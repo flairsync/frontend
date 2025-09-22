@@ -4,7 +4,8 @@
     "build": "vike build",
     "preview": "vike preview",
     "shadcn": "npx shadcn@latest",
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "prod": "NODE_ENV=production node server.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -96,7 +96,7 @@ const LandingHero = () => {
                 {/* Right section */}
                 <div className="hero_image flex-1 flex justify-center md:justify-end  w-full  ">
                     <img
-                        src="./assets/images/landing/hero.png"
+                        src="./public/images/landing/hero.png"
                         alt="Hero Illustration"
                         className="w-full   rounded-lg shadow-lg h-[400px] object-cover rounded-l-full"
                     />
