@@ -1,0 +1,26 @@
+/* Links */
+html{
+  scroll-behavior: smooth;
+}
+a {
+  text-decoration: none;
+}
+
+/* Reset */
+/* body {
+  margin: 0;
+  font-family: sans-serif;
+}
+* {
+  box-sizing: border-box;
+} */
+
+/* Page Transition Animation */
+/* #page-content {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+body.page-is-transitioning #page-content {
+  opacity: 0;
+}
+ */
