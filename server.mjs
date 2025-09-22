@@ -1,42 +1,29 @@
-import express from "express";
 import { renderPage } from "vike/server";
 
-const app = express();
+// We use JSDoc instead of TypeScript because Vercel seems buggy with /api/**/*.ts files
 
-// Serve static client assets
-app.use(express.static("dist/client"));
+/**
+ * @param {import('@vercel/node').VercelRequest} req
+ * @param {import('@vercel/node').VercelResponse} res
+ */
+export default async function handler(req, res) {
+  const { url } = req;
+  console.log("Request to url:", url);
+  if (url === undefined) throw new Error("req.url is undefined");
 
-// Catch-all route for SSR
-app.get("/:path(.*)*", async (req, res, next) => {
-  try {
-    const pageContextInit = { urlOriginal: req.originalUrl };
-    const pageContext = await renderPage(pageContextInit);
+  const pageContextInit = { urlOriginal: url };
+  const pageContext = await renderPage(pageContextInit);
+  const { httpResponse } = pageContext;
+  console.log("httpResponse", !!httpResponse);
 
-    const { httpResponse } = pageContext;
-
-    if (!httpResponse) {
-      // No SSR page found, continue to next middleware (optional 404)
-      return next();
-    }
-
-    const { body, statusCode, headers } = httpResponse;
-
-    res.status(statusCode);
-    headers.forEach(([name, value]) => res.setHeader(name, value));
-    res.send(body);
-  } catch (err) {
-    console.error("SSR Error:", err);
-    res.status(500).send("Internal Server Error");
+  if (!httpResponse) {
+    res.statusCode = 200;
+    res.end();
+    return;
   }
-});
 
-// Optional: 404 for any unmatched static assets
-app.use((req, res) => {
-  res.status(404).send("Not Found");
-});
-
-// Start server on Render’s PORT
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Vike SSR server running at http://localhost:${port}`);
-});
+  const { body, statusCode, headers } = httpResponse;
+  res.statusCode = statusCode;
+  headers.forEach(([name, value]) => res.setHeader(name, value));
+  res.end(body);
+}
