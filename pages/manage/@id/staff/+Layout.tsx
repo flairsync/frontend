@@ -37,6 +37,7 @@ import {
 import { BusinessOwnerManagementSidebar } from '@/components/management/BusinessOwnerManagementSidebar';
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
+import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
 
 
 
@@ -55,7 +56,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                 open={sidebarOpen}
                 className="flex h-screen w-full overflow-hidden "
             >
-                <BusinessOwnerManagementSidebar
+                <StaffMemberSidebar
                     businessId={routeParams.id}
                     className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
                 />
