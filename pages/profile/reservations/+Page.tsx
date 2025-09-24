@@ -1,23 +1,33 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import React from 'react'
+import ProfileReservationCard from "@/components/profile/ProfileReservationCard"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useState } from "react"
 
 const ReservationsPage = () => {
+    const [reservations, setReservations] = useState([
+        { id: 1, restaurantName: "Borda La Vella", datetime: "2025-09-28T19:30:00" },
+        { id: 2, restaurantName: "Cafe Central", datetime: "2025-09-30T12:00:00" },
+    ])
+
+    const handleCancel = (id: number | string) => {
+        setReservations((prev) => prev.filter((r) => r.id !== id))
+    }
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle>My Reservations</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                <div className="flex justify-between items-center border-b pb-2">
-                    <div>
-                        <h3 className="font-medium">Borda La Vella</h3>
-                        <p className="text-sm text-muted-foreground">
-                            Sept 28, 2025 – 19:30
-                        </p>
-                    </div>
-                    <Button size="sm">Cancel</Button>
-                </div>
+                {reservations.map((res) => (
+                    <ProfileReservationCard
+                        key={res.id}
+                        id={res.id}
+                        restaurantName={res.restaurantName}
+                        href={`/business/${res.id}`}
+                        datetime={res.datetime}
+                        onCancel={handleCancel}
+                    />
+                ))}
             </CardContent>
         </Card>
     )
