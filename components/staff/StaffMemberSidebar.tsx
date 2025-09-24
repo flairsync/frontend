@@ -78,7 +78,7 @@ export function isActiveLink(key: string): boolean {
     const currentPath = window.location.pathname;
     // Example: "/manage/123/owner/staff"
 
-    return currentPath.includes(`/owner/${key}`);
+    return currentPath.includes(`/staff/${key}`);
 }
 
 

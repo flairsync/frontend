@@ -1,7 +1,6 @@
 export { ProfilePagesLayout }
 
-import PublicFeedHeader from '@/components/feed/PublicFeedHeader'
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
     User,
@@ -13,6 +12,11 @@ import {
     ShieldAlert,
     LogOut,
 } from "lucide-react";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { ProfileSidebar } from '@/components/profile/ProfileSidebar';
+import { Separator } from '@/components/ui/separator';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '@/components/ui/breadcrumb';
+import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 const menuItems = [
     { key: "overview", label: "Profile Overview", icon: User },
     { key: "favorites", label: "Favorites", icon: Heart },
@@ -23,13 +27,67 @@ const menuItems = [
     { key: "danger", label: "Danger Zone", icon: ShieldAlert },
 ];
 const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <div className="flex min-h-screen">
+    const [sidebarOpen, setsidebarOpen] = useState(true);
+
+
+    return (<div>
+
+        <SidebarProvider
+            onOpenChange={setsidebarOpen}
+            open={sidebarOpen}
+            className="flex h-screen w-full overflow-hidden "
+        >
+            <ProfileSidebar
+                className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
+            />
+            <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                    <SidebarTrigger className="-ml-1" />
+                    <Separator
+                        orientation="vertical"
+                        className="mr-2 data-[orientation=vertical]:h-4"
+                    />
+                    Welcome back, Semah Chriha
+                    {/* <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbLink href="/manage">
+                                        Business name
+                                    </BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="hidden md:block" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb> */}
+                    <div
+                        className=' flex flex-1  justify-end mr-10'
+                    >
+
+                        <HeaderProfileAvatar />
+                    </div>
+                </header>
+                <div className="flex flex-1 flex-col gap-4 p-4 overflow-scroll">
+                    {children}
+                </div>
+            </SidebarInset>
+        </SidebarProvider>
+    </div>
+
+    )
+}
+
+export default ProfilePagesLayout
+
+
+/*
+
+ <div className="flex min-h-screen">
             <PublicFeedHeader />
             <div
                 className="flex min-h-screen pt-14 w-full"
             >
-                {/* Sidebar */}
                 <aside className="w-64 border-r bg-sidebar text-sidebar-foreground p-4">
                     <h2 className="text-lg font-bold mb-4">My Profile</h2>
                     <nav className="space-y-2">
@@ -48,12 +106,8 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
                     </nav>
                 </aside>
 
-                {/* Main Content */}
                 <main className="flex-1 p-6 bg-muted/30">{children}</main>
             </div>
 
         </div>
-    )
-}
-
-export default ProfilePagesLayout
+*/

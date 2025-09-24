@@ -4,7 +4,7 @@ const PublicFeedSearchHero = () => {
     return (
         <div className="bg-gray-100  font-sans">
             <div
-                className="relative w-full h-[500px] flex items-center justify-center text-center p-4 bg-cover bg-center"
+                className="relative w-full h-[300px] flex items-center justify-center text-center p-4 bg-cover bg-center"
                 style={{
                     backgroundImage: "url('https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg')",
                     backgroundBlendMode: 'multiply',
@@ -12,7 +12,7 @@ const PublicFeedSearchHero = () => {
                 }}
             >
                 <div className="z-10 text-white p-4 max-w-2xl mx-auto">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
+                    <h1 className="text-4xl md:text-4xl lg:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
                         Stop looking for a restaurant - find it.
                     </h1>
                     <form className="relative w-full">

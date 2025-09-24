@@ -38,6 +38,19 @@ const restaurantTags = [
     "Wheelchair Accessible",
 ]
 
+
+const TagsList = React.memo(() => (
+    <div className="gap-3 flex flex-col">
+        {restaurantTags.map((val) => (
+            <div key={val} className="flex items-center gap-3">
+                <Checkbox id={val} />
+                <Label htmlFor={val}>{val}</Label>
+            </div>
+        ))}
+    </div>
+))
+
+
 const PublicFeedSidebar = () => {
     const [locationModalOpen, setLocationModalOpen] = useState(false)
 
@@ -52,76 +65,60 @@ const PublicFeedSidebar = () => {
             </div>
 
             {/* Location modal */}
-            <LocationSelectionModal
-                isOpen={locationModalOpen}
-                onOpenChange={() => {
-                    setLocationModalOpen(false)
-                }}
-            />
+            {locationModalOpen && (
+                <LocationSelectionModal
+                    isOpen={locationModalOpen}
+                    onOpenChange={() => setLocationModalOpen(false)}
+                />
+            )}
 
             {/* Form */}
-            <Formik
-                initialValues={{
-                    searchType: "all",
-                }}
-                onSubmit={(values) => {
-                    console.log(values)
-                }}
-            >
-                {({ values, setFieldValue }) => (
-                    <Form className="space-y-6">
-                        {/* Location section */}
-                        <div
-                            className="hover:cursor-pointer"
-                            onClick={() => setLocationModalOpen(true)}
-                        >
-                            <h3 className="text-md font-semibold mb-2">Location</h3>
-                            <div className="flex flex-row items-center gap-3">
-                                <p className="text-sm text-muted-foreground">
-                                    Andorra la vella, AD 500
-                                </p>
-                                <MapPinPenIcon className="w-4 h-4 text-muted-foreground" />
-                            </div>
-                        </div>
+            <div
 
-                        {/* Type section */}
-                        <div>
-                            <h3 className="text-md font-semibold mb-2">Type</h3>
-                            <RadioGroup
-                                defaultValue={values.searchType}
-                                value={values.searchType}
-                                onValueChange={(val) => setFieldValue("searchType", val)}
-                            >
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="all" id="all" />
-                                    <Label htmlFor="all">All</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="restaurants" id="restaurants" />
-                                    <Label htmlFor="restaurants">Restaurants</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="coffee-shops" id="coffee-shops" />
-                                    <Label htmlFor="coffee-shops">Coffee shops</Label>
-                                </div>
-                            </RadioGroup>
+            >
+
+                <div className="space-y-6">
+                    {/* Location section */}
+                    <div
+                        className="hover:cursor-pointer"
+                        onClick={() => setLocationModalOpen(true)}
+                    >
+                        <h3 className="text-md font-semibold mb-2">Location</h3>
+                        <div className="flex flex-row items-center gap-3">
+                            <p className="text-sm text-muted-foreground">
+                                Andorra la vella, AD 500
+                            </p>
+                            <MapPinPenIcon className="w-4 h-4 text-muted-foreground" />
                         </div>
-                    </Form>
-                )}
-            </Formik>
+                    </div>
+
+                    {/* Type section */}
+                    <div>
+                        <h3 className="text-md font-semibold mb-2">Type</h3>
+                        <RadioGroup
+                        >
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="all" id="all" />
+                                <Label htmlFor="all">All</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="restaurants" id="restaurants" />
+                                <Label htmlFor="restaurants">Restaurants</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="coffee-shops" id="coffee-shops" />
+                                <Label htmlFor="coffee-shops">Coffee shops</Label>
+                            </div>
+                        </RadioGroup>
+                    </div>
+                </div>
+            </div>
 
             {/* Tags section */}
             <div className="space-y-6 mt-6">
                 <div>
                     <h3 className="text-md font-semibold mb-2">Tags</h3>
-                    <div className="gap-3 flex flex-col">
-                        {restaurantTags.map((val) => (
-                            <div key={val} className="flex items-center gap-3">
-                                <Checkbox id={val} />
-                                <Label htmlFor={val}>{val}</Label>
-                            </div>
-                        ))}
-                    </div>
+                    <TagsList />
                 </div>
             </div>
         </div>

@@ -22,13 +22,11 @@ const FeedPage = () => {
             <div
                 className='pt-40 md:pt-14 gap-10 flex flex-col pb-20'
             >
-
                 <PublicFeedSearchHero />
-
 
                 <div className="container mx-auto px-4 ">
                     <div className="flex flex-col md:flex-row gap-8">
-                        <PublicFeedSidebar />
+                        {<PublicFeedSidebar />}
                         <div className="w-full md:w-3/4">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-sm text-gray-500">Found <span className="font-bold">376</span> results</span>
