@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, CreditCard, LayoutDashboard, Plug, Settings, ShieldAlert, ShoppingBag, Users, Utensils } from "lucide-react"
+import { BarChart3, CreditCard, Images, LayoutDashboard, Plug, Settings, ShieldAlert, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 
 // This is sample data.
@@ -29,6 +29,13 @@ const ownerNavData = {
                     title: "Dashboard",
                     url: "/manage/:id/owner/dashboard",
                     icon: LayoutDashboard,
+                },
+                {
+                    key: "branding",
+
+                    title: "Business Branding",
+                    url: "/manage/:id/owner/branding",
+                    icon: Images,
                 },
                 {
                     key: "settings",
@@ -137,7 +144,9 @@ export function BusinessOwnerManagementSidebar({ ...props }: React.ComponentProp
                                 {item.items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild isActive={isActiveLink(item.key)}>
-                                            <a href={item.url.replace(":id", props.businessId)}>{item.title}</a>
+                                            <a href={item.url.replace(":id", props.businessId)}>
+                                                <item.icon />
+                                                {item.title}</a>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ))}
