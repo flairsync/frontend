@@ -15,6 +15,7 @@ import {
     SidebarRail,
 } from "@/components/ui/sidebar"
 import { BarChart3, Calendar, CreditCard, Heart, LayoutDashboard, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils } from "lucide-react"
+import WebsiteLogo from "../shared/WebsiteLogo"
 
 // This is sample data.
 const ownerNavData = {
@@ -88,6 +89,11 @@ export function ProfileSidebar({ ...props }: React.ComponentProps<typeof Sidebar
         <Sidebar {...props}
         >
             <SidebarHeader>
+                <a
+                    href="/feed"
+                >
+                    <WebsiteLogo />
+                </a>
             </SidebarHeader>
             <SidebarContent>
                 {/* We create a SidebarGroup for each parent. */}

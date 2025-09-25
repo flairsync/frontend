@@ -1,9 +1,16 @@
+"use client"
+
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 
 const ProfilePreferencesPage = () => {
     const [themeDark, setThemeDark] = useState(false)
@@ -12,7 +19,7 @@ const ProfilePreferencesPage = () => {
         vegan: false,
         glutenFree: true,
     })
-    const [maxDistance, setMaxDistance] = useState(10) // in km
+    const [maxDistance, setMaxDistance] = useState(10)
 
     const toggleRestaurantType = (type: keyof typeof restaurantTypes) => {
         setRestaurantTypes((prev) => ({ ...prev, [type]: !prev[type] }))
@@ -20,65 +27,66 @@ const ProfilePreferencesPage = () => {
 
     const saveTheme = () => alert(`Theme saved: ${themeDark ? "Dark" : "Light"}`)
     const saveRestaurantTypes = () =>
-        alert(`Selected types: ${Object.entries(restaurantTypes)
-            .filter(([_, v]) => v)
-            .map(([k]) => k)
-            .join(", ")}`)
+        alert(
+            `Selected types: ${Object.entries(restaurantTypes)
+                .filter(([_, v]) => v)
+                .map(([k]) => k)
+                .join(", ")}`
+        )
     const saveMaxDistance = () => alert(`Max distance: ${maxDistance} km`)
 
     return (
-        <div className="space-y-6">
-            {/* Theme Card */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Theme</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-4">
+        <Accordion type="single" collapsible className="w-full space-y-2">
+            {/* Theme */}
+            <AccordionItem value="theme" className="border rounded-lg px-3">
+                <AccordionTrigger>Theme</AccordionTrigger>
+                <AccordionContent className="space-y-4 py-2">
                     <div className="flex items-center justify-between">
                         <Label>Dark Mode</Label>
                         <Switch checked={themeDark} onCheckedChange={setThemeDark} />
                     </div>
-                    <Button onClick={saveTheme} className="self-start">Save</Button>
-                </CardContent>
-            </Card>
+                    <Button onClick={saveTheme}>Save</Button>
+                </AccordionContent>
+            </AccordionItem>
 
-            {/* Restaurant Types Card */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Restaurant Types</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-2">
+            {/* Restaurant Types */}
+            <AccordionItem value="restaurant-types" className="border rounded-lg px-3">
+                <AccordionTrigger>Restaurant Types</AccordionTrigger>
+                <AccordionContent className="space-y-3 py-2">
                     {Object.entries(restaurantTypes).map(([type, value]) => (
-                        <label key={type} className="flex items-center gap-2">
+                        <label key={type} className="flex items-center gap-2 text-sm">
                             <input
                                 type="checkbox"
                                 checked={value}
-                                onChange={() => toggleRestaurantType(type as keyof typeof restaurantTypes)}
+                                onChange={() =>
+                                    toggleRestaurantType(type as keyof typeof restaurantTypes)
+                                }
                             />
-                            {type.charAt(0).toUpperCase() + type.slice(1).replace(/([A-Z])/g, " $1")}
+                            {type.charAt(0).toUpperCase() +
+                                type.slice(1).replace(/([A-Z])/g, " $1")}
                         </label>
                     ))}
-                    <Button onClick={saveRestaurantTypes} className="self-start mt-2">Save</Button>
-                </CardContent>
-            </Card>
+                    <Button onClick={saveRestaurantTypes}>Save</Button>
+                </AccordionContent>
+            </AccordionItem>
 
-            {/* Max Distance Card */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Max Distance</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-4">
-                    <Label>Maximum Distance: {maxDistance} km</Label>
+            {/* Max Distance */}
+            <AccordionItem value="max-distance" className="border rounded-lg px-3">
+                <AccordionTrigger>Max Distance</AccordionTrigger>
+                <AccordionContent className="space-y-4 py-2">
+                    <Label className="text-sm">
+                        Maximum Distance: {maxDistance} km
+                    </Label>
                     <Slider
                         value={[maxDistance]}
                         onValueChange={(val) => setMaxDistance(val[0])}
                         min={1}
                         max={50}
                     />
-                    <Button onClick={saveMaxDistance} className="self-start">Save</Button>
-                </CardContent>
-            </Card>
-        </div>
+                    <Button onClick={saveMaxDistance}>Save</Button>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
     )
 }
 

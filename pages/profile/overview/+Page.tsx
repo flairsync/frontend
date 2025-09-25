@@ -1,6 +1,8 @@
 import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import ProfileOverviewOrdersChart from "@/components/profile/ProfileOverviewOrdersChart"
+
 
 const ProfileOverviewPage = () => {
     // Example stats
@@ -66,18 +68,8 @@ const ProfileOverviewPage = () => {
                 </Card>
             </div>
 
-            {/* Example Graph: Favorite Cuisine Progress */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Favorite Cuisine Engagement</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-sm text-muted-foreground mb-2">
-                        Percentage of orders from your favorite cuisine
-                    </p>
-                    <Progress value={favoriteCuisineProgress} className="h-4 rounded-full" />
-                </CardContent>
-            </Card>
+            <ProfileOverviewOrdersChart />
+
         </div>
     )
 }

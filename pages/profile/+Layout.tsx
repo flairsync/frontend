@@ -17,6 +17,8 @@ import { ProfileSidebar } from '@/components/profile/ProfileSidebar';
 import { Separator } from '@/components/ui/separator';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '@/components/ui/breadcrumb';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
+import WebsiteLogo from '@/components/shared/WebsiteLogo';
+import { motion, AnimatePresence } from "framer-motion"
 const menuItems = [
     { key: "overview", label: "Profile Overview", icon: User },
     { key: "favorites", label: "Favorites", icon: Heart },
@@ -43,6 +45,23 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
             <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                     <SidebarTrigger className="-ml-1" />
+                    <Separator
+                        orientation="vertical"
+                        className="mr-2 data-[orientation=vertical]:h-4"
+                    />
+                    <AnimatePresence>
+                        {!sidebarOpen && (
+                            <motion.a
+                                href="/feed"
+                                initial={{ opacity: 0, scale: 0.5, x: -10 }}
+                                animate={{ opacity: 1, scale: 1, x: 0 }}
+                                exit={{ opacity: 0, scale: 0.5, x: -10 }}
+                                transition={{ duration: 0.5, ease: "easeInOut" }}
+                            >
+                                <WebsiteLogo />
+                            </motion.a>
+                        )}
+                    </AnimatePresence>
                     <Separator
                         orientation="vertical"
                         className="mr-2 data-[orientation=vertical]:h-4"
