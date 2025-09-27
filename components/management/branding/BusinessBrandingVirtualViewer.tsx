@@ -100,6 +100,7 @@ const nodes: VirtualTourNode[] = [
 const BusinessBrandingVirtualViewer = () => {
     const [images, setImages] = useState<any[]>([]);
 
+    const [virtualNodes, setVirtualNodes] = useState(nodes);
     const viewerRef = useRef<Viewer | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -122,7 +123,6 @@ const BusinessBrandingVirtualViewer = () => {
                 mousewheelCtrlKey: true,
                 defaultYaw: '130deg',
                 navbar: 'zoom move gallery caption fullscreen',
-
                 plugins: [
                     MarkersPlugin,
                     GalleryPlugin.withConfig({
@@ -131,7 +131,7 @@ const BusinessBrandingVirtualViewer = () => {
                     VirtualTourPlugin.withConfig({
                         positionMode: 'gps',
                         renderMode: '3d',
-                        nodes: nodes,
+                        nodes: virtualNodes,
                         startNodeId: '2',
                     }),
                 ],
@@ -150,12 +150,33 @@ const BusinessBrandingVirtualViewer = () => {
         }
     }, []);
 
-    /* useEffect(() => {
-        if (viewerRef.current && images.length > 0) {
-            const url = URL.createObjectURL(images[0]);
-            viewerRef.current.setPanorama(url, { transition: false }).catch(console.error);
+    useEffect(() => {
+        if (images.length > 0) {
+
+            const url = URL.createObjectURL(images[0])
+            setVirtualNodes([{
+                id: '1',
+                panorama: url,
+                thumbnail: baseUrl + 'tour/key-biscayne-1-thumb.jpg',
+                name: 'One',
+                caption: `[1]`,
+                //links: [{ nodeId: '2' }],
+                markers: [],
+                gps: [-80.156479, 25.666725, 3],
+                sphereCorrection: { pan: '33deg' },
+            }])
+
+            /* const url = URL.createObjectURL(images[0]);
+            viewerRef.current.setPanorama(url, { transition: false }).catch(console.error); */
         }
-    }, [images]); */
+    }, [images]);
+
+    useEffect(() => {
+        if (viewerRef.current) {
+            viewerRef.current.getPlugin<VirtualTourPlugin>(VirtualTourPlugin).setNodes(virtualNodes)
+        }
+
+    }, [virtualNodes]);
 
     return (
         <div>
