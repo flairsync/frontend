@@ -7,6 +7,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 
 import { clientOnly } from "vike-react/clientOnly"
+import { CardDescription } from "@/components/ui/card"
+import BusinessBrandingLogoUpload from "@/components/management/branding/BusinessBrandingLogoUpload"
+import BusinessBrandingGalleryUpload from "@/components/management/branding/BusinessBrandingGalleryUpload"
 const BusinessBrandingVirtualViewer = clientOnly(() =>
     import("@/components/management/branding/BusinessBrandingVirtualViewer")
 )
@@ -39,50 +42,33 @@ const BusinessBrandingPage = () => {
     return (
         <Accordion type="single" collapsible className="w-full space-y-2">
             {/* Logo */}
-            <AccordionItem value="logo" className="border rounded-lg px-3">
-                <AccordionTrigger>Logo</AccordionTrigger>
+            <AccordionItem value="logo" className="border rounded-lg px-3  ">
+                <AccordionTrigger className="hover:cursor-pointer ">Logo</AccordionTrigger>
+
                 <AccordionContent className="space-y-4 py-2">
-                    <Input
-                        placeholder="Logo URL"
-                        value={logoUrl}
-                        onChange={(e) => setLogoUrl(e.target.value)}
+                    <BusinessBrandingLogoUpload
+                        onSave={(f) => { }}
+
                     />
-                    <Button onClick={saveLogo}>Save</Button>
                 </AccordionContent>
             </AccordionItem>
 
             {/* Gallery */}
             <AccordionItem value="gallery" className="border rounded-lg px-3">
-                <AccordionTrigger>Gallery</AccordionTrigger>
+                <AccordionTrigger className="hover:cursor-pointer ">Gallery</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
-                    <div className="space-y-2">
-                        {galleryUrls.length === 0 && <p>No images added yet.</p>}
-                        {galleryUrls.map((url, index) => (
-                            <div key={index} className="flex items-center justify-between">
-                                <span>{url}</span>
-                                <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() =>
-                                        setGalleryUrls(galleryUrls.filter((_, i) => i !== index))
-                                    }
-                                >
-                                    Remove
-                                </Button>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex gap-2">
-                        <Button onClick={addGalleryImage}>Add Image</Button>
-                        <Button onClick={saveGallery}>Save Gallery</Button>
-                    </div>
+                    <BusinessBrandingGalleryUpload
+                        onSave={(f) => {
+
+                        }}
+                    />
                 </AccordionContent>
             </AccordionItem>
 
 
             {/* Virtual tour */}
             <AccordionItem value="virtua_tour" className="border rounded-lg px-3">
-                <AccordionTrigger>Virtual tour</AccordionTrigger>
+                <AccordionTrigger className="hover:cursor-pointer ">Virtual tour</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingVirtualViewer />
                 </AccordionContent>
@@ -90,7 +76,7 @@ const BusinessBrandingPage = () => {
 
             {/* Description */}
             <AccordionItem value="description" className="border rounded-lg px-3">
-                <AccordionTrigger>Description</AccordionTrigger>
+                <AccordionTrigger className="hover:cursor-pointer ">Description</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <Textarea
                         placeholder="Write a description about your restaurant or coffee shop"
@@ -101,18 +87,6 @@ const BusinessBrandingPage = () => {
                 </AccordionContent>
             </AccordionItem>
 
-            {/* Video */}
-            <AccordionItem value="video" className="border rounded-lg px-3">
-                <AccordionTrigger>Video</AccordionTrigger>
-                <AccordionContent className="space-y-4 py-2">
-                    <Input
-                        placeholder="Video URL"
-                        value={videoUrl}
-                        onChange={(e) => setVideoUrl(e.target.value)}
-                    />
-                    <Button onClick={saveVideo}>Save Video</Button>
-                </AccordionContent>
-            </AccordionItem>
         </Accordion>
     )
 }

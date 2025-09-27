@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, CreditCard, Images, LayoutDashboard, Plug, Settings, ShieldAlert, ShoppingBag, Users, Utensils } from "lucide-react"
+import { BarChart3, CalendarCheck, CreditCard, Images, LayoutDashboard, PackageOpen, Plug, Settings, ShieldAlert, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 
 // This is sample data.
@@ -57,6 +57,20 @@ const ownerNavData = {
                     title: "Staff Management",
                     url: "/manage/:id/owner/staff",
                     icon: Users,
+                },
+                {
+                    key: "schedule",
+
+                    title: "Schedule Management",
+                    url: "/manage/:id/owner/schedule",
+                    icon: CalendarCheck,
+                },
+                {
+                    key: "inventory",
+
+                    title: "Inventory Management",
+                    url: "/manage/:id/owner/inventory",
+                    icon: PackageOpen,
                 },
                 {
                     key: "menu",
