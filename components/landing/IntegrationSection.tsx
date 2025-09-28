@@ -2,27 +2,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ArrowRight } from "lucide-react";
-import { animate, createTimeline, onScroll, stagger, text, utils } from 'animejs';
-
-import React, { useEffect, useLayoutEffect } from 'react';
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 const IntegrationSection = () => {
+    const { t } = useTranslation();
 
     return (
-        <div
-            className=" scroll-container flex justify-center items-center min-h-screen bg-white font-sans text-zinc-900">
-            <div className=" square w-[1100px] h-[550px] bg-[#6366F1] rounded-3xl p-16 flex items-center justify-between relative overflow-hidden shadow-2xl">
+        <div className="scroll-container flex justify-center items-center min-h-screen bg-white font-sans text-zinc-900">
+            <div className="square w-[1100px] h-[550px] bg-[#6366F1] rounded-3xl p-16 flex items-center justify-between relative overflow-hidden shadow-2xl">
                 {/* Left Section */}
                 <div className="flex-1 max-w-lg z-10">
-                    <h1
-                        className=" text-6xl font-extrabold text-white mb-6 leading-tight">
-                        Seamless Setup, Zero Hassle
+                    <h1 className="text-6xl font-extrabold text-white mb-6 leading-tight">
+                        {t("landing_page.integration.title")}
                     </h1>
-                    <p className=" text-xl text-white/90 mb-10">
-                        No complicated integrations. Just create your account, set up your business details, and start managing everything from one place — right away.
+                    <p className="text-xl text-white/90 mb-10">
+                        {t("landing_page.integration.subtitle")}
                     </p>
                     <Button className="bg-white text-[#6366F1] font-semibold py-7 px-8 hover:cursor-pointer text-lg hover:bg-zinc-100 transition-colors duration-200">
-                        Book a Demo
+                        {t("landing_page.integration.buttonText")}
                         <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                 </div>
@@ -33,8 +31,12 @@ const IntegrationSection = () => {
                     <Card className="absolute top-1/4 right-20 w-[300px] h-[400px] bg-white rounded-xl shadow-lg transform rotate-6">
                         <CardContent className="p-6">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-sm text-zinc-500 font-medium">Overdraft Prevention</span>
-                                <span className="text-xs text-green-500 font-semibold">Currently On</span>
+                                <span className="text-sm text-zinc-500 font-medium">
+                                    {t("landing_page.integration.mainCard.title")}
+                                </span>
+                                <span className="text-xs text-green-500 font-semibold">
+                                    {t("landing_page.integration.mainCard.status")}
+                                </span>
                             </div>
                             <Separator />
                             <div className="flex flex-col items-center mt-6 mb-4">
@@ -59,12 +61,20 @@ const IntegrationSection = () => {
                                             strokeDasharray="251.2"
                                             strokeDashoffset="20.1"
                                         ></circle>
-                                        <text x="50" y="50" textAnchor="middle" dy="0.35em" className="text-3xl font-bold text-zinc-800">
-                                            93%
+                                        <text
+                                            x="50"
+                                            y="50"
+                                            textAnchor="middle"
+                                            dy="0.35em"
+                                            className="text-3xl font-bold text-zinc-800"
+                                        >
+                                            {t("landing_page.integration.mainCard.progress")}
                                         </text>
                                     </svg>
                                 </div>
-                                <span className="text-sm font-medium mt-2">Weekly Progress</span>
+                                <span className="text-sm font-medium mt-2">
+                                    {t("landing_page.integration.mainCard.progressLabel")}
+                                </span>
                             </div>
                             <div className="flex justify-between items-end">
                                 <div className="w-full h-24 bg-zinc-100 rounded-lg">

@@ -1,8 +1,11 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const PublicFeedSearchHero = () => {
+    const { t } = useTranslation()
+
     return (
-        <div className="bg-gray-100  font-sans">
+        <div className="bg-gray-100 font-sans">
             <div
                 className="relative w-full h-[300px] flex items-center justify-center text-center p-4 bg-cover bg-center"
                 style={{
@@ -12,9 +15,12 @@ const PublicFeedSearchHero = () => {
                 }}
             >
                 <div className="z-10 text-white p-4 max-w-2xl mx-auto">
+                    {/* Hero title */}
                     <h1 className="text-4xl md:text-4xl lg:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
-                        Stop looking for a restaurant - find it.
+                        {t("public_feed.searchHero.title")}
                     </h1>
+
+                    {/* Search input */}
                     <form className="relative w-full">
                         <div className="relative flex items-center bg-white rounded-full shadow-lg overflow-hidden">
                             <svg
@@ -34,10 +40,10 @@ const PublicFeedSearchHero = () => {
                             <input
                                 type="text"
                                 className="w-full pl-12 pr-4 py-4 text-lg text-gray-800 focus:outline-none bg-transparent"
+                                placeholder={t("public_feed.searchHero.searchPlaceholder")}
                             />
                         </div>
-                        {/* The search button is omitted as it's not in the design,
-            but we can add one if needed. */}
+                        {/* Optional search button can be added here */}
                     </form>
                 </div>
             </div>
