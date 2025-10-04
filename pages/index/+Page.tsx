@@ -8,6 +8,7 @@ import LandingHero from '@/components/landing/LandingHero';
 import LandingPricingSection from '@/components/landing/LandingPricingSection';
 import ProblemSolutionSection from '@/components/landing/ProblemSolutionSection';
 import StaffManagementFeature from '@/components/landing/StaffManagementFeature';
+import WebsiteFooter from '@/components/shared/WebsiteFooter';
 import { useSectionObserver } from '@/hooks/useSectionObserver';
 import { clientOnly } from 'vike-react/clientOnly'
 
@@ -84,7 +85,7 @@ export default function Page() {
         </div>
 
       </div>
-      <LandingFooter />
+      <WebsiteFooter />
     </div>
   );
 }

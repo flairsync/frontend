@@ -18,6 +18,7 @@ import { BusinessCardDetails } from '@/models/BusinessCardDetails'
 
 // ✅ i18n
 import { useTranslation, Trans } from 'react-i18next'
+import WebsiteFooter from '@/components/shared/WebsiteFooter'
 
 const FeedPage = () => {
     const { t } = useTranslation()
@@ -93,7 +94,7 @@ const FeedPage = () => {
                     </div>
                 </div>
             </div>
-            <LandingFooter />
+            <WebsiteFooter />
         </div>
     )
 }

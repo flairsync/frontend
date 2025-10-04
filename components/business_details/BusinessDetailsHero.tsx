@@ -1,24 +1,74 @@
-import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Star } from "lucide-react";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useTranslation } from 'react-i18next';
+import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal";
 
 const BusinessDetailsHero = () => {
+    const { t } = useTranslation();
+
     return (
-        <div className="bg-gray-100  font-sans">
-            <div
-                className="relative w-full h-[500px] flex items-center justify-center text-center p-4 bg-cover bg-center"
-                style={{
-                    backgroundImage: "url('https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg')",
-                    backgroundBlendMode: 'multiply',
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)'
-                }}
+        <div className="space-y-4">
+            <Carousel
+                orientation="horizontal"
+                plugins={[Autoplay({ delay: 2000 })]}
             >
-                <div className="z-10 text-white p-4 max-w-2xl mx-auto">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
-                        Restaurant name
-                    </h1>
+                <CarouselContent>
+                    <CarouselItem>
+                        <img
+                            src="https://images.pexels.com/photos/33899554/pexels-photo-33899554.jpeg"
+                            alt="Restaurant"
+                            className="w-full h-80 object-cover rounded-2xl shadow-md"
+                        />
+                    </CarouselItem>
+                    <CarouselItem>
+                        <img
+                            src="https://images.pexels.com/photos/33899554/pexels-photo-33899554.jpeg"
+                            alt="Restaurant"
+                            className="w-full h-80 object-cover rounded-2xl shadow-md"
+                        />
+                    </CarouselItem>
+                    <CarouselItem>
+                        <img
+                            src="https://images.pexels.com/photos/33899554/pexels-photo-33899554.jpeg"
+                            alt="Restaurant"
+                            className="w-full h-80 object-cover rounded-2xl shadow-md"
+                        />
+                    </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+            </Carousel>
+
+            <div className="flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold">Cafe Montserrat</h1>
+                    <p className="text-muted-foreground">
+                        Cozy place with a great atmosphere, perfect for coffee and
+                        pastries.
+                    </p>
                 </div>
+                {/* <Button>{t("business_page.header.reserve_table_button")}</Button> */}
+                <BusinessDetailsReserveTableModal />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary">Halal</Badge>
+                <Badge variant="secondary">Vegan Options</Badge>
+                <Badge variant="secondary">Family Friendly</Badge>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default BusinessDetailsHero
+export default BusinessDetailsHero;
