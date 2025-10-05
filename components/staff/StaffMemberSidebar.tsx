@@ -44,8 +44,14 @@ const staffNavData = {
                 },
                 {
                     key: "orders",
-                    title: "Orders & Reservations",
+                    title: "Orders",
                     url: "/manage/:id/staff/orders",
+                    icon: ShoppingBag,
+                },
+                {
+                    key: "reservations",
+                    title: "Reservations",
+                    url: "/manage/:id/staff/reservations",
                     icon: ShoppingBag,
                 },
                 {

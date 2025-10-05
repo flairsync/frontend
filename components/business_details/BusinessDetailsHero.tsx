@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useTranslation } from 'react-i18next';
-import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal";
 
 const BusinessDetailsHero = () => {
     const { t } = useTranslation();
@@ -58,8 +57,8 @@ const BusinessDetailsHero = () => {
                         pastries.
                     </p>
                 </div>
-                {/* <Button>{t("business_page.header.reserve_table_button")}</Button> */}
-                <BusinessDetailsReserveTableModal />
+                <Button>{t("business_page.header.reserve_table_button")}</Button>
+                {/*  */}
             </div>
 
             <div className="flex flex-wrap gap-2">

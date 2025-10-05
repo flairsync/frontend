@@ -6,16 +6,19 @@ import BusinessDetailsReviews from '@/components/business_details/BusinessDetail
 import BusinessDetailsTiming from '@/components/business_details/BusinessDetailsTiming';
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import { Separator } from '@/components/ui/separator';
-import React from 'react'
+import React, { useState } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
 import WebsiteFooter from '@/components/shared/WebsiteFooter';
 import BusinessDetailsTableReservation from '@/components/business_details/BusinessDetailsTableReservation';
+import BusinessDetailsReserveTableModal from '@/components/business_details/BusinessDetailsReserveTableModal';
 
 const BusinessPage = () => {
     const pageContext = usePageContext();
+
     return (
         <div>
             <PublicFeedHeader />
+
             <div
                 className='pt-12'
             >
