@@ -48,7 +48,7 @@ const PublicFeedHeader = (props: HeaderProps) => {
                 </div>
 
                 {/* Right Section: Join Us + Mobile Menu */}
-                <div className="md:flex hidden items-center space-x-4  ">
+                <div className="md:flex items-center space-x-4  ">
                     {/* <LanguageSwitcher /> */}
 
                     {
@@ -66,26 +66,11 @@ const PublicFeedHeader = (props: HeaderProps) => {
                         </a>
                     }
 
-                    <button className="md:hidden text-foreground" onClick={toggleMenu}>
-                        {isOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+
                 </div>
             </div>
 
-            {/* Mobile Menu  TODO */}
-            {/*  {isOpen && (
-                <div className="md:hidden bg-background/95 backdrop-blur-md shadow-md">
-                    <nav className="flex flex-col px-6 py-4 space-y-3">
-                        <a href="#features" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>Features</a>
-                        <a href="#pricing" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>Pricing</a>
-                        <a href="#faq" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>FAQ</a>
-                        <a href="#contact" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>Contact</a>
-                        <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition">
-                            Start Free Trial
-                        </button>
-                    </nav>
-                </div>
-            )} */}
+
         </header>
     )
 }

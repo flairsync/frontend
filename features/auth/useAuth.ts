@@ -29,10 +29,24 @@ export const useAuth = () => {
     },
   });
 
+  const { mutate: signupUser, isPending: signingUp } = useMutation({
+    mutationKey: ["signup_user"],
+    mutationFn: (data: { email: string; password: string }) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(AuthUserProfile.generateDummyProfile());
+        }, 2000);
+      });
+    },
+    onSuccess(data, variables, context) {},
+  });
+
   return {
     loginUser,
     loggingIn,
     userAuthProfile,
     loadingUserAuthProfile,
+    signupUser,
+    signingUp,
   };
 };

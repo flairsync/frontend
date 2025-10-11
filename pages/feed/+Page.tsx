@@ -1,10 +1,7 @@
-import PublicFeedBusinessCard from '@/components/feed/PublicFeedBusinessCard'
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader'
 import PublicFeedSearchHero from '@/components/feed/PublicFeedSearchHero'
 import PublicFeedSidebar from '@/components/feed/PublicFeedSidebar'
 import DataPagination from '@/components/inputs/DataPagination'
-import LandingFooter from '@/components/landing/LandingFooter'
-import LandingHeader from '@/components/landing/LandingHeader'
 import React from 'react'
 
 import {
@@ -20,6 +17,16 @@ import { BusinessCardDetails } from '@/models/BusinessCardDetails'
 import { useTranslation, Trans } from 'react-i18next'
 import WebsiteFooter from '@/components/shared/WebsiteFooter'
 
+//import PublicFeedBusinessCard from '@/components/feed/PublicFeedBusinessCard'
+
+// trying to optimize it 
+import { clientOnly } from 'vike-react/clientOnly'
+import { BusinessTag } from '@/models/BusinessTag'
+
+const PublicFeedBusinessCard = clientOnly(() =>
+    import("@/components/feed/PublicFeedBusinessCard")
+)
+
 const FeedPage = () => {
     const { t } = useTranslation()
 
@@ -32,25 +39,7 @@ const FeedPage = () => {
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row gap-8">
                         <PublicFeedSidebar
-                            tags={[
-                                "Halal",
-                                "Vegan",
-                                "Vegetarian",
-                                "Gluten-Free",
-                                "Organic",
-                                "Kosher",
-                                "Dairy-Free",
-                                "Nut-Free",
-                                "Locally Sourced",
-                                "Fair Trade",
-                                "Pet-Friendly",
-                                "Outdoor Seating",
-                                "Takeaway",
-                                "Delivery",
-                                "Kid-Friendly",
-                                "Wi-Fi",
-                                "Wheelchair Accessible"
-                            ]}
+                            tags={BusinessTag.generateDummyData()}
                         />
                         <div className="w-full md:w-3/4">
                             <div className="flex justify-between items-center mb-4">

@@ -18,7 +18,7 @@ const FeaturesSection = () => {
                     autoplay: onScroll({
                         sync: 1,
                         enter: "bottom center",
-                        leave: "center top",
+                        leave: "top top",
                     }),
                 });
             });
