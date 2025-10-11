@@ -1,0 +1,42 @@
+networks:
+  traefik:
+    external: true
+services:
+  app:
+    # Use the Dockerfile specific for development
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    # Map the container port 5173 to the host port 5173
+    # Crucial for development: mounts and volume isolation
+    networks:
+      - traefik
+    volumes:
+      # 1. Bind Mount: Mounts your local source code (current directory)
+      #    to the container's working directory (/app).
+      #    This enables live changes and HMR.
+      - .:/app
+
+      # 2. Anonymous Volume: Creates a throwaway volume just for node_modules.
+      #    This prevents your host's node_modules from overwriting the
+      #    dependencies installed inside the container, avoiding conflicts.
+      - /app/node_modules
+    labels:
+      - "traefik.enable=true"
+      # Routing
+      - "traefik.http.routers.webapp.entrypoints=web,websecure"
+      - "traefik.http.routers.webapp.rule=Host(`flairsync.test`)"
+      - "traefik.http.routers.webapp.tls=true"
+      - "traefik.http.services.webapp.loadbalancer.server.port=3000"
+
+    # Set the polling environment variable inside the container
+    # (Alternative to setting it in vite.config.js or package.json)
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+
+    # Set stdin_open and tty to keep the container running and show logs
+    stdin_open: true
+    tty: true
+
+    # The default command specified in Dockerfile.dev will run: npm run dev

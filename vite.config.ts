@@ -17,4 +17,11 @@ export default defineConfig({
       "@": new URL("./", import.meta.url).pathname,
     },
   },
+  server: {
+    host: "0.0.0.0", // Make sure the server is accessible outside the container
+    watch: {
+      usePolling: true, // Essential for Docker development environments
+    },
+    allowedHosts: ["flairsync.test"],
+  },
 });

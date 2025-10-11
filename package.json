@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "vike dev",
+    "dev": "CHOKIDAR_USEPOLLING=true vike dev",
     "build": "vike build",
     "preview": "vike preview",
     "shadcn": "npx shadcn@latest",
@@ -40,6 +40,7 @@
     "@vitejs/plugin-react": "^5.0.1",
     "animejs": "^4.1.3",
     "class-variance-authority": "^0.7.1",
+    "clientjs": "^0.2.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",

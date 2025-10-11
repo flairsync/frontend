@@ -1,0 +1,24 @@
+# Use a standard Node.js image for development
+FROM node:20-alpine
+
+# Set the working directory for the application
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+# We copy them first to leverage Docker's build cache
+COPY package*.json ./
+
+# Install dependencies. Use 'npm ci' if you have a lock file for determinism.
+RUN npm install
+
+# Expose the port Vite/Vike uses (default is 5173 for dev)
+EXPOSE 3000
+
+# Set environment variable for polling inside the container
+# This is an alternative to setting it in package.json
+ENV CHOKIDAR_USEPOLLING=true
+
+# The application's source code will be mounted as a volume in the next step,
+# so we only need the command to start the dev server.
+# If your setup uses 'npm run dev' to start a custom server, ensure it's correct.
+CMD ["npm", "run", "dev"]
