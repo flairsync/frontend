@@ -13,15 +13,17 @@ import { SignupFormSchema } from '@/misc/FormValidators';
 import { InputError } from '@/components/inputs/InputError';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { useAuth } from '@/features/auth/useAuth';
+import { loginUserApiCall } from '@/features/auth/service';
+import axios from 'axios';
 
 const LoginPage = () => {
     const { t } = useTranslation();
     const [showPassword, setShowPassword] = useState(false);
 
-    const { loginUser, loggingIn, userAuthProfile, loadingUserAuthProfile } = useAuth();
+    const { loginUser, loggingIn, authProfile, loadingUserAuthProfile } = useAuth();
 
     if (loadingUserAuthProfile) return <div>Loading ...</div>;
-    if (userAuthProfile) {
+    if (authProfile) {
         navigate("/feed");
         return null;
     }
@@ -37,12 +39,36 @@ const LoginPage = () => {
                 <div className="w-full max-w-md ">
                     <h1 className="text-4xl font-extrabold mb-2">{t("auth_page.signin_page_title")}</h1>
                     <p className="text-zinc-600 mb-8">{t("auth_page.please_login_label")}</p>
+                    <Button
+                        onClick={() => {
+                            axios.get("https://api.flairsync.test/api/v1/auth/testCookie", {
+                                withCredentials: true
+                            }).then(res => {
+                                console.log("--------------------------------");
+                                console.log(res);
+                                console.log("--------------------------------");
+
+                            }).catch(err => {
+                                console.log("****************************************** ");
+                                console.log(err);
+                                console.log("****************************************** ");
+
+                            })
+                        }}
+                        className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                    >
+                        TEST LOGGED IN FUN
+                    </Button>
 
                     <Formik
                         initialValues={{ email: '', password: '' }}
                         validationSchema={SignupFormSchema}
                         onSubmit={values => {
-                            loginUser(values);
+                            // loginUser(values);
+                            loginUserApiCall({
+                                email: values.email,
+                                password: values.password
+                            })
                             console.log(values);
                         }}
                     >

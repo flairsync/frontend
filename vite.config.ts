@@ -24,4 +24,7 @@ export default defineConfig({
     },
     allowedHosts: ["flairsync.test"],
   },
+  define: {
+    "process.env": {},
+  },
 });
