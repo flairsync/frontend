@@ -25,6 +25,8 @@ import FrFlag from "@/assets/flags/fr.svg";
 import EsFlag from "@/assets/flags/es.svg";
 import CatFlag from "@/assets/flags/ad.svg";
 import { useTranslation } from "react-i18next";
+import { useAuth } from '@/features/auth/useAuth'
+import { useProfile } from '@/features/profile/useProfile'
 
 
 const languages = [
@@ -35,7 +37,12 @@ const languages = [
 ];
 const HeaderProfileAvatar = () => {
 
-    const { setTheme, theme } = useTheme()
+    const { setTheme, theme } = useTheme();
+    const {
+        logoutUser, loggingOut
+    } = useAuth();
+
+    const { userProfile, loadingUserProfile } = useProfile();
 
     const {
         i18n
@@ -55,11 +62,11 @@ const HeaderProfileAvatar = () => {
             <DropdownMenuTrigger>
                 <Avatar className='hover:cursor-pointer'>
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>SC</AvatarFallback>
+                    <AvatarFallback>{userProfile?.getInitials()}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuLabel>Semah Chriha</DropdownMenuLabel>
+                <DropdownMenuLabel>{userProfile?.getFullName()}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <a
                     href='/profile/overview'
@@ -119,7 +126,11 @@ const HeaderProfileAvatar = () => {
                     </DropdownMenuSub>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => {
+                        logoutUser();
+                    }}
+                >Logout</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

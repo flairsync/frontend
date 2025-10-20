@@ -14,10 +14,13 @@ export default {
 
   // https://vike.dev/head-tags
   title: "FlairSync",
-  description: "Demo showcasing Vike",
+  description:
+    "FlairSync is a modern platform that helps creators and businesses connect, manage their content, and streamline their workflow with powerful tools for collaboration, analytics, and payouts — all in one place.",
 
   extends: [vikeReact, vikeReactQuery, vikeServer],
   server: "server/index.js",
+
+  passToClient: ["user", "tfa"],
 } satisfies Config;
 
 declare global {
@@ -25,9 +28,12 @@ declare global {
     interface PageContext {
       // Type of pageContext.user
       user?: {
+        verified: boolean;
+      };
+      tfa?: {
         tfaEnabled: boolean;
         tfaSuccess: boolean;
-        verified: boolean;
+        trustedDevice: boolean;
       };
       // Refine type of pageContext.Page
     }

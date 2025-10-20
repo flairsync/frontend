@@ -1,10 +1,11 @@
 const baseUrl = `${import.meta.env.BASE_URL}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
-import axios from "axios";
+const logoutUrl = `${baseUrl}/logout`;
+import flairapi from "@/lib/flairapi";
 
 export const loginUserApiCall = (data: { email: string; password: string }) => {
-  return axios.post(
+  return flairapi.post(
     loginUrl,
     {
       email: data.email,
@@ -17,7 +18,12 @@ export const loginUserApiCall = (data: { email: string; password: string }) => {
         "x-device-model": "windows 11",
         "x-client-type": "web",
       },
-      withCredentials: true,
     }
   );
+};
+
+export const logoutUserApiCall = () => {
+  return flairapi.delete(logoutUrl, {
+    withCredentials: true,
+  });
 };

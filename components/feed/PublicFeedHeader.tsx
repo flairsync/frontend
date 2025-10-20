@@ -17,23 +17,13 @@ type HeaderProps = {
     activeTag?: string
 }
 const PublicFeedHeader = (props: HeaderProps) => {
-
+    const {
+        user
+    } = usePageContext();
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => setIsOpen(!isOpen);
     const { t } = useTranslation();
-    const {
-        userAuthProfile
-    } = useAuth();
 
-
-
-    const isActiveHash = (href: string) => {
-
-        if (props.activeTag) {
-            return props.activeTag.toLowerCase() == href.slice(1).toLowerCase();
-        }
-        return false;
-    }
 
     return (
         <header className="fixed top-0 w-full  z-50 backdrop-blur-md bg-background/70 ">
@@ -52,7 +42,7 @@ const PublicFeedHeader = (props: HeaderProps) => {
                     {/* <LanguageSwitcher /> */}
 
                     {
-                        !userAuthProfile ? <HeaderProfileAvatar /> : <a
+                        user ? <HeaderProfileAvatar /> : <a
                             href="/login"
                         >
 
@@ -60,10 +50,13 @@ const PublicFeedHeader = (props: HeaderProps) => {
                                 className="px-8 py-2 hover:cursor-pointer bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
                                 variant="default"
                             >
-                                {t("join_us_tab_title")}
+                                {t("landing_page.header.joinUsButton")}
                             </Button>
 
                         </a>
+
+
+
                     }
 
 
@@ -76,3 +69,20 @@ const PublicFeedHeader = (props: HeaderProps) => {
 }
 
 export default PublicFeedHeader
+
+/*
+
+<a
+                            href="/login"
+                        >
+
+                            <Button
+                                className="px-8 py-2 hover:cursor-pointer bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
+                                variant="default"
+                            >
+                                {t("join_us_tab_title")}
+                            </Button>
+
+                        </a>
+                        
+                        */

@@ -1,17 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { loginUserApiCall } from "./service";
+import { loginUserApiCall, logoutUserApiCall } from "./service";
 import { UserAuthProfile } from "@/models/UserAuthProfile";
 import { UserProfile } from "@/models/UserProfile";
 import { saveJwtToken } from "@/misc/SecureStorage";
+import { navigate } from "vike/client/router";
+
 export const useAuth = () => {
   const queryClient = useQueryClient();
-
-  const { data: authProfile, isLoading: loadingUserAuthProfile } = useQuery({
-    queryKey: ["user_auth_profile"],
-    queryFn: () => {
-      return undefined;
-    },
-  });
 
   const { mutate: loginUser, isPending: loggingIn } = useMutation({
     mutationKey: ["login_user"],
@@ -19,10 +14,16 @@ export const useAuth = () => {
       return loginUserApiCall(data);
     },
     onSuccess(data, variables, context) {
-      const ap = UserAuthProfile.parseApiResponse(data.data);
-      const up = UserProfile.parseApiResponse(data.data.user);
-      saveJwtToken(data.data.accessToken);
-      queryClient.setQueryData(["user_auth_profile"], ap);
+      navigate("/feed");
+    },
+  });
+
+  const { mutate: logoutUser, isPending: loggingOut } = useMutation({
+    mutationKey: ["logout_user"],
+    mutationFn: logoutUserApiCall,
+    onSuccess(data, variables, context) {
+      // refresh to hydrate ssr
+      navigate(window.location.pathname, { keepScrollPosition: true });
     },
   });
 
@@ -41,9 +42,11 @@ export const useAuth = () => {
   return {
     loginUser,
     loggingIn,
-    authProfile,
-    loadingUserAuthProfile,
+
     signupUser,
     signingUp,
+
+    logoutUser,
+    loggingOut,
   };
 };

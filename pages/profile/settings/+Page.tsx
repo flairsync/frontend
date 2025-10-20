@@ -11,6 +11,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import ProfileTfaSettings from "@/components/profile/settings/ProfileTfaSettings"
 
 const ProfileSettingsPage = () => {
     const [name, setName] = useState("John Doe")
@@ -103,16 +104,7 @@ const ProfileSettingsPage = () => {
             </AccordionItem>
 
             {/* 2FA */}
-            <AccordionItem value="twofa" className="border rounded-lg px-3">
-                <AccordionTrigger>Two-Factor Authentication (2FA)</AccordionTrigger>
-                <AccordionContent className="space-y-4 py-2">
-                    <div className="flex items-center justify-between">
-                        <Label>Enable 2FA</Label>
-                        <Switch checked={twoFAEnabled} onCheckedChange={setTwoFAEnabled} />
-                    </div>
-                    <Button onClick={save2FA}>Save</Button>
-                </AccordionContent>
-            </AccordionItem>
+            <ProfileTfaSettings />
 
             {/* Marketing */}
             <AccordionItem value="marketing" className="border rounded-lg px-3">
