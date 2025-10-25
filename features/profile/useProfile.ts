@@ -1,6 +1,6 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePageContext } from "vike-react/usePageContext";
-import { getUserProfileApiCall } from "./service";
+import { getUserProfileApiCall, updateUserProfileApiCall } from "./service";
 import { UserProfile } from "@/models/UserProfile";
 
 export const useProfile = () => {
@@ -18,8 +18,26 @@ export const useProfile = () => {
     enabled: user != null,
   });
 
+  const {
+    mutate: updateUserProfile,
+    isPending: updatingUserProfile,
+    isSuccess: updatedUserProfile,
+  } = useMutation({
+    mutationKey: ["update_user_profile"],
+    mutationFn: updateUserProfileApiCall,
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["user_profile"],
+      });
+    },
+  });
+
   return {
     userProfile,
     loadingUserProfile,
+
+    updateUserProfile,
+    updatingUserProfile,
+    updatedUserProfile,
   };
 };

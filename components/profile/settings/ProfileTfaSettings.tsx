@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { CardDescription } from "@/components/ui/card"
@@ -8,17 +8,30 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "@/components/ui/input"
 import { useTfaSettings } from "@/features/profileSettings/useTfaSettings"
 import { QRCodeSVG } from 'qrcode.react';
+import TfaCodeModal from "@/components/inputs/TfaCodeModal"
+import { DisableTfaNotice } from "./DisableTfaNotice"
+import { InfoAlert } from "@/components/shared/InfoAlert"
+import { Alert } from "@/components/ui/alert"
 const ProfileTfaSettings = () => {
-    const { userTfaStatus, initializeTfaSetupApiCall, validateTfaCode, validatedTfaCode } = useTfaSettings()
+    const { userTfaStatus, initializeTfaSetupApiCall, validateTfaCode, validatedTfaCode, disableTfaCode, disablingTfaCode, disabledTfa, recoverWords } = useTfaSettings()
     const [open, setOpen] = useState(false)
     const [verificationCode, setVerificationCode] = useState("")
     const [qrCodeLink, setQrcodeLink] = useState('');
-
+    const [updatingTfaStatus, setUpdatingTfaStatus] = useState(0); // 0 = noth, 1= enabling , 2=disabling
+    const [recoveryCodes, setRecoveryCodes] = useState("");
+    const viewedRecoverCodes = useRef(false);
     useEffect(() => {
         if (validatedTfaCode) {
             setOpen(false);
         }
-    }, [validatedTfaCode]);
+        if (disabledTfa) {
+            setUpdatingTfaStatus(0);
+        }
+        if (recoverWords && recoverWords.length > 0 && !viewedRecoverCodes.current) {
+            setRecoveryCodes(recoverWords);
+            viewedRecoverCodes.current = true;
+        }
+    }, [validatedTfaCode, disabledTfa, recoverWords]);
 
     const generateQrCodeUrl = () => {
         if (!qrCodeLink || qrCodeLink.length == 0)
@@ -33,8 +46,39 @@ const ProfileTfaSettings = () => {
         validateTfaCode(verificationCode)
     }
 
+
+
+
     return (
         <>
+            <InfoAlert
+                onOpenChange={() => {
+                    setRecoveryCodes("")
+                }}
+                open={recoveryCodes.length > 0}
+                title="Recovery codes"
+                description="Please memorize these codes, and store them safely they can be used to recover two factor auth"
+            >
+                <Alert
+                    variant={"default"}
+                >
+
+                    {recoveryCodes}
+                </Alert>
+            </InfoAlert>
+            <TfaCodeModal
+                onConfirm={(code) => {
+                    if (updatingTfaStatus == 2) {
+                        disableTfaCode(code);
+                    }
+                }}
+                loading={disablingTfaCode}
+                onOpenChange={() => {
+                    setUpdatingTfaStatus(0);
+                }}
+                open={updatingTfaStatus > 0}
+
+            />
             <AccordionItem value="twofa" className="border rounded-lg px-3">
                 <AccordionTrigger>Two-Factor Authentication (2FA)</AccordionTrigger>
 
@@ -46,8 +90,22 @@ const ProfileTfaSettings = () => {
                     </CardDescription>
                     {userTfaStatus?.tfaSetup ? (
                         <div className="flex items-center justify-between">
-                            <Label>Enable 2FA</Label>
-                            <Switch checked={userTfaStatus?.tfaEnabled} onCheckedChange={() => { }} />
+                            <DisableTfaNotice
+                                onDisable={() => {
+                                    setUpdatingTfaStatus(2);
+                                }}
+
+                            />
+                            {/* <Label>Enable 2FA</Label> */}
+                            {/* <Switch checked={userTfaStatus?.tfaEnabled} onCheckedChange={(checked) => {
+                                if (checked) {
+                                    setUpdatingTfaStatus(1);
+                                    //enable
+                                } else {
+                                    setUpdatingTfaStatus(2);
+                                    //disable
+                                }
+                            }} /> */}
                         </div>
                     ) : (
                         <div className="flex items-center justify-between">

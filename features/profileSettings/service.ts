@@ -1,9 +1,26 @@
 import flairapi from "@/lib/flairapi";
-const baseUrl = `${import.meta.env.BASE_URL}/auth/tfa`;
+const tfaBaseUrl = `${import.meta.env.BASE_URL}/auth/tfa`;
+const passwordBaseUrl = `${import.meta.env.BASE_URL}/auth/password`;
 
-const myTfaStatus = `${baseUrl}/status`;
-const initializeTfa = `${baseUrl}/create`;
-const validateTfa = `${baseUrl}/validate`;
+const myTfaStatus = `${tfaBaseUrl}/status`;
+
+const initializeTfa = `${tfaBaseUrl}/create`;
+const validateTfa = `${tfaBaseUrl}/validate`;
+const disableTfa = `${tfaBaseUrl}/disable`;
+const checkTfa = `${tfaBaseUrl}/check`;
+
+// password
+
+export type UpdatePasswordDto = {
+  password: string;
+  newPassword: string;
+};
+
+export const updateUserPasswordApiCall = (data: UpdatePasswordDto) => {
+  return flairapi.patch(passwordBaseUrl, data);
+};
+
+//tfa
 
 export const getTfaStatusApiCall = () => {
   return flairapi.get(myTfaStatus);
@@ -14,6 +31,18 @@ export const initializeTfaSetupApiCall = () => {
 };
 export const validateTfaSetupApiCall = (code: string) => {
   return flairapi.post(validateTfa, {
+    tfaCode: code,
+  });
+};
+
+export const disableTfaApiCall = (code: string) => {
+  return flairapi.patch(disableTfa, {
+    tfaCode: code,
+  });
+};
+
+export const checkTfaApiCall = (code: string) => {
+  return flairapi.post(checkTfa, {
     tfaCode: code,
   });
 };

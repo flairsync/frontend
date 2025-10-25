@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  disableTfaApiCall,
   getTfaStatusApiCall,
   initializeTfaSetupApiCall,
   validateTfaSetupApiCall,
@@ -20,10 +21,35 @@ export const useTfaSettings = () => {
     staleTime: Infinity,
   });
 
-  const { mutate: validateTfaCode, isSuccess: validatedTfaCode } = useMutation({
+  const {
+    mutate: validateTfaCode,
+    isSuccess: validatedTfaCode,
+    data: recoverWords,
+  } = useMutation({
     mutationKey: ["user_tfa_validation"],
     mutationFn: async (code: string) => {
-      return validateTfaSetupApiCall(code);
+      const res = await validateTfaSetupApiCall(code);
+      if (res.data.success) {
+        return res.data.data.recovery as string;
+      } else {
+        throw res;
+      }
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["user_tfa_status"],
+      });
+    },
+  });
+
+  const {
+    mutate: disableTfaCode,
+    isPending: disablingTfaCode,
+    isSuccess: disabledTfa,
+  } = useMutation({
+    mutationKey: ["user_tfa_disable"],
+    mutationFn: async (code: string) => {
+      return disableTfaApiCall(code);
     },
     onSuccess(data, variables, context) {
       queryClient.refetchQueries({
@@ -36,6 +62,10 @@ export const useTfaSettings = () => {
     userTfaStatus,
     validateTfaCode,
     validatedTfaCode,
+    recoverWords,
     initializeTfaSetupApiCall,
+    disableTfaCode,
+    disablingTfaCode,
+    disabledTfa,
   };
 };
