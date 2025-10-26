@@ -53,18 +53,17 @@ const ownerNavData = {
                 },
                 {
                     key: "settings",
-
                     title: "Settings",
                     url: "/profile/settings",
                     icon: Settings,
                 },
-                {
-                    key: "preferences",
-
-                    title: "Preferences",
-                    url: "/profile/preferences",
-                    icon: SlidersHorizontal,
-                },
+                /*  {
+                     key: "preferences",
+ 
+                     title: "Preferences",
+                     url: "/profile/preferences",
+                     icon: SlidersHorizontal,
+                 }, */
                 {
                     key: "danger",
 

@@ -2,14 +2,16 @@ import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import ProfileOverviewOrdersChart from "@/components/profile/ProfileOverviewOrdersChart"
+import { useProfile } from "@/features/profile/useProfile"
 
 
 const ProfileOverviewPage = () => {
+    const {
+        userProfile
+    } = useProfile();
     // Example stats
-    const joinedDate = "Jan 15, 2023"
     const reservationsMade = 27
     const mealsOrdered = 134
-    const favoriteCuisineProgress = 70 // percent for favorite cuisine graph example
 
     return (
         <div className="space-y-6">
@@ -25,12 +27,10 @@ const ProfileOverviewPage = () => {
                         className="w-20 h-20 rounded-full"
                     />
                     <div className="flex-1">
-                        <h2 className="text-xl font-bold">John Doe</h2>
-                        <p className="text-sm text-muted-foreground">johndoe@email.com</p>
-                        <p className="text-sm">📍 Andorra la Vella, Andorra</p>
-                        <p className="text-sm text-muted-foreground mt-2">
-                            Coffee enthusiast, loves exploring new restaurants.
-                        </p>
+                        <h2 className="text-xl font-bold">{userProfile?.getFullName()}</h2>
+                        <p className="text-sm text-muted-foreground">{userProfile?.email}</p>
+                        {/* <p className="text-sm">📍 Andorra la Vella, Andorra</p> */}
+
                     </div>
                 </CardContent>
             </Card>
@@ -43,7 +43,7 @@ const ProfileOverviewPage = () => {
                         <CardTitle>Joined</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-lg font-bold">{joinedDate}</p>
+                        <p className="text-lg font-bold">{userProfile?.getJoinDate()}</p>
                     </CardContent>
                 </Card>
 

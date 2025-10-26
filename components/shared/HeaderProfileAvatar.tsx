@@ -126,6 +126,30 @@ const HeaderProfileAvatar = () => {
                     </DropdownMenuSub>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
+
+                <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>Owner</DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+
+                                <a
+                                    href='/manage'
+                                >
+                                    <DropdownMenuItem className='hover:cursor-pointer'>
+                                        Manage your business
+                                    </DropdownMenuItem>
+                                </a>
+
+
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator />
+
+
                 <DropdownMenuItem
                     onClick={() => {
                         logoutUser();

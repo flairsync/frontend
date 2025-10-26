@@ -8,6 +8,7 @@ export const usePasswordSettings = () => {
     mutate: updateUserPassword,
     isPending: updatingUserPassword,
     error: errorUpdatingUserPassword,
+    isSuccess: userPasswordUpdated,
   } = useMutation({
     mutationKey: ["update_user_password"],
     mutationFn: updateUserPasswordApiCall,
@@ -25,5 +26,6 @@ export const usePasswordSettings = () => {
     updateUserPassword,
     updatingUserPassword,
     errorUpdatingUserPassword,
+    userPasswordUpdated,
   };
 };

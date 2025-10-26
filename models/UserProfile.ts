@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 export class UserProfile {
   id: string;
   email: string;
@@ -5,6 +6,7 @@ export class UserProfile {
   lastName: string;
   language: string;
   marketingEmails: boolean;
+  createdAt: Date;
 
   constructor(
     id: string,
@@ -12,7 +14,8 @@ export class UserProfile {
     firstName: string,
     lastName: string,
     language: string,
-    marketingEmails: boolean
+    marketingEmails: boolean,
+    createdAt: Date
   ) {
     this.id = id;
     this.email = email;
@@ -20,6 +23,7 @@ export class UserProfile {
     this.lastName = lastName;
     this.language = language;
     this.marketingEmails = marketingEmails;
+    this.createdAt = createdAt;
   }
 
   static parseApiResponse(data: any): UserProfile {
@@ -29,7 +33,8 @@ export class UserProfile {
       data.firstName,
       data.lastName,
       data.language,
-      data.marketingEmails
+      data.marketingEmails,
+      data.createdAt
     );
   }
 
@@ -45,5 +50,9 @@ export class UserProfile {
     if (this.firstName) init += this.firstName.charAt(0);
     if (this.lastName) init += this.lastName.charAt(0);
     return init;
+  }
+
+  getJoinDate() {
+    return dayjs(this.createdAt).format("YYYY - MM - DD");
   }
 }
