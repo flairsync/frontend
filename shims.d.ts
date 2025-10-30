@@ -6,7 +6,7 @@ interface Window {
      * @param options - An object with a single property, eventHandler, which is a function that will be called when Lemon.js emits an event.
      */
     Setup: (options: {
-      eventHandler: (event: { event: string }) => void;
+      eventHandler: (event: { event: string } | string) => void;
     }) => void;
     /**
      * Refreshes `lemonsqueezy-button` listeners on the page.

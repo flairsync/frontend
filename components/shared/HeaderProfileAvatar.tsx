@@ -127,9 +127,17 @@ const HeaderProfileAvatar = () => {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
 
-                <DropdownMenuGroup>
+                <a
+                    href='/manage/overview'
+                >
+                    <DropdownMenuItem className='hover:cursor-pointer'>
+                        BusinessHub
+                    </DropdownMenuItem>
+                </a>
+
+                {/* <DropdownMenuGroup>
                     <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Owner</DropdownMenuSubTrigger>
+                        <DropdownMenuSubTrigger>BusinessHub</DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
 
@@ -145,7 +153,7 @@ const HeaderProfileAvatar = () => {
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
                     </DropdownMenuSub>
-                </DropdownMenuGroup>
+                </DropdownMenuGroup> */}
 
                 <DropdownMenuSeparator />
 

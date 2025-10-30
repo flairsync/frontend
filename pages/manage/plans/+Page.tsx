@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowLeft } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Loader2 } from "lucide-react";
 import { SubscriptionPack, PricingType } from "@/models/SubscriptionPack";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
 import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
+import { toast } from "sonner";
 
 const PlansPage: React.FC = () => {
   const { subscriptionPacks, handleUserCheckoutApiCall } = useSubscriptions();
@@ -41,6 +42,14 @@ const PlansPage: React.FC = () => {
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
       <LemonPaymentOverlay
         url={checkoutLink}
+        onOverlayClosed={() => {
+          setCheckoutLink(undefined);
+        }}
+
+        onCheckoutSuccess={() => {
+          setCheckoutLink(undefined);
+          toast("Payment success !");
+        }}
       />
       <BusinessManagementHeader />
 
@@ -81,9 +90,12 @@ const PlansPage: React.FC = () => {
             </Button>
           </div>
         </div>
-        {
-          loadingCheckout && <div>Loading please wait ...</div>
-        }
+        {loadingCheckout && (
+          <div className="flex flex-col items-center justify-center py-6">
+            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mb-2" />
+            <p className="text-sm text-muted-foreground">Loading, please wait...</p>
+          </div>
+        )}
         {/* Plans grid */}
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           {displayedPacks.map((pack) => (
