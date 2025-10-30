@@ -20,7 +20,7 @@ export default {
   extends: [vikeReact, vikeReactQuery, vikeServer],
   server: "server/index.js",
 
-  passToClient: ["user", "tfa"],
+  passToClient: ["user", "tfa", "session"],
 } satisfies Config;
 
 declare global {
@@ -34,6 +34,9 @@ declare global {
         tfaEnabled: boolean;
         tfaSuccess: boolean;
         trustedDevice: boolean;
+      };
+      session?: {
+        id: string;
       };
       // Refine type of pageContext.Page
     }

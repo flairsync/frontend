@@ -14,6 +14,7 @@ import {
 import ProfileTfaSettings from "@/components/profile/settings/ProfileTfaSettings"
 import ProfileInfoSettings from "@/components/profile/settings/ProfileInfoSettings"
 import PasswordSettings from "@/components/profile/settings/PasswordSettings"
+import SessionManagementSettings from "@/components/profile/settings/SessionManagementSettings"
 
 const ProfileSettingsPage = () => {
 
@@ -31,8 +32,10 @@ const ProfileSettingsPage = () => {
             {/* 2FA */}
             <ProfileTfaSettings />
 
-            {/* Marketing */}
 
+            <SessionManagementSettings
+
+            />
         </Accordion>
     )
 }

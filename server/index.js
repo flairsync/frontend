@@ -10,10 +10,14 @@ function startServer() {
   app.use("*", async (c, next) => {
     const userCookie = getCookie(c, "user"); // 👈 Your HttpOnly cookie name
     const tfaCookie = getCookie(c, "tfa");
-    console.log("Tfa cookie", tfaCookie);
+    const sessionId = getCookie(c, "sid");
 
     let user = null;
     let tfa = null;
+
+    let session = {
+      id: sessionId,
+    };
     if (userCookie) {
       user = userCookie;
     }
@@ -22,6 +26,7 @@ function startServer() {
     }
     c.set("user", user);
     c.set("tfa", tfa);
+    c.set("session", session);
     await next();
   });
 

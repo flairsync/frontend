@@ -5,8 +5,13 @@ import { Separator } from "@/components/ui/separator";
 import { Plus, LogIn, Building2, Crown, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
+import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 
 const ManagePage: React.FC = () => {
+
+    const {
+        currentUserSubscription
+    } = useSubscriptions();
     // Dummy data
     const ownedBusinesses = [
         { id: "1", name: "Café Aroma" },
@@ -38,74 +43,121 @@ const ManagePage: React.FC = () => {
                                 Subscription Overview
                             </CardTitle>
                         </div>
-                        <Button variant="outline" className="gap-2">
+                        {/* <Button variant="outline" className="gap-2">
                             <Settings className="h-4 w-4" />
                             Manage Plan
-                        </Button>
+                        </Button> */}
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                        <div>
-                            <p className="text-zinc-500">Current Plan</p>
-                            <p className="font-semibold">{subscription.plan}</p>
-                        </div>
-                        <div>
-                            <p className="text-zinc-500">Renewal Date</p>
-                            <p className="font-semibold">{subscription.renewalDate}</p>
-                        </div>
-                        <div>
-                            <p className="text-zinc-500">Status</p>
-                            <p
-                                className={`font-semibold ${subscription.status === "Active"
-                                        ? "text-green-600"
-                                        : "text-red-500"
-                                    }`}
-                            >
-                                {subscription.status}
-                            </p>
-                        </div>
+
+                        {
+                            currentUserSubscription ? <>
+                                <div>
+                                    <p className="text-zinc-500">Current Plan</p>
+                                    <p className="font-semibold">{subscription.plan}</p>
+                                </div>
+                                <div>
+                                    <p className="text-zinc-500">Renewal Date</p>
+                                    <p className="font-semibold">{subscription.renewalDate}</p>
+                                </div>
+                                <div>
+                                    <p className="text-zinc-500">Status</p>
+                                    <p
+                                        className={`font-semibold ${subscription.status === "Active"
+                                            ? "text-green-600"
+                                            : "text-red-500"
+                                            }`}
+                                    >
+                                        {subscription.status}
+                                    </p>
+                                </div>
+                            </> : <>
+
+                                <motion.div
+                                    className="col-span-full flex flex-col items-center justify-center py-10 text-center"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <div className="bg-primary/10 rounded-full p-4 mb-4">
+                                        <Crown className="h-8 w-8 text-primary" />
+                                    </div>
+
+                                    <h3 className="text-lg font-semibold mb-2">No Active Subscription</h3>
+                                    <p className="text-sm text-muted-foreground max-w-sm mb-5">
+                                        You don’t have an active plan yet. Subscribe to unlock access to premium
+                                        features and manage your businesses seamlessly.
+                                    </p>
+
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <a
+                                            href="/manage/plans"
+                                        >
+                                            <Button className="gap-2">
+                                                <Crown className="h-4 w-4" />
+                                                View Plans
+                                            </Button>
+
+                                        </a>
+                                        <Button variant="outline" className="gap-2">
+                                            <Plus className="h-4 w-4" />
+                                            Start Free Trial
+                                        </Button>
+                                    </div>
+                                </motion.div>
+                            </>
+                        }
+
                     </CardContent>
                 </Card>
 
-                <Separator />
 
-                {/* OWNED BUSINESSES */}
-                <section className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold">Your Restaurants</h2>
-                        <Button variant="default" className="gap-2">
-                            <Plus className="h-4 w-4" />
-                            Create New
-                        </Button>
-                    </div>
 
-                    {ownedBusinesses.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            {ownedBusinesses.map((biz) => (
-                                <motion.div
-                                    key={biz.id}
-                                    whileHover={{ scale: 1.03 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <Card
-                                        className="cursor-pointer hover:shadow-lg transition"
-                                        onClick={() =>
-                                            (window.location.href = `/manage/${biz.id}/owner/dashboard`)
-                                        }
-                                    >
-                                        <CardContent className="flex items-center gap-3 p-5">
-                                            <Building2 className="h-6 w-6 text-primary" />
-                                            <span className="font-medium text-lg">{biz.name}</span>
-                                        </CardContent>
-                                    </Card>
-                                </motion.div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-zinc-500 text-sm">
-                            You don’t own any businesses yet.
-                        </p>
-                    )}
-                </section>
+                {
+                    currentUserSubscription &&
+                    <>
+                        <Separator />
+
+                        {/* OWNED BUSINESSES */}
+                        <section className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-xl font-semibold">Your Restaurants</h2>
+                                <Button variant="default" className="gap-2">
+                                    <Plus className="h-4 w-4" />
+                                    Create New
+                                </Button>
+                            </div>
+
+                            {ownedBusinesses.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    {ownedBusinesses.map((biz) => (
+                                        <motion.div
+                                            key={biz.id}
+                                            whileHover={{ scale: 1.03 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <Card
+                                                className="cursor-pointer hover:shadow-lg transition"
+                                                onClick={() =>
+                                                    (window.location.href = `/manage/${biz.id}/owner/dashboard`)
+                                                }
+                                            >
+                                                <CardContent className="flex items-center gap-3 p-5">
+                                                    <Building2 className="h-6 w-6 text-primary" />
+                                                    <span className="font-medium text-lg">{biz.name}</span>
+                                                </CardContent>
+                                            </Card>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-zinc-500 text-sm">
+                                    You don’t own any businesses yet.
+                                </p>
+                            )}
+                        </section>
+                    </>
+                }
 
                 <Separator />
 
