@@ -1,4 +1,7 @@
+import { SubscriptionPack } from "./SubscriptionPack";
+
 export enum SubscriptionStatus {
+  PENDING = "pending",
   ACTIVE = "active",
   TRIALING = "trialing",
   CANCELED = "canceled",
@@ -8,7 +11,7 @@ export enum SubscriptionStatus {
 
 export class Subscription {
   id: string;
-  pack: any; // You can replace 'any' with a proper Pack class/interface if you have one
+  pack: SubscriptionPack; // You can replace 'any' with a proper Pack class/interface if you have one
   lemonSubscriptionId: string | null;
   lemonCustomerId: string | null;
   lemonOrderId: string | null;
@@ -80,6 +83,15 @@ export class Subscription {
     } catch (error) {
       return null;
     }
+  }
+
+  static parseApiArrayResponse(data: any[]): Subscription[] {
+    const arr: Subscription[] = [];
+    data.forEach((val) => {
+      const pack = this.parseApiResponse(val);
+      if (pack) arr.push(pack);
+    });
+    return arr;
   }
 
   // Optional helper

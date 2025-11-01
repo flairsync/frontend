@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getCurrentUserSubscriptionApiCall,
   getSubscriptionPacksApiCall,
+  getUserSubscriptionsListApiCall,
   handleUserCheckoutApiCall,
 } from "./service";
 import { Subscription } from "@/models/Subscription";
@@ -51,6 +52,20 @@ export const useSubscriptions = () => {
     },
   });
 
+  const { data: userSubscriptionsList, isPending: fetchingUserSubscriptions } =
+    useQuery({
+      queryKey: ["user_subscriptions_list"],
+      queryFn: async () => {
+        const resp = await getUserSubscriptionsListApiCall();
+        if (resp.data.success) {
+          return Subscription.parseApiArrayResponse(resp.data.data);
+        } else {
+          return null;
+        }
+      },
+      enabled: user != null,
+    });
+
   return {
     currentUserSubscription,
     subscriptionPacks,
@@ -59,5 +74,9 @@ export const useSubscriptions = () => {
     creatingCheckout,
     createCheckout,
     handleUserCheckoutApiCall,
+
+    // subs list
+    userSubscriptionsList,
+    fetchingUserSubscriptions,
   };
 };
