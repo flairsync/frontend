@@ -37,8 +37,7 @@ const ownerNavData = {
                     icon: Heart,
                 },
                 {
-                    key: "my_business",
-
+                    key: "owned",
                     title: "My businesses",
                     url: "/manage/owned",
                     icon: Building,

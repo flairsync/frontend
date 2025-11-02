@@ -6,6 +6,13 @@ a {
   text-decoration: none;
 }
 
+/* Make map tiles and marker layers lower */
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  z-index: 0 !important;
+}
+
 /* Reset */
 /* body {
   margin: 0;

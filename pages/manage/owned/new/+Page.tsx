@@ -17,17 +17,24 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import WorkHoursSelector, { WorkHours } from '@/components/management/create/WorkHoursSelector';
+import BusinessTypeSelect from '@/components/management/create/BusinessTypeSelect';
+import BusinessTagsInput from '@/components/management/create/BusinessTagsInput';
+import BusinessPricingSelector from '@/components/management/create/BusinessPricingSelector';
+import BusinessSocialLinksInput from '@/components/management/create/BusinessSocialLinksInput';
+import { clientOnly } from 'vike-react/clientOnly';
 
+const LocationPicker = clientOnly(() =>
+    import("@/components/management/create/BusinessLocationPicker")
+)
 interface BusinessFormValues {
     name: string;
     description: string;
     type: string;
-    workTimes: string;
+    workTimes: WorkHours;
     pricing: string;
-    tags: string;
-    instagram?: string;
-    facebook?: string;
-    images: FileList | null;
+    tags: string[];
+    links: any;
+    location: any;
 }
 
 
@@ -53,32 +60,29 @@ const validationSchema = [
     }),
     // Step 2
     Yup.object({
-        workTimes: Yup.string().required('Work times are required'),
+        workTimes: Yup.object().required('Work times are required'),
         pricing: Yup.string().required('Pricing information is required'),
-        tags: Yup.string().required('Tags are required'),
+        tags: Yup.array().required('Tags are required'),
     }),
     // Step 3
     Yup.object({
-        instagram: Yup.string().url('Invalid Instagram URL').nullable(),
-        facebook: Yup.string().url('Invalid Facebook URL').nullable(),
-        images: Yup.mixed().nullable(),
+        links: Yup.object().nullable(),
     }),
 ];
 
 export default function CreateNewBusiness() {
     const [step, setStep] = useState(0);
-    const totalSteps = 3;
+    const totalSteps = 4;
 
     const initialValues: BusinessFormValues = {
         name: '',
         description: '',
         type: '',
-        workTimes: '',
+        workTimes: initialHours,
         pricing: '',
-        tags: '',
-        instagram: '',
-        facebook: '',
-        images: null,
+        tags: [],
+        links: {},
+        location: {}
     };
 
     const handleSubmit = (values: BusinessFormValues) => {
@@ -99,7 +103,7 @@ export default function CreateNewBusiness() {
                 </CardHeader>
 
                 <CardContent>
-                    <Progress value={((step + 1) / totalSteps) * 100} className="mb-6" />
+                    <Progress value={((step) / totalSteps) * 100} className="mb-6" />
 
                     <Formik
                         initialValues={initialValues}
@@ -153,19 +157,20 @@ export default function CreateNewBusiness() {
                                                 />
                                             </div>
 
-                                            <div>
-                                                <label className="font-medium">Type</label>
-                                                <Field
-                                                    as={Input}
-                                                    name="type"
-                                                    placeholder="e.g. Restaurant, Coffee Shop, Bakery..."
-                                                />
-                                                <ErrorMessage
-                                                    name="type"
-                                                    component="p"
-                                                    className="text-red-500 text-sm"
-                                                />
-                                            </div>
+                                            <BusinessTypeSelect
+
+                                                onChange={(newValue) => {
+                                                    setFieldValue("type", newValue);
+
+                                                }}
+                                                value={values.type}
+                                            />
+                                            <ErrorMessage
+                                                name="type"
+                                                component="p"
+                                                className="text-red-500 text-sm"
+                                            />
+
                                         </>
                                     )}
 
@@ -174,12 +179,12 @@ export default function CreateNewBusiness() {
                                         <>
                                             <div>
                                                 <label className="font-medium">Work Times</label>
-
                                                 <WorkHoursSelector
-                                                    value={initialHours}
-                                                    onChange={(newValue) => { }}
+                                                    value={values.workTimes}
+                                                    onChange={(newValue) => {
+                                                        setFieldValue("workTimes", newValue);
+                                                    }}
                                                 />
-
                                                 <ErrorMessage
                                                     name="workTimes"
                                                     component="p"
@@ -187,93 +192,50 @@ export default function CreateNewBusiness() {
                                                 />
                                             </div>
 
-                                            <div>
-                                                <label className="font-medium">Pricing</label>
-                                                <Field
-                                                    as={Input}
-                                                    name="pricing"
-                                                    placeholder="e.g. $$ (moderate)"
-                                                />
-                                                <ErrorMessage
-                                                    name="pricing"
-                                                    component="p"
-                                                    className="text-red-500 text-sm"
-                                                />
-                                            </div>
+                                            <BusinessPricingSelector
+                                                onChange={(val) => {
+                                                    setFieldValue("pricing", val);
+                                                }}
+                                                value={values.pricing}
+                                            />
+                                            <ErrorMessage
+                                                name="pricing"
+                                                component="p"
+                                                className="text-red-500 text-sm"
+                                            />
 
-                                            <div>
-                                                <label className="font-medium">Tags</label>
-                                                <Field
-                                                    as={Input}
-                                                    name="tags"
-                                                    placeholder="e.g. brunch, vegan, cozy"
-                                                />
-                                                <ErrorMessage
-                                                    name="tags"
-                                                    component="p"
-                                                    className="text-red-500 text-sm"
-                                                />
-                                                {values.tags && (
-                                                    <div className="flex flex-wrap gap-2 mt-2">
-                                                        {values.tags.split(',').map((tag) => (
-                                                            <Badge key={tag.trim()} variant="secondary">
-                                                                {tag.trim()}
-                                                            </Badge>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
+                                            <BusinessTagsInput
+                                                onChange={(tags) => {
+                                                    setFieldValue("tags", tags);
+                                                }}
+                                                value={values.tags}
+                                            />
+                                            <ErrorMessage
+                                                name="tags"
+                                                component="p"
+                                                className="text-red-500 text-sm"
+                                            />
                                         </>
                                     )}
-
-                                    {/* === Step 3 === */}
-                                    {step === 2 && (
+                                    {
+                                        step === 2 && <>
+                                            <LocationPicker
+                                                value={values.location}
+                                                onChange={(loc) => setFieldValue("location", loc)}
+                                            />
+                                        </>
+                                    }
+                                    {/* === Step 4 === */}
+                                    {step === 3 && (
                                         <>
-                                            <div>
-                                                <label className="font-medium">Instagram Link</label>
-                                                <Field
-                                                    as={Input}
-                                                    name="instagram"
-                                                    placeholder="https://instagram.com/yourpage"
-                                                />
-                                                <ErrorMessage
-                                                    name="instagram"
-                                                    component="p"
-                                                    className="text-red-500 text-sm"
-                                                />
-                                            </div>
+                                            <BusinessSocialLinksInput
+                                                onChange={(links) => {
+                                                    setFieldValue("links", links)
+                                                }}
+                                                values={values.links}
+                                            />
 
-                                            <div>
-                                                <label className="font-medium">Facebook Link</label>
-                                                <Field
-                                                    as={Input}
-                                                    name="facebook"
-                                                    placeholder="https://facebook.com/yourpage"
-                                                />
-                                                <ErrorMessage
-                                                    name="facebook"
-                                                    component="p"
-                                                    className="text-red-500 text-sm"
-                                                />
-                                            </div>
 
-                                            <div>
-                                                <label className="font-medium">Upload Images</label>
-                                                <input
-                                                    type="file"
-                                                    multiple
-                                                    accept="image/*"
-                                                    onChange={(e) =>
-                                                        setFieldValue('images', e.currentTarget.files)
-                                                    }
-                                                    className="mt-1 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100"
-                                                />
-                                                {values.images && values.images.length > 0 && (
-                                                    <p className="text-sm text-gray-600 mt-2">
-                                                        {values.images.length} image(s) selected
-                                                    </p>
-                                                )}
-                                            </div>
                                         </>
                                     )}
                                 </motion.div>
