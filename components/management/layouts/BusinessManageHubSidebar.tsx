@@ -64,7 +64,7 @@ const ownerNavData = {
 export function isActiveLink(key: string): boolean {
     if (typeof window === "undefined") return false; // SSR safety
     const currentPath = window.location.pathname;
-    return currentPath.includes(`/profile/${key}`);
+    return currentPath.includes(`/manage/${key}`);
 }
 
 

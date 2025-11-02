@@ -30,9 +30,14 @@ const OwnedPage = () => {
                         Manage the businesses you own and monitor their performance.
                     </p>
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4">
-                    + Create Business
-                </Button>
+                <a
+                    href="owned/new"
+                >
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4">
+                        + Create Business
+                    </Button>
+
+                </a>
             </div>
 
             {ownedBusinesses.length > 0 ? (

@@ -36,7 +36,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                             {subscriptions.map((subscription) => (
                                 <TableRow key={subscription.id}>
                                     <TableCell className="font-medium">{subscription.id}</TableCell>
-                                    <TableCell>{subscription.startedAt ? subscription.startedAt.toString() : " --- "}</TableCell>
+                                    <TableCell>{subscription.getStartDate()}</TableCell>
                                     <TableCell>{subscription.pack.price} ({subscription.pack.currency})</TableCell>
                                     <TableCell
                                         className={

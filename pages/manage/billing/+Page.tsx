@@ -5,8 +5,13 @@ import { Crown, CreditCard, Receipt, Download } from "lucide-react";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { Subscription, SubscriptionStatus } from "@/models/Subscription";
 import { BillingInvoicesTable } from "@/components/management/billing/BillingInvoicesTable";
+import { useProfile } from "@/features/profile/useProfile";
 
 const BillingPage = () => {
+
+    const {
+        userProfile
+    } = useProfile();
 
     const {
         userSubscriptionsList,
@@ -21,12 +26,7 @@ const BillingPage = () => {
             setSubscriptions(userSubscriptionsList);
         }
     }, [userSubscriptionsList]);
-    const subscription = {
-        plan: "Pro",
-        renewalDate: "2025-11-10",
-        price: "€19.99 / month",
-        status: "Active",
-    };
+
 
 
     return (
@@ -50,25 +50,30 @@ const BillingPage = () => {
                         Manage Plan
                     </Button>
                 </CardHeader>
-                <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                    <div>
-                        <p className="text-zinc-500">Plan</p>
-                        <p className="font-semibold">{subscription.plan}</p>
-                    </div>
-                    <div>
-                        <p className="text-zinc-500">Renewal Date</p>
-                        <p className="font-semibold">{subscription.renewalDate}</p>
-                    </div>
-                    <div>
-                        <p className="text-zinc-500">Status</p>
-                        <p
-                            className={`font-semibold ${subscription.status === "Active" ? "text-green-600" : "text-red-500"
-                                }`}
-                        >
-                            {subscription.status}
-                        </p>
-                    </div>
-                </CardContent>
+                {
+                    userProfile && userProfile.currentSubscription && <>
+                        <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <p className="text-zinc-500">Plan</p>
+                                <p className="font-semibold">{userProfile?.currentSubscription?.pack.name}</p>
+                            </div>
+                            <div>
+                                <p className="text-zinc-500">Renewal Date</p>
+                                <p className="font-semibold">{userProfile?.currentSubscription?.getRenewalDate()}</p>
+                            </div>
+                            <div>
+                                <p className="text-zinc-500">Status</p>
+                                <p
+                                    className={`font-semibold ${userProfile?.currentSubscription?.status === SubscriptionStatus.ACTIVE ? "text-green-600" : "text-red-500"
+                                        }`}
+                                >
+                                    {userProfile?.currentSubscription?.status}
+                                </p>
+                            </div>
+                        </CardContent>
+
+                    </>
+                }
             </Card>
 
             {/* Invoices */}

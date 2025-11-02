@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { Subscription } from "./Subscription";
 export class UserProfile {
   id: string;
   email: string;
@@ -7,6 +8,7 @@ export class UserProfile {
   language: string;
   marketingEmails: boolean;
   createdAt: Date;
+  currentSubscription?: Subscription;
 
   constructor(
     id: string,
@@ -15,7 +17,8 @@ export class UserProfile {
     lastName: string,
     language: string,
     marketingEmails: boolean,
-    createdAt: Date
+    createdAt: Date,
+    currentSubscription?: Subscription
   ) {
     this.id = id;
     this.email = email;
@@ -24,9 +27,11 @@ export class UserProfile {
     this.language = language;
     this.marketingEmails = marketingEmails;
     this.createdAt = createdAt;
+    this.currentSubscription = currentSubscription;
   }
 
   static parseApiResponse(data: any): UserProfile {
+    const sub = Subscription.parseApiResponse(data.currentSubscription);
     return new UserProfile(
       data.id,
       data.email,
@@ -34,7 +39,8 @@ export class UserProfile {
       data.lastName,
       data.language,
       data.marketingEmails,
-      data.createdAt
+      data.createdAt,
+      sub ? sub : undefined
     );
   }
 

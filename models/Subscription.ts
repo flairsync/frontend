@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { SubscriptionPack } from "./SubscriptionPack";
 
 export enum SubscriptionStatus {
@@ -103,5 +104,20 @@ export class Subscription {
       ) &&
       (!this.endsAt || this.endsAt > now)
     );
+  }
+
+  getRenewalDate(format?: string) {
+    if (this.renewsAt) {
+      return dayjs(this.renewsAt).format(format ? format : "DD/MM/YYYY");
+    } else {
+      return null;
+    }
+  }
+  getStartDate(format?: string) {
+    if (this.startedAt) {
+      return dayjs(this.startedAt).format(format ? format : "DD/MM/YYYY");
+    } else {
+      return null;
+    }
   }
 }

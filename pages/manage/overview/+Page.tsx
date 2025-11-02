@@ -18,9 +18,13 @@ import {
     Plus,
 } from "lucide-react";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
+import { useProfile } from "@/features/profile/useProfile";
+import { SubscriptionStatus } from "@/models/Subscription";
 
 const OverviewPage: React.FC = () => {
-    const { currentUserSubscription } = useSubscriptions();
+    const {
+        userProfile
+    } = useProfile();
 
     // Dummy data
     const ownedBusinesses = [
@@ -33,11 +37,6 @@ const OverviewPage: React.FC = () => {
         { id: "4", name: "Morning Brew Coffee" },
     ];
 
-    const subscription = {
-        plan: "Pro",
-        renewalDate: "2025-11-10",
-        status: "Active",
-    };
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
@@ -70,25 +69,25 @@ const OverviewPage: React.FC = () => {
                         </CardHeader>
 
                         <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                            {currentUserSubscription ? (
+                            {userProfile?.currentSubscription ? (
                                 <>
                                     <div>
                                         <p className="text-zinc-500">Plan</p>
-                                        <p className="font-semibold">{subscription.plan}</p>
+                                        <p className="font-semibold">{userProfile.currentSubscription.pack.name}</p>
                                     </div>
                                     <div>
                                         <p className="text-zinc-500">Next Renewal</p>
-                                        <p className="font-semibold">{subscription.renewalDate}</p>
+                                        <p className="font-semibold">{userProfile.currentSubscription.getRenewalDate()}</p>
                                     </div>
                                     <div>
                                         <p className="text-zinc-500">Status</p>
                                         <p
-                                            className={`font-semibold ${subscription.status === "Active"
-                                                    ? "text-green-600"
-                                                    : "text-red-500"
+                                            className={`font-semibold ${userProfile.currentSubscription.status === SubscriptionStatus.ACTIVE
+                                                ? "text-green-600"
+                                                : "text-red-500"
                                                 }`}
                                         >
-                                            {subscription.status}
+                                            {userProfile.currentSubscription.status}
                                         </p>
                                     </div>
                                 </>
