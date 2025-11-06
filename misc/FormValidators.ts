@@ -12,6 +12,8 @@ export const passwordValidation = Yup.string()
 
 export const SignupFormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
+  firstName: Yup.string().required("Required"),
+  lastName: Yup.string().required("Required"),
   password: passwordValidation,
 });
 

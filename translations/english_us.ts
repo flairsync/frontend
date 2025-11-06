@@ -163,6 +163,9 @@ const auth_page = {
     signin_with_google_label: "Sign in with Google",
     already_have_account_label: "Already have an account?",
     signin_instead_label: "Sign in instead",
+    firstname_label: "Firstname",
+    lastname_label: "Lastname",
+    repeat_password_label: "Repeat password",
   },
 };
 

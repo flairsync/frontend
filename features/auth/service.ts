@@ -2,6 +2,7 @@ import flairapi from "@/lib/flairapi";
 const baseUrl = `${import.meta.env.BASE_URL}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
+const registerUrl = `${baseUrl}/register`;
 const logoutUrl = `${baseUrl}/logout`;
 
 const sessionsUrl = `${baseUrl}/sessions`;
@@ -22,6 +23,20 @@ export const loginUserApiCall = (data: { email: string; password: string }) => {
       },
     }
   );
+};
+
+export const signupUserApiCall = (data: {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}) => {
+  return flairapi.post(registerUrl, {
+    email: data.email,
+    password: data.password,
+    firstName: data.firstName,
+    lastName: data.lastName,
+  });
 };
 
 export const logoutUserApiCall = () => {

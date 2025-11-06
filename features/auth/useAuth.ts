@@ -1,9 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { loginUserApiCall, logoutUserApiCall } from "./service";
+import {
+  loginUserApiCall,
+  logoutUserApiCall,
+  signupUserApiCall,
+} from "./service";
 import { UserAuthProfile } from "@/models/UserAuthProfile";
 import { UserProfile } from "@/models/UserProfile";
 import { saveJwtToken } from "@/misc/SecureStorage";
 import { navigate } from "vike/client/router";
+import { toast } from "sonner";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
@@ -27,16 +32,17 @@ export const useAuth = () => {
     },
   });
 
-  const { mutate: signupUser, isPending: signingUp } = useMutation({
+  const {
+    mutate: signupUser,
+    isPending: signingUp,
+    error: signupError,
+  } = useMutation({
     mutationKey: ["signup_user"],
-    mutationFn: (data: { email: string; password: string }) => {
-      return new Promise((resolve) => {
-        /* setTimeout(() => {
-          resolve(AuthUserProfile.generateDummyProfile());
-        }, 2000); */
-      });
+    mutationFn: signupUserApiCall,
+    onSuccess(data, variables, context) {
+      toast("Account created");
+      navigate("/login");
     },
-    onSuccess(data, variables, context) {},
   });
 
   return {
@@ -48,5 +54,6 @@ export const useAuth = () => {
 
     logoutUser,
     loggingOut,
+    signupError,
   };
 };
