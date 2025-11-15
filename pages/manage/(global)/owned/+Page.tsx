@@ -69,7 +69,7 @@ const OwnedPage = () => {
 
                                 <div className="flex items-center justify-between mt-4">
                                     <a
-                                        href={`/business/${biz.id}/manage`}
+                                        href={`/manage/${biz.id}/owner/dashboard`}
                                         className="text-blue-600 text-sm font-medium hover:underline"
                                     >
                                         View dashboard

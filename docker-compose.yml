@@ -1,5 +1,5 @@
 networks:
-  traefik:
+  public:
     external: true
 services:
   app:
@@ -11,7 +11,7 @@ services:
     # Map the container port 5173 to the host port 5173
     # Crucial for development: mounts and volume isolation
     networks:
-      - traefik
+      - public
     volumes:
       # 1. Bind Mount: Mounts your local source code (current directory)
       #    to the container's working directory (/app).

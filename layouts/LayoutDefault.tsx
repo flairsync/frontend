@@ -8,6 +8,7 @@ import { clientOnly } from "vike-react/clientOnly";
 const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provider"));
 import { Toaster } from "@/components/ui/sonner"
 
+console.log("DEFAULT LAYOUT ---------------------");
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (

@@ -9,7 +9,7 @@ import { Formik, Form } from 'formik';
 import { navigate } from 'vike/client/router';
 import AbstractBG from "@/assets/svg/vecteezy_abstract-blue-color-background-dynamic-wave-fluid-shape_23455702.svg";
 import { useTranslation } from 'react-i18next';
-import { SignupFormSchema } from '@/misc/FormValidators';
+import { LoginFormSchema, SignupFormSchema } from '@/misc/FormValidators';
 import { InputError } from '@/components/inputs/InputError';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { useAuth } from '@/features/auth/useAuth';
@@ -36,7 +36,7 @@ const LoginPage = () => {
                     <p className="text-zinc-600 mb-8">{t("auth_page.please_login_label")}</p>
                     <Formik
                         initialValues={{ email: '', password: '' }}
-                        validationSchema={SignupFormSchema}
+                        validationSchema={LoginFormSchema}
                         onSubmit={values => {
                             // loginUser(values);
                             loginUser({

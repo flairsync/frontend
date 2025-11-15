@@ -276,6 +276,34 @@ const business_page = {
   },
 };
 
+const input_errors = {
+  email: {
+    invalid: "Invalid email address",
+    required: "Email is required",
+  },
+  firstName: {
+    required: "First name is required",
+  },
+  lastName: {
+    required: "Last name is required",
+  },
+  password: {
+    min_length: "Password must be at least 8 characters long",
+    requirements:
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+    too_long: "Password is too long",
+    required: "Password is required",
+  },
+  repeat_password: {
+    mismatch: "Passwords must match",
+    required: "Please confirm your password",
+  },
+  repeatNewPassword: {
+    mismatch: "New passwords must match",
+    required: "Please confirm your new password",
+  },
+};
+
 export default {
   landing_page,
 
@@ -284,4 +312,5 @@ export default {
   auth_page,
   business_page,
   shared,
+  input_errors,
 };

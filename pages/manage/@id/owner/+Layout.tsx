@@ -1,22 +1,7 @@
 export { ManagePagesLayout }
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-
-
-import {
-    Settings,
-    SlidersHorizontal,
-    ShieldAlert,
-    LogOut,
-    LayoutDashboard,
-    CreditCard,
-    Users,
-    Utensils,
-    ShoppingBag,
-    BarChart3,
-    Plug,
-} from "lucide-react";
 import { usePageContext } from 'vike-react/usePageContext';
 
 import { AppSidebar } from "@/components/app-sidebar"
@@ -35,18 +20,28 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { BusinessOwnerManagementSidebar } from '@/components/management/BusinessOwnerManagementSidebar';
-import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
-
-
+import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
+    const [loading, setLoading] = useState(true);
+    const {
+        i18n
+    } = useTranslation();
     const {
         routeParams
     } = usePageContext();
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
+    useEffect(() => {
+        setLoading(false);
+    }, []);
+
+
+    if (loading) return <>Loading ....</>
+    if (!i18n.isInitialized) return <>Loading ....</>
     return (
         <div>
 

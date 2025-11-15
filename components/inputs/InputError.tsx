@@ -1,5 +1,6 @@
 import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface InputErrorProps {
     message?: string;
@@ -7,6 +8,7 @@ interface InputErrorProps {
 }
 
 export function InputError({ message, className }: InputErrorProps) {
+    const { t } = useTranslation();
     if (!message) return null;
 
     return (
@@ -17,7 +19,7 @@ export function InputError({ message, className }: InputErrorProps) {
             )}
         >
             <AlertCircle className="h-4 w-4 shrink-0" />
-            <span>{message}</span>
+            <span>{t(message)}</span>
         </p>
     );
 }
