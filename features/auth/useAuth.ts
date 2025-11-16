@@ -9,11 +9,17 @@ import { UserProfile } from "@/models/UserProfile";
 import { saveJwtToken } from "@/misc/SecureStorage";
 import { navigate } from "vike/client/router";
 import { toast } from "sonner";
+import { AxiosError } from "axios";
+import { useApiMutation } from "@/hooks/use-api-mutation";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
 
-  const { mutate: loginUser, isPending: loggingIn } = useMutation({
+  const {
+    mutate: loginUser,
+    isPending: loggingIn,
+    error: loginError,
+  } = useApiMutation({
     mutationKey: ["login_user"],
     mutationFn: (data: { email: string; password: string }) => {
       return loginUserApiCall(data);
@@ -48,6 +54,7 @@ export const useAuth = () => {
   return {
     loginUser,
     loggingIn,
+    loginError,
 
     signupUser,
     signingUp,

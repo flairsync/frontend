@@ -4,17 +4,32 @@ import {
     InputOTPGroup,
     InputOTPSeparator,
     InputOTPSlot,
-
 } from "@/components/ui/input-otp"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { useVerification } from "@/features/auth/useVerification"
+import { usePageContext } from "vike-react/usePageContext"
 
 export default function VerifyAccountPage() {
+
+    const {
+        user
+    } = usePageContext();
+    console.log("USERRRRRRRRRRRR ", user);
+
+    const {
+        resendOtpCode,
+        errorResendingOtpCode,
+        resendingOtpCode,
+
+        verifyEmailOtp,
+        verifyingEmailOtp,
+        errorVerifyingEmailOtp,
+    } = useVerification()
+
     const [otp, setOtp] = React.useState("")
-    const [isResending, setIsResending] = React.useState(false)
-    const [isVerifying, setIsVerifying] = React.useState(false)
     const [message, setMessage] = React.useState<{
         type: "info" | "error" | "success"
         text: string
@@ -24,36 +39,48 @@ export default function VerifyAccountPage() {
         setOtp(value)
     }
 
-    const handleVerify = async () => {
+    const handleVerify = () => {
         if (otp.length < 6) {
             setMessage({ type: "error", text: "Please enter the 6-digit code." })
             return
         }
-        setIsVerifying(true)
+
         setMessage({ type: "info", text: "Verifying your account..." })
-        try {
-            // TODO: call your verification API
-            await new Promise((r) => setTimeout(r, 1500))
-            setMessage({ type: "success", text: "✅ Account verified successfully!" })
-        } catch (err) {
-            setMessage({ type: "error", text: "Something went wrong. Try again." })
-        } finally {
-            setIsVerifying(false)
-        }
+
+        verifyEmailOtp(
+            otp, // ← send OTP to your API
+            {
+                onSuccess: () => {
+                    setMessage({
+                        type: "success",
+                        text: "✅ Account verified successfully!",
+                    })
+                },
+                onError: () => {
+                    setMessage({
+                        type: "error",
+                        text: "Invalid code. Please try again.",
+                    })
+                },
+            }
+        )
     }
 
-    const handleResend = async () => {
-        setIsResending(true)
-        setMessage({ type: "info", text: "Resending verification code..." })
-        try {
-            // TODO: call your resend API
-            await new Promise((r) => setTimeout(r, 1500))
-            setMessage({ type: "success", text: "A new verification code has been sent." })
-        } catch (err) {
-            setMessage({ type: "error", text: "Couldn't resend code. Please try later." })
-        } finally {
-            setIsResending(false)
-        }
+    const handleResend = () => {
+        resendOtpCode(undefined, {
+            onSuccess: () => {
+                setMessage({
+                    type: "success",
+                    text: "A new code has been sent to your email.",
+                })
+            },
+            onError: () => {
+                setMessage({
+                    type: "error",
+                    text: "Failed to resend the verification code.",
+                })
+            },
+        })
     }
 
     return (
@@ -65,11 +92,12 @@ export default function VerifyAccountPage() {
                             Verify Your Account
                         </CardTitle>
                         <CardDescription className="text-muted-foreground">
-                            We’ve sent a one-time verification code to your email. Please enter it below to
-                            verify your account. This helps us confirm it's really you. If you did not receive
-                            it, you can resend the code.
+                            We’ve sent a one-time verification code to your email.
+                            Enter it below to verify your account. If you did not
+                            receive it, you can resend the code.
                         </CardDescription>
                     </CardHeader>
+
                     <CardContent className="space-y-6">
                         <div className="flex justify-center">
                             <InputOTP
@@ -78,7 +106,6 @@ export default function VerifyAccountPage() {
                                 onChange={handleOTPComplete}
                                 className="gap-2"
                                 pattern={REGEXP_ONLY_DIGITS}
-
                             >
                                 <InputOTPGroup>
                                     <InputOTPSlot index={0} />
@@ -97,9 +124,9 @@ export default function VerifyAccountPage() {
                         <Button
                             onClick={handleVerify}
                             className="w-full"
-                            disabled={otp.length < 6 || isVerifying}
+                            disabled={otp.length < 6 || verifyingEmailOtp}
                         >
-                            {isVerifying ? "Verifying…" : "Verify Account"}
+                            {verifyingEmailOtp ? "Verifying…" : "Verify Account"}
                         </Button>
 
                         <div className="text-center text-sm text-muted-foreground">
@@ -107,13 +134,14 @@ export default function VerifyAccountPage() {
                             <Button
                                 variant="link"
                                 onClick={handleResend}
-                                disabled={isResending}
+                                disabled={resendingOtpCode}
                                 className="p-0 text-primary"
                             >
-                                {isResending ? "Resending…" : "Resend code"}
+                                {resendingOtpCode ? "Resending…" : "Resend code"}
                             </Button>
                         </div>
 
+                        {/* Local UI messages */}
                         {message && (
                             <p
                                 className={`text-center text-sm ${message.type === "error"
@@ -124,6 +152,21 @@ export default function VerifyAccountPage() {
                                     }`}
                             >
                                 {message.text}
+                            </p>
+                        )}
+
+                        {/* API-level errors (fallback display) */}
+                        {errorVerifyingEmailOtp && (
+                            <p className="text-center text-sm text-destructive">
+                                {errorVerifyingEmailOtp.response?.data?.message ||
+                                    "Verification failed."}
+                            </p>
+                        )}
+
+                        {errorResendingOtpCode && (
+                            <p className="text-center text-sm text-destructive">
+                                {errorResendingOtpCode.response?.data?.message ||
+                                    "Failed to resend code."}
                             </p>
                         )}
                     </CardContent>

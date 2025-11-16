@@ -19,11 +19,14 @@ function startServer() {
       id: sessionId,
     };
     if (userCookie) {
-      user = userCookie;
+      const clean = userCookie.replace(/^j:/, ""); // remove the leading 'J:'
+
+      user = JSON.parse(clean);
     }
     if (tfaCookie) {
       tfa = tfaCookie;
     }
+
     c.set("user", user);
     c.set("tfa", tfa);
     c.set("session", session);

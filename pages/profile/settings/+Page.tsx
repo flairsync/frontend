@@ -15,6 +15,7 @@ import ProfileTfaSettings from "@/components/profile/settings/ProfileTfaSettings
 import ProfileInfoSettings from "@/components/profile/settings/ProfileInfoSettings"
 import PasswordSettings from "@/components/profile/settings/PasswordSettings"
 import SessionManagementSettings from "@/components/profile/settings/SessionManagementSettings"
+import AccountVerification from "@/components/profile/settings/AccountVerification"
 
 const ProfileSettingsPage = () => {
 
@@ -25,6 +26,8 @@ const ProfileSettingsPage = () => {
 
             <ProfileInfoSettings />
 
+            <AccountVerification />
+
             {/* Password */}
 
             <PasswordSettings />
@@ -34,7 +37,6 @@ const ProfileSettingsPage = () => {
 
 
             <SessionManagementSettings
-
             />
         </Accordion>
     )

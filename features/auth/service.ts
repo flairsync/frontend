@@ -7,6 +7,9 @@ const logoutUrl = `${baseUrl}/logout`;
 
 const sessionsUrl = `${baseUrl}/sessions`;
 
+const resendVerificationEmailUrl = `${baseUrl}/resend-email-otp`;
+const verifyEmailUrl = `${baseUrl}/verify-email`;
+
 export const loginUserApiCall = (data: { email: string; password: string }) => {
   return flairapi.post(
     loginUrl,
@@ -56,4 +59,15 @@ export type DisconnectSessionData = {
 };
 export const disconnectUserSessionsApiCall = (data: DisconnectSessionData) => {
   return flairapi.delete(`${sessionsUrl}/${data.sessionId}`);
+};
+
+// verification
+
+export const resendVerificationOtpApiCall = () => {
+  return flairapi.get(resendVerificationEmailUrl);
+};
+export const verifyEmailOtpApiCall = (otp: string) => {
+  return flairapi.post(verifyEmailUrl, {
+    otp,
+  });
 };

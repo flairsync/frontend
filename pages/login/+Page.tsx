@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -19,9 +19,17 @@ import axios from 'axios';
 const LoginPage = () => {
     const { t } = useTranslation();
     const [showPassword, setShowPassword] = useState(false);
+    const [apiError, setApiError] = useState<string>();
 
-    const { loginUser, loggingIn, } = useAuth();
+    const { loginUser, loggingIn, loginError } = useAuth();
 
+    useEffect(() => {
+        if (loginError && loginError.response?.data) {
+            // @ts-ignore
+            setApiError(loginError.response?.data.message);
+
+        }
+    }, [loginError]);
 
     return (
         <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
@@ -38,6 +46,7 @@ const LoginPage = () => {
                         initialValues={{ email: '', password: '' }}
                         validationSchema={LoginFormSchema}
                         onSubmit={values => {
+                            setApiError(undefined);
                             // loginUser(values);
                             loginUser({
                                 email: values.email,
@@ -89,7 +98,11 @@ const LoginPage = () => {
                                     </Label>
                                 </div>
 
-                                {loggingIn && <>Logging in ...</>}
+                                {
+                                    apiError && <InputError
+                                        message={apiError}
+                                    />
+                                }
 
                                 <Button
                                     disabled={loggingIn}
