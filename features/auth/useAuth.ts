@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   loginUserApiCall,
+  loginUserWithGoogleApiCall,
   logoutUserApiCall,
   signupUserApiCall,
 } from "./service";
@@ -23,6 +24,23 @@ export const useAuth = () => {
     mutationKey: ["login_user"],
     mutationFn: (data: { email: string; password: string }) => {
       return loginUserApiCall(data);
+    },
+    onSuccess(data, variables, context) {
+      navigate("/feed");
+    },
+  });
+
+  const {
+    mutate: loginUserWithGoogle,
+    isPending: loggingInWithGoogle,
+    error: loginErrorWithGoogle,
+  } = useApiMutation({
+    mutationKey: ["login_user_google"],
+    mutationFn: (data: { tokenId: string }) => {
+      return loginUserWithGoogleApiCall(data.tokenId);
+    },
+    onError(error, variables, context) {
+      console.log("ERROR LOGGING WITH GOOGLE ", error);
     },
     onSuccess(data, variables, context) {
       navigate("/feed");
@@ -55,6 +73,10 @@ export const useAuth = () => {
     loginUser,
     loggingIn,
     loginError,
+
+    loginUserWithGoogle,
+    loginErrorWithGoogle,
+    loggingInWithGoogle,
 
     signupUser,
     signingUp,

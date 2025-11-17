@@ -22,7 +22,7 @@ export default defineConfig({
     watch: {
       usePolling: true, // Essential for Docker development environments
     },
-    allowedHosts: ["flairsync.test"],
+    allowedHosts: ["flairsync.com"],
   },
   define: {
     "process.env": {},

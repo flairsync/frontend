@@ -2,6 +2,7 @@ import flairapi from "@/lib/flairapi";
 const baseUrl = `${import.meta.env.BASE_URL}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
+const googleAuthUrl = `${baseUrl}/google`;
 const registerUrl = `${baseUrl}/register`;
 const logoutUrl = `${baseUrl}/logout`;
 
@@ -9,6 +10,23 @@ const sessionsUrl = `${baseUrl}/sessions`;
 
 const resendVerificationEmailUrl = `${baseUrl}/resend-email-otp`;
 const verifyEmailUrl = `${baseUrl}/verify-email`;
+
+export const loginUserWithGoogleApiCall = (tokenId: string) => {
+  return flairapi.post(
+    googleAuthUrl,
+    {
+      tokenId,
+    },
+    {
+      headers: {
+        "x-device-id": "device id",
+        "x-platform": "windows",
+        "x-device-model": "windows 11",
+        "x-client-type": "web",
+      },
+    }
+  );
+};
 
 export const loginUserApiCall = (data: { email: string; password: string }) => {
   return flairapi.post(

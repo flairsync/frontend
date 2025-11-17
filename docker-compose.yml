@@ -26,7 +26,7 @@ services:
       - "traefik.enable=true"
       # Routing
       - "traefik.http.routers.webapp.entrypoints=web,websecure"
-      - "traefik.http.routers.webapp.rule=Host(`flairsync.test`)"
+      - "traefik.http.routers.webapp.rule=Host(`flairsync.com`)"
       - "traefik.http.routers.webapp.tls=true"
       - "traefik.http.services.webapp.loadbalancer.server.port=3000"
 
