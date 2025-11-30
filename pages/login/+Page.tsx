@@ -133,7 +133,9 @@ const LoginPage = () => {
                         </svg>
                         {t("auth_page.signin_with_google_label")}
                     </Button> */}
+
                     <GoogleLoginButton />
+
 
                     <p className="mt-8 text-center text-sm text-zinc-600">
                         {t("auth_page.need_account_label")}{' '}

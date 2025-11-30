@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { LocateFixed } from "lucide-react";
 import { toast } from "sonner";
+import { LocationPlaceholderCard } from "./LocationPlaceholderCard";
 
 interface LocationValue {
     lat: number;
@@ -41,9 +42,11 @@ const LocationMarker = ({
     position,
     onSelect,
 }: {
-    position: LocationValue;
+    position: L.LatLngExpression;
     onSelect: (val: LocationValue) => void;
 }) => {
+    console.log("POSITION ", position);
+
     useMapEvents({
         click(e) {
             onSelect({ lat: e.latlng.lat, lng: e.latlng.lng });
@@ -64,7 +67,7 @@ const MapPanTo: React.FC<{ position: LocationValue }> = ({ position }) => {
 };
 
 const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
-    const [position, setPosition] = useState<LocationValue>(value || defaultCenter);
+    const [position, setPosition] = useState<LocationValue>(defaultCenter);
     const [country, setCountry] = useState(value?.country || "");
     const [city, setCity] = useState(value?.city || "");
     const [address, setAddress] = useState(value?.address || "");
@@ -112,6 +115,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
     useEffect(() => {
         if (value) setPosition(value);
     }, [value]);
+
+    const checkPositionValue = () => {
+        if (position.lat && position.lng) return true;
+
+        return false;
+    }
 
     return (
         <div className="space-y-4">
@@ -191,19 +200,25 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
 
             {/* Map */}
             <div className="h-80 w-full rounded-md overflow-hidden border border-gray-200 z-0">
-                <MapContainer
-                    center={[position.lat, position.lng]}
-                    zoom={13}
-                    scrollWheelZoom
-                    style={{ height: "100%", width: "100%" }}
-                >
-                    <TileLayer
-                        attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <LocationMarker position={position} onSelect={handleSelectLocation} />
-                    <MapPanTo position={position} />
-                </MapContainer>
+                {checkPositionValue() ? (
+                    <MapContainer
+                        center={[position.lat, position.lng]}
+                        zoom={13}
+                        scrollWheelZoom
+                        style={{ height: "100%", width: "100%", zIndex: 0 }}
+                    >
+                        <TileLayer
+                            attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <LocationMarker
+                            position={{ lat: position.lat, lng: position.lng }}
+                            onSelect={handleSelectLocation}
+                        />
+                    </MapContainer>
+                ) : (
+                    <LocationPlaceholderCard />
+                )}
             </div>
         </div>
     );

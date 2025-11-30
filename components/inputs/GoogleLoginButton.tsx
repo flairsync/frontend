@@ -8,17 +8,13 @@ export default function GoogleLoginButton() {
         loginErrorWithGoogle,
         loggingInWithGoogle
     } = useAuth();
+
     const handleLogin = (response: any) => {
         const idToken = response.credential;
-        console.log(idToken);
-        loginUserWithGoogle({
-            tokenId: idToken
-        })
-
+        loginUserWithGoogle({ tokenId: idToken });
     };
 
     useEffect(() => {
-        // wait for GIS script to load
         const interval = setInterval(() => {
             if (window.google) {
                 window.google.accounts.id.initialize({
@@ -28,7 +24,11 @@ export default function GoogleLoginButton() {
 
                 window.google.accounts.id.renderButton(
                     document.getElementById("googleBtn")!,
-                    { theme: "outline", size: "large" }
+                    {
+                        theme: "outline",
+                        size: "large",
+                        width: "100%",   // ⬅ full width!
+                    }
                 );
 
                 clearInterval(interval);
@@ -36,5 +36,11 @@ export default function GoogleLoginButton() {
         }, 200);
     }, []);
 
-    return <div id="googleBtn"></div>;
+    return (
+        <div
+            className="w-full justify-center flex"
+        >
+            <div id="googleBtn" ></div>
+        </div>
+    );
 }

@@ -21,15 +21,7 @@ import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { motion, AnimatePresence } from "framer-motion"
 import { useProfile } from '@/features/profile/useProfile';
 import { BusinessManageHubSidebar } from '@/components/management/layouts/BusinessManageHubSidebar';
-const menuItems = [
-    { key: "overview", label: "Profile Overview", icon: User },
-    { key: "favorites", label: "Favorites", icon: Heart },
-    { key: "reviews", label: "Reviews", icon: Star },
-    { key: "reservations", label: "Reservations", icon: Calendar },
-    { key: "settings", label: "Settings", icon: Settings },
-    // { key: "preferences", label: "Preferences", icon: SlidersHorizontal },
-    { key: "danger", label: "Danger Zone", icon: ShieldAlert },
-];
+
 const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const {

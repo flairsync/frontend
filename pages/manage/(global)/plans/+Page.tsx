@@ -56,16 +56,7 @@ const PlansPage: React.FC = () => {
       <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 py-16 px-6">
         <div className="max-w-6xl mx-auto text-center mb-12">
           {/* Go Back Button */}
-          <div className="flex items-center justify-start mb-6">
-            <Button
-              variant="ghost"
-              onClick={() => window.history.back()}
-              className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 hover:text-primary transition"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Go Back
-            </Button>
-          </div>
+
 
           <h1 className="text-4xl font-bold mb-3">Choose Your Plan</h1>
           <p className="text-zinc-500">

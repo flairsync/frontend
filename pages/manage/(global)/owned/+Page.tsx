@@ -2,22 +2,9 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building, Settings, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Business } from "@/models/Business";
 
-const ownedBusinesses = [
-    {
-        id: 1,
-        name: "PixelForge Studio",
-        members: 5,
-        createdAt: "Feb 2024",
-        revenue: "€1,230",
-    },
-    {
-        id: 2,
-        name: "Skyline Tech",
-        members: 9,
-        createdAt: "Nov 2023",
-        revenue: "€2,780",
-    },
+const ownedBusinesses: Business[] = [
 ];
 
 const OwnedPage = () => {
@@ -59,10 +46,10 @@ const OwnedPage = () => {
                                 <div className="flex justify-between items-center mb-3">
                                     <div>
                                         <p className="text-sm text-zinc-600 flex items-center gap-1">
-                                            <Users className="h-4 w-4 text-zinc-500" /> Members: {biz.members}
+                                            <Users className="h-4 w-4 text-zinc-500" /> Members: {biz.employeeCount}
                                         </p>
                                         <p className="text-sm text-zinc-600">
-                                            Revenue: <span className="font-medium">{biz.revenue}</span>
+                                            Revenue: <span className="font-medium">{biz.rating}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -101,9 +88,7 @@ const OwnedPage = () => {
                     <p className="text-sm mb-4">
                         Create a new business to start managing your own team and sales.
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
-                        Create Business
-                    </Button>
+
                 </div>
             )}
         </div>

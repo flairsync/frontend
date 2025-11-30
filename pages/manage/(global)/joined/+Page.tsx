@@ -31,38 +31,36 @@ const JoinedPage = () => {
             {joinedBusinesses.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {joinedBusinesses.map((biz) => (
-                        <Card
-                            key={biz.id}
-                            className="hover:shadow-md transition-all border border-zinc-200"
+                        <a
+                            href={`/manage/${biz.id}/staff/dashboard`}
                         >
-                            <CardHeader className="flex flex-row items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <Building2 className="h-6 w-6 text-zinc-600" />
-                                    <CardTitle>{biz.name}</CardTitle>
-                                </div>
-                                <span className="text-sm text-zinc-500">{biz.joinedAt}</span>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <p className="text-sm text-zinc-600">
-                                            Role: <span className="font-medium">{biz.role}</span>
-                                        </p>
-                                        <p className="text-sm text-zinc-600">
-                                            Members: {biz.members}
-                                        </p>
+
+                            <Card
+                                key={biz.id}
+                                className="hover:shadow-md transition-all border border-zinc-200"
+                            >
+                                <CardHeader className="flex flex-row items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <Building2 className="h-6 w-6 text-zinc-600" />
+                                        <CardTitle>{biz.name}</CardTitle>
                                     </div>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="flex items-center gap-2 text-red-600 border-red-300 hover:bg-red-50"
-                                    >
-                                        <LogOut className="h-4 w-4" />
-                                        Leave
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                                    <span className="text-sm text-zinc-500">{biz.joinedAt}</span>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="text-sm text-zinc-600">
+                                                Role: <span className="font-medium">{biz.role}</span>
+                                            </p>
+                                            <p className="text-sm text-zinc-600">
+                                                Members: {biz.members}
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </a>
                     ))}
                 </div>
             ) : (

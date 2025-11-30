@@ -44,10 +44,15 @@ const ownerNavData = {
                 },
                 {
                     key: "billing",
-
                     title: "Billing",
                     url: "/manage/billing",
                     icon: LucideNewspaper,
+                },
+                {
+                    key: "plans",
+                    title: "Plans",
+                    url: "/manage/plans",
+                    icon: CreditCard,
                 },
                 {
                     key: "help",

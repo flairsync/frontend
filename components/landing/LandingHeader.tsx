@@ -3,6 +3,9 @@ import { Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { useTranslation } from "react-i18next";
 import WebsiteLogo from "../shared/WebsiteLogo";
+import { useProfile } from "@/features/profile/useProfile";
+import { usePageContext } from "vike-react/usePageContext";
+import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
 
 const NAV_LINKS = [
     { name: "home_tab_title", href: "#home" },
@@ -44,6 +47,11 @@ type HeaderProps = {
 };
 
 const LandingHeader = (props: HeaderProps) => {
+    const {
+        user
+    } = usePageContext();
+
+
     const [isOpen, setIsOpen] = useState(false);
     const toggleMenu = () => setIsOpen(!isOpen);
     const { t } = useTranslation();
@@ -74,14 +82,17 @@ const LandingHeader = (props: HeaderProps) => {
 
                 {/* Right Section: Join Us + Mobile Menu */}
                 <div className="md:flex hidden items-center space-x-4">
-                    <a href="/login">
-                        <Button
-                            className="px-8 py-2 hover:cursor-pointer bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
-                            variant="default"
-                        >
-                            {t("landing_page.header.joinUsButton")}
-                        </Button>
-                    </a>
+                    {
+                        user ? <HeaderProfileAvatar /> :
+                            <a href="/login">
+                                <Button
+                                    className="px-8 py-2 hover:cursor-pointer bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
+                                    variant="default"
+                                >
+                                    {t("landing_page.header.joinUsButton")}
+                                </Button>
+                            </a>
+                    }
                     <button className="md:hidden text-foreground" onClick={toggleMenu}>
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
