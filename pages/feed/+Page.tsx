@@ -21,7 +21,7 @@ import WebsiteFooter from '@/components/shared/WebsiteFooter'
 
 // trying to optimize it 
 import { clientOnly } from 'vike-react/clientOnly'
-import { BusinessTag } from '@/models/BusinessTag'
+import { BusinessTag } from '@/models/business/BusinessTag'
 
 const PublicFeedBusinessCard = clientOnly(() =>
     import("@/components/feed/PublicFeedBusinessCard")

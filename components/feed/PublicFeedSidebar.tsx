@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { clientOnly } from "vike-react/clientOnly"
 import { MapPinPenIcon, SlidersHorizontal } from "lucide-react"
 import { useTranslation } from "react-i18next"
-import { BusinessTag } from "@/models/BusinessTag"
+import { BusinessTag } from "@/models/business/BusinessTag"
 import {
     Dialog,
     DialogContent,

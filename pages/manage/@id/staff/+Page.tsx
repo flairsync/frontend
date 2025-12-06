@@ -8,7 +8,7 @@ const MainStaffPage = () => {
     navigate(`/manage/${id}/staff/dashboard`);
 
     return (
-        <div>123456</div>
+        <div></div>
     )
 }
 

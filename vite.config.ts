@@ -27,4 +27,8 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  ssr: {
+    // Add problematic npm package here:
+    noExternal: ["radar-sdk-js"],
+  },
 });

@@ -22,6 +22,7 @@ import BusinessTagsInput from '@/components/management/create/BusinessTagsInput'
 import BusinessPricingSelector from '@/components/management/create/BusinessPricingSelector';
 import BusinessSocialLinksInput from '@/components/management/create/BusinessSocialLinksInput';
 import { clientOnly } from 'vike-react/clientOnly';
+import { useBusinessTypes } from '@/features/business/types/useBusinessTypes';
 
 const LocationPicker = clientOnly(() =>
     import("@/components/management/create/BusinessLocationPicker")
@@ -71,6 +72,9 @@ const validationSchema = [
 ];
 
 export default function CreateNewBusiness() {
+    const {
+        businessTypes
+    } = useBusinessTypes();
     const [step, setStep] = useState(0);
     const totalSteps = 4;
 
@@ -158,7 +162,7 @@ export default function CreateNewBusiness() {
                                             </div>
 
                                             <BusinessTypeSelect
-
+                                                types={businessTypes}
                                                 onChange={(newValue) => {
                                                     setFieldValue("type", newValue);
 

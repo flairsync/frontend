@@ -6,12 +6,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { BusinessType } from "@/models/business/BusinessType";
 
 interface BusinessTypeSelectProps {
     value: string;
+    types: BusinessType[] | undefined;
     onChange: (newValue: string) => void;
     label?: string;
-    options?: string[];
     placeholder?: string;
     error?: string;
 }
@@ -20,11 +21,7 @@ export default function BusinessTypeSelect({
     value,
     onChange,
     label = "Business Type",
-    options = [
-        "Restaurant",
-        "Coffee Shop",
-        "Other",
-    ],
+    types,
     placeholder = "Select a business type...",
     error,
 }: BusinessTypeSelectProps) {
@@ -37,9 +34,9 @@ export default function BusinessTypeSelect({
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>
-                    {options.map((option) => (
-                        <SelectItem key={option} value={option}>
-                            {option}
+                    {types?.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                            {option.name}
                         </SelectItem>
                     ))}
                 </SelectContent>

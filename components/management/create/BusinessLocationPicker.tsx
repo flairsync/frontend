@@ -10,6 +10,9 @@ import { Button } from "@/components/ui/button";
 import { LocateFixed } from "lucide-react";
 import { toast } from "sonner";
 import { LocationPlaceholderCard } from "./LocationPlaceholderCard";
+import Radar from "radar-sdk-js";
+import { AddressAutocomplete } from "@/components/inputs/AddressAutocomplete";
+
 
 interface LocationValue {
     lat: number;
@@ -128,14 +131,17 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
 
             {/* Search input */}
             <div className="flex gap-2">
-                <Input
+                {/*  <Input
                     placeholder="Search address or place name..."
                     value={address}
                     onChange={(e) => {
-                        setAddress(e.target.value);
-                        onChange({ ...position, country, city, address: e.target.value });
+                        //setAddress(e.target.value);
+                        //onChange({ ...position, country, city, address: e.target.value });
                     }}
                     className="flex-1"
+                /> */}
+                <AddressAutocomplete
+                    onSelect={(adr) => { }}
                 />
                 <Button
                     type="button"
