@@ -12,6 +12,9 @@ import { toast } from "sonner";
 import { LocationPlaceholderCard } from "./LocationPlaceholderCard";
 import Radar from "radar-sdk-js";
 import { AddressAutocomplete } from "@/components/inputs/AddressAutocomplete";
+import { usePlatformCountries } from "@/features/shared/usePlatformCountries";
+import { PlatformCountry } from "@/models/shared/PlatformCountry";
+//import andorraGeoJson from "@/data/andorra.geojson";
 
 
 interface LocationValue {
@@ -70,23 +73,21 @@ const MapPanTo: React.FC<{ position: LocationValue }> = ({ position }) => {
 };
 
 const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
+
+    const {
+        platformCountries
+    } = usePlatformCountries();
     const [position, setPosition] = useState<LocationValue>(defaultCenter);
-    const [country, setCountry] = useState(value?.country || "");
+    const [country, setCountry] = useState<PlatformCountry>();
     const [city, setCity] = useState(value?.city || "");
     const [address, setAddress] = useState(value?.address || "");
 
-    // Simulated country/city data
-    const countries = ["Spain", "France", "Andorra"];
-    const cities: Record<string, string[]> = {
-        Spain: ["Barcelona", "Madrid", "Valencia"],
-        France: ["Paris", "Lyon", "Marseille"],
-        Andorra: ["Andorra la Vella", "Escaldes-Engordany"],
-    };
-
     const handleSelectLocation = (val: LocationValue) => {
         setPosition(val);
-        onChange({ ...val, country, city, address });
+        // onChange({ ...val, country, city, address });
     };
+
+
 
     const handleGeolocate = () => {
         if (!navigator.geolocation) {
@@ -103,7 +104,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                     lng: pos.coords.longitude,
                 };
                 setPosition(coords);
-                onChange({ ...coords, country, city, address });
+                //  onChange({ ...coords, country, city, address });
             },
             (err) => {
                 toast("Location permission denied", {
@@ -131,15 +132,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
 
             {/* Search input */}
             <div className="flex gap-2">
-                {/*  <Input
-                    placeholder="Search address or place name..."
-                    value={address}
-                    onChange={(e) => {
-                        //setAddress(e.target.value);
-                        //onChange({ ...position, country, city, address: e.target.value });
-                    }}
-                    className="flex-1"
-                /> */}
+
                 <AddressAutocomplete
                     onSelect={(adr) => { }}
                 />
@@ -159,9 +152,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                 <div>
                     <Label className="text-sm">Country</Label>
                     <Select
-                        value={country}
+                        value={country?.code}
                         onValueChange={(val) => {
-                            setCountry(val);
+                            setCountry(platformCountries?.find(count => count.code == val));
                             setCity("");
                             onChange({ ...position, country: val, city: "", address });
                         }}
@@ -170,9 +163,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                             <SelectValue placeholder="Select Country" />
                         </SelectTrigger>
                         <SelectContent>
-                            {countries.map((c) => (
-                                <SelectItem key={c} value={c}>
-                                    {c}
+                            {platformCountries?.map((c) => (
+                                <SelectItem key={c.id} value={c.code}>
+                                    {c.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -185,20 +178,20 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                         value={city}
                         onValueChange={(val) => {
                             setCity(val);
-                            onChange({ ...position, country, city: val, address });
+                            //onChange({ ...position, country, city: val, address });
                         }}
                     >
                         <SelectTrigger>
                             <SelectValue placeholder="Select City" />
                         </SelectTrigger>
                         <SelectContent>
-                            {country && cities[country]
+                            {/* {country && cities[country]
                                 ? cities[country].map((c) => (
                                     <SelectItem key={c} value={c}>
                                         {c}
                                     </SelectItem>
                                 ))
-                                : null}
+                                : null} */}
                         </SelectContent>
                     </Select>
                 </div>
@@ -206,9 +199,26 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
 
             {/* Map */}
             <div className="h-80 w-full rounded-md overflow-hidden border border-gray-200 z-0">
-                {checkPositionValue() ? (
+                {
+                    country ? <>
+
+                        <MapContainer
+                            center={[country.centerLat, country.centerLng]}
+                            zoom={13}
+                            scrollWheelZoom
+                            style={{ height: "100%", width: "100%", zIndex: 0 }}
+                        >
+                            <TileLayer
+                                attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+
+                        </MapContainer>
+                    </> : <><LocationPlaceholderCard /></>
+                }
+                {!checkPositionValue() ? (
                     <MapContainer
-                        center={[position.lat, position.lng]}
+                        // center={[position.lat, position.lng]}
                         zoom={13}
                         scrollWheelZoom
                         style={{ height: "100%", width: "100%", zIndex: 0 }}
@@ -217,10 +227,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                             attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        <LocationMarker
+                        {/*   <LocationMarker
                             position={{ lat: position.lat, lng: position.lng }}
                             onSelect={handleSelectLocation}
-                        />
+                        /> */}
                     </MapContainer>
                 ) : (
                     <LocationPlaceholderCard />
