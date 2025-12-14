@@ -1,0 +1,44 @@
+[
+  {
+    "city": "andorra la vella",
+    "zipcode": "ad500",
+    "lat": 42.5063,
+    "lng": 1.5218
+  },
+  {
+    "city": "escaldes-engordany",
+    "zipcode": "ad700",
+    "lat": 42.5075,
+    "lng": 1.5341
+  },
+  {
+    "city": "encamp",
+    "zipcode": "ad200",
+    "lat": 42.5347,
+    "lng": 1.5801
+  },
+  {
+    "city": "la massana",
+    "zipcode": "ad400",
+    "lat": 42.5446,
+    "lng": 1.5146
+  },
+  {
+    "city": "ordino",
+    "zipcode": "ad300",
+    "lat": 42.5562,
+    "lng": 1.5332
+  },
+  {
+    "city": "sant julià de lòria",
+    "zipcode": "ad600",
+    "lat": 42.4637,
+    "lng": 1.4913
+  },
+  {
+    "city": "canillo",
+    "zipcode": "ad100",
+    "lat": 42.5667,
+    "lng": 1.5976
+  }
+]

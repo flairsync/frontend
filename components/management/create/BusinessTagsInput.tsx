@@ -4,26 +4,32 @@ import { X } from "lucide-react";
 import { Command, CommandInput, CommandItem, CommandList, CommandEmpty } from "@/components/ui/command";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { useBusinessTags } from "@/features/business/tags/useBusinessTags";
+import { BusinessTag } from "@/models/business/BusinessTag";
 
 interface TagsDropdownProps {
-  value: string[];
-  onChange: (tags: string[]) => void;
+  value: BusinessTag[];
+  onChange: (tags: BusinessTag[]) => void;
   options?: string[];
   placeholder?: string;
 }
 
-const tagOptions = ["vegan", "brunch", "cozy", "family-friendly", "romantic"];
 
 
 const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, options = [], placeholder }) => {
+  const {
+    businessTags
+  } = useBusinessTags();
+
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filtered = tagOptions.filter(
-    (opt) => opt.toLowerCase().includes(search.toLowerCase()) && !value.includes(opt)
+
+  const filtered = businessTags?.filter(
+    (opt) => opt.name.toLowerCase().includes(search.toLowerCase()) && !value.includes(opt)
   );
 
-  const addTag = (tag: string) => {
+  const addTag = (tag: BusinessTag) => {
     if (tag && !value.includes(tag)) {
       onChange([...value, tag]);
     }
@@ -31,7 +37,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
     setOpen(false);
   };
 
-  const removeTag = (tag: string) => {
+  const removeTag = (tag: BusinessTag) => {
     onChange(value.filter((t) => t !== tag));
   };
 
@@ -44,12 +50,12 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
         <div className="flex flex-wrap gap-2">
           {value.map((tag) => (
             <Badge
-              key={tag}
+              key={tag.id}
               variant="secondary"
               className="flex items-center gap-1 cursor-pointer"
               onClick={() => removeTag(tag)}
             >
-              {tag}
+              {tag.name}
               <X className="w-3 h-3" />
             </Badge>
           ))}
@@ -75,9 +81,9 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
               onValueChange={setSearch}
             />
             <CommandList>
-              {filtered.map((opt) => (
-                <CommandItem key={opt} onSelect={() => addTag(opt)}>
-                  {opt}
+              {filtered?.map((opt) => (
+                <CommandItem key={opt.id} onSelect={() => addTag(opt)}>
+                  {opt.name}
                 </CommandItem>
               ))}
             </CommandList>

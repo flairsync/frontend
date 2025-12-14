@@ -7,6 +7,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { BusinessType } from "@/models/business/BusinessType";
+import { Check } from "lucide-react";
 
 interface BusinessTypeSelectProps {
     value: string;
@@ -31,12 +32,21 @@ export default function BusinessTypeSelect({
 
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder={placeholder} />
+                    <SelectValue placeholder={placeholder} >{
+                        types?.find(val => val.id == value)?.name
+                    }</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                     {types?.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
-                            {option.name}
+                            <div
+                                className="flex flex-row "
+                            >
+                                {option.name}
+                                {
+                                    option.id == value && <Check height={20} width={20} />
+                                }
+                            </div>
                         </SelectItem>
                     ))}
                 </SelectContent>

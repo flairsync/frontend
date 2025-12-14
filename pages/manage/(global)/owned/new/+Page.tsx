@@ -23,6 +23,8 @@ import BusinessPricingSelector from '@/components/management/create/BusinessPric
 import BusinessSocialLinksInput from '@/components/management/create/BusinessSocialLinksInput';
 import { clientOnly } from 'vike-react/clientOnly';
 import { useBusinessTypes } from '@/features/business/types/useBusinessTypes';
+import { BusinessTag } from '@/models/business/BusinessTag';
+import { useBusinessOps } from '@/features/business/useBusinessOps';
 
 const LocationPicker = clientOnly(() =>
     import("@/components/management/create/BusinessLocationPicker")
@@ -33,7 +35,7 @@ interface BusinessFormValues {
     type: string;
     workTimes: WorkHours;
     pricing: string;
-    tags: string[];
+    tags: BusinessTag[];
     links: any;
     location: any;
 }
@@ -41,13 +43,13 @@ interface BusinessFormValues {
 
 
 const initialHours: WorkHours = {
-    Monday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }, { open: "21:00", close: "04:00" }] },
-    Tuesday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }] },
-    Wednesday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }] },
-    Thursday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }] },
-    Friday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }, { open: "21:00", close: "04:00" }] },
-    Saturday: { isClosed: true, shifts: [] },
-    Sunday: { isClosed: true, shifts: [] },
+    monday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }, { open: "21:00", close: "04:00" }] },
+    tuesday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }] },
+    wednesday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }] },
+    thursday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }] },
+    friday: { isClosed: false, shifts: [{ open: "08:00", close: "15:00" }, { open: "21:00", close: "04:00" }] },
+    saturday: { isClosed: true, shifts: [] },
+    sunday: { isClosed: true, shifts: [] },
 };
 
 
@@ -75,6 +77,10 @@ export default function CreateNewBusiness() {
     const {
         businessTypes
     } = useBusinessTypes();
+
+    const {
+        createdNewBusiness,
+    } = useBusinessOps();
     const [step, setStep] = useState(0);
     const totalSteps = 4;
 
@@ -90,8 +96,7 @@ export default function CreateNewBusiness() {
     };
 
     const handleSubmit = (values: BusinessFormValues) => {
-        console.log('Business created:', values);
-        alert('Business successfully created!');
+        createdNewBusiness(values)
     };
 
     const nextStep = () => setStep((s) => Math.min(s + 1, totalSteps - 1));
@@ -114,6 +119,7 @@ export default function CreateNewBusiness() {
                         validationSchema={validationSchema[step]}
                         onSubmit={(values) => {
                             if (step === totalSteps - 1) {
+                                console.log(values);
                                 handleSubmit(values);
                             } else {
                                 nextStep();

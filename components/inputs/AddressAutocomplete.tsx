@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Command, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import Radar from 'radar-sdk-js';
+import { PlatformCountry } from '@/models/shared/PlatformCountry';
 
 interface AddressDetails {
     formattedAddress: string;
@@ -18,11 +19,13 @@ interface AddressDetails {
 interface AddressAutocompleteProps {
     onSelect: (address: AddressDetails) => void;
     placeholder?: string;
+    country?: PlatformCountry
 }
 
 export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     onSelect,
     placeholder = 'Search address...',
+    country
 }) => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -34,7 +37,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     useEffect(() => {
         if (debounceRef.current) clearTimeout(debounceRef.current);
 
-        if (!query) {
+        if (!query || query.length < 3) {
             setSuggestions([]);
             setShowDropdown(false);
             return;
@@ -46,7 +49,8 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
                 const res = await Radar.autocomplete({
                     query,
                     limit: 5,
-                    layers: ['address', 'place']
+                    layers: ['address', 'place'],
+                    countryCode: country?.code,
                 });
 
                 if (res.addresses) {
@@ -96,6 +100,9 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
         setShowDropdown(false);
     };
 
+    if (!country) return <>
+        Please select a country first
+    </>
     return (
         <div className="relative w-full">
             <Input
