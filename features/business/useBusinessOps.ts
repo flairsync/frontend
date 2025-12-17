@@ -64,16 +64,8 @@ export const useBusinessOps = () => {
       const mapped = mapBusinessFormToCreateBusinessDto(val);
       return createNewBusinessApiCall(mapped);
     },
-    onSuccess(data, variables, context) {
-      console.log("SUCCESS ----------------------------");
-      console.log(data);
-      console.log("SUCCESS ----------------------------");
-    },
-    onError(error, variables, context) {
-      console.log("ERROR +++++++++++++++++++++++");
-      console.log(error);
-      console.log("ERROR +++++++++++++++++++++++");
-    },
+    onSuccess(data, variables, context) {},
+    onError(error, variables, context) {},
   });
 
   return {

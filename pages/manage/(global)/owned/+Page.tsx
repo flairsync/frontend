@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building, Settings, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Business } from "@/models/Business";
+import { useMyBusinesses } from "@/features/business/useMyBusinesses";
 
 const ownedBusinesses: Business[] = [
 ];
 
 const OwnedPage = () => {
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const {
+        myBusinesses,
+        loadingMyBussinesses,
+        refreshMyBusinesses
+    } = useMyBusinesses(page, limit);
     return (
         <div className="p-6 w-full">
             <div className="flex items-center justify-between mb-6">
@@ -27,9 +35,9 @@ const OwnedPage = () => {
                 </a>
             </div>
 
-            {ownedBusinesses.length > 0 ? (
+            {myBusinesses ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {ownedBusinesses.map((biz) => (
+                    {myBusinesses.map((biz) => (
                         <Card
                             key={biz.id}
                             className="hover:shadow-md transition-all border border-zinc-200"
@@ -39,17 +47,17 @@ const OwnedPage = () => {
                                     <Building className="h-6 w-6 text-zinc-600" />
                                     <CardTitle>{biz.name}</CardTitle>
                                 </div>
-                                <span className="text-sm text-zinc-500">{biz.createdAt}</span>
+                                <span className="text-sm text-zinc-500">{biz.createdAt.toDateString()}</span>
                             </CardHeader>
 
                             <CardContent>
                                 <div className="flex justify-between items-center mb-3">
                                     <div>
                                         <p className="text-sm text-zinc-600 flex items-center gap-1">
-                                            <Users className="h-4 w-4 text-zinc-500" /> Members: {biz.employeeCount}
+                                            <Users className="h-4 w-4 text-zinc-500" /> Name: {biz.name}
                                         </p>
                                         <p className="text-sm text-zinc-600">
-                                            Revenue: <span className="font-medium">{biz.rating}</span>
+                                            Type: <span className="font-medium">{biz.type?.name}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -68,13 +76,6 @@ const OwnedPage = () => {
                                             className="flex items-center gap-2 text-zinc-700 border-zinc-300"
                                         >
                                             <Settings className="h-4 w-4" /> Settings
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="flex items-center gap-2 text-red-600 border-red-300 hover:bg-red-50"
-                                        >
-                                            <Trash2 className="h-4 w-4" /> Delete
                                         </Button>
                                     </div>
                                 </div>

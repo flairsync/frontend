@@ -11,10 +11,29 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { useTranslation } from "react-i18next"
+import { usePageContext } from "vike-react/usePageContext"
+import { useMyBusiness } from "@/features/business/useMyBusiness"
+import { Textarea } from "@/components/ui/textarea"
 
 const BusinessSettingsPage = () => {
+
+    const {
+        i18n
+    } = useTranslation();
+    const {
+        routeParams
+    } = usePageContext();
+
+
+    const {
+        myBusinessFullDetails,
+        fetchingMyBusinessFullDetails,
+    } = useMyBusiness(routeParams.id);
+
     // General Info
-    const [businessName, setBusinessName] = useState("")
+    const [businessName, setBusinessName] = useState(myBusinessFullDetails?.name)
+    const [description, setDescription] = useState(myBusinessFullDetails?.description)
     const [contactEmail, setContactEmail] = useState("")
     const [phone, setPhone] = useState("")
     const [address, setAddress] = useState("")
@@ -54,7 +73,14 @@ const BusinessSettingsPage = () => {
                         placeholder="Business Name"
                         value={businessName}
                         onChange={(e) => setBusinessName(e.target.value)}
+                        maxLength={20}
                     />
+                    <Textarea
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+
                     <Input
                         placeholder="Contact Email"
                         type="email"
@@ -72,11 +98,7 @@ const BusinessSettingsPage = () => {
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                     />
-                    <Input
-                        placeholder="Opening Hours"
-                        value={openingHours}
-                        onChange={(e) => setOpeningHours(e.target.value)}
-                    />
+
                     <Button onClick={saveGeneralInfo}>Save</Button>
                 </AccordionContent>
             </AccordionItem>

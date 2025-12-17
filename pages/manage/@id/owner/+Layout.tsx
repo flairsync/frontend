@@ -23,10 +23,11 @@ import { BusinessOwnerManagementSidebar } from '@/components/management/Business
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
+import { useMyBusiness } from '@/features/business/useMyBusiness';
 
 
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
-    const [loading, setLoading] = useState(true);
+
     const {
         i18n
     } = useTranslation();
@@ -34,13 +35,16 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         routeParams
     } = usePageContext();
 
+    const {
+        myBusinessFullDetails,
+        fetchingMyBusinessFullDetails,
+    } = useMyBusiness(routeParams.id);
+
+
     const [sidebarOpen, setsidebarOpen] = useState(true);
-    useEffect(() => {
-        setLoading(false);
-    }, []);
 
 
-    if (loading) return <>Loading ....</>
+
     if (!i18n.isInitialized) return <>Loading ....</>
     return (
         <div>
@@ -64,8 +68,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="/manage">
-                                        Business name
+                                    <BreadcrumbLink >
+                                        {myBusinessFullDetails?.name}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />

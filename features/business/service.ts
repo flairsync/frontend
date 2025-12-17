@@ -6,6 +6,7 @@ const getBusinessTagsUrl = `${baseUrl}/business-tags`;
 const getBusinessTypesUrl = `${baseUrl}/business-types`;
 
 const createNewBusinessTypesUrl = `${baseBusinessUrl}/new`;
+const getMyBusinessUrl = `${baseBusinessUrl}/my`;
 
 // Public business Routes
 
@@ -20,4 +21,17 @@ export const getBusinessTypesApiCall = () => {
 
 export const createNewBusinessApiCall = (data: any) => {
   return flairapi.post(createNewBusinessTypesUrl, data);
+};
+
+export const fetchMyBusinessesApiCall = (page: number, limit: number) => {
+  return flairapi.get(getMyBusinessUrl, {
+    params: {
+      page,
+      limit,
+    },
+  });
+};
+
+export const fetchMyBuysinessFullDetailsApiCall = (businessId: string) => {
+  return flairapi.get(`${getMyBusinessUrl}/${businessId}`);
 };
