@@ -21,7 +21,7 @@ import WebsiteFooter from '@/components/shared/WebsiteFooter'
 
 // trying to optimize it 
 import { clientOnly } from 'vike-react/clientOnly'
-import { BusinessTag } from '@/models/business/BusinessTag'
+import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
 
 const PublicFeedBusinessCard = clientOnly(() =>
     import("@/components/feed/PublicFeedBusinessCard")
@@ -29,6 +29,9 @@ const PublicFeedBusinessCard = clientOnly(() =>
 
 const FeedPage = () => {
     const { t } = useTranslation()
+    const {
+        businessTags
+    } = useBusinessTags();
 
     return (
         <div>
@@ -39,7 +42,7 @@ const FeedPage = () => {
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row gap-8">
                         <PublicFeedSidebar
-                            tags={BusinessTag.generateDummyData()}
+                            tags={businessTags}
                         />
                         <div className="w-full md:w-3/4">
                             <div className="flex justify-between items-center mb-4">

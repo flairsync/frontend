@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
 const baseUrl = `${import.meta.env.BASE_URL}`;
 const baseBusinessUrl = `${import.meta.env.BASE_URL}/business`;
 
@@ -34,4 +35,11 @@ export const fetchMyBusinessesApiCall = (page: number, limit: number) => {
 
 export const fetchMyBuysinessFullDetailsApiCall = (businessId: string) => {
   return flairapi.get(`${getMyBusinessUrl}/${businessId}`);
+};
+
+export const updateMyBusinessDetailsApiCall = (
+  businessId: string,
+  data: UpdateBusinessDetailsDto
+) => {
+  return flairapi.patch(`${getMyBusinessUrl}/${businessId}`, data);
 };

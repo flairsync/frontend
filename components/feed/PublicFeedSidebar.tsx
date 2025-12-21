@@ -20,13 +20,13 @@ const LocationSelectionModal = clientOnly(() =>
     import("@/components/inputs/LocationSelectionModal")
 )
 
-const TagsList = React.memo(({ tags }: { tags: BusinessTag[] }) => (
+const TagsList = React.memo(({ tags }: { tags?: BusinessTag[] }) => (
     <div className="gap-3 flex flex-col">
-        {tags.map((val) => (
+        {tags?.map((val) => (
             <div key={val.id} className="flex items-center gap-3">
                 <Checkbox id={val.id} />
                 <Label htmlFor={val.id}>
-                    {t(`public_feed.sidebar.tags.${val.name}`)}
+                    {t(`shared.tags.${val.name}`)}
                 </Label>
             </div>
         ))}
@@ -34,7 +34,7 @@ const TagsList = React.memo(({ tags }: { tags: BusinessTag[] }) => (
 ))
 
 interface Props {
-    tags: BusinessTag[] // Will come from API
+    tags?: BusinessTag[] // Will come from API
 }
 
 const PublicFeedSidebar = ({ tags }: Props) => {

@@ -94,6 +94,8 @@ export class MyBusinessFullDetails {
   status: string;
   facebook?: string;
   instagram?: string;
+  email?: string;
+  phone?: string;
   createdAt: Date;
   updatedAt: Date;
 
@@ -117,6 +119,8 @@ export class MyBusinessFullDetails {
     status: string,
     facebook: string | undefined,
     instagram: string | undefined,
+    email: string | undefined,
+    phone: string | undefined,
     createdAt: Date,
     updatedAt: Date
   ) {
@@ -139,6 +143,8 @@ export class MyBusinessFullDetails {
     this.status = status;
     this.facebook = facebook;
     this.instagram = instagram;
+    this.email = email;
+    this.phone = phone;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -166,6 +172,8 @@ export class MyBusinessFullDetails {
         data.status,
         data.facebook,
         data.instagram,
+        data.email,
+        data.phone,
         new Date(data.createdAt),
         new Date(data.updatedAt)
       );
@@ -183,3 +191,20 @@ export class MyBusinessFullDetails {
     return arr;
   }
 }
+
+// OPS types
+
+export type UpdateBusinessDetailsDto = {
+  name?: string;
+  description?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  facebook?: string;
+  instagram?: string;
+  priceLevel?: number;
+  status?: string;
+  timezone?: string;
+};

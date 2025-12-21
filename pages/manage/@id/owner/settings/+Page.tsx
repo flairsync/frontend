@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -15,6 +13,8 @@ import { useTranslation } from "react-i18next"
 import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
+import BusinessSettingsGeneralDetails from "@/components/management/settings/BusinessSettingsGeneralDetails"
+import BusinessSettingsOpenPeriods from "@/components/management/settings/BusinessSettingsOpenPeriods"
 
 const BusinessSettingsPage = () => {
 
@@ -29,15 +29,10 @@ const BusinessSettingsPage = () => {
     const {
         myBusinessFullDetails,
         fetchingMyBusinessFullDetails,
-    } = useMyBusiness(routeParams.id);
+        updatingMyBusiness,
+        updateMyBusinessDetails
 
-    // General Info
-    const [businessName, setBusinessName] = useState(myBusinessFullDetails?.name)
-    const [description, setDescription] = useState(myBusinessFullDetails?.description)
-    const [contactEmail, setContactEmail] = useState("")
-    const [phone, setPhone] = useState("")
-    const [address, setAddress] = useState("")
-    const [openingHours, setOpeningHours] = useState("")
+    } = useMyBusiness(routeParams.id);
 
     // Reservations
     const [reservationsEnabled, setReservationsEnabled] = useState(true)
@@ -57,7 +52,6 @@ const BusinessSettingsPage = () => {
     const [paymentMethods, setPaymentMethods] = useState("Cash, Card, Online Payment")
     const [receiptTemplate, setReceiptTemplate] = useState("")
 
-    const saveGeneralInfo = () => alert("General info saved")
     const saveReservations = () => alert("Reservations settings saved")
     const saveStaffManagement = () => alert("Staff management saved")
     const saveAutomation = () => alert("Automation settings saved")
@@ -66,42 +60,16 @@ const BusinessSettingsPage = () => {
     return (
         <Accordion type="single" collapsible className="w-full space-y-2">
             {/* General Info */}
-            <AccordionItem value="general-info" className="border rounded-lg px-3">
-                <AccordionTrigger>General Information</AccordionTrigger>
-                <AccordionContent className="space-y-4 py-2">
-                    <Input
-                        placeholder="Business Name"
-                        value={businessName}
-                        onChange={(e) => setBusinessName(e.target.value)}
-                        maxLength={20}
-                    />
-                    <Textarea
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
+            <BusinessSettingsGeneralDetails
+                businessDetails={myBusinessFullDetails}
+                onSaveDetails={(data) => {
+                    updateMyBusinessDetails(data);
+                }}
+                disabled={updatingMyBusiness}
+            />
 
-                    <Input
-                        placeholder="Contact Email"
-                        type="email"
-                        value={contactEmail}
-                        onChange={(e) => setContactEmail(e.target.value)}
-                    />
-                    <Input
-                        placeholder="Phone Number"
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                    />
-                    <Input
-                        placeholder="Address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    />
+            <BusinessSettingsOpenPeriods />
 
-                    <Button onClick={saveGeneralInfo}>Save</Button>
-                </AccordionContent>
-            </AccordionItem>
 
             {/* Reservations */}
             <AccordionItem value="reservations" className="border rounded-lg px-3">

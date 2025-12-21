@@ -22,8 +22,7 @@ const BusinessBrandingPage = () => {
     // Gallery
     const [galleryUrls, setGalleryUrls] = useState<string[]>([])
 
-    // Description
-    const [description, setDescription] = useState("")
+
 
     // Video
     const [videoUrl, setVideoUrl] = useState("")
@@ -59,7 +58,6 @@ const BusinessBrandingPage = () => {
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingGalleryUpload
                         onSave={(f) => {
-
                         }}
                     />
                 </AccordionContent>
@@ -67,25 +65,15 @@ const BusinessBrandingPage = () => {
 
 
             {/* Virtual tour */}
-            <AccordionItem value="virtua_tour" className="border rounded-lg px-3">
+            {/*   
+         // FUTURE FEATURE 
+         <AccordionItem value="virtua_tour" className="border rounded-lg px-3">
                 <AccordionTrigger className="hover:cursor-pointer ">Virtual tour</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingVirtualViewer />
                 </AccordionContent>
-            </AccordionItem>
+            </AccordionItem> */}
 
-            {/* Description */}
-            <AccordionItem value="description" className="border rounded-lg px-3">
-                <AccordionTrigger className="hover:cursor-pointer ">Description</AccordionTrigger>
-                <AccordionContent className="space-y-4 py-2">
-                    <Textarea
-                        placeholder="Write a description about your restaurant or coffee shop"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <Button onClick={saveDescription}>Save Description</Button>
-                </AccordionContent>
-            </AccordionItem>
 
         </Accordion>
     )
