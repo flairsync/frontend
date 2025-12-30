@@ -4,6 +4,7 @@ import { Building, Settings, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Business } from "@/models/Business";
 import { useMyBusinesses } from "@/features/business/useMyBusinesses";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ownedBusinesses: Business[] = [
 ];
@@ -44,7 +45,10 @@ const OwnedPage = () => {
                         >
                             <CardHeader className="flex flex-row items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <Building className="h-6 w-6 text-zinc-600" />
+                                    <Avatar>
+                                        <AvatarImage src={biz.logo} alt={biz.name} />
+                                        <AvatarFallback>{biz.name}</AvatarFallback>
+                                    </Avatar>
                                     <CardTitle>{biz.name}</CardTitle>
                                 </div>
                                 <span className="text-sm text-zinc-500">{biz.createdAt.toDateString()}</span>

@@ -98,6 +98,7 @@ export class MyBusinessFullDetails {
   phone?: string;
   createdAt: Date;
   updatedAt: Date;
+  logo?: string;
 
   constructor(
     id: string,
@@ -121,6 +122,7 @@ export class MyBusinessFullDetails {
     instagram: string | undefined,
     email: string | undefined,
     phone: string | undefined,
+    logo: string | undefined,
     createdAt: Date,
     updatedAt: Date
   ) {
@@ -145,6 +147,7 @@ export class MyBusinessFullDetails {
     this.instagram = instagram;
     this.email = email;
     this.phone = phone;
+    this.logo = logo;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -174,6 +177,7 @@ export class MyBusinessFullDetails {
         data.instagram,
         data.email,
         data.phone,
+        data.logo,
         new Date(data.createdAt),
         new Date(data.updatedAt)
       );

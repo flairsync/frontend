@@ -10,12 +10,29 @@ import { clientOnly } from "vike-react/clientOnly"
 import { CardDescription } from "@/components/ui/card"
 import BusinessBrandingLogoUpload from "@/components/management/branding/BusinessBrandingLogoUpload"
 import BusinessBrandingGalleryUpload from "@/components/management/branding/BusinessBrandingGalleryUpload"
+import { usePageContext } from "vike-react/usePageContext"
+import { useMyBusiness } from "@/features/business/useMyBusiness"
 const BusinessBrandingVirtualViewer = clientOnly(() =>
     import("@/components/management/branding/BusinessBrandingVirtualViewer")
 )
 
 
 const BusinessBrandingPage = () => {
+
+    const {
+        routeParams
+    } = usePageContext();
+
+
+    const {
+        myBusinessFullDetails,
+        fetchingMyBusinessFullDetails,
+        updatingMyBusiness,
+        updateBusinessLogo,
+        updatingBusinessLogo
+
+    } = useMyBusiness(routeParams.id);
+
     // Logo
     const [logoUrl, setLogoUrl] = useState("")
 
@@ -46,7 +63,13 @@ const BusinessBrandingPage = () => {
 
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingLogoUpload
-                        onSave={(f) => { }}
+                        onSave={(f) => {
+                            updateBusinessLogo({
+                                file: f
+                            })
+                        }}
+                        currentLogoUrl={myBusinessFullDetails?.logo}
+                        loading={fetchingMyBusinessFullDetails || updatingBusinessLogo}
 
                     />
                 </AccordionContent>

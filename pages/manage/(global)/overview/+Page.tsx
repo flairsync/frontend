@@ -20,23 +20,18 @@ import {
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { useProfile } from "@/features/profile/useProfile";
 import { SubscriptionStatus } from "@/models/Subscription";
+import { useMyBusinesses } from "@/features/business/useMyBusinesses";
 
 const OverviewPage: React.FC = () => {
     const {
         userProfile
     } = useProfile();
 
-    // Dummy data
-    const ownedBusinesses = [
-        { id: "1", name: "Café Aroma" },
-        { id: "2", name: "Downtown Deli" },
-    ];
-
-    const joinedBusinesses = [
-        { id: "3", name: "Sunset Grill" },
-        { id: "4", name: "Morning Brew Coffee" },
-    ];
-
+    const {
+        myBusinesses,
+        loadingMyBussinesses,
+        refreshMyBusinesses,
+    } = useMyBusinesses();
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
@@ -123,7 +118,7 @@ const OverviewPage: React.FC = () => {
                                     <Building className="h-6 w-6 text-primary" />
                                     <div>
                                         <p className="font-semibold text-lg">
-                                            {ownedBusinesses.length}
+                                            {myBusinesses?.length}
                                         </p>
                                         <p className="text-sm text-zinc-500">Owned</p>
                                     </div>
@@ -142,7 +137,7 @@ const OverviewPage: React.FC = () => {
                                     <Heart className="h-6 w-6 text-primary" />
                                     <div>
                                         <p className="font-semibold text-lg">
-                                            {joinedBusinesses.length}
+                                            {0}
                                         </p>
                                         <p className="text-sm text-zinc-500">Joined</p>
                                     </div>

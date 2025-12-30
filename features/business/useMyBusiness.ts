@@ -7,6 +7,7 @@ import {
 import {
   fetchMyBuysinessFullDetailsApiCall,
   updateMyBusinessDetailsApiCall,
+  updateMyBusinessLogoApiCall,
 } from "./service";
 import {
   MyBusinessFullDetails,
@@ -55,10 +56,42 @@ export const useMyBusiness = (businessId: string | null = null) => {
       },
     });
 
+  const { mutate: updateBusinessLogo, isPending: updatingBusinessLogo } =
+    useMutation({
+      mutationKey: ["update_my_business_logo", businessId],
+      mutationFn: async (data: { file: File }) => {
+        toastId = toast.loading("Updating logo");
+        if (!businessId) return;
+        return updateMyBusinessLogoApiCall(businessId, data.file);
+      },
+      onSuccess(data, variables, context) {
+        // TODO: update insead of doing a full server refetch
+        queryClient.refetchQueries({
+          queryKey: ["my_business", businessId],
+        });
+        setTimeout(() => {
+          toast.dismiss(toastId);
+          toast.success("Updated", {
+            description: "Business details updated ...",
+          });
+        }, 3000);
+      },
+      onError(error, variables, context) {
+        setTimeout(() => {
+          toast.dismiss(toastId);
+          toast.error("Error updating", {
+            description: "An error occured while updating your logo",
+          });
+        }, 3000);
+      },
+    });
+
   return {
     myBusinessFullDetails,
     fetchingMyBusinessFullDetails,
     updatingMyBusiness,
     updateMyBusinessDetails,
+    updateBusinessLogo,
+    updatingBusinessLogo,
   };
 };

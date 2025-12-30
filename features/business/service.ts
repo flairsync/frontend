@@ -9,6 +9,8 @@ const getBusinessTypesUrl = `${baseUrl}/business-types`;
 const createNewBusinessTypesUrl = `${baseBusinessUrl}/new`;
 const getMyBusinessUrl = `${baseBusinessUrl}/my`;
 
+const updateMyBusinessLogoSuffix = "media/logo";
+
 // Public business Routes
 
 export const getBusinessTagsApiCall = () => {
@@ -42,4 +44,13 @@ export const updateMyBusinessDetailsApiCall = (
   data: UpdateBusinessDetailsDto
 ) => {
   return flairapi.patch(`${getMyBusinessUrl}/${businessId}`, data);
+};
+
+export const updateMyBusinessLogoApiCall = (businessId: string, file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  flairapi.post(
+    `${getMyBusinessUrl}/${businessId}/${updateMyBusinessLogoSuffix}`,
+    formData
+  );
 };
