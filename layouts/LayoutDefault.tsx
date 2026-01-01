@@ -1,7 +1,7 @@
 import "./style.css";
 
 import "./tailwind.css";
-
+import 'react-photo-view/dist/react-photo-view.css';
 import "@/translations/i18n"
 import { clientOnly } from "vike-react/clientOnly";
 import 'radar-sdk-js/dist/radar.css';

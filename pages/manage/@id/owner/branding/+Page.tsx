@@ -33,30 +33,11 @@ const BusinessBrandingPage = () => {
 
     } = useMyBusiness(routeParams.id);
 
-    // Logo
-    const [logoUrl, setLogoUrl] = useState("")
-
-    // Gallery
-    const [galleryUrls, setGalleryUrls] = useState<string[]>([])
-
-
-
-    // Video
-    const [videoUrl, setVideoUrl] = useState("")
-
-    const saveLogo = () => alert("Logo saved")
-    const saveGallery = () => alert("Gallery saved")
-    const saveDescription = () => alert("Description saved")
-    const saveVideo = () => alert("Video saved")
-
-    // Function to add new gallery URL (or could be replaced with file upload)
-    const addGalleryImage = () => {
-        const url = prompt("Enter image URL")
-        if (url) setGalleryUrls([...galleryUrls, url])
-    }
 
     return (
-        <Accordion type="single" collapsible className="w-full space-y-2">
+        <Accordion type="single" collapsible className="w-full space-y-2" onValueChange={(val) => {
+
+        }} >
             {/* Logo */}
             <AccordionItem value="logo" className="border rounded-lg px-3  ">
                 <AccordionTrigger className="hover:cursor-pointer ">Logo</AccordionTrigger>
@@ -76,10 +57,11 @@ const BusinessBrandingPage = () => {
             </AccordionItem>
 
             {/* Gallery */}
-            <AccordionItem value="gallery" className="border rounded-lg px-3">
+            <AccordionItem value="gallery" className="border rounded-lg px-3" >
                 <AccordionTrigger className="hover:cursor-pointer ">Gallery</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingGalleryUpload
+                        businessMedia={myBusinessFullDetails?.media}
                         onSave={(f) => {
                         }}
                     />

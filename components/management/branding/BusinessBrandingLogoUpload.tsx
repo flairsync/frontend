@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ImageIcon } from "lucide-react";
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 interface LogoUploaderProps {
     currentLogoUrl?: string;
@@ -41,15 +42,22 @@ export default function BusinessBrandingLogoUpload({ currentLogoUrl, loading = f
                 <CardDescription>Add your restaurant brand logo, preferably without a background</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-4">
-                <div className="w-32 h-32 border rounded flex items-center justify-center overflow-hidden">
-                    {previewUrl ? (
-                        <img src={previewUrl} alt="Logo Preview" className="object-contain w-full h-full" />
-                    ) : currentLogoUrl ? (
-                        <img src={currentLogoUrl} alt="Current Logo" className="object-contain w-full h-full" />
-                    ) : (
-                        <ImageIcon className="w-12 h-12 text-gray-400" />
-                    )}
-                </div>
+                <PhotoProvider>
+                    <div className="w-32 h-32 border rounded flex items-center justify-center overflow-hidden">
+                        {previewUrl ? (
+                            <PhotoView key={"logo"} src={previewUrl}>
+                                <img src={previewUrl} alt="Logo Preview" className="object-contain w-full h-full" />
+                            </PhotoView>
+                        ) : currentLogoUrl ? (
+                            <PhotoView key={"logo"} src={currentLogoUrl}>
+                                <img src={currentLogoUrl} alt="Current Logo" className="object-contain w-full h-full" />
+                            </PhotoView>
+                        ) : (
+                            <ImageIcon className="w-12 h-12 text-gray-400" />
+                        )}
+                    </div>
+                </PhotoProvider>
+
                 <Input type="file" accept="image/*" onChange={handleFileChange} />
                 <Button onClick={handleSave} disabled={loading || !selectedFile}>
                     {loading ? "Saving..." : "Save"}

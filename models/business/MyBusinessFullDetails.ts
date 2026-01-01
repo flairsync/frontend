@@ -1,5 +1,6 @@
 import { BusinessType } from "./BusinessType";
 import { BusinessTag } from "./BusinessTag";
+import { BusinessMedia } from "./BusinessMedia";
 
 export type Country = {
   id: number;
@@ -92,6 +93,7 @@ export class MyBusinessFullDetails {
   timezone: string;
   openingHours: OpeningHours[];
   status: string;
+  media: BusinessMedia[];
   facebook?: string;
   instagram?: string;
   email?: string;
@@ -118,6 +120,7 @@ export class MyBusinessFullDetails {
     timezone: string,
     openingHours: OpeningHours[],
     status: string,
+    media: BusinessMedia[],
     facebook: string | undefined,
     instagram: string | undefined,
     email: string | undefined,
@@ -143,6 +146,7 @@ export class MyBusinessFullDetails {
     this.timezone = timezone;
     this.openingHours = openingHours;
     this.status = status;
+    this.media = media;
     this.facebook = facebook;
     this.instagram = instagram;
     this.email = email;
@@ -173,6 +177,7 @@ export class MyBusinessFullDetails {
         data.timezone || "UTC",
         OpeningHours.parseApiArrayResponse(data.openingHours || []),
         data.status,
+        BusinessMedia.parseApiArrayResponse(data.media),
         data.facebook,
         data.instagram,
         data.email,
