@@ -37,7 +37,7 @@ interface GalleryUploaderProps {
     businessMedia: BusinessMedia[],
     initialGallery?: string[];
     loading?: boolean;
-    onSave: (files: File[]) => void;
+    onSave: (files: GallerySaveType) => void;
 }
 
 type GallerySlot = {
@@ -48,12 +48,18 @@ type GallerySlot = {
     markedForDelete?: boolean;
 };
 
+type GallerySaveType = {
+    files: File[];
+    order: {
+        id: string;
+        order: number;
+    }[];
+    delete: string[];
+}
 
 
 export default function BusinessBrandingGalleryUpload({
     businessMedia,
-    initialGallery = [],
-    loading = false,
     onSave,
 }: GalleryUploaderProps) {
     const MAX_IMAGES = 10;
@@ -67,9 +73,6 @@ export default function BusinessBrandingGalleryUpload({
             ...Array.from({ length: emptyCount }, () => ({ id: uuidv4() })),
         ];
     });
-
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
 
     const sensors = useSensors(useSensor(PointerSensor));
 
@@ -96,19 +99,26 @@ export default function BusinessBrandingGalleryUpload({
     const handleRemove = (slotId: string) => {
         setSlots((prev) =>
             prev.map((s) =>
-                s.id === slotId ? { ...s, file: undefined, url: undefined, markedForDelete: true } : s
+                s.id === slotId
+                    ? { ...s, markedForDelete: !s.markedForDelete }
+                    : s
             )
         );
     };
 
     const buildPayload = () => {
-        const files = slots.filter((s) => s.file).map((s) => ({ id: s.id, file: s.file! }));
+        const files = slots.filter((s) => s.file).map((s) => {
+            if (s.file) {
+                const renamedFile = new File([s.file], s.id, { type: s.file.type });
+                return renamedFile
+            }
+        }).filter(val => val != undefined);
         const order = slots
             .filter((s) => s.url) // remove empty slots
             .map((s, index) => ({ id: s.id, order: index }));
         const deleteIds = slots.filter((s) => s.markedForDelete && !s.file && s.url).map((s) => s.id);
-
-        return { files, order, delete: deleteIds };
+        const payload = { files, order, delete: deleteIds };
+        onSave(payload);
     };
 
 
@@ -123,79 +133,18 @@ export default function BusinessBrandingGalleryUpload({
                         slot={slot}
                         onFileChange={handleFileChange}
                         onRemove={handleRemove}
+                        markedForDeleting={slot.markedForDelete || false}
                     />
                 ))}
             </div>
         </SortableContext>
-        <button className="mt-4 btn-primary" onClick={() => console.log(buildPayload())}>
+        <Button className="mt-4 btn-primary" onClick={() => {
+            buildPayload()
+        }}>
             Save
-        </button>
+        </Button>
     </DndContext>
 
-
-    return (
-        <Card>
-            <CardHeader>
-                <CardDescription>
-                    Upload and organize your restaurant gallery images.
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-                {businessMedia?.length === 0 && <p>No images added yet.</p>}
-
-
-                <PhotoProvider>
-                    <div className="
-                        flex
-                        flex-wrap
-                        justify-center
-                        gap-3
-                        max-w-full
-                    ">
-
-                        {Array.from({ length: MAX_IMAGES }).map((_, idx) => (
-                            <div
-                                key={`placeholder-${idx}`}
-                                className="w-32 h-32 border-2 border-dashed rounded flex items-center justify-center text-gray-400"
-                            >
-                                +
-                            </div>
-                        ))}
-                        {businessMedia?.map((val) => (
-                            <GalleryImage
-                                key={val.id}
-                                url={val.url}
-                                blurHash={val.blurHash}
-                            />
-                        ))}
-                    </div>
-                </PhotoProvider>
-
-
-                {/*  {gallery.length > 0 && (
-                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                        <SortableContext items={gallery} strategy={verticalListSortingStrategy}>
-                            <div className="space-y-2">
-                                {gallery.map((url) => (
-                                    <SortableItem
-                                        key={url}
-                                        id={url}
-                                        url={url}
-                                        onRemove={() => handleRemove(gallery.indexOf(url))}
-                                    />
-                                ))}
-                            </div>
-                        </SortableContext>
-                    </DndContext>
-                )} */}
-                <div className="flex gap-2">
-                    <Button disabled={loading || selectedFiles.length === 0}>
-                        {loading ? "Saving..." : "Save Gallery"}
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
-    );
 }
 
 
@@ -203,10 +152,12 @@ function SortableSlot({
     slot,
     onFileChange,
     onRemove,
+    markedForDeleting
 }: {
     slot: GallerySlot;
     onFileChange: (file: File, slotId: string) => void;
     onRemove: (slotId: string) => void;
+    markedForDeleting: boolean
 }) {
     const { setNodeRef, attributes, listeners, transform, transition } = useSortable({ id: slot.id });
     const style = { transform: CSS.Transform.toString(transform), transition };
@@ -215,9 +166,7 @@ function SortableSlot({
         <div
             ref={setNodeRef}
             style={style}
-            {...attributes}
-            {...listeners}
-            className="relative w-32 h-32 border rounded overflow-hidden flex items-center justify-center cursor-grab"
+            className="relative w-32 h-32 border rounded overflow-hidden flex items-center justify-center"
         >
             {slot.url ? (
                 <>
@@ -232,19 +181,32 @@ function SortableSlot({
                             className="absolute inset-0"
                         />
                     )}
-                    <img src={slot.url} className="w-full h-full object-cover" />
+
+                    <img src={slot.url} className="w-full h-full object-cover pointer-events-none" />
+
+                    {/* 🟦 DRAG HANDLE */}
+                    <div
+                        {...attributes}
+                        {...listeners}
+                        className="absolute bottom-1 left-1 bg-black/60 text-white text-xs px-2 py-1 rounded cursor-grab"
+                    >
+                        Drag
+                    </div>
+
+                    {/* 🗑 DELETE BUTTON */}
                     <button
+                        type="button"
                         onClick={(e) => {
                             e.stopPropagation();
                             onRemove(slot.id);
                         }}
                         className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1 hover:bg-red-600"
                     >
-                        🗑
+                        {slot.markedForDelete ? "↩️" : "🗑"}
                     </button>
                 </>
             ) : (
-                <label className=" flex flex-col items-center justify-center cursor-pointer text-gray-400">
+                <label className="flex flex-col items-center justify-center cursor-pointer text-gray-400">
                     <span className="text-2xl">+</span>
                     <input
                         type="file"
@@ -256,6 +218,27 @@ function SortableSlot({
                         }}
                     />
                 </label>
+            )}
+
+            {slot.markedForDelete && (
+                <div className="absolute inset-0 z-40 pointer-events-none">
+                    {/* Dark layer */}
+                    <div className="absolute inset-0 bg-black/40" />
+
+                    {/* Stripes */}
+                    <div className="absolute inset-0 bg-[repeating-linear-gradient(
+                    45deg,
+                    rgba(255,255,255,0.25),
+                    rgba(255,255,255,0.25) 10px,
+                    transparent 10px,
+                    transparent 20px
+                    )]" />
+
+                    {/* Label */}
+                    <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-sm">
+                        Marked for deletion
+                    </div>
+                </div>
             )}
         </div>
     );

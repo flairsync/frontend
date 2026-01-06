@@ -30,7 +30,9 @@ const BusinessSettingsPage = () => {
         myBusinessFullDetails,
         fetchingMyBusinessFullDetails,
         updatingMyBusiness,
-        updateMyBusinessDetails
+        updateMyBusinessDetails,
+        updateMyBusinessOpenHours,
+        updatingMyBusinessOpenHours
 
     } = useMyBusiness(routeParams.id);
 
@@ -68,7 +70,14 @@ const BusinessSettingsPage = () => {
                 disabled={updatingMyBusiness}
             />
 
-            <BusinessSettingsOpenPeriods />
+            {/* Business open periods */}
+            <BusinessSettingsOpenPeriods
+                businessDetails={myBusinessFullDetails}
+                disabled={updatingMyBusinessOpenHours}
+                onSaveDetails={(data) => {
+                    updateMyBusinessOpenHours(data);
+                }}
+            />
 
 
             {/* Reservations */}

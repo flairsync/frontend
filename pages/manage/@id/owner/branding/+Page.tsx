@@ -29,7 +29,9 @@ const BusinessBrandingPage = () => {
         fetchingMyBusinessFullDetails,
         updatingMyBusiness,
         updateBusinessLogo,
-        updatingBusinessLogo
+        updatingBusinessLogo,
+        updateMyBusinessGallery,
+        updatingMyBusinessGallery,
 
     } = useMyBusiness(routeParams.id);
 
@@ -61,8 +63,10 @@ const BusinessBrandingPage = () => {
                 <AccordionTrigger className="hover:cursor-pointer ">Gallery</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingGalleryUpload
-                        businessMedia={myBusinessFullDetails?.media}
-                        onSave={(f) => {
+                        loading={fetchingMyBusinessFullDetails || updatingMyBusinessGallery}
+                        businessMedia={myBusinessFullDetails?.media || []}
+                        onSave={(updateData) => {
+                            updateMyBusinessGallery(updateData);
                         }}
                     />
                 </AccordionContent>

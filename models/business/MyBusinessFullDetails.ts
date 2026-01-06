@@ -18,6 +18,13 @@ export class OpeningPeriod {
     this.close = close;
   }
 
+  toDto() {
+    return {
+      open: this.open,
+      close: this.close,
+    };
+  }
+
   static parseApiResponse(data: any): OpeningPeriod | null {
     if (!data) return null;
     try {
@@ -72,6 +79,20 @@ export class OpeningHours {
       if (oh) arr.push(oh);
     });
     return arr;
+  }
+
+  toUpdateDto() {
+    return {
+      day: this.day,
+      isClosed: this.isClosed,
+      periods: this.isClosed ? [] : this.periods.map((p) => p.toDto()),
+    };
+  }
+
+  static toUpdateDtoArray(hours: OpeningHours[]) {
+    return {
+      openingHours: hours.map((h) => h.toUpdateDto()),
+    };
   }
 }
 
