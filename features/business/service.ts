@@ -13,6 +13,19 @@ const updateMyBusinessLogoSuffix = "media/logo";
 const updateMyBusinessGallerySuffix = "media/gallery";
 
 const businessOpenHoursSuffix = "open-hours";
+// roles
+
+const businessRolesSuffix = "roles";
+
+// Employment
+const businessEmploymentsBaseUrl = `${baseUrl}/employments/bus`;
+
+const employeesSuffix = "employees";
+
+// Invitations
+
+const businessInvitationsBaseUrl = `${baseUrl}/business-invitations/businesses`;
+const invitationsSuffix = "invitations";
 
 // Public business Routes
 
@@ -44,7 +57,7 @@ export const fetchMyBuysinessFullDetailsApiCall = (businessId: string) => {
 
 export const updateMyBusinessDetailsApiCall = (
   businessId: string,
-  data: UpdateBusinessDetailsDto
+  data: UpdateBusinessDetailsDto,
 ) => {
   return flairapi.patch(`${MyBusinessUrl}/${businessId}`, data);
 };
@@ -54,7 +67,7 @@ export const updateMyBusinessLogoApiCall = (businessId: string, file: File) => {
   formData.append("file", file);
   flairapi.post(
     `${MyBusinessUrl}/${businessId}/${updateMyBusinessLogoSuffix}`,
-    formData
+    formData,
   );
 };
 
@@ -69,7 +82,7 @@ export type UpdateBusinessGalleryDataType = {
 
 export const updateMyBusienssGalleryApiCall = (
   businessId: string,
-  data: UpdateBusinessGalleryDataType
+  data: UpdateBusinessGalleryDataType,
 ) => {
   const formData = new FormData();
   // FILES
@@ -94,16 +107,103 @@ export const updateMyBusienssGalleryApiCall = (
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }
+    },
   );
 };
 
 export const updateMyBusinessOpenHoursApiCall = (
   businessId: string,
-  payload: any
+  payload: any,
 ) => {
   return flairapi.patch(
     `${MyBusinessUrl}/${businessId}/${businessOpenHoursSuffix}`,
-    payload
+    payload,
+  );
+};
+
+// Roles =
+
+export const getBusinessRolesApiCall = (businessId: string) => {
+  return flairapi.get(
+    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}`,
+  );
+};
+
+export type CreateRoleDataType = {
+  name: string;
+  permissions: {
+    permissionKey: string;
+    canRead: boolean;
+    canCreate: boolean;
+    canUpdate: boolean;
+    canDelete: boolean;
+  }[];
+};
+
+export const createNewBusinessRoleApiCall = (
+  businessId: string,
+  data: CreateRoleDataType,
+) => {
+  return flairapi.post(
+    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}`,
+    data,
+  );
+};
+
+// Employments
+
+export const fetchBusinessEmployeesApiCall = (
+  businessId: string,
+  page: number = 1,
+) => {
+  return flairapi.get(
+    `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}`,
+    {
+      params: {
+        page: page,
+      },
+    },
+  );
+};
+
+//Invitations
+export const inviteEmployeeApiCall = (businessId: string, email: string) => {
+  return flairapi.post(
+    `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}`,
+    {
+      email: email,
+    },
+  );
+};
+
+export const resendInvitationToEmployeeApiCall = (
+  businessId: string,
+  inviteId: string,
+) => {
+  return flairapi.post(
+    `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}/${inviteId}/resend`,
+  );
+};
+
+export const cancelInvitationToEmployeeApiCall = (
+  businessId: string,
+  inviteId: string,
+) => {
+  return flairapi.post(
+    `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}/${inviteId}/cancel`,
+  );
+};
+
+export const fetchBusinessEmployeeInvitationsApiCall = (
+  businessId: string,
+  page: number = 1,
+) => {
+  return flairapi.get(
+    `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}`,
+    {
+      params: {
+        page: page,
+      },
+    },
   );
 };

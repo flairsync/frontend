@@ -2,20 +2,8 @@ export { ProfilePagesLayout }
 
 import React, { useState } from 'react'
 
-import {
-    User,
-    Heart,
-    Star,
-    Calendar,
-    Settings,
-    SlidersHorizontal,
-    ShieldAlert,
-    LogOut,
-} from "lucide-react";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { ProfileSidebar } from '@/components/profile/ProfileSidebar';
 import { Separator } from '@/components/ui/separator';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '@/components/ui/breadcrumb';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { motion, AnimatePresence } from "framer-motion"

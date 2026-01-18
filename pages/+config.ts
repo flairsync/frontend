@@ -29,6 +29,7 @@ declare global {
       // Type of pageContext.user
       user?: {
         verified: boolean;
+        hasPP: boolean;
       };
       tfa?: {
         tfaEnabled: boolean;

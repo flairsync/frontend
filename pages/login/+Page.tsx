@@ -139,7 +139,7 @@ const LoginPage = () => {
 
                     <p className="mt-8 text-center text-sm text-zinc-600">
                         {t("auth_page.need_account_label")}{' '}
-                        <a href="/register" className="font-semibold text-[#6366F1] hover:underline">
+                        <a href="/signup" className="font-semibold text-[#6366F1] hover:underline">
                             {t("auth_page.create_account_label")}
                         </a>
                     </p>

@@ -32,8 +32,10 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         i18n
     } = useTranslation();
     const {
-        routeParams
+        routeParams,
+        data
     } = usePageContext();
+
 
     const {
         myBusinessFullDetails,
@@ -41,8 +43,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     } = useMyBusiness(routeParams.id);
 
 
-    const [sidebarOpen, setsidebarOpen] = useState(true);
 
+    const [sidebarOpen, setsidebarOpen] = useState(true);
 
 
     if (!i18n.isInitialized) return <>Loading ....</>

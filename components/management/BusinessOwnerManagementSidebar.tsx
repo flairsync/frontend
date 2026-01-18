@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/sidebar"
 import { BarChart3, CalendarCheck, CreditCard, Images, LayoutDashboard, PackageOpen, Plug, Settings, ShieldAlert, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
+import { useMyBusinesses } from "@/features/business/useMyBusinesses"
+import { usePageContext } from "vike-react/usePageContext"
 
 // This is sample data.
 const ownerNavData = {
@@ -93,13 +95,6 @@ const ownerNavData = {
                     url: "/manage/:id/owner/analytics",
                     icon: BarChart3,
                 },
-                /*  {
-                     key: "integrations",
- 
-                     title: "Integrations",
-                     url: "/manage/:id/owner/integrations",
-                     icon: Plug,
-                 }, */
                 {
                     key: "danger",
 
@@ -116,7 +111,6 @@ export function isActiveLink(key: string): boolean {
     if (typeof window === "undefined") return false; // SSR safety
 
     const currentPath = window.location.pathname;
-    // Example: "/manage/123/owner/staff"
 
     return currentPath.includes(`/owner/${key}`);
 }
@@ -125,25 +119,34 @@ export function isActiveLink(key: string): boolean {
 export function BusinessOwnerManagementSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & {
     businessId: string
 }) {
+
+    const {
+        myBusinesses
+    } = useMyBusinesses();
+
+
+
+    const getListOfBusinesses = () => {
+        if (myBusinesses) {
+            return myBusinesses.map(val => {
+                return {
+                    id: val.id,
+                    name: val.name
+                }
+            })
+        } else {
+            return [];
+        }
+    }
+
     return (
         <Sidebar {...props}
         >
             <SidebarHeader>
                 <BusinessSwitcher
-                    businesses={[{
-                        id: "1",
-                        name: "Business 1"
-                    }, {
-                        id: "2",
-                        name: "Business 2"
-                    }, {
-                        id: "3",
-                        name: "Business 3"
-                    },]}
-                    defaultBusiness={{
-                        id: "1",
-                        name: "Business 1"
-                    }}
+
+                    businesses={getListOfBusinesses()}
+                    selectedBusiness={props.businessId}
 
                 />
 

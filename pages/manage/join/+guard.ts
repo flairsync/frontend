@@ -9,7 +9,7 @@ export const guard = (pageContext: PageContext) => {
     throw redirect("/login");
   }
 
-  if (!user.hasPP) {
-    throw redirect("/manage/join");
+  if (user.hasPP) {
+    throw redirect("/manage/overview");
   }
 };

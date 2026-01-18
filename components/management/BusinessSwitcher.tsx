@@ -22,14 +22,18 @@ type BusinessSwitchItem = {
 
 export function BusinessSwitcher({
   businesses,
-  defaultBusiness,
+  selectedBusiness,
   onBusinessChange
 }: {
   businesses: BusinessSwitchItem[]
-  defaultBusiness: BusinessSwitchItem,
+  selectedBusiness: string,
   onBusinessChange?: (business: BusinessSwitchItem) => void
 }) {
-  const [selectedVersion, setSelectedVersion] = React.useState(defaultBusiness)
+
+
+  const getSelectedBusiness = () => {
+    return businesses.find(val => val.id == selectedBusiness);
+  }
 
   return (
     <SidebarMenu>
@@ -45,7 +49,7 @@ export function BusinessSwitcher({
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="font-semibold">Current business</span>
-                <span className="">{selectedVersion.name}</span>
+                <span className="">{getSelectedBusiness()?.name}</span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -58,12 +62,11 @@ export function BusinessSwitcher({
               <DropdownMenuItem
                 key={business.id}
                 onSelect={() => {
-                  setSelectedVersion(business);
                   if (onBusinessChange) onBusinessChange(business);
                 }}
               >
                 {business.name}{" "}
-                {business.id === selectedVersion.id && <Check className="ml-auto" />}
+                {business.id === selectedBusiness && <Check className="ml-auto" />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

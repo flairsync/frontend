@@ -8,7 +8,6 @@ const shared = {
     saturday: "Saturday",
     sunday: "Sunday",
   },
-
   tags: {
     halal: "Halal",
     vegan: "Vegan",
@@ -36,6 +35,38 @@ const shared = {
     trendy: "Trendy",
     quiet: "Quiet",
     lively: "Lively",
+  },
+};
+
+const permissions = {
+  MENU: {
+    label: "Menu management",
+    description:
+      "Create, update, and manage menu items, categories, and pricing.",
+  },
+
+  RESERVATIONS: {
+    label: "Reservation management",
+    description:
+      "View, create, update, and manage customer reservations and bookings.",
+  },
+
+  STAFF: {
+    label: "Staff management",
+    description:
+      "Manage staff members, roles, permissions, and work assignments.",
+  },
+
+  OPENING_HOURS: {
+    label: "Opening hours management",
+    description:
+      "Configure business opening hours, special schedules, and closures.",
+  },
+
+  BUSINESS_SETTINGS: {
+    label: "Business settings",
+    description:
+      "Manage business information, preferences, and operational settings.",
   },
 };
 
@@ -293,9 +324,15 @@ const input_errors = {
   },
   firstName: {
     required: "First name is required",
+    too_long: "First name is too long",
   },
   lastName: {
     required: "Last name is required",
+    too_long: "Last name is too long",
+  },
+  displayName: {
+    required: "Display name is required",
+    too_long: "Display name is too long",
   },
   password: {
     min_length: "Password must be at least 8 characters long",
@@ -312,15 +349,18 @@ const input_errors = {
     mismatch: "New passwords must match",
     required: "Please confirm your new password",
   },
+  checkbox: {
+    required: "You must confirm this checkbox",
+  },
 };
 
 export default {
   landing_page,
-
   errors,
   public_feed,
   auth_page,
   business_page,
   shared,
   input_errors,
+  permissions,
 };

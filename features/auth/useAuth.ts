@@ -12,9 +12,13 @@ import { navigate } from "vike/client/router";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useApiMutation } from "@/hooks/use-api-mutation";
+import { usePageContext } from "vike-react/usePageContext";
+import { PageContext } from "vike/types";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
+
+  const pageContext = usePageContext();
 
   const {
     mutate: loginUser,
@@ -26,7 +30,8 @@ export const useAuth = () => {
       return loginUserApiCall(data);
     },
     onSuccess(data, variables, context) {
-      navigate("/feed");
+      // refresh to hydrate ssr
+      hydrateSSR();
     },
   });
 
@@ -43,7 +48,8 @@ export const useAuth = () => {
       console.log("ERROR LOGGING WITH GOOGLE ", error);
     },
     onSuccess(data, variables, context) {
-      navigate("/feed");
+      // refresh to hydrate ssr
+      hydrateSSR();
     },
   });
 
@@ -52,7 +58,10 @@ export const useAuth = () => {
     mutationFn: logoutUserApiCall,
     onSuccess(data, variables, context) {
       // refresh to hydrate ssr
-      navigate(window.location.pathname, { keepScrollPosition: true });
+      hydrateSSR();
+    },
+    onError(error, variables, context) {
+      hydrateSSR();
     },
   });
 
@@ -68,6 +77,15 @@ export const useAuth = () => {
       navigate("/login");
     },
   });
+
+  const hydrateSSR = () => {
+    navigate(window.location.pathname, {
+      keepScrollPosition: true,
+      pageContext: {
+        ...pageContext,
+      },
+    });
+  };
 
   return {
     loginUser,
