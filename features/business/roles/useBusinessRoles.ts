@@ -3,6 +3,7 @@ import {
   createNewBusinessRoleApiCall,
   CreateRoleDataType,
   getBusinessRolesApiCall,
+  updateBusinessEmployeeRolesApiCall,
 } from "../service";
 import { Role } from "@/models/business/roles/Role";
 
@@ -31,11 +32,33 @@ export const useBusinessRoles = (businessId?: string) => {
     },
   });
 
+  //#region Roles & Staff
+
+  const { mutate: updateEmployeeRoles } = useMutation({
+    mutationFn: async (data: { employmentId: string; roles: string[] }) => {
+      if (!businessId) return;
+      return updateBusinessEmployeeRolesApiCall(
+        businessId,
+        data.employmentId,
+        data.roles,
+      );
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["business_emps", businessId],
+      });
+    },
+  });
+
+  //#endregion
+
   return {
     businessRoles,
     loadingBusinessRoles,
 
     createNewRole,
     creatingNewRole,
+
+    updateEmployeeRoles,
   };
 };

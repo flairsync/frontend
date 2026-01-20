@@ -1,10 +1,19 @@
 import { ProfessionalProfile } from "../professional/ProfessionalProfile";
 
+type BusinessEmployeeRole = {
+  id: string;
+  role: {
+    id: string;
+    name: string;
+  };
+};
+
 export class BusinessEmployee {
   id: string;
   professionalProfile: ProfessionalProfile | null;
   type: string;
   status: string;
+  roles: BusinessEmployeeRole[] = [];
   createdAt: string;
   updatedAt: string;
 
@@ -13,13 +22,15 @@ export class BusinessEmployee {
     professionalProfile: ProfessionalProfile | null,
     type: string,
     status: string,
+    roles: BusinessEmployeeRole[],
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
   ) {
     this.id = id;
     this.professionalProfile = professionalProfile;
     this.type = type;
     this.status = status;
+    this.roles = roles;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -32,8 +43,9 @@ export class BusinessEmployee {
         ProfessionalProfile.parseApiResponse(data.professionalProfile),
         data.type,
         data.status,
+        data.roles,
         data.createdAt,
-        data.updatedAt
+        data.updatedAt,
       );
     } catch (error) {
       return null;

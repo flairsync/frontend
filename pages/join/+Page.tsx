@@ -12,6 +12,7 @@ import { Check, X } from "lucide-react";
 import { usePageContext } from "vike-react/usePageContext";
 import PublicFeedHeader from "@/components/feed/PublicFeedHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
+import { useBusinessInvitation } from "@/features/business/invitations/useBusinessInvitation";
 
 const JoinBusinessPage: React.FC = () => {
 
@@ -26,12 +27,25 @@ const JoinBusinessPage: React.FC = () => {
      refuseInvitation,
    } = useJoinInvitation(invitationToken!); */
 
+  const {
+    invitationDetails,
+    acceptInvitation,
+    acceptingInvitation,
+    loadingInvitationDetails,
+    refuseInvitation,
+    refuseingInvitation
+  } = useBusinessInvitation(invitationToken);
+
   const [actionInProgress, setActionInProgress] = useState(false);
 
   const handleAccept = async () => {
+    if (invitationToken && invitationDetails) {
+      acceptInvitation();
+    }
   };
 
   const handleRefuse = async () => {
+    refuseInvitation();
   };
 
 
@@ -44,7 +58,7 @@ const JoinBusinessPage: React.FC = () => {
       <div className="max-w-xl mx-auto mt-10 px-4 pt-20">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Join {"Business name"}</CardTitle>
+            <CardTitle className="text-2xl font-bold">Join {invitationDetails?.business?.name}</CardTitle>
             <CardDescription className="mt-1 text-gray-500">
               You have been invited to join this business on FlairSync
             </CardDescription>
@@ -52,14 +66,13 @@ const JoinBusinessPage: React.FC = () => {
           <CardContent className="flex flex-col items-center gap-4">
             {/* Business avatar / logo */}
             <Avatar className="w-24 h-24">
-              <AvatarImage src={""} alt={""} />
+              <AvatarImage src={invitationDetails?.business?.logo} alt={invitationDetails?.business?.name} />
               <AvatarFallback>{"B"}</AvatarFallback>
             </Avatar>
 
             {/* Business details placeholder */}
             <div className="text-center space-y-1">
-              <p className="font-medium text-lg">{"invitation.businessName"}</p>
-              <p className="text-sm text-gray-500">Business ID: {invitationToken}</p>
+              <p className="font-medium text-lg">{invitationDetails?.business?.name}</p>
               {/* Optional: add location, industry, or other metadata */}
               {/* <p className="text-sm text-gray-500">Industry: Placeholder</p> */}
             </div>

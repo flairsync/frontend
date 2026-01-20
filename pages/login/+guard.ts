@@ -5,10 +5,6 @@ export const guard = (pageContext: PageContext) => {
   const { user, urlParsed } = pageContext;
 
   if (user) {
-    console.log("-----------------------");
-    console.log(urlParsed);
-    console.log("-----------------------");
-
     if (urlParsed.search["returnUrl"]) {
       throw redirect(urlParsed.search["returnUrl"]);
     } else {

@@ -74,19 +74,21 @@ export const useAuth = () => {
     mutationFn: signupUserApiCall,
     onSuccess(data, variables, context) {
       toast("Account created");
-      navigate("/login");
+      navigate("login", {
+        keepScrollPosition: true,
+        pageContext: {
+          ...pageContext,
+        },
+      });
     },
   });
 
   const hydrateSSR = () => {
-    navigate(window.location.pathname, {
+    //window.location.reload();
+    navigate(window.location.href, {
       keepScrollPosition: true,
-      pageContext: {
-        ...pageContext,
-      },
     });
   };
-
   return {
     loginUser,
     loggingIn,

@@ -3,6 +3,7 @@ import {
   cancelInvitationToEmployeeApiCall,
   inviteEmployeeApiCall,
   resendInvitationToEmployeeApiCall,
+  resyncInvitationsApiCall,
 } from "../service";
 import { toast } from "sonner";
 
@@ -79,6 +80,18 @@ export const useBusinessEmployeeOps = (businessId: string) => {
       },
     });
 
+  const { mutate: resyncInvitations } = useMutation({
+    mutationKey: ["resync_invitationsa", businessId],
+    mutationFn: () => {
+      return resyncInvitationsApiCall(businessId);
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["business_emps", businessId],
+      });
+    },
+  });
+
   //#endregion
 
   return {
@@ -88,5 +101,6 @@ export const useBusinessEmployeeOps = (businessId: string) => {
     resendingInvitation,
     cancelInvitation,
     cancelingInvitation,
+    resyncInvitations,
   };
 };

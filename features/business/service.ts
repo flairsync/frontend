@@ -25,6 +25,7 @@ const employeesSuffix = "employees";
 // Invitations
 
 const businessInvitationsBaseUrl = `${baseUrl}/business-invitations/businesses`;
+const invitationsBaseUrl = `${baseUrl}/business-invitations`;
 const invitationsSuffix = "invitations";
 
 // Public business Routes
@@ -150,6 +151,17 @@ export const createNewBusinessRoleApiCall = (
   );
 };
 
+export const updateBusinessEmployeeRolesApiCall = (
+  businessId: string,
+  employeeId: string,
+  roleIds: string[],
+) => {
+  return flairapi.post(
+    `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}/${employeeId}`,
+    { roleIds },
+  );
+};
+
 // Employments
 
 export const fetchBusinessEmployeesApiCall = (
@@ -206,4 +218,22 @@ export const fetchBusinessEmployeeInvitationsApiCall = (
       },
     },
   );
+};
+
+export const resyncInvitationsApiCall = (businessId: string) => {
+  return flairapi.post(
+    `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}/resync`,
+  );
+};
+
+export const fetchInvitationDetailsApiCall = (inviteId: string) => {
+  return flairapi.get(`${invitationsBaseUrl}/invitation/${inviteId}`);
+};
+
+export const acceptInvitationApiCall = (inviteId: string) => {
+  return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteId}/accept`);
+};
+
+export const refuseInvitationApiCall = (inviteId: string) => {
+  return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteId}/refuse`);
 };

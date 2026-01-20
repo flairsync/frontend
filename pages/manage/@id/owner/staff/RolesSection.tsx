@@ -59,42 +59,48 @@ const RolesSection = () => {
     const [roleModal, setRoleModal] = useState(false);
     const [editRole, setEditRole] = useState<Role>();
 
+
     return (
         <div>
 
-            <div className="flex justify-end">
-                <AddRoleModal
-                    open={roleModal}
-                    onOpenChange={(open) => {
-                        setRoleModal(open);
-                        if (!open) {
-                            setEditRole(undefined);
-                        }
-                    }}
-                    editRole={editRole}
-                    onAdd={(data) => {
-                        createNewRole({
-                            name: data.name,
-                            permissions: data.permissions.map(val => {
-                                return {
-                                    permissionKey: val.key,
-                                    canCreate: val.flags.canCreate,
-                                    canDelete: val.flags.canDelete,
-                                    canRead: val.flags.canRead,
-                                    canUpdate: val.flags.canUpdate
-                                }
-                            })
-                        })
-                        setRoleModal(false);
-                        setEditRole(undefined);
 
-                    }}
-                />
-            </div>
 
             <Card>
-                <CardHeader>
+                <CardHeader
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
+                >
                     <CardTitle>Roles</CardTitle>
+                    <div className="flex gap-2">
+                        <div className="flex justify-end">
+                            <AddRoleModal
+                                open={roleModal}
+                                onOpenChange={(open) => {
+                                    setRoleModal(open);
+                                    if (!open) {
+                                        setEditRole(undefined);
+                                    }
+                                }}
+                                editRole={editRole}
+                                onAdd={(data) => {
+                                    createNewRole({
+                                        name: data.name,
+                                        permissions: data.permissions.map(val => {
+                                            return {
+                                                permissionKey: val.key,
+                                                canCreate: val.flags.canCreate,
+                                                canDelete: val.flags.canDelete,
+                                                canRead: val.flags.canRead,
+                                                canUpdate: val.flags.canUpdate
+                                            }
+                                        })
+                                    })
+                                    setRoleModal(false);
+                                    setEditRole(undefined);
+
+                                }}
+                            />
+                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <div className="relative overflow-x-auto">

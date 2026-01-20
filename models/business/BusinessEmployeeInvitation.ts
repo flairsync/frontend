@@ -8,6 +8,18 @@ enum BusinessInvitationStatus {
   CANCELLED = "CANCELLED",
 }
 
+type InvitationBusinessInfo = {
+  name: string;
+  logo: string;
+};
+
+type InvitationProfessionalInfo = {
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  verified: boolean;
+};
+
 export class BusinessEmployeeInvitation {
   id: string;
   email: string;
@@ -16,6 +28,8 @@ export class BusinessEmployeeInvitation {
   expiresAt: string;
   acceptedAt: string | null;
   declinedAt: string | null;
+  business?: InvitationBusinessInfo | null;
+  professional?: InvitationProfessionalInfo | null;
   createdAt: string;
   updatedAt: string;
   token: string;
@@ -31,6 +45,8 @@ export class BusinessEmployeeInvitation {
     createdAt: string,
     updatedAt: string,
     token: string,
+    business?: InvitationBusinessInfo | null,
+    professional?: InvitationProfessionalInfo | null,
   ) {
     this.id = id;
     this.email = email;
@@ -42,6 +58,8 @@ export class BusinessEmployeeInvitation {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.token = token;
+    this.business = business;
+    this.professional = professional;
   }
 
   // Parse a single invitation object
@@ -59,6 +77,8 @@ export class BusinessEmployeeInvitation {
         data.createdAt,
         data.updatedAt,
         data.token,
+        data.business,
+        data.professional,
       );
     } catch (error) {
       return null;

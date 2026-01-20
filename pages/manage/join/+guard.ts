@@ -2,7 +2,7 @@ import { render, redirect } from "vike/abort";
 import { PageContext } from "vike/types";
 
 export const guard = (pageContext: PageContext) => {
-  const { user } = pageContext;
+  const { user, urlParsed } = pageContext;
 
   if (!user) {
     // Render the error page and show message to the user
@@ -10,6 +10,10 @@ export const guard = (pageContext: PageContext) => {
   }
 
   if (user.hasPP) {
-    throw redirect("/manage/overview");
+    if (urlParsed.search["invitation"]) {
+      throw redirect("/join?invitation=" + urlParsed.search["invitation"]);
+    } else {
+      throw redirect("/manage/overview");
+    }
   }
 };

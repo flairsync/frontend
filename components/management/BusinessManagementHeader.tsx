@@ -1,93 +1,109 @@
-import React, { act, useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react"; // optional for icons
+import React, { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePageContext } from "vike-react/usePageContext";
-import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import WebsiteLogo from "../shared/WebsiteLogo";
-import { useAuth } from "@/features/auth/useAuth";
-import { Avatar } from "../ui/avatar";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
 
-
-
-
 type HeaderProps = {
-    activeTag?: string
-}
-const BusinessManagementHeader = (props: HeaderProps) => {
+    activeTag?: string;
+};
 
+const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const toggleMenu = () => setIsOpen(!isOpen);
     const { t } = useTranslation();
-    const {
-        userAuthProfile
-    } = useAuth();
+    const { user } = usePageContext();
 
 
-
-    const isActiveHash = (href: string) => {
-
-        if (props.activeTag) {
-            return props.activeTag.toLowerCase() == href.slice(1).toLowerCase();
-        }
-        return false;
-    }
+    /* ---------------------------------------------
+     * Close mobile menu on route change / resize
+     * --------------------------------------------*/
+    useEffect(() => {
+        const closeMenu = () => setIsOpen(false);
+        window.addEventListener("resize", closeMenu);
+        return () => window.removeEventListener("resize", closeMenu);
+    }, []);
 
     return (
-        <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-background/70 ">
+        <header
+            className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-md border-b h-20 pb-20"
+        >
             <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-                {/* Left Section: Logo + Nav */}
-                <div className="flex items-center space-x-12">
-                    <a
-                        href="/feed"
-                    >
-                        <WebsiteLogo />
-                    </a>
-                </div>
+                {/* Logo */}
+                <a href="/feed" className="flex items-center">
+                    <WebsiteLogo />
+                </a>
 
-                {/* Right Section: Join Us + Mobile Menu */}
-                <div className="md:flex hidden items-center space-x-4  ">
-                    {/* <LanguageSwitcher /> */}
-
-                    {
-                        !userAuthProfile ? <HeaderProfileAvatar /> : <a
-                            href="/login"
-                        >
-
-                            <Button
-                                className="px-8 py-2 hover:cursor-pointer bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
-                                variant="default"
-                            >
+                {/* Desktop actions */}
+                <div className="hidden md:flex items-center gap-4">
+                    {user ? (
+                        <HeaderProfileAvatar />
+                    ) : (
+                        <a href="/login">
+                            <Button className="px-8">
                                 {t("join_us_tab_title")}
                             </Button>
-
                         </a>
-                    }
-
-                    <button className="md:hidden text-foreground" onClick={toggleMenu}>
-                        {isOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                    )}
                 </div>
+
+                {/* Mobile toggle */}
+                <button
+                    className="md:hidden text-foreground"
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    aria-label="Toggle menu"
+                >
+                    {isOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
             </div>
 
-            {/* Mobile Menu  TODO */}
-            {/*  {isOpen && (
-                <div className="md:hidden bg-background/95 backdrop-blur-md shadow-md">
-                    <nav className="flex flex-col px-6 py-4 space-y-3">
-                        <a href="#features" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>Features</a>
-                        <a href="#pricing" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>Pricing</a>
-                        <a href="#faq" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>FAQ</a>
-                        <a href="#contact" className="text-foreground hover:text-primary transition" onClick={() => setIsOpen(false)}>Contact</a>
-                        <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition">
-                            Start Free Trial
-                        </button>
+            {/* ---------------------------------------------
+             * Mobile menu
+             * --------------------------------------------*/}
+            {isOpen && (
+                <div className="md:hidden border-t bg-background/95 backdrop-blur-md shadow-lg">
+                    <nav className="flex flex-col px-6 py-4 space-y-4">
+                        <a
+                            href="/feed"
+                            className="text-foreground hover:text-primary transition"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Home
+                        </a>
+
+                        <a
+                            href="/manage/overview"
+                            className="text-foreground hover:text-primary transition"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Dashboard
+                        </a>
+
+                        <a
+                            href="/manage/businesses"
+                            className="text-foreground hover:text-primary transition"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Businesses
+                        </a>
+
+                        <div className="pt-3 border-t">
+                            {user ? (
+                                <HeaderProfileAvatar />
+                            ) : (
+                                <a href="/login" onClick={() => setIsOpen(false)}>
+                                    <Button className="w-full">
+                                        {t("join_us_tab_title")}
+                                    </Button>
+                                </a>
+                            )}
+                        </div>
                     </nav>
                 </div>
-            )} */}
+            )}
         </header>
-    )
-}
+    );
+};
 
-export default BusinessManagementHeader
+export default BusinessManagementHeader;

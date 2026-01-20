@@ -40,7 +40,7 @@ export const useBusinessEmpInvitations = (businessId: string) => {
     queryFn: async () => {
       const resp = await fetchBusinessEmployeeInvitationsApiCall(
         businessId,
-        currentPage
+        currentPage,
       );
 
       if (!resp.data.success) {
@@ -48,7 +48,7 @@ export const useBusinessEmpInvitations = (businessId: string) => {
       }
 
       const emps = BusinessEmployeeInvitation.parseApiArrayResponse(
-        resp.data.data
+        resp.data.data.data,
       );
 
       return {

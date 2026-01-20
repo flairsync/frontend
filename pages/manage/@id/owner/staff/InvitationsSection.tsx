@@ -25,8 +25,22 @@ import { useBusinessEmployeeOps } from '@/features/business/employment/useBusine
 import { QrcodePopup } from '@/components/shared/QrcodePopup';
 import { BusinessEmployeeInvitation } from '@/models/business/BusinessEmployeeInvitation';
 import { ConfirmationPopup } from '@/components/shared/ConfirmationPopup';
+import { Input } from "@/components/ui/input";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Form, Formik } from "formik";
+import { inviteNewEmployeeSchema } from "@/misc/FormValidators";
+import { InputError } from "@/components/inputs/InputError";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 
 const InvitationsSection = () => {
+    const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()
@@ -43,6 +57,11 @@ const InvitationsSection = () => {
         setPage,
         totalPages
     } = useBusinessEmpInvitations(routeParams.id);
+
+    const {
+        inviteNewEmployee,
+        invitingNewEmployee
+    } = useBusinessEmployeeOps(routeParams.id);
 
     const {
         resendInvitation,
@@ -82,20 +101,64 @@ const InvitationsSection = () => {
             <Card>
                 <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                     <CardTitle>All Staff Invitations</CardTitle>
+
+
                     <div className="flex gap-2">
+                        <div className="flex justify-end">
+                            <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
+                                <DialogTrigger asChild >
+                                    <Button className="flex items-center gap-2">
+                                        <UserPlus className="h-4 w-4" /> Add Staff
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Add New Staff</DialogTitle>
+                                    </DialogHeader>
+
+                                    <Formik
+                                        initialValues={{ email: '', }}
+                                        validationSchema={inviteNewEmployeeSchema}
+                                        onSubmit={values => {
+                                            inviteNewEmployee(values.email)
+                                            setInviteModalOpen(false);
+                                        }}
+                                    >
+                                        {({ errors, touched, handleChange, values }) => (
+                                            <Form className="space-y-4 mt-2">
+                                                <Input
+                                                    placeholder="Email"
+                                                    value={values.email}
+                                                    name="email"
+                                                    id="email"
+                                                    onChange={handleChange}
+                                                />
+                                                <InputError
+                                                    message={errors.email}
+                                                />
+                                                <Button type="submit" >Add</Button>
+                                            </Form>)}
+                                    </Formik>
+
+                                </DialogContent>
+                            </Dialog>
+
+                        </div>
                         {/* Example filter dropdown */}
-                        <select
-                            className="border rounded px-2 py-1"
-                            value={filterStatus}
-                            onChange={(e) => handleFilterChange(e.target.value)}
-                        >
-                            <option value="ALL">All</option>
-                            <option value="PENDING">Pending</option>
-                            <option value="ACCEPTED">Accepted</option>
-                            <option value="DECLINED">Declined</option>
-                            <option value="CANCELLED">Cancelled</option>
-                            <option value="EXPIRED">Expired</option>
-                        </select>
+                        <Select value={filterStatus} onValueChange={(value) => handleFilterChange(value)}>
+                            <SelectTrigger className="w-[200px]">
+                                <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="ALL">All</SelectItem>
+                                <SelectItem value="PENDING">Pending</SelectItem>
+                                <SelectItem value="ACCEPTED">Accepted</SelectItem>
+                                <SelectItem value="DECLINED">Declined</SelectItem>
+                                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                                <SelectItem value="EXPIRED">Expired</SelectItem>
+                            </SelectContent>
+                        </Select>
+
                     </div>
                 </CardHeader>
 
@@ -104,6 +167,7 @@ const InvitationsSection = () => {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Email</TableHead>
+                                <TableHead>Display name</TableHead>
                                 <TableHead>Created</TableHead>
                                 <TableHead>Expires</TableHead>
                                 <TableHead>Status</TableHead>
@@ -115,6 +179,7 @@ const InvitationsSection = () => {
                             {invitations?.map((invite) => (
                                 <TableRow key={invite.id}>
                                     <TableCell>{invite.email}</TableCell>
+                                    <TableCell>{invite.professional?.displayName}</TableCell>
                                     <TableCell>{invite.getCreatedAtDate()}</TableCell>
                                     <TableCell>{invite.getExpiryDate()}</TableCell>
                                     <TableCell>
