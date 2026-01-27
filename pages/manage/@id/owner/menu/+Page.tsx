@@ -1,204 +1,145 @@
-
 import React, { useState } from "react";
-import { motion, AnimatePresence, Reorder } from "framer-motion";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Plus, Trash, ChevronDown, ChevronRight } from "lucide-react";
+import { Plus, Coffee, Moon, ForkKnife } from "lucide-react";
+import { motion } from "framer-motion";
+import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
+import { usePageContext } from "vike-react/usePageContext";
+import { CreateMenuModal } from "@/components/management/menu/CreateMenuModal";
 
-type MenuItem = {
-    id: string;
-    name: string;
-    category: string;
-    price: string;
-    description: string;
-};
-
-type Category = {
-    id: string;
-    name: string;
-};
-
-const initialCategories: Category[] = [
-    { id: "1", name: "Drinks" },
-    { id: "2", name: "Main" },
-    { id: "3", name: "Desserts" },
-    { id: "4", name: "Appetizers" },
+const dummyMenus = [
+    { id: "menu1", name: "Lunch Menu", items: 12, categories: 4, icon: <ForkKnife /> },
+    { id: "menu2", name: "Dinner Menu", items: 8, categories: 3, icon: <Moon /> },
 ];
 
-const OwnerMenuManagementPage: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>(initialCategories);
+// Example subscription data
+const userSubscription = {
+    maxMenus: 5,
+};
 
-    const [menuItems, setMenuItems] = useState<MenuItem[]>([
-        {
-            id: "1",
-            name: "Cappuccino",
-            category: "Drinks",
-            price: "$3.50",
-            description: "Classic Italian coffee.",
-        },
-        {
-            id: "2",
-            name: "Margherita Pizza",
-            category: "Main",
-            price: "$12.00",
-            description: "Tomato, mozzarella, basil.",
-        },
-        {
-            id: "3",
-            name: "Chocolate Cake",
-            category: "Desserts",
-            price: "$5.50",
-            description: "Rich chocolate cake.",
-        },
-    ]);
+const MenusPage: React.FC = () => {
+    const [createModal, setCreateModal] = useState(false);
+    const {
+        routeParams,
+        data
+    } = usePageContext();
 
-    const [expanded, setExpanded] = useState<string | null>(null);
+    const {
+        businessBasicMenus,
+        createNewMenu
+    } = useBusinessMenus(routeParams.id);
 
-    const removeMenuItem = (id: string) => {
-        setMenuItems(menuItems.filter((item) => item.id !== id));
-    };
-
-    const toggleExpand = (cat: string) => {
-        setExpanded(expanded === cat ? null : cat);
-    };
-
+    const remainingMenus = userSubscription.maxMenus - (businessBasicMenus?.length || 0);
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
-            <div className="max-w-5xl mx-auto space-y-8">
-                <h1 className="text-3xl font-bold text-zinc-800 dark:text-zinc-100">
-                    Menu Management
+            <CreateMenuModal
+                isOpen={createModal}
+                onClose={() => {
+                    setCreateModal(false);
+                }}
+                onCreate={(data) => {
+                    createNewMenu({
+                        name: data.name,
+                        description: data.description,
+                    });
+                    setCreateModal(false);
+
+                }}
+            />
+            <div className="max-w-6xl mx-auto space-y-8">
+                <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-100">
+                    Your Menus
                 </h1>
+                <p className="text-zinc-500 dark:text-zinc-400">
+                    Click on a menu to manage its categories and items. Add new menus to get started!
+                </p>
 
-                {/* Top Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card>
-                        <CardContent className="p-4 text-center">
-                            <p className="text-sm text-zinc-500">Total Items</p>
-                            <p className="text-2xl font-bold">{menuItems.length}</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="p-4 text-center">
-                            <p className="text-sm text-zinc-500">Total Categories</p>
-                            <p className="text-2xl font-bold">{categories.length}</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="p-4 flex items-center justify-center">
-                            <Button className="flex items-center gap-2">
-                                <Plus className="h-4 w-4" /> Add Item
-                            </Button>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="p-4 flex items-center justify-center">
-                            <Button variant="secondary" className="flex items-center gap-2">
-                                <Plus className="h-4 w-4" /> Add Category
-                            </Button>
-                        </CardContent>
-                    </Card>
+                {/* Subscription counter */}
+                <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 mb-4">
+                    <span>
+                        {remainingMenus > 0
+                            ? `You can create ${remainingMenus} more menu${remainingMenus > 1 ? "s" : ""} with your subscription.`
+                            : "You have reached your menu limit for your subscription."}
+                    </span>
+                    {remainingMenus === 0 && (
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="ml-2"
+                            onClick={() => console.log("Upgrade subscription clicked")}
+                        >
+                            Upgrade
+                        </Button>
+                    )}
                 </div>
 
-                <Separator />
-
-                {/* Categories Collapsible */}
-                <div >
-                    <Reorder.Group
-                        onReorder={setCategories}
-                        values={categories}
-                        className="space-y-4"
-                    >
-                        {categories.map((cat) => {
-                            const items = menuItems.filter((m) => m.category === cat.name);
-                            const isOpen = expanded === cat.id;
-                            return (
-                                <Reorder.Item
-                                    value={cat}
-                                    key={cat.id}
-                                >
-                                    <Card key={cat.id + "_card"}>
-                                        <CardHeader
-                                            className="flex flex-row items-center justify-between cursor-pointer"
-                                            onClick={() => toggleExpand(cat.id)}
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                {isOpen ? (
-                                                    <ChevronDown className="h-4 w-4" />
-                                                ) : (
-                                                    <ChevronRight className="h-4 w-4" />
-                                                )}
-                                                <CardTitle>{cat.name}</CardTitle>
-                                                <span className="text-sm text-zinc-500">
-                                                    ({items.length} items)
-                                                </span>
+                {businessBasicMenus?.length === 0 ? (
+                    <Card className="text-center p-12 border-dashed border-2 border-zinc-300 dark:border-zinc-700">
+                        <CardTitle className="text-2xl">No menus yet</CardTitle>
+                        <p className="text-zinc-500 my-4">
+                            Create your first menu to start organizing your items.
+                        </p>
+                        <Button className="mt-4"
+                            onClick={() => {
+                                setCreateModal(true);
+                            }}
+                        >
+                            <Plus className="h-4 w-4 mr-2" /> Create Menu
+                        </Button>
+                    </Card>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {businessBasicMenus?.map((menu) => (
+                            <motion.a
+                                key={menu.id}
+                                href={`./menu/${menu.id}`}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                className="block"
+                            >
+                                <Card className="cursor-pointer p-4 hover:shadow-xl transition-shadow border border-zinc-200 dark:border-zinc-700 rounded-xl">
+                                    <CardContent className="space-y-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="text-2xl text-indigo-500 dark:text-indigo-400">
+                                                {menu.icon || <Coffee />}
                                             </div>
-                                            <Button
-                                                size="sm"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    console.log("Add item under", cat.name);
-                                                }}
-                                            >
-                                                <Plus className="h-4 w-4 mr-1" /> Add
-                                            </Button>
-                                        </CardHeader>
+                                            <CardTitle className="text-xl font-semibold">{menu.name}</CardTitle>
+                                        </div>
 
-                                        <AnimatePresence>
-                                            {isOpen && (
-                                                <motion.div
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: "auto", opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.25 }}
-                                                >
-                                                    <CardContent className="space-y-2">
-                                                        {items.length === 0 && (
-                                                            <p className="text-sm text-zinc-500">
-                                                                No items in this category.
-                                                            </p>
-                                                        )}
-                                                        {items.map((item) => (
-                                                            <div
-                                                                key={item.id}
-                                                                className="flex items-center justify-between border-b py-2"
-                                                            >
-                                                                <div>
-                                                                    <p className="font-medium">{item.name}</p>
-                                                                    <p className="text-sm text-zinc-500">
-                                                                        {item.description}
-                                                                    </p>
-                                                                </div>
-                                                                <div className="flex items-center gap-2">
-                                                                    <p className="font-semibold">{item.price}</p>
-                                                                    <Button
-                                                                        variant="destructive"
-                                                                        size="sm"
-                                                                        onClick={() => removeMenuItem(item.id)}
-                                                                    >
-                                                                        <Trash className="h-4 w-4" />
-                                                                    </Button>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    </CardContent>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </Card>
-                                </Reorder.Item>
-                            );
-                        })}
-                    </Reorder.Group>
-                </div>
+                                        <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400 text-sm">
+                                            <span>{menu.categoriesCount} Categories</span>
+                                            <span>•</span>
+                                            <span>{menu.itemsCount} Items</span>
+                                        </div>
+                                        <p className="text-zinc-400 text-sm italic">
+                                            Click to open and manage this menu.
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            </motion.a>
+                        ))}
+
+                        {/* Create Menu Card */}
+                        {remainingMenus > 0 && (
+                            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                <Card
+                                    className="flex flex-col items-center justify-center cursor-pointer p-6 border-dashed border-2 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition rounded-xl"
+                                    onClick={() => {
+                                        setCreateModal(true);
+                                    }}
+                                >
+                                    <Plus className="h-6 w-6 text-indigo-500 mb-2" />
+                                    <p className="font-semibold text-zinc-700 dark:text-zinc-200">
+                                        Create New Menu
+                                    </p>
+                                </Card>
+                            </motion.div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
-export default OwnerMenuManagementPage;
+export default MenusPage;
