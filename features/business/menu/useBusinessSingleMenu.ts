@@ -4,16 +4,24 @@ import {
   CreateMenuItemDto,
   createNewMenuCategoryApiCall,
   createNewMenuItemApiCall,
+  deleteMenuCategoryApiCall,
   deleteMenuItemApiCall,
   fetchBusinessSingleMenuApiCall,
+  updateBusinessMenuApiCall,
+  UpdateMenuCategoriesOrder,
+  updateMenuCategoriesOrderApiCall,
+  updateMenuCategoryApiCall,
+  UpdateMenuDto,
   updateMenuItemApiCall,
   UpdateMenuItemDto,
 } from "./service";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
+import { toast } from "sonner";
 
 export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
   const queryClient = useQueryClient();
 
+  //#region Menu
   const { data: businessMenu, refetch: refreshBusinessMenu } = useQuery({
     queryKey: ["business_menu", businessId, menuId],
     queryFn: async () => {
@@ -25,6 +33,21 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     enabled: businessId != null && menuId != null,
   });
 
+  const { mutate: updateMenu } = useMutation({
+    mutationKey: ["menu_up", businessId, menuId],
+    mutationFn: async (data: UpdateMenuDto) => {
+      return updateBusinessMenuApiCall(businessId, menuId, data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Menu updated !");
+      refreshBusinessMenu();
+    },
+  });
+
+  //#endregion
+
+  //#region Categories management
+
   const { mutate: createNewCategory } = useMutation({
     mutationKey: ["menu_create_cat", businessId, menuId],
     mutationFn: async (data: CreateMenuCategoryDto) => {
@@ -34,6 +57,51 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       refreshBusinessMenu();
     },
   });
+
+  const { mutate: updateCategoriesOrder } = useMutation({
+    mutationKey: ["menu_cat_order_up", businessId, menuId],
+    mutationFn: async (data: UpdateMenuCategoriesOrder[]) => {
+      return updateMenuCategoriesOrderApiCall(businessId, menuId, data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Categories order updated !");
+    },
+  });
+
+  const { mutate: updateCategory } = useMutation({
+    mutationKey: ["menu_cat_up", businessId, menuId],
+    mutationFn: async (data: {
+      categoryId: string;
+      data: {
+        name: string;
+        description: string;
+      };
+    }) => {
+      return updateMenuCategoryApiCall(
+        businessId,
+        menuId,
+        data.categoryId,
+        data.data,
+      );
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Category Updated !");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: removeCategory } = useMutation({
+    mutationKey: ["menu_cat_del", businessId, menuId],
+    mutationFn: async (categoryId: string) => {
+      return deleteMenuCategoryApiCall(businessId, menuId, categoryId);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Category Removed !");
+      refreshBusinessMenu();
+    },
+  });
+
+  //#endregion
 
   //#region Menu item management
 
@@ -88,9 +156,17 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
   });
 
   //#endregion
+
   return {
+    // Menu
     businessMenu,
+    updateMenu,
+    // Categories
     createNewCategory,
+    updateCategoriesOrder,
+    updateCategory,
+    removeCategory,
+    // Items
     createNewItem,
     removeItem,
     updateItem,

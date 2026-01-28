@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+// components/CreateMenuModal.tsx
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Plus, Coffee, Moon, Sun, ForkKnife, IceCream, Beer, Pizza } from "lucide-react";
+import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 
 const allIcons = { Coffee, Moon, Sun, ForkKnife, IceCream, Beer, Pizza };
 
@@ -18,33 +20,26 @@ const daysOfWeek = [
     { value: 6, label: "Sat" },
 ];
 
-type CreateMenuPayload = {
+export type MenuPayload = {
     name: string;
     description: string;
     icon: string | null;
-
-    // Active date range (optional)
-    startDate: string | null; // YYYY-MM-DD
-    endDate: string | null;   // YYYY-MM-DD
-
-    // Daily active time range (optional)
-    startTime: string | null; // HH:MM
-    endTime: string | null;   // HH:MM
-
-    // Recurrence
+    startDate: string | null;
+    endDate: string | null;
+    startTime: string | null;
+    endTime: string | null;
     repeatYearly: boolean;
-    repeatDays: number[]; // 0=Sunday ... 6=Saturday
+    repeatDays: number[];
 };
 
-
-
 type CreateMenuModalProps = {
-    onCreate: (data: CreateMenuPayload) => void,
-    isOpen: boolean,
-    onClose: () => void
-}
+    onSubmit: (data: MenuPayload) => void;
+    isOpen: boolean;
+    onClose: () => void;
+    menu?: BusinessMenu; // optional for editing
+};
 
-export const CreateMenuModal = (props: CreateMenuModalProps) => {
+export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, onClose, menu }) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [icon, setIcon] = useState<string>("Coffee");
@@ -54,6 +49,32 @@ export const CreateMenuModal = (props: CreateMenuModalProps) => {
     const [endTime, setEndTime] = useState("");
     const [repeatYearly, setRepeatYearly] = useState(false);
     const [repeatDays, setRepeatDays] = useState<number[]>([]);
+
+    // Pre-fill fields when editing
+    useEffect(() => {
+        if (menu) {
+            setName(menu.name || "");
+            setDescription(menu.description || "");
+            setIcon(menu.icon || "Coffee");
+            setStartDate(menu.startDate || "");
+            setEndDate(menu.endDate || "");
+            setStartTime(menu.startTime || "");
+            setEndTime(menu.endTime || "");
+            setRepeatYearly(menu.repeatYearly ?? false);
+            setRepeatDays(menu.repeatDaysOfWeek || []);
+        } else {
+            // reset for new menu
+            setName("");
+            setDescription("");
+            setIcon("Coffee");
+            setStartDate("");
+            setEndDate("");
+            setStartTime("");
+            setEndTime("");
+            setRepeatYearly(false);
+            setRepeatDays([]);
+        }
+    }, [menu, isOpen]);
 
     const toggleDay = (day: number) => {
         setRepeatDays(prev =>
@@ -67,14 +88,15 @@ export const CreateMenuModal = (props: CreateMenuModalProps) => {
     };
 
     const handleSubmit = () => {
-        props.onCreate({
+        if (!name.trim()) return; // simple validation
+        onSubmit({
             name,
             description,
             icon,
-            startDate,
-            endDate,
-            startTime,
-            endTime,
+            startDate: startDate || null,
+            endDate: endDate || null,
+            startTime: startTime || null,
+            endTime: endTime || null,
             repeatYearly,
             repeatDays,
         });
@@ -82,15 +104,14 @@ export const CreateMenuModal = (props: CreateMenuModalProps) => {
 
     return (
         <Dialog
-            open={props.isOpen}
+            open={isOpen}
             onOpenChange={(open) => {
-                if (!open) props.onClose();
+                if (!open) onClose();
             }}
         >
-
             <DialogContent className="sm:max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 rounded-lg">
                 <DialogHeader>
-                    <DialogTitle>Create New Menu</DialogTitle>
+                    <DialogTitle>{menu ? "Edit Menu" : "Create New Menu"}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-4 mt-2">
@@ -146,7 +167,7 @@ export const CreateMenuModal = (props: CreateMenuModalProps) => {
                                         <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>Leave empty for a normal menu that is always active.</p>
+                                        <p>Leave empty for a menu that is always active.</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </Label>
@@ -161,7 +182,7 @@ export const CreateMenuModal = (props: CreateMenuModalProps) => {
                                         <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>Leave empty for a normal menu that is always active.</p>
+                                        <p>Leave empty for a menu that is always active.</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </Label>
@@ -233,7 +254,7 @@ export const CreateMenuModal = (props: CreateMenuModalProps) => {
 
                 <DialogFooter className="mt-4">
                     <Button onClick={handleSubmit} className="w-full">
-                        Create Menu
+                        {menu ? "Update Menu" : "Create Menu"}
                     </Button>
                 </DialogFooter>
             </DialogContent>

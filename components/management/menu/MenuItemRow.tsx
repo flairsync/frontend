@@ -65,14 +65,6 @@ export const MenuItemRow = ({
                 >
                     <Edit className="h-4 w-4" /> Edit
                 </Button>
-
-                <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex items-center gap-1"
-                >
-                    <ImageIcon className="h-4 w-4" /> Add Image
-                </Button>
             </div>
         </div>
     );

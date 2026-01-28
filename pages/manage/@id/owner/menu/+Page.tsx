@@ -5,7 +5,8 @@ import { Plus, Coffee, Moon, ForkKnife } from "lucide-react";
 import { motion } from "framer-motion";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { usePageContext } from "vike-react/usePageContext";
-import { CreateMenuModal } from "@/components/management/menu/CreateMenuModal";
+import { MenuModal } from "@/components/management/menu/CreateMenuModal";
+import { IconRenderer } from "@/components/shared/IconRenderer";
 
 const dummyMenus = [
     { id: "menu1", name: "Lunch Menu", items: 12, categories: 4, icon: <ForkKnife /> },
@@ -32,12 +33,12 @@ const MenusPage: React.FC = () => {
     const remainingMenus = userSubscription.maxMenus - (businessBasicMenus?.length || 0);
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
-            <CreateMenuModal
+            <MenuModal
                 isOpen={createModal}
                 onClose={() => {
                     setCreateModal(false);
                 }}
-                onCreate={(data) => {
+                onSubmit={(data) => {
                     createNewMenu({
                         name: data.name,
                         description: data.description,
@@ -92,7 +93,7 @@ const MenusPage: React.FC = () => {
                         {businessBasicMenus?.map((menu) => (
                             <motion.a
                                 key={menu.id}
-                                href={`./menu/${menu.id}`}
+                                href={`/manage/${routeParams.id}/owner/menu/${menu.id}`}
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.97 }}
                                 className="block"
@@ -101,7 +102,7 @@ const MenusPage: React.FC = () => {
                                     <CardContent className="space-y-3">
                                         <div className="flex items-center gap-3">
                                             <div className="text-2xl text-indigo-500 dark:text-indigo-400">
-                                                {menu.icon || <Coffee />}
+                                                <IconRenderer icon={menu.icon} className="h-6 w-6" />
                                             </div>
                                             <CardTitle className="text-xl font-semibold">{menu.name}</CardTitle>
                                         </div>
