@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence, Reorder } from "framer-motion";
+import { motion, AnimatePresence, Reorder, useDragControls } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash, ChevronDown, ChevronRight, ImageIcon, ArrowLeft, Edit, AlertCircle, Info, CheckCircle } from "lucide-react";
+import { Plus, Trash, ChevronDown, ChevronRight, ImageIcon, ArrowLeft, Edit, AlertCircle, Info, CheckCircle, AlertTriangle } from "lucide-react";
 import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from 'vike/client/router'
 import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
@@ -15,6 +15,42 @@ import { MenuCategoryCard } from "@/components/management/menu/MenuCategoryCard"
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
+import { ItemsDuplicationModal } from "@/components/management/menu/ItemsDuplicationModal";
+
+const getHintMeta = (level: number) => {
+    if (level >= 5)
+        return {
+            icon: AlertTriangle,
+            color: "text-red-600",
+            badge: "bg-red-100 text-red-700",
+            label: "Critical",
+        };
+
+    if (level >= 4)
+        return {
+            icon: AlertCircle,
+            color: "text-orange-600",
+            badge: "bg-orange-100 text-orange-700",
+            label: "High",
+        };
+
+    if (level >= 3)
+        return {
+            icon: AlertCircle,
+            color: "text-yellow-600",
+            badge: "bg-yellow-100 text-yellow-800",
+            label: "Medium",
+        };
+
+    return {
+        icon: Info,
+        color: "text-zinc-500",
+        badge: "bg-zinc-100 text-zinc-700",
+        label: "Low",
+    };
+};
+
 
 
 
@@ -31,11 +67,18 @@ const MenuDetailPage: React.FC = () => {
         updateCategoriesOrder,
         updateCategory,
         removeCategory,
+        duplicateItemsIntoCategory,
         //Items
         updateItem,
         createNewItem,
         removeItem
     } = useBusinessSingleMenu(id, menuId);
+
+    const categoryDragControls = useDragControls();
+
+    const {
+        businessAllItems
+    } = useBusinessMenus(id);
 
     const [createCategoryModal, setCreateCategoryModal] = useState(false);
     const [editingCategory, setEditingCategory] = useState<{
@@ -60,6 +103,7 @@ const MenuDetailPage: React.FC = () => {
 
     const [categories, setCategories] = useState(businessMenu?.getOrderedCategories() || []);
 
+    const [toDuplicateCategory, setToDuplicateCategory] = useState<string>();
 
     useEffect(() => {
         setCategories(businessMenu?.getOrderedCategories() || []);
@@ -136,6 +180,7 @@ const MenuDetailPage: React.FC = () => {
                 }}
             />
             <ItemModal
+                availableItems={businessAllItems}
                 allergies={[]}
                 onClose={() => {
                     setCreateItemCatId(undefined);
@@ -179,6 +224,26 @@ const MenuDetailPage: React.FC = () => {
 
                 }}
             />
+            {
+                businessAllItems &&
+                <ItemsDuplicationModal
+                    items={businessAllItems}
+                    onConfirm={(data) => {
+                        if (toDuplicateCategory) {
+                            duplicateItemsIntoCategory({
+                                categoryId: toDuplicateCategory,
+                                data: data,
+                            })
+                        }
+                        setToDuplicateCategory(undefined);
+                    }}
+                    onOpenChange={(open) => {
+                        if (!open)
+                            setToDuplicateCategory(undefined);
+                    }}
+                    open={toDuplicateCategory != undefined}
+                />
+            }
             <a
                 href="./"
             >
@@ -207,38 +272,56 @@ const MenuDetailPage: React.FC = () => {
                             onDuplicate={() => { }}
                             onDelete={() => { }}
                         />
-                        <h4 className="mb-2 text-lg font-semibold">Menu Hints:</h4>
-                        <Card className="space-y-2">
-                            <CardContent className="space-y-2">
-                                {businessMenu.getMenuHints().map((hint, i) => {
-                                    let Icon;
-                                    let variant: "default" | "destructive" = "default";
+                        {businessMenu.hints && Object.keys(businessMenu.hints).length > 0 && (
+                            <>
+                                <h4 className="mb-3 text-lg font-semibold">Menu Hints</h4>
 
-                                    switch (hint.type) {
-                                        case "danger":
-                                            Icon = AlertCircle;
-                                            variant = "destructive";
-                                            break;
-                                        case "info":
-                                            Icon = Info;
-                                            variant = "default";
-                                            break;
-                                        case "hint":
-                                        default:
-                                            Icon = CheckCircle;
-                                            variant = "default";
-                                            break;
-                                    }
+                                <Card>
+                                    <CardContent className="space-y-4 pt-6">
+                                        {Object.entries(businessMenu.hints)
+                                            .sort((a, b) => b[1] - a[1]) // most important first
+                                            .map(([hintKey, importance]) => {
+                                                const meta = getHintMeta(importance);
+                                                const Icon = meta.icon;
 
-                                    return (
-                                        <Alert key={i} variant={variant} className="p-2">
-                                            <Icon className="w-4 h-4 mr-2 shrink-0" />
-                                            <AlertDescription>{hint.message}</AlertDescription>
-                                        </Alert>
-                                    );
-                                })}
-                            </CardContent>
-                        </Card>
+                                                return (
+                                                    <div
+                                                        key={hintKey}
+                                                        className="flex gap-4 rounded-lg border p-4 hover:bg-zinc-50 transition"
+                                                    >
+                                                        {/* Icon */}
+                                                        <div className={`mt-1 ${meta.color}`}>
+                                                            <Icon className="h-5 w-5" />
+                                                        </div>
+
+                                                        {/* Content */}
+                                                        <div className="flex-1 space-y-1">
+                                                            <div className="flex items-center gap-2">
+                                                                <h5 className="font-medium">
+                                                                    {hintKey}
+                                                                </h5>
+
+                                                                <span
+                                                                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${meta.badge}`}
+                                                                >
+                                                                    {meta.label} • {importance}/5
+                                                                </span>
+                                                            </div>
+
+                                                            {/* Description placeholder */}
+                                                            <p className="text-sm text-zinc-500">
+                                                                {/* You’ll replace this later */}
+                                                                No description yet. This hint may require adjusting menu
+                                                                configuration such as dates, availability, or pricing.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                    </CardContent>
+                                </Card>
+                            </>
+                        )}
                     </>
                 }
 
@@ -267,11 +350,16 @@ const MenuDetailPage: React.FC = () => {
 
                         {categories.map((cat) => (
                             <Reorder.Item key={cat.id} value={cat}
+                                dragListener={false} // only drag via handle
+                                dragControls={categoryDragControls}
                                 onDragEnd={() => {
                                     commitCategoriesOrder(categories);
                                 }}
                             >
                                 <MenuCategoryCard
+                                    onDuplicateItems={() => {
+                                        setToDuplicateCategory(cat.id);
+                                    }}
                                     onDeleteCategory={() => {
                                         removeCategory(cat.id);
                                     }}
@@ -292,6 +380,8 @@ const MenuDetailPage: React.FC = () => {
                                     onDeleteItem={(itemId) =>
                                         removeItem({ categoryId: cat.id, itemId })
                                     }
+                                    dragControls={categoryDragControls} // <-- this is new
+
                                 />
                             </Reorder.Item>
                         ))}

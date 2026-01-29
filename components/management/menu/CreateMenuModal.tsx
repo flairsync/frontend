@@ -61,7 +61,7 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
             setStartTime(menu.startTime || "");
             setEndTime(menu.endTime || "");
             setRepeatYearly(menu.repeatYearly ?? false);
-            setRepeatDays(menu.repeatDaysOfWeek || []);
+            setRepeatDays(menu.getRepeatDaysAsNumberArray());
         } else {
             // reset for new menu
             setName("");

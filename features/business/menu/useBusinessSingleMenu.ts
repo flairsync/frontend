@@ -6,6 +6,8 @@ import {
   createNewMenuItemApiCall,
   deleteMenuCategoryApiCall,
   deleteMenuItemApiCall,
+  DuplicateItemsInCatDto,
+  duplicateItemsIntoCategoryApiCall,
   fetchBusinessSingleMenuApiCall,
   updateBusinessMenuApiCall,
   UpdateMenuCategoriesOrder,
@@ -101,6 +103,25 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     },
   });
 
+  const { mutate: duplicateItemsIntoCategory } = useMutation({
+    mutationKey: ["menu_cat_dup_itms", businessId, menuId],
+    mutationFn: async (data: {
+      categoryId: string;
+      data: DuplicateItemsInCatDto[];
+    }) => {
+      return duplicateItemsIntoCategoryApiCall(
+        businessId,
+        menuId,
+        data.categoryId,
+        data.data,
+      );
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Items added !");
+      refreshBusinessMenu();
+    },
+  });
+
   //#endregion
 
   //#region Menu item management
@@ -166,6 +187,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     updateCategoriesOrder,
     updateCategory,
     removeCategory,
+    duplicateItemsIntoCategory,
     // Items
     createNewItem,
     removeItem,

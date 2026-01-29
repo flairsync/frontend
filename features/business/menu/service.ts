@@ -11,21 +11,15 @@ export const fetchBusinessBasicMenusApiCall = (businessId: string) => {
 };
 
 export type CreateMenuDto = {
-  name: string;
-
-  description?: string;
-
-  startDate?: string;
-
-  endDate?: string;
-
-  startTime?: string; // "HH:MM:SS"
-
-  endTime?: string; // "HH:MM:SS"
-
-  repeatYearly?: boolean;
-
-  repeatDaysOfWeek?: number[];
+  name: string | null;
+  description: string | null;
+  startDate: string | null; // "YYYY-MM-DD"
+  endDate: string | null; // "YYYY-MM-DD"
+  startTime: string | null; // "HH:MM:SS"
+  endTime: string | null; // "HH:MM:SS"
+  repeatYearly: boolean | null;
+  repeatDaysOfWeek: number[] | null;
+  icon: string | null;
 };
 
 export const createBusinessMenuApiCall = (
@@ -115,7 +109,28 @@ export const deleteMenuCategoryApiCall = (
   return flairapi.delete(`${getMenusUrl(businessId)}/${menuId}/${categoryId}`);
 };
 
+export type DuplicateItemsInCatDto = {
+  id: string;
+  useMedia: boolean;
+};
+
+export const duplicateItemsIntoCategoryApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  data: DuplicateItemsInCatDto[],
+) => {
+  return flairapi.post(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/duplicate`,
+    {
+      items: data,
+    },
+  );
+};
+
 //#endregion
+
+//#region Items
 
 export type CreateMenuItemDto = {
   name: string;
@@ -215,3 +230,9 @@ export const updateMenuItemApiCall = (
     },
   );
 };
+
+export const fetchBusinessAllMenuItemsApiCall = (businessId: string) => {
+  return flairapi.get(`${getMenusUrl(businessId)}/all-items`);
+};
+
+//#endregion

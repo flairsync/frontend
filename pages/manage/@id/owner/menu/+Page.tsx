@@ -7,15 +7,34 @@ import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { usePageContext } from "vike-react/usePageContext";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { IconRenderer } from "@/components/shared/IconRenderer";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { AlertTriangle } from "lucide-react";
 
-const dummyMenus = [
-    { id: "menu1", name: "Lunch Menu", items: 12, categories: 4, icon: <ForkKnife /> },
-    { id: "menu2", name: "Dinner Menu", items: 8, categories: 3, icon: <Moon /> },
-];
+const MAX_HINTS_PREVIEW = 3;
 
 // Example subscription data
 const userSubscription = {
     maxMenus: 5,
+};
+
+const getMaxHintLevel = (hints: Record<string, number>) =>
+    Math.max(...Object.values(hints));
+
+const getBadgeStyles = (level: number) => {
+    if (level >= 5)
+        return "bg-red-600 text-white hover:bg-red-600";
+    if (level >= 4)
+        return "bg-orange-500 text-white hover:bg-orange-500";
+    if (level >= 3)
+        return "bg-yellow-500 text-black hover:bg-yellow-500";
+
+    return "bg-zinc-700 text-white hover:bg-zinc-700";
 };
 
 const MenusPage: React.FC = () => {
@@ -42,9 +61,15 @@ const MenusPage: React.FC = () => {
                     createNewMenu({
                         name: data.name,
                         description: data.description,
+                        endDate: data.endDate,
+                        endTime: data.endTime,
+                        icon: data.icon,
+                        repeatDaysOfWeek: data.repeatDays,
+                        repeatYearly: data.repeatYearly,
+                        startDate: data.startDate,
+                        startTime: data.startTime
                     });
                     setCreateModal(false);
-
                 }}
             />
             <div className="max-w-6xl mx-auto space-y-8">
@@ -111,6 +136,54 @@ const MenusPage: React.FC = () => {
                                             <span>{menu.categoriesCount} Categories</span>
                                             <span>•</span>
                                             <span>{menu.itemsCount} Items</span>
+                                            <span>•</span>
+                                            {menu.hints && Object.keys(menu.hints).length > 0 && (
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <span>
+                                                                <Badge
+                                                                    className={`flex items-center gap-1 px-2 py-0.5 text-xs font-medium cursor-default
+                                                                        ${getBadgeStyles(getMaxHintLevel(menu.hints))}
+                                                                    `}
+                                                                >
+                                                                    <AlertTriangle className="h-3.5 w-3.5" />
+                                                                    {Object.keys(menu.hints).length}
+                                                                    <span className="ml-0.5 hidden sm:inline">Hints</span>
+                                                                </Badge>
+                                                            </span>
+                                                        </TooltipTrigger>
+
+                                                        <TooltipContent
+                                                            className="bg-white text-zinc-900 border shadow-md"
+                                                            side="top"
+                                                        >
+                                                            <div className="space-y-1">
+                                                                {Object.entries(menu.hints)
+                                                                    .sort((a, b) => b[1] - a[1])
+                                                                    .slice(0, MAX_HINTS_PREVIEW)
+                                                                    .map(([hintKey, importance]) => (
+                                                                        <div
+                                                                            key={hintKey}
+                                                                            className="flex justify-between gap-3 text-xs"
+                                                                        >
+                                                                            <span className="truncate">{hintKey}</span>
+                                                                            <span className="font-medium text-zinc-600">
+                                                                                {importance}/5
+                                                                            </span>
+                                                                        </div>
+                                                                    ))}
+
+                                                                {Object.keys(menu.hints).length > MAX_HINTS_PREVIEW && (
+                                                                    <div className="pt-1 text-xs text-zinc-500">
+                                                                        +{Object.keys(menu.hints).length - MAX_HINTS_PREVIEW} more
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            )}
                                         </div>
                                         <p className="text-zinc-400 text-sm italic">
                                             Click to open and manage this menu.

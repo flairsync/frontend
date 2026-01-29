@@ -7,6 +7,7 @@ export class BusinessMenuBasic {
   icon?: string | null; // optional, for UI purposes
   createdAt: string;
   updatedAt: string;
+  hints?: Record<string, number>;
 
   constructor(
     id: string,
@@ -17,6 +18,7 @@ export class BusinessMenuBasic {
     createdAt: string,
     updatedAt: string,
     icon?: string | null,
+    hints?: Record<string, number>,
   ) {
     this.id = id;
     this.name = name;
@@ -26,6 +28,7 @@ export class BusinessMenuBasic {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.icon = icon ?? null;
+    this.hints = hints;
   }
 
   /** Parse a single API response into BusinessMenuBasic */
@@ -47,6 +50,7 @@ export class BusinessMenuBasic {
         data.createdAt,
         data.updatedAt,
         data.icon ?? null,
+        data.hints,
       );
     } catch (error) {
       console.error("Failed to parse BusinessMenuBasic:", error);

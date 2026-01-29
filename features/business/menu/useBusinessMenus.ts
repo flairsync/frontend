@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createBusinessMenuApiCall,
   CreateMenuDto,
+  fetchBusinessAllMenuItemsApiCall,
   fetchBusinessBasicMenusApiCall,
 } from "./service";
 import { BusinessMenuBasic } from "@/models/business/menu/BusinessMenuBasic";
+import { BusinessMenuItem } from "@/models/business/menu/BusinessMenuItem";
 
 export const useBusinessMenus = (businessId: string) => {
   const queryClient = useQueryClient();
@@ -33,8 +35,17 @@ export const useBusinessMenus = (businessId: string) => {
     },
   });
 
+  const { data: businessAllItems } = useQuery({
+    queryKey: ["business_menu_items", businessId],
+    queryFn: async () => {
+      const resp = await fetchBusinessAllMenuItemsApiCall(businessId);
+      return BusinessMenuItem.parseApiArrayResponse(resp.data.data.items);
+    },
+  });
+
   return {
     businessBasicMenus,
     createNewMenu,
+    businessAllItems,
   };
 };

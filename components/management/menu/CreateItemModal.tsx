@@ -16,6 +16,7 @@ import {
     ComboboxChipsInput,
     ComboboxContent,
     ComboboxEmpty,
+    ComboboxInput,
     ComboboxItem,
     ComboboxList,
     ComboboxValue,
@@ -25,7 +26,20 @@ import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { X } from 'lucide-react';
 import { Allergy } from '@/models/shared/Allergy';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
-
+const frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"]
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+    Command,
+    CommandInput,
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+} from "@/components/ui/command";
+import { Check } from "lucide-react";
 interface ItemModalProps {
     open: boolean;
     onClose: () => void;
@@ -38,6 +52,7 @@ interface ItemModalProps {
     }) => void;
     allergies: Allergy[];
     initialData?: BusinessMenuItem;
+    availableItems?: BusinessMenuItem[]; // items to select from for copying
 }
 
 export const ItemModal: React.FC<ItemModalProps> = ({
@@ -46,6 +61,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     onConfirm,
     allergies,
     initialData,
+    availableItems
 }) => {
     const anchor = useComboboxAnchor();
 
@@ -55,6 +71,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     const [price, setPrice] = useState('');
     const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
     const [images, setImages] = useState<File[]>([]);
+    const [selectedCopyItemId, setSelectedCopyItemId] = useState<string | null>(null);
 
     // Prefill state when editing
     useEffect(() => {
@@ -113,7 +130,63 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{initialData ? 'Edit Item' : 'Create New Item'}</DialogTitle>
+
+
                 </DialogHeader>
+
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-foreground">
+                        Copy from existing items
+                    </label>
+                    {description && (
+                        <p className="text-xs text-muted-foreground">
+                            Select an item to auto-fill the form. All fields remain editable
+                        </p>
+                    )}
+                </div>
+
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button variant="outline" className="w-full justify-between">
+                            {selectedCopyItemId
+                                ? availableItems?.find(i => i.id === selectedCopyItemId)?.name
+                                : "Select item"}
+                        </Button>
+                    </PopoverTrigger>
+
+                    <PopoverContent className="w-full p-0" align="start">
+                        <Command>
+                            <CommandInput placeholder="Search items..." />
+                            <CommandEmpty>No items found.</CommandEmpty>
+
+                            <CommandGroup>
+                                {availableItems?.map((item) => (
+                                    <CommandItem
+                                        key={item.id}
+                                        value={item.name}
+                                        onSelect={() => {
+                                            setSelectedCopyItemId(item.id);
+                                            setName(item.name);
+                                            setDescription(item.description || "");
+                                            setPrice(item.price.toString());
+                                            setSelectedAllergies(item.allergies?.map(a => a.id) || []);
+
+                                            if (item.media) {
+                                                setImages(item.media.map(m => new File([], m.url)));
+                                            }
+                                        }}
+                                    >
+                                        <Check
+                                            className={`mr-2 h-4 w-4 ${selectedCopyItemId === item.id ? "opacity-100" : "opacity-0"
+                                                }`}
+                                        />
+                                        {item.name} — {item.price}€
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
 
                 <div className="space-y-4">
                     {/* Name */}
