@@ -8,6 +8,18 @@ const shared = {
     saturday: "Dissabte",
     sunday: "Diumenge",
   },
+  actions: {
+    save: "Guardar",
+    cancel: "Cancel·lar",
+    delete: "Eliminar",
+    edit: "Editar",
+    add: "Afegir",
+    move: "Moure",
+    duplicate: "Duplicar",
+    confirm: "Confirmar",
+    back: "Enrere",
+    search: "Cercar",
+  },
 };
 
 const landing_page = {
@@ -252,6 +264,77 @@ const business_page = {
   },
 };
 
+const menu_management = {
+  actions: {
+    add_category: "Afegir categoria",
+    add_item: "Afegir article",
+    save_changes: "Guardar canvis",
+    move_to_category: "Moure a categoria",
+    delete_category: "Eliminar categoria",
+  },
+  labels: {
+    simple_view: "Simple",
+    organize_view: "Organitzar",
+    menu_hints: "Suggeriments del menú",
+    no_items: "Encara no hi ha articles. Fes clic a \"Afegir article\" per començar.",
+    no_items_category: "Encara no hi ha articles en aquesta categoria.",
+    items_count: "{{count}} articles",
+    add_first_item: "Afegeix el teu primer article",
+    critical: "Crític",
+    high: "Alt",
+    medium: "Mitjà",
+    low: "Baix",
+    go_back_menus: "Tornar a tots els menús",
+  },
+  messages: {
+    delete_category_confirm: "Estàs segur que vols eliminar aquesta categoria? Aquesta acció no es pot desfer i eliminarà tots els articles que contingui.",
+    delete_item_confirm_title: "Eliminar article?",
+    delete_item_confirm_desc: "Això eliminarà permanentment \"{{name}}\".",
+    move_item_select_category: "Selecciona la categoria on vols moure aquest article.",
+  },
+  modal: {
+    create_title: "Crear nou menú",
+    edit_title: "Editar menú",
+    name: "Nom",
+    description: "Descripció",
+    icon: "Icona",
+    start_date: "Data d'inici",
+    end_date: "Data de fi",
+    start_time: "Hora d'inici",
+    end_time: "Hora de fi",
+    repeat: "Repetir",
+    repeat_yearly: "Repetir anualment",
+    select_all_days: "Seleccionar tots els dies",
+    unselect_all_days: "Deseleccionar tots els dies",
+    update_button: "Actualitzar menú",
+    create_button: "Crear menú",
+    tooltips: {
+      icon: "Tria una icona per representar aquest menú.",
+      date_empty: "Deixar buit per a un menú sempre actiu.",
+      time_empty: "Deixar buit per a un menú actiu tot el dia.",
+    }
+  },
+  list: {
+    title: "Els teus Menús",
+    description: "Fes clic en un menú per gestionar les seves categories i articles. Afegeix nous menús per començar!",
+    remaining_menus: "Pots crear {{count}} menú més amb la teva subscripció.",
+    remaining_menus_plural: "Pots crear {{count}} menús més amb la teva subscripció.",
+    limit_reached: "Has assolit el límit de menús per a la teva subscripció.",
+    upgrade: "Actualitzar pla",
+    no_menus_title: "Encara no hi ha menús",
+    no_menus_desc: "Crea el teu primer menú per començar a organitzar els teus articles.",
+    create_menu: "Crear menú",
+    categories_count: "{{count}} Categoria",
+    categories_count_plural: "{{count}} Categories",
+    items_count: "{{count}} Article",
+    items_count_plural: "{{count}} Articles",
+    hints: "Suggeriments",
+    more_hints: "+{{count}} més",
+    manage_menu_hint: "Fes clic per obrir i gestionar aquest menú.",
+    create_new_menu_card: "Crear nou menú",
+  }
+};
+
 export default {
   landing_page,
   errors,
@@ -259,4 +342,5 @@ export default {
   auth_page,
   business_page,
   shared,
+  menu_management,
 };

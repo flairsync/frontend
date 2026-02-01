@@ -61,7 +61,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>
                         {isEditMode ? 'Edit Category' : 'Create New Category'}

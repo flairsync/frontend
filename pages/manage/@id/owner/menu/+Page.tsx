@@ -7,6 +7,7 @@ import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { usePageContext } from "vike-react/usePageContext";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { IconRenderer } from "@/components/shared/IconRenderer";
+import { useTranslation } from "react-i18next";
 import {
     Tooltip,
     TooltipContent,
@@ -38,6 +39,7 @@ const getBadgeStyles = (level: number) => {
 };
 
 const MenusPage: React.FC = () => {
+    const { t } = useTranslation();
     const [createModal, setCreateModal] = useState(false);
     const {
         routeParams,
@@ -50,6 +52,7 @@ const MenusPage: React.FC = () => {
     } = useBusinessMenus(routeParams.id);
 
     const remainingMenus = userSubscription.maxMenus - (businessBasicMenus?.length || 0);
+
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
             <MenuModal
@@ -74,18 +77,18 @@ const MenusPage: React.FC = () => {
             />
             <div className="max-w-6xl mx-auto space-y-8">
                 <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-100">
-                    Your Menus
+                    {t('menu_management.list.title')}
                 </h1>
                 <p className="text-zinc-500 dark:text-zinc-400">
-                    Click on a menu to manage its categories and items. Add new menus to get started!
+                    {t('menu_management.list.description')}
                 </p>
 
                 {/* Subscription counter */}
                 <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 mb-4">
                     <span>
                         {remainingMenus > 0
-                            ? `You can create ${remainingMenus} more menu${remainingMenus > 1 ? "s" : ""} with your subscription.`
-                            : "You have reached your menu limit for your subscription."}
+                            ? t('menu_management.list.remaining_menus', { count: remainingMenus })
+                            : t('menu_management.list.limit_reached')}
                     </span>
                     {remainingMenus === 0 && (
                         <Button
@@ -94,23 +97,23 @@ const MenusPage: React.FC = () => {
                             className="ml-2"
                             onClick={() => console.log("Upgrade subscription clicked")}
                         >
-                            Upgrade
+                            {t('menu_management.list.upgrade')}
                         </Button>
                     )}
                 </div>
 
                 {businessBasicMenus?.length === 0 ? (
                     <Card className="text-center p-12 border-dashed border-2 border-zinc-300 dark:border-zinc-700">
-                        <CardTitle className="text-2xl">No menus yet</CardTitle>
+                        <CardTitle className="text-2xl">{t('menu_management.list.no_menus_title')}</CardTitle>
                         <p className="text-zinc-500 my-4">
-                            Create your first menu to start organizing your items.
+                            {t('menu_management.list.no_menus_desc')}
                         </p>
                         <Button className="mt-4"
                             onClick={() => {
                                 setCreateModal(true);
                             }}
                         >
-                            <Plus className="h-4 w-4 mr-2" /> Create Menu
+                            <Plus className="h-4 w-4 mr-2" /> {t('menu_management.list.create_menu')}
                         </Button>
                     </Card>
                 ) : (
@@ -133,9 +136,9 @@ const MenusPage: React.FC = () => {
                                         </div>
 
                                         <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                            <span>{menu.categoriesCount} Categories</span>
+                                            <span>{t('menu_management.list.categories_count', { count: menu.categoriesCount })}</span>
                                             <span>•</span>
-                                            <span>{menu.itemsCount} Items</span>
+                                            <span>{t('menu_management.list.items_count', { count: menu.itemsCount })}</span>
                                             <span>•</span>
                                             {menu.hints && Object.keys(menu.hints).length > 0 && (
                                                 <TooltipProvider>
@@ -149,7 +152,7 @@ const MenusPage: React.FC = () => {
                                                                 >
                                                                     <AlertTriangle className="h-3.5 w-3.5" />
                                                                     {Object.keys(menu.hints).length}
-                                                                    <span className="ml-0.5 hidden sm:inline">Hints</span>
+                                                                    <span className="ml-0.5 hidden sm:inline">{t('menu_management.list.hints')}</span>
                                                                 </Badge>
                                                             </span>
                                                         </TooltipTrigger>
@@ -176,7 +179,7 @@ const MenusPage: React.FC = () => {
 
                                                                 {Object.keys(menu.hints).length > MAX_HINTS_PREVIEW && (
                                                                     <div className="pt-1 text-xs text-zinc-500">
-                                                                        +{Object.keys(menu.hints).length - MAX_HINTS_PREVIEW} more
+                                                                        {t('menu_management.list.more_hints', { count: Object.keys(menu.hints).length - MAX_HINTS_PREVIEW })}
                                                                     </div>
                                                                 )}
                                                             </div>
@@ -186,7 +189,7 @@ const MenusPage: React.FC = () => {
                                             )}
                                         </div>
                                         <p className="text-zinc-400 text-sm italic">
-                                            Click to open and manage this menu.
+                                            {t('menu_management.list.manage_menu_hint')}
                                         </p>
                                     </CardContent>
                                 </Card>
@@ -204,7 +207,7 @@ const MenusPage: React.FC = () => {
                                 >
                                     <Plus className="h-6 w-6 text-indigo-500 mb-2" />
                                     <p className="font-semibold text-zinc-700 dark:text-zinc-200">
-                                        Create New Menu
+                                        {t('menu_management.list.create_new_menu_card')}
                                     </p>
                                 </Card>
                             </motion.div>

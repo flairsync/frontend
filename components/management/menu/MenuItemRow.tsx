@@ -15,7 +15,6 @@ type MenuItemRowProps = {
     onDelete: (itemId: string) => void;
     // NEW
     onDuplicate: (item: any) => void; // duplicate button
-    dragControls?: any;               // passed from Reorder.Item
 };
 
 export const MenuItemRow = ({
@@ -23,7 +22,6 @@ export const MenuItemRow = ({
     categoryId,
     onEdit,
     onDelete,
-    dragControls,
     onDuplicate
 }: MenuItemRowProps) => {
     return (
@@ -31,11 +29,7 @@ export const MenuItemRow = ({
             className="flex justify-between items-center p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg
                  border border-zinc-200 dark:border-zinc-700 hover:shadow-sm transition"
         >
-            {/* Drag handle - left 25% of item */}
-            <div
-                className="absolute left-0 top-0 bottom-0 w-1/4 cursor-grab z-10 bg-gray-200 dark:bg-zinc-700/50"
-                onPointerDown={(e) => dragControls?.start(e)}
-            />
+
             <div className="flex flex-col">
                 <p className="font-medium text-zinc-800 dark:text-zinc-100">
                     {item.name}

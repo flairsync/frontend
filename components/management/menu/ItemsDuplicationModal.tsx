@@ -83,19 +83,19 @@ export function ItemsDuplicationModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl">
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
                 <DialogHeader>
                     <DialogTitle>Duplicate items into category</DialogTitle>
                 </DialogHeader>
 
-                <div className="grid grid-cols-2 gap-6 h-[420px]">
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-6 h-[600px] md:h-[420px]">
                     {/* LEFT SIDE */}
-                    <div className="flex flex-col gap-4">
-                        <Command className="border rounded-lg">
+                    <div className="flex flex-col gap-4 h-[300px] md:h-full">
+                        <Command className="border rounded-lg h-1/2 md:h-auto flex-1 flex flex-col min-h-0">
                             <CommandInput placeholder="Search items..." />
                             <CommandEmpty>No items found.</CommandEmpty>
-                            <CommandGroup>
-                                <ScrollArea className="h-[160px]">
+                            <CommandGroup className="flex-1 overflow-auto">
+                                <div className="h-full">
                                     {availableItems.map((item) => (
                                         <CommandItem
                                             key={item.id}
@@ -105,11 +105,11 @@ export function ItemsDuplicationModal({
                                             {item.name}
                                         </CommandItem>
                                     ))}
-                                </ScrollArea>
+                                </div>
                             </CommandGroup>
                         </Command>
 
-                        <div className="flex-1 border rounded-lg p-2">
+                        <div className="flex-1 border rounded-lg p-2 h-1/2 md:h-auto overflow-hidden">
                             <ScrollArea className="h-full">
                                 <div className="space-y-2">
                                     {selectedItems.map((item) => (
@@ -145,7 +145,7 @@ export function ItemsDuplicationModal({
                     </div>
 
                     {/* RIGHT SIDE */}
-                    <div className="border rounded-lg p-4 flex flex-col justify-between">
+                    <div className="border rounded-lg p-4 flex flex-col justify-between h-[200px] md:h-full overflow-y-auto">
                         {activeItem ? (
                             <div className="space-y-4">
                                 <div>

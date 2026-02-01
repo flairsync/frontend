@@ -21,6 +21,11 @@ export const useBusinessMenus = (businessId: string) => {
         return [];
       }
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!businessId,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
   });
 
   const { mutate: createNewMenu } = useMutation({
@@ -41,6 +46,11 @@ export const useBusinessMenus = (businessId: string) => {
       const resp = await fetchBusinessAllMenuItemsApiCall(businessId);
       return BusinessMenuItem.parseApiArrayResponse(resp.data.data.items);
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!businessId,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
   });
 
   return {

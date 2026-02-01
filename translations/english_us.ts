@@ -8,6 +8,18 @@ const shared = {
     saturday: "Saturday",
     sunday: "Sunday",
   },
+  actions: {
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    edit: "Edit",
+    add: "Add",
+    move: "Move",
+    duplicate: "Duplicate",
+    confirm: "Confirm",
+    back: "Back",
+    search: "Search",
+  },
   tags: {
     halal: "Halal",
     vegan: "Vegan",
@@ -354,6 +366,77 @@ const input_errors = {
   },
 };
 
+const menu_management = {
+  actions: {
+    add_category: "Add Category",
+    add_item: "Add Item",
+    save_changes: "Save changes",
+    move_to_category: "Move to Category",
+    delete_category: "Delete Category",
+  },
+  labels: {
+    simple_view: "Simple",
+    organize_view: "Organize",
+    menu_hints: "Menu Hints",
+    no_items: "No items yet. Click \"Add Item\" to start.",
+    no_items_category: "No items in this category yet.",
+    items_count: "{{count}} items",
+    add_first_item: "Add your first item",
+    critical: "Critical",
+    high: "High",
+    medium: "Medium",
+    low: "Low",
+    go_back_menus: "Go back to all menus",
+  },
+  messages: {
+    delete_category_confirm: "Are you sure you want to delete this category? This action cannot be undone and will remove all items within it.",
+    delete_item_confirm_title: "Delete item?",
+    delete_item_confirm_desc: "This will permanently delete \"{{name}}\".",
+    move_item_select_category: "Select the category to move this item to.",
+  },
+  modal: {
+    create_title: "Create New Menu",
+    edit_title: "Edit Menu",
+    name: "Name",
+    description: "Description",
+    icon: "Icon",
+    start_date: "Start Date",
+    end_date: "End Date",
+    start_time: "Start Time",
+    end_time: "End Time",
+    repeat: "Repeat",
+    repeat_yearly: "Repeat yearly",
+    select_all_days: "Select all days",
+    unselect_all_days: "Unselect all days",
+    update_button: "Update Menu",
+    create_button: "Create Menu",
+    tooltips: {
+      icon: "Pick an icon to represent this menu in the UI.",
+      date_empty: "Leave empty for a menu that is always active.",
+      time_empty: "Leave empty for this menu to be active all day.",
+    }
+  },
+  list: {
+    title: "Your Menus",
+    description: "Click on a menu to manage its categories and items. Add new menus to get started!",
+    remaining_menus: "You can create {{count}} more menu with your subscription.",
+    remaining_menus_plural: "You can create {{count}} more menus with your subscription.",
+    limit_reached: "You have reached your menu limit for your subscription.",
+    upgrade: "Upgrade",
+    no_menus_title: "No menus yet",
+    no_menus_desc: "Create your first menu to start organizing your items.",
+    create_menu: "Create Menu",
+    categories_count: "{{count}} Category",
+    categories_count_plural: "{{count}} Categories",
+    items_count: "{{count}} Item",
+    items_count_plural: "{{count}} Items",
+    hints: "Hints",
+    more_hints: "+{{count}} more",
+    manage_menu_hint: "Click to open and manage this menu.",
+    create_new_menu_card: "Create New Menu",
+  }
+};
+
 export default {
   landing_page,
   errors,
@@ -363,4 +446,5 @@ export default {
   shared,
   input_errors,
   permissions,
+  menu_management,
 };

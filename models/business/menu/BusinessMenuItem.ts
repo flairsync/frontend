@@ -6,6 +6,7 @@ export class BusinessMenuItem {
   name: string;
   description?: string;
   price: number;
+  order: number;
 
   allergies?: Allergy[] = [];
   media?: BusinessMenuItemMedia[] = [];
@@ -14,6 +15,7 @@ export class BusinessMenuItem {
     id: string,
     name: string,
     price: number,
+    order: number,
     description?: string,
     allergies?: Allergy[],
     media?: BusinessMenuItemMedia[],
@@ -24,6 +26,7 @@ export class BusinessMenuItem {
     this.description = description;
     this.allergies = allergies;
     this.media = media;
+    this.order = order;
   }
 
   static parseApiResponse(data: any): BusinessMenuItem | null {
@@ -35,6 +38,7 @@ export class BusinessMenuItem {
         data.id,
         data.name,
         data.price,
+        data.order,
         data.description,
         allergies,
         media,
@@ -52,8 +56,6 @@ export class BusinessMenuItem {
       const employee = this.parseApiResponse(val);
       if (employee) arr.push(employee);
     });
-    console.log("PARSED MENU ITEMS FOR ", data, " WILL RETURN ", arr);
-
     return arr;
   }
 }

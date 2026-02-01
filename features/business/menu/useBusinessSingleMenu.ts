@@ -9,7 +9,9 @@ import {
   DuplicateItemsInCatDto,
   duplicateItemsIntoCategoryApiCall,
   fetchBusinessSingleMenuApiCall,
+  MenuChanges,
   updateBusinessMenuApiCall,
+  updateBusinessMenuStructureApiCall,
   UpdateMenuCategoriesOrder,
   updateMenuCategoriesOrderApiCall,
   updateMenuCategoryApiCall,
@@ -32,7 +34,11 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
         return BusinessMenu.parseApiResponse(resp.data.data) || undefined;
       }
     },
-    enabled: businessId != null && menuId != null,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!businessId && !!menuId,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
   });
 
   const { mutate: updateMenu } = useMutation({
@@ -43,6 +49,25 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Menu updated !");
       refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: updateMenuStructure } = useMutation({
+    mutationKey: ["menu_struct", businessId, menuId],
+    mutationFn: async (data: MenuChanges) => {
+      toast.loading("Updating menu structure", {
+        id: "menu_sturcture_update",
+        toasterId: "menu_sturcture_update",
+      });
+      return updateBusinessMenuStructureApiCall(businessId, menuId, data);
+    },
+    onSuccess(data, variables, context) {
+      toast.dismiss("menu_sturcture_update");
+      toast.success("Menu structure updated");
+    },
+    onError(error, variables, context) {
+      toast.dismiss("menu_sturcture_update");
+      toast.error("Error updating menu structure");
     },
   });
 
@@ -182,6 +207,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     // Menu
     businessMenu,
     updateMenu,
+    updateMenuStructure,
     // Categories
     createNewCategory,
     updateCategoriesOrder,

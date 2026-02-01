@@ -127,7 +127,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
     return (
         <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto p-4 sm:p-6">
                 <DialogHeader>
                     <DialogTitle>{initialData ? 'Edit Item' : 'Create New Item'}</DialogTitle>
 

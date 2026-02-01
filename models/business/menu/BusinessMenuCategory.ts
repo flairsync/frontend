@@ -24,9 +24,8 @@ export class BusinessMenuCategory {
   static parseApiResponse(data: any): BusinessMenuCategory | null {
     if (!data) return null;
     try {
-      const items = BusinessMenuItem.parseApiArrayResponse(data.items);
-      console.log("PARSING GOT INM CATEGORYYYY ", items);
-
+      const items = BusinessMenuItem.parseApiArrayResponse(data.items)
+        .sort((a, b) => a.order - b.order);
       return new BusinessMenuCategory(
         data.id,
         data.name,

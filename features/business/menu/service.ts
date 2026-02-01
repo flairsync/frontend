@@ -5,6 +5,25 @@ const getMenusUrl = (businessId: string) => {
   return `${baseBusinessUrl}/${businessId}/menus`;
 };
 
+// Types
+
+export type OrderChange = {
+  id: string;
+  order: number;
+};
+
+export type ItemParentChange = {
+  itemId: string;
+  fromCategoryId: string;
+  toCategoryId: string;
+};
+
+export type MenuChanges = {
+  categoryOrderChanges: OrderChange[];
+  itemOrderChanges: OrderChange[];
+  itemParentChanges: ItemParentChange[];
+};
+
 //#region Menu
 export const fetchBusinessBasicMenusApiCall = (businessId: string) => {
   return flairapi.get(`${getMenusUrl(businessId)}/all`);
@@ -48,13 +67,20 @@ export type UpdateMenuDto = {
   icon: string | null;
 };
 
-// API function to update a menu using PATCH
 export const updateBusinessMenuApiCall = (
   businessId: string,
   menuId: string,
   data: UpdateMenuDto,
 ) => {
   return flairapi.patch(`${getMenusUrl(businessId)}/${menuId}`, data);
+};
+
+export const updateBusinessMenuStructureApiCall = (
+  businessId: string,
+  menuId: string,
+  data: MenuChanges,
+) => {
+  return flairapi.patch(`${getMenusUrl(businessId)}/${menuId}/structure`, data);
 };
 
 //#region Categories

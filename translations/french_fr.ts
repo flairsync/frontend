@@ -8,6 +8,18 @@ const shared = {
     saturday: "Samedi",
     sunday: "Dimanche",
   },
+  actions: {
+    save: "Enregistrer",
+    cancel: "Annuler",
+    delete: "Supprimer",
+    edit: "Modifier",
+    add: "Ajouter",
+    move: "Déplacer",
+    duplicate: "Dupliquer",
+    confirm: "Confirmer",
+    back: "Retour",
+    search: "Rechercher",
+  },
 };
 
 const landing_page = {
@@ -259,6 +271,77 @@ const business_page = {
   },
 };
 
+const menu_management = {
+  actions: {
+    add_category: "Ajouter une catégorie",
+    add_item: "Ajouter un article",
+    save_changes: "Enregistrer",
+    move_to_category: "Déplacer vers une catégorie",
+    delete_category: "Supprimer la catégorie",
+  },
+  labels: {
+    simple_view: "Simple",
+    organize_view: "Organiser",
+    menu_hints: "Conseils du menu",
+    no_items: "Pas encore d'articles. Cliquez sur \"Ajouter un article\" pour commencer.",
+    no_items_category: "Pas encore d'articles dans cette catégorie.",
+    items_count: "{{count}} articles",
+    add_first_item: "Ajoutez votre premier article",
+    critical: "Critique",
+    high: "Élevé",
+    medium: "Moyen",
+    low: "Faible",
+    go_back_menus: "Retour à tous les menus",
+  },
+  messages: {
+    delete_category_confirm: "Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible et supprimera tous les articles qu'elle contient.",
+    delete_item_confirm_title: "Supprimer l'article ?",
+    delete_item_confirm_desc: "Cela supprimera définitivement \"{{name}}\".",
+    move_item_select_category: "Sélectionnez la catégorie vers laquelle déplacer cet article.",
+  },
+  modal: {
+    create_title: "Créer un nouveau menu",
+    edit_title: "Modifier le menu",
+    name: "Nom",
+    description: "Description",
+    icon: "Icône",
+    start_date: "Date de début",
+    end_date: "Date de fin",
+    start_time: "Heure de début",
+    end_time: "Heure de fin",
+    repeat: "Répéter",
+    repeat_yearly: "Répéter chaque année",
+    select_all_days: "Sélectionner tous les jours",
+    unselect_all_days: "Désélectionner tous les jours",
+    update_button: "Mettre à jour le menu",
+    create_button: "Créer le menu",
+    tooltips: {
+      icon: "Choisissez une icône pour représenter ce menu.",
+      date_empty: "Laisser vide pour un menu toujours actif.",
+      time_empty: "Laisser vide pour un menu actif toute la journée.",
+    }
+  },
+  list: {
+    title: "Vos Menus",
+    description: "Cliquez sur un menu pour gérer ses catégories et ses articles. Ajoutez de nouveaux menus pour commencer !",
+    remaining_menus: "Vous pouvez créer {{count}} menu supplémentaire avec votre abonnement.",
+    remaining_menus_plural: "Vous pouvez créer {{count}} menus supplémentaires avec votre abonnement.",
+    limit_reached: "Vous avez atteint votre limite de menus pour votre abonnement.",
+    upgrade: "Mettre à niveau",
+    no_menus_title: "Aucun menu pour le moment",
+    no_menus_desc: "Créez votre premier menu pour commencer à organiser vos articles.",
+    create_menu: "Créer un menu",
+    categories_count: "{{count}} Catégorie",
+    categories_count_plural: "{{count}} Catégories",
+    items_count: "{{count}} Article",
+    items_count_plural: "{{count}} Articles",
+    hints: "Conseils",
+    more_hints: "+{{count}} de plus",
+    manage_menu_hint: "Cliquez pour ouvrir et gérer ce menu.",
+    create_new_menu_card: "Créer un nouveau menu",
+  }
+};
+
 export default {
   landing_page,
   errors,
@@ -266,4 +349,5 @@ export default {
   auth_page,
   business_page,
   shared,
+  menu_management,
 };
