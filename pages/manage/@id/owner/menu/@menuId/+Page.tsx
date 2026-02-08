@@ -358,6 +358,7 @@ const MenuDetailPage: React.FC = () => {
             />
 
             <ItemModal
+                businessId={id}
                 availableItems={businessAllItems}
                 allergies={[]}
                 onClose={() => {

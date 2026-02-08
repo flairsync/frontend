@@ -90,3 +90,17 @@ export const inviteNewEmployeeSchema = Yup.object({
     .email("input_errors.email.invalid")
     .required("input_errors.email.required"),
 });
+
+export const InventoryItemSchema = Yup.object().shape({
+  name: Yup.string().required("inventory_management.form.errors.name_required"),
+  quantity: Yup.number()
+    .min(0, "inventory_management.form.errors.quantity_min")
+    .required("inventory_management.form.errors.quantity_required"),
+  unitId: Yup.number().required("inventory_management.form.errors.unit_required"),
+  lowStockThreshold: Yup.number()
+    .min(0, "inventory_management.form.errors.threshold_min")
+    .required("inventory_management.form.errors.threshold_required"),
+  barcode: Yup.string().optional(),
+  description: Yup.string().optional(),
+  groupId: Yup.string().optional(),
+});

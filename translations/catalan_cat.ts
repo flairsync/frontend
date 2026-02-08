@@ -19,6 +19,10 @@ const shared = {
     confirm: "Confirmar",
     back: "Enrere",
     search: "Cercar",
+    clear: "Netejar",
+    all: "Tot",
+    previous: "Anterior",
+    next: "Següent",
   },
 };
 
@@ -335,6 +339,81 @@ const menu_management = {
   }
 };
 
+const item_modal = {
+  create_title: "Crear nou article",
+  edit_title: "Editar article",
+  copy_label: "Copiar d'articles existents",
+  copy_hint: "Selecciona un article per pre-emplenar el formulari. Tots els camps segueixen sent editables",
+  name: "Nom",
+  description: "Descripció",
+  price: "Preu",
+  allergies: "Al·lèrgies",
+  images: "Imatges",
+  tracking: {
+    label: "Seguiment",
+    tooltip: "Tria com es vincula aquest article amb el teu inventari.",
+    none: "Cap",
+    none_desc: "Sense seguiment d'inventari per a aquest article.",
+    direct: "Vincle directe",
+    direct_desc: "Aquest article del menú correspon directament a un article de l'inventari (ex: un article \"Coca Cola\" està vinculat a una \"Llauna de Coca\").",
+    link_existing: "Vincular article existent",
+    create_new: "Crear nou article d'inventari",
+    unit: "Unitat",
+    unit_placeholder: "Seleccionar unitat",
+    quantity_per_sale: "Quina quantitat es consumeix per venda?",
+    quantity_hint: "Si es ven en litres i aquest article usa 0.5 L, introdueix 0.5",
+  }
+};
+
+const inventory_management = {
+  title: "Gestió d'Inventari",
+  add_item: "Afegir Article",
+  edit_item: "Editar Article",
+  delete_item: "Eliminar Article",
+  adjust_stock: "Ajustar Estoc",
+  groups: "Grups",
+  manage_groups: "Gestionar Grups",
+  add_group: "Afegir Grup",
+  edit_group: "Editar Grup",
+  delete_group: "Eliminar Grup",
+  items: "Articles",
+  low_stock: "Estoc Baix",
+  all_items: "Tots els Articles",
+  table: {
+    name: "Nom",
+    quantity: "Quantitat",
+    unit: "Unitat",
+    group: "Grup",
+    threshold: "Llindar",
+    last_updated: "Actualitzat",
+    actions: "Accions",
+  },
+  form: {
+    name: "Nom de l'Article",
+    description: "Descripció",
+    quantity: "Quantitat",
+    unit: "Unitat",
+    threshold: "Llindar d'Alerta",
+    group: "Grup",
+    no_group: "Sense Grup",
+  },
+  adjust: {
+    title: "Ajustar Estoc per a {{name}}",
+    current: "Quantitat Actual",
+    adjustment: "Ajust",
+    adjustment_placeholder: "ex: 5 o -2",
+    reason: "Raó",
+    reason_placeholder: "ex: Reabastiment, Mermes, etc.",
+    new_quantity: "Nova Quantitat",
+  },
+  messages: {
+    delete_item_confirm: "Estàs segur que vols eliminar aquest article? Això també l'eliminarà de tots els articles del menú vinculats.",
+    delete_group_confirm: "Estàs segur que vols eliminar aquest grup? Els articles d’aquest grup es mouran a 'Per Defecte'.",
+    no_items: "No s’han trobat articles.",
+    no_groups: "No s’han trobat grups.",
+  }
+};
+
 export default {
   landing_page,
   errors,
@@ -343,4 +422,6 @@ export default {
   business_page,
   shared,
   menu_management,
+  item_modal,
+  inventory_management,
 };

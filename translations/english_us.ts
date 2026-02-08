@@ -19,6 +19,10 @@ const shared = {
     confirm: "Confirm",
     back: "Back",
     search: "Search",
+    clear: "Clear",
+    all: "All",
+    previous: "Previous",
+    next: "Next",
   },
   tags: {
     halal: "Halal",
@@ -437,6 +441,92 @@ const menu_management = {
   }
 };
 
+const item_modal = {
+  create_title: "Create New Item",
+  edit_title: "Edit Item",
+  copy_label: "Copy from existing items",
+  copy_hint: "Select an item to auto-fill the form. All fields remain editable",
+  name: "Name",
+  description: "Description",
+  price: "Price",
+  allergies: "Allergies",
+  images: "Images",
+  tracking: {
+    label: "Tracking",
+    tooltip: "Choose how this item links to your inventory.",
+    none: "None",
+    none_desc: "No inventory tracking for this item.",
+    direct: "Direct Link",
+    direct_desc: "This menu item maps directly to an inventory item. (e.g., a \"Coca Cola\" menu item links to a \"Coke Can\" inventory item).",
+    link_existing: "Link Existing Item",
+    create_new: "Create new inventory item",
+    unit: "Unit",
+    unit_placeholder: "Select unit",
+    quantity_per_sale: "How much is consumed per sale?",
+    quantity_hint: "If sold in liters and this item uses 0.5L, enter 0.5",
+  }
+};
+
+const inventory_management = {
+  title: "Inventory Management",
+  add_item: "Add Item",
+  edit_item: "Edit Item",
+  delete_item: "Delete Item",
+  adjust_stock: "Adjust Stock",
+  groups: "Groups",
+  manage_groups: "Manage Groups",
+  add_group: "Add Group",
+  edit_group: "Edit Group",
+  delete_group: "Delete Group",
+  items: "Items",
+  low_stock: "Low Stock",
+  all_items: "All Items",
+  table: {
+    name: "Name",
+    quantity: "Quantity",
+    unit: "Unit",
+    group: "Group",
+    threshold: "Threshold",
+    last_updated: "Last Updated",
+    actions: "Actions",
+  },
+  form: {
+    name: "Item Name",
+    barcode: "Barcode",
+    description: "Description",
+    quantity: "Quantity",
+    unit: "Unit",
+    threshold: "Low Stock Threshold",
+    group: "Group",
+    no_group: "No Group",
+    errors: {
+      name_required: "Item name is required",
+      quantity_required: "Quantity is required",
+      quantity_min: "Quantity cannot be negative",
+      unit_required: "Unit is required",
+      threshold_required: "Threshold is required",
+      threshold_min: "Threshold cannot be negative",
+    },
+  },
+  search_barcode: "Search Barcode",
+  edit_group_mode: "Updating group...",
+  adjust: {
+    title: "Adjust Stock for {{name}}",
+    current: "Current Quantity",
+    adjustment: "Adjustment",
+    adjustment_placeholder: "e.g., 5 or -2",
+    reason: "Reason",
+    reason_placeholder: "e.g., Restock, Waste, etc.",
+    new_quantity: "New Quantity",
+  },
+  messages: {
+    delete_item_confirm: "Are you sure you want to delete this item? This will also remove it from any linked menu items.",
+    delete_group_confirm: "Are you sure you want to delete this group? Items in this group will be moved to 'Default'.",
+    no_items: "No inventory items found.",
+    no_groups: "No groups found.",
+  }
+};
+
 export default {
   landing_page,
   errors,
@@ -447,4 +537,6 @@ export default {
   input_errors,
   permissions,
   menu_management,
+  item_modal,
+  inventory_management,
 };

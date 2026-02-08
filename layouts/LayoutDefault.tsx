@@ -1,4 +1,5 @@
 import "./style.css";
+import "nprogress/nprogress.css";
 
 import "./tailwind.css";
 import 'react-photo-view/dist/react-photo-view.css';

@@ -19,6 +19,10 @@ const shared = {
     confirm: "Confirmer",
     back: "Retour",
     search: "Rechercher",
+    clear: "Effacer",
+    all: "Tout",
+    previous: "Précédent",
+    next: "Suivant",
   },
 };
 
@@ -342,6 +346,81 @@ const menu_management = {
   }
 };
 
+const item_modal = {
+  create_title: "Créer un nouvel article",
+  edit_title: "Modifier l'article",
+  copy_label: "Copier à partir d'articles existants",
+  copy_hint: "Sélectionnez un article pour pré-remplir le formulaire. Tous les champs restent modifiables",
+  name: "Nom",
+  description: "Description",
+  price: "Prix",
+  allergies: "Allergies",
+  images: "Images",
+  tracking: {
+    label: "Suivi",
+    tooltip: "Choisissez comment cet article est lié à votre inventaire.",
+    none: "Aucun",
+    none_desc: "Pas de suivi d'inventaire pour cet article.",
+    direct: "Lien direct",
+    direct_desc: "Cet article du menu correspond directement à un article de l'inventaire. (ex: un article \"Coca Cola\" est lié à une \"Canette de Coca\").",
+    link_existing: "Lier un article existant",
+    create_new: "Créer un nouvel article d'inventaire",
+    unit: "Unité",
+    unit_placeholder: "Sélectionner l'unité",
+    quantity_per_sale: "Quelle quantité est consommée par vente ?",
+    quantity_hint: "S'il est vendu en litres et que cet article utilise 0,5 L, entrez 0,5",
+  }
+};
+
+const inventory_management = {
+  title: "Gestion des stocks",
+  add_item: "Ajouter un article",
+  edit_item: "Modifier l'article",
+  delete_item: "Supprimer l'article",
+  adjust_stock: "Ajuster le stock",
+  groups: "Groupes",
+  manage_groups: "Gérer les groupes",
+  add_group: "Ajouter un groupe",
+  edit_group: "Modifier le groupe",
+  delete_group: "Supprimer le groupe",
+  items: "Articles",
+  low_stock: "Stock faible",
+  all_items: "Tous les articles",
+  table: {
+    name: "Nom",
+    quantity: "Quantité",
+    unit: "Unité",
+    group: "Groupe",
+    threshold: "Seuil",
+    last_updated: "Mis à jour",
+    actions: "Actions",
+  },
+  form: {
+    name: "Nom de l'article",
+    description: "Description",
+    quantity: "Quantité",
+    unit: "Unité",
+    threshold: "Seuil d'alerte",
+    group: "Groupe",
+    no_group: "Aucun groupe",
+  },
+  adjust: {
+    title: "Ajuster le stock pour {{name}}",
+    current: "Quantité actuelle",
+    adjustment: "Ajustement",
+    adjustment_placeholder: "ex: 5 ou -2",
+    reason: "Raison",
+    reason_placeholder: "ex: Réapprovisionnement, Perte, etc.",
+    new_quantity: "Nouvelle quantité",
+  },
+  messages: {
+    delete_item_confirm: "Êtes-vous sûr de vouloir supprimer cet article ? Cela le retirera également de tous les articles du menu liés.",
+    delete_group_confirm: "Êtes-vous sûr de vouloir supprimer ce groupe ? Les articles de ce groupe seront déplacés vers 'Défaut'.",
+    no_items: "Aucun article trouvé.",
+    no_groups: "Aucun groupe trouvé.",
+  }
+};
+
 export default {
   landing_page,
   errors,
@@ -350,4 +429,6 @@ export default {
   business_page,
   shared,
   menu_management,
+  item_modal,
+  inventory_management,
 };
