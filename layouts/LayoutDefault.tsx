@@ -8,6 +8,7 @@ import { clientOnly } from "vike-react/clientOnly";
 import 'radar-sdk-js/dist/radar.css';
 const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provider"));
 import { Toaster } from "@/components/ui/sonner"
+import { SystemErrorOverlay } from "@/features/system-errors/SystemErrorOverlay";
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +20,7 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
       >
         {children}
         <Toaster />
+        <SystemErrorOverlay />
       </ThemeProvider>
     </>
   );

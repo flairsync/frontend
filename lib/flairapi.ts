@@ -1,4 +1,7 @@
 import axios from "axios";
+import { toast } from "sonner";
+import i18n from "@/translations/i18n";
+import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
 const baseUrl = `${import.meta.env.BASE_URL}/auth/refresh`;
 
 const flairapi = axios.create({
@@ -60,6 +63,31 @@ flairapi.interceptors.response.use(
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
+      }
+    }
+
+    // Global Error Handling for UI Feedback
+    if (typeof window !== "undefined") {
+      console.error("API ERROR DETECTED:", error);
+
+      const isProtectedRoute = window.location.pathname.startsWith('/manage') || window.location.pathname.startsWith('/profile');
+
+      if (!error.response) {
+        // Network error (CORS, offline, etc.)
+        console.warn("NETWORK/CORS ERROR DETECTED");
+        if (isProtectedRoute) {
+          console.warn("PROTECTED ROUTE - LOCKING APP");
+          useSystemErrorStore.getState().lock('network');
+        }
+        toast.error(i18n.t("errors.technical.network_error"));
+      } else if (error.response.status >= 500) {
+        // Server error
+        console.warn("SERVER ERROR DETECTED");
+        if (isProtectedRoute) {
+          console.warn("PROTECTED ROUTE - LOCKING APP");
+          useSystemErrorStore.getState().lock('server');
+        }
+        toast.error(i18n.t("errors.technical.server_error"));
       }
     }
 

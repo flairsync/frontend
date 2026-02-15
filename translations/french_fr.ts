@@ -23,6 +23,7 @@ const shared = {
     all: "Tout",
     previous: "Précédent",
     next: "Suivant",
+    retry: "Réessayer la connexion",
   },
 };
 
@@ -213,6 +214,15 @@ const errors = {
   "500": {
     title: "500 Erreur interne du serveur",
     description: "Une erreur est survenue.",
+  },
+  technical: {
+    network_title: "Connexion perdue",
+    error_title: "Erreur système",
+    network_error: "Erreur réseau ou connexion perdue. Nous y travaillons.",
+    server_error: "Erreur interne du serveur. Veuillez réessayer plus tard.",
+    session_expired: "Votre session a expiré. Veuillez vous reconnecter.",
+    unexpected_error: "Une erreur inattendue est survenue. Veuillez réessayer.",
+    working_on_it: "Nous sommes au courant du problème et nous travaillons à restaurer l'accès.",
   },
 };
 

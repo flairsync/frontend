@@ -82,11 +82,23 @@ const ownerNavData = {
                     icon: Utensils,
                 },
                 {
+                    key: "floor-plan",
+                    title: "Floor Plan",
+                    url: "/manage/:id/owner/floor-plan",
+                    icon: LayoutDashboard,
+                },
+                {
                     key: "orders",
 
-                    title: "Orders & Reservations",
+                    title: "Orders",
                     url: "/manage/:id/owner/orders",
                     icon: ShoppingBag,
+                },
+                {
+                    key: "reservations",
+                    title: "Reservations",
+                    url: "/manage/:id/owner/reservations",
+                    icon: CalendarCheck,
                 },
                 {
                     key: "analytics",

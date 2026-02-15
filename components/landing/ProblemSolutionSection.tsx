@@ -66,8 +66,8 @@ const ProblemSolutionSection = () => {
     }, []);
 
     return (
-        <div className="font-sans bg-white text-zinc-900 p-8">
-            <div className="max-w-7xl mx-auto" id="landing_prob_sol_section">
+        <div className="font-sans bg-white text-zinc-900 py-16 px-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6" id="landing_prob_sol_section">
                 {/* Top Section */}
                 <div className="mb-16">
                     <h1 className="text-4xl font-bold mb-4 leading-[1.3]" id="prob_solution_title">

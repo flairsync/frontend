@@ -208,56 +208,67 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
 
     return (
         <div className="p-6 space-y-6">
-            <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">{t("inventory_management.title")}</h1>
-                <div className="flex space-x-2">
-                    <Button variant="outline" onClick={() => setGroupModalOpen(true)} className="gap-2">
-                        <Layers className="w-4 h-4" /> {t("inventory_management.manage_groups")}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("inventory_management.title")}</h1>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <Button variant="outline" onClick={() => setGroupModalOpen(true)} className="flex-1 sm:flex-none gap-2 px-3 h-9">
+                        <Layers className="w-4 h-4" />
+                        <span className="hidden sm:inline">{t("inventory_management.manage_groups")}</span>
+                        <span className="sm:hidden text-xs">Groups</span>
                     </Button>
-                    <Button onClick={handleOpenCreateModal} className="gap-2">
-                        <Plus className="w-4 h-4" /> {t("inventory_management.add_item")}
+                    <Button onClick={handleOpenCreateModal} className="flex-1 sm:flex-none gap-2 px-3 h-9">
+                        <Plus className="w-4 h-4" />
+                        <span className="hidden sm:inline">{t("inventory_management.add_item")}</span>
+                        <span className="sm:hidden text-xs">Add</span>
                     </Button>
                 </div>
             </div>
 
             <Card>
-                <CardHeader className="pb-3">
-                    <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-                        <div className="relative w-full md:w-72">
-                            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
-                            <Input
-                                placeholder={t("shared.actions.search")}
-                                className="pl-8"
-                                value={filters.search}
-                                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                            />
+                <CardHeader className="pb-3 px-6 pt-6">
+                    <div className="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
+                        {/* Search Controls */}
+                        <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                            <div className="relative w-full sm:w-64">
+                                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    placeholder={t("shared.actions.search")}
+                                    className="pl-8 h-9"
+                                    value={filters.search}
+                                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="relative w-full sm:w-48">
+                                <Input
+                                    placeholder={t("inventory_management.search_barcode") || "Search Barcode"}
+                                    value={filters.barcode}
+                                    className="h-9"
+                                    onChange={(e) => setFilters({ ...filters, barcode: e.target.value })}
+                                />
+                            </div>
                         </div>
 
-                        <div className="relative w-full md:w-48">
-                            <Input
-                                placeholder={t("inventory_management.search_barcode") || "Search Barcode"}
-                                value={filters.barcode}
-                                onChange={(e) => setFilters({ ...filters, barcode: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                            <div className="flex items-center gap-2">
-                                <Label className="text-sm whitespace-nowrap">{t("inventory_management.table.group")}:</Label>
+                        {/* Filter Controls */}
+                        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-start lg:justify-end">
+                            <div className="flex items-center gap-2 shrink-0">
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant="outline"
                                             role="combobox"
-                                            className="w-[150px] justify-between font-normal"
+                                            size="sm"
+                                            className="w-[140px] justify-between font-normal h-9 bg-background/50"
                                         >
-                                            {filters.groupId === "all"
-                                                ? t("inventory_management.all_items")
-                                                : inventoryGroups?.find(g => g.id === filters.groupId)?.name || filters.groupId}
+                                            <span className="truncate">
+                                                {filters.groupId === "all"
+                                                    ? t("inventory_management.table.group")
+                                                    : inventoryGroups?.find(g => g.id === filters.groupId)?.name || filters.groupId}
+                                            </span>
                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
+                                    <PopoverContent className="w-[200px] p-0" align="end">
                                         <Command>
                                             <CommandInput placeholder={t("shared.actions.search")} />
                                             <CommandEmpty>No group found.</CommandEmpty>
@@ -287,22 +298,24 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                 </Popover>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                                <Label className="text-sm whitespace-nowrap">{t("inventory_management.table.unit")}:</Label>
+                            <div className="flex items-center gap-2 shrink-0">
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant="outline"
                                             role="combobox"
-                                            className="w-[150px] justify-between font-normal"
+                                            size="sm"
+                                            className="w-[140px] justify-between font-normal h-9 bg-background/50"
                                         >
-                                            {filters.unitId === "all"
-                                                ? t("shared.actions.all")
-                                                : inventoryUnits?.find(u => String(u.id) === filters.unitId)?.name || filters.unitId}
+                                            <span className="truncate">
+                                                {filters.unitId === "all"
+                                                    ? t("inventory_management.table.unit")
+                                                    : inventoryUnits?.find(u => String(u.id) === filters.unitId)?.name || filters.unitId}
+                                            </span>
                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
+                                    <PopoverContent className="w-[200px] p-0" align="end">
                                         <Command>
                                             <CommandInput placeholder={t("shared.actions.search")} />
                                             <CommandEmpty>No unit found.</CommandEmpty>
@@ -332,98 +345,117 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                 </Popover>
                             </div>
 
-                            <div className="flex items-center space-x-2">
+                            <div className="flex items-center space-x-2 bg-muted/40 px-3 py-1.5 rounded-md h-9 border border-transparent hover:border-muted-foreground/20 transition-colors cursor-pointer select-none"
+                                onClick={() => setFilters({ ...filters, lowStock: !filters.lowStock })}>
                                 <Checkbox
                                     id="lowStock"
                                     checked={filters.lowStock}
                                     onCheckedChange={(checked) => setFilters({ ...filters, lowStock: !!checked })}
                                 />
-                                <Label htmlFor="lowStock" className="text-sm cursor-pointer">{t("inventory_management.low_stock")}</Label>
+                                <Label htmlFor="lowStock" className="text-xs font-medium cursor-pointer whitespace-nowrap">
+                                    {t("inventory_management.low_stock")}
+                                </Label>
                             </div>
 
                             {(filters.search || filters.barcode || filters.groupId !== "all" || filters.unitId !== "all" || filters.lowStock) && (
-                                <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 px-2 lg:px-3">
+                                <Button variant="ghost" size="sm" onClick={clearFilters} className="h-9 px-2 text-muted-foreground hover:text-foreground">
+                                    <X className="mr-2 h-4 w-4" />
                                     {t("shared.actions.clear") || "Clear"}
-                                    <X className="ml-2 h-4 w-4" />
                                 </Button>
                             )}
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="cursor-pointer" onClick={() => toggleSort("name")}>
-                                    <div className="flex items-center">{t("inventory_management.table.name")} <SortIcon field="name" /></div>
-                                </TableHead>
-                                <TableHead className="cursor-pointer" onClick={() => toggleSort("group")}>
-                                    <div className="flex items-center">{t("inventory_management.table.group")} <SortIcon field="group" /></div>
-                                </TableHead>
-                                <TableHead className="cursor-pointer text-right" onClick={() => toggleSort("quantity")}>
-                                    <div className="flex items-center justify-end">{t("inventory_management.table.quantity")} <SortIcon field="quantity" /></div>
-                                </TableHead>
-                                <TableHead>{t("inventory_management.table.unit")}</TableHead>
-                                <TableHead className="text-right">{t("inventory_management.table.threshold")}</TableHead>
-                                <TableHead className="text-right">{t("inventory_management.table.actions")}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {fetchingInventoryItems && !inventoryItems ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                        Loading inventory...
-                                    </TableCell>
-                                </TableRow>
-                            ) : !inventoryItems || inventoryItems.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                        {t("inventory_management.messages.no_items")}
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                inventoryItems.map((item) => (
-                                    <TableRow key={item.id}>
-                                        <TableCell className="font-medium">
-                                            {item.name}
-                                            {item.quantity <= item.lowStockThreshold && (
-                                                <Badge variant="destructive" className="ml-2">
-                                                    <AlertTriangle className="w-3 h-3 mr-1" /> {t("inventory_management.low_stock")}
-                                                </Badge>
-                                            )}
-                                        </TableCell>
-                                        <TableCell>{item.group?.name || t("inventory_management.form.no_group")}</TableCell>
-                                        <TableCell className="text-right">
-                                            <span className={item.quantity <= item.lowStockThreshold ? "text-destructive font-bold" : ""}>
-                                                {item.quantity}
-                                            </span>
-                                        </TableCell>
-                                        <TableCell>{getUnitName(item.unitId)}</TableCell>
-                                        <TableCell className="text-right">{item.lowStockThreshold}</TableCell>
-                                        <TableCell className="text-right space-x-2">
-                                            <Button size="icon" variant="ghost" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")}>
-                                                <History className="w-4 h-4" />
-                                            </Button>
-                                            <Button size="icon" variant="ghost" onClick={() => handleEditItem(item)}>
-                                                <Pencil className="w-4 h-4" />
-                                            </Button>
-                                            <ConfirmAction
-                                                onConfirm={() => handleDeleteItem(item.id)}
-                                                title={t("shared.actions.delete")}
-                                                description={t("inventory_management.messages.delete_item_confirm")}
-                                                confirmText={t("shared.actions.delete")}
-                                                cancelText={t("shared.actions.cancel")}
-                                            >
-                                                <Button size="icon" variant="ghost" className="text-destructive hover:text-destructive">
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            </ConfirmAction>
-                                        </TableCell>
+                    <div className="rounded-md border overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader className="bg-muted/30">
+                                    <TableRow>
+                                        <TableHead className="cursor-pointer font-semibold min-w-[160px]" onClick={() => toggleSort("name")}>
+                                            <div className="flex items-center">{t("inventory_management.table.name")} <SortIcon field="name" /></div>
+                                        </TableHead>
+                                        <TableHead className="cursor-pointer font-semibold" onClick={() => toggleSort("group")}>
+                                            <div className="flex items-center">{t("inventory_management.table.group")} <SortIcon field="group" /></div>
+                                        </TableHead>
+                                        <TableHead className="cursor-pointer text-right font-semibold" onClick={() => toggleSort("quantity")}>
+                                            <div className="flex items-center justify-end">{t("inventory_management.table.quantity")} <SortIcon field="quantity" /></div>
+                                        </TableHead>
+                                        <TableHead className="font-semibold">{t("inventory_management.table.unit")}</TableHead>
+                                        <TableHead className="text-right font-semibold">{t("inventory_management.table.threshold")}</TableHead>
+                                        <TableHead className="text-right font-semibold">{t("inventory_management.table.actions")}</TableHead>
                                     </TableRow>
-                                ))
-                            )}
-                        </TableBody>
-                    </Table>
+                                </TableHeader>
+                                <TableBody>
+                                    {fetchingInventoryItems && !inventoryItems ? (
+                                        <TableRow>
+                                            <TableCell colSpan={6} className="text-center py-10 text-muted-foreground font-medium">
+                                                Loading inventory...
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : !inventoryItems || inventoryItems.length === 0 ? (
+                                        <TableRow>
+                                            <TableCell colSpan={6} className="text-center py-10 text-muted-foreground font-medium">
+                                                {t("inventory_management.messages.no_items")}
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        inventoryItems.map((item) => (
+                                            <TableRow key={item.id} className="hover:bg-muted/20 transition-colors">
+                                                <TableCell className="font-medium min-w-[160px]">
+                                                    <div className="flex flex-col">
+                                                        <span>{item.name}</span>
+                                                        {item.barcode && <span className="text-[10px] text-muted-foreground font-normal">{item.barcode}</span>}
+                                                    </div>
+                                                    {item.quantity <= item.lowStockThreshold && (
+                                                        <Badge variant="destructive" className="mt-1.5 text-[10px] px-1.5 py-0.5 h-auto leading-none w-fit flex items-center shrink-0">
+                                                            <AlertTriangle className="w-2.5 h-2.5 mr-1" /> {t("inventory_management.low_stock")}
+                                                        </Badge>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline" className="font-normal">
+                                                        {item.group?.name || t("inventory_management.form.no_group")}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <span className={cn(
+                                                        "inline-flex items-center justify-center min-w-[32px] px-2 py-0.5 rounded-full text-sm font-bold",
+                                                        item.quantity <= item.lowStockThreshold ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"
+                                                    )}>
+                                                        {item.quantity}
+                                                    </span>
+                                                </TableCell>
+                                                <TableCell className="text-muted-foreground">{getUnitName(item.unitId)}</TableCell>
+                                                <TableCell className="text-right text-muted-foreground">{item.lowStockThreshold}</TableCell>
+                                                <TableCell className="text-right">
+                                                    <div className="flex justify-end gap-1">
+                                                        <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")}>
+                                                            <History className="w-4 h-4 text-muted-foreground" />
+                                                        </Button>
+                                                        <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditItem(item)}>
+                                                            <Pencil className="w-4 h-4 text-muted-foreground" />
+                                                        </Button>
+                                                        <ConfirmAction
+                                                            onConfirm={() => handleDeleteItem(item.id)}
+                                                            title={t("shared.actions.delete")}
+                                                            description={t("inventory_management.messages.delete_item_confirm")}
+                                                            confirmText={t("shared.actions.delete")}
+                                                            cancelText={t("shared.actions.cancel")}
+                                                        >
+                                                            <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10">
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </Button>
+                                                        </ConfirmAction>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
 
                     {/* Pagination */}
                     {pagination && pagination.pages > 1 && (

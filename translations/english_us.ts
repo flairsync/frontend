@@ -23,6 +23,7 @@ const shared = {
     all: "All",
     previous: "Previous",
     next: "Next",
+    retry: "Retry Connection",
   },
   tags: {
     halal: "Halal",
@@ -268,6 +269,15 @@ const errors = {
   "500": {
     title: "500 Internal Server Error",
     description: "Something went wrong.",
+  },
+  technical: {
+    network_title: "Connection Lost",
+    error_title: "System Error",
+    network_error: "Network error or connection lost. We're working on it.",
+    server_error: "Internal server error. Please try again later.",
+    session_expired: "Your session has expired. Please log in again.",
+    unexpected_error: "An unexpected error occurred. Please try again.",
+    working_on_it: "We're aware of the issue and working to restore access.",
   },
 };
 
@@ -539,4 +549,39 @@ export default {
   menu_management,
   item_modal,
   inventory_management,
+  floor_plan: {
+    title: "Floor Plan",
+    add_floor: "Add Floor",
+    edit_floor: "Edit Floor",
+    delete_floor: "Delete Floor",
+    floors: "Floors",
+    tables: "Tables",
+    add_table: "Add Table",
+    edit_table: "Edit Table",
+    delete_table: "Delete Table",
+    capacity: "Capacity",
+    position: "Position",
+    shape: "Shape",
+  },
+  orders: {
+    title: "Orders",
+    create_order: "Create Order",
+    order_type: "Order Type",
+    status: "Status",
+    items: "Items",
+    total: "Total",
+    dine_in: "Dine-in",
+    takeaway: "Takeaway",
+    delivery: "Delivery",
+  },
+  reservations: {
+    title: "Reservations",
+    add_reservation: "Add Reservation",
+    customer_name: "Customer Name",
+    time: "Time",
+    guests: "Guests",
+    table: "Table",
+    assign_table: "Assign Table",
+    pre_order: "Pre-order",
+  },
 };

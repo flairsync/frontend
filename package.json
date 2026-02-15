@@ -90,7 +90,8 @@
     "vike-react-query": "^0.1.5",
     "vike-server": "^1.0.24",
     "yup": "^1.7.0",
-    "zod": "^4.1.5"
+    "zod": "^4.1.5",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.12",
