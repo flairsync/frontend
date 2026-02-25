@@ -1,108 +1,113 @@
+import React, { memo } from "react"
+import { motion } from "framer-motion"
+import { Star, Clock, MapPin, ExternalLink } from "lucide-react"
+import { Badge } from "../ui/badge"
 import { BusinessCardDetails } from "@/models/BusinessCardDetails"
-import React from "react"
 
 type Props = {
     businessDetails: BusinessCardDetails
 }
 
-const GetStars = ({ rating }: { rating: number }) => {
-    const fullStars = Math.floor(rating)
-    const halfStar = rating % 1 >= 0.5 ? 1 : 0
-    const emptyStars = 5 - fullStars - halfStar
-
+const GetStars = memo(({ rating }: { rating: number }) => {
     return (
-        <div className="flex items-center gap-1">
-            {/* Full stars */}
-            {Array(fullStars)
-                .fill(0)
-                .map((_, i) => (
-                    <svg
-                        key={`full-${i}`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        className="w-5 h-5 text-yellow-500"
-                    >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                ))}
-
-            {/* Half star */}
-            {halfStar === 1 && (
-                <svg
-                    key="half"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    className="w-5 h-5 text-yellow-500"
-                >
-                    <defs>
-                        <linearGradient id="halfGrad">
-                            <stop offset="50%" stopColor="currentColor" />
-                            <stop offset="50%" stopColor="transparent" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        fill="url(#halfGrad)"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                    />
-                </svg>
-            )}
-
-            {/* Empty stars */}
-            {Array(emptyStars)
-                .fill(0)
-                .map((_, i) => (
-                    <svg
-                        key={`empty-${i}`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        stroke="currentColor"
-                        className="w-5 h-5 text-muted-foreground"
-                    >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                ))}
-
-            <p className="text-sm text-muted-foreground">({rating})</p>
+        <div className="flex items-center gap-0.5">
+            {[...Array(5)].map((_, i) => (
+                <Star
+                    key={i}
+                    size={14}
+                    className={`${i < Math.floor(rating)
+                        ? "fill-yellow-400 text-yellow-400"
+                        : i < rating
+                            ? "fill-yellow-400/50 text-yellow-400/50"
+                            : "text-muted-foreground/30"
+                        }`}
+                />
+            ))}
+            <span className="ml-1.5 text-xs font-bold text-foreground/80">{rating}</span>
         </div>
     )
-}
+})
 
-const PublicFeedBusinessCard = ({ businessDetails }: Props) => {
+GetStars.displayName = "GetStars"
+
+const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
     return (
-        <a href={`business/${businessDetails.link}`}>
-            <div className="bg-card text-card-foreground rounded-lg shadow-sm overflow-hidden flex flex-col h-full border border-border hover:cursor-pointer hover:scale-105 transition-all ease-in-out duration-300">
-                {/* Image */}
-                <div className="relative">
+        <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ y: -6 }}
+            transition={{
+                duration: 0.2,
+                ease: [0.23, 1, 0.32, 1] // Custom snappy ease
+            }}
+            style={{
+                willChange: "transform, opacity",
+                backfaceVisibility: "hidden"
+            }}
+            className="group relative flex flex-col h-full bg-card border border-border/50 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-shadow duration-300"
+        >
+            <a href={`business/${businessDetails.link}`} className="flex flex-col h-full">
+                {/* Image Container */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     <img
                         src={businessDetails.image}
-                        alt="Restaurant"
-                        className="w-full h-48 object-cover"
+                        alt={businessDetails.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+
+                    {/* Overlays */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+
+                    {/* Status Badge */}
+                    <div className="absolute top-4 left-4">
+                        <Badge className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 transition-colors rounded-full px-3 py-1 text-[10px] uppercase tracking-wider font-bold">
+                            {businessDetails.status}
+                        </Badge>
+                    </div>
+
+                    {/* Quick Action Button */}
+                    <div className="absolute bottom-4 right-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="p-2.5 rounded-full bg-primary text-primary-foreground shadow-xl">
+                            <ExternalLink size={16} />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-4 flex flex-col justify-between flex-grow">
-                    <div>
-                        <h3 className="text-xl font-semibold">{businessDetails.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                            {businessDetails.status}
-                        </p>
-
-                        <div className="flex items-center text-lg">
-                            <GetStars rating={businessDetails.rating} />
+                <div className="p-6 flex flex-col flex-grow space-y-4">
+                    <div className="space-y-1">
+                        <h3 className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors line-clamp-1">
+                            {businessDetails.name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                            <MapPin size={12} />
+                            <span className="text-xs font-medium">Paris, France</span>
                         </div>
+                    </div>
 
-                        <p className="mt-2 font-bold text-lg">$30 and under</p>
-                        <p className="text-sm text-muted-foreground mt-1">(1687 reviews)</p>
+                    <div className="flex items-center justify-between">
+                        <GetStars rating={businessDetails.rating} />
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <Clock size={12} className="text-primary/60" />
+                            <span className="text-[10px] font-bold uppercase tracking-tight">Open Now</span>
+                        </div>
+                    </div>
+
+                    <div className="pt-2 mt-auto border-t border-border/30 flex items-center justify-between">
+                        <p className="text-sm font-bold text-foreground/90">
+                            $30 <span className="text-muted-foreground/50 font-medium">and under</span>
+                        </p>
+                        <p className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+                            1.6k+ reviews
+                        </p>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </motion.div>
     )
-}
+})
+
+PublicFeedBusinessCard.displayName = "PublicFeedBusinessCard"
 
 export default PublicFeedBusinessCard

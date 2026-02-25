@@ -13,6 +13,7 @@ import { FloorPlanDesigner } from "@/features/floor-plan/components/FloorPlanDes
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { BatchCreateTableModal } from "@/components/management/floor-plan/BatchCreateTableModal";
 
 const FloorPlanPage: React.FC = () => {
     const { t } = useTranslation();
@@ -40,6 +41,12 @@ const FloorPlanPage: React.FC = () => {
     const [tableModalOpen, setTableModalOpen] = useState(false);
     const [editingFloor, setEditingFloor] = useState<any>(null);
     const [editingTable, setEditingTable] = useState<any>(null);
+    const [batchModalOpen, setBatchModalOpen] = useState(false);
+
+    const {
+        batchCreateTables,
+        isBatchCreatingTables
+    } = useTables(businessId);
 
     const [floorForm, setFloorForm] = useState({ name: "", description: "", order: 0 });
     const [tableForm, setTableForm] = useState({
@@ -115,6 +122,10 @@ const FloorPlanPage: React.FC = () => {
                         <Grid2X2 className="w-4 h-4" />
                         {t("floor_plan.add_table")}
                     </Button>
+                    <Button variant="outline" onClick={() => setBatchModalOpen(true)} className="gap-2">
+                        <Grid2X2 className="w-4 h-4" />
+                        Batch Create
+                    </Button>
                 </div>
             </div>
 
@@ -183,6 +194,7 @@ const FloorPlanPage: React.FC = () => {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
+                                        <TableHead>Number</TableHead>
                                         <TableHead>{t("inventory_management.table.name")}</TableHead>
                                         <TableHead>{t("floor_plan.capacity")}</TableHead>
                                         <TableHead>{t("floor_plan.title")}</TableHead>
@@ -191,12 +203,13 @@ const FloorPlanPage: React.FC = () => {
                                 </TableHeader>
                                 <TableBody>
                                     {fetchingTables ? (
-                                        <TableRow><TableCell colSpan={4} className="text-center">Loading...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={5} className="text-center">Loading...</TableCell></TableRow>
                                     ) : tables?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={4} className="text-center">No tables found.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={5} className="text-center">No tables found.</TableCell></TableRow>
                                     ) : (
                                         tables?.map((table: any) => (
                                             <TableRow key={table.id}>
+                                                <TableCell>{table.number || "-"}</TableCell>
                                                 <TableCell className="font-medium">{table.name}</TableCell>
                                                 <TableCell>{table.capacity}</TableCell>
                                                 <TableCell>{floors?.find((f: any) => f.id === table.floorId)?.name || "-"}</TableCell>
@@ -295,6 +308,15 @@ const FloorPlanPage: React.FC = () => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            <BatchCreateTableModal
+                isOpen={batchModalOpen}
+                onClose={() => setBatchModalOpen(false)}
+                floors={floors || []}
+                existingTables={tables || []}
+                onBatchCreate={batchCreateTables}
+                isCreating={isBatchCreatingTables}
+            />
         </div>
     );
 };

@@ -31,10 +31,25 @@ export const useReservations = (businessId: string) => {
     });
 
     const createReservationMutation = useMutation({
-        mutationFn: (data: CreateReservationDto) => createReservationApiCall(businessId, data),
+        mutationFn: async (data: CreateReservationDto) => {
+            const response = await createReservationApiCall(businessId, data);
+            return response.data?.data !== undefined ? response.data.data : response.data;
+        },
         onSuccess: () => {
             toast.success("Reservation created successfully");
             queryClient.invalidateQueries({ queryKey: ["reservations", businessId] });
+        },
+        onError: (error: any) => {
+            const status = error.response?.status || error.status;
+            if (status === 400) {
+                toast.error("Guest count exceeds the selected table's maximum capacity.");
+            } else if (status === 409) {
+                toast.error("This table is already booked around this time. Please select another table or time.");
+            } else if (status === 403) {
+                toast.error("You do not have permission to manage reservations.");
+            } else {
+                toast.error(error.response?.data?.message || "Failed to create reservation");
+            }
         },
     });
 

@@ -8,8 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Coffee, UtensilsCrossed, Table2, Clock } from "lucide-react"
 import { StaffAddOrderDrawer } from "@/components/staff/orders/StaffAddOrderDrawer"
 import { useState } from "react"
+import { usePageContext } from "vike-react/usePageContext"
 
 export default function StaffOrdersPage() {
+    const { routeParams } = usePageContext();
+    const businessId = routeParams.id;
     const [addingOrder, setAddingOrder] = useState(false);
     const activeOrders = [
         {
@@ -52,6 +55,7 @@ export default function StaffOrdersPage() {
     return (
         <div className="space-y-6 p-6">
             <StaffAddOrderDrawer
+                businessId={businessId}
                 open={addingOrder}
                 onOpenChange={() => {
                     setAddingOrder(false);

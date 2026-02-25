@@ -59,12 +59,12 @@ export const SystemErrorOverlay: React.FC = () => {
                             <h2 className="text-2xl font-bold tracking-tight">
                                 {errorType === 'network'
                                     ? t('errors.technical.network_title', 'Connection Lost')
-                                    : t('errors.technical.error_title', 'System Error')}
+                                    : t('errors.technical.error_title', 'Service Unavailable')}
                             </h2>
                             <p className="text-muted-foreground">
                                 {errorType === 'network'
-                                    ? t('errors.technical.network_error')
-                                    : t('errors.technical.server_error')}
+                                    ? t('errors.technical.network_error_desc', 'We are unable to connect to our servers. Please check your internet connection.')
+                                    : t('errors.technical.server_error_desc', 'We are experiencing technical difficulties. Please try again later.')}
                             </p>
                         </div>
 

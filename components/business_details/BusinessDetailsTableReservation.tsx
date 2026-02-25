@@ -2,17 +2,8 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogClose,
-} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Clock, Table as TableIcon } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal";
 
@@ -30,6 +21,8 @@ const tablesData: Table[] = [
     { id: 4, number: 4, seats: 2, available: true },
     { id: 5, number: 5, seats: 6, available: true },
     { id: 6, number: 6, seats: 2, available: false },
+    { id: 7, number: 7, seats: 4, available: true },
+    { id: 8, number: 8, seats: 8, available: true },
 ];
 
 const BusinessDetailsTableReservation: React.FC = () => {
@@ -37,111 +30,129 @@ const BusinessDetailsTableReservation: React.FC = () => {
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        guests: 1,
-        notes: "",
-    });
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleConfirm = () => {
-        console.log("Reservation confirmed:", {
-            table: selectedTable,
-            date: selectedDate,
-            time: selectedTime,
-            ...formData,
-        });
-        alert(`Table ${selectedTable?.number} reserved!`);
-        setSelectedTable(null);
-        setFormData({ name: "", email: "", phone: "", guests: 1, notes: "" });
-    };
-
     const canShowTables = selectedDate && selectedTime;
 
     return (
-        <div className="space-y-8">
+        <section className="space-y-12">
             <BusinessDetailsReserveTableModal
-                onClose={() => {
-                    setSelectedTable(null);
-                }}
-                onSubmit={() => { }}
+                onClose={() => setSelectedTable(null)}
+                onSubmit={() => setSelectedTable(null)}
                 isOpen={selectedTable != null}
             />
-            {/* Date & Time Selection */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
-                <div className="flex-1 relative w-full">
-                    <Label htmlFor="date">Select Date</Label>
-                    <Input
-                        type="date"
-                        id="date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                    />
-                    <Calendar className="absolute right-3 top-9 w-5 h-5 text-gray-400" />
+
+            <div className="space-y-2 text-center max-w-2xl mx-auto">
+                <h2 className="text-3xl font-bold tracking-tight">Reserve a Table</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                    Select your preferred date and time to see available tables. We'll make sure everything is ready for your arrival.
+                </p>
+            </div>
+
+            {/* Selection Controls */}
+            <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-card border border-border/50 rounded-[2.5rem] shadow-2xl shadow-primary/5">
+                <div className="space-y-3">
+                    <Label htmlFor="date" className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Date</Label>
+                    <div className="relative group">
+                        <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
+                        <Input
+                            type="date"
+                            id="date"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                            className="pl-12 h-14 rounded-2xl bg-muted/50 border-none focus:ring-2 focus:ring-primary/20 text-md font-bold"
+                        />
+                    </div>
                 </div>
 
-                <div className="flex-1 relative w-full">
-                    <Label htmlFor="time">Select Time</Label>
-                    <Input
-                        type="time"
-                        id="time"
-                        value={selectedTime}
-                        onChange={(e) => setSelectedTime(e.target.value)}
-                    />
-                    <Clock className="absolute right-3 top-9 w-5 h-5 text-gray-400" />
+                <div className="space-y-3">
+                    <Label htmlFor="time" className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Time</Label>
+                    <div className="relative group">
+                        <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
+                        <Input
+                            type="time"
+                            id="time"
+                            value={selectedTime}
+                            onChange={(e) => setSelectedTime(e.target.value)}
+                            className="pl-12 h-14 rounded-2xl bg-muted/50 border-none focus:ring-2 focus:ring-primary/20 text-md font-bold"
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-3 sm:col-span-2 lg:col-span-1">
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Guests</Label>
+                    <div className="relative group">
+                        <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
+                        <select className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none">
+                            <option>1 Guest</option>
+                            <option>2 Guests</option>
+                            <option>4 Guests</option>
+                            <option>6 Guests</option>
+                            <option>8+ Guests</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            {/* Tables Grid - Only show when date & time selected */}
-            <AnimatePresence>
-                {canShowTables ? (
-                    <motion.div
-                        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        {tablesData.map((table) => (
+            {/* Tables Grid */}
+            <div className="min-h-[300px] flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                    {canShowTables ? (
+                        <motion.div
+                            key="grid"
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full"
+                        >
+                            {tablesData.map((table) => (
+                                <motion.button
+                                    key={table.id}
+                                    whileHover={table.available ? { y: -4, scale: 1.02 } : {}}
+                                    whileTap={table.available ? { scale: 0.98 } : {}}
+                                    disabled={!table.available}
+                                    className={`relative p-6 rounded-[2rem] border transition-all flex flex-col items-center gap-4 ${table.available
+                                            ? "bg-card border-border/50 hover:border-primary hover:shadow-2xl hover:shadow-primary/10 cursor-pointer"
+                                            : "bg-muted/30 border-transparent opacity-60 cursor-not-allowed"
+                                        }`}
+                                    onClick={() => setSelectedTable(table)}
+                                >
+                                    <div className={`p-4 rounded-2xl ${table.available ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+                                        <Users size={32} />
+                                    </div>
+                                    <div className="text-center space-y-1">
+                                        <span className="text-lg font-black block">Table {table.number}</span>
+                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{table.seats} Seats</span>
+                                    </div>
 
-                            <button
-                                disabled={!table.available}
-                                className={`border p-4 rounded-xl flex flex-col items-center justify-center gap-1 transition-all shadow-sm ${table.available
-                                    ? "hover:bg-primary/10 cursor-pointer"
-                                    : "bg-gray-200 cursor-not-allowed"
-                                    }`}
-                                onClick={() => {
-                                    setSelectedTable(table)
-                                }}
-                            >
-                                <TableIcon className="w-8 h-8 text-gray-700" />
-                                <span className="font-semibold">Table {table.number}</span>
-                                <span className="text-sm text-gray-500">
-                                    {table.seats} seats
-                                </span>
-                            </button>
-                        ))}
-                    </motion.div>
-                ) : (
-                    <motion.p
-                        className="text-center text-gray-500 italic"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.4 }}
-                    >
-                        Please select a date and time to view available tables.
-                    </motion.p>
-                )}
-            </AnimatePresence>
-        </div>
+                                    <div className="absolute top-4 right-4">
+                                        {table.available ? (
+                                            <CheckCircle2 size={18} className="text-emerald-500" />
+                                        ) : (
+                                            <XCircle size={18} className="text-muted-foreground" />
+                                        )}
+                                    </div>
+                                </motion.button>
+                            ))}
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="placeholder"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center space-y-4"
+                        >
+                            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
+                                <CalendarIcon size={32} />
+                            </div>
+                            <p className="text-muted-foreground font-medium italic">
+                                Please select a date and time to view available tables.
+                            </p>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </section>
     );
 };
 
 export default BusinessDetailsTableReservation;
+

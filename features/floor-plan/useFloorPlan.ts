@@ -12,7 +12,9 @@ import {
     CreateFloorDto,
     UpdateFloorDto,
     CreateTableDto,
-    UpdateTableDto
+    UpdateTableDto,
+    BatchCreateTableDto,
+    batchCreateTablesApiCall
 } from "./service";
 
 export const useFloors = (businessId: string) => {
@@ -124,6 +126,15 @@ export const useTables = (businessId: string) => {
         },
     });
 
+    const batchCreateTableMutation = useMutation({
+        mutationFn: (data: BatchCreateTableDto) => batchCreateTablesApiCall(businessId, data),
+        onSuccess: () => {
+            toast.success("Tables created successfully");
+            queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+        },
+    });
+
     return {
         tables,
         fetchingTables,
@@ -134,5 +145,7 @@ export const useTables = (businessId: string) => {
         isUpdatingTable: updateTableMutation.isPending,
         deleteTable: deleteTableMutation.mutate,
         isDeletingTable: deleteTableMutation.isPending,
+        batchCreateTables: batchCreateTableMutation.mutate,
+        isBatchCreatingTables: batchCreateTableMutation.isPending,
     };
 };

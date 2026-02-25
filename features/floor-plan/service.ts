@@ -72,3 +72,18 @@ export const updateTableApiCall = (businessId: string, tableId: string, data: Up
 export const deleteTableApiCall = (businessId: string, tableId: string) => {
     return flairapi.delete(`${getFloorPlanUrl(businessId)}/tables/${tableId}`);
 };
+
+export interface BatchCreateTableDto {
+    floorId: string;
+    tables: {
+        name: string;
+        number: number;
+        capacity: number;
+        status: string;
+        position: { x: number; y: number };
+    }[];
+}
+
+export const batchCreateTablesApiCall = (businessId: string, data: BatchCreateTableDto) => {
+    return flairapi.post(`${getFloorPlanUrl(businessId)}/tables/batch`, data);
+};

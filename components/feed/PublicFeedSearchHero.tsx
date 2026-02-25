@@ -1,54 +1,69 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'framer-motion'
+import { Search } from 'lucide-react'
 
 const PublicFeedSearchHero = () => {
     const { t } = useTranslation()
 
     return (
-        <div className="bg-gray-100 font-sans">
-            <div
-                className="relative w-full h-[300px] flex items-center justify-center text-center p-4 bg-cover bg-center"
-                style={{
-                    backgroundImage: "url('https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg')",
-                    backgroundBlendMode: 'multiply',
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)'
-                }}
-            >
-                <div className="z-10 text-white p-4 max-w-2xl mx-auto">
-                    {/* Hero title */}
-                    <h1 className="text-4xl md:text-4xl lg:text-6xl font-extrabold mb-4 leading-tight drop-shadow-lg">
-                        {t("public_feed.searchHero.title")}
-                    </h1>
+        <section className="relative overflow-hidden bg-background pt-16 pb-8 md:pt-24 md:pb-12">
+            {/* Background elements */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
+            </div>
 
-                    {/* Search input */}
-                    <form className="relative w-full">
-                        <div className="relative flex items-center bg-white rounded-full shadow-lg overflow-hidden">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 text-gray-500 absolute left-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="max-w-4xl mx-auto text-center space-y-8">
+                    {/* Hero Text */}
+                    <div className="space-y-4">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, ease: "easeOut" }}
+                            className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
+                        >
+                            {t("public_feed.searchHero.title")}
+                        </motion.h1>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+                            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+                        >
+                            {t("public_feed.searchHero.subtitle", "Discover the best local businesses, curated just for you.")}
+                        </motion.p>
+                    </div>
+
+                    {/* Search Bar */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="relative max-w-2xl mx-auto"
+                    >
+                        <div className="group relative flex items-center bg-card/50 backdrop-blur-xl border border-border rounded-full p-2 shadow-2xl shadow-primary/5 transition-all duration-300 hover:border-primary/50 hover:shadow-primary/10">
+                            <div className="flex items-center flex-1 px-4">
+                                <Search className="w-5 h-5 text-muted-foreground transition-colors group-focus-within:text-primary" />
+                                <input
+                                    type="text"
+                                    className="w-full px-4 py-3 bg-transparent border-none focus:outline-none focus:ring-0 text-foreground placeholder:text-muted-foreground transition-all"
+                                    placeholder={t("public_feed.searchHero.searchPlaceholder")}
                                 />
-                            </svg>
-                            <input
-                                type="text"
-                                className="w-full pl-12 pr-4 py-4 text-lg text-gray-800 focus:outline-none bg-transparent"
-                                placeholder={t("public_feed.searchHero.searchPlaceholder")}
-                            />
+                            </div>
+                            <button className="hidden md:flex px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold transition-all hover:opacity-90 active:scale-95 shadow-lg shadow-primary/20">
+                                {t("public_feed.searchHero.searchButton", "Search")}
+                            </button>
                         </div>
-                        {/* Optional search button can be added here */}
-                    </form>
+                    </motion.div>
+
+                    {/* Quick Stats or Tags could go here */}
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
 export default PublicFeedSearchHero
+
