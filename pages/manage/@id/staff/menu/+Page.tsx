@@ -385,6 +385,8 @@ export default function StaffMenuPage() {
 
             <ItemModal
                 open={isItemModalOpen}
+                menuId={selectedMenuId || ""}
+                categoryId={targetCategoryId || undefined}
                 onClose={() => setIsItemModalOpen(false)}
                 onConfirm={(data) => {
                     const payload = {
@@ -392,7 +394,12 @@ export default function StaffMenuPage() {
                         description: data.description,
                         price: data.price,
                         allergies: data.allergyIds,
-                        images: data.images
+                        images: data.images,
+                        inventoryTrackingMode: data.trackingMode,
+                        inventoryItemId: data.inventoryItemId,
+                        createInventoryItem: data.createInventoryItem,
+                        inventoryUnitId: data.inventoryUnit,
+                        quantityPerSale: data.quantityPerSale,
                     } as any;
 
                     if (modalMode === 'create') {
@@ -402,7 +409,7 @@ export default function StaffMenuPage() {
                     }
                 }}
                 allergies={[]}
-                initialData={editingItem}
+                initialData={editingItem ? (categories.find(c => c.id === targetCategoryId)?.items?.find(i => i.id === editingItem.id) || editingItem) : undefined}
                 businessId={businessId}
                 availableItems={[]}
             />

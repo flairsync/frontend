@@ -23,7 +23,7 @@ import {
     useComboboxAnchor,
 } from '@/components/ui/combobox';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { X, Info, Check, ChevronsUpDown } from 'lucide-react';
+import { X, Info, Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { Allergy } from '@/models/shared/Allergy';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +57,11 @@ import {
 } from "@/components/ui/command";
 import { useInventory } from '@/features/inventory/useInventory';
 import { useInventoryUnits } from '@/features/inventory/useInventoryUnits';
+import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
+import { MenuItemVariant } from '@/models/business/menu/MenuItemVariant';
+import { MenuItemModifierGroup } from '@/models/business/menu/MenuItemModifierGroup';
+import { MenuItemModifierItem } from '@/models/business/menu/MenuItemModifierItem';
+
 interface ItemModalProps {
     open: boolean;
     onClose: () => void;
@@ -66,7 +71,7 @@ interface ItemModalProps {
         price: number;
         allergyIds: string[];
         images: File[];
-        trackingMode?: 'NONE' | 'DIRECT_ITEM';
+        trackingMode?: 'none' | 'direct_item';
         inventoryItemId?: string;
         createInventoryItem?: boolean;
         inventoryUnit?: string;
@@ -76,7 +81,227 @@ interface ItemModalProps {
     initialData?: BusinessMenuItem;
     availableItems?: BusinessMenuItem[]; // items to select from for copying
     businessId: string;
+    menuId: string;
+    categoryId?: string;
 }
+
+// --- Variants Section Component ---
+const ItemVariantsSection: React.FC<{
+    businessId: string;
+    menuId: string;
+    categoryId: string;
+    itemId: string;
+    variants: MenuItemVariant[];
+}> = ({ businessId, menuId, categoryId, itemId, variants }) => {
+    const { t } = useTranslation();
+    const { createVariant, updateVariant, deleteVariant } = useBusinessSingleMenu(businessId, menuId);
+
+    const [isAdding, setIsAdding] = useState(false);
+    const [newName, setNewName] = useState('');
+    const [newPrice, setNewPrice] = useState('');
+
+    const handleAdd = () => {
+        if (!newName.trim() || !newPrice) return;
+        createVariant({
+            categoryId,
+            itemId,
+            data: { name: newName, price: parseFloat(newPrice) }
+        });
+        setNewName('');
+        setNewPrice('');
+        setIsAdding(false);
+    };
+
+    return (
+        <div className="space-y-4 pt-4 border-t">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-sm font-medium">Variants</h3>
+                    <p className="text-xs text-muted-foreground">Add sizes or specific variations with distinct prices.</p>
+                </div>
+                {!isAdding && (
+                    <Button variant="outline" size="sm" onClick={() => setIsAdding(true)}>
+                        <Plus className="h-4 w-4 mr-1" /> Add Variant
+                    </Button>
+                )}
+            </div>
+
+            {variants.length > 0 && (
+                <div className="space-y-2">
+                    {variants.map(v => (
+                        <div key={v.id} className="flex items-center justify-between p-2 border rounded-md">
+                            <div className="text-sm font-medium">{v.name}</div>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                {v.price}€
+                                <button type="button" onClick={() => deleteVariant({ categoryId, itemId, variantId: v.id })} className="text-red-500 hover:text-red-700">
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {isAdding && (
+                <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-md border">
+                    <Input placeholder="Name (e.g., Large)" value={newName} onChange={e => setNewName(e.target.value)} className="flex-1" />
+                    <Input type="number" placeholder="Price" value={newPrice} onChange={e => setNewPrice(e.target.value)} className="w-24" />
+                    <Button size="sm" onClick={handleAdd}>Save</Button>
+                    <Button size="sm" variant="ghost" onClick={() => setIsAdding(false)}>Cancel</Button>
+                </div>
+            )}
+        </div>
+    );
+};
+
+// --- Modifiers Section Component ---
+const ItemModifiersSection: React.FC<{
+    businessId: string;
+    menuId: string;
+    categoryId: string;
+    itemId: string;
+    modifierGroups: MenuItemModifierGroup[];
+}> = ({ businessId, menuId, categoryId, itemId, modifierGroups }) => {
+    const { t } = useTranslation();
+    const {
+        createModifierGroup, deleteModifierGroup,
+        createModifierItem, deleteModifierItem
+    } = useBusinessSingleMenu(businessId, menuId);
+
+    const [isAddingGroup, setIsAddingGroup] = useState(false);
+    const [newGroupName, setNewGroupName] = useState('');
+    const [newGroupSelMode, setNewGroupSelMode] = useState<'single' | 'multiple'>('single');
+    const [newGroupMin, setNewGroupMin] = useState('1');
+    const [newGroupMax, setNewGroupMax] = useState('1');
+
+    const [addingItemToGroup, setAddingItemToGroup] = useState<string | null>(null);
+    const [newItemName, setNewItemName] = useState('');
+    const [newItemPrice, setNewItemPrice] = useState('0');
+
+    const handleAddGroup = () => {
+        if (!newGroupName.trim()) return;
+        createModifierGroup({
+            categoryId, itemId,
+            data: {
+                name: newGroupName,
+                selectionMode: newGroupSelMode,
+                minSelections: parseInt(newGroupMin) || 0,
+                maxSelections: parseInt(newGroupMax) || 1,
+            }
+        });
+        setNewGroupName('');
+        setIsAddingGroup(false);
+    };
+
+    const handleAddItem = (groupId: string) => {
+        if (!newItemName.trim() || !newItemPrice) return;
+        createModifierItem({
+            categoryId, itemId, groupId,
+            data: { name: newItemName, price: parseFloat(newItemPrice) }
+        });
+        setNewItemName('');
+        setNewItemPrice('0');
+        setAddingItemToGroup(null);
+    };
+
+    return (
+        <div className="space-y-4 pt-4 border-t">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-sm font-medium">Modifier Groups</h3>
+                    <p className="text-xs text-muted-foreground">Add choices or add-ons (e.g., Milk Choice, Extra Toppings).</p>
+                </div>
+                {!isAddingGroup && (
+                    <Button variant="outline" size="sm" onClick={() => setIsAddingGroup(true)}>
+                        <Plus className="h-4 w-4 mr-1" /> Add Group
+                    </Button>
+                )}
+            </div>
+
+            {modifierGroups.length > 0 && (
+                <div className="space-y-3">
+                    {modifierGroups.map(group => (
+                        <div key={group.id} className="border rounded-md p-3 space-y-3">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <span className="text-sm font-medium">{group.name}</span>
+                                    <span className="text-xs text-muted-foreground ml-2">
+                                        ({group.selectionMode} • min: {group.minSelections} • max: {group.maxSelections})
+                                    </span>
+                                </div>
+                                <button type="button" onClick={() => deleteModifierGroup({ categoryId, itemId, groupId: group.id })} className="text-red-500 hover:text-red-700">
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+
+                            {/* Items inside group */}
+                            <div className="space-y-2 pl-4 border-l-2">
+                                {group.items?.map(modItem => (
+                                    <div key={modItem.id} className="flex items-center justify-between text-sm p-1">
+                                        <span>{modItem.name}</span>
+                                        <div className="flex items-center gap-3 text-muted-foreground">
+                                            +{modItem.price}€
+                                            <button type="button" onClick={() => deleteModifierItem({ categoryId, itemId, groupId: group.id, modItemId: modItem.id })} className="text-red-500 hover:text-red-700">
+                                                <X className="h-3 w-3" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {addingItemToGroup === group.id ? (
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <Input placeholder="Choice name" value={newItemName} onChange={e => setNewItemName(e.target.value)} className="h-8 text-sm" />
+                                        <Input type="number" placeholder="+ Price" value={newItemPrice} onChange={e => setNewItemPrice(e.target.value)} className="w-20 h-8 text-sm" />
+                                        <Button size="sm" onClick={() => handleAddItem(group.id)}>Add</Button>
+                                        <Button size="sm" variant="ghost" onClick={() => setAddingItemToGroup(null)}>Cancel</Button>
+                                    </div>
+                                ) : (
+                                    <Button variant="ghost" size="sm" className="h-6 text-xs mt-1" onClick={() => { setAddingItemToGroup(group.id); setNewItemName(''); setNewItemPrice('0'); }}>
+                                        <Plus className="h-3 w-3 mr-1" /> Add Option
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {isAddingGroup && (
+                <div className="space-y-3 p-3 bg-muted/30 rounded-md border mt-2">
+                    <div className="font-medium text-sm">New Modifier Group</div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                            <label className="text-xs text-muted-foreground">Group Name</label>
+                            <Input placeholder="e.g. Milk Choice" value={newGroupName} onChange={e => setNewGroupName(e.target.value)} className="h-8" />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs text-muted-foreground">Selection Mode</label>
+                            <Select value={newGroupSelMode} onValueChange={(val: any) => setNewGroupSelMode(val)}>
+                                <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="single">Single (Radio)</SelectItem>
+                                    <SelectItem value="multiple">Multiple (Checkbox)</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs text-muted-foreground">Min Selections (0 = optional)</label>
+                            <Input type="number" value={newGroupMin} onChange={e => setNewGroupMin(e.target.value)} className="h-8" />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-xs text-muted-foreground">Max Selections</label>
+                            <Input type="number" value={newGroupMax} onChange={e => setNewGroupMax(e.target.value)} className="h-8" />
+                        </div>
+                    </div>
+                    <div className="flex gap-2">
+                        <Button size="sm" onClick={handleAddGroup}>Save Group</Button>
+                        <Button size="sm" variant="ghost" onClick={() => setIsAddingGroup(false)}>Cancel</Button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export const ItemModal: React.FC<ItemModalProps> = ({
     open,
@@ -85,7 +310,9 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     allergies,
     initialData,
     availableItems,
-    businessId
+    businessId,
+    menuId,
+    categoryId
 }) => {
     const anchor = useComboboxAnchor();
 
@@ -98,7 +325,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     const [selectedCopyItemId, setSelectedCopyItemId] = useState<string | null>(null);
 
     // Tracking state
-    const [trackingMode, setTrackingMode] = useState<'NONE' | 'DIRECT_ITEM'>('NONE');
+    const [trackingMode, setTrackingMode] = useState<'none' | 'direct_item'>('none');
     const [inventoryItemId, setInventoryItemId] = useState<string | null>(null);
     const [createInventoryItem, setCreateInventoryItem] = useState(false);
     const [inventoryUnitSystem, setInventoryUnitSystem] = useState<string>('metric');
@@ -124,27 +351,29 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             setDescription(initialData.description || '');
             setPrice(initialData.price.toString());
             setSelectedAllergies(initialData.allergies?.map((a) => a.id) || []);
-            // For images, we cannot prefill File objects, but you can display URLs
+
             if (initialData.media) {
-                const fakeFiles = initialData.media.map((m) => {
-                    const file = new File([], m.url); // empty File but with URL reference
-                    return file;
-                });
+                const fakeFiles = initialData.media.map((m) => new File([], m.url));
                 setImages(fakeFiles);
             }
+            // Tracking
+            setTrackingMode(initialData.inventoryTrackingMode as any || 'none');
+            setInventoryItemId(initialData.inventoryItemId || null);
+            setInventoryUnit(initialData.inventoryUnitId?.toString() || '');
+            setQuantityPerSale(initialData.quantityPerSale?.toString() || '1');
         } else {
             setName('');
             setDescription('');
             setPrice('');
             setSelectedAllergies([]);
             setImages([]);
-            setTrackingMode('NONE');
+            setTrackingMode('none');
             setInventoryItemId(null);
             setCreateInventoryItem(false);
             setInventoryUnit('');
             setQuantityPerSale('1');
         }
-    }, [initialData, open]);
+    }, [initialData?.id, open]);
 
 
     // Handlers
@@ -171,10 +400,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             allergyIds: selectedAllergies,
             images,
             trackingMode,
-            inventoryItemId: inventoryItemId || undefined,
-            createInventoryItem,
-            inventoryUnit: createInventoryItem ? inventoryUnit : undefined,
-            quantityPerSale: trackingMode === 'DIRECT_ITEM' ? parseFloat(quantityPerSale) : undefined,
+            inventoryItemId: trackingMode === 'direct_item' && !createInventoryItem ? (inventoryItemId || undefined) : undefined,
+            createInventoryItem: trackingMode === 'direct_item' ? createInventoryItem : undefined,
+            inventoryUnit: (trackingMode === 'direct_item' && createInventoryItem) ? inventoryUnit : undefined,
+            quantityPerSale: trackingMode === 'direct_item' ? parseFloat(quantityPerSale) : undefined,
         });
 
         onClose();
@@ -343,6 +572,31 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                         </PhotoProvider>
                     )}
 
+                    {/* Variants and Modifiers */}
+                    {initialData && categoryId && menuId ? (
+                        <>
+                            <ItemVariantsSection
+                                businessId={businessId}
+                                menuId={menuId}
+                                categoryId={categoryId}
+                                itemId={initialData.id}
+                                variants={initialData.variants || []}
+                            />
+                            <ItemModifiersSection
+                                businessId={businessId}
+                                menuId={menuId}
+                                categoryId={categoryId}
+                                itemId={initialData.id}
+                                modifierGroups={initialData.modifierGroups || []}
+                            />
+                        </>
+                    ) : (
+                        <div className="p-4 bg-muted/40 rounded-lg text-sm text-muted-foreground border flex items-start gap-2">
+                            <Info className="h-4 w-4 mt-0.5 shrink-0" />
+                            <p>Save this item first to add Variants and Modifier Groups.</p>
+                        </div>
+                    )}
+
                     {/* Tracking Section */}
                     <div className="space-y-4 pt-4 border-t">
                         <div className="flex items-center gap-2">
@@ -367,13 +621,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="NONE">
+                                <SelectItem value="none">
                                     <div className="flex flex-col">
                                         <span className="font-medium">{t('item_modal.tracking.none')}</span>
                                         <span className="text-xs text-muted-foreground">{t('item_modal.tracking.none_desc')}</span>
                                     </div>
                                 </SelectItem>
-                                <SelectItem value="DIRECT_ITEM">
+                                <SelectItem value="direct_item">
                                     <div className="flex flex-col">
                                         <span className="font-medium">{t('item_modal.tracking.direct')}</span>
                                         <span className="text-xs text-muted-foreground">{t('item_modal.tracking.direct_desc')}</span>
@@ -382,7 +636,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             </SelectContent>
                         </Select>
 
-                        {trackingMode === 'DIRECT_ITEM' && (
+                        {trackingMode === 'direct_item' && (
                             <div className="space-y-4 pl-4 border-l-2 border-muted animate-in fade-in slide-in-from-left-2">
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">

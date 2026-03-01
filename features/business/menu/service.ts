@@ -164,6 +164,11 @@ export type CreateMenuItemDto = {
   price: number;
   allergies: string[];
   files: File[];
+  inventoryTrackingMode?: string;
+  inventoryItemId?: string;
+  createInventoryItem?: boolean;
+  inventoryUnitId?: string | number;
+  quantityPerSale?: number;
 };
 
 export const createNewMenuItemApiCall = (
@@ -177,6 +182,22 @@ export const createNewMenuItemApiCall = (
   payload.append("name", data.name);
   payload.append("description", data.description);
   payload.append("price", data.price.toString());
+
+  if (data.inventoryTrackingMode) {
+    payload.append("inventoryTrackingMode", data.inventoryTrackingMode);
+  }
+  if (data.inventoryItemId) {
+    payload.append("inventoryItemId", data.inventoryItemId);
+  }
+  if (data.createInventoryItem !== undefined) {
+    payload.append("createInventoryItem", data.createInventoryItem.toString());
+  }
+  if (data.inventoryUnitId !== undefined) {
+    payload.append("inventoryUnitId", data.inventoryUnitId.toString());
+  }
+  if (data.quantityPerSale !== undefined) {
+    payload.append("quantityPerSale", data.quantityPerSale.toString());
+  }
 
   // allergies[] → backend-friendly
   data.allergies.forEach((allergyId) => {
@@ -216,6 +237,11 @@ export type UpdateMenuItemDto = {
   price?: number;
   allergies?: string[];
   files?: File[];
+  inventoryTrackingMode?: string;
+  inventoryItemId?: string;
+  createInventoryItem?: boolean;
+  inventoryUnitId?: string | number;
+  quantityPerSale?: number;
 };
 
 export const updateMenuItemApiCall = (
@@ -231,6 +257,22 @@ export const updateMenuItemApiCall = (
   if (data.description !== undefined)
     payload.append("description", data.description);
   if (data.price !== undefined) payload.append("price", data.price.toString());
+
+  if (data.inventoryTrackingMode) {
+    payload.append("inventoryTrackingMode", data.inventoryTrackingMode);
+  }
+  if (data.inventoryItemId) {
+    payload.append("inventoryItemId", data.inventoryItemId);
+  }
+  if (data.createInventoryItem !== undefined) {
+    payload.append("createInventoryItem", data.createInventoryItem.toString());
+  }
+  if (data.inventoryUnitId !== undefined) {
+    payload.append("inventoryUnitId", data.inventoryUnitId.toString());
+  }
+  if (data.quantityPerSale !== undefined) {
+    payload.append("quantityPerSale", data.quantityPerSale.toString());
+  }
 
   // allergies[] → backend-friendly
   if (data.allergies) {
@@ -257,5 +299,155 @@ export const updateMenuItemApiCall = (
   );
 };
 
+
+//#endregion
+
+//#region Variants
+
+export type CreateVariantDto = {
+  name: string;
+  price: number;
+};
+
+export const createVariantApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  data: CreateVariantDto,
+) => {
+  return flairapi.post(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/variants`,
+    data,
+  );
+};
+
+export const updateVariantApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  variantId: string,
+  data: Partial<CreateVariantDto>,
+) => {
+  return flairapi.patch(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/variants/${variantId}`,
+    data,
+  );
+};
+
+export const deleteVariantApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  variantId: string,
+) => {
+  return flairapi.delete(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/variants/${variantId}`,
+  );
+};
+
+//#endregion
+
+//#region Modifier Groups
+
+export type CreateModifierGroupDto = {
+  name: string;
+  selectionMode: 'single' | 'multiple';
+  minSelections: number;
+  maxSelections: number;
+  order?: number;
+};
+
+export const createModifierGroupApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  data: CreateModifierGroupDto,
+) => {
+  return flairapi.post(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/modifier-groups`,
+    data,
+  );
+};
+
+export const updateModifierGroupApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  groupId: string,
+  data: Partial<CreateModifierGroupDto>,
+) => {
+  return flairapi.patch(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/modifier-groups/${groupId}`,
+    data,
+  );
+};
+
+export const deleteModifierGroupApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  groupId: string,
+) => {
+  return flairapi.delete(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/modifier-groups/${groupId}`,
+  );
+};
+
+//#endregion
+
+//#region Modifier Items
+
+export type CreateModifierItemDto = {
+  name: string;
+  price: number;
+};
+
+export const createModifierItemApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  groupId: string,
+  data: CreateModifierItemDto,
+) => {
+  return flairapi.post(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/modifier-groups/${groupId}/items`,
+    data,
+  );
+};
+
+export const updateModifierItemApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  groupId: string,
+  modifierItemId: string,
+  data: Partial<CreateModifierItemDto>,
+) => {
+  return flairapi.patch(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/modifier-groups/${groupId}/items/${modifierItemId}`,
+    data,
+  );
+};
+
+export const deleteModifierItemApiCall = (
+  businessId: string,
+  menuId: string,
+  categoryId: string,
+  itemId: string,
+  groupId: string,
+  modifierItemId: string,
+) => {
+  return flairapi.delete(
+    `${getMenusUrl(businessId)}/${menuId}/${categoryId}/${itemId}/modifier-groups/${groupId}/items/${modifierItemId}`,
+  );
+};
 
 //#endregion

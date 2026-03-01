@@ -365,8 +365,10 @@ const MenuDetailPage: React.FC = () => {
                     setCreateItemCatId(undefined);
                     setEditingItem(undefined);
                 }}
-                initialData={editingItem?.item}
+                initialData={editingItem ? (categories.find(c => c.id === editingItem.category)?.items?.find(i => i.id === editingItem.item.id) || editingItem.item) : undefined}
                 open={(createItemCatId != undefined || editingItem != undefined)}
+                menuId={menuId}
+                categoryId={editingItem?.category || createItemCatId}
                 onConfirm={(data) => {
                     if (!editingItem) {
                         createNewItem({
@@ -377,6 +379,11 @@ const MenuDetailPage: React.FC = () => {
                                 files: data.images,
                                 name: data.name,
                                 price: data.price,
+                                inventoryTrackingMode: data.trackingMode,
+                                inventoryItemId: data.inventoryItemId,
+                                createInventoryItem: data.createInventoryItem,
+                                inventoryUnitId: data.inventoryUnit,
+                                quantityPerSale: data.quantityPerSale,
                             },
                         });
                     } else {
@@ -389,6 +396,11 @@ const MenuDetailPage: React.FC = () => {
                                 files: data.images,
                                 name: data.name,
                                 price: data.price,
+                                inventoryTrackingMode: data.trackingMode,
+                                inventoryItemId: data.inventoryItemId,
+                                createInventoryItem: data.createInventoryItem,
+                                inventoryUnitId: data.inventoryUnit,
+                                quantityPerSale: data.quantityPerSale,
                             }
                         });
                     }
