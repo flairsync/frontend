@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createNewBusinessRoleApiCall,
   CreateRoleDataType,
+  deleteBusinessRoleApiCall,
   getBusinessRolesApiCall,
   updateBusinessEmployeeRolesApiCall,
+  updateBusinessRoleApiCall,
 } from "../service";
 import { Role } from "@/models/business/roles/Role";
 
@@ -24,6 +26,32 @@ export const useBusinessRoles = (businessId?: string) => {
     mutationFn: async (data: CreateRoleDataType) => {
       if (!businessId) return;
       return createNewBusinessRoleApiCall(businessId, data);
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["business_roles", businessId],
+      });
+    },
+  });
+
+  const { mutate: updateRole, isPending: updatingRole } = useMutation({
+    mutationKey: ["update_role", businessId],
+    mutationFn: async (data: { roleId: string; data: CreateRoleDataType }) => {
+      if (!businessId) return;
+      return updateBusinessRoleApiCall(businessId, data.roleId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["business_roles", businessId],
+      });
+    },
+  });
+
+  const { mutate: deleteRole, isPending: deletingRole } = useMutation({
+    mutationKey: ["delete_role", businessId],
+    mutationFn: async (roleId: string) => {
+      if (!businessId) return;
+      return deleteBusinessRoleApiCall(businessId, roleId);
     },
     onSuccess(data, variables, context) {
       queryClient.refetchQueries({
@@ -58,6 +86,12 @@ export const useBusinessRoles = (businessId?: string) => {
 
     createNewRole,
     creatingNewRole,
+
+    updateRole,
+    updatingRole,
+
+    deleteRole,
+    deletingRole,
 
     updateEmployeeRoles,
   };

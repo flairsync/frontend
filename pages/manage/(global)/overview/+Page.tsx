@@ -21,6 +21,7 @@ import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { useProfile } from "@/features/profile/useProfile";
 import { SubscriptionStatus } from "@/models/Subscription";
 import { useMyBusinesses } from "@/features/business/useMyBusinesses";
+import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
 
 const OverviewPage: React.FC = () => {
     const {
@@ -30,8 +31,15 @@ const OverviewPage: React.FC = () => {
     const {
         myBusinesses,
         loadingMyBussinesses,
-        refreshMyBusinesses,
     } = useMyBusinesses();
+
+    const {
+        myEmployments,
+    } = useMyEmployments();
+
+    const joinedCount = myEmployments?.filter(
+        (emp) => emp.type === "INVITED" && emp.status === "ACTIVE"
+    ).length || 0;
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
@@ -137,7 +145,7 @@ const OverviewPage: React.FC = () => {
                                     <Heart className="h-6 w-6 text-primary" />
                                     <div>
                                         <p className="font-semibold text-lg">
-                                            {0}
+                                            {joinedCount}
                                         </p>
                                         <p className="text-sm text-zinc-500">Joined</p>
                                     </div>

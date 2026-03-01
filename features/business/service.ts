@@ -19,6 +19,7 @@ const businessRolesSuffix = "roles";
 
 // Employment
 const businessEmploymentsBaseUrl = `${baseUrl}/employments/bus`;
+const myEmploymentsUrl = `${baseUrl}/employments/me`;
 
 const employeesSuffix = "employees";
 
@@ -151,6 +152,26 @@ export const createNewBusinessRoleApiCall = (
   );
 };
 
+export const updateBusinessRoleApiCall = (
+  businessId: string,
+  roleId: string,
+  data: CreateRoleDataType,
+) => {
+  return flairapi.put(
+    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}/${roleId}`,
+    data,
+  );
+};
+
+export const deleteBusinessRoleApiCall = (
+  businessId: string,
+  roleId: string,
+) => {
+  return flairapi.delete(
+    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}/${roleId}`,
+  );
+};
+
 export const updateBusinessEmployeeRolesApiCall = (
   businessId: string,
   employeeId: string,
@@ -176,6 +197,15 @@ export const fetchBusinessEmployeesApiCall = (
       },
     },
   );
+};
+
+export const fetchMyEmploymentsApiCall = (page: number = 1, limit: number = 10) => {
+  return flairapi.get(myEmploymentsUrl, {
+    params: {
+      page,
+      limit,
+    },
+  });
 };
 
 //Invitations

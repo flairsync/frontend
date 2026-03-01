@@ -44,3 +44,9 @@ export const fetchReservationDetailsApiCall = (businessId: string, reservationId
 export const updateReservationApiCall = (businessId: string, reservationId: string, data: UpdateReservationDto) => {
     return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}`, data);
 };
+
+export const findAvailabilityApiCall = (businessId: string, date: string, guestCount: number) => {
+    return flairapi.get(`${getReservationsUrl(businessId)}/availability`, {
+        params: { date, guestCount }
+    });
+};

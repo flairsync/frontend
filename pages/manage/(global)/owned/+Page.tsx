@@ -8,15 +8,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ownedBusinesses: Business[] = [
 ];
-
 const OwnedPage = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const {
         myBusinesses,
-        loadingMyBussinesses,
-        refreshMyBusinesses
+        loadingMyBussinesses: isLoading,
     } = useMyBusinesses(page, limit);
+
     return (
         <div className="p-6 w-full">
             <div className="flex items-center justify-between mb-6">
@@ -26,61 +25,76 @@ const OwnedPage = () => {
                         Manage the businesses you own and monitor their performance.
                     </p>
                 </div>
-                <a
-                    href="owned/new"
-                >
+                <a href="/business/new">
                     <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4">
                         + Create Business
                     </Button>
-
                 </a>
             </div>
 
-            {myBusinesses ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {isLoading && !myBusinesses?.length ? (
+                <div className="flex flex-col items-center justify-center py-20 gap-3 border border-dashed border-zinc-200 rounded-xl bg-zinc-50/50">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <p className="text-sm text-zinc-500 font-medium">Loading your businesses...</p>
+                </div>
+            ) : myBusinesses && myBusinesses.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {myBusinesses.map((biz) => (
                         <Card
                             key={biz.id}
-                            className="hover:shadow-md transition-all border border-zinc-200"
+                            className="hover:shadow-lg transition-all border border-zinc-200 group overflow-hidden"
                         >
-                            <CardHeader className="flex flex-row items-center justify-between">
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
                                 <div className="flex items-center gap-3">
-                                    <Avatar>
+                                    <Avatar className="h-10 w-10 border border-zinc-100 shadow-sm">
                                         <AvatarImage src={biz.logo} alt={biz.name} />
-                                        <AvatarFallback>{biz.name}</AvatarFallback>
+                                        <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
+                                            {biz.name.charAt(0).toUpperCase()}
+                                        </AvatarFallback>
                                     </Avatar>
-                                    <CardTitle>{biz.name}</CardTitle>
+                                    <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                                        {biz.name}
+                                    </CardTitle>
                                 </div>
-                                <span className="text-sm text-zinc-500">{biz.createdAt.toDateString()}</span>
+                                <span className="text-xs text-zinc-400 font-medium">
+                                    {new Date(biz.createdAt).toLocaleDateString()}
+                                </span>
                             </CardHeader>
 
                             <CardContent>
-                                <div className="flex justify-between items-center mb-3">
-                                    <div>
-                                        <p className="text-sm text-zinc-600 flex items-center gap-1">
-                                            <Users className="h-4 w-4 text-zinc-500" /> Name: {biz.name}
+                                <div className="space-y-3">
+                                    <div className="flex flex-col gap-1.5">
+                                        <p className="text-sm text-zinc-500 flex items-center gap-2">
+                                            <Users className="h-4 w-4 text-zinc-400" />
+                                            <span className="font-medium text-zinc-700">Owner</span>
                                         </p>
-                                        <p className="text-sm text-zinc-600">
-                                            Type: <span className="font-medium">{biz.type?.name}</span>
+                                        <p className="text-sm text-zinc-500 flex items-center gap-2">
+                                            <Building className="h-4 w-4 text-zinc-400" />
+                                            <span className="font-medium text-zinc-700">{biz.type?.name || "Other"}</span>
                                         </p>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center justify-between mt-4">
-                                    <a
-                                        href={`/manage/${biz.id}/owner/dashboard`}
-                                        className="text-blue-600 text-sm font-medium hover:underline"
-                                    >
-                                        View dashboard
-                                    </a>
-                                    <div className="flex gap-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="flex items-center gap-2 text-zinc-700 border-zinc-300"
+                                    <div className="pt-4 flex items-center justify-between border-t border-zinc-50">
+                                        <a
+                                            href={`/manage/${biz.id}/owner/dashboard`}
+                                            className="inline-flex items-center text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors gap-1 group/link"
                                         >
-                                            <Settings className="h-4 w-4" /> Settings
-                                        </Button>
+                                            View Dashboard
+                                            <span className="group-hover/link:translate-x-0.5 transition-transform">→</span>
+                                        </a>
+                                        <div className="flex gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="h-8 px-2 text-zinc-500 hover:text-blue-600 hover:bg-blue-50"
+                                                asChild
+                                            >
+                                                <a href={`/manage/${biz.id}/owner/settings`}>
+                                                    <Settings className="h-4 w-4 mr-1" />
+                                                    <span className="text-xs">Settings</span>
+                                                </a>
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </CardContent>
@@ -88,12 +102,19 @@ const OwnedPage = () => {
                     ))}
                 </div>
             ) : (
-                <div className="text-center text-zinc-500 border border-dashed border-zinc-300 rounded-lg p-10">
-                    <p className="text-lg font-medium mb-2">You don’t own any businesses yet.</p>
-                    <p className="text-sm mb-4">
-                        Create a new business to start managing your own team and sales.
+                <div className="text-center text-zinc-500 border-2 border-dashed border-zinc-200 rounded-2xl p-16 bg-zinc-50/30">
+                    <div className="bg-white p-4 rounded-full shadow-sm w-fit mx-auto mb-4 border border-zinc-100">
+                        <Building className="h-8 w-8 text-zinc-300" />
+                    </div>
+                    <p className="text-xl font-bold text-zinc-800 mb-2">You don’t own any businesses yet</p>
+                    <p className="text-zinc-500 mb-8 max-w-sm mx-auto">
+                        Create your first business to start managing your team, menu, and sales effortlessly.
                     </p>
-
+                    <a href="/business/new">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md shadow-blue-100 px-8 py-6 h-auto font-bold">
+                            Create a Business Now
+                        </Button>
+                    </a>
                 </div>
             )}
         </div>

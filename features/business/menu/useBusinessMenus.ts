@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createBusinessMenuApiCall,
   CreateMenuDto,
-  fetchBusinessAllMenuItemsApiCall,
   fetchBusinessBasicMenusApiCall,
 } from "./service";
 import { BusinessMenuBasic } from "@/models/business/menu/BusinessMenuBasic";
@@ -43,10 +42,50 @@ export const useBusinessMenus = (businessId: string) => {
   const { data: businessAllItems } = useQuery({
     queryKey: ["business_menu_items", businessId],
     queryFn: async () => {
-      const resp = await fetchBusinessAllMenuItemsApiCall(businessId);
-      return BusinessMenuItem.parseApiArrayResponse(resp.data.data.items);
+      const resp = await fetchBusinessBasicMenusApiCall(businessId);
+      const menus = resp.data.data;
+      const allItems: BusinessMenuItem[] = [];
+
+      menus.forEach((menu: any) => {
+        const categories = menu.categories || [];
+        categories.forEach((cat: any) => {
+          const items = BusinessMenuItem.parseApiArrayResponse(cat.items || []);
+          allItems.push(...items);
+        });
+      });
+
+      return allItems;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: !!businessId,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
+  });
+
+  const { data: businessAllCategories } = useQuery({
+    queryKey: ["business_menu_categories", businessId],
+    queryFn: async () => {
+      const resp = await fetchBusinessBasicMenusApiCall(businessId);
+      const menus = resp.data.data;
+      const allCategories: { id: string; name: string; items: BusinessMenuItem[] }[] = [];
+
+      menus.forEach((menu: any) => {
+        const categories = menu.categories || [];
+        categories.forEach((cat: any) => {
+          const items = BusinessMenuItem.parseApiArrayResponse(cat.items || []);
+          // if category already exists, merge items (though ideally IDs are unique)
+          allCategories.push({
+            id: cat.id,
+            name: cat.name,
+            items: items,
+          });
+        });
+      });
+
+      return allCategories;
+    },
+    staleTime: 1000 * 60 * 5,
     enabled: !!businessId,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -57,5 +96,6 @@ export const useBusinessMenus = (businessId: string) => {
     businessBasicMenus,
     createNewMenu,
     businessAllItems,
+    businessAllCategories,
   };
 };

@@ -257,8 +257,5 @@ export const updateMenuItemApiCall = (
   );
 };
 
-export const fetchBusinessAllMenuItemsApiCall = (businessId: string) => {
-  return flairapi.get(`${getMenusUrl(businessId)}/all-items`);
-};
 
 //#endregion

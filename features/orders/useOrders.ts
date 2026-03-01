@@ -9,21 +9,31 @@ import {
     sendOrderApiCall,
     serveOrderApiCall,
     closeOrderApiCall,
+    cancelOrderApiCall,
     createPaymentApiCall,
+    refundPaymentApiCall,
+    transferOrderApiCall,
+    updateOrderItemApiCall,
+    voidOrderItemApiCall,
     CreateOrderDto,
     UpdateOrderDto,
     CreatePaymentDto,
     Order
 } from "./service";
 
-export const useOrders = (businessId: string) => {
+export const useOrders = (
+    businessId: string,
+    status?: "ongoing" | "all" | "open" | "sent" | "served" | "closed" | "cancelled",
+    startDate?: string,
+    endDate?: string
+) => {
     const queryClient = useQueryClient();
 
     const { data: orders, isFetching: fetchingOrders, refetch } = useQuery<Order[]>({
-        queryKey: ["orders", businessId],
+        queryKey: ["orders", businessId, status || "ongoing", startDate, endDate],
         queryFn: async () => {
             try {
-                const resp = await fetchOrdersApiCall(businessId);
+                const resp = await fetchOrdersApiCall(businessId, status, startDate, endDate);
                 const resData = resp.data;
                 const actualData = resData?.data !== undefined ? resData.data : resData;
 
@@ -105,7 +115,8 @@ export const useOrders = (businessId: string) => {
     });
 
     const closeOrderMutation = useMutation({
-        mutationFn: (orderId: string) => closeOrderApiCall(businessId, orderId),
+        mutationFn: ({ orderId, data }: { orderId: string; data?: { force?: boolean; notes?: string } }) =>
+            closeOrderApiCall(businessId, orderId, data),
         onSuccess: () => {
             toast.success("Order closed successfully");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
@@ -114,6 +125,21 @@ export const useOrders = (businessId: string) => {
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Failed to close order";
+            toast.error(msg);
+        }
+    });
+
+    const cancelOrderMutation = useMutation({
+        mutationFn: ({ orderId, data }: { orderId: string; data?: { reason?: string } }) =>
+            cancelOrderApiCall(businessId, orderId, data),
+        onSuccess: () => {
+            toast.success("Order cancelled");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+        },
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || "Failed to cancel order";
             toast.error(msg);
         }
     });
@@ -127,6 +153,63 @@ export const useOrders = (businessId: string) => {
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Failed to record payment";
+            toast.error(msg);
+        }
+    });
+
+    const refundPaymentMutation = useMutation({
+        mutationFn: ({ orderId, paymentId, data }: { orderId: string, paymentId: string, data?: { reason?: string } }) =>
+            refundPaymentApiCall(businessId, orderId, paymentId, data),
+        onSuccess: () => {
+            toast.success("Payment refunded successfully");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+        },
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || "Failed to refund payment";
+            toast.error(msg);
+        }
+    });
+
+    const transferOrderMutation = useMutation({
+        mutationFn: ({ orderId, data }: { orderId: string, data: { tableId: string } }) =>
+            transferOrderApiCall(businessId, orderId, data),
+        onSuccess: () => {
+            toast.success("Table transferred successfully");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+        },
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || "Failed to transfer table";
+            toast.error(msg);
+        }
+    });
+
+    const updateOrderItemMutation = useMutation({
+        mutationFn: ({ orderId, itemId, data }: { orderId: string, itemId: string, data: { quantity?: number; modifiers?: any[]; notes?: string } }) =>
+            updateOrderItemApiCall(businessId, orderId, itemId, data),
+        onSuccess: () => {
+            toast.success("Item updated successfully");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+        },
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || "Failed to update item";
+            toast.error(msg);
+        }
+    });
+
+    const voidOrderItemMutation = useMutation({
+        mutationFn: ({ orderId, itemId }: { orderId: string, itemId: string }) =>
+            voidOrderItemApiCall(businessId, orderId, itemId),
+        onSuccess: () => {
+            toast.success("Item voided successfully");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+        },
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || "Failed to void item";
             toast.error(msg);
         }
     });
@@ -147,8 +230,18 @@ export const useOrders = (businessId: string) => {
         isServingOrder: serveOrderMutation.isPending,
         closeOrder: closeOrderMutation.mutate,
         isClosingOrder: closeOrderMutation.isPending,
+        cancelOrder: cancelOrderMutation.mutate,
+        isCancellingOrder: cancelOrderMutation.isPending,
         createPayment: createPaymentMutation.mutateAsync,
         isCreatingPayment: createPaymentMutation.isPending,
+        refundPayment: refundPaymentMutation.mutate,
+        isRefundingPayment: refundPaymentMutation.isPending,
+        transferOrder: transferOrderMutation.mutate,
+        isTransferringOrder: transferOrderMutation.isPending,
+        updateOrderItem: updateOrderItemMutation.mutate,
+        isUpdatingOrderItem: updateOrderItemMutation.isPending,
+        voidOrderItem: voidOrderItemMutation.mutate,
+        isVoidingOrderItem: voidOrderItemMutation.isPending,
     };
 };
 

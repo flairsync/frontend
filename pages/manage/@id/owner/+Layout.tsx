@@ -25,6 +25,8 @@ import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useMyBusiness } from '@/features/business/useMyBusiness';
 
+import { Loader } from 'lucide-react';
+
 
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
@@ -44,10 +46,18 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
 
 
+
+
     const [sidebarOpen, setsidebarOpen] = useState(true);
 
 
-    if (!i18n.isInitialized) return <>Loading ....</>
+    if (!i18n.isInitialized) return (
+        <div className="flex items-center justify-center h-screen w-full">
+            <div className="flex flex-col items-center gap-2">
+                <Loader className="h-8 w-8 animate-spin" />
+            </div>
+        </div>
+    )
     return (
         <div>
 

@@ -4,7 +4,7 @@ import * as React from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import { DayPicker } from "react-day-picker"
 
-import { cn } from "@/components/event-calendar/utils"
+import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
 function Calendar({
@@ -51,9 +51,9 @@ function Calendar({
       ...acc,
       [key]: classNames?.[key as keyof typeof classNames]
         ? cn(
-            defaultClassNames[key as keyof typeof defaultClassNames],
-            classNames[key as keyof typeof classNames]
-          )
+          defaultClassNames[key as keyof typeof defaultClassNames],
+          classNames[key as keyof typeof classNames]
+        )
         : defaultClassNames[key as keyof typeof defaultClassNames],
     }),
     {} as typeof defaultClassNames

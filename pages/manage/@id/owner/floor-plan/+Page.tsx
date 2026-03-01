@@ -51,6 +51,7 @@ const FloorPlanPage: React.FC = () => {
     const [floorForm, setFloorForm] = useState({ name: "", description: "", order: 0 });
     const [tableForm, setTableForm] = useState({
         name: "",
+        number: 1,
         capacity: 2,
         floorId: "",
         position: { x: 0, y: 0, shape: "circle" as "circle" | "square" | "rectangle" }
@@ -80,8 +81,11 @@ const FloorPlanPage: React.FC = () => {
 
     const handleOpenCreateTable = () => {
         setEditingTable(null);
+        // Find the next available number
+        const maxNumber = tables?.reduce((max: number, t: any) => Math.max(max, t.number || 0), 0) || 0;
         setTableForm({
             name: "",
+            number: maxNumber + 1,
             capacity: 2,
             floorId: floors?.[0]?.id || "",
             position: { x: 0, y: 0, shape: "circle" }
@@ -93,6 +97,7 @@ const FloorPlanPage: React.FC = () => {
         setEditingTable(table);
         setTableForm({
             name: table.name,
+            number: table.number || 1,
             capacity: table.capacity,
             floorId: table.floorId,
             position: table.position || { x: 0, y: 0, shape: "circle" }
@@ -265,9 +270,22 @@ const FloorPlanPage: React.FC = () => {
                         <DialogTitle>{editingTable ? t("floor_plan.edit_table") : t("floor_plan.add_table")}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                            <Label>{t("inventory_management.table.name")}</Label>
-                            <Input value={tableForm.name} onChange={(e) => setTableForm({ ...tableForm, name: e.target.value })} />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>{t("inventory_management.table.name")}</Label>
+                                <Input value={tableForm.name} onChange={(e) => setTableForm({ ...tableForm, name: e.target.value })} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Table Number</Label>
+                                <Input
+                                    type="number"
+                                    value={tableForm.number}
+                                    onChange={(e) => setTableForm({ ...tableForm, number: parseInt(e.target.value) || 0 })}
+                                />
+                                {tables?.some((t: any) => t.number === tableForm.number && t.id !== editingTable?.id) && (
+                                    <p className="text-[10px] text-amber-600 font-medium">Warning: This table number already exists.</p>
+                                )}
+                            </div>
                         </div>
                         <div className="space-y-2">
                             <Label>{t("floor_plan.capacity")}</Label>

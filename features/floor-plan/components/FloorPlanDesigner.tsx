@@ -9,8 +9,13 @@ import { Save, Trash2, RotateCw, Settings2, ZoomIn, ZoomOut, Maximize2 } from "l
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TableAssignmentDropdown } from "./TableAssignmentDropdown";
+import { usePageContext } from "vike-react/usePageContext";
+import { useTables } from "@/features/floor-plan/useFloorPlan";
 
 export const FloorPlanDesigner: React.FC<{ initialLayout?: FloorPlanLayout }> = ({ initialLayout }) => {
+    const { routeParams } = usePageContext();
+    const businessId = routeParams.id;
     const [layout, setLayout] = useState<FloorPlanLayout>(initialLayout || {
         id: uuidv4(),
         name: "Main Floor",
@@ -24,6 +29,7 @@ export const FloorPlanDesigner: React.FC<{ initialLayout?: FloorPlanLayout }> = 
     const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
     const [zoom, setZoom] = useState(1);
     const [activeTab, setActiveTab] = useState<'item' | 'canvas'>('item');
+    const { tables } = useTables(businessId);
 
     useEffect(() => {
         if (selectedElementId) setActiveTab('item');
@@ -211,6 +217,24 @@ export const FloorPlanDesigner: React.FC<{ initialLayout?: FloorPlanLayout }> = 
                                                 onChange={(e) => handleUpdateItem(selectedElement.id, { label: e.target.value })}
                                             />
                                         </div>
+
+                                        {selectedElement.type === "table" && (
+                                            <div className="space-y-1.5">
+                                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">Linked Table</Label>
+                                                <TableAssignmentDropdown
+                                                    businessId={businessId}
+                                                    value={selectedElement.tableId || ""}
+                                                    onChange={(val: string) => {
+                                                        const table = tables?.find((t: any) => t.id === val);
+                                                        const newLabel = table ? (table.name || `T${table.number}`) : selectedElement.label;
+                                                        handleUpdateItem(selectedElement.id, {
+                                                            tableId: val === "none" ? undefined : val,
+                                                            label: val === "none" ? selectedElement.label : newLabel
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
 
                                         <div className="flex flex-col gap-2 pt-4">
                                             <Button variant="outline" size="sm" className="w-full gap-2 justify-start" onClick={() => handleRotate(selectedElement.id)}>

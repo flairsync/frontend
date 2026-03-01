@@ -19,6 +19,7 @@ export interface UpdateFloorDto {
 
 export interface CreateTableDto {
     name: string;
+    number: number;
     capacity: number;
     floorId: string;
     position: {
@@ -30,6 +31,7 @@ export interface CreateTableDto {
 
 export interface UpdateTableDto {
     name?: string;
+    number?: number;
     capacity?: number;
     floorId?: string;
     position?: {

@@ -34,82 +34,94 @@ const ownerNavData = {
                 },
                 {
                     key: "branding",
-
                     title: "Business Branding",
                     url: "/manage/:id/owner/branding",
                     icon: Images,
+                    requiredPermission: "BUSINESS_SETTINGS",
+                    requiredAction: "read",
                 },
                 {
                     key: "settings",
-
                     title: "Business Settings",
                     url: "/manage/:id/owner/settings",
                     icon: Settings,
+                    requiredPermission: "BUSINESS_SETTINGS",
+                    requiredAction: "read",
                 },
                 {
                     key: "billing",
-
                     title: "Billing & Subscription",
                     url: "/manage/:id/owner/billing",
                     icon: CreditCard,
+                    requiredPermission: "BUSINESS_SETTINGS", // Maybe owner only later
+                    requiredAction: "read",
                 },
                 {
                     key: "staff",
-
                     title: "Staff Management",
                     url: "/manage/:id/owner/staff",
                     icon: Users,
+                    requiredPermission: "STAFF",
+                    requiredAction: "read",
                 },
                 {
                     key: "schedule",
-
                     title: "Schedule Management",
                     url: "/manage/:id/owner/schedule",
                     icon: CalendarCheck,
+                    requiredPermission: "OPENING_HOURS",
+                    requiredAction: "read",
                 },
                 {
                     key: "inventory",
-
                     title: "Inventory Management",
                     url: "/manage/:id/owner/inventory",
                     icon: PackageOpen,
+                    requiredPermission: "INVENTORY",
+                    requiredAction: "read",
                 },
                 {
                     key: "menu",
-
                     title: "Menu Management",
                     url: "/manage/:id/owner/menu",
                     icon: Utensils,
+                    requiredPermission: "MENU",
+                    requiredAction: "read",
                 },
                 {
                     key: "floor-plan",
                     title: "Floor Plan",
                     url: "/manage/:id/owner/floor-plan",
                     icon: LayoutDashboard,
+                    requiredPermission: "BUSINESS_SETTINGS",
+                    requiredAction: "read",
                 },
                 {
                     key: "orders",
-
                     title: "Orders",
                     url: "/manage/:id/owner/orders",
                     icon: ShoppingBag,
+                    requiredPermission: "ORDERS",
+                    requiredAction: "read",
                 },
                 {
                     key: "reservations",
                     title: "Reservations",
                     url: "/manage/:id/owner/reservations",
                     icon: CalendarCheck,
+                    requiredPermission: "RESERVATIONS",
+                    requiredAction: "read",
                 },
                 {
                     key: "analytics",
-
                     title: "Analytics & Reports",
                     url: "/manage/:id/owner/analytics",
                     icon: BarChart3,
+                    requiredPermission: "ORDERS", // Or specific analytics perm
+                    requiredAction: "read",
                 },
                 {
                     key: "danger",
-
                     title: "Danger Zone",
                     url: "/manage/:id/owner/danger",
                     icon: ShieldAlert,

@@ -19,7 +19,7 @@ interface AddOrderDrawerProps {
 }
 
 export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrderDrawerProps) {
-    const { businessAllItems } = useBusinessMenus(businessId)
+    const { businessAllCategories } = useBusinessMenus(businessId)
     const { floors } = useFloors(businessId)
     const { createOrder, isCreatingOrder } = useOrders(businessId)
 
@@ -117,7 +117,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
 
                     <div className="flex-1 overflow-y-auto px-6 pb-6">
                         <StaffAddOrderMenu
-                            items={businessAllItems || []}
+                            categories={businessAllCategories || []}
                             onSelectItem={handleSelectItem}
                         />
                     </div>

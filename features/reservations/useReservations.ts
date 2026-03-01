@@ -5,6 +5,7 @@ import {
     createReservationApiCall,
     fetchReservationDetailsApiCall,
     updateReservationApiCall,
+    findAvailabilityApiCall,
     CreateReservationDto,
     UpdateReservationDto
 } from "./service";
@@ -74,6 +75,15 @@ export const useReservations = (businessId: string) => {
         updateReservation: updateReservationMutation.mutate,
         isUpdatingReservation: updateReservationMutation.isPending,
     };
+};
+
+export const useAvailability = (businessId: string) => {
+    return useMutation({
+        mutationFn: async (data: { date: string; guestCount: number }) => {
+            const response = await findAvailabilityApiCall(businessId, data.date, data.guestCount);
+            return response.data?.data || response.data || [];
+        },
+    });
 };
 
 export const useReservationDetails = (businessId: string, reservationId: string) => {

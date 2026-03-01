@@ -37,27 +37,36 @@ export interface Order {
     type: "dine_in" | "takeaway" | "delivery";
     status: "open" | "sent" | "served" | "closed" | "cancelled";
     tableId?: string;
+    table?: { id: string; name: string; number?: number };
     totalAmount: number;
     totalPaid?: number;
+    totalTip?: number;
+    taxAmount?: string | number;
+    discountAmount?: string | number;
     items: {
         id: string;
         menuItemId: string;
         quantity: number;
         notes?: string;
         price: number;
+        status?: string;
         nameSnapshot?: string;
         basePriceSnapshot?: string | number;
         totalPrice?: string | number;
+        selectedModifiers?: { id?: string; name: string; price: number }[];
     }[];
     payments?: {
         id: string;
         amount: number;
+        tipAmount?: number;
         method: "cash" | "card" | "online" | "other";
         status: string;
         createdAt: string;
     }[];
     paymentStatus: "pending" | "partially_paid" | "paid" | "refunded" | "failed";
     paymentMethod?: "cash" | "card" | "online" | "other";
+    cancellationReason?: string;
+    closingNotes?: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -65,11 +74,24 @@ export interface Order {
 export interface CreatePaymentDto {
     amount: number;
     method: "cash" | "card" | "online" | "other";
+    tipAmount?: number;
 }
 
-// API Calls
-export const fetchOrdersApiCall = (businessId: string) => {
-    return flairapi.get(getOrdersUrl(businessId));
+export const fetchOrdersApiCall = (
+    businessId: string,
+    status?: "ongoing" | "all" | "open" | "sent" | "served" | "closed" | "cancelled",
+    startDate?: string,
+    endDate?: string
+) => {
+    const url = getOrdersUrl(businessId);
+    const params = new URLSearchParams();
+
+    if (status) params.append("status", status);
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+
+    const qs = params.toString();
+    return flairapi.get(qs ? `${url}?${qs}` : url);
 };
 
 export const createOrderApiCall = (businessId: string, data: CreateOrderDto) => {
@@ -96,10 +118,30 @@ export const serveOrderApiCall = (businessId: string, orderId: string) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/serve`, {});
 };
 
-export const closeOrderApiCall = (businessId: string, orderId: string) => {
-    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/close`, {});
+export const closeOrderApiCall = (businessId: string, orderId: string, data?: { force?: boolean; notes?: string }) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/close`, data || {});
+};
+
+export const cancelOrderApiCall = (businessId: string, orderId: string, data?: { reason?: string }) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/cancel`, data || {});
 };
 
 export const createPaymentApiCall = (businessId: string, orderId: string, data: CreatePaymentDto) => {
     return flairapi.post(`${getOrdersUrl(businessId)}/${orderId}/payments`, data);
+};
+
+export const refundPaymentApiCall = (businessId: string, orderId: string, paymentId: string, data?: { reason?: string }) => {
+    return flairapi.post(`${getOrdersUrl(businessId)}/${orderId}/payments/${paymentId}/refund`, data || {});
+};
+
+export const transferOrderApiCall = (businessId: string, orderId: string, data: { tableId: string }) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/transfer`, data);
+};
+
+export const updateOrderItemApiCall = (businessId: string, orderId: string, itemId: string, data: { quantity?: number; modifiers?: any[]; notes?: string }) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`, data);
+};
+
+export const voidOrderItemApiCall = (businessId: string, orderId: string, itemId: string) => {
+    return flairapi.delete(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`);
 };

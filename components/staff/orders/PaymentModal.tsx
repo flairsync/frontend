@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useOrders } from "@/features/orders/useOrders";
+import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
 
 interface PaymentModalProps {
     businessId: string;
@@ -22,37 +22,45 @@ interface PaymentModalProps {
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, open, onClose }) => {
+    const { data: fullOrder } = useOrderDetails(businessId, order?.id || "");
+    const displayOrder = fullOrder || order;
+
     const { createPayment, isCreatingPayment } = useOrders(businessId);
 
     const [amount, setAmount] = useState<string>("");
+    const [tipAmount, setTipAmount] = useState<string>("");
     const [method, setMethod] = useState<"cash" | "card" | "online" | "other">("cash");
 
-    const totalAmount = Number(order?.totalAmount || 0);
-    const totalPaid = Number(order?.totalPaid || 0);
+    const totalAmount = Number(displayOrder?.totalAmount || 0);
+    const totalPaid = Number(displayOrder?.totalPaid || 0);
+    const totalTip = Number(displayOrder?.totalTip || 0);
     const remainingBalance = Math.max(totalAmount - totalPaid, 0);
 
     useEffect(() => {
-        if (open && order) {
+        if (open && displayOrder) {
             setAmount(remainingBalance.toFixed(2));
+            setTipAmount("");
             setMethod("cash");
         }
-    }, [open, order, remainingBalance]);
+    }, [open, displayOrder, remainingBalance]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!order) return;
+        if (!displayOrder) return;
 
         const paymentAmount = Number(amount);
+        const parsedTip = Number(tipAmount);
         if (isNaN(paymentAmount) || paymentAmount <= 0) {
             return;
         }
 
         try {
             await createPayment({
-                orderId: order.id,
+                orderId: displayOrder.id,
                 data: {
                     amount: paymentAmount,
-                    method
+                    method,
+                    tipAmount: !isNaN(parsedTip) && parsedTip > 0 ? parsedTip : undefined
                 }
             });
             onClose();
@@ -61,14 +69,14 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
         }
     };
 
-    if (!order) return null;
+    if (!displayOrder) return null;
 
     return (
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Add Payment - Order #{order.id.substring(0, 8)}</DialogTitle>
+                        <DialogTitle>Add Payment - Order #{displayOrder.id.substring(0, 8)}</DialogTitle>
                         <DialogDescription>
                             Record a payment for this order. It currently has a remaining balance of <strong>${remainingBalance.toFixed(2)}</strong>.
                         </DialogDescription>
@@ -97,6 +105,19 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 required
+                            />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="tipAmount">Tip Amount ($) <span className="text-muted-foreground text-xs font-normal">(Optional)</span></Label>
+                            <Input
+                                id="tipAmount"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={tipAmount}
+                                onChange={(e) => setTipAmount(e.target.value)}
+                                placeholder="0.00"
                             />
                         </div>
 

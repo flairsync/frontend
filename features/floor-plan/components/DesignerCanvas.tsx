@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { FloorPlanLayout, DesignerElement, Point } from "./types";
 import { ASSETS } from "./FloorPlanAssets";
+import { useOrders } from "@/features/orders/useOrders";
+import { usePageContext } from "vike-react/usePageContext";
+import { Badge } from "@/components/ui/badge";
 
 interface CanvasProps {
     layout: FloorPlanLayout;
@@ -14,6 +17,11 @@ interface CanvasProps {
 type ResizeDirection = 'e' | 'w' | 's' | 'n';
 
 export const DesignerCanvas: React.FC<CanvasProps> = ({ layout, onUpdateItem, selectedId, onSelect, zoom, onZoomChange }) => {
+    const { routeParams } = usePageContext();
+    const businessId = routeParams.id;
+    const { orders } = useOrders(businessId);
+
+    const activeOrders = useMemo(() => orders?.filter(o => o.status !== "closed" && o.status !== "cancelled") || [], [orders]);
     const svgRef = useRef<SVGSVGElement>(null);
     const [draggingId, setDraggingId] = useState<string | null>(null);
     const [resizingId, setResizingId] = useState<string | null>(null);
@@ -266,6 +274,7 @@ export const DesignerCanvas: React.FC<CanvasProps> = ({ layout, onUpdateItem, se
         }
 
         const isSelected = selectedId === el.id;
+        const linkedOrder = el.tableId ? activeOrders.find(o => o.tableId === el.tableId) : null;
 
         return (
             <g
@@ -275,6 +284,18 @@ export const DesignerCanvas: React.FC<CanvasProps> = ({ layout, onUpdateItem, se
                 onClick={(e) => e.stopPropagation()}
                 style={{ cursor: draggingId === el.id ? 'grabbing' : 'grab' }}
             >
+                {linkedOrder && (
+                    <circle
+                        cx={elW / 2}
+                        cy={elH / 2}
+                        r={Math.min(elW, elH) / 1.5}
+                        className={`animate-pulse fill-none stroke-[4] ${linkedOrder.status === 'open' ? 'stroke-blue-400' :
+                                linkedOrder.status === 'sent' ? 'stroke-amber-400' :
+                                    'stroke-green-400'
+                            }`}
+                        strokeDasharray="4 2"
+                    />
+                )}
                 {content}
                 {el.label && (
                     <text

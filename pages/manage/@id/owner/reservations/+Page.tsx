@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { format } from "date-fns";
+import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal";
 
 const ReservationsPage: React.FC = () => {
     const { t } = useTranslation();
@@ -30,54 +31,21 @@ const ReservationsPage: React.FC = () => {
     const { floors } = useFloors(businessId); // To get table choices if assigned
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [editingReservation, setEditingReservation] = useState<any>(null);
 
-    const [form, setForm] = useState({
-        customerName: "",
-        customerEmail: "",
-        customerPhone: "",
-        reservationTime: "",
-        guestCount: 2,
-        notes: "",
-        tableId: ""
-    });
+    const getStatusBadge = (status: string) => {
+        switch (status.toLowerCase()) {
+            case 'pending': return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 uppercase text-[10px]">Pending</Badge>;
+            case 'confirmed': return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 uppercase text-[10px]">Confirmed</Badge>;
+            case 'waitlist': return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 uppercase text-[10px]">Waitlist</Badge>;
+            case 'completed': return <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200 uppercase text-[10px]">Completed</Badge>;
+            case 'no_show': return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 uppercase text-[10px]">No Show</Badge>;
+            case 'cancelled': return <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 uppercase text-[10px]">Cancelled</Badge>;
+            default: return <Badge variant="outline" className="uppercase text-[10px]">{status}</Badge>;
+        }
+    };
 
     const handleOpenCreate = () => {
-        setEditingReservation(null);
-        setForm({
-            customerName: "",
-            customerEmail: "",
-            customerPhone: "",
-            reservationTime: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
-            guestCount: 2,
-            notes: "",
-            tableId: ""
-        });
         setModalOpen(true);
-    };
-
-    const handleEdit = (res: any) => {
-        setEditingReservation(res);
-        setForm({
-            customerName: res.customerName,
-            customerEmail: res.customerEmail,
-            customerPhone: res.customerPhone,
-            reservationTime: format(new Date(res.reservationTime), "yyyy-MM-dd'T'HH:mm"),
-            guestCount: res.guestCount,
-            notes: res.notes || "",
-            tableId: res.tableId || ""
-        });
-        setModalOpen(true);
-    };
-
-    const handleSave = async () => {
-        const payload = { ...form, reservationTime: new Date(form.reservationTime).toISOString() };
-        if (editingReservation) {
-            updateReservation({ reservationId: editingReservation.id, data: payload });
-        } else {
-            createReservation(payload);
-        }
-        setModalOpen(false);
     };
 
     const updateStatus = (id: string, status: string) => {
@@ -128,25 +96,26 @@ const ReservationsPage: React.FC = () => {
                                         <TableCell>{res.guestCount}</TableCell>
                                         <TableCell>{res.tableId ? `Table ${res.tableId.substring(0, 4)}` : "Unassigned"}</TableCell>
                                         <TableCell>
-                                            <Select value={res.status} onValueChange={(val) => updateStatus(res.id, val)}>
-                                                <SelectTrigger className="w-32">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="pending">Pending</SelectItem>
-                                                    <SelectItem value="confirmed">Confirmed</SelectItem>
-                                                    <SelectItem value="rejected">Rejected</SelectItem>
-                                                    <SelectItem value="cancelled">Cancelled</SelectItem>
-                                                    <SelectItem value="completed">Completed</SelectItem>
-                                                </SelectContent>
-                                            </Select>
+                                            <div className="flex items-center gap-2">
+                                                {getStatusBadge(res.status)}
+                                                <Select value={res.status} onValueChange={(val) => updateStatus(res.id, val)}>
+                                                    <SelectTrigger className="w-[32px] h-8 p-0 flex items-center justify-center border-none shadow-none hover:bg-accent">
+                                                        <Pencil className="w-3 h-3" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="pending">Pending</SelectItem>
+                                                        <SelectItem value="confirmed">Confirmed</SelectItem>
+                                                        <SelectItem value="waitlist">Waitlist</SelectItem>
+                                                        <SelectItem value="rejected">Rejected</SelectItem>
+                                                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                                                        <SelectItem value="completed">Completed</SelectItem>
+                                                        <SelectItem value="no_show">No Show</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <div className="flex justify-end gap-2">
-                                                <Button size="icon" variant="ghost" onClick={() => handleEdit(res)}>
-                                                    <Pencil className="w-4 h-4" />
-                                                </Button>
-                                            </div>
+                                            {/* Action icons could go here if needed */}
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -156,57 +125,11 @@ const ReservationsPage: React.FC = () => {
                 </CardContent>
             </Card>
 
-            <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-                <DialogContent className="max-w-md">
-                    <DialogHeader>
-                        <DialogTitle>{editingReservation ? t("reservations.title") : t("reservations.add_reservation")}</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label>{t("reservations.customer_name")}</Label>
-                                <Input value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                                <Label>Phone</Label>
-                                <Input value={form.customerPhone} onChange={(e) => setForm({ ...form, customerPhone: e.target.value })} />
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <Label>{t("reservations.time")}</Label>
-                            <Input type="datetime-local" value={form.reservationTime} onChange={(e) => setForm({ ...form, reservationTime: e.target.value })} />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label>{t("reservations.guests")}</Label>
-                                <Input type="number" value={form.guestCount} onChange={(e) => setForm({ ...form, guestCount: Number(e.target.value) })} />
-                            </div>
-                            <div className="space-y-2">
-                                <Label>{t("reservations.table")}</Label>
-                                <Select value={form.tableId} onValueChange={(val) => setForm({ ...form, tableId: val })}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select Table" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {/* Ideally we'd flatten all tables from floors */}
-                                        {floors?.flatMap((f: any) => f.tables || [])?.map((t: any) => (
-                                            <SelectItem key={t.id} value={t.id}>{t.name} (Cap: {t.capacity})</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Notes</Label>
-                            <Input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setModalOpen(false)}>{t("shared.actions.cancel")}</Button>
-                        <Button onClick={handleSave}>{t("shared.actions.save")}</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <BookingFlowModal
+                businessId={businessId}
+                open={modalOpen}
+                onOpenChange={setModalOpen}
+            />
         </div>
     );
 };

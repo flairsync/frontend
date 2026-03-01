@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/table";
 import { Trash, UserPlus, Edit, Plus } from "lucide-react";
 import { AddRoleModal } from "@/components/management/staff/AddNewRoleModal";
+import { ViewRoleModal } from "@/components/management/staff/ViewRoleModal";
+import { BatchEditRoleEmployeesModal } from "@/components/management/staff/BatchEditRoleEmployeesModal";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessRoles } from "@/features/business/roles/useBusinessRoles";
@@ -51,13 +53,19 @@ const RolesSection = () => {
         businessRoles,
         loadingBusinessRoles,
         createNewRole,
-        creatingNewRole
+        creatingNewRole,
+        updateRole,
+        deleteRole
     } = useBusinessRoles(routeParams.id);
 
 
     // Roles
     const [roleModal, setRoleModal] = useState(false);
     const [editRole, setEditRole] = useState<Role>();
+    const [viewRoleModal, setViewRoleModal] = useState(false);
+    const [viewRole, setViewRole] = useState<Role>();
+    const [batchEditRoleModal, setBatchEditRoleModal] = useState(false);
+    const [batchEditRole, setBatchEditRole] = useState<Role>();
 
 
     return (
@@ -82,7 +90,7 @@ const RolesSection = () => {
                                 }}
                                 editRole={editRole}
                                 onAdd={(data) => {
-                                    createNewRole({
+                                    const payload = {
                                         name: data.name,
                                         permissions: data.permissions.map(val => {
                                             return {
@@ -93,11 +101,32 @@ const RolesSection = () => {
                                                 canUpdate: val.flags.canUpdate
                                             }
                                         })
-                                    })
+                                    }
+
+                                    if (data.editId) {
+                                        updateRole({
+                                            roleId: data.editId,
+                                            data: payload
+                                        })
+                                    } else {
+                                        createNewRole(payload)
+                                    }
+
                                     setRoleModal(false);
                                     setEditRole(undefined);
 
                                 }}
+                            />
+                            <ViewRoleModal
+                                open={viewRoleModal}
+                                onOpenChange={setViewRoleModal}
+                                role={viewRole}
+                            />
+                            <BatchEditRoleEmployeesModal
+                                open={batchEditRoleModal}
+                                onOpenChange={setBatchEditRoleModal}
+                                role={batchEditRole}
+                                businessId={routeParams.id}
                             />
                         </div>
                     </div>
@@ -109,67 +138,72 @@ const RolesSection = () => {
                                 <TableRow>
                                     <TableHead>Role Name</TableHead>
                                     <TableHead>Employees</TableHead>
-                                    <TableHead>Permission</TableHead>
-                                    <TableHead className="text-center">Read</TableHead>
-                                    <TableHead className="text-center">Create</TableHead>
-                                    <TableHead className="text-center">Update</TableHead>
-                                    <TableHead className="text-center">Delete</TableHead>
-                                    <TableHead className="sticky right-0 bg-white z-10">Actions</TableHead>
+                                    <TableHead className="text-center">Permissions</TableHead>
+                                    <TableHead className="sticky right-0 bg-white z-10 text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
 
                             <TableBody>
                                 {businessRoles?.map((role) => (
-                                    <>
-                                        {role.permissions.map((p, idx) => (
-                                            <TableRow key={`${role.id}-${p.permission.id}`}>
-                                                {/* Role name only in the first permission row */}
-                                                <TableCell className="align-top">
-                                                    {idx === 0 ? role.name : ""}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Button>{role.employeeCount} Emps.
-                                                        <Edit />
-                                                    </Button>
-                                                </TableCell>
-                                                {/* Permission label */}
-                                                <TableCell>{p.permission.label}</TableCell>
-
-                                                {/* Checkboxes for flags */}
-                                                <TableCell className="text-center">
-                                                    <Checkbox checked={p.canRead} disabled />
-                                                </TableCell>
-
-                                                <TableCell className="text-center">
-                                                    <Checkbox checked={p.canCreate} disabled />
-                                                </TableCell>
-
-                                                <TableCell className="text-center">
-                                                    <Checkbox checked={p.canUpdate} disabled />
-                                                </TableCell>
-
-                                                <TableCell className="text-center">
-                                                    <Checkbox checked={p.canDelete} disabled />
-                                                </TableCell>
-
-                                                {/* Edit button only in the first permission row */}
-                                                {idx === 0 && (
-                                                    <TableCell className="sticky right-0 bg-white z-10 text-right">
-                                                        <Button
-                                                            size="sm"
-                                                            onClick={() => {
-                                                                setEditRole(role);
-                                                                setRoleModal(true);
-                                                            }}
-                                                        //   onClick={() => handleEditRole(role)}
-                                                        >
-                                                            Edit
-                                                        </Button>
-                                                    </TableCell>
-                                                )}
-                                            </TableRow>
-                                        ))}
-                                    </>
+                                    <TableRow
+                                        key={role.id}
+                                        className="cursor-pointer hover:bg-muted/50 transition-colors"
+                                        onDoubleClick={() => {
+                                            setViewRole(role);
+                                            setViewRoleModal(true);
+                                        }}
+                                    >
+                                        <TableCell className="font-medium align-middle">
+                                            {role.name}
+                                        </TableCell>
+                                        <TableCell className="align-middle">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="gap-2"
+                                                onClick={(e) => {
+                                                    // Stop propagation to avoid triggering the row's onDoubleClick
+                                                    e.stopPropagation();
+                                                    setBatchEditRole(role);
+                                                    setBatchEditRoleModal(true);
+                                                }}
+                                            >
+                                                {role.employeeCount} Emps.
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell className="text-center align-middle">
+                                            {role.permissions.length} Permissions
+                                        </TableCell>
+                                        <TableCell className="sticky right-0 bg-white z-10 text-right align-middle">
+                                            <div className="flex justify-end gap-2">
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setEditRole(role);
+                                                        setRoleModal(true);
+                                                    }}
+                                                >
+                                                    <Edit className="h-4 w-4 mr-1" />
+                                                    Edit
+                                                </Button>
+                                                <Button
+                                                    size="sm"
+                                                    variant="destructive"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (confirm(`Are you sure you want to delete the role "${role.name}"?`)) {
+                                                            deleteRole(role.id)
+                                                        }
+                                                    }}
+                                                >
+                                                    <Trash className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                             </TableBody>
                         </Table>

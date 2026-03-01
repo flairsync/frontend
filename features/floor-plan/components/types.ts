@@ -15,6 +15,7 @@ export interface DesignerElement {
     heightMeters: number;
     rotation: number;
     label?: string;
+    tableId?: string;
     isLocked?: boolean;
     props?: Record<string, any>;
 }

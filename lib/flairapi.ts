@@ -11,7 +11,7 @@ NProgress.configure({ showSpinner: false });
 
 const flairapi = axios.create({
   withCredentials: true,
-  timeout: 15000, // 15 seconds timeout
+  timeout: 60000, // 60 seconds timeout to handle slow cold starts
 });
 
 // To avoid multiple refreshes in parallel
