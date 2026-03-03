@@ -37,10 +37,12 @@ import { Form, Formik } from "formik";
 import { inviteNewEmployeeSchema } from "@/misc/FormValidators";
 import { InputError } from "@/components/inputs/InputError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { UpgradeModal } from "@/components/subscriptions/UpgradeModal";
 
 
 const InvitationsSection = () => {
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()
@@ -82,6 +84,7 @@ const InvitationsSection = () => {
 
     return (
         <div>
+            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
             <ConfirmationPopup
                 isOpen={cancelInvitationId != undefined}
                 onCancel={() => setCancelInvitationId(undefined)}
@@ -120,7 +123,11 @@ const InvitationsSection = () => {
                                         initialValues={{ email: '', }}
                                         validationSchema={inviteNewEmployeeSchema}
                                         onSubmit={values => {
-                                            inviteNewEmployee(values.email)
+                                            inviteNewEmployee(values.email, {
+                                                onError: (err: any) => {
+                                                    if (err?.response?.status === 403) setShowUpgradeModal(true);
+                                                }
+                                            });
                                             setInviteModalOpen(false);
                                         }}
                                     >

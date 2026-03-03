@@ -11,6 +11,7 @@ import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus"
 import { useFloors } from "@/features/floor-plan/useFloorPlan"
 import { useOrders } from "@/features/orders/useOrders"
 import { Plus, Minus, Trash2, ShoppingBag, UtensilsCrossed } from "lucide-react"
+import { OrderItemConfigModal, ConfiguredOrderItem } from "./OrderItemConfigModal"
 
 interface AddOrderDrawerProps {
     businessId: string;
@@ -26,8 +27,12 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
     const [orderType, setOrderType] = React.useState<"dine_in" | "takeaway" | "delivery">("dine_in")
     const [selectedTable, setSelectedTable] = React.useState<string>("none")
 
-    // items state includes menuItemId and quantity
-    const [selectedItems, setSelectedItems] = React.useState<{ menuItemId: string; name: string; price: number; quantity: number }[]>([])
+    // items state includes an internal id, menuItemId, quantity, variants, modifiers
+    const [selectedItems, setSelectedItems] = React.useState<(ConfiguredOrderItem & { id: string })[]>([])
+
+    // Config modal state
+    const [configModalOpen, setConfigModalOpen] = React.useState(false)
+    const [selectedConfigItem, setSelectedConfigItem] = React.useState<any>(null)
 
     // Flat tables list from floors
     const tables = React.useMemo(() => {
@@ -35,19 +40,47 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
     }, [floors])
 
     const handleSelectItem = (menuItem: any) => {
+        if ((menuItem.variants && menuItem.variants.length > 0) || (menuItem.modifierGroups && menuItem.modifierGroups.length > 0)) {
+            setSelectedConfigItem(menuItem)
+            setConfigModalOpen(true)
+            return
+        }
+
         setSelectedItems(prev => {
-            const existing = prev.find(i => i.menuItemId === menuItem.id)
+            const existing = prev.find(i => i.menuItemId === menuItem.id && !i.variantId && (!i.modifiers || i.modifiers.length === 0))
             if (existing) {
-                return prev.map(i => i.menuItemId === menuItem.id ? { ...i, quantity: i.quantity + 1 } : i)
+                return prev.map(i => i.id === existing.id ? { ...i, quantity: i.quantity + 1 } : i)
             }
-            return [...prev, { menuItemId: menuItem.id, name: menuItem.name, price: Number(menuItem.price || 0), quantity: 1 }]
+            return [...prev, { id: Date.now().toString(), menuItemId: menuItem.id, name: menuItem.name, price: Number(menuItem.price || 0), quantity: 1 }]
         })
     }
 
-    const handleUpdateQuantity = (menuItemId: string, delta: number) => {
+    const handleSaveConfig = (config: ConfiguredOrderItem) => {
+        setSelectedItems(prev => {
+            // Compare if exact config exists to increment
+            const existingIndex = prev.findIndex(i =>
+                i.menuItemId === config.menuItemId &&
+                i.variantId === config.variantId &&
+                JSON.stringify(i.modifiers || []) === JSON.stringify(config.modifiers || []) &&
+                i.notes === config.notes
+            )
+
+            if (existingIndex >= 0) {
+                const updated = [...prev]
+                updated[existingIndex].quantity += config.quantity
+                return updated
+            }
+
+            return [...prev, { ...config, id: Date.now().toString() + Math.random().toString(36).substring(7) }]
+        })
+        setConfigModalOpen(false)
+        setSelectedConfigItem(null)
+    }
+
+    const handleUpdateQuantity = (id: string, delta: number) => {
         setSelectedItems(prev => {
             return prev.map(i => {
-                if (i.menuItemId === menuItemId) {
+                if (i.id === id) {
                     return { ...i, quantity: Math.max(0, i.quantity + delta) }
                 }
                 return i
@@ -55,8 +88,8 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
         })
     }
 
-    const handleRemoveItem = (menuItemId: string) => {
-        setSelectedItems(prev => prev.filter(i => i.menuItemId !== menuItemId))
+    const handleRemoveItem = (id: string) => {
+        setSelectedItems(prev => prev.filter(i => i.id !== id))
     }
 
     const resetForm = () => {
@@ -81,7 +114,10 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
             tableId: orderType === "dine_in" ? selectedTable : undefined,
             items: selectedItems.map(i => ({
                 menuItemId: i.menuItemId,
-                quantity: i.quantity
+                quantity: i.quantity,
+                variantId: i.variantId,
+                modifiers: i.modifiers?.map(m => ({ modifierItemId: m.modifierItemId })),
+                notes: i.notes
             }))
         }, {
             onSuccess: () => {
@@ -184,17 +220,30 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                             ) : (
                                 <div className="space-y-2">
                                     {selectedItems.map(item => (
-                                        <div key={item.menuItemId} className="p-3 bg-muted/20 rounded-lg border flex items-center justify-between group">
+                                        <div key={item.id} className="p-3 bg-muted/20 rounded-lg border flex items-center justify-between group">
                                             <div className="flex flex-col flex-1 truncate pr-3">
-                                                <span className="text-sm font-medium truncate">{item.name}</span>
-                                                <span className="text-xs text-muted-foreground">${item.price.toFixed(2)} each</span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-medium truncate">{item.name}</span>
+                                                    {item.variantId && <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">Variant Selected</span>}
+                                                </div>
+                                                {item.modifiers && item.modifiers.length > 0 && (
+                                                    <span className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
+                                                        Mods: {item.modifiers.map(m => m.name).join(", ")}
+                                                    </span>
+                                                )}
+                                                {item.notes && (
+                                                    <span className="text-[10px] text-amber-600 line-clamp-1 mt-0.5 italic">
+                                                        Note: {item.notes}
+                                                    </span>
+                                                )}
+                                                <span className="text-xs text-muted-foreground mt-0.5">${item.price.toFixed(2)} each</span>
                                             </div>
                                             <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm">
-                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.menuItemId, -1)}>
+                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.id, -1)}>
                                                     <Minus className="h-3 w-3" />
                                                 </Button>
                                                 <span className="text-sm font-medium w-5 text-center leading-none">{item.quantity}</span>
-                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.menuItemId, 1)}>
+                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.id, 1)}>
                                                     <Plus className="h-3 w-3" />
                                                 </Button>
                                             </div>
@@ -227,6 +276,16 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                 </div>
 
             </DialogContent>
+
+            <OrderItemConfigModal
+                open={configModalOpen}
+                onClose={() => {
+                    setConfigModalOpen(false)
+                    setSelectedConfigItem(null)
+                }}
+                item={selectedConfigItem}
+                onSave={handleSaveConfig}
+            />
         </Dialog>
     )
 }

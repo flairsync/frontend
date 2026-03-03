@@ -48,7 +48,7 @@ export function MarketplaceSidebar({
     activeCategory,
 }: MarketplaceSidebarProps) {
     return (
-        <Sidebar collapsible="icon" className="border-r border-white/5 bg-secondary/10 backdrop-blur-xl">
+        <Sidebar collapsible="icon" className="border-r border-white/5 bg-secondary/10 backdrop-blur-xl sticky top-0 h-screen">
             <SidebarHeader className="h-16 flex items-center px-4 border-b border-white/5">
                 <span className="text-sm font-bold tracking-tight text-foreground group-data-[collapsible=icon]:hidden">
                     MARKETPLACE

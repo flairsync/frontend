@@ -1,10 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Menu, X, ChevronDown, ShoppingBag } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePageContext } from "vike-react/usePageContext";
 import { useTranslation } from "react-i18next";
 import WebsiteLogo from "../shared/WebsiteLogo";
 import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type HeaderProps = {
     activeTag?: string;
@@ -37,6 +43,27 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
 
                 {/* Desktop actions */}
                 <div className="hidden md:flex items-center gap-4">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="gap-2">
+                                <ShoppingBag className="w-4 h-4" />
+                                Marketplace
+                                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem asChild>
+                                <a href="/marketplace/guest" className="cursor-pointer">Guest Shop</a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <a href="/marketplace/b2b" className="cursor-pointer">B2B Supplies</a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <a href="/marketplace/saas" className="cursor-pointer">Official Gear</a>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
                     {user ? (
                         <HeaderProfileAvatar />
                     ) : (
@@ -87,6 +114,32 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
                         >
                             Businesses
                         </a>
+
+                        {/* Mobile Marketplace Links */}
+                        <div className="pt-2 flex flex-col space-y-3">
+                            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Marketplace</span>
+                            <a
+                                href="/marketplace/guest"
+                                className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Guest Shop
+                            </a>
+                            <a
+                                href="/marketplace/b2b"
+                                className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                B2B Supplies
+                            </a>
+                            <a
+                                href="/marketplace/saas"
+                                className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Official Gear
+                            </a>
+                        </div>
 
                         <div className="pt-3 border-t">
                             {user ? (

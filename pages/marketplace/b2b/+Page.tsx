@@ -1,10 +1,14 @@
 import React from 'react';
 import { MarketplaceLayout } from '@/components/marketplace/MarketplaceLayout';
 import { MarketplaceGrid } from '@/components/marketplace/MarketplaceGrid';
-import { MOCK_ITEMS } from '@/components/marketplace/data';
+import { usePlatformMarketplaceItems } from '@/features/marketplace/useMarketplace';
+import { MarketplaceItem } from '@/models/MarketplaceItem';
 
 export function Page() {
-    const items = MOCK_ITEMS.filter(item => item.type === 'b2b');
+    const { data: platData, isLoading } = usePlatformMarketplaceItems();
+
+    // B2B could also be platform items matching type b2b
+    const items = platData?.data?.filter((item: MarketplaceItem) => item.type === 'b2b') || [];
 
     return (
         <MarketplaceLayout
@@ -12,7 +16,11 @@ export function Page() {
             title="B2B Marketplace"
             subtitle="Sourcing & supplies for your business."
         >
-            <MarketplaceGrid items={items} />
+            {isLoading ? (
+                <div className="flex justify-center items-center p-20">Loading...</div>
+            ) : (
+                <MarketplaceGrid items={items} />
+            )}
         </MarketplaceLayout>
     );
 }

@@ -10,8 +10,9 @@ export const getCurrentUserSubscriptionApiCall = () => {
   return flairapi.get(currentSubscriptionUrl);
 };
 
-export const getSubscriptionPacksApiCall = () => {
-  return flairapi.get(subscriptionPacksUrl);
+export const getSubscriptionPacksApiCall = (country?: string) => {
+  const query = country ? `?country=${country}` : "";
+  return flairapi.get(`${subscriptionPacksUrl}${query}`);
 };
 
 export const handleUserCheckoutApiCall = (data: { packId: string }) => {

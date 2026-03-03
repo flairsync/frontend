@@ -6,20 +6,43 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CalendarDays, Clock, User, Table2, Loader } from "lucide-react"
-import { StaffAddReservationDrawer } from "@/components/staff/reservations/StaffAddReservationDrawer"
+import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal"
+import { EditReservationModal } from "@/components/management/reservations/EditReservationModal"
 import { useState } from "react"
 import { useReservations } from "@/features/reservations/useReservations"
 import { usePageContext } from "vike-react/usePageContext"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
+import DataPagination from "@/components/inputs/DataPagination"
 
 export default function StaffReservationsPage() {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { t } = useTranslation();
     const [addingReservation, setAddingReservation] = useState(false);
+    const [editingReservation, setEditingReservation] = useState<any>(null);
 
-    const { reservations, fetchingReservations, updateReservation } = useReservations(businessId);
+    const [activeTab, setActiveTab] = useState("upcoming");
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+
+    const getFilters = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (activeTab === "upcoming") {
+            return { page, limit, startDate: today.toISOString() };
+        } else {
+            return { page, limit, endDate: new Date(today.getTime() - 1).toISOString() }; // yesterday 23:59:59
+        }
+    };
+
+    const { reservations, meta, fetchingReservations, updateReservation } = useReservations(businessId, getFilters());
+
+    const handleTabChange = (val: string) => {
+        setActiveTab(val);
+        setPage(1); // Reset page on tab switch
+    };
 
     const getStatusBadge = (status: string) => {
         switch (status.toLowerCase()) {
@@ -33,6 +56,9 @@ export default function StaffReservationsPage() {
         }
     };
 
+    // Since we are filtering on the backend via startDate/endDate, we just use the raw array,
+    // but we can still locally filter status purely for display/safety since
+    // we didn't send a hard status filter to the backend in the getFilters()
     const upcomingReservations = reservations?.filter((r: any) =>
         ['pending', 'confirmed', 'waitlist'].includes(r.status.toLowerCase())
     ) || [];
@@ -47,9 +73,10 @@ export default function StaffReservationsPage() {
 
     return (
         <div className="space-y-6 p-6">
-            <StaffAddReservationDrawer
+            <BookingFlowModal
+                businessId={businessId}
                 open={addingReservation}
-                onOpenChange={() => setAddingReservation(false)}
+                onOpenChange={setAddingReservation}
             />
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -68,7 +95,7 @@ export default function StaffReservationsPage() {
             </div>
 
             {/* Tabs */}
-            <Tabs defaultValue="upcoming" className="w-full">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <TabsList className="grid grid-cols-2 w-full max-w-[300px]">
                     <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
                     <TabsTrigger value="past">Past</TabsTrigger>
@@ -118,7 +145,7 @@ export default function StaffReservationsPage() {
                                                     <TableCell>
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <Table2 className="w-4 h-4 text-muted-foreground" />
-                                                            <span>{rsv.tableId ? `Table ${rsv.tableId.substring(0, 4)}` : "Unassigned"}</span>
+                                                            <span>{rsv.table ? (rsv.table.name || `Table ${rsv.table.number || rsv.table.id.substring(0, 4)}`) : "Unassigned"}</span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
@@ -137,6 +164,14 @@ export default function StaffReservationsPage() {
                                                     <TableCell>{getStatusBadge(rsv.status)}</TableCell>
                                                     <TableCell className="text-right space-x-2">
                                                         <div className="flex justify-end gap-2">
+                                                            <Button
+                                                                size="sm"
+                                                                variant="ghost"
+                                                                className="h-8 px-2"
+                                                                onClick={() => setEditingReservation(rsv)}
+                                                            >
+                                                                Edit
+                                                            </Button>
                                                             {rsv.status.toLowerCase() === "pending" && (
                                                                 <Button
                                                                     size="sm"
@@ -163,6 +198,16 @@ export default function StaffReservationsPage() {
                                     </TableBody>
                                 </Table>
                             </div>
+                            {!fetchingReservations && meta && meta.totalPages > 1 && (
+                                <div className="mt-4 flex justify-end">
+                                    <DataPagination
+                                        current={page}
+                                        total={meta.totalItems}
+                                        pageSize={limit}
+                                        onChange={(p: number) => setPage(p)}
+                                    />
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -211,7 +256,7 @@ export default function StaffReservationsPage() {
                                                     <TableCell>
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <Table2 className="w-4 h-4 text-muted-foreground" />
-                                                            <span>{rsv.tableId ? `Table ${rsv.tableId.substring(0, 4)}` : "Unassigned"}</span>
+                                                            <span>{rsv.table ? (rsv.table.name || `Table ${rsv.table.number || rsv.table.id.substring(0, 4)}`) : "Unassigned"}</span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
@@ -234,10 +279,29 @@ export default function StaffReservationsPage() {
                                     </TableBody>
                                 </Table>
                             </div>
+                            {!fetchingReservations && meta && meta.totalPages > 1 && (
+                                <div className="mt-4 flex justify-end">
+                                    <DataPagination
+                                        current={page}
+                                        total={meta.totalItems}
+                                        pageSize={limit}
+                                        onChange={(p: number) => setPage(p)}
+                                    />
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>
             </Tabs>
+
+            <EditReservationModal
+                businessId={businessId}
+                reservation={editingReservation}
+                open={!!editingReservation}
+                onOpenChange={(open) => {
+                    if (!open) setEditingReservation(null);
+                }}
+            />
         </div>
     )
 }

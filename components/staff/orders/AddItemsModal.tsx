@@ -13,9 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Check, Plus, Minus, Search } from "lucide-react";
+import { Check, Plus, Minus, Search, Trash2 } from "lucide-react";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { useOrders } from "@/features/orders/useOrders";
+import { OrderItemConfigModal, ConfiguredOrderItem } from "./OrderItemConfigModal";
 
 interface AddItemsModalProps {
     businessId: string;
@@ -30,7 +31,11 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
 
     const [search, setSearch] = useState("");
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>("all");
-    const [selectedItems, setSelectedItems] = useState<{ menuItemId: string; quantity: number }[]>([]);
+    const [selectedItems, setSelectedItems] = useState<(ConfiguredOrderItem & { id: string })[]>([]);
+
+    // Config modal state
+    const [configModalOpen, setConfigModalOpen] = useState(false);
+    const [selectedConfigItem, setSelectedConfigItem] = useState<any>(null);
 
     const filteredCategories = useMemo(() => {
         if (!businessAllCategories) return [];
@@ -60,24 +65,70 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
         }
     }, [selectedCategoryId]);
 
-    const handleQuantityChange = (menuItemId: string, delta: number) => {
+    const handleQuantityChange = (item: any, delta: number) => {
+        if (delta > 0 && ((item.variants && item.variants.length > 0) || (item.modifierGroups && item.modifierGroups.length > 0))) {
+            setSelectedConfigItem(item);
+            setConfigModalOpen(true);
+            return;
+        }
+
         setSelectedItems(prev => {
-            const existingIndex = prev.findIndex(i => i.menuItemId === menuItemId);
-            if (existingIndex >= 0) {
-                const updated = [...prev];
-                const newQuantity = updated[existingIndex].quantity + delta;
-                if (newQuantity <= 0) {
-                    updated.splice(existingIndex, 1);
-                } else {
-                    updated[existingIndex].quantity = newQuantity;
-                }
-                return updated;
-            }
             if (delta > 0) {
-                return [...prev, { menuItemId, quantity: delta }];
+                const existingIndex = prev.findIndex(i => i.menuItemId === item.id && !i.variantId && (!i.modifiers || i.modifiers.length === 0));
+                if (existingIndex >= 0) {
+                    const updated = [...prev];
+                    updated[existingIndex].quantity += delta;
+                    return updated;
+                }
+                return [...prev, { id: Date.now().toString(), menuItemId: item.id, name: item.name, price: Number(item.price || 0), quantity: delta }];
+            } else {
+                // Determine which one to remove (prefer simple ones, then last added)
+                const indices = prev.map((val, idx) => val.menuItemId === item.id ? idx : -1).filter(idx => idx !== -1);
+                if (indices.length > 0) {
+                    const targetIndex = indices[indices.length - 1]; // Remove last one added
+                    const updated = [...prev];
+                    updated[targetIndex].quantity += delta;
+                    if (updated[targetIndex].quantity <= 0) {
+                        updated.splice(targetIndex, 1);
+                    }
+                    return updated;
+                }
             }
             return prev;
         });
+    };
+
+    const handleSaveConfig = (config: ConfiguredOrderItem) => {
+        setSelectedItems(prev => {
+            const existingIndex = prev.findIndex(i =>
+                i.menuItemId === config.menuItemId &&
+                i.variantId === config.variantId &&
+                JSON.stringify(i.modifiers || []) === JSON.stringify(config.modifiers || []) &&
+                i.notes === config.notes
+            );
+
+            if (existingIndex >= 0) {
+                const updated = [...prev];
+                updated[existingIndex].quantity += config.quantity;
+                return updated;
+            }
+            return [...prev, { ...config, id: Date.now().toString() + Math.random().toString(36).substring(7) }];
+        });
+        setConfigModalOpen(false);
+        setSelectedConfigItem(null);
+    };
+
+    const handleRemoveCartItem = (id: string) => {
+        setSelectedItems(prev => prev.filter(i => i.id !== id));
+    };
+
+    const handleUpdateCartQuantity = (id: string, delta: number) => {
+        setSelectedItems(prev => prev.map(i => {
+            if (i.id === id) {
+                return { ...i, quantity: Math.max(0, i.quantity + delta) };
+            }
+            return i;
+        }).filter(i => i.quantity > 0));
     };
 
     const getQuantity = (menuItemId: string) => {
@@ -135,7 +186,44 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
                         )}
                     </div>
 
-                    <ScrollArea className="flex-1 pr-4 -mr-4 h-[300px]">
+                    <ScrollArea className="flex-1 pr-4 -mr-4 h-[400px]">
+                        {selectedItems.length > 0 && (
+                            <div className="mb-6 space-y-2">
+                                <h3 className="text-xs font-semibold uppercase text-muted-foreground">Selected Items</h3>
+                                <div className="space-y-2">
+                                    {selectedItems.map(item => (
+                                        <div key={item.id} className="p-3 bg-muted/20 rounded-lg border flex items-center justify-between group">
+                                            <div className="flex flex-col flex-1 truncate pr-3">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-medium truncate">{item.name}</span>
+                                                    {item.variantId && <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">Variant Selected</span>}
+                                                </div>
+                                                {item.modifiers && item.modifiers.length > 0 && (
+                                                    <span className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
+                                                        Mods: {item.modifiers.map(m => m.name).join(", ")}
+                                                    </span>
+                                                )}
+                                                {item.notes && (
+                                                    <span className="text-[10px] text-amber-600 line-clamp-1 mt-0.5 italic">
+                                                        Note: {item.notes}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm">
+                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateCartQuantity(item.id, -1)}>
+                                                    <Minus className="h-3 w-3" />
+                                                </Button>
+                                                <span className="text-sm font-medium w-5 text-center leading-none">{item.quantity}</span>
+                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateCartQuantity(item.id, 1)}>
+                                                    <Plus className="h-3 w-3" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {filteredCategories.length === 0 ? (
                             <p className="text-center text-muted-foreground py-8">No items found.</p>
                         ) : (
@@ -160,7 +248,7 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
                                                                         variant="outline"
                                                                         size="icon"
                                                                         className="h-8 w-8 rounded-full"
-                                                                        onClick={() => handleQuantityChange(item.id, -1)}
+                                                                        onClick={() => handleQuantityChange(item, -1)}
                                                                     >
                                                                         <Minus className="h-3 w-3" />
                                                                     </Button>
@@ -169,7 +257,7 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
                                                                         variant="outline"
                                                                         size="icon"
                                                                         className="h-8 w-8 rounded-full"
-                                                                        onClick={() => handleQuantityChange(item.id, 1)}
+                                                                        onClick={() => handleQuantityChange(item, 1)}
                                                                     >
                                                                         <Plus className="h-3 w-3" />
                                                                     </Button>
@@ -179,7 +267,7 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
                                                                     variant="secondary"
                                                                     size="sm"
                                                                     className="h-8 rounded-full px-4"
-                                                                    onClick={() => handleQuantityChange(item.id, 1)}
+                                                                    onClick={() => handleQuantityChange(item, 1)}
                                                                 >
                                                                     Add
                                                                 </Button>
@@ -206,6 +294,15 @@ export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsMo
                     </Button>
                 </DialogFooter>
             </DialogContent>
+            <OrderItemConfigModal
+                open={configModalOpen}
+                onClose={() => {
+                    setConfigModalOpen(false);
+                    setSelectedConfigItem(null);
+                }}
+                item={selectedConfigItem}
+                onSave={handleSaveConfig}
+            />
         </Dialog>
     );
 }

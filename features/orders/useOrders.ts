@@ -150,6 +150,7 @@ export const useOrders = (
         onSuccess: () => {
             toast.success("Payment recorded successfully");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Failed to record payment";
@@ -187,7 +188,7 @@ export const useOrders = (
     });
 
     const updateOrderItemMutation = useMutation({
-        mutationFn: ({ orderId, itemId, data }: { orderId: string, itemId: string, data: { quantity?: number; modifiers?: any[]; notes?: string } }) =>
+        mutationFn: ({ orderId, itemId, data }: { orderId: string, itemId: string, data: { variantId?: string | null; quantity?: number; modifiers?: any[]; notes?: string } }) =>
             updateOrderItemApiCall(businessId, orderId, itemId, data),
         onSuccess: () => {
             toast.success("Item updated successfully");

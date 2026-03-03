@@ -146,19 +146,17 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     <div className="font-bold text-right">
                                                         {item.status === 'voided' ? <span className="line-through text-muted-foreground">${totalItemPrice.toFixed(2)}</span> : `$${totalItemPrice.toFixed(2)}`}
                                                     </div>
-                                                    {item.status !== 'voided' && (displayOrder.status === 'open' || displayOrder.status === 'sent' || displayOrder.status === 'served') && (
+                                                    {item.status !== 'voided' && (!item.status || item.status === 'pending') && displayOrder.status === 'open' && (
                                                         <div className="flex items-center gap-1 mt-auto">
-                                                            {(!item.status || item.status === 'pending') && (
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    size="icon"
-                                                                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                                                                    onClick={() => setManageItemId(item.id)}
-                                                                    title="Edit Item"
-                                                                >
-                                                                    <Pencil className="w-3.5 h-3.5" />
-                                                                </Button>
-                                                            )}
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                                                                onClick={() => setManageItemId(item.id)}
+                                                                title="Edit Item"
+                                                            >
+                                                                <Pencil className="w-3.5 h-3.5" />
+                                                            </Button>
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"

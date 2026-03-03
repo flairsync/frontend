@@ -1,17 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, ShoppingBag } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePageContext } from "vike-react/usePageContext";
 import { useTranslation } from "react-i18next";
 import WebsiteLogo from "../shared/WebsiteLogo";
 import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type HeaderProps = {
     activeTag?: string;
+    className?: string;
 };
 
-const PublicFeedHeader = ({ activeTag }: HeaderProps) => {
+const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
     const { user } = usePageContext();
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +58,7 @@ const PublicFeedHeader = ({ activeTag }: HeaderProps) => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-xl border-b border-white/10"
+            className={`z-50 bg-background/60 backdrop-blur-xl border-b border-white/10 ${className || "fixed top-0 w-full"}`}
         >
             <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
                 {/* Logo */}
@@ -68,6 +75,31 @@ const PublicFeedHeader = ({ activeTag }: HeaderProps) => {
                         <a href="/explore" className="text-sm font-medium hover:text-primary transition-colors">
                             {t("public_feed.header.explore", "Explore")}
                         </a>
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm font-medium hover:text-primary transition-colors outline-none">
+                                <ShoppingBag className="w-3.5 h-3.5" />
+                                {t("public_feed.header.marketplace", "Marketplace")}
+                                <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="start" className="w-48 bg-background/95 backdrop-blur-md border-white/10 mt-2">
+                                <DropdownMenuItem asChild>
+                                    <a href="/marketplace/guest" className="cursor-pointer py-2">
+                                        Guest Shop
+                                    </a>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <a href="/marketplace/b2b" className="cursor-pointer py-2">
+                                        B2B Supplies
+                                    </a>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <a href="/marketplace/saas" className="cursor-pointer py-2">
+                                        Official Gear
+                                    </a>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </nav>
                     {user ? (
                         <HeaderProfileAvatar />
@@ -117,6 +149,34 @@ const PublicFeedHeader = ({ activeTag }: HeaderProps) => {
                             >
                                 {t("public_feed.header.explore", "Explore")}
                             </a>
+
+                            {/* Mobile Marketplace Links */}
+                            <div className="pt-2 flex flex-col space-y-3 pl-2 border-l-2 border-white/10 ml-2">
+                                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest bg-background px-1 rounded inline-block -ml-4 w-max">
+                                    {t("public_feed.header.marketplace", "Marketplace")}
+                                </span>
+                                <a
+                                    href="/marketplace/guest"
+                                    className="text-md font-medium text-foreground/80 hover:text-primary transition"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Guest Shop
+                                </a>
+                                <a
+                                    href="/marketplace/b2b"
+                                    className="text-md font-medium text-foreground/80 hover:text-primary transition"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    B2B Supplies
+                                </a>
+                                <a
+                                    href="/marketplace/saas"
+                                    className="text-md font-medium text-foreground/80 hover:text-primary transition"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Official Gear
+                                </a>
+                            </div>
 
                             <div className="pt-4 border-t border-foreground/5">
                                 {user ? (

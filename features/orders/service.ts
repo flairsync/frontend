@@ -13,7 +13,7 @@ export interface CreateOrderDto {
         variantId?: string;
         quantity: number;
         notes?: string;
-        modifiers?: { modifierItemId: string; name: string; price: number }[];
+        modifiers?: { modifierItemId: string }[];
     }[];
     reservationId?: string;
     paymentStatus?: "pending" | "paid" | "refunded" | "failed";
@@ -46,6 +46,7 @@ export interface Order {
     items: {
         id: string;
         menuItemId: string;
+        variantId?: string;
         quantity: number;
         notes?: string;
         price: number;
@@ -138,7 +139,7 @@ export const transferOrderApiCall = (businessId: string, orderId: string, data: 
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/transfer`, data);
 };
 
-export const updateOrderItemApiCall = (businessId: string, orderId: string, itemId: string, data: { quantity?: number; modifiers?: any[]; notes?: string }) => {
+export const updateOrderItemApiCall = (businessId: string, orderId: string, itemId: string, data: { variantId?: string | null; quantity?: number; modifiers?: any[]; notes?: string }) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`, data);
 };
 

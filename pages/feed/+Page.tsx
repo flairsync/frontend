@@ -113,7 +113,12 @@ const FeedPage = () => {
 
                             {/* Pagination */}
                             <div className="pt-8 border-t border-border/40">
-                                <DataPagination />
+                                <DataPagination
+                                    current={1}
+                                    total={376}
+                                    pageSize={30}
+                                    onChange={() => { }}
+                                />
                             </div>
                         </div>
                     </div>

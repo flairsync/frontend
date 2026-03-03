@@ -15,22 +15,41 @@ import { Label } from "@/components/ui/label";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { format } from "date-fns";
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal";
+import { EditReservationModal } from "@/components/management/reservations/EditReservationModal";
+import DataPagination from "@/components/inputs/DataPagination";
 
 const ReservationsPage: React.FC = () => {
     const { t } = useTranslation();
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const [statusFilter, setStatusFilter] = useState<string>("all");
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
+
+    // Build the query object
+    const filters = {
+        page,
+        limit,
+        ...(statusFilter !== "all" ? { status: statusFilter } : {}),
+        ...(startDate ? { startDate: new Date(startDate).toISOString() } : {}),
+        ...(endDate ? { endDate: new Date(endDate).toISOString() } : {})
+    };
+
     const {
         reservations,
+        meta,
         fetchingReservations,
         createReservation,
         updateReservation
-    } = useReservations(businessId);
+    } = useReservations(businessId, filters);
 
     const { floors } = useFloors(businessId); // To get table choices if assigned
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [editingReservation, setEditingReservation] = useState<any>(null);
 
     const getStatusBadge = (status: string) => {
         switch (status.toLowerCase()) {
@@ -52,6 +71,19 @@ const ReservationsPage: React.FC = () => {
         updateReservation({ reservationId: id, data: { status: status as any } });
     };
 
+    const handleClearFilters = () => {
+        setStatusFilter("all");
+        setStartDate("");
+        setEndDate("");
+        setPage(1);
+    };
+
+    // Whenever a filter changes, reset to page 1
+    const handleFilterChange = (setter: any, value: any) => {
+        setter(value);
+        setPage(1);
+    };
+
     return (
         <div className="p-6 space-y-6">
             <div className="flex justify-between items-center">
@@ -64,7 +96,52 @@ const ReservationsPage: React.FC = () => {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>{t("reservations.title")}</CardTitle>
+                    <div className="flex flex-col gap-4">
+                        <CardTitle>{t("reservations.title")}</CardTitle>
+                        <div className="flex flex-wrap items-end gap-4 bg-muted/30 p-4 rounded-lg border">
+                            <div className="space-y-1">
+                                <Label className="text-xs">Status</Label>
+                                <Select value={statusFilter} onValueChange={(v) => handleFilterChange(setStatusFilter, v)}>
+                                    <SelectTrigger className="w-[150px]">
+                                        <SelectValue placeholder="All Statuses" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Statuses</SelectItem>
+                                        <SelectItem value="pending">Pending</SelectItem>
+                                        <SelectItem value="confirmed">Confirmed</SelectItem>
+                                        <SelectItem value="waitlist">Waitlist</SelectItem>
+                                        <SelectItem value="completed">Completed</SelectItem>
+                                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                                        <SelectItem value="no_show">No Show</SelectItem>
+                                        <SelectItem value="rejected">Rejected</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-1">
+                                <Label className="text-xs">Start Date</Label>
+                                <Input
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e) => handleFilterChange(setStartDate, e.target.value)}
+                                    className="w-[160px]"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <Label className="text-xs">End Date</Label>
+                                <Input
+                                    type="date"
+                                    value={endDate}
+                                    onChange={(e) => handleFilterChange(setEndDate, e.target.value)}
+                                    className="w-[160px]"
+                                />
+                            </div>
+                            {(statusFilter !== "all" || startDate || endDate) && (
+                                <Button variant="ghost" onClick={handleClearFilters} size="sm" className="h-10">
+                                    Clear Filters
+                                </Button>
+                            )}
+                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <Table>
@@ -94,7 +171,7 @@ const ReservationsPage: React.FC = () => {
                                         </TableCell>
                                         <TableCell>{format(new Date(res.reservationTime), "MMM d, h:mm a")}</TableCell>
                                         <TableCell>{res.guestCount}</TableCell>
-                                        <TableCell>{res.tableId ? `Table ${res.tableId.substring(0, 4)}` : "Unassigned"}</TableCell>
+                                        <TableCell>{res.table ? (res.table.name || `Table ${res.table.number || res.table.id.substring(0, 4)}`) : "Unassigned"}</TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
                                                 {getStatusBadge(res.status)}
@@ -115,13 +192,26 @@ const ReservationsPage: React.FC = () => {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            {/* Action icons could go here if needed */}
+                                            <Button variant="ghost" size="sm" onClick={() => setEditingReservation(res)}>
+                                                Edit
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
                             )}
                         </TableBody>
                     </Table>
+
+                    {!fetchingReservations && meta && meta.totalPages > 1 && (
+                        <div className="mt-4 flex justify-end">
+                            <DataPagination
+                                current={page}
+                                total={meta.totalItems}
+                                pageSize={limit}
+                                onChange={(p: number) => setPage(p)}
+                            />
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
@@ -129,6 +219,15 @@ const ReservationsPage: React.FC = () => {
                 businessId={businessId}
                 open={modalOpen}
                 onOpenChange={setModalOpen}
+            />
+
+            <EditReservationModal
+                businessId={businessId}
+                reservation={editingReservation}
+                open={!!editingReservation}
+                onOpenChange={(open) => {
+                    if (!open) setEditingReservation(null);
+                }}
             />
         </div>
     );

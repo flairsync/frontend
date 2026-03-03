@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAvailability, useReservations } from "@/features/reservations/useReservations";
+import { useAvailability, useReservations, useUserLookup } from "@/features/reservations/useReservations";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { toast } from "sonner";
 import { Calendar, Users, Clock, Check, ChevronRight, ChevronLeft, ShoppingCart, Loader2 } from "lucide-react";
@@ -48,6 +48,27 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
     const { businessAllItems: menuItems } = useBusinessMenus(businessId);
     const [availableTables, setAvailableTables] = useState<any[]>([]);
 
+    const [debouncedEmail, setDebouncedEmail] = useState("");
+    const [debouncedPhone, setDebouncedPhone] = useState("");
+    const [linkedUserId, setLinkedUserId] = useState<string | undefined>();
+    const [declinedLink, setDeclinedLink] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedEmail(bookingData.customerEmail);
+            setDebouncedPhone(bookingData.customerPhone);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [bookingData.customerEmail, bookingData.customerPhone]);
+
+    // Reset declined state if email/phone changes
+    useEffect(() => {
+        setDeclinedLink(false);
+        setLinkedUserId(undefined);
+    }, [debouncedEmail, debouncedPhone]);
+
+    const { data: foundUser, isFetching: searchingUser } = useUserLookup(debouncedEmail, debouncedPhone);
+
     const handleNext = () => {
         if (step === "SEARCH") {
             const timestamp = `${bookingData.date}T${bookingData.time}`;
@@ -83,7 +104,8 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             reservationTime: new Date(timestamp).toISOString(),
             guestCount: bookingData.guestCount,
             notes: bookingData.notes,
-            tableId: bookingData.tableId
+            tableId: bookingData.tableId,
+            ...(linkedUserId ? { userId: linkedUserId } : {})
         };
 
         if (bookingData.orderItems.length > 0) {
@@ -117,6 +139,10 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             notes: "",
             orderItems: []
         });
+        setDebouncedEmail("");
+        setDebouncedPhone("");
+        setLinkedUserId(undefined);
+        setDeclinedLink(false);
     };
 
     const addToOrder = (item: any) => {
@@ -270,6 +296,30 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
 
                     {step === "CUSTOMER_INFO" && (
                         <div className="space-y-4">
+                            {foundUser && !linkedUserId && !declinedLink && (
+                                <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                            {foundUser.firstName?.[0]}{foundUser.lastName?.[0]}
+                                        </div>
+                                        <div>
+                                            <p className="font-medium text-sm">Found user: {foundUser.firstName} {foundUser.lastName}</p>
+                                            <p className="text-xs text-muted-foreground">Do you want to link this reservation?</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Button size="sm" variant="outline" onClick={() => setDeclinedLink(true)}>No</Button>
+                                        <Button size="sm" onClick={() => setLinkedUserId(foundUser.id)}>Yes, Link</Button>
+                                    </div>
+                                </div>
+                            )}
+                            {linkedUserId && foundUser && (
+                                <div className="p-3 bg-secondary border border-secondary/50 rounded-lg flex items-center gap-2 text-secondary-foreground text-sm">
+                                    <Check className="w-4 h-4 text-green-500" />
+                                    Linked to {foundUser.firstName} {foundUser.lastName}'s account
+                                </div>
+                            )}
+
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>Customer Name</Label>

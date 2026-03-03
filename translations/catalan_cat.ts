@@ -414,6 +414,30 @@ const inventory_management = {
   }
 };
 
+const subscriptions = {
+  features: {
+    menu_mgmt: "Gestió de menús",
+    basic_menu_mgmt: "Gestió de menú bàsica",
+    advanced_analytics: "Anàlisi avançada",
+    basic_analytics: "Anàlisi bàsica",
+    staff_scheduling: "Programació de personal",
+    reservation_system: "Sistema de reserves",
+    priority_support: "Suport prioritari",
+    ded_acc_manager: "Gestor de comptes dedicat",
+    custom_branding: "Marca personalitzada",
+  },
+  limits: {
+    businesses: "Fins a {{count}} negoci",
+    businesses_plural: "Fins a {{count}} negocis",
+    employees: "Fins a {{count}} empleat",
+    employees_plural: "Fins a {{count}} empleats",
+    menus: "Fins a {{count}} menú",
+    menus_plural: "Fins a {{count}} menús",
+    products: "Fins a {{count}} producte",
+    products_plural: "Fins a {{count}} productes",
+  },
+};
+
 export default {
   landing_page,
   errors,
@@ -424,4 +448,5 @@ export default {
   menu_management,
   item_modal,
   inventory_management,
+  subscriptions,
 };

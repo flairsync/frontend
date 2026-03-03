@@ -12,17 +12,25 @@ import { useTranslation } from 'react-i18next';
 import { LoginFormSchema, SignupFormSchema } from '@/misc/FormValidators';
 import { InputError } from '@/components/inputs/InputError';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
+import { usePageContext } from 'vike-react/usePageContext';
 import { useAuth } from '@/features/auth/useAuth';
-import { loginUserApiCall } from '@/features/auth/service';
-import axios from 'axios';
 import GoogleLoginButton from '@/components/inputs/GoogleLoginButton';
 
 const LoginPage = () => {
     const { t } = useTranslation();
+    const { urlParsed } = usePageContext();
     const [showPassword, setShowPassword] = useState(false);
     const [apiError, setApiError] = useState<string>();
 
     const { loginUser, loggingIn, loginError } = useAuth();
+
+    const origin = urlParsed.search.origin || '/';
+    const packId = urlParsed.search.packId;
+
+    const handlePostLogin = () => {
+        const target = packId ? `${origin}?packId=${packId}` : origin;
+        navigate(target);
+    };
 
     useEffect(() => {
         if (loginError && loginError.response?.data) {
@@ -52,6 +60,8 @@ const LoginPage = () => {
                             loginUser({
                                 email: values.email,
                                 password: values.password
+                            }, {
+                                onSuccess: handlePostLogin
                             })
                         }}
                     >

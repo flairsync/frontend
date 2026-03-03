@@ -14,7 +14,16 @@ export interface CreateReservationDto {
     guestCount: number;
     notes?: string;
     tableId?: string; // Optional at creation
+    userId?: string; // Optional, links reservation to a known user profile
     order?: CreateOrderDto; // Optional pre-order
+}
+
+export interface FetchReservationsDto {
+    page?: number;
+    limit?: number;
+    status?: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 export interface UpdateReservationDto {
@@ -29,8 +38,8 @@ export interface UpdateReservationDto {
 }
 
 // API Calls
-export const fetchReservationsApiCall = (businessId: string) => {
-    return flairapi.get(getReservationsUrl(businessId));
+export const fetchReservationsApiCall = (businessId: string, params?: FetchReservationsDto) => {
+    return flairapi.get(getReservationsUrl(businessId), { params });
 };
 
 export const createReservationApiCall = (businessId: string, data: CreateReservationDto) => {
@@ -48,5 +57,11 @@ export const updateReservationApiCall = (businessId: string, reservationId: stri
 export const findAvailabilityApiCall = (businessId: string, date: string, guestCount: number) => {
     return flairapi.get(`${getReservationsUrl(businessId)}/availability`, {
         params: { date, guestCount }
+    });
+};
+
+export const lookupUserApiCall = (email?: string, phone?: string) => {
+    return flairapi.get(`${import.meta.env.BASE_URL}/users/lookup`, {
+        params: { email, phone }
     });
 };

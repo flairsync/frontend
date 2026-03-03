@@ -27,6 +27,7 @@ import CatFlag from "@/assets/flags/ad.svg";
 import { useTranslation } from "react-i18next";
 import { useAuth } from '@/features/auth/useAuth'
 import { useProfile } from '@/features/profile/useProfile'
+import { NotificationBubble } from '@/components/notifications/NotificationBubble'
 
 
 const languages = [
@@ -58,84 +59,86 @@ const HeaderProfileAvatar = () => {
 
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger>
-                <Avatar className='hover:cursor-pointer'>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>{userProfile?.getInitials()}</AvatarFallback>
-                </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                <DropdownMenuLabel>{userProfile?.getFullName()}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <a
-                    href='/profile/overview'
-                >
-                    <DropdownMenuItem className='hover:cursor-pointer'>
-                        Profile
-                    </DropdownMenuItem>
-                </a>
+        <div className="flex items-center gap-2">
+            <NotificationBubble />
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Avatar className='hover:cursor-pointer'>
+                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <AvatarFallback>{userProfile?.getInitials()}</AvatarFallback>
+                    </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuLabel>{userProfile?.getFullName()}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <a
+                        href='/profile/overview'
+                    >
+                        <DropdownMenuItem className='hover:cursor-pointer'>
+                            Profile
+                        </DropdownMenuItem>
+                    </a>
 
-                <a
-                    href='/profile/settings'
-                >
-                    <DropdownMenuItem className='hover:cursor-pointer'>
-                        Settings
-                    </DropdownMenuItem>
-                </a>
+                    <a
+                        href='/profile/settings'
+                    >
+                        <DropdownMenuItem className='hover:cursor-pointer'>
+                            Settings
+                        </DropdownMenuItem>
+                    </a>
 
-                <DropdownMenuGroup>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Language</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>Language</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
 
-                                {languages.map((lang) => (
-                                    <DropdownMenuItem
-                                        key={lang.code}
-                                        onClick={() => handleSelect(lang.code)}
-                                        className="flex items-center gap-2 hover:cursor-pointer"
+                                    {languages.map((lang) => (
+                                        <DropdownMenuItem
+                                            key={lang.code}
+                                            onClick={() => handleSelect(lang.code)}
+                                            className="flex items-center gap-2 hover:cursor-pointer"
 
-                                    >
-                                        {i18n.language == lang.code && <CheckCircle />}
-                                        <img src={lang.flag} alt={lang.label} className="w-5 h-5" />
-                                        {lang.label}
-                                    </DropdownMenuItem>
-                                ))}
+                                        >
+                                            {i18n.language == lang.code && <CheckCircle />}
+                                            <img src={lang.flag} alt={lang.label} className="w-5 h-5" />
+                                            {lang.label}
+                                        </DropdownMenuItem>
+                                    ))}
 
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                </DropdownMenuGroup>
-                <DropdownMenuGroup>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={() => setTheme("light")}>
-                                    {theme == "light" && <CheckCircle2 />}
-                                    Light</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                    {theme == "dark" && <CheckCircle2 />}
-                                    Dark</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("system")}>
-                                    {theme == "system" && <CheckCircle2 />}
-                                    Auto</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    <DropdownMenuItem onClick={() => setTheme("light")}>
+                                        {theme == "light" && <CheckCircle2 />}
+                                        Light</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                        {theme == "dark" && <CheckCircle2 />}
+                                        Dark</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setTheme("system")}>
+                                        {theme == "system" && <CheckCircle2 />}
+                                        Auto</DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
 
-                <a
-                    href='/manage/overview'
-                >
-                    <DropdownMenuItem className='hover:cursor-pointer'>
-                        BusinessHub
-                    </DropdownMenuItem>
-                </a>
+                    <a
+                        href='/manage/overview'
+                    >
+                        <DropdownMenuItem className='hover:cursor-pointer'>
+                            BusinessHub
+                        </DropdownMenuItem>
+                    </a>
 
-                {/* <DropdownMenuGroup>
+                    {/* <DropdownMenuGroup>
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>BusinessHub</DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
@@ -155,16 +158,17 @@ const HeaderProfileAvatar = () => {
                     </DropdownMenuSub>
                 </DropdownMenuGroup> */}
 
-                <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
 
 
-                <DropdownMenuItem
-                    onClick={() => {
-                        logoutUser();
-                    }}
-                >Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            logoutUser();
+                        }}
+                    >Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
     )
 }
 

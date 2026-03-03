@@ -24,10 +24,15 @@ export const useSubscriptions = () => {
     enabled: user != null,
   });
 
-  const { data: subscriptionPacks } = useQuery({
+  const { data: subscriptionPacks, isPending: fetchingPacks } = useQuery({
     queryKey: ["subscription_packs"],
     queryFn: async () => {
-      const res = await getSubscriptionPacksApiCall();
+      // Extract country code from browser locale (e.g., 'en-US' -> 'US')
+      let countryCode;
+      if (typeof navigator !== "undefined" && navigator.language) {
+        countryCode = navigator.language.split("-")[1]?.toUpperCase();
+      }
+      const res = await getSubscriptionPacksApiCall(countryCode);
       if (res.data.success) {
         return SubscriptionPack.parseApiArrayResponse(res.data.data);
       } else {
@@ -69,6 +74,7 @@ export const useSubscriptions = () => {
   return {
     currentUserSubscription,
     subscriptionPacks,
+    fetchingPacks,
 
     checkoutData,
     creatingCheckout,

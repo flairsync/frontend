@@ -316,7 +316,7 @@ export default function StaffOrdersPage() {
                                                                         <span>Transfer Table</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status !== "closed" && o.status !== "cancelled" && (
+                                                                {o.status === "open" && (
                                                                     <DropdownMenuItem onClick={() => handleOpenCancel(o)} className="text-red-600 focus:text-red-700">
                                                                         <XCircle className="mr-2 h-4 w-4" />
                                                                         <span>Cancel</span>

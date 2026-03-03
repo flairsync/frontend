@@ -8,6 +8,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { IconRenderer } from "@/components/shared/IconRenderer";
 import { useTranslation } from "react-i18next";
+import { UpgradeModal } from "@/components/subscriptions/UpgradeModal";
 import {
     Tooltip,
     TooltipContent,
@@ -41,6 +42,7 @@ const getBadgeStyles = (level: number) => {
 const MenusPage: React.FC = () => {
     const { t } = useTranslation();
     const [createModal, setCreateModal] = useState(false);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const {
         routeParams,
         data
@@ -55,6 +57,7 @@ const MenusPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
+            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
             <MenuModal
                 isOpen={createModal}
                 onClose={() => {
@@ -71,6 +74,10 @@ const MenusPage: React.FC = () => {
                         repeatYearly: data.repeatYearly,
                         startDate: data.startDate,
                         startTime: data.startTime
+                    }, {
+                        onError: (err: any) => {
+                            if (err?.response?.status === 403) setShowUpgradeModal(true);
+                        }
                     });
                     setCreateModal(false);
                 }}

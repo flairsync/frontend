@@ -431,6 +431,30 @@ const inventory_management = {
   }
 };
 
+const subscriptions = {
+  features: {
+    menu_mgmt: "Gestion des menus",
+    basic_menu_mgmt: "Gestion de menu de base",
+    advanced_analytics: "Analyses avancées",
+    basic_analytics: "Analyses de base",
+    staff_scheduling: "Planification du personnel",
+    reservation_system: "Système de réservation",
+    priority_support: "Support prioritaire",
+    ded_acc_manager: "Gestionnaire de compte dédié",
+    custom_branding: "Branding personnalisé",
+  },
+  limits: {
+    businesses: "Jusqu'à {{count}} établissement",
+    businesses_plural: "Jusqu'à {{count}} établissements",
+    employees: "Jusqu'à {{count}} employé",
+    employees_plural: "Jusqu'à {{count}} employés",
+    menus: "Jusqu'à {{count}} menu",
+    menus_plural: "Jusqu'à {{count}} menus",
+    products: "Jusqu'à {{count}} produit",
+    products_plural: "Jusqu'à {{count}} produits",
+  },
+};
+
 export default {
   landing_page,
   errors,
@@ -441,4 +465,5 @@ export default {
   menu_management,
   item_modal,
   inventory_management,
+  subscriptions,
 };

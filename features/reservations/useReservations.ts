@@ -6,26 +6,24 @@ import {
     fetchReservationDetailsApiCall,
     updateReservationApiCall,
     findAvailabilityApiCall,
+    lookupUserApiCall,
     CreateReservationDto,
-    UpdateReservationDto
+    UpdateReservationDto,
+    FetchReservationsDto
 } from "./service";
 
-export const useReservations = (businessId: string) => {
+export const useReservations = (businessId: string, filters?: FetchReservationsDto) => {
     const queryClient = useQueryClient();
 
-    const { data: reservations, isFetching: fetchingReservations, refetch } = useQuery({
-        queryKey: ["reservations", businessId],
+    const { data: reservationsData, isFetching: fetchingReservations, refetch } = useQuery({
+        queryKey: ["reservations", businessId, filters],
         queryFn: async () => {
             try {
-                const resp = await fetchReservationsApiCall(businessId);
-                const resData = resp.data;
-                const actualData = resData?.data !== undefined ? resData.data : resData;
-
-                if (actualData && actualData.data && Array.isArray(actualData.data)) return actualData.data;
-                return Array.isArray(actualData) ? actualData : [];
+                const resp = await fetchReservationsApiCall(businessId, filters);
+                return resp.data;
             } catch (error) {
                 console.warn("Failed to fetch reservations:", error);
-                return [];
+                return { data: [], meta: { totalPages: 1, totalItems: 0 } };
             }
         },
         enabled: !!businessId,
@@ -66,8 +64,17 @@ export const useReservations = (businessId: string) => {
         },
     });
 
+    // Extract arrays from backend response wrapping
+    const actualData = reservationsData?.data !== undefined ? reservationsData.data : reservationsData;
+    const reservationsArray = (actualData && actualData.data && Array.isArray(actualData.data))
+        ? actualData.data
+        : (Array.isArray(actualData) ? actualData : []);
+
+    const meta = reservationsData?.meta || reservationsData?.data?.meta || { totalPages: 1, totalItems: reservationsArray.length };
+
     return {
-        reservations,
+        reservations: reservationsArray,
+        meta,
         fetchingReservations,
         refetchReservations: refetch,
         createReservation: createReservationMutation.mutate,
@@ -99,5 +106,23 @@ export const useReservationDetails = (businessId: string, reservationId: string)
             }
         },
         enabled: !!businessId && !!reservationId,
+    });
+};
+
+export const useUserLookup = (email?: string, phone?: string) => {
+    return useQuery({
+        queryKey: ["user-lookup", email, phone],
+        queryFn: async () => {
+            if (!email && !phone) return null;
+            try {
+                const resp = await lookupUserApiCall(email, phone);
+                return resp.data?.data || null;
+            } catch (error) {
+                console.warn("User lookup failed:", error);
+                return null;
+            }
+        },
+        enabled: !!email || !!phone,
+        retry: false,
     });
 };

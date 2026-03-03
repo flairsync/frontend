@@ -41,6 +41,8 @@ const OverviewPage: React.FC = () => {
         (emp) => emp.type === "INVITED" && emp.status === "ACTIVE"
     ).length || 0;
 
+    const isLimitReached = userProfile?.currentSubscription?.pack?.maxBusinesses != null && myBusinesses && myBusinesses.length >= userProfile.currentSubscription.pack.maxBusinesses;
+
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
             <div className="max-w-6xl mx-auto space-y-10">
@@ -169,13 +171,23 @@ const OverviewPage: React.FC = () => {
                     transition={{ duration: 0.4, delay: 0.2 }}
                 >
                     <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-                    <div className="flex flex-wrap gap-4">
-                        <a href="/manage/owned">
-                            <Button className="gap-2">
-                                <Plus className="h-4 w-4" />
-                                Create Business
-                            </Button>
-                        </a>
+                    <div className="flex flex-wrap gap-4 items-center">
+                        {isLimitReached ? (
+                            <div className="flex items-center gap-2">
+                                <Button disabled className="gap-2 opacity-70">
+                                    <Plus className="h-4 w-4" />
+                                    Create Business
+                                </Button>
+                                <span className="text-xs text-orange-600 font-medium">Upgrade to add more</span>
+                            </div>
+                        ) : (
+                            <a href="/business/new">
+                                <Button className="gap-2">
+                                    <Plus className="h-4 w-4" />
+                                    Create Business
+                                </Button>
+                            </a>
+                        )}
                         <a href="/manage/billing">
                             <Button variant="outline" className="gap-2">
                                 <LucideNewspaper className="h-4 w-4" />

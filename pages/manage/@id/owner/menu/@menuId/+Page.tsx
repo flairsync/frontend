@@ -40,6 +40,7 @@ import { CategoryModal } from "@/components/management/menu/CreateCategoryModal"
 import { ItemModal } from "@/components/management/menu/CreateItemModal";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { ItemsDuplicationModal } from "@/components/management/menu/ItemsDuplicationModal";
+import { UpgradeModal } from "@/components/subscriptions/UpgradeModal";
 // #endregion
 
 // #region Sortable Components
@@ -121,6 +122,7 @@ const MenuDetailPage: React.FC = () => {
 
     // View Mode
     const [viewMode, setViewMode] = useState<'dnd' | 'simple'>('dnd');
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
     // Modals & Active Items
     const [createCategoryModal, setCreateCategoryModal] = useState(false);
@@ -313,6 +315,7 @@ const MenuDetailPage: React.FC = () => {
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
 
             {/* #region Modals */}
+            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
             <MenuModal
                 isOpen={editMenu}
                 onClose={() => setEditMenu(false)}
@@ -385,6 +388,10 @@ const MenuDetailPage: React.FC = () => {
                                 inventoryUnitId: data.inventoryUnit,
                                 quantityPerSale: data.quantityPerSale,
                             },
+                        }, {
+                            onError: (err: any) => {
+                                if (err?.response?.status === 403) setShowUpgradeModal(true);
+                            }
                         });
                     } else {
                         updateItem({

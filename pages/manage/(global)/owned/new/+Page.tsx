@@ -25,6 +25,7 @@ import { clientOnly } from 'vike-react/clientOnly';
 import { useBusinessTypes } from '@/features/business/types/useBusinessTypes';
 import { BusinessTag } from '@/models/business/BusinessTag';
 import { useBusinessOps } from '@/features/business/useBusinessOps';
+import { UpgradeModal } from '@/components/subscriptions/UpgradeModal';
 
 const LocationPicker = clientOnly(() =>
     import("@/components/management/create/BusinessLocationPicker")
@@ -82,6 +83,7 @@ export default function CreateNewBusiness() {
         createdNewBusiness,
     } = useBusinessOps();
     const [step, setStep] = useState(0);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const totalSteps = 4;
 
     const initialValues: BusinessFormValues = {
@@ -96,7 +98,13 @@ export default function CreateNewBusiness() {
     };
 
     const handleSubmit = (values: BusinessFormValues) => {
-        createdNewBusiness(values)
+        createdNewBusiness(values, {
+            onError: (err: any) => {
+                if (err?.response?.status === 403) {
+                    setShowUpgradeModal(true);
+                }
+            }
+        });
     };
 
     const nextStep = () => setStep((s) => Math.min(s + 1, totalSteps - 1));
@@ -104,6 +112,7 @@ export default function CreateNewBusiness() {
 
     return (
         <div className="flex justify-center py-10 px-4">
+            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
             <Card className="w-full max-w-2xl shadow-xl rounded-2xl">
                 <CardHeader className="text-center">
                     <CardTitle className="text-2xl font-bold">
