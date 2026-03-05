@@ -45,16 +45,19 @@ export const useBusinessOps = () => {
       instagram: input.links?.instagram || undefined,
 
       // opening hours
-      openingHours: Object.entries(input.workTimes || {}).map(
-        ([day, value]: [string, any]) => ({
-          day,
+      openingHours: (input.workTimes || []).map(
+        (value: any) => ({
+          day: value.day,
           isClosed: value.isClosed ?? false,
-          periods: (value.shifts || []).map((shift: any) => ({
-            open: shift.open,
-            close: shift.close,
+          periods: (value.periods || []).map((period: any) => ({
+            open: period.open,
+            close: period.close,
           })),
         })
       ),
+
+      // status
+      status: "auto",
     };
   }
 
@@ -64,8 +67,8 @@ export const useBusinessOps = () => {
       const mapped = mapBusinessFormToCreateBusinessDto(val);
       return createNewBusinessApiCall(mapped);
     },
-    onSuccess(data, variables, context) {},
-    onError(error, variables, context) {},
+    onSuccess(data, variables, context) { },
+    onError(error, variables, context) { },
   });
 
   return {

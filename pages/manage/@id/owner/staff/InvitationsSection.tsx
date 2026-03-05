@@ -37,19 +37,27 @@ import { Form, Formik } from "formik";
 import { inviteNewEmployeeSchema } from "@/misc/FormValidators";
 import { InputError } from "@/components/inputs/InputError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { UpgradeModal } from "@/components/subscriptions/UpgradeModal";
+import UpgradeModal from "@/components/subscriptions/UpgradeModal";
+import { useUsage } from '@/features/subscriptions/useUsage';
+import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
+import { cn } from '@/lib/utils';
+import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees';
 
 
 const InvitationsSection = () => {
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
-    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+    const { usage } = useUsage();
+    const { openUpgradeModal } = useSubscriptionStore();
+    const { routeParams } = usePageContext();
+    const { employees } = useBusinessEmployees(routeParams.id);
+
+    const ordinaryStaffCount = employees?.filter(emp => emp.type !== 'OWNER').length || 0;
+    const canAddEmployee = usage ? ordinaryStaffCount < usage.allowed.employees : true;
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()
     const [filterStatus, setFilterStatus] = useState<string>('ALL'); // Example filter
-    const {
-        routeParams
-    } = usePageContext();
 
     const {
         invitations,
@@ -84,7 +92,7 @@ const InvitationsSection = () => {
 
     return (
         <div>
-            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
+            {/* Global UpgradeModal handles this */}
             <ConfirmationPopup
                 isOpen={cancelInvitationId != undefined}
                 onCancel={() => setCancelInvitationId(undefined)}
@@ -110,8 +118,22 @@ const InvitationsSection = () => {
                         <div className="flex justify-end">
                             <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
                                 <DialogTrigger asChild >
-                                    <Button className="flex items-center gap-2">
+                                    <Button
+                                        className={cn(
+                                            "flex items-center gap-2 transition",
+                                            canAddEmployee
+                                                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                        )}
+                                        onClick={(e) => {
+                                            if (!canAddEmployee) {
+                                                e.preventDefault();
+                                                openUpgradeModal("You've reached your employee limit. Upgrade to add more staff members.");
+                                            }
+                                        }}
+                                    >
                                         <UserPlus className="h-4 w-4" /> Add Staff
+                                        {!canAddEmployee && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent>
@@ -125,7 +147,7 @@ const InvitationsSection = () => {
                                         onSubmit={values => {
                                             inviteNewEmployee(values.email, {
                                                 onError: (err: any) => {
-                                                    if (err?.response?.status === 403) setShowUpgradeModal(true);
+                                                    // Global interceptor handles this
                                                 }
                                             });
                                             setInviteModalOpen(false);
@@ -194,27 +216,29 @@ const InvitationsSection = () => {
                                     </TableCell>
                                     <TableCell>{invite.resendCount}</TableCell>
                                     <TableCell className="flex gap-2">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
-                                                    <MoreHorizontal />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem onClick={() => resendInvitation(invite.id)}>
-                                                    Resend email
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => handleGenerateQrValue(invite)}>
-                                                    Show QR code
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => setCancelInvitationId(invite.id)}>
-                                                    Cancel invitation
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        {invite.status !== 'ACCEPTED' && (
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                        <span className="sr-only">Open menu</span>
+                                                        <MoreHorizontal />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuItem onClick={() => resendInvitation(invite.id)}>
+                                                        Resend email
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => handleGenerateQrValue(invite)}>
+                                                        Show QR code
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => setCancelInvitationId(invite.id)}>
+                                                        Cancel invitation
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}

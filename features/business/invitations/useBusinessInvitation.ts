@@ -43,9 +43,17 @@ export const useBusinessInvitation = (inviteId?: string) => {
         toast.success("Invitation accepted");
         refreshInvitation();
       },
-      onError(error, variables, context) {
+      onError(error: any, variables, context) {
         toast.dismiss("invitation_accept_toast");
-        toast.error("Error accepting invitation");
+
+        const errorMessage = error.response?.data?.message;
+
+        if (errorMessage === "PROFILE_NOT_VERIFIED") {
+          toast.error("Please verify your email address to accept this invitation. Check your inbox and try again.");
+        } else {
+          toast.error("Error accepting invitation");
+        }
+
         refreshInvitation();
       },
     });

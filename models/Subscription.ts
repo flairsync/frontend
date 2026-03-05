@@ -26,6 +26,7 @@ export class Subscription {
   currency: string;
   createdAt: Date;
   updatedAt: Date;
+  isDefault: boolean;
 
   constructor(
     id: string,
@@ -42,7 +43,8 @@ export class Subscription {
     price: number | null,
     currency: string,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    isDefault: boolean = false
   ) {
     this.id = id;
     this.pack = pack;
@@ -59,6 +61,7 @@ export class Subscription {
     this.currency = currency;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.isDefault = isDefault;
   }
 
   static parseApiResponse(data: any): Subscription | null {
@@ -79,7 +82,8 @@ export class Subscription {
         data.price ?? null,
         data.currency ?? "EUR",
         new Date(data.createdAt),
-        new Date(data.updatedAt)
+        new Date(data.updatedAt),
+        data.isDefault ?? false
       );
     } catch (error) {
       return null;
@@ -116,6 +120,14 @@ export class Subscription {
   getStartDate(format?: string) {
     if (this.startedAt) {
       return dayjs(this.startedAt).format(format ? format : "DD/MM/YYYY");
+    } else {
+      return null;
+    }
+  }
+
+  getEndDate(format?: string) {
+    if (this.endsAt) {
+      return dayjs(this.endsAt).format(format ? format : "DD/MM/YYYY");
     } else {
       return null;
     }

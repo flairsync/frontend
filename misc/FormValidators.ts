@@ -23,6 +23,9 @@ export const SignupFormSchema = Yup.object().shape({
       "input_errors.repeat_password.mismatch"
     )
     .required("input_errors.repeat_password.required"),
+  termsAccepted: Yup.boolean()
+    .oneOf([true], "auth_page.register.terms_required")
+    .required("auth_page.register.terms_required"),
 });
 
 export const LoginFormSchema = Yup.object().shape({

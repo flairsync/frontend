@@ -104,27 +104,35 @@ const StaffSection = () => {
                   <TableCell>{member.professionalProfile?.displayName}</TableCell>
                   <TableCell>{member.professionalProfile?.workEmail}</TableCell>
                   <TableCell>
-                    <StaffRolesCell
-                      roles={member.roles}
-                      onEdit={() => {
-                        setSelectedStaff(member)
-                      }}
-                    />
+                    {member.type === 'OWNER' ? (
+                      <Badge variant="default" className="bg-indigo-600 hover:bg-indigo-700">Business Owner</Badge>
+                    ) : (
+                      <StaffRolesCell
+                        roles={member.roles}
+                        onEdit={() => {
+                          setSelectedStaff(member)
+                        }}
+                      />
+                    )}
                   </TableCell>
                   <TableCell>
                     {member.status}
                   </TableCell>
 
                   <TableCell className="flex gap-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                    >
-                      <Trash className="h-4 w-4" />
-                    </Button>
+                    {member.type !== 'OWNER' && (
+                      <>
+                        <Button size="sm" variant="outline">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

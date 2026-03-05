@@ -6,6 +6,9 @@ import { Business } from "@/models/Business";
 import { useMyBusinesses } from "@/features/business/useMyBusinesses";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUsage } from "@/features/subscriptions/useUsage";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
 
 const ownedBusinesses: Business[] = [
 ];
@@ -16,9 +19,12 @@ const OwnedPage = () => {
         myBusinesses,
         loadingMyBussinesses: isLoading,
     } = useMyBusinesses(page, limit);
+    const { usage } = useUsage();
     const { currentUserSubscription } = useSubscriptions();
+    const { openUpgradeModal } = useSubscriptionStore();
 
-    const isLimitReached = currentUserSubscription?.pack?.maxBusinesses != null && myBusinesses && myBusinesses.length >= currentUserSubscription.pack.maxBusinesses;
+    const canCreateBusiness = usage?.canCreateBusiness ?? (currentUserSubscription ? true : false);
+    const isLimitReached = !canCreateBusiness;
 
     return (
         <div className="p-6 w-full">
@@ -30,20 +36,24 @@ const OwnedPage = () => {
                     </p>
                 </div>
                 <div className="flex flex-col items-end">
-                    {isLimitReached ? (
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs text-orange-600 font-medium">Upgrade to Pro to add more businesses</span>
-                            <Button disabled className="bg-blue-600 text-white rounded-xl px-4 opacity-70">
-                                + Create Business
-                            </Button>
-                        </div>
-                    ) : (
-                        <a href="/business/new">
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4">
-                                + Create Business
-                            </Button>
-                        </a>
-                    )}
+                    <Button
+                        className={cn(
+                            "rounded-xl px-4 transition h-11",
+                            canCreateBusiness
+                                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                        )}
+                        onClick={(e) => {
+                            if (canCreateBusiness) {
+                                window.location.href = "/manage/owned/new";
+                            } else {
+                                openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                            }
+                        }}
+                    >
+                        + Create Business
+                        {!canCreateBusiness && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-2">Upgrade</span>}
+                    </Button>
                 </div>
             </div>
 
@@ -126,20 +136,23 @@ const OwnedPage = () => {
                         <p className="text-zinc-500 mb-8 max-w-sm mx-auto">
                             Create your first business to start managing your team, menu, and sales effortlessly.
                         </p>
-                        {isLimitReached ? (
-                            <div className="flex flex-col items-center">
-                                <Button disabled className="bg-blue-600 text-white rounded-xl shadow-md px-8 py-6 h-auto font-bold opacity-70">
-                                    Create a Business Now
-                                </Button>
-                                <span className="mt-3 text-sm text-orange-600 font-medium">Upgrade to Pro to add more businesses</span>
-                            </div>
-                        ) : (
-                            <a href="/business/new">
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md shadow-blue-100 px-8 py-6 h-auto font-bold">
-                                    Create a Business Now
-                                </Button>
-                            </a>
-                        )}
+                        <Button
+                            className={cn(
+                                "rounded-xl shadow-md px-8 py-6 h-auto font-bold transition",
+                                canCreateBusiness
+                                    ? "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-100"
+                                    : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                            )}
+                            onClick={() => {
+                                if (canCreateBusiness) {
+                                    window.location.href = "/manage/owned/new";
+                                } else {
+                                    openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                                }
+                            }}
+                        >
+                            {canCreateBusiness ? "Create a Business Now" : "Unlock More Businesses"}
+                        </Button>
                     </div>
                 )
             }

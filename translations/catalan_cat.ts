@@ -24,6 +24,26 @@ const shared = {
     previous: "Anterior",
     next: "Següent",
   },
+  tags: {
+    vegan: "Vegà",
+    vegetarian: "Vegetarià",
+    gluten_free: "Sense gluten",
+    halal: "Halal",
+    brunch: "Brunch",
+    breakfast: "Esmorzar",
+    late_night: "Obert de nit",
+    cozy: "Acollidor",
+    romantic: "Romàntic",
+    family_friendly: "Familiar",
+    trendy: "Modern",
+    quiet: "Tranquil",
+    lively: "Animat",
+    wifi: "Wi-Fi",
+    pet_friendly: "Admet mascotes",
+    outdoor_seating: "Terrassa",
+    delivery: "A domicili",
+    takeaway: "Per emportar",
+  },
 };
 
 const landing_page = {
@@ -181,6 +201,14 @@ const auth_page = {
     signin_with_google_label: "Inicia sessió amb Google",
     already_have_account_label: "Ja tens un compte?",
     signin_instead_label: "Inicia sessió en lloc d’això",
+    firstname_label: "Nom",
+    lastname_label: "Cognom",
+    repeat_password_label: "Repetir contrasenya",
+    terms_required: "Has d'acceptar els termes i condicions per continuar",
+    i_agree_to: "Accepto els",
+    terms_and_conditions: "Termes i condicions",
+    please_read_terms: "Sisplau llegeix els nostres termes i condicions a continuació detingudament.",
+    confirm: "Confirmar",
   },
 };
 
@@ -438,8 +466,17 @@ const subscriptions = {
   },
 };
 
+const business_types = {
+  bakery: "Forn de Pa",
+  fast_food: "Menjar Ràpid",
+  coffee_shop: "Cafeteria",
+  restaurant: "Restaurant",
+  other: "Altres",
+};
+
 export default {
   landing_page,
+  business_types,
   errors,
   public_feed,
   auth_page,

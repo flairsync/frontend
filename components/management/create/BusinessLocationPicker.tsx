@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents, GeoJSON } from "react-leaflet";
 import L, { LatLngBoundsExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,6 +14,7 @@ import { AddressAutocomplete } from "@/components/inputs/AddressAutocomplete";
 import { usePlatformCountries } from "@/features/shared/usePlatformCountries";
 import { PlatformCountry } from "@/models/shared/PlatformCountry";
 import andorraCities from '@/data/andorra.cities.json';
+import Radar from 'radar-sdk-js';
 
 
 
@@ -31,14 +33,12 @@ interface LocationPickerProps {
 
 const defaultCenter = { lat: 41.3851, lng: 2.1734 }; // Barcelona fallback
 
-// Fix for default Leaflet marker icons
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl:
-        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-    iconUrl:
-        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-    shadowUrl:
-        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+// Custom Marker Icon SVG to avoid missing image issues
+const customMarkerIcon = new L.DivIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-red-500 drop-shadow-md"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    className: "custom-leaflet-marker",
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
 });
 
 
@@ -54,17 +54,54 @@ const checkPositionValue = (position: any) => {
 const LocationMarker = ({
     position,
     onSelect,
+    allowedCountries,
+    selectedCountryCode
 }: {
     position?: L.LatLngExpression;
     onSelect: (val: LocationValue) => void;
+    allowedCountries: PlatformCountry[] | undefined;
+    selectedCountryCode: string | undefined;
 }) => {
 
     useMapEvents({
-        click(e) {
-            onSelect({ lat: e.latlng.lat, lng: e.latlng.lng });
+        async click(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            try {
+                // Reverse geocode to check if clicked location is in an allowed country
+                const res = await Radar.reverseGeocode({
+                    latitude: lat,
+                    longitude: lng,
+                    layers: ['country']
+                });
+
+                if (res.addresses && res.addresses.length > 0) {
+                    const countryCode = res.addresses[0].countryCode;
+
+                    // Is the clicked country the same as the selected dropdown country?
+                    // Or if no country selected, is it in the platform countries list?
+                    const isAllowed = selectedCountryCode
+                        ? (countryCode === selectedCountryCode)
+                        : (allowedCountries?.some(c => c.code === countryCode));
+
+                    if (isAllowed) {
+                        onSelect({ lat, lng });
+                    } else {
+                        toast.error("Location not allowed", {
+                            description: "Please select a location within the allowed country.",
+                        });
+                    }
+                } else {
+                    onSelect({ lat, lng }); // Fallback if Radar can't find country
+                }
+            } catch (error) {
+                console.error('Radar reverse geocode error:', error);
+                onSelect({ lat, lng }); // Fallback on error
+            }
         },
     });
-    return position && checkPositionValue(position) ? <Marker position={position} /> : null;
+    return position && checkPositionValue(position) ? <Marker icon={customMarkerIcon} position={[(position as any).lat, (position as any).lng]} /> : null;
 };
 
 // Component to smoothly pan the map to a location
@@ -72,7 +109,7 @@ const MapPanTo: React.FC<{ position: LocationValue }> = ({ position }) => {
     const map = useMap();
     useEffect(() => {
         if (position && checkPositionValue(position)) {
-            map.flyTo([position.lat, position.lng], 13, { duration: 1.5 });
+            map.flyTo([position.lat, position.lng], map.getZoom(), { duration: 1.5 });
         }
     }, [position]);
     return null;
@@ -209,9 +246,17 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                     <Select
                         value={country?.code}
                         onValueChange={(val) => {
-                            setCountry(platformCountries?.find(count => count.code == val));
+                            const newCountry = platformCountries?.find(count => count.code == val);
+                            setCountry(newCountry);
                             setCity("");
-                            //  onChange({ ...position, country: val, city: "", address });
+                            if (newCountry) {
+                                setPosition({ lat: newCountry.centerLat, lng: newCountry.centerLng })
+                            }
+                            onChange({
+                                lat: newCountry ? newCountry.centerLat : position.lat,
+                                lng: newCountry ? newCountry.centerLng : position.lng,
+                                country: newCountry, city: "", address
+                            });
                         }}
                     >
                         <SelectTrigger>
@@ -255,12 +300,18 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
             {/* Map */}
             <div className="h-80 w-full rounded-md overflow-hidden border border-gray-200 z-0">
                 {
-                    country ? <>
-
+                    country ? (
                         <MapContainer
+                            key={country.code} /* Only remount when country changes */
                             center={[country.centerLat, country.centerLng]}
                             zoom={13}
                             scrollWheelZoom
+                            maxBounds={[
+                                [country.centerLat - 2, country.centerLng - 2], // South West
+                                [country.centerLat + 2, country.centerLng + 2]  // North East
+                            ]}
+                            maxBoundsViscosity={1.0}
+                            minZoom={6}
                             style={{ height: "100%", width: "100%", zIndex: 0 }}
                         >
                             <TileLayer
@@ -268,15 +319,18 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             <LocationMarker
-                                position={{ lat: position.lat, lng: position.lng }}
+                                position={position as any}
                                 onSelect={handleSelectLocation}
+                                allowedCountries={platformCountries}
+                                selectedCountryCode={country.code}
                             />
                             <MapPanTo
                                 position={position}
                             />
-
                         </MapContainer>
-                    </> : <><LocationPlaceholderCard /></>
+                    ) : (
+                        <LocationPlaceholderCard />
+                    )
                 }
 
             </div>

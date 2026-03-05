@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 const baseUrl = `${import.meta.env.BASE_URL}/auth/refresh`;
 
 import NProgress from "nprogress";
@@ -11,7 +12,10 @@ NProgress.configure({ showSpinner: false });
 
 const flairapi = axios.create({
   withCredentials: true,
-  timeout: 60000, // 60 seconds timeout to handle slow cold starts
+  timeout: 60000,
+  headers: {
+    "x-client-type": "web",
+  },
 });
 
 // To avoid multiple refreshes in parallel
@@ -131,6 +135,16 @@ flairapi.interceptors.response.use(
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
+      }
+    }
+
+    // Handle Subscription Limits (403 Forbidden with limit_reached code or explicit legacy business message)
+    if (error.response?.status === 403) {
+      if ((errorCode as string)?.includes("limit_reached") || error.response?.data?.message?.includes("Upgrade your subscription to access this business")) {
+        useSubscriptionStore.getState().openUpgradeModal(
+          error.response?.data?.message || i18n.t("subscriptions.errors.limit_reached")
+        );
+        return Promise.reject(error);
       }
     }
 

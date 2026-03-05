@@ -1,18 +1,18 @@
-import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import React, { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, Crown, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { PricingType } from "@/models/SubscriptionPack";
+import { cn } from "@/lib/utils";
 
-interface UpgradeModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
-
-export const UpgradeModal: React.FC<UpgradeModalProps> = ({ isOpen, onClose }) => {
+const UpgradeModal: React.FC = () => {
     const { t } = useTranslation();
+    const { isUpgradeModalOpen, closeUpgradeModal, limitMessage } = useSubscriptionStore();
     const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout } = useSubscriptions();
+    const [isMonthly, setIsMonthly] = useState(true);
 
     const handleSubscribe = (packId: string) => {
         createCheckout({ packId }, {
@@ -24,93 +24,139 @@ export const UpgradeModal: React.FC<UpgradeModalProps> = ({ isOpen, onClose }) =
         });
     };
 
+    const displayedPacks = subscriptionPacks?.filter(
+        (p) => p.pricingType === (isMonthly ? PricingType.MONTHLY : PricingType.YEARLY)
+    ) || [];
+
+    // Filter out the free pack if user is already on a paid plan or if they are looking to upgrade
+    const upgradePacks = displayedPacks.filter(p => {
+        const price = parseFloat(p.price.toString());
+        const currentPrice = currentUserSubscription?.price || 0;
+        return price > currentPrice || (currentPrice === 0 && price === 0 && p.id !== currentUserSubscription?.pack?.id);
+    });
+
     return (
         <Dialog
-            open={isOpen}
+            open={isUpgradeModalOpen}
             onOpenChange={(open) => {
-                if (!open && !creatingCheckout) onClose();
+                if (!open && !creatingCheckout) closeUpgradeModal();
             }}
         >
-            <DialogContent className="sm:max-w-4xl w-full max-h-[90vh] overflow-y-auto p-4 sm:p-8 rounded-lg">
-                <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-center mb-2">Upgrade Your Plan</DialogTitle>
-                    <p className="text-center text-gray-500 mb-6">Choose a plan that fits your business needs.</p>
-                </DialogHeader>
+            <DialogContent className="sm:max-w-4xl w-full max-h-[95vh] overflow-y-auto p-0 rounded-2xl border-none bg-zinc-50">
+                <div className="p-6 sm:p-10">
+                    <DialogHeader className="mb-8">
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="bg-indigo-100 p-3 rounded-2xl">
+                                <Crown className="h-8 w-8 text-indigo-600" />
+                            </div>
+                        </div>
+                        <DialogTitle className="text-3xl font-bold text-center">Upgrade Your Plan</DialogTitle>
+                        <DialogDescription className="text-center text-zinc-600 text-lg mt-2 max-w-md mx-auto">
+                            {limitMessage || t("subscriptions.upgrade_message", "Choose a plan that fits your business needs and unlock more power.")}
+                        </DialogDescription>
+                    </DialogHeader>
 
-                {fetchingPacks ? (
-                    <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                    <div className="flex justify-center mb-10">
+                        <div className="flex bg-zinc-200 p-1 rounded-full gap-1 shadow-inner border border-zinc-300/50">
+                            <Button
+                                size="sm"
+                                variant={isMonthly ? "default" : "ghost"}
+                                className={cn(
+                                    "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
+                                    isMonthly ? "shadow-sm" : "text-zinc-600 hover:bg-zinc-300"
+                                )}
+                                onClick={() => setIsMonthly(true)}
+                            >
+                                Monthly
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={!isMonthly ? "default" : "ghost"}
+                                className={cn(
+                                    "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
+                                    !isMonthly ? "shadow-sm" : "text-zinc-600 hover:bg-zinc-300"
+                                )}
+                                onClick={() => setIsMonthly(false)}
+                            >
+                                Yearly
+                            </Button>
+                        </div>
                     </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {subscriptionPacks?.map((pack) => {
-                            const isCurrentPlan = currentUserSubscription?.pack?.id === pack.id;
-                            // Also considering free plan might have price 0
-                            const isFree = parseFloat(pack.price.toString()) === 0;
 
-                            return (
-                                <div
-                                    key={pack.id}
-                                    className={`relative flex flex-col p-6 rounded-2xl border ${isCurrentPlan ? "border-indigo-500 shadow-md ring-1 ring-indigo-500" : "border-gray-200"
-                                        } bg-white`}
-                                >
-                                    {isCurrentPlan && (
-                                        <div className="absolute top-0 right-0 -mt-3 mr-4">
-                                            <span className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                                                Current Plan
-                                            </span>
-                                        </div>
-                                    )}
+                    {fetchingPacks ? (
+                        <div className="flex justify-center items-center py-20">
+                            <Loader2 className="h-10 w-10 animate-spin text-indigo-600" />
+                        </div>
+                    ) : (
+                        <div className={cn(
+                            "grid gap-6",
+                            upgradePacks.length === 1 ? "max-w-md mx-auto grid-cols-1" :
+                                upgradePacks.length === 2 ? "max-w-2xl mx-auto grid-cols-1 md:grid-cols-2" :
+                                    "grid-cols-1 md:grid-cols-3"
+                        )}>
+                            {upgradePacks.map((pack) => {
+                                const isFree = parseFloat(pack.price.toString()) === 0;
 
-                                    <div className="mb-4">
-                                        <h3 className="text-xl font-bold text-gray-900">{pack.name}</h3>
-                                        <p className="text-sm text-gray-500 mt-1 h-10">{pack.getShortDescription()}</p>
-                                    </div>
-
-                                    <div className="my-6">
-                                        <span className="text-4xl font-extrabold text-gray-900">{isFree ? "Free" : pack.getFormattedPrice()}</span>
-                                        {!isFree && <span className="text-gray-500 font-medium">/mo</span>}
-                                    </div>
-
-                                    <ul className="mb-8 space-y-3 flex-1 text-sm text-gray-600">
-                                        <li className="flex items-center">
-                                            <Check className="h-5 w-5 text-indigo-500 mr-2 shrink-0" />
-                                            {t("subscriptions.limits.businesses", { count: pack.maxBusinesses })}
-                                        </li>
-                                        <li className="flex items-center">
-                                            <Check className="h-5 w-5 text-indigo-500 mr-2 shrink-0" />
-                                            {t("subscriptions.limits.employees", { count: pack.maxEmployees })}
-                                        </li>
-                                        <li className="flex items-center">
-                                            <Check className="h-5 w-5 text-indigo-500 mr-2 shrink-0" />
-                                            {t("subscriptions.limits.menus", { count: pack.maxMenus })}
-                                        </li>
-                                        <li className="flex items-center">
-                                            <Check className="h-5 w-5 text-indigo-500 mr-2 shrink-0" />
-                                            {t("subscriptions.limits.products", { count: pack.maxProducts })}
-                                        </li>
-                                        {pack.features.filter(f => f !== 'api_access').map((feature, idx) => (
-                                            <li key={idx} className="flex items-center">
-                                                <Check className="h-5 w-5 text-indigo-500 mr-2 shrink-0" />
-                                                {t(`subscriptions.features.${feature}`, feature)}
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                    <Button
-                                        className="w-full mt-auto"
-                                        variant={isCurrentPlan ? "outline" : "default"}
-                                        disabled={isCurrentPlan || isFree || creatingCheckout}
-                                        onClick={() => handleSubscribe(pack.id)}
+                                return (
+                                    <div
+                                        key={pack.id}
+                                        className="relative flex flex-col p-8 rounded-3xl border border-zinc-200 bg-white shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                                     >
-                                        {isCurrentPlan ? "Current Plan" : creatingCheckout ? "Loading..." : "Subscribe"}
-                                    </Button>
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
+                                        <div className="mb-6">
+                                            <h3 className="text-2xl font-bold text-zinc-900">{pack.name}</h3>
+                                            <p className="text-sm text-zinc-500 mt-2 leading-relaxed min-h-[3rem]">
+                                                {pack.description || pack.getShortDescription()}
+                                            </p>
+                                        </div>
+
+                                        <div className="mb-8">
+                                            <div className="flex items-baseline gap-1">
+                                                <span className="text-4xl font-black text-zinc-900">
+                                                    {isFree ? "Free" : pack.getFormattedPrice()}
+                                                </span>
+                                                {!isFree && <span className="text-zinc-500 font-bold text-lg">/{isMonthly ? "mo" : "yr"}</span>}
+                                            </div>
+                                        </div>
+
+                                        <ul className="mb-10 space-y-4 flex-1 text-sm font-medium text-zinc-700">
+                                            <li className="flex items-start">
+                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <span>{t("subscriptions.limits.businesses", { count: pack.maxBusinesses })}</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <span>{t("subscriptions.limits.employees", { count: pack.maxEmployees })}</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <span>{t("subscriptions.limits.menus", { count: pack.maxMenus })}</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <span>{t("subscriptions.limits.products", { count: pack.maxProducts })}</span>
+                                            </li>
+                                        </ul>
+
+                                        <Button
+                                            className="w-full py-7 rounded-2xl font-bold text-lg shadow-lg hover:shadow-indigo-500/20 transition-all"
+                                            disabled={creatingCheckout}
+                                            onClick={() => handleSubscribe(pack.id)}
+                                        >
+                                            {creatingCheckout ? (
+                                                <Loader2 className="h-6 w-6 animate-spin" />
+                                            ) : (
+                                                "Get Started"
+                                            )}
+                                        </Button>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             </DialogContent>
         </Dialog>
     );
 };
+
+export default UpgradeModal;

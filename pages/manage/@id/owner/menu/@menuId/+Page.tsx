@@ -40,7 +40,10 @@ import { CategoryModal } from "@/components/management/menu/CreateCategoryModal"
 import { ItemModal } from "@/components/management/menu/CreateItemModal";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { ItemsDuplicationModal } from "@/components/management/menu/ItemsDuplicationModal";
-import { UpgradeModal } from "@/components/subscriptions/UpgradeModal";
+import UpgradeModal from "@/components/subscriptions/UpgradeModal";
+import { useUsage } from "@/features/subscriptions/useUsage";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
 // #endregion
 
 // #region Sortable Components
@@ -122,7 +125,6 @@ const MenuDetailPage: React.FC = () => {
 
     // View Mode
     const [viewMode, setViewMode] = useState<'dnd' | 'simple'>('dnd');
-    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
     // Modals & Active Items
     const [createCategoryModal, setCreateCategoryModal] = useState(false);
@@ -133,6 +135,12 @@ const MenuDetailPage: React.FC = () => {
     const [toDuplicateCategory, setToDuplicateCategory] = useState<string | undefined>();
     const [deleteCategoryConfirm, setDeleteCategoryConfirm] = useState<string | null>(null);
     const [movingItem, setMovingItem] = useState<{ itemId: string, currentCatId: string } | null>(null);
+
+    const { usage } = useUsage();
+    const { openUpgradeModal } = useSubscriptionStore();
+
+    const canCreateProduct = usage?.canCreateProduct ?? true;
+    const canCreateMenu = usage?.canCreateMenu ?? true;
     // #endregion
 
     // #region Effects
@@ -315,7 +323,7 @@ const MenuDetailPage: React.FC = () => {
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
 
             {/* #region Modals */}
-            <UpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
+            {/* No local UpgradeModal component here anymore, handled globally */}
             <MenuModal
                 isOpen={editMenu}
                 onClose={() => setEditMenu(false)}
@@ -390,7 +398,7 @@ const MenuDetailPage: React.FC = () => {
                             },
                         }, {
                             onError: (err: any) => {
-                                if (err?.response?.status === 403) setShowUpgradeModal(true);
+                                // Global interceptor handles this, but we can explicitly call it too if needed
                             }
                         });
                     } else {
@@ -570,11 +578,23 @@ const MenuDetailPage: React.FC = () => {
                     </div>
 
                     <Button
-                        onClick={() => setCreateCategoryModal(true)}
-                        className="flex items-center gap-2 bg-indigo-500 text-white hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-500 transition px-3 sm:px-4"
+                        onClick={() => {
+                            if (canCreateMenu) {
+                                setCreateCategoryModal(true);
+                            } else {
+                                openUpgradeModal("You've reached your menu category limit. Upgrade to add more categories.");
+                            }
+                        }}
+                        className={cn(
+                            "flex items-center gap-2 transition px-3 sm:px-4",
+                            canCreateMenu
+                                ? "bg-indigo-500 text-white hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                        )}
                     >
                         <Plus className="h-4 w-4 sm:mr-1" />
                         <span className="hidden sm:inline">{t('menu_management.actions.add_category')}</span>
+                        {!canCreateMenu && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                     </Button>
                     <Button
                         disabled={!hasChanges()}

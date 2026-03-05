@@ -21,6 +21,7 @@ export class SubscriptionPack {
   pricingType: PricingType;
   lemonVariantId?: string | null;
   lemonProductId?: string | null;
+  isDefault: boolean;
 
   constructor(
     id: string,
@@ -36,7 +37,8 @@ export class SubscriptionPack {
     pricingType: PricingType,
     isActive?: boolean,
     lemonVariantId?: string | null,
-    lemonProductId?: string | null
+    lemonProductId?: string | null,
+    isDefault: boolean = false
   ) {
     this.id = id;
     this.name = name;
@@ -52,6 +54,7 @@ export class SubscriptionPack {
     this.isActive = isActive;
     this.lemonVariantId = lemonVariantId ?? null;
     this.lemonProductId = lemonProductId ?? null;
+    this.isDefault = isDefault;
   }
 
   // --- Static parsing methods ---
@@ -71,12 +74,13 @@ export class SubscriptionPack {
         Array.isArray(data.features)
           ? data.features
           : typeof data.features === "object"
-          ? Object.keys(data.features)
-          : [],
+            ? Object.keys(data.features)
+            : [],
         data.pricingType as PricingType,
         data.isActive,
         data.lemonVariantId,
-        data.lemonProductId
+        data.lemonProductId,
+        data.isDefault ?? false
       );
     } catch {
       return null;

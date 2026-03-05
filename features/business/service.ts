@@ -260,10 +260,10 @@ export const fetchInvitationDetailsApiCall = (inviteId: string) => {
   return flairapi.get(`${invitationsBaseUrl}/invitation/${inviteId}`);
 };
 
-export const acceptInvitationApiCall = (inviteId: string) => {
-  return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteId}/accept`);
+export const acceptInvitationApiCall = (inviteToken: string) => {
+  return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteToken}/accept`);
 };
 
-export const refuseInvitationApiCall = (inviteId: string) => {
-  return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteId}/refuse`);
+export const refuseInvitationApiCall = (inviteToken: string) => {
+  return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteToken}/decline`);
 };

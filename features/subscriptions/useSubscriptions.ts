@@ -4,6 +4,7 @@ import {
   getSubscriptionPacksApiCall,
   getUserSubscriptionsListApiCall,
   handleUserCheckoutApiCall,
+  getSubscriptionPortalUrlApiCall,
 } from "./service";
 import { Subscription } from "@/models/Subscription";
 import { usePageContext } from "vike-react/usePageContext";
@@ -29,9 +30,9 @@ export const useSubscriptions = () => {
     queryFn: async () => {
       // Extract country code from browser locale (e.g., 'en-US' -> 'US')
       let countryCode;
-      if (typeof navigator !== "undefined" && navigator.language) {
+      /* if (typeof navigator !== "undefined" && navigator.language) {
         countryCode = navigator.language.split("-")[1]?.toUpperCase();
-      }
+      } */
       const res = await getSubscriptionPacksApiCall(countryCode);
       if (res.data.success) {
         return SubscriptionPack.parseApiArrayResponse(res.data.data);
@@ -71,6 +72,22 @@ export const useSubscriptions = () => {
       enabled: user != null,
     });
 
+  const {
+    data: portalUrlData,
+    isPending: fetchingPortalUrl,
+    mutateAsync: fetchPortalUrl,
+  } = useMutation({
+    mutationKey: ["fetch_portal_url"],
+    mutationFn: async () => {
+      const resp = await getSubscriptionPortalUrlApiCall();
+      if (resp.status === 200 && resp.data?.data?.url) {
+        return resp.data.data.url as string;
+      } else {
+        return null;
+      }
+    },
+  });
+
   return {
     currentUserSubscription,
     subscriptionPacks,
@@ -84,5 +101,10 @@ export const useSubscriptions = () => {
     // subs list
     userSubscriptionsList,
     fetchingUserSubscriptions,
+
+    // portal
+    portalUrlData,
+    fetchingPortalUrl,
+    fetchPortalUrl,
   };
 };

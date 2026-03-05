@@ -49,14 +49,6 @@ const ownerNavData = {
                     requiredAction: "read",
                 },
                 {
-                    key: "billing",
-                    title: "Billing & Subscription",
-                    url: "/manage/:id/owner/billing",
-                    icon: CreditCard,
-                    requiredPermission: "BUSINESS_SETTINGS", // Maybe owner only later
-                    requiredAction: "read",
-                },
-                {
                     key: "staff",
                     title: "Staff Management",
                     url: "/manage/:id/owner/staff",

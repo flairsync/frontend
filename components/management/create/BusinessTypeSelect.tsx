@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/select";
 import { BusinessType } from "@/models/business/BusinessType";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface BusinessTypeSelectProps {
     value: string;
     types: BusinessType[] | undefined;
     onChange: (newValue: string) => void;
-    label?: string;
     placeholder?: string;
     error?: string;
 }
@@ -21,19 +21,18 @@ interface BusinessTypeSelectProps {
 export default function BusinessTypeSelect({
     value,
     onChange,
-    label = "Business Type",
     types,
     placeholder = "Select a business type...",
     error,
 }: BusinessTypeSelectProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="flex flex-col space-y-1.5">
-            {label && <Label>{label}</Label>}
-
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger>
                     <SelectValue placeholder={placeholder} >{
-                        types?.find(val => val.id == value)?.name
+                        types?.find(val => val.id == value)?.name ? t(`business_types.${types?.find(val => val.id == value)?.name}`) : undefined
                     }</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -42,7 +41,7 @@ export default function BusinessTypeSelect({
                             <div
                                 className="flex flex-row "
                             >
-                                {option.name}
+                                {t(`business_types.${option.name}`)}
                                 {
                                     option.id == value && <Check height={20} width={20} />
                                 }

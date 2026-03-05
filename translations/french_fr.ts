@@ -25,6 +25,26 @@ const shared = {
     next: "Suivant",
     retry: "Réessayer la connexion",
   },
+  tags: {
+    vegan: "Végan",
+    vegetarian: "Végétarien",
+    gluten_free: "Sans gluten",
+    halal: "Halal",
+    brunch: "Brunch",
+    breakfast: "Petit-déjeuner",
+    late_night: "Ouvert tard",
+    cozy: "Chaleureux",
+    romantic: "Romantique",
+    family_friendly: "Familial",
+    trendy: "Tendance",
+    quiet: "Calme",
+    lively: "Animé",
+    wifi: "Wi-Fi",
+    pet_friendly: "Animaux acceptés",
+    outdoor_seating: "Terrasse",
+    delivery: "Livraison",
+    takeaway: "À emporter",
+  },
 };
 
 const landing_page = {
@@ -188,6 +208,14 @@ const auth_page = {
     signin_with_google_label: "Se connecter avec Google",
     already_have_account_label: "Vous avez déjà un compte ?",
     signin_instead_label: "Connectez-vous à la place",
+    firstname_label: "Prénom",
+    lastname_label: "Nom",
+    repeat_password_label: "Répéter le mot de passe",
+    terms_required: "Vous devez accepter les conditions générales pour continuer",
+    i_agree_to: "J'accepte les",
+    terms_and_conditions: "Conditions Générales",
+    please_read_terms: "Veuillez lire attentivement nos conditions générales ci-dessous.",
+    confirm: "Confirmer",
   },
 };
 
@@ -455,8 +483,17 @@ const subscriptions = {
   },
 };
 
+const business_types = {
+  bakery: "Boulangerie",
+  fast_food: "Restauration rapide",
+  coffee_shop: "Café",
+  restaurant: "Restaurant",
+  other: "Autre",
+};
+
 export default {
   landing_page,
+  business_types,
   errors,
   public_feed,
   auth_page,

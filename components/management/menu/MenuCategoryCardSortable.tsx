@@ -9,6 +9,10 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { useUsage } from "@/features/subscriptions/useUsage";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
+
 type Props = {
     category: BusinessMenuCategory;
     categories: BusinessMenuCategory[];
@@ -33,6 +37,9 @@ export const MenuCategoryCardSortable = ({
     onDuplicateItem
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { usage } = useUsage();
+    const { openUpgradeModal } = useSubscriptionStore();
+    const canCreateProduct = usage?.canCreateProduct ?? true;
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: category.id,
@@ -95,12 +102,23 @@ export const MenuCategoryCardSortable = ({
                             </Button>
                             <Button
                                 size="sm"
-                                className="bg-indigo-500 text-white hover:bg-indigo-600"
+                                className={cn(
+                                    "transition",
+                                    canCreateProduct
+                                        ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                                        : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                )}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    onAddItem();
+                                    if (canCreateProduct) {
+                                        onAddItem();
+                                    } else {
+                                        openUpgradeModal("You've reached your product limit. Upgrade to add more items.");
+                                    }
                                 }}
-                            >                                <Plus className="h-4 w-4 mr-1" /> Add Item
+                            >
+                                <Plus className="h-4 w-4 mr-1" /> Add Item
+                                {!canCreateProduct && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                             </Button>
                         </div>
                     </CardHeader>

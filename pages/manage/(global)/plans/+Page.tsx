@@ -39,7 +39,7 @@ const PlansPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
+    <div className="p-6 w-full max-w-6xl mx-auto">
       <LemonPaymentOverlay
         url={checkoutLink}
         onOverlayClosed={() => {
@@ -51,86 +51,102 @@ const PlansPage: React.FC = () => {
           toast("Payment success !");
         }}
       />
-      <BusinessManagementHeader />
 
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 py-16 px-6">
-        <div className="max-w-6xl mx-auto text-center mb-12">
-          {/* Go Back Button */}
+      <div className="text-center mb-12">
+        {/* Go Back Button */}
 
 
-          <h1 className="text-4xl font-bold mb-3">Choose Your Plan</h1>
-          <p className="text-zinc-500">
-            Select the subscription that fits your restaurant best.
-          </p>
+        <h1 className="text-4xl font-bold mb-3">Choose Your Plan</h1>
+        <p className="text-zinc-500">
+          Select the subscription that fits your restaurant best.
+        </p>
 
-          {/* Billing toggle */}
-          <div className="mt-6 inline-flex bg-white dark:bg-zinc-800 rounded-full p-1 shadow-md">
-            <Button
-              variant={billingType === PricingType.MONTHLY ? "default" : "ghost"}
-              className="rounded-full px-5 py-2"
-              onClick={() => setBillingType(PricingType.MONTHLY)}
-            >
-              Monthly
-            </Button>
-            <Button
-              variant={billingType === PricingType.YEARLY ? "default" : "ghost"}
-              className="rounded-full px-5 py-2"
-              onClick={() => setBillingType(PricingType.YEARLY)}
-            >
-              Yearly
-            </Button>
-          </div>
+        {/* Billing toggle */}
+        <div className="mt-6 inline-flex bg-white dark:bg-zinc-800 rounded-full p-1 shadow-md">
+          <Button
+            variant={billingType === PricingType.MONTHLY ? "default" : "ghost"}
+            className="rounded-full px-5 py-2"
+            onClick={() => setBillingType(PricingType.MONTHLY)}
+          >
+            Monthly
+          </Button>
+          <Button
+            variant={billingType === PricingType.YEARLY ? "default" : "ghost"}
+            className="rounded-full px-5 py-2"
+            onClick={() => setBillingType(PricingType.YEARLY)}
+          >
+            Yearly
+          </Button>
         </div>
-        {loadingCheckout && (
-          <div className="flex flex-col items-center justify-center py-6">
-            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mb-2" />
-            <p className="text-sm text-muted-foreground">Loading, please wait...</p>
-          </div>
-        )}
-        {/* Plans grid */}
-        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-          {displayedPacks.map((pack) => (
-            <motion.div
-              key={pack.id}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Card className="border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-lg transition bg-white dark:bg-zinc-900 flex flex-col h-full">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-semibold text-primary mb-1">
-                    {pack.name}
-                  </CardTitle>
-                  <p className="text-sm text-zinc-500">{pack.getShortDescription()}</p>
-                </CardHeader>
+      </div>
+      {loadingCheckout && (
+        <div className="flex flex-col items-center justify-center py-6">
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mb-2" />
+          <p className="text-sm text-muted-foreground">Loading, please wait...</p>
+        </div>
+      )}
+      {/* Plans grid */}
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+        {displayedPacks.map((pack) => (
+          <motion.div
+            key={pack.id}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className="border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-lg transition bg-white dark:bg-zinc-900 flex flex-col h-full">
+              <CardHeader>
+                <CardTitle className="text-2xl font-semibold text-primary mb-1">
+                  {pack.name}
+                </CardTitle>
+                <p className="text-sm text-zinc-500">{pack.getShortDescription()}</p>
+              </CardHeader>
 
-                <CardContent className="flex flex-col justify-between flex-grow">
-                  <div className="mt-2 mb-4">
-                    <p className="text-4xl font-bold mb-1">
-                      {pack.price}{" "}
-                      <span className="text-lg font-normal">{pack.currency}</span>
-                    </p>
-                    <p className="text-zinc-500 text-sm">{pack.getPlanDuration()}</p>
+              <CardContent className="flex flex-col justify-between flex-grow">
+                <div className="mt-2 text-center mb-6">
+                  <p className="text-4xl font-bold mb-1">
+                    {pack.price}{" "}
+                    <span className="text-lg font-normal">{pack.currency}</span>
+                  </p>
+                  <p className="text-zinc-500 text-sm">{pack.getPlanDuration()}</p>
+                </div>
+
+                <div className="mb-6 grid grid-cols-2 gap-4 text-xs bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800">
+                  <div className="flex flex-col">
+                    <span className="text-zinc-500 mb-1">Businesses</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxBusinesses === -1 ? "Unlimited" : pack.maxBusinesses}</span>
                   </div>
+                  <div className="flex flex-col">
+                    <span className="text-zinc-500 mb-1">Staff</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxEmployees === -1 ? "Unlimited" : pack.maxEmployees}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-zinc-500 mb-1">Menus</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxMenus === -1 ? "Unlimited" : pack.maxMenus}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-zinc-500 mb-1">Products</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxProducts === -1 ? "Unlimited" : pack.maxProducts}</span>
+                  </div>
+                </div>
 
-                  <ul className="text-sm text-zinc-600 dark:text-zinc-300 space-y-2 mb-6">
-                    {pack.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary" />
-                        <span>{f.replace(/_/g, " ")}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-300 space-y-2 mb-6">
+                  {pack.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-primary" />
+                      <span>{f.replace(/_/g, " ")}</span>
+                    </li>
+                  ))}
+                </ul>
 
-                  <Button
-                    onClick={() => {
-                      onChoosePlan(pack.id)
-                    }}
-                    className="w-full mt-auto">Select Plan</Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                <Button
+                  onClick={() => {
+                    onChoosePlan(pack.id)
+                  }}
+                  className="w-full mt-auto">Select Plan</Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
       </div>
     </div>
   );

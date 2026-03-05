@@ -10,6 +10,10 @@ import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategor
 import { SimpleMenuItemRow } from "./SimpleMenuItemRow";
 import { useTranslation } from "react-i18next";
 
+import { useUsage } from "@/features/subscriptions/useUsage";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
+
 type Props = {
     category: BusinessMenuCategory;
     onEdit: () => void;
@@ -41,6 +45,9 @@ export const SimpleMenuCategoryCard = ({
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation();
+    const { usage } = useUsage();
+    const { openUpgradeModal } = useSubscriptionStore();
+    const canCreateProduct = usage?.canCreateProduct ?? true;
 
     return (
         <div className="mb-2">
@@ -117,14 +124,24 @@ export const SimpleMenuCategoryCard = ({
                         </Button>
                         <Button
                             size="sm"
-                            className="bg-indigo-500 text-white hover:bg-indigo-600"
+                            className={cn(
+                                "transition",
+                                canCreateProduct
+                                    ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                                    : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                            )}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onAddItem();
+                                if (canCreateProduct) {
+                                    onAddItem();
+                                } else {
+                                    openUpgradeModal("You've reached your product limit. Upgrade to add more items.");
+                                }
                             }}
                         >
                             <Plus className="h-4 w-4 mr-1" /> <span className="hidden sm:inline">{t('menu_management.actions.add_item')}</span>
                             <span className="sm:hidden">{t('shared.actions.add')}</span>
+                            {!canCreateProduct && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                         </Button>
                     </div>
                 </div>

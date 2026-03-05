@@ -243,6 +243,11 @@ const auth_page = {
     firstname_label: "Firstname",
     lastname_label: "Lastname",
     repeat_password_label: "Repeat password",
+    terms_required: "You must accept the terms and conditions to continue",
+    i_agree_to: "I agree to the",
+    terms_and_conditions: "Terms and Conditions",
+    please_read_terms: "Please read our terms and conditions below carefully.",
+    confirm: "Confirm",
   },
 };
 
@@ -561,8 +566,17 @@ const subscriptions = {
   },
 };
 
+const business_types = {
+  bakery: "Bakery",
+  fast_food: "Fast Food",
+  coffee_shop: "Coffee Shop",
+  restaurant: "Restaurant",
+  other: "Other",
+};
+
 export default {
   landing_page,
+  business_types,
   errors,
   public_feed,
   auth_page,

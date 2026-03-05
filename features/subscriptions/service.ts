@@ -5,6 +5,8 @@ const currentSubscriptionUrl = `${baseUrl}/current`;
 const subscriptionsListUrl = `${baseUrl}/my`;
 const subscriptionPacksUrl = `${baseUrl}/packs`;
 const checkoutUrl = `${baseUrl}/checkout`;
+const usageUrl = `${baseUrl}/usage`;
+const portalUrl = `${baseUrl}/portal`;
 
 export const getCurrentUserSubscriptionApiCall = () => {
   return flairapi.get(currentSubscriptionUrl);
@@ -21,4 +23,12 @@ export const handleUserCheckoutApiCall = (data: { packId: string }) => {
 
 export const getUserSubscriptionsListApiCall = () => {
   return flairapi.get(subscriptionsListUrl);
+};
+
+export const getUserUsageApiCall = () => {
+  return flairapi.get(usageUrl);
+};
+
+export const getSubscriptionPortalUrlApiCall = () => {
+  return flairapi.get(portalUrl);
 };
