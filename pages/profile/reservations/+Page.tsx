@@ -1,15 +1,15 @@
 import ProfileReservationCard from "@/components/profile/ProfileReservationCard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import React, { useState } from "react"
+import React from "react"
+import { useMyReservations, useCancelReservation } from "@/features/discovery/useDiscovery"
+import { Loader2 } from "lucide-react"
 
 const ReservationsPage = () => {
-    const [reservations, setReservations] = useState([
-        { id: 1, restaurantName: "Borda La Vella", datetime: "2025-09-28T19:30:00" },
-        { id: 2, restaurantName: "Cafe Central", datetime: "2025-09-30T12:00:00" },
-    ])
+    const { data: reservations = [], isLoading } = useMyReservations();
+    const { mutate: cancelReservation, isPending: isCanceling } = useCancelReservation();
 
-    const handleCancel = (id: number | string) => {
-        setReservations((prev) => prev.filter((r) => r.id !== id))
+    const handleCancel = (businessId: string, reservationId: string | number) => {
+        cancelReservation({ businessId, reservationId: String(reservationId) });
     }
 
     return (
@@ -18,16 +18,25 @@ const ReservationsPage = () => {
                 <CardTitle>My Reservations</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                {reservations.map((res) => (
-                    <ProfileReservationCard
-                        key={res.id}
-                        id={res.id}
-                        restaurantName={res.restaurantName}
-                        href={`/business/${res.id}`}
-                        datetime={res.datetime}
-                        onCancel={handleCancel}
-                    />
-                ))}
+                {isLoading ? (
+                    <div className="flex justify-center p-4"><Loader2 className="animate-spin text-muted-foreground" /></div>
+                ) : reservations.length === 0 ? (
+                    <p className="text-muted-foreground text-center p-4">You have no upcoming reservations.</p>
+                ) : (
+                    reservations.map((res: any) => (
+                        <ProfileReservationCard
+                            key={res.id}
+                            id={res.id}
+                            businessId={res.businessId}
+                            restaurantName={res.business?.name || "Restaurant"}
+                            href={`/business/${res.businessId}`}
+                            datetime={res.reservationTime}
+                            status={res.status}
+                            onCancel={handleCancel}
+                            isCanceling={isCanceling}
+                        />
+                    ))
+                )}
             </CardContent>
         </Card>
     )

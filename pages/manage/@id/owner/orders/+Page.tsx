@@ -166,6 +166,7 @@ const OwnerOrdersPage: React.FC = () => {
 
     const getStatusVariant = (status: string) => {
         switch (status) {
+            case "pending_confirmation": return "secondary";
             case "open": return "outline";
             case "sent": return "secondary";
             case "served": return "default";
@@ -301,6 +302,12 @@ const OwnerOrdersPage: React.FC = () => {
                                                                     <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
                                                                         <CreditCard className="mr-2 h-4 w-4" />
                                                                         <span>Add Payment</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {o.status === "pending_confirmation" && (
+                                                                    <DropdownMenuItem onClick={() => updateOrder({ orderId: o.id, data: { status: "open" } })} disabled={isUpdatingOrder} className="text-blue-600 focus:text-blue-700">
+                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <span>Confirm Order</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "open" && (

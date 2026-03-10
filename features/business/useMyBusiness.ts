@@ -31,7 +31,16 @@ export const useMyBusiness = (businessId: string | null = null) => {
     queryFn: async () => {
       if (!businessId) return;
       const res = await fetchMyBuysinessFullDetailsApiCall(businessId);
-      return MyBusinessFullDetails.parseApiResponse(res.data.data) || undefined;
+      const data = res.data.data;
+
+      if (data.usage) {
+        queryClient.setQueryData(["user_usage"], data.usage);
+      }
+
+      return {
+        business: MyBusinessFullDetails.parseApiResponse(data.business) || undefined,
+        usage: data.usage
+      };
     },
     enabled: businessId != null,
     gcTime: Infinity,
@@ -157,7 +166,8 @@ export const useMyBusiness = (businessId: string | null = null) => {
   });
 
   return {
-    myBusinessFullDetails,
+    myBusinessFullDetails: myBusinessFullDetails?.business,
+    usage: myBusinessFullDetails?.usage,
     fetchingMyBusinessFullDetails,
     updatingMyBusiness,
     updateMyBusinessDetails,

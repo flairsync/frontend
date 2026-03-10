@@ -44,6 +44,7 @@ import UpgradeModal from "@/components/subscriptions/UpgradeModal";
 import { useUsage } from "@/features/subscriptions/useUsage";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
+import { useAllergies } from "@/features/shared/useAllergies";
 // #endregion
 
 // #region Sortable Components
@@ -141,6 +142,8 @@ const MenuDetailPage: React.FC = () => {
 
     const canCreateProduct = usage?.canCreateProduct ?? true;
     const canCreateMenu = usage?.canCreateMenu ?? true;
+
+    const { allergies } = useAllergies();
     // #endregion
 
     // #region Effects
@@ -371,7 +374,7 @@ const MenuDetailPage: React.FC = () => {
             <ItemModal
                 businessId={id}
                 availableItems={businessAllItems}
-                allergies={[]}
+                allergies={allergies || []}
                 onClose={() => {
                     setCreateItemCatId(undefined);
                     setEditingItem(undefined);

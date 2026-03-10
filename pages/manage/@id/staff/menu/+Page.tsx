@@ -19,6 +19,7 @@ import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategor
 import { snapshotCategories, diffCategories } from "@/features/business/menu/menuUtils";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
+import { useAllergies } from "@/features/shared/useAllergies";
 
 export default function StaffMenuPage() {
     const { routeParams } = usePageContext();
@@ -73,6 +74,8 @@ export default function StaffMenuPage() {
     const [editingCategory, setEditingCategory] = useState<any>(null);
     const [editingItem, setEditingItem] = useState<any>(null);
     const [targetCategoryId, setTargetCategoryId] = useState<string | null>(null);
+
+    const { allergies } = useAllergies();
 
     // Auto-select first menu
     useEffect(() => {
@@ -408,7 +411,7 @@ export default function StaffMenuPage() {
                         updateItem({ categoryId: targetCategoryId!, itemId: editingItem.id, data: payload });
                     }
                 }}
-                allergies={[]}
+                allergies={allergies || []}
                 initialData={editingItem ? (categories.find(c => c.id === targetCategoryId)?.items?.find(i => i.id === editingItem.id) || editingItem) : undefined}
                 businessId={businessId}
                 availableItems={[]}

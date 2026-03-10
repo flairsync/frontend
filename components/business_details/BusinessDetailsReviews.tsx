@@ -55,7 +55,11 @@ const RenderStars = ({ rating }: { rating: number }) => {
 };
 
 // ---- 💬 Component ---- //
-const BusinessDetailsReviews: React.FC = () => {
+interface BusinessDetailsReviewsProps {
+    businessName?: string;
+}
+
+const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ businessName }) => {
     const { t } = useTranslation();
 
     return (
@@ -63,14 +67,14 @@ const BusinessDetailsReviews: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                 <div className="space-y-2">
                     <h2 className="text-3xl font-bold tracking-tight">
-                        What Guests Say
+                        {t("business_page.reviews.section_title", "What Guests Say")}
                     </h2>
                     <p className="text-muted-foreground max-w-xl leading-relaxed">
-                        Hear from our community about their experiences at Cafe Montserrat. Verified reviews from recent visits.
+                        {t("business_page.reviews.subtitle", `Hear from our community about their experiences at ${businessName || "our business"}. Verified reviews from recent visits.`, { name: businessName || "our business" })}
                     </p>
                 </div>
                 <div className="flex items-center gap-2 text-primary font-black cursor-pointer group uppercase tracking-widest text-xs">
-                    See All 128 Reviews
+                    {t("business_page.reviews.see_all_button", "See All Reviews")}
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </div>
             </div>

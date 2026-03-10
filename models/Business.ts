@@ -34,6 +34,7 @@ export class Business {
   menuCount?: number;
   employeeCount?: number;
   isActive?: boolean;
+  isFavorite?: boolean;
   createdAt: string;
   updatedAt: string;
 
@@ -56,7 +57,8 @@ export class Business {
     reviewsCount?: number,
     menuCount?: number,
     employeeCount?: number,
-    isActive?: boolean
+    isActive?: boolean,
+    isFavorite?: boolean
   ) {
     this.id = id;
     this.name = name;
@@ -77,6 +79,7 @@ export class Business {
     this.menuCount = menuCount;
     this.employeeCount = employeeCount;
     this.isActive = isActive ?? true;
+    this.isFavorite = isFavorite ?? false;
     this.createdAt = dayjs().toISOString();
     this.updatedAt = dayjs().toISOString();
   }
@@ -104,7 +107,8 @@ export class Business {
         data.reviewsCount,
         data.menuCount,
         data.employeeCount,
-        data.isActive
+        data.isActive,
+        data.isFavorite
       );
     } catch {
       return null;

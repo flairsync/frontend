@@ -3,7 +3,7 @@ import { getCountriesListApiCall } from "./service";
 import { PlatformCountry } from "@/models/shared/PlatformCountry";
 
 export const usePlatformCountries = () => {
-  const { data: platformCountries } = useQuery({
+  const { data: platformCountries, isLoading: isCountriesLoading } = useQuery({
     queryKey: ["platform_countries"],
     queryFn: async () => {
       const resp = await getCountriesListApiCall();
@@ -14,5 +14,6 @@ export const usePlatformCountries = () => {
 
   return {
     platformCountries,
+    isCountriesLoading
   };
 };

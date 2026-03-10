@@ -5,6 +5,8 @@ import {
     createReservationApiCall,
     fetchReservationDetailsApiCall,
     updateReservationApiCall,
+    cancelReservationForStaffApiCall,
+    markReservationNoShowApiCall,
     findAvailabilityApiCall,
     lookupUserApiCall,
     CreateReservationDto,
@@ -72,6 +74,28 @@ export const useReservations = (businessId: string, filters?: FetchReservationsD
 
     const meta = reservationsData?.meta || reservationsData?.data?.meta || { totalPages: 1, totalItems: reservationsArray.length };
 
+    const cancelReservationMutation = useMutation({
+        mutationFn: ({ reservationId, cancelReason }: { reservationId: string; cancelReason?: string }) =>
+            cancelReservationForStaffApiCall(businessId, reservationId, cancelReason),
+        onSuccess: () => {
+            toast.success("Reservation cancelled successfully");
+            queryClient.invalidateQueries({ queryKey: ["reservations", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+        },
+    });
+
+    const markNoShowMutation = useMutation({
+        mutationFn: (reservationId: string) =>
+            markReservationNoShowApiCall(businessId, reservationId),
+        onSuccess: () => {
+            toast.success("Reservation marked as no-show");
+            queryClient.invalidateQueries({ queryKey: ["reservations", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+        },
+    });
+
     return {
         reservations: reservationsArray,
         meta,
@@ -81,6 +105,10 @@ export const useReservations = (businessId: string, filters?: FetchReservationsD
         isCreatingReservation: createReservationMutation.isPending,
         updateReservation: updateReservationMutation.mutate,
         isUpdatingReservation: updateReservationMutation.isPending,
+        cancelReservation: cancelReservationMutation.mutate,
+        isCancellingReservation: cancelReservationMutation.isPending,
+        markNoShow: markNoShowMutation.mutate,
+        isMarkingNoShow: markNoShowMutation.isPending,
     };
 };
 

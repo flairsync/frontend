@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAvailability, useReservations, useUserLookup } from "@/features/reservations/useReservations";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { parseInTimezone } from "@/lib/dateUtils";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { toast } from "sonner";
 import { Calendar, Users, Clock, Check, ChevronRight, ChevronLeft, ShoppingCart, Loader2 } from "lucide-react";
@@ -40,12 +42,18 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
         customerEmail: "",
         customerPhone: "",
         notes: "",
+        reservationSource: "PHONE",
+        durationMinutes: 120,
         orderItems: [] as any[]
     });
 
     const { mutate: checkAvailability, isPending: checkingAvailability } = useAvailability(businessId);
     const { createReservation, isCreatingReservation } = useReservations(businessId);
     const { businessAllItems: menuItems } = useBusinessMenus(businessId);
+
+    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const businessTimezone = myBusinessFullDetails?.timezone;
+
     const [availableTables, setAvailableTables] = useState<any[]>([]);
 
     const [debouncedEmail, setDebouncedEmail] = useState("");
@@ -73,7 +81,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
         if (step === "SEARCH") {
             const timestamp = `${bookingData.date}T${bookingData.time}`;
             checkAvailability(
-                { date: new Date(timestamp).toISOString(), guestCount: bookingData.guestCount },
+                { date: parseInTimezone(timestamp, businessTimezone), guestCount: bookingData.guestCount },
                 {
                     onSuccess: (data) => {
                         setAvailableTables(data);
@@ -101,10 +109,12 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             customerName: bookingData.customerName,
             customerEmail: bookingData.customerEmail,
             customerPhone: bookingData.customerPhone,
-            reservationTime: new Date(timestamp).toISOString(),
+            reservationTime: parseInTimezone(timestamp, businessTimezone),
             guestCount: bookingData.guestCount,
             notes: bookingData.notes,
             tableId: bookingData.tableId,
+            reservationSource: bookingData.reservationSource,
+            durationMinutes: bookingData.durationMinutes,
             ...(linkedUserId ? { userId: linkedUserId } : {})
         };
 
@@ -137,6 +147,8 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             customerEmail: "",
             customerPhone: "",
             notes: "",
+            reservationSource: "PHONE",
+            durationMinutes: 120,
             orderItems: []
         });
         setDebouncedEmail("");
@@ -354,6 +366,34 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                     value={bookingData.notes}
                                     onChange={e => setBookingData({ ...bookingData, notes: e.target.value })}
                                 />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>Source</Label>
+                                    <Select value={bookingData.reservationSource} onValueChange={(val) => setBookingData({ ...bookingData, reservationSource: val })}>
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="APP">App</SelectItem>
+                                            <SelectItem value="WEB">Web</SelectItem>
+                                            <SelectItem value="PHONE">Phone</SelectItem>
+                                            <SelectItem value="WALK_IN">Walk-in</SelectItem>
+                                            <SelectItem value="INSTAGRAM">Instagram</SelectItem>
+                                            <SelectItem value="GOOGLE">Google</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Duration (Minutes)</Label>
+                                    <Input
+                                        type="number"
+                                        min={15}
+                                        step={15}
+                                        value={bookingData.durationMinutes}
+                                        onChange={e => setBookingData({ ...bookingData, durationMinutes: parseInt(e.target.value) || 120 })}
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}

@@ -10,10 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Pencil, Trash2, CalendarCheck, User } from "lucide-react";
 import { useReservations } from "@/features/reservations/useReservations";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
-import { format } from "date-fns";
+import { formatInTimezone } from "@/lib/dateUtils";
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal";
 import { EditReservationModal } from "@/components/management/reservations/EditReservationModal";
 import DataPagination from "@/components/inputs/DataPagination";
@@ -22,6 +23,9 @@ const ReservationsPage: React.FC = () => {
     const { t } = useTranslation();
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
+
+    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const businessTimezone = myBusinessFullDetails?.timezone;
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -169,7 +173,7 @@ const ReservationsPage: React.FC = () => {
                                                 <span className="text-xs text-muted-foreground">{res.customerPhone}</span>
                                             </div>
                                         </TableCell>
-                                        <TableCell>{format(new Date(res.reservationTime), "MMM d, h:mm a")}</TableCell>
+                                        <TableCell>{formatInTimezone(res.reservationTime, "MMM D, h:mm A", businessTimezone)}</TableCell>
                                         <TableCell>{res.guestCount}</TableCell>
                                         <TableCell>{res.table ? (res.table.name || `Table ${res.table.number || res.table.id.substring(0, 4)}`) : "Unassigned"}</TableCell>
                                         <TableCell>

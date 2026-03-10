@@ -18,10 +18,12 @@ export interface CreateOrderDto {
     reservationId?: string;
     paymentStatus?: "pending" | "paid" | "refunded" | "failed";
     paymentMethod?: "cash" | "card" | "online" | "other";
+    lat?: number;
+    lng?: number;
 }
 
 export interface UpdateOrderDto {
-    status?: "pending" | "preparing" | "ready" | "served" | "completed" | "cancelled";
+    status?: "pending_confirmation" | "open" | "preparing" | "ready" | "served" | "completed" | "cancelled";
     items?: {
         menuItemId: string;
         quantity: number;
@@ -35,7 +37,7 @@ export interface Order {
     id: string;
     businessId: string;
     type: "dine_in" | "takeaway" | "delivery";
-    status: "open" | "sent" | "served" | "closed" | "cancelled";
+    status: "pending_confirmation" | "open" | "sent" | "served" | "closed" | "cancelled";
     tableId?: string;
     table?: { id: string; name: string; number?: number };
     totalAmount: number;
@@ -80,7 +82,7 @@ export interface CreatePaymentDto {
 
 export const fetchOrdersApiCall = (
     businessId: string,
-    status?: "ongoing" | "all" | "open" | "sent" | "served" | "closed" | "cancelled",
+    status?: "ongoing" | "all" | "pending_confirmation" | "open" | "sent" | "served" | "closed" | "cancelled",
     startDate?: string,
     endDate?: string
 ) => {

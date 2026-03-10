@@ -122,6 +122,21 @@ export class MyBusinessFullDetails {
   createdAt: Date;
   updatedAt: Date;
   logo?: string;
+  allowReservations: boolean;
+  allowOrders: boolean;
+  requireReservationConfirmation: boolean;
+  requireOrderConfirmation: boolean;
+  allowOnlyNearbyOrders: boolean;
+  maxOrderDistanceMeters: number;
+  allowTableOrdering: boolean;
+  allowTakeawayOrdering: boolean;
+  reservationCancellationWindow: number;
+  reservationModificationLimit: number;
+  reservationTimeoutMinutes: number;
+  counts?: {
+    employees: number;
+    menus: number;
+  };
 
   constructor(
     id: string,
@@ -147,8 +162,23 @@ export class MyBusinessFullDetails {
     email: string | undefined,
     phone: string | undefined,
     logo: string | undefined,
+    allowReservations: boolean,
+    allowOrders: boolean,
+    requireReservationConfirmation: boolean,
+    requireOrderConfirmation: boolean,
+    allowOnlyNearbyOrders: boolean,
+    maxOrderDistanceMeters: number,
+    allowTableOrdering: boolean,
+    allowTakeawayOrdering: boolean,
+    reservationCancellationWindow: number,
+    reservationModificationLimit: number,
+    reservationTimeoutMinutes: number,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    counts?: {
+      employees: number;
+      menus: number;
+    }
   ) {
     this.id = id;
     this.name = name;
@@ -173,8 +203,20 @@ export class MyBusinessFullDetails {
     this.email = email;
     this.phone = phone;
     this.logo = logo;
+    this.allowReservations = allowReservations;
+    this.allowOrders = allowOrders;
+    this.requireReservationConfirmation = requireReservationConfirmation;
+    this.requireOrderConfirmation = requireOrderConfirmation;
+    this.allowOnlyNearbyOrders = allowOnlyNearbyOrders;
+    this.maxOrderDistanceMeters = maxOrderDistanceMeters;
+    this.allowTableOrdering = allowTableOrdering;
+    this.allowTakeawayOrdering = allowTakeawayOrdering;
+    this.reservationCancellationWindow = reservationCancellationWindow;
+    this.reservationModificationLimit = reservationModificationLimit;
+    this.reservationTimeoutMinutes = reservationTimeoutMinutes;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.counts = counts;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -204,8 +246,20 @@ export class MyBusinessFullDetails {
         data.email,
         data.phone,
         data.logo,
+        !!data.allowReservations,
+        !!data.allowOrders,
+        !!data.requireReservationConfirmation,
+        !!data.requireOrderConfirmation,
+        !!data.allowOnlyNearbyOrders,
+        data.maxOrderDistanceMeters !== undefined && data.maxOrderDistanceMeters !== null ? Number(data.maxOrderDistanceMeters) : 500,
+        data.allowTableOrdering !== undefined ? !!data.allowTableOrdering : true,
+        data.allowTakeawayOrdering !== undefined ? !!data.allowTakeawayOrdering : true,
+        data.reservationCancellationWindow !== undefined ? Number(data.reservationCancellationWindow) : 1,
+        data.reservationModificationLimit !== undefined ? Number(data.reservationModificationLimit) : 120,
+        data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15,
         new Date(data.createdAt),
-        new Date(data.updatedAt)
+        new Date(data.updatedAt),
+        data.counts
       );
     } catch {
       return null;
@@ -237,4 +291,15 @@ export type UpdateBusinessDetailsDto = {
   priceLevel?: number;
   status?: string;
   timezone?: string;
+  allowReservations?: boolean;
+  allowOrders?: boolean;
+  requireReservationConfirmation?: boolean;
+  requireOrderConfirmation?: boolean;
+  allowOnlyNearbyOrders?: boolean;
+  maxOrderDistanceMeters?: number;
+  allowTableOrdering?: boolean;
+  allowTakeawayOrdering?: boolean;
+  reservationCancellationWindow?: number;
+  reservationModificationLimit?: number;
+  reservationTimeoutMinutes?: number;
 };

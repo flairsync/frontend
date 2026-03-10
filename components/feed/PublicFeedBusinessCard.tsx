@@ -1,8 +1,10 @@
 import React, { memo } from "react"
 import { motion } from "framer-motion"
-import { Star, Clock, MapPin, ExternalLink } from "lucide-react"
+import { Star, Clock, MapPin, ExternalLink, Heart } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { BusinessCardDetails } from "@/models/BusinessCardDetails"
+import { useFavorites } from "@/features/favorites/useFavorites"
+import { cn } from "@/lib/utils"
 
 type Props = {
     businessDetails: BusinessCardDetails
@@ -31,6 +33,18 @@ const GetStars = memo(({ rating }: { rating: number }) => {
 GetStars.displayName = "GetStars"
 
 const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
+    const { addFavorite, removeFavorite } = useFavorites();
+
+    const toggleFavorite = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (businessDetails.isFavorite) {
+            await removeFavorite(businessDetails.link);
+        } else {
+            await addFavorite(businessDetails.link);
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -66,6 +80,27 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                         </Badge>
                     </div>
 
+                    {/* Favorite Button */}
+                    <div className="absolute top-4 right-4">
+                        <button
+                            onClick={toggleFavorite}
+                            className={cn(
+                                "flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300",
+                                businessDetails.isFavorite
+                                    ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
+                                    : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                            )}
+                        >
+                            <Heart
+                                size={18}
+                                className={cn(
+                                    "transition-transform duration-300",
+                                    businessDetails.isFavorite && "fill-current scale-110"
+                                )}
+                            />
+                        </button>
+                    </div>
+
                     {/* Quick Action Button */}
                     <div className="absolute bottom-4 right-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                         <div className="p-2.5 rounded-full bg-primary text-primary-foreground shadow-xl">
@@ -80,26 +115,28 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                         <h3 className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors line-clamp-1">
                             {businessDetails.name}
                         </h3>
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                            <MapPin size={12} />
-                            <span className="text-xs font-medium">Paris, France</span>
+                        <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap overflow-hidden">
+                            <MapPin size={12} className="shrink-0" />
+                            <span className="text-xs font-medium truncate">{businessDetails.address}</span>
                         </div>
                     </div>
 
                     <div className="flex items-center justify-between">
                         <GetStars rating={businessDetails.rating} />
                         <div className="flex items-center gap-1.5 text-muted-foreground">
-                            <Clock size={12} className="text-primary/60" />
-                            <span className="text-[10px] font-bold uppercase tracking-tight">Open Now</span>
+                            <Clock size={12} className={businessDetails.status === "open" ? "text-green-500/60" : "text-red-500/60"} />
+                            <span className="text-[10px] font-bold uppercase tracking-tight">
+                                {businessDetails.status === "open" ? "Open Now" : "Closed"}
+                            </span>
                         </div>
                     </div>
 
                     <div className="pt-2 mt-auto border-t border-border/30 flex items-center justify-between">
                         <p className="text-sm font-bold text-foreground/90">
-                            $30 <span className="text-muted-foreground/50 font-medium">and under</span>
+                            {"$".repeat(businessDetails.priceLevel)} <span className="text-muted-foreground/50 font-medium ml-1">Price Level</span>
                         </p>
                         <p className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
-                            1.6k+ reviews
+                            No reviews yet
                         </p>
                     </div>
                 </div>

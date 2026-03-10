@@ -58,6 +58,8 @@ export const useBusinessOps = () => {
 
       // status
       status: "auto",
+      // timezone
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
   }
 

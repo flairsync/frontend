@@ -3,7 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Search } from 'lucide-react'
 
-const PublicFeedSearchHero = () => {
+const PublicFeedSearchHero = ({
+    searchQuery,
+    setSearchQuery,
+    onSearch
+}: {
+    searchQuery: string;
+    setSearchQuery: (val: string) => void;
+    onSearch: () => void;
+}) => {
     const { t } = useTranslation()
 
     return (
@@ -48,11 +56,19 @@ const PublicFeedSearchHero = () => {
                                 <Search className="w-5 h-5 text-muted-foreground transition-colors group-focus-within:text-primary" />
                                 <input
                                     type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') onSearch();
+                                    }}
                                     className="w-full px-4 py-3 bg-transparent border-none focus:outline-none focus:ring-0 text-foreground placeholder:text-muted-foreground transition-all"
                                     placeholder={t("public_feed.searchHero.searchPlaceholder")}
                                 />
                             </div>
-                            <button className="hidden md:flex px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold transition-all hover:opacity-90 active:scale-95 shadow-lg shadow-primary/20">
+                            <button
+                                onClick={onSearch}
+                                className="hidden md:flex px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold transition-all hover:opacity-90 active:scale-95 shadow-lg shadow-primary/20"
+                            >
                                 {t("public_feed.searchHero.searchButton", "Search")}
                             </button>
                         </div>

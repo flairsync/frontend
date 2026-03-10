@@ -495,46 +495,72 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     </div>
 
                     {/* Allergies */}
-                    <div>
+                    <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium">{t('item_modal.allergies')}</label>
-                        <Combobox
-                            multiple
-                            autoHighlight
-                            items={allergies.map((a) => a.name)}
-                            value={selectedAllergies.map(
-                                (id) => allergies.find((a) => a.id === id)?.name || ''
-                            )}
-                            onValueChange={(values: string[]) => {
-                                const ids = values
-                                    .map((name) => allergies.find((a) => a.name === name)?.id)
-                                    .filter(Boolean) as string[];
-                                setSelectedAllergies(ids);
-                            }}
-                        >
-                            <ComboboxChips ref={anchor} className="w-full">
-                                <ComboboxValue>
-                                    {(values) => (
-                                        <>
-                                            {values.map((v: any) => (
-                                                <ComboboxChip key={v}>{v}</ComboboxChip>
-                                            ))}
-                                            <ComboboxChipsInput />
-                                        </>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className="w-full justify-between h-auto min-h-10 py-2 font-normal"
+                                >
+                                    {selectedAllergies.length > 0 ? (
+                                        <div className="flex flex-wrap gap-1">
+                                            {selectedAllergies.map((id) => {
+                                                const allergyName = allergies.find((a) => a.id === id)?.name;
+                                                return allergyName ? (
+                                                    <div
+                                                        key={id}
+                                                        className="bg-muted text-foreground flex items-center justify-center gap-1 rounded-sm px-2 py-0.5 text-xs font-medium border"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedAllergies(selectedAllergies.filter(aId => aId !== id));
+                                                        }}
+                                                    >
+                                                        {allergyName}
+                                                        <X size={12} className="ml-1 cursor-pointer hover:text-red-500 transition-colors" />
+                                                    </div>
+                                                ) : null;
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <span className="text-muted-foreground">{t('item_modal.allergies')}...</span>
                                     )}
-                                </ComboboxValue>
-                            </ComboboxChips>
-
-                            <ComboboxContent anchor={anchor}>
-                                <ComboboxEmpty>No allergies found.</ComboboxEmpty>
-                                <ComboboxList>
-                                    {(item) => (
-                                        <ComboboxItem key={item} value={item}>
-                                            {item}
-                                        </ComboboxItem>
-                                    )}
-                                </ComboboxList>
-                            </ComboboxContent>
-                        </Combobox>
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                                <Command>
+                                    <CommandInput placeholder="Search allergies..." />
+                                    <CommandEmpty>No allergies found.</CommandEmpty>
+                                    <CommandList className="max-h-60 overflow-y-auto">
+                                        <CommandGroup>
+                                            {allergies.map((allergy) => {
+                                                const isSelected = selectedAllergies.includes(allergy.id);
+                                                return (
+                                                    <CommandItem
+                                                        key={allergy.id}
+                                                        value={allergy.name}
+                                                        onSelect={() => {
+                                                            if (isSelected) {
+                                                                setSelectedAllergies(selectedAllergies.filter((id) => id !== allergy.id));
+                                                            } else {
+                                                                setSelectedAllergies([...selectedAllergies, allergy.id]);
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Check
+                                                            className={`mr-2 h-4 w-4 ${isSelected ? "opacity-100" : "opacity-0"}`}
+                                                        />
+                                                        {allergy.name}
+                                                    </CommandItem>
+                                                );
+                                            })}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                     </div>
 
                     {/* Images */}

@@ -1,43 +1,79 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal";
+import { FloorPlanLayout } from "@/features/floor-plan/components/types";
 
+// Adapt FloorPlan elements to the UI's Table type
 type Table = {
-    id: number;
-    number: number;
+    id: string;
+    number: string;
     seats: number;
     available: boolean;
 };
 
-const tablesData: Table[] = [
-    { id: 1, number: 1, seats: 2, available: true },
-    { id: 2, number: 2, seats: 4, available: true },
-    { id: 3, number: 3, seats: 4, available: false },
-    { id: 4, number: 4, seats: 2, available: true },
-    { id: 5, number: 5, seats: 6, available: true },
-    { id: 6, number: 6, seats: 2, available: false },
-    { id: 7, number: 7, seats: 4, available: true },
-    { id: 8, number: 8, seats: 8, available: true },
-];
+interface BusinessDetailsTableReservationProps {
+    tables?: FloorPlanLayout[];
+    businessId: string;
+}
 
-const BusinessDetailsTableReservation: React.FC = () => {
+const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationProps> = ({ tables = [], businessId }) => {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
+    const [selectedGuests, setSelectedGuests] = useState(1);
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
+
+    const extractedTables = useMemo(() => {
+        const allTables: Table[] = [];
+        // Safety check: Ensure tables is an array before iterating
+        if (Array.isArray(tables)) {
+            tables.forEach(layout => {
+                // Try discovery structure (tables array)
+                if (Array.isArray((layout as any).tables)) {
+                    (layout as any).tables.forEach((t: any) => {
+                        allTables.push({
+                            id: t.id,
+                            number: t.name || t.number?.toString() || 'T',
+                            seats: t.capacity || 2,
+                            available: t.status === 'available' || true
+                        });
+                    });
+                }
+                // Try owner structure (elements array)
+                else {
+                    layout.elements?.forEach(el => {
+                        if (el.type === 'table') {
+                            allTables.push({
+                                id: el.id,
+                                number: el.label || el.tableId || 'T',
+                                seats: el.props?.seats || 2,
+                                available: true
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        return allTables;
+    }, [tables]);
 
     const canShowTables = selectedDate && selectedTime;
 
     return (
-        <section className="space-y-12">
+        <section className="space-y-12" id="reservation-section">
             <BusinessDetailsReserveTableModal
                 onClose={() => setSelectedTable(null)}
-                onSubmit={() => setSelectedTable(null)}
                 isOpen={selectedTable != null}
+                businessId={businessId}
+                date={selectedDate}
+                time={selectedTime}
+                guests={selectedGuests}
+                tableId={selectedTable?.id || ""}
+                tableName={selectedTable?.number || ""}
             />
 
             <div className="space-y-2 text-center max-w-2xl mx-auto">
@@ -81,12 +117,14 @@ const BusinessDetailsTableReservation: React.FC = () => {
                     <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Guests</Label>
                     <div className="relative group">
                         <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
-                        <select className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none">
-                            <option>1 Guest</option>
-                            <option>2 Guests</option>
-                            <option>4 Guests</option>
-                            <option>6 Guests</option>
-                            <option>8+ Guests</option>
+                        <select
+                            className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none bg-no-repeat"
+                            value={selectedGuests}
+                            onChange={(e) => setSelectedGuests(parseInt(e.target.value))}
+                        >
+                            {[1, 2, 3, 4, 5, 6, 8, 10].map(n => (
+                                <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+                            ))}
                         </select>
                     </div>
                 </div>
@@ -95,7 +133,21 @@ const BusinessDetailsTableReservation: React.FC = () => {
             {/* Tables Grid */}
             <div className="min-h-[300px] flex items-center justify-center">
                 <AnimatePresence mode="wait">
-                    {canShowTables ? (
+                    {!canShowTables ? (
+                        <motion.div
+                            key="placeholder"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center space-y-4"
+                        >
+                            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
+                                <CalendarIcon size={32} />
+                            </div>
+                            <p className="text-muted-foreground font-medium italic">
+                                Please select a date and time to view available tables.
+                            </p>
+                        </motion.div>
+                    ) : extractedTables.length > 0 ? (
                         <motion.div
                             key="grid"
                             initial={{ opacity: 0, scale: 0.98 }}
@@ -103,15 +155,15 @@ const BusinessDetailsTableReservation: React.FC = () => {
                             exit={{ opacity: 0, scale: 0.98 }}
                             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full"
                         >
-                            {tablesData.map((table) => (
+                            {extractedTables.map((table) => (
                                 <motion.button
                                     key={table.id}
                                     whileHover={table.available ? { y: -4, scale: 1.02 } : {}}
                                     whileTap={table.available ? { scale: 0.98 } : {}}
                                     disabled={!table.available}
                                     className={`relative p-6 rounded-[2rem] border transition-all flex flex-col items-center gap-4 ${table.available
-                                            ? "bg-card border-border/50 hover:border-primary hover:shadow-2xl hover:shadow-primary/10 cursor-pointer"
-                                            : "bg-muted/30 border-transparent opacity-60 cursor-not-allowed"
+                                        ? "bg-card border-border/50 hover:border-primary hover:shadow-2xl hover:shadow-primary/10 cursor-pointer"
+                                        : "bg-muted/30 border-transparent opacity-60 cursor-not-allowed"
                                         }`}
                                     onClick={() => setSelectedTable(table)}
                                 >
@@ -135,16 +187,16 @@ const BusinessDetailsTableReservation: React.FC = () => {
                         </motion.div>
                     ) : (
                         <motion.div
-                            key="placeholder"
+                            key="empty"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="text-center space-y-4"
                         >
                             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
-                                <CalendarIcon size={32} />
+                                <XCircle size={32} />
                             </div>
                             <p className="text-muted-foreground font-medium italic">
-                                Please select a date and time to view available tables.
+                                No tables configured for this business yet.
                             </p>
                         </motion.div>
                     )}

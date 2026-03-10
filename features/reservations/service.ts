@@ -16,6 +16,8 @@ export interface CreateReservationDto {
     tableId?: string; // Optional at creation
     userId?: string; // Optional, links reservation to a known user profile
     order?: CreateOrderDto; // Optional pre-order
+    reservationSource?: string;
+    durationMinutes?: number;
 }
 
 export interface FetchReservationsDto {
@@ -34,7 +36,7 @@ export interface UpdateReservationDto {
     guestCount?: number;
     notes?: string;
     tableId?: string;
-    status?: "pending" | "confirmed" | "rejected" | "cancelled" | "completed";
+    status?: "PENDING" | "CONFIRMED" | "SEATED" | "COMPLETED" | "CANCELLED" | "NO_SHOW" | "EXPIRED" | "WAITLIST";
 }
 
 // API Calls
@@ -52,6 +54,14 @@ export const fetchReservationDetailsApiCall = (businessId: string, reservationId
 
 export const updateReservationApiCall = (businessId: string, reservationId: string, data: UpdateReservationDto) => {
     return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}`, data);
+};
+
+export const cancelReservationForStaffApiCall = (businessId: string, reservationId: string, cancelReason?: string) => {
+    return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}/cancel`, { cancelReason });
+};
+
+export const markReservationNoShowApiCall = (businessId: string, reservationId: string) => {
+    return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}/no-show`);
 };
 
 export const findAvailabilityApiCall = (businessId: string, date: string, guestCount: number) => {

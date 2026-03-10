@@ -164,20 +164,38 @@ const ManagePage: React.FC = () => {
                                         transition={{ duration: 0.2 }}
                                     >
                                         <Card
-                                            className="cursor-pointer hover:shadow-md transition-all border-zinc-100/80 bg-white group"
+                                            className="cursor-pointer hover:shadow-md transition-all border-zinc-100/80 bg-white group flex flex-col"
                                             onClick={() => (window.location.href = `/manage/${biz.id}/owner/dashboard`)}
                                         >
-                                            <CardContent className="flex items-center justify-between p-6">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                                                        <Building2 className="h-6 w-6" />
+                                            <CardContent className="p-6">
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                                            <Building2 className="h-6 w-6" />
+                                                        </div>
+                                                        <div>
+                                                            <span className="font-bold text-lg block text-zinc-900">{biz.name}</span>
+                                                            <span className="text-xs text-zinc-500 font-medium">Owner Dashboard</span>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <span className="font-bold text-lg block text-zinc-900">{biz.name}</span>
-                                                        <span className="text-xs text-zinc-500 font-medium">Owner Dashboard</span>
-                                                    </div>
+                                                    <ChevronRight className="h-5 w-5 text-zinc-300 group-hover:text-indigo-600 transition-colors" />
                                                 </div>
-                                                <ChevronRight className="h-5 w-5 text-zinc-300 group-hover:text-indigo-600 transition-colors" />
+
+                                                {/* PER-BUSINESS USAGE */}
+                                                {biz.counts && usage && (
+                                                    <div className="pt-4 mt-2 border-t border-zinc-100/80 grid grid-cols-2 gap-4">
+                                                        <UsageItem
+                                                            label="Employees"
+                                                            current={biz.counts.employees}
+                                                            allowed={usage.allowed.employees}
+                                                        />
+                                                        <UsageItem
+                                                            label="Menus"
+                                                            current={biz.counts.menus}
+                                                            allowed={usage.allowed.menus}
+                                                        />
+                                                    </div>
+                                                )}
                                             </CardContent>
                                         </Card>
                                     </motion.div>

@@ -16,6 +16,10 @@ export class MyBusiness {
   createdAt: Date;
   updatedAt: Date;
   logo: string;
+  counts?: {
+    employees: number;
+    menus: number;
+  };
 
   constructor(
     id: string,
@@ -26,7 +30,11 @@ export class MyBusiness {
     tags: BusinessTag[],
     createdAt: Date,
     updatedAt: Date,
-    logo: string
+    logo: string,
+    counts?: {
+      employees: number;
+      menus: number;
+    }
   ) {
     this.id = id;
     this.name = name;
@@ -37,6 +45,7 @@ export class MyBusiness {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.logo = logo;
+    this.counts = counts;
   }
 
   static parseApiResponse(data: any): MyBusiness | null {
@@ -52,7 +61,8 @@ export class MyBusiness {
         BusinessTag.parseApiArrayResponse(data.tags || []),
         new Date(data.createdAt),
         new Date(data.updatedAt),
-        data.logo
+        data.logo,
+        data.counts
       );
     } catch (error) {
       return null;

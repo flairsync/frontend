@@ -11,3 +11,7 @@ export const getCountriesListApiCall = () => {
 export const getPermissionsListApiCall = () => {
   return flairapi.get(permissionsUrl);
 };
+
+export const fetchAllergiesApiCall = () => {
+  return flairapi.get(`${import.meta.env.BASE_URL}/allergy`);
+};

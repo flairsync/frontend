@@ -1,29 +1,44 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import React from "react"
+import { useDiscoveryProfile } from "@/features/discovery/useDiscovery"
+import { differenceInDays } from "date-fns"
+import { Loader2 } from "lucide-react"
+import { formatInTimezone } from "@/lib/dateUtils"
 
 interface ProfileReservationCardProps {
     id: string | number
+    businessId: string
     restaurantName: string
     href: string
     datetime: string | Date
-    onCancel?: (id: string | number) => void
+    status: string
+    onCancel?: (businessId: string, id: string | number) => void
+    isCanceling?: boolean
 }
 
 const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
     id,
+    businessId,
     restaurantName,
     href,
     datetime,
+    status,
     onCancel,
+    isCanceling
 }) => {
-    const formattedDate = new Date(datetime).toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-    })
+    const { data: businessProfile } = useDiscoveryProfile(businessId);
+
+    const formattedDate = formatInTimezone(
+        datetime,
+        "MMM D, YYYY hh:mm A",
+        businessProfile?.timezone
+    );
+
+    const cancellationWindowDays = businessProfile?.reservationCancellationWindow ?? 1;
+    const daysUntilReservation = differenceInDays(new Date(datetime), new Date());
+    const canCancel = daysUntilReservation >= cancellationWindowDays;
+    const isCancellableStatus = status === "PENDING" || status === "CONFIRMED" || status === "WAITLIST";
 
     return (
         <Card
@@ -35,18 +50,25 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
       "
         >
             <a href={href} className="flex flex-col flex-1">
-                <h3 className="font-medium group-hover:text-primary transition-colors">
-                    {restaurantName}
-                </h3>
+                <div className="flex items-center gap-2">
+                    <h3 className="font-medium group-hover:text-primary transition-colors">
+                        {restaurantName}
+                    </h3>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground font-semibold">
+                        {status}
+                    </span>
+                </div>
                 <p className="text-sm text-muted-foreground">{formattedDate}</p>
             </a>
 
-            {onCancel && (
+            {onCancel && canCancel && isCancellableStatus && (
                 <Button
                     size="sm"
                     variant="destructive"
-                    onClick={() => onCancel(id)}
+                    onClick={() => onCancel(businessId, id as string)}
+                    disabled={isCanceling}
                 >
+                    {isCanceling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Cancel
                 </Button>
             )}

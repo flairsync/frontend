@@ -60,7 +60,7 @@ export class BusinessMenuItem {
       return new BusinessMenuItem(
         data.id,
         data.name,
-        data.price,
+        data.price ? Number(data.price) : 0,
         data.order,
         data.description,
         allergies,
@@ -80,6 +80,7 @@ export class BusinessMenuItem {
   }
 
   static parseApiArrayResponse(data: any[]): BusinessMenuItem[] {
+    if (!Array.isArray(data)) return [];
     const arr: BusinessMenuItem[] = [];
     data.forEach((val) => {
       const employee = this.parseApiResponse(val);

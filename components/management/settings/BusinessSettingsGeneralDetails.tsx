@@ -11,6 +11,13 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { useTranslation } from "react-i18next"
 import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
@@ -22,6 +29,7 @@ type BusinessGeneralInfo = {
     description?: string,
     email?: string,
     phone?: string,
+    timezone?: string,
 }
 
 type Props = {
@@ -35,6 +43,9 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [description, setDescription] = useState(props.businessDetails?.description)
     const [contactEmail, setContactEmail] = useState(props.businessDetails?.email)
     const [phone, setPhone] = useState(props.businessDetails?.phone);
+    const [timezone, setTimezone] = useState(props.businessDetails?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+    const timezones = Intl.supportedValuesOf('timeZone');
 
     const onSaveDetails = () => {
         if (props.onSaveDetails) {
@@ -42,7 +53,8 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 description: description,
                 email: contactEmail,
                 name: businessName,
-                phone: phone
+                phone: phone,
+                timezone: timezone
             })
         }
     }
@@ -83,6 +95,27 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
+
+                <div className="space-y-1.5 flex flex-col">
+                    <Label className="text-sm font-medium">Business Timezone</Label>
+                    <Select
+                        disabled={props.disabled}
+                        value={timezone}
+                        onValueChange={setTimezone}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a timezone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {timezones.map(tz => (
+                                <SelectItem key={tz} value={tz}>
+                                    {tz}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
                 <Button
                     disabled={props.disabled}
                     onClick={onSaveDetails}>Save</Button>

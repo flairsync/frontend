@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
 import {
     Accordion,
     AccordionContent,
@@ -33,12 +34,7 @@ const BusinessSettingsPage = () => {
         updateMyBusinessDetails,
         updateMyBusinessOpenHours,
         updatingMyBusinessOpenHours
-
     } = useMyBusiness(routeParams.id);
-
-    // Reservations
-    const [reservationsEnabled, setReservationsEnabled] = useState(true)
-    const [maxReservations, setMaxReservations] = useState(10)
 
     // Staff Management
     const [staffAlerts, setStaffAlerts] = useState(true)
@@ -54,7 +50,6 @@ const BusinessSettingsPage = () => {
     const [paymentMethods, setPaymentMethods] = useState("Cash, Card, Online Payment")
     const [receiptTemplate, setReceiptTemplate] = useState("")
 
-    const saveReservations = () => alert("Reservations settings saved")
     const saveStaffManagement = () => alert("Staff management saved")
     const saveAutomation = () => alert("Automation settings saved")
     const savePayments = () => alert("Payments settings saved")
@@ -80,26 +75,162 @@ const BusinessSettingsPage = () => {
             />
 
 
-            {/* Reservations */}
+            {/* Reservations & Orders */}
             <AccordionItem value="reservations" className="border rounded-lg px-3">
                 <AccordionTrigger>Reservations & Orders</AccordionTrigger>
-                <AccordionContent className="space-y-4 py-2">
-                    <div className="flex items-center justify-between">
-                        <Label>Enable Table Reservations</Label>
-                        <Switch
-                            checked={reservationsEnabled}
-                            onCheckedChange={setReservationsEnabled}
-                        />
+                <AccordionContent className="space-y-6 py-4">
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                                <Label>Enable Table Reservations</Label>
+                                <p className="text-xs text-muted-foreground">Allow guests to book tables online</p>
+                            </div>
+                            <Switch
+                                checked={myBusinessFullDetails?.allowReservations}
+                                onCheckedChange={(val) => updateMyBusinessDetails({ allowReservations: val })}
+                                disabled={updatingMyBusiness}
+                            />
+                        </div>
+
+                        {myBusinessFullDetails?.allowReservations && (
+                            <>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Require Reservation Confirmation</Label>
+                                        <p className="text-xs text-muted-foreground">Reservations must be approved by staff</p>
+                                    </div>
+                                    <Switch
+                                        checked={myBusinessFullDetails?.requireReservationConfirmation}
+                                        onCheckedChange={(val) => updateMyBusinessDetails({ requireReservationConfirmation: val })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Cancellation Window (Days)</Label>
+                                        <p className="text-xs text-muted-foreground">Number of days before reservation allowed to cancel</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.reservationCancellationWindow}
+                                        onBlur={(e) => updateMyBusinessDetails({ reservationCancellationWindow: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Modification Limit (Minutes)</Label>
+                                        <p className="text-xs text-muted-foreground">Minimum minutes before reservation can be modified</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.reservationModificationLimit}
+                                        onBlur={(e) => updateMyBusinessDetails({ reservationModificationLimit: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Pending Timeout (Minutes)</Label>
+                                        <p className="text-xs text-muted-foreground">Minutes before an unconfirmed request expires</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.reservationTimeoutMinutes}
+                                        onBlur={(e) => updateMyBusinessDetails({ reservationTimeoutMinutes: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
-                    {reservationsEnabled && (
-                        <Input
-                            type="number"
-                            placeholder="Max Reservations per Slot"
-                            value={maxReservations}
-                            onChange={(e) => setMaxReservations(Number(e.target.value))}
-                        />
-                    )}
-                    <Button onClick={saveReservations}>Save</Button>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                                <Label>Enable Online Ordering</Label>
+                                <p className="text-xs text-muted-foreground">Allow guests to place orders online</p>
+                            </div>
+                            <Switch
+                                checked={myBusinessFullDetails?.allowOrders}
+                                onCheckedChange={(val) => updateMyBusinessDetails({ allowOrders: val })}
+                                disabled={updatingMyBusiness}
+                            />
+                        </div>
+
+                        {myBusinessFullDetails?.allowOrders && (
+                            <div className="space-y-4 pl-6 border-l-2 border-muted">
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label>Require Order Confirmation</Label>
+                                        <p className="text-xs text-muted-foreground">Orders must be approved by staff</p>
+                                    </div>
+                                    <Switch
+                                        checked={myBusinessFullDetails?.requireOrderConfirmation}
+                                        onCheckedChange={(val) => updateMyBusinessDetails({ requireOrderConfirmation: val })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label>Allow Only Nearby Orders</Label>
+                                        <p className="text-xs text-muted-foreground">Guests must be within an allowed radius of your location</p>
+                                    </div>
+                                    <Switch
+                                        checked={myBusinessFullDetails?.allowOnlyNearbyOrders}
+                                        onCheckedChange={(val) => updateMyBusinessDetails({ allowOnlyNearbyOrders: val })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+
+                                {myBusinessFullDetails?.allowOnlyNearbyOrders && (
+                                    <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                        <div className="space-y-0.5">
+                                            <Label>Maximum Distance (Meters)</Label>
+                                            <p className="text-xs text-muted-foreground">Maximum allowed distance for nearby orders</p>
+                                        </div>
+                                        <Input
+                                            type="number"
+                                            className="w-24"
+                                            defaultValue={myBusinessFullDetails?.maxOrderDistanceMeters}
+                                            onBlur={(e) => updateMyBusinessDetails({ maxOrderDistanceMeters: parseInt(e.target.value) })}
+                                            disabled={updatingMyBusiness}
+                                        />
+                                    </div>
+                                )}
+
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label>Allow Table Ordering</Label>
+                                        <p className="text-xs text-muted-foreground">Enable "Dine-in" option for guests</p>
+                                    </div>
+                                    <Switch
+                                        checked={myBusinessFullDetails?.allowTableOrdering}
+                                        onCheckedChange={(val) => updateMyBusinessDetails({ allowTableOrdering: val })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-0.5">
+                                        <Label>Allow Takeaway Ordering</Label>
+                                        <p className="text-xs text-muted-foreground">Enable "Takeaway" option for guests</p>
+                                    </div>
+                                    <Switch
+                                        checked={myBusinessFullDetails?.allowTakeawayOrdering}
+                                        onCheckedChange={(val) => updateMyBusinessDetails({ allowTakeawayOrdering: val })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </AccordionContent>
             </AccordionItem>
 
