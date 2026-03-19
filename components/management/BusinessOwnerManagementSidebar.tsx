@@ -132,7 +132,7 @@ export function isActiveLink(key: string): boolean {
 }
 
 
-export function BusinessOwnerManagementSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & {
+export function BusinessOwnerManagementSidebar({ businessId, ...props }: React.ComponentProps<typeof Sidebar> & {
     businessId: string
 }) {
 
@@ -162,7 +162,7 @@ export function BusinessOwnerManagementSidebar({ ...props }: React.ComponentProp
                 <BusinessSwitcher
 
                     businesses={getListOfBusinesses()}
-                    selectedBusiness={props.businessId}
+                    selectedBusiness={businessId}
 
                 />
 
@@ -177,7 +177,7 @@ export function BusinessOwnerManagementSidebar({ ...props }: React.ComponentProp
                                 {item.items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild isActive={isActiveLink(item.key)}>
-                                            <a href={item.url.replace(":id", props.businessId)}>
+                                            <a href={item.url.replace(":id", businessId)}>
                                                 <item.icon />
                                                 {item.title}</a>
                                         </SidebarMenuButton>

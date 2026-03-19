@@ -9,7 +9,9 @@ import {
     fetchMyReservationsApiCall,
     fetchMyOrdersApiCall,
     cancelReservationApiCall,
+    checkDiscoveryTableAvailabilityApiCall,
     FetchDiscoveryBusinessesParams,
+    FetchMyReservationsParams,
 } from "./discovery.api";
 import { DiscoveryBusiness } from "@/models/discovery/DiscoveryBusiness";
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
@@ -113,6 +115,19 @@ export const useDiscoveryTables = (businessId: string | undefined) => {
     });
 };
 
+export const useDiscoveryTableAvailability = (businessId: string | undefined, params: { date: string, guestCount: number }, enabled: boolean) => {
+    return useQuery({
+        queryKey: ["discovery_table_availability", businessId, params],
+        queryFn: async () => {
+            if (!businessId) return [];
+            const res = await checkDiscoveryTableAvailabilityApiCall(businessId, params);
+            const data = res.data.data || res.data;
+            return Array.isArray(data) ? data : [];
+        },
+        enabled: enabled && !!businessId,
+    });
+};
+
 export const useSubmitReservation = (businessId: string) => {
     return useMutation({
         mutationFn: async (payload: Record<string, any>) => {
@@ -131,11 +146,13 @@ export const useSubmitOrder = (businessId: string) => {
     });
 };
 
-export const useMyReservations = (businessId?: string) => {
+export const useMyReservations = (params?: FetchMyReservationsParams | string) => {
+    const fetchParams = typeof params === 'string' ? { businessId: params } : (params || {});
+
     return useQuery({
-        queryKey: ["my_reservations", businessId],
+        queryKey: ["my_reservations", fetchParams],
         queryFn: async () => {
-            const res = await fetchMyReservationsApiCall(businessId);
+            const res = await fetchMyReservationsApiCall(fetchParams);
             // Handle both { data: { data: [] } } and { data: [] }
             const data = res.data.data?.data || res.data.data || res.data;
             return Array.isArray(data) ? data : [];

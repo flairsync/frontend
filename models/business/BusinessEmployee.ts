@@ -16,6 +16,8 @@ export class BusinessEmployee {
   roles: BusinessEmployeeRole[] = [];
   createdAt: string;
   updatedAt: string;
+  hourlyRate: number;
+  currency: string;
 
   constructor(
     id: string,
@@ -25,6 +27,8 @@ export class BusinessEmployee {
     roles: BusinessEmployeeRole[],
     createdAt: string,
     updatedAt: string,
+    hourlyRate: number,
+    currency: string,
   ) {
     this.id = id;
     this.professionalProfile = professionalProfile;
@@ -33,6 +37,8 @@ export class BusinessEmployee {
     this.roles = roles;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.hourlyRate = hourlyRate;
+    this.currency = currency;
   }
 
   static parseApiResponse(data: any): BusinessEmployee | null {
@@ -46,6 +52,8 @@ export class BusinessEmployee {
         data.roles,
         data.createdAt,
         data.updatedAt,
+        data.hourlyRate || 0,
+        data.currency || 'EUR',
       );
     } catch (error) {
       return null;

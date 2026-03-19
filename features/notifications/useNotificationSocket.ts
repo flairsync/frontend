@@ -12,23 +12,17 @@ export const useNotificationSocket = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        const token = getJwtToken();
-
-        if (!token) {
-            return;
-        }
+        // We'll connect if we have a socket isn't already created.
+        // The instructions suggest using HTTP-only cookies, so manual token passing is not required.
 
         // Connect to the specific namespace and authenticate
         if (!socket) {
-            // API_URL might be defined in import.meta.env, let's derive it from the frontend URL or VITE_API_URL
-            // Since flairapi uses BASE_URL for api, we'll try to extract the origin.
-            // Often, VITE_API_URL or similar is used:
-            const apiUrl = import.meta.env.VITE_API_URL || window.location.origin;
+            // Deriving apiUrl from BASE_URL if available
+            const baseUrl = import.meta.env.BASE_URL;
+            const apiUrl = baseUrl ? new URL(baseUrl).origin : window.location.origin;
 
             socket = io(`${apiUrl}/notifications`, {
-                auth: {
-                    token
-                },
+                withCredentials: true,
                 transports: ['websocket', 'polling'] // Try WebSocket first
             });
 

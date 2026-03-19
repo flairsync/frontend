@@ -12,6 +12,10 @@ export type UpdateUserProfileDTO = {
   lastName?: string;
   language?: string;
   marketingEmail?: boolean;
+  phoneNumber?: string | null;
+  dateOfBirth?: string | null;
+  gender?: string | null;
+  countryId?: number | null;
 };
 
 export const updateUserProfileApiCall = (data: UpdateUserProfileDTO) => {

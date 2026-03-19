@@ -3,10 +3,12 @@ import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal";
 import { FloorPlanLayout } from "@/features/floor-plan/components/types";
+import { useDiscoveryTableAvailability, useDiscoveryProfile } from "@/features/discovery/useDiscovery";
+import { parseInTimezone } from "@/lib/dateUtils";
 
 // Adapt FloorPlan elements to the UI's Table type
 type Table = {
@@ -27,8 +29,25 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
     const [selectedGuests, setSelectedGuests] = useState(1);
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
+    const canShowTables = Boolean(selectedDate && selectedTime);
+
+    const { data: profile } = useDiscoveryProfile(businessId);
+
+    const reservationTime = useMemo(() => {
+        if (!canShowTables) return null;
+        return parseInTimezone(`${selectedDate}T${selectedTime}:00`, profile?.timezone);
+    }, [selectedDate, selectedTime, canShowTables, profile?.timezone]);
+
+    const { data: availableTablesResponse, isLoading: isAvailabilityLoading } = useDiscoveryTableAvailability(
+        businessId,
+        { date: reservationTime || "", guestCount: selectedGuests },
+        canShowTables && !!reservationTime
+    );
+
     const extractedTables = useMemo(() => {
         const allTables: Table[] = [];
+        const availableTableIds = new Set(availableTablesResponse?.map((t: any) => t.id) || []);
+
         // Safety check: Ensure tables is an array before iterating
         if (Array.isArray(tables)) {
             tables.forEach(layout => {
@@ -39,7 +58,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             id: t.id,
                             number: t.name || t.number?.toString() || 'T',
                             seats: t.capacity || 2,
-                            available: t.status === 'available' || true
+                            available: canShowTables ? availableTableIds.has(t.id) : true
                         });
                     });
                 }
@@ -51,7 +70,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                 id: el.id,
                                 number: el.label || el.tableId || 'T',
                                 seats: el.props?.seats || 2,
-                                available: true
+                                available: canShowTables ? availableTableIds.has(el.id) : true
                             });
                         }
                     });
@@ -59,9 +78,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
             });
         }
         return allTables;
-    }, [tables]);
-
-    const canShowTables = selectedDate && selectedTime;
+    }, [tables, availableTablesResponse, canShowTables]);
 
     return (
         <section className="space-y-12" id="reservation-section">
@@ -145,6 +162,34 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             </div>
                             <p className="text-muted-foreground font-medium italic">
                                 Please select a date and time to view available tables.
+                            </p>
+                        </motion.div>
+                    ) : isAvailabilityLoading ? (
+                        <motion.div
+                            key="loading"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="flex flex-col items-center justify-center space-y-4 py-8"
+                        >
+                            <Loader2 className="w-12 h-12 text-primary animate-spin" />
+                            <p className="text-muted-foreground font-medium italic">Checking availability...</p>
+                        </motion.div>
+                    ) : availableTablesResponse?.length === 0 ? (
+                        <motion.div
+                            key="no-availability"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center space-y-4"
+                        >
+                            <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto text-rose-500">
+                                <XCircle size={32} />
+                            </div>
+                            <p className="text-rose-600 font-medium">
+                                No tables are available for {selectedGuests} {selectedGuests === 1 ? 'guest' : 'guests'} at {selectedTime}.
+                            </p>
+                            <p className="text-muted-foreground text-sm">
+                                Please try selecting a different time or adjusting your party size.
                             </p>
                         </motion.div>
                     ) : extractedTables.length > 0 ? (

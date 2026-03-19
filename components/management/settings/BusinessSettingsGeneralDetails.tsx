@@ -29,7 +29,7 @@ type BusinessGeneralInfo = {
     description?: string,
     email?: string,
     phone?: string,
-    timezone?: string,
+    currency?: string,
 }
 
 type Props = {
@@ -43,9 +43,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [description, setDescription] = useState(props.businessDetails?.description)
     const [contactEmail, setContactEmail] = useState(props.businessDetails?.email)
     const [phone, setPhone] = useState(props.businessDetails?.phone);
-    const [timezone, setTimezone] = useState(props.businessDetails?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-    const timezones = Intl.supportedValuesOf('timeZone');
+    const [currency, setCurrency] = useState(props.businessDetails?.currency || "$");
 
     const onSaveDetails = () => {
         if (props.onSaveDetails) {
@@ -54,7 +52,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 email: contactEmail,
                 name: businessName,
                 phone: phone,
-                timezone: timezone
+                currency: currency
             })
         }
     }
@@ -96,24 +94,28 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     onChange={(e) => setPhone(e.target.value)}
                 />
 
-                <div className="space-y-1.5 flex flex-col">
-                    <Label className="text-sm font-medium">Business Timezone</Label>
-                    <Select
-                        disabled={props.disabled}
-                        value={timezone}
-                        onValueChange={setTimezone}
-                    >
+                <div className="space-y-1.5 pt-2 border-t mt-4">
+                    <Label>Currency</Label>
+                    <Select disabled={props.disabled} value={currency} onValueChange={setCurrency}>
                         <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a timezone" />
+                            <SelectValue placeholder="Select a currency" />
                         </SelectTrigger>
-                        <SelectContent>
-                            {timezones.map(tz => (
-                                <SelectItem key={tz} value={tz}>
-                                    {tz}
-                                </SelectItem>
-                            ))}
+                        <SelectContent className="max-h-[300px]">
+                            <SelectItem value="$">US Dollar (USD $)</SelectItem>
+                            <SelectItem value="€">Euro (EUR €)</SelectItem>
+                            <SelectItem value="£">British Pound (GBP £)</SelectItem>
+                            <SelectItem value="TND">Tunisian Dinar (TND)</SelectItem>
+                            <SelectItem value="AED">Emirati Dirham (AED)</SelectItem>
+                            <SelectItem value="R$">Brazilian Real (BRL R$)</SelectItem>
+                            <SelectItem value="CA$">Canadian Dollar (CAD CA$)</SelectItem>
+                            <SelectItem value="AU$">Australian Dollar (AUD AU$)</SelectItem>
+                            <SelectItem value="¥">Japanese Yen (JPY ¥)</SelectItem>
+                            <SelectItem value="₹">Indian Rupee (INR ₹)</SelectItem>
+                            <SelectItem value="CHF">Swiss Franc (CHF)</SelectItem>
+                            <SelectItem value="SG$">Singapore Dollar (SGD SG$)</SelectItem>
                         </SelectContent>
                     </Select>
+                    <p className="text-xs text-muted-foreground">This symbol will be shown next to prices on your public page.</p>
                 </div>
 
                 <Button

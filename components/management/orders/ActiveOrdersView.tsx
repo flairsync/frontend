@@ -64,7 +64,7 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                     <p className="text-[10px] text-muted-foreground uppercase">{table.floorName}</p>
                                 </div>
                                 <Badge variant={order ? "default" : "outline"} className="text-[10px]">
-                                    {order ? order.status.toUpperCase() : "VACANT"}
+                                    {order ? order.status?.toUpperCase() || "UNKNOWN" : "VACANT"}
                                 </Badge>
                             </CardHeader>
                             <CardContent>

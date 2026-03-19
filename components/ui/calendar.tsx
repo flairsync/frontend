@@ -2,10 +2,11 @@
 
 import * as React from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import { DayPicker, DropdownProps } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 function Calendar({
   className,
@@ -20,6 +21,12 @@ function Calendar({
     month_caption:
       "relative mx-10 mb-1 flex h-9 items-center justify-center z-20",
     caption_label: "text-sm font-medium",
+    caption_dropdowns: "flex justify-center gap-1",
+    dropdowns: "flex justify-center gap-1",
+    dropdown: "rdp-dropdown bg-transparent",
+    dropdown_month: "rdp-dropdown_month",
+    dropdown_year: "rdp-dropdown_year",
+    dropdown_icon: "hidden",
     nav: "absolute top-0 flex w-full justify-between z-10",
     button_previous: cn(
       buttonVariants({ variant: "ghost" }),
@@ -41,6 +48,7 @@ function Calendar({
     outside:
       "text-muted-foreground data-selected:bg-accent/50 data-selected:text-muted-foreground",
     hidden: "invisible",
+    vhidden: "hidden",
     week_number: "size-9 p-0 text-xs font-medium text-muted-foreground/80",
   }
 
@@ -70,6 +78,38 @@ function Calendar({
         return <ChevronLeftIcon size={16} {...props} aria-hidden="true" />
       }
       return <ChevronRightIcon size={16} {...props} aria-hidden="true" />
+    },
+    Dropdown: ({ value, onChange, options, ...props }: DropdownProps) => {
+      const selected = options?.find((child) => child.value === value)
+      const handleChange = (value: string) => {
+        const changeEvent = {
+          target: { value },
+        } as React.ChangeEvent<HTMLSelectElement>
+        onChange?.(changeEvent)
+      }
+      return (
+        <Select
+          value={value?.toString()}
+          onValueChange={(value) => {
+            handleChange(value)
+          }}
+        >
+          <SelectTrigger className="h-8 w-fit min-w-[75px] border-none shadow-none text-sm font-medium focus:ring-0">
+            <SelectValue>{selected?.label}</SelectValue>
+          </SelectTrigger>
+          <SelectContent position="popper" className="max-h-80 overflow-y-auto">
+            {options?.map((option, id: number) => (
+              <SelectItem
+                key={`${option.value}-${id}`}
+                value={option.value?.toString() ?? ""}
+                disabled={option.disabled}
+              >
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )
     },
   }
 

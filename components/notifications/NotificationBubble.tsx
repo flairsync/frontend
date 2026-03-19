@@ -14,6 +14,10 @@ import {
 
 const getIconForType = (type: NotificationPayload['type']) => {
     switch (type) {
+        case 'SHIFT_PUBLISHED':
+        case 'SHIFT_CREATED':
+        case 'SHIFT_UPDATED':
+            return <Calendar className="w-5 h-5 text-indigo-500" />;
         case 'SECURITY': return <ShieldAlert className="w-5 h-5 text-red-500" />;
         case 'RESERVATION': return <Calendar className="w-5 h-5 text-blue-500" />;
         case 'PROMO': return <Tag className="w-5 h-5 text-green-500" />;
@@ -31,6 +35,41 @@ export const NotificationBubble = () => {
 
     const handleNavigateToHub = () => {
         navigate('/notifications');
+    };
+
+    const handleNotificationClick = (record: any) => {
+        const { notification, id, isRead } = record;
+        
+        // Mark as read if not already
+        if (!isRead) {
+            markAsRead(id);
+        }
+
+        // Handle Redirection based on type and payload
+        switch (notification.type) {
+            case 'SHIFT_PUBLISHED':
+            case 'SHIFT_CREATED':
+            case 'SHIFT_UPDATED':
+                const bizId = notification.payload?.businessId;
+                if (bizId) {
+                    navigate(`/manage/${bizId}/staff/shifts?tab=schedule`);
+                } else {
+                    navigate('/shifts');
+                }
+                break;
+            case 'SHIFT_SWAP_REQUEST':
+            case 'TIME_OFF_APPROVED':
+                const bizIdReq = notification.payload?.businessId;
+                if (bizIdReq) {
+                    navigate(`/manage/${bizIdReq}/staff/shifts?tab=requests`);
+                } else {
+                    navigate('/shifts');
+                }
+                break;
+            default:
+                // For other types, we might not have a specific redirection yet
+                break;
+        }
     };
 
     return (
@@ -72,7 +111,8 @@ export const NotificationBubble = () => {
                             return (
                                 <div
                                     key={id}
-                                    className={`p-3 flex gap-3 transition-colors hover:bg-muted/50 ${!isRead ? 'bg-muted/10' : ''}`}
+                                    onClick={() => handleNotificationClick(record)}
+                                    className={`p-3 flex gap-3 transition-colors hover:bg-muted/50 cursor-pointer ${!isRead ? 'bg-muted/10' : ''}`}
                                 >
                                     <div className="flex-shrink-0 mt-0.5">
                                         <div className="scale-75 origin-top-left">

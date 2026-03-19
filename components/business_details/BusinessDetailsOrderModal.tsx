@@ -14,6 +14,7 @@ import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessPr
 import { useSubmitOrder } from "@/features/discovery/useDiscovery";
 import { Loader2, MapPin, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { getDistanceInMeters } from "@/lib/locationUtils";
 
 interface Props {
     open: boolean;
@@ -72,9 +73,22 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
     const handleSubmit = async () => {
         if (!item || !business) return;
 
-        if (business.allowOnlyNearbyOrders && !location) {
-            handleLocate();
-            return;
+        if (business.allowOnlyNearbyOrders) {
+            if (!location) {
+                handleLocate();
+                return;
+            }
+            if (business.location && business.location.coordinates?.length >= 2) {
+                const businessLon = business.location.coordinates[0];
+                const businessLat = business.location.coordinates[1];
+                const dist = getDistanceInMeters(location.lat, location.lng, businessLat, businessLon);
+                const maxDist = business.maxOrderDistanceMeters || 500;
+
+                if (dist > maxDist) {
+                    setLocationError(`You are too far away to order. Maximum distance is ${Math.round(maxDist)}m, but you are ${Math.round(dist)}m away.`);
+                    return;
+                }
+            }
         }
 
         try {
@@ -218,7 +232,7 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                     </Button>
                     <Button onClick={handleSubmit} disabled={!canSubmit}>
                         {submitOrder.isPending && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
-                        Confirm Order - ${(item?.price || 0) * quantity}
+                        Confirm Order - {business?.currency || "$"}{(item?.price || 0) * quantity}
                     </Button>
                 </DialogFooter>
             </DialogContent>

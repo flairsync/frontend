@@ -16,6 +16,7 @@ import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
 import BusinessSettingsGeneralDetails from "@/components/management/settings/BusinessSettingsGeneralDetails"
 import BusinessSettingsOpenPeriods from "@/components/management/settings/BusinessSettingsOpenPeriods"
+import BusinessSettingsLocation from "@/components/management/settings/BusinessSettingsLocation"
 
 const BusinessSettingsPage = () => {
 
@@ -58,6 +59,15 @@ const BusinessSettingsPage = () => {
         <Accordion type="single" collapsible className="w-full space-y-2">
             {/* General Info */}
             <BusinessSettingsGeneralDetails
+                businessDetails={myBusinessFullDetails}
+                onSaveDetails={(data) => {
+                    updateMyBusinessDetails(data);
+                }}
+                disabled={updatingMyBusiness}
+            />
+
+            {/* Location & Address */}
+            <BusinessSettingsLocation
                 businessDetails={myBusinessFullDetails}
                 onSaveDetails={(data) => {
                     updateMyBusinessDetails(data);
@@ -144,6 +154,19 @@ const BusinessSettingsPage = () => {
                                         disabled={updatingMyBusiness}
                                     />
                                 </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Default Duration (Minutes)</Label>
+                                        <p className="text-xs text-muted-foreground">Default duration for new reservations</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.defaultReservationDurationMinutes ?? 120}
+                                        onBlur={(e) => updateMyBusinessDetails({ defaultReservationDurationMinutes: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
                             </>
                         )}
                     </div>
@@ -176,34 +199,6 @@ const BusinessSettingsPage = () => {
                                         disabled={updatingMyBusiness}
                                     />
                                 </div>
-
-                                <div className="flex items-center justify-between">
-                                    <div className="space-y-0.5">
-                                        <Label>Allow Only Nearby Orders</Label>
-                                        <p className="text-xs text-muted-foreground">Guests must be within an allowed radius of your location</p>
-                                    </div>
-                                    <Switch
-                                        checked={myBusinessFullDetails?.allowOnlyNearbyOrders}
-                                        onCheckedChange={(val) => updateMyBusinessDetails({ allowOnlyNearbyOrders: val })}
-                                        disabled={updatingMyBusiness}
-                                    />
-                                </div>
-
-                                {myBusinessFullDetails?.allowOnlyNearbyOrders && (
-                                    <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
-                                        <div className="space-y-0.5">
-                                            <Label>Maximum Distance (Meters)</Label>
-                                            <p className="text-xs text-muted-foreground">Maximum allowed distance for nearby orders</p>
-                                        </div>
-                                        <Input
-                                            type="number"
-                                            className="w-24"
-                                            defaultValue={myBusinessFullDetails?.maxOrderDistanceMeters}
-                                            onBlur={(e) => updateMyBusinessDetails({ maxOrderDistanceMeters: parseInt(e.target.value) })}
-                                            disabled={updatingMyBusiness}
-                                        />
-                                    </div>
-                                )}
 
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-0.5">

@@ -26,7 +26,8 @@ export const getPreferencesApiCall = () => {
 };
 
 export const updatePreferencesApiCall = (data: {
-    type: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER';
+    type: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' | 
+          'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED';
     updates: {
         emailEnabled?: boolean;
         inAppEnabled?: boolean;

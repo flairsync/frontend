@@ -31,7 +31,7 @@ const PlansPage: React.FC = () => {
       packId: packId
     }).then(res => {
       if (res.data.success) {
-        setCheckoutLink(res.data.data.url);
+        setCheckoutLink(res.data.data.data.url);
       }
     }).finally(() => {
       setLoadingCheckout(false);

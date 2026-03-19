@@ -25,6 +25,8 @@ export class DiscoveryBusinessProfile {
     reservationCancellationWindow: number;
     reservationModificationLimit: number;
     reservationTimeoutMinutes: number;
+    defaultReservationDurationMinutes: number;
+    maxOrderDistanceMeters: number;
 
     // Location
     country: Country | null;
@@ -33,6 +35,7 @@ export class DiscoveryBusinessProfile {
     address?: string;
     location?: { type: string; coordinates: number[] };
     timezone: string;
+    currency?: string;
 
     // Extras
     priceLevel: number;
@@ -60,6 +63,7 @@ export class DiscoveryBusinessProfile {
         address: string | undefined,
         location: { type: string; coordinates: number[] } | undefined,
         timezone: string,
+        currency: string | undefined,
         priceLevel: number,
         openingHours: OpeningHours[],
         facebook: string | undefined,
@@ -74,7 +78,9 @@ export class DiscoveryBusinessProfile {
         allowTakeawayOrdering: boolean,
         reservationCancellationWindow: number,
         reservationModificationLimit: number,
-        reservationTimeoutMinutes: number
+        reservationTimeoutMinutes: number,
+        defaultReservationDurationMinutes: number,
+        maxOrderDistanceMeters: number
     ) {
         this.id = id;
         this.name = name;
@@ -92,6 +98,7 @@ export class DiscoveryBusinessProfile {
         this.address = address;
         this.location = location;
         this.timezone = timezone;
+        this.currency = currency;
         this.priceLevel = priceLevel;
         this.openingHours = openingHours;
         this.facebook = facebook;
@@ -107,6 +114,8 @@ export class DiscoveryBusinessProfile {
         this.reservationCancellationWindow = reservationCancellationWindow;
         this.reservationModificationLimit = reservationModificationLimit;
         this.reservationTimeoutMinutes = reservationTimeoutMinutes;
+        this.defaultReservationDurationMinutes = defaultReservationDurationMinutes;
+        this.maxOrderDistanceMeters = maxOrderDistanceMeters;
     }
 
     static parseApiArrayResponse(data: any[]): DiscoveryBusinessProfile[] {
@@ -139,6 +148,7 @@ export class DiscoveryBusinessProfile {
                 data.address,
                 data.location,
                 data.timezone || "UTC",
+                data.currency,
                 data.priceLevel || 1,
                 OpeningHours.parseApiArrayResponse(data.openingHours || []),
                 data.facebook,
@@ -153,7 +163,9 @@ export class DiscoveryBusinessProfile {
                 data.allowTakeawayOrdering !== undefined ? !!data.allowTakeawayOrdering : true,
                 data.reservationCancellationWindow !== undefined ? Number(data.reservationCancellationWindow) : 1,
                 data.reservationModificationLimit !== undefined ? Number(data.reservationModificationLimit) : 120,
-                data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15
+                data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15,
+                data.defaultReservationDurationMinutes !== undefined ? Number(data.defaultReservationDurationMinutes) : 120,
+                data.maxOrderDistanceMeters !== undefined && data.maxOrderDistanceMeters !== null ? Number(data.maxOrderDistanceMeters) : 500
             );
         } catch {
             return null;

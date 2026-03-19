@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, CalendarCheck, User } from "lucide-react";
+import { Plus, Pencil, Trash2, CalendarCheck, User, Eye } from "lucide-react";
 import { useReservations } from "@/features/reservations/useReservations";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
@@ -17,6 +17,7 @@ import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { formatInTimezone } from "@/lib/dateUtils";
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal";
 import { EditReservationModal } from "@/components/management/reservations/EditReservationModal";
+import { ViewReservationModal } from "@/components/management/reservations/ViewReservationModal";
 import DataPagination from "@/components/inputs/DataPagination";
 
 const ReservationsPage: React.FC = () => {
@@ -32,6 +33,8 @@ const ReservationsPage: React.FC = () => {
     const [statusFilter, setStatusFilter] = useState<string>("all");
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
+    const [sortBy, setSortBy] = useState<string>("reservationTime");
+    const [sortOrder, setSortOrder] = useState<string>("DESC");
 
     // Build the query object
     const filters = {
@@ -39,7 +42,9 @@ const ReservationsPage: React.FC = () => {
         limit,
         ...(statusFilter !== "all" ? { status: statusFilter } : {}),
         ...(startDate ? { startDate: new Date(startDate).toISOString() } : {}),
-        ...(endDate ? { endDate: new Date(endDate).toISOString() } : {})
+        ...(endDate ? { endDate: new Date(endDate).toISOString() } : {}),
+        sortBy,
+        sortOrder
     };
 
     const {
@@ -54,6 +59,7 @@ const ReservationsPage: React.FC = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingReservation, setEditingReservation] = useState<any>(null);
+    const [viewingReservation, setViewingReservation] = useState<any>(null);
 
     const getStatusBadge = (status: string) => {
         switch (status.toLowerCase()) {
@@ -79,6 +85,8 @@ const ReservationsPage: React.FC = () => {
         setStatusFilter("all");
         setStartDate("");
         setEndDate("");
+        setSortBy("reservationTime");
+        setSortOrder("DESC");
         setPage(1);
     };
 
@@ -139,7 +147,31 @@ const ReservationsPage: React.FC = () => {
                                     className="w-[160px]"
                                 />
                             </div>
-                            {(statusFilter !== "all" || startDate || endDate) && (
+                            <div className="space-y-1">
+                                <Label className="text-xs">Sort By</Label>
+                                <Select value={sortBy} onValueChange={(v) => handleFilterChange(setSortBy, v)}>
+                                    <SelectTrigger className="w-[150px]">
+                                        <SelectValue placeholder="Sort By" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="reservationTime">Reservation Date</SelectItem>
+                                        <SelectItem value="createdAt">Booking Date</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-1">
+                                <Label className="text-xs">Order</Label>
+                                <Select value={sortOrder} onValueChange={(v) => handleFilterChange(setSortOrder, v)}>
+                                    <SelectTrigger className="w-[120px]">
+                                        <SelectValue placeholder="Order" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="DESC">Newest First</SelectItem>
+                                        <SelectItem value="ASC">Oldest First</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            {(statusFilter !== "all" || startDate || endDate || sortBy !== "reservationTime" || sortOrder !== "DESC") && (
                                 <Button variant="ghost" onClick={handleClearFilters} size="sm" className="h-10">
                                     Clear Filters
                                 </Button>
@@ -196,9 +228,14 @@ const ReservationsPage: React.FC = () => {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <Button variant="ghost" size="sm" onClick={() => setEditingReservation(res)}>
-                                                Edit
-                                            </Button>
+                                            <div className="flex justify-end gap-2">
+                                                <Button variant="ghost" size="sm" onClick={() => setViewingReservation(res)}>
+                                                    <Eye className="w-4 h-4 mr-1" /> View
+                                                </Button>
+                                                <Button variant="ghost" size="sm" onClick={() => setEditingReservation(res)}>
+                                                    Edit
+                                                </Button>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -231,6 +268,15 @@ const ReservationsPage: React.FC = () => {
                 open={!!editingReservation}
                 onOpenChange={(open) => {
                     if (!open) setEditingReservation(null);
+                }}
+            />
+
+            <ViewReservationModal
+                businessId={businessId}
+                reservation={viewingReservation}
+                open={!!viewingReservation}
+                onOpenChange={(open) => {
+                    if (!open) setViewingReservation(null);
                 }}
             />
         </div>

@@ -63,11 +63,14 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         );
     }
 
-    // Profile page is always accessible (Danger Zone)
-    // Other pages require at least one permission or specific permission
+    const isAwaysAllowedPage = 
+        urlPathname.endsWith('/profile') || 
+        urlPathname.endsWith('/dashboard') || 
+        urlPathname.endsWith('/shifts');
+
     const hasAnyPermission = permissions && Object.values(permissions).some((p: any) => p.read || p.create || p.update || p.delete);
 
-    if (!isProfilePage && !hasAnyPermission) {
+    if (!isAwaysAllowedPage && !hasAnyPermission) {
         return (
             <div className="flex h-screen w-full flex-col items-center justify-center space-y-4 p-6 text-center">
                 <ShieldAlert className="h-16 w-16 text-destructive" />

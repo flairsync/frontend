@@ -4,8 +4,12 @@ const permissionsUrl = `${import.meta.env.BASE_URL}/permissions`;
 
 const countriesListUrl = `${baseUrl}/list`;
 
-export const getCountriesListApiCall = () => {
-  return flairapi.get(countriesListUrl);
+export const getCountriesListApiCall = (includeAll?: boolean) => {
+  return flairapi.get(countriesListUrl, {
+    params: {
+      includeAll: includeAll ? 'true' : undefined
+    }
+  });
 };
 
 export const getPermissionsListApiCall = () => {

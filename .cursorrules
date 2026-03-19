@@ -1,0 +1,10 @@
+# Context
+We are currently in a Development Environment.
+
+# General Guidelines
+- Do NOT run production builds (like `npm run build`) unless explicitly asked by the me.
+- Do NOT apply quick optimizations to "fix" build warnings (like renaming Vike Envs to `PUBLIC_ENV__BASE_URL`) if it risks breaking the `npm run dev` environment.
+- Always prioritize functionality within the `npm run dev` server.
+
+# API Guidelines
+- ALWAYS use `import.meta.env.BASE_URL` as a prefix for any new backend API call endpoints. Never hardcode absolute paths like `/businesses/...` directly. Use `flairapi` from `lib/flairapi` to make the requests.

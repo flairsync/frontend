@@ -26,6 +26,8 @@ export interface FetchReservationsDto {
     status?: string;
     startDate?: string;
     endDate?: string;
+    sortBy?: "reservationTime" | "createdAt" | string;
+    sortOrder?: "DESC" | "ASC" | string;
 }
 
 export interface UpdateReservationDto {

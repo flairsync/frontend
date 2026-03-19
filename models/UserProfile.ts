@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { Subscription } from "./Subscription";
+import { PlatformCountry } from "./shared/PlatformCountry";
 export class UserProfile {
   id: string;
   email: string;
@@ -9,6 +10,11 @@ export class UserProfile {
   marketingEmails: boolean;
   createdAt: Date;
   currentSubscription?: Subscription;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  countryId?: number;
+  country?: PlatformCountry;
 
   constructor(
     id: string,
@@ -18,7 +24,12 @@ export class UserProfile {
     language: string,
     marketingEmails: boolean,
     createdAt: Date,
-    currentSubscription?: Subscription
+    currentSubscription?: Subscription,
+    phoneNumber?: string,
+    dateOfBirth?: string,
+    gender?: string,
+    countryId?: number,
+    country?: PlatformCountry
   ) {
     this.id = id;
     this.email = email;
@@ -28,10 +39,16 @@ export class UserProfile {
     this.marketingEmails = marketingEmails;
     this.createdAt = createdAt;
     this.currentSubscription = currentSubscription;
+    this.phoneNumber = phoneNumber;
+    this.dateOfBirth = dateOfBirth;
+    this.gender = gender;
+    this.countryId = countryId;
+    this.country = country;
   }
 
   static parseApiResponse(data: any): UserProfile {
     const sub = Subscription.parseApiResponse(data.currentSubscription);
+    const countryObj = PlatformCountry.parseApiResponse(data.country);
     return new UserProfile(
       data.id,
       data.email,
@@ -40,7 +57,12 @@ export class UserProfile {
       data.language,
       data.marketingEmails,
       data.createdAt,
-      sub ? sub : undefined
+      sub ? sub : undefined,
+      data.phoneNumber,
+      data.dateOfBirth,
+      data.gender,
+      data.countryId,
+      countryObj ? countryObj : undefined
     );
   }
 

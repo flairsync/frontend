@@ -137,7 +137,7 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, busines
                                                     </div>
                                                     <div className="flex items-center gap-4 ml-4">
                                                         <span className="font-black text-primary bg-primary/5 px-3 py-1 rounded-lg">
-                                                            €{item.price}
+                                                            {business.currency || "$"}{item.price}
                                                         </span>
                                                         {allowOrders && (
                                                             <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />

@@ -12,11 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, CheckCircle2, Users, Mail, Phone, User, MessageSquare, Clock, Loader2 } from "lucide-react";
+import { Calendar, CheckCircle2, Users, Mail, Phone, User, MessageSquare, Clock, Loader2, Plus, Minus, UtensilsCrossed } from "lucide-react";
 import { Formik, Form, Field } from "formik";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 
-import { useSubmitReservation, useDiscoveryProfile } from "@/features/discovery/useDiscovery";
+import { useSubmitReservation, useDiscoveryProfile, useDiscoveryMenu } from "@/features/discovery/useDiscovery";
 import { Badge } from "@/components/ui/badge";
 import { parseInTimezone } from "@/lib/dateUtils";
 import { usePageContext } from "vike-react/usePageContext";
@@ -51,13 +52,32 @@ const validationSchema = Yup.object().shape({
 
 const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
     const [isSuccess, setIsSuccess] = useState(false);
+    const [preOrders, setPreOrders] = useState<Record<string, number>>({});
     const { userProfile } = useProfile();
     const submitReservation = useSubmitReservation(props.businessId);
     const { data: businessProfile } = useDiscoveryProfile(props.businessId);
+    const { data: menu } = useDiscoveryMenu(props.businessId);
+
+    const handleQuantityChange = (itemId: string, delta: number) => {
+        setPreOrders(prev => {
+            const newQty = (prev[itemId] || 0) + delta;
+            if (newQty <= 0) {
+                const copy = { ...prev };
+                delete copy[itemId];
+                return copy;
+            }
+            return { ...prev, [itemId]: newQty };
+        });
+    };
 
     const handleSubmit = async (values: any) => {
         try {
             const reservationTime = parseInTimezone(`${props.date}T${props.time}:00`, businessProfile?.timezone);
+
+            const preOrderItems = Object.entries(preOrders).map(([menuItemId, quantity]) => ({
+                menuItemId,
+                quantity
+            }));
 
             await submitReservation.mutateAsync({
                 customerName: values.name,
@@ -68,6 +88,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                 notes: values.notes,
                 tableId: props.tableId,
                 userId: userProfile?.id,
+                preOrderItems: preOrderItems.length > 0 ? preOrderItems : undefined,
             });
             setIsSuccess(true);
         } catch (error) {
@@ -104,7 +125,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
 
     return (
         <Dialog open={props.isOpen} onOpenChange={(open) => !open && props.onClose()}>
-            <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-none rounded-[2rem]">
+            <DialogContent className="sm:max-w-[500px] p-0 overflow-y-auto max-h-[90vh] border-none rounded-[2rem]">
                 <div className="bg-primary p-8 text-primary-foreground relative overflow-hidden">
                     <div className="relative z-10 space-y-1">
                         <h2 className="text-2xl font-bold italic tracking-tight">Complete Your Reservation</h2>
@@ -192,6 +213,65 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                         rows={3}
                                     />
                                 </div>
+
+                                {menu && menu.categories && menu.categories.length > 0 && (
+                                    <div className="flex flex-col gap-1.5 mt-4">
+                                        <Label className="flex items-center gap-2">
+                                            <UtensilsCrossed size={16} className="text-primary" />
+                                            Pre-order Items (Optional)
+                                        </Label>
+                                        <div className="rounded-xl border border-border/50 bg-card/50 overflow-hidden">
+                                            <Accordion type="single" collapsible className="w-full">
+                                                {menu.getOrderedCategories().map((category) => (
+                                                    <AccordionItem key={category.id} value={category.id} className="border-b border-border/50 last:border-0">
+                                                        <AccordionTrigger className="px-4 py-3 hover:bg-muted/50 hover:no-underline text-sm font-semibold">
+                                                            {category.name} ({category.items?.length || 0})
+                                                        </AccordionTrigger>
+                                                        <AccordionContent className="px-4 pb-4 pt-1 space-y-3">
+                                                            {category.items?.map((item) => (
+                                                                <div key={item.id} className="flex items-center justify-between gap-4">
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <div className="font-medium text-sm truncate">{item.name}</div>
+                                                                        <div className="text-xs text-muted-foreground">{businessProfile?.currency || "$"}{item.price}</div>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-2">
+                                                                        <Button
+                                                                            type="button"
+                                                                            variant="outline"
+                                                                            size="icon"
+                                                                            className="h-7 w-7 rounded-sm"
+                                                                            onClick={() => handleQuantityChange(item.id, -1)}
+                                                                            disabled={!preOrders[item.id]}
+                                                                        >
+                                                                            <Minus size={12} />
+                                                                        </Button>
+                                                                        <span className="w-4 text-center text-sm font-medium">
+                                                                            {preOrders[item.id] || 0}
+                                                                        </span>
+                                                                        <Button
+                                                                            type="button"
+                                                                            variant="outline"
+                                                                            size="icon"
+                                                                            className="h-7 w-7 rounded-sm"
+                                                                            onClick={() => handleQuantityChange(item.id, 1)}
+                                                                        >
+                                                                            <Plus size={12} />
+                                                                        </Button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </AccordionContent>
+                                                    </AccordionItem>
+                                                ))}
+                                            </Accordion>
+                                        </div>
+                                        {Object.keys(preOrders).length > 0 && (
+                                            <p className="text-xs text-muted-foreground mt-1">
+                                                {Object.values(preOrders).reduce((a, b) => a + b, 0)} item(s) selected for pre-order.
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
 
                                 <div className="flex justify-end gap-3 mt-4">
                                     <Button type="button" variant="outline" onClick={props.onClose}>

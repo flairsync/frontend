@@ -28,6 +28,7 @@ import { Role } from "@/models/business/roles/Role";
 import StaffSection from "./StaffSection";
 import RolesSection from "./RolesSection";
 import InvitationsSection from "./InvitationsSection";
+import TeamsSection from "@/components/management/staff/teams/TeamsSection";
 
 
 
@@ -54,6 +55,9 @@ const OwnerStaffManagementPage: React.FC = () => {
                         <TabsTrigger value="roles" className="flex-1 sm:flex-none min-w-[120px] text-center">
                             Roles Management
                         </TabsTrigger>
+                        <TabsTrigger value="teams" className="flex-1 sm:flex-none min-w-[120px] text-center">
+                            Teams Management
+                        </TabsTrigger>
                     </TabsList>
 
                     {/* Staff Management */}
@@ -70,6 +74,11 @@ const OwnerStaffManagementPage: React.FC = () => {
                     {/* Roles Management */}
                     <TabsContent value="roles" className="space-y-6">
                         <RolesSection />
+                    </TabsContent>
+
+                    {/* Teams Management */}
+                    <TabsContent value="teams" className="space-y-6">
+                        <TeamsSection />
                     </TabsContent>
                 </Tabs>
             </div>

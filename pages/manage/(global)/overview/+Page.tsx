@@ -48,9 +48,9 @@ const ManagePage: React.FC = () => {
                                         <div className="flex items-center gap-2 mt-2">
                                             <Badge
                                                 variant={currentUserSubscription.status === "active" ? "default" : "destructive"}
-                                                className={cn("rounded-full", currentUserSubscription.status === "active" && "bg-green-600 hover:bg-green-700")}
+                                                className={cn("rounded-full", (currentUserSubscription.status === "active" || currentUserSubscription.isDefault) ? "bg-green-600 hover:bg-green-700" : "")}
                                             >
-                                                {currentUserSubscription.status.toUpperCase()}
+                                                {currentUserSubscription.isDefault ? "FREE PLAN" : (currentUserSubscription.status?.toUpperCase() || "ACTIVE")}
                                             </Badge>
                                             <span className="text-xs text-zinc-500 font-medium">
                                                 Renews on {currentUserSubscription.getRenewalDate("MMM DD, YYYY")}

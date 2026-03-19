@@ -30,16 +30,12 @@ const staffNavData = {
                     title: "Dashboard",
                     url: "/manage/:id/staff/dashboard",
                     icon: LayoutDashboard,
-                    requiredPermission: "BUSINESS_SETTINGS",
-                    requiredAction: "read",
                 },
                 {
                     key: "shifts",
                     title: "My Shifts",
                     url: "/manage/:id/staff/shifts",
                     icon: Calendar,
-                    requiredPermission: "STAFF",
-                    requiredAction: "read",
                 },
                 {
                     key: "tasks",
@@ -103,10 +99,10 @@ export function isActiveLink(key: string): boolean {
 }
 
 
-export function StaffMemberSidebar({ ...props }: React.ComponentProps<typeof Sidebar> & {
+export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProps<typeof Sidebar> & {
     businessId: string
 }) {
-    const { hasPermission, isLoading: loadingPermissions } = usePermissions(props.businessId);
+    const { hasPermission, isLoading: loadingPermissions } = usePermissions(businessId);
 
     return (
         <Sidebar {...props}
@@ -114,10 +110,10 @@ export function StaffMemberSidebar({ ...props }: React.ComponentProps<typeof Sid
             <SidebarHeader>
                 <BusinessSwitcher
                     businesses={[{
-                        id: props.businessId,
+                        id: businessId,
                         name: "Current Business"
                     }]}
-                    selectedBusiness={props.businessId}
+                    selectedBusiness={businessId}
                 />
             </SidebarHeader>
             <SidebarContent>
@@ -136,7 +132,7 @@ export function StaffMemberSidebar({ ...props }: React.ComponentProps<typeof Sid
                                     .map((item) => (
                                         <SidebarMenuItem key={item.key}>
                                             <SidebarMenuButton asChild isActive={isActiveLink(item.key)}>
-                                                <a href={item.url.replace(":id", props.businessId)}>
+                                                <a href={item.url.replace(":id", businessId)}>
                                                     <item.icon className="h-4 w-4" />
                                                     <span>{item.title}</span>
                                                 </a>

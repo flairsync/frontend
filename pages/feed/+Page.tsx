@@ -25,6 +25,9 @@ import { clientOnly } from 'vike-react/clientOnly'
 import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
 import { useDiscoverySearch } from '@/features/discovery/useDiscovery';
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries';
+import { useProfile } from '@/features/profile/useProfile';
+
+const FILTER_STORAGE_KEY = 'public_feed_filters';
 
 const PublicFeedBusinessCard = clientOnly(() =>
     import("@/components/feed/PublicFeedBusinessCard")
@@ -56,6 +59,9 @@ const FeedPage = () => {
     const [page, setPage] = useState(1);
     const limit = 30; // Matches dummy size
 
+    // Track initialization to avoid overwriting localStorage on mount
+    const [isInitialized, setIsInitialized] = useState(false);
+
     // Location State
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [locationState, setLocationState] = useState<LocationFilterState>({
@@ -68,35 +74,99 @@ const FeedPage = () => {
     const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
     const [locationErrorReason, setLocationErrorReason] = useState<string | undefined>();
 
-    // ✅ Automatic Geolocation on Mount
+    const { platformCountries } = usePlatformCountries();
+    const { userProfile } = useProfile();
+
+    // ✅ Persistence: Save to localStorage (Only after initial load is complete)
     React.useEffect(() => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setLocationState(prev => ({
-                        ...prev,
-                        lat: latitude,
-                        lng: longitude,
-                        useCustomLocation: false
-                    }));
-                },
-                (error) => {
-                    console.error("Geolocation error:", error);
-                    setIsLocationModalOpen(true);
-                    if (error.code === error.PERMISSION_DENIED) {
-                        setLocationErrorReason("denied");
-                    } else {
-                        setLocationErrorReason("error");
-                    }
-                },
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-            );
-        } else {
-            setIsLocationModalOpen(true);
-            setLocationErrorReason("unsupported");
+        if (!isInitialized) return;
+
+        const filters = {
+            locationState,
+            selectedTypeId,
+            selectedTagIds,
+        };
+        localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(filters));
+    }, [locationState, selectedTypeId, selectedTagIds, isInitialized]);
+
+    // ✅ Priority Logic on Mount
+    React.useEffect(() => {
+        if (isInitialized) return; // Only run once on mount
+
+        let hasValidStoredFilters = false;
+
+        // 1. Check localStorage
+        const stored = localStorage.getItem(FILTER_STORAGE_KEY);
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (parsed.locationState && (parsed.locationState.lat || parsed.locationState.countryId)) {
+                    setLocationState(parsed.locationState);
+                    if (parsed.selectedTypeId) setSelectedTypeId(parsed.selectedTypeId);
+                    if (parsed.selectedTagIds) setSelectedTagIds(parsed.selectedTagIds);
+                    hasValidStoredFilters = true;
+                }
+            } catch (e) {
+                console.error("Error parsing stored filters:", e);
+            }
         }
-    }, []);
+
+        // 2. Geolocation
+        const requestGeolocation = () => {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        setLocationState(prev => ({
+                            ...prev,
+                            lat: latitude,
+                            lng: longitude,
+                            useCustomLocation: false,
+                            countryId: undefined // GPS overrides residency country
+                        }));
+                    },
+                    (error) => {
+                        console.error("Geolocation error:", error);
+                        // 3. Fallback to User Country
+                        handleFallbackToProfileCountry();
+
+                        setIsLocationModalOpen(true);
+                        if (error.code === error.PERMISSION_DENIED) {
+                            setLocationErrorReason("denied");
+                        } else {
+                            setLocationErrorReason("error");
+                        }
+                    },
+                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                );
+            } else {
+                handleFallbackToProfileCountry();
+                setIsLocationModalOpen(true);
+                setLocationErrorReason("unsupported");
+            }
+        };
+
+        const handleFallbackToProfileCountry = () => {
+            if (userProfile?.countryId) {
+                setLocationState(prev => ({
+                    ...prev,
+                    countryId: userProfile.countryId,
+                    lat: undefined,
+                    lng: undefined
+                }));
+            }
+        };
+
+        if (!hasValidStoredFilters) {
+            requestGeolocation();
+        }
+
+        // Add small delay to ensure state updates process before enabling persistence
+        const timeoutId = setTimeout(() => setIsInitialized(true), 50);
+
+        return () => clearTimeout(timeoutId);
+
+    }, [userProfile?.id, userProfile?.countryId, isInitialized]);
 
     // Fetch Discovery Businesses
     const { data: searchData, isLoading } = useDiscoverySearch({
@@ -132,10 +202,10 @@ const FeedPage = () => {
             useCustomLocation: false,
             radius: 50000
         });
+        localStorage.removeItem(FILTER_STORAGE_KEY);
         setPage(1);
     };
 
-    const { platformCountries } = usePlatformCountries();
 
     // Memoize location label
     const locationLabel = useMemo(() => {

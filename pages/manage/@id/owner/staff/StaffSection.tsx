@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash, UserPlus, Edit, Plus, EditIcon } from "lucide-react";
+import { Trash, UserPlus, Edit, Plus, EditIcon, CalendarPlus } from "lucide-react";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useBusinessEmployeeOps } from "@/features/business/employment/useBusinessEmployeeOps";
@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { BusinessEmployee } from "@/models/business/BusinessEmployee";
 import { EditStaffRolesModal } from "@/components/management/staff/EditStaffRolesModal";
 import { useBusinessRoles } from "@/features/business/roles/useBusinessRoles";
-
+import { IndividualScheduleModal } from '@/components/management/schedule/IndividualScheduleModal';
 
 const StaffSection = () => {
   // Add Staff Modal State
@@ -52,6 +52,9 @@ const StaffSection = () => {
 
   const [selectedStaff, setSelectedStaff] = useState<BusinessEmployee | null>(null);
 
+  // Individual Schedule State
+  const [scheduleStaffId, setScheduleStaffId] = useState<string | null>(null);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
   return (
     <div>
@@ -68,6 +71,14 @@ const StaffSection = () => {
           staff={selectedStaff}
           open={Boolean(selectedStaff)}
           onOpenChange={open => !open && setSelectedStaff(null)}
+        />
+      )}
+
+      {isScheduleModalOpen && (
+        <IndividualScheduleModal 
+          open={isScheduleModalOpen} 
+          onOpenChange={setIsScheduleModalOpen}
+          defaultEmploymentId={scheduleStaffId}
         />
       )}
 
@@ -122,6 +133,17 @@ const StaffSection = () => {
                   <TableCell className="flex gap-2">
                     {member.type !== 'OWNER' && (
                       <>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          title="Schedule Shift"
+                          onClick={() => {
+                            setScheduleStaffId(member.id);
+                            setIsScheduleModalOpen(true);
+                          }}
+                        >
+                          <CalendarPlus className="h-4 w-4" />
+                        </Button>
                         <Button size="sm" variant="outline">
                           <Edit className="h-4 w-4" />
                         </Button>

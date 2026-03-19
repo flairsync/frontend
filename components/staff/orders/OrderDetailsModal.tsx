@@ -61,7 +61,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                         <DialogTitle className="text-xl font-bold flex items-center gap-2">
                             Order #{displayOrder.id.split('-')[0]}
                             <Badge variant="outline" className={getStatusColor(displayOrder.status)}>
-                                {displayOrder.status.toUpperCase()}
+                                {displayOrder.status?.toUpperCase() || "UNKNOWN"}
                             </Badge>
                         </DialogTitle>
                         <span className="text-sm text-muted-foreground">

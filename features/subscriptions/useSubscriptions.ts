@@ -17,7 +17,7 @@ export const useSubscriptions = () => {
     queryFn: async () => {
       const res = await getCurrentUserSubscriptionApiCall();
       if (res.data.success) {
-        return Subscription.parseApiResponse(res.data.data);
+        return Subscription.parseApiResponse(res.data.data.data);
       } else {
         return null;
       }
@@ -35,7 +35,7 @@ export const useSubscriptions = () => {
       } */
       const res = await getSubscriptionPacksApiCall(countryCode);
       if (res.data.success) {
-        return SubscriptionPack.parseApiArrayResponse(res.data.data);
+        return SubscriptionPack.parseApiArrayResponse(res.data.data.data);
       } else {
         return null;
       }
@@ -51,7 +51,7 @@ export const useSubscriptions = () => {
     mutationFn: async (data: { packId: string }) => {
       const resp = await handleUserCheckoutApiCall(data);
       if (resp.data.success) {
-        return resp.data.data.url as string;
+        return resp.data.data.data.url as string;
       } else {
         return null;
       }
@@ -64,7 +64,7 @@ export const useSubscriptions = () => {
       queryFn: async () => {
         const resp = await getUserSubscriptionsListApiCall();
         if (resp.data.success) {
-          return Subscription.parseApiArrayResponse(resp.data.data);
+          return Subscription.parseApiArrayResponse(resp.data.data.data);
         } else {
           return null;
         }
@@ -80,8 +80,8 @@ export const useSubscriptions = () => {
     mutationKey: ["fetch_portal_url"],
     mutationFn: async () => {
       const resp = await getSubscriptionPortalUrlApiCall();
-      if (resp.status === 200 && resp.data?.data?.url) {
-        return resp.data.data.url as string;
+      if (resp.status === 200 && resp.data?.data?.data?.url) {
+        return resp.data.data.data.url as string;
       } else {
         return null;
       }

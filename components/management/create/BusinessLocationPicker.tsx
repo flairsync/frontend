@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, useMap, useMapEvents, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents, GeoJSON, Circle } from "react-leaflet";
 import L, { LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,8 @@ interface LocationValue {
 interface LocationPickerProps {
     value?: LocationValue;
     onChange: (value: LocationValue) => void;
+    showRadius?: boolean;
+    radiusMeters?: number;
 }
 
 const defaultCenter = { lat: 41.3851, lng: 2.1734 }; // Barcelona fallback
@@ -115,7 +117,7 @@ const MapPanTo: React.FC<{ position: LocationValue }> = ({ position }) => {
     return null;
 };
 
-const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
+const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRadius, radiusMeters }) => {
 
     const {
         platformCountries
@@ -178,8 +180,21 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
 
     // Sync prop changes
     useEffect(() => {
-        if (value) setPosition(value);
+        if (value) {
+            setPosition(value);
+            if (value.address) setAddress(value.address);
+            if (value.city) setCity(value.city);
+        }
     }, [value]);
+
+    useEffect(() => {
+        if (platformCountries && value?.country && !country) {
+            const match = platformCountries.find(c =>
+                c.id === value.country?.id || c.name === value.country?.name
+            );
+            if (match) setCountry(match);
+        }
+    }, [platformCountries, value]);
 
 
 
@@ -324,6 +339,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange }) => {
                                 allowedCountries={platformCountries}
                                 selectedCountryCode={country.code}
                             />
+                            {showRadius && radiusMeters ? (
+                                <Circle
+                                    center={[position.lat, position.lng]}
+                                    radius={radiusMeters}
+                                    pathOptions={{ color: 'blue', fillColor: 'blue', fillOpacity: 0.2 }}
+                                />
+                            ) : null}
                             <MapPanTo
                                 position={position}
                             />

@@ -5,9 +5,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CalendarDays, Clock, User, Table2, Loader } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CalendarDays, Clock, User, Table2, Loader, Eye } from "lucide-react"
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal"
 import { EditReservationModal } from "@/components/management/reservations/EditReservationModal"
+import { ViewReservationModal } from "@/components/management/reservations/ViewReservationModal"
 import { useState } from "react"
 import { useReservations } from "@/features/reservations/useReservations"
 import { usePageContext } from "vike-react/usePageContext"
@@ -21,19 +23,22 @@ export default function StaffReservationsPage() {
     const { t } = useTranslation();
     const [addingReservation, setAddingReservation] = useState(false);
     const [editingReservation, setEditingReservation] = useState<any>(null);
+    const [viewingReservation, setViewingReservation] = useState<any>(null);
 
     const [activeTab, setActiveTab] = useState("upcoming");
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
+    const [sortBy, setSortBy] = useState<string>("reservationTime");
+    const [sortOrder, setSortOrder] = useState<string>("DESC");
 
     const getFilters = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         if (activeTab === "upcoming") {
-            return { page, limit, startDate: today.toISOString() };
+            return { page, limit, startDate: today.toISOString(), sortBy, sortOrder };
         } else {
-            return { page, limit, endDate: new Date(today.getTime() - 1).toISOString() }; // yesterday 23:59:59
+            return { page, limit, endDate: new Date(today.getTime() - 1).toISOString(), sortBy, sortOrder }; // yesterday 23:59:59
         }
     };
 
@@ -96,10 +101,33 @@ export default function StaffReservationsPage() {
 
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <TabsList className="grid grid-cols-2 w-full max-w-[300px]">
-                    <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-                    <TabsTrigger value="past">Past</TabsTrigger>
-                </TabsList>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <TabsList className="grid grid-cols-2 w-full max-w-[300px]">
+                        <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                        <TabsTrigger value="past">Past</TabsTrigger>
+                    </TabsList>
+
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                        <Select value={sortBy} onValueChange={setSortBy}>
+                            <SelectTrigger className="w-[160px]">
+                                <SelectValue placeholder="Sort By" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="reservationTime">Reservation Date</SelectItem>
+                                <SelectItem value="createdAt">Booking Date</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select value={sortOrder} onValueChange={setSortOrder}>
+                            <SelectTrigger className="w-[130px]">
+                                <SelectValue placeholder="Order" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="DESC">Newest First</SelectItem>
+                                <SelectItem value="ASC">Oldest First</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
 
                 {/* Upcoming Reservations */}
                 <TabsContent value="upcoming" className="mt-6">
@@ -168,6 +196,14 @@ export default function StaffReservationsPage() {
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="h-8 px-2"
+                                                                onClick={() => setViewingReservation(rsv)}
+                                                            >
+                                                                <Eye className="w-4 h-4 mr-1" /> View
+                                                            </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="ghost"
+                                                                className="h-8 px-2"
                                                                 onClick={() => setEditingReservation(rsv)}
                                                             >
                                                                 Edit
@@ -229,6 +265,7 @@ export default function StaffReservationsPage() {
                                             <TableHead>Time</TableHead>
                                             <TableHead>Guests</TableHead>
                                             <TableHead>Status</TableHead>
+                                            <TableHead className="text-right">Action</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -273,6 +310,16 @@ export default function StaffReservationsPage() {
                                                     </TableCell>
                                                     <TableCell>{rsv.guestCount}</TableCell>
                                                     <TableCell>{getStatusBadge(rsv.status)}</TableCell>
+                                                    <TableCell className="text-right">
+                                                        <Button
+                                                            size="sm"
+                                                            variant="ghost"
+                                                            className="h-8 px-2"
+                                                            onClick={() => setViewingReservation(rsv)}
+                                                        >
+                                                            <Eye className="w-4 h-4 mr-1" /> View
+                                                        </Button>
+                                                    </TableCell>
                                                 </TableRow>
                                             ))
                                         )}
@@ -300,6 +347,15 @@ export default function StaffReservationsPage() {
                 open={!!editingReservation}
                 onOpenChange={(open) => {
                     if (!open) setEditingReservation(null);
+                }}
+            />
+
+            <ViewReservationModal
+                businessId={businessId}
+                reservation={viewingReservation}
+                open={!!viewingReservation}
+                onOpenChange={(open) => {
+                    if (!open) setViewingReservation(null);
                 }}
             />
         </div>

@@ -1,11 +1,16 @@
 import React from 'react';
 import { useNotifications } from '@/features/notifications/useNotifications';
-import { NotificationPayload } from '@/features/notifications/types';
+import { NotificationPayload, NotificationRecipient } from '@/features/notifications/types';
+import { navigate } from 'vike/client/router';
 import { formatDistanceToNow } from 'date-fns';
 import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle } from 'lucide-react';
 
 const getIconForType = (type: NotificationPayload['type']) => {
     switch (type) {
+        case 'SHIFT_PUBLISHED':
+        case 'SHIFT_CREATED':
+        case 'SHIFT_UPDATED':
+            return <Calendar className="w-5 h-5 text-indigo-500" />;
         case 'SECURITY': return <ShieldAlert className="w-5 h-5 text-red-500" />;
         case 'RESERVATION': return <Calendar className="w-5 h-5 text-blue-500" />;
         case 'PROMO': return <Tag className="w-5 h-5 text-green-500" />;
@@ -46,6 +51,41 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
         markAllAsRead();
     };
 
+    const handleNotificationClick = (record: NotificationRecipient) => {
+        const { notification, id, isRead } = record;
+        
+        // Mark as read if not already
+        if (!isRead) {
+            markAsRead(id);
+        }
+
+        // Handle Redirection based on type and payload
+        switch (notification.type) {
+            case 'SHIFT_PUBLISHED':
+            case 'SHIFT_CREATED':
+            case 'SHIFT_UPDATED':
+                const bizId = notification.payload?.businessId;
+                if (bizId) {
+                    navigate(`/manage/${bizId}/staff/shifts?tab=schedule`);
+                } else {
+                    navigate('/shifts');
+                }
+                break;
+            case 'SHIFT_SWAP_REQUEST':
+            case 'TIME_OFF_APPROVED':
+                const bizIdReq = notification.payload?.businessId;
+                if (bizIdReq) {
+                    navigate(`/manage/${bizIdReq}/staff/shifts?tab=requests`);
+                } else {
+                    navigate('/shifts');
+                }
+                break;
+            default:
+                // For other types, we might not have a specific redirection yet
+                break;
+        }
+    };
+
     return (
         <div className="flex flex-col w-full bg-background rounded-lg border shadow-sm">
             <div className="flex items-center justify-between p-4 border-b">
@@ -65,7 +105,8 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
                     return (
                         <div
                             key={id}
-                            className={`p-4 flex gap-4 transition-colors hover:bg-muted/50 ${!isRead ? 'bg-muted/20' : ''}`}
+                            onClick={() => handleNotificationClick(record)}
+                            className={`p-4 flex gap-4 transition-colors hover:bg-muted/50 cursor-pointer ${!isRead ? 'bg-muted/20' : ''}`}
                         >
                             <div className="flex-shrink-0 mt-1">
                                 {getIconForType(notification.type)}

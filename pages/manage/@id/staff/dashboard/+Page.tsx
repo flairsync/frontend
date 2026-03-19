@@ -3,9 +3,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, ClipboardList, ShoppingBag, Megaphone } from "lucide-react"
+import { Calendar, ClipboardList, ShoppingBag, Megaphone, Loader2 } from "lucide-react"
+import { AttendanceDashboard } from "@/components/management/schedule/AttendanceDashboard"
+import { usePageContext } from "vike-react/usePageContext"
+import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
+import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance"
 
 export default function StaffDashboard() {
+    const { routeParams } = usePageContext();
+    const businessId = routeParams.id;
+
+    const { myEmployments, loadingMyEmployments } = useMyEmployments();
+    const activeEmployment = myEmployments?.find(e => e.business?.id === businessId);
+    const employmentId = activeEmployment?.id || "";
+
+    const { data: dashboard, isLoading: isLoadingDashboard } = useTodayAttendanceDashboard(businessId);
+
+    if (loadingMyEmployments || isLoadingDashboard) {
+        return (
+            <div className="flex h-[50vh] items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        );
+    }
     return (
         <div className="space-y-6 p-6">
             {/* Page Title */}
@@ -13,6 +33,11 @@ export default function StaffDashboard() {
                 <h1 className="text-2xl font-bold tracking-tight">Staff Dashboard</h1>
                 <p className="text-muted-foreground">Welcome back! Here’s what’s happening today.</p>
             </div>
+
+            {/* Attendance Dashboard */}
+            {businessId && employmentId && (
+                <AttendanceDashboard businessId={businessId as string} employmentId={employmentId} />
+            )}
 
             {/* Quick Overview */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -22,8 +47,8 @@ export default function StaffDashboard() {
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">2</div>
-                        <p className="text-xs text-muted-foreground">Shifts this week</p>
+                        <div className="text-2xl font-bold">{dashboard?.shifts?.length || 0}</div>
+                        <p className="text-xs text-muted-foreground">Shifts today</p>
                     </CardContent>
                 </Card>
 
@@ -128,7 +153,9 @@ export default function StaffDashboard() {
 
             {/* Quick action button */}
             <div className="flex justify-end">
-                <Button>View Full Schedule</Button>
+                <a href={`/manage/${businessId}/staff/shifts`}>
+                    <Button>View Full Schedule</Button>
+                </a>
             </div>
         </div>
     )

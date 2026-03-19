@@ -73,7 +73,7 @@ export class Subscription {
         data.lemonSubscriptionId ?? null,
         data.lemonCustomerId ?? null,
         data.lemonOrderId ?? null,
-        data.status,
+        data.status || SubscriptionStatus.PENDING,
         data.startedAt ? new Date(data.startedAt) : null,
         data.trialEndsAt ? new Date(data.trialEndsAt) : null,
         data.renewsAt ? new Date(data.renewsAt) : null,

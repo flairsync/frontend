@@ -112,6 +112,7 @@ export class MyBusinessFullDetails {
   address?: string;
   location?: { type: string; coordinates: number[] };
   timezone: string;
+  currency?: string;
   openingHours: OpeningHours[];
   status: string;
   media: BusinessMedia[];
@@ -133,6 +134,7 @@ export class MyBusinessFullDetails {
   reservationCancellationWindow: number;
   reservationModificationLimit: number;
   reservationTimeoutMinutes: number;
+  defaultReservationDurationMinutes: number;
   counts?: {
     employees: number;
     menus: number;
@@ -154,6 +156,7 @@ export class MyBusinessFullDetails {
     address: string | undefined,
     location: { type: string; coordinates: number[] } | undefined,
     timezone: string,
+    currency: string | undefined,
     openingHours: OpeningHours[],
     status: string,
     media: BusinessMedia[],
@@ -173,6 +176,7 @@ export class MyBusinessFullDetails {
     reservationCancellationWindow: number,
     reservationModificationLimit: number,
     reservationTimeoutMinutes: number,
+    defaultReservationDurationMinutes: number,
     createdAt: Date,
     updatedAt: Date,
     counts?: {
@@ -195,6 +199,7 @@ export class MyBusinessFullDetails {
     this.address = address;
     this.location = location;
     this.timezone = timezone;
+    this.currency = currency;
     this.openingHours = openingHours;
     this.status = status;
     this.media = media;
@@ -214,6 +219,7 @@ export class MyBusinessFullDetails {
     this.reservationCancellationWindow = reservationCancellationWindow;
     this.reservationModificationLimit = reservationModificationLimit;
     this.reservationTimeoutMinutes = reservationTimeoutMinutes;
+    this.defaultReservationDurationMinutes = defaultReservationDurationMinutes;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.counts = counts;
@@ -238,6 +244,7 @@ export class MyBusinessFullDetails {
         data.address,
         data.location,
         data.timezone || "UTC",
+        data.currency,
         OpeningHours.parseApiArrayResponse(data.openingHours || []),
         data.status,
         BusinessMedia.parseApiArrayResponse(data.media),
@@ -257,6 +264,7 @@ export class MyBusinessFullDetails {
         data.reservationCancellationWindow !== undefined ? Number(data.reservationCancellationWindow) : 1,
         data.reservationModificationLimit !== undefined ? Number(data.reservationModificationLimit) : 120,
         data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15,
+        data.defaultReservationDurationMinutes !== undefined ? Number(data.defaultReservationDurationMinutes) : 120,
         new Date(data.createdAt),
         new Date(data.updatedAt),
         data.counts
@@ -291,6 +299,7 @@ export type UpdateBusinessDetailsDto = {
   priceLevel?: number;
   status?: string;
   timezone?: string;
+  currency?: string;
   allowReservations?: boolean;
   allowOrders?: boolean;
   requireReservationConfirmation?: boolean;
@@ -302,4 +311,7 @@ export type UpdateBusinessDetailsDto = {
   reservationCancellationWindow?: number;
   reservationModificationLimit?: number;
   reservationTimeoutMinutes?: number;
+  defaultReservationDurationMinutes?: number;
+  countryId?: number;
+  location?: { type: "Point"; coordinates: [number, number] };
 };
