@@ -18,9 +18,10 @@ import GoogleLoginButton from '@/components/inputs/GoogleLoginButton';
 
 const LoginPage = () => {
     const { t } = useTranslation();
-    const { urlParsed } = usePageContext();
+    const { urlParsed, user } = usePageContext();
     const [showPassword, setShowPassword] = useState(false);
     const [apiError, setApiError] = useState<string>();
+
 
     const { loginUser, loggingIn, loginError } = useAuth();
 
@@ -33,6 +34,8 @@ const LoginPage = () => {
     };
 
     useEffect(() => {
+        console.log("------ client ", user);
+
         if (loginError && loginError.response?.data) {
             // @ts-ignore
             setApiError(loginError.response?.data.message);
@@ -149,7 +152,7 @@ const LoginPage = () => {
 
                     <p className="mt-8 text-center text-sm text-zinc-600">
                         {t("auth_page.need_account_label")}{' '}
-                        <a href="/signup" className="font-semibold text-[#6366F1] hover:underline">
+                        <a href={`/signup?origin=${encodeURIComponent(origin)}`} className="font-semibold text-[#6366F1] hover:underline">
                             {t("auth_page.create_account_label")}
                         </a>
                     </p>

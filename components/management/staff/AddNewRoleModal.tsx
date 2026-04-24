@@ -26,7 +26,7 @@ import {
     CommandItem,
 } from "@/components/ui/command";
 import { usePlatformPermissions } from "@/features/shared/usePlatformPermissions";
-import { Loader, Check, Plus } from "lucide-react";
+import { Loader, Check, Plus, Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Role } from "@/models/business/roles/Role";
 import { RoleSchema } from "@/misc/FormValidators";
@@ -39,6 +39,7 @@ type Props = {
         editId?: string;
     }) => void;
     onOpenChange: (open: boolean) => void;
+    onDeletePermission?: (permissionKey: string) => void;
     editRole?: Role;
 };
 
@@ -219,34 +220,57 @@ export function AddRoleModal(props: Props) {
                                         {formik.values.permissions.map(p => (
                                             <div
                                                 key={p.permissionId}
-                                                className="flex justify-between p-3"
+                                                className="flex justify-between items-center p-3"
                                             >
                                                 <span className="font-medium">
                                                     {t(`permissions.${p.key}.label`)}
                                                 </span>
-                                                <div className="flex gap-4">
-                                                    {(
-                                                        ["canRead", "canCreate", "canUpdate", "canDelete"] as const
-                                                    ).map(flag => (
-                                                        <div
-                                                            key={flag}
-                                                            className="flex items-center gap-1"
-                                                        >
-                                                            <Checkbox
-                                                                checked={p.flags[flag]}
-                                                                onCheckedChange={v =>
-                                                                    updateFlag(
-                                                                        p.permissionId,
-                                                                        flag,
-                                                                        Boolean(v)
-                                                                    )
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex gap-4">
+                                                        {(
+                                                            ["canRead", "canCreate", "canUpdate", "canDelete"] as const
+                                                        ).map(flag => (
+                                                            <div
+                                                                key={flag}
+                                                                className="flex items-center gap-1"
+                                                            >
+                                                                <Checkbox
+                                                                    checked={p.flags[flag]}
+                                                                    onCheckedChange={v =>
+                                                                        updateFlag(
+                                                                            p.permissionId,
+                                                                            flag,
+                                                                            Boolean(v)
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <span className="text-sm">
+                                                                    {flag.replace("can", "")}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    {props.editRole && (
+                                                        <Button
+                                                            type="button"
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-8 w-8"
+                                                            onClick={() => {
+                                                                if (props.onDeletePermission) {
+                                                                    props.onDeletePermission(p.key);
                                                                 }
-                                                            />
-                                                            <span className="text-sm">
-                                                                {flag.replace("can", "")}
-                                                            </span>
-                                                        </div>
-                                                    ))}
+                                                                formik.setFieldValue(
+                                                                    "permissions",
+                                                                    formik.values.permissions.filter(
+                                                                        perm => perm.key !== p.key
+                                                                    )
+                                                                );
+                                                            }}
+                                                        >
+                                                            <Trash className="h-4 w-4 text-destructive" />
+                                                        </Button>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}

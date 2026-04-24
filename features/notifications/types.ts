@@ -1,7 +1,8 @@
 export interface NotificationPayload {
     id: string; // UUID
-    type: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' | 
-          'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED';
+    type: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' |
+          'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' |
+          'INVENTORY_LOW_STOCK';
     title: string;
     message: string;
     payload?: Record<string, any>;
@@ -23,8 +24,9 @@ export interface NotificationRecipient {
 export interface NotificationPreference {
     id: string;
     userId: string;
-    notificationType: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' | 
-                      'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED';
+    notificationType: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' |
+                      'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' |
+                      'INVENTORY_LOW_STOCK';
     emailEnabled: boolean;
     inAppEnabled: boolean;
     pushEnabled: boolean;

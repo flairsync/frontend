@@ -21,16 +21,13 @@ export const useBusinessEmployees = (businessId: string) => {
 
   // Keep state in sync if user navigates with back/forward
   useEffect(() => {
-    if (!urlParsed.search[EMPLOYEE_PAGE_PARAM]) {
-      setPage(1);
-    }
     const onPopState = () => {
       setCurrentPage(Number(urlParsed.search[EMPLOYEE_PAGE_PARAM] ?? 1));
     };
     window.addEventListener("popstate", onPopState);
 
     return () => window.removeEventListener("popstate", onPopState);
-  }, []);
+  }, [urlParsed.search]);
 
   const { data, isPending, isFetching } = useQuery<PaginatedEmployeesType>({
     queryKey: ["business_emps", businessId, currentPage],

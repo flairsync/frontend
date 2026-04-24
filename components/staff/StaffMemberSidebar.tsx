@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, Calendar, ClipboardList, CreditCard, LayoutDashboard, MessageSquare, Plug, Settings, ShieldAlert, ShoppingBag, User, Users, Utensils } from "lucide-react"
+import { BarChart3, Calendar, ClipboardList, CreditCard, LayoutDashboard, MessageSquare, PackageOpen, Plug, Settings, ShieldAlert, ShoppingBag, User, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { usePermissions } from "@/features/auth/usePermissions"
 
@@ -59,6 +59,14 @@ const staffNavData = {
                     url: "/manage/:id/staff/reservations",
                     icon: ShoppingBag,
                     requiredPermission: "RESERVATIONS",
+                    requiredAction: "read",
+                },
+                {
+                    key: "inventory",
+                    title: "Inventory",
+                    url: "/manage/:id/staff/inventory",
+                    icon: PackageOpen,
+                    requiredPermission: "INVENTORY",
                     requiredAction: "read",
                 },
                 {

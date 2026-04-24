@@ -6,6 +6,7 @@ import {
 } from "./service";
 import { toast } from "sonner";
 import { ProfessionalProfile } from "@/models/professional/ProfessionalProfile";
+import { navigate } from "vike/client/router";
 
 export const useProfessionalProfile = () => {
   const queryClient = useQueryClient();
@@ -38,6 +39,12 @@ export const useProfessionalProfile = () => {
         });
         queryClient.refetchQueries({
           queryKey: ["user_pro_profile"],
+        });
+
+        // refresh to hydrate ssr and get new permissions/hasPP state
+        navigate(window.location.href, {
+          keepScrollPosition: true,
+          overwriteLastHistoryEntry: true,
         });
       },
     });

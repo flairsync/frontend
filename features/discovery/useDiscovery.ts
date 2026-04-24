@@ -10,9 +10,13 @@ import {
     fetchMyOrdersApiCall,
     cancelReservationApiCall,
     checkDiscoveryTableAvailabilityApiCall,
+    fetchReservationTimelineApiCall,
+    postReservationActionApiCall,
     FetchDiscoveryBusinessesParams,
     FetchMyReservationsParams,
 } from "./discovery.api";
+import { CustomerActionPayload, CustomerTimelineResponse } from "./types";
+import { toast } from "sonner";
 import { DiscoveryBusiness } from "@/models/discovery/DiscoveryBusiness";
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
@@ -184,6 +188,62 @@ export const useCancelReservation = (businessId?: string) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["my_reservations"] });
+        },
+    });
+};
+
+const TERMINAL_STATUSES = ['completed', 'cancelled', 'no_show', 'expired'];
+
+export const useReservationTimeline = (businessId: string, reservationId: string) => {
+    return useQuery({
+        queryKey: ["reservation_timeline", businessId, reservationId],
+        queryFn: async (): Promise<CustomerTimelineResponse> => {
+            const res = await fetchReservationTimelineApiCall(businessId, reservationId);
+            return res.data?.data ?? res.data;
+        },
+        enabled: !!businessId && !!reservationId,
+        refetchInterval: (query) => {
+            const status = query.state.data?.reservation?.status?.toLowerCase();
+            if (status && TERMINAL_STATUSES.includes(status)) return false;
+            return 30_000;
+        },
+    });
+};
+
+export const useReservationAction = (businessId: string, reservationId: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload: CustomerActionPayload) => {
+            const res = await postReservationActionApiCall(businessId, reservationId, payload);
+            return res.data?.data ?? res.data;
+        },
+        onSuccess: (data) => {
+            // Optimistically merge the new event + updated actions into cached query data
+            queryClient.setQueryData(
+                ["reservation_timeline", businessId, reservationId],
+                (old: CustomerTimelineResponse | undefined) => {
+                    if (!old) return old;
+                    return {
+                        ...old,
+                        events: [...old.events, data.event],
+                        availableActions: data.availableActions,
+                    };
+                }
+            );
+        },
+        onError: (error: any) => {
+            const code = error.response?.data?.code;
+            if (code === 'reservation.not_found') {
+                toast.error("Reservation not found.");
+            } else if (code === 'reservation.forbidden') {
+                toast.error("This reservation doesn't belong to your account.");
+            } else if (code === 'reservation.action_not_allowed') {
+                toast.error("This action is no longer available. Please refresh.");
+                queryClient.invalidateQueries({ queryKey: ["reservation_timeline", businessId, reservationId] });
+            } else {
+                toast.error(error.response?.data?.message || "Action failed. Please try again.");
+            }
         },
     });
 };

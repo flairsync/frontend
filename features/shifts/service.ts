@@ -37,7 +37,7 @@ export interface BulkStaffWeeklyDto {
 
 export interface CreateIndividualShiftDto {
   businessId: string;
-  employmentId: string;
+  employmentId?: string; // Optional for OPEN shifts
   startTime: string; // "YYYY-MM-DD HH:mm:ss" (Wall Time)
   endTime: string; // "YYYY-MM-DD HH:mm:ss" (Wall Time)
   notes?: string;
@@ -64,6 +64,16 @@ export interface CheckOutDto {
   businessId: string;
   employmentId: string;
   location?: { lat: number; lng: number };
+  type?: 'PAID' | 'UNPAID';
+}
+
+export interface ValidateAttendanceDto {
+  adminId: string;
+  updateData: {
+    checkInTime: string; // "YYYY-MM-DD HH:mm:ss"
+    checkOutTime: string; // "YYYY-MM-DD HH:mm:ss"
+    notes: string;
+  };
 }
 
 // Availability DTOs
@@ -122,6 +132,14 @@ export const fetchManagerRosterApiCall = (businessId: string, startDate: string,
   return flairapi.get(`${baseUrl}/manager-roster?businessId=${businessId}&startDate=${startDate}&endDate=${endDate}`);
 };
 
+export const fetchAvailableShiftsApiCall = (businessId: string) => {
+  return flairapi.get(`${baseUrl}/available?businessId=${businessId}`);
+};
+
+export const fetchMyBidsApiCall = () => {
+  return flairapi.get(`${baseUrl}/my-bids`);
+};
+
 export const bulkScheduleTeamShiftsApiCall = (data: BulkScheduleTeamDto) => {
   return flairapi.post(`${baseUrl}/bulk-team`, data);
 };
@@ -146,8 +164,24 @@ export const respondToShiftApiCall = (shiftId: string, response: 'ACCEPTED' | 'R
   return flairapi.patch(`${baseUrl}/${shiftId}/respond`, { response });
 };
 
-export const claimShiftApiCall = (shiftId: string, employmentId: string) => {
-  return flairapi.post(`${baseUrl}/${shiftId}/claim`, { employmentId });
+export const claimShiftApiCall = (shiftId: string) => {
+  return flairapi.post(`${baseUrl}/${shiftId}/claim`, {});
+};
+
+export const bidOnShiftApiCall = (shiftId: string) => {
+  return flairapi.post(`${baseUrl}/${shiftId}/bid`, {});
+};
+
+export const fetchShiftBidsApiCall = (shiftId: string) => {
+  return flairapi.get(`${baseUrl}/${shiftId}/bids`);
+};
+
+export const fetchAllBusinessBidsApiCall = (businessId: string) => {
+  return flairapi.get(`${baseUrl}/bids/all?businessId=${businessId}`);
+};
+
+export const updateShiftBidStatusApiCall = (bidId: string, status: 'APPROVED' | 'REJECTED') => {
+  return flairapi.patch(`${baseUrl}/bids/${bidId}/status`, { status });
 };
 
 // Weekly Management API
@@ -253,4 +287,8 @@ export const fetchMyAttendanceApiCall = (businessId: string) => {
 export const fetchTodayAttendanceDashboardApiCall = (businessId: string, date?: string) => {
   const url = `${import.meta.env.BASE_URL}/attendance/today?businessId=${businessId}`;
   return flairapi.get(date ? `${url}&date=${date}` : url);
+};
+
+export const validateAttendanceApiCall = (attendanceId: string, data: ValidateAttendanceDto) => {
+  return flairapi.post(`${import.meta.env.BASE_URL}/attendance/${attendanceId}/validate`, data);
 };

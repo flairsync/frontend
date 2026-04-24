@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useTimeOff } from "@/features/shifts/useTimeOff";
 import { usePageContext } from "vike-react/usePageContext";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import dayjs from "@/utils/date-utils";
 
 interface RequestTimeOffModalProps {
     open: boolean;
@@ -21,17 +23,20 @@ export const RequestTimeOffModal: React.FC<RequestTimeOffModalProps> = ({
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
+    const businessTz = businessBasicDetails?.timezone || 'UTC';
+
     const { submitRequest, isSubmitting } = useTimeOff(businessId as string, employmentId);
 
-    const [startDate, setStartDate] = useState<string>(new Date().toISOString().split('T')[0]);
-    const [endDate, setEndDate] = useState<string>(new Date().toISOString().split('T')[0]);
+    const [startDate, setStartDate] = useState<string>(dayjs().tz(businessTz).format('YYYY-MM-DD'));
+    const [endDate, setEndDate] = useState<string>(dayjs().tz(businessTz).format('YYYY-MM-DD'));
     const [reason, setReason] = useState<string>("");
     const [documentUrl, setDocumentUrl] = useState<string>("");
 
     useEffect(() => {
         if (open) {
-            setStartDate(new Date().toISOString().split('T')[0]);
-            setEndDate(new Date().toISOString().split('T')[0]);
+            setStartDate(dayjs().tz(businessTz).format('YYYY-MM-DD'));
+            setEndDate(dayjs().tz(businessTz).format('YYYY-MM-DD'));
             setReason("");
             setDocumentUrl("");
         }

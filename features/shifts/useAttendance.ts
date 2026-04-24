@@ -8,10 +8,13 @@ import {
   fetchAttendanceLogsApiCall,
   fetchMyAttendanceApiCall,
   fetchTodayAttendanceDashboardApiCall,
+  validateAttendanceApiCall,
   CheckInDto,
   CheckOutDto,
+  ValidateAttendanceDto, // Assuming this DTO exists in service.ts
 } from "./service";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/utils/error-utils";
 
 export const useAttendance = (businessId?: string) => {
   const queryClient = useQueryClient();
@@ -31,7 +34,7 @@ export const useAttendance = (businessId?: string) => {
       toast.success("Checked in successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to check in");
+      toast.error(extractErrorMessage(error, "Failed to check in"));
     },
   });
 
@@ -44,7 +47,7 @@ export const useAttendance = (businessId?: string) => {
       toast.success("Checked out successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to check out");
+      toast.error(extractErrorMessage(error, "Failed to check out"));
     },
   });
 
@@ -57,7 +60,7 @@ export const useAttendance = (businessId?: string) => {
       toast.success("Break started");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to start break");
+      toast.error(extractErrorMessage(error, "Failed to start break"));
     },
   });
 
@@ -70,7 +73,23 @@ export const useAttendance = (businessId?: string) => {
       toast.success("Break ended");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to end break");
+      toast.error(extractErrorMessage(error, "Failed to end break"));
+    },
+  });
+
+  const validateAttendanceMutation = useMutation({
+    mutationFn: (args: { attendanceId: string; data: ValidateAttendanceDto }) =>
+      validateAttendanceApiCall(args.attendanceId, args.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["attendance-logs", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["my-attendance", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["attendance-today", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["upcoming-shifts"] }); // Also clear shifts
+      queryClient.invalidateQueries({ queryKey: ["manager-roster"] });
+      toast.success("Attendance validated successfully");
+    },
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to validate attendance"));
     },
   });
 
@@ -81,10 +100,12 @@ export const useAttendance = (businessId?: string) => {
     checkOut: checkOutMutation.mutateAsync,
     startBreak: startBreakMutation.mutateAsync,
     endBreak: endBreakMutation.mutateAsync,
+    validateAttendance: validateAttendanceMutation.mutateAsync,
     isCheckingIn: checkInMutation.isPending,
     isCheckingOut: checkOutMutation.isPending,
     isStartingBreak: startBreakMutation.isPending,
     isEndingBreak: endBreakMutation.isPending,
+    isValidatingAttendance: validateAttendanceMutation.isPending,
   };
 };
 

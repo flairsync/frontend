@@ -614,6 +614,7 @@ const MenuDetailPage: React.FC = () => {
                 {viewMode === 'simple' ? (
                     <SimpleMenuCategories
                         categories={categories}
+                        businessId={id}
                         onEditCategory={handleEditCategory}
                         onDeleteCategory={(catId) => setDeleteCategoryConfirm(catId)}
                         onAddItem={(catId) => setCreateItemCatId(catId)}
@@ -630,6 +631,7 @@ const MenuDetailPage: React.FC = () => {
                     <MenuCategoriesSortable
                         categories={categories}
                         setCategories={setCategories}
+                        businessId={id}
                         onChange={(changes) => setMenuChanges(changes)}
                         onEditCategory={handleEditCategory}
                         onDeleteCategory={(catId) => setDeleteCategoryConfirm(catId)}

@@ -36,12 +36,14 @@ export const useNotificationSocket = () => {
         }
 
         const handleNewNotification = (notification: NotificationPayload) => {
-            // Invalidate queries so unread count and notification list refresh
             queryClient.invalidateQueries({ queryKey: ['notifications'] });
 
-            // Optionally show a toast for new notifications based on type
             if (notification.type === 'ALERT' || notification.type === 'SECURITY') {
                 toast.error(notification.title, { description: notification.message });
+            } else if (notification.type === 'INVENTORY_LOW_STOCK') {
+                queryClient.invalidateQueries({ queryKey: ['inventory_low_stock'] });
+                queryClient.invalidateQueries({ queryKey: ['inventory_dashboard'] });
+                toast.warning(notification.title, { description: notification.message });
             } else {
                 toast.info(notification.title, { description: notification.message });
             }

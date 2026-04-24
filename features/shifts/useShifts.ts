@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
+import { extractErrorMessage } from "@/utils/error-utils";
 import {
   fetchShiftsApiCall,
   bulkScheduleTeamShiftsApiCall,
@@ -13,8 +14,14 @@ import {
   bulkStaffWeeklySetupApiCall,
   respondToShiftApiCall,
   claimShiftApiCall,
+  bidOnShiftApiCall,
+  fetchShiftBidsApiCall,
+  fetchAllBusinessBidsApiCall,
+  updateShiftBidStatusApiCall,
   fetchManagerRosterApiCall,
   getUpcomingShiftsApiCall,
+  fetchAvailableShiftsApiCall,
+  fetchMyBidsApiCall,
   BulkScheduleTeamDto,
   BulkStaffWeeklyDto,
   CreateIndividualShiftDto,
@@ -33,7 +40,7 @@ export interface PaginatedResponse<T> {
 // Helper to format for Wall Time
 const formatToWallTime = (date: Date | string) => {
   const d = typeof date === 'string' ? parseISO(date) : date;
-  return format(d, "yyyy-MM-dd HH:mm:ss");
+  return d.toISOString();
 };
 
 const formatToDateOnly = (date: Date | string) => {
@@ -80,8 +87,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to schedule team shifts";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to schedule team shifts"));
     }
   });
 
@@ -100,8 +106,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to schedule staff shifts";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to schedule staff shifts"));
     }
   });
 
@@ -119,8 +124,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to create shift";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to create shift"));
     }
   });
 
@@ -137,8 +141,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to update shift";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to update shift"));
     }
   });
 
@@ -150,8 +153,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to delete shift";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to delete shift"));
     }
   });
 
@@ -163,8 +165,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to generate weekly draft";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to generate weekly draft"));
     }
   });
 
@@ -180,8 +181,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to publish weekly schedule";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to publish weekly schedule"));
     }
   });
 
@@ -197,8 +197,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to copy shifts";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to copy shifts"));
     }
   });
   
@@ -211,22 +210,51 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["upcoming-shifts"] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to record response";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to record response"));
     }
   });
   
   const claimShiftMutation = useMutation({
     mutationFn: (shiftId: string) => 
-      claimShiftApiCall(shiftId, employmentId || ''),
+      claimShiftApiCall(shiftId),
     onSuccess: () => {
       toast.success("Shift claimed successfully");
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
       queryClient.invalidateQueries({ queryKey: ["upcoming-shifts"] });
+      queryClient.invalidateQueries({ queryKey: ["available-shifts", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to claim shift";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to claim shift"));
+    }
+  });
+
+  const bidOnShiftMutation = useMutation({
+    mutationFn: (shiftId: string) => 
+      bidOnShiftApiCall(shiftId),
+    onSuccess: () => {
+      toast.success("Bid submitted successfully");
+      queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["upcoming-shifts"] });
+      queryClient.invalidateQueries({ queryKey: ["available-shifts", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["my-bids"] });
+    },
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to submit bid"));
+    }
+  });
+
+  const updateShiftBidStatusMutation = useMutation({
+    mutationFn: ({ bidId, status }: { bidId: string; status: 'APPROVED' | 'REJECTED' }) => 
+      updateShiftBidStatusApiCall(bidId, status),
+    onSuccess: (_, variables) => {
+      toast.success(`Bid ${variables.status.toLowerCase()} successfully`);
+      queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["manager-roster"] });
+      queryClient.invalidateQueries({ queryKey: ["shift-bids"] });
+      queryClient.invalidateQueries({ queryKey: ["business-bids", businessId] });
+    },
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to update bid status"));
     }
   });
 
@@ -255,7 +283,28 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
     isResponding: respondToShiftMutation.isPending,
     claimShift: claimShiftMutation.mutate,
     isClaiming: claimShiftMutation.isPending,
+    bidOnShift: bidOnShiftMutation.mutate,
+    isBidding: bidOnShiftMutation.isPending,
+    approveShiftBid: (bidId: string, options?: any) => updateShiftBidStatusMutation.mutate({ bidId, status: 'APPROVED' }, options),
+    rejectShiftBid: (bidId: string, options?: any) => updateShiftBidStatusMutation.mutate({ bidId, status: 'REJECTED' }, options),
+    updateBidStatus: updateShiftBidStatusMutation.mutate,
+    isUpdatingBidStatus: updateShiftBidStatusMutation.isPending,
+    isApprovingBid: updateShiftBidStatusMutation.isPending && updateShiftBidStatusMutation.variables?.status === 'APPROVED'
   };
+};
+
+export const useShiftBids = (shiftId?: string) => {
+  return useQuery({
+    queryKey: ["shift-bids", shiftId],
+    queryFn: async () => {
+      if (!shiftId) return [];
+      const resp = await fetchShiftBidsApiCall(shiftId);
+      const resData = resp.data;
+      const actualData = resData?.data !== undefined ? resData.data : resData;
+      return Array.isArray(actualData) ? actualData : [];
+    },
+    enabled: !!shiftId,
+  });
 };
 
 export const useManagerRoster = (businessId: string, startDate?: Date | string, endDate?: Date | string) => {
@@ -295,9 +344,51 @@ export const useUpcomingShifts = (params: {
   return useQuery<PaginatedResponse<Shift>>({
     queryKey: ["upcoming-shifts", params],
     queryFn: async () => {
-      const resp = await getUpcomingShiftsApiCall(params);
-      return resp.data.data;
+      try {
+        const resp = await getUpcomingShiftsApiCall(params);
+        const resData = resp.data;
+        // Handle both { data: [...] } and { data: { data: [...] } }
+        const actualData = resData?.data !== undefined ? resData.data : resData;
+        return actualData;
+      } catch (error) {
+        console.warn("Failed to fetch upcoming shifts:", error);
+        throw error; // Let React Query handle the error state
+      }
     },
     enabled: !!params.businessId,
+  });
+};
+
+export const useAvailableShifts = (businessId: string) => {
+  return useQuery<Shift[]>({
+    queryKey: ["available-shifts", businessId],
+    queryFn: async () => {
+      const resp = await fetchAvailableShiftsApiCall(businessId);
+      return resp.data?.data || [];
+    },
+    enabled: !!businessId,
+  });
+};
+
+export const useMyBids = () => {
+  return useQuery<any[]>({
+    queryKey: ["my-bids"],
+    queryFn: async () => {
+      const resp = await fetchMyBidsApiCall();
+      return resp.data?.data || [];
+    },
+  });
+};
+
+export const useAllBusinessBids = (businessId: string) => {
+  return useQuery<any[]>({
+    queryKey: ["business-bids", businessId],
+    queryFn: async () => {
+      const resp = await fetchAllBusinessBidsApiCall(businessId);
+      const resData = resp.data;
+      const actualData = resData?.data !== undefined ? resData.data : resData;
+      return Array.isArray(actualData) ? actualData : [];
+    },
+    enabled: !!businessId,
   });
 };

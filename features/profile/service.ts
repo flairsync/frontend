@@ -21,3 +21,8 @@ export type UpdateUserProfileDTO = {
 export const updateUserProfileApiCall = (data: UpdateUserProfileDTO) => {
   return flairapi.patch(myUserProfileUrl, data);
 };
+
+
+export const getPublicUserDisplayName = (userId: string) => {
+  return flairapi.get(`${baseUrl}/${userId}/display-name`)
+}

@@ -4,12 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRightLeft, Loader2, DollarSign, ChevronLeft, ChevronRight, Filter } from "lucide-react"
+import { Calendar, ArrowRightLeft, Loader2, DollarSign, ChevronLeft, ChevronRight, Filter, CheckCircle2, Lock, ShieldCheck, Clock, Info } from "lucide-react"
 import { usePageContext } from "vike-react/usePageContext"
-import { useShifts, useUpcomingShifts } from "@/features/shifts/useShifts"
+import { navigate } from "vike/client/router"
+import { useShifts, useUpcomingShifts, useAvailableShifts, useMyBids } from "@/features/shifts/useShifts"
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
-import { Shift } from "@/models/business/shift/Shift"
-import { format, parseISO, addDays, startOfDay } from "date-fns"
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
+import { formatInBusinessTimezone } from "@/utils/date-utils"
+import { Shift, ShiftStatus } from "@/models/business/shift/Shift"
+import { format, parseISO, addDays, startOfDay, differenceInHours } from "date-fns"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState, useMemo, useEffect } from "react"
 import { RequestTimeOffModal } from "@/components/management/schedule/RequestTimeOffModal"
@@ -18,10 +21,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTimeOff } from "@/features/shifts/useTimeOff"
 import { useShiftSwaps } from "@/features/shifts/useShiftSwaps"
 import { AttendanceDashboard } from "@/components/management/schedule/AttendanceDashboard"
+import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance"
 import { StaffAvailabilityModal } from "@/components/management/schedule/StaffAvailabilityModal"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ValidationModal } from "@/components/management/schedule/ValidationModal"
 
 export default function StaffShiftsPage() {
     const { routeParams, urlParsed } = usePageContext();
@@ -31,6 +36,10 @@ export default function StaffShiftsPage() {
     // In our SaaS, a user usually has one employment per business
     const activeEmployment = myEmployments?.find(e => e.business?.id === businessId);
     const employmentId = activeEmployment?.id || "";
+    const isManagerOrOwner = activeEmployment?.type === 'OWNER' || activeEmployment?.type === 'MANAGER';
+
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
+    const businessTz = businessBasicDetails?.timezone || 'UTC';
 
     const { startDate, endDate } = useMemo(() => ({
         startDate: format(startOfDay(new Date()), 'yyyy-MM-dd'),
@@ -50,8 +59,8 @@ export default function StaffShiftsPage() {
         loadingShifts, 
         respondToShift, 
         isResponding,
-        claimShift,
-        isClaiming
+        bidOnShift,
+        isBidding
     } = useShifts(
         businessId as string,
         startDate,
@@ -68,24 +77,39 @@ export default function StaffShiftsPage() {
         limit,
     });
 
-    const upcomingShifts = upcomingData?.data || [];
-    const totalPages = upcomingData?.pages || 1;
+    const upcomingShifts = Array.isArray(upcomingData) ? upcomingData : (upcomingData?.data || []);
+    const totalPages = Array.isArray(upcomingData) ? 1 : (upcomingData?.pages || 1);
+
+    const { data: dashboard } = useTodayAttendanceDashboard(businessId as string);
+    const isCheckedOut = !!dashboard?.attendance?.checkOutTime;
 
     const { requests: timeOffRequests, fetchingRequests } = useTimeOff(businessId as string, employmentId);
     const { swaps: shiftSwaps, fetchingSwaps } = useShiftSwaps(businessId as string, employmentId);
+
+    const { data: availableShifts, isLoading: loadingAvailable } = useAvailableShifts(businessId as string);
+    const { data: myBids, isLoading: loadingMyBids } = useMyBids();
+    const { claimShift, isClaiming } = useShifts(businessId as string);
 
     const [activeTab, setActiveTab] = useState(urlParsed.search.tab || "today");
     const [isTimeOffOpen, setIsTimeOffOpen] = useState(false);
     const [isSwapOpen, setIsSwapOpen] = useState(false);
     const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false);
     const [selectedShiftId, setSelectedShiftId] = useState<string | null>(null);
+    const [submittingBidId, setSubmittingBidId] = useState<string | null>(null);
+
+    // Validation State
+    const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
+    const [validationAttendanceId, setValidationAttendanceId] = useState("");
+    const [validationInitialCheckIn, setValidationInitialCheckIn] = useState("");
+    const [validationInitialCheckOut, setValidationInitialCheckOut] = useState("");
 
     // Sync tab with URL search params
     useEffect(() => {
-        if (urlParsed.search.tab && urlParsed.search.tab !== activeTab) {
-            setActiveTab(urlParsed.search.tab);
+        const tab = urlParsed.search.tab || "today";
+        if (tab !== activeTab) {
+            setActiveTab(tab);
         }
-    }, [urlParsed.search.tab]);
+    }, [urlParsed.search.tab, activeTab]);
 
     // Reset page when filters change
     useEffect(() => {
@@ -102,7 +126,7 @@ export default function StaffShiftsPage() {
         }
     }, [urlParsed.search.date]);
 
-    const visibleShifts = (shifts || []).filter(s => s.isPublished || s.isVirtual);
+    const visibleShifts = (shifts || []).filter(s => s.isPublished);
     const nextShift = visibleShifts[0];
 
     const handleSwap = (shiftId?: string) => {
@@ -112,6 +136,45 @@ export default function StaffShiftsPage() {
 
     const handleResponse = (shiftId: string, response: 'ACCEPTED' | 'REJECTED') => {
         respondToShift({ shiftId, response });
+    };
+
+    const handleValidateShift = (shift: Shift) => {
+        if (!shift.attendanceId) return;
+        setValidationAttendanceId(shift.attendanceId);
+        setValidationInitialCheckIn(shift.startTime);
+        setValidationInitialCheckOut(shift.endTime);
+        setIsValidationModalOpen(true);
+    };
+
+    const getStatusBadge = (status: ShiftStatus) => {
+        switch (status) {
+            case ShiftStatus.SCHEDULED:
+                return <Badge variant="secondary" className="bg-gray-100 text-gray-600">Pending</Badge>;
+            case ShiftStatus.IN_PROGRESS:
+                return (
+                    <Badge variant="outline" className="border-green-200 bg-green-50 text-green-700 flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        Ongoing
+                    </Badge>
+                );
+            case ShiftStatus.COMPLETED:
+                return <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-700">Finished</Badge>;
+            case ShiftStatus.VALIDATED:
+                return (
+                    <Badge variant="outline" className="border-green-500 bg-green-50 text-green-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Validated
+                    </Badge>
+                );
+            case ShiftStatus.OPEN:
+                return (
+                    <Badge variant="outline" className="border-orange-500 bg-orange-50 text-orange-700 font-bold">
+                        OPEN
+                    </Badge>
+                );
+            default:
+                return <Badge variant="outline">{status}</Badge>;
+        }
     };
 
     return (
@@ -134,11 +197,19 @@ export default function StaffShiftsPage() {
                 </div>
             </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs 
+                value={activeTab} 
+                onValueChange={(val) => {
+                    setActiveTab(val);
+                    navigate(`/manage/${businessId}/staff/shifts?tab=${val}`);
+                }} 
+                className="w-full"
+            >
                 <TabsList className="mb-4">
                     <TabsTrigger value="today">Today</TabsTrigger>
                     <TabsTrigger value="schedule">Upcoming Schedule</TabsTrigger>
                     <TabsTrigger value="requests">Time Off & Swaps</TabsTrigger>
+                    <TabsTrigger value="bids">Bids & History</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="today" className="space-y-6">
@@ -156,17 +227,16 @@ export default function StaffShiftsPage() {
                         <CardContent className="flex flex-col gap-4">
                             {loadingShifts ? (
                                 <Skeleton className="h-20 w-full" />
-                            ) : nextShift && format(parseISO(nextShift.startTime), 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') ? (
+                            ) : nextShift && formatInBusinessTimezone(nextShift.startTime, businessTz, 'yyyy-MM-dd') === formatInBusinessTimezone(new Date().toISOString(), businessTz, 'yyyy-MM-dd') ? (
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-1">
-                                            <span className="font-bold text-lg">{format(parseISO(nextShift.startTime), 'EEEE, MMM d')}</span>
+                                            <span className="font-bold text-lg">{formatInBusinessTimezone(nextShift.startTime, businessTz, 'dddd, MMM D')}</span>
                                             <p className="text-sm text-muted-foreground">
-                                                {format(parseISO(nextShift.startTime), 'hh:mm a')} - {format(parseISO(nextShift.endTime), 'hh:mm a')}
+                                                {formatInBusinessTimezone(nextShift.startTime, businessTz)} - {formatInBusinessTimezone(nextShift.endTime, businessTz)}
                                             </p>
                                         </div>
                                         <div className="flex gap-2">
-                                            {nextShift.isVirtual && <Badge variant="secondary">VIRTUAL</Badge>}
                                             <Badge variant={nextShift.staffResponse === 'ACCEPTED' ? 'default' : 'secondary'}>
                                                 {nextShift.staffResponse || 'PENDING'}
                                             </Badge>
@@ -180,7 +250,7 @@ export default function StaffShiftsPage() {
                                     )}
 
                                     <div className="flex gap-3">
-                                        {!nextShift.isVirtual ? (
+                                        {!isCheckedOut ? (
                                             <>
                                                 {(nextShift.staffResponse === 'PENDING' || !nextShift.staffResponse) && (
                                                     <Button size="sm" onClick={() => handleResponse(nextShift.id, 'ACCEPTED')} disabled={isResponding}>Accept Shift</Button>
@@ -188,7 +258,14 @@ export default function StaffShiftsPage() {
                                                 <Button size="sm" variant="outline" onClick={() => handleSwap(nextShift.id)}>Swap Shift</Button>
                                             </>
                                         ) : (
-                                            <p className="text-xs text-muted-foreground italic">Scheduled Projection</p>
+                                            <div className="flex flex-col gap-3">
+                                                <Badge variant="outline" className="w-fit border-emerald-200 bg-emerald-50 text-emerald-700">Finished & Worked</Badge>
+                                                <div className="p-2 bg-muted/50 rounded border border-dashed border-muted-foreground/20">
+                                                    <p className="text-xs text-muted-foreground">
+                                                        <span className="font-semibold italic">Mistake?</span> Contact a supervisor to correct your record.
+                                                    </p>
+                                                </div>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
@@ -215,38 +292,89 @@ export default function StaffShiftsPage() {
                             <CardDescription>Pick up extra hours by claiming these unclaimed shifts.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            {(shifts || []).filter(s => s.status === 'OPEN').length === 0 ? (
+                            {loadingAvailable ? (
+                                <div className="flex justify-center py-6">
+                                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                                </div>
+                            ) : (availableShifts || []).length === 0 ? (
                                 <div className="text-center py-6 text-muted-foreground border border-dashed rounded-lg bg-background/50">
-                                    No open shifts currently available for bidding.
+                                    No open shifts currently available for bidding. Check back later!
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {(shifts || []).filter(s => s.status === 'OPEN').map(shift => (
-                                        <Card key={shift.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
-                                            <CardContent className="p-4 flex flex-col justify-between h-full gap-4">
-                                                <div>
-                                                    <div className="font-semibold text-lg">{format(parseISO(shift.startTime), 'EEEE, MMM d')}</div>
-                                                    <div className="text-sm text-muted-foreground">
-                                                        {format(parseISO(shift.startTime), 'hh:mm a')} - {format(parseISO(shift.endTime), 'hh:mm a')}
-                                                    </div>
-                                                    {shift.estimatedCost && (
-                                                        <div className="mt-2 flex items-center gap-1 text-sm font-medium text-emerald-600">
-                                                            <DollarSign className="h-3 w-3" />
-                                                            <span>{shift.estimatedCost} {shift.currency || 'EUR'}</span>
+                                    {(availableShifts || []).map(shift => {
+                                        // Check for tight gaps with scheduled shifts
+                                        const hasConflict = (shifts || []).some(scheduled => {
+                                            const availStart = new Date(shift.startTime);
+                                            const availEnd = new Date(shift.endTime);
+                                            const schedStart = new Date(scheduled.startTime);
+                                            const schedEnd = new Date(scheduled.endTime);
+                                            
+                                            const gapBefore = (availStart.getTime() - schedEnd.getTime()) / (1000 * 60 * 60);
+                                            const gapAfter = (schedStart.getTime() - availEnd.getTime()) / (1000 * 60 * 60);
+                                            
+                                            // 8h rest gap rule
+                                            return (gapBefore > 0 && gapBefore < 8) || (gapAfter > 0 && gapAfter < 8);
+                                        });
+
+                                        return (
+                                            <Card key={shift.id} className="bg-background shadow-sm hover:shadow-md transition-shadow">
+                                                <CardContent className="p-4 flex flex-col justify-between h-full gap-4">
+                                                    <div>
+                                                        <div className="flex justify-between items-start">
+                                                            <div className="font-semibold text-lg">{formatInBusinessTimezone(shift.startTime, businessTz, 'dddd, MMM D')}</div>
+                                                            {hasConflict && (
+                                                                <Badge variant="outline" className="text-[10px] border-amber-500 text-amber-600 bg-amber-50 gap-1">
+                                                                    <Clock className="w-3 h-3" />
+                                                                    Short Rest Gap
+                                                                </Badge>
+                                                            )}
                                                         </div>
-                                                    )}
-                                                </div>
-                                                <Button 
-                                                    className="w-full" 
-                                                    onClick={() => claimShift(shift.id)}
-                                                    disabled={isClaiming}
-                                                >
-                                                    {isClaiming ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                                                    Claim Shift
-                                                </Button>
-                                            </CardContent>
-                                        </Card>
-                                    ))}
+                                                        <div className="text-sm text-muted-foreground">
+                                                            {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
+                                                        </div>
+                                                        {shift.estimatedCost && (
+                                                            <div className="mt-2 flex items-center gap-1 text-sm font-medium text-emerald-600">
+                                                                <DollarSign className="h-3 w-3" />
+                                                                <span>{shift.estimatedCost} {shift.currency || 'EUR'}</span>
+                                                            </div>
+                                                        )}
+                                                        {hasConflict && (
+                                                            <p className="text-[10px] text-amber-600 mt-2 italic flex items-center gap-1">
+                                                                <Info className="w-3 h-3" />
+                                                                Less than 8h from another shift
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <Button 
+                                                            className="flex-1" 
+                                                            onClick={() => {
+                                                                setSubmittingBidId(shift.id);
+                                                                bidOnShift(shift.id, { onSettled: () => setSubmittingBidId(null) });
+                                                            }}
+                                                            disabled={isBidding || submittingBidId === shift.id}
+                                                        >
+                                                            {isBidding || submittingBidId === shift.id ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                                                            Bid
+                                                        </Button>
+                                                        <Button 
+                                                            variant="secondary"
+                                                            className="flex-1" 
+                                                            onClick={() => {
+                                                                setSubmittingBidId(shift.id + '-claim');
+                                                                claimShift(shift.id, { onSettled: () => setSubmittingBidId(null) });
+                                                            }}
+                                                            disabled={isClaiming || submittingBidId === shift.id + '-claim'}
+                                                        >
+                                                            {isClaiming || submittingBidId === shift.id + '-claim' ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                                                            Claim
+                                                        </Button>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </CardContent>
@@ -269,7 +397,9 @@ export default function StaffShiftsPage() {
                                             <SelectContent>
                                                 <SelectItem value="ALL">All Statuses</SelectItem>
                                                 <SelectItem value="SCHEDULED">Scheduled</SelectItem>
+                                                <SelectItem value="IN_PROGRESS">Ongoing</SelectItem>
                                                 <SelectItem value="COMPLETED">Completed</SelectItem>
+                                                <SelectItem value="VALIDATED">Validated</SelectItem>
                                                 <SelectItem value="CANCELLED">Cancelled</SelectItem>
                                             </SelectContent>
                                         </Select>
@@ -326,9 +456,9 @@ export default function StaffShiftsPage() {
                                         ) : (
                                             upcomingShifts.map((shift: Shift) => (
                                                 <TableRow key={shift.id}>
-                                                    <TableCell className="font-medium">{format(parseISO(shift.startTime), 'EEE, MMM d')}</TableCell>
+                                                    <TableCell className="font-medium">{formatInBusinessTimezone(shift.startTime, businessTz, 'ddd, MMM D')}</TableCell>
                                                     <TableCell>
-                                                        {format(parseISO(shift.startTime), 'hh:mm a')} - {format(parseISO(shift.endTime), 'hh:mm a')}
+                                                        {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
                                                     </TableCell>
                                                     <TableCell>
                                                         {shift.estimatedCost ? (
@@ -341,9 +471,7 @@ export default function StaffShiftsPage() {
                                                         )}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {shift.isVirtual ? (
-                                                            <Badge variant="secondary">VIRTUAL</Badge>
-                                                        ) : shift.staffResponse ? (
+                                                        {shift.staffResponse ? (
                                                             <Badge variant={shift.staffResponse === 'ACCEPTED' ? 'outline' : 'destructive'} className={shift.staffResponse === 'ACCEPTED' ? 'border-emerald-500 text-emerald-600' : ''}>
                                                                 {shift.staffResponse}
                                                             </Badge>
@@ -351,11 +479,22 @@ export default function StaffShiftsPage() {
                                                             <Badge variant="secondary">PENDING</Badge>
                                                         )}
                                                     </TableCell>
-                                                    <TableCell><Badge variant="outline">{shift.isVirtual ? 'PROJECTED' : shift.status}</Badge></TableCell>
+                                                    <TableCell>
+                                                        <div className="flex items-center gap-2">
+                                                            {getStatusBadge(shift.status)}
+                                                            {shift.status === ShiftStatus.VALIDATED && <Lock className="h-3 w-3 text-green-600" />}
+                                                        </div>
+                                                    </TableCell>
                                                     <TableCell className="text-right">
                                                         <div className="flex justify-end gap-2">
-                                                            {!shift.isVirtual && (
+                                                            {shift.status !== ShiftStatus.VALIDATED && (
                                                                 <>
+                                                                    {isManagerOrOwner && shift.status === ShiftStatus.COMPLETED && shift.attendanceId && (
+                                                                        <Button variant="ghost" size="sm" onClick={() => handleValidateShift(shift)} className="text-green-600 hover:text-green-700 hover:bg-green-50">
+                                                                            <ShieldCheck className="h-4 w-4 mr-2" />
+                                                                            Validate
+                                                                        </Button>
+                                                                    )}
                                                                     {(shift.staffResponse === 'PENDING' || !shift.staffResponse) && (
                                                                         <Button variant="ghost" size="sm" onClick={() => handleResponse(shift.id, 'ACCEPTED')} disabled={isResponding} className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">Accept</Button>
                                                                     )}
@@ -364,6 +503,12 @@ export default function StaffShiftsPage() {
                                                                         Swap
                                                                     </Button>
                                                                 </>
+                                                            )}
+                                                            {shift.status === ShiftStatus.VALIDATED && (
+                                                                <span className="text-xs text-muted-foreground flex items-center gap-1 italic">
+                                                                    <Lock className="h-3 w-3" />
+                                                                    Locked
+                                                                </span>
                                                             )}
                                                         </div>
                                                     </TableCell>
@@ -436,7 +581,7 @@ export default function StaffShiftsPage() {
                                         (timeOffRequests || []).map(req => (
                                             <TableRow key={req.id}>
                                                 <TableCell className="text-sm">
-                                                    {format(parseISO(req.startDate), 'MMM d, yyyy')} - {format(parseISO(req.endDate), 'MMM d, yyyy')}
+                                                    {formatInBusinessTimezone(req.startDate, businessTz, 'MMM D, yyyy')} - {formatInBusinessTimezone(req.endDate, businessTz, 'MMM D, yyyy')}
                                                 </TableCell>
                                                 <TableCell className="max-w-[200px] truncate">{req.reason}</TableCell>
                                                 <TableCell>
@@ -472,10 +617,10 @@ export default function StaffShiftsPage() {
                                     ) : (shiftSwaps || []).length === 0 ? (
                                         <TableRow><TableCell colSpan={3} className="text-center py-4 text-muted-foreground">No shift swaps found.</TableCell></TableRow>
                                     ) : (
-                                        (shiftSwaps || []).map(swap => (
+                                        (shiftSwaps || []).map((swap: any) => (
                                             <TableRow key={swap.id}>
                                                 <TableCell className="text-sm">
-                                                    {swap.shift ? `${format(parseISO(swap.shift.startTime), 'MMM d')}: ${format(parseISO(swap.shift.startTime), 'HH:mm')} - ${format(parseISO(swap.shift.endTime), 'HH:mm')}` : 'Unknown Shift'}
+                                                    {swap.shift ? `${formatInBusinessTimezone(swap.shift.startTime, businessTz, 'MMM D')}: ${formatInBusinessTimezone(swap.shift.startTime, businessTz)} - ${formatInBusinessTimezone(swap.shift.endTime, businessTz)}` : 'Unknown Shift'}
                                                 </TableCell>
                                                 <TableCell className="text-sm">
                                                     {swap.fromEmploymentId === employmentId ? `With: ${swap.toEmployment?.professionalProfile?.displayName || 'Colleague'}` : `From: ${swap.fromEmployment?.professionalProfile?.displayName || 'Colleague'}`}
@@ -490,6 +635,81 @@ export default function StaffShiftsPage() {
                                     )}
                                 </TableBody>
                             </Table>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="bids" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>My Shift Bids</CardTitle>
+                            <CardDescription>Track the status of your applications for open shifts.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Shift Date</TableHead>
+                                            <TableHead>Times</TableHead>
+                                            <TableHead>Restaurant</TableHead>
+                                            <TableHead>Bid Submitted</TableHead>
+                                            <TableHead>Status</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {loadingMyBids ? (
+                                            <TableRow><TableCell colSpan={5} className="text-center py-8">
+                                                <div className="flex items-center justify-center gap-2">
+                                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                                    <span>Loading your bids...</span>
+                                                </div>
+                                            </TableCell></TableRow>
+                                        ) : (myBids || []).length === 0 ? (
+                                            <TableRow><TableCell colSpan={5} className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2">
+                                                <ArrowRightLeft className="h-8 w-8 opacity-20" />
+                                                <p>You haven't placed any bids yet.</p>
+                                            </TableCell></TableRow>
+                                        ) : (
+                                            (myBids || []).map((bid: any) => (
+                                                <TableRow key={bid.id}>
+                                                    <TableCell className="font-medium">
+                                                        {bid.shift ? formatInBusinessTimezone(bid.shift.startTime, businessTz, 'ddd, MMM D') : 'Unknown Date'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {bid.shift ? (
+                                                            `${formatInBusinessTimezone(bid.shift.startTime, businessTz)} - ${formatInBusinessTimezone(bid.shift.endTime, businessTz)}`
+                                                        ) : (
+                                                            'N/A'
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>{bid.shift?.business?.name || 'Your Restaurant'}</TableCell>
+                                                    <TableCell className="text-xs text-muted-foreground">
+                                                        {formatInBusinessTimezone(bid.createdAt, businessTz, 'MMM D, HH:mm')}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {bid.status === 'PENDING' && (
+                                                            <Badge variant="outline" className="border-amber-500 text-amber-600 bg-amber-50">
+                                                                Pending Review
+                                                            </Badge>
+                                                        )}
+                                                        {bid.status === 'APPROVED' && (
+                                                            <Badge variant="outline" className="border-emerald-500 text-emerald-600 bg-emerald-50">
+                                                                Approved
+                                                            </Badge>
+                                                        )}
+                                                        {bid.status === 'REJECTED' && (
+                                                            <Badge variant="outline" className="border-red-500 text-red-600 bg-red-50">
+                                                                Rejected
+                                                            </Badge>
+                                                        )}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -512,6 +732,14 @@ export default function StaffShiftsPage() {
                 isOpen={isAvailabilityOpen}
                 onClose={() => setIsAvailabilityOpen(false)}
                 employmentId={employmentId}
+            />
+
+            <ValidationModal
+                open={isValidationModalOpen}
+                onOpenChange={setIsValidationModalOpen}
+                attendanceId={validationAttendanceId}
+                initialCheckIn={validationInitialCheckIn}
+                initialCheckOut={validationInitialCheckOut}
             />
         </div>
     )

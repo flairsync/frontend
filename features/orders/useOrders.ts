@@ -6,9 +6,11 @@ import {
     fetchOrderDetailsApiCall,
     updateOrderApiCall,
     addItemsToOrderApiCall,
-    sendOrderApiCall,
-    serveOrderApiCall,
-    closeOrderApiCall,
+    acceptOrderApiCall,
+    rejectOrderApiCall,
+    prepareOrderApiCall,
+    readyOrderApiCall,
+    completeOrderApiCall,
     cancelOrderApiCall,
     createPaymentApiCall,
     refundPaymentApiCall,
@@ -18,12 +20,13 @@ import {
     CreateOrderDto,
     UpdateOrderDto,
     CreatePaymentDto,
-    Order
+    Order,
+    OrderStatus,
 } from "./service";
 
 export const useOrders = (
     businessId: string,
-    status?: "ongoing" | "all" | "open" | "sent" | "served" | "closed" | "cancelled",
+    status?: "ongoing" | "all" | OrderStatus,
     startDate?: string,
     endDate?: string
 ) => {
@@ -92,40 +95,88 @@ export const useOrders = (
         }
     });
 
-    const sendOrderMutation = useMutation({
-        mutationFn: (orderId: string) => sendOrderApiCall(businessId, orderId),
+    const handleInvalidTransition = (error: any, refetchFn: () => void) => {
+        if (error.response?.data?.code === "order.invalid_transition") {
+            toast.error("Order was already updated. Refreshing...");
+            refetchFn();
+        }
+    };
+
+    const acceptOrderMutation = useMutation({
+        mutationFn: (orderId: string) => acceptOrderApiCall(businessId, orderId),
         onSuccess: () => {
-            toast.success("Order sent to kitchen");
+            toast.success("Order accepted");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["inventory_items", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["inventory_dashboard", businessId] });
         },
-        onError: () => {
-            toast.error("Failed to send order to kitchen");
+        onError: (error: any) => {
+            const code = error.response?.data?.code;
+            if (code === "inventory.insufficient_stock") {
+                const msg = error.response?.data?.message || "Insufficient stock to accept this order.";
+                toast.error("Insufficient Stock", {
+                    description: msg,
+                    duration: 8000,
+                });
+                return;
+            }
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (code !== "order.invalid_transition") toast.error("Failed to accept order");
         }
     });
 
-    const serveOrderMutation = useMutation({
-        mutationFn: (orderId: string) => serveOrderApiCall(businessId, orderId),
+    const rejectOrderMutation = useMutation({
+        mutationFn: ({ orderId, data }: { orderId: string; data?: { reason?: string } }) =>
+            rejectOrderApiCall(businessId, orderId, data),
         onSuccess: () => {
-            toast.success("Order marked as served");
+            toast.success("Order rejected");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
         },
-        onError: () => {
-            toast.error("Failed to mark order as served");
+        onError: (error: any) => {
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (error.response?.data?.code !== "order.invalid_transition") toast.error("Failed to reject order");
         }
     });
 
-    const closeOrderMutation = useMutation({
+    const prepareOrderMutation = useMutation({
+        mutationFn: (orderId: string) => prepareOrderApiCall(businessId, orderId),
+        onSuccess: () => {
+            toast.success("Order is now being prepared");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+        },
+        onError: (error: any) => {
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (error.response?.data?.code !== "order.invalid_transition") toast.error("Failed to start preparing order");
+        }
+    });
+
+    const readyOrderMutation = useMutation({
+        mutationFn: (orderId: string) => readyOrderApiCall(businessId, orderId),
+        onSuccess: () => {
+            toast.success("Order marked as ready");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+        },
+        onError: (error: any) => {
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (error.response?.data?.code !== "order.invalid_transition") toast.error("Failed to mark order as ready");
+        }
+    });
+
+    const completeOrderMutation = useMutation({
         mutationFn: ({ orderId, data }: { orderId: string; data?: { force?: boolean; notes?: string } }) =>
-            closeOrderApiCall(businessId, orderId, data),
+            completeOrderApiCall(businessId, orderId, data),
         onSuccess: () => {
-            toast.success("Order closed successfully");
+            toast.success("Order completed");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
         },
         onError: (error: any) => {
-            const msg = error.response?.data?.message || "Failed to close order";
-            toast.error(msg);
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (error.response?.data?.code !== "order.invalid_transition") {
+                const msg = error.response?.data?.message || "Failed to complete order";
+                toast.error(msg);
+            }
         }
     });
 
@@ -133,28 +184,44 @@ export const useOrders = (
         mutationFn: ({ orderId, data }: { orderId: string; data?: { reason?: string } }) =>
             cancelOrderApiCall(businessId, orderId, data),
         onSuccess: () => {
-            toast.success("Order cancelled");
+            toast.success("Order canceled");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
         },
         onError: (error: any) => {
-            const msg = error.response?.data?.message || "Failed to cancel order";
-            toast.error(msg);
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (error.response?.data?.code !== "order.invalid_transition") {
+                const msg = error.response?.data?.message || "Failed to cancel order";
+                toast.error(msg);
+            }
         }
     });
 
     const createPaymentMutation = useMutation({
-        mutationFn: ({ orderId, data }: { orderId: string; data: CreatePaymentDto }) =>
-            createPaymentApiCall(businessId, orderId, data),
+        mutationFn: ({ orderId, data, idempotencyKey }: { orderId: string; data: CreatePaymentDto; idempotencyKey?: string }) =>
+            createPaymentApiCall(businessId, orderId, data, idempotencyKey),
+        retry: (failureCount, error: any) => {
+            if (failureCount >= 2) return false;
+            const status = error?.response?.status;
+            // Only retry true network failures (no response) or 5xx — never 4xx
+            if (status && status < 500) return false;
+            return true;
+        },
         onSuccess: () => {
             toast.success("Payment recorded successfully");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
             queryClient.invalidateQueries({ queryKey: ["order", businessId] });
         },
         onError: (error: any) => {
-            const msg = error.response?.data?.message || "Failed to record payment";
-            toast.error(msg);
+            if (error.response?.data?.code === "payment.idempotency_key_conflict") {
+                toast.error("Something went wrong with this payment. Please refresh and try again.");
+                queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+                queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+            } else {
+                const msg = error.response?.data?.message || "Failed to record payment";
+                toast.error(msg);
+            }
         }
     });
 
@@ -225,12 +292,16 @@ export const useOrders = (
         isUpdatingOrder: updateOrderMutation.isPending,
         addItemsToOrder: addItemsToOrderMutation.mutate,
         isAddingItems: addItemsToOrderMutation.isPending,
-        sendOrder: sendOrderMutation.mutate,
-        isSendingOrder: sendOrderMutation.isPending,
-        serveOrder: serveOrderMutation.mutate,
-        isServingOrder: serveOrderMutation.isPending,
-        closeOrder: closeOrderMutation.mutate,
-        isClosingOrder: closeOrderMutation.isPending,
+        acceptOrder: acceptOrderMutation.mutate,
+        isAcceptingOrder: acceptOrderMutation.isPending,
+        rejectOrder: rejectOrderMutation.mutate,
+        isRejectingOrder: rejectOrderMutation.isPending,
+        prepareOrder: prepareOrderMutation.mutate,
+        isPreparingOrder: prepareOrderMutation.isPending,
+        readyOrder: readyOrderMutation.mutate,
+        isMarkingReady: readyOrderMutation.isPending,
+        completeOrder: completeOrderMutation.mutate,
+        isCompletingOrder: completeOrderMutation.isPending,
         cancelOrder: cancelOrderMutation.mutate,
         isCancellingOrder: cancelOrderMutation.isPending,
         createPayment: createPaymentMutation.mutateAsync,

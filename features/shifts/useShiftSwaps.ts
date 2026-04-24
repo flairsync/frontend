@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/utils/error-utils";
 import {
   fetchShiftSwapsApiCall,
   requestShiftSwapApiCall,
@@ -35,8 +36,7 @@ export const useShiftSwaps = (businessId: string, employmentId?: string) => {
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to request shift swap";
-      toast.error(msg);
+      toast.error(extractErrorMessage(error, "Failed to request shift swap"));
     }
   });
 
@@ -49,8 +49,12 @@ export const useShiftSwaps = (businessId: string, employmentId?: string) => {
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
-      const msg = error.response?.data?.message || "Failed to update shift swap status";
-      toast.error(msg);
+      const msg = extractErrorMessage(error, "Failed to update shift swap status");
+      const respData = error.response?.data;
+      toast.error(msg, {
+        description: respData?.statusCode === 400 ? 'Smart Guard Validation Failed' : undefined,
+        duration: 6000,
+      });
     }
   });
 

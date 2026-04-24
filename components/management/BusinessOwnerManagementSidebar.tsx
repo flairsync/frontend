@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, CalendarCheck, CreditCard, Images, LayoutDashboard, PackageOpen, Plug, Settings, ShieldAlert, ShoppingBag, Users, Utensils } from "lucide-react"
+import { BarChart3, CalendarCheck, CreditCard, Images, LayoutDashboard, PackageOpen, Plug, Settings, ShieldAlert, ShoppingBag, ClockFadingIcon, Utensils, Users, ScrollText } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { useMyBusinesses } from "@/features/business/useMyBusinesses"
 import { usePageContext } from "vike-react/usePageContext"
@@ -65,6 +65,14 @@ const ownerNavData = {
                     requiredAction: "read",
                 },
                 {
+                    key: "attendance",
+                    title: "Attendance",
+                    url: "/manage/:id/owner/attendance",
+                    icon: ClockFadingIcon,
+                    requiredPermission: "STAFF",
+                    requiredAction: "read",
+                },
+                {
                     key: "inventory",
                     title: "Inventory Management",
                     url: "/manage/:id/owner/inventory",
@@ -111,6 +119,12 @@ const ownerNavData = {
                     icon: BarChart3,
                     requiredPermission: "ORDERS", // Or specific analytics perm
                     requiredAction: "read",
+                },
+                {
+                    key: "audit-logs",
+                    title: "Audit Logs",
+                    url: "/manage/:id/owner/audit-logs",
+                    icon: ScrollText,
                 },
                 {
                     key: "danger",

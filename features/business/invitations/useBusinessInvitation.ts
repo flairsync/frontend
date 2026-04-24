@@ -21,6 +21,7 @@ export const useBusinessInvitation = (inviteId?: string) => {
       const resp = await fetchInvitationDetailsApiCall(inviteId);
       return BusinessEmployeeInvitation.parseApiResponse(resp.data.data);
     },
+    enabled: !!inviteId,
     gcTime: Infinity,
     staleTime: Infinity,
   });

@@ -9,12 +9,16 @@ import { useBusinessEmployees } from '@/features/business/employment/useBusiness
 import { Badge } from '@/components/ui/badge'
 import { format, parseISO } from 'date-fns'
 import { useProfile } from '@/features/profile/useProfile'
+import { formatInBusinessTimezone } from '@/utils/date-utils'
+import { useMyBusiness } from '@/features/business/useMyBusiness'
 
 const ManagerScheduleTimeOffTab = () => {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { requests, fetchingRequests, updateStatus } = useTimeOff(businessId as string);
     const { employees } = useBusinessEmployees(businessId as string);
+    const { myBusinessFullDetails } = useMyBusiness(businessId as string);
+    const businessTz = myBusinessFullDetails?.timezone || 'UTC';
 
     const getEmployeeName = (id: string) => {
         const emp = employees?.find(e => e.id === id);
@@ -58,7 +62,7 @@ const ManagerScheduleTimeOffTab = () => {
                                 <TableRow key={request.id}>
                                     <TableCell className="font-medium">{getEmployeeName(request.employmentId)}</TableCell>
                                     <TableCell>
-                                        {format(parseISO(request.startDate), 'MMM d')} - {format(parseISO(request.endDate), 'MMM d, yyyy')}
+                                        {formatInBusinessTimezone(request.startDate, businessTz, 'MMM D')} - {formatInBusinessTimezone(request.endDate, businessTz, 'MMM D, yyyy')}
                                     </TableCell>
                                     <TableCell className="max-w-xs truncate">{request.reason}</TableCell>
                                     <TableCell>

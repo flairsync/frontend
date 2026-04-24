@@ -27,7 +27,15 @@ const JoinProfessionalPage = () => {
     } = useProfessionalProfile();
 
     if (userProfessionalProfile) {
-        navigate("/manage/overview");
+        const invitation = urlParsed.search["invitation"];
+        const origin = urlParsed.search["origin"];
+        if (invitation) {
+            navigate(`/join?invitation=${invitation}`);
+        } else if (origin) {
+            navigate(origin);
+        } else {
+            navigate("/manage/overview");
+        }
     }
 
     console.log(urlParsed.search["invitation"]);
@@ -67,7 +75,7 @@ const JoinProfessionalPage = () => {
                         </Alert>
                     </div>
                 )}
-                {!loadingInvitationDetails && !invitationDetails && (
+                {!loadingInvitationDetails && !invitationDetails && "invitation" in urlParsed.search && (
                     <div className="mt-6 max-w-6xl mx-auto px-6">
                         <Alert className="border-amber-200 bg-amber-50">
                             <Building2Icon className="h-5 w-5 text-amber-600" />

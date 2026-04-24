@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { useVerification } from "@/features/auth/useVerification"
 import { usePageContext } from "vike-react/usePageContext"
+import { navigate } from "vike/client/router"
 
 export default function VerifyAccountPage() {
 
@@ -55,6 +56,10 @@ export default function VerifyAccountPage() {
                         type: "success",
                         text: "✅ Account verified successfully!",
                     })
+                    const origin = new URLSearchParams(window.location.search).get('origin') || '/feed';
+                    setTimeout(() => {
+                        navigate(origin);
+                    }, 1500);
                 },
                 onError: () => {
                     setMessage({

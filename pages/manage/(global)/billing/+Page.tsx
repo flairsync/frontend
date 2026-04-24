@@ -136,7 +136,7 @@ const BillingPage = () => {
                 </CardContent>
             </Card>
 
-            {/* Invoices */}
+            {/* Subscriptions */}
             <BillingInvoicesTable
                 subscriptions={subscriptions}
             />

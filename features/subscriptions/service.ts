@@ -7,6 +7,8 @@ const subscriptionPacksUrl = `${baseUrl}/packs`;
 const checkoutUrl = `${baseUrl}/checkout`;
 const usageUrl = `${baseUrl}/usage`;
 const portalUrl = `${baseUrl}/portal`;
+const syncUrl = `${baseUrl}/sync`;
+const invoiceUrl = `${baseUrl}/invoice`;
 
 export const getCurrentUserSubscriptionApiCall = () => {
   return flairapi.get(currentSubscriptionUrl);
@@ -31,4 +33,16 @@ export const getUserUsageApiCall = () => {
 
 export const getSubscriptionPortalUrlApiCall = () => {
   return flairapi.get(portalUrl);
+};
+
+export const syncSubscriptionApiCall = (subId: string) => {
+  return flairapi.post(`${syncUrl}/${subId}`);
+};
+
+export const getSubscriptionInvoicesApiCall = (subId: string) => {
+  return flairapi.get(`${invoiceUrl}/${subId}`);
+};
+
+export const downloadSubscriptionInvoiceApiCall = (subId: string, invoiceId: string) => {
+  return flairapi.get(`${invoiceUrl}/${subId}/download/${invoiceId}`);
 };

@@ -13,6 +13,11 @@ export interface AttendanceLog {
   checkInLocation?: Location;
   checkOutLocation?: Location;
   breaks: AttendanceBreak[];
+  lifecycleStatus: 'ONGOING' | 'FINISHED' | 'VALIDATED';
+  isValidated: boolean;
+  validatedAt?: string; // ISO DateTime
+  validatedById?: string; // UUID
+  notes?: string;
   createdAt: string;
   updatedAt: string;
 }

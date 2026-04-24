@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea"
 import BusinessSettingsGeneralDetails from "@/components/management/settings/BusinessSettingsGeneralDetails"
 import BusinessSettingsOpenPeriods from "@/components/management/settings/BusinessSettingsOpenPeriods"
 import BusinessSettingsLocation from "@/components/management/settings/BusinessSettingsLocation"
+import BusinessSettingsLabor from "@/components/management/settings/BusinessSettingsLabor"
 
 const BusinessSettingsPage = () => {
 
@@ -81,6 +82,15 @@ const BusinessSettingsPage = () => {
                 disabled={updatingMyBusinessOpenHours}
                 onSaveDetails={(data) => {
                     updateMyBusinessOpenHours(data);
+                }}
+            />
+
+            {/* Labor & Compliance */}
+            <BusinessSettingsLabor
+                businessDetails={myBusinessFullDetails}
+                disabled={updatingMyBusiness}
+                onSaveDetails={(data) => {
+                    updateMyBusinessDetails(data);
                 }}
             />
 
@@ -167,6 +177,71 @@ const BusinessSettingsPage = () => {
                                         disabled={updatingMyBusiness}
                                     />
                                 </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Max Party Size</Label>
+                                        <p className="text-xs text-muted-foreground">Maximum guests allowed per reservation</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.maxPartySize ?? 20}
+                                        onBlur={(e) => updateMyBusinessDetails({ maxPartySize: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Booking Window (Days)</Label>
+                                        <p className="text-xs text-muted-foreground">How far ahead customers can book</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.reservationBookingWindowDays ?? 60}
+                                        onBlur={(e) => updateMyBusinessDetails({ reservationBookingWindowDays: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Buffer Between Reservations (min)</Label>
+                                        <p className="text-xs text-muted-foreground">Gap added between back-to-back table slots</p>
+                                    </div>
+                                    <Input
+                                        type="number"
+                                        className="w-20"
+                                        defaultValue={myBusinessFullDetails?.reservationBufferMinutes ?? 0}
+                                        onBlur={(e) => updateMyBusinessDetails({ reservationBufferMinutes: parseInt(e.target.value) })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between pl-6 border-l-2 border-muted">
+                                    <div className="space-y-0.5">
+                                        <Label>Auto No-Show</Label>
+                                        <p className="text-xs text-muted-foreground">Automatically mark confirmed reservations as no-show after grace period</p>
+                                    </div>
+                                    <Switch
+                                        checked={myBusinessFullDetails?.autoNoShow ?? false}
+                                        onCheckedChange={(val) => updateMyBusinessDetails({ autoNoShow: val })}
+                                        disabled={updatingMyBusiness}
+                                    />
+                                </div>
+                                {myBusinessFullDetails?.autoNoShow && (
+                                    <div className="flex items-center justify-between pl-12 border-l-2 border-muted">
+                                        <div className="space-y-0.5">
+                                            <Label>Grace Period (min)</Label>
+                                            <p className="text-xs text-muted-foreground">Minutes past reservation time before auto no-show triggers</p>
+                                        </div>
+                                        <Input
+                                            type="number"
+                                            className="w-20"
+                                            defaultValue={myBusinessFullDetails?.gracePeriodMinutes ?? 30}
+                                            onBlur={(e) => updateMyBusinessDetails({ gracePeriodMinutes: parseInt(e.target.value) })}
+                                            disabled={updatingMyBusiness}
+                                        />
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>

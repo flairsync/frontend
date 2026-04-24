@@ -7,7 +7,9 @@ import { useShiftSwaps } from "@/features/shifts/useShiftSwaps";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useShifts } from "@/features/shifts/useShifts";
 import { usePageContext } from "vike-react/usePageContext";
-import { format, parseISO } from "date-fns";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { formatInBusinessTimezone } from "@/utils/date-utils";
+import dayjs from "@/utils/date-utils";
 
 interface RequestShiftSwapModalProps {
     open: boolean;
@@ -25,12 +27,18 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
+    const businessTz = businessBasicDetails?.timezone || 'UTC';
+
     const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
-    const { shifts, fetchingShifts } = useShifts(businessId, new Date(), format(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), "yyyy-MM-dd"), currentEmploymentId);
+    const startDate = dayjs().tz(businessTz).format('YYYY-MM-DD');
+    const endDate = dayjs().tz(businessTz).add(30, 'day').format('YYYY-MM-DD');
+    const { shifts, fetchingShifts } = useShifts(businessId, startDate, endDate, currentEmploymentId);
     const { requestSwap, isRequesting } = useShiftSwaps(businessId as string, currentEmploymentId);
 
     const [shiftId, setShiftId] = useState<string>("");
     const [toEmploymentId, setToEmploymentId] = useState<string>("");
+    const [isLocalSubmitting, setIsLocalSubmitting] = useState(false);
 
     useEffect(() => {
         if (open) {
@@ -43,12 +51,14 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
         e.preventDefault();
         if (!shiftId || !toEmploymentId) return;
 
+        setIsLocalSubmitting(true);
         requestSwap({
             shiftId,
             fromEmploymentId: currentEmploymentId,
             toEmploymentId
         }, {
-            onSuccess: () => onOpenChange(false)
+            onSuccess: () => onOpenChange(false),
+            onSettled: () => setIsLocalSubmitting(false)
         });
     };
 
@@ -74,7 +84,7 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
                             <SelectContent>
                                 {myShifts.map(shift => (
                                     <SelectItem key={shift.id} value={shift.id}>
-                                        {format(parseISO(shift.startTime), 'EEE, MMM d: HH:mm')} - {format(parseISO(shift.endTime), 'HH:mm')}
+                                        {formatInBusinessTimezone(shift.startTime, businessTz, 'ddd, MMM D')}: {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
                                     </SelectItem>
                                 ))}
                                 {myShifts.length === 0 && !fetchingShifts && (
@@ -102,8 +112,8 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
 
                     <div className="flex justify-end gap-2 pt-4">
                         <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancel</Button>
-                        <Button type="submit" disabled={isRequesting || !shiftId || !toEmploymentId}>
-                            {isRequesting ? "Submitting..." : "Send Swap Request"}
+                        <Button type="submit" disabled={isRequesting || isLocalSubmitting || !shiftId || !toEmploymentId}>
+                            {isRequesting || isLocalSubmitting ? "Submitting..." : "Send Swap Request"}
                         </Button>
                     </div>
                 </form>

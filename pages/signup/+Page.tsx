@@ -14,6 +14,8 @@ import { useAuth } from '@/features/auth/useAuth';
 import { AxiosError } from 'axios';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { usePageContext } from 'vike-react/usePageContext';
+import { navigate } from 'vike/client/router';
 
 const RegisterPage = () => {
     const { t } = useTranslation();
@@ -21,6 +23,15 @@ const RegisterPage = () => {
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
     const [signupErrorText, setSignupErrorText] = useState<string>();
     const { signupUser, signingUp, signupError } = useAuth();
+    const { urlParsed } = usePageContext();
+
+    const origin = urlParsed.search.origin || '/';
+    const packId = urlParsed.search.packId;
+
+    const handlePostSignup = () => {
+        const target = packId ? `${origin}?packId=${packId}` : origin;
+        navigate(target);
+    };
 
     // Terms & Conditions Modal State
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
@@ -79,6 +90,8 @@ const RegisterPage = () => {
                                     firstName: values.firstName,
                                     lastName: values.lastName,
                                     password: values.password,
+                                }, {
+                                    onSuccess: handlePostSignup
                                 });
                             }}
                         >
@@ -319,7 +332,7 @@ const RegisterPage = () => {
                                     {/* Already have account */}
                                     <p className="mt-6 text-center text-xs md:text-sm text-zinc-600">
                                         {t("auth_page.register.already_have_account_label")}{' '}
-                                        <a href="/login" className="font-semibold text-[#6366F1] hover:underline">
+                                        <a href={`/login?origin=${encodeURIComponent(origin)}`} className="font-semibold text-[#6366F1] hover:underline">
                                             {t("auth_page.register.signin_instead_label")}
                                         </a>
                                     </p>

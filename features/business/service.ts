@@ -57,6 +57,10 @@ export const fetchMyBuysinessFullDetailsApiCall = (businessId: string) => {
   return flairapi.get(`${MyBusinessUrl}/${businessId}`);
 };
 
+export const fetchBusinessBasicDetailsApiCall = (businessId: string) => {
+  return flairapi.get(`${baseBusinessUrl}/${businessId}/basic-details`);
+};
+
 export const updateMyBusinessDetailsApiCall = (
   businessId: string,
   data: UpdateBusinessDetailsDto,
@@ -172,6 +176,34 @@ export const deleteBusinessRoleApiCall = (
   );
 };
 
+export const updateBusinessRolePermissionApiCall = (
+  businessId: string,
+  roleId: string,
+  data: {
+    permissionKey: string;
+    canRead: boolean;
+    canCreate: boolean;
+    canUpdate: boolean;
+    canDelete: boolean;
+  }
+) => {
+  return flairapi.post(
+    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}/${roleId}/permissions`,
+    data,
+  );
+};
+
+export const deleteBusinessRolePermissionApiCall = (
+  businessId: string,
+  roleId: string,
+  permissionKey: string,
+) => {
+  return flairapi.delete(
+    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}/${roleId}/permissions/${permissionKey}`,
+  );
+};
+
+
 export const updateBusinessEmployeeRolesApiCall = (
   businessId: string,
   employeeId: string,
@@ -180,6 +212,28 @@ export const updateBusinessEmployeeRolesApiCall = (
   return flairapi.post(
     `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}/${employeeId}`,
     { roleIds },
+  );
+};
+
+export const updateBusinessEmployeeHourlyRateApiCall = (
+  businessId: string,
+  employeeId: string,
+  hourlyRate: number,
+) => {
+  return flairapi.patch(
+    `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}/${employeeId}/rate`,
+    { hourlyRate },
+  );
+};
+
+export const updateBusinessEmployeeSettingsApiCall = (
+  businessId: string,
+  employeeId: string,
+  data: any,
+) => {
+  return flairapi.patch(
+    `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}/${employeeId}`,
+    data
   );
 };
 

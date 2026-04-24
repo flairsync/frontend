@@ -1,5 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { CreateOrderDto } from "../orders/service";
+import { WalkInReservationDto, AssignTableDto, CustomerLateDto } from "./types";
 
 const getReservationsUrl = (businessId: string) => {
     return `${import.meta.env.BASE_URL}/businesses/${businessId}/reservations`;
@@ -76,4 +77,25 @@ export const lookupUserApiCall = (email?: string, phone?: string) => {
     return flairapi.get(`${import.meta.env.BASE_URL}/users/lookup`, {
         params: { email, phone }
     });
+};
+
+// V2 endpoints
+export const fetchReservationDashboardApiCall = (businessId: string) => {
+    return flairapi.get(`${getReservationsUrl(businessId)}/dashboard`);
+};
+
+export const createWalkInApiCall = (businessId: string, data: WalkInReservationDto) => {
+    return flairapi.post(`${getReservationsUrl(businessId)}/walk-in`, data);
+};
+
+export const assignTableApiCall = (businessId: string, reservationId: string, data: AssignTableDto) => {
+    return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}/table`, data);
+};
+
+export const recordCustomerLateApiCall = (businessId: string, reservationId: string, data: CustomerLateDto) => {
+    return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}/customer-late`, data);
+};
+
+export const fetchReservationEventsApiCall = (businessId: string, reservationId: string) => {
+    return flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}/events`);
 };

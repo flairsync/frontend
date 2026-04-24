@@ -27,6 +27,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
 
     const { createPayment, isCreatingPayment } = useOrders(businessId);
 
+    // Stable per form-mount — reused on retries, regenerated when the modal is closed and reopened
+    const [idempotencyKey] = useState(() => crypto.randomUUID());
+
     const [amount, setAmount] = useState<string>("");
     const [tipAmount, setTipAmount] = useState<string>("");
     const [method, setMethod] = useState<"cash" | "card" | "online" | "other">("cash");
@@ -57,6 +60,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
         try {
             await createPayment({
                 orderId: displayOrder.id,
+                idempotencyKey,
                 data: {
                     amount: paymentAmount,
                     method,
@@ -64,8 +68,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                 }
             });
             onClose();
-        } catch (error) {
-            // Error handling is managed by the mutation's onError toast
+        } catch (error: any) {
+            // Toast and cache refresh are handled by the mutation's onError.
+            // For idempotency conflicts the modal should also close (order state is stale).
+            if (error?.response?.data?.code === "payment.idempotency_key_conflict") {
+                onClose();
+            }
         }
     };
 

@@ -8,7 +8,7 @@ import { useShiftSwaps } from '@/features/shifts/useShiftSwaps'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
 import { useShifts } from '@/features/shifts/useShifts'
 import { Badge } from '@/components/ui/badge'
-import { format, parseISO } from 'date-fns'
+import { formatInBusinessTimezone } from '@/utils/date-utils'
 
 const ManagerScheduleSwapsTab = () => {
     const { routeParams } = usePageContext();
@@ -26,7 +26,8 @@ const ManagerScheduleSwapsTab = () => {
     const getShiftInfo = (shiftId: string) => {
         const shift = shifts?.find(s => s.id === shiftId);
         if (!shift) return 'Unknown Shift';
-        return `${format(parseISO(shift.startTime), 'MMM d, HH:mm')} - ${format(parseISO(shift.endTime), 'HH:mm')}`;
+        // Get timezone if we can
+        return `${formatInBusinessTimezone(shift.startTime, 'UTC', 'MMM D, HH:mm')} - ${formatInBusinessTimezone(shift.endTime, 'UTC', 'HH:mm')}`;
     };
 
     return (

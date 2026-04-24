@@ -19,6 +19,7 @@ import {
 import { MyBusinessFullDetails, UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
 import { PlatformCountry } from "@/models/shared/PlatformCountry";
 import { ClientOnly } from "../../ClientOnly";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 const LocationPicker = React.lazy(() => import("@/components/management/create/BusinessLocationPicker"));
 
@@ -52,6 +53,11 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
     const [allowOnlyNearbyOrders, setAllowOnlyNearbyOrders] = useState(!!businessDetails?.allowOnlyNearbyOrders);
     const [maxOrderDistanceMeters, setMaxOrderDistanceMeters] = useState(businessDetails?.maxOrderDistanceMeters || 5000);
 
+    // Attendance Geofencing
+    const [requireGpsForAttendance, setRequireGpsForAttendance] = useState(!!businessDetails?.requireGpsForAttendance);
+    const [attendanceGeofenceRadiusMeters, setAttendanceGeofenceRadiusMeters] = useState(businessDetails?.attendanceGeofenceRadiusMeters || 50);
+    const [strictGeofenceBlock, setStrictGeofenceBlock] = useState(!!businessDetails?.strictGeofenceBlock);
+
     const handleLocationChange = (val: any) => {
         setLocationValue(val);
         setAddress(val.address || "");
@@ -74,14 +80,24 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                     coordinates: [locationValue.lng, locationValue.lat]
                 },
                 allowOnlyNearbyOrders,
-                maxOrderDistanceMeters
+                maxOrderDistanceMeters,
+                requireGpsForAttendance,
+                attendanceGeofenceRadiusMeters,
+                strictGeofenceBlock
             });
         }
     };
 
     return (
         <AccordionItem value="location-address" className="border rounded-lg px-3">
-            <AccordionTrigger>Location &amp; Address</AccordionTrigger>
+            <AccordionTrigger className="flex items-center gap-2">
+                <span>Location & Address</span>
+                <AuditLogHint
+                    entityType="business"
+                    entityId={businessDetails?.id}
+                    businessId={businessDetails?.id}
+                />
+            </AccordionTrigger>
             <AccordionContent className="space-y-6 py-4">
 
                 {/* Timezone */}
@@ -158,6 +174,52 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                                 disabled={disabled}
                             />
                         </div>
+                    )}
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                    <Label className="text-base font-medium">Attendance & Geofencing Settings</Label>
+                    <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                            <Label>Require GPS for Attendance</Label>
+                            <p className="text-xs text-muted-foreground">Staff must share their location to clock in or out</p>
+                        </div>
+                        <Switch
+                            checked={requireGpsForAttendance}
+                            onCheckedChange={setRequireGpsForAttendance}
+                            disabled={disabled}
+                        />
+                    </div>
+
+                    {requireGpsForAttendance && (
+                        <>
+                            <div className="flex items-center justify-between pl-6 border-l-2 border-muted mt-4">
+                                <div className="space-y-0.5">
+                                    <Label>Attendance Geofence Radius (Meters)</Label>
+                                    <p className="text-xs text-muted-foreground">Maximum distance from business to allow clock in (e.g. 50)</p>
+                                </div>
+                                <Input
+                                    type="number"
+                                    className="w-24"
+                                    value={attendanceGeofenceRadiusMeters}
+                                    onChange={(e) => setAttendanceGeofenceRadiusMeters(parseInt(e.target.value) || 0)}
+                                    disabled={disabled}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between pl-6 border-l-2 border-muted mt-4">
+                                <div className="space-y-0.5">
+                                    <Label>Strict Geofence Block</Label>
+                                    <p className="text-xs text-muted-foreground">If enabled, prevents clock-in if staff is outside the radius. If disabled, allows clock-in but flags it for manager review.</p>
+                                </div>
+                                <Switch
+                                    checked={strictGeofenceBlock}
+                                    onCheckedChange={setStrictGeofenceBlock}
+                                    disabled={disabled}
+                                />
+                            </div>
+                        </>
                     )}
                 </div>
 

@@ -1,16 +1,19 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   getCurrentUserSubscriptionApiCall,
   getSubscriptionPacksApiCall,
   getUserSubscriptionsListApiCall,
   handleUserCheckoutApiCall,
   getSubscriptionPortalUrlApiCall,
+  syncSubscriptionApiCall,
 } from "./service";
 import { Subscription } from "@/models/Subscription";
 import { usePageContext } from "vike-react/usePageContext";
 import { SubscriptionPack } from "@/models/SubscriptionPack";
 
 export const useSubscriptions = () => {
+  const queryClient = useQueryClient();
   const { user } = usePageContext();
   const { data: currentUserSubscription } = useQuery({
     queryKey: ["current_user_subscription"],
@@ -88,6 +91,25 @@ export const useSubscriptions = () => {
     },
   });
 
+  const { mutate: syncSubscription, isPending: syncingSubscription } = useMutation({
+    mutationKey: ["sync_subscription"],
+    mutationFn: async (subId: string) => {
+      toast.loading("Syncing subscription...", { id: "sync_sub_toast" });
+      const resp = await syncSubscriptionApiCall(subId);
+      return resp.data;
+    },
+    onSuccess: (data) => {
+      toast.dismiss("sync_sub_toast");
+      toast.success("Subscription synced successfully.");
+      queryClient.invalidateQueries({ queryKey: ["user_subscriptions_list"] });
+      queryClient.invalidateQueries({ queryKey: ["current_user_subscription"] });
+    },
+    onError: (error) => {
+      toast.dismiss("sync_sub_toast");
+      toast.error("Failed to sync subscription.");
+    },
+  });
+
   return {
     currentUserSubscription,
     subscriptionPacks,
@@ -106,5 +128,8 @@ export const useSubscriptions = () => {
     portalUrlData,
     fetchingPortalUrl,
     fetchPortalUrl,
+
+    syncSubscription,
+    syncingSubscription,
   };
 };

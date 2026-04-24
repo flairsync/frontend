@@ -43,6 +43,7 @@ type Props = {
     categories: BusinessMenuCategory[];
     setCategories: (cats: BusinessMenuCategory[]) => void;
     onChange?: (changes: MenuChanges) => void;
+    businessId?: string;
     onEditCategory: (id: string) => void;
     onDeleteCategory: (id: string) => void;
     onAddItem: (catId: string) => void;
@@ -69,6 +70,7 @@ export const MenuCategoriesSortable = ({
     categories,
     setCategories,
     onChange,
+    businessId,
     onEditCategory,
     onDeleteCategory,
     onAddItem,
@@ -196,6 +198,7 @@ export const MenuCategoriesSortable = ({
                         category={cat}
                         categories={categories}
                         setCategories={setCategories}
+                        businessId={businessId}
                         onEdit={() => onEditCategory(cat.id)}
                         onDelete={() => onDeleteCategory(cat.id)}
                         onAddItem={() => onAddItem(cat.id)}

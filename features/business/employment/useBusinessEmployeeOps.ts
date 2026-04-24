@@ -4,6 +4,8 @@ import {
   inviteEmployeeApiCall,
   resendInvitationToEmployeeApiCall,
   resyncInvitationsApiCall,
+  updateBusinessEmployeeHourlyRateApiCall,
+  updateBusinessEmployeeSettingsApiCall,
 } from "../service";
 import { toast } from "sonner";
 
@@ -92,6 +94,60 @@ export const useBusinessEmployeeOps = (businessId: string) => {
     },
   });
 
+  const { mutate: updateHourlyRate, isPending: updatingHourlyRate } =
+    useMutation({
+      mutationKey: ["update_emp_rate", businessId],
+      mutationFn: ({
+        employeeId,
+        hourlyRate,
+      }: {
+        employeeId: string;
+        hourlyRate: number;
+      }) => {
+        return updateBusinessEmployeeHourlyRateApiCall(
+          businessId,
+          employeeId,
+          hourlyRate,
+        );
+      },
+      onSuccess: () => {
+        toast.success("Hourly rate updated");
+        queryClient.invalidateQueries({
+          queryKey: ["business_emps", businessId],
+        });
+      },
+      onError: () => {
+        toast.error("Error updating hourly rate");
+      },
+    });
+
+  const { mutate: updateEmployeeSettings, isPending: updatingEmployeeSettings } =
+    useMutation({
+      mutationKey: ["update_emp_settings", businessId],
+      mutationFn: ({
+        employeeId,
+        settings,
+      }: {
+        employeeId: string;
+        settings: any;
+      }) => {
+        return updateBusinessEmployeeSettingsApiCall(
+          businessId,
+          employeeId,
+          settings,
+        );
+      },
+      onSuccess: () => {
+        toast.success("Employee settings updated");
+        queryClient.invalidateQueries({
+          queryKey: ["business_emps", businessId],
+        });
+      },
+      onError: () => {
+        toast.error("Error updating employee settings");
+      },
+    });
+
   //#endregion
 
   return {
@@ -102,5 +158,9 @@ export const useBusinessEmployeeOps = (businessId: string) => {
     cancelInvitation,
     cancelingInvitation,
     resyncInvitations,
+    updateHourlyRate,
+    updatingHourlyRate,
+    updateEmployeeSettings,
+    updatingEmployeeSettings,
   };
 };

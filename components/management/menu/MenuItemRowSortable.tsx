@@ -4,12 +4,14 @@ import { Edit, Trash, Copy } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 type Props = {
     item: any;
     category: BusinessMenuCategory;
     categories: BusinessMenuCategory[];
     setCategories: (cats: BusinessMenuCategory[]) => void;
+    businessId?: string;
     onEdit: () => void;
     onDelete: () => void;
     onDuplicate: () => void;
@@ -18,6 +20,7 @@ type Props = {
 export const MenuItemRowSortable = ({
     item,
     category,
+    businessId,
     onEdit,
     onDelete,
     onDuplicate
@@ -40,7 +43,10 @@ export const MenuItemRowSortable = ({
 
             <div className="flex-1 flex justify-between items-center">
                 <div>
-                    <p className="font-medium text-zinc-800 dark:text-zinc-100">{item.name}</p>
+                    <div className="flex items-center gap-1">
+                        <p className="font-medium text-zinc-800 dark:text-zinc-100">{item.name}</p>
+                        <AuditLogHint entityType="menu_item" entityId={item.id} businessId={businessId} />
+                    </div>
                     {item.description && <p className="text-sm text-zinc-500 dark:text-zinc-400">{item.description}</p>}
                 </div>
                 <div className="flex items-center gap-2">

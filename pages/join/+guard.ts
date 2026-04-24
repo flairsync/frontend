@@ -5,14 +5,14 @@ import { modifyUrl } from "vike/modifyUrl";
 export const guard = (pageContext: PageContext) => {
   const { user, urlParsed } = pageContext;
 
-  console.log(user);
+  console.log("------------------------", user);
 
   if (!user) {
     // Render the error page and show message to the user
-    throw redirect(`/login?returnUrl=${urlParsed.href}`);
+    throw redirect(`/login?origin=${encodeURIComponent(urlParsed.pathname + urlParsed.searchOriginal)}`);
   }
   if (!user.verified) {
-    throw redirect(`/verify?returnUrl=${urlParsed.href}`);
+    throw redirect(`/verify?origin=${encodeURIComponent(urlParsed.pathname + urlParsed.searchOriginal)}`);
   }
   if (!user.hasPP) {
     throw redirect(`/manage/join?invitation=${urlParsed.search["invitation"]}`);

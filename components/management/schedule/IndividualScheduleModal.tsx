@@ -8,11 +8,22 @@ import { useShifts } from "@/features/shifts/useShifts";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useBusinessRoles } from "@/features/business/roles/useBusinessRoles";
 import { usePageContext } from "vike-react/usePageContext";
-import { parse, isValid, format, parseISO } from "date-fns";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import dayjs from "@/utils/date-utils";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 import { Shift } from "@/models/business/shift/Shift";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, UserCheck, ShieldCheck, Loader2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { useShiftBids } from "@/features/shifts/useShifts";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, XCircle, Clock } from "lucide-react";
 
 interface IndividualScheduleModalProps {
     open: boolean;
@@ -44,30 +55,43 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
         updateShift,
         isUpdatingShift
     } = useShifts(businessId);
+    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const businessTz = myBusinessFullDetails?.timezone || 'UTC';
 
     const [employmentId, setEmploymentId] = useState<string>("");
+    const [isOpenShift, setIsOpenShift] = useState(false);
     const [dateInput, setDateInput] = useState<string>("");
     const [startTime, setStartTime] = useState<string>("09:00");
     const [endTime, setEndTime] = useState<string>("17:00");
     const [notes, setNotes] = useState<string>("");
+    const [unpaidBreakMinutes, setUnpaidBreakMinutes] = useState<number>(0);
     const [requiredRoleId, setRequiredRoleId] = useState<string>("none");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const { data: bids, refetch: refetchBids } = useShiftBids(shift?.id);
+    const { approveShiftBid, isApprovingBid } = useShifts(businessId);
 
     useEffect(() => {
         if (open) {
             if (shift) {
+                const start = dayjs.utc(shift.startTime).tz(businessTz);
+                const end = dayjs.utc(shift.endTime).tz(businessTz);
                 setEmploymentId(shift.employmentId || "");
-                setDateInput(format(parseISO(shift.startTime), 'yyyy-MM-dd'));
-                setStartTime(format(parseISO(shift.startTime), "HH:mm"));
-                setEndTime(format(parseISO(shift.endTime), "HH:mm"));
+                setIsOpenShift(!shift.employmentId);
+                setDateInput(start.format('YYYY-MM-DD'));
+                setStartTime(start.format("HH:mm"));
+                setEndTime(end.format("HH:mm"));
                 setNotes(shift.notes || "");
+                setUnpaidBreakMinutes(shift.unpaidBreakMinutes || 0);
                 setRequiredRoleId(shift.requiredRoleId || "none");
             } else {
                 setEmploymentId(defaultEmploymentId || "");
-                setDateInput(defaultDate || format(new Date(), "yyyy-MM-dd"));
+                setIsOpenShift(!defaultEmploymentId);
+                setDateInput(defaultDate || dayjs().tz(businessTz).format("YYYY-MM-DD"));
                 setStartTime("09:00");
                 setEndTime("17:00");
                 setNotes("");
+                setUnpaidBreakMinutes(0);
                 setRequiredRoleId("none");
             }
             setErrorMessage(null);
@@ -76,35 +100,35 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!employmentId || !dateInput || !startTime || !endTime) return;
+        if ((!isOpenShift && !employmentId) || !dateInput || !startTime || !endTime) return;
 
-        const newStart = `${dateInput}T${startTime}:00`; 
+        // Construct local time strings in the business timezone
+        const startLocalStr = `${dateInput}T${startTime}:00`;
+        let startObj = dayjs.tz(startLocalStr, businessTz);
         
-        let endDateInput = dateInput;
-        const startParsed = parse(startTime, "HH:mm", new Date());
-        const endParsed = parse(endTime, "HH:mm", new Date());
-        
-        if (isValid(startParsed) && isValid(endParsed)) {
-             if (endParsed < startParsed) {
-                 const d = parse(dateInput, "yyyy-MM-dd", new Date());
-                 d.setDate(d.getDate() + 1);
-                 endDateInput = format(d, "yyyy-MM-dd");
-             }
+        let endLocalStr = `${dateInput}T${endTime}:00`;
+        let endObj = dayjs.tz(endLocalStr, businessTz);
+
+        // Handle overnight shifts
+        if (endObj.isBefore(startObj)) {
+            endObj = endObj.add(1, 'day');
         }
-        
-        const newEnd = `${endDateInput}T${endTime}:00`;
 
         const payload: any = {
-            startTime: newStart,
-            endTime: newEnd,
+            startTime: startObj.toISOString(),
+            endTime: endObj.toISOString(),
             notes,
+            unpaidBreakMinutes: unpaidBreakMinutes > 0 ? unpaidBreakMinutes : undefined,
             requiredRoleId: requiredRoleId === "none" ? undefined : requiredRoleId
         };
 
         if (shift) {
             updateShift({
                 shiftId: shift.id,
-                data: payload
+                data: {
+                    ...payload,
+                    employmentId: isOpenShift ? null : employmentId
+                }
             }, {
                 onSuccess: () => onOpenChange(false),
                 onError: (error: any) => {
@@ -115,7 +139,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
         } else {
             createIndividualShift({
                 ...payload,
-                employmentId,
+                employmentId: isOpenShift ? undefined : employmentId,
             }, {
                 onSuccess: () => onOpenChange(false),
                 onError: (error: any) => {
@@ -126,11 +150,37 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
         }
     };
 
+    const handleApproveBid = (bidId: string) => {
+        approveShiftBid(bidId, {
+            onSuccess: () => {
+                toast.success("Bid approved and shift assigned!");
+                onOpenChange(false);
+            }
+        });
+    };
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>{shift ? "Edit Employee Shift" : "Schedule Employee Shift"}</DialogTitle>
+                    <div className="flex items-center justify-between">
+                        <DialogTitle>{shift ? "Edit Employee Shift" : "Schedule Employee Shift"}</DialogTitle>
+                        {shift && shift.isPublished && (
+                            <Badge 
+                                variant={
+                                    shift.staffResponse === 'ACCEPTED' ? 'outline' : 
+                                    shift.staffResponse === 'REJECTED' ? 'destructive' : 
+                                    'secondary'
+                                }
+                                className={shift.staffResponse === 'ACCEPTED' ? 'border-emerald-500 text-emerald-700 bg-emerald-50 flex items-center gap-1 font-bold' : 'flex items-center gap-1 font-bold'}
+                            >
+                                {shift.staffResponse === 'ACCEPTED' && <CheckCircle2 className="w-3 h-3" />}
+                                {shift.staffResponse === 'REJECTED' && <XCircle className="w-3 h-3" />}
+                                {(!shift.staffResponse || shift.staffResponse === 'PENDING') && <Clock className="w-3 h-3" />}
+                                {shift.staffResponse || 'PENDING RESPONSE'}
+                            </Badge>
+                        )}
+                    </div>
                     <DialogDescription>
                         {shift ? "Update details for this shift." : "Assign a shift to an individual employee."}
                     </DialogDescription>
@@ -142,76 +192,149 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                         <AlertDescription>{errorMessage}</AlertDescription>
                     </Alert>
                 )}
+                <form onSubmit={handleSubmit} className="flex flex-col h-full max-h-[80vh]">
+                    <ScrollArea className="flex-1 pr-4 -mr-4">
+                        <div className="space-y-4 pt-4 pr-4">
+                            <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-dashed">
+                                <div className="space-y-0.5">
+                                    <Label className="text-sm font-semibold">Post as Open Shift</Label>
+                                    <p className="text-[10px] text-muted-foreground">Allows any eligible staff to bid or claim.</p>
+                                </div>
+                                <Switch 
+                                    checked={isOpenShift} 
+                                    onCheckedChange={(checked) => {
+                                        setIsOpenShift(checked);
+                                        if (checked) setEmploymentId("");
+                                    }} 
+                                />
+                            </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-                    <div className="space-y-2">
-                        <Label>Select Employee</Label>
-                        <Select value={employmentId} onValueChange={setEmploymentId}>
-                            <SelectTrigger>
-                                <SelectValue placeholder={fetchingEmployees ? "Loading employees..." : "Choose an employee"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {employees?.map(emp => (
-                                    <SelectItem key={emp.id} value={emp.id}>
-                                        {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Unnamed Staff'}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                            {!isOpenShift && (
+                                <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <Label>Select Employee</Label>
+                                    <Select value={employmentId} onValueChange={setEmploymentId}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder={fetchingEmployees ? "Loading employees..." : "Choose an employee"} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {employees?.map(emp => (
+                                                <SelectItem key={emp.id} value={emp.id}>
+                                                    {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Unnamed Staff'}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
 
-                    <div className="space-y-2">
-                        <Label>Date</Label>
-                        <Input 
-                            type="date" 
-                            value={dateInput} 
-                            onChange={e => setDateInput(e.target.value)} 
-                            required 
-                        />
-                    </div>
+                            <div className="space-y-2">
+                                <Label>Date</Label>
+                                <Input 
+                                    type="date" 
+                                    value={dateInput} 
+                                    onChange={e => setDateInput(e.target.value)} 
+                                    required 
+                                />
+                                {dateInput && dayjs.tz(dateInput, businessTz).isBefore(dayjs().tz(businessTz).startOf('day')) && (
+                                    <p className="text-xs text-amber-600 flex items-center gap-1 mt-1 font-medium">
+                                        <AlertCircle className="w-3.5 h-3.5" />
+                                        Warning: You are scheduling a shift in the past.
+                                    </p>
+                                )}
+                            </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">Start Time</Label>
-                            <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <Label className="text-xs text-muted-foreground">Start Time</Label>
+                                    <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label className="text-xs text-muted-foreground">End Time</Label>
+                                    <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <Label>Required Role (Optional)</Label>
+                                <Select value={requiredRoleId} onValueChange={setRequiredRoleId}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder={loadingBusinessRoles ? "Loading roles..." : "Choose a required role"} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">No specific role required</SelectItem>
+                                        {businessRoles?.map(role => (
+                                            <SelectItem key={role.id} value={role.id}>
+                                                {role.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <p className="text-[10px] text-muted-foreground">If set, the system will verify the employee has this role.</p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>Notes (Optional)</Label>
+                                <Input 
+                                    value={notes} 
+                                    onChange={e => setNotes(e.target.value)} 
+                                    placeholder="e.g. Front desk duty"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>Unpaid Break (Minutes)</Label>
+                                <Input 
+                                    type="number"
+                                    min="0"
+                                    step="5"
+                                    value={unpaidBreakMinutes} 
+                                    onChange={e => setUnpaidBreakMinutes(Number(e.target.value))} 
+                                    placeholder="e.g. 30"
+                                />
+                                <p className="text-[10px] text-muted-foreground">This time will be deducted from paid hours.</p>
+                            </div>
+
+                            {shift && !shift.employmentId && bids && bids.length > 0 && (
+                                <div className="mt-6 pt-6 border-t font-semibold space-y-4 px-1">
+                                    <div className="flex items-center gap-2 text-sm text-primary">
+                                        <UserCheck className="w-4 h-4" />
+                                        <span>Recent Applicants ({bids.length})</span>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {bids.map((bid: any) => (
+                                            <div key={bid.id} className="flex items-center justify-between p-2 rounded-md border bg-muted/10">
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-medium">
+                                                        {bid.employment?.professionalProfile?.displayName || 
+                                                         `${bid.employment?.professionalProfile?.firstName || ''} ${bid.employment?.professionalProfile?.lastName || ''}`.trim() || 
+                                                         'Staff Member'}
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground">
+                                                        Applied {dayjs(bid.createdAt).fromNow()}
+                                                    </span>
+                                                </div>
+                                                <Button 
+                                                    size="sm" 
+                                                    variant="outline" 
+                                                    className="h-8 text-xs gap-1.5 border-primary/30 text-primary hover:bg-primary/10"
+                                                    onClick={() => handleApproveBid(bid.id)}
+                                                    disabled={isApprovingBid}
+                                                >
+                                                    {isApprovingBid ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3 h-3" />}
+                                                    Approve
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">End Time</Label>
-                            <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
-                        </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                        <Label>Required Role (Optional)</Label>
-                        <Select value={requiredRoleId} onValueChange={setRequiredRoleId}>
-                            <SelectTrigger>
-                                <SelectValue placeholder={loadingBusinessRoles ? "Loading roles..." : "Choose a required role"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="none">No specific role required</SelectItem>
-                                {businessRoles?.map(role => (
-                                    <SelectItem key={role.id} value={role.id}>
-                                        {role.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        <p className="text-[10px] text-muted-foreground">If set, the system will verify the employee has this role.</p>
-                    </div>
+                    </ScrollArea>
 
-                    <div className="space-y-2">
-                        <Label>Notes (Optional)</Label>
-                        <Input 
-                            value={notes} 
-                            onChange={e => setNotes(e.target.value)} 
-                            placeholder="e.g. Front desk duty"
-                        />
-                    </div>
-
-                    <div className="flex justify-end gap-2 pt-4">
+                    <div className="flex justify-end gap-2 pt-4 mt-4 border-t bg-background">
                         <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancel</Button>
-                        <Button type="submit" disabled={isCreatingIndividualShift || isUpdatingShift || !employmentId || !dateInput}>
-                            {isCreatingIndividualShift || isUpdatingShift ? "Saving..." : shift ? "Update Shift" : "Schedule Employee"}
+                        <Button type="submit" disabled={isCreatingIndividualShift || isUpdatingShift || (!isOpenShift && !employmentId) || !dateInput}>
+                            {isCreatingIndividualShift || isUpdatingShift ? "Saving..." : shift ? "Update Shift" : isOpenShift ? "Post Open Shift" : "Schedule Employee"}
                         </Button>
                     </div>
                 </form>

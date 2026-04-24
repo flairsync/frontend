@@ -70,3 +70,18 @@ export const fetchMyOrdersApiCall = (businessId: string) => {
 export const cancelReservationApiCall = (businessId: string, reservationId: string) => {
     return flairapi.patch(`${baseUrl}/businesses/${businessId}/my-reservations/${reservationId}/cancel`);
 };
+
+export const fetchReservationTimelineApiCall = (businessId: string, reservationId: string) => {
+    return flairapi.get(`${baseUrl}/businesses/${businessId}/my-reservations/${reservationId}/timeline`);
+};
+
+export const postReservationActionApiCall = (
+    businessId: string,
+    reservationId: string,
+    payload: import('./types').CustomerActionPayload,
+) => {
+    return flairapi.post(
+        `${baseUrl}/businesses/${businessId}/my-reservations/${reservationId}/action`,
+        payload,
+    );
+};

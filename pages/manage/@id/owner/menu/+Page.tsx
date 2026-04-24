@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { useUsage } from "@/features/subscriptions/useUsage";
 
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 const MAX_HINTS_PREVIEW = 3;
 
@@ -149,6 +150,13 @@ const MenusPage: React.FC = () => {
                                                 <IconRenderer icon={menu.icon} className="h-6 w-6" />
                                             </div>
                                             <CardTitle className="text-xl font-semibold">{menu.name}</CardTitle>
+                                            <AuditLogHint
+                                                entityType="menu"
+                                                entityId={menu.id}
+                                                businessId={routeParams.id}
+                                                className="ml-auto"
+                                                side="left"
+                                            />
                                         </div>
 
                                         <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400 text-sm">

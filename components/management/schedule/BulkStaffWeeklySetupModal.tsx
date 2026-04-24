@@ -29,6 +29,8 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
     const [templateId, setTemplateId] = useState<string>("");
     const [startTime, setStartTime] = useState<string>("09:00");
     const [endTime, setEndTime] = useState<string>("17:00");
+    const [unpaidBreakMinutes, setUnpaidBreakMinutes] = useState<number>(0);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     
     // Dates
     const [dateInput, setDateInput] = useState<string>("");
@@ -52,7 +54,7 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
 
         bulkStaffWeeklySetup({
             employmentId,
-            ...(useTemplate ? { templateId } : { startTime, endTime }),
+            ...(useTemplate ? { templateId } : { startTime, endTime, unpaidBreakMinutes: unpaidBreakMinutes > 0 ? unpaidBreakMinutes : undefined }),
             dates: dates.map(d => ({ date: d }))
         }, {
             onSuccess: () => {
@@ -60,6 +62,11 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
                 setDates([]);
                 setEmploymentId("");
                 setTemplateId("");
+                setErrorMessage(null);
+            },
+            onError: (error: any) => {
+                const msg = error.response?.data?.message || "Failed to schedule staff shifts";
+                setErrorMessage(msg);
             }
         });
     };
@@ -71,6 +78,14 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
                     <DialogTitle>Bulk Staff Shift Setup</DialogTitle>
                     <DialogDescription>Assign multiple shifts to a specific staff member across different dates.</DialogDescription>
                 </DialogHeader>
+
+                {errorMessage && (
+                    <div className="mt-4 p-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-md text-sm font-medium flex items-start gap-2 animate-in fade-in slide-in-from-top-2">
+                        <span className="mt-0.5">⚠️</span>
+                        <div>{errorMessage}</div>
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
                         <Label>Select Staff Member</Label>
@@ -121,14 +136,28 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
                                 </SelectContent>
                             </Select>
                         ) : (
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <Label className="text-xs text-muted-foreground">Start</Label>
-                                    <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs text-muted-foreground">Start</Label>
+                                        <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs text-muted-foreground">End</Label>
+                                        <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
+                                    </div>
                                 </div>
-                                <div className="space-y-1">
-                                    <Label className="text-xs text-muted-foreground">End</Label>
-                                    <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-muted-foreground">Unpaid Break (Minutes)</Label>
+                                    <Input 
+                                        type="number"
+                                        min="0"
+                                        step="5"
+                                        value={unpaidBreakMinutes} 
+                                        onChange={e => setUnpaidBreakMinutes(Number(e.target.value))} 
+                                        placeholder="e.g. 30"
+                                    />
+                                    <p className="text-[10px] text-muted-foreground">This time will be deducted from paid hours.</p>
                                 </div>
                             </div>
                         )}

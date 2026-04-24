@@ -44,12 +44,27 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case "open": return "bg-blue-100 text-blue-800 border-blue-200";
-            case "sent": return "bg-amber-100 text-amber-800 border-amber-200";
-            case "served": return "bg-green-100 text-green-800 border-green-200";
-            case "closed": return "bg-gray-100 text-gray-800 border-gray-200";
-            case "cancelled": return "bg-red-100 text-red-800 border-red-200";
+            case "created": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+            case "accepted": return "bg-blue-100 text-blue-800 border-blue-200";
+            case "preparing": return "bg-orange-100 text-orange-800 border-orange-200";
+            case "ready": return "bg-green-100 text-green-800 border-green-200";
+            case "completed": return "bg-gray-100 text-gray-800 border-gray-200";
+            case "rejected": return "bg-red-100 text-red-800 border-red-200";
+            case "canceled": return "bg-red-100 text-red-800 border-red-200";
             default: return "bg-gray-100 text-gray-800 border-gray-200";
+        }
+    };
+
+    const getStatusLabel = (status: string) => {
+        switch (status) {
+            case "created": return "Pending";
+            case "accepted": return "Accepted";
+            case "preparing": return "Preparing";
+            case "ready": return "Ready";
+            case "completed": return "Completed";
+            case "rejected": return "Rejected";
+            case "canceled": return "Canceled";
+            default: return status.toUpperCase();
         }
     };
 
@@ -61,7 +76,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                         <DialogTitle className="text-xl font-bold flex items-center gap-2">
                             Order #{displayOrder.id.split('-')[0]}
                             <Badge variant="outline" className={getStatusColor(displayOrder.status)}>
-                                {displayOrder.status?.toUpperCase() || "UNKNOWN"}
+                                {getStatusLabel(displayOrder.status || "")}
                             </Badge>
                         </DialogTitle>
                         <span className="text-sm text-muted-foreground">
@@ -86,9 +101,17 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                             </div>
                             {displayOrder.cancellationReason && (
                                 <div>
-                                    <span className="text-muted-foreground font-semibold uppercase text-xs text-red-600">Cancel Reason</span>
+                                    <span className="font-semibold uppercase text-xs text-red-600">Cancel Reason</span>
                                     <p className="font-medium text-red-700 max-w-[200px] truncate" title={displayOrder.cancellationReason}>
                                         {displayOrder.cancellationReason}
+                                    </p>
+                                </div>
+                            )}
+                            {displayOrder.rejectionReason && (
+                                <div>
+                                    <span className="font-semibold uppercase text-xs text-red-600">Rejection Reason</span>
+                                    <p className="font-medium text-red-700 max-w-[200px] truncate" title={displayOrder.rejectionReason}>
+                                        {displayOrder.rejectionReason}
                                     </p>
                                 </div>
                             )}
@@ -146,7 +169,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     <div className="font-bold text-right">
                                                         {item.status === 'voided' ? <span className="line-through text-muted-foreground">${totalItemPrice.toFixed(2)}</span> : `$${totalItemPrice.toFixed(2)}`}
                                                     </div>
-                                                    {item.status !== 'voided' && (!item.status || item.status === 'pending') && displayOrder.status === 'open' && (
+                                                    {item.status !== 'voided' && item.status === 'pending' && (displayOrder.status === 'created' || displayOrder.status === 'accepted') && (
                                                         <div className="flex items-center gap-1 mt-auto">
                                                             <Button
                                                                 variant="ghost"

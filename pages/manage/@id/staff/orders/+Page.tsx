@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Clock, CheckCircle, Send, CheckSquare, PlusCircle, Eye, CreditCard, Hash, Utensils, MoreHorizontal, XCircle, ArrowRightLeft } from "lucide-react"
+import { Clock, CheckCircle, CheckSquare, PlusCircle, Eye, CreditCard, Hash, Utensils, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown } from "lucide-react"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { StaffAddOrderDrawer } from "@/components/staff/orders/StaffAddOrderDrawer"
@@ -89,12 +89,16 @@ export default function StaffOrdersPage() {
     const {
         orders,
         fetchingOrders,
-        sendOrder,
-        isSendingOrder,
-        serveOrder,
-        isServingOrder,
-        closeOrder,
-        isClosingOrder
+        acceptOrder,
+        isAcceptingOrder,
+        rejectOrder,
+        isRejectingOrder,
+        prepareOrder,
+        isPreparingOrder,
+        readyOrder,
+        isMarkingReady,
+        completeOrder,
+        isCompletingOrder,
     } = useOrders(
         businessId,
         activeTab === "completed" ? "all" : "ongoing",
@@ -128,14 +132,31 @@ export default function StaffOrdersPage() {
 
     const getStatusVariant = (status: string) => {
         switch (status) {
-            case "open": return "outline";
-            case "sent": return "secondary";
-            case "served": return "default";
-            case "closed": return "default";
-            case "cancelled": return "destructive";
+            case "created": return "secondary";
+            case "accepted": return "outline";
+            case "preparing": return "secondary";
+            case "ready": return "default";
+            case "completed": return "default";
+            case "rejected": return "destructive";
+            case "canceled": return "destructive";
             default: return "outline";
         }
     };
+
+    const getStatusLabel = (status: string) => {
+        switch (status) {
+            case "created": return "Pending";
+            case "accepted": return "Accepted";
+            case "preparing": return "Preparing";
+            case "ready": return "Ready";
+            case "completed": return "Completed";
+            case "rejected": return "Rejected";
+            case "canceled": return "Canceled";
+            default: return status;
+        }
+    };
+
+    const isTerminal = (status: string) => ["completed", "rejected", "canceled"].includes(status);
 
     const handleOpenAddItems = (orderId: string) => {
         setSelectedOrderId(orderId);
@@ -167,8 +188,8 @@ export default function StaffOrdersPage() {
         setTransferModalOpen(true);
     };
 
-    const activeOrdersList = orders?.filter(o => o.status !== "closed" && o.status !== "cancelled") || [];
-    const completedOrdersList = orders?.filter(o => o.status === "closed" || o.status === "cancelled") || [];
+    const activeOrdersList = orders?.filter(o => !isTerminal(o.status)) || [];
+    const completedOrdersList = orders?.filter(o => isTerminal(o.status)) || [];
 
     return (
         <div className="space-y-6 p-6">
@@ -256,7 +277,7 @@ export default function StaffOrdersPage() {
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 items-start">
                                                         <Badge variant={getStatusVariant(o.status)} className="capitalize">
-                                                            {o.status}
+                                                            {getStatusLabel(o.status)}
                                                         </Badge>
                                                         <Badge variant={o.paymentStatus === 'paid' ? 'default' : o.paymentStatus === 'partially_paid' ? 'outline' : 'secondary'} className="capitalize text-[10px] h-4">
                                                             {(o.paymentStatus || 'pending').replace(/_/g, " ")}
@@ -274,49 +295,61 @@ export default function StaffOrdersPage() {
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end">
-                                                                {o.paymentStatus !== "paid" && (
+                                                                {o.paymentStatus !== "paid" && !isTerminal(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
                                                                         <CreditCard className="mr-2 h-4 w-4" />
                                                                         <span>Pay</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "open" && (
-                                                                    <DropdownMenuItem onClick={() => sendOrder(o.id)} disabled={isSendingOrder}>
-                                                                        <Send className="mr-2 h-4 w-4" />
-                                                                        <span>Send</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "sent" && (
-                                                                    <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isServingOrder} className="text-amber-600 focus:text-amber-700">
+                                                                {o.status === "created" && (
+                                                                    <DropdownMenuItem onClick={() => acceptOrder(o.id)} disabled={isAcceptingOrder} className="text-blue-600 focus:text-blue-700">
                                                                         <CheckCircle className="mr-2 h-4 w-4" />
-                                                                        <span>Serve</span>
+                                                                        <span>Accept</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "served" && o.paymentStatus === "paid" && (
-                                                                    <DropdownMenuItem onClick={() => closeOrder({ orderId: o.id })} disabled={isClosingOrder} className="text-green-600 focus:text-green-700">
+                                                                {o.status === "created" && (
+                                                                    <DropdownMenuItem onClick={() => rejectOrder({ orderId: o.id })} disabled={isRejectingOrder} className="text-red-600 focus:text-red-700">
+                                                                        <ThumbsDown className="mr-2 h-4 w-4" />
+                                                                        <span>Reject</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {o.status === "accepted" && (
+                                                                    <DropdownMenuItem onClick={() => prepareOrder(o.id)} disabled={isPreparingOrder} className="text-orange-600 focus:text-orange-700">
+                                                                        <ChefHat className="mr-2 h-4 w-4" />
+                                                                        <span>Start Preparing</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {o.status === "preparing" && (
+                                                                    <DropdownMenuItem onClick={() => readyOrder(o.id)} disabled={isMarkingReady} className="text-green-600 focus:text-green-700">
+                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <span>Mark Ready</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {o.status === "ready" && o.paymentStatus === "paid" && (
+                                                                    <DropdownMenuItem onClick={() => completeOrder({ orderId: o.id })} disabled={isCompletingOrder} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
-                                                                        <span>Close</span>
+                                                                        <span>Complete</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "served" && o.paymentStatus !== "paid" && (
+                                                                {o.status === "ready" && o.paymentStatus !== "paid" && (
                                                                     <DropdownMenuItem onClick={() => handleOpenForceClose(o)} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
-                                                                        <span>Force Close</span>
+                                                                        <span>Force Complete</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {(o.status === "open" || o.status === "sent") && (
+                                                                {(o.status === "created" || o.status === "accepted") && (
                                                                     <DropdownMenuItem onClick={() => handleOpenAddItems(o.id)}>
                                                                         <PlusCircle className="mr-2 h-4 w-4" />
                                                                         <span>Add</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.type === "dine_in" && o.status !== "closed" && o.status !== "cancelled" && (
+                                                                {o.type === "dine_in" && !isTerminal(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenTransfer(o)}>
                                                                         <ArrowRightLeft className="mr-2 h-4 w-4" />
                                                                         <span>Transfer Table</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "open" && (
+                                                                {["created", "accepted", "preparing", "ready"].includes(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenCancel(o)} className="text-red-600 focus:text-red-700">
                                                                         <XCircle className="mr-2 h-4 w-4" />
                                                                         <span>Cancel</span>
@@ -396,7 +429,7 @@ export default function StaffOrdersPage() {
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 items-start">
                                                         <Badge variant={getStatusVariant(o.status)} className="capitalize">
-                                                            {o.status}
+                                                            {getStatusLabel(o.status)}
                                                         </Badge>
                                                         <Badge variant={o.paymentStatus === 'paid' ? 'default' : o.paymentStatus === 'partially_paid' ? 'outline' : 'secondary'} className="capitalize text-[10px] h-4">
                                                             {(o.paymentStatus || 'pending').replace(/_/g, " ")}

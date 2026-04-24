@@ -6,6 +6,8 @@ import {
   getBusinessRolesApiCall,
   updateBusinessEmployeeRolesApiCall,
   updateBusinessRoleApiCall,
+  updateBusinessRolePermissionApiCall,
+  deleteBusinessRolePermissionApiCall,
 } from "../service";
 import { Role } from "@/models/business/roles/Role";
 
@@ -60,6 +62,41 @@ export const useBusinessRoles = (businessId?: string) => {
     },
   });
 
+  const { mutate: updateRolePermission, isPending: updatingRolePermission } = useMutation({
+    mutationKey: ["update_role_permission", businessId],
+    mutationFn: async (data: {
+      roleId: string;
+      permission: {
+        permissionKey: string;
+        canRead: boolean;
+        canCreate: boolean;
+        canUpdate: boolean;
+        canDelete: boolean;
+      };
+    }) => {
+      if (!businessId) return;
+      return updateBusinessRolePermissionApiCall(businessId, data.roleId, data.permission);
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["business_roles", businessId],
+      });
+    },
+  });
+
+  const { mutate: deleteRolePermission, isPending: deletingRolePermission } = useMutation({
+    mutationKey: ["delete_role_permission", businessId],
+    mutationFn: async (data: { roleId: string; permissionKey: string }) => {
+      if (!businessId) return;
+      return deleteBusinessRolePermissionApiCall(businessId, data.roleId, data.permissionKey);
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["business_roles", businessId],
+      });
+    },
+  });
+
   //#region Roles & Staff
 
   const { mutate: updateEmployeeRoles } = useMutation({
@@ -92,6 +129,12 @@ export const useBusinessRoles = (businessId?: string) => {
 
     deleteRole,
     deletingRole,
+
+    updateRolePermission,
+    updatingRolePermission,
+
+    deleteRolePermission,
+    deletingRolePermission,
 
     updateEmployeeRoles,
   };

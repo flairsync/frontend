@@ -18,6 +18,9 @@ export class BusinessEmployee {
   updatedAt: string;
   hourlyRate: number;
   currency: string;
+  maxWeeklyHours?: number;
+  minGapBetweenShiftsHours?: number;
+  splitShiftGapHours?: number;
 
   constructor(
     id: string,
@@ -29,6 +32,9 @@ export class BusinessEmployee {
     updatedAt: string,
     hourlyRate: number,
     currency: string,
+    maxWeeklyHours?: number,
+    minGapBetweenShiftsHours?: number,
+    splitShiftGapHours?: number,
   ) {
     this.id = id;
     this.professionalProfile = professionalProfile;
@@ -39,6 +45,9 @@ export class BusinessEmployee {
     this.updatedAt = updatedAt;
     this.hourlyRate = hourlyRate;
     this.currency = currency;
+    this.maxWeeklyHours = maxWeeklyHours;
+    this.minGapBetweenShiftsHours = minGapBetweenShiftsHours;
+    this.splitShiftGapHours = splitShiftGapHours;
   }
 
   static parseApiResponse(data: any): BusinessEmployee | null {
@@ -54,6 +63,9 @@ export class BusinessEmployee {
         data.updatedAt,
         data.hourlyRate || 0,
         data.currency || 'EUR',
+        data.maxWeeklyHours,
+        data.minGapBetweenShiftsHours,
+        data.splitShiftGapHours
       );
     } catch (error) {
       return null;

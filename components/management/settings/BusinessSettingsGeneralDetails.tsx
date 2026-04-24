@@ -23,6 +23,7 @@ import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
+import { AuditLogHint } from '@/components/audit/AuditLogHint'
 
 type BusinessGeneralInfo = {
     name?: string,
@@ -59,7 +60,14 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
 
     return (
         <AccordionItem value="general-info" className="border rounded-lg px-3">
-            <AccordionTrigger>General Information</AccordionTrigger>
+            <AccordionTrigger className="flex items-center gap-2">
+                <span>General Information</span>
+                <AuditLogHint
+                    entityType="business"
+                    entityId={props.businessDetails?.id}
+                    businessId={props.businessDetails?.id}
+                />
+            </AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 <Input
                     disabled={props.disabled}

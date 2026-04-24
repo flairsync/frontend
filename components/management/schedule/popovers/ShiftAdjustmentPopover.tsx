@@ -44,18 +44,19 @@ export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ 
     const handleSave = () => {
         // Construct full ISO datetime strings retaining the original dates
         // This is a simplified approach, handling date crossings accurately would require more logic
-        // But assuming the adjustment is on the same day for time:
-        const originalDateOnly = shift.startTime.split('T')[0];
-        const endOriginalDateOnly = shift.endTime.split('T')[0];
-        
-        const newStart = `${originalDateOnly}T${startTime}:00`; 
-        const newEnd = `${endOriginalDateOnly}T${endTime}:00`;
+        const newStartObj = new Date(shift.startTime);
+        const [startH, startM] = startTime.split(':').map(Number);
+        newStartObj.setHours(startH, startM, 0, 0);
+
+        const newEndObj = new Date(shift.endTime);
+        const [endH, endM] = endTime.split(':').map(Number);
+        newEndObj.setHours(endH, endM, 0, 0);
 
         updateShift({
             shiftId: shift.id,
             data: {
-                startTime: newStart,
-                endTime: newEnd,
+                startTime: newStartObj.toISOString(),
+                endTime: newEndObj.toISOString(),
                 status,
                 notes
             }

@@ -3,7 +3,7 @@ import { useNotifications } from '@/features/notifications/useNotifications';
 import { NotificationPayload, NotificationRecipient } from '@/features/notifications/types';
 import { navigate } from 'vike/client/router';
 import { formatDistanceToNow } from 'date-fns';
-import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle } from 'lucide-react';
+import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, Package } from 'lucide-react';
 
 const getIconForType = (type: NotificationPayload['type']) => {
     switch (type) {
@@ -15,6 +15,7 @@ const getIconForType = (type: NotificationPayload['type']) => {
         case 'RESERVATION': return <Calendar className="w-5 h-5 text-blue-500" />;
         case 'PROMO': return <Tag className="w-5 h-5 text-green-500" />;
         case 'ORDER': return <ShoppingBag className="w-5 h-5 text-amber-500" />;
+        case 'INVENTORY_LOW_STOCK': return <Package className="w-5 h-5 text-orange-500" />;
         case 'ALERT':
         default: return <Bell className="w-5 h-5 text-gray-500" />;
     }
@@ -53,35 +54,38 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
 
     const handleNotificationClick = (record: NotificationRecipient) => {
         const { notification, id, isRead } = record;
-        
-        // Mark as read if not already
+
         if (!isRead) {
             markAsRead(id);
         }
 
-        // Handle Redirection based on type and payload
         switch (notification.type) {
             case 'SHIFT_PUBLISHED':
             case 'SHIFT_CREATED':
-            case 'SHIFT_UPDATED':
+            case 'SHIFT_UPDATED': {
                 const bizId = notification.payload?.businessId;
-                if (bizId) {
-                    navigate(`/manage/${bizId}/staff/shifts?tab=schedule`);
-                } else {
-                    navigate('/shifts');
-                }
+                if (bizId) navigate(`/manage/${bizId}/staff/shifts?tab=schedule`);
                 break;
+            }
             case 'SHIFT_SWAP_REQUEST':
-            case 'TIME_OFF_APPROVED':
-                const bizIdReq = notification.payload?.businessId;
-                if (bizIdReq) {
-                    navigate(`/manage/${bizIdReq}/staff/shifts?tab=requests`);
-                } else {
-                    navigate('/shifts');
-                }
+            case 'TIME_OFF_APPROVED': {
+                const bizId = notification.payload?.businessId;
+                if (bizId) navigate(`/manage/${bizId}/staff/shifts?tab=requests`);
                 break;
+            }
+            case 'INVENTORY_LOW_STOCK': {
+                const bizId = notification.payload?.businessId;
+                if (bizId) navigate(`/manage/${bizId}/owner/inventory?tab=low-stock`);
+                break;
+            }
+            case 'RESERVATION': {
+                const bizId = notification.payload?.businessId;
+                const resId = notification.payload?.reservationId;
+                if (bizId && resId) navigate(`/manage/${bizId}/owner/reservations?reservationId=${resId}`);
+                else if (bizId) navigate(`/manage/${bizId}/owner/reservations`);
+                break;
+            }
             default:
-                // For other types, we might not have a specific redirection yet
                 break;
         }
     };
@@ -123,6 +127,16 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
                                 <p className={`mt-1 text-sm ${!isRead ? 'text-foreground' : 'text-muted-foreground'}`}>
                                     {notification.message}
                                 </p>
+                                {notification.type === 'INVENTORY_LOW_STOCK' && notification.payload && (
+                                    <p className="mt-1 text-xs text-orange-600 font-medium">
+                                        Stock: {notification.payload.currentQuantity} / Threshold: {notification.payload.threshold}
+                                    </p>
+                                )}
+                                {notification.type === 'RESERVATION' && notification.payload?.reservationId && (
+                                    <p className="mt-1 text-xs text-blue-600 font-medium underline cursor-pointer">
+                                        View reservation →
+                                    </p>
+                                )}
                             </div>
                             {!isRead && (
                                 <button

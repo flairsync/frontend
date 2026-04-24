@@ -135,10 +135,21 @@ export class MyBusinessFullDetails {
   reservationModificationLimit: number;
   reservationTimeoutMinutes: number;
   defaultReservationDurationMinutes: number;
+  requireGpsForAttendance: boolean;
+  attendanceGeofenceRadiusMeters: number;
+  strictGeofenceBlock: boolean;
   counts?: {
     employees: number;
     menus: number;
   };
+  maxWeeklyHours?: number;
+  minGapBetweenShiftsHours?: number;
+  splitShiftGapHours?: number;
+  maxPartySize: number;
+  reservationBookingWindowDays: number;
+  reservationBufferMinutes: number;
+  autoNoShow: boolean;
+  gracePeriodMinutes: number;
 
   constructor(
     id: string,
@@ -177,12 +188,23 @@ export class MyBusinessFullDetails {
     reservationModificationLimit: number,
     reservationTimeoutMinutes: number,
     defaultReservationDurationMinutes: number,
+    requireGpsForAttendance: boolean,
+    attendanceGeofenceRadiusMeters: number,
+    strictGeofenceBlock: boolean,
     createdAt: Date,
     updatedAt: Date,
     counts?: {
       employees: number;
       menus: number;
-    }
+    },
+    maxWeeklyHours?: number,
+    minGapBetweenShiftsHours?: number,
+    splitShiftGapHours?: number,
+    maxPartySize?: number,
+    reservationBookingWindowDays?: number,
+    reservationBufferMinutes?: number,
+    autoNoShow?: boolean,
+    gracePeriodMinutes?: number,
   ) {
     this.id = id;
     this.name = name;
@@ -220,9 +242,20 @@ export class MyBusinessFullDetails {
     this.reservationModificationLimit = reservationModificationLimit;
     this.reservationTimeoutMinutes = reservationTimeoutMinutes;
     this.defaultReservationDurationMinutes = defaultReservationDurationMinutes;
+    this.requireGpsForAttendance = requireGpsForAttendance;
+    this.attendanceGeofenceRadiusMeters = attendanceGeofenceRadiusMeters;
+    this.strictGeofenceBlock = strictGeofenceBlock;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.counts = counts;
+    this.maxWeeklyHours = maxWeeklyHours;
+    this.minGapBetweenShiftsHours = minGapBetweenShiftsHours;
+    this.splitShiftGapHours = splitShiftGapHours;
+    this.maxPartySize = maxPartySize ?? 20;
+    this.reservationBookingWindowDays = reservationBookingWindowDays ?? 60;
+    this.reservationBufferMinutes = reservationBufferMinutes ?? 0;
+    this.autoNoShow = autoNoShow ?? false;
+    this.gracePeriodMinutes = gracePeriodMinutes ?? 30;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -265,9 +298,20 @@ export class MyBusinessFullDetails {
         data.reservationModificationLimit !== undefined ? Number(data.reservationModificationLimit) : 120,
         data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15,
         data.defaultReservationDurationMinutes !== undefined ? Number(data.defaultReservationDurationMinutes) : 120,
+        !!data.requireGpsForAttendance,
+        data.attendanceGeofenceRadiusMeters !== undefined ? Number(data.attendanceGeofenceRadiusMeters) : 50,
+        !!data.strictGeofenceBlock,
         new Date(data.createdAt),
         new Date(data.updatedAt),
-        data.counts
+        data.counts,
+        data.maxWeeklyHours !== undefined && data.maxWeeklyHours !== null ? Number(data.maxWeeklyHours) : undefined,
+        data.minGapBetweenShiftsHours !== undefined && data.minGapBetweenShiftsHours !== null ? Number(data.minGapBetweenShiftsHours) : undefined,
+        data.splitShiftGapHours !== undefined && data.splitShiftGapHours !== null ? Number(data.splitShiftGapHours) : undefined,
+        data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
+        data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
+        data.reservationBufferMinutes !== undefined ? Number(data.reservationBufferMinutes) : 0,
+        data.autoNoShow !== undefined ? !!data.autoNoShow : false,
+        data.gracePeriodMinutes !== undefined ? Number(data.gracePeriodMinutes) : 30,
       );
     } catch {
       return null;
@@ -312,6 +356,17 @@ export type UpdateBusinessDetailsDto = {
   reservationModificationLimit?: number;
   reservationTimeoutMinutes?: number;
   defaultReservationDurationMinutes?: number;
+  requireGpsForAttendance?: boolean;
+  attendanceGeofenceRadiusMeters?: number;
+  strictGeofenceBlock?: boolean;
   countryId?: number;
   location?: { type: "Point"; coordinates: [number, number] };
+  maxWeeklyHours?: number;
+  minGapBetweenShiftsHours?: number;
+  splitShiftGapHours?: number;
+  maxPartySize?: number;
+  reservationBookingWindowDays?: number;
+  reservationBufferMinutes?: number;
+  autoNoShow?: boolean;
+  gracePeriodMinutes?: number;
 };

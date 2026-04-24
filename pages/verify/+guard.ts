@@ -10,8 +10,8 @@ export const guard = (pageContext: PageContext) => {
   }
 
   if (user.verified) {
-    if (urlParsed.search["returnUrl"]) {
-      throw redirect(urlParsed.search["returnUrl"]);
+    if (urlParsed.search["origin"]) {
+      throw redirect(urlParsed.search["origin"]);
     } else {
       // Render the error page and show message to the user
       throw redirect("/feed");

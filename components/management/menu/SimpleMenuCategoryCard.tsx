@@ -13,9 +13,11 @@ import { useTranslation } from "react-i18next";
 import { useUsage } from "@/features/subscriptions/useUsage";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 type Props = {
     category: BusinessMenuCategory;
+    businessId?: string;
     onEdit: () => void;
     onDelete: () => void;
     onAddItem: () => void;
@@ -31,6 +33,7 @@ type Props = {
 
 export const SimpleMenuCategoryCard = ({
     category,
+    businessId,
     onEdit,
     onDelete,
     onAddItem,
@@ -89,9 +92,16 @@ export const SimpleMenuCategoryCard = ({
                             <UtensilsCrossed className="h-5 w-5" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100 truncate">
-                                {category.name}
-                            </h3>
+                            <div className="flex items-center gap-1">
+                                <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100 truncate">
+                                    {category.name}
+                                </h3>
+                                <AuditLogHint
+                                    entityType="menu_category"
+                                    entityId={category.id}
+                                    businessId={businessId}
+                                />
+                            </div>
                             <p className="text-sm text-zinc-500 dark:text-zinc-400">
                                 {t('menu_management.labels.items_count', { count: category.items?.length || 0 })}
                             </p>
@@ -163,6 +173,7 @@ export const SimpleMenuCategoryCard = ({
                                                 key={item.id}
                                                 item={item}
                                                 category={category}
+                                                businessId={businessId}
                                                 onEdit={() => onEditItem(item.id)}
                                                 onDelete={() => onDeleteItem(item.id)}
                                                 onDuplicate={() => onDuplicateItem(item.id)}

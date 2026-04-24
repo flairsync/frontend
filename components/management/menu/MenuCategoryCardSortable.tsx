@@ -12,11 +12,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useUsage } from "@/features/subscriptions/useUsage";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 type Props = {
     category: BusinessMenuCategory;
     categories: BusinessMenuCategory[];
     setCategories: (cats: BusinessMenuCategory[]) => void;
+    businessId?: string;
     onEdit: () => void;
     onDelete: () => void;
     onAddItem: () => void;
@@ -29,6 +31,7 @@ export const MenuCategoryCardSortable = ({
     category,
     categories,
     setCategories,
+    businessId,
     onEdit,
     onDelete,
     onAddItem,
@@ -74,6 +77,11 @@ export const MenuCategoryCardSortable = ({
                         <div className="flex items-center gap-3">
                             {isOpen ? <ChevronDown /> : <ChevronRight />}
                             <CardTitle className="text-lg font-semibold">{category.name}</CardTitle>
+                            <AuditLogHint
+                                entityType="menu_category"
+                                entityId={category.id}
+                                businessId={businessId}
+                            />
                             <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                 ({category.items?.length || 0} items)
                             </span>
@@ -146,6 +154,7 @@ export const MenuCategoryCardSortable = ({
                                                 category={category}
                                                 categories={categories}
                                                 setCategories={setCategories}
+                                                businessId={businessId}
                                                 onEdit={() => onEditItem(item.id)}
                                                 onDelete={() => onDeleteItem(item.id)}
                                                 onDuplicate={() => onDuplicateItem(item.id)}

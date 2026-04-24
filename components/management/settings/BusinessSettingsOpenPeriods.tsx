@@ -17,6 +17,7 @@ import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails, OpeningHours } from '@/models/business/MyBusinessFullDetails'
 import WorkHoursSelector from '../create/WorkHoursSelector'
+import { AuditLogHint } from "@/components/audit/AuditLogHint"
 
 import {
     Tooltip,
@@ -73,7 +74,14 @@ const BusinessSettingsOpenPeriods = (props: Props) => {
 
     return (
         <AccordionItem value="open-periods" className="border rounded-lg px-3">
-            <AccordionTrigger>Open periods</AccordionTrigger>
+            <AccordionTrigger className="flex items-center gap-2">
+                <span>Open periods</span>
+                <AuditLogHint
+                    entityType="business"
+                    entityId={props.businessDetails?.id}
+                    businessId={props.businessDetails?.id}
+                />
+            </AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
 
                 <div className="flex items-center justify-between mb-3">

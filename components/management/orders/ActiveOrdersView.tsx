@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useOrders } from "@/features/orders/useOrders";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
-import { Loader2, Plus, ShoppingCart, CheckCircle, Utensils, Send } from "lucide-react";
+import { Loader2, Plus, CheckCircle, Utensils, ChefHat } from "lucide-react";
 import { AddItemsModal } from "@/components/staff/orders/AddItemsModal";
 import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
 
@@ -17,10 +17,12 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
     const {
         orders,
         fetchingOrders,
-        sendOrder,
-        serveOrder,
-        isSendingOrder,
-        isServingOrder
+        acceptOrder,
+        isAcceptingOrder,
+        prepareOrder,
+        isPreparingOrder,
+        readyOrder,
+        isMarkingReady,
     } = useOrders(businessId);
 
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
     const [detailsOpen, setDetailsOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
-    const activeOrders = orders?.filter(o => o.status !== "closed" && o.status !== "cancelled") || [];
+    const activeOrders = orders?.filter(o => !["completed", "rejected", "canceled"].includes(o.status)) || [];
 
     // Flatten tables from all floors
     const allTables = floors?.flatMap((f: any) => (f.tables || []).map((t: any) => ({ ...t, floorName: f.name }))) || [];
@@ -75,14 +77,19 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                             <span className="font-bold">${Number(order.totalAmount).toFixed(2)}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-1">
-                                            {order.status === "open" && (
-                                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1" onClick={() => sendOrder(order.id)} disabled={isSendingOrder}>
-                                                    <Send className="w-3 h-3" /> Send
+                                            {order.status === "created" && (
+                                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 text-blue-600 border-blue-200" onClick={() => acceptOrder(order.id)} disabled={isAcceptingOrder}>
+                                                    <CheckCircle className="w-3 h-3" /> Accept
                                                 </Button>
                                             )}
-                                            {order.status === "sent" && (
-                                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-amber-50 text-amber-600 border-amber-200" onClick={() => serveOrder(order.id)} disabled={isServingOrder}>
-                                                    <CheckCircle className="w-3 h-3" /> Serve
+                                            {order.status === "accepted" && (
+                                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 text-orange-600 border-orange-200" onClick={() => prepareOrder(order.id)} disabled={isPreparingOrder}>
+                                                    <ChefHat className="w-3 h-3" /> Prepare
+                                                </Button>
+                                            )}
+                                            {order.status === "preparing" && (
+                                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-amber-50 text-amber-600 border-amber-200" onClick={() => readyOrder(order.id)} disabled={isMarkingReady}>
+                                                    <CheckCircle className="w-3 h-3" /> Mark Ready
                                                 </Button>
                                             )}
                                             <Button size="sm" variant="secondary" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleAddItems(order.id)}>

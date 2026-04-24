@@ -32,6 +32,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Trash, UserPlus, Edit, Plus } from "lucide-react";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 import { AddRoleModal } from "@/components/management/staff/AddNewRoleModal";
 import { ViewRoleModal } from "@/components/management/staff/ViewRoleModal";
 import { BatchEditRoleEmployeesModal } from "@/components/management/staff/BatchEditRoleEmployeesModal";
@@ -55,7 +56,8 @@ const RolesSection = () => {
         createNewRole,
         creatingNewRole,
         updateRole,
-        deleteRole
+        deleteRole,
+        deleteRolePermission
     } = useBusinessRoles(routeParams.id);
 
 
@@ -89,6 +91,11 @@ const RolesSection = () => {
                                     }
                                 }}
                                 editRole={editRole}
+                                onDeletePermission={(permissionKey) => {
+                                    if (editRole) {
+                                        deleteRolePermission({ roleId: editRole.id, permissionKey });
+                                    }
+                                }}
                                 onAdd={(data) => {
                                     const payload = {
                                         name: data.name,
@@ -154,7 +161,14 @@ const RolesSection = () => {
                                         }}
                                     >
                                         <TableCell className="font-medium align-middle">
-                                            {role.name}
+                                            <div className="flex items-center gap-1">
+                                                {role.name}
+                                                <AuditLogHint
+                                                    entityType="role"
+                                                    entityId={role.id}
+                                                    businessId={routeParams.id}
+                                                />
+                                            </div>
                                         </TableCell>
                                         <TableCell className="align-middle">
                                             <Button

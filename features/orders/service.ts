@@ -22,8 +22,20 @@ export interface CreateOrderDto {
     lng?: number;
 }
 
+export type OrderStatus =
+    | 'created'
+    | 'accepted'
+    | 'preparing'
+    | 'ready'
+    | 'completed'
+    | 'rejected'
+    | 'canceled';
+
+export const TERMINAL_STATUSES: OrderStatus[] = ['completed', 'rejected', 'canceled'];
+export const ACTIVE_STATUSES: OrderStatus[] = ['created', 'accepted', 'preparing', 'ready'];
+
 export interface UpdateOrderDto {
-    status?: "pending_confirmation" | "open" | "preparing" | "ready" | "served" | "completed" | "cancelled";
+    status?: OrderStatus;
     items?: {
         menuItemId: string;
         quantity: number;
@@ -37,7 +49,7 @@ export interface Order {
     id: string;
     businessId: string;
     type: "dine_in" | "takeaway" | "delivery";
-    status: "pending_confirmation" | "open" | "sent" | "served" | "closed" | "cancelled";
+    status: OrderStatus;
     tableId?: string;
     table?: { id: string; name: string; number?: number };
     totalAmount: number;
@@ -64,11 +76,13 @@ export interface Order {
         tipAmount?: number;
         method: "cash" | "card" | "online" | "other";
         status: string;
+        idempotencyKey: string | null;
         createdAt: string;
     }[];
     paymentStatus: "pending" | "partially_paid" | "paid" | "refunded" | "failed";
     paymentMethod?: "cash" | "card" | "online" | "other";
     cancellationReason?: string;
+    rejectionReason?: string | null;
     closingNotes?: string;
     createdAt: string;
     updatedAt: string;
@@ -82,7 +96,7 @@ export interface CreatePaymentDto {
 
 export const fetchOrdersApiCall = (
     businessId: string,
-    status?: "ongoing" | "all" | "pending_confirmation" | "open" | "sent" | "served" | "closed" | "cancelled",
+    status?: "ongoing" | "all" | OrderStatus,
     startDate?: string,
     endDate?: string
 ) => {
@@ -113,24 +127,36 @@ export const addItemsToOrderApiCall = (businessId: string, orderId: string, data
     return flairapi.post(`${getOrdersUrl(businessId)}/${orderId}/items`, data);
 };
 
-export const sendOrderApiCall = (businessId: string, orderId: string) => {
-    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/send`, {});
+export const acceptOrderApiCall = (businessId: string, orderId: string) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/accept`, {});
 };
 
-export const serveOrderApiCall = (businessId: string, orderId: string) => {
-    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/serve`, {});
+export const rejectOrderApiCall = (businessId: string, orderId: string, data?: { reason?: string }) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/reject`, data || {});
 };
 
-export const closeOrderApiCall = (businessId: string, orderId: string, data?: { force?: boolean; notes?: string }) => {
-    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/close`, data || {});
+export const prepareOrderApiCall = (businessId: string, orderId: string) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/prepare`, {});
+};
+
+export const readyOrderApiCall = (businessId: string, orderId: string) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/ready`, {});
+};
+
+export const completeOrderApiCall = (businessId: string, orderId: string, data?: { force?: boolean; notes?: string }) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/complete`, data || {});
 };
 
 export const cancelOrderApiCall = (businessId: string, orderId: string, data?: { reason?: string }) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/cancel`, data || {});
 };
 
-export const createPaymentApiCall = (businessId: string, orderId: string, data: CreatePaymentDto) => {
-    return flairapi.post(`${getOrdersUrl(businessId)}/${orderId}/payments`, data);
+export const createPaymentApiCall = (businessId: string, orderId: string, data: CreatePaymentDto, idempotencyKey?: string) => {
+    return flairapi.post(
+        `${getOrdersUrl(businessId)}/${orderId}/payments`,
+        data,
+        idempotencyKey ? { headers: { 'Idempotency-Key': idempotencyKey } } : undefined
+    );
 };
 
 export const refundPaymentApiCall = (businessId: string, orderId: string, paymentId: string, data?: { reason?: string }) => {
