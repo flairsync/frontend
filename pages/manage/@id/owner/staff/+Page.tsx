@@ -38,11 +38,10 @@ const OwnerStaffManagementPage: React.FC = () => {
     } = useTranslation();
 
     return (
-        <div className="min-h-screen p-8">
-            <div className="max-w-6xl mx-auto space-y-8">
-                <h1 className="text-3xl font-bold">Staff & Roles</h1>
+        <div className="space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">Staff & Roles</h1>
 
-                <Separator />
+            <Separator />
 
                 <Tabs defaultValue="staff" className="space-y-6">
                     <TabsList className="flex flex-wrap sm:flex-nowrap gap-2 overflow-x-auto scrollbar-none">
@@ -81,7 +80,6 @@ const OwnerStaffManagementPage: React.FC = () => {
                         <TeamsSection />
                     </TabsContent>
                 </Tabs>
-            </div>
         </div>
     );
 };

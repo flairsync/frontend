@@ -132,7 +132,15 @@ const BusinessPage = () => {
                     </motion.div>
 
                     <motion.div variants={item}>
-                        <BusinessDetailsReviews businessName={profile.name} />
+                        <BusinessDetailsReviews
+                            businessId={id}
+                            businessName={profile.name}
+                            initialStats={profile.rating !== null || profile.reviewCount > 0 ? {
+                                average: profile.rating,
+                                total: profile.reviewCount,
+                                distribution: profile.reviewDistribution,
+                            } : undefined}
+                        />
                     </motion.div>
 
                     <motion.div variants={item}>

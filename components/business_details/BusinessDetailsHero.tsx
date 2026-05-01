@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Share2, Heart, Calendar } from "lucide-react";
+import { Star, MapPin, Share2, Heart, Calendar, Check } from "lucide-react";
 import {
     Carousel,
     CarouselContent,
@@ -14,6 +14,8 @@ import { motion } from 'framer-motion';
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
 import { useFavorites } from "@/features/favorites/useFavorites";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface BusinessDetailsHeroProps {
     profile: DiscoveryBusinessProfile;
@@ -22,12 +24,40 @@ interface BusinessDetailsHeroProps {
 const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
     const { t } = useTranslation();
     const { addFavorite, removeFavorite } = useFavorites();
+    const [copied, setCopied] = useState(false);
 
     const toggleFavorite = async () => {
         if (profile.isFavorite) {
             await removeFavorite(profile.id);
         } else {
             await addFavorite(profile.id);
+        }
+    };
+
+    const handleShare = async () => {
+        const url = window.location.href;
+        const shareData = {
+            title: profile.name,
+            text: profile.description || `Check out ${profile.name}`,
+            url,
+        };
+
+        if (navigator.share && navigator.canShare?.(shareData)) {
+            try {
+                await navigator.share(shareData);
+            } catch (err: any) {
+                // User cancelled — not an error worth toasting
+                if (err.name !== "AbortError") toast.error("Couldn't open share sheet.");
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(url);
+                setCopied(true);
+                toast.success("Link copied to clipboard!");
+                setTimeout(() => setCopied(false), 2000);
+            } catch {
+                toast.error("Couldn't copy link.");
+            }
         }
     };
 
@@ -74,8 +104,13 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
 
                 {/* Quick Actions Float */}
                 <div className="absolute top-6 right-6 flex gap-3">
-                    <Button variant="outline" size="icon" className="rounded-full bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20 hover:scale-110 transition-all">
-                        <Share2 size={18} />
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={handleShare}
+                        className="rounded-full bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/20 hover:scale-110 transition-all"
+                    >
+                        {copied ? <Check size={18} className="text-emerald-400" /> : <Share2 size={18} />}
                     </Button>
                     <Button
                         variant="outline"
@@ -126,11 +161,17 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                         <MapPin size={16} className="text-primary" />
                                         <span className="text-sm">{addressLabel}</span>
                                     </div>
-                                    <div className="flex items-center gap-1">
-                                        <Star size={16} className="text-yellow-400 fill-yellow-400" />
-                                        <span className="text-sm font-bold text-white">4.8</span>
-                                        <span className="text-xs text-white/50">(1.2k+ reviews)</span>
-                                    </div>
+                                    {profile.rating !== null ? (
+                                        <div className="flex items-center gap-1">
+                                            <Star size={16} className="text-yellow-400 fill-yellow-400" />
+                                            <span className="text-sm font-bold text-white">{profile.rating}</span>
+                                            {profile.reviewCount > 0 && (
+                                                <span className="text-xs text-white/50">({profile.reviewCount} reviews)</span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <span className="text-xs text-white/50">No reviews yet</span>
+                                    )}
                                 </div>
                             </div>
                         </div>

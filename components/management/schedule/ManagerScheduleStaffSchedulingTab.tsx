@@ -9,6 +9,7 @@ import { useTimeOff } from '@/features/shifts/useTimeOff'
 import { useUnvalidatedSummary } from '@/features/shifts/useUnvalidatedSummary'
 import { useManagerRoster } from '@/features/shifts/useShifts'
 import { useMyBusiness } from '@/features/business/useMyBusiness'
+import { getCurrencySymbol } from '@/utils/currency'
 import { formatInBusinessTimezone } from '@/utils/date-utils'
 import { BulkScheduleModal } from './BulkScheduleModal'
 import { BulkStaffWeeklySetupModal } from './BulkStaffWeeklySetupModal'
@@ -698,7 +699,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                 return (
                                     <div key={day.toString()} className="p-2 border-r last:border-r-0 flex flex-col items-center justify-center text-center">
                                         <div className="text-xs font-bold">{dayData?.dailyTotalHours?.toFixed(1) || '0.0'}h</div>
-                                        <div className="text-[10px] text-primary font-medium">€{dayData?.dailyTotalCost?.toFixed(2) || '0.00'}</div>
+                                        <div className="text-[10px] text-primary font-medium">{getCurrencySymbol(myBusinessFullDetails?.currency)}{dayData?.dailyTotalCost?.toFixed(2) || '0.00'}</div>
                                     </div>
                                 );
                             })}

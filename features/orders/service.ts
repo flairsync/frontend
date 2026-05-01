@@ -174,3 +174,116 @@ export const updateOrderItemApiCall = (businessId: string, orderId: string, item
 export const voidOrderItemApiCall = (businessId: string, orderId: string, itemId: string) => {
     return flairapi.delete(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`);
 };
+
+// ─── Receipt ──────────────────────────────────────────────────────────────────
+
+export interface ReceiptTaxLine {
+    name: string;
+    rate: number;
+    amount: number;
+    isInclusive: boolean;
+}
+
+export interface ReceiptItem {
+    name: string;
+    variantName: string | null;
+    modifiers: Array<{ name: string; price: number }>;
+    quantity: number;
+    unitPrice: number;
+    totalPrice: number;
+}
+
+export interface ReceiptPayment {
+    method: "cash" | "card" | "online" | "other";
+    amount: number;
+    tipAmount: number;
+    createdAt: string;
+}
+
+export interface ReceiptData {
+    receiptNumber: string;
+    issuedAt: string;
+    business: {
+        name: string;
+        address: string | null;
+        phone: string | null;
+        taxId: string | null;
+    };
+    order: {
+        id: string;
+        type: "dine_in" | "takeaway" | "delivery";
+        tableNumber: number | null;
+        waiterName: string | null;
+    };
+    items: ReceiptItem[];
+    subtotal: number;
+    taxLines: ReceiptTaxLine[];
+    discountAmount: number;
+    discountLabel: string | null;
+    totalAmount: number;
+    payments: ReceiptPayment[];
+    totalPaid: number;
+    totalTip: number;
+    changeDue: number;
+    balanceDue: number;
+}
+
+export const getReceiptApiCall = (businessId: string, orderId: string) =>
+    flairapi.get(`${getOrdersUrl(businessId)}/${orderId}/receipt`).then((r) => r.data.data as ReceiptData);
+
+// ─── Split Bill ───────────────────────────────────────────────────────────────
+
+export type SplitPaymentStatus = "UNPAID" | "PARTIALLY_PAID" | "PAID";
+
+export interface OrderSplit {
+    id: string;
+    orderId: string;
+    label: string;
+    amount: number;
+    amountPaid: number;
+    paymentStatus: SplitPaymentStatus;
+    itemIds: string[] | null;
+    createdAt: string;
+}
+
+export interface CreateSplitsPayload {
+    type: "equal" | "by_items";
+    count?: number;
+    parts?: Array<{ label: string; itemIds: string[] }>;
+}
+
+export interface PaySplitPayload {
+    amount: number;
+    method: "cash" | "card" | "online" | "other";
+    tipAmount?: number;
+}
+
+export const splitsApi = {
+    create: (businessId: string, orderId: string, payload: CreateSplitsPayload) =>
+        flairapi
+            .post(`${getOrdersUrl(businessId)}/${orderId}/splits`, payload)
+            .then((r) => r.data.data as OrderSplit[]),
+
+    list: (businessId: string, orderId: string) =>
+        flairapi
+            .get(`${getOrdersUrl(businessId)}/${orderId}/splits`)
+            .then((r) => r.data.data as OrderSplit[]),
+
+    remove: (businessId: string, orderId: string) =>
+        flairapi.delete(`${getOrdersUrl(businessId)}/${orderId}/splits`),
+
+    pay: (
+        businessId: string,
+        orderId: string,
+        splitId: string,
+        payload: PaySplitPayload,
+        idempotencyKey?: string,
+    ) =>
+        flairapi
+            .post(
+                `${getOrdersUrl(businessId)}/${orderId}/splits/${splitId}/pay`,
+                payload,
+                idempotencyKey ? { headers: { "Idempotency-Key": idempotencyKey } } : undefined,
+            )
+            .then((r) => r.data.data as { split: OrderSplit; payment: any }),
+};

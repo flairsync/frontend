@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useDashboardAnalytics } from "@/features/analytics/useDashboardAnalytics";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { getCurrencySymbol } from "@/utils/currency";
 import { AnalyticsTimeFilter, TimeRangePreset } from "./AnalyticsTimeFilter";
 import { subDays, startOfDay, endOfDay, formatISO } from "date-fns";
 
@@ -36,6 +38,9 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
         enabled: !!businessId,
     });
 
+    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const currency = getCurrencySymbol(myBusinessFullDetails?.currency);
+
     const handleTimeRangeChange = (preset: TimeRangePreset, start: string, end: string) => {
         setTimeRange(preset);
         setStartDate(start);
@@ -70,7 +75,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
 
             {data && (
                 <>
-                    <AnalyticsKpiCards sales={data.sales} />
+                    <AnalyticsKpiCards sales={data.sales} currency={currency} />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <AnalyticsRevenueChart sales={data.sales} />

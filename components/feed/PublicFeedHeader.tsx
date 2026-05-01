@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown, ShoppingBag } from "lucide-react";
+import { Menu, X, ChevronDown, ShoppingBag, Newspaper, Video, Briefcase } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePageContext } from "vike-react/usePageContext";
 import { useTranslation } from "react-i18next";
@@ -69,11 +69,17 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
                 {/* Desktop actions */}
                 <div className="hidden md:flex items-center gap-6">
                     <nav className="flex items-center gap-6 mr-4">
-                        <a href="/feed" className="text-sm font-medium hover:text-primary transition-colors">
+                        <a href="/feed" className="flex items-center gap-1.5 text-sm font-medium hover:text-primary transition-colors">
+                            <Newspaper className="w-3.5 h-3.5" />
                             {t("public_feed.header.feed", "Feed")}
                         </a>
-                        <a href="/explore" className="text-sm font-medium hover:text-primary transition-colors">
+                        <a href="/explore" className="flex items-center gap-1.5 text-sm font-medium hover:text-primary transition-colors">
+                            <Video className="w-3.5 h-3.5" />
                             {t("public_feed.header.explore", "Explore")}
+                        </a>
+                        <a href="/jobs" className="flex items-center gap-1.5 text-sm font-medium hover:text-primary transition-colors">
+                            <Briefcase className="w-3.5 h-3.5" />
+                            {t("public_feed.header.jobs", "Jobs")}
                         </a>
 
                         <DropdownMenu>
@@ -136,18 +142,29 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
                         <nav className="flex flex-col px-6 py-6 space-y-4">
                             <a
                                 href="/feed"
-                                className="text-lg font-medium hover:text-primary transition"
+                                className="flex items-center gap-2 text-lg font-medium hover:text-primary transition"
                                 onClick={() => setIsOpen(false)}
                             >
+                                <Newspaper className="w-5 h-5" />
                                 {t("public_feed.header.feed", "Feed")}
                             </a>
 
                             <a
                                 href="/explore"
-                                className="text-lg font-medium hover:text-primary transition"
+                                className="flex items-center gap-2 text-lg font-medium hover:text-primary transition"
                                 onClick={() => setIsOpen(false)}
                             >
+                                <Video className="w-5 h-5" />
                                 {t("public_feed.header.explore", "Explore")}
+                            </a>
+
+                            <a
+                                href="/jobs"
+                                className="flex items-center gap-2 text-lg font-medium hover:text-primary transition"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                <Briefcase className="w-5 h-5" />
+                                {t("public_feed.header.jobs", "Jobs")}
                             </a>
 
                             {/* Mobile Marketplace Links */}

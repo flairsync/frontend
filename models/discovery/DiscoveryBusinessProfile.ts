@@ -12,6 +12,11 @@ export class DiscoveryBusinessProfile {
     tags: BusinessTag[];
     media: BusinessMedia[];
 
+    // Rating summary (populated from API, no extra request needed)
+    rating: number | null;
+    reviewCount: number;
+    reviewDistribution: Record<string, number>;
+
     // Important Flags for UI
     allowReservations: boolean;
     allowOrders: boolean;
@@ -27,6 +32,8 @@ export class DiscoveryBusinessProfile {
     reservationTimeoutMinutes: number;
     defaultReservationDurationMinutes: number;
     maxOrderDistanceMeters: number;
+    reservationBookingWindowDays: number;
+    maxPartySize: number;
 
     // Location
     country: Country | null;
@@ -54,6 +61,9 @@ export class DiscoveryBusinessProfile {
         type: BusinessType | null,
         tags: BusinessTag[],
         media: BusinessMedia[],
+        rating: number | null,
+        reviewCount: number,
+        reviewDistribution: Record<string, number>,
         allowReservations: boolean,
         allowOrders: boolean,
         isFavorite: boolean | undefined,
@@ -80,7 +90,9 @@ export class DiscoveryBusinessProfile {
         reservationModificationLimit: number,
         reservationTimeoutMinutes: number,
         defaultReservationDurationMinutes: number,
-        maxOrderDistanceMeters: number
+        maxOrderDistanceMeters: number,
+        reservationBookingWindowDays: number,
+        maxPartySize: number
     ) {
         this.id = id;
         this.name = name;
@@ -89,6 +101,9 @@ export class DiscoveryBusinessProfile {
         this.type = type;
         this.tags = tags;
         this.media = media;
+        this.rating = rating;
+        this.reviewCount = reviewCount;
+        this.reviewDistribution = reviewDistribution;
         this.allowReservations = allowReservations;
         this.allowOrders = allowOrders;
         this.isFavorite = isFavorite;
@@ -116,6 +131,8 @@ export class DiscoveryBusinessProfile {
         this.reservationTimeoutMinutes = reservationTimeoutMinutes;
         this.defaultReservationDurationMinutes = defaultReservationDurationMinutes;
         this.maxOrderDistanceMeters = maxOrderDistanceMeters;
+        this.reservationBookingWindowDays = reservationBookingWindowDays;
+        this.maxPartySize = maxPartySize;
     }
 
     static parseApiArrayResponse(data: any[]): DiscoveryBusinessProfile[] {
@@ -139,6 +156,9 @@ export class DiscoveryBusinessProfile {
                 BusinessType.parseApiResponse(data.type),
                 BusinessTag.parseApiArrayResponse(data.tags || []),
                 BusinessMedia.parseApiArrayResponse(data.media || []),
+                data.rating ?? null,
+                data.reviewCount ?? 0,
+                data.reviewDistribution ?? {},
                 !!data.allowReservations,
                 !!data.allowOrders,
                 !!data.isFavorite,
@@ -165,7 +185,9 @@ export class DiscoveryBusinessProfile {
                 data.reservationModificationLimit !== undefined ? Number(data.reservationModificationLimit) : 120,
                 data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15,
                 data.defaultReservationDurationMinutes !== undefined ? Number(data.defaultReservationDurationMinutes) : 120,
-                data.maxOrderDistanceMeters !== undefined && data.maxOrderDistanceMeters !== null ? Number(data.maxOrderDistanceMeters) : 500
+                data.maxOrderDistanceMeters !== undefined && data.maxOrderDistanceMeters !== null ? Number(data.maxOrderDistanceMeters) : 500,
+                data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
+                data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20
             );
         } catch {
             return null;

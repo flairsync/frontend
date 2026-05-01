@@ -44,6 +44,22 @@ export const useNotificationSocket = () => {
                 queryClient.invalidateQueries({ queryKey: ['inventory_low_stock'] });
                 queryClient.invalidateQueries({ queryKey: ['inventory_dashboard'] });
                 toast.warning(notification.title, { description: notification.message });
+            } else if (notification.type === 'RESERVATION') {
+                // Refresh the specific reservation timeline if we have the ID
+                const { reservationId, businessId } = notification.payload ?? {};
+                if (businessId && reservationId) {
+                    queryClient.invalidateQueries({
+                        queryKey: ['reservation_timeline', businessId, reservationId],
+                    });
+                }
+                // Also refresh the reservation dashboard (staff view) and list
+                if (businessId) {
+                    queryClient.invalidateQueries({ queryKey: ['reservation-dashboard', businessId] });
+                    queryClient.invalidateQueries({ queryKey: ['reservations', businessId] });
+                }
+                // Refresh the customer's personal reservations list
+                queryClient.invalidateQueries({ queryKey: ['my_reservations'] });
+                toast.info(notification.title, { description: notification.message });
             } else {
                 toast.info(notification.title, { description: notification.message });
             }

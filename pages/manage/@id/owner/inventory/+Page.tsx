@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -174,10 +175,10 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
     const hasActiveFilters = filters.search || filters.barcode || filters.groupId !== "all" || filters.unitId !== "all" || filters.lowStock;
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("inventory_management.title")}</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t("inventory_management.title")}</h1>
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                     <Button variant="outline" onClick={() => setGroupModalOpen(true)} className="flex-1 sm:flex-none gap-2 px-3 h-9">
                         <Layers className="w-4 h-4" />
@@ -191,6 +192,8 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                     </Button>
                 </div>
             </div>
+
+            <Separator />
 
             {/* Dashboard summary cards */}
             <InventoryDashboardCards

@@ -2,59 +2,64 @@ import React from "react";
 import AttendanceStats from "./AttendanceStats";
 import AttendanceFilters from "./AttendanceFilters";
 import AttendanceTable from "./AttendanceTable";
-import { AttendanceRecord, AttendanceStatus } from "@/lib/attendanceUtils";
 import { DateRange } from "react-day-picker";
+import { AttendanceLog, AttendanceLifecycleStatus, AttendanceStatus } from "@/models/business/shift/Attendance";
 
 interface OverviewTabProps {
-  records: AttendanceRecord[];
-  stats: any;
+  businessId: string;
+  records: AttendanceLog[];
+  total: number;
+  isLoading: boolean;
   dateRange: DateRange | undefined;
   setDateRange: (range: DateRange | undefined) => void;
   employeeFilter: string;
   setEmployeeFilter: (val: string) => void;
-  statusFilter: string;
-  setStatusFilter: (val: string) => void;
-  onEdit: (record: AttendanceRecord) => void;
-  onAddNote: (record: AttendanceRecord) => void;
+  lifecycleFilter: AttendanceLifecycleStatus | "all";
+  setLifecycleFilter: (val: AttendanceLifecycleStatus | "all") => void;
+  statusFilter: AttendanceStatus | "all";
+  setStatusFilter: (val: AttendanceStatus | "all") => void;
 }
 
 const OverviewTab = ({
+  businessId,
   records,
-  stats,
+  total,
+  isLoading,
   dateRange,
   setDateRange,
   employeeFilter,
   setEmployeeFilter,
+  lifecycleFilter,
+  setLifecycleFilter,
   statusFilter,
   setStatusFilter,
-  onEdit,
-  onAddNote,
 }: OverviewTabProps) => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 md:px-6">
-      <AttendanceStats stats={stats} />
-      
-      <AttendanceFilters 
+      <AttendanceStats records={records} />
+
+      <AttendanceFilters
         dateRange={dateRange}
         setDateRange={setDateRange}
         employeeFilter={employeeFilter}
         setEmployeeFilter={setEmployeeFilter}
+        lifecycleFilter={lifecycleFilter}
+        setLifecycleFilter={setLifecycleFilter}
         statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
-        showExportButton={false}
       />
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-slate-800">Shift Logs</h2>
+          <h2 className="text-xl font-bold text-slate-800">Attendance Logs</h2>
           <span className="text-sm text-slate-400 font-medium bg-slate-100 px-3 py-1 rounded-full">
-            {records.length} records found
+            {records.length} of {total} records
           </span>
         </div>
-        <AttendanceTable 
+        <AttendanceTable
           records={records}
-          onEdit={onEdit}
-          onAddNote={onAddNote}
+          isLoading={isLoading}
+          businessId={businessId}
         />
       </div>
     </div>

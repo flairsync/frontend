@@ -11,6 +11,7 @@ import { useShifts, useUpcomingShifts, useAvailableShifts, useMyBids } from "@/f
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
 import { formatInBusinessTimezone } from "@/utils/date-utils"
+import { getCurrencySymbol } from "@/utils/currency"
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift"
 import { format, parseISO, addDays, startOfDay, differenceInHours } from "date-fns"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -336,7 +337,7 @@ export default function StaffShiftsPage() {
                                                         {shift.estimatedCost && (
                                                             <div className="mt-2 flex items-center gap-1 text-sm font-medium text-emerald-600">
                                                                 <DollarSign className="h-3 w-3" />
-                                                                <span>{shift.estimatedCost} {shift.currency || 'EUR'}</span>
+                                                                <span>{getCurrencySymbol(shift.currency || 'EUR')}{shift.estimatedCost}</span>
                                                             </div>
                                                         )}
                                                         {hasConflict && (
@@ -464,7 +465,7 @@ export default function StaffShiftsPage() {
                                                         {shift.estimatedCost ? (
                                                             <div className="flex items-center gap-1 text-sm font-medium text-emerald-600">
                                                                 <span>{shift.estimatedCost}</span>
-                                                                <span className="text-[10px] text-muted-foreground uppercase">{shift.currency || 'EUR'}</span>
+                                                                <span className="text-[10px] text-muted-foreground">{getCurrencySymbol(shift.currency || 'EUR')}</span>
                                                             </div>
                                                         ) : (
                                                             <span className="text-muted-foreground text-xs">-</span>

@@ -1,7 +1,6 @@
 import React from "react";
 import { useReservationEvents } from "@/features/reservations/useReservationDashboard";
-import { ReservationEvent } from "@/features/reservations/types";
-type ReservationEventType = ReservationEvent['type'];
+import { ReservationEvent, ReservationEventType } from "@/features/reservations/types";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";

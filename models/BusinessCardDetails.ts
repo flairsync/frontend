@@ -8,7 +8,8 @@ export class BusinessCardDetails {
     lng: number;
   };
   description: string;
-  rating: number;
+  rating: number | null;
+  reviewCount: number;
   address: string;
   status: string; // open, closed, busy, not busy
   link: string; // new field for URL
@@ -20,7 +21,8 @@ export class BusinessCardDetails {
     name: string,
     location: { lat: number; lng: number },
     description: string,
-    rating: number,
+    rating: number | null,
+    reviewCount: number,
     address: string,
     status: string,
     link: string,
@@ -32,6 +34,7 @@ export class BusinessCardDetails {
     this.location = location;
     this.description = description;
     this.rating = rating;
+    this.reviewCount = reviewCount;
     this.address = address;
     this.status = status;
     this.link = link;
@@ -46,72 +49,54 @@ export class BusinessCardDetails {
         "Cafe Montserrat",
         { lat: 42.507, lng: 1.521 },
         "Cozy place with a great atmosphere.",
-        4.5,
+        4.5, 0,
         "Carrer Major 12, Andorra la Vella, Andorra",
-        "open",
-        "cafe-montserrat",
-        2,
-        false
+        "open", "cafe-montserrat", 2, false
       ),
       new BusinessCardDetails(
         "https://images.pexels.com/photos/6152041/pexels-photo-6152041.jpeg",
         "Borda La Vella",
         { lat: 42.534, lng: 1.545 },
         "Perfect spot for coffee and pastries.",
-        4.2,
+        4.2, 0,
         "Avinguda de Meritxell 8, Andorra la Vella, Andorra",
-        "busy",
-        "borda-la-vella",
-        3,
-        false
+        "busy", "borda-la-vella", 3, false
       ),
       new BusinessCardDetails(
         "https://images.pexels.com/photos/5902957/pexels-photo-5902957.jpeg",
         "Vermuteria Andorra",
         { lat: 42.516, lng: 1.556 },
         "Family-friendly and welcoming.",
-        4.8,
+        4.8, 0,
         "Carrer de la Vall 5, Escaldes-Engordany, Andorra",
-        "closed",
-        "vermuteria-andorra",
-        1,
-        false
+        "closed", "vermuteria-andorra", 1, false
       ),
       new BusinessCardDetails(
         "https://images.pexels.com/photos/33899554/pexels-photo-33899554.jpeg",
         "Restaurant Caldea",
         { lat: 42.523, lng: 1.534 },
         "Known for its delicious local dishes.",
-        4.6,
+        4.6, 0,
         "Avinguda Carlemany 20, Escaldes-Engordany, Andorra",
-        "open",
-        "restaurant-caldea",
-        4,
-        false
+        "open", "restaurant-caldea", 4, false
       ),
       new BusinessCardDetails(
         "https://images.pexels.com/photos/33899422/pexels-photo-33899422.jpeg",
         "Pizzeria La Massana",
         { lat: 42.544, lng: 1.512 },
         "Modern interior and tasty meals.",
-        4.3,
+        4.3, 0,
         "Carrer de Prat de la Creu 3, La Massana, Andorra",
-        "not busy",
-        "pizzeria-la-massana",
-        2,
-        false
+        "not busy", "pizzeria-la-massana", 2, false
       ),
       new BusinessCardDetails(
         "https://images.pexels.com/photos/2159065/pexels-photo-2159065.jpeg",
         "Snack Bar Encamp",
         { lat: 42.534, lng: 1.576 },
         "Quick bites with excellent service.",
-        4.0,
+        4.0, 0,
         "Carrer del Nord 7, Encamp, Andorra",
-        "open",
-        "snack-bar-encamp",
-        1,
-        false
+        "open", "snack-bar-encamp", 1, false
       ),
     ];
   }
@@ -128,15 +113,14 @@ export class BusinessCardDetails {
     const lat = b.location?.coordinates?.[1] || 0;
     const lng = b.location?.coordinates?.[0] || 0;
 
-    // Use rating from backend if available (even if 0.0), otherwise fallback to 0
-    const rating = b.rating ?? 0;
+    const rating = b.rating ?? null;
+    const reviewCount = b.reviewCount ?? 0;
 
-    // Find the first image or logo
     let imageSrc = b.logo || "https://images.pexels.com/photos/1237073/pexels-photo-1237073.jpeg";
     if (!b.logo && b.media?.length > 0) {
       const imageMedia = b.media.find(m => m.url.match(/\.(jpeg|jpg|png|webp|gif)$/i));
       if (imageMedia) imageSrc = imageMedia.url;
-      else imageSrc = b.media[0].url; // fallback to first media item if video
+      else imageSrc = b.media[0].url;
     }
 
     return new BusinessCardDetails(
@@ -145,6 +129,7 @@ export class BusinessCardDetails {
       { lat, lng },
       b.description || b.tags.map(t => t.name).join(", "),
       rating,
+      reviewCount,
       address,
       status,
       b.id,

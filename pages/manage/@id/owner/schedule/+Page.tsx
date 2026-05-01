@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import ManagerScheduleShiftsTab from "@/components/management/schedule/ManagerScheduleShiftsTab";
 import ManagerScheduleStaffSchedulingTab from "@/components/management/schedule/ManagerScheduleStaffSchedulingTab";
 import ManagerScheduleRecurringRulesTab from "@/components/management/schedule/ManagerScheduleRecurringRulesTab";
@@ -44,15 +45,15 @@ export default function OwnerManageSchedulesPage() {
     }, [activeTab, isInitialized]);
 
     return (
-        <main className="min-h-screen bg-slate-50 p-6">
-            <div className="max-w-6xl mx-auto space-y-6">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-slate-900">Schedule Management</h1>
-                </div>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold tracking-tight">Schedule Management</h1>
+            </div>
 
-                {/* Tabs */}
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <Separator />
+
+            {/* Tabs */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                     <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
                         <TabsTrigger value="manage" className="flex-1">Staff Scheduling</TabsTrigger>
                         <TabsTrigger value="bids" className="flex-1">Open Shift Bids</TabsTrigger>
@@ -92,8 +93,7 @@ export default function OwnerManageSchedulesPage() {
                         <ManagerScheduleSwapsTab />
                     </TabsContent>
                 </Tabs>
-            </div>
-        </main>
+        </div>
     );
 }
 

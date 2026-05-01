@@ -31,6 +31,11 @@ const BusinessDetailsContact: React.FC<BusinessDetailsContactProps> = ({ profile
         },
     ].filter(link => !!link.href);
 
+    const hasContactInfo = !!(profile.phone || profile.email);
+    const hasSocials = socialLinks.length > 0 || !!profile.website;
+
+    if (!hasContactInfo && !hasSocials) return null;
+
     return (
         <section className="space-y-12 pb-12">
             <div className="space-y-2 text-center max-w-2xl mx-auto">
@@ -42,53 +47,55 @@ const BusinessDetailsContact: React.FC<BusinessDetailsContactProps> = ({ profile
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className={`grid grid-cols-1 gap-8 max-w-4xl mx-auto ${hasContactInfo && hasSocials ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}`}>
                 {/* Contact Methods */}
-                <div className="space-y-6">
-                    <Card className="bg-card border-border/50 rounded-[2rem] overflow-hidden group hover:shadow-xl hover:shadow-primary/5 transition-all duration-500">
-                        <CardContent className="p-8 space-y-6">
-                            {profile.phone && (
-                                <div className="flex items-center gap-5">
-                                    <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-600">
-                                        <Phone size={24} />
+                {hasContactInfo && (
+                    <div className="space-y-6">
+                        <Card className="bg-card border-border/50 rounded-[2rem] overflow-hidden group hover:shadow-xl hover:shadow-primary/5 transition-all duration-500">
+                            <CardContent className="p-8 space-y-6">
+                                {profile.phone && (
+                                    <div className="flex items-center gap-5">
+                                        <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-600">
+                                            <Phone size={24} />
+                                        </div>
+                                        <div className="space-y-0.5">
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                                                {t("business_page.contact.phone_label", "Phone")}
+                                            </p>
+                                            <a href={`tel:${profile.phone}`} className="text-xl font-bold hover:text-primary transition-colors tracking-tight block">
+                                                {profile.phone}
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div className="space-y-0.5">
-                                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                                            {t("business_page.contact.phone_label", "Phone")}
-                                        </p>
-                                        <a href={`tel:${profile.phone}`} className="text-xl font-bold hover:text-primary transition-colors tracking-tight block">
-                                            {profile.phone}
-                                        </a>
-                                    </div>
-                                </div>
-                            )}
+                                )}
 
-                            {profile.email && (
-                                <div className="flex items-center gap-5">
-                                    <div className="p-3 bg-blue-500/10 rounded-xl text-blue-600">
-                                        <Mail size={24} />
+                                {profile.email && (
+                                    <div className="flex items-center gap-5">
+                                        <div className="p-3 bg-blue-500/10 rounded-xl text-blue-600">
+                                            <Mail size={24} />
+                                        </div>
+                                        <div className="space-y-0.5">
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                                                {t("business_page.contact.email_label", "Email")}
+                                            </p>
+                                            <a href={`mailto:${profile.email}`} className="text-xl font-bold hover:text-primary transition-colors tracking-tight block">
+                                                {profile.email}
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div className="space-y-0.5">
-                                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                                            {t("business_page.contact.email_label", "Email")}
-                                        </p>
-                                        <a href={`mailto:${profile.email}`} className="text-xl font-bold hover:text-primary transition-colors tracking-tight block">
-                                            {profile.email}
-                                        </a>
-                                    </div>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
+                                )}
+                            </CardContent>
+                        </Card>
 
-                    <Button className="w-full h-14 rounded-2xl bg-foreground text-background hover:bg-foreground/90 text-md font-bold tracking-tight shadow-lg">
-                        <MessageSquare className="mr-2" size={18} />
-                        {t("business_page.contact.send_message_button", "Send us a Message")}
-                    </Button>
-                </div>
+                        <Button className="w-full h-14 rounded-2xl bg-foreground text-background hover:bg-foreground/90 text-md font-bold tracking-tight shadow-lg">
+                            <MessageSquare className="mr-2" size={18} />
+                            {t("business_page.contact.send_message_button", "Send us a Message")}
+                        </Button>
+                    </div>
+                )}
 
                 {/* Social & Web */}
-                <div className="space-y-8 flex flex-col justify-center">
+                {hasSocials && <div className="space-y-8 flex flex-col justify-center">
                     {socialLinks.length > 0 && (
                         <>
                             <div className="space-y-3">
@@ -135,7 +142,7 @@ const BusinessDetailsContact: React.FC<BusinessDetailsContactProps> = ({ profile
                             </a>
                         </div>
                     )}
-                </div>
+                </div>}
             </div>
         </section>
     );

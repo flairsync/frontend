@@ -20,7 +20,8 @@ export class DiscoveryBusiness {
     country?: { id: number; name: string };
     isOpen?: boolean;
     isFavorite?: boolean;
-    rating?: number;
+    rating?: number | null;
+    reviewCount?: number;
     location?: {
         type: string;
         coordinates: number[];
@@ -44,7 +45,8 @@ export class DiscoveryBusiness {
         country?: { id: number; name: string },
         isOpen?: boolean,
         isFavorite?: boolean,
-        rating?: number,
+        rating?: number | null,
+        reviewCount?: number,
         location?: { type: string; coordinates: number[] }
     ) {
         this.id = id;
@@ -65,6 +67,7 @@ export class DiscoveryBusiness {
         this.isOpen = isOpen;
         this.isFavorite = isFavorite;
         this.rating = rating;
+        this.reviewCount = reviewCount;
         this.location = location;
     }
 
@@ -88,8 +91,9 @@ export class DiscoveryBusiness {
                 data.currency,
                 typeof data.country === 'string' ? { id: 0, name: data.country } : data.country,
                 data.isOpen,
-                data.isFavorite ?? true, // Default to true if parsing from favorites list
-                data.rating,
+                data.isFavorite ?? true,
+                data.rating ?? null,
+                data.reviewCount ?? 0,
                 data.location
             );
         } catch {

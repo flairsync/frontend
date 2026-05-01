@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash, UserPlus, Edit, Plus, EditIcon, CalendarPlus, AlertCircle, Check, X } from "lucide-react";
+import { Trash, UserPlus, Edit, Plus, EditIcon, CalendarPlus, AlertCircle, Check, X, KeyRound } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -26,18 +26,22 @@ import { Input } from "@/components/ui/input";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useBusinessEmployeeOps } from "@/features/business/employment/useBusinessEmployeeOps";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { getCurrencySymbol } from "@/utils/currency";
 import { Badge } from "@/components/ui/badge";
 import { BusinessEmployee } from "@/models/business/BusinessEmployee";
 import { EditStaffRolesModal } from "@/components/management/staff/EditStaffRolesModal";
 import { useBusinessRoles } from "@/features/business/roles/useBusinessRoles";
 import { IndividualScheduleModal } from '@/components/management/schedule/IndividualScheduleModal';
 import { EditStaffSettingsModal } from "@/components/management/staff/EditStaffSettingsModal";
+import SetPinModal from "@/components/management/staff/SetPinModal";
 
 interface EditableHourlyRateProps {
   employeeId: string;
   initialRate: number;
   onSave: (rate: number) => void;
   isUpdating?: boolean;
+  currency?: string;
 }
 
 const EditableHourlyRate = ({
@@ -45,6 +49,7 @@ const EditableHourlyRate = ({
   initialRate,
   onSave,
   isUpdating,
+  currency = "€",
 }: EditableHourlyRateProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [rate, setRate] = useState(initialRate.toString());
@@ -92,7 +97,7 @@ const EditableHourlyRate = ({
         className="cursor-pointer hover:underline decoration-dotted"
         onClick={() => setIsEditing(true)}
       >
-        {initialRate > 0 ? `${initialRate}€` : "0€"}
+        {initialRate > 0 ? `${initialRate}${currency}` : `0${currency}`}
       </span>
       {(!initialRate || initialRate === 0) && (
         <TooltipProvider>
@@ -146,8 +151,12 @@ const StaffSection = () => {
     updateEmployeeSettings,
   } = useBusinessEmployeeOps(routeParams.id);
 
+  const { myBusinessFullDetails } = useMyBusiness(routeParams.id);
+  const currency = getCurrencySymbol(myBusinessFullDetails?.currency);
+
   const [selectedStaff, setSelectedStaff] = useState<BusinessEmployee | null>(null);
   const [editingSettingsStaff, setEditingSettingsStaff] = useState<BusinessEmployee | null>(null);
+  const [pinStaff, setPinStaff] = useState<BusinessEmployee | null>(null);
 
   // Individual Schedule State
   const [scheduleStaffId, setScheduleStaffId] = useState<string | null>(null);
@@ -186,10 +195,22 @@ const StaffSection = () => {
       )}
 
       {isScheduleModalOpen && (
-        <IndividualScheduleModal 
-          open={isScheduleModalOpen} 
+        <IndividualScheduleModal
+          open={isScheduleModalOpen}
           onOpenChange={setIsScheduleModalOpen}
           defaultEmploymentId={scheduleStaffId}
+        />
+      )}
+
+      {pinStaff && (
+        <SetPinModal
+          open={Boolean(pinStaff)}
+          businessId={routeParams.id}
+          employee={{
+            id: pinStaff.id,
+            name: pinStaff.professionalProfile?.displayName ?? "Staff",
+          }}
+          onClose={() => setPinStaff(null)}
         />
       )}
 
@@ -243,6 +264,7 @@ const StaffSection = () => {
                       initialRate={member.hourlyRate}
                       onSave={(rate) => updateHourlyRate({ employeeId: member.id, hourlyRate: rate })}
                       isUpdating={updatingHourlyRate}
+                      currency={currency}
                     />
                   </TableCell>
                   <TableCell>
@@ -270,6 +292,16 @@ const StaffSection = () => {
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
+                        {member.status === 'ACTIVE' && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            title="Set POS PIN"
+                            onClick={() => setPinStaff(member)}
+                          >
+                            <KeyRound className="h-4 w-4" />
+                          </Button>
+                        )}
                         <Button
                           size="sm"
                           variant="destructive"

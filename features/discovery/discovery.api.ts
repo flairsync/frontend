@@ -14,6 +14,7 @@ export interface FetchDiscoveryBusinessesParams {
     state?: string;
     minPrice?: number;
     maxPrice?: number;
+    minRating?: number;
     page?: number;
     limit?: number;
 }
@@ -63,8 +64,24 @@ export const fetchMyReservationsApiCall = (params?: FetchMyReservationsParams) =
     return flairapi.get(`${baseUrl}/my-reservations`, { params: queryParams });
 };
 
-export const fetchMyOrdersApiCall = (businessId: string) => {
-    return flairapi.get(`${baseUrl}/businesses/${businessId}/my-orders`);
+export interface FetchMyOrdersParams {
+    page?: number;
+    limit?: number;
+    status?: string;
+    startDate?: string;
+    endDate?: string;
+}
+
+export const fetchMyOrdersApiCall = (businessId: string, params?: FetchMyOrdersParams) => {
+    return flairapi.get(`${baseUrl}/businesses/${businessId}/my-orders`, { params });
+};
+
+export const fetchSingleOrderApiCall = (businessId: string, orderId: string) => {
+    return flairapi.get(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}`);
+};
+
+export const reorderApiCall = (businessId: string, orderId: string, payload?: { type?: string; tableId?: string }) => {
+    return flairapi.post(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}/reorder`, payload || {});
 };
 
 export const cancelReservationApiCall = (businessId: string, reservationId: string) => {
@@ -73,6 +90,37 @@ export const cancelReservationApiCall = (businessId: string, reservationId: stri
 
 export const fetchReservationTimelineApiCall = (businessId: string, reservationId: string) => {
     return flairapi.get(`${baseUrl}/businesses/${businessId}/my-reservations/${reservationId}/timeline`);
+};
+
+// Reviews
+export interface FetchReviewsParams {
+    page?: number;
+    limit?: number;
+    rating?: number;
+}
+
+export const fetchReviewsApiCall = (businessId: string, params?: FetchReviewsParams) => {
+    return flairapi.get(`${baseUrl}/businesses/${businessId}/reviews`, { params });
+};
+
+export const fetchReviewStatsApiCall = (businessId: string) => {
+    return flairapi.get(`${baseUrl}/businesses/${businessId}/reviews/stats`);
+};
+
+export const fetchMyReviewApiCall = (businessId: string) => {
+    return flairapi.get(`${baseUrl}/businesses/${businessId}/reviews/mine`);
+};
+
+export const createReviewApiCall = (businessId: string, payload: { rating: number; comment?: string }) => {
+    return flairapi.post(`${baseUrl}/businesses/${businessId}/reviews`, payload);
+};
+
+export const updateReviewApiCall = (businessId: string, reviewId: string, payload: { rating?: number; comment?: string }) => {
+    return flairapi.patch(`${baseUrl}/businesses/${businessId}/reviews/${reviewId}`, payload);
+};
+
+export const deleteReviewApiCall = (businessId: string, reviewId: string) => {
+    return flairapi.delete(`${baseUrl}/businesses/${businessId}/reviews/${reviewId}`);
 };
 
 export const postReservationActionApiCall = (

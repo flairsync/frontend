@@ -72,6 +72,7 @@ const FeedPage = () => {
     // Sidebar Filter State
     const [selectedTypeId, setSelectedTypeId] = useState<string | undefined>();
     const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
+    const [selectedMinRating, setSelectedMinRating] = useState<number | undefined>();
     const [locationErrorReason, setLocationErrorReason] = useState<string | undefined>();
 
     const { platformCountries } = usePlatformCountries();
@@ -85,9 +86,10 @@ const FeedPage = () => {
             locationState,
             selectedTypeId,
             selectedTagIds,
+            selectedMinRating,
         };
         localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(filters));
-    }, [locationState, selectedTypeId, selectedTagIds, isInitialized]);
+    }, [locationState, selectedTypeId, selectedTagIds, selectedMinRating, isInitialized]);
 
     // ✅ Priority Logic on Mount
     React.useEffect(() => {
@@ -104,6 +106,7 @@ const FeedPage = () => {
                     setLocationState(parsed.locationState);
                     if (parsed.selectedTypeId) setSelectedTypeId(parsed.selectedTypeId);
                     if (parsed.selectedTagIds) setSelectedTagIds(parsed.selectedTagIds);
+                    if (parsed.selectedMinRating) setSelectedMinRating(parsed.selectedMinRating);
                     hasValidStoredFilters = true;
                 }
             } catch (e) {
@@ -173,12 +176,13 @@ const FeedPage = () => {
         page,
         limit,
         q: searchQuery || undefined,
-        radius: locationState.radius, // already in meters
+        radius: locationState.radius,
         lat: locationState.lat,
         lng: locationState.lng,
         countryId: locationState.countryId,
         typeId: selectedTypeId === 'all' ? undefined : (selectedTypeId ? parseInt(selectedTypeId) : undefined),
-        tagIds: selectedTagIds.length > 0 ? selectedTagIds.join(',') : undefined
+        tagIds: selectedTagIds.length > 0 ? selectedTagIds.join(',') : undefined,
+        minRating: selectedMinRating,
     });
 
     const handleSearch = () => {
@@ -198,6 +202,7 @@ const FeedPage = () => {
     const handleClearFilters = () => {
         setSelectedTypeId(undefined);
         setSelectedTagIds([]);
+        setSelectedMinRating(undefined);
         setLocationState({
             useCustomLocation: false,
             radius: 50000
@@ -228,7 +233,7 @@ const FeedPage = () => {
         return searchData.businesses.map(b => BusinessCardDetails.fromDiscoveryBusiness(b));
     }, [searchData]);
 
-    const totalResults = searchData?.total || 0;
+    const totalResults = searchData?.total ?? 0;
 
     return (
         <div className="min-h-screen bg-background">
@@ -288,6 +293,11 @@ const FeedPage = () => {
                             }}
                             selectedTagIds={selectedTagIds}
                             onTagToggle={handleTagToggle}
+                            selectedMinRating={selectedMinRating}
+                            onMinRatingChange={(r) => {
+                                setSelectedMinRating(r);
+                                setPage(1);
+                            }}
                             onLocationClick={() => setIsLocationModalOpen(true)}
                             onClearFilters={handleClearFilters}
                             locationLabel={locationLabel}

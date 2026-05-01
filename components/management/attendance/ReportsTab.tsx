@@ -1,134 +1,139 @@
-import React, { useMemo } from "react";
-import { 
-  AttendanceRecord, 
-  aggregateAttendanceByEmployee, 
-  formatDuration 
-} from "@/lib/attendanceUtils";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Download, FileText, TrendingUp, TrendingDown } from "lucide-react";
-import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
+import React from "react";
 import { DateRange } from "react-day-picker";
+import { format, startOfWeek, endOfWeek } from "date-fns";
+import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Info } from "lucide-react";
+import { useAttendanceSummary } from "@/features/shifts/useAttendance";
+import { getCurrencySymbol } from "@/utils/currency";
 
-interface ReportsTabProps {
-  records: AttendanceRecord[];
-  dateRange: DateRange | undefined;
-  setDateRange: (range: DateRange | undefined) => void;
-  onExport: () => void;
+function fmtHours(h: number) {
+  return `${h.toFixed(1)}h`;
 }
 
-const ReportsTab = ({ records, dateRange, setDateRange, onExport }: ReportsTabProps) => {
-  const employeeStats = useMemo(() => {
-    return aggregateAttendanceByEmployee(records);
-  }, [records]);
+interface ReportsTabProps {
+  businessId: string;
+  dateRange: DateRange | undefined;
+  setDateRange: (range: DateRange | undefined) => void;
+}
 
-  const totals = useMemo(() => {
-    return employeeStats.reduce((acc, curr) => ({
-      hours: acc.hours + curr.totalHours,
-      shifts: acc.shifts + curr.totalShifts,
-      absences: acc.absences + curr.absences,
-      lates: acc.lates + curr.lates
-    }), { hours: 0, shifts: 0, absences: 0, lates: 0 });
-  }, [employeeStats]);
+const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) => {
+  const startDate = dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined;
+  const endDate = dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined;
+
+  const { data: summary = [], isLoading } = useAttendanceSummary(businessId, startDate, endDate);
+
+  const totals = summary.reduce(
+    (acc, entry) => ({
+      totalHours: acc.totalHours + entry.totalHours,
+      regularHours: acc.regularHours + entry.regularHours,
+      overtimeHours: acc.overtimeHours + entry.overtimeHours,
+      totalPay: acc.totalPay + entry.totalPay,
+    }),
+    { totalHours: 0, regularHours: 0, overtimeHours: 0, totalPay: 0 }
+  );
+
+  const currency = summary[0]?.currency ?? "USD";
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 max-w-7xl mx-auto px-4 md:px-6">
-      {/* Header with Filters and Export */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border border-slate-50">
-        <div className="space-y-1">
-          <h2 className="text-xl font-bold text-slate-800">Attendance Report</h2>
-          <p className="text-slate-500 text-sm">Aggregated performance data by staff member.</p>
+    <div className="space-y-8 max-w-7xl mx-auto px-4 md:px-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm">
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">Labor Summary</h2>
+          <p className="text-slate-500 text-sm">OT + pay breakdown — validated records only.</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-[280px]" />
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex items-center gap-2"
-            onClick={onExport}
-          >
-            <Download className="h-4 w-4" />
-            Download PDF
-          </Button>
-        </div>
+        <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-[280px]" />
       </div>
 
-      {/* Aggregate Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {[
-          { label: "Total Period Hours", value: totals.hours.toFixed(1) + "h", icon: FileText, color: "text-blue-600" },
-          { label: "Total Shifts", value: totals.shifts, icon: TrendingUp, color: "text-green-600" },
-          { label: "Total Absences", value: totals.absences, icon: TrendingDown, color: "text-red-600" },
-          { label: "Total Late Arrivals", value: totals.lates, icon: TrendingUp, color: "text-amber-600" },
-        ].map((card, i) => (
-          <Card key={i} className="border-none shadow-sm">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-2 text-slate-500 text-sm mb-1 uppercase tracking-wider font-semibold">
-                <card.icon className={`h-4 w-4 ${card.color}`} />
-                {card.label}
-              </div>
-              <div className="text-3xl font-extrabold text-slate-900">{card.value}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {!startDate || !endDate ? (
+        <div className="flex items-center gap-2 text-slate-500 text-sm bg-amber-50 border border-amber-100 rounded-lg px-4 py-3">
+          <Info className="h-4 w-4 text-amber-500 shrink-0" />
+          Select a date range to load the labor summary.
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: "Total Hours", value: fmtHours(totals.totalHours), color: "text-blue-600" },
+              { label: "Regular Hours", value: fmtHours(totals.regularHours), color: "text-green-600" },
+              { label: "Overtime Hours", value: fmtHours(totals.overtimeHours), color: "text-amber-600" },
+              { label: "Total Pay", value: `${getCurrencySymbol(currency)}${totals.totalPay.toFixed(2)}`, color: "text-indigo-600" },
+            ].map((card) => (
+              <Card key={card.label} className="border-none shadow-sm">
+                <CardContent className="pt-5">
+                  <p className="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">{card.label}</p>
+                  <p className={`text-2xl font-extrabold ${card.color}`}>{card.value}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-      {/* Aggregated Table */}
-      <div className="bg-white rounded-xl shadow-sm border-none overflow-hidden">
-        <Table>
-          <TableHeader className="bg-slate-50/50">
-            <TableRow>
-              <TableHead className="font-semibold text-slate-600">Employee</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-center">Total Shifts</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-center">Total Hours</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-center text-red-500">Absences</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-center text-amber-500">Lates</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-center">Overtime</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {employeeStats.length > 0 ? (
-              employeeStats.map((stat) => (
-                <TableRow key={stat.employee.id} className="hover:bg-slate-50/50">
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span className="text-slate-900 font-semibold">{stat.employee.name}</span>
-                      <span className="text-xs text-slate-400">{stat.employee.role || "Staff"}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-center font-medium text-slate-600">{stat.totalShifts}</TableCell>
-                  <TableCell className="text-center font-bold text-slate-900">{stat.totalHours}h</TableCell>
-                  <TableCell className="text-center">
-                    <span className={`px-2 py-1 rounded-full ${stat.absences > 0 ? 'bg-red-50 text-red-600 font-bold' : 'text-slate-300'}`}>
-                      {stat.absences}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <span className={`px-2 py-1 rounded-full ${stat.lates > 0 ? 'bg-amber-50 text-amber-600 font-bold' : 'text-slate-300'}`}>
-                      {stat.lates}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-center font-medium text-slate-600">
-                    {stat.overtimeHours > 0 ? `+${stat.overtimeHours}h` : "--"}
-                  </TableCell>
+          {summary.length > 0 && summary.some((e) => e.attendanceCount < (e.attendanceIds?.length ?? 0)) && (
+            <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-4 py-3">
+              <Info className="h-4 w-4 shrink-0" />
+              Some records are still pending validation and are not included in this summary.
+            </div>
+          )}
+
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <Table>
+              <TableHeader className="bg-slate-50/50">
+                <TableRow>
+                  <TableHead className="font-semibold text-slate-600">Employee</TableHead>
+                  <TableHead className="font-semibold text-slate-600 text-center">Records</TableHead>
+                  <TableHead className="font-semibold text-slate-600 text-center">Total Hours</TableHead>
+                  <TableHead className="font-semibold text-slate-600 text-center">Regular</TableHead>
+                  <TableHead className="font-semibold text-slate-600 text-center text-amber-600">Overtime</TableHead>
+                  <TableHead className="font-semibold text-slate-600 text-right pr-6">Total Pay</TableHead>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={6} className="h-32 text-center text-slate-400 italic">
-                  No data available for the selected range.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  [...Array(4)].map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell colSpan={6}><Skeleton className="h-10 w-full" /></TableCell>
+                    </TableRow>
+                  ))
+                ) : summary.length > 0 ? (
+                  summary.map((entry) => (
+                    <TableRow key={entry.employmentId} className="hover:bg-slate-50/50">
+                      <TableCell className="font-semibold text-slate-900">{entry.employeeName}</TableCell>
+                      <TableCell className="text-center text-slate-500">{entry.attendanceCount}</TableCell>
+                      <TableCell className="text-center font-bold text-slate-900">{fmtHours(entry.totalHours)}</TableCell>
+                      <TableCell className="text-center text-slate-600">{fmtHours(entry.regularHours)}</TableCell>
+                      <TableCell className="text-center">
+                        <span className={entry.overtimeHours > 0 ? "text-amber-600 font-bold" : "text-slate-300"}>
+                          {entry.overtimeHours > 0 ? `+${fmtHours(entry.overtimeHours)}` : "—"}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right pr-6 font-bold text-indigo-700">
+                        {entry.hourlyRate === 0
+                          ? <span className="text-xs font-normal text-slate-400">Rate not set</span>
+                          : `${getCurrencySymbol(entry.currency)}${entry.totalPay.toFixed(2)}`}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-32 text-center text-slate-400 italic">
+                      No validated records for this period.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </>
+      )}
     </div>
   );
 };

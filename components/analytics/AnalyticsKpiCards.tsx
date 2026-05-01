@@ -5,9 +5,10 @@ import { DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
 
 interface AnalyticsKpiCardsProps {
     sales: DailySalesMetric[];
+    currency?: string;
 }
 
-export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales }) => {
+export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, currency = "$" }) => {
     const { totalRevenue, totalOrders, aov } = useMemo(() => {
         let rev = 0;
         let orders = 0;
@@ -26,12 +27,7 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales }) =
         };
     }, [sales]);
 
-    const formatCurrency = (val: number) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(val);
-    };
+    const formatCurrency = (val: number) => `${currency}${val.toFixed(2)}`;
 
     const stats = [
         {

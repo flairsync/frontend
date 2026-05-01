@@ -52,6 +52,7 @@ const validationSchema = Yup.object().shape({
 
 const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
     const [isSuccess, setIsSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const [preOrders, setPreOrders] = useState<Record<string, number>>({});
     const { userProfile } = useProfile();
     const submitReservation = useSubmitReservation(props.businessId);
@@ -72,6 +73,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
 
     const handleSubmit = async (values: any) => {
         try {
+            setSubmitError(null);
             const reservationTime = parseInTimezone(`${props.date}T${props.time}:00`, businessProfile?.timezone);
 
             const preOrderItems = Object.entries(preOrders).map(([menuItemId, quantity]) => ({
@@ -91,8 +93,9 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                 preOrderItems: preOrderItems.length > 0 ? preOrderItems : undefined,
             });
             setIsSuccess(true);
-        } catch (error) {
-            console.error("Reservation error:", error);
+        } catch (error: any) {
+            const message = error?.response?.data?.message || "Something went wrong. Please try again.";
+            setSubmitError(message);
         }
     };
 
@@ -271,6 +274,12 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                             </p>
                                         )}
                                     </div>
+                                )}
+
+                                {submitError && (
+                                    <p className="text-sm text-destructive font-medium rounded-lg bg-destructive/10 px-3 py-2">
+                                        {submitError}
+                                    </p>
                                 )}
 
                                 <div className="flex justify-end gap-3 mt-4">

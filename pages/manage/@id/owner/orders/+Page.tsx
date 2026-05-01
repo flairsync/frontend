@@ -212,9 +212,9 @@ const OwnerOrdersPage: React.FC = () => {
     const filteredOrders = filterType === "All" ? orders : orders?.filter((o: any) => o.type === filterType.toLowerCase());
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">{t("orders.title")}</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t("orders.title")}</h1>
                 <Button className="gap-2" onClick={() => setCreateOrderOpen(true)}>
                     <Plus className="w-4 h-4" />
                     {t("orders.create_order")}

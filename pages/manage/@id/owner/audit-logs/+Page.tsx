@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -81,14 +82,15 @@ const AuditLogsPage: React.FC = () => {
     };
 
     return (
-        <div className="p-6 max-w-6xl mx-auto space-y-6">
-            <div className="flex items-center gap-3">
-                <ScrollText className="h-6 w-6 text-indigo-500" />
-                <h1 className="text-2xl font-bold text-zinc-800 dark:text-zinc-100">Audit Logs</h1>
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-3xl font-bold tracking-tight">Audit Logs</h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                    Full traceability of every change made across your business.
+                </p>
             </div>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 -mt-4">
-                Full traceability of every change made across your business.
-            </p>
+
+            <Separator />
 
             {/* Filters */}
             <Card>

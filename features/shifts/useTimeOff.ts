@@ -6,7 +6,7 @@ import {
   submitTimeOffRequestApiCall,
   updateTimeOffStatusApiCall
 } from "./service";
-import { TimeOffRequest } from "@/models/business/shift/TimeOffRequest";
+import { TimeOffRequest, LeaveType } from "@/models/business/shift/TimeOffRequest";
 
 const formatToDateOnly = (date: Date | string) => {
   const d = typeof date === 'string' ? parseISO(date) : date;
@@ -33,17 +33,20 @@ export const useTimeOff = (businessId: string, employmentId?: string) => {
   });
 
   const submitRequestMutation = useMutation({
-    mutationFn: (data: Omit<TimeOffRequest, "id" | "businessId" | "status">) => {
+    mutationFn: (data: Omit<TimeOffRequest, "id" | "businessId" | "status" | "createdAt" | "updatedAt"> & { leaveType: LeaveType }) => {
       const formatToWallTime = (date: Date | string) => {
         const d = typeof date === 'string' ? parseISO(date) : date;
         return format(d, "yyyy-MM-dd HH:mm:ss");
       };
-      
-      return submitTimeOffRequestApiCall({ 
-        ...data, 
+
+      return submitTimeOffRequestApiCall({
+        ...data,
         businessId,
         startDate: formatToWallTime(data.startDate),
-        endDate: formatToWallTime(data.endDate)
+        endDate: formatToWallTime(data.endDate),
+        leaveType: data.leaveType,
+        reason: data.reason ?? '',
+        documentUrl: data.documentUrl ?? undefined,
       });
     },
     onSuccess: () => {

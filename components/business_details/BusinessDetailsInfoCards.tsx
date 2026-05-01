@@ -110,8 +110,8 @@ const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) =>
             <InfoCard
                 icon={Star}
                 title={t("business_page.info_cards.rating_title")}
-                content="4.5 / 5"
-                subContent="Based on premium reviews"
+                content={profile.rating !== null ? `${profile.rating} / 5` : "No reviews yet"}
+                subContent={profile.reviewCount > 0 ? `Based on ${profile.reviewCount} ${profile.reviewCount === 1 ? "review" : "reviews"}` : "Be the first to leave a review"}
             />
 
             <InfoCard

@@ -10,7 +10,14 @@ type Props = {
     businessDetails: BusinessCardDetails
 }
 
-const GetStars = memo(({ rating }: { rating: number }) => {
+const GetStars = memo(({ rating, reviewCount }: { rating: number | null; reviewCount: number }) => {
+    if (rating === null) {
+        return (
+            <span className="text-[10px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+                No reviews yet
+            </span>
+        );
+    }
     return (
         <div className="flex items-center gap-0.5">
             {[...Array(5)].map((_, i) => (
@@ -27,7 +34,7 @@ const GetStars = memo(({ rating }: { rating: number }) => {
             ))}
             <span className="ml-1.5 text-xs font-bold text-foreground/80">{rating}</span>
         </div>
-    )
+    );
 })
 
 GetStars.displayName = "GetStars"
@@ -122,7 +129,7 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <GetStars rating={businessDetails.rating} />
+                        <GetStars rating={businessDetails.rating} reviewCount={businessDetails.reviewCount} />
                         <div className="flex items-center gap-1.5 text-muted-foreground">
                             <Clock size={12} className={businessDetails.status === "open" ? "text-green-500/60" : "text-red-500/60"} />
                             <span className="text-[10px] font-bold uppercase tracking-tight">
@@ -135,9 +142,11 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                         <p className="text-sm font-bold text-foreground/90">
                             {"$".repeat(businessDetails.priceLevel)} <span className="text-muted-foreground/50 font-medium ml-1">Price Level</span>
                         </p>
-                        <p className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
-                            No reviews yet
-                        </p>
+                        {businessDetails.rating !== null && businessDetails.reviewCount > 0 && (
+                            <p className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+                                {businessDetails.reviewCount} {businessDetails.reviewCount === 1 ? "review" : "reviews"}
+                            </p>
+                        )}
                     </div>
                 </div>
             </a>

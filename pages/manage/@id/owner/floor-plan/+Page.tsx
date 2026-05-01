@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -115,9 +116,9 @@ const FloorPlanPage: React.FC = () => {
     };
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">{t("floor_plan.title")}</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t("floor_plan.title")}</h1>
                 <div className="flex gap-2">
                     <Button variant="outline" onClick={handleOpenCreateFloor} className="gap-2">
                         <Layers className="w-4 h-4" />
@@ -133,6 +134,8 @@ const FloorPlanPage: React.FC = () => {
                     </Button>
                 </div>
             </div>
+
+            <Separator />
 
             <Tabs defaultValue="floors" className="w-full">
                 <TabsList>

@@ -1,46 +1,49 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { 
-  AttendanceRecord, 
-  getLiveStatus, 
-  formatDuration, 
-  computeWorkedHours 
-} from "@/lib/attendanceUtils";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { format, parseISO, differenceInMinutes } from "date-fns";
-import { Clock, User } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { format, parseISO, differenceInSeconds } from "date-fns";
+import { User, Coffee } from "lucide-react";
+import { AttendanceLog } from "@/models/business/shift/Attendance";
 
-interface LiveTabProps {
-  records: AttendanceRecord[];
+function getElapsed(fromIso: string): string {
+  const diff = differenceInSeconds(new Date(), parseISO(fromIso));
+  const h = Math.floor(diff / 3600);
+  const m = Math.floor((diff % 3600) / 60);
+  const s = diff % 60;
+  return `${h}h ${m}m ${s}s`;
 }
 
-const LiveTab = ({ records }: LiveTabProps) => {
-  const [now, setNow] = useState(new Date());
+interface LiveTabProps {
+  records: AttendanceLog[];
+  isLoading?: boolean;
+}
 
-  // Update "now" every 60 seconds to refresh durations
+const LiveTab = ({ records, isLoading }: LiveTabProps) => {
+  const [tick, setTick] = useState(0);
+
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000);
+    const timer = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const liveRecords = useMemo(() => {
-    return records
-      .filter((r) => r.clock_in && !r.clock_out)
-      .sort((a, b) => {
-        // Sort by longest duration (earliest clock-in first)
-        return parseISO(a.clock_in!).getTime() - parseISO(b.clock_in!).getTime();
-      });
-  }, [records]);
+  const liveRecords = useMemo(
+    () =>
+      records
+        .filter((r) => r.lifecycleStatus === "ONGOING")
+        .sort((a, b) => parseISO(a.checkInTime).getTime() - parseISO(b.checkInTime).getTime()),
+    [records]
+  );
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500 max-w-7xl mx-auto px-4 md:px-6">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-slate-800">Who's Working Now</h2>
@@ -48,57 +51,75 @@ const LiveTab = ({ records }: LiveTabProps) => {
         </div>
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          LIVE · Last sync {format(now, "HH:mm")}
+          LIVE · {liveRecords.length} active
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border-none overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <Table>
           <TableHeader className="bg-slate-50/50">
             <TableRow>
               <TableHead className="font-semibold text-slate-600">Employee</TableHead>
-              <TableHead className="font-semibold text-slate-600">Clock-in Time</TableHead>
-              <TableHead className="font-semibold text-slate-600">Current Duration</TableHead>
-              <TableHead className="font-semibold text-slate-600">Planned End</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-right pr-6">Status</TableHead>
+              <TableHead className="font-semibold text-slate-600">Clock In</TableHead>
+              <TableHead className="font-semibold text-slate-600">Duration</TableHead>
+              <TableHead className="font-semibold text-slate-600">Status</TableHead>
+              <TableHead className="font-semibold text-slate-600">Break</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {liveRecords.length > 0 ? (
+            {isLoading ? (
+              [...Array(4)].map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell colSpan={5}><Skeleton className="h-10 w-full" /></TableCell>
+                </TableRow>
+              ))
+            ) : liveRecords.length > 0 ? (
               liveRecords.map((record) => {
-                const liveStatus = getLiveStatus(record);
-                const clockIn = parseISO(record.clock_in!);
-                const durationMinutes = differenceInMinutes(now, clockIn);
-                
+                const onBreak = record.status === "ON_BREAK";
+                const activeBreak = onBreak
+                  ? record.breaks.find((b) => b.end === null)
+                  : null;
+                const employeeName = record.employment
+                  ? `${record.employment.professionalProfile.firstName} ${record.employment.professionalProfile.lastName}`
+                  : record.employmentId.slice(0, 8);
+
                 return (
-                  <TableRow key={record.id} className="hover:bg-slate-50/50 transition-colors border-slate-50 h-16">
+                  <TableRow key={record.id} className="hover:bg-slate-50/50 h-16">
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="bg-slate-100 p-2 rounded-full">
                           <User className="h-4 w-4 text-slate-500" />
                         </div>
-                        <div className="flex flex-col">
-                          <span className="text-slate-900 font-semibold">{record.employee.name}</span>
-                          <span className="text-xs text-slate-400">{record.employee.role || "Staff"}</span>
-                        </div>
+                        <span className="font-semibold text-slate-900">{employeeName}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-slate-600 font-medium">
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-3.5 w-3.5 text-slate-400" />
-                        {format(clockIn, "HH:mm")}
-                      </div>
+                      {format(parseISO(record.checkInTime), "HH:mm")}
                     </TableCell>
-                    <TableCell className="font-bold text-slate-700">
-                      {formatDuration(durationMinutes / 60)}
+                    <TableCell className="font-bold text-slate-700 tabular-nums">
+                      {getElapsed(record.checkInTime)}
                     </TableCell>
-                    <TableCell className="text-slate-500">
-                      {format(parseISO(record.planned_end), "HH:mm")}
-                    </TableCell>
-                    <TableCell className="text-right pr-6">
-                      <Badge variant="outline" className={`${liveStatus.color} border-current font-bold uppercase tracking-tighter text-[10px] px-2 py-0.5`}>
-                        {liveStatus.label}
+                    <TableCell>
+                      <Badge
+                        variant="secondary"
+                        className={
+                          onBreak
+                            ? "bg-purple-100 text-purple-700 border-none"
+                            : "bg-green-100 text-green-700 border-none"
+                        }
+                      >
+                        {onBreak ? "On Break" : "Working"}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-slate-500 text-sm">
+                      {activeBreak ? (
+                        <span className="flex items-center gap-1">
+                          <Coffee className="h-3.5 w-3.5 text-purple-400" />
+                          {activeBreak.type === "PAID" ? "Paid" : "Unpaid"} · {getElapsed(activeBreak.start)}
+                        </span>
+                      ) : (
+                        "—"
+                      )}
                     </TableCell>
                   </TableRow>
                 );

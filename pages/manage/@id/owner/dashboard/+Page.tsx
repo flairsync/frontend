@@ -9,24 +9,16 @@ const OwnerDashboardPage: React.FC = () => {
     const businessId = routeParams.id;
 
     return (
-        <div className="min-h-screen p-8">
-            <div className="max-w-6xl mx-auto space-y-8">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-zinc-800 dark:text-zinc-100">
-                        Dashboard
-                    </h1>
-                    {/* <Button>Generate Report</Button> */}
-                </div>
+        <div className="space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
 
-                <Separator />
+            <Separator />
 
-                {businessId ? (
-                    <AnalyticsDashboard businessId={businessId} showTimeFilter={false} />
-                ) : (
-                    <div>Loading dashboard...</div>
-                )}
-            </div>
+            {businessId ? (
+                <AnalyticsDashboard businessId={businessId} showTimeFilter={false} />
+            ) : (
+                <div>Loading dashboard...</div>
+            )}
         </div>
     );
 };

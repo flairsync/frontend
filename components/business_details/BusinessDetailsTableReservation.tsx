@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,8 +8,52 @@ import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal
 import { FloorPlanLayout } from "@/features/floor-plan/components/types";
 import { useDiscoveryTableAvailability, useDiscoveryProfile } from "@/features/discovery/useDiscovery";
 import { parseInTimezone } from "@/lib/dateUtils";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { OpeningHours } from "@/models/business/MyBusinessFullDetails";
+import { format } from "date-fns";
 
-// Adapt FloorPlan elements to the UI's Table type
+const DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+function getOpeningHoursForDate(date: Date, openingHours: OpeningHours[]): OpeningHours | undefined {
+    const dayName = DAY_NAMES[date.getDay()];
+    return openingHours.find(oh => oh.day.toLowerCase() === dayName);
+}
+
+function isDateAvailable(date: Date, openingHours: OpeningHours[]): boolean {
+    const oh = getOpeningHoursForDate(date, openingHours);
+    return !!oh && !oh.isClosed && oh.periods.length > 0;
+}
+
+function generateTimeSlots(oh: OpeningHours, selectedDate: Date): string[] {
+    const slots: string[] = [];
+    const isToday = new Date().toDateString() === selectedDate.toDateString();
+    const nowMinutes = isToday ? new Date().getHours() * 60 + new Date().getMinutes() : -1;
+
+    for (const period of oh.periods) {
+        const [openH, openM] = period.open.split(':').map(Number);
+        const [closeH, closeM] = period.close.split(':').map(Number);
+        let current = openH * 60 + openM;
+        const closeMinutes = closeH * 60 + closeM;
+        while (current < closeMinutes) {
+            if (current > nowMinutes) {
+                const h = Math.floor(current / 60).toString().padStart(2, '0');
+                const m = (current % 60).toString().padStart(2, '0');
+                slots.push(`${h}:${m}`);
+            }
+            current += 30;
+        }
+    }
+    return slots;
+}
+
+function formatTimeSlot(slot: string): string {
+    const [h, m] = slot.split(':').map(Number);
+    const period = h < 12 ? 'AM' : 'PM';
+    const displayH = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return `${displayH}:${m.toString().padStart(2, '0')} ${period}`;
+}
+
 type Table = {
     id: string;
     number: string;
@@ -24,14 +67,53 @@ interface BusinessDetailsTableReservationProps {
 }
 
 const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationProps> = ({ tables = [], businessId }) => {
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDateObj, setSelectedDateObj] = useState<Date | undefined>(undefined);
+    const [calendarOpen, setCalendarOpen] = useState(false);
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedGuests, setSelectedGuests] = useState(1);
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
-    const canShowTables = Boolean(selectedDate && selectedTime);
-
     const { data: profile } = useDiscoveryProfile(businessId);
+
+    const today = useMemo(() => {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        return d;
+    }, []);
+
+    const bookingWindowEnd = useMemo(() => {
+        const d = new Date(today);
+        d.setDate(d.getDate() + (profile?.reservationBookingWindowDays ?? 60));
+        return d;
+    }, [today, profile?.reservationBookingWindowDays]);
+
+    const disabledDays = useMemo(() => [
+        { before: today },
+        { after: bookingWindowEnd },
+        (date: Date) => {
+            if (!profile?.openingHours?.length) return false;
+            return !isDateAvailable(date, profile.openingHours);
+        },
+    ], [today, bookingWindowEnd, profile?.openingHours]);
+
+    const selectedDate = selectedDateObj ? format(selectedDateObj, 'yyyy-MM-dd') : '';
+
+    const openingHoursForSelectedDate = useMemo(() => {
+        if (!selectedDateObj || !profile?.openingHours?.length) return undefined;
+        return getOpeningHoursForDate(selectedDateObj, profile.openingHours);
+    }, [selectedDateObj, profile?.openingHours]);
+
+    const timeSlots = useMemo(() => {
+        if (!selectedDateObj || !openingHoursForSelectedDate || openingHoursForSelectedDate.isClosed) return [];
+        return generateTimeSlots(openingHoursForSelectedDate, selectedDateObj);
+    }, [selectedDateObj, openingHoursForSelectedDate]);
+
+    const guestOptions = useMemo(() => {
+        const max = Math.min(profile?.maxPartySize ?? 20, 20);
+        return Array.from({ length: max }, (_, i) => i + 1);
+    }, [profile?.maxPartySize]);
+
+    const canShowTables = Boolean(selectedDate && selectedTime);
 
     const reservationTime = useMemo(() => {
         if (!canShowTables) return null;
@@ -48,10 +130,8 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
         const allTables: Table[] = [];
         const availableTableIds = new Set(availableTablesResponse?.map((t: any) => t.id) || []);
 
-        // Safety check: Ensure tables is an array before iterating
         if (Array.isArray(tables)) {
             tables.forEach(layout => {
-                // Try discovery structure (tables array)
                 if (Array.isArray((layout as any).tables)) {
                     (layout as any).tables.forEach((t: any) => {
                         allTables.push({
@@ -61,9 +141,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             available: canShowTables ? availableTableIds.has(t.id) : true
                         });
                     });
-                }
-                // Try owner structure (elements array)
-                else {
+                } else {
                     layout.elements?.forEach(el => {
                         if (el.type === 'table') {
                             allTables.push({
@@ -100,36 +178,66 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                 </p>
             </div>
 
-            {/* Selection Controls */}
             <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-card border border-border/50 rounded-[2.5rem] shadow-2xl shadow-primary/5">
+                {/* Date — calendar popover, only open days within booking window */}
                 <div className="space-y-3">
-                    <Label htmlFor="date" className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Date</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Date</Label>
                     <div className="relative group">
-                        <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
-                        <Input
-                            type="date"
-                            id="date"
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e.target.value)}
-                            className="pl-12 h-14 rounded-2xl bg-muted/50 border-none focus:ring-2 focus:ring-primary/20 text-md font-bold"
-                        />
+                        <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none group-hover:scale-110 transition-transform" size={18} />
+                        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className="pl-12 h-14 w-full rounded-2xl bg-muted/50 border-none text-md font-bold justify-start hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-primary/20"
+                                >
+                                    {selectedDateObj
+                                        ? format(selectedDateObj, 'MMM d, yyyy')
+                                        : <span className="font-normal text-muted-foreground">Select date</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    mode="single"
+                                    selected={selectedDateObj}
+                                    onSelect={(date) => {
+                                        setSelectedDateObj(date);
+                                        setSelectedTime('');
+                                        setCalendarOpen(false);
+                                    }}
+                                    disabled={disabledDays}
+                                    startMonth={today}
+                                />
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 </div>
 
+                {/* Time — slots derived from the selected day's opening hours */}
                 <div className="space-y-3">
-                    <Label htmlFor="time" className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Time</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Time</Label>
                     <div className="relative group">
-                        <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
-                        <Input
-                            type="time"
-                            id="time"
+                        <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none group-hover:scale-110 transition-transform" size={18} />
+                        <select
+                            className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none bg-no-repeat disabled:opacity-50 disabled:cursor-not-allowed"
                             value={selectedTime}
                             onChange={(e) => setSelectedTime(e.target.value)}
-                            className="pl-12 h-14 rounded-2xl bg-muted/50 border-none focus:ring-2 focus:ring-primary/20 text-md font-bold"
-                        />
+                            disabled={!selectedDateObj || timeSlots.length === 0}
+                        >
+                            <option value="">
+                                {!selectedDateObj
+                                    ? 'Select date first'
+                                    : timeSlots.length === 0
+                                        ? 'No slots available'
+                                        : 'Select time'}
+                            </option>
+                            {timeSlots.map(slot => (
+                                <option key={slot} value={slot}>{formatTimeSlot(slot)}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
+                {/* Guests — capped at maxPartySize */}
                 <div className="space-y-3 sm:col-span-2 lg:col-span-1">
                     <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Guests</Label>
                     <div className="relative group">
@@ -139,7 +247,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             value={selectedGuests}
                             onChange={(e) => setSelectedGuests(parseInt(e.target.value))}
                         >
-                            {[1, 2, 3, 4, 5, 6, 8, 10].map(n => (
+                            {guestOptions.map(n => (
                                 <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
                             ))}
                         </select>
@@ -147,7 +255,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                 </div>
             </div>
 
-            {/* Tables Grid */}
+            {/* Tables grid */}
             <div className="min-h-[300px] flex items-center justify-center">
                 <AnimatePresence mode="wait">
                     {!canShowTables ? (
@@ -219,7 +327,6 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                         <span className="text-lg font-black block">Table {table.number}</span>
                                         <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{table.seats} Seats</span>
                                     </div>
-
                                     <div className="absolute top-4 right-4">
                                         {table.available ? (
                                             <CheckCircle2 size={18} className="text-emerald-500" />
@@ -252,4 +359,3 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
 };
 
 export default BusinessDetailsTableReservation;
-

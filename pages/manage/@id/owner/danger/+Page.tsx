@@ -32,11 +32,10 @@ const OwnerDashboardPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
-            <div className="max-w-3xl mx-auto space-y-6">
-                <h1 className="text-3xl font-bold">Business Settings</h1>
+        <div className="space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">Danger Zone</h1>
 
-                <Separator />
+            <Separator />
 
                 {/* Danger Zone */}
                 <Card className="border-red-500">
@@ -180,7 +179,6 @@ const OwnerDashboardPage = () => {
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
-            </div>
         </div>
     );
 };

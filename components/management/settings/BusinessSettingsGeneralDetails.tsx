@@ -23,7 +23,7 @@ import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
-import { AuditLogHint } from '@/components/audit/AuditLogHint'
+import { toIsoCurrencyCode } from '@/utils/currency'
 
 type BusinessGeneralInfo = {
     name?: string,
@@ -36,6 +36,7 @@ type BusinessGeneralInfo = {
 type Props = {
     businessDetails?: MyBusinessFullDetails,
     onSaveDetails?: (data: BusinessGeneralInfo) => void,
+    onTogglePublished?: (val: boolean) => void,
     disabled?: boolean
 }
 const BusinessSettingsGeneralDetails = (props: Props) => {
@@ -44,7 +45,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [description, setDescription] = useState(props.businessDetails?.description)
     const [contactEmail, setContactEmail] = useState(props.businessDetails?.email)
     const [phone, setPhone] = useState(props.businessDetails?.phone);
-    const [currency, setCurrency] = useState(props.businessDetails?.currency || "$");
+    const [currency, setCurrency] = useState(toIsoCurrencyCode(props.businessDetails?.currency || "USD"));
 
     const onSaveDetails = () => {
         if (props.onSaveDetails) {
@@ -60,14 +61,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
 
     return (
         <AccordionItem value="general-info" className="border rounded-lg px-3">
-            <AccordionTrigger className="flex items-center gap-2">
-                <span>General Information</span>
-                <AuditLogHint
-                    entityType="business"
-                    entityId={props.businessDetails?.id}
-                    businessId={props.businessDetails?.id}
-                />
-            </AccordionTrigger>
+            <AccordionTrigger>General Information</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 <Input
                     disabled={props.disabled}
@@ -109,21 +103,35 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             <SelectValue placeholder="Select a currency" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
-                            <SelectItem value="$">US Dollar (USD $)</SelectItem>
-                            <SelectItem value="€">Euro (EUR €)</SelectItem>
-                            <SelectItem value="£">British Pound (GBP £)</SelectItem>
+                            <SelectItem value="USD">US Dollar (USD $)</SelectItem>
+                            <SelectItem value="EUR">Euro (EUR €)</SelectItem>
+                            <SelectItem value="GBP">British Pound (GBP £)</SelectItem>
                             <SelectItem value="TND">Tunisian Dinar (TND)</SelectItem>
                             <SelectItem value="AED">Emirati Dirham (AED)</SelectItem>
-                            <SelectItem value="R$">Brazilian Real (BRL R$)</SelectItem>
-                            <SelectItem value="CA$">Canadian Dollar (CAD CA$)</SelectItem>
-                            <SelectItem value="AU$">Australian Dollar (AUD AU$)</SelectItem>
-                            <SelectItem value="¥">Japanese Yen (JPY ¥)</SelectItem>
-                            <SelectItem value="₹">Indian Rupee (INR ₹)</SelectItem>
+                            <SelectItem value="BRL">Brazilian Real (BRL R$)</SelectItem>
+                            <SelectItem value="CAD">Canadian Dollar (CAD CA$)</SelectItem>
+                            <SelectItem value="AUD">Australian Dollar (AUD AU$)</SelectItem>
+                            <SelectItem value="JPY">Japanese Yen (JPY ¥)</SelectItem>
+                            <SelectItem value="INR">Indian Rupee (INR ₹)</SelectItem>
                             <SelectItem value="CHF">Swiss Franc (CHF)</SelectItem>
-                            <SelectItem value="SG$">Singapore Dollar (SGD SG$)</SelectItem>
+                            <SelectItem value="SGD">Singapore Dollar (SGD SG$)</SelectItem>
                         </SelectContent>
                     </Select>
-                    <p className="text-xs text-muted-foreground">This symbol will be shown next to prices on your public page.</p>
+                    <p className="text-xs text-muted-foreground">This currency will be shown next to prices across your business.</p>
+                </div>
+
+                <div className="divide-y divide-border border-t mt-4">
+                    <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                        <div className="space-y-0.5">
+                            <Label>Published</Label>
+                            <p className="text-xs text-muted-foreground">Show this business to customers on the platform</p>
+                        </div>
+                        <Switch
+                            disabled={props.disabled}
+                            checked={props.businessDetails?.isPublished ?? false}
+                            onCheckedChange={(val) => props.onTogglePublished?.(val)}
+                        />
+                    </div>
                 </div>
 
                 <Button

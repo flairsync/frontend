@@ -145,11 +145,16 @@ export class MyBusinessFullDetails {
   maxWeeklyHours?: number;
   minGapBetweenShiftsHours?: number;
   splitShiftGapHours?: number;
+  overtimeDailyThresholdHours?: number;
+  overtimeWeeklyThresholdHours?: number;
+  overtimeMultiplier?: number;
+  payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
   maxPartySize: number;
   reservationBookingWindowDays: number;
   reservationBufferMinutes: number;
   autoNoShow: boolean;
   gracePeriodMinutes: number;
+  isPublished: boolean;
 
   constructor(
     id: string,
@@ -200,11 +205,16 @@ export class MyBusinessFullDetails {
     maxWeeklyHours?: number,
     minGapBetweenShiftsHours?: number,
     splitShiftGapHours?: number,
+    overtimeDailyThresholdHours?: number,
+    overtimeWeeklyThresholdHours?: number,
+    overtimeMultiplier?: number,
+    payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY',
     maxPartySize?: number,
     reservationBookingWindowDays?: number,
     reservationBufferMinutes?: number,
     autoNoShow?: boolean,
     gracePeriodMinutes?: number,
+    isPublished?: boolean,
   ) {
     this.id = id;
     this.name = name;
@@ -251,11 +261,16 @@ export class MyBusinessFullDetails {
     this.maxWeeklyHours = maxWeeklyHours;
     this.minGapBetweenShiftsHours = minGapBetweenShiftsHours;
     this.splitShiftGapHours = splitShiftGapHours;
+    this.overtimeDailyThresholdHours = overtimeDailyThresholdHours;
+    this.overtimeWeeklyThresholdHours = overtimeWeeklyThresholdHours;
+    this.overtimeMultiplier = overtimeMultiplier;
+    this.payPeriodType = payPeriodType;
     this.maxPartySize = maxPartySize ?? 20;
     this.reservationBookingWindowDays = reservationBookingWindowDays ?? 60;
     this.reservationBufferMinutes = reservationBufferMinutes ?? 0;
     this.autoNoShow = autoNoShow ?? false;
     this.gracePeriodMinutes = gracePeriodMinutes ?? 30;
+    this.isPublished = isPublished ?? false;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -307,11 +322,16 @@ export class MyBusinessFullDetails {
         data.maxWeeklyHours !== undefined && data.maxWeeklyHours !== null ? Number(data.maxWeeklyHours) : undefined,
         data.minGapBetweenShiftsHours !== undefined && data.minGapBetweenShiftsHours !== null ? Number(data.minGapBetweenShiftsHours) : undefined,
         data.splitShiftGapHours !== undefined && data.splitShiftGapHours !== null ? Number(data.splitShiftGapHours) : undefined,
+        data.overtimeDailyThresholdHours !== undefined && data.overtimeDailyThresholdHours !== null ? Number(data.overtimeDailyThresholdHours) : undefined,
+        data.overtimeWeeklyThresholdHours !== undefined && data.overtimeWeeklyThresholdHours !== null ? Number(data.overtimeWeeklyThresholdHours) : undefined,
+        data.overtimeMultiplier !== undefined && data.overtimeMultiplier !== null ? Number(data.overtimeMultiplier) : undefined,
+        data.payPeriodType ?? undefined,
         data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
         data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
         data.reservationBufferMinutes !== undefined ? Number(data.reservationBufferMinutes) : 0,
         data.autoNoShow !== undefined ? !!data.autoNoShow : false,
         data.gracePeriodMinutes !== undefined ? Number(data.gracePeriodMinutes) : 30,
+        !!data.isPublished,
       );
     } catch {
       return null;
@@ -364,9 +384,14 @@ export type UpdateBusinessDetailsDto = {
   maxWeeklyHours?: number;
   minGapBetweenShiftsHours?: number;
   splitShiftGapHours?: number;
+  overtimeDailyThresholdHours?: number;
+  overtimeWeeklyThresholdHours?: number;
+  overtimeMultiplier?: number;
+  payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
   maxPartySize?: number;
   reservationBookingWindowDays?: number;
   reservationBufferMinutes?: number;
   autoNoShow?: boolean;
   gracePeriodMinutes?: number;
+  isPublished?: boolean;
 };

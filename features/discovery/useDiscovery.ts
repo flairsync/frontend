@@ -8,12 +8,22 @@ import {
     submitOrderApiCall,
     fetchMyReservationsApiCall,
     fetchMyOrdersApiCall,
+    fetchSingleOrderApiCall,
+    reorderApiCall,
     cancelReservationApiCall,
     checkDiscoveryTableAvailabilityApiCall,
     fetchReservationTimelineApiCall,
     postReservationActionApiCall,
+    fetchReviewsApiCall,
+    fetchReviewStatsApiCall,
+    fetchMyReviewApiCall,
+    createReviewApiCall,
+    updateReviewApiCall,
+    deleteReviewApiCall,
     FetchDiscoveryBusinessesParams,
     FetchMyReservationsParams,
+    FetchMyOrdersParams,
+    FetchReviewsParams,
 } from "./discovery.api";
 import { CustomerActionPayload, CustomerTimelineResponse } from "./types";
 import { toast } from "sonner";
@@ -35,11 +45,12 @@ export const useDiscoverySearch = (params: FetchDiscoveryBusinessesParams) => {
                 ? nestedData
                 : (nestedData?.data || rawBody.businesses || []);
 
+            const parsedBusinesses = DiscoveryBusiness.parseApiArrayResponse(businessesData);
             return {
-                businesses: DiscoveryBusiness.parseApiArrayResponse(businessesData),
-                total: nestedData?.total || rawBody.total || 0,
-                page: nestedData?.current || nestedData?.page || rawBody.page || 1,
-                limit: nestedData?.limit || rawBody.limit || 10,
+                businesses: parsedBusinesses,
+                total: nestedData?.total ?? nestedData?.count ?? rawBody.total ?? rawBody.count ?? parsedBusinesses.length,
+                page: nestedData?.current ?? nestedData?.page ?? rawBody.page ?? 1,
+                limit: nestedData?.limit ?? rawBody.limit ?? 10,
             };
         },
         // Don't refetch on window focus for discovery search to save bandwidth
@@ -59,11 +70,12 @@ export const useInfiniteDiscoverySearch = (params: Omit<FetchDiscoveryBusinesses
                 ? nestedData
                 : (nestedData?.data || rawBody.businesses || []);
 
+            const parsedBusinesses = DiscoveryBusiness.parseApiArrayResponse(businessesData);
             return {
-                businesses: DiscoveryBusiness.parseApiArrayResponse(businessesData),
-                total: nestedData?.total || rawBody.total || 0,
-                page: nestedData?.current || nestedData?.page || rawBody.page || 1,
-                limit: nestedData?.limit || rawBody.limit || 10,
+                businesses: parsedBusinesses,
+                total: nestedData?.total ?? nestedData?.count ?? rawBody.total ?? rawBody.count ?? parsedBusinesses.length,
+                page: nestedData?.current ?? nestedData?.page ?? rawBody.page ?? 1,
+                limit: nestedData?.limit ?? rawBody.limit ?? 10,
             };
         },
         getNextPageParam: (lastPage) => {
@@ -164,17 +176,42 @@ export const useMyReservations = (params?: FetchMyReservationsParams | string) =
     });
 };
 
-export const useMyOrders = (businessId: string | undefined) => {
+export const useMyOrders = (businessId: string | undefined, params?: FetchMyOrdersParams) => {
     return useQuery({
-        queryKey: ["my_orders", businessId],
+        queryKey: ["my_orders", businessId, params],
         queryFn: async () => {
-            if (!businessId) return [];
-            const res = await fetchMyOrdersApiCall(businessId);
-            // Handle both { data: { data: [] } } and { data: [] }
-            const data = res.data.data?.data || res.data.data || res.data;
-            return Array.isArray(data) ? data : [];
+            if (!businessId) return { data: [], page: 1, totalPages: 1 };
+            const res = await fetchMyOrdersApiCall(businessId, params);
+            const raw = res.data;
+            const data = raw.data?.data || raw.data || raw;
+            return {
+                data: Array.isArray(data) ? data : [],
+                page: raw.page ?? 1,
+                totalPages: raw.totalPages ?? 1,
+            };
         },
         enabled: !!businessId,
+    });
+};
+
+export const useSingleOrder = (businessId: string | undefined, orderId: string | undefined) => {
+    return useQuery({
+        queryKey: ["my_order", businessId, orderId],
+        queryFn: async () => {
+            if (!businessId || !orderId) return null;
+            const res = await fetchSingleOrderApiCall(businessId, orderId);
+            return res.data.data ?? res.data;
+        },
+        enabled: !!businessId && !!orderId,
+    });
+};
+
+export const useReorder = (businessId: string) => {
+    return useMutation({
+        mutationFn: async ({ orderId, payload }: { orderId: string; payload?: { type?: string; tableId?: string } }) => {
+            const res = await reorderApiCall(businessId, orderId, payload);
+            return res.data.data ?? res.data;
+        },
     });
 };
 
@@ -206,6 +243,95 @@ export const useReservationTimeline = (businessId: string, reservationId: string
             const status = query.state.data?.reservation?.status?.toLowerCase();
             if (status && TERMINAL_STATUSES.includes(status)) return false;
             return 30_000;
+        },
+    });
+};
+
+// Reviews
+export const useReviews = (businessId: string | undefined, params?: FetchReviewsParams) => {
+    return useQuery({
+        queryKey: ["reviews", businessId, params],
+        queryFn: async () => {
+            if (!businessId) return { data: [], page: 1, totalPages: 1 };
+            const res = await fetchReviewsApiCall(businessId, params);
+            // Shape: { data: { data: [...], current: 1, pages: N } }
+            const envelope = res.data?.data ?? res.data;
+            const items = envelope?.data ?? envelope ?? [];
+            return {
+                data: Array.isArray(items) ? items : [],
+                page: envelope?.current ?? envelope?.page ?? 1,
+                totalPages: envelope?.pages ?? envelope?.totalPages ?? 1,
+            };
+        },
+        enabled: !!businessId,
+    });
+};
+
+export const useReviewStats = (businessId: string | undefined) => {
+    return useQuery({
+        queryKey: ["review_stats", businessId],
+        queryFn: async () => {
+            if (!businessId) return null;
+            const res = await fetchReviewStatsApiCall(businessId);
+            return res.data.data ?? res.data;
+        },
+        enabled: !!businessId,
+    });
+};
+
+export const useMyReview = (businessId: string | undefined, enabled: boolean = true) => {
+    return useQuery({
+        queryKey: ["my_review", businessId],
+        queryFn: async () => {
+            if (!businessId) return null;
+            const res = await fetchMyReviewApiCall(businessId);
+            return res.data.data ?? null;
+        },
+        enabled: !!businessId && enabled,
+    });
+};
+
+export const useCreateReview = (businessId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (payload: { rating: number; comment?: string }) => {
+            const res = await createReviewApiCall(businessId, payload);
+            return res.data.data ?? res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reviews", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["review_stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["my_review", businessId] });
+        },
+    });
+};
+
+export const useUpdateReview = (businessId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async ({ reviewId, payload }: { reviewId: string; payload: { rating?: number; comment?: string } }) => {
+            const res = await updateReviewApiCall(businessId, reviewId, payload);
+            return res.data.data ?? res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reviews", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["review_stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["my_review", businessId] });
+        },
+    });
+};
+
+export const useDeleteReview = (businessId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (reviewId: string) => {
+            const res = await deleteReviewApiCall(businessId, reviewId);
+            return res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reviews", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["review_stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["my_review", businessId] });
         },
     });
 };

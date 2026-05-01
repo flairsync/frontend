@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
+import { DateRange } from "react-day-picker";
+import { format } from "date-fns";
 import { useReservationDashboard } from "@/features/reservations/useReservationDashboard";
 import { useReservations } from "@/features/reservations/useReservations";
 import { getAvailableActions, getStatusBadge } from "@/features/reservations/reservationUtils";
@@ -21,7 +23,7 @@ import {
     Users, CheckCircle, Armchair, Flag, XCircle, UserX,
     CalendarCheck, Clock, Plus, Eye, RefreshCw
 } from "lucide-react";
-import dayjs from "dayjs";
+
 
 interface ReservationDashboardProps {
     businessId: string;
@@ -66,13 +68,9 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
     const [page, setPage] = useState(1);
     const limit = 10;
     const [statusFilter, setStatusFilter] = useState<string>("all");
-    const [startDate, setStartDate] = useState<string>(() => {
-        const today = new Date();
-        return today.toISOString().split("T")[0];
-    });
-    const [endDate, setEndDate] = useState<string>(() => {
-        const today = new Date();
-        return today.toISOString().split("T")[0];
+    const [dateRange, setDateRange] = useState<DateRange | undefined>({
+        from: new Date(),
+        to: new Date(),
     });
 
     const { data: dashboard, isLoading: loadingDashboard, refetch: refetchDashboard } = useReservationDashboard(businessId);
@@ -80,8 +78,8 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
     const filters = {
         page, limit,
         ...(statusFilter !== "all" ? { status: statusFilter } : {}),
-        startDate: startDate ? new Date(startDate + "T00:00:00").toISOString() : undefined,
-        endDate: endDate ? new Date(endDate + "T23:59:59").toISOString() : undefined,
+        startDate: dateRange?.from ? new Date(format(dateRange.from, "yyyy-MM-dd") + "T00:00:00").toISOString() : undefined,
+        endDate: dateRange?.to ? new Date(format(dateRange.to, "yyyy-MM-dd") + "T23:59:59").toISOString() : undefined,
         sortBy: "reservationTime",
         sortOrder: "ASC",
     };
@@ -235,11 +233,17 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                 </Card>
             )}
 
-            {/* All Today — paginated */}
+            {/* All Reservations — paginated */}
             <Card>
                 <CardHeader>
                     <div className="flex flex-col gap-3">
-                        <CardTitle className="text-base">All Today</CardTitle>
+                        <CardTitle className="text-base">
+                            {dateRange?.from ? (
+                                dateRange.to && dateRange.from.toDateString() !== dateRange.to.toDateString()
+                                    ? `${format(dateRange.from, "MMM d")} – ${format(dateRange.to, "MMM d, yyyy")}`
+                                    : format(dateRange.from, "MMM d, yyyy")
+                            ) : "All Reservations"}
+                        </CardTitle>
                         <div className="flex flex-wrap items-end gap-3">
                             <div className="space-y-1">
                                 <Label className="text-xs">Status</Label>
@@ -261,12 +265,11 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                 </Select>
                             </div>
                             <div className="space-y-1">
-                                <Label className="text-xs">From</Label>
-                                <Input type="date" value={startDate} onChange={(e) => { setStartDate(e.target.value); setPage(1); }} className="w-[150px]" />
-                            </div>
-                            <div className="space-y-1">
-                                <Label className="text-xs">To</Label>
-                                <Input type="date" value={endDate} onChange={(e) => { setEndDate(e.target.value); setPage(1); }} className="w-[150px]" />
+                                <Label className="text-xs">Date Range</Label>
+                                <DatePickerWithRange
+                                    date={dateRange}
+                                    setDate={(range) => { setDateRange(range); setPage(1); }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -275,7 +278,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Time</TableHead>
+                                <TableHead>Date & Time</TableHead>
                                 <TableHead>Customer</TableHead>
                                 <TableHead>Guests</TableHead>
                                 <TableHead>Table</TableHead>
@@ -296,7 +299,10 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                     return (
                                         <TableRow key={res.id}>
                                             <TableCell className="text-sm whitespace-nowrap">
-                                                {formatInTimezone(res.reservationTime, "h:mm A", timezone)}
+                                                <div className="flex flex-col">
+                                                    <span>{formatInTimezone(res.reservationTime, "MMM D, YYYY", timezone)}</span>
+                                                    <span className="text-xs text-muted-foreground">{formatInTimezone(res.reservationTime, "h:mm A", timezone)}</span>
+                                                </div>
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex flex-col">
