@@ -21,7 +21,7 @@ const quickLinks = [
     { title: "Integrations", url: "/#integration", icon: Info },
     { title: "Features", url: "/#features", icon: Info },
     { title: "Pricing", url: "/#pricing", icon: Info },
-    { title: "Contact Us", url: "/contact", icon: Info },
+    { title: "Contact Us", url: "/support", icon: Info },
 ];
 
 // Support Links

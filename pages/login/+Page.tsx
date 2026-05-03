@@ -105,11 +105,16 @@ const LoginPage = () => {
                                     {errors.password && touched.password && <InputError message={errors.password} />}
                                 </div>
 
-                                <div className="flex items-center space-x-2">
-                                    <Checkbox id="keep-logged-in" className="rounded-md border-zinc-300" />
-                                    <Label htmlFor="keep-logged-in" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        {t("auth_page.stay_signedin_label")}
-                                    </Label>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="keep-logged-in" className="rounded-md border-zinc-300" />
+                                        <Label htmlFor="keep-logged-in" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                            {t("auth_page.stay_signedin_label")}
+                                        </Label>
+                                    </div>
+                                    <a href="/forgot-password" className="text-sm font-semibold text-[#6366F1] hover:underline">
+                                        Forgot password?
+                                    </a>
                                 </div>
 
                                 {

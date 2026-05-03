@@ -89,3 +89,14 @@ export const verifyEmailOtpApiCall = (otp: string) => {
     otp,
   });
 };
+
+const forgotPasswordUrl = `${baseUrl}/forgot-password`;
+const resetPasswordUrl = `${baseUrl}/reset-password`;
+
+export const forgotPasswordApiCall = (email: string) => {
+  return flairapi.post(forgotPasswordUrl, { email });
+};
+
+export const resetPasswordApiCall = (data: { token: string; newPassword: string }) => {
+  return flairapi.post(resetPasswordUrl, { token: data.token, newPassword: data.newPassword });
+};

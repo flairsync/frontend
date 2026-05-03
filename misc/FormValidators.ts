@@ -35,6 +35,19 @@ export const LoginFormSchema = Yup.object().shape({
   password: passwordValidation,
 });
 
+export const ForgotPasswordSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("input_errors.email.invalid")
+    .required("input_errors.email.required"),
+});
+
+export const ResetPasswordSchema = Yup.object().shape({
+  newPassword: passwordValidation,
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), undefined], "input_errors.repeat_password.mismatch")
+    .required("input_errors.repeat_password.required"),
+});
+
 export const UpdatePasswordSchema = Yup.object().shape({
   currentPassword: passwordValidation,
   newPassword: passwordValidation,

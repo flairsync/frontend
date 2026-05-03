@@ -286,10 +286,11 @@ export default function StationsPage() {
   });
 
   const { mutate: revoke, isPending: isRevoking } = useMutation({
-    mutationFn: () => stationService.revokeStation(businessId, revoking!.id),
-    onSuccess: () => {
+    mutationFn: ({ id }: { id: string; name: string }) =>
+      stationService.revokeStation(businessId, id),
+    onSuccess: (_data, { name }) => {
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
-      toast.success(`"${revoking?.name}" has been revoked.`);
+      toast.success(`"${name}" has been revoked.`);
       setRevoking(null);
     },
     onError: () => toast.error("Failed to revoke station."),
@@ -388,7 +389,7 @@ export default function StationsPage() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => revoke()}
+              onClick={() => revoke(revoking!)}
               disabled={isRevoking}
               className="bg-destructive hover:bg-destructive/90"
             >

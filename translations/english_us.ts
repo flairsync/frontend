@@ -249,6 +249,38 @@ const auth_page = {
     please_read_terms: "Please read our terms and conditions below carefully.",
     confirm: "Confirm",
   },
+
+  forgot_password: {
+    title: "Forgot your password?",
+    subtitle: "Enter your email and we'll send you a reset link.",
+    email_label: "Email address",
+    submit_button: "Send Reset Link",
+    back_to_login: "← Back to login",
+    success_title: "Check your inbox",
+    success_message: "If an account exists for that email, we've sent a password reset link.",
+    success_expiry: "The link expires in 1 hour.",
+    back_to_login_button: "Back to Login",
+    network_error: "Network error. Please try again.",
+  },
+
+  reset_password: {
+    title: "Choose a new password",
+    new_password_label: "New password",
+    confirm_password_label: "Confirm new password",
+    submit_button: "Reset Password",
+    requirements_title: "Password requirements:",
+    req_length: "8+ characters",
+    req_uppercase: "One uppercase letter",
+    req_lowercase: "One lowercase letter",
+    req_number: "One number",
+    success_title: "Password updated!",
+    success_message: "Your password has been changed. You can now log in with your new password.",
+    go_to_login: "Go to Login",
+    invalid_title: "Link expired or invalid",
+    invalid_message: "This password reset link has already been used or has expired (links are valid for 1 hour).",
+    request_new_link: "Request a new link",
+    network_error: "Network error. Please try again.",
+  },
 };
 
 const errors = {
