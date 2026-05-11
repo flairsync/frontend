@@ -1,13 +1,25 @@
 import { useState, useEffect, useCallback } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { stationService, type StationRecord } from "@/features/station/service";
+import {
+  stationService,
+  kitchenStationService,
+  type StationRecord,
+  type KitchenStation,
+} from "@/features/station/service";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -28,6 +40,7 @@ import {
 import {
   Monitor, ChefHat, Plus, Unplug, RefreshCw,
   Wifi, WifiOff, Clock, Copy, Check, Loader2, Terminal,
+  Pencil, Trash2, UtensilsCrossed,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -35,7 +48,7 @@ import { toast } from "sonner";
 
 function isOnline(lastSeenAt: string | null): boolean {
   if (!lastSeenAt) return false;
-  return Date.now() - new Date(lastSeenAt).getTime() < 2 * 60 * 1000; // 2 min
+  return Date.now() - new Date(lastSeenAt).getTime() < 2 * 60 * 1000;
 }
 
 function useCountdown(expiresAt: Date | null) {
@@ -79,7 +92,6 @@ function PairingCodeDialog({
     }
   }, [businessId]);
 
-  // Auto-generate when dialog opens
   useEffect(() => {
     if (open) generate();
   }, [open]);
@@ -90,10 +102,6 @@ function PairingCodeDialog({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
-
-  const progress = expiresAt
-    ? (secsLeft / Math.floor((expiresAt.getTime() - (expiresAt.getTime() - 300_000)) / 1000)) * 100
-    : 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -109,7 +117,6 @@ function PairingCodeDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-5 py-2">
-          {/* Code display */}
           <div className="relative bg-muted rounded-2xl p-6 text-center border">
             {code ? (
               <>
@@ -130,7 +137,6 @@ function PairingCodeDialog({
             )}
           </div>
 
-          {/* Countdown bar */}
           {code && (
             <div className="flex flex-col gap-1.5">
               <div className="h-1.5 bg-muted rounded-full overflow-hidden">
@@ -164,17 +170,19 @@ function PairingCodeDialog({
 function StationCard({
   station,
   businessId,
+  kitchenStations,
   onRevoke,
 }: {
   station: StationRecord;
   businessId: string;
+  kitchenStations: KitchenStation[];
   onRevoke: (id: string, name: string) => void;
 }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(station.name);
   const qc = useQueryClient();
 
-  const { mutate: save, isPending } = useMutation({
+  const { mutate: save, isPending: isSaving } = useMutation({
     mutationFn: () => stationService.updateStation(businessId, station.id, { name }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
@@ -182,6 +190,16 @@ function StationCard({
       toast.success("Station renamed.");
     },
     onError: () => toast.error("Failed to rename station."),
+  });
+
+  const { mutate: assignKs, isPending: isAssigning } = useMutation({
+    mutationFn: (kitchenStationId: string | null) =>
+      stationService.updateStation(businessId, station.id, { kitchenStationId }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["stations", businessId] });
+      toast.success("Kitchen station assigned.");
+    },
+    onError: () => toast.error("Failed to assign kitchen station."),
   });
 
   const online = isOnline(station.lastSeenAt);
@@ -212,8 +230,8 @@ function StationCard({
                       if (e.key === "Escape") { setEditing(false); setName(station.name); }
                     }}
                   />
-                  <Button size="sm" className="h-7 px-2 text-xs" onClick={() => save()} disabled={isPending}>
-                    {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+                  <Button size="sm" className="h-7 px-2 text-xs" onClick={() => save()} disabled={isSaving}>
+                    {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
                   </Button>
                 </div>
               ) : (
@@ -237,7 +255,6 @@ function StationCard({
             </div>
           </div>
 
-          {/* Online indicator */}
           <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] font-bold ${
             online ? "bg-green-500/10 text-green-600" : "bg-muted text-muted-foreground"
           }`}>
@@ -245,6 +262,37 @@ function StationCard({
             {online ? "Online" : "Offline"}
           </div>
         </div>
+
+        {/* KDS — kitchen station assignment */}
+        {station.type === "kds" && (
+          <div className="mb-4">
+            <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5 block">
+              Kitchen Station
+            </Label>
+            <Select
+              value={station.kitchenStationId ?? "none"}
+              onValueChange={(v) => assignKs(v === "none" ? null : v)}
+              disabled={isAssigning}
+            >
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue placeholder="Not assigned" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">
+                  <span className="text-muted-foreground">Not assigned</span>
+                </SelectItem>
+                {kitchenStations.map((ks) => (
+                  <SelectItem key={ks.id} value={ks.id}>
+                    {ks.name}
+                    {!ks.active && (
+                      <span className="ml-1 text-muted-foreground">(inactive)</span>
+                    )}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         <Separator className="mb-4" />
 
@@ -270,6 +318,94 @@ function StationCard({
   );
 }
 
+// ─── Kitchen Station Card ─────────────────────────────────────────────────────
+
+function KitchenStationCard({
+  ks,
+  businessId,
+  onDelete,
+}: {
+  ks: KitchenStation;
+  businessId: string;
+  onDelete: (ks: KitchenStation) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(ks.name);
+  const qc = useQueryClient();
+
+  const { mutate: save, isPending } = useMutation({
+    mutationFn: () => kitchenStationService.update(businessId, ks.id, { name }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["kitchen-stations", businessId] });
+      setEditing(false);
+      toast.success("Kitchen station renamed.");
+    },
+    onError: () => toast.error("Failed to rename."),
+  });
+
+  const statusColor: Record<KitchenStation["status"], string> = {
+    ready: "bg-green-500/10 text-green-600 border-green-500/20",
+    getting_ready: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+    broken: "bg-destructive/10 text-destructive border-destructive/20",
+    offline: "bg-muted text-muted-foreground border-border",
+  };
+
+  return (
+    <div className="flex items-center gap-3 px-4 py-3 rounded-xl border bg-card hover:bg-accent/30 transition-colors group">
+      <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
+        <UtensilsCrossed className="w-4 h-4 text-amber-600" />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        {editing ? (
+          <div className="flex items-center gap-2">
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="h-7 text-sm font-bold flex-1"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") save();
+                if (e.key === "Escape") { setEditing(false); setName(ks.name); }
+              }}
+            />
+            <Button size="sm" className="h-7 px-2 text-xs" onClick={() => save()} disabled={isPending}>
+              {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+            </Button>
+          </div>
+        ) : (
+          <p className="text-sm font-bold truncate">{ks.name}</p>
+        )}
+        <Badge
+          variant="outline"
+          className={`text-[10px] font-bold uppercase tracking-wide mt-0.5 ${statusColor[ks.status]}`}
+        >
+          {ks.status.replace("_", " ")}
+        </Badge>
+      </div>
+
+      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7 text-muted-foreground hover:text-foreground"
+          onClick={() => setEditing(true)}
+        >
+          <Pencil className="w-3.5 h-3.5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7 text-destructive/50 hover:text-destructive"
+          onClick={() => onDelete(ks)}
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function StationsPage() {
@@ -279,10 +415,18 @@ export default function StationsPage() {
 
   const [pairOpen, setPairOpen] = useState(false);
   const [revoking, setRevoking] = useState<{ id: string; name: string } | null>(null);
+  const [deletingKs, setDeletingKs] = useState<KitchenStation | null>(null);
+  const [newKsName, setNewKsName] = useState("");
+  const [addingKs, setAddingKs] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["stations", businessId],
     queryFn: () => stationService.listStations(businessId).then((r) => r.data.data),
+  });
+
+  const { data: kitchenStations = [], isLoading: ksLoading } = useQuery({
+    queryKey: ["kitchen-stations", businessId],
+    queryFn: () => kitchenStationService.list(businessId).then((r) => r.data.data),
   });
 
   const { mutate: revoke, isPending: isRevoking } = useMutation({
@@ -296,15 +440,37 @@ export default function StationsPage() {
     onError: () => toast.error("Failed to revoke station."),
   });
 
+  const { mutate: createKs, isPending: isCreatingKs } = useMutation({
+    mutationFn: () => kitchenStationService.create(businessId, newKsName.trim()),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["kitchen-stations", businessId] });
+      setNewKsName("");
+      setAddingKs(false);
+      toast.success("Kitchen station created.");
+    },
+    onError: () => toast.error("Failed to create kitchen station."),
+  });
+
+  const { mutate: deleteKs, isPending: isDeletingKs } = useMutation({
+    mutationFn: (ks: KitchenStation) => kitchenStationService.remove(businessId, ks.id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["kitchen-stations", businessId] });
+      qc.invalidateQueries({ queryKey: ["stations", businessId] });
+      toast.success("Kitchen station deleted.");
+      setDeletingKs(null);
+    },
+    onError: () => toast.error("Failed to delete kitchen station."),
+  });
+
   const stations = data ?? [];
   const posCount = stations.filter((s) => s.type === "pos").length;
   const kdsCount = stations.filter((s) => s.type === "kds").length;
   const onlineCount = stations.filter((s) => isOnline(s.lastSeenAt)).length;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-5xl mx-auto space-y-8">
       {/* Page header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Stations</h1>
           <p className="text-muted-foreground text-sm mt-1">
@@ -319,7 +485,7 @@ export default function StationsPage() {
 
       {/* Summary row */}
       {stations.length > 0 && (
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-3 gap-4">
           {[
             { label: "POS Terminals", value: posCount, Icon: Monitor, color: "text-primary" },
             { label: "KDS Screens", value: kdsCount, Icon: ChefHat, color: "text-amber-600" },
@@ -340,35 +506,116 @@ export default function StationsPage() {
         </div>
       )}
 
-      {/* Station grid */}
-      {isLoading ? (
-        <div className="flex items-center justify-center py-20 text-muted-foreground">
-          <Loader2 className="w-6 h-6 animate-spin" />
-        </div>
-      ) : stations.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground border border-dashed rounded-2xl">
-          <Monitor className="w-12 h-12 mb-4 opacity-20" />
-          <p className="font-semibold">No stations linked yet</p>
-          <p className="text-sm mt-1 max-w-xs">
-            Click "Add Station" to generate a pairing code, then enter it on any device running the station app.
+      {/* Kitchen Stations section */}
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base flex items-center gap-2">
+              <UtensilsCrossed className="w-4 h-4 text-amber-600" />
+              Kitchen Stations
+            </CardTitle>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-8 gap-1.5 text-xs"
+              onClick={() => setAddingKs((v) => !v)}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Add
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Logical cooking areas (e.g. Grill, Fryer). Assign each KDS device to one of these.
           </p>
-          <Button className="mt-6 gap-2" onClick={() => setPairOpen(true)}>
-            <Plus className="w-4 h-4" />
-            Add Station
-          </Button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {stations.map((s) => (
-            <StationCard
-              key={s.id}
-              station={s}
-              businessId={businessId}
-              onRevoke={(id, name) => setRevoking({ id, name })}
-            />
-          ))}
-        </div>
-      )}
+        </CardHeader>
+        <CardContent className="flex flex-col gap-2">
+          {addingKs && (
+            <div className="flex items-center gap-2 mb-1">
+              <Input
+                value={newKsName}
+                onChange={(e) => setNewKsName(e.target.value)}
+                placeholder="e.g. Grill, Fryer, Cold Station…"
+                className="h-8 text-sm flex-1"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && newKsName.trim()) createKs();
+                  if (e.key === "Escape") { setAddingKs(false); setNewKsName(""); }
+                }}
+              />
+              <Button
+                size="sm"
+                className="h-8 px-3 text-xs"
+                disabled={!newKsName.trim() || isCreatingKs}
+                onClick={() => createKs()}
+              >
+                {isCreatingKs ? <Loader2 className="w-3 h-3 animate-spin" /> : "Create"}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 px-3 text-xs"
+                onClick={() => { setAddingKs(false); setNewKsName(""); }}
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
+
+          {ksLoading ? (
+            <div className="flex items-center justify-center py-6 text-muted-foreground">
+              <Loader2 className="w-5 h-5 animate-spin" />
+            </div>
+          ) : kitchenStations.length === 0 ? (
+            <div className="text-center py-6 text-muted-foreground text-sm border border-dashed rounded-xl">
+              No kitchen stations yet. Add one to assign KDS devices.
+            </div>
+          ) : (
+            kitchenStations.map((ks) => (
+              <KitchenStationCard
+                key={ks.id}
+                ks={ks}
+                businessId={businessId}
+                onDelete={setDeletingKs}
+              />
+            ))
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Station grid */}
+      <div>
+        <h2 className="text-base font-bold mb-3">Devices</h2>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20 text-muted-foreground">
+            <Loader2 className="w-6 h-6 animate-spin" />
+          </div>
+        ) : stations.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground border border-dashed rounded-2xl">
+            <Monitor className="w-12 h-12 mb-4 opacity-20" />
+            <p className="font-semibold">No stations linked yet</p>
+            <p className="text-sm mt-1 max-w-xs">
+              Click "Add Station" to generate a pairing code, then enter it on any device running
+              the station app.
+            </p>
+            <Button className="mt-6 gap-2" onClick={() => setPairOpen(true)}>
+              <Plus className="w-4 h-4" />
+              Add Station
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {stations.map((s) => (
+              <StationCard
+                key={s.id}
+                station={s}
+                businessId={businessId}
+                kitchenStations={kitchenStations}
+                onRevoke={(id, name) => setRevoking({ id, name })}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Pairing dialog */}
       <PairingCodeDialog
@@ -383,7 +630,8 @@ export default function StationsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Revoke "{revoking?.name}"?</AlertDialogTitle>
             <AlertDialogDescription>
-              The device will be immediately disconnected. It will need a new pairing code to reconnect.
+              The device will be immediately disconnected. It will need a new pairing code to
+              reconnect.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -395,6 +643,30 @@ export default function StationsPage() {
             >
               {isRevoking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
               Revoke Station
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete kitchen station confirmation */}
+      <AlertDialog open={!!deletingKs} onOpenChange={(v) => !v && setDeletingKs(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete "{deletingKs?.name}"?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Any KDS devices assigned to this station will lose their assignment. This cannot be
+              undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteKs(deletingKs!)}
+              disabled={isDeletingKs}
+              className="bg-destructive hover:bg-destructive/90"
+            >
+              {isDeletingKs ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

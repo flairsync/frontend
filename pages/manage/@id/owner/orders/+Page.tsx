@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useOrders } from "@/features/orders/useOrders";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown } from "lucide-react";
+import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import ReceiptView from "@/components/pos/ReceiptView";
 import { AddItemsModal } from "@/components/staff/orders/AddItemsModal";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { StaffAddOrderDrawer } from "@/components/staff/orders/StaffAddOrderDrawer";
@@ -50,6 +52,10 @@ const OwnerOrdersPage: React.FC = () => {
     // Transfer Table Modal State
     const [transferModalOpen, setTransferModalOpen] = useState(false);
     const [selectedOrderForTransfer, setSelectedOrderForTransfer] = useState<Order | null>(null);
+
+    // Receipt Modal State
+    const [receiptModalOpen, setReceiptModalOpen] = useState(false);
+    const [selectedOrderForReceipt, setSelectedOrderForReceipt] = useState<Order | null>(null);
 
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
     const [statusFilter, setStatusFilter] = useState<"ongoing" | "all">("ongoing");
@@ -136,6 +142,11 @@ const OwnerOrdersPage: React.FC = () => {
     const handleOpenTransfer = (order: Order) => {
         setSelectedOrderForTransfer(order);
         setTransferModalOpen(true);
+    };
+
+    const handleViewReceipt = (order: Order) => {
+        setSelectedOrderForReceipt(order);
+        setReceiptModalOpen(true);
     };
 
     const {
@@ -395,6 +406,12 @@ const OwnerOrdersPage: React.FC = () => {
                                                                     <Eye className="mr-2 h-4 w-4" />
                                                                     <span>View Details</span>
                                                                 </DropdownMenuItem>
+                                                                {(o.status === "completed" || o.paymentStatus === "paid" || o.paymentStatus === "partially_paid") && (
+                                                                    <DropdownMenuItem onClick={() => handleViewReceipt(o)}>
+                                                                        <Receipt className="mr-2 h-4 w-4" />
+                                                                        <span>View Receipt</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                             </DropdownMenuContent>
                                                         </DropdownMenu>
                                                     </div>
@@ -460,6 +477,21 @@ const OwnerOrdersPage: React.FC = () => {
                 businessId={businessId}
                 order={selectedOrderForForceClose}
             />
+
+            <Dialog open={receiptModalOpen} onOpenChange={setReceiptModalOpen}>
+                <DialogContent className="max-w-sm p-0">
+                    <DialogHeader className="px-4 pt-4">
+                        <DialogTitle>Receipt</DialogTitle>
+                    </DialogHeader>
+                    {selectedOrderForReceipt && (
+                        <ReceiptView
+                            businessId={businessId}
+                            orderId={selectedOrderForReceipt.id}
+                            onClose={() => setReceiptModalOpen(false)}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

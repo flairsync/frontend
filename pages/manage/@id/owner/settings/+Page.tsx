@@ -16,6 +16,7 @@ import BusinessSettingsGeneralDetails from "@/components/management/settings/Bus
 import BusinessSettingsOpenPeriods from "@/components/management/settings/BusinessSettingsOpenPeriods"
 import BusinessSettingsLocation from "@/components/management/settings/BusinessSettingsLocation"
 import BusinessSettingsLabor from "@/components/management/settings/BusinessSettingsLabor"
+import BusinessSettingsTax from "@/components/management/settings/BusinessSettingsTax"
 import { AuditLogHint } from "@/components/audit/AuditLogHint"
 
 const BusinessSettingsPage = () => {
@@ -138,6 +139,15 @@ const BusinessSettingsPage = () => {
 
             {/* Labor & Compliance */}
             <BusinessSettingsLabor
+                businessDetails={myBusinessFullDetails}
+                disabled={updatingMyBusiness}
+                onSaveDetails={(data) => {
+                    updateMyBusinessDetails(data);
+                }}
+            />
+
+            {/* Tax Configuration */}
+            <BusinessSettingsTax
                 businessDetails={myBusinessFullDetails}
                 disabled={updatingMyBusiness}
                 onSaveDetails={(data) => {

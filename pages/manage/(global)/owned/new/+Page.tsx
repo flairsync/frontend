@@ -28,7 +28,6 @@ import { useBusinessTypes } from '@/features/business/types/useBusinessTypes';
 import { BusinessTag } from '@/models/business/BusinessTag';
 import { useBusinessOps } from '@/features/business/useBusinessOps';
 import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
-import { useUsage } from '@/features/subscriptions/useUsage';
 
 const LocationPicker = clientOnly(() =>
     import("@/components/management/create/BusinessLocationPicker")
@@ -37,6 +36,8 @@ interface BusinessFormValues {
     name: string;
     description: string;
     type: string;
+    tableCount: number;
+    hasKitchen: boolean;
     workTimes: OpeningHours[];
     pricing: string;
     tags: BusinessTag[];
@@ -48,9 +49,12 @@ interface BusinessFormValues {
         lat: number;
         lng: number;
     };
+    autoSetup: boolean;
 }
 
 
+
+const NO_KITCHEN_TYPES = ['coffee_shop', 'bakery', 'coffee_drinks'];
 
 const initialHours: OpeningHours[] = [
     new OpeningHours('', 'monday', false, [new OpeningPeriod('', '08:00', '15:00'), new OpeningPeriod('', '21:00', '04:00')]),
@@ -70,6 +74,11 @@ const validationSchema = [
         name: Yup.string().required('Business name is required'),
         description: Yup.string().required('Description is required'),
         type: Yup.string().required('Please specify the business type'),
+        tableCount: Yup.number()
+            .integer('Must be a whole number')
+            .min(1, 'At least 1 table')
+            .max(200, 'Maximum 200 tables')
+            .required('Table count is required'),
     }),
     // Step 2: Details
     Yup.object({
@@ -94,17 +103,13 @@ const validationSchema = [
 ];
 
 export default function CreateNewBusiness() {
-    const {
-        businessTypes,
-        isLoading: loadingBusinessTypes
-    } = useBusinessTypes();
+    const { businessTypes } = useBusinessTypes();
 
     const {
         createdNewBusiness,
     } = useBusinessOps();
 
     const { openUpgradeModal } = useSubscriptionStore();
-    const { usage } = useUsage();
 
     const [step, setStep] = useState(0);
     const totalSteps = 4;
@@ -113,6 +118,8 @@ export default function CreateNewBusiness() {
         name: '',
         description: '',
         type: '',
+        tableCount: 10,
+        hasKitchen: true,
         workTimes: initialHours,
         pricing: '',
         tags: [],
@@ -123,7 +130,8 @@ export default function CreateNewBusiness() {
             country: undefined,
             lat: 0,
             lng: 0
-        }
+        },
+        autoSetup: false,
     };
 
     const handleSubmit = (values: BusinessFormValues) => {
@@ -142,7 +150,7 @@ export default function CreateNewBusiness() {
     const nextStep = () => setStep((s) => Math.min(s + 1, totalSteps - 1));
     const prevStep = () => setStep((s) => Math.max(s - 1, 0));
 
-    if (loadingBusinessTypes) {
+    if (!businessTypes) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <p>Loading...</p>
@@ -222,6 +230,10 @@ export default function CreateNewBusiness() {
                                                     types={businessTypes}
                                                     onChange={(newValue: string) => {
                                                         setFieldValue("type", newValue);
+                                                        const typeName = businessTypes?.find(t => t.id === newValue)?.name ?? '';
+                                                        if (NO_KITCHEN_TYPES.includes(typeName)) {
+                                                            setFieldValue("hasKitchen", false);
+                                                        }
                                                     }}
                                                     value={values.type}
                                                 />
@@ -230,6 +242,36 @@ export default function CreateNewBusiness() {
                                                     component="p"
                                                     className="text-red-500 text-xs mt-1"
                                                 />
+                                            </div>
+
+                                            <div className="flex gap-4">
+                                                <div className="flex-1">
+                                                    <label className="font-medium text-sm text-zinc-600">Number of Tables</label>
+                                                    <Field
+                                                        as={Input}
+                                                        name="tableCount"
+                                                        type="number"
+                                                        min={1}
+                                                        max={200}
+                                                        className="mt-1"
+                                                    />
+                                                    <ErrorMessage
+                                                        name="tableCount"
+                                                        component="p"
+                                                        className="text-red-500 text-xs mt-1"
+                                                    />
+                                                </div>
+
+                                                <div className="flex flex-col justify-center gap-1 pt-1">
+                                                    <label className="font-medium text-sm text-zinc-600">Has a Kitchen?</label>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setFieldValue("hasKitchen", !values.hasKitchen)}
+                                                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${values.hasKitchen ? 'bg-primary' : 'bg-zinc-300'}`}
+                                                    >
+                                                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${values.hasKitchen ? 'translate-x-6' : 'translate-x-1'}`} />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </>
                                     )}
@@ -312,6 +354,24 @@ export default function CreateNewBusiness() {
                                                 }}
                                                 values={values.links}
                                             />
+
+                                            <button
+                                                type="button"
+                                                onClick={() => setFieldValue("autoSetup", !values.autoSetup)}
+                                                className={`w-full flex items-start gap-3 rounded-xl border-2 p-4 text-left transition-colors ${values.autoSetup ? 'border-primary bg-primary/5' : 'border-zinc-200 hover:border-zinc-300'}`}
+                                            >
+                                                <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors ${values.autoSetup ? 'border-primary bg-primary' : 'border-zinc-300'}`}>
+                                                    {values.autoSetup && (
+                                                        <svg className="h-3 w-3 text-white" viewBox="0 0 12 12" fill="none">
+                                                            <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium text-sm text-zinc-800">Auto-create setup</p>
+                                                    <p className="text-xs text-zinc-500 mt-0.5">Auto-create categories, roles, floor plan and more based on your business type</p>
+                                                </div>
+                                            </button>
                                         </div>
                                     )}
                                 </motion.div>

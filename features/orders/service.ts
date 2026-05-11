@@ -92,6 +92,7 @@ export interface CreatePaymentDto {
     amount: number;
     method: "cash" | "card" | "online" | "other";
     tipAmount?: number;
+    cashTendered?: number;
 }
 
 export const fetchOrdersApiCall = (
@@ -177,6 +178,14 @@ export const voidOrderItemApiCall = (businessId: string, orderId: string, itemId
 
 // ─── Receipt ──────────────────────────────────────────────────────────────────
 
+export interface ReceiptTax {
+    name: string;
+    rate: number;
+    included: boolean;
+    amount: number;
+}
+
+/** @deprecated use ReceiptTax */
 export interface ReceiptTaxLine {
     name: string;
     rate: number;
@@ -194,38 +203,34 @@ export interface ReceiptItem {
 }
 
 export interface ReceiptPayment {
+    id?: string;
     method: "cash" | "card" | "online" | "other";
     amount: number;
     tipAmount: number;
-    createdAt: string;
+    cashTendered: number | null;
+    changeGiven: number | null;
+    status?: "success" | "failed" | "refunded";
 }
 
 export interface ReceiptData {
     receiptNumber: string;
-    issuedAt: string;
-    business: {
-        name: string;
-        address: string | null;
-        phone: string | null;
-        taxId: string | null;
-    };
-    order: {
-        id: string;
-        type: "dine_in" | "takeaway" | "delivery";
-        tableNumber: number | null;
-        waiterName: string | null;
-    };
+    generatedAt: string;
+    orderId: string;
+    type: "dine_in" | "takeaway" | "delivery";
+    status: string;
+    paymentStatus: string;
+    tableId: string | null;
+    tableName: string | null;
+    createdAt: string;
+    closedAt: string | null;
     items: ReceiptItem[];
     subtotal: number;
-    taxLines: ReceiptTaxLine[];
+    tax: ReceiptTax;
     discountAmount: number;
-    discountLabel: string | null;
     totalAmount: number;
     payments: ReceiptPayment[];
     totalPaid: number;
     totalTip: number;
-    changeDue: number;
-    balanceDue: number;
 }
 
 export const getReceiptApiCall = (businessId: string, orderId: string) =>

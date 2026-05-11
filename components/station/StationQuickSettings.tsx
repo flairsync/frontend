@@ -8,10 +8,11 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { Settings, Monitor, ChefHat, Building2, Cpu } from "lucide-react";
+import { Settings, Monitor, ChefHat, Building2, Cpu, Clock } from "lucide-react";
 import { getOrCreateDeviceUuid } from "@/features/station/useStationAuth";
 import { cn } from "@/lib/utils";
 import type { StationInfo } from "@/models/Station";
+import AttendancePanel from "@/components/pos/AttendancePanel";
 
 interface Props {
     station: StationInfo;
@@ -66,6 +67,17 @@ export default function StationQuickSettings({ station }: Props) {
                             </div>
                         </div>
                     </div>
+
+                    {/* Attendance */}
+                    <div className="flex flex-col gap-3">
+                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
+                            <Clock className="w-3 h-3" />
+                            Attendance
+                        </Label>
+                        <AttendancePanel />
+                    </div>
+
+                    <Separator />
 
                     {/* Mode switcher */}
                     <div className="flex flex-col gap-3">

@@ -15,7 +15,7 @@ export const stationService = {
   updateStation: (
     businessId: string,
     stationId: string,
-    payload: { name?: string; type?: "pos" | "kds" }
+    payload: { name?: string; type?: "pos" | "kds"; kitchenStationId?: string | null }
   ) =>
     flairapi.patch<{ data: StationRecord }>(
       `${base(businessId)}/stations/${stationId}`,
@@ -26,6 +26,36 @@ export const stationService = {
     flairapi.delete(`${base(businessId)}/stations/${stationId}`),
 };
 
+const ksBase = (businessId: string) =>
+  `${import.meta.env.BASE_URL}/businesses/${businessId}/kitchen-stations`;
+
+export const kitchenStationService = {
+  list: (businessId: string) =>
+    flairapi.get<{ data: KitchenStation[] }>(ksBase(businessId)),
+
+  create: (businessId: string, name: string) =>
+    flairapi.post<{ data: KitchenStation }>(ksBase(businessId), { name }),
+
+  update: (
+    businessId: string,
+    ksId: string,
+    payload: { name?: string; status?: KitchenStationStatus; active?: boolean }
+  ) =>
+    flairapi.patch<{ data: KitchenStation }>(`${ksBase(businessId)}/${ksId}`, payload),
+
+  remove: (businessId: string, ksId: string) =>
+    flairapi.delete(`${ksBase(businessId)}/${ksId}`),
+};
+
+export type KitchenStationStatus = "getting_ready" | "ready" | "broken" | "offline";
+
+export interface KitchenStation {
+  id: string;
+  name: string;
+  status: KitchenStationStatus;
+  active: boolean;
+}
+
 export interface StationRecord {
   id: string;
   name: string;
@@ -33,4 +63,5 @@ export interface StationRecord {
   isActive: boolean;
   lastSeenAt: string | null;
   deviceUuid: string;
+  kitchenStationId?: string | null;
 }

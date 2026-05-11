@@ -19,6 +19,7 @@ export class BusinessMenuItem {
   inventoryItemId?: string;
   inventoryUnitId?: string | number;
   quantityPerSale?: number;
+  kitchenStationId?: string | null;
 
   constructor(
     id: string,
@@ -34,6 +35,7 @@ export class BusinessMenuItem {
     inventoryItemId?: string,
     inventoryUnitId?: string | number,
     quantityPerSale?: number,
+    kitchenStationId?: string | null,
   ) {
     this.id = id;
     this.name = name;
@@ -48,6 +50,7 @@ export class BusinessMenuItem {
     this.inventoryItemId = inventoryItemId;
     this.inventoryUnitId = inventoryUnitId;
     this.quantityPerSale = quantityPerSale;
+    this.kitchenStationId = kitchenStationId;
   }
 
   static parseApiResponse(data: any): BusinessMenuItem | null {
@@ -71,10 +74,10 @@ export class BusinessMenuItem {
         data.inventoryItemId,
         data.inventoryUnitId,
         data.quantityPerSale,
+        data.kitchenStationId ?? null,
       );
     } catch (error) {
       console.log("ERROR PARSING THE MENU ITEM ", error);
-
       return null;
     }
   }

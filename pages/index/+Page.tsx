@@ -14,6 +14,7 @@ import { clientOnly } from 'vike-react/clientOnly'
 
 const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
 const ScrollArrow = clientOnly(() => import("@/components/landing/AnimatedScrollArrow"));
+const MascotChat = clientOnly(() => import("@/components/landing/MascotChat"));
 
 
 const ScrollMoreArrow = () => {
@@ -86,6 +87,7 @@ export default function Page() {
 
       </div>
       <WebsiteFooter />
+      <MascotChat />
     </div>
   );
 }

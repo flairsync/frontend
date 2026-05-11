@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Minus, Plus } from "lucide-react";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 interface Props {
     businessId: string;
@@ -21,10 +23,6 @@ interface Props {
 
 type SplitMode = "none" | "equal" | "by_items";
 
-function fmt(n: number) {
-    return `$${n.toFixed(2)}`;
-}
-
 export default function SplitBillPanel({
     businessId,
     orderId,
@@ -33,6 +31,9 @@ export default function SplitBillPanel({
     onAllPaid,
 }: Props) {
     const qc = useQueryClient();
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currency = businessBasicDetails?.currency ?? "USD";
+    const fmt = (n: number) => formatCurrency(n, currency);
     const [mode, setMode] = useState<SplitMode>("none");
     const [count, setCount] = useState(2);
     const [itemAssignments, setItemAssignments] = useState<Record<string, string>>({});

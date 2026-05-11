@@ -65,7 +65,7 @@ const MenusPage: React.FC = () => {
             <MenuModal
                 isOpen={createModal}
                 onClose={() => {
-                    setCreateModal(true);
+                    setCreateModal(false);
                 }}
                 onSubmit={(data) => {
                     createNewMenu({

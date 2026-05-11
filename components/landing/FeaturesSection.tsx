@@ -29,7 +29,7 @@ const FeaturesSection = () => {
 
     return (
         <div>
-            <div className="flex w-full py-16 md:py-24 bg-zinc-50/50">
+            <div className="flex w-full py-16 md:py-24 bg-muted/50">
                 <div
                     id={"header_feature_section"}
                     className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center gap-12 lg:gap-24"
@@ -52,10 +52,10 @@ const FeaturesSection = () => {
 
                     {/* Text Section */}
                     <div className="flex-1 text-center md:text-left">
-                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.2] mb-6">
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-[1.2] mb-6">
                             {t("landing_page.features.globalTitle")}
                         </h1>
-                        <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
+                        <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
                             {t("landing_page.features.globalSubtitle")}
                         </p>
                     </div>

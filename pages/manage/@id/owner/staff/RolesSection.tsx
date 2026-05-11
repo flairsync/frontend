@@ -146,7 +146,7 @@ const RolesSection = () => {
                                     <TableHead>Role Name</TableHead>
                                     <TableHead>Employees</TableHead>
                                     <TableHead className="text-center">Permissions</TableHead>
-                                    <TableHead className="sticky right-0 bg-white z-10 text-right">Actions</TableHead>
+                                    <TableHead className="sticky right-0 bg-card z-10 text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
 
@@ -189,7 +189,7 @@ const RolesSection = () => {
                                         <TableCell className="text-center align-middle">
                                             {role.permissions.length} Permissions
                                         </TableCell>
-                                        <TableCell className="sticky right-0 bg-white z-10 text-right align-middle">
+                                        <TableCell className="sticky right-0 bg-card z-10 text-right align-middle">
                                             <div className="flex justify-end gap-2">
                                                 <Button
                                                     size="sm"

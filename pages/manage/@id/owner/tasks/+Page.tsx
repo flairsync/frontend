@@ -221,7 +221,7 @@ function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFormDialog
             </Button>
             <Button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={isPending || !title.trim()}
             >
               {isPending ? "Saving..." : isEdit ? "Save Changes" : "Create Task"}
@@ -316,7 +316,7 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
             </Button>
             <Button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim())}
             >
               {updatingStatus ? "Saving..." : "Update"}
@@ -341,10 +341,10 @@ function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardProps) {
   const isGlobal = task.assignedToEmploymentId === null;
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-xl p-4 flex items-start gap-4 hover:shadow-sm transition-shadow">
+    <div className="bg-card border border-border rounded-xl p-4 flex items-start gap-4 hover:shadow-sm transition-shadow">
       <div className="flex-1 min-w-0">
         <div className="flex items-start gap-2 flex-wrap">
-          <h3 className="font-semibold text-zinc-900">{task.title}</h3>
+          <h3 className="font-semibold text-foreground">{task.title}</h3>
           <span
             className={cn(
               "text-xs font-medium px-2 py-0.5 rounded-full shrink-0",
@@ -356,10 +356,10 @@ function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardProps) {
         </div>
 
         {task.description && (
-          <p className="text-sm text-zinc-500 mt-1 line-clamp-2">{task.description}</p>
+          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{task.description}</p>
         )}
 
-        <div className="flex flex-wrap gap-3 mt-2 text-xs text-zinc-500">
+        <div className="flex flex-wrap gap-3 mt-2 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             {isGlobal ? (
               <Globe className="h-3.5 w-3.5" />
@@ -449,7 +449,7 @@ const OwnerTasksPage = () => {
       <Separator />
 
       {/* Filter tabs */}
-      <div className="flex gap-1 bg-zinc-100 rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
         {FILTER_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -457,8 +457,8 @@ const OwnerTasksPage = () => {
             className={cn(
               "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
               filter === tab.value
-                ? "bg-white text-zinc-900 shadow-sm"
-                : "text-zinc-500 hover:text-zinc-700",
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             {tab.label}
@@ -469,18 +469,18 @@ const OwnerTasksPage = () => {
       {/* List */}
       {loadingTasks ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-          <p className="text-sm text-zinc-500">Loading tasks...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+          <p className="text-sm text-muted-foreground">Loading tasks...</p>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center border-2 border-dashed border-zinc-200 rounded-2xl p-16 bg-zinc-50/30">
-          <ClipboardList className="h-8 w-8 text-zinc-300 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-zinc-700 mb-1">No tasks yet</p>
-          <p className="text-sm text-zinc-400 mb-4">
+        <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
+          <ClipboardList className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
+          <p className="text-lg font-semibold text-foreground mb-1">No tasks yet</p>
+          <p className="text-sm text-muted-foreground mb-4">
             Create your first task to get your team organized.
           </p>
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
             onClick={() => setCreateOpen(true)}
           >
             Create Task

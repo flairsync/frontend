@@ -45,18 +45,23 @@ const LandingFooter = () => {
                     <nav className="flex flex-col items-center md:items-start">
                         <h3 className="text-xl font-bold mb-5">Quick Links</h3>
                         <ul className="space-y-3">
-                            {["Home", "About Us", "Integrations", "Features", "Pricing", "Contact Us"].map(
-                                (link) => (
-                                    <li key={link}>
-                                        <a
-                                            href="#"
-                                            className="text-muted-foreground hover:text-primary transition-colors duration-200"
-                                        >
-                                            {link}
-                                        </a>
-                                    </li>
-                                )
-                            )}
+                            {[
+                                { label: "Home", href: "/" },
+                                { label: "About Us", href: "/about" },
+                                { label: "Integrations", href: "/#integration" },
+                                { label: "Features", href: "/#features" },
+                                { label: "Pricing", href: "/#pricing" },
+                                { label: "Contact Us", href: "/support" },
+                            ].map(({ label, href }) => (
+                                <li key={label}>
+                                    <a
+                                        href={href}
+                                        className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                                    >
+                                        {label}
+                                    </a>
+                                </li>
+                            ))}
                         </ul>
                     </nav>
 
@@ -64,13 +69,19 @@ const LandingFooter = () => {
                     <nav className="flex flex-col items-center md:items-start">
                         <h3 className="text-xl font-bold mb-5">Support</h3>
                         <ul className="space-y-3">
-                            {["FAQ's", "Support Center", "Privacy Policy", "Terms"].map((link) => (
-                                <li key={link}>
+                            {[
+                                { label: "FAQ's", href: "/#faq" },
+                                { label: "Support Center", href: "/support" },
+                                { label: "Privacy Policy", href: "/privacy" },
+                                { label: "Terms of Use", href: "/terms" },
+                                { label: "GDPR & Cookies", href: "/gdpr" },
+                            ].map(({ label, href }) => (
+                                <li key={label}>
                                     <a
-                                        href="#"
+                                        href={href}
                                         className="text-muted-foreground hover:text-primary transition-colors duration-200"
                                     >
-                                        {link}
+                                        {label}
                                     </a>
                                 </li>
                             ))}

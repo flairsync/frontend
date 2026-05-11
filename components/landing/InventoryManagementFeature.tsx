@@ -34,10 +34,10 @@ const InventoryManagementFeature = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col-reverse md:flex-row items-center gap-12 lg:gap-24">
                     {/* Text Section */}
                     <div className="flex-1 text-center md:text-left">
-                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.2] mb-6">
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-[1.2] mb-6">
                             {t("landing_page.features.inventoryManagement.title")}
                         </h1>
-                        <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
+                        <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
                             {t("landing_page.features.inventoryManagement.subtitle")}
                         </p>
                     </div>

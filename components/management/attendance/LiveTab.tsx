@@ -46,24 +46,24 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
     <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Who's Working Now</h2>
-          <p className="text-slate-500 text-sm">Real-time status of clocked-in employees.</p>
+          <h2 className="text-xl font-bold text-foreground">Who's Working Now</h2>
+          <p className="text-muted-foreground text-sm">Real-time status of clocked-in employees.</p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+        <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground bg-muted px-3 py-1.5 rounded-lg border border-border">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           LIVE · {liveRecords.length} active
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl shadow-sm overflow-hidden">
         <Table>
-          <TableHeader className="bg-slate-50/50">
+          <TableHeader className="bg-muted/50">
             <TableRow>
-              <TableHead className="font-semibold text-slate-600">Employee</TableHead>
-              <TableHead className="font-semibold text-slate-600">Clock In</TableHead>
-              <TableHead className="font-semibold text-slate-600">Duration</TableHead>
-              <TableHead className="font-semibold text-slate-600">Status</TableHead>
-              <TableHead className="font-semibold text-slate-600">Break</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Employee</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Clock In</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Duration</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Status</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Break</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -84,19 +84,19 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
                   : record.employmentId.slice(0, 8);
 
                 return (
-                  <TableRow key={record.id} className="hover:bg-slate-50/50 h-16">
+                  <TableRow key={record.id} className="hover:bg-muted/50 h-16">
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        <div className="bg-slate-100 p-2 rounded-full">
-                          <User className="h-4 w-4 text-slate-500" />
+                        <div className="bg-muted p-2 rounded-full">
+                          <User className="h-4 w-4 text-muted-foreground" />
                         </div>
-                        <span className="font-semibold text-slate-900">{employeeName}</span>
+                        <span className="font-semibold text-foreground">{employeeName}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-slate-600 font-medium">
+                    <TableCell className="text-muted-foreground font-medium">
                       {format(parseISO(record.checkInTime), "HH:mm")}
                     </TableCell>
-                    <TableCell className="font-bold text-slate-700 tabular-nums">
+                    <TableCell className="font-bold text-foreground tabular-nums">
                       {getElapsed(record.checkInTime)}
                     </TableCell>
                     <TableCell>
@@ -111,7 +111,7 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
                         {onBreak ? "On Break" : "Working"}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-slate-500 text-sm">
+                    <TableCell className="text-muted-foreground text-sm">
                       {activeBreak ? (
                         <span className="flex items-center gap-1">
                           <Coffee className="h-3.5 w-3.5 text-purple-400" />
@@ -126,9 +126,9 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="h-48 text-center text-slate-400">
+                <TableCell colSpan={5} className="h-48 text-center text-muted-foreground">
                   <div className="flex flex-col items-center gap-2">
-                    <User className="h-8 w-8 text-slate-200" />
+                    <User className="h-8 w-8 text-muted-foreground/30" />
                     <p className="italic">No employees currently clocked in.</p>
                   </div>
                 </TableCell>

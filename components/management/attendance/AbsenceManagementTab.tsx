@@ -41,8 +41,8 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
     <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Absence Log</h2>
-          <p className="text-slate-500 text-sm">Manager-recorded absences for all staff.</p>
+          <h2 className="text-xl font-bold text-foreground">Absence Log</h2>
+          <p className="text-muted-foreground text-sm">Manager-recorded absences for all staff.</p>
         </div>
         <Button
           className="bg-indigo-600 hover:bg-indigo-700 gap-2"
@@ -53,17 +53,17 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
         </Button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl shadow-sm overflow-hidden">
         <Table>
-          <TableHeader className="bg-slate-50/50">
+          <TableHeader className="bg-muted/50">
             <TableRow>
-              <TableHead className="font-semibold text-slate-600">Employee</TableHead>
-              <TableHead className="font-semibold text-slate-600">Date</TableHead>
-              <TableHead className="font-semibold text-slate-600">Type</TableHead>
-              <TableHead className="font-semibold text-slate-600">Notes</TableHead>
-              <TableHead className="font-semibold text-slate-600">Document</TableHead>
-              <TableHead className="font-semibold text-slate-600">Recorded By</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-right pr-6">Actions</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Employee</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Date</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Type</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Notes</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Document</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">Recorded By</TableHead>
+              <TableHead className="font-semibold text-muted-foreground text-right pr-6">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -83,9 +83,9 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                   : "—";
 
                 return (
-                  <TableRow key={absence.id} className="hover:bg-slate-50/50">
-                    <TableCell className="font-semibold text-slate-900">{employeeName}</TableCell>
-                    <TableCell className="text-slate-600">
+                  <TableRow key={absence.id} className="hover:bg-muted/50">
+                    <TableCell className="font-semibold text-foreground">{employeeName}</TableCell>
+                    <TableCell className="text-muted-foreground">
                       {format(parseISO(absence.date), "MMM d, yyyy")}
                     </TableCell>
                     <TableCell>
@@ -96,7 +96,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                         {ABSENCE_TYPE_LABELS[absence.type]}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-slate-500 text-sm max-w-[200px] truncate">
+                    <TableCell className="text-muted-foreground text-sm max-w-[200px] truncate">
                       {absence.notes ?? "—"}
                     </TableCell>
                     <TableCell>
@@ -105,21 +105,21 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                           href={absence.documentUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-indigo-600 hover:underline text-sm"
+                          className="flex items-center gap-1 text-primary hover:underline text-sm"
                         >
                           View <ExternalLink className="h-3 w-3" />
                         </a>
                       ) : (
-                        <span className="text-slate-300 text-sm">—</span>
+                        <span className="text-muted-foreground/40 text-sm">—</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-slate-500 text-sm">{recordedBy}</TableCell>
+                    <TableCell className="text-muted-foreground text-sm">{recordedBy}</TableCell>
                     <TableCell className="text-right pr-4">
                       <div className="flex justify-end gap-1">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                          className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10"
                           onClick={() => setEditingRecord(absence)}
                         >
                           <Pencil className="h-3.5 w-3.5" />
@@ -127,7 +127,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50"
+                          className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50"
                           onClick={() => setDeletingId(absence.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -139,7 +139,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={7} className="h-32 text-center text-slate-400 italic">
+                <TableCell colSpan={7} className="h-32 text-center text-muted-foreground italic">
                   No absence records found.
                 </TableCell>
               </TableRow>

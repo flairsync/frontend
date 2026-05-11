@@ -321,3 +321,7 @@ export const acceptInvitationApiCall = (inviteToken: string) => {
 export const refuseInvitationApiCall = (inviteToken: string) => {
   return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteToken}/decline`);
 };
+
+export const deleteMyBusinessApiCall = (businessId: string) => {
+  return flairapi.delete(`${MyBusinessUrl}/${businessId}`);
+};

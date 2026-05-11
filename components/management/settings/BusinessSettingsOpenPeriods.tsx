@@ -87,7 +87,7 @@ const BusinessSettingsOpenPeriods = (props: Props) => {
                                         setAutoOpen(checked);
                                     }}
                                 />
-                                <span className="text-sm text-gray-600">
+                                <span className="text-sm text-muted-foreground">
                                     Auto open business
                                 </span>
                             </div>

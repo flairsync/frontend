@@ -5,6 +5,7 @@ export enum SubscriptionStatus {
   PENDING = "pending",
   ACTIVE = "active",
   TRIALING = "trialing",
+  ON_TRIAL = "on_trial",
   CANCELED = "canceled",
   EXPIRED = "expired",
   PAST_DUE = "past_due",
@@ -103,7 +104,7 @@ export class Subscription {
   get isActive(): boolean {
     const now = new Date();
     return (
-      [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING].includes(
+      [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING, SubscriptionStatus.ON_TRIAL].includes(
         this.status
       ) &&
       (!this.endsAt || this.endsAt > now)
@@ -132,4 +133,5 @@ export class Subscription {
       return null;
     }
   }
+
 }

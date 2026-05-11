@@ -104,7 +104,7 @@ export function JobForm({
     <div className="flex flex-col gap-6 max-w-2xl">
       {/* Title */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-700">
+        <label className="text-sm font-medium text-foreground">
           Job Title <span className="text-red-500">*</span>
         </label>
         <Input
@@ -119,7 +119,7 @@ export function JobForm({
       {/* Type + Category */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-700">
+          <label className="text-sm font-medium text-foreground">
             Employment Type <span className="text-red-500">*</span>
           </label>
           <Select value={form.type} onValueChange={(v) => set("type", v)} disabled={isSubmitting}>
@@ -138,7 +138,7 @@ export function JobForm({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-700">
+          <label className="text-sm font-medium text-foreground">
             Category / Role <span className="text-red-500">*</span>
           </label>
           <Select value={form.category} onValueChange={(v) => set("category", v)} disabled={isSubmitting}>
@@ -159,11 +159,11 @@ export function JobForm({
 
       {/* Description */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-700">
+        <label className="text-sm font-medium text-foreground">
           Description <span className="text-red-500">*</span>
         </label>
         <textarea
-          className="w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm resize-y min-h-[140px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          className="w-full rounded-lg border border-border bg-muted/50 text-foreground px-3 py-2.5 text-sm resize-y min-h-[140px] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition"
           placeholder="Describe the role, requirements, and what you're looking for..."
           value={form.description}
           onChange={(e) => set("description", e.target.value)}
@@ -175,7 +175,7 @@ export function JobForm({
       {/* Location + Salary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-700">Location</label>
+          <label className="text-sm font-medium text-foreground">Location</label>
           <Input
             value={form.location}
             onChange={(e) => set("location", e.target.value)}
@@ -184,7 +184,7 @@ export function JobForm({
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-700">Salary Range</label>
+          <label className="text-sm font-medium text-foreground">Salary Range</label>
           <Input
             value={form.salaryRange}
             onChange={(e) => set("salaryRange", e.target.value)}
@@ -196,13 +196,13 @@ export function JobForm({
 
       {/* Deadline */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-700">Application Deadline</label>
+        <label className="text-sm font-medium text-foreground">Application Deadline</label>
         <Input
           type="date"
           value={form.closesAt}
           onChange={(e) => set("closesAt", e.target.value)}
           disabled={isSubmitting}
-          className="max-w-xs"
+          className="max-w-xs bg-background text-foreground"
         />
         {errors.closesAt && <p className="text-xs text-red-600">{errors.closesAt}</p>}
       </div>
@@ -220,7 +220,7 @@ export function JobForm({
         <Button
           onClick={handlePublish}
           disabled={isSubmitting}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           {isSubmitting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
           {job ? "Save Changes" : "Publish Job"}

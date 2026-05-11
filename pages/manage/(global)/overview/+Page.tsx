@@ -11,6 +11,7 @@ import { useMyEmployments } from "@/features/business/employment/useMyEmployment
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { SubscriptionStatus } from "@/models/Subscription";
 import { cn } from "@/lib/utils";
 import { MyEmployment } from "@/models/business/MyEmployment";
 
@@ -28,15 +29,15 @@ const ManagePage: React.FC = () => {
     const canCreateBusiness = usage?.canCreateBusiness ?? (currentUserSubscription ? true : false);
 
     return (
-        <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 p-4 sm:p-8">
+        <div className="min-h-screen bg-background p-4 sm:p-8">
 
             <div className="max-w-6xl mx-auto space-y-12 mt-8">
                 {/* SUBSCRIPTION & USAGE OVERVIEW */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <Card className="lg:col-span-1 shadow-sm border-zinc-200/60 overflow-hidden bg-white">
-                        <CardHeader className="bg-zinc-50/50 border-b border-zinc-100">
+                    <Card className="lg:col-span-1 shadow-sm border-border/60 overflow-hidden bg-card">
+                        <CardHeader className="bg-muted/50 border-b border-border">
                             <CardTitle className="flex items-center gap-2 text-lg">
-                                <Crown className="h-5 w-5 text-indigo-600" />
+                                <Crown className="h-5 w-5 text-primary" />
                                 Current Plan
                             </CardTitle>
                         </CardHeader>
@@ -44,21 +45,34 @@ const ManagePage: React.FC = () => {
                             {currentUserSubscription ? (
                                 <div className="space-y-6">
                                     <div>
-                                        <h3 className="text-3xl font-bold text-zinc-900">{currentUserSubscription.pack?.name}</h3>
+                                        <h3 className="text-3xl font-bold text-foreground">{currentUserSubscription.pack?.name}</h3>
                                         <div className="flex items-center gap-2 mt-2">
                                             <Badge
-                                                variant={currentUserSubscription.status === "active" ? "default" : "destructive"}
-                                                className={cn("rounded-full", (currentUserSubscription.status === "active" || currentUserSubscription.isDefault) ? "bg-green-600 hover:bg-green-700" : "")}
+                                                variant={currentUserSubscription.status === SubscriptionStatus.ACTIVE ? "default" : "destructive"}
+                                                className={cn(
+                                                    "rounded-full",
+                                                    (currentUserSubscription.status === SubscriptionStatus.ACTIVE || currentUserSubscription.isDefault)
+                                                        ? "bg-green-600 hover:bg-green-700"
+                                                        : currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                            ? "bg-blue-600 hover:bg-blue-700"
+                                                            : ""
+                                                )}
                                             >
-                                                {currentUserSubscription.isDefault ? "FREE PLAN" : (currentUserSubscription.status?.toUpperCase() || "ACTIVE")}
+                                                {currentUserSubscription.isDefault
+                                                    ? "FREE PLAN"
+                                                    : currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                        ? "FREE TRIAL"
+                                                        : (currentUserSubscription.status?.toUpperCase() || "ACTIVE")}
                                             </Badge>
-                                            <span className="text-xs text-zinc-500 font-medium">
-                                                Renews on {currentUserSubscription.getRenewalDate("MMM DD, YYYY")}
+                                            <span className="text-xs text-muted-foreground font-medium">
+                                                {currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                    ? `Trial ends on ${currentUserSubscription.getRenewalDate("MMM DD, YYYY") ?? "N/A"}`
+                                                    : `Renews on ${currentUserSubscription.getRenewalDate("MMM DD, YYYY")}`}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <div className="pt-4 border-t border-zinc-100">
+                                    <div className="pt-4 border-t border-border">
                                         <a href="/manage/plans">
                                             <Button variant="outline" className="w-full justify-between group">
                                                 Manage Subscription
@@ -69,23 +83,23 @@ const ManagePage: React.FC = () => {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center text-center py-4">
-                                    <div className="bg-zinc-100 p-4 rounded-full mb-4">
-                                        <Ban className="h-8 w-8 text-zinc-400" />
+                                    <div className="bg-muted p-4 rounded-full mb-4">
+                                        <Ban className="h-8 w-8 text-muted-foreground" />
                                     </div>
                                     <h3 className="font-bold text-lg mb-2">No Active Plan</h3>
-                                    <p className="text-sm text-zinc-500 mb-6">Unlock more features by choosing a plan.</p>
+                                    <p className="text-sm text-muted-foreground mb-6">Unlock more features by choosing a plan.</p>
                                     <a href="/manage/plans">
-                                        <Button className="w-full bg-indigo-600 hover:bg-indigo-700">Explore Plans</Button>
+                                        <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Explore Plans</Button>
                                     </a>
                                 </div>
                             )}
                         </CardContent>
                     </Card>
 
-                    <Card className="lg:col-span-2 shadow-sm border-zinc-200/60 bg-white">
-                        <CardHeader className="bg-zinc-50/50 border-b border-zinc-100">
+                    <Card className="lg:col-span-2 shadow-sm border-border/60 bg-card">
+                        <CardHeader className="bg-muted/50 border-b border-border">
                             <CardTitle className="flex items-center gap-2 text-lg">
-                                <AlertCircle className="h-5 w-5 text-indigo-600" />
+                                <AlertCircle className="h-5 w-5 text-primary" />
                                 Resource Usage
                             </CardTitle>
                         </CardHeader>
@@ -114,7 +128,7 @@ const ManagePage: React.FC = () => {
                                     />
                                 </div>
                             ) : (
-                                <div className="flex items-center justify-center py-10 text-zinc-400">
+                                <div className="flex items-center justify-center py-10 text-muted-foreground">
                                     {loadingUsage ? "Loading usage data..." : "Usage data unavailable"}
                                 </div>
                             )}
@@ -122,18 +136,18 @@ const ManagePage: React.FC = () => {
                     </Card>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
                     {/* OWNED BUSINESSES */}
                     <section className="space-y-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h2 className="text-2xl font-bold text-zinc-900">My Restaurants</h2>
-                                <p className="text-sm text-zinc-500 mt-1">Manage and edit your business profiles.</p>
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">My Businesses</h2>
+                                <p className="text-sm text-muted-foreground mt-1">Manage and edit your business profiles.</p>
                             </div>
-                            <div className="flex flex-col items-end gap-1">
+                            <div className="flex flex-col items-end gap-1 shrink-0">
                                 <Button
                                     variant={canCreateBusiness ? "default" : "outline"}
-                                    className={cn("gap-2 shadow-sm h-11", !canCreateBusiness && "border-zinc-200 text-zinc-400 cursor-not-allowed")}
+                                    className={cn("gap-2 shadow-sm h-11", !canCreateBusiness && "border-border text-muted-foreground cursor-not-allowed")}
                                     onClick={() => {
                                         if (canCreateBusiness) {
                                             window.location.href = "/manage/owned/new";
@@ -146,14 +160,14 @@ const ManagePage: React.FC = () => {
                                     <span>Create New</span>
                                 </Button>
                                 {!canCreateBusiness && (
-                                    <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-tight">Upgrade Required</span>
+                                    <span className="text-[10px] font-bold text-primary uppercase tracking-tight">Upgrade Required</span>
                                 )}
                             </div>
                         </div>
 
                         {loadingMyBussinesses ? (
                             <div className="grid grid-cols-1 gap-4">
-                                {[1, 2].map(i => <div key={i} className="h-24 bg-zinc-100 rounded-2xl animate-pulse" />)}
+                                {[1, 2].map(i => <div key={i} className="h-24 bg-muted rounded-2xl animate-pulse" />)}
                             </div>
                         ) : myBusinesses && myBusinesses.length > 0 ? (
                             <div className="grid grid-cols-1 gap-4">
@@ -164,26 +178,26 @@ const ManagePage: React.FC = () => {
                                         transition={{ duration: 0.2 }}
                                     >
                                         <Card
-                                            className="cursor-pointer hover:shadow-md transition-all border-zinc-100/80 bg-white group flex flex-col"
+                                            className="cursor-pointer hover:shadow-md transition-all border-border/80 bg-card group flex flex-col"
                                             onClick={() => (window.location.href = `/manage/${biz.id}/owner/dashboard`)}
                                         >
                                             <CardContent className="p-6">
                                                 <div className="flex items-center justify-between mb-4">
                                                     <div className="flex items-center gap-4">
-                                                        <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                                        <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                                             <Building2 className="h-6 w-6" />
                                                         </div>
                                                         <div>
-                                                            <span className="font-bold text-lg block text-zinc-900">{biz.name}</span>
-                                                            <span className="text-xs text-zinc-500 font-medium">Owner Dashboard</span>
+                                                            <span className="font-bold text-lg block text-foreground">{biz.name}</span>
+                                                            <span className="text-xs text-muted-foreground font-medium">Owner Dashboard</span>
                                                         </div>
                                                     </div>
-                                                    <ChevronRight className="h-5 w-5 text-zinc-300 group-hover:text-indigo-600 transition-colors" />
+                                                    <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-primary transition-colors" />
                                                 </div>
 
                                                 {/* PER-BUSINESS USAGE */}
                                                 {biz.counts && usage && (
-                                                    <div className="pt-4 mt-2 border-t border-zinc-100/80 grid grid-cols-2 gap-4">
+                                                    <div className="pt-4 mt-2 border-t border-border/80 grid grid-cols-2 gap-4">
                                                         <UsageItem
                                                             label="Employees"
                                                             current={biz.counts.employees}
@@ -202,32 +216,32 @@ const ManagePage: React.FC = () => {
                                 ))}
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-zinc-100 rounded-3xl bg-zinc-50/30">
-                                <div className="h-16 w-16 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-300 mb-4">
+                            <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-border rounded-3xl bg-muted/30">
+                                <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground/50 mb-4">
                                     <Building2 className="h-8 w-8" />
                                 </div>
-                                <h3 className="font-bold text-lg text-zinc-900">No restaurants yet</h3>
-                                <p className="text-sm text-zinc-500 max-w-xs mt-2">Start your journey by adding your first restaurant or cafe.</p>
+                                <h3 className="font-bold text-lg text-foreground">No businesses yet</h3>
+                                <p className="text-sm text-muted-foreground max-w-xs mt-2">Start your journey by adding your first business.</p>
                             </div>
                         )}
                     </section>
 
                     {/* STAFF BUSINESSES */}
                     <section className="space-y-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h2 className="text-2xl font-bold text-zinc-900">Joined Teams</h2>
-                                <p className="text-sm text-zinc-500 mt-1">Businesses where you work as staff.</p>
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">Joined Businesses</h2>
+                                <p className="text-sm text-muted-foreground mt-1">Businesses where you work as staff.</p>
                             </div>
-                            <Button variant="outline" className="gap-2 shadow-sm border-zinc-200 h-11" onClick={() => window.location.href = "/manage/join"}>
+                            <Button variant="outline" className="gap-2 shadow-sm border-border h-11 shrink-0" onClick={() => window.location.href = "/manage/join"}>
                                 <LogIn className="h-4 w-4" />
-                                Join Team
+                                Join
                             </Button>
                         </div>
 
                         {loadingMyEmployments ? (
                             <div className="grid grid-cols-1 gap-4">
-                                {[1].map(i => <div key={i} className="h-24 bg-zinc-100 rounded-2xl animate-pulse" />)}
+                                {[1].map(i => <div key={i} className="h-24 bg-muted rounded-2xl animate-pulse" />)}
                             </div>
                         ) : joinedBusinesses.length > 0 ? (
                             <div className="grid grid-cols-1 gap-4">
@@ -238,7 +252,7 @@ const ManagePage: React.FC = () => {
                                         transition={{ duration: 0.2 }}
                                     >
                                         <Card
-                                            className="cursor-pointer hover:shadow-md transition-all border-zinc-100/80 bg-white group"
+                                            className="cursor-pointer hover:shadow-md transition-all border-border/80 bg-card group"
                                             onClick={() => (window.location.href = `/manage/${emp.business.id}/staff/dashboard`)}
                                         >
                                             <CardContent className="flex items-center justify-between p-6">
@@ -247,23 +261,23 @@ const ManagePage: React.FC = () => {
                                                         <Building2 className="h-6 w-6" />
                                                     </div>
                                                     <div>
-                                                        <span className="font-bold text-lg block text-zinc-900">{emp.business.name}</span>
-                                                        <span className="text-xs text-zinc-500 font-medium">Staff Member</span>
+                                                        <span className="font-bold text-lg block text-foreground">{emp.business.name}</span>
+                                                        <span className="text-xs text-muted-foreground font-medium">Staff Member</span>
                                                     </div>
                                                 </div>
-                                                <ChevronRight className="h-5 w-5 text-zinc-300 group-hover:text-green-600 transition-colors" />
+                                                <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-green-600 transition-colors" />
                                             </CardContent>
                                         </Card>
                                     </motion.div>
                                 ))}
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-zinc-100 rounded-3xl bg-zinc-50/30">
-                                <div className="h-16 w-16 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-300 mb-4">
+                            <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-border rounded-3xl bg-muted/30">
+                                <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground/50 mb-4">
                                     <Building2 className="h-8 w-8" />
                                 </div>
-                                <h3 className="font-bold text-lg text-zinc-900">Not in any teams</h3>
-                                <p className="text-sm text-zinc-500 max-w-xs mt-2">When you join a business team, it will appear here.</p>
+                                <h3 className="font-bold text-lg text-foreground">Not in any teams</h3>
+                                <p className="text-sm text-muted-foreground max-w-xs mt-2">When you join a business team, it will appear here.</p>
                             </div>
                         )}
                     </section>
@@ -280,12 +294,12 @@ const UsageItem = ({ label, current, allowed }: { label: string, current: number
     return (
         <div className="space-y-3">
             <div className="flex justify-between items-end">
-                <span className="text-sm font-bold text-zinc-700">{label}</span>
-                <span className={cn("text-xs font-medium px-2 py-0.5 rounded-full", isFull ? "bg-amber-100 text-amber-700 font-bold" : "text-zinc-500 bg-zinc-100")}>
+                <span className="text-sm font-bold text-foreground/80">{label}</span>
+                <span className={cn("text-xs font-medium px-2 py-0.5 rounded-full", isFull ? "bg-amber-100 text-amber-700 font-bold" : "text-muted-foreground bg-muted")}>
                     {current} / {allowed}
                 </span>
             </div>
-            <Progress value={percentage} className={cn("h-1.5", isFull ? "[&>div]:bg-amber-500 bg-amber-100" : "[&>div]:bg-indigo-600 bg-indigo-50")} />
+            <Progress value={percentage} className={cn("h-1.5", isFull ? "[&>div]:bg-amber-500 bg-amber-100" : "[&>div]:bg-primary bg-primary/10")} />
         </div>
     );
 }

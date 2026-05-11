@@ -25,16 +25,18 @@ stationApi.interceptors.response.use(
   }
 );
 
-// Staff-authenticated requests (uses short PIN token for business routes)
-// Reads from Zustand store via getState() — safe outside React components
+// Staff-authenticated requests: device token in Authorization + staff short token in X-Staff-Token
+// Both headers are required for all write operations per the station API spec
 export const staffApi = axios.create({
   baseURL: import.meta.env.BASE_URL,
   timeout: 30000,
 });
 
 staffApi.interceptors.request.use((config) => {
+  const deviceToken = getStationToken();
+  if (deviceToken) config.headers["Authorization"] = `Bearer ${deviceToken}`;
   const session = useStaffSession.getState().session;
-  if (session) config.headers["Authorization"] = `Bearer ${session.shortToken}`;
+  if (session) config.headers["X-Staff-Token"] = session.shortToken;
   return config;
 });
 

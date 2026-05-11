@@ -1,20 +1,32 @@
 import ProfileReviewCard from "@/components/profile/ProfileReviewCard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import React, { useState } from "react"
+import { useMyReviews } from "@/features/discovery/useDiscovery"
+import { deleteReviewApiCall } from "@/features/discovery/discovery.api"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
+import React from "react"
 
 const MyReviewsPage = () => {
-    const [reviews, setReviews] = useState([
-        { id: 1, restaurantName: "Restaurant 1", rating: 4.5, review: "Amazing food, friendly staff!" },
-        { id: 2, restaurantName: "Restaurant 2", rating: 5, review: "Best dining experience I've had in years." },
-    ])
+    const queryClient = useQueryClient()
+    const { data: reviews = [], isLoading } = useMyReviews()
 
-    const handleDelete = (id: number | string) => {
-        setReviews((prev) => prev.filter((r) => r.id !== id))
-    }
+    const { mutate: deleteReview } = useMutation({
+        mutationFn: async ({ businessId, reviewId }: { businessId: string; reviewId: string }) => {
+            const res = await deleteReviewApiCall(businessId, reviewId)
+            return res.data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["my_reviews"] })
+            toast.success("Review deleted.")
+        },
+        onError: () => {
+            toast.error("Failed to delete review. Please try again.")
+        },
+    })
 
-    const handleEdit = (id: number | string) => {
-        console.log("Edit review:", id)
-        // Could open modal or navigate to edit page
+    const handleDelete = (review: any) => {
+        deleteReview({ businessId: review.business.id, reviewId: review.id })
     }
 
     return (
@@ -23,18 +35,32 @@ const MyReviewsPage = () => {
                 <CardTitle>My Reviews</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                {reviews.map((review) => (
-                    <ProfileReviewCard
-                        key={review.id}
-                        id={review.id}
-                        restaurantName={review.restaurantName}
-                        href={`/business/${review.id}`}
-                        rating={review.rating}
-                        review={review.review}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                    />
-                ))}
+                {isLoading ? (
+                    <div className="flex justify-center p-4">
+                        <Loader2 className="animate-spin text-muted-foreground" />
+                    </div>
+                ) : reviews.length === 0 ? (
+                    <p className="text-muted-foreground text-center p-4">
+                        You haven't written any reviews yet.
+                    </p>
+                ) : (
+                    reviews.map((review: any) => {
+                        const subtitleParts = [review.business?.city, review.business?.address].filter(Boolean)
+                        return (
+                            <ProfileReviewCard
+                                key={review.id}
+                                id={review.id}
+                                businessId={review.business?.id}
+                                restaurantName={review.business?.name}
+                                subtitle={subtitleParts.join(" · ")}
+                                rating={review.rating}
+                                review={review.comment ?? ""}
+                                date={review.createdAt}
+                                onDelete={() => handleDelete(review)}
+                            />
+                        )
+                    })
+                )}
             </CardContent>
         </Card>
     )

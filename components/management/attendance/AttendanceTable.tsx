@@ -56,7 +56,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden p-4 space-y-3">
+      <div className="bg-card rounded-xl shadow-sm overflow-hidden p-4 space-y-3">
         {[...Array(5)].map((_, i) => (
           <Skeleton key={i} className="h-12 w-full" />
         ))}
@@ -66,10 +66,10 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl shadow-sm overflow-hidden">
         <Table>
-          <TableHeader className="bg-slate-50/50">
-            <TableRow className="hover:bg-transparent border-slate-100">
+          <TableHeader className="bg-muted/50">
+            <TableRow className="hover:bg-transparent border-border">
               <TableHead className="font-semibold text-slate-600">Employee</TableHead>
               <TableHead className="font-semibold text-slate-600">Date</TableHead>
               <TableHead className="font-semibold text-slate-600">Clock In</TableHead>
@@ -95,7 +95,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                   <TableRow key={record.id} className="hover:bg-slate-50/50 transition-colors border-slate-50">
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-2">
-                        <span className="text-slate-900 font-semibold">{employeeName}</span>
+                        <span className="text-foreground font-semibold">{employeeName}</span>
                         {record.isOutOfGeofence && (
                           <MapPin className="h-3.5 w-3.5 text-amber-500" aria-label="Clocked in outside geofence" />
                         )}

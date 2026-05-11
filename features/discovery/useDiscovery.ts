@@ -6,6 +6,7 @@ import {
     fetchDiscoveryTablesApiCall,
     submitReservationApiCall,
     submitOrderApiCall,
+    fetchAllMyReservationsApiCall,
     fetchMyReservationsApiCall,
     fetchMyOrdersApiCall,
     fetchSingleOrderApiCall,
@@ -17,10 +18,12 @@ import {
     fetchReviewsApiCall,
     fetchReviewStatsApiCall,
     fetchMyReviewApiCall,
+    fetchMyReviewsApiCall,
     createReviewApiCall,
     updateReviewApiCall,
     deleteReviewApiCall,
     FetchDiscoveryBusinessesParams,
+    FetchAllMyReservationsParams,
     FetchMyReservationsParams,
     FetchMyOrdersParams,
     FetchReviewsParams,
@@ -162,6 +165,22 @@ export const useSubmitOrder = (businessId: string) => {
     });
 };
 
+export const useAllMyReservations = (params?: FetchAllMyReservationsParams) => {
+    return useQuery({
+        queryKey: ["all_my_reservations", params],
+        queryFn: async () => {
+            const res = await fetchAllMyReservationsApiCall(params);
+            const envelope = res.data?.data ?? res.data;
+            const items = envelope?.data ?? (Array.isArray(envelope) ? envelope : []);
+            return {
+                data: Array.isArray(items) ? items : [],
+                page: envelope?.current ?? 1,
+                totalPages: envelope?.pages ?? 1,
+            };
+        },
+    });
+};
+
 export const useMyReservations = (params?: FetchMyReservationsParams | string) => {
     const fetchParams = typeof params === 'string' ? { businessId: params } : (params || {});
 
@@ -288,6 +307,18 @@ export const useMyReview = (businessId: string | undefined, enabled: boolean = t
             return res.data.data ?? null;
         },
         enabled: !!businessId && enabled,
+    });
+};
+
+export const useMyReviews = () => {
+    return useQuery({
+        queryKey: ["my_reviews"],
+        queryFn: async () => {
+            const res = await fetchMyReviewsApiCall();
+            const envelope = res.data?.data ?? res.data;
+            const items = envelope?.data ?? (Array.isArray(envelope) ? envelope : []);
+            return Array.isArray(items) ? items : [];
+        },
     });
 };
 

@@ -47,7 +47,7 @@ const STATUS_TABS: Array<{ label: string; value: JobStatus | "all" }> = [
 
 const STATUS_BADGE: Record<JobStatus, string> = {
   open: "bg-green-100 text-green-700",
-  draft: "bg-zinc-100 text-zinc-600",
+  draft: "bg-muted text-muted-foreground",
   closed: "bg-red-100 text-red-700",
 };
 
@@ -108,7 +108,7 @@ const OwnerJobsPage = () => {
       <Separator />
 
       {/* Status tabs */}
-      <div className="flex gap-1 bg-zinc-100 rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
         {STATUS_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -116,8 +116,8 @@ const OwnerJobsPage = () => {
             className={cn(
               "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
               statusFilter === tab.value
-                ? "bg-white text-zinc-900 shadow-sm"
-                : "text-zinc-500 hover:text-zinc-700"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -129,17 +129,17 @@ const OwnerJobsPage = () => {
       {loadingJobs ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-          <p className="text-sm text-zinc-500">Loading jobs...</p>
+          <p className="text-sm text-muted-foreground">Loading jobs...</p>
         </div>
       ) : jobs.length === 0 ? (
-        <div className="text-center border-2 border-dashed border-zinc-200 rounded-2xl p-16 bg-zinc-50/30">
-          <Briefcase className="h-8 w-8 text-zinc-300 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-zinc-700 mb-1">No job postings yet</p>
-          <p className="text-sm text-zinc-400 mb-4">
+        <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
+          <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
+          <p className="text-lg font-semibold text-foreground mb-1">No job postings yet</p>
+          <p className="text-sm text-muted-foreground mb-4">
             Post your first job to start receiving applications.
           </p>
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
             onClick={() => { window.location.href = `/manage/${businessId}/owner/jobs/new`; }}
           >
             Post a Job
@@ -150,11 +150,11 @@ const OwnerJobsPage = () => {
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="bg-white border border-zinc-200 rounded-xl p-4 flex items-start gap-4 hover:shadow-sm transition-shadow"
+              className="bg-card border border-border rounded-xl p-4 flex items-start gap-4 hover:shadow-sm transition-shadow"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-start gap-2 flex-wrap">
-                  <h3 className="font-semibold text-zinc-900">{job.title}</h3>
+                  <h3 className="font-semibold text-foreground">{job.title}</h3>
                   <span className={cn("text-xs font-medium px-2 py-0.5 rounded-full", STATUS_BADGE[job.status])}>
                     {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                   </span>
@@ -165,7 +165,7 @@ const OwnerJobsPage = () => {
                   <Badge variant="outline" className="text-xs">{JOB_CATEGORY_LABELS[job.category]}</Badge>
                 </div>
 
-                <div className="flex flex-wrap gap-4 mt-2 text-xs text-zinc-500">
+                <div className="flex flex-wrap gap-4 mt-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="h-3.5 w-3.5" />
                     {job.applicationCount} applicant{job.applicationCount !== 1 ? "s" : ""}
@@ -229,7 +229,7 @@ const OwnerJobsPage = () => {
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
                 Previous
               </Button>
-              <span className="text-sm text-zinc-500">Page {page} of {totalPages}</span>
+              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
                 Next
               </Button>

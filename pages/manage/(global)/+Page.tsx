@@ -7,8 +7,8 @@ const ManagePage: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#FDFDFD] dark:bg-zinc-950">
-            <div className="animate-pulse text-zinc-500">Redirecting to Dashboard...</div>
+        <div className="min-h-screen flex items-center justify-center bg-background">
+            <div className="animate-pulse text-muted-foreground">Redirecting to Dashboard...</div>
         </div>
     );
 };

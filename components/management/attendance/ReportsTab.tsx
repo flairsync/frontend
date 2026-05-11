@@ -46,10 +46,10 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 md:px-6">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-card p-6 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Labor Summary</h2>
-          <p className="text-slate-500 text-sm">OT + pay breakdown — validated records only.</p>
+          <h2 className="text-xl font-bold text-foreground">Labor Summary</h2>
+          <p className="text-muted-foreground text-sm">OT + pay breakdown — validated records only.</p>
         </div>
         <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-[280px]" />
       </div>
@@ -84,16 +84,16 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
             </div>
           )}
 
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-card rounded-xl shadow-sm overflow-hidden">
             <Table>
-              <TableHeader className="bg-slate-50/50">
+              <TableHeader className="bg-muted/50">
                 <TableRow>
-                  <TableHead className="font-semibold text-slate-600">Employee</TableHead>
-                  <TableHead className="font-semibold text-slate-600 text-center">Records</TableHead>
-                  <TableHead className="font-semibold text-slate-600 text-center">Total Hours</TableHead>
-                  <TableHead className="font-semibold text-slate-600 text-center">Regular</TableHead>
-                  <TableHead className="font-semibold text-slate-600 text-center text-amber-600">Overtime</TableHead>
-                  <TableHead className="font-semibold text-slate-600 text-right pr-6">Total Pay</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground">Employee</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center">Records</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center">Total Hours</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center">Regular</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center text-amber-600">Overtime</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-right pr-6">Total Pay</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -105,26 +105,26 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
                   ))
                 ) : summary.length > 0 ? (
                   summary.map((entry) => (
-                    <TableRow key={entry.employmentId} className="hover:bg-slate-50/50">
-                      <TableCell className="font-semibold text-slate-900">{entry.employeeName}</TableCell>
-                      <TableCell className="text-center text-slate-500">{entry.attendanceCount}</TableCell>
-                      <TableCell className="text-center font-bold text-slate-900">{fmtHours(entry.totalHours)}</TableCell>
-                      <TableCell className="text-center text-slate-600">{fmtHours(entry.regularHours)}</TableCell>
+                    <TableRow key={entry.employmentId} className="hover:bg-muted/50">
+                      <TableCell className="font-semibold text-foreground">{entry.employeeName}</TableCell>
+                      <TableCell className="text-center text-muted-foreground">{entry.attendanceCount}</TableCell>
+                      <TableCell className="text-center font-bold text-foreground">{fmtHours(entry.totalHours)}</TableCell>
+                      <TableCell className="text-center text-muted-foreground">{fmtHours(entry.regularHours)}</TableCell>
                       <TableCell className="text-center">
-                        <span className={entry.overtimeHours > 0 ? "text-amber-600 font-bold" : "text-slate-300"}>
+                        <span className={entry.overtimeHours > 0 ? "text-amber-600 font-bold" : "text-muted-foreground/40"}>
                           {entry.overtimeHours > 0 ? `+${fmtHours(entry.overtimeHours)}` : "—"}
                         </span>
                       </TableCell>
-                      <TableCell className="text-right pr-6 font-bold text-indigo-700">
+                      <TableCell className="text-right pr-6 font-bold text-primary">
                         {entry.hourlyRate === 0
-                          ? <span className="text-xs font-normal text-slate-400">Rate not set</span>
+                          ? <span className="text-xs font-normal text-muted-foreground">Rate not set</span>
                           : `${getCurrencySymbol(entry.currency)}${entry.totalPay.toFixed(2)}`}
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={6} className="h-32 text-center text-slate-400 italic">
+                    <TableCell colSpan={6} className="h-32 text-center text-muted-foreground italic">
                       No validated records for this period.
                     </TableCell>
                   </TableRow>

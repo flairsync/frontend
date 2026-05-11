@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { ValidationAlert } from "./ValidationAlert";
 import { type CartItem, calcSubtotal, calcTax, getTaxRate } from "@/features/pos/types";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 export type { CartItem };
 
@@ -15,6 +16,7 @@ interface OrderCartProps {
     orderMode: "dine-in" | "takeaway";
     selectedTable?: string;
     staffName?: string;
+    currency?: string;
     onUpdateQuantity: (id: string, delta: number) => void;
     onRemoveItem: (id: string) => void;
     onClear: () => void;
@@ -29,6 +31,7 @@ export function OrderCart({
     orderMode,
     selectedTable,
     staffName,
+    currency = "USD",
     onUpdateQuantity,
     onRemoveItem,
     onClear,
@@ -195,7 +198,7 @@ export function OrderCart({
                                         </p>
                                     )}
                                     <p className="text-[10px] text-muted-foreground font-bold mt-0.5">
-                                        ${item.price.toFixed(2)} / unit
+                                        {formatCurrency(item.price, currency)} / unit
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -251,18 +254,18 @@ export function OrderCart({
                 <div className="space-y-1.5">
                     <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                         <span>Subtotal</span>
-                        <span>${subtotal.toFixed(2)}</span>
+                        <span>{formatCurrency(subtotal, currency)}</span>
                     </div>
                     <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                         <span>Tax {taxRate > 0 ? `(${(taxRate * 100).toFixed(0)}%)` : ""}</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>{formatCurrency(tax, currency)}</span>
                     </div>
                     <div className="flex justify-between items-baseline pt-2">
                         <span className="text-sm font-black uppercase tracking-tighter">
                             Total Amount
                         </span>
                         <span className="text-3xl font-black text-primary">
-                            ${total.toFixed(2)}
+                            {formatCurrency(total, currency)}
                         </span>
                     </div>
                 </div>

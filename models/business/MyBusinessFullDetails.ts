@@ -155,6 +155,9 @@ export class MyBusinessFullDetails {
   autoNoShow: boolean;
   gracePeriodMinutes: number;
   isPublished: boolean;
+  taxRate: number;
+  taxName: string;
+  taxIncluded: boolean;
 
   constructor(
     id: string,
@@ -215,6 +218,9 @@ export class MyBusinessFullDetails {
     autoNoShow?: boolean,
     gracePeriodMinutes?: number,
     isPublished?: boolean,
+    taxRate?: number,
+    taxName?: string,
+    taxIncluded?: boolean,
   ) {
     this.id = id;
     this.name = name;
@@ -271,6 +277,9 @@ export class MyBusinessFullDetails {
     this.autoNoShow = autoNoShow ?? false;
     this.gracePeriodMinutes = gracePeriodMinutes ?? 30;
     this.isPublished = isPublished ?? false;
+    this.taxRate = taxRate ?? 0;
+    this.taxName = taxName ?? "";
+    this.taxIncluded = taxIncluded ?? true;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -332,6 +341,9 @@ export class MyBusinessFullDetails {
         data.autoNoShow !== undefined ? !!data.autoNoShow : false,
         data.gracePeriodMinutes !== undefined ? Number(data.gracePeriodMinutes) : 30,
         !!data.isPublished,
+        data.taxRate !== undefined ? Number(data.taxRate) : 0,
+        data.taxName ?? "",
+        data.taxIncluded !== undefined ? !!data.taxIncluded : true,
       );
     } catch {
       return null;
@@ -394,4 +406,7 @@ export type UpdateBusinessDetailsDto = {
   autoNoShow?: boolean;
   gracePeriodMinutes?: number;
   isPublished?: boolean;
+  taxRate?: number;
+  taxName?: string;
+  taxIncluded?: boolean;
 };

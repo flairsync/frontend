@@ -169,6 +169,7 @@ export type CreateMenuItemDto = {
   createInventoryItem?: boolean;
   inventoryUnitId?: string | number;
   quantityPerSale?: number;
+  kitchenStationId?: string | null;
 };
 
 export const createNewMenuItemApiCall = (
@@ -197,6 +198,10 @@ export const createNewMenuItemApiCall = (
   }
   if (data.quantityPerSale !== undefined) {
     payload.append("quantityPerSale", data.quantityPerSale.toString());
+  }
+
+  if (data.kitchenStationId !== undefined) {
+    payload.append("kitchenStationId", data.kitchenStationId ?? "");
   }
 
   // allergies[] → backend-friendly
@@ -242,6 +247,7 @@ export type UpdateMenuItemDto = {
   createInventoryItem?: boolean;
   inventoryUnitId?: string | number;
   quantityPerSale?: number;
+  kitchenStationId?: string | null;
 };
 
 export const updateMenuItemApiCall = (
@@ -272,6 +278,10 @@ export const updateMenuItemApiCall = (
   }
   if (data.quantityPerSale !== undefined) {
     payload.append("quantityPerSale", data.quantityPerSale.toString());
+  }
+
+  if (data.kitchenStationId !== undefined) {
+    payload.append("kitchenStationId", data.kitchenStationId ?? "");
   }
 
   // allergies[] → backend-friendly

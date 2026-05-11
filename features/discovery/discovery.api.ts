@@ -53,6 +53,17 @@ export interface FetchMyReservationsParams {
     sortOrder?: "DESC" | "ASC" | string;
 }
 
+export interface FetchAllMyReservationsParams {
+    filter?: "upcoming" | "past";
+    status?: string;
+    page?: number;
+    limit?: number;
+}
+
+export const fetchAllMyReservationsApiCall = (params?: FetchAllMyReservationsParams) => {
+    return flairapi.get(`${baseUrl}/reservations/mine`, { params });
+};
+
 export const fetchMyReservationsApiCall = (params?: FetchMyReservationsParams) => {
     const queryParams: any = {};
     if (params?.sortBy) queryParams.sortBy = params.sortBy;
@@ -109,6 +120,10 @@ export const fetchReviewStatsApiCall = (businessId: string) => {
 
 export const fetchMyReviewApiCall = (businessId: string) => {
     return flairapi.get(`${baseUrl}/businesses/${businessId}/reviews/mine`);
+};
+
+export const fetchMyReviewsApiCall = () => {
+    return flairapi.get(`${baseUrl}/reviews/mine`);
 };
 
 export const createReviewApiCall = (businessId: string, payload: { rating: number; comment?: string }) => {

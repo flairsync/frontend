@@ -1,4 +1,44 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+
+// ─── Resizable panel hook ─────────────────────────────────────────────────────
+
+function useResizablePanel(initial: number, min: number, max: number, invertDelta = false) {
+    const [width, setWidth] = useState(initial);
+    const widthRef = useRef(width);
+    widthRef.current = width;
+
+    const startResize = useCallback(
+        (e: React.MouseEvent | React.TouchEvent) => {
+            e.preventDefault();
+            const startX = "touches" in e ? e.touches[0].clientX : e.clientX;
+            const startWidth = widthRef.current;
+
+            const onMove = (ev: MouseEvent | TouchEvent) => {
+                const currentX =
+                    "touches" in ev
+                        ? (ev as TouchEvent).touches[0].clientX
+                        : (ev as MouseEvent).clientX;
+                const delta = currentX - startX;
+                setWidth(Math.min(max, Math.max(min, startWidth + (invertDelta ? -delta : delta))));
+            };
+
+            const onUp = () => {
+                document.removeEventListener("mousemove", onMove as EventListener);
+                document.removeEventListener("mouseup", onUp);
+                document.removeEventListener("touchmove", onMove as EventListener);
+                document.removeEventListener("touchend", onUp);
+            };
+
+            document.addEventListener("mousemove", onMove as EventListener);
+            document.addEventListener("mouseup", onUp);
+            document.addEventListener("touchmove", onMove as EventListener, { passive: false });
+            document.addEventListener("touchend", onUp);
+        },
+        [min, max, invertDelta],
+    );
+
+    return { width, startResize };
+}
 import { ProductCard } from "@/components/pos/ProductCard";
 import { OrderCart } from "@/components/pos/OrderCart";
 import { PaymentModal } from "@/components/pos/PaymentModal";
@@ -103,6 +143,10 @@ function POSMain({
     onLock: () => void;
 }) {
     const { session } = useStaffSession();
+
+    // ── Resizable panels ──
+    const leftPanel = useResizablePanel(192, 140, 300);
+    const rightPanel = useResizablePanel(340, 260, 500, true);
 
     // ── Data state ──
     const [menus] = useState<PosMenu[]>(bootstrapData.menus);
@@ -268,14 +312,11 @@ function POSMain({
     });
 
     const createAndAcceptOrder = async () => {
-        const res = await staffApi.post(
-            `/businesses/${station.businessId}/orders`,
-            buildOrderPayload(),
-        );
+        const res = await staffApi.post("/station/orders", buildOrderPayload());
         const order: Order = res.data.data;
         // Auto-accept (single-cashier flow)
         try {
-            await staffApi.patch(`/businesses/${station.businessId}/orders/${order.id}/accept`);
+            await staffApi.patch(`/station/orders/${order.id}/accept`);
         } catch { /* accept failure is non-fatal */ }
         return order;
     };
@@ -454,7 +495,10 @@ function POSMain({
 
             <div className="flex-1 flex overflow-hidden">
                 {/* LEFT SIDEBAR */}
-                <aside className="w-48 bg-card border-r border-border flex flex-col py-4 flex-shrink-0">
+                <aside
+                    style={{ width: leftPanel.width }}
+                    className="bg-card flex flex-col py-4 flex-shrink-0 overflow-hidden"
+                >
                     <p className="text-[9px] font-black text-muted-foreground tracking-widest uppercase px-4 mb-3">
                         {activeMainSection === "menu"
                             ? "Category"
@@ -561,6 +605,15 @@ function POSMain({
                     </ScrollArea>
                 </aside>
 
+                {/* Left resize handle */}
+                <div
+                    onMouseDown={leftPanel.startResize}
+                    onTouchStart={leftPanel.startResize}
+                    style={{ touchAction: "none" }}
+                    className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
+                    title="Drag to resize"
+                />
+
                 {/* MAIN CONTENT */}
                 <main className="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
                     {/* ── MENU VIEW ── */}
@@ -596,6 +649,7 @@ function POSMain({
                                                     cart.find((c) => c.menuItemId === item.id)
                                                         ?.quantity
                                                 }
+                                                currency={station.business.currency}
                                             />
                                         ))}
                                     </div>
@@ -644,6 +698,15 @@ function POSMain({
                                                 Number(order.totalAmount),
                                             )
                                         }
+                                        onTransition={async (action) => {
+                                            try {
+                                                await staffApi.patch(`/station/orders/${order.id}/${action}`);
+                                                refreshOrders();
+                                                refreshTables();
+                                            } catch {
+                                                toast.error("Failed to update order");
+                                            }
+                                        }}
                                         onCancel={() =>
                                             setConfirmModal({
                                                 isOpen: true,
@@ -654,7 +717,7 @@ function POSMain({
                                                 onConfirm: async () => {
                                                     try {
                                                         await staffApi.patch(
-                                                            `/businesses/${station.businessId}/orders/${order.id}/cancel`,
+                                                            `/station/orders/${order.id}/cancel`,
                                                             {},
                                                         );
                                                         toast.success("Order cancelled");
@@ -752,13 +815,26 @@ function POSMain({
                     )}
                 </main>
 
+                {/* Right resize handle */}
+                <div
+                    onMouseDown={rightPanel.startResize}
+                    onTouchStart={rightPanel.startResize}
+                    style={{ touchAction: "none" }}
+                    className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
+                    title="Drag to resize"
+                />
+
                 {/* RIGHT CART SIDEBAR */}
-                <aside className="w-80 lg:w-96 flex flex-col h-full flex-shrink-0 border-l border-border bg-card/20">
+                <aside
+                    style={{ width: rightPanel.width }}
+                    className="flex flex-col h-full flex-shrink-0 bg-card/20 overflow-hidden"
+                >
                     <OrderCart
                         items={cart}
                         orderMode={orderMode}
                         selectedTable={selectedTable?.name}
                         staffName={session?.name}
+                        currency={station.business.currency}
                         onUpdateQuantity={(id, delta) =>
                             setCart((prev) =>
                                 prev.map((item) =>
@@ -778,14 +854,14 @@ function POSMain({
                 </aside>
             </div>
 
-            {/* Payment modal — passes real orderId so receipt + discount work */}
+            {/* Payment modal — station mode: uses station API, hides mgmt-only features */}
             <PaymentModal
                 isOpen={isPaymentModalOpen}
                 onClose={finalizeOrder}
                 total={payingOrderTotal || cartTotal}
                 method={paymentMethod}
-                businessId={station.businessId}
                 orderId={payingOrderId ?? undefined}
+                stationMode
             />
 
             <ConfirmationModal
@@ -802,19 +878,37 @@ function POSMain({
 
 // ─── Active Order Card ────────────────────────────────────────────────────────
 
+const STATUS_TRANSITION: Record<string, { label: string; action: string }> = {
+    CREATED: { label: "ACCEPT", action: "accept" },
+    ACCEPTED: { label: "PREPARING", action: "prepare" },
+    PREPARING: { label: "MARK READY", action: "ready" },
+};
+
+const STATUS_COLOR: Record<string, string> = {
+    CREATED: "bg-yellow-500/10 text-yellow-600",
+    ACCEPTED: "bg-blue-500/10 text-blue-600",
+    PREPARING: "bg-orange-500/10 text-orange-600",
+    READY: "bg-emerald-500/10 text-emerald-600",
+};
+
 function ActiveOrderCard({
     order,
     onPay,
+    onTransition,
     onCancel,
 }: {
     order: Order;
     onPay: (method: "cash" | "card") => void;
+    onTransition: (action: string) => void;
     onCancel: () => void;
 }) {
     const time = new Date(order.createdAt).toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
     });
+    const statusUpper = order.status.toUpperCase();
+    const transition = STATUS_TRANSITION[statusUpper];
+    const canPay = ["ACCEPTED", "PREPARING", "READY"].includes(statusUpper);
 
     return (
         <Card className="bg-card border-border overflow-hidden hover:border-primary/30 transition-all">
@@ -839,7 +933,7 @@ function ActiveOrderCard({
                                 <h3 className="font-black text-sm">
                                     {order.table?.name ?? (order.type === "dine_in" ? "Table" : "Takeaway")}
                                 </h3>
-                                <span className="text-[9px] font-bold uppercase text-muted-foreground">
+                                <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${STATUS_COLOR[statusUpper] ?? "bg-muted text-muted-foreground"}`}>
                                     {order.status}
                                 </span>
                             </div>
@@ -865,25 +959,42 @@ function ActiveOrderCard({
                         )}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
-                        <Button
-                            className="font-black text-[10px] h-10 gap-2"
-                            onClick={() => onPay("card")}
-                        >
-                            <CreditCard className="w-3 h-3" />
-                            PAY CARD
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="font-black text-[10px] h-10 gap-2"
-                            onClick={() => onPay("cash")}
-                        >
-                            <Settings className="w-3 h-3" />
-                            PAY CASH
-                        </Button>
+                    <div className="flex flex-col gap-2">
+                        {/* Status transition */}
+                        {transition && (
+                            <Button
+                                variant="outline"
+                                className="w-full font-black text-[10px] h-9 gap-2"
+                                onClick={() => onTransition(transition.action)}
+                            >
+                                {transition.label}
+                            </Button>
+                        )}
+
+                        {/* Payment buttons — only when order is past CREATED */}
+                        {canPay && (
+                            <div className="grid grid-cols-2 gap-2">
+                                <Button
+                                    className="font-black text-[10px] h-10 gap-2"
+                                    onClick={() => onPay("card")}
+                                >
+                                    <CreditCard className="w-3 h-3" />
+                                    PAY CARD
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="font-black text-[10px] h-10 gap-2"
+                                    onClick={() => onPay("cash")}
+                                >
+                                    <Settings className="w-3 h-3" />
+                                    PAY CASH
+                                </Button>
+                            </div>
+                        )}
+
                         <Button
                             variant="ghost"
-                            className="col-span-2 text-destructive/40 hover:text-destructive hover:bg-destructive/10 font-bold text-[9px] h-8 uppercase tracking-widest mt-1"
+                            className="col-span-2 text-destructive/40 hover:text-destructive hover:bg-destructive/10 font-bold text-[9px] h-8 uppercase tracking-widest"
                             onClick={onCancel}
                         >
                             Cancel & Void Order

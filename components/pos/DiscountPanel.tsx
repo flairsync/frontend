@@ -3,6 +3,8 @@ import { discountsApi } from "@/features/orders/discounts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tag, X } from "lucide-react";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 interface Props {
     businessId: string;
@@ -21,6 +23,8 @@ export default function DiscountPanel({
     onApplied,
     onRemoved,
 }: Props) {
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currency = businessBasicDetails?.currency ?? "USD";
     const [mode, setMode] = useState<DiscountMode>("code");
     const [code, setCode] = useState("");
     const [manualAmount, setManualAmount] = useState("");
@@ -67,7 +71,7 @@ export default function DiscountPanel({
                     <Tag className="w-4 h-4 text-primary" />
                     <div>
                         <p className="text-sm font-semibold text-foreground">Discount applied</p>
-                        <p className="text-primary font-bold">−${currentDiscount.toFixed(2)}</p>
+                        <p className="text-primary font-bold">−{formatCurrency(currentDiscount, currency)}</p>
                     </div>
                 </div>
                 <Button

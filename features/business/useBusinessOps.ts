@@ -56,6 +56,11 @@ export const useBusinessOps = () => {
         })
       ),
 
+      // auto-creation engine
+      tableCount: input.tableCount ?? 10,
+      hasKitchen: input.hasKitchen ?? true,
+      autoSetup: input.autoSetup ?? false,
+
       // status
       status: "auto",
       // timezone

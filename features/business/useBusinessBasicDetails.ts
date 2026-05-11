@@ -18,6 +18,9 @@ export interface BusinessBasicDetails {
     name: string;
   };
   requireGpsForAttendance?: boolean;
+  taxRate?: number;
+  taxName?: string;
+  taxIncluded?: boolean;
 }
 
 export const useBusinessBasicDetails = (businessId: string | null = null) => {

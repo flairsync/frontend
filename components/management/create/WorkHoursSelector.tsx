@@ -101,7 +101,7 @@ export default function WorkHoursSelector({
         <Card className="mt-6 w-full">
             <CardContent className="p-4 space-y-6">
                 {!hideTitle && (
-                    <h2 className="text-lg font-semibold text-gray-800">
+                    <h2 className="text-lg font-semibold text-foreground">
                         🕒 Business Hours
                     </h2>
                 )}
@@ -110,10 +110,10 @@ export default function WorkHoursSelector({
                     {hoursByDay.map((dayHours) => (
                         <div
                             key={dayHours.day}
-                            className="border border-gray-200 rounded-xl p-3 bg-gray-50 shadow-sm"
+                            className="border border-border rounded-xl p-3 bg-muted/50 shadow-sm"
                         >
                             <div className="flex items-center justify-between mb-3">
-                                <Label className="font-medium text-gray-700 capitalize">
+                                <Label className="font-medium text-foreground capitalize">
                                     {dayHours.day}
                                 </Label>
 
@@ -124,7 +124,7 @@ export default function WorkHoursSelector({
                                             toggleClosed(dayHours.day, !checked)
                                         }
                                     />
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-sm text-muted-foreground">
                                         {dayHours.isClosed ? "Closed" : "Open"}
                                     </span>
                                 </div>
@@ -133,7 +133,7 @@ export default function WorkHoursSelector({
                             {!dayHours.isClosed ? (
                                 <div className="flex flex-col gap-3">
                                     {dayHours.periods.length === 0 && (
-                                        <p className="text-sm text-gray-500 italic">
+                                        <p className="text-sm text-muted-foreground italic">
                                             No shifts added yet
                                         </p>
                                     )}
@@ -141,14 +141,14 @@ export default function WorkHoursSelector({
                                     {dayHours.periods.map((p, i) => (
                                         <div
                                             key={p.id ?? i}
-                                            className="flex flex-wrap items-center gap-3 border border-gray-200 bg-white p-2 rounded-lg"
+                                            className="flex flex-wrap items-center gap-3 border border-border bg-background p-2 rounded-lg"
                                         >
                                             <div className="flex flex-col">
-                                                <Label className="text-xs text-gray-500">Opens</Label>
+                                                <Label className="text-xs text-muted-foreground">Opens</Label>
                                                 <input
                                                     type="time"
                                                     value={p.open}
-                                                    className="border rounded-md p-1 text-sm"
+                                                    className="border border-border rounded-md p-1 text-sm bg-background text-foreground"
                                                     onChange={(e) =>
                                                         updatePeriod(dayHours.day, i, "open", e.target.value)
                                                     }
@@ -156,25 +156,25 @@ export default function WorkHoursSelector({
                                             </div>
 
                                             <div className="flex flex-col">
-                                                <Label className="text-xs text-gray-500">Closes</Label>
+                                                <Label className="text-xs text-muted-foreground">Closes</Label>
                                                 <input
                                                     type="time"
                                                     value={p.close}
-                                                    className="border rounded-md p-1 text-sm"
+                                                    className="border border-border rounded-md p-1 text-sm bg-background text-foreground"
                                                     onChange={(e) =>
                                                         updatePeriod(dayHours.day, i, "close", e.target.value)
                                                     }
                                                 />
                                             </div>
 
-                                            <span className="text-xs text-gray-500 italic">
+                                            <span className="text-xs text-muted-foreground italic">
                                                 {p.open > p.close ? "Next day ➜" : ""}
                                             </span>
 
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                className="ml-auto text-gray-500 hover:text-red-500"
+                                                className="ml-auto text-muted-foreground hover:text-destructive"
                                                 onClick={() => removePeriod(dayHours.day, i)}
                                             >
                                                 <Trash2 className="h-4 w-4" />
@@ -191,7 +191,7 @@ export default function WorkHoursSelector({
                                     </Button>
                                 </div>
                             ) : (
-                                <span className="text-sm text-gray-500">Day off</span>
+                                <span className="text-sm text-muted-foreground">Day off</span>
                             )}
                         </div>
                     ))}

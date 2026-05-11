@@ -11,10 +11,13 @@ export class UserProfile {
   createdAt: Date;
   currentSubscription?: Subscription;
   phoneNumber?: string;
+  emailVerified?: boolean;
+  phoneVerified?: boolean;
   dateOfBirth?: string;
   gender?: string;
   countryId?: number;
   country?: PlatformCountry;
+  deletionRequestedAt?: string | null;
 
   constructor(
     id: string,
@@ -26,10 +29,13 @@ export class UserProfile {
     createdAt: Date,
     currentSubscription?: Subscription,
     phoneNumber?: string,
+    emailVerified?: boolean,
+    phoneVerified?: boolean,
     dateOfBirth?: string,
     gender?: string,
     countryId?: number,
-    country?: PlatformCountry
+    country?: PlatformCountry,
+    deletionRequestedAt?: string | null
   ) {
     this.id = id;
     this.email = email;
@@ -40,10 +46,13 @@ export class UserProfile {
     this.createdAt = createdAt;
     this.currentSubscription = currentSubscription;
     this.phoneNumber = phoneNumber;
+    this.emailVerified = emailVerified;
+    this.phoneVerified = phoneVerified;
     this.dateOfBirth = dateOfBirth;
     this.gender = gender;
     this.countryId = countryId;
     this.country = country;
+    this.deletionRequestedAt = deletionRequestedAt;
   }
 
   static parseApiResponse(data: any): UserProfile {
@@ -59,11 +68,19 @@ export class UserProfile {
       data.createdAt,
       sub ? sub : undefined,
       data.phoneNumber,
+      data.emailVerified,
+      data.phoneVerified,
       data.dateOfBirth,
       data.gender,
       data.countryId,
-      countryObj ? countryObj : undefined
+      countryObj ? countryObj : undefined,
+      data.deletionRequestedAt ?? null
     );
+  }
+
+  getScheduledDeletionDate(): Date | null {
+    if (!this.deletionRequestedAt) return null;
+    return new Date(new Date(this.deletionRequestedAt).getTime() + 30 * 24 * 60 * 60 * 1000);
   }
 
   getFullName() {

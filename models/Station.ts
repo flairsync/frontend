@@ -6,6 +6,7 @@ export interface StationInfo {
   businessId: string;
   isActive: boolean;
   lastSeenAt: string;
+  kitchenStationId?: string | null;
   business: {
     id: string;
     name: string;

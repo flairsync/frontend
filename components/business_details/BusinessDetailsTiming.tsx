@@ -40,30 +40,31 @@ const BusinessDetailsTiming: React.FC<BusinessDetailsTimingProps> = ({ openingHo
 
             {sortedHours.length > 0 ? (
                 <Card className="max-w-3xl mx-auto border-border/50 shadow-2xl shadow-primary/5 rounded-[3rem] overflow-hidden bg-card/50 backdrop-blur-sm">
-                    <CardContent className="p-10 space-y-2">
+                    <CardContent className="p-4 sm:p-10 space-y-2">
                         {sortedHours.map((dayHour, index) => (
                             <div
                                 key={index}
-                                className="flex justify-between items-center p-5 rounded-2xl hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/10 group"
+                                className="flex justify-between items-center p-3 sm:p-5 rounded-2xl hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/10 group"
                             >
-                                <div className="flex items-center gap-5">
-                                    <div className="p-3 bg-muted rounded-xl text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
-                                        <Clock size={22} />
+                                <div className="flex items-center gap-3 sm:gap-5">
+                                    <div className="p-2 sm:p-3 bg-muted rounded-xl text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
+                                        <Clock size={18} className="sm:hidden" />
+                                        <Clock size={22} className="hidden sm:block" />
                                     </div>
-                                    <span className="font-bold text-xl text-foreground capitalize tracking-tight">
+                                    <span className="font-bold text-base sm:text-xl text-foreground capitalize tracking-tight">
                                         {t(`shared.days.${dayHour.day.toLowerCase()}`, dayHour.day)}
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2 sm:gap-4">
                                     {dayHour.isClosed ? (
-                                        <span className="font-black text-muted-foreground/60 bg-muted/30 px-5 py-2 rounded-2xl text-xs uppercase tracking-[0.2em]">
+                                        <span className="font-black text-muted-foreground/60 bg-muted/30 px-3 sm:px-5 py-1.5 sm:py-2 rounded-2xl text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em]">
                                             {t("business_page.timing.closed", "Closed")}
                                         </span>
                                     ) : (
-                                        <div className="flex flex-col items-end gap-2">
+                                        <div className="flex flex-col items-end gap-1.5 sm:gap-2">
                                             {dayHour.periods.map((period, pIdx) => (
-                                                <span key={pIdx} className="font-black text-primary bg-primary/10 px-5 py-2 rounded-2xl text-sm shadow-sm">
-                                                    {period.open.substring(0, 5)} - {period.close.substring(0, 5)}
+                                                <span key={pIdx} className="font-black text-primary bg-primary/10 px-3 sm:px-5 py-1.5 sm:py-2 rounded-2xl text-xs sm:text-sm shadow-sm">
+                                                    {period.open.substring(0, 5)} – {period.close.substring(0, 5)}
                                                 </span>
                                             ))}
                                         </div>

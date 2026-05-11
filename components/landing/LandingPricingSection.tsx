@@ -101,48 +101,48 @@ const LandingPricingSection = () => {
                     "rounded-xl p-6 shadow-lg transform transition-all duration-300 hover:scale-[1.02] border-none flex flex-col h-full",
                     isHighlighted
                         ? 'bg-gradient-to-b from-[#8A89F9] to-[#6366F1] text-white ring-4 ring-[#8A89F9]/50 shadow-2xl z-10'
-                        : 'bg-zinc-100'
+                        : 'bg-muted'
                 )}
             >
                 <CardHeader className="p-0 mb-6">
-                    <CardTitle className={cn("text-2xl font-bold mb-4", !isHighlighted && 'text-zinc-900')}>
+                    <CardTitle className={cn("text-2xl font-bold mb-4", !isHighlighted && 'text-foreground')}>
                         {pack.name}
                     </CardTitle>
                     <div className="flex items-baseline gap-1">
-                        <h2 className={cn("text-5xl font-extrabold", isHighlighted ? 'text-white' : 'text-zinc-900')}>
+                        <h2 className={cn("text-5xl font-extrabold", isHighlighted ? 'text-white' : 'text-foreground')}>
                             {isFree ? "Free" : pack.getFormattedPrice()}
                         </h2>
                         {!isFree && (
-                            <p className={cn("text-sm font-medium", isHighlighted ? "text-white/80" : "text-zinc-500")}>
+                            <p className={cn("text-sm font-medium", isHighlighted ? "text-white/80" : "text-muted-foreground")}>
                                 /mo
                             </p>
                         )}
                     </div>
-                    <CardDescription className={cn("text-sm mt-4 min-h-[40px]", isHighlighted ? 'text-white/90' : 'text-zinc-600')}>
+                    <CardDescription className={cn("text-sm mt-4 min-h-[40px]", isHighlighted ? 'text-white/90' : 'text-muted-foreground')}>
                         {pack.description || pack.getShortDescription()}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0 flex-1 flex flex-col">
                     <ul className="space-y-3 mb-8 flex-1">
                         <li className="flex items-center text-sm font-medium">
-                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-[#6366F1]')} />
+                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-primary')} />
                             {t("subscriptions.limits.businesses", { count: pack.maxBusinesses })}
                         </li>
                         <li className="flex items-center text-sm font-medium">
-                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-[#6366F1]')} />
+                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-primary')} />
                             {t("subscriptions.limits.employees", { count: pack.maxEmployees })}
                         </li>
                         <li className="flex items-center text-sm font-medium">
-                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-[#6366F1]')} />
+                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-primary')} />
                             {t("subscriptions.limits.menus", { count: pack.maxMenus })}
                         </li>
                         <li className="flex items-center text-sm font-medium">
-                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-[#6366F1]')} />
+                            <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-primary')} />
                             {t("subscriptions.limits.products", { count: pack.maxProducts })}
                         </li>
                         {pack.features.filter((f: string) => f !== 'api_access').map((feature: string, i: number) => (
                             <li key={i} className="flex items-center text-sm font-medium">
-                                <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-[#6366F1]')} />
+                                <Check className={cn("w-4 h-4 mr-3 shrink-0", isHighlighted ? 'text-white' : 'text-primary')} />
                                 {t(`subscriptions.features.${feature}`, feature)}
                             </li>
                         ))}
@@ -152,7 +152,7 @@ const LandingPricingSection = () => {
                             className={cn("w-full py-6 font-semibold rounded-lg",
                                 isHighlighted
                                     ? 'bg-[#98D26C] hover:bg-[#8ac263] text-zinc-900 shadow-md'
-                                    : 'bg-white hover:bg-zinc-100 text-[#6366F1] border border-[#6366F1]'
+                                    : 'bg-background hover:bg-muted text-primary border border-primary'
                             )}
                             disabled={creatingCheckout || (user && currentUserSubscription?.pack?.id === pack.id)}
                             onClick={() => handleSubscribe(pack)}
@@ -169,7 +169,7 @@ const LandingPricingSection = () => {
                         </Button>
                     </div>
                     {!isFree && (
-                        <p className={cn("text-xs mt-3 text-center", isHighlighted ? 'text-white/70' : 'text-zinc-500')}>
+                        <p className={cn("text-xs mt-3 text-center", isHighlighted ? 'text-white/70' : 'text-muted-foreground')}>
                             {t('landing_page.pricing.billed_note')}
                         </p>
                     )}
@@ -179,7 +179,7 @@ const LandingPricingSection = () => {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-50 font-sans text-zinc-900 flex flex-col items-center justify-center p-8 py-20">
+        <div className="min-h-screen bg-muted/50 font-sans text-foreground flex flex-col items-center justify-center p-8 py-20">
             <div className="text-center mb-10">
                 <h1 className="text-5xl font-extrabold mb-2" id='landing_pricing_title'>
                     {t('landing_page.pricing.title')}
@@ -187,12 +187,12 @@ const LandingPricingSection = () => {
             </div>
 
             {/* Toggle Buttons */}
-            <div className="flex bg-zinc-200 p-1 rounded-full mb-16 relative gap-3" id='landing_pricing_selector'>
+            <div className="flex bg-muted p-1 rounded-full mb-16 relative gap-3" id='landing_pricing_selector'>
                 <Button
                     onClick={() => setIsMonthly(true)}
                     className={cn(
                         "rounded-full px-6 py-2 transition-all duration-300 hover:cursor-pointer hover:scale-105",
-                        isMonthly ? 'shadow-sm' : 'bg-transparent text-zinc-600'
+                        isMonthly ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
                     )}
                 >
                     {t('landing_page.pricing.monthly_label')}
@@ -201,7 +201,7 @@ const LandingPricingSection = () => {
                     onClick={() => setIsMonthly(false)}
                     className={cn(
                         "rounded-full px-6 py-2 transition-all duration-300 relative hover:cursor-pointer hover:scale-105",
-                        !isMonthly ? 'shadow-sm' : 'bg-transparent text-zinc-600'
+                        !isMonthly ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
                     )}
                 >
                     {t('landing_page.pricing.yearly_label')}
@@ -210,7 +210,7 @@ const LandingPricingSection = () => {
 
             {fetchingPacks && (
                 <div className="flex justify-center py-20">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
             )}
 

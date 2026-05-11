@@ -5,6 +5,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { useTranslation } from "react-i18next";
 import WebsiteLogo from "../shared/WebsiteLogo";
 import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
+import MobileProfileSheet from "../shared/MobileProfileSheet";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     DropdownMenu,
@@ -24,9 +25,6 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const headerRef = useRef<HTMLElement>(null);
 
-    /* ---------------------------------------------
-     * Sync header height to CSS variable
-     * --------------------------------------------*/
     useEffect(() => {
         const updateHeaderHeight = () => {
             if (headerRef.current) {
@@ -36,16 +34,11 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
                 );
             }
         };
-
         updateHeaderHeight();
         window.addEventListener("resize", updateHeaderHeight);
-
         return () => window.removeEventListener("resize", updateHeaderHeight);
     }, []);
 
-    /* ---------------------------------------------
-     * Close mobile menu on resize
-     * --------------------------------------------*/
     useEffect(() => {
         const closeMenu = () => setIsOpen(false);
         window.addEventListener("resize", closeMenu);
@@ -90,19 +83,13 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="start" className="w-48 bg-background/95 backdrop-blur-md border-white/10 mt-2">
                                 <DropdownMenuItem asChild>
-                                    <a href="/marketplace/guest" className="cursor-pointer py-2">
-                                        Guest Shop
-                                    </a>
+                                    <a href="/marketplace/guest" className="cursor-pointer py-2">Guest Shop</a>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <a href="/marketplace/b2b" className="cursor-pointer py-2">
-                                        B2B Supplies
-                                    </a>
+                                    <a href="/marketplace/b2b" className="cursor-pointer py-2">B2B Supplies</a>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <a href="/marketplace/saas" className="cursor-pointer py-2">
-                                        Official Gear
-                                    </a>
+                                    <a href="/marketplace/saas" className="cursor-pointer py-2">Official Gear</a>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -118,19 +105,20 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
                     )}
                 </div>
 
-                {/* Mobile toggle */}
-                <button
-                    className="md:hidden p-2 rounded-full hover:bg-foreground/5 transition-colors"
-                    onClick={() => setIsOpen((prev) => !prev)}
-                    aria-label="Toggle menu"
-                >
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                {/* Mobile right side: avatar sheet (if logged in) + hamburger */}
+                <div className="md:hidden flex items-center gap-2">
+                    {user && <MobileProfileSheet />}
+                    <button
+                        className="p-2 rounded-full hover:bg-foreground/5 transition-colors"
+                        onClick={() => setIsOpen((prev) => !prev)}
+                        aria-label="Toggle menu"
+                    >
+                        {isOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
             </div>
 
-            {/* ---------------------------------------------
-             * Mobile menu
-             * --------------------------------------------*/}
+            {/* Mobile slide-down nav (links only) */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -140,74 +128,39 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
                         className="md:hidden border-t bg-background/95 backdrop-blur-lg overflow-hidden"
                     >
                         <nav className="flex flex-col px-6 py-6 space-y-4">
-                            <a
-                                href="/feed"
-                                className="flex items-center gap-2 text-lg font-medium hover:text-primary transition"
-                                onClick={() => setIsOpen(false)}
-                            >
+                            <a href="/feed" className="flex items-center gap-2 text-lg font-medium hover:text-primary transition" onClick={() => setIsOpen(false)}>
                                 <Newspaper className="w-5 h-5" />
                                 {t("public_feed.header.feed", "Feed")}
                             </a>
-
-                            <a
-                                href="/explore"
-                                className="flex items-center gap-2 text-lg font-medium hover:text-primary transition"
-                                onClick={() => setIsOpen(false)}
-                            >
+                            <a href="/explore" className="flex items-center gap-2 text-lg font-medium hover:text-primary transition" onClick={() => setIsOpen(false)}>
                                 <Video className="w-5 h-5" />
                                 {t("public_feed.header.explore", "Explore")}
                             </a>
-
-                            <a
-                                href="/jobs"
-                                className="flex items-center gap-2 text-lg font-medium hover:text-primary transition"
-                                onClick={() => setIsOpen(false)}
-                            >
+                            <a href="/jobs" className="flex items-center gap-2 text-lg font-medium hover:text-primary transition" onClick={() => setIsOpen(false)}>
                                 <Briefcase className="w-5 h-5" />
                                 {t("public_feed.header.jobs", "Jobs")}
                             </a>
 
-                            {/* Mobile Marketplace Links */}
+                            {/* Marketplace links */}
                             <div className="pt-2 flex flex-col space-y-3 pl-2 border-l-2 border-white/10 ml-2">
                                 <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest bg-background px-1 rounded inline-block -ml-4 w-max">
                                     {t("public_feed.header.marketplace", "Marketplace")}
                                 </span>
-                                <a
-                                    href="/marketplace/guest"
-                                    className="text-md font-medium text-foreground/80 hover:text-primary transition"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Guest Shop
-                                </a>
-                                <a
-                                    href="/marketplace/b2b"
-                                    className="text-md font-medium text-foreground/80 hover:text-primary transition"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    B2B Supplies
-                                </a>
-                                <a
-                                    href="/marketplace/saas"
-                                    className="text-md font-medium text-foreground/80 hover:text-primary transition"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Official Gear
-                                </a>
+                                <a href="/marketplace/guest" className="text-md font-medium text-foreground/80 hover:text-primary transition" onClick={() => setIsOpen(false)}>Guest Shop</a>
+                                <a href="/marketplace/b2b" className="text-md font-medium text-foreground/80 hover:text-primary transition" onClick={() => setIsOpen(false)}>B2B Supplies</a>
+                                <a href="/marketplace/saas" className="text-md font-medium text-foreground/80 hover:text-primary transition" onClick={() => setIsOpen(false)}>Official Gear</a>
                             </div>
 
-                            <div className="pt-4 border-t border-foreground/5">
-                                {user ? (
-                                    <div className="flex items-center gap-3">
-                                        <HeaderProfileAvatar />
-                                    </div>
-                                ) : (
+                            {/* Join Us for guests */}
+                            {!user && (
+                                <div className="pt-4 border-t border-foreground/5">
                                     <a href="/login" onClick={() => setIsOpen(false)}>
                                         <Button className="w-full rounded-full py-6 text-lg font-semibold">
                                             {t("landing_page.header.joinUsButton")}
                                         </Button>
                                     </a>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </nav>
                     </motion.div>
                 )}
@@ -217,4 +170,3 @@ const PublicFeedHeader = ({ activeTag, className }: HeaderProps) => {
 };
 
 export default PublicFeedHeader;
-

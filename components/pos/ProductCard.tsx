@@ -1,18 +1,20 @@
 import React from "react";
 import { Plus, AlertCircle } from "lucide-react";
 import type { MenuItem } from "@/features/pos/types";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 interface ProductCardProps {
     product: MenuItem;
     onClick: (product: MenuItem) => void;
     quantity?: number;
+    currency?: string;
 }
 
-export function ProductCard({ product, onClick, quantity }: ProductCardProps) {
+export function ProductCard({ product, onClick, quantity, currency = "USD" }: ProductCardProps) {
     const hasVariants = product.variants.length > 0;
     const displayPrice = hasVariants
-        ? `From $${Math.min(...product.variants.map((v) => v.price)).toFixed(2)}`
-        : `$${product.basePrice.toFixed(2)}`;
+        ? `From ${formatCurrency(Math.min(...product.variants.map((v) => v.price)), currency)}`
+        : formatCurrency(product.basePrice, currency);
 
     const thumbnail = product.images?.[0] ?? null;
 

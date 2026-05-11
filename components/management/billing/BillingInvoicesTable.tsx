@@ -65,10 +65,12 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                             className={
                                                 subscription.status === SubscriptionStatus.ACTIVE
                                                     ? "text-green-600 font-medium"
-                                                    : "text-red-500 font-medium"
+                                                    : subscription.status === SubscriptionStatus.ON_TRIAL
+                                                        ? "text-blue-600 font-medium"
+                                                        : "text-red-500 font-medium"
                                             }
                                         >
-                                            {subscription.status}
+                                            {subscription.status === SubscriptionStatus.ON_TRIAL ? "On Trial" : subscription.status}
                                         </TableCell>
                                         <TableCell>
                                             <DropdownMenu>

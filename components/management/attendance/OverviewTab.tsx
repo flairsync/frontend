@@ -51,8 +51,8 @@ const OverviewTab = ({
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-slate-800">Attendance Logs</h2>
-          <span className="text-sm text-slate-400 font-medium bg-slate-100 px-3 py-1 rounded-full">
+          <h2 className="text-xl font-bold text-foreground">Attendance Logs</h2>
+          <span className="text-sm text-muted-foreground font-medium bg-muted px-3 py-1 rounded-full">
             {records.length} of {total} records
           </span>
         </div>

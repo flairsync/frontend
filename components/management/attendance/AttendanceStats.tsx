@@ -70,9 +70,9 @@ const AttendanceStats = ({ records }: AttendanceStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {statItems.map((item) => (
-        <Card key={item.title} className="border-none shadow-sm bg-white hover:shadow-md transition-shadow">
+        <Card key={item.title} className="border-none shadow-sm bg-card hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500 uppercase tracking-wider">
+            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
               {item.title}
             </CardTitle>
             <div className={`${item.bgColor} p-2 rounded-lg`}>
@@ -80,8 +80,8 @@ const AttendanceStats = ({ records }: AttendanceStatsProps) => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">{item.value}</div>
-            <p className="text-xs text-slate-400 mt-1">{item.description}</p>
+            <div className="text-2xl font-bold text-foreground">{item.value}</div>
+            <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
           </CardContent>
         </Card>
       ))}

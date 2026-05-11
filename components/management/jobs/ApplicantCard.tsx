@@ -30,7 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const STATUS_BADGE_CLASSES: Record<string, string> = {
-  gray: "bg-zinc-100 text-zinc-700",
+  gray: "bg-muted text-muted-foreground",
   blue: "bg-blue-100 text-blue-700",
   yellow: "bg-yellow-100 text-yellow-700",
   green: "bg-green-100 text-green-700",

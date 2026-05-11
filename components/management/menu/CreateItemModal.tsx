@@ -58,6 +58,8 @@ import {
 import { useInventory } from '@/features/inventory/useInventory';
 import { useInventoryUnits } from '@/features/inventory/useInventoryUnits';
 import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
+import { kitchenStationService } from "@/features/station/service";
+import { useQuery } from "@tanstack/react-query";
 import { MenuItemVariant } from '@/models/business/menu/MenuItemVariant';
 import { MenuItemModifierGroup } from '@/models/business/menu/MenuItemModifierGroup';
 import { MenuItemModifierItem } from '@/models/business/menu/MenuItemModifierItem';
@@ -76,6 +78,7 @@ interface ItemModalProps {
         createInventoryItem?: boolean;
         inventoryUnit?: string;
         quantityPerSale?: number;
+        kitchenStationId?: string | null;
     }) => void;
     allergies: Allergy[];
     initialData?: BusinessMenuItem;
@@ -324,6 +327,15 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     const [images, setImages] = useState<File[]>([]);
     const [selectedCopyItemId, setSelectedCopyItemId] = useState<string | null>(null);
 
+    // Kitchen station
+    const [kitchenStationId, setKitchenStationId] = useState<string | null>(null);
+
+    const { data: kitchenStations = [] } = useQuery({
+        queryKey: ["kitchen-stations", businessId],
+        queryFn: () => kitchenStationService.list(businessId).then((r) => r.data.data),
+        enabled: open,
+    });
+
     // Tracking state
     const [trackingMode, setTrackingMode] = useState<'none' | 'direct_item'>('none');
     const [inventoryItemId, setInventoryItemId] = useState<string | null>(null);
@@ -361,6 +373,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             setInventoryItemId(initialData.inventoryItemId || null);
             setInventoryUnit(initialData.inventoryUnitId?.toString() || '');
             setQuantityPerSale(initialData.quantityPerSale?.toString() || '1');
+            setKitchenStationId(initialData.kitchenStationId ?? null);
         } else {
             setName('');
             setDescription('');
@@ -372,6 +385,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             setCreateInventoryItem(false);
             setInventoryUnit('');
             setQuantityPerSale('1');
+            setKitchenStationId(null);
         }
     }, [initialData?.id, open]);
 
@@ -404,6 +418,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             createInventoryItem: trackingMode === 'direct_item' ? createInventoryItem : undefined,
             inventoryUnit: (trackingMode === 'direct_item' && createInventoryItem) ? inventoryUnit : undefined,
             quantityPerSale: trackingMode === 'direct_item' ? parseFloat(quantityPerSale) : undefined,
+            kitchenStationId,
         });
 
         onClose();
@@ -622,6 +637,30 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             <p>Save this item first to add Variants and Modifier Groups.</p>
                         </div>
                     )}
+
+                    {/* Kitchen Station */}
+                    <div className="space-y-2 pt-4 border-t">
+                        <label className="text-sm font-medium">Kitchen Station</label>
+                        <p className="text-xs text-muted-foreground">
+                            Which station prepares this item. Leave as "None" for items that need no kitchen prep.
+                        </p>
+                        <Select
+                            value={kitchenStationId ?? "none"}
+                            onValueChange={(v) => setKitchenStationId(v === "none" ? null : v)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="none">None — no prep needed</SelectItem>
+                                {kitchenStations.map((ks) => (
+                                    <SelectItem key={ks.id} value={ks.id}>
+                                        {ks.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
                     {/* Tracking Section */}
                     <div className="space-y-4 pt-4 border-t">

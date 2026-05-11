@@ -31,7 +31,7 @@ const OwnedPage = () => {
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold">My Businesses</h1>
-                    <p className="text-zinc-500 mt-1">
+                    <p className="text-muted-foreground mt-1">
                         Manage the businesses you own and monitor their performance.
                     </p>
                 </div>
@@ -40,8 +40,8 @@ const OwnedPage = () => {
                         className={cn(
                             "rounded-xl px-4 transition h-11",
                             canCreateBusiness
-                                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                ? "bg-primary hover:bg-primary/90 text-primary-foreground"
+                                : "bg-muted text-muted-foreground cursor-not-allowed border-border"
                         )}
                         onClick={(e) => {
                             if (canCreateBusiness) {
@@ -52,37 +52,37 @@ const OwnedPage = () => {
                         }}
                     >
                         + Create Business
-                        {!canCreateBusiness && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-2">Upgrade</span>}
+                        {!canCreateBusiness && <span className="text-[10px] font-bold text-primary uppercase ml-2">Upgrade</span>}
                     </Button>
                 </div>
             </div>
 
             {
                 isLoading && !myBusinesses?.length ? (
-                    <div className="flex flex-col items-center justify-center py-20 gap-3 border border-dashed border-zinc-200 rounded-xl bg-zinc-50/50">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        <p className="text-sm text-zinc-500 font-medium">Loading your businesses...</p>
+                    <div className="flex flex-col items-center justify-center py-20 gap-3 border border-dashed border-border rounded-xl bg-muted/50">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                        <p className="text-sm text-muted-foreground font-medium">Loading your businesses...</p>
                     </div>
                 ) : myBusinesses && myBusinesses.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {myBusinesses.map((biz) => (
                             <Card
                                 key={biz.id}
-                                className="hover:shadow-lg transition-all border border-zinc-200 group overflow-hidden"
+                                className="hover:shadow-lg transition-all border border-border group overflow-hidden"
                             >
                                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                                     <div className="flex items-center gap-3">
-                                        <Avatar className="h-10 w-10 border border-zinc-100 shadow-sm">
+                                        <Avatar className="h-10 w-10 border border-border shadow-sm">
                                             <AvatarImage src={biz.logo} alt={biz.name} />
                                             <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
                                                 {biz.name.charAt(0).toUpperCase()}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                                        <CardTitle className="text-lg group-hover:text-primary transition-colors">
                                             {biz.name}
                                         </CardTitle>
                                     </div>
-                                    <span className="text-xs text-zinc-400 font-medium">
+                                    <span className="text-xs text-muted-foreground font-medium">
                                         {new Date(biz.createdAt).toLocaleDateString()}
                                     </span>
                                 </CardHeader>
@@ -90,20 +90,20 @@ const OwnedPage = () => {
                                 <CardContent>
                                     <div className="space-y-3">
                                         <div className="flex flex-col gap-1.5">
-                                            <p className="text-sm text-zinc-500 flex items-center gap-2">
-                                                <Users className="h-4 w-4 text-zinc-400" />
-                                                <span className="font-medium text-zinc-700">Owner</span>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-2">
+                                                <Users className="h-4 w-4 text-muted-foreground" />
+                                                <span className="font-medium text-foreground/80">Owner</span>
                                             </p>
-                                            <p className="text-sm text-zinc-500 flex items-center gap-2">
-                                                <Building className="h-4 w-4 text-zinc-400" />
-                                                <span className="font-medium text-zinc-700">{biz.type?.name || "Other"}</span>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-2">
+                                                <Building className="h-4 w-4 text-muted-foreground" />
+                                                <span className="font-medium text-foreground/80">{biz.type?.name || "Other"}</span>
                                             </p>
                                         </div>
 
-                                        <div className="pt-4 flex items-center justify-between border-t border-zinc-50">
+                                        <div className="pt-4 flex items-center justify-between border-t border-border">
                                             <a
                                                 href={`/manage/${biz.id}/owner/dashboard`}
-                                                className="inline-flex items-center text-blue-600 text-sm font-semibold hover:text-blue-700 transition-colors gap-1 group/link"
+                                                className="inline-flex items-center text-primary text-sm font-semibold hover:text-primary/80 transition-colors gap-1 group/link"
                                             >
                                                 View Dashboard
                                                 <span className="group-hover/link:translate-x-0.5 transition-transform">→</span>
@@ -112,7 +112,7 @@ const OwnedPage = () => {
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="h-8 px-2 text-zinc-500 hover:text-blue-600 hover:bg-blue-50"
+                                                    className="h-8 px-2 text-muted-foreground hover:text-primary hover:bg-primary/10"
                                                     asChild
                                                 >
                                                     <a href={`/manage/${biz.id}/owner/settings`}>
@@ -128,20 +128,20 @@ const OwnedPage = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center text-zinc-500 border-2 border-dashed border-zinc-200 rounded-2xl p-16 bg-zinc-50/30">
-                        <div className="bg-white p-4 rounded-full shadow-sm w-fit mx-auto mb-4 border border-zinc-100">
-                            <Building className="h-8 w-8 text-zinc-300" />
+                    <div className="text-center text-muted-foreground border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
+                        <div className="bg-card p-4 rounded-full shadow-sm w-fit mx-auto mb-4 border border-border">
+                            <Building className="h-8 w-8 text-muted-foreground/50" />
                         </div>
-                        <p className="text-xl font-bold text-zinc-800 mb-2">You don’t own any businesses yet</p>
-                        <p className="text-zinc-500 mb-8 max-w-sm mx-auto">
+                        <p className="text-xl font-bold text-foreground mb-2">You don’t own any businesses yet</p>
+                        <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
                             Create your first business to start managing your team, menu, and sales effortlessly.
                         </p>
                         <Button
                             className={cn(
                                 "rounded-xl shadow-md px-8 py-6 h-auto font-bold transition",
                                 canCreateBusiness
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-100"
-                                    : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                    ? "bg-primary hover:bg-primary/90 text-primary-foreground"
+                                    : "bg-muted text-muted-foreground cursor-not-allowed border-border"
                             )}
                             onClick={() => {
                                 if (canCreateBusiness) {

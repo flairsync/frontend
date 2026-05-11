@@ -14,6 +14,7 @@ interface ProfileReservationCardProps {
     href: string
     datetime: string | Date
     status: string
+    subtitle?: string
     onCancel?: (businessId: string, id: string | number) => void
     isCanceling?: boolean
 }
@@ -27,6 +28,7 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
     href,
     datetime,
     status,
+    subtitle,
     onCancel,
     isCanceling
 }) => {
@@ -59,6 +61,7 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
                         {getStatusBadge(normalizedStatus)}
                     </div>
                     <p className="text-sm text-muted-foreground mt-0.5">{formattedDate}</p>
+                    {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
                 </a>
 
                 {/* Right: actions */}

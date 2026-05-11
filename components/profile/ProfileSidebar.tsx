@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, Calendar, CreditCard, Heart, LayoutDashboard, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils } from "lucide-react"
+import { BarChart3, Calendar, CreditCard, Heart, LayoutDashboard, Plug, Settings, UserCog, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils } from "lucide-react"
 import WebsiteLogo from "../shared/WebsiteLogo"
 
 // This is sample data.
@@ -65,11 +65,10 @@ const ownerNavData = {
                      icon: SlidersHorizontal,
                  }, */
                 {
-                    key: "danger",
-
-                    title: "Danger zone",
-                    url: "/profile/danger",
-                    icon: ShieldAlert,
+                    key: "account",
+                    title: "Account",
+                    url: "/profile/account",
+                    icon: UserCog,
                 },
             ],
         },

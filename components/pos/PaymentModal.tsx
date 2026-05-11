@@ -6,18 +6,25 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt } from "lucide-react";
+import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { staffApi } from "@/features/station/station-api";
 import DiscountPanel from "./DiscountPanel";
 import SplitBillPanel from "./SplitBillPanel";
 import ReceiptView from "./ReceiptView";
+import StationReceiptView from "./StationReceiptView";
 
 interface PaymentModalProps {
     isOpen: boolean;
     onClose: () => void;
     total: number;
     method: "cash" | "card" | null;
-    businessId?: string;
+    /** Station mode: use station API for payment + receipt, hide mgmt-only features */
+    stationMode?: boolean;
+    /** Required in station mode for the payment API call */
     orderId?: string;
+    /** Required in management mode for discount/split panels and ReceiptView */
+    businessId?: string;
     orderItems?: Array<{ id: string; nameSnapshot: string; totalPrice: number }>;
 }
 
@@ -31,8 +38,9 @@ export function PaymentModal({
     onClose,
     total,
     method,
-    businessId,
+    stationMode = false,
     orderId,
+    businessId,
     orderItems = [],
 }: PaymentModalProps) {
     const [step, setStep] = useState<Step>("confirm");
@@ -40,6 +48,7 @@ export function PaymentModal({
     const [activePanel, setActivePanel] = useState<Panel>("none");
     const [discountAmount, setDiscountAmount] = useState(0);
     const [showReceipt, setShowReceipt] = useState(false);
+    const [processing, setProcessing] = useState(false);
 
     const effectiveTotal = total - discountAmount;
 
@@ -50,6 +59,7 @@ export function PaymentModal({
             setActivePanel("none");
             setDiscountAmount(0);
             setShowReceipt(false);
+            setProcessing(false);
         }
     }, [isOpen]);
 
@@ -73,21 +83,59 @@ export function PaymentModal({
         setActivePanel((prev) => (prev === panel ? "none" : panel));
     }
 
-    // Receipt shown after payment success (only if orderId is real)
-    if (showReceipt && businessId && orderId) {
-        return (
-            <Dialog open={isOpen} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-sm p-0 overflow-hidden">
-                    <ReceiptView
-                        businessId={businessId}
-                        orderId={orderId}
-                        onClose={onClose}
-                        onNewOrder={onClose}
-                    />
-                </DialogContent>
-            </Dialog>
-        );
+    async function handleConfirmPayment() {
+        if (stationMode && orderId) {
+            setProcessing(true);
+            try {
+                const paymentBody: Record<string, unknown> = {
+                    amount: effectiveTotal,
+                    method: method ?? "cash",
+                };
+                if (method === "cash" && cashGiven > 0) {
+                    paymentBody.cashTendered = cashGiven;
+                }
+                await staffApi.post(
+                    `/station/orders/${orderId}/payments`,
+                    paymentBody,
+                    { headers: { "Idempotency-Key": crypto.randomUUID() } },
+                );
+                // Attempt to complete the order; silently ignore if not yet in READY state
+                try {
+                    await staffApi.patch(`/station/orders/${orderId}/complete`);
+                } catch { /* kitchen may not have marked it ready — staff completes manually */ }
+                setStep("success");
+            } catch (e: any) {
+                toast.error(e?.response?.data?.message ?? "Payment failed. Please try again.");
+            } finally {
+                setProcessing(false);
+            }
+            return;
+        }
+        // Non-station mode: no API call (legacy / placeholder)
+        setStep("success");
     }
+
+    // ── Receipt view ──────────────────────────────────────────────────────────
+
+    if (showReceipt && orderId) {
+        const receiptContent = stationMode ? (
+            <StationReceiptView orderId={orderId} onClose={onClose} onNewOrder={onClose} />
+        ) : businessId ? (
+            <ReceiptView businessId={businessId} orderId={orderId} onClose={onClose} onNewOrder={onClose} />
+        ) : null;
+
+        if (receiptContent) {
+            return (
+                <Dialog open={isOpen} onOpenChange={onClose}>
+                    <DialogContent className="sm:max-w-sm p-0 overflow-hidden">
+                        {receiptContent}
+                    </DialogContent>
+                </Dialog>
+            );
+        }
+    }
+
+    // ── Success step ──────────────────────────────────────────────────────────
 
     if (step === "success") {
         return (
@@ -113,17 +161,13 @@ export function PaymentModal({
                         {discountAmount > 0 && (
                             <div className="flex justify-between items-center">
                                 <span className="text-muted-foreground text-sm">Discount</span>
-                                <span className="font-bold text-primary">
-                                    −${discountAmount.toFixed(2)}
-                                </span>
+                                <span className="font-bold text-primary">−${discountAmount.toFixed(2)}</span>
                             </div>
                         )}
                         {method === "cash" && cashGiven > 0 && (
                             <>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground text-sm">
-                                        Cash Received
-                                    </span>
+                                    <span className="text-muted-foreground text-sm">Cash Received</span>
                                     <span className="font-bold">${cashGiven.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center border-t border-border pt-3">
@@ -131,21 +175,15 @@ export function PaymentModal({
                                         Change Due
                                     </span>
                                     <span className="text-2xl font-black text-primary">
-                                        ${change.toFixed(2)}
+                                        ${Math.max(0, change).toFixed(2)}
                                     </span>
                                 </div>
                             </>
                         )}
-                        <div className="flex justify-between items-center border-t border-border pt-3">
-                            <span className="text-muted-foreground text-sm">Transaction ID</span>
-                            <span className="font-mono text-xs text-muted-foreground">
-                                #PX-{Math.random().toString(36).slice(2, 8).toUpperCase()}
-                            </span>
-                        </div>
                     </div>
 
                     <div className="flex gap-3 p-2">
-                        {businessId && orderId ? (
+                        {orderId && (
                             <Button
                                 variant="outline"
                                 className="flex-1 gap-2 h-12"
@@ -154,7 +192,7 @@ export function PaymentModal({
                                 <Receipt className="h-4 w-4" />
                                 View Receipt
                             </Button>
-                        ) : null}
+                        )}
                         <Button className="flex-1 gap-2 h-12 font-black" onClick={onClose}>
                             New Order
                             <ArrowRight className="h-4 w-4" />
@@ -164,6 +202,8 @@ export function PaymentModal({
             </Dialog>
         );
     }
+
+    // ── Confirm step ──────────────────────────────────────────────────────────
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -212,8 +252,8 @@ export function PaymentModal({
                     </div>
                 </div>
 
-                {/* Discount / Split toggles */}
-                {businessId && orderId && (
+                {/* Discount / Split toggles — management mode only */}
+                {!stationMode && businessId && orderId && (
                     <div className="flex gap-2 px-4 pt-3">
                         <button
                             onClick={() => togglePanel("discount")}
@@ -251,9 +291,7 @@ export function PaymentModal({
                                 setDiscountAmount(Number(updated.discountAmount) || 0);
                                 setActivePanel("none");
                             }}
-                            onRemoved={() => {
-                                setDiscountAmount(0);
-                            }}
+                            onRemoved={() => setDiscountAmount(0)}
                         />
                     </div>
                 )}
@@ -274,7 +312,7 @@ export function PaymentModal({
                     </div>
                 )}
 
-                {/* Cash input — only when no panel open */}
+                {/* Cash input */}
                 {activePanel === "none" && method === "cash" && (
                     <div className="p-4 space-y-3">
                         <div className="bg-muted/30 rounded-2xl p-4 border border-border text-center">
@@ -310,26 +348,24 @@ export function PaymentModal({
                         </div>
 
                         <div className="grid grid-cols-3 gap-1.5">
-                            {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "DEL"].map(
-                                (k) => (
-                                    <button
-                                        key={k}
-                                        onClick={() => handleKeypad(k)}
-                                        className={`h-12 rounded-xl font-black text-sm transition-all active:scale-95 flex items-center justify-center ${
-                                            k === "DEL"
-                                                ? "bg-destructive/10 text-destructive hover:bg-destructive/20"
-                                                : "bg-muted hover:bg-muted/80"
-                                        }`}
-                                    >
-                                        {k === "DEL" ? <Delete className="w-4 h-4" /> : k}
-                                    </button>
-                                ),
-                            )}
+                            {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "DEL"].map((k) => (
+                                <button
+                                    key={k}
+                                    onClick={() => handleKeypad(k)}
+                                    className={`h-12 rounded-xl font-black text-sm transition-all active:scale-95 flex items-center justify-center ${
+                                        k === "DEL"
+                                            ? "bg-destructive/10 text-destructive hover:bg-destructive/20"
+                                            : "bg-muted hover:bg-muted/80"
+                                    }`}
+                                >
+                                    {k === "DEL" ? <Delete className="w-4 h-4" /> : k}
+                                </button>
+                            ))}
                         </div>
                     </div>
                 )}
 
-                {/* Card — no panel open */}
+                {/* Card */}
                 {activePanel === "none" && method === "card" && (
                     <div className="p-6 flex flex-col items-center gap-4">
                         <div className="w-24 h-24 rounded-3xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
@@ -344,12 +380,21 @@ export function PaymentModal({
                 {activePanel === "none" && (
                     <div className="px-4 pb-4">
                         <Button
-                            onClick={() => setStep("success")}
-                            disabled={!isValidCash}
+                            onClick={handleConfirmPayment}
+                            disabled={!isValidCash || processing}
                             className="w-full h-14 font-black text-sm rounded-2xl gap-2"
                         >
-                            <CheckCircle2 className="w-4 h-4" />
-                            CONFIRM PAYMENT
+                            {processing ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Processing...
+                                </>
+                            ) : (
+                                <>
+                                    <CheckCircle2 className="w-4 h-4" />
+                                    CONFIRM PAYMENT
+                                </>
+                            )}
                         </Button>
                     </div>
                 )}

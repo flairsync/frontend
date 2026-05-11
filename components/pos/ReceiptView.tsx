@@ -3,16 +3,14 @@ import { getReceiptApiCall, ReceiptData } from "@/features/orders/service";
 import { Button } from "@/components/ui/button";
 import { Printer, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 interface Props {
     businessId: string;
     orderId: string;
     onClose: () => void;
     onNewOrder?: () => void;
-}
-
-function fmt(amount: number) {
-    return `$${amount.toFixed(2)}`;
 }
 
 function fmtDate(iso: string) {
@@ -27,6 +25,9 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
         queryKey: ["receipt", orderId],
         queryFn: () => getReceiptApiCall(businessId, orderId),
     });
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currency = businessBasicDetails?.currency ?? "USD";
+    const fmt = (amount: number) => formatCurrency(amount, currency);
 
     if (isLoading) {
         return (
@@ -72,6 +73,8 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
         win.close();
     }
 
+    const balanceDue = Math.max(0, receipt.totalAmount - receipt.totalPaid);
+
     return (
         <div className="flex flex-col max-h-[80vh]">
             {/* Scrollable receipt content */}
@@ -80,19 +83,6 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                     id="pos-receipt-content"
                     className="bg-background text-foreground font-mono text-sm w-full"
                 >
-                    {/* Business header */}
-                    <div className="text-center py-4 border-b border-border">
-                        <h1 className="text-base font-bold">{receipt.business.name}</h1>
-                        {receipt.business.address && (
-                            <p className="text-muted-foreground text-xs mt-1">
-                                {receipt.business.address}
-                            </p>
-                        )}
-                        {receipt.business.phone && (
-                            <p className="text-muted-foreground text-xs">{receipt.business.phone}</p>
-                        )}
-                    </div>
-
                     {/* Order info */}
                     <div className="px-4 py-3 border-b border-border space-y-1 text-xs text-muted-foreground">
                         <div className="flex justify-between">
@@ -101,18 +91,16 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                         </div>
                         <div className="flex justify-between">
                             <span>Date</span>
-                            <span>{fmtDate(receipt.issuedAt)}</span>
+                            <span>{fmtDate(receipt.generatedAt)}</span>
                         </div>
-                        {receipt.order.tableNumber && (
+                        <div className="flex justify-between">
+                            <span>Type</span>
+                            <span className="capitalize">{receipt.type.replace("_", " ")}</span>
+                        </div>
+                        {receipt.tableName && (
                             <div className="flex justify-between">
                                 <span>Table</span>
-                                <span>{receipt.order.tableNumber}</span>
-                            </div>
-                        )}
-                        {receipt.order.waiterName && (
-                            <div className="flex justify-between">
-                                <span>Server</span>
-                                <span>{receipt.order.waiterName}</span>
+                                <span>{receipt.tableName}</span>
                             </div>
                         )}
                     </div>
@@ -149,18 +137,19 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                             <span>Subtotal</span>
                             <span>{fmt(receipt.subtotal)}</span>
                         </div>
-                        {receipt.taxLines.map((tax, i) => (
-                            <div key={i} className="flex justify-between text-muted-foreground">
-                                <span>
-                                    {tax.name} ({tax.rate}%{tax.isInclusive ? " incl." : ""})
-                                </span>
-                                <span>{fmt(tax.amount)}</span>
-                            </div>
-                        ))}
                         {receipt.discountAmount > 0 && (
                             <div className="flex justify-between text-primary">
-                                <span>{receipt.discountLabel ?? "Discount"}</span>
+                                <span>Discount</span>
                                 <span>−{fmt(receipt.discountAmount)}</span>
+                            </div>
+                        )}
+                        {receipt.tax.rate > 0 && receipt.tax.amount > 0 && (
+                            <div className="flex justify-between text-muted-foreground">
+                                <span>
+                                    {receipt.tax.name} {receipt.tax.rate}%
+                                    {receipt.tax.included && " incl."}
+                                </span>
+                                <span>{fmt(receipt.tax.amount)}</span>
                             </div>
                         )}
                         <div className="flex justify-between font-bold text-sm border-t border-border pt-2 mt-1">
@@ -172,9 +161,23 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                     {/* Payments */}
                     <div className="px-4 py-3 border-b border-border space-y-1 text-xs">
                         {receipt.payments.map((p, i) => (
-                            <div key={i} className="flex justify-between text-muted-foreground">
-                                <span className="capitalize">{p.method}</span>
-                                <span>{fmt(p.amount)}</span>
+                            <div key={i} className="space-y-0.5">
+                                <div className="flex justify-between text-muted-foreground">
+                                    <span className="capitalize">{p.method}</span>
+                                    <span>{fmt(p.amount)}</span>
+                                </div>
+                                {p.method === "cash" && p.cashTendered !== null && (
+                                    <>
+                                        <div className="flex justify-between text-muted-foreground pl-3">
+                                            <span>Tendered</span>
+                                            <span>{fmt(p.cashTendered)}</span>
+                                        </div>
+                                        <div className="flex justify-between font-semibold text-primary pl-3">
+                                            <span>Change</span>
+                                            <span>{fmt(p.changeGiven ?? 0)}</span>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         ))}
                         {receipt.totalTip > 0 && (
@@ -183,16 +186,10 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                                 <span>{fmt(receipt.totalTip)}</span>
                             </div>
                         )}
-                        {receipt.changeDue > 0 && (
-                            <div className="flex justify-between font-semibold text-primary">
-                                <span>Change Due</span>
-                                <span>{fmt(receipt.changeDue)}</span>
-                            </div>
-                        )}
-                        {receipt.balanceDue > 0 && (
+                        {balanceDue > 0 && (
                             <div className="flex justify-between font-semibold text-destructive">
                                 <span>Balance Due</span>
-                                <span>{fmt(receipt.balanceDue)}</span>
+                                <span>{fmt(balanceDue)}</span>
                             </div>
                         )}
                     </div>

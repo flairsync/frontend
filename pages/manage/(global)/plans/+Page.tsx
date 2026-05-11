@@ -57,12 +57,12 @@ const PlansPage: React.FC = () => {
 
 
         <h1 className="text-4xl font-bold mb-3">Choose Your Plan</h1>
-        <p className="text-zinc-500">
-          Select the subscription that fits your restaurant best.
+        <p className="text-muted-foreground">
+          Select the subscription that fits your business best.
         </p>
 
         {/* Billing toggle */}
-        <div className="mt-6 inline-flex bg-white dark:bg-zinc-800 rounded-full p-1 shadow-md">
+        <div className="mt-6 inline-flex bg-card rounded-full p-1 shadow-md">
           <Button
             variant={billingType === PricingType.MONTHLY ? "default" : "ghost"}
             className="rounded-full px-5 py-2"
@@ -93,12 +93,12 @@ const PlansPage: React.FC = () => {
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
-            <Card className="border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-lg transition bg-white dark:bg-zinc-900 flex flex-col h-full">
+            <Card className="border border-border shadow-sm hover:shadow-lg transition bg-card flex flex-col h-full">
               <CardHeader>
                 <CardTitle className="text-2xl font-semibold text-primary mb-1">
                   {pack.name}
                 </CardTitle>
-                <p className="text-sm text-zinc-500">{pack.getShortDescription()}</p>
+                <p className="text-sm text-muted-foreground">{pack.getShortDescription()}</p>
               </CardHeader>
 
               <CardContent className="flex flex-col justify-between flex-grow">
@@ -107,29 +107,29 @@ const PlansPage: React.FC = () => {
                     {pack.price}{" "}
                     <span className="text-lg font-normal">{pack.currency}</span>
                   </p>
-                  <p className="text-zinc-500 text-sm">{pack.getPlanDuration()}</p>
+                  <p className="text-muted-foreground text-sm">{pack.getPlanDuration()}</p>
                 </div>
 
-                <div className="mb-6 grid grid-cols-2 gap-4 text-xs bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800">
+                <div className="mb-6 grid grid-cols-2 gap-4 text-xs bg-muted/50 p-3 rounded-lg border border-border">
                   <div className="flex flex-col">
-                    <span className="text-zinc-500 mb-1">Businesses</span>
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxBusinesses === -1 ? "Unlimited" : pack.maxBusinesses}</span>
+                    <span className="text-muted-foreground mb-1">Businesses</span>
+                    <span className="font-semibold text-foreground">{pack.maxBusinesses === -1 ? "Unlimited" : pack.maxBusinesses}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-zinc-500 mb-1">Staff</span>
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxEmployees === -1 ? "Unlimited" : pack.maxEmployees}</span>
+                    <span className="text-muted-foreground mb-1">Staff</span>
+                    <span className="font-semibold text-foreground">{pack.maxEmployees === -1 ? "Unlimited" : pack.maxEmployees}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-zinc-500 mb-1">Menus</span>
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxMenus === -1 ? "Unlimited" : pack.maxMenus}</span>
+                    <span className="text-muted-foreground mb-1">Menus</span>
+                    <span className="font-semibold text-foreground">{pack.maxMenus === -1 ? "Unlimited" : pack.maxMenus}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-zinc-500 mb-1">Products</span>
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{pack.maxProducts === -1 ? "Unlimited" : pack.maxProducts}</span>
+                    <span className="text-muted-foreground mb-1">Products</span>
+                    <span className="font-semibold text-foreground">{pack.maxProducts === -1 ? "Unlimited" : pack.maxProducts}</span>
                   </div>
                 </div>
 
-                <ul className="text-sm text-zinc-600 dark:text-zinc-300 space-y-2 mb-6">
+                <ul className="text-sm text-muted-foreground space-y-2 mb-6">
                   {pack.features.map((f) => (
                     <li key={f} className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-primary" />

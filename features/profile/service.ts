@@ -24,5 +24,21 @@ export const updateUserProfileApiCall = (data: UpdateUserProfileDTO) => {
 
 
 export const getPublicUserDisplayName = (userId: string) => {
-  return flairapi.get(`${baseUrl}/${userId}/display-name`)
-}
+  return flairapi.get(`${baseUrl}/${userId}/display-name`);
+};
+
+export const requestAccountDeletionApiCall = () => {
+  return flairapi.delete(myUserProfileUrl);
+};
+
+export const cancelAccountDeletionApiCall = () => {
+  return flairapi.post(`${myUserProfileUrl}/cancel-deletion`);
+};
+
+export const requestDataExportApiCall = () => {
+  return flairapi.post(`${myUserProfileUrl}/data-export`);
+};
+
+export const getDataExportStatusApiCall = () => {
+  return flairapi.get(`${myUserProfileUrl}/data-export/status`);
+};
