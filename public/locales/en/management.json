@@ -1,0 +1,223 @@
+{
+  "permissions": {
+    "MENU": { "label": "Menu management", "description": "Create, update, and manage menu items, categories, and pricing." },
+    "RESERVATIONS": { "label": "Reservation management", "description": "View, create, update, and manage customer reservations and bookings." },
+    "STAFF": { "label": "Staff management", "description": "Manage staff members, roles, permissions, and work assignments." },
+    "OPENING_HOURS": { "label": "Opening hours management", "description": "Configure business opening hours, special schedules, and closures." },
+    "BUSINESS_SETTINGS": { "label": "Business settings", "description": "Manage business information, preferences, and operational settings." },
+    "ORDERS": { "label": "Orders management", "description": "View, create, and manage customer orders for dine-in, takeaway, and delivery." },
+    "INVENTORY": { "label": "Inventory management", "description": "Track ingredients and stock levels, manage inventory items and units." }
+  },
+  "menu_management": {
+    "actions": {
+      "add_category": "Add Category",
+      "add_item": "Add Item",
+      "save_changes": "Save changes",
+      "move_to_category": "Move to Category",
+      "delete_category": "Delete Category"
+    },
+    "labels": {
+      "simple_view": "Simple",
+      "organize_view": "Organize",
+      "menu_hints": "Menu Hints",
+      "no_items": "No items yet. Click \"Add Item\" to start.",
+      "no_items_category": "No items in this category yet.",
+      "items_count": "{{count}} items",
+      "add_first_item": "Add your first item",
+      "critical": "Critical",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "go_back_menus": "Go back to all menus"
+    },
+    "messages": {
+      "delete_category_confirm": "Are you sure you want to delete this category? This action cannot be undone and will remove all items within it.",
+      "delete_item_confirm_title": "Delete item?",
+      "delete_item_confirm_desc": "This will permanently delete \"{{name}}\".",
+      "move_item_select_category": "Select the category to move this item to."
+    },
+    "modal": {
+      "create_title": "Create New Menu",
+      "edit_title": "Edit Menu",
+      "name": "Name",
+      "description": "Description",
+      "icon": "Icon",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "start_time": "Start Time",
+      "end_time": "End Time",
+      "repeat": "Repeat",
+      "repeat_yearly": "Repeat yearly",
+      "select_all_days": "Select all days",
+      "unselect_all_days": "Unselect all days",
+      "update_button": "Update Menu",
+      "create_button": "Create Menu",
+      "tooltips": {
+        "icon": "Pick an icon to represent this menu in the UI.",
+        "date_empty": "Leave empty for a menu that is always active.",
+        "time_empty": "Leave empty for this menu to be active all day."
+      }
+    },
+    "list": {
+      "title": "Your Menus",
+      "description": "Click on a menu to manage its categories and items. Add new menus to get started!",
+      "remaining_menus": "You can create {{count}} more menu with your subscription.",
+      "remaining_menus_plural": "You can create {{count}} more menus with your subscription.",
+      "limit_reached": "You have reached your menu limit for your subscription.",
+      "upgrade": "Upgrade",
+      "no_menus_title": "No menus yet",
+      "no_menus_desc": "Create your first menu to start organizing your items.",
+      "create_menu": "Create Menu",
+      "categories_count": "{{count}} Category",
+      "categories_count_plural": "{{count}} Categories",
+      "items_count": "{{count}} Item",
+      "items_count_plural": "{{count}} Items",
+      "hints": "Hints",
+      "more_hints": "+{{count}} more",
+      "manage_menu_hint": "Click to open and manage this menu.",
+      "create_new_menu_card": "Create New Menu"
+    }
+  },
+  "item_modal": {
+    "create_title": "Create New Item",
+    "edit_title": "Edit Item",
+    "copy_label": "Copy from existing items",
+    "copy_hint": "Select an item to auto-fill the form. All fields remain editable",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "allergies": "Allergies",
+    "images": "Images",
+    "tracking": {
+      "label": "Tracking",
+      "tooltip": "Choose how this item links to your inventory.",
+      "none": "None",
+      "none_desc": "No inventory tracking for this item.",
+      "direct": "Direct Link",
+      "direct_desc": "This menu item maps directly to an inventory item. (e.g., a \"Coca Cola\" menu item links to a \"Coke Can\" inventory item).",
+      "link_existing": "Link Existing Item",
+      "create_new": "Create new inventory item",
+      "unit": "Unit",
+      "unit_placeholder": "Select unit",
+      "quantity_per_sale": "How much is consumed per sale?",
+      "quantity_hint": "If sold in liters and this item uses 0.5L, enter 0.5"
+    }
+  },
+  "inventory_management": {
+    "title": "Inventory Management",
+    "add_item": "Add Item",
+    "edit_item": "Edit Item",
+    "delete_item": "Delete Item",
+    "adjust_stock": "Adjust Stock",
+    "groups": "Groups",
+    "manage_groups": "Manage Groups",
+    "add_group": "Add Group",
+    "edit_group": "Edit Group",
+    "delete_group": "Delete Group",
+    "items": "Items",
+    "low_stock": "Low Stock",
+    "all_items": "All Items",
+    "table": {
+      "name": "Name",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "group": "Group",
+      "threshold": "Threshold",
+      "last_updated": "Last Updated",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Item Name",
+      "barcode": "Barcode",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "threshold": "Low Stock Threshold",
+      "group": "Group",
+      "no_group": "No Group",
+      "errors": {
+        "name_required": "Item name is required",
+        "quantity_required": "Quantity is required",
+        "quantity_min": "Quantity cannot be negative",
+        "unit_required": "Unit is required",
+        "threshold_required": "Threshold is required",
+        "threshold_min": "Threshold cannot be negative"
+      }
+    },
+    "search_barcode": "Search Barcode",
+    "edit_group_mode": "Updating group...",
+    "adjust": {
+      "title": "Adjust Stock for {{name}}",
+      "current": "Current Quantity",
+      "adjustment": "Adjustment",
+      "adjustment_placeholder": "e.g., 5 or -2",
+      "reason": "Reason",
+      "reason_placeholder": "e.g., Restock, Waste, etc.",
+      "new_quantity": "New Quantity"
+    },
+    "messages": {
+      "delete_item_confirm": "Are you sure you want to delete this item? This will also remove it from any linked menu items.",
+      "delete_group_confirm": "Are you sure you want to delete this group? Items in this group will be moved to 'Default'.",
+      "no_items": "No inventory items found.",
+      "no_groups": "No groups found."
+    }
+  },
+  "subscriptions": {
+    "features": {
+      "menu_mgmt": "Menu Management",
+      "basic_menu_mgmt": "Basic Menu Management",
+      "advanced_analytics": "Advanced Analytics",
+      "basic_analytics": "Basic Analytics",
+      "staff_scheduling": "Staff Scheduling",
+      "reservation_system": "Reservation System",
+      "priority_support": "Priority Support",
+      "ded_acc_manager": "Dedicated Account Manager",
+      "custom_branding": "Custom Branding"
+    },
+    "limits": {
+      "businesses": "Up to {{count}} Business",
+      "businesses_plural": "Up to {{count}} Businesses",
+      "employees": "Up to {{count}} Employee",
+      "employees_plural": "Up to {{count}} Employees",
+      "menus": "Up to {{count}} Menu",
+      "menus_plural": "Up to {{count}} Menus",
+      "products": "Up to {{count}} Product",
+      "products_plural": "Up to {{count}} Products"
+    }
+  },
+  "floor_plan": {
+    "title": "Floor Plan",
+    "add_floor": "Add Floor",
+    "edit_floor": "Edit Floor",
+    "delete_floor": "Delete Floor",
+    "floors": "Floors",
+    "tables": "Tables",
+    "add_table": "Add Table",
+    "edit_table": "Edit Table",
+    "delete_table": "Delete Table",
+    "capacity": "Capacity",
+    "position": "Position",
+    "shape": "Shape"
+  },
+  "orders": {
+    "title": "Orders",
+    "create_order": "Create Order",
+    "order_type": "Order Type",
+    "status": "Status",
+    "items": "Items",
+    "total": "Total",
+    "dine_in": "Dine-in",
+    "takeaway": "Takeaway",
+    "delivery": "Delivery"
+  },
+  "reservations": {
+    "title": "Reservations",
+    "add_reservation": "Add Reservation",
+    "customer_name": "Customer Name",
+    "time": "Time",
+    "guests": "Guests",
+    "table": "Table",
+    "assign_table": "Assign Table",
+    "pre_order": "Pre-order"
+  }
+}

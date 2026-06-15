@@ -52,7 +52,7 @@ const solutions: Solution[] = [
 ];
 
 const ProblemSolutionSection = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
     const [activeSolution, setActiveSolution] = useState<Solution>(solutions[0]);
     const scope = useRef<Scope>(null);
 

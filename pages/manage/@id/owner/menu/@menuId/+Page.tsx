@@ -40,6 +40,10 @@ import { CategoryModal } from "@/components/management/menu/CreateCategoryModal"
 import { ItemModal } from "@/components/management/menu/CreateItemModal";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { ItemsDuplicationModal } from "@/components/management/menu/ItemsDuplicationModal";
+import { useBusinessPlan } from "@/features/business/useBusinessPlan";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
+import { useAllergies } from "@/features/shared/useAllergies";
 // #endregion
 
 // #region Sortable Components
@@ -86,7 +90,7 @@ const MenuDetailPage: React.FC = () => {
     // #region Routing
     const { routeParams } = usePageContext();
     const { menuId, id } = routeParams;
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     // #endregion
 
     // #region Hooks
@@ -131,6 +135,14 @@ const MenuDetailPage: React.FC = () => {
     const [toDuplicateCategory, setToDuplicateCategory] = useState<string | undefined>();
     const [deleteCategoryConfirm, setDeleteCategoryConfirm] = useState<string | null>(null);
     const [movingItem, setMovingItem] = useState<{ itemId: string, currentCatId: string } | null>(null);
+
+    const { plan } = useBusinessPlan(id);
+    const { openUpgradeModal } = useSubscriptionStore();
+
+    const canCreateProduct = plan ? plan.canCreateProduct : true;
+    const canCreateMenu = plan ? plan.canCreateMenu : true;
+
+    const { allergies } = useAllergies();
     // #endregion
 
     // #region Effects
@@ -313,6 +325,7 @@ const MenuDetailPage: React.FC = () => {
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
 
             {/* #region Modals */}
+            {/* No local UpgradeModal component here anymore, handled globally */}
             <MenuModal
                 isOpen={editMenu}
                 onClose={() => setEditMenu(false)}
@@ -360,13 +373,15 @@ const MenuDetailPage: React.FC = () => {
             <ItemModal
                 businessId={id}
                 availableItems={businessAllItems}
-                allergies={[]}
+                allergies={allergies || []}
                 onClose={() => {
                     setCreateItemCatId(undefined);
                     setEditingItem(undefined);
                 }}
-                initialData={editingItem?.item}
+                initialData={editingItem ? (categories.find(c => c.id === editingItem.category)?.items?.find(i => i.id === editingItem.item.id) || editingItem.item) : undefined}
                 open={(createItemCatId != undefined || editingItem != undefined)}
+                menuId={menuId}
+                categoryId={editingItem?.category || createItemCatId}
                 onConfirm={(data) => {
                     if (!editingItem) {
                         createNewItem({
@@ -377,7 +392,17 @@ const MenuDetailPage: React.FC = () => {
                                 files: data.images,
                                 name: data.name,
                                 price: data.price,
+                                inventoryTrackingMode: data.trackingMode,
+                                inventoryItemId: data.inventoryItemId,
+                                createInventoryItem: data.createInventoryItem,
+                                inventoryUnitId: data.inventoryUnit,
+                                quantityPerSale: data.quantityPerSale,
+                                kitchenStationId: data.kitchenStationId,
                             },
+                        }, {
+                            onError: (err: any) => {
+                                // Global interceptor handles this, but we can explicitly call it too if needed
+                            }
                         });
                     } else {
                         updateItem({
@@ -389,6 +414,12 @@ const MenuDetailPage: React.FC = () => {
                                 files: data.images,
                                 name: data.name,
                                 price: data.price,
+                                inventoryTrackingMode: data.trackingMode,
+                                inventoryItemId: data.inventoryItemId,
+                                createInventoryItem: data.createInventoryItem,
+                                inventoryUnitId: data.inventoryUnit,
+                                quantityPerSale: data.quantityPerSale,
+                                kitchenStationId: data.kitchenStationId,
                             }
                         });
                     }
@@ -551,11 +582,23 @@ const MenuDetailPage: React.FC = () => {
                     </div>
 
                     <Button
-                        onClick={() => setCreateCategoryModal(true)}
-                        className="flex items-center gap-2 bg-indigo-500 text-white hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-500 transition px-3 sm:px-4"
+                        onClick={() => {
+                            if (canCreateMenu) {
+                                setCreateCategoryModal(true);
+                            } else {
+                                openUpgradeModal(`The business plan allows up to ${plan?.allowed.products ?? 0} menu items. The owner needs to upgrade to add more.`);
+                            }
+                        }}
+                        className={cn(
+                            "flex items-center gap-2 transition px-3 sm:px-4",
+                            canCreateMenu
+                                ? "bg-indigo-500 text-white hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                        )}
                     >
                         <Plus className="h-4 w-4 sm:mr-1" />
                         <span className="hidden sm:inline">{t('menu_management.actions.add_category')}</span>
+                        {!canCreateMenu && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                     </Button>
                     <Button
                         disabled={!hasChanges()}
@@ -572,6 +615,7 @@ const MenuDetailPage: React.FC = () => {
                 {viewMode === 'simple' ? (
                     <SimpleMenuCategories
                         categories={categories}
+                        businessId={id}
                         onEditCategory={handleEditCategory}
                         onDeleteCategory={(catId) => setDeleteCategoryConfirm(catId)}
                         onAddItem={(catId) => setCreateItemCatId(catId)}
@@ -588,6 +632,7 @@ const MenuDetailPage: React.FC = () => {
                     <MenuCategoriesSortable
                         categories={categories}
                         setCategories={setCategories}
+                        businessId={id}
                         onChange={(changes) => setMenuChanges(changes)}
                         onEditCategory={handleEditCategory}
                         onDeleteCategory={(catId) => setDeleteCategoryConfirm(catId)}

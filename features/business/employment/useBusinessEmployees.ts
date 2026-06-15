@@ -12,7 +12,7 @@ type PaginatedEmployeesType = {
 // ✅ Extract the page param key
 const EMPLOYEE_PAGE_PARAM = "etbl";
 
-export const useBusinessEmployees = (businessId: string) => {
+export const useBusinessEmployees = (businessId: string, options?: { enabled?: boolean }) => {
   const { urlParsed } = usePageContext();
 
   // Read epage from urlParsed.search or default to 1
@@ -21,31 +21,23 @@ export const useBusinessEmployees = (businessId: string) => {
 
   // Keep state in sync if user navigates with back/forward
   useEffect(() => {
-    if (!urlParsed.search[EMPLOYEE_PAGE_PARAM]) {
-      setPage(1);
-    }
     const onPopState = () => {
       setCurrentPage(Number(urlParsed.search[EMPLOYEE_PAGE_PARAM] ?? 1));
     };
     window.addEventListener("popstate", onPopState);
 
     return () => window.removeEventListener("popstate", onPopState);
-  }, []);
+  }, [urlParsed.search]);
 
   const { data, isPending, isFetching } = useQuery<PaginatedEmployeesType>({
     queryKey: ["business_emps", businessId, currentPage],
+    enabled: options?.enabled !== false && !!businessId,
     queryFn: async () => {
       const resp = await fetchBusinessEmployeesApiCall(businessId, currentPage);
 
-      if (!resp.data.success) {
-        throw new Error("Failed to fetch employees");
-      }
-
-      const emps = BusinessEmployee.parseApiArrayResponse(resp.data.data.data);
-
       return {
-        employees: emps,
-        totalPages: resp.data.data.pages,
+        employees: BusinessEmployee.parseApiArrayResponse(resp.data),
+        totalPages: resp.pages,
       };
     },
     staleTime: 5000,

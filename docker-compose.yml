@@ -24,6 +24,7 @@ services:
       - /app/node_modules
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=public"
       # Routing
       - "traefik.http.routers.webapp.entrypoints=web,websecure"
       - "traefik.http.routers.webapp.rule=Host(`flairsync.com`)"

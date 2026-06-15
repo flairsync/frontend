@@ -1,0 +1,179 @@
+{
+  "marketplace": {
+    "title": "Marketplace"
+  },
+  "footer": {
+    "follow_us": "Follow us"
+  },
+  "landing_page": {
+    "header": {
+      "navLinks": {
+        "home_tab_title": "Home",
+        "businesses_tab_title": "Businesses",
+        "features_tab_title": "Features",
+        "solution_tab_title": "Solution",
+        "integration_tab_title": "Integration",
+        "pricing_tab_title": "Pricing",
+        "faq_tab_title": "FAQ"
+      },
+      "joinUsButton": "Join us",
+      "jobs": "Jobs",
+      "findBusinessButton": "Find your favorite business",
+      "explore": "Explore"
+    },
+    "hero": {
+      "title": "Upgrade your café & restaurant management",
+      "subtitle": "The easiest way to manage your workflow and collaborate with your team seamlessly.",
+      "trialButton": "Start Free Trial",
+      "explainButton": "See how it works"
+    },
+    "features": {
+      "globalTitle": "Everything You Need to Run Your Café & Restaurant",
+      "globalSubtitle": "From menus to staff, inventory to customer discovery — manage it all in one sleek platform. Save time, cut costs, and focus on serving great food and experiences while we handle the operations.",
+      "inventoryManagement": {
+        "title": "Inventory Management",
+        "subtitle": "Monitor ingredients in real time, get low-stock alerts, and simplify supplier orders to keep your kitchen running smoothly."
+      },
+      "staffManagement": {
+        "title": "Staff Management",
+        "subtitle": "Create and share staff schedules in minutes, manage shifts, and track attendance — all from one place. Say goodbye to last-minute chaos."
+      }
+    },
+    "problemSolution": {
+      "title": "We Know the Struggles of Running a Restaurant",
+      "subtitle": "Managing staff, tracking stock, updating menus, and keeping customers coming back can feel overwhelming. That's why we built a simple, all-in-one tool designed for cafés and restaurants.",
+      "leftPanelTitle": "How we can help you grow your business",
+      "solutions": [
+        {
+          "id": 1,
+          "title": "Track inventory easily",
+          "description": "Keep your stock up-to-date, get low-stock alerts, and reorder ingredients effortlessly.",
+          "cardTitle": "Inventory Management",
+          "cardDescription": "Monitor ingredients in real time, get low-stock alerts, and simplify supplier orders to keep your kitchen running smoothly."
+        },
+        {
+          "id": 2,
+          "title": "Manage staff schedules",
+          "description": "Create and share shifts, track attendance, and communicate easily with your team.",
+          "cardTitle": "Staff Management",
+          "cardDescription": "Create and share staff schedules in minutes, manage shifts, and track attendance — all from one place."
+        },
+        {
+          "id": 3,
+          "title": "Update menus quickly",
+          "description": "Add new items, remove old ones, and update prices without hassle.",
+          "cardTitle": "Menu Management",
+          "cardDescription": "Easily manage your menu and keep your offerings up-to-date for your customers."
+        },
+        {
+          "id": 4,
+          "title": "Boost customer loyalty",
+          "description": "Engage your customers and keep them coming back with personalized offers.",
+          "cardTitle": "Customer Engagement",
+          "cardDescription": "Build loyalty programs, track customer preferences, and improve retention."
+        }
+      ]
+    },
+    "stats": {
+      "items": [
+        {
+          "prefix": "UP TO",
+          "value": "35%",
+          "label": "More revenue",
+          "sub": "through optimized orders & upselling"
+        },
+        {
+          "prefix": "UP TO",
+          "value": "4 hrs",
+          "label": "Saved every day",
+          "sub": "on scheduling, inventory & reporting"
+        },
+        {
+          "prefix": "UP TO",
+          "value": "40%",
+          "label": "Less food waste",
+          "sub": "with real-time inventory alerts"
+        },
+        {
+          "prefix": "UP TO",
+          "value": "3×",
+          "label": "Faster table turns",
+          "sub": "with smart reservations & floor plans"
+        }
+      ]
+    },
+    "integration": {
+      "title": "Seamless Setup, Zero Hassle",
+      "subtitle": "No complicated integrations. Just create your account, set up your business details, and start managing everything from one place — right away.",
+      "buttonText": "Book a Demo",
+      "mainCard": {
+        "title": "Overdraft Prevention",
+        "status": "Currently On",
+        "progress": "93%",
+        "progressLabel": "Weekly Progress"
+      }
+    },
+    "pricing": {
+      "title": "Choose The Plans That Suits You!",
+      "monthly_label": "Bill monthly",
+      "yearly_label": "Bill yearly (41% off)",
+      "billed_note": "*Billed annually, plus application taxes",
+      "choose_plan_button": "Choose Plan"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Got questions? We've got answers. Here are some of the most common questions restaurant and café owners ask about using our platform.",
+      "cta_button": "Got more questions?"
+    },
+    "footer": {
+      "logo": "FlairSync",
+      "follow_us": "Follow us",
+      "quick_links_title": "Quick Links",
+      "quick_links": [
+        "Home",
+        "About Us",
+        "Integrations",
+        "Features",
+        "Pricing",
+        "Contact Us"
+      ],
+      "support_title": "Support",
+      "support_links": [
+        "FAQ's",
+        "Support Center",
+        "Privacy Policy",
+        "Terms"
+      ],
+      "contact_title": "Contact",
+      "contact_address_line1": "Andorra La Vella, AD500, Andorra",
+      "contact_phone": "+376 123 456",
+      "newsletter_title": "Subscribe to our Newsletter",
+      "newsletter_placeholder": "Enter your email",
+      "copyright": "© {{year}} FlairSync. All Rights Reserved."
+    }
+  },
+  "subscriptions": {
+    "current_plan": "Current Plan",
+    "limits": {
+      "businesses": "{{count}} business",
+      "businesses_plural": "{{count}} businesses",
+      "employees": "{{count}} employee",
+      "employees_plural": "{{count}} employees",
+      "menus": "{{count}} menu",
+      "menus_plural": "{{count}} menus",
+      "products": "{{count}} product",
+      "products_plural": "{{count}} products"
+    },
+    "features": {
+      "basic_menu_mgmt": "Basic menu management",
+      "menu_mgmt": "Full menu management",
+      "basic_analytics": "Basic analytics",
+      "advanced_analytics": "Advanced analytics",
+      "staff_scheduling": "Staff scheduling",
+      "reservation_system": "Reservation system",
+      "priority_support": "Priority support",
+      "ded_acc_manager": "Dedicated account manager",
+      "custom_branding": "Custom branding"
+    }
+  }
+}

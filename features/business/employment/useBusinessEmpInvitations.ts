@@ -43,17 +43,9 @@ export const useBusinessEmpInvitations = (businessId: string) => {
         currentPage,
       );
 
-      if (!resp.data.success) {
-        throw new Error("Failed to fetch employees");
-      }
-
-      const emps = BusinessEmployeeInvitation.parseApiArrayResponse(
-        resp.data.data.data,
-      );
-
       return {
-        invitations: emps,
-        totalPages: resp.data.data.pages,
+        invitations: BusinessEmployeeInvitation.parseApiArrayResponse(resp.data),
+        totalPages: resp.pages,
       };
     },
     staleTime: 5000,

@@ -1,190 +1,307 @@
-"use client";
-
 import React from "react";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Plus, LogIn, Building2, Crown, ChevronRight, Ban, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import {
-    Crown,
-    Building,
-    Heart,
-    LucideNewspaper,
-    Plus,
-} from "lucide-react";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
-import { useProfile } from "@/features/profile/useProfile";
-import { SubscriptionStatus } from "@/models/Subscription";
+import { useUsage } from "@/features/subscriptions/useUsage";
 import { useMyBusinesses } from "@/features/business/useMyBusinesses";
+import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { SubscriptionStatus } from "@/models/Subscription";
+import { cn } from "@/lib/utils";
+import { MyEmployment } from "@/models/business/MyEmployment";
 
-const OverviewPage: React.FC = () => {
-    const {
-        userProfile
-    } = useProfile();
+const ManagePage: React.FC = () => {
+    const { currentUserSubscription } = useSubscriptions();
+    const { usage, isLoading: loadingUsage } = useUsage();
+    const { myBusinesses, loadingMyBussinesses } = useMyBusinesses();
+    const { myEmployments, loadingMyEmployments } = useMyEmployments();
+    const { openUpgradeModal } = useSubscriptionStore();
 
-    const {
-        myBusinesses,
-        loadingMyBussinesses,
-        refreshMyBusinesses,
-    } = useMyBusinesses();
+    const joinedBusinesses = myEmployments?.filter(
+        (emp: MyEmployment) => emp.type === "INVITED" && emp.status === "ACTIVE"
+    ) || [];
+
+    const canCreateBusiness = usage?.canCreateBusiness ?? (currentUserSubscription ? true : false);
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
-            <div className="max-w-6xl mx-auto space-y-10">
-                {/* HEADER */}
-                <div>
-                    <h1 className="text-3xl font-semibold mb-2">Overview</h1>
-                    <p className="text-zinc-500">
-                        Welcome back! Here’s a quick summary of your account.
-                    </p>
-                </div>
+        <div className="min-h-screen bg-background p-4 sm:p-8">
 
-                {/* SUBSCRIPTION STATUS */}
-                <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                >
-                    <Card className="shadow-sm border-primary/20">
-                        <CardHeader className="flex flex-row items-center justify-between">
+            <div className="max-w-6xl mx-auto space-y-12 mt-8">
+                {/* SUBSCRIPTION & USAGE OVERVIEW */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <Card className="lg:col-span-1 shadow-sm border-border/60 overflow-hidden bg-card">
+                        <CardHeader className="bg-muted/50 border-b border-border">
                             <CardTitle className="flex items-center gap-2 text-lg">
                                 <Crown className="h-5 w-5 text-primary" />
-                                Subscription
+                                Current Plan
                             </CardTitle>
-                            <a href="/manage/billing">
-                                <Button variant="outline" size="sm">
-                                    Manage Billing
-                                </Button>
-                            </a>
                         </CardHeader>
+                        <CardContent className="pt-6">
+                            {currentUserSubscription ? (
+                                <div className="space-y-6">
+                                    <div>
+                                        <h3 className="text-3xl font-bold text-foreground">{currentUserSubscription.pack?.name}</h3>
+                                        <div className="flex items-center gap-2 mt-2">
+                                            <Badge
+                                                variant={currentUserSubscription.status === SubscriptionStatus.ACTIVE ? "default" : "destructive"}
+                                                className={cn(
+                                                    "rounded-full",
+                                                    (currentUserSubscription.status === SubscriptionStatus.ACTIVE || currentUserSubscription.isDefault)
+                                                        ? "bg-green-600 hover:bg-green-700"
+                                                        : currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                            ? "bg-blue-600 hover:bg-blue-700"
+                                                            : ""
+                                                )}
+                                            >
+                                                {currentUserSubscription.isDefault
+                                                    ? "FREE PLAN"
+                                                    : currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                        ? "FREE TRIAL"
+                                                        : (currentUserSubscription.status?.toUpperCase() || "ACTIVE")}
+                                            </Badge>
+                                            <span className="text-xs text-muted-foreground font-medium">
+                                                {currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                    ? `Trial ends on ${currentUserSubscription.getRenewalDate("MMM DD, YYYY") ?? "N/A"}`
+                                                    : `Renews on ${currentUserSubscription.getRenewalDate("MMM DD, YYYY")}`}
+                                            </span>
+                                        </div>
+                                    </div>
 
-                        <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                            {userProfile?.currentSubscription ? (
-                                <>
-                                    <div>
-                                        <p className="text-zinc-500">Plan</p>
-                                        <p className="font-semibold">{userProfile.currentSubscription.pack.name}</p>
+                                    <div className="pt-4 border-t border-border">
+                                        <a href="/manage/plans">
+                                            <Button variant="outline" className="w-full justify-between group">
+                                                Manage Subscription
+                                                <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                                            </Button>
+                                        </a>
                                     </div>
-                                    <div>
-                                        <p className="text-zinc-500">Next Renewal</p>
-                                        <p className="font-semibold">{userProfile.currentSubscription.getRenewalDate()}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-zinc-500">Status</p>
-                                        <p
-                                            className={`font-semibold ${userProfile.currentSubscription.status === SubscriptionStatus.ACTIVE
-                                                ? "text-green-600"
-                                                : "text-red-500"
-                                                }`}
-                                        >
-                                            {userProfile.currentSubscription.status}
-                                        </p>
-                                    </div>
-                                </>
+                                </div>
                             ) : (
-                                <div className="col-span-full flex flex-col items-center justify-center py-8">
-                                    <Crown className="h-10 w-10 text-primary mb-3" />
-                                    <p className="font-medium mb-2">No Active Subscription</p>
+                                <div className="flex flex-col items-center text-center py-4">
+                                    <div className="bg-muted p-4 rounded-full mb-4">
+                                        <Ban className="h-8 w-8 text-muted-foreground" />
+                                    </div>
+                                    <h3 className="font-bold text-lg mb-2">No Active Plan</h3>
+                                    <p className="text-sm text-muted-foreground mb-6">Unlock more features by choosing a plan.</p>
                                     <a href="/manage/plans">
-                                        <Button className="gap-2">
-                                            <Crown className="h-4 w-4" />
-                                            View Plans
-                                        </Button>
+                                        <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Explore Plans</Button>
                                     </a>
                                 </div>
                             )}
                         </CardContent>
                     </Card>
-                </motion.div>
 
-                <Separator />
-
-                {/* BUSINESS SUMMARY */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                >
-                    <h2 className="text-xl font-semibold mb-4">Your Businesses</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <Card className="p-5 hover:shadow-lg transition">
-                            <CardContent className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <Building className="h-6 w-6 text-primary" />
-                                    <div>
-                                        <p className="font-semibold text-lg">
-                                            {myBusinesses?.length}
-                                        </p>
-                                        <p className="text-sm text-zinc-500">Owned</p>
-                                    </div>
+                    <Card className="lg:col-span-2 shadow-sm border-border/60 bg-card">
+                        <CardHeader className="bg-muted/50 border-b border-border">
+                            <CardTitle className="flex items-center gap-2 text-lg">
+                                <AlertCircle className="h-5 w-5 text-primary" />
+                                Resource Usage
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="pt-8 px-8">
+                            {usage ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                                    <UsageItem
+                                        label="Businesses"
+                                        current={usage.current.businesses}
+                                        allowed={usage.allowed.businesses}
+                                    />
+                                    <UsageItem
+                                        label="Menus (Active)"
+                                        current={usage.current.menus}
+                                        allowed={usage.allowed.menus}
+                                    />
+                                    <UsageItem
+                                        label="Products"
+                                        current={usage.current.products}
+                                        allowed={usage.allowed.products}
+                                    />
+                                    <UsageItem
+                                        label="Employees"
+                                        current={usage.current.employees}
+                                        allowed={usage.allowed.employees}
+                                    />
                                 </div>
-                                <a href="/manage/owned">
-                                    <Button variant="outline" size="sm">
-                                        View
-                                    </Button>
-                                </a>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="p-5 hover:shadow-lg transition">
-                            <CardContent className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <Heart className="h-6 w-6 text-primary" />
-                                    <div>
-                                        <p className="font-semibold text-lg">
-                                            {0}
-                                        </p>
-                                        <p className="text-sm text-zinc-500">Joined</p>
-                                    </div>
+                            ) : (
+                                <div className="flex items-center justify-center py-10 text-muted-foreground">
+                                    {loadingUsage ? "Loading usage data..." : "Usage data unavailable"}
                                 </div>
-                                <a href="/manage/joined">
-                                    <Button variant="outline" size="sm">
-                                        View
-                                    </Button>
-                                </a>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </motion.div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
 
-                <Separator />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+                    {/* OWNED BUSINESSES */}
+                    <section className="space-y-6">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">My Businesses</h2>
+                                <p className="text-sm text-muted-foreground mt-1">Manage and edit your business profiles.</p>
+                            </div>
+                            <div className="flex flex-col items-end gap-1 shrink-0">
+                                <Button
+                                    variant={canCreateBusiness ? "default" : "outline"}
+                                    className={cn("gap-2 shadow-sm h-11", !canCreateBusiness && "border-border text-muted-foreground cursor-not-allowed")}
+                                    onClick={() => {
+                                        if (canCreateBusiness) {
+                                            window.location.href = "/manage/owned/new";
+                                        } else {
+                                            openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                                        }
+                                    }}
+                                >
+                                    <Plus className="h-4 w-4" />
+                                    <span>Create New</span>
+                                </Button>
+                                {!canCreateBusiness && (
+                                    <span className="text-[10px] font-bold text-primary uppercase tracking-tight">Upgrade Required</span>
+                                )}
+                            </div>
+                        </div>
 
-                {/* QUICK ACTIONS */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                >
-                    <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-                    <div className="flex flex-wrap gap-4">
-                        <a href="/manage/owned">
-                            <Button className="gap-2">
-                                <Plus className="h-4 w-4" />
-                                Create Business
+                        {loadingMyBussinesses ? (
+                            <div className="grid grid-cols-1 gap-4">
+                                {[1, 2].map(i => <div key={i} className="h-24 bg-muted rounded-2xl animate-pulse" />)}
+                            </div>
+                        ) : myBusinesses && myBusinesses.length > 0 ? (
+                            <div className="grid grid-cols-1 gap-4">
+                                {myBusinesses.map((biz) => (
+                                    <motion.div
+                                        key={biz.id}
+                                        whileHover={{ x: 8 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <Card
+                                            className="cursor-pointer hover:shadow-md transition-all border-border/80 bg-card group flex flex-col"
+                                            onClick={() => (window.location.href = `/manage/${biz.id}/owner/dashboard`)}
+                                        >
+                                            <CardContent className="p-6">
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                                                            <Building2 className="h-6 w-6" />
+                                                        </div>
+                                                        <div>
+                                                            <span className="font-bold text-lg block text-foreground">{biz.name}</span>
+                                                            <span className="text-xs text-muted-foreground font-medium">Owner Dashboard</span>
+                                                        </div>
+                                                    </div>
+                                                    <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-primary transition-colors" />
+                                                </div>
+
+                                                {/* PER-BUSINESS USAGE */}
+                                                {biz.counts && usage && (
+                                                    <div className="pt-4 mt-2 border-t border-border/80 grid grid-cols-2 gap-4">
+                                                        <UsageItem
+                                                            label="Employees"
+                                                            current={biz.counts.employees}
+                                                            allowed={usage.allowed.employees}
+                                                        />
+                                                        <UsageItem
+                                                            label="Menus"
+                                                            current={biz.counts.menus}
+                                                            allowed={usage.allowed.menus}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </CardContent>
+                                        </Card>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-border rounded-3xl bg-muted/30">
+                                <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground/50 mb-4">
+                                    <Building2 className="h-8 w-8" />
+                                </div>
+                                <h3 className="font-bold text-lg text-foreground">No businesses yet</h3>
+                                <p className="text-sm text-muted-foreground max-w-xs mt-2">Start your journey by adding your first business.</p>
+                            </div>
+                        )}
+                    </section>
+
+                    {/* STAFF BUSINESSES */}
+                    <section className="space-y-6">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">Joined Businesses</h2>
+                                <p className="text-sm text-muted-foreground mt-1">Businesses where you work as staff.</p>
+                            </div>
+                            <Button variant="outline" className="gap-2 shadow-sm border-border h-11 shrink-0" onClick={() => window.location.href = "/manage/join"}>
+                                <LogIn className="h-4 w-4" />
+                                Join
                             </Button>
-                        </a>
-                        <a href="/manage/billing">
-                            <Button variant="outline" className="gap-2">
-                                <LucideNewspaper className="h-4 w-4" />
-                                View Billing
-                            </Button>
-                        </a>
-                        <a href="/manage/help">
-                            <Button variant="outline" className="gap-2">
-                                <LucideNewspaper className="h-4 w-4" />
-                                Get Help
-                            </Button>
-                        </a>
-                    </div>
-                </motion.div>
+                        </div>
+
+                        {loadingMyEmployments ? (
+                            <div className="grid grid-cols-1 gap-4">
+                                {[1].map(i => <div key={i} className="h-24 bg-muted rounded-2xl animate-pulse" />)}
+                            </div>
+                        ) : joinedBusinesses.length > 0 ? (
+                            <div className="grid grid-cols-1 gap-4">
+                                {joinedBusinesses.map((emp: MyEmployment) => (
+                                    <motion.div
+                                        key={emp.id}
+                                        whileHover={{ x: 8 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <Card
+                                            className="cursor-pointer hover:shadow-md transition-all border-border/80 bg-card group"
+                                            onClick={() => (window.location.href = `/manage/${emp.business.id}/staff/dashboard`)}
+                                        >
+                                            <CardContent className="flex items-center justify-between p-6">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="h-12 w-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-600 border border-green-100 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                                                        <Building2 className="h-6 w-6" />
+                                                    </div>
+                                                    <div>
+                                                        <span className="font-bold text-lg block text-foreground">{emp.business.name}</span>
+                                                        <span className="text-xs text-muted-foreground font-medium">Staff Member</span>
+                                                    </div>
+                                                </div>
+                                                <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-green-600 transition-colors" />
+                                            </CardContent>
+                                        </Card>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-border rounded-3xl bg-muted/30">
+                                <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground/50 mb-4">
+                                    <Building2 className="h-8 w-8" />
+                                </div>
+                                <h3 className="font-bold text-lg text-foreground">Not in any teams</h3>
+                                <p className="text-sm text-muted-foreground max-w-xs mt-2">When you join a business team, it will appear here.</p>
+                            </div>
+                        )}
+                    </section>
+                </div>
             </div>
         </div>
     );
 };
 
-export default OverviewPage;
+const UsageItem = ({ label, current, allowed }: { label: string, current: number, allowed: number }) => {
+    const percentage = Math.min((current / allowed) * 100, 100);
+    const isFull = current >= allowed;
+
+    return (
+        <div className="space-y-3">
+            <div className="flex justify-between items-end">
+                <span className="text-sm font-bold text-foreground/80">{label}</span>
+                <span className={cn("text-xs font-medium px-2 py-0.5 rounded-full", isFull ? "bg-amber-100 text-amber-700 font-bold" : "text-muted-foreground bg-muted")}>
+                    {current} / {allowed}
+                </span>
+            </div>
+            <Progress value={percentage} className={cn("h-1.5", isFull ? "[&>div]:bg-amber-500 bg-amber-100" : "[&>div]:bg-primary bg-primary/10")} />
+        </div>
+    );
+}
+
+export default ManagePage;

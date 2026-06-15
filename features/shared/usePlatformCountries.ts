@@ -2,17 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getCountriesListApiCall } from "./service";
 import { PlatformCountry } from "@/models/shared/PlatformCountry";
 
-export const usePlatformCountries = () => {
-  const { data: platformCountries } = useQuery({
-    queryKey: ["platform_countries"],
+export const usePlatformCountries = ({ includeAll = false }: { includeAll?: boolean } = {}) => {
+  const { data: platformCountries, isLoading: isCountriesLoading } = useQuery({
+    queryKey: ["platform_countries", includeAll],
     queryFn: async () => {
-      const resp = await getCountriesListApiCall();
-
-      return PlatformCountry.parseApiArrayResponse(resp.data.data);
+      const data = await getCountriesListApiCall(includeAll);
+      return PlatformCountry.parseApiArrayResponse(data);
     },
   });
 
   return {
     platformCountries,
+    isCountriesLoading
   };
 };

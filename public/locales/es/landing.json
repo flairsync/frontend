@@ -1,0 +1,179 @@
+{
+  "marketplace": {
+    "title": "Marketplace"
+  },
+  "footer": {
+    "follow_us": "Síguenos"
+  },
+  "landing_page": {
+    "header": {
+      "navLinks": {
+        "home_tab_title": "Inicio",
+        "businesses_tab_title": "Negocios",
+        "features_tab_title": "Funciones",
+        "solution_tab_title": "Solución",
+        "integration_tab_title": "Integración",
+        "pricing_tab_title": "Precios",
+        "faq_tab_title": "FAQ"
+      },
+      "joinUsButton": "Únete a nosotros",
+      "jobs": "Empleos",
+      "findBusinessButton": "Encuentra tu negocio favorito",
+      "explore": "Explorar"
+    },
+    "hero": {
+      "title": "Mejora la gestión de tu café y restaurante",
+      "subtitle": "La forma más fácil de gestionar tu flujo de trabajo y colaborar con tu equipo sin problemas.",
+      "trialButton": "Comenzar prueba gratuita",
+      "explainButton": "Ver cómo funciona"
+    },
+    "features": {
+      "globalTitle": "Todo lo que necesitas para gestionar tu café y restaurante",
+      "globalSubtitle": "Desde menús hasta personal, inventario y descubrimiento de clientes: gestiona todo en una sola plataforma elegante. Ahorra tiempo, reduce costos y enfócate en ofrecer excelentes comidas y experiencias mientras nosotros manejamos las operaciones.",
+      "inventoryManagement": {
+        "title": "Gestión de inventario",
+        "subtitle": "Monitorea los ingredientes en tiempo real, recibe alertas de bajo stock y simplifica los pedidos a proveedores para mantener tu cocina funcionando sin problemas."
+      },
+      "staffManagement": {
+        "title": "Gestión de personal",
+        "subtitle": "Crea y comparte horarios del personal en minutos, gestiona turnos y sigue la asistencia, todo desde un solo lugar. Adiós al caos de último minuto."
+      }
+    },
+    "problemSolution": {
+      "title": "Conocemos los retos de manejar un restaurante",
+      "subtitle": "Gestionar personal, controlar el inventario, actualizar menús y fidelizar clientes puede ser abrumador. Por eso creamos una herramienta simple todo-en-uno diseñada para cafés y restaurantes.",
+      "leftPanelTitle": "Cómo podemos ayudarte a hacer crecer tu negocio",
+      "solutions": [
+        {
+          "id": 1,
+          "title": "Controla fácilmente el inventario",
+          "description": "Mantén tu stock actualizado, recibe alertas de bajo inventario y reordena ingredientes sin esfuerzo.",
+          "cardTitle": "Gestión de inventario",
+          "cardDescription": "Monitorea los ingredientes en tiempo real, recibe alertas de bajo stock y simplifica los pedidos a proveedores para mantener tu cocina funcionando sin problemas."
+        },
+        {
+          "id": 2,
+          "title": "Gestiona los horarios del personal",
+          "description": "Crea y comparte turnos, controla la asistencia y comunícate fácilmente con tu equipo.",
+          "cardTitle": "Gestión de personal",
+          "cardDescription": "Crea y comparte horarios del personal en minutos, gestiona turnos y sigue la asistencia, todo desde un solo lugar."
+        },
+        {
+          "id": 3,
+          "title": "Actualiza menús rápidamente",
+          "description": "Agrega nuevos artículos, elimina los antiguos y actualiza precios sin complicaciones.",
+          "cardTitle": "Gestión de menús",
+          "cardDescription": "Gestiona fácilmente tu menú y mantén tus ofertas actualizadas para tus clientes."
+        },
+        {
+          "id": 4,
+          "title": "Fomenta la lealtad de los clientes",
+          "description": "Involucra a tus clientes y haz que regresen con ofertas personalizadas.",
+          "cardTitle": "Compromiso con el cliente",
+          "cardDescription": "Crea programas de lealtad, sigue las preferencias de los clientes y mejora la retención."
+        }
+      ]
+    },
+    "stats": {
+      "items": [
+        {
+          "prefix": "HASTA UN",
+          "value": "35%",
+          "label": "Más ingresos",
+          "sub": "con pedidos optimizados y ventas adicionales"
+        },
+        {
+          "prefix": "HASTA",
+          "value": "4 hrs",
+          "label": "Ahorradas al día",
+          "sub": "en planificación, inventario e informes"
+        },
+        {
+          "prefix": "HASTA UN",
+          "value": "40%",
+          "label": "Menos desperdicio",
+          "sub": "con alertas de inventario en tiempo real"
+        },
+        {
+          "prefix": "HASTA",
+          "value": "3×",
+          "label": "Más rotación de mesas",
+          "sub": "con reservas y planos inteligentes"
+        }
+      ]
+    },
+    "integration": {
+      "title": "Configuración sencilla, sin complicaciones",
+      "subtitle": "Sin integraciones complicadas. Solo crea tu cuenta, configura los detalles de tu negocio y empieza a gestionar todo desde un solo lugar, de inmediato.",
+      "buttonText": "Reservar una demo",
+      "mainCard": {
+        "title": "Prevención de sobregiros",
+        "status": "Actualmente activo",
+        "progress": "93%",
+        "progressLabel": "Progreso semanal"
+      }
+    },
+    "pricing": {
+      "title": "¡Elige el plan que se adapte a ti!",
+      "monthly_label": "Facturación mensual",
+      "yearly_label": "Facturación anual (41% de descuento)",
+      "billed_note": "*Facturado anualmente, impuestos de la aplicación no incluidos",
+      "choose_plan_button": "Elegir plan"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "subtitle": "¿Tienes preguntas? Tenemos respuestas. Aquí están algunas de las preguntas más comunes de propietarios de restaurantes y cafés sobre nuestra plataforma.",
+      "cta_button": "¿Tienes más preguntas?"
+    },
+    "footer": {
+      "logo": "FlairSync",
+      "follow_us": "Síguenos",
+      "quick_links_title": "Enlaces rápidos",
+      "quick_links": [
+        "Inicio",
+        "Acerca de nosotros",
+        "Integraciones",
+        "Funciones",
+        "Precios",
+        "Contáctanos"
+      ],
+      "support_title": "Soporte",
+      "support_links": [
+        "FAQ",
+        "Centro de soporte",
+        "Política de privacidad",
+        "Términos"
+      ],
+      "contact_title": "Contacto",
+      "contact_address_line1": "Andorra La Vella, AD500, Andorra",
+      "contact_phone": "+376 123 456",
+      "newsletter_title": "Suscríbete a nuestro boletín",
+      "newsletter_placeholder": "Ingresa tu correo electrónico",
+      "copyright": "© {{year}} FlairSync. Todos los derechos reservados."
+    }
+  },
+  "subscriptions": {
+    "current_plan": "Plan actual",
+    "limits": {
+      "businesses": "{{count}} negocio",
+      "businesses_plural": "{{count}} negocios",
+      "employees": "{{count}} empleado",
+      "employees_plural": "{{count}} empleados",
+      "menus": "{{count}} menú",
+      "menus_plural": "{{count}} menús",
+      "products": "{{count}} producto",
+      "products_plural": "{{count}} productos"
+    },
+    "features": {
+      "basic_menu_mgmt": "Gestión básica de menú",
+      "menu_mgmt": "Gestión completa de menús",
+      "basic_analytics": "Analíticas básicas",
+      "advanced_analytics": "Analíticas avanzadas",
+      "staff_scheduling": "Planificación de personal",
+      "reservation_system": "Sistema de reservas",
+      "priority_support": "Soporte prioritario",
+      "ded_acc_manager": "Gestor de cuenta dedicado",
+      "custom_branding": "Marca personalizada"
+    }
+  }
+}

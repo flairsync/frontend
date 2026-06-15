@@ -1,0 +1,50 @@
+{
+  "public_feed": {
+    "resultsFound": "Found {{count}} results",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "default": "Default",
+      "rating_low": "Rating: Low to High",
+      "rating_high": "Rating: High to Low"
+    },
+    "searchHero": {
+      "title": "Stop looking for a restaurant - find it.",
+      "searchPlaceholder": "Search for restaurants, cuisines, or locations..."
+    },
+    "sidebar": {
+      "filterTitle": "Filter",
+      "clearFilters": "Clear filters",
+      "locationTitle": "Location",
+      "locationPlaceholder": "Andorra la vella, AD 500",
+      "customLocation": "Custom Location",
+      "nearby": "Nearby You",
+      "typeTitle": "Type",
+      "anyType": "Any type",
+      "anyTag": "Any tag",
+      "tagsTitle": "Tags"
+    }
+  },
+  "business_page": {
+    "header": { "reserve_table_button": "Reserve a Table" },
+    "info_cards": {
+      "rating_title": "Rating",
+      "status_title": "Status",
+      "status_open_now": "Open Now",
+      "status_closed": "Closed",
+      "status_closes_at": "Closes at {{time}}",
+      "status_opens_at": "Opens at {{time}}",
+      "status_check_hours": "Check hours",
+      "location_title": "Location",
+      "view_on_map_button": "View on Map"
+    },
+    "menu": {
+      "section_title": "Menu",
+      "categories": { "coffee_drinks": "Coffee & Drinks", "food": "Food" }
+    },
+    "timing": { "section_title": "Opening Hours" },
+    "contact": {
+      "section_title": "Contact & Socials",
+      "buttons": { "instagram": "Instagram", "facebook": "Facebook", "website": "Website" }
+    }
+  }
+}

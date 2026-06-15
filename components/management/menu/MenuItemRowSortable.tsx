@@ -4,12 +4,16 @@ import { Edit, Trash, Copy } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 
 type Props = {
     item: any;
     category: BusinessMenuCategory;
     categories: BusinessMenuCategory[];
     setCategories: (cats: BusinessMenuCategory[]) => void;
+    businessId?: string;
     onEdit: () => void;
     onDelete: () => void;
     onDuplicate: () => void;
@@ -18,10 +22,14 @@ type Props = {
 export const MenuItemRowSortable = ({
     item,
     category,
+    businessId,
     onEdit,
     onDelete,
     onDuplicate
 }: Props) => {
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId ?? null);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
+
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: item.id,
         data: { type: "item", name: item.name },
@@ -40,11 +48,14 @@ export const MenuItemRowSortable = ({
 
             <div className="flex-1 flex justify-between items-center">
                 <div>
-                    <p className="font-medium text-zinc-800 dark:text-zinc-100">{item.name}</p>
+                    <div className="flex items-center gap-1">
+                        <p className="font-medium text-zinc-800 dark:text-zinc-100">{item.name}</p>
+                        <AuditLogHint entityType="menu_item" entityId={item.id} businessId={businessId} />
+                    </div>
                     {item.description && <p className="text-sm text-zinc-500 dark:text-zinc-400">{item.description}</p>}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400">{item.price}</span>
+                    <span className="font-semibold text-indigo-600 dark:text-indigo-400">{currencySymbol}{item.price}</span>
                     <Button
                         size="sm"
                         variant="destructive"

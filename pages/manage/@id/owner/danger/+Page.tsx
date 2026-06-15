@@ -17,13 +17,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { AlertTriangle, Trash2, ShieldAlert } from "lucide-react";
+import { usePageContext } from "vike-react/usePageContext";
+import { navigate } from "vike/client/router";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
 
 const OwnerDashboardPage = () => {
+    const { routeParams } = usePageContext();
+    const businessId = routeParams.id as string;
+
+    const { myBusinessFullDetails, deleteBusiness, deletingBusiness } = useMyBusiness(businessId);
+
     const [openModal, setOpenModal] = useState<
         null | "shifts" | "menu" | "ownership" | "business"
     >(null);
 
     const [confirmText, setConfirmText] = useState("");
+
+    const canDelete =
+        myBusinessFullDetails != null &&
+        !myBusinessFullDetails.isPublished &&
+        (myBusinessFullDetails.counts?.employees ?? 0) === 0;
+
+    const deleteHint = myBusinessFullDetails?.isPublished
+        ? "Unpublish the business first"
+        : (myBusinessFullDetails?.counts?.employees ?? 0) > 0
+        ? `Remove all ${myBusinessFullDetails?.counts?.employees} staff member(s) first`
+        : null;
 
     const handleDangerAction = (type: string) => {
         console.log(`Performing danger action: ${type}`);
@@ -31,21 +50,31 @@ const OwnerDashboardPage = () => {
         setConfirmText("");
     };
 
-    return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
-            <div className="max-w-3xl mx-auto space-y-6">
-                <h1 className="text-3xl font-bold">Business Settings</h1>
+    function handleDeleteBusiness() {
+        deleteBusiness(undefined, {
+            onSuccess: () => {
+                setOpenModal(null);
+                setConfirmText("");
+                navigate("/manage/(global)/owned");
+            },
+        });
+    }
 
-                <Separator />
+    const businessNameConfirmed =
+        confirmText === (myBusinessFullDetails?.name ?? "");
+
+    return (
+        <div className="space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">Danger Zone</h1>
+
+            <Separator />
 
                 {/* Danger Zone */}
                 <Card className="border-red-500">
                     <CardHeader>
                         <CardTitle className="text-red-600">Danger Zone</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4
-                    
-                    ">
+                    <CardContent className="space-y-4">
                         <p className="text-sm text-zinc-600 dark:text-zinc-400">
                             These actions are destructive and cannot be undone. Please be
                             careful.
@@ -76,20 +105,26 @@ const OwnerDashboardPage = () => {
                                 Transfer Ownership
                             </Button>
 
-                            <Button
-                                variant="destructive"
-                                onClick={() => setOpenModal("business")}
-                            >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Permanently Delete Business
-                            </Button>
+                            <div className="flex flex-col gap-1">
+                                <Button
+                                    variant="destructive"
+                                    disabled={!canDelete}
+                                    onClick={() => setOpenModal("business")}
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Permanently Delete Business
+                                </Button>
+                                {deleteHint && (
+                                    <p className="text-xs text-red-500">{deleteHint}</p>
+                                )}
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
 
                 {/* Confirm Modals */}
-                <Dialog open={openModal === "shifts"} onOpenChange={() => setOpenModal(null)} >
-                    <DialogContent >
+                <Dialog open={openModal === "shifts"} onOpenChange={() => setOpenModal(null)}>
+                    <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Reset All Staff Shifts</DialogTitle>
                             <DialogDescription>
@@ -150,37 +185,55 @@ const OwnerDashboardPage = () => {
                     </DialogContent>
                 </Dialog>
 
-                <Dialog open={openModal === "business"} onOpenChange={() => setOpenModal(null)}>
+                <Dialog
+                    open={openModal === "business"}
+                    onOpenChange={() => {
+                        setOpenModal(null);
+                        setConfirmText("");
+                    }}
+                >
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Permanently Delete Business</DialogTitle>
-                            <DialogDescription className="text-red-600">
-                                This will permanently delete your business and all related data.
-                                To confirm, type <strong>DELETE</strong> below.
+                            <DialogDescription asChild>
+                                <div className="space-y-2 text-sm">
+                                    <p className="text-red-600">
+                                        This action is <strong>permanent and cannot be undone</strong>.
+                                        All menus, shifts, schedules, inventory, and media will be deleted.
+                                    </p>
+                                    <p>
+                                        Type <strong>{myBusinessFullDetails?.name}</strong> to confirm:
+                                    </p>
+                                </div>
                             </DialogDescription>
                         </DialogHeader>
                         <div className="py-2">
                             <Input
-                                placeholder="Type DELETE to confirm"
+                                placeholder={`Type "${myBusinessFullDetails?.name}" to confirm`}
                                 value={confirmText}
                                 onChange={(e) => setConfirmText(e.target.value)}
                             />
                         </div>
                         <DialogFooter>
-                            <Button variant="outline" onClick={() => setOpenModal(null)}>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setOpenModal(null);
+                                    setConfirmText("");
+                                }}
+                            >
                                 Cancel
                             </Button>
                             <Button
                                 variant="destructive"
-                                disabled={confirmText !== "DELETE"}
-                                onClick={() => handleDangerAction("delete_business")}
+                                disabled={!businessNameConfirmed || deletingBusiness}
+                                onClick={handleDeleteBusiness}
                             >
-                                Permanently Delete
+                                {deletingBusiness ? "Deleting..." : "Delete permanently"}
                             </Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
-            </div>
         </div>
     );
 };

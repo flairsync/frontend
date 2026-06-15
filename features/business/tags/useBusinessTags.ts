@@ -7,7 +7,7 @@ export const useBusinessTags = () => {
     queryKey: ["business_tags"],
     queryFn: async () => {
       const d = await getBusinessTagsApiCall();
-      return BusinessTag.parseApiArrayResponse(d.data.data);
+      return BusinessTag.parseApiArrayResponse(Array.isArray(d) ? d : []);
     },
   });
 

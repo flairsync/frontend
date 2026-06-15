@@ -13,10 +13,8 @@ export const useSession = () => {
   const { data: userSessions } = useQuery({
     queryKey: ["user_sessions_list"],
     queryFn: async () => {
-      const res = await getUserSessionsApiCall();
-      if (res.data.success) {
-        return UserSession.parseApiArrayResponse(res.data.data);
-      }
+      const data = await getUserSessionsApiCall();
+      return UserSession.parseApiArrayResponse(data);
     },
     enabled: user != null,
   });

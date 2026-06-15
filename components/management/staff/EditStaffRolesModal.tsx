@@ -41,7 +41,7 @@ export function EditStaffRolesModal({
     onOpenChange,
     onSave,
 }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
 
     /** 🔹 Editable role IDs */
     const [selectedRoleIds, setSelectedRoleIds] = useState<string[]>([]);

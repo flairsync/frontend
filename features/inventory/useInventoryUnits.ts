@@ -15,11 +15,8 @@ export const useInventoryUnits = (system: string = "metric") => {
     } = useQuery({
         queryKey: ["inventory_units", system],
         queryFn: async () => {
-            const resp = await fetchInventoryUnitsApiCall(system);
-            if (resp.data.success) {
-                return InventoryUnit.parseApiArrayResponse(resp.data.data);
-            }
-            return [];
+            const data = await fetchInventoryUnitsApiCall(system);
+            return InventoryUnit.parseApiArrayResponse(Array.isArray(data) ? data : []);
         },
         staleTime: 1000 * 60 * 10, // 10 minutes
     });

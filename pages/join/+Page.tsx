@@ -12,6 +12,7 @@ import { Check, X } from "lucide-react";
 import { usePageContext } from "vike-react/usePageContext";
 import PublicFeedHeader from "@/components/feed/PublicFeedHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
+import { navigate } from "vike/client/router";
 import { useBusinessInvitation } from "@/features/business/invitations/useBusinessInvitation";
 
 const JoinBusinessPage: React.FC = () => {
@@ -40,12 +41,28 @@ const JoinBusinessPage: React.FC = () => {
 
   const handleAccept = async () => {
     if (invitationToken && invitationDetails) {
-      acceptInvitation();
+      setActionInProgress(true);
+      acceptInvitation(undefined, {
+        onSuccess: () => {
+          navigate("/manage/overview");
+        },
+        onSettled: () => {
+          setActionInProgress(false);
+        }
+      });
     }
   };
 
   const handleRefuse = async () => {
-    refuseInvitation();
+    setActionInProgress(true);
+    refuseInvitation(undefined, {
+      onSuccess: () => {
+        navigate("/");
+      },
+      onSettled: () => {
+        setActionInProgress(false);
+      }
+    });
   };
 
 
@@ -83,7 +100,7 @@ const JoinBusinessPage: React.FC = () => {
                 variant="default"
                 className="flex items-center gap-2"
                 onClick={handleAccept}
-                disabled={actionInProgress}
+                disabled={actionInProgress || acceptingInvitation || refuseingInvitation}
               >
                 <Check className="w-4 h-4" />
                 Accept Invitation
@@ -92,7 +109,7 @@ const JoinBusinessPage: React.FC = () => {
                 variant="destructive"
                 className="flex items-center gap-2"
                 onClick={handleRefuse}
-                disabled={actionInProgress}
+                disabled={actionInProgress || acceptingInvitation || refuseingInvitation}
               >
                 <X className="w-4 h-4" />
                 Decline

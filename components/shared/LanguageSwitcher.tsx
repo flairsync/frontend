@@ -14,6 +14,7 @@ import FrFlag from "@/assets/flags/fr.svg";
 import EsFlag from "@/assets/flags/es.svg";
 import CatFlag from "@/assets/flags/ad.svg";
 import { useTranslation } from "react-i18next";
+import { setLangCookie } from "@/utils/cookies";
 
 
 
@@ -25,19 +26,19 @@ const languages = [
 ];
 
 
-export function LanguageSwitcher() {
-    const [currentLang, setCurrentLang] = useState("en");
-    const {
-        i18n
-    } = useTranslation();
+export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
+    const { i18n } = useTranslation();
+    const [currentLang, setCurrentLang] = useState(i18n.language || "en");
+
     useEffect(() => {
         i18n.on("languageChanged", (lng) => {
             setCurrentLang(lng);
-        })
+        });
     }, []);
 
     const handleSelect = (code: string) => {
         i18n.changeLanguage(code);
+        setLangCookie(code);
     };
 
     const current = languages.find((l) => l.code === currentLang);
@@ -45,13 +46,27 @@ export function LanguageSwitcher() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="flex items-center gap-2">
-                    <Globe className="h-4 w-4" />
-                    {current && (
-                        <img src={current.flag} alt={current.label} className="w-5 h-5" />
-                    )}
-                    <span>{current?.label}</span>
-                </Button>
+                {compact ? (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="flex items-center gap-1.5 px-2 text-foreground/70 hover:text-foreground"
+                        aria-label="Select language"
+                    >
+                        <Globe className="h-4 w-4 shrink-0" />
+                        {current && (
+                            <img src={current.flag} alt={current.label} className="w-4 h-4 rounded-sm" />
+                        )}
+                    </Button>
+                ) : (
+                    <Button variant="outline" size="sm" className="flex items-center gap-2">
+                        <Globe className="h-4 w-4" />
+                        {current && (
+                            <img src={current.flag} alt={current.label} className="w-5 h-5" />
+                        )}
+                        <span>{current?.label}</span>
+                    </Button>
+                )}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
                 {languages.map((lang) => (

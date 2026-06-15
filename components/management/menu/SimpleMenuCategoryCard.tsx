@@ -10,8 +10,14 @@ import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategor
 import { SimpleMenuItemRow } from "./SimpleMenuItemRow";
 import { useTranslation } from "react-i18next";
 
+import { useUsage } from "@/features/subscriptions/useUsage";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
+
 type Props = {
     category: BusinessMenuCategory;
+    businessId?: string;
     onEdit: () => void;
     onDelete: () => void;
     onAddItem: () => void;
@@ -27,6 +33,7 @@ type Props = {
 
 export const SimpleMenuCategoryCard = ({
     category,
+    businessId,
     onEdit,
     onDelete,
     onAddItem,
@@ -40,7 +47,10 @@ export const SimpleMenuCategoryCard = ({
     onMoveCategoryDown
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
+    const { usage } = useUsage();
+    const { openUpgradeModal } = useSubscriptionStore();
+    const canCreateProduct = usage?.canCreateProduct ?? true;
 
     return (
         <div className="mb-2">
@@ -82,9 +92,16 @@ export const SimpleMenuCategoryCard = ({
                             <UtensilsCrossed className="h-5 w-5" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100 truncate">
-                                {category.name}
-                            </h3>
+                            <div className="flex items-center gap-1">
+                                <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100 truncate">
+                                    {category.name}
+                                </h3>
+                                <AuditLogHint
+                                    entityType="menu_category"
+                                    entityId={category.id}
+                                    businessId={businessId}
+                                />
+                            </div>
                             <p className="text-sm text-zinc-500 dark:text-zinc-400">
                                 {t('menu_management.labels.items_count', { count: category.items?.length || 0 })}
                             </p>
@@ -117,14 +134,24 @@ export const SimpleMenuCategoryCard = ({
                         </Button>
                         <Button
                             size="sm"
-                            className="bg-indigo-500 text-white hover:bg-indigo-600"
+                            className={cn(
+                                "transition",
+                                canCreateProduct
+                                    ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                                    : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                            )}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onAddItem();
+                                if (canCreateProduct) {
+                                    onAddItem();
+                                } else {
+                                    openUpgradeModal("You've reached your product limit. Upgrade to add more items.");
+                                }
                             }}
                         >
                             <Plus className="h-4 w-4 mr-1" /> <span className="hidden sm:inline">{t('menu_management.actions.add_item')}</span>
                             <span className="sm:hidden">{t('shared.actions.add')}</span>
+                            {!canCreateProduct && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                         </Button>
                     </div>
                 </div>
@@ -146,6 +173,7 @@ export const SimpleMenuCategoryCard = ({
                                                 key={item.id}
                                                 item={item}
                                                 category={category}
+                                                businessId={businessId}
                                                 onEdit={() => onEditItem(item.id)}
                                                 onDelete={() => onDeleteItem(item.id)}
                                                 onDuplicate={() => onDuplicateItem(item.id)}

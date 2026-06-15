@@ -18,6 +18,18 @@ import {
   UpdateMenuDto,
   updateMenuItemApiCall,
   UpdateMenuItemDto,
+  createVariantApiCall,
+  updateVariantApiCall,
+  deleteVariantApiCall,
+  createModifierGroupApiCall,
+  updateModifierGroupApiCall,
+  deleteModifierGroupApiCall,
+  createModifierItemApiCall,
+  updateModifierItemApiCall,
+  deleteModifierItemApiCall,
+  CreateVariantDto,
+  CreateModifierGroupDto,
+  CreateModifierItemDto,
 } from "./service";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 import { toast } from "sonner";
@@ -30,9 +42,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     queryKey: ["business_menu", businessId, menuId],
     queryFn: async () => {
       const resp = await fetchBusinessSingleMenuApiCall(businessId, menuId);
-      if (resp.data.success) {
-        return BusinessMenu.parseApiResponse(resp.data.data) || undefined;
-      }
+      return resp ? BusinessMenu.parseApiResponse(resp as any) || undefined : undefined;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!businessId && !!menuId,
@@ -162,6 +172,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       );
     },
     onSuccess(data, variables, context) {
+      toast.success("Item added!");
       refreshBusinessMenu();
     },
   });
@@ -203,6 +214,111 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
 
   //#endregion
 
+  //#region Variants
+  const { mutate: createVariant } = useMutation({
+    mutationKey: ["menu_create_variant", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; data: CreateVariantDto }) => {
+      return createVariantApiCall(businessId, menuId, data.categoryId, data.itemId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Variant created!");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: updateVariant } = useMutation({
+    mutationKey: ["menu_update_variant", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; variantId: string; data: Partial<CreateVariantDto> }) => {
+      return updateVariantApiCall(businessId, menuId, data.categoryId, data.itemId, data.variantId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Variant updated!");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: deleteVariant } = useMutation({
+    mutationKey: ["menu_delete_variant", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; variantId: string }) => {
+      return deleteVariantApiCall(businessId, menuId, data.categoryId, data.itemId, data.variantId);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Variant deleted!");
+      refreshBusinessMenu();
+    },
+  });
+  //#endregion
+
+  //#region Modifier Groups
+  const { mutate: createModifierGroup } = useMutation({
+    mutationKey: ["menu_create_mod_group", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; data: CreateModifierGroupDto }) => {
+      return createModifierGroupApiCall(businessId, menuId, data.categoryId, data.itemId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Modifier Group created!");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: updateModifierGroup } = useMutation({
+    mutationKey: ["menu_update_mod_group", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; groupId: string; data: Partial<CreateModifierGroupDto> }) => {
+      return updateModifierGroupApiCall(businessId, menuId, data.categoryId, data.itemId, data.groupId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Modifier Group updated!");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: deleteModifierGroup } = useMutation({
+    mutationKey: ["menu_delete_mod_group", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; groupId: string }) => {
+      return deleteModifierGroupApiCall(businessId, menuId, data.categoryId, data.itemId, data.groupId);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Modifier Group deleted!");
+      refreshBusinessMenu();
+    },
+  });
+  //#endregion
+
+  //#region Modifier Items
+  const { mutate: createModifierItem } = useMutation({
+    mutationKey: ["menu_create_mod_item", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; groupId: string; data: CreateModifierItemDto }) => {
+      return createModifierItemApiCall(businessId, menuId, data.categoryId, data.itemId, data.groupId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Modifier Item created!");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: updateModifierItem } = useMutation({
+    mutationKey: ["menu_update_mod_item", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; groupId: string; modItemId: string; data: Partial<CreateModifierItemDto> }) => {
+      return updateModifierItemApiCall(businessId, menuId, data.categoryId, data.itemId, data.groupId, data.modItemId, data.data);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Modifier Item updated!");
+      refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: deleteModifierItem } = useMutation({
+    mutationKey: ["menu_delete_mod_item", businessId, menuId],
+    mutationFn: async (data: { categoryId: string; itemId: string; groupId: string; modItemId: string }) => {
+      return deleteModifierItemApiCall(businessId, menuId, data.categoryId, data.itemId, data.groupId, data.modItemId);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Modifier Item deleted!");
+      refreshBusinessMenu();
+    },
+  });
+  //#endregion
+
   return {
     // Menu
     businessMenu,
@@ -218,5 +334,17 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     createNewItem,
     removeItem,
     updateItem,
+    // Variants
+    createVariant,
+    updateVariant,
+    deleteVariant,
+    // Modifier Groups
+    createModifierGroup,
+    updateModifierGroup,
+    deleteModifierGroup,
+    // Modifier Items
+    createModifierItem,
+    updateModifierItem,
+    deleteModifierItem,
   };
 };

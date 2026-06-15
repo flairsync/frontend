@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const baseBusinessUrl = `${import.meta.env.BASE_URL}/businesses`;
 
@@ -6,7 +7,7 @@ const getInventoryUrl = (businessId: string) => {
     return `${baseBusinessUrl}/${businessId}/inventory`;
 };
 
-// DTOs
+// DTOs & Types
 export interface CreateInventoryGroupDto {
     name: string;
 }
@@ -15,7 +16,7 @@ export interface CreateInventoryItemDto {
     name: string;
     description?: string;
     unitId?: number;
-    quantity: number;
+    quantity?: number;
     lowStockThreshold?: number;
     barcode?: string;
     groupId?: string;
@@ -25,25 +26,19 @@ export interface UpdateInventoryItemDto {
     name?: string;
     description?: string;
     unitId?: number;
-    quantity?: number;
     lowStockThreshold?: number;
     barcode?: string;
     groupId?: string;
 }
 
+export type AdjustStockType = "add" | "subtract" | "set" | "waste";
+
 export interface AdjustStockDto {
-    adjustment: number; // Positive to add, negative to subtract
-    reason?: string;
+    type: AdjustStockType;
+    amount: number;
+    notes?: string;
 }
 
-// API Calls - Units
-export const fetchInventoryUnitsApiCall = (system?: string) => {
-    return flairapi.get(`${import.meta.env.BASE_URL}/inventory/units`, {
-        params: { system },
-    });
-};
-
-// API Calls - Items
 export interface InventoryFilters {
     page?: number;
     limit?: number;
@@ -53,26 +48,67 @@ export interface InventoryFilters {
     barcode?: string;
     unitId?: number;
     sortBy?: string;
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: "asc" | "desc";
 }
 
-export const fetchInventoryItemsApiCall = (businessId: string, params?: InventoryFilters) => {
-    return flairapi.get(`${getInventoryUrl(businessId)}/items`, { params });
+export interface TopConsumedFilters {
+    limit?: number;
+    startDate?: string;
+    endDate?: string;
+}
+
+export interface TimelineFilters {
+    page?: number;
+    limit?: number;
+    itemId?: string;
+    type?: string;
+    sourceType?: string;
+    startDate?: string;
+    endDate?: string;
+}
+
+export interface RecipeIngredientDto {
+    inventoryItemId: string;
+    quantityRequired: number;
+    unit?: string;
+}
+
+export interface SetRecipeDto {
+    ingredients: RecipeIngredientDto[];
+}
+
+// API Calls - Units
+export const fetchInventoryUnitsApiCall = async (system?: string) =>
+    unwrap(await flairapi.get(`${import.meta.env.BASE_URL}/inventory/units`, { params: { system } }));
+
+// API Calls - Groups
+export const fetchInventoryGroupsApiCall = async (businessId: string) =>
+    unwrap(await flairapi.get(`${getInventoryUrl(businessId)}/groups`));
+
+export const createInventoryGroupApiCall = (businessId: string, data: CreateInventoryGroupDto) => {
+    return flairapi.post(`${getInventoryUrl(businessId)}/groups`, data);
 };
 
-export const fetchInventoryAutocompleteApiCall = (businessId: string, query: string) => {
-    return flairapi.get(`${getInventoryUrl(businessId)}/autocomplete`, {
-        params: { q: query },
-    });
+export const updateInventoryGroupApiCall = (businessId: string, groupId: string, data: CreateInventoryGroupDto) => {
+    return flairapi.patch(`${getInventoryUrl(businessId)}/groups/${groupId}`, data);
 };
 
-export const fetchInventoryLowStockApiCall = (businessId: string) => {
-    return flairapi.get(`${getInventoryUrl(businessId)}/items/low-stock`);
+export const deleteInventoryGroupApiCall = (businessId: string, groupId: string) => {
+    return flairapi.delete(`${getInventoryUrl(businessId)}/groups/${groupId}`);
 };
 
-export const fetchInventoryItemApiCall = (businessId: string, itemId: string) => {
-    return flairapi.get(`${getInventoryUrl(businessId)}/items/${itemId}`);
-};
+// API Calls - Items
+export const fetchInventoryItemsApiCall = async (businessId: string, params?: InventoryFilters) =>
+    unwrapPaginated(await flairapi.get(`${getInventoryUrl(businessId)}/items`, { params }));
+
+export const fetchInventoryAutocompleteApiCall = async (businessId: string, query: string) =>
+    unwrap(await flairapi.get(`${getInventoryUrl(businessId)}/autocomplete`, { params: { q: query } }));
+
+export const fetchInventoryLowStockApiCall = async (businessId: string) =>
+    unwrap(await flairapi.get(`${getInventoryUrl(businessId)}/items/low-stock`));
+
+export const fetchInventoryItemApiCall = async (businessId: string, itemId: string) =>
+    unwrap(await flairapi.get(`${getInventoryUrl(businessId)}/items/${itemId}`));
 
 export const createInventoryItemApiCall = (businessId: string, data: CreateInventoryItemDto) => {
     return flairapi.post(`${getInventoryUrl(businessId)}/items`, data);
@@ -90,19 +126,27 @@ export const adjustInventoryStockApiCall = (businessId: string, itemId: string, 
     return flairapi.post(`${getInventoryUrl(businessId)}/items/${itemId}/adjust`, data);
 };
 
-// API Calls - Groups
-export const fetchInventoryGroupsApiCall = (businessId: string) => {
-    return flairapi.get(`${getInventoryUrl(businessId)}/groups`);
-};
+// API Calls - Dashboard & Analytics
+export const fetchInventoryDashboardApiCall = async (businessId: string) =>
+    unwrap(await flairapi.get(`${getInventoryUrl(businessId)}/dashboard`));
 
-export const createInventoryGroupApiCall = (businessId: string, data: CreateInventoryGroupDto) => {
-    return flairapi.post(`${getInventoryUrl(businessId)}/groups`, data);
-};
+export const fetchInventoryTopConsumedApiCall = async (businessId: string, params?: TopConsumedFilters) =>
+    unwrap(await flairapi.get(`${getInventoryUrl(businessId)}/top-consumed`, { params }));
 
-export const updateInventoryGroupApiCall = (businessId: string, groupId: string, data: CreateInventoryGroupDto) => {
-    return flairapi.patch(`${getInventoryUrl(businessId)}/groups/${groupId}`, data);
-};
+// API Calls - Movement History
+export const fetchInventoryMovementsApiCall = async (businessId: string, itemId: string, params?: { page?: number; limit?: number }) =>
+    unwrapPaginated(await flairapi.get(`${getInventoryUrl(businessId)}/items/${itemId}/movements`, { params }));
 
-export const deleteInventoryGroupApiCall = (businessId: string, groupId: string) => {
-    return flairapi.delete(`${getInventoryUrl(businessId)}/groups/${groupId}`);
+export const fetchInventoryTimelineApiCall = async (businessId: string, params?: TimelineFilters) =>
+    unwrapPaginated(await flairapi.get(`${getInventoryUrl(businessId)}/timeline`, { params }));
+
+// API Calls - Recipes
+export const setMenuItemRecipeApiCall = (businessId: string, menuItemId: string, data: SetRecipeDto) =>
+    flairapi.post(`${baseBusinessUrl}/${businessId}/menu/items/${menuItemId}/recipes`, data);
+
+export const getMenuItemRecipeApiCall = async (businessId: string, menuItemId: string) =>
+    unwrap(await flairapi.get(`${baseBusinessUrl}/${businessId}/menu/items/${menuItemId}/recipes`));
+
+export const deleteRecipeIngredientApiCall = (businessId: string, recipeId: string) => {
+    return flairapi.delete(`${getInventoryUrl(businessId)}/recipes/${recipeId}`);
 };

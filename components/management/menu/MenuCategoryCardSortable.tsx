@@ -9,10 +9,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { useUsage } from "@/features/subscriptions/useUsage";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { cn } from "@/lib/utils";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
+
 type Props = {
     category: BusinessMenuCategory;
     categories: BusinessMenuCategory[];
     setCategories: (cats: BusinessMenuCategory[]) => void;
+    businessId?: string;
     onEdit: () => void;
     onDelete: () => void;
     onAddItem: () => void;
@@ -25,6 +31,7 @@ export const MenuCategoryCardSortable = ({
     category,
     categories,
     setCategories,
+    businessId,
     onEdit,
     onDelete,
     onAddItem,
@@ -33,6 +40,9 @@ export const MenuCategoryCardSortable = ({
     onDuplicateItem
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { usage } = useUsage();
+    const { openUpgradeModal } = useSubscriptionStore();
+    const canCreateProduct = usage?.canCreateProduct ?? true;
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: category.id,
@@ -67,6 +77,11 @@ export const MenuCategoryCardSortable = ({
                         <div className="flex items-center gap-3">
                             {isOpen ? <ChevronDown /> : <ChevronRight />}
                             <CardTitle className="text-lg font-semibold">{category.name}</CardTitle>
+                            <AuditLogHint
+                                entityType="menu_category"
+                                entityId={category.id}
+                                businessId={businessId}
+                            />
                             <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                 ({category.items?.length || 0} items)
                             </span>
@@ -95,12 +110,23 @@ export const MenuCategoryCardSortable = ({
                             </Button>
                             <Button
                                 size="sm"
-                                className="bg-indigo-500 text-white hover:bg-indigo-600"
+                                className={cn(
+                                    "transition",
+                                    canCreateProduct
+                                        ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                                        : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                )}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    onAddItem();
+                                    if (canCreateProduct) {
+                                        onAddItem();
+                                    } else {
+                                        openUpgradeModal("You've reached your product limit. Upgrade to add more items.");
+                                    }
                                 }}
-                            >                                <Plus className="h-4 w-4 mr-1" /> Add Item
+                            >
+                                <Plus className="h-4 w-4 mr-1" /> Add Item
+                                {!canCreateProduct && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                             </Button>
                         </div>
                     </CardHeader>
@@ -128,6 +154,7 @@ export const MenuCategoryCardSortable = ({
                                                 category={category}
                                                 categories={categories}
                                                 setCategories={setCategories}
+                                                businessId={businessId}
                                                 onEdit={() => onEditItem(item.id)}
                                                 onDelete={() => onDeleteItem(item.id)}
                                                 onDuplicate={() => onDuplicateItem(item.id)}

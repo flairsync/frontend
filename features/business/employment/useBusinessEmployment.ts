@@ -8,7 +8,7 @@ export const useBusinessEmployment = (businessId: string) => {
       queryKey: ["business_emps", businessId],
       queryFn: async () => {
         const resp = await fetchBusinessEmployeesApiCall(businessId);
-        return BusinessEmployee.parseApiArrayResponse(resp.data.data);
+        return BusinessEmployee.parseApiArrayResponse(resp.data);
       },
     });
 

@@ -1,0 +1,160 @@
+{
+  "shared": {
+    "days": {
+      "monday": "Lundi",
+      "tuesday": "Mardi",
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi",
+      "saturday": "Samedi",
+      "sunday": "Dimanche"
+    },
+    "actions": {
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "add": "Ajouter",
+      "move": "Déplacer",
+      "duplicate": "Dupliquer",
+      "confirm": "Confirmer",
+      "back": "Retour",
+      "search": "Rechercher",
+      "clear": "Effacer",
+      "all": "Tout",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "retry": "Réessayer la connexion"
+    },
+    "tags": {
+      "halal": "Halal",
+      "vegan": "Végan",
+      "vegetarian": "Végétarien",
+      "gluten_free": "Sans gluten",
+      "organic": "Bio",
+      "kosher": "Casher",
+      "dairy_free": "Sans lactose",
+      "nut_free": "Sans noix",
+      "locally_sourced": "Local",
+      "fair_trade": "Commerce équitable",
+      "pet_friendly": "Animaux acceptés",
+      "outdoor_seating": "Terrasse",
+      "takeaway": "À emporter",
+      "delivery": "Livraison",
+      "kid_friendly": "Adapté aux enfants",
+      "wifi": "Wi-Fi",
+      "wheelchair_accessible": "Accessible PMR",
+      "brunch": "Brunch",
+      "breakfast": "Petit-déjeuner",
+      "late_night": "Ouvert tard",
+      "cozy": "Chaleureux",
+      "romantic": "Romantique",
+      "family_friendly": "Familial",
+      "trendy": "Tendance",
+      "quiet": "Calme",
+      "lively": "Animé"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Page non trouvée",
+      "description": "Nous ne pouvons pas trouver la page que vous recherchez. Elle a peut-être été déplacée, renommée ou n'a jamais existé.",
+      "quickSearch": "Recherche rapide",
+      "searchPlaceholder": "Rechercher pages, personnel ou paramètres...",
+      "searchButton": "Rechercher",
+      "goToDashboard": "Aller au tableau de bord",
+      "contactSupport": "Contacter le support",
+      "reportError": "Si vous pensez qu'il s'agit d'une erreur, veuillez la signaler — nous enquêterons.",
+      "lostTitle": "Perdu en cuisine ?",
+      "lostDescription": "Essayez l'un des liens ci-dessous ou retournez au tableau de bord principal.",
+      "staffManagement": "Gestion du personnel",
+      "scheduleManagement": "Gestion des horaires",
+      "settings": "Paramètres",
+      "errorCode": "Code d'erreur :"
+    },
+    "500": {
+      "title": "500 Erreur interne du serveur",
+      "description": "Une erreur est survenue."
+    },
+    "technical": {
+      "network_title": "Connexion perdue",
+      "error_title": "Erreur système",
+      "network_error": "Erreur réseau ou connexion perdue. Nous y travaillons.",
+      "server_error": "Erreur interne du serveur. Veuillez réessayer plus tard.",
+      "session_expired": "Votre session a expiré. Veuillez vous reconnecter.",
+      "unexpected_error": "Une erreur inattendue est survenue. Veuillez réessayer.",
+      "working_on_it": "Nous sommes au courant du problème et nous travaillons à restaurer l'accès."
+    }
+  },
+  "input_errors": {
+    "email": {
+      "invalid": "Adresse e-mail invalide",
+      "required": "L'e-mail est requis"
+    },
+    "firstName": {
+      "required": "Le prénom est requis",
+      "too_long": "Le prénom est trop long"
+    },
+    "lastName": {
+      "required": "Le nom est requis",
+      "too_long": "Le nom est trop long"
+    },
+    "displayName": {
+      "required": "Le nom d'affichage est requis",
+      "too_long": "Le nom d'affichage est trop long"
+    },
+    "password": {
+      "min_length": "Le mot de passe doit comporter au moins 8 caractères",
+      "requirements": "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre",
+      "too_long": "Le mot de passe est trop long",
+      "required": "Le mot de passe est requis"
+    },
+    "repeat_password": {
+      "mismatch": "Les mots de passe doivent correspondre",
+      "required": "Veuillez confirmer votre mot de passe"
+    },
+    "repeatNewPassword": {
+      "mismatch": "Les nouveaux mots de passe doivent correspondre",
+      "required": "Veuillez confirmer votre nouveau mot de passe"
+    },
+    "checkbox": {
+      "required": "Vous devez cocher cette case"
+    }
+  },
+  "business_types": {
+    "bakery": "Boulangerie",
+    "fast_food": "Restauration rapide",
+    "coffee_shop": "Café",
+    "restaurant": "Restaurant",
+    "other": "Autre"
+  },
+  "cookies": {
+    "banner_text": "Nous utilisons des cookies pour améliorer votre expérience, mémoriser vos préférences et analyser l'utilisation du site. En cliquant sur « Tout accepter », vous consentez à tous les cookies.",
+    "learn_more": "En savoir plus dans notre politique de cookies & RGPD",
+    "manage": "Gérer les préférences",
+    "reject_all": "Tout refuser",
+    "accept_all": "Tout accepter",
+    "always_active": "Toujours actif",
+    "save_preferences": "Enregistrer mes préférences",
+    "preferences_title": "Préférences de cookies",
+    "preferences_description": "Choisissez les cookies que vous autorisez. Les cookies strictement nécessaires ne peuvent pas être désactivés car ils sont indispensables au bon fonctionnement de la plateforme.",
+    "categories": {
+      "necessary": {
+        "label": "Strictement nécessaires",
+        "description": "Requis pour l'authentification, la sécurité et les fonctionnalités principales. Ne peuvent pas être désactivés."
+      },
+      "functional": {
+        "label": "Fonctionnels",
+        "description": "Mémorisent votre langue, votre thème et d'autres préférences pour personnaliser votre expérience."
+      },
+      "analytics": {
+        "label": "Analytiques",
+        "description": "Nous aident à comprendre comment vous utilisez la plateforme afin de l'améliorer. Toutes les données sont anonymisées."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "description": "Utilisés pour diffuser du contenu pertinent et mesurer l'efficacité des campagnes. Nous ne vendons pas vos données."
+      }
+    }
+  }
+}

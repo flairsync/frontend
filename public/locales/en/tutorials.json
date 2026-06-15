@@ -1,0 +1,531 @@
+{
+  "page": {
+    "title": "FlairSync User Guide",
+    "subtitle": "Step-by-step tutorials for every feature on the platform. Pick a topic below or use the sidebar to get started."
+  },
+  "ui": {
+    "search_placeholder": "Search topics…",
+    "contents": "Contents",
+    "overview_label": "Overview",
+    "who_uses": "Who uses this",
+    "how_to": "How to do it",
+    "tips_label": "Tips",
+    "ready_to_try": "Ready to try it?",
+    "ready_desc": "Open the relevant section in the app and follow the steps above.",
+    "part": "Part",
+    "topic": "topic",
+    "topics": "topics",
+    "prev_label": "Previous",
+    "next_label": "Next",
+    "no_results": "No results found."
+  },
+  "parts": {
+    "1": "Getting Started",
+    "2": "Business Setup",
+    "3": "Staff Management",
+    "4": "Scheduling & Shifts",
+    "5": "Attendance & Payroll",
+    "6": "Menu Management",
+    "7": "Floor Plan & Tables",
+    "8": "Orders",
+    "9": "Kitchen Display System (KDS)",
+    "10": "Reservations",
+    "11": "Inventory Management",
+    "12": "Notifications",
+    "13": "Analytics",
+    "14": "POS Station",
+    "15": "Guest Discovery & Booking",
+    "16": "Subscriptions & Billing",
+    "17": "Tasks",
+    "18": "Jobs & Recruitment",
+    "19": "Marketplace",
+    "20": "Support",
+    "21": "Account & Privacy"
+  },
+  "sections": {
+    "1-1": {
+      "title": "Creating Your Account",
+      "whatItIs": "Register and verify your identity so you can access the platform.",
+      "whoUsesIt": "Anyone new to FlairSync.",
+      "stepGroups": [{ "steps": ["Click Sign Up on the login page.", "Enter your full name, email address, and a strong password.", "Click Create Account.", "Open your inbox — you'll receive a 6-digit verification code.", "Enter the code on the verification screen.", "Your account is now active. You'll be taken to your dashboard."] }],
+      "tips": ["The verification code expires in 10 minutes. Request a new one if it expires.", "You can also sign up via Continue with Google — no code needed."],
+      "appRouteLabel": "Sign Up Now"
+    },
+    "1-2": {
+      "title": "Logging In",
+      "whatItIs": "Access your account with email/password or Google.",
+      "whoUsesIt": "All users.",
+      "stepGroups": [{ "steps": ["Go to the login page and enter your email and password.", "Click Log In.", "If you have two-factor authentication enabled, enter the 6-digit code from your authenticator app.", "You're in."] }],
+      "tips": ["Sessions expire after 15 minutes of inactivity. You'll be automatically re-authenticated if your refresh token is valid.", "Click Forgot Password to receive a reset link by email."],
+      "appRouteLabel": "Go to Login"
+    },
+    "1-3": {
+      "title": "Resetting Your Password",
+      "whatItIs": "Recover access to your account when you've forgotten your password.",
+      "whoUsesIt": "Any user locked out of their account.",
+      "stepGroups": [{ "steps": ["On the login page, click Forgot Password.", "Enter your registered email address and click Send Reset Link.", "Open your inbox and click the link in the email.", "Enter your new password twice to confirm.", "Click Reset Password — you can now log in with the new password."] }],
+      "appRouteLabel": "Reset Password"
+    },
+    "1-4": {
+      "title": "Setting Up Two-Factor Authentication",
+      "whatItIs": "An extra layer of security that requires a time-based code from an authenticator app every time you log in.",
+      "whoUsesIt": "Any user who wants stronger account security.",
+      "stepGroups": [{ "steps": ["Go to Profile Settings → Security.", "Click Enable Two-Factor Authentication.", "Open an authenticator app (Google Authenticator, Authy, or similar) on your phone.", "Scan the QR code shown on screen.", "Enter the 6-digit code shown in your app to confirm.", "Save your backup codes somewhere safe — you'll need them if you lose your phone.", "2FA is now active. Future logins will ask for your authenticator code."] }],
+      "tips": ["To turn off 2FA, go to Profile Settings → Security → Disable 2FA and enter a valid authenticator code."],
+      "appRouteLabel": "Set Up 2FA"
+    },
+    "1-5": {
+      "title": "Updating Your Profile",
+      "whatItIs": "Edit your name, profile picture, and personal details.",
+      "whoUsesIt": "All users.",
+      "stepGroups": [{ "steps": ["Click your avatar in the top-right corner.", "Select Profile Settings.", "Update your name, email, or other information.", "To change your profile picture, click Upload Avatar and choose an image file.", "Click Save Changes."] }],
+      "appRouteLabel": "Go to Profile"
+    },
+    "1-6": {
+      "title": "Managing Active Sessions",
+      "whatItIs": "See every device currently logged into your account and revoke access from any of them.",
+      "whoUsesIt": "Users concerned about account security.",
+      "stepGroups": [{ "steps": ["Go to Profile Settings → Sessions.", "You'll see a list of active sessions with device info and location.", "To sign out of a specific device, click Revoke next to it.", "To sign out of all other devices, click Revoke All Other Sessions."] }],
+      "appRouteLabel": "Manage Sessions"
+    },
+    "2-1": {
+      "title": "Creating Your Business",
+      "whatItIs": "Register your restaurant or venue on FlairSync so you can manage staff, menus, orders, and more.",
+      "whoUsesIt": "Business owners onboarding for the first time.",
+      "stepGroups": [{ "steps": ["From your dashboard, click Create a Business.", "Enter your business name and select a Business Type (e.g., Restaurant, Café, Bar).", "Add your business address and country.", "Click Create Business.", "You'll be taken to your new business dashboard."] }],
+      "tips": ["You can manage multiple businesses from one account — just repeat this process.", "Your subscription plan determines how many businesses you can create."],
+      "appRouteLabel": "Go to Dashboard"
+    },
+    "2-2": {
+      "title": "Completing Your Business Profile",
+      "whatItIs": "Add all the details guests and customers will see when they discover your business.",
+      "whoUsesIt": "Business owners after initial setup.",
+      "stepGroups": [{ "steps": ["Go to Business Settings → Profile.", "Upload your Logo (appears in search results and your public profile).", "Add a short Description of your venue.", "Select relevant Tags (e.g., Rooftop, Vegan, Live Music) — these help customers find you.", "Set your Price Range ($ to $$$$).", "Add a Phone Number and Website if you have one.", "Upload Gallery Photos to showcase your space (up to your plan limit).", "Click Save."] }],
+      "appRouteLabel": "Open Business Hub"
+    },
+    "2-3": {
+      "title": "Setting Opening Hours",
+      "whatItIs": "Define when your business is open so the system can manage reservations and show accurate hours to customers.",
+      "whoUsesIt": "Business owners.",
+      "stepGroups": [{ "steps": ["Go to Business Settings → Opening Hours.", "For each day of the week, toggle it On if you're open that day.", "Set the Opening Time and Closing Time.", "If you're closed on a particular day, leave the toggle off.", "Click Save Hours."] }],
+      "tips": ["You can set different hours for public holidays separately."],
+      "appRouteLabel": "Open Business Settings"
+    },
+    "2-4": {
+      "title": "Setting Up Tax Rates",
+      "whatItIs": "Configure the tax rates that apply to orders at your business.",
+      "whoUsesIt": "Business owners responsible for billing.",
+      "stepGroups": [{ "steps": ["Go to Business Settings → Taxes.", "Click Add Tax Group and give it a name (e.g., \"Standard VAT\").", "Enter the tax Percentage (e.g., 20 for 20%).", "Assign the tax group to applicable menu items later in Menu Settings.", "Click Save."] }],
+      "appRouteLabel": "Open Business Settings"
+    },
+    "3-1": {
+      "title": "Inviting Staff Members",
+      "whatItIs": "Send email invitations to employees so they can join your business on FlairSync.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Staff → Invitations.", "Click Invite Staff Member.", "Enter the staff member's email address.", "Select the role they'll have (e.g., Waiter, Kitchen Staff, Manager).", "Click Send Invitation.", "The staff member will receive an email with a link to accept the invitation and create or link their account."] }],
+      "tips": ["You can resend or cancel invitations from the Invitations list.", "The invitation link expires after 7 days."],
+      "appRouteLabel": "Go to Staff"
+    },
+    "3-2": {
+      "title": "Creating and Managing Roles",
+      "whatItIs": "Define custom job roles and control exactly what each role can see and do in the system.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Staff → Roles.", "Click Create Role.", "Give the role a name and optional description.", "Click Create.", "Now click Edit Permissions on the new role.", "Toggle on the permissions this role needs (e.g., View Orders, Manage Reservations, View Inventory).", "Click Save Permissions."] }],
+      "tips": ["Changes to a role's permissions take effect immediately for all staff with that role.", "One staff member can have multiple roles — their permissions are the union of all their roles."],
+      "appRouteLabel": "Go to Roles"
+    },
+    "3-3": {
+      "title": "Managing Employee Details",
+      "whatItIs": "View your full staff list, update employment details, set hourly rates, and manage each person's access.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Staff → Employees.", "Click on any staff member to open their employment profile.", "To update their role, click Edit Role and select a new one.", "To set their hourly rate (used for payroll), click Edit Rate and enter the value.", "To set a POS PIN for tablet login, click Set PIN and enter a 4-6 digit number.", "To remove someone from the business, click End Employment at the bottom of their profile."] }],
+      "appRouteLabel": "Go to Employees"
+    },
+    "3-4": {
+      "title": "Organizing Staff into Teams",
+      "whatItIs": "Group employees into teams like \"Kitchen\", \"Front of House\", or \"Bar\" so you can manage and schedule them together.",
+      "whoUsesIt": "Managers in larger venues.",
+      "stepGroups": [{ "steps": ["Go to Staff → Teams.", "Click Create Team and give it a name.", "Open the team and click Add Members.", "Select the employees you want to add to this team.", "Click Save."] }],
+      "tips": ["Teams make bulk shift creation much faster — you can create a shift for an entire team at once."],
+      "appRouteLabel": "Go to Teams"
+    },
+    "4-1": {
+      "title": "Creating a Shift for One Employee",
+      "whatItIs": "Schedule a work shift for a specific employee on a specific date.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Scheduling → Schedule.", "Click Add Shift or click directly on a day in the calendar.", "Select the employee.", "Set the start time and end time.", "Optionally select a shift template if you have recurring patterns saved.", "Click Save Shift.", "The employee will receive a notification about their new shift."] }],
+      "appRouteLabel": "Open Schedule"
+    },
+    "4-2": {
+      "title": "Creating Shifts for a Team",
+      "whatItIs": "Create the same shift for all members of a team at once — great for setting weekly rosters quickly.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Scheduling → Schedule.", "Click Bulk Create → Team Shift.", "Select the team you want to schedule.", "Set the date, start time, and end time.", "Click Create Shifts — one shift will be created for every active member of the team."] }],
+      "appRouteLabel": "Open Schedule"
+    },
+    "4-3": {
+      "title": "Generating a Weekly Schedule Draft",
+      "whatItIs": "Automatically generate a draft weekly schedule based on staff availability and templates, which managers can review and adjust before publishing.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Scheduling → Schedule.", "Click Generate Weekly Draft.", "Select the week you want to schedule.", "The system will create draft shifts (shown in a \"Draft\" state).", "Review the draft — adjust any shifts by clicking on them.", "When satisfied, click Publish Schedule.", "All staff on the schedule will be notified."] }],
+      "appRouteLabel": "Open Schedule"
+    },
+    "4-4": {
+      "title": "Managing Shift Swaps",
+      "whatItIs": "Allows staff to request swapping a shift with a colleague. Managers review and approve or deny the request.",
+      "whoUsesIt": "Staff (request) and Managers (approve).",
+      "stepGroups": [
+        { "label": "Staff requesting a swap", "steps": ["Go to My Schedule.", "Click on the shift you want to swap.", "Click Request Swap and select a colleague to swap with.", "Submit the request."] },
+        { "label": "Manager approving a swap", "steps": ["Go to Scheduling → Swap Requests.", "Review the pending request and the two employees involved.", "Click Approve or Deny.", "Both employees are notified of the decision."] }
+      ],
+      "appRouteLabel": "Open Schedule"
+    },
+    "4-5": {
+      "title": "Shift Bidding (Open Shifts)",
+      "whatItIs": "Post an open (uncovered) shift and let staff bid to take it. Managers pick who gets it.",
+      "whoUsesIt": "Managers and staff.",
+      "stepGroups": [
+        { "label": "Posting an open shift", "steps": ["Create a shift without assigning it to an employee (leave the employee field blank or mark it as \"Open\").", "The shift appears in the Open Shifts board visible to all eligible staff."] },
+        { "label": "Staff bidding", "steps": ["Go to My Schedule → Open Shifts.", "Click on an available shift and click Place Bid."] },
+        { "label": "Manager selecting a bid", "steps": ["Go to Scheduling → Open Shifts.", "Open the shift and review all bids.", "Click Accept Bid next to the employee you want to assign."] }
+      ],
+      "appRouteLabel": "Open Schedule"
+    },
+    "4-6": {
+      "title": "Managing Time-Off Requests",
+      "whatItIs": "Staff can request days off. Managers review and approve or reject requests.",
+      "whoUsesIt": "Staff (request) and Managers (approve).",
+      "stepGroups": [
+        { "label": "Staff submitting time-off", "steps": ["Go to My Schedule → Time Off.", "Click Request Time Off.", "Select the date range and enter a reason (optional).", "Submit the request."] },
+        { "label": "Manager reviewing requests", "steps": ["Go to Scheduling → Time-Off Requests.", "Review each pending request.", "Click Approve or Reject, optionally leaving a note.", "The staff member is notified."] }
+      ],
+      "appRouteLabel": "Open Schedule"
+    },
+    "4-7": {
+      "title": "Setting Staff Availability",
+      "whatItIs": "Staff can declare which days and hours they're generally available so managers can schedule them appropriately.",
+      "whoUsesIt": "Staff.",
+      "stepGroups": [{ "steps": ["Go to My Profile → Availability.", "For each day of the week, set the hours you're available.", "Toggle off days you're never available.", "Click Save Availability."] }],
+      "appRouteLabel": "Go to My Schedule"
+    },
+    "5-1": {
+      "title": "Clocking In and Out",
+      "whatItIs": "Track when staff start and end their work. Can be done via the web app or a POS station tablet.",
+      "whoUsesIt": "All staff.",
+      "stepGroups": [{ "steps": ["At the start of your shift, go to Attendance or use the POS station.", "Click Clock In — your start time is recorded.", "To take a break, click Start Break.", "Click End Break when returning.", "At the end of your shift, click Clock Out."] }],
+      "appRouteLabel": "Go to Attendance"
+    },
+    "5-2": {
+      "title": "Recording Absences",
+      "whatItIs": "Managers can log when an employee is absent (sick day, unpaid leave, etc.) to keep attendance records accurate.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Attendance → Absences.", "Click Record Absence.", "Select the employee and the date.", "Choose the absence type (Sick, Unpaid Leave, Other).", "Add a note if needed and click Save."] }],
+      "appRouteLabel": "Go to Attendance"
+    },
+    "5-3": {
+      "title": "Generating Payroll",
+      "whatItIs": "Automatically calculate what each employee is owed for a given period based on their attendance and hourly rate.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Make sure all employees have an hourly rate set (Staff → Employees → Edit Rate).", "Go to Payroll.", "Select the pay period (e.g., June 2026).", "Click Generate Payroll.", "Review the breakdown — hours worked × hourly rate per employee.", "Click Export to CSV to download the report for your accounting software."] }],
+      "appRouteLabel": "Go to Payroll"
+    },
+    "6-1": {
+      "title": "Creating a Menu",
+      "whatItIs": "Set up a menu (e.g., \"Lunch Menu\", \"Dinner Menu\", \"Drinks\") that will contain your categories and items.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Menu.", "Click Create Menu.", "Enter a menu name and optional description.", "Click Create."] }],
+      "appRouteLabel": "Go to Menu"
+    },
+    "6-2": {
+      "title": "Adding Categories and Items",
+      "whatItIs": "Organize your menu by grouping items into categories (e.g., Starters, Mains, Desserts) and adding the items within each.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [
+        { "label": "Add a category", "steps": ["Open your menu and click Add Category.", "Enter the category name (e.g., \"Starters\") and click Save."] },
+        { "label": "Add an item", "steps": ["Click on a category to expand it, then click Add Item.", "Enter the item name, description, price, and upload an image.", "Set dietary info (vegan, gluten-free, etc.) and allergens.", "Click Save Item."] }
+      ],
+      "appRouteLabel": "Go to Menu"
+    },
+    "6-3": {
+      "title": "Adding Variants and Modifiers",
+      "whatItIs": "Variants let you offer the same dish in different sizes or styles (e.g., Small / Large). Modifiers let customers customize an item (e.g., add toppings, choose a sauce).",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [
+        { "label": "Add variants (e.g., sizes)", "steps": ["Open a menu item and go to Variants.", "Click Add Variant and enter a name (e.g., \"Large\") and its price.", "Repeat for each variant."] },
+        { "label": "Add a modifier group", "steps": ["Open a menu item and go to Modifiers.", "Click Add Modifier Group and give it a name.", "Set whether it's required or optional, and the min/max selections.", "Click Add Option within the group and enter each choice with its price (0 if free)."] }
+      ],
+      "appRouteLabel": "Go to Menu"
+    },
+    "6-4": {
+      "title": "Scheduling a Menu",
+      "whatItIs": "Automatically activate or deactivate a menu on specific dates, times, or days of the week — perfect for lunch specials or seasonal menus.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Open a menu and click Schedule.", "Set an active from date/time and an active until date/time, or choose specific days of the week.", "Click Save Schedule.", "The menu will automatically go live and expire at the set times."] }],
+      "appRouteLabel": "Go to Menu"
+    },
+    "7-1": {
+      "title": "Setting Up Your Floor Plan",
+      "whatItIs": "Create a visual map of your venue's floors and tables so you can assign orders and reservations to specific tables.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Floor Plan.", "Click Add Floor and give it a name (e.g., \"Ground Floor\", \"Terrace\").", "On the floor, click Add Table.", "Set the table number or name, capacity (number of seats), and its position on the map.", "Repeat for all tables.", "Click Save."] }],
+      "tips": ["Use Add Multiple Tables to create several tables at once with sequential numbering."],
+      "appRouteLabel": "Open Floor Plan"
+    },
+    "7-2": {
+      "title": "Viewing Table Status",
+      "whatItIs": "See in real time which tables are occupied, available, or reserved.",
+      "whoUsesIt": "Hosts, servers, managers.",
+      "stepGroups": [{ "steps": ["Go to Floor Plan or the Tables view on the POS station.", "Tables are color-coded: green = available, red = occupied, yellow = reserved.", "Click on any table to see who's seated, the active order, or the upcoming reservation."] }],
+      "appRouteLabel": "Open Floor Plan"
+    },
+    "8-1": {
+      "title": "Creating an Order",
+      "whatItIs": "Open a new order for a table or for takeaway/delivery.",
+      "whoUsesIt": "Servers and POS staff.",
+      "stepGroups": [{ "steps": ["Go to Orders or use the POS station.", "Click New Order.", "Select the order type: Dine-in, Takeaway, or Delivery.", "For dine-in, select the table.", "Browse the menu and click items to add them.", "For items with variants or modifiers, make the required selections in the pop-up.", "Adjust quantities as needed.", "Click Send Order — the order is sent to the kitchen."] }],
+      "appRouteLabel": "Go to Orders"
+    },
+    "8-2": {
+      "title": "Managing an Order's Lifecycle",
+      "whatItIs": "Track an order from placement through to completion, moving it through the correct stages.",
+      "whoUsesIt": "Kitchen staff, servers, managers.",
+      "stepGroups": [{ "steps": ["When a new order comes in, it appears as Pending.", "Click Accept to confirm the kitchen received it (status → Accepted).", "When cooking starts, click Preparing (status → Preparing).", "When the food is ready to serve, click Ready (status → Ready).", "After delivering to the customer, click Complete (status → Completed)."] }],
+      "tips": ["You can cancel an order at any stage before completion. Add a reason when prompted."],
+      "appRouteLabel": "Go to Orders"
+    },
+    "8-3": {
+      "title": "Taking Payment",
+      "whatItIs": "Record payment for an order once the customer is ready to pay.",
+      "whoUsesIt": "Servers and cashiers.",
+      "stepGroups": [{ "steps": ["Open the completed or active order and click Take Payment.", "Select the payment method (Cash, Card, etc.).", "Enter the amount received.", "If splitting the bill, click Split Bill first and divide the amount between guests.", "Click Confirm Payment.", "The order is now marked as Paid."] }],
+      "appRouteLabel": "Go to Orders"
+    },
+    "8-4": {
+      "title": "Issuing a Refund",
+      "whatItIs": "Process a full or partial refund on a payment that has already been recorded.",
+      "whoUsesIt": "Managers and cashiers.",
+      "stepGroups": [{ "steps": ["Open the order and go to the Payments tab.", "Find the payment you want to refund and click Refund.", "Enter the refund amount (full or partial).", "Add a reason for the refund.", "Click Confirm Refund."] }],
+      "appRouteLabel": "Go to Orders"
+    },
+    "9-1": {
+      "title": "Setting Up Kitchen Stations",
+      "whatItIs": "Define different kitchen stations (e.g., Grill, Cold Prep, Pastry) and assign menu categories to them so the right orders show up on the right screen.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Kitchen → Stations.", "Click Add Station and give it a name (e.g., \"Grill Station\").", "Select which menu categories should appear on this station (e.g., \"Mains\", \"Burgers\").", "Click Save.", "Set up a tablet or screen at that station and connect it to the station display."] }],
+      "appRouteLabel": "Go to Stations"
+    },
+    "9-2": {
+      "title": "Using the Kitchen Display",
+      "whatItIs": "The real-time view that kitchen staff use to see incoming orders for their station.",
+      "whoUsesIt": "Kitchen staff.",
+      "stepGroups": [{ "steps": ["Open the KDS view on the kitchen screen.", "New orders appear automatically in a queue.", "Click an order to see its full details (items, modifiers, notes).", "Click Mark Ready when the food for that order is prepared.", "The server is notified that the order is ready for pickup."] }],
+      "appRouteLabel": "Go to Stations"
+    },
+    "10-1": {
+      "title": "Creating a Reservation",
+      "whatItIs": "Book a table for a future date and time for a guest.",
+      "whoUsesIt": "Front-of-house staff, hosts.",
+      "stepGroups": [{ "steps": ["Go to Reservations.", "Click New Reservation.", "Enter the guest name, phone number or email, and party size.", "Select the date and time.", "The system will show available tables — select one.", "Add any special notes (e.g., \"Birthday cake\", \"Wheelchair accessible table needed\").", "Click Confirm Reservation.", "The guest will receive a confirmation."] }],
+      "appRouteLabel": "Go to Reservations"
+    },
+    "10-2": {
+      "title": "Managing the Reservation Lifecycle",
+      "whatItIs": "Track a reservation from booking through to the guest leaving.",
+      "whoUsesIt": "Hosts and front-of-house staff.",
+      "stepGroups": [{ "steps": ["A new reservation starts as Pending.", "Confirm it by clicking Confirm (status → Confirmed).", "When the guest arrives, click Check In (status → Checked In).", "After the visit, click Complete (status → Completed).", "If the guest doesn't show, click No Show.", "To cancel, click Cancel and provide a reason."] }],
+      "appRouteLabel": "Go to Reservations"
+    },
+    "10-3": {
+      "title": "Walk-In Reservations",
+      "whatItIs": "Quickly seat a guest who arrived without a prior booking.",
+      "whoUsesIt": "Hosts.",
+      "stepGroups": [{ "steps": ["Go to Reservations and click Walk-In.", "Select an available table that fits the party size.", "Enter the guest count (name is optional for walk-ins).", "Click Seat Now — the table is immediately marked occupied."] }],
+      "appRouteLabel": "Go to Reservations"
+    },
+    "10-4": {
+      "title": "Checking Availability",
+      "whatItIs": "See which tables are available for a given date, time, and party size before confirming a booking.",
+      "whoUsesIt": "Hosts and staff taking phone bookings.",
+      "stepGroups": [{ "steps": ["Go to Reservations → Check Availability.", "Enter the date, time, and guest count.", "The system shows a list of available tables with their capacity.", "Select one to pre-fill a new reservation form."] }],
+      "appRouteLabel": "Go to Reservations"
+    },
+    "11-1": {
+      "title": "Adding Inventory Items",
+      "whatItIs": "Create a record for each ingredient or supply item you want to track (e.g., Tomatoes, Olive Oil, Napkins).",
+      "whoUsesIt": "Managers and kitchen leads.",
+      "stepGroups": [{ "steps": ["Go to Inventory.", "Click Add Item.", "Enter the item name, unit (kg, liters, pieces, etc.), and current stock quantity.", "Set a reorder level — when stock drops below this, you'll get a low-stock alert.", "Optionally assign it to a group (e.g., Produce, Beverages, Dry Goods).", "Click Save."] }],
+      "appRouteLabel": "Go to Inventory"
+    },
+    "11-2": {
+      "title": "Adjusting Stock Levels",
+      "whatItIs": "Record stock changes when deliveries arrive, ingredients are used, or items are wasted.",
+      "whoUsesIt": "Kitchen staff and managers.",
+      "stepGroups": [{ "steps": ["Go to Inventory and find the item.", "Click Adjust Stock.", "Select the movement type: Add (delivery received), Deduct (manual use), or Waste (spoilage).", "Enter the quantity and a note.", "Click Save — the movement is recorded in the item's history log."] }],
+      "appRouteLabel": "Go to Inventory"
+    },
+    "11-3": {
+      "title": "Linking Recipes to Menu Items",
+      "whatItIs": "Connect a menu item to its ingredients so that every time the item is ordered and completed, the system automatically deducts the right amounts from inventory.",
+      "whoUsesIt": "Managers and kitchen leads.",
+      "stepGroups": [{ "steps": ["Go to Inventory → Recipes or open a menu item and click Recipe.", "Click Add Ingredient.", "Select the inventory item and enter the quantity used per serving (e.g., 0.2 kg of tomatoes).", "Repeat for all ingredients in the dish.", "Click Save Recipe."] }],
+      "tips": ["Once a recipe is set up, completing an order will automatically deduct all linked ingredients from stock."],
+      "appRouteLabel": "Go to Inventory"
+    },
+    "11-4": {
+      "title": "Viewing Stock Movement History",
+      "whatItIs": "See a full log of every stock change for any inventory item.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Inventory and click on any item.", "Scroll to the Movement History tab.", "You'll see every addition, deduction, and waste event with the date, quantity, and who made the change."] }],
+      "appRouteLabel": "Go to Inventory"
+    },
+    "12-1": {
+      "title": "Managing Your Notifications",
+      "whatItIs": "View and manage your in-app notifications for things like new orders, reservation changes, shift assignments, and low-stock alerts.",
+      "whoUsesIt": "All users.",
+      "stepGroups": [{ "steps": ["Click the bell icon in the top navigation bar.", "A list of your recent notifications appears.", "Click on any notification to go to the relevant section.", "Click Mark as Read on individual notifications or Mark All as Read to clear them all."] }],
+      "appRouteLabel": "View Notifications"
+    },
+    "12-2": {
+      "title": "Notification Preferences",
+      "whatItIs": "Control which types of notifications you receive so your feed stays relevant.",
+      "whoUsesIt": "All users.",
+      "stepGroups": [{ "steps": ["Go to Profile Settings → Notifications.", "Toggle each notification type on or off (e.g., Order Updates, Shift Reminders, Low Stock Alerts).", "Changes save automatically."] }],
+      "appRouteLabel": "Go to Profile"
+    },
+    "13-1": {
+      "title": "Viewing Your Sales Dashboard",
+      "whatItIs": "An overview of your business performance — revenue, order counts, top-selling items, and trends over time.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Analytics.", "Select your date range (e.g., last 7 days, last month, or a custom range).", "View Total Sales for the period.", "Review Order count broken down by type (dine-in, takeaway, delivery).", "Check Top Selling Items ranked by revenue.", "Explore the Daily Sales Chart showing trends over the period.", "Use the Staff Performance tab to see individual performance metrics."] }],
+      "appRouteLabel": "Go to Analytics"
+    },
+    "14-1": {
+      "title": "Setting Up a POS Station (Tablet)",
+      "whatItIs": "Link a tablet or terminal device to your FlairSync account so staff can take orders, process payments, and clock in from it.",
+      "whoUsesIt": "Managers setting up hardware.",
+      "stepGroups": [{ "steps": ["Go to Settings → POS Stations.", "Click Add Station and give it a name (e.g., \"Bar Terminal\", \"Table 1 iPad\").", "Click Generate Pairing Code — a short code appears.", "On the tablet, open FlairSync POS and enter the pairing code.", "The station is now linked. It will use a secure long-lived token for authentication."] }],
+      "appRouteLabel": "Go to POS Settings"
+    },
+    "14-2": {
+      "title": "Staff Login on the POS Station",
+      "whatItIs": "Staff use a short PIN instead of a password to quickly log into the POS station at the start of their shift.",
+      "whoUsesIt": "All floor and kitchen staff.",
+      "stepGroups": [{ "steps": ["On the POS station, tap Staff Login.", "Enter your 4-6 digit PIN (set by your manager in your employment profile).", "You're now logged in and can take orders, clock in, and more."] }],
+      "tips": ["If you don't have a PIN yet, ask your manager to set one from Staff → Employees → Set PIN."],
+      "appRouteLabel": "Launch POS Station"
+    },
+    "15-1": {
+      "title": "Finding a Restaurant",
+      "whatItIs": "Browse restaurants on the FlairSync platform, filter by type, location, and preferences, and find somewhere to eat.",
+      "whoUsesIt": "Customers / end users.",
+      "stepGroups": [{ "steps": ["Go to the Discover page.", "Use the search bar to search by name or keyword.", "Filter by cuisine type, price range, tags (e.g., Outdoor, Vegan), or rating.", "Enable Near Me to show restaurants close to your current location.", "Click on any restaurant to view its full profile, menu, and available times."] }],
+      "appRouteLabel": "Browse Restaurants"
+    },
+    "15-2": {
+      "title": "Making a Reservation (As a Customer)",
+      "whatItIs": "Book a table at a restaurant directly through the platform.",
+      "whoUsesIt": "Customers.",
+      "stepGroups": [{ "steps": ["Open a restaurant's profile and click Reserve a Table.", "Select the date, time, and number of guests.", "Available time slots will appear — pick one.", "Enter your name, phone, and any special requests.", "If you have an account, log in — otherwise you can book as a guest.", "Click Confirm Reservation.", "You'll receive a confirmation by email or SMS."] }],
+      "appRouteLabel": "Browse Restaurants"
+    },
+    "15-3": {
+      "title": "Placing a Takeaway or Delivery Order",
+      "whatItIs": "Order food online from a restaurant and choose to pick it up or have it delivered.",
+      "whoUsesIt": "Customers.",
+      "stepGroups": [{ "steps": ["Open a restaurant's profile and click Order Now.", "Select Takeaway or Delivery.", "Browse the menu and add items to your cart.", "Customize items with variants and modifiers as needed.", "Review your cart and click Place Order.", "You'll receive confirmation and can track the order status."] }],
+      "appRouteLabel": "Browse Restaurants"
+    },
+    "15-4": {
+      "title": "Writing a Review",
+      "whatItIs": "Rate and review a restaurant after a visit to share your experience.",
+      "whoUsesIt": "Customers.",
+      "stepGroups": [{ "steps": ["Open the restaurant's profile or find it in My Orders history.", "Click Write a Review.", "Select a star rating (1-5).", "Write your review in the text box.", "Click Submit Review."] }],
+      "appRouteLabel": "Browse Restaurants"
+    },
+    "16-1": {
+      "title": "Choosing a Subscription Plan",
+      "whatItIs": "Select the FlairSync plan that fits your business size and unlock the corresponding features and limits.",
+      "whoUsesIt": "Business owners.",
+      "stepGroups": [{ "steps": ["Go to Settings → Subscription.", "View the available plans and their features (staff limits, menu limits, table limits, etc.).", "Click Choose Plan on the one that fits your needs.", "You'll be redirected to the secure billing page to enter your payment details.", "After payment, your plan is activated immediately."] }],
+      "appRouteLabel": "View Plans"
+    },
+    "16-2": {
+      "title": "Managing Your Billing",
+      "whatItIs": "View your current plan, download invoices, and update payment details.",
+      "whoUsesIt": "Business owners.",
+      "stepGroups": [{ "steps": ["Go to Settings → Subscription → Billing.", "View your current plan and next billing date.", "To download an invoice, click Invoices and then Download next to any invoice.", "To update payment details or cancel, click Manage Billing — this opens a secure billing portal."] }],
+      "appRouteLabel": "Manage Billing"
+    },
+    "17-1": {
+      "title": "Creating and Assigning Tasks",
+      "whatItIs": "Create tasks for staff to complete (e.g., \"Clean walk-in fridge\") and assign them to specific employees.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Tasks.", "Click Create Task.", "Enter a task name and optional description.", "Set a due date if applicable.", "Assign it to an employee.", "Click Create — the assigned employee is notified."] }],
+      "appRouteLabel": "Go to Tasks"
+    },
+    "17-2": {
+      "title": "Completing a Task",
+      "whatItIs": "Staff update task status as they work through their list.",
+      "whoUsesIt": "Staff.",
+      "stepGroups": [{ "steps": ["Go to Tasks → My Tasks.", "Click on a task to open it.", "Click Mark In Progress when you start.", "Click Mark Complete when you're done.", "The manager is notified."] }],
+      "appRouteLabel": "Go to Tasks"
+    },
+    "18-1": {
+      "title": "Posting a Job Opening",
+      "whatItIs": "List a position at your restaurant so job seekers can find it and apply through the platform.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Jobs → My Postings.", "Click Post a Job.", "Enter the job title, description, requirements, and type (Full-time, Part-time, etc.).", "Click Publish — the listing goes live on the public job board."] }],
+      "appRouteLabel": "Go to Jobs"
+    },
+    "18-2": {
+      "title": "Reviewing Applications",
+      "whatItIs": "View applications from candidates and move them through the hiring stages.",
+      "whoUsesIt": "Managers.",
+      "stepGroups": [{ "steps": ["Go to Jobs → My Postings and open the relevant job.", "Click View Applications.", "For each applicant, you can view their profile, resume, and cover note.", "Move them through stages: Screening → Interview → Hired or Rejected.", "The applicant is notified of each status change."] }],
+      "appRouteLabel": "Go to Jobs"
+    },
+    "18-3": {
+      "title": "Applying for a Job",
+      "whatItIs": "Browse open restaurant positions and submit your application.",
+      "whoUsesIt": "Job seekers.",
+      "stepGroups": [{ "steps": ["Go to the Job Board from the public discovery page.", "Filter by location, role type, or restaurant.", "Click on a listing to read the full description.", "Click Apply Now.", "Upload your resume (PDF) or enter a link.", "Add a cover note (optional).", "Click Submit Application.", "Track the status of your application from My Applications."] }],
+      "appRouteLabel": "Browse Job Board"
+    },
+    "19-1": {
+      "title": "Browsing the Marketplace",
+      "whatItIs": "A shared space where businesses can list and discover menu items, templates, or resources to exchange with other restaurants on the platform.",
+      "whoUsesIt": "Business owners and managers.",
+      "stepGroups": [{ "steps": ["Go to Marketplace.", "Browse all listings or use the search bar to find something specific.", "Click on any listing to see its full details.", "Contact the listing owner or request/claim the item."] }],
+      "appRouteLabel": "Open Marketplace"
+    },
+    "19-2": {
+      "title": "Creating a Marketplace Listing",
+      "whatItIs": "Share something from your business with other restaurants on the platform.",
+      "whoUsesIt": "Business owners.",
+      "stepGroups": [{ "steps": ["Go to Marketplace and click Create Listing.", "Enter a title, description, and any relevant details.", "Add an image if applicable.", "Click Publish."] }],
+      "appRouteLabel": "Open Marketplace"
+    },
+    "20-1": {
+      "title": "Contacting Support",
+      "whatItIs": "Submit a request to the FlairSync support team if you're experiencing issues or have questions.",
+      "whoUsesIt": "All users.",
+      "stepGroups": [{ "steps": ["Go to Help → Contact Support or click the ? icon.", "Select a category that best describes your issue.", "Write a description of what you need help with.", "Click Send — you'll receive a confirmation email and hear back from the team."] }],
+      "appRouteLabel": "Contact Support"
+    },
+    "21-1": {
+      "title": "Exporting Your Data",
+      "whatItIs": "Download a copy of all your personal data held on FlairSync (GDPR right of access).",
+      "whoUsesIt": "Any user.",
+      "stepGroups": [{ "steps": ["Go to Profile Settings → Privacy.", "Click Export My Data.", "A job is queued — you'll receive an email with a download link when it's ready (usually within a few minutes)."] }],
+      "appRouteLabel": "Go to Profile"
+    },
+    "21-2": {
+      "title": "Deleting Your Account",
+      "whatItIs": "Permanently remove your account and all associated data from the platform. There is a 30-day grace period before deletion is finalized.",
+      "whoUsesIt": "Any user who wishes to leave the platform.",
+      "stepGroups": [{ "steps": ["Go to Profile Settings → Privacy.", "Click Delete My Account.", "Read the confirmation warning carefully.", "Type your password to confirm.", "Click Schedule Deletion.", "Your account enters a 30-day grace period — you can log back in and click Cancel Deletion during this time.", "After 30 days, your account and all data are permanently removed."] }],
+      "tips": ["If you're a business owner, make sure to hand off ownership before deleting your account."],
+      "appRouteLabel": "Go to Profile"
+    }
+  }
+}

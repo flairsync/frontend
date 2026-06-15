@@ -5,6 +5,7 @@ export enum SubscriptionStatus {
   PENDING = "pending",
   ACTIVE = "active",
   TRIALING = "trialing",
+  ON_TRIAL = "on_trial",
   CANCELED = "canceled",
   EXPIRED = "expired",
   PAST_DUE = "past_due",
@@ -26,6 +27,7 @@ export class Subscription {
   currency: string;
   createdAt: Date;
   updatedAt: Date;
+  isDefault: boolean;
 
   constructor(
     id: string,
@@ -42,7 +44,8 @@ export class Subscription {
     price: number | null,
     currency: string,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    isDefault: boolean = false
   ) {
     this.id = id;
     this.pack = pack;
@@ -59,6 +62,7 @@ export class Subscription {
     this.currency = currency;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.isDefault = isDefault;
   }
 
   static parseApiResponse(data: any): Subscription | null {
@@ -70,7 +74,7 @@ export class Subscription {
         data.lemonSubscriptionId ?? null,
         data.lemonCustomerId ?? null,
         data.lemonOrderId ?? null,
-        data.status,
+        data.status || SubscriptionStatus.PENDING,
         data.startedAt ? new Date(data.startedAt) : null,
         data.trialEndsAt ? new Date(data.trialEndsAt) : null,
         data.renewsAt ? new Date(data.renewsAt) : null,
@@ -79,7 +83,8 @@ export class Subscription {
         data.price ?? null,
         data.currency ?? "EUR",
         new Date(data.createdAt),
-        new Date(data.updatedAt)
+        new Date(data.updatedAt),
+        data.isDefault ?? false
       );
     } catch (error) {
       return null;
@@ -99,7 +104,7 @@ export class Subscription {
   get isActive(): boolean {
     const now = new Date();
     return (
-      [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING].includes(
+      [SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING, SubscriptionStatus.ON_TRIAL].includes(
         this.status
       ) &&
       (!this.endsAt || this.endsAt > now)
@@ -120,4 +125,13 @@ export class Subscription {
       return null;
     }
   }
+
+  getEndDate(format?: string) {
+    if (this.endsAt) {
+      return dayjs(this.endsAt).format(format ? format : "DD/MM/YYYY");
+    } else {
+      return null;
+    }
+  }
+
 }

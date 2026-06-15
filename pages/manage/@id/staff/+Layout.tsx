@@ -7,8 +7,6 @@ import React, { useState } from 'react'
 import {
     Settings,
     SlidersHorizontal,
-    ShieldAlert,
-    LogOut,
     LayoutDashboard,
     CreditCard,
     Users,
@@ -38,16 +36,51 @@ import { BusinessOwnerManagementSidebar } from '@/components/management/Business
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
+import { usePermissions } from '@/features/auth/usePermissions';
+import { Loader, ShieldAlert, LogOut } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 
 
 
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const {
-        routeParams
+        routeParams,
+        urlPathname,
     } = usePageContext();
 
+    const { isLoading: loadingPermissions, permissions } = usePermissions(routeParams.id);
+
     const [sidebarOpen, setsidebarOpen] = useState(true);
+
+    if (loadingPermissions) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center">
+                <Loader className="h-10 w-10 animate-spin text-blue-600" />
+            </div>
+        );
+    }
+
+    const isAwaysAllowedPage =
+        urlPathname.endsWith('/dashboard') ||
+        urlPathname.endsWith('/shifts');
+
+    const hasAnyPermission = permissions && Object.values(permissions).some((p: any) => p.read || p.create || p.update || p.delete);
+
+    if (!isAwaysAllowedPage && !hasAnyPermission) {
+        return (
+            <div className="flex h-screen w-full flex-col items-center justify-center space-y-4 p-6 text-center">
+                <ShieldAlert className="h-16 w-16 text-destructive" />
+                <h1 className="text-2xl font-bold">Access Denied</h1>
+                <p className="text-muted-foreground max-w-md">
+                    You don't have permission to access this area. Please contact your manager or visit your professional profile.
+                </p>
+                <a href="/manage/professional-profile">
+                    <Button>Go to Professional Profile</Button>
+                </a>
+            </div>
+        );
+    }
     return (
         <div>
 

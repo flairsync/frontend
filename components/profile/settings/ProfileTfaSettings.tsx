@@ -2,24 +2,48 @@ import React, { useEffect, useRef, useState } from "react"
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { CardDescription } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useTfaSettings } from "@/features/profileSettings/useTfaSettings"
 import { QRCodeSVG } from 'qrcode.react';
 import TfaCodeModal from "@/components/inputs/TfaCodeModal"
 import { DisableTfaNotice } from "./DisableTfaNotice"
-import { InfoAlert } from "@/components/shared/InfoAlert"
-import { Alert } from "@/components/ui/alert"
+import { AlertTriangle, Download, RefreshCw } from "lucide-react"
+import { toast } from "sonner"
+
 const ProfileTfaSettings = () => {
-    const { userTfaStatus, initializeTfaSetupApiCall, validateTfaCode, validatedTfaCode, disableTfaCode, disablingTfaCode, disabledTfa, recoverWords } = useTfaSettings()
+    const {
+        userTfaStatus,
+        initializeTfaSetupApiCall,
+        validateTfaCode,
+        validatedTfaCode,
+        disableTfaCode,
+        disablingTfaCode,
+        disabledTfa,
+        recoverWords,
+        regenerateBackupCodes,
+        regeneratingBackupCodes,
+        regenDisabled,
+    } = useTfaSettings()
+
     const [open, setOpen] = useState(false)
     const [verificationCode, setVerificationCode] = useState("")
     const [qrCodeLink, setQrcodeLink] = useState('');
-    const [updatingTfaStatus, setUpdatingTfaStatus] = useState(0); // 0 = noth, 1= enabling , 2=disabling
+    const [updatingTfaStatus, setUpdatingTfaStatus] = useState(0); // 0 = none, 1 = enabling, 2 = disabling
+
+    // Recovery codes dialog state
     const [recoveryCodes, setRecoveryCodes] = useState("");
+    const [savedAcknowledged, setSavedAcknowledged] = useState(false);
+    const [codeDownloaded, setCodeDownloaded] = useState(false);
     const viewedRecoverCodes = useRef(false);
+
+    // Regenerate confirmation dialog
+    const [confirmRegenOpen, setConfirmRegenOpen] = useState(false);
+
     useEffect(() => {
         if (validatedTfaCode) {
             setOpen(false);
@@ -29,90 +53,183 @@ const ProfileTfaSettings = () => {
         }
         if (recoverWords && recoverWords.length > 0 && !viewedRecoverCodes.current) {
             setRecoveryCodes(recoverWords);
+            setSavedAcknowledged(false);
+            setCodeDownloaded(false);
             viewedRecoverCodes.current = true;
         }
     }, [validatedTfaCode, disabledTfa, recoverWords]);
 
     const generateQrCodeUrl = () => {
-        if (!qrCodeLink || qrCodeLink.length == 0)
+        if (!qrCodeLink || qrCodeLink.length === 0)
             initializeTfaSetupApiCall().then(res => {
                 if (res.data.success) {
                     setQrcodeLink(res.data.data.link);
                 }
             })
     }
+
     const handleVerify = () => {
-        console.log("Verifying code:", verificationCode)
         validateTfaCode(verificationCode)
     }
 
+    const handleDownloadBackupCodes = () => {
+        regenerateBackupCodes(undefined, {
+            onSuccess: () => {
+                setCodeDownloaded(true);
+                toast.success("New backup codes downloaded. Old codes are now invalid.");
+            },
+        });
+    }
 
+    const handleConfirmRegenerate = () => {
+        setConfirmRegenOpen(false);
+        regenerateBackupCodes(undefined, {
+            onSuccess: () => {
+                toast.success("New backup codes downloaded. Old codes are now invalid.");
+            },
+        });
+    }
 
+    const canCloseRecoveryCodes = savedAcknowledged || codeDownloaded;
 
     return (
         <>
-            <InfoAlert
-                onOpenChange={() => {
-                    setRecoveryCodes("")
-                }}
+            {/* Recovery codes blocking dialog — shown after initial 2FA setup */}
+            <Dialog
                 open={recoveryCodes.length > 0}
-                title="Recovery codes"
-                description="Please memorize these codes, and store them safely they can be used to recover two factor auth"
+                onOpenChange={(nextOpen) => {
+                    if (!nextOpen && !canCloseRecoveryCodes) return;
+                    if (!nextOpen) setRecoveryCodes("");
+                }}
             >
-                <Alert
-                    variant={"default"}
+                <DialogContent
+                    className="sm:max-w-md"
+                    onPointerDownOutside={(e) => { if (!canCloseRecoveryCodes) e.preventDefault(); }}
+                    onEscapeKeyDown={(e) => { if (!canCloseRecoveryCodes) e.preventDefault(); }}
                 >
+                    <DialogHeader>
+                        <DialogTitle>Save Your Backup Codes</DialogTitle>
+                        <DialogDescription>
+                            These are your 2FA recovery codes. Store them somewhere safe.
+                        </DialogDescription>
+                    </DialogHeader>
 
-                    {recoveryCodes}
-                </Alert>
-            </InfoAlert>
+                    <Alert className="border-amber-400 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300">
+                        <AlertTriangle className="h-4 w-4 text-amber-500" />
+                        <AlertDescription className="font-medium ml-2">
+                            These codes won't be shown again. Save them now.
+                        </AlertDescription>
+                    </Alert>
+
+                    <Alert variant="default" className="font-mono text-sm break-all">
+                        {recoveryCodes}
+                    </Alert>
+
+                    <Button
+                        variant="outline"
+                        className="w-full gap-2"
+                        onClick={handleDownloadBackupCodes}
+                        disabled={regeneratingBackupCodes || regenDisabled}
+                    >
+                        <Download className="h-4 w-4" />
+                        {regeneratingBackupCodes ? "Downloading…" : "Download as PDF"}
+                    </Button>
+
+                    <div className="flex items-center gap-2 pt-1">
+                        <Checkbox
+                            id="saved-codes"
+                            checked={savedAcknowledged}
+                            onCheckedChange={(checked) => setSavedAcknowledged(checked === true)}
+                        />
+                        <Label htmlFor="saved-codes" className="text-sm cursor-pointer">
+                            I've saved my backup codes
+                        </Label>
+                    </div>
+
+                    <DialogFooter>
+                        <Button
+                            disabled={!canCloseRecoveryCodes}
+                            onClick={() => setRecoveryCodes("")}
+                        >
+                            Done
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Disable 2FA confirmation modal */}
             <TfaCodeModal
                 onConfirm={(code) => {
-                    if (updatingTfaStatus == 2) {
+                    if (updatingTfaStatus === 2) {
                         disableTfaCode(code);
                     }
                 }}
                 loading={disablingTfaCode}
-                onOpenChange={() => {
-                    setUpdatingTfaStatus(0);
-                }}
+                onOpenChange={() => setUpdatingTfaStatus(0)}
                 open={updatingTfaStatus > 0}
-
             />
+
+            {/* Regenerate backup codes confirmation dialog */}
+            <AlertDialog open={confirmRegenOpen} onOpenChange={setConfirmRegenOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Regenerate backup codes?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will invalidate your existing backup codes. A new set will be downloaded as a PDF.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleConfirmRegenerate}>
+                            Continue
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
             <AccordionItem value="twofa" className="border rounded-lg px-3">
                 <AccordionTrigger>Two-Factor Authentication (2FA)</AccordionTrigger>
 
                 <AccordionContent className="space-y-4 py-2">
                     <CardDescription>
                         Two-Factor Authentication (2FA) adds an extra layer of security to your account. After entering your password,
-                        you’ll be asked for a one-time code generated by an authenticator app (like Google Authenticator). This ensures
+                        you'll be asked for a one-time code generated by an authenticator app (like Google Authenticator). This ensures
                         that only you can access your account, even if someone else knows your password.
                     </CardDescription>
-                    {userTfaStatus?.tfaSetup ? (
-                        <div className="flex items-center justify-between">
-                            <DisableTfaNotice
-                                onDisable={() => {
-                                    setUpdatingTfaStatus(2);
-                                }}
 
+                    {userTfaStatus?.tfaSetup ? (
+                        <div className="flex flex-col gap-3">
+                            <DisableTfaNotice
+                                onDisable={() => setUpdatingTfaStatus(2)}
                             />
-                            {/* <Label>Enable 2FA</Label> */}
-                            {/* <Switch checked={userTfaStatus?.tfaEnabled} onCheckedChange={(checked) => {
-                                if (checked) {
-                                    setUpdatingTfaStatus(1);
-                                    //enable
-                                } else {
-                                    setUpdatingTfaStatus(2);
-                                    //disable
-                                }
-                            }} /> */}
+                            <div className="flex items-center justify-between rounded-lg border px-4 py-3">
+                                <div>
+                                    <p className="text-sm font-medium">Backup codes</p>
+                                    <p className="text-xs text-muted-foreground">
+                                        Download a fresh set of recovery codes. Your old codes will be invalidated.
+                                    </p>
+                                </div>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="gap-2 shrink-0 ml-4"
+                                    onClick={() => setConfirmRegenOpen(true)}
+                                    disabled={regeneratingBackupCodes || regenDisabled}
+                                    title={regenDisabled ? "You can regenerate backup codes once per hour" : undefined}
+                                >
+                                    <RefreshCw className="h-4 w-4" />
+                                    Regenerate backup codes
+                                </Button>
+                            </div>
                         </div>
                     ) : (
                         <div className="flex items-center justify-between">
                             <Button onClick={() => {
                                 generateQrCodeUrl();
-                                setOpen(true)
-                            }}>Setup Two-Factor Auth</Button>
+                                setOpen(true);
+                            }}>
+                                Setup Two-Factor Auth
+                            </Button>
                         </div>
                     )}
                 </AccordionContent>
@@ -129,14 +246,12 @@ const ProfileTfaSettings = () => {
                         </DialogDescription>
                     </DialogHeader>
 
-                    {/* QR Code Placeholder */}
                     <div className="flex justify-center py-4">
                         <div className="p-4 bg-muted rounded-lg">
                             <QRCodeSVG value={qrCodeLink} />
                         </div>
                     </div>
 
-                    {/* Input field for code */}
                     <div className="space-y-2">
                         <Label htmlFor="tfa-code">Enter 6-digit code</Label>
                         <Input

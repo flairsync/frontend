@@ -45,16 +45,26 @@ export const useBusinessOps = () => {
       instagram: input.links?.instagram || undefined,
 
       // opening hours
-      openingHours: Object.entries(input.workTimes || {}).map(
-        ([day, value]: [string, any]) => ({
-          day,
+      openingHours: (input.workTimes || []).map(
+        (value: any) => ({
+          day: value.day,
           isClosed: value.isClosed ?? false,
-          periods: (value.shifts || []).map((shift: any) => ({
-            open: shift.open,
-            close: shift.close,
+          periods: (value.periods || []).map((period: any) => ({
+            open: period.open,
+            close: period.close,
           })),
         })
       ),
+
+      // auto-creation engine
+      tableCount: input.tableCount ?? 10,
+      hasKitchen: input.hasKitchen ?? true,
+      autoSetup: input.autoSetup ?? false,
+
+      // status
+      status: "auto",
+      // timezone
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
   }
 
@@ -64,8 +74,8 @@ export const useBusinessOps = () => {
       const mapped = mapBusinessFormToCreateBusinessDto(val);
       return createNewBusinessApiCall(mapped);
     },
-    onSuccess(data, variables, context) {},
-    onError(error, variables, context) {},
+    onSuccess(data, variables, context) { },
+    onError(error, variables, context) { },
   });
 
   return {

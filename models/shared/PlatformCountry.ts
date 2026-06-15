@@ -1,8 +1,14 @@
+export enum CountryStatus {
+  ACTIVE = 'ACTIVE',
+  COMING_SOON = 'COMING_SOON',
+  INACTIVE = 'INACTIVE',
+}
+
 export class PlatformCountry {
   id: number;
   code: string;
   name: string;
-  enabled: boolean;
+  status: CountryStatus;
   currency: string;
   phoneCode: string;
   region: string;
@@ -14,7 +20,7 @@ export class PlatformCountry {
     id: number,
     code: string,
     name: string,
-    enabled: boolean,
+    status: CountryStatus,
     currency: string,
     phoneCode: string,
     region: string,
@@ -25,7 +31,7 @@ export class PlatformCountry {
     this.id = id;
     this.code = code;
     this.name = name;
-    this.enabled = enabled;
+    this.status = status;
     this.currency = currency;
     this.phoneCode = phoneCode;
     this.region = region;
@@ -41,7 +47,7 @@ export class PlatformCountry {
         data.id,
         data.code,
         data.name,
-        data.enabled,
+        data.status as CountryStatus,
         data.currency,
         data.phoneCode,
         data.region,

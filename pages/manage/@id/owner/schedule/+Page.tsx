@@ -1,69 +1,124 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle, Clock, Edit3, Users, CalendarDays, AlertCircle } from "lucide-react";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import ManagerScheduleSummary from "@/components/management/schedule/ManagerScheduleSummary";
-import ManagerScheduleClockinTab from "@/components/management/schedule/ManagerScheduleClockinTab";
+import { Separator } from "@/components/ui/separator";
 import ManagerScheduleShiftsTab from "@/components/management/schedule/ManagerScheduleShiftsTab";
 import ManagerScheduleStaffSchedulingTab from "@/components/management/schedule/ManagerScheduleStaffSchedulingTab";
-import ManagerScheduleCalendarTab from "@/components/management/schedule/ManagerScheduleCalendarTab";
+import ManagerScheduleRecurringRulesTab from "@/components/management/schedule/ManagerScheduleRecurringRulesTab";
+import ManagerScheduleTimeOffTab from "@/components/management/schedule/ManagerScheduleTimeOffTab";
+import ManagerScheduleSwapsTab from "@/components/management/schedule/ManagerScheduleSwapsTab";
+import ManagerScheduleBidsTab from "@/components/management/schedule/ManagerScheduleBidsTab";
+import { usePageTour } from "@/features/tour/usePageTour";
+import type { TourStep } from "@/features/tour/types";
+
+const SCHEDULE_TOUR_STEPS: TourStep[] = [
+    {
+        target: '[data-tour="schedule-tab-manage"]',
+        title: 'Staff Scheduling',
+        description: 'The main scheduling view. Assign shifts to staff, view the weekly calendar, and manage who is working when across your whole team.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="schedule-tab-bids"]',
+        title: 'Open Shift Bids',
+        description: 'Post open shifts that staff can bid on. Review bids and approve the best candidate — great for filling gaps without manual assignment.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="schedule-tab-rules"]',
+        title: 'Recurring Rules',
+        description: 'Define repeating schedule patterns so shifts are auto-generated each week. Reduces manual scheduling for predictable rosters.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="schedule-tab-shifts"]',
+        title: 'Shift Templates',
+        description: 'Create reusable shift templates (e.g. "Morning 8–4", "Evening 5–11") that can be quickly applied when building the schedule.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="schedule-tab-time-off"]',
+        title: 'Time Off',
+        description: 'Review and approve time-off requests from your staff. Approved requests are automatically blocked out in the schedule.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="schedule-tab-swaps"]',
+        title: 'Swaps',
+        description: 'Staff can request to swap shifts with each other. Review pending swap requests here and approve or reject them.',
+        position: 'bottom',
+    },
+]
 
 export default function OwnerManageSchedulesPage() {
+    usePageTour(SCHEDULE_TOUR_STEPS);
+
+    const [activeTab, setActiveTab] = useState("manage");
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get("tab");
+            if (tab) setActiveTab(tab);
+
+            // Cleanup non-schedule parameters
+            const allowedParams = ["tab", "date", "view", "staffId"];
+            let changed = false;
+            for (const key of Array.from(params.keys())) {
+                if (!allowedParams.includes(key)) {
+                    params.delete(key);
+                    changed = true;
+                }
+            }
+            if (changed) {
+                const url = new URL(window.location.href);
+                url.search = params.toString();
+                window.history.replaceState({}, "", url.toString());
+            }
+            setIsInitialized(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isInitialized && typeof window !== "undefined") {
+            const url = new URL(window.location.href);
+            url.searchParams.set("tab", activeTab);
+            window.history.replaceState({}, "", url.toString());
+        }
+    }, [activeTab, isInitialized]);
+
     return (
-        <main className="min-h-screen bg-slate-50 p-6">
-            <div className="max-w-6xl mx-auto space-y-6">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-slate-900">Schedule Management</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <Button>
-                            <PlusCircle className="w-4 h-4 mr-2" /> Add Shift
-                        </Button>
-                        <Button>
-                            <PlusCircle className="w-4 h-4 mr-2" /> Schedule staff
-                        </Button>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <h1 className="text-3xl font-bold tracking-tight">Schedule Management</h1>
+            </div>
 
-                    </div>
-                </div>
+            <Separator />
 
-                {/* Summary cards */}
-                <ManagerScheduleSummary />
-
-                {/* Filters */}
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="flex gap-2">
-                        <Select>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Filter by staff" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All Staff</SelectItem>
-                                <SelectItem value="1">Jane Doe</SelectItem>
-                                <SelectItem value="2">John Smith</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Input type="date" className="w-[180px]" />
-                    </div>
-                    <Button variant="outline">Export Data</Button>
-                </div>
-
-                {/* Tabs */}
-                <Tabs defaultValue="clockins" className="space-y-6">
-                    <TabsList className="w-full grid grid-cols-2 md:grid-cols-4">
-                        <TabsTrigger value="clockins" className="hover:cursor-pointer hover:scale-105 transition-all ease-in-out duration-300">Clock-ins / Clock-outs</TabsTrigger>
-                        <TabsTrigger value="shifts" className="hover:cursor-pointer hover:scale-105 transition-all ease-in-out duration-300">Shifts</TabsTrigger>
-                        <TabsTrigger value="manage" className="hover:cursor-pointer hover:scale-105 transition-all ease-in-out duration-300">Staff Scheduling</TabsTrigger>
-                        <TabsTrigger value="calendar" className="hover:cursor-pointer hover:scale-105 transition-all ease-in-out duration-300">Calendar</TabsTrigger>
+            {/* Tabs */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                    <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
+                        <TabsTrigger data-tour="schedule-tab-manage" value="manage" className="flex-1">Staff Scheduling</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-bids" value="bids" className="flex-1">Open Shift Bids</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-rules" value="rules" className="flex-1">Recurring Rules</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-shifts" value="shifts" className="flex-1">Shift Templates</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-time-off" value="time-off" className="flex-1">Time Off</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-swaps" value="swaps" className="flex-1">Swaps</TabsTrigger>
                     </TabsList>
 
-                    {/* Clock-ins / Clock-outs */}
-                    <TabsContent value="clockins">
-                        <ManagerScheduleClockinTab />
+                    {/* Manage Staff Scheduling */}
+                    <TabsContent value="manage">
+                        <ManagerScheduleStaffSchedulingTab />
+                    </TabsContent>
 
+                    {/* Shift Bids */}
+                    <TabsContent value="bids">
+                        <ManagerScheduleBidsTab />
+                    </TabsContent>
+
+                    {/* Recurring Rules */}
+                    <TabsContent value="rules">
+                        <ManagerScheduleRecurringRulesTab />
                     </TabsContent>
 
                     {/* Shifts overview */}
@@ -71,15 +126,17 @@ export default function OwnerManageSchedulesPage() {
                         <ManagerScheduleShiftsTab />
                     </TabsContent>
 
-                    {/* Manage Staff Scheduling */}
-                    <TabsContent value="manage">
-                        <ManagerScheduleStaffSchedulingTab />
+                    {/* Time Off Requests */}
+                    <TabsContent value="time-off">
+                        <ManagerScheduleTimeOffTab />
                     </TabsContent>
-                    <TabsContent value="calendar">
-                        <ManagerScheduleCalendarTab />
+
+                    {/* Shift Swaps */}
+                    <TabsContent value="swaps">
+                        <ManagerScheduleSwapsTab />
                     </TabsContent>
                 </Tabs>
-            </div>
-        </main>
+        </div>
     );
 }
+

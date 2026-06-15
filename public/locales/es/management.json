@@ -1,0 +1,223 @@
+{
+  "permissions": {
+    "MENU": { "label": "Gestión del menú", "description": "Crear, actualizar y gestionar platos, categorías y precios del menú." },
+    "RESERVATIONS": { "label": "Gestión de reservas", "description": "Ver, crear, actualizar y gestionar las reservas y los clientes." },
+    "STAFF": { "label": "Gestión del personal", "description": "Gestionar miembros del equipo, roles, permisos y asignaciones de trabajo." },
+    "OPENING_HOURS": { "label": "Gestión del horario de apertura", "description": "Configurar el horario de apertura, horarios especiales y cierres." },
+    "BUSINESS_SETTINGS": { "label": "Configuración del negocio", "description": "Gestionar información, preferencias y configuración operativa del negocio." },
+    "ORDERS": { "label": "Gestión de pedidos", "description": "Ver, crear y gestionar pedidos de clientes para consumo en local, para llevar y a domicilio." },
+    "INVENTORY": { "label": "Gestión de inventario", "description": "Controlar el nivel de existencias, gestionar artículos de inventario y unidades." }
+  },
+  "menu_management": {
+    "actions": {
+      "add_category": "Añadir categoría",
+      "add_item": "Añadir artículo",
+      "save_changes": "Guardar cambios",
+      "move_to_category": "Mover a categoría",
+      "delete_category": "Eliminar categoría"
+    },
+    "labels": {
+      "simple_view": "Simple",
+      "organize_view": "Organizar",
+      "menu_hints": "Sugerencias del menú",
+      "no_items": "No hay artículos todavía. Haz clic en \"Añadir artículo\" para comenzar.",
+      "no_items_category": "No hay artículos en esta categoría todavía.",
+      "items_count": "{{count}} artículos",
+      "add_first_item": "Añade tu primer artículo",
+      "critical": "Crítico",
+      "high": "Alto",
+      "medium": "Medio",
+      "low": "Bajo",
+      "go_back_menus": "Volver a todos los menús"
+    },
+    "messages": {
+      "delete_category_confirm": "¿Estás seguro de que deseas eliminar esta categoría? Esta acción no se puede deshacer y eliminará todos los artículos dentro de ella.",
+      "delete_item_confirm_title": "¿Eliminar artículo?",
+      "delete_item_confirm_desc": "Esto eliminará permanentemente \"{{name}}\".",
+      "move_item_select_category": "Selecciona la categoría a la que mover este artículo."
+    },
+    "modal": {
+      "create_title": "Crear nuevo menú",
+      "edit_title": "Editar menú",
+      "name": "Nombre",
+      "description": "Descripción",
+      "icon": "Icono",
+      "start_date": "Fecha de inicio",
+      "end_date": "Fecha de fin",
+      "start_time": "Hora de inicio",
+      "end_time": "Hora de fin",
+      "repeat": "Repetir",
+      "repeat_yearly": "Repetir anualmente",
+      "select_all_days": "Seleccionar todos los días",
+      "unselect_all_days": "Deseleccionar todos los días",
+      "update_button": "Actualizar menú",
+      "create_button": "Crear menú",
+      "tooltips": {
+        "icon": "Elige un icono para representar este menú.",
+        "date_empty": "Dejar vacío para un menú siempre activo.",
+        "time_empty": "Dejar vacío para un menú activo todo el día."
+      }
+    },
+    "list": {
+      "title": "Tus Menús",
+      "description": "Haz clic en un menú para gestionar sus categorías y artículos. ¡Añade nuevos menús para comenzar!",
+      "remaining_menus": "Puedes crear {{count}} menú más con tu suscripción.",
+      "remaining_menus_plural": "Puedes crear {{count}} menús más con tu suscripción.",
+      "limit_reached": "Has alcanzado el límite de menús para tu suscripción.",
+      "upgrade": "Mejorar plan",
+      "no_menus_title": "No hay menús todavía",
+      "no_menus_desc": "Crea tu primer menú para empezar a organizar tus artículos.",
+      "create_menu": "Crear menú",
+      "categories_count": "{{count}} Categoría",
+      "categories_count_plural": "{{count}} Categorías",
+      "items_count": "{{count}} Artículo",
+      "items_count_plural": "{{count}} Artículos",
+      "hints": "Sugerencias",
+      "more_hints": "+{{count}} más",
+      "manage_menu_hint": "Haz clic para abrir y gestionar este menú.",
+      "create_new_menu_card": "Crear nuevo menú"
+    }
+  },
+  "item_modal": {
+    "create_title": "Crear nuevo artículo",
+    "edit_title": "Editar artículo",
+    "copy_label": "Copiar de artículos existentes",
+    "copy_hint": "Selecciona un artículo para pre-completar el formulario. Todos los campos siguen siendo editables",
+    "name": "Nombre",
+    "description": "Descripción",
+    "price": "Precio",
+    "allergies": "Alergias",
+    "images": "Imágenes",
+    "tracking": {
+      "label": "Seguimiento",
+      "tooltip": "Elige cómo se vincula este artículo con tu inventario.",
+      "none": "Ninguno",
+      "none_desc": "Sin seguimiento de inventario para este artículo.",
+      "direct": "Vínculo directo",
+      "direct_desc": "Este artículo del menú corresponde directamente a un artículo del inventario (ej: un artículo \"Coca Cola\" está vinculado a una \"Lata de Coca\").",
+      "link_existing": "Vincular artículo existente",
+      "create_new": "Crear nuevo artículo de inventario",
+      "unit": "Unidad",
+      "unit_placeholder": "Seleccionar unidad",
+      "quantity_per_sale": "¿Qué cantidad se consume por venta?",
+      "quantity_hint": "Si se vende en litros y este artículo usa 0.5 L, ingresa 0.5"
+    }
+  },
+  "inventory_management": {
+    "title": "Gestión de Inventario",
+    "add_item": "Añadir Artículo",
+    "edit_item": "Editar Artículo",
+    "delete_item": "Eliminar Artículo",
+    "adjust_stock": "Ajustar Stock",
+    "groups": "Grupos",
+    "manage_groups": "Gestionar Grupos",
+    "add_group": "Añadir Grupo",
+    "edit_group": "Editar Grupo",
+    "delete_group": "Eliminar Grupo",
+    "items": "Artículos",
+    "low_stock": "Stock Bajo",
+    "all_items": "Todos los Artículos",
+    "table": {
+      "name": "Nombre",
+      "quantity": "Cantidad",
+      "unit": "Unidad",
+      "group": "Grupo",
+      "threshold": "Umbral",
+      "last_updated": "Actualizado",
+      "actions": "Acciones"
+    },
+    "form": {
+      "name": "Nombre del Artículo",
+      "barcode": "Código de Barras",
+      "description": "Descripción",
+      "quantity": "Cantidad",
+      "unit": "Unidad",
+      "threshold": "Umbral de Alerta",
+      "group": "Grupo",
+      "no_group": "Sin Grupo",
+      "errors": {
+        "name_required": "El nombre del artículo es obligatorio",
+        "quantity_required": "La cantidad es obligatoria",
+        "quantity_min": "La cantidad no puede ser negativa",
+        "unit_required": "La unidad es obligatoria",
+        "threshold_required": "El umbral es obligatorio",
+        "threshold_min": "El umbral no puede ser negativo"
+      }
+    },
+    "search_barcode": "Buscar por Código de Barras",
+    "edit_group_mode": "Actualizando grupo...",
+    "adjust": {
+      "title": "Ajustar Stock para {{name}}",
+      "current": "Cantidad Actual",
+      "adjustment": "Ajuste",
+      "adjustment_placeholder": "ej: 5 o -2",
+      "reason": "Razón",
+      "reason_placeholder": "ej: Reabastecimiento, Mermas, etc.",
+      "new_quantity": "Nueva Cantidad"
+    },
+    "messages": {
+      "delete_item_confirm": "¿Estás seguro de que deseas eliminar este artículo? Esto también lo eliminará de todos los artículos del menú vinculados.",
+      "delete_group_confirm": "¿Estás seguro de que deseas eliminar este grupo? Los artículos de este grupo se moverán a 'Predeterminado'.",
+      "no_items": "No se encontraron artículos.",
+      "no_groups": "No se encontraron grupos."
+    }
+  },
+  "subscriptions": {
+    "features": {
+      "menu_mgmt": "Gestión de menús",
+      "basic_menu_mgmt": "Gestión de menú básica",
+      "advanced_analytics": "Análisis avanzado",
+      "basic_analytics": "Análisis básico",
+      "staff_scheduling": "Programación de personal",
+      "reservation_system": "Sistema de reservas",
+      "priority_support": "Soporte prioritario",
+      "ded_acc_manager": "Gestor de cuentas dedicado",
+      "custom_branding": "Marca personalizada"
+    },
+    "limits": {
+      "businesses": "Hasta {{count}} negocio",
+      "businesses_plural": "Hasta {{count}} negocios",
+      "employees": "Hasta {{count}} empleado",
+      "employees_plural": "Hasta {{count}} empleados",
+      "menus": "Hasta {{count}} menú",
+      "menus_plural": "Hasta {{count}} menús",
+      "products": "Hasta {{count}} producto",
+      "products_plural": "Hasta {{count}} productos"
+    }
+  },
+  "floor_plan": {
+    "title": "Plano de planta",
+    "add_floor": "Añadir planta",
+    "edit_floor": "Editar planta",
+    "delete_floor": "Eliminar planta",
+    "floors": "Plantas",
+    "tables": "Mesas",
+    "add_table": "Añadir mesa",
+    "edit_table": "Editar mesa",
+    "delete_table": "Eliminar mesa",
+    "capacity": "Capacidad",
+    "position": "Posición",
+    "shape": "Forma"
+  },
+  "orders": {
+    "title": "Pedidos",
+    "create_order": "Crear pedido",
+    "order_type": "Tipo de pedido",
+    "status": "Estado",
+    "items": "Artículos",
+    "total": "Total",
+    "dine_in": "En el local",
+    "takeaway": "Para llevar",
+    "delivery": "A domicilio"
+  },
+  "reservations": {
+    "title": "Reservas",
+    "add_reservation": "Añadir reserva",
+    "customer_name": "Nombre del cliente",
+    "time": "Hora",
+    "guests": "Comensales",
+    "table": "Mesa",
+    "assign_table": "Asignar mesa",
+    "pre_order": "Pre-pedido"
+  }
+}

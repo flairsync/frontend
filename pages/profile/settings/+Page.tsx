@@ -16,28 +16,24 @@ import ProfileInfoSettings from "@/components/profile/settings/ProfileInfoSettin
 import PasswordSettings from "@/components/profile/settings/PasswordSettings"
 import SessionManagementSettings from "@/components/profile/settings/SessionManagementSettings"
 import AccountVerification from "@/components/profile/settings/AccountVerification"
+import MarketingSettings from "@/components/profile/settings/MarketingSettings"
 
 const ProfileSettingsPage = () => {
 
 
     return (
         <Accordion type="single" collapsible className="w-full space-y-2">
-            {/* Profile Info */}
-
             <ProfileInfoSettings />
 
             <AccountVerification />
 
-            {/* Password */}
+            <MarketingSettings />
 
             <PasswordSettings />
 
-            {/* 2FA */}
             <ProfileTfaSettings />
 
-
-            <SessionManagementSettings
-            />
+            <SessionManagementSettings />
         </Accordion>
     )
 }

@@ -26,7 +26,7 @@ export const useAuth = () => {
     error: loginError,
   } = useApiMutation({
     mutationKey: ["login_user"],
-    mutationFn: (data: { email: string; password: string }) => {
+    mutationFn: (data: { email: string; password: string; stayConnected?: boolean }) => {
       return loginUserApiCall(data);
     },
     onSuccess(data, variables, context) {
@@ -69,17 +69,12 @@ export const useAuth = () => {
     mutate: signupUser,
     isPending: signingUp,
     error: signupError,
-  } = useMutation({
+  } = useApiMutation({
     mutationKey: ["signup_user"],
     mutationFn: signupUserApiCall,
     onSuccess(data, variables, context) {
       toast("Account created");
-      navigate("login", {
-        keepScrollPosition: true,
-        pageContext: {
-          ...pageContext,
-        },
-      });
+      hydrateSSR();
     },
   });
 

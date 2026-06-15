@@ -39,10 +39,11 @@ export class BusinessMenuCategory {
   }
 
   static parseApiArrayResponse(data: any[]): BusinessMenuCategory[] {
+    if (!Array.isArray(data)) return [];
     const arr: BusinessMenuCategory[] = [];
     data.forEach((val) => {
-      const employee = this.parseApiResponse(val);
-      if (employee) arr.push(employee);
+      const b = this.parseApiResponse(val);
+      if (b) arr.push(b);
     });
     return arr;
   }

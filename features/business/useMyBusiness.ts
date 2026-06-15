@@ -5,6 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  deleteMyBusinessApiCall,
   fetchMyBuysinessFullDetailsApiCall,
   UpdateBusinessGalleryDataType,
   updateMyBusienssGalleryApiCall,
@@ -25,13 +26,22 @@ export const useMyBusiness = (businessId: string | null = null) => {
 
   const {
     data: myBusinessFullDetails,
-    isFetching: fetchingMyBusinessFullDetails,
+    isLoading: fetchingMyBusinessFullDetails,
+    isError: businessLoadError,
   } = useQuery({
     queryKey: ["my_business", businessId],
     queryFn: async () => {
       if (!businessId) return;
-      const res = await fetchMyBuysinessFullDetailsApiCall(businessId);
-      return MyBusinessFullDetails.parseApiResponse(res.data.data) || undefined;
+      const res = await fetchMyBuysinessFullDetailsApiCall(businessId) as any;
+
+      if (res.usage) {
+        queryClient.setQueryData(["user_usage"], res.usage);
+      }
+
+      return {
+        business: MyBusinessFullDetails.parseApiResponse(res.business) || undefined,
+        usage: res.usage
+      };
     },
     enabled: businessId != null,
     gcTime: Infinity,
@@ -156,9 +166,31 @@ export const useMyBusiness = (businessId: string | null = null) => {
     },
   });
 
+  const { mutate: deleteBusiness, isPending: deletingBusiness } = useMutation({
+    mutationKey: ["delete_my_business", businessId],
+    mutationFn: async () => {
+      if (!businessId) return;
+      toastId = toast.loading("Deleting business...");
+      return deleteMyBusinessApiCall(businessId);
+    },
+    onSuccess() {
+      toast.dismiss(toastId);
+      toast.success("Business deleted", {
+        description: "Your business has been permanently deleted.",
+      });
+      queryClient.removeQueries({ queryKey: ["my_business", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["my_businesses"] });
+    },
+    onError() {
+      toast.dismiss(toastId);
+    },
+  });
+
   return {
-    myBusinessFullDetails,
+    myBusinessFullDetails: myBusinessFullDetails?.business,
+    usage: myBusinessFullDetails?.usage,
     fetchingMyBusinessFullDetails,
+    businessLoadError,
     updatingMyBusiness,
     updateMyBusinessDetails,
     updateBusinessLogo,
@@ -167,5 +199,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
     updatingMyBusinessGallery,
     updateMyBusinessOpenHours,
     updatingMyBusinessOpenHours,
+    deleteBusiness,
+    deletingBusiness,
   };
 };

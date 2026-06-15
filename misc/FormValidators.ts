@@ -23,6 +23,9 @@ export const SignupFormSchema = Yup.object().shape({
       "input_errors.repeat_password.mismatch"
     )
     .required("input_errors.repeat_password.required"),
+  termsAccepted: Yup.boolean()
+    .oneOf([true], "auth_page.register.terms_required")
+    .required("auth_page.register.terms_required"),
 });
 
 export const LoginFormSchema = Yup.object().shape({
@@ -30,6 +33,19 @@ export const LoginFormSchema = Yup.object().shape({
     .email("input_errors.email.invalid")
     .required("input_errors.email.required"),
   password: passwordValidation,
+});
+
+export const ForgotPasswordSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("input_errors.email.invalid")
+    .required("input_errors.email.required"),
+});
+
+export const ResetPasswordSchema = Yup.object().shape({
+  newPassword: passwordValidation,
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), undefined], "input_errors.repeat_password.mismatch")
+    .required("input_errors.repeat_password.required"),
 });
 
 export const UpdatePasswordSchema = Yup.object().shape({

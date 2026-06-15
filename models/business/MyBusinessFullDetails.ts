@@ -5,6 +5,7 @@ import { BusinessMedia } from "./BusinessMedia";
 export type Country = {
   id: number;
   name: string;
+  code?: string;
 };
 
 export class OpeningPeriod {
@@ -112,6 +113,7 @@ export class MyBusinessFullDetails {
   address?: string;
   location?: { type: string; coordinates: number[] };
   timezone: string;
+  currency?: string;
   openingHours: OpeningHours[];
   status: string;
   media: BusinessMedia[];
@@ -122,6 +124,42 @@ export class MyBusinessFullDetails {
   createdAt: Date;
   updatedAt: Date;
   logo?: string;
+  allowReservations: boolean;
+  allowOrders: boolean;
+  requireReservationConfirmation: boolean;
+  requireOrderConfirmation: boolean;
+  allowOnlyNearbyOrders: boolean;
+  maxOrderDistanceMeters: number;
+  allowTableOrdering: boolean;
+  allowTakeawayOrdering: boolean;
+  enableFloorPlanView: boolean;
+  reservationCancellationWindow: number;
+  reservationModificationLimit: number;
+  reservationTimeoutMinutes: number;
+  defaultReservationDurationMinutes: number;
+  requireGpsForAttendance: boolean;
+  attendanceGeofenceRadiusMeters: number;
+  strictGeofenceBlock: boolean;
+  counts?: {
+    employees: number;
+    menus: number;
+  };
+  maxWeeklyHours?: number;
+  minGapBetweenShiftsHours?: number;
+  splitShiftGapHours?: number;
+  overtimeDailyThresholdHours?: number;
+  overtimeWeeklyThresholdHours?: number;
+  overtimeMultiplier?: number;
+  payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
+  maxPartySize: number;
+  reservationBookingWindowDays: number;
+  reservationBufferMinutes: number;
+  autoNoShow: boolean;
+  gracePeriodMinutes: number;
+  isPublished: boolean;
+  taxRate: number;
+  taxName: string;
+  taxIncluded: boolean;
 
   constructor(
     id: string,
@@ -139,6 +177,7 @@ export class MyBusinessFullDetails {
     address: string | undefined,
     location: { type: string; coordinates: number[] } | undefined,
     timezone: string,
+    currency: string | undefined,
     openingHours: OpeningHours[],
     status: string,
     media: BusinessMedia[],
@@ -147,8 +186,44 @@ export class MyBusinessFullDetails {
     email: string | undefined,
     phone: string | undefined,
     logo: string | undefined,
+    allowReservations: boolean,
+    allowOrders: boolean,
+    requireReservationConfirmation: boolean,
+    requireOrderConfirmation: boolean,
+    allowOnlyNearbyOrders: boolean,
+    maxOrderDistanceMeters: number,
+    allowTableOrdering: boolean,
+    allowTakeawayOrdering: boolean,
+    reservationCancellationWindow: number,
+    reservationModificationLimit: number,
+    reservationTimeoutMinutes: number,
+    defaultReservationDurationMinutes: number,
+    requireGpsForAttendance: boolean,
+    attendanceGeofenceRadiusMeters: number,
+    strictGeofenceBlock: boolean,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    counts?: {
+      employees: number;
+      menus: number;
+    },
+    maxWeeklyHours?: number,
+    minGapBetweenShiftsHours?: number,
+    splitShiftGapHours?: number,
+    overtimeDailyThresholdHours?: number,
+    overtimeWeeklyThresholdHours?: number,
+    overtimeMultiplier?: number,
+    payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY',
+    maxPartySize?: number,
+    reservationBookingWindowDays?: number,
+    reservationBufferMinutes?: number,
+    autoNoShow?: boolean,
+    gracePeriodMinutes?: number,
+    isPublished?: boolean,
+    taxRate?: number,
+    taxName?: string,
+    taxIncluded?: boolean,
+    enableFloorPlanView?: boolean,
   ) {
     this.id = id;
     this.name = name;
@@ -165,6 +240,7 @@ export class MyBusinessFullDetails {
     this.address = address;
     this.location = location;
     this.timezone = timezone;
+    this.currency = currency;
     this.openingHours = openingHours;
     this.status = status;
     this.media = media;
@@ -173,8 +249,41 @@ export class MyBusinessFullDetails {
     this.email = email;
     this.phone = phone;
     this.logo = logo;
+    this.allowReservations = allowReservations;
+    this.allowOrders = allowOrders;
+    this.requireReservationConfirmation = requireReservationConfirmation;
+    this.requireOrderConfirmation = requireOrderConfirmation;
+    this.allowOnlyNearbyOrders = allowOnlyNearbyOrders;
+    this.maxOrderDistanceMeters = maxOrderDistanceMeters;
+    this.allowTableOrdering = allowTableOrdering;
+    this.allowTakeawayOrdering = allowTakeawayOrdering;
+    this.enableFloorPlanView = enableFloorPlanView ?? false;
+    this.reservationCancellationWindow = reservationCancellationWindow;
+    this.reservationModificationLimit = reservationModificationLimit;
+    this.reservationTimeoutMinutes = reservationTimeoutMinutes;
+    this.defaultReservationDurationMinutes = defaultReservationDurationMinutes;
+    this.requireGpsForAttendance = requireGpsForAttendance;
+    this.attendanceGeofenceRadiusMeters = attendanceGeofenceRadiusMeters;
+    this.strictGeofenceBlock = strictGeofenceBlock;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.counts = counts;
+    this.maxWeeklyHours = maxWeeklyHours;
+    this.minGapBetweenShiftsHours = minGapBetweenShiftsHours;
+    this.splitShiftGapHours = splitShiftGapHours;
+    this.overtimeDailyThresholdHours = overtimeDailyThresholdHours;
+    this.overtimeWeeklyThresholdHours = overtimeWeeklyThresholdHours;
+    this.overtimeMultiplier = overtimeMultiplier;
+    this.payPeriodType = payPeriodType;
+    this.maxPartySize = maxPartySize ?? 20;
+    this.reservationBookingWindowDays = reservationBookingWindowDays ?? 60;
+    this.reservationBufferMinutes = reservationBufferMinutes ?? 0;
+    this.autoNoShow = autoNoShow ?? false;
+    this.gracePeriodMinutes = gracePeriodMinutes ?? 30;
+    this.isPublished = isPublished ?? false;
+    this.taxRate = taxRate ?? 0;
+    this.taxName = taxName ?? "";
+    this.taxIncluded = taxIncluded ?? true;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -196,6 +305,7 @@ export class MyBusinessFullDetails {
         data.address,
         data.location,
         data.timezone || "UTC",
+        data.currency,
         OpeningHours.parseApiArrayResponse(data.openingHours || []),
         data.status,
         BusinessMedia.parseApiArrayResponse(data.media),
@@ -204,8 +314,41 @@ export class MyBusinessFullDetails {
         data.email,
         data.phone,
         data.logo,
+        !!data.allowReservations,
+        !!data.allowOrders,
+        !!data.requireReservationConfirmation,
+        !!data.requireOrderConfirmation,
+        !!data.allowOnlyNearbyOrders,
+        data.maxOrderDistanceMeters !== undefined && data.maxOrderDistanceMeters !== null ? Number(data.maxOrderDistanceMeters) : 500,
+        data.allowTableOrdering !== undefined ? !!data.allowTableOrdering : true,
+        data.allowTakeawayOrdering !== undefined ? !!data.allowTakeawayOrdering : true,
+        data.reservationCancellationWindow !== undefined ? Number(data.reservationCancellationWindow) : 1,
+        data.reservationModificationLimit !== undefined ? Number(data.reservationModificationLimit) : 120,
+        data.reservationTimeoutMinutes !== undefined ? Number(data.reservationTimeoutMinutes) : 15,
+        data.defaultReservationDurationMinutes !== undefined ? Number(data.defaultReservationDurationMinutes) : 120,
+        !!data.requireGpsForAttendance,
+        data.attendanceGeofenceRadiusMeters !== undefined ? Number(data.attendanceGeofenceRadiusMeters) : 50,
+        !!data.strictGeofenceBlock,
         new Date(data.createdAt),
-        new Date(data.updatedAt)
+        new Date(data.updatedAt),
+        data.counts,
+        data.maxWeeklyHours !== undefined && data.maxWeeklyHours !== null ? Number(data.maxWeeklyHours) : undefined,
+        data.minGapBetweenShiftsHours !== undefined && data.minGapBetweenShiftsHours !== null ? Number(data.minGapBetweenShiftsHours) : undefined,
+        data.splitShiftGapHours !== undefined && data.splitShiftGapHours !== null ? Number(data.splitShiftGapHours) : undefined,
+        data.overtimeDailyThresholdHours !== undefined && data.overtimeDailyThresholdHours !== null ? Number(data.overtimeDailyThresholdHours) : undefined,
+        data.overtimeWeeklyThresholdHours !== undefined && data.overtimeWeeklyThresholdHours !== null ? Number(data.overtimeWeeklyThresholdHours) : undefined,
+        data.overtimeMultiplier !== undefined && data.overtimeMultiplier !== null ? Number(data.overtimeMultiplier) : undefined,
+        data.payPeriodType ?? undefined,
+        data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
+        data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
+        data.reservationBufferMinutes !== undefined ? Number(data.reservationBufferMinutes) : 0,
+        data.autoNoShow !== undefined ? !!data.autoNoShow : false,
+        data.gracePeriodMinutes !== undefined ? Number(data.gracePeriodMinutes) : 30,
+        !!data.isPublished,
+        data.taxRate !== undefined ? Number(data.taxRate) : 0,
+        data.taxName ?? "",
+        data.taxIncluded !== undefined ? !!data.taxIncluded : true,
+        data.enableFloorPlanView !== undefined ? !!data.enableFloorPlanView : false,
       );
     } catch {
       return null;
@@ -237,4 +380,39 @@ export type UpdateBusinessDetailsDto = {
   priceLevel?: number;
   status?: string;
   timezone?: string;
+  currency?: string;
+  allowReservations?: boolean;
+  allowOrders?: boolean;
+  requireReservationConfirmation?: boolean;
+  requireOrderConfirmation?: boolean;
+  allowOnlyNearbyOrders?: boolean;
+  maxOrderDistanceMeters?: number;
+  allowTableOrdering?: boolean;
+  allowTakeawayOrdering?: boolean;
+  reservationCancellationWindow?: number;
+  reservationModificationLimit?: number;
+  reservationTimeoutMinutes?: number;
+  defaultReservationDurationMinutes?: number;
+  requireGpsForAttendance?: boolean;
+  attendanceGeofenceRadiusMeters?: number;
+  strictGeofenceBlock?: boolean;
+  countryId?: number;
+  location?: { type: "Point"; coordinates: [number, number] };
+  maxWeeklyHours?: number;
+  minGapBetweenShiftsHours?: number;
+  splitShiftGapHours?: number;
+  overtimeDailyThresholdHours?: number;
+  overtimeWeeklyThresholdHours?: number;
+  overtimeMultiplier?: number;
+  payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
+  maxPartySize?: number;
+  reservationBookingWindowDays?: number;
+  reservationBufferMinutes?: number;
+  autoNoShow?: boolean;
+  gracePeriodMinutes?: number;
+  isPublished?: boolean;
+  taxRate?: number;
+  taxName?: string;
+  taxIncluded?: boolean;
+  enableFloorPlanView?: boolean;
 };

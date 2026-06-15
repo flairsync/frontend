@@ -1,6 +1,7 @@
 export { ManagePagesLayout }
 
 import React, { useEffect, useState } from 'react'
+import { navigate } from 'vike/client/router'
 
 import { usePageContext } from 'vike-react/usePageContext';
 
@@ -25,12 +26,45 @@ import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useMyBusiness } from '@/features/business/useMyBusiness';
 
+import { Loader } from 'lucide-react';
+
+const PAGE_LABELS: Record<string, string> = {
+    dashboard: "Dashboard",
+    branding: "Business Branding",
+    settings: "Business Settings",
+    staff: "Staff Management",
+    schedule: "Schedule",
+    attendance: "Attendance",
+    payroll: "Payroll",
+    jobs: "Job Postings",
+    inventory: "Inventory",
+    menu: "Menu",
+    "floor-plan": "Floor Plan",
+    orders: "Orders",
+    reservations: "Reservations",
+    tasks: "Tasks",
+    stations: "Stations",
+    analytics: "Analytics & Reports",
+    reviews: "Reviews",
+    "audit-logs": "Audit Logs",
+    danger: "Danger Zone",
+    integrations: "Integrations",
+    marketplace: "Marketplace",
+}
+
+function getCurrentPageLabel(): string {
+    if (typeof window === "undefined") return "Dashboard"
+    const match = window.location.pathname.match(/\/owner\/([^/]+)/)
+    const key = match?.[1]
+    return key ? (PAGE_LABELS[key] ?? key) : "Dashboard"
+}
+
 
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
     const {
         i18n
-    } = useTranslation();
+    } = useTranslation("management");
     const {
         routeParams,
         data
@@ -40,14 +74,29 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const {
         myBusinessFullDetails,
         fetchingMyBusinessFullDetails,
+        businessLoadError,
     } = useMyBusiness(routeParams.id);
+
+    useEffect(() => {
+        if (businessLoadError) {
+            navigate('/manage/overview');
+        }
+    }, [businessLoadError]);
+
+
 
 
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
 
 
-    if (!i18n.isInitialized) return <>Loading ....</>
+    if (!i18n.isInitialized || fetchingMyBusinessFullDetails || businessLoadError) return (
+        <div className="flex items-center justify-center h-screen w-full">
+            <div className="flex flex-col items-center gap-2">
+                <Loader className="h-8 w-8 animate-spin" />
+            </div>
+        </div>
+    )
     return (
         <div>
 
@@ -69,21 +118,31 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         />
                         <Breadcrumb>
                             <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink >
+                                <BreadcrumbItem className="hidden md:flex items-center gap-2">
+                                    <BreadcrumbLink>
                                         {myBusinessFullDetails?.name}
                                     </BreadcrumbLink>
+                                    {!fetchingMyBusinessFullDetails && myBusinessFullDetails && (
+                                        myBusinessFullDetails.isPublished ? (
+                                            <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 font-medium">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                                Live
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20 font-medium">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                                Draft
+                                            </span>
+                                        )
+                                    )}
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                                    <BreadcrumbPage>{getCurrentPageLabel()}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
-                        <div
-                            className=' flex flex-1  justify-end mr-10'
-                        >
-
+                        <div className="flex flex-1 justify-end mr-10">
                             <HeaderProfileAvatar />
                         </div>
                     </header>

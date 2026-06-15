@@ -1,0 +1,179 @@
+{
+  "marketplace": {
+    "title": "Marketplace"
+  },
+  "footer": {
+    "follow_us": "Segueix-nos"
+  },
+  "landing_page": {
+    "header": {
+      "navLinks": {
+        "home_tab_title": "Inici",
+        "businesses_tab_title": "Negocis",
+        "features_tab_title": "Funcions",
+        "solution_tab_title": "Solució",
+        "integration_tab_title": "Integració",
+        "pricing_tab_title": "Preus",
+        "faq_tab_title": "FAQ"
+      },
+      "joinUsButton": "Uneix-te a nosaltres",
+      "jobs": "Feina",
+      "findBusinessButton": "Troba el teu negoci preferit",
+      "explore": "Explorar"
+    },
+    "hero": {
+      "title": "Millora la gestió del teu cafè i restaurant",
+      "subtitle": "La manera més fàcil de gestionar el teu flux de treball i col·laborar amb el teu equip sense problemes.",
+      "trialButton": "Comença la prova gratuïta",
+      "explainButton": "Veure com funciona"
+    },
+    "features": {
+      "globalTitle": "Tot el que necessites per gestionar el teu cafè i restaurant",
+      "globalSubtitle": "Des de menús fins a personal, inventari i descoberta de clients: gestiona-ho tot en una sola plataforma elegant. Estalvia temps, redueix costos i centra't a oferir excel·lents plats i experiències mentre nosaltres gestionem les operacions.",
+      "inventoryManagement": {
+        "title": "Gestió d'inventari",
+        "subtitle": "Supervisa els ingredients en temps real, rep alertes de baix estoc i simplifica les comandes als proveïdors per mantenir la cuina funcionant sense problemes."
+      },
+      "staffManagement": {
+        "title": "Gestió del personal",
+        "subtitle": "Crea i comparteix horaris del personal en minuts, gestiona torns i controla l'assistència, tot des d'un sol lloc. Adéu al caos d'últim moment."
+      }
+    },
+    "problemSolution": {
+      "title": "Coneixem els reptes de gestionar un restaurant",
+      "subtitle": "Gestionar personal, controlar l'inventari, actualitzar menús i fidelitzar clients pot ser aclaparador. Per això vam crear una eina simple tot-en-un dissenyada per a cafès i restaurants.",
+      "leftPanelTitle": "Com podem ajudar-te a fer créixer el teu negoci",
+      "solutions": [
+        {
+          "id": 1,
+          "title": "Controla fàcilment l'inventari",
+          "description": "Mantingues el teu estoc actualitzat, rep alertes de baix inventari i torna a demanar ingredients sense esforç.",
+          "cardTitle": "Gestió d'inventari",
+          "cardDescription": "Supervisa els ingredients en temps real, rep alertes de baix estoc i simplifica les comandes als proveïdors per mantenir la cuina funcionant sense problemes."
+        },
+        {
+          "id": 2,
+          "title": "Gestiona els horaris del personal",
+          "description": "Crea i comparteix torns, controla l'assistència i comunica't fàcilment amb el teu equip.",
+          "cardTitle": "Gestió del personal",
+          "cardDescription": "Crea i comparteix horaris del personal en minuts, gestiona torns i controla l'assistència, tot des d'un sol lloc."
+        },
+        {
+          "id": 3,
+          "title": "Actualitza els menús ràpidament",
+          "description": "Afegeix nous plats, elimina els antics i actualitza preus sense complicacions.",
+          "cardTitle": "Gestió de menús",
+          "cardDescription": "Gestiona fàcilment el teu menú i mantingues les ofertes actualitzades per als teus clients."
+        },
+        {
+          "id": 4,
+          "title": "Fidelitza els clients",
+          "description": "Involucra els teus clients i fes que tornin amb ofertes personalitzades.",
+          "cardTitle": "Compromís amb el client",
+          "cardDescription": "Crea programes de fidelització, controla les preferències dels clients i millora la retenció."
+        }
+      ]
+    },
+    "stats": {
+      "items": [
+        {
+          "prefix": "FINS A",
+          "value": "35%",
+          "label": "Més ingressos",
+          "sub": "amb comandes optimitzades i vendes addicionals"
+        },
+        {
+          "prefix": "FINS A",
+          "value": "4 h",
+          "label": "Estalviades al dia",
+          "sub": "en planificació, inventari i informes"
+        },
+        {
+          "prefix": "FINS A",
+          "value": "40%",
+          "label": "Menys malbaratament",
+          "sub": "amb alertes d'inventari en temps real"
+        },
+        {
+          "prefix": "FINS A",
+          "value": "3×",
+          "label": "Més rotació de taules",
+          "sub": "amb reserves i plànols intel·ligents"
+        }
+      ]
+    },
+    "integration": {
+      "title": "Configuració senzilla, sense complicacions",
+      "subtitle": "Sense integracions complicades. Simplement crea el teu compte, configura els detalls del teu negoci i comença a gestionar-ho tot des d'un sol lloc, immediatament.",
+      "buttonText": "Reserva una demo",
+      "mainCard": {
+        "title": "Prevenció de descoberts",
+        "status": "Actualment actiu",
+        "progress": "93%",
+        "progressLabel": "Progrés setmanal"
+      }
+    },
+    "pricing": {
+      "title": "Tria el pla que millor s'adapti a tu!",
+      "monthly_label": "Facturació mensual",
+      "yearly_label": "Facturació anual (41% de descompte)",
+      "billed_note": "*Facturat anualment, impostos de l'aplicació no inclosos",
+      "choose_plan_button": "Tria pla"
+    },
+    "faq": {
+      "title": "Preguntes freqüents",
+      "subtitle": "Tens preguntes? Tenim respostes. Aquí tens algunes de les preguntes més comunes dels propietaris de restaurants i cafès sobre la nostra plataforma.",
+      "cta_button": "Tens més preguntes?"
+    },
+    "footer": {
+      "logo": "FlairSync",
+      "follow_us": "Segueix-nos",
+      "quick_links_title": "Enllaços ràpids",
+      "quick_links": [
+        "Inici",
+        "Sobre nosaltres",
+        "Integracions",
+        "Funcions",
+        "Preus",
+        "Contacta'ns"
+      ],
+      "support_title": "Suport",
+      "support_links": [
+        "FAQ",
+        "Centre d'ajuda",
+        "Política de privadesa",
+        "Termes"
+      ],
+      "contact_title": "Contacte",
+      "contact_address_line1": "Andorra la Vella, AD500, Andorra",
+      "contact_phone": "+376 123 456",
+      "newsletter_title": "Subscriu-te al nostre butlletí",
+      "newsletter_placeholder": "Introdueix el teu correu electrònic",
+      "copyright": "© {{year}} FlairSync. Tots els drets reservats."
+    }
+  },
+  "subscriptions": {
+    "current_plan": "Pla actual",
+    "limits": {
+      "businesses": "{{count}} negoci",
+      "businesses_plural": "{{count}} negocis",
+      "employees": "{{count}} empleat",
+      "employees_plural": "{{count}} empleats",
+      "menus": "{{count}} menú",
+      "menus_plural": "{{count}} menús",
+      "products": "{{count}} producte",
+      "products_plural": "{{count}} productes"
+    },
+    "features": {
+      "basic_menu_mgmt": "Gestió bàsica de menú",
+      "menu_mgmt": "Gestió completa dels menús",
+      "basic_analytics": "Analítiques bàsiques",
+      "advanced_analytics": "Analítiques avançades",
+      "staff_scheduling": "Planificació del personal",
+      "reservation_system": "Sistema de reserves",
+      "priority_support": "Suport prioritari",
+      "ded_acc_manager": "Gestor de compte dedicat",
+      "custom_branding": "Marca personalitzada"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
+import LandingHeader from "@/components/landing/LandingHeader";
 
 // --- Constants for Terms Sections (FINALIZED FOR RESTAURANT SaaS) ---
 const termsSections = [
@@ -88,11 +89,12 @@ const termsSections = [
 const TermsPage: React.FC = () => {
     return (
         <div>
-            <main className="container mx-auto max-w-5xl px-6 py-20 space-y-12">
+            <LandingHeader />
+            <main className="container mx-auto max-w-5xl px-6 pt-32 pb-20 space-y-12">
                 {/* Hero Section */}
                 <section className="text-center space-y-4">
                     <h1 className="text-4xl font-extrabold">Terms and Conditions</h1>
-                    <p className="text-muted-foreground">Last Updated: [Insert Date]</p>
+                    <p className="text-muted-foreground">Last Updated: May 6, 2026</p>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                         These Terms and Conditions govern your use of FlairSync. By using our services, you agree to comply with them.
                     </p>

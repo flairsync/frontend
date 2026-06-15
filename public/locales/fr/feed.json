@@ -1,0 +1,50 @@
+{
+  "public_feed": {
+    "resultsFound": "{{count}} résultats trouvés",
+    "sortBy": "Trier par",
+    "sortOptions": {
+      "default": "Par défaut",
+      "rating_low": "Note : du plus bas au plus élevé",
+      "rating_high": "Note : du plus élevé au plus bas"
+    },
+    "searchHero": {
+      "title": "Arrêtez de chercher un restaurant - trouvez-le.",
+      "searchPlaceholder": "Recherchez des restaurants, cuisines ou lieux..."
+    },
+    "sidebar": {
+      "filterTitle": "Filtrer",
+      "clearFilters": "Effacer les filtres",
+      "locationTitle": "Lieu",
+      "locationPlaceholder": "Andorra la Vella, AD 500",
+      "customLocation": "Emplacement personnalisé",
+      "nearby": "À proximité",
+      "typeTitle": "Type",
+      "anyType": "Tous types",
+      "anyTag": "Toutes étiquettes",
+      "tagsTitle": "Tags"
+    }
+  },
+  "business_page": {
+    "header": { "reserve_table_button": "Réserver une table" },
+    "info_cards": {
+      "rating_title": "Note",
+      "status_title": "Statut",
+      "status_open_now": "Ouvert maintenant",
+      "status_closed": "Fermé",
+      "status_closes_at": "Ferme à {{time}}",
+      "status_opens_at": "Ouvre à {{time}}",
+      "status_check_hours": "Consulter les horaires",
+      "location_title": "Localisation",
+      "view_on_map_button": "Voir sur la carte"
+    },
+    "menu": {
+      "section_title": "Menu",
+      "categories": { "coffee_drinks": "Café & Boissons", "food": "Nourriture" }
+    },
+    "timing": { "section_title": "Horaires d'ouverture" },
+    "contact": {
+      "section_title": "Contact & Réseaux sociaux",
+      "buttons": { "instagram": "Instagram", "facebook": "Facebook", "website": "Site Web" }
+    }
+  }
+}

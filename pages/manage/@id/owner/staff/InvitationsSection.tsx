@@ -37,17 +37,27 @@ import { Form, Formik } from "formik";
 import { inviteNewEmployeeSchema } from "@/misc/FormValidators";
 import { InputError } from "@/components/inputs/InputError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useBusinessPlan } from '@/features/business/useBusinessPlan';
+import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
+import { cn } from '@/lib/utils';
 
 
-const InvitationsSection = () => {
+type InvitationsSectionProps = {
+    canCreate?: boolean;
+};
+
+const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
+
+    const { openUpgradeModal } = useSubscriptionStore();
+    const { routeParams } = usePageContext();
+
+    const { plan } = useBusinessPlan(routeParams.id);
+    const canAddEmployee = plan ? plan.canAddEmployee : true;
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()
     const [filterStatus, setFilterStatus] = useState<string>('ALL'); // Example filter
-    const {
-        routeParams
-    } = usePageContext();
 
     const {
         invitations,
@@ -82,6 +92,7 @@ const InvitationsSection = () => {
 
     return (
         <div>
+            {/* Global UpgradeModal handles this */}
             <ConfirmationPopup
                 isOpen={cancelInvitationId != undefined}
                 onCancel={() => setCancelInvitationId(undefined)}
@@ -105,10 +116,28 @@ const InvitationsSection = () => {
 
                     <div className="flex gap-2">
                         <div className="flex justify-end">
-                            <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
+                            {canCreate && <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
                                 <DialogTrigger asChild >
-                                    <Button className="flex items-center gap-2">
+                                    <Button
+                                        className={cn(
+                                            "flex items-center gap-2 transition",
+                                            canAddEmployee
+                                                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                        )}
+                                        onClick={(e) => {
+                                            if (!canAddEmployee) {
+                                                e.preventDefault();
+                                                openUpgradeModal(
+                                                    plan
+                                                        ? `The business plan allows up to ${plan.allowed.employees} employees (${plan.current.employees} currently active). The owner needs to upgrade to add more.`
+                                                        : "The business plan employee limit has been reached. The owner needs to upgrade to add more staff."
+                                                );
+                                            }
+                                        }}
+                                    >
                                         <UserPlus className="h-4 w-4" /> Add Staff
+                                        {!canAddEmployee && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent>
@@ -120,7 +149,11 @@ const InvitationsSection = () => {
                                         initialValues={{ email: '', }}
                                         validationSchema={inviteNewEmployeeSchema}
                                         onSubmit={values => {
-                                            inviteNewEmployee(values.email)
+                                            inviteNewEmployee(values.email, {
+                                                onError: (err: any) => {
+                                                    // Global interceptor handles this
+                                                }
+                                            });
                                             setInviteModalOpen(false);
                                         }}
                                     >
@@ -141,7 +174,7 @@ const InvitationsSection = () => {
                                     </Formik>
 
                                 </DialogContent>
-                            </Dialog>
+                            </Dialog>}
 
                         </div>
                         {/* Example filter dropdown */}
@@ -187,27 +220,29 @@ const InvitationsSection = () => {
                                     </TableCell>
                                     <TableCell>{invite.resendCount}</TableCell>
                                     <TableCell className="flex gap-2">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
-                                                    <MoreHorizontal />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem onClick={() => resendInvitation(invite.id)}>
-                                                    Resend email
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => handleGenerateQrValue(invite)}>
-                                                    Show QR code
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => setCancelInvitationId(invite.id)}>
-                                                    Cancel invitation
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        {invite.status !== 'ACCEPTED' && (
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                        <span className="sr-only">Open menu</span>
+                                                        <MoreHorizontal />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuItem onClick={() => resendInvitation(invite.id)}>
+                                                        Resend email
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => handleGenerateQrValue(invite)}>
+                                                        Show QR code
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => setCancelInvitationId(invite.id)}>
+                                                        Cancel invitation
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}

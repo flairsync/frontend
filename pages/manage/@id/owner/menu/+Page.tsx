@@ -16,13 +16,13 @@ import {
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+import { useBusinessPlan } from "@/features/business/useBusinessPlan";
+import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 const MAX_HINTS_PREVIEW = 3;
-
-// Example subscription data
-const userSubscription = {
-    maxMenus: 5,
-};
 
 const getMaxHintLevel = (hints: Record<string, number>) =>
     Math.max(...Object.values(hints));
@@ -39,11 +39,10 @@ const getBadgeStyles = (level: number) => {
 };
 
 const MenusPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [createModal, setCreateModal] = useState(false);
     const {
         routeParams,
-        data
     } = usePageContext();
 
     const {
@@ -51,7 +50,13 @@ const MenusPage: React.FC = () => {
         createNewMenu
     } = useBusinessMenus(routeParams.id);
 
-    const remainingMenus = userSubscription.maxMenus - (businessBasicMenus?.length || 0);
+    const { plan } = useBusinessPlan(routeParams.id);
+    const { openUpgradeModal } = useSubscriptionStore();
+
+    const maxMenus = plan?.allowed.menus || 0;
+    const currentMenus = plan?.current.menus || 0;
+    const remainingMenus = Math.max(0, maxMenus - currentMenus);
+    const canCreateMenu = plan ? plan.canCreateMenu : true;
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
@@ -85,20 +90,26 @@ const MenusPage: React.FC = () => {
 
                 {/* Subscription counter */}
                 <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 mb-4">
-                    <span>
-                        {remainingMenus > 0
-                            ? t('menu_management.list.remaining_menus', { count: remainingMenus })
-                            : t('menu_management.list.limit_reached')}
-                    </span>
-                    {remainingMenus === 0 && (
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            className="ml-2"
-                            onClick={() => console.log("Upgrade subscription clicked")}
-                        >
-                            {t('menu_management.list.upgrade')}
-                        </Button>
+                    {plan ? (
+                        <>
+                            <span>
+                                {canCreateMenu
+                                    ? t('menu_management.list.remaining_menus', { count: remainingMenus })
+                                    : t('menu_management.list.limit_reached')}
+                            </span>
+                            {!canCreateMenu && (
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="ml-2 text-indigo-600 border-indigo-200"
+                                    onClick={() => openUpgradeModal(`The business plan allows up to ${plan.allowed.menus} menus. The owner needs to upgrade to add more.`)}
+                                >
+                                    {t('menu_management.list.upgrade')}
+                                </Button>
+                            )}
+                        </>
+                    ) : (
+                        <div className="h-5 w-32 bg-zinc-100 animate-pulse rounded" />
                     )}
                 </div>
 
@@ -110,7 +121,11 @@ const MenusPage: React.FC = () => {
                         </p>
                         <Button className="mt-4"
                             onClick={() => {
-                                setCreateModal(true);
+                                if (canCreateMenu) {
+                                    setCreateModal(true);
+                                } else {
+                                    openUpgradeModal(`The business plan allows up to ${plan?.allowed.menus ?? 0} menus. The owner needs to upgrade to add more.`);
+                                }
                             }}
                         >
                             <Plus className="h-4 w-4 mr-2" /> {t('menu_management.list.create_menu')}
@@ -133,6 +148,13 @@ const MenusPage: React.FC = () => {
                                                 <IconRenderer icon={menu.icon} className="h-6 w-6" />
                                             </div>
                                             <CardTitle className="text-xl font-semibold">{menu.name}</CardTitle>
+                                            <AuditLogHint
+                                                entityType="menu"
+                                                entityId={menu.id}
+                                                businessId={routeParams.id}
+                                                className="ml-auto"
+                                                side="left"
+                                            />
                                         </div>
 
                                         <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400 text-sm">
@@ -197,21 +219,31 @@ const MenusPage: React.FC = () => {
                         ))}
 
                         {/* Create Menu Card */}
-                        {remainingMenus > 0 && (
-                            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                                <Card
-                                    className="flex flex-col items-center justify-center cursor-pointer p-6 border-dashed border-2 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition rounded-xl"
-                                    onClick={() => {
+                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                            <Card
+                                className={cn(
+                                    "flex flex-col items-center justify-center cursor-pointer p-6 border-dashed border-2 transition rounded-xl",
+                                    canCreateMenu
+                                        ? "border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                        : "border-zinc-200 opacity-60 bg-zinc-50 cursor-not-allowed"
+                                )}
+                                onClick={() => {
+                                    if (canCreateMenu) {
                                         setCreateModal(true);
-                                    }}
-                                >
-                                    <Plus className="h-6 w-6 text-indigo-500 mb-2" />
-                                    <p className="font-semibold text-zinc-700 dark:text-zinc-200">
-                                        {t('menu_management.list.create_new_menu_card')}
-                                    </p>
-                                </Card>
-                            </motion.div>
-                        )}
+                                    } else {
+                                        openUpgradeModal(`The business plan allows up to ${plan?.allowed.menus ?? 0} menus. The owner needs to upgrade to add more.`);
+                                    }
+                                }}
+                            >
+                                <Plus className={cn("h-6 w-6 mb-2", canCreateMenu ? "text-indigo-500" : "text-zinc-400")} />
+                                <p className={cn("font-semibold", canCreateMenu ? "text-zinc-700 dark:text-zinc-200" : "text-zinc-400")}>
+                                    {t('menu_management.list.create_new_menu_card')}
+                                </p>
+                                {!canCreateMenu && (
+                                    <span className="text-[10px] font-bold text-indigo-600 uppercase mt-1">Upgrade Required</span>
+                                )}
+                            </Card>
+                        </motion.div>
                     </div>
                 )}
             </div>

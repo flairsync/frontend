@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { Separator } from "@/components/ui/separator"
 
 import { clientOnly } from "vike-react/clientOnly"
 import { CardDescription } from "@/components/ui/card"
@@ -37,9 +38,14 @@ const BusinessBrandingPage = () => {
 
 
     return (
-        <Accordion type="single" collapsible className="w-full space-y-2" onValueChange={(val) => {
+        <div className="space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">Branding</h1>
 
-        }} >
+            <Separator />
+
+            <Accordion type="single" collapsible className="w-full space-y-2" onValueChange={(val) => {
+
+            }} >
             {/* Logo */}
             <AccordionItem value="logo" className="border rounded-lg px-3  ">
                 <AccordionTrigger className="hover:cursor-pointer ">Logo</AccordionTrigger>
@@ -84,7 +90,8 @@ const BusinessBrandingPage = () => {
             </AccordionItem> */}
 
 
-        </Accordion>
+            </Accordion>
+        </div>
     )
 }
 

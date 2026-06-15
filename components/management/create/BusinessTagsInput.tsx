@@ -6,6 +6,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { useBusinessTags } from "@/features/business/tags/useBusinessTags";
 import { BusinessTag } from "@/models/business/BusinessTag";
+import { useTranslation } from "react-i18next";
 
 interface TagsDropdownProps {
   value: BusinessTag[];
@@ -17,6 +18,7 @@ interface TagsDropdownProps {
 
 
 const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, options = [], placeholder }) => {
+  const { t } = useTranslation();
   const {
     businessTags
   } = useBusinessTags();
@@ -26,7 +28,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
 
 
   const filtered = businessTags?.filter(
-    (opt) => opt.name.toLowerCase().includes(search.toLowerCase()) && !value.includes(opt)
+    (opt) => t(`shared.tags.${opt.name}`, opt.name).toLowerCase().includes(search.toLowerCase()) && !value.includes(opt)
   );
 
   const addTag = (tag: BusinessTag) => {
@@ -34,7 +36,6 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
       onChange([...value, tag]);
     }
     setSearch("");
-    setOpen(false);
   };
 
   const removeTag = (tag: BusinessTag) => {
@@ -55,7 +56,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
               className="flex items-center gap-1 cursor-pointer"
               onClick={() => removeTag(tag)}
             >
-              {tag.name}
+              {t(`shared.tags.${tag.name}`, tag.name)}
               <X className="w-3 h-3" />
             </Badge>
           ))}
@@ -83,7 +84,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
             <CommandList>
               {filtered?.map((opt) => (
                 <CommandItem key={opt.id} onSelect={() => addTag(opt)}>
-                  {opt.name}
+                  {t(`shared.tags.${opt.name}`, opt.name)}
                 </CommandItem>
               ))}
             </CommandList>

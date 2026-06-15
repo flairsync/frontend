@@ -1,5 +1,7 @@
 import { Allergy } from "@/models/shared/Allergy";
 import { BusinessMenuItemMedia } from "./BusinessMenuItemMedia";
+import { MenuItemModifierGroup } from "./MenuItemModifierGroup";
+import { MenuItemVariant } from "./MenuItemVariant";
 
 export class BusinessMenuItem {
   id: string;
@@ -10,6 +12,14 @@ export class BusinessMenuItem {
 
   allergies?: Allergy[] = [];
   media?: BusinessMenuItemMedia[] = [];
+  variants?: MenuItemVariant[] = [];
+  modifierGroups?: MenuItemModifierGroup[] = [];
+
+  inventoryTrackingMode?: string;
+  inventoryItemId?: string;
+  inventoryUnitId?: string | number;
+  quantityPerSale?: number;
+  kitchenStationId?: string | null;
 
   constructor(
     id: string,
@@ -19,6 +29,13 @@ export class BusinessMenuItem {
     description?: string,
     allergies?: Allergy[],
     media?: BusinessMenuItemMedia[],
+    variants?: MenuItemVariant[],
+    modifierGroups?: MenuItemModifierGroup[],
+    inventoryTrackingMode?: string,
+    inventoryItemId?: string,
+    inventoryUnitId?: string | number,
+    quantityPerSale?: number,
+    kitchenStationId?: string | null,
   ) {
     this.id = id;
     this.name = name;
@@ -26,7 +43,14 @@ export class BusinessMenuItem {
     this.description = description;
     this.allergies = allergies;
     this.media = media;
+    this.variants = variants;
+    this.modifierGroups = modifierGroups;
     this.order = order;
+    this.inventoryTrackingMode = inventoryTrackingMode;
+    this.inventoryItemId = inventoryItemId;
+    this.inventoryUnitId = inventoryUnitId;
+    this.quantityPerSale = quantityPerSale;
+    this.kitchenStationId = kitchenStationId;
   }
 
   static parseApiResponse(data: any): BusinessMenuItem | null {
@@ -34,23 +58,32 @@ export class BusinessMenuItem {
     try {
       const allergies = Allergy.parseApiArrayResponse(data.Allergy);
       const media = BusinessMenuItemMedia.parseApiArrayResponse(data.media);
+      const variants = MenuItemVariant.parseApiArrayResponse(data.variants || []);
+      const modifierGroups = MenuItemModifierGroup.parseApiArrayResponse(data.modifierGroups || []);
       return new BusinessMenuItem(
         data.id,
         data.name,
-        data.price,
+        data.price ? Number(data.price) : 0,
         data.order,
         data.description,
         allergies,
         media,
+        variants,
+        modifierGroups,
+        data.inventoryTrackingMode,
+        data.inventoryItemId,
+        data.inventoryUnitId,
+        data.quantityPerSale,
+        data.kitchenStationId ?? null,
       );
     } catch (error) {
       console.log("ERROR PARSING THE MENU ITEM ", error);
-
       return null;
     }
   }
 
   static parseApiArrayResponse(data: any[]): BusinessMenuItem[] {
+    if (!Array.isArray(data)) return [];
     const arr: BusinessMenuItem[] = [];
     data.forEach((val) => {
       const employee = this.parseApiResponse(val);

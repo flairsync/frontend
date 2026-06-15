@@ -19,13 +19,8 @@ export const useInventoryGroups = (businessId: string) => {
     } = useQuery({
         queryKey: ["inventory_groups", businessId],
         queryFn: async () => {
-            const resp = await fetchInventoryGroupsApiCall(businessId);
-            if (resp.data.success) {
-                // Support both flat and paginated structures
-                const groupsData = resp.data.data.data || resp.data.data;
-                return InventoryGroup.parseApiArrayResponse(groupsData);
-            }
-            return [];
+            const data = await fetchInventoryGroupsApiCall(businessId);
+            return InventoryGroup.parseApiArrayResponse(Array.isArray(data) ? data : []);
         },
         enabled: !!businessId,
         staleTime: 1000 * 60 * 10, // 10 minutes

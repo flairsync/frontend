@@ -1,13 +1,17 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "./api-response";
 const baseUrl = `${import.meta.env.BASE_URL}/countries`;
 const permissionsUrl = `${import.meta.env.BASE_URL}/permissions`;
 
 const countriesListUrl = `${baseUrl}/list`;
 
-export const getCountriesListApiCall = () => {
-  return flairapi.get(countriesListUrl);
-};
+export const getCountriesListApiCall = async (includeAll?: boolean) =>
+  unwrap(await flairapi.get(countriesListUrl, {
+    params: { includeAll: includeAll ? 'true' : undefined },
+  }));
 
-export const getPermissionsListApiCall = () => {
-  return flairapi.get(permissionsUrl);
-};
+export const getPermissionsListApiCall = async () =>
+  unwrap(await flairapi.get(permissionsUrl));
+
+export const fetchAllergiesApiCall = async () =>
+  unwrap(await flairapi.get(`${import.meta.env.BASE_URL}/allergy`));
