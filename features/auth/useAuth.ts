@@ -26,7 +26,7 @@ export const useAuth = () => {
     error: loginError,
   } = useApiMutation({
     mutationKey: ["login_user"],
-    mutationFn: (data: { email: string; password: string }) => {
+    mutationFn: (data: { email: string; password: string; stayConnected?: boolean }) => {
       return loginUserApiCall(data);
     },
     onSuccess(data, variables, context) {

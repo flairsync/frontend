@@ -6,7 +6,16 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CalendarDays, Clock, User, Table2, Loader, Eye } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { DatePickerWithRange } from "@/components/ui/date-picker-with-range"
+import { DateRange } from "react-day-picker"
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { CalendarDays, Clock, Table2, Loader, Eye } from "lucide-react"
+import { isTerminalStatus, getAvailableActions } from "@/features/reservations/reservationUtils"
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal"
 import { EditReservationModal } from "@/components/management/reservations/EditReservationModal"
 import { ViewReservationModal } from "@/components/management/reservations/ViewReservationModal"
@@ -20,33 +29,51 @@ import DataPagination from "@/components/inputs/DataPagination"
 export default function StaffReservationsPage() {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [addingReservation, setAddingReservation] = useState(false);
     const [editingReservation, setEditingReservation] = useState<any>(null);
     const [viewingReservation, setViewingReservation] = useState<any>(null);
+    const [cancelTarget, setCancelTarget] = useState<any>(null);
 
     const [activeTab, setActiveTab] = useState("upcoming");
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [sortBy, setSortBy] = useState<string>("reservationTime");
     const [sortOrder, setSortOrder] = useState<string>("DESC");
+    const [statusFilter, setStatusFilter] = useState<string>("all");
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
     const getFilters = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        if (activeTab === "upcoming") {
-            return { page, limit, startDate: today.toISOString(), sortBy, sortOrder };
-        } else {
-            return { page, limit, endDate: new Date(today.getTime() - 1).toISOString(), sortBy, sortOrder }; // yesterday 23:59:59
+        const base: any = { page, limit, sortBy, sortOrder };
+
+        if (statusFilter !== "all") {
+            base.status = statusFilter;
         }
+
+        if (dateRange?.from || dateRange?.to) {
+            if (dateRange?.from) base.startDate = new Date(format(dateRange.from, "yyyy-MM-dd") + "T00:00:00").toISOString();
+            if (dateRange?.to) base.endDate = new Date(format(dateRange.to, "yyyy-MM-dd") + "T23:59:59").toISOString();
+        } else {
+            if (activeTab === "upcoming") {
+                base.startDate = today.toISOString();
+            } else {
+                base.endDate = new Date(today.getTime() - 1).toISOString();
+            }
+        }
+
+        return base;
     };
 
     const { reservations, meta, fetchingReservations, updateReservation } = useReservations(businessId, getFilters());
 
     const handleTabChange = (val: string) => {
         setActiveTab(val);
-        setPage(1); // Reset page on tab switch
+        setPage(1);
+        setDateRange(undefined);
+        setStatusFilter("all");
     };
 
     const getStatusBadge = (status: string) => {
@@ -61,16 +88,7 @@ export default function StaffReservationsPage() {
         }
     };
 
-    // Since we are filtering on the backend via startDate/endDate, we just use the raw array,
-    // but we can still locally filter status purely for display/safety since
-    // we didn't send a hard status filter to the backend in the getFilters()
-    const upcomingReservations = reservations?.filter((r: any) =>
-        ['pending', 'confirmed', 'waitlist'].includes(r.status.toLowerCase())
-    ) || [];
-
-    const pastReservations = reservations?.filter((r: any) =>
-        ['completed', 'no_show', 'cancelled', 'rejected'].includes(r.status.toLowerCase())
-    ) || [];
+    const displayReservations = reservations ?? [];
 
     const handleUpdateStatus = (id: string, status: string) => {
         updateReservation({ reservationId: id, data: { status: status as any } });
@@ -101,31 +119,62 @@ export default function StaffReservationsPage() {
 
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                    <TabsList className="grid grid-cols-2 w-full max-w-[300px]">
-                        <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-                        <TabsTrigger value="past">Past</TabsTrigger>
-                    </TabsList>
+                <div className="flex flex-col gap-3 mb-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <TabsList className="grid grid-cols-2 w-full max-w-[300px]">
+                            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                            <TabsTrigger value="past">Past</TabsTrigger>
+                        </TabsList>
 
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
-                        <Select value={sortBy} onValueChange={setSortBy}>
-                            <SelectTrigger className="w-[160px]">
-                                <SelectValue placeholder="Sort By" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="reservationTime">Reservation Date</SelectItem>
-                                <SelectItem value="createdAt">Booking Date</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Select value={sortOrder} onValueChange={setSortOrder}>
-                            <SelectTrigger className="w-[130px]">
-                                <SelectValue placeholder="Order" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="DESC">Newest First</SelectItem>
-                                <SelectItem value="ASC">Oldest First</SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <div className="flex items-center gap-2 w-full sm:w-auto">
+                            <Select value={sortBy} onValueChange={setSortBy}>
+                                <SelectTrigger className="w-[160px]">
+                                    <SelectValue placeholder="Sort By" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="reservationTime">Reservation Date</SelectItem>
+                                    <SelectItem value="createdAt">Booking Date</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select value={sortOrder} onValueChange={setSortOrder}>
+                                <SelectTrigger className="w-[130px]">
+                                    <SelectValue placeholder="Order" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="DESC">Newest First</SelectItem>
+                                    <SelectItem value="ASC">Oldest First</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-end gap-3">
+                        <div className="space-y-1">
+                            <Label className="text-xs">Status</Label>
+                            <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
+                                <SelectTrigger className="w-[140px]">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All</SelectItem>
+                                    <SelectItem value="pending">Pending</SelectItem>
+                                    <SelectItem value="confirmed">Confirmed</SelectItem>
+                                    <SelectItem value="seated">Seated</SelectItem>
+                                    <SelectItem value="completed">Completed</SelectItem>
+                                    <SelectItem value="cancelled">Cancelled</SelectItem>
+                                    <SelectItem value="no_show">No Show</SelectItem>
+                                    <SelectItem value="waitlist">Waitlist</SelectItem>
+                                    <SelectItem value="expired">Expired</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-1">
+                            <Label className="text-xs">Date Range</Label>
+                            <DatePickerWithRange
+                                date={dateRange}
+                                setDate={(range) => { setDateRange(range); setPage(1); }}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -155,14 +204,14 @@ export default function StaffReservationsPage() {
                                                     <Loader className="h-6 w-6 animate-spin mx-auto text-blue-600" />
                                                 </TableCell>
                                             </TableRow>
-                                        ) : upcomingReservations.length === 0 ? (
+                                        ) : displayReservations.length === 0 ? (
                                             <TableRow>
                                                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
                                                     No upcoming reservations found.
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            upcomingReservations.map((rsv: any) => (
+                                            displayReservations.map((rsv: any) => (
                                                 <TableRow key={rsv.id} className="hover:bg-muted/50 transition-colors">
                                                     <TableCell>
                                                         <div className="flex flex-col">
@@ -200,14 +249,16 @@ export default function StaffReservationsPage() {
                                                             >
                                                                 <Eye className="w-4 h-4 mr-1" /> View
                                                             </Button>
-                                                            <Button
-                                                                size="sm"
-                                                                variant="ghost"
-                                                                className="h-8 px-2"
-                                                                onClick={() => setEditingReservation(rsv)}
-                                                            >
-                                                                Edit
-                                                            </Button>
+                                                            {!isTerminalStatus(rsv.status) && (
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="ghost"
+                                                                    className="h-8 px-2"
+                                                                    onClick={() => setEditingReservation(rsv)}
+                                                                >
+                                                                    Edit
+                                                                </Button>
+                                                            )}
                                                             {rsv.status.toLowerCase() === "pending" && (
                                                                 <Button
                                                                     size="sm"
@@ -218,14 +269,16 @@ export default function StaffReservationsPage() {
                                                                     Approve
                                                                 </Button>
                                                             )}
-                                                            <Button
-                                                                size="sm"
-                                                                variant="ghost"
-                                                                className="h-8 px-2 text-destructive hover:text-destructive hover:bg-destructive/10"
-                                                                onClick={() => handleUpdateStatus(rsv.id, "cancelled")}
-                                                            >
-                                                                Cancel
-                                                            </Button>
+                                                            {getAvailableActions(rsv.status).includes('cancel') && (
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="ghost"
+                                                                    className="h-8 px-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                                    onClick={() => setCancelTarget(rsv)}
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                            )}
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
@@ -275,14 +328,14 @@ export default function StaffReservationsPage() {
                                                     <Loader className="h-6 w-6 animate-spin mx-auto text-blue-600" />
                                                 </TableCell>
                                             </TableRow>
-                                        ) : pastReservations.length === 0 ? (
+                                        ) : displayReservations.length === 0 ? (
                                             <TableRow>
                                                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
                                                     No past reservations found.
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            pastReservations.map((rsv: any) => (
+                                            displayReservations.map((rsv: any) => (
                                                 <TableRow key={rsv.id} className="hover:bg-muted/50 transition-colors">
                                                     <TableCell>
                                                         <div className="flex flex-col">
@@ -358,6 +411,33 @@ export default function StaffReservationsPage() {
                     if (!open) setViewingReservation(null);
                 }}
             />
+
+            <AlertDialog open={!!cancelTarget} onOpenChange={(open) => { if (!open) setCancelTarget(null); }}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Cancel this reservation?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {cancelTarget?.customerName
+                                ? `This will cancel the reservation for ${cancelTarget.customerName}. The customer will be notified.`
+                                : "This will cancel the reservation. The customer will be notified."}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Keep Reservation</AlertDialogCancel>
+                        <AlertDialogAction
+                            className="bg-destructive hover:bg-destructive/90"
+                            onClick={() => {
+                                if (cancelTarget) {
+                                    handleUpdateStatus(cancelTarget.id, "cancelled");
+                                    setCancelTarget(null);
+                                }
+                            }}
+                        >
+                            Yes, Cancel It
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

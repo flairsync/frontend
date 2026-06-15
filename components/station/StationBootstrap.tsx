@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getOrCreateDeviceUuid, getStationToken, clearStationToken } from "@/features/station/useStationAuth";
+import { getOrCreateDeviceUuid, getStationToken, setActiveStationType } from "@/features/station/useStationAuth";
 import { stationApi } from "@/features/station/station-api";
 import type { StationInfo } from "@/models/Station";
 import type { PosBootstrapData, PosMenu } from "@/features/pos/types";
@@ -64,9 +64,45 @@ function FullScreenLoader() {
 }
 
 export default function StationBootstrap({ stationType }: Props) {
-  const [status, setStatus] = useState<"loading" | "pairing" | "ready">("loading");
+  // Must be set synchronously before any API call or token read so that
+  // stationApi / staffApi interceptors pick up the right per-type token.
+  setActiveStationType(stationType);
+
+  const [status, setStatus] = useState<"loading" | "pairing" | "error" | "ready">("loading");
   const [stationInfo, setStationInfo] = useState<StationInfo | null>(null);
   const [bootstrapData, setBootstrapData] = useState<PosBootstrapData>({ menus: [], tables: [] });
+
+  const loadBootstrap = async () => {
+    setStatus("loading");
+    try {
+      const [stationRes, menuRes, tableRes] = await Promise.all([
+        stationApi.get("/station/me"),
+        stationApi.get("/station/menu"),
+        stationApi.get("/station/tables"),
+      ]);
+
+      setStationInfo(stationRes.data.data);
+
+      const rawMenuArray: any[] = Array.isArray(menuRes.data)
+        ? menuRes.data
+        : Array.isArray(menuRes.data?.data)
+        ? menuRes.data.data
+        : [];
+
+      const tables = tableRes.data?.data ?? [];
+
+      setBootstrapData({ menus: normalizePosMenus(rawMenuArray), tables });
+      setStatus("ready");
+    } catch (err: any) {
+      // 401 is handled by the stationApi interceptor: it clears the token and
+      // triggers window.location.reload(), so we'll land on pairing automatically.
+      // For any other error (5xx, network, etc.) show a retry screen — do NOT
+      // clear the token, because the device is still validly linked.
+      if (err?.response?.status !== 401) {
+        setStatus("error");
+      }
+    }
+  };
 
   useEffect(() => {
     getOrCreateDeviceUuid();
@@ -77,36 +113,27 @@ export default function StationBootstrap({ stationType }: Props) {
       return;
     }
 
-    const loadBootstrap = async () => {
-      try {
-        const [stationRes, menuRes, tableRes] = await Promise.all([
-          stationApi.get("/station/me"),
-          stationApi.get("/station/menu"),
-          stationApi.get("/station/tables"),
-        ]);
-
-        setStationInfo(stationRes.data.data);
-
-        const rawMenuArray: any[] = Array.isArray(menuRes.data)
-          ? menuRes.data
-          : Array.isArray(menuRes.data?.data)
-          ? menuRes.data.data
-          : [];
-
-        const tables = tableRes.data?.data ?? [];
-
-        setBootstrapData({ menus: normalizePosMenus(rawMenuArray), tables });
-        setStatus("ready");
-      } catch {
-        clearStationToken();
-        setStatus("pairing");
-      }
-    };
-
     loadBootstrap();
   }, []);
 
   if (status === "loading") return <FullScreenLoader />;
+
+  if (status === "error") {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-background min-h-screen">
+        <div className="flex flex-col items-center gap-4 text-muted-foreground text-center max-w-xs">
+          <p className="text-sm font-bold text-destructive">Failed to load station data.</p>
+          <p className="text-xs">Check your connection and try again.</p>
+          <button
+            onClick={loadBootstrap}
+            className="mt-2 px-4 py-2 text-xs font-black uppercase tracking-widest bg-primary text-primary-foreground rounded-lg"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (status === "pairing") {
     return (

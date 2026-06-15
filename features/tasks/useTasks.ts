@@ -16,10 +16,7 @@ import {
 export const useBusinessTasks = (businessId: string) => {
   const { data: tasks, isPending: loadingTasks, refetch } = useQuery<Task[]>({
     queryKey: ["business_tasks", businessId],
-    queryFn: async () => {
-      const resp = await fetchBusinessTasksApiCall(businessId);
-      return resp.data.data;
-    },
+    queryFn: () => fetchBusinessTasksApiCall(businessId),
     enabled: !!businessId,
   });
 
@@ -29,10 +26,7 @@ export const useBusinessTasks = (businessId: string) => {
 export const useBusinessTask = (businessId: string, taskId: string) => {
   const { data: task, isPending: loadingTask } = useQuery<Task>({
     queryKey: ["business_task", businessId, taskId],
-    queryFn: async () => {
-      const resp = await fetchBusinessTaskByIdApiCall(businessId, taskId);
-      return resp.data.data;
-    },
+    queryFn: () => fetchBusinessTaskByIdApiCall(businessId, taskId),
     enabled: !!businessId && !!taskId,
   });
 

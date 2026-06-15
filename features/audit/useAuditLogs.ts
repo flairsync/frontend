@@ -15,7 +15,7 @@ export const useLatestAuditLog = (businessId: string | undefined, entityType: st
         page: 1,
       });
       
-      const logs = response.data.data.data as AuditLog[];
+      const logs = response.data as AuditLog[];
       return logs.length > 0 ? logs[0] : null;
     },
     enabled: !!businessId && !!entityId,
@@ -28,7 +28,7 @@ export const useAuditLogs = (params: FetchAuditLogsParams) => {
     queryKey: ["audit_logs", "list", params],
     queryFn: async () => {
       const response = await fetchAuditLogsApiCall(params);
-      return response.data.data as { data: AuditLog[]; current: number; pages: number };
+      return response as { data: AuditLog[]; current: number; pages: number };
     },
     enabled: !!params.businessId,
     staleTime: 1000 * 60 * 2,

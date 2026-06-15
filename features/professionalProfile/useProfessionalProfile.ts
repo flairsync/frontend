@@ -3,6 +3,8 @@ import {
   createMyProfessionalProfileApiCall,
   CreateProProfileDto,
   getMyProfessionalProfileApiCall,
+  updateMyProfessionalProfileApiCall,
+  UpdateProProfileDto,
 } from "./service";
 import { toast } from "sonner";
 import { ProfessionalProfile } from "@/models/professional/ProfessionalProfile";
@@ -17,8 +19,8 @@ export const useProfessionalProfile = () => {
   } = useQuery({
     queryKey: ["user_pro_profile"],
     queryFn: async () => {
-      const resp = await getMyProfessionalProfileApiCall();
-      return ProfessionalProfile.parseApiResponse(resp.data.data);
+      const data = await getMyProfessionalProfileApiCall();
+      return ProfessionalProfile.parseApiResponse(data);
     },
   });
 
@@ -49,11 +51,36 @@ export const useProfessionalProfile = () => {
       },
     });
 
+  const { mutate: updateProProfile, isPending: updatingProProfile } =
+    useMutation({
+      mutationKey: ["user_update_pro_profile"],
+      mutationFn: (data: UpdateProProfileDto) => {
+        toast.loading("Saving changes", {
+          id: "pro_profile_update_toast",
+          toasterId: "pro_profile_update_toast",
+        });
+        return updateMyProfessionalProfileApiCall(data);
+      },
+      onSuccess() {
+        toast.dismiss("pro_profile_update_toast");
+        toast.success("Saved", {
+          description: "Your professional profile was updated.",
+        });
+        queryClient.refetchQueries({ queryKey: ["user_pro_profile"] });
+      },
+      onError() {
+        toast.dismiss("pro_profile_update_toast");
+      },
+    });
+
   return {
     userProfessionalProfile,
     loadingProfessionalProfile,
 
     createProProfile,
     creatingProProfile,
+
+    updateProProfile,
+    updatingProProfile,
   };
 };

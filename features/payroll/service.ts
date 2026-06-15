@@ -1,9 +1,10 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../shared/api-response";
 import { GeneratePayrollDto, FinalizePayrollDto } from "@/models/business/shift/PayrollEntry";
 
 const baseUrl = `${import.meta.env.BASE_URL}/payroll`;
 
-export const fetchPayrollPreviewApiCall = (
+export const fetchPayrollPreviewApiCall = async (
   businessId: string,
   startDate: string,
   endDate: string,
@@ -11,7 +12,7 @@ export const fetchPayrollPreviewApiCall = (
 ) => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append('employmentId', employmentId);
-  return flairapi.get(`${baseUrl}/preview?${params.toString()}`);
+  return unwrap(await flairapi.get(`${baseUrl}/preview?${params.toString()}`));
 };
 
 export const generatePayrollApiCall = (data: GeneratePayrollDto) => {
@@ -22,7 +23,7 @@ export const finalizePayrollApiCall = (data: FinalizePayrollDto) => {
   return flairapi.patch(`${baseUrl}/finalize`, data);
 };
 
-export const fetchPayrollEntriesApiCall = (
+export const fetchPayrollEntriesApiCall = async (
   businessId: string,
   startDate?: string,
   endDate?: string,
@@ -34,7 +35,7 @@ export const fetchPayrollEntriesApiCall = (
   if (endDate) params.append('endDate', endDate);
   if (employmentId) params.append('employmentId', employmentId);
   if (status) params.append('status', status);
-  return flairapi.get(`${baseUrl}?${params.toString()}`);
+  return unwrap(await flairapi.get(`${baseUrl}?${params.toString()}`));
 };
 
 export const getPayrollExportUrl = (

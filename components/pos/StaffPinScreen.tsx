@@ -39,11 +39,34 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
                 pin: enteredPin,
                 businessId,
             });
-            const { employmentId, name, roles, shortToken } = res.data.data;
-            setSession({ employmentId, name, roles, shortToken, loggedInAt: new Date() });
+            const { employmentId, name, roles, shortToken, posPermissions } = res.data.data;
+            setSession({
+                employmentId,
+                name,
+                roles,
+                shortToken,
+                loggedInAt: new Date(),
+                posPermissions: posPermissions ?? {
+                    posCreateOrder: false,
+                    posVoidItem: false,
+                    posCancelOrder: false,
+                    posRefund: false,
+                    posApplyDiscount: false,
+                },
+            });
             onLogin();
-        } catch {
-            setError("Invalid PIN");
+        } catch (err: any) {
+            const status = err?.response?.status;
+            const message = err?.response?.data?.message ?? "";
+
+            let errorMsg = "Incorrect PIN";
+            if (status === 403) {
+                errorMsg = "You don't have access to this terminal";
+            } else if (status === 401 && message.toLowerCase().includes("lock")) {
+                errorMsg = "Terminal locked for 15 minutes";
+            }
+
+            setError(errorMsg);
             setPin("");
             setShake(true);
             setTimeout(() => setShake(false), 600);

@@ -5,6 +5,7 @@ import InventoryManagementFeature from '@/components/landing/InventoryManagement
 import LandingFaqSection from '@/components/landing/LandingFaqSection';
 import LandingFooter from '@/components/landing/LandingFooter';
 import LandingHero from '@/components/landing/LandingHero';
+import LandingStatsBar from '@/components/landing/LandingStatsBar';
 import LandingPricingSection from '@/components/landing/LandingPricingSection';
 import ProblemSolutionSection from '@/components/landing/ProblemSolutionSection';
 import StaffManagementFeature from '@/components/landing/StaffManagementFeature';
@@ -14,7 +15,6 @@ import { clientOnly } from 'vike-react/clientOnly'
 
 const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
 const ScrollArrow = clientOnly(() => import("@/components/landing/AnimatedScrollArrow"));
-const MascotChat = clientOnly(() => import("@/components/landing/MascotChat"));
 
 
 const ScrollMoreArrow = () => {
@@ -56,6 +56,8 @@ export default function Page() {
           </div>
         </div>
 
+        <LandingStatsBar />
+
         <div
           id='features'
         >
@@ -87,7 +89,6 @@ export default function Page() {
 
       </div>
       <WebsiteFooter />
-      <MascotChat />
     </div>
   );
 }

@@ -15,13 +15,8 @@ export const useSubscriptionInvoices = (subId?: string) => {
     queryKey: ["subscription_invoices", subId],
     queryFn: async () => {
       if (!subId) return [];
-      const resp = await getSubscriptionInvoicesApiCall(subId);
-      if (resp.data.success) {
-        return SubscriptionInvoice.parseApiArrayResponse(
-          resp.data.data.data || resp.data.data
-        );
-      }
-      return [];
+      const resp = await getSubscriptionInvoicesApiCall(subId) as any[];
+      return SubscriptionInvoice.parseApiArrayResponse(Array.isArray(resp) ? resp : []);
     },
     enabled: !!subId,
   });
@@ -31,10 +26,7 @@ export const useSubscriptionInvoices = (subId?: string) => {
     try {
       toast.loading("Fetching invoice...", { id: "download_invoice_toast" });
       const resp = await downloadSubscriptionInvoiceApiCall(subId, invoiceId);
-      const url =
-        resp.data?.data?.data?.invoiceUrl ||
-        resp.data?.data?.invoiceUrl ||
-        resp.data?.invoiceUrl;
+      const url = (resp.data as any)?.invoiceUrl ?? null;
       toast.dismiss("download_invoice_toast");
       if (url) {
         window.open(url, "_blank");

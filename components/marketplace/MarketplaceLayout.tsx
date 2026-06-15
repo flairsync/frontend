@@ -30,7 +30,7 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
 
             <SidebarInset className="flex flex-col flex-1 min-h-[calc(100vh-var(--public-header-height,80px))]">
                 {/* Standard Header */}
-                <PublicFeedHeader className="sticky top-0 w-full shrink-0 shadow-sm" />
+                <PublicFeedHeader className="sticky top-0 w-full shrink-0 shadow-sm" disableEntryAnimation />
 
                 <main className="flex-1 flex flex-col min-w-0 bg-secondary/5">
                     <div className="flex-1">

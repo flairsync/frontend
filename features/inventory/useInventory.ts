@@ -31,22 +31,13 @@ export const useInventory = (businessId: string, filters: InventoryFilters = {})
     } = useQuery({
         queryKey: ["inventory_items", businessId, filters],
         queryFn: async () => {
-            const resp = await fetchInventoryItemsApiCall(businessId, {
+            const paged = await fetchInventoryItemsApiCall(businessId, {
                 limit: 20,
                 ...filters,
             });
-            const resData = resp.data?.data !== undefined ? resp.data.data : resp.data;
-            const isPaginated = resData?.data !== undefined && Array.isArray(resData.data);
-            const itemsData = isPaginated ? resData.data : (Array.isArray(resData) ? resData : []);
             return {
-                items: InventoryItem.parseApiArrayResponse(itemsData),
-                pagination: isPaginated
-                    ? {
-                          current: resData.page ?? resData.current ?? 1,
-                          pages: resData.totalPages ?? resData.pages ?? 1,
-                          total: resData.total ?? itemsData.length,
-                      }
-                    : null,
+                items: InventoryItem.parseApiArrayResponse(paged.data),
+                pagination: { current: paged.current, pages: paged.pages, total: paged.data.length },
             };
         },
         enabled: !!businessId,
@@ -134,12 +125,11 @@ export const useInventoryDashboard = (businessId: string) => {
     return useQuery({
         queryKey: ["inventory_dashboard", businessId],
         queryFn: async () => {
-            const resp = await fetchInventoryDashboardApiCall(businessId);
-            const data = resp.data?.data !== undefined ? resp.data.data : resp.data;
+            const data = await fetchInventoryDashboardApiCall(businessId);
             return {
-                totalItems: data?.totalItems ?? 0,
-                lowStockItems: data?.lowStockItems ?? 0,
-                totalStockUnits: data?.totalStockUnits ?? 0,
+                totalItems: (data as any)?.totalItems ?? 0,
+                lowStockItems: (data as any)?.lowStockItems ?? 0,
+                totalStockUnits: (data as any)?.totalStockUnits ?? 0,
             };
         },
         enabled: !!businessId,
@@ -151,8 +141,7 @@ export const useInventoryLowStock = (businessId: string) => {
     return useQuery({
         queryKey: ["inventory_low_stock", businessId],
         queryFn: async () => {
-            const resp = await fetchInventoryLowStockApiCall(businessId);
-            const data = resp.data?.data !== undefined ? resp.data.data : resp.data;
+            const data = await fetchInventoryLowStockApiCall(businessId);
             return Array.isArray(data) ? data : [];
         },
         enabled: !!businessId,
@@ -164,8 +153,7 @@ export const useInventoryTopConsumed = (businessId: string, params?: TopConsumed
     return useQuery({
         queryKey: ["inventory_top_consumed", businessId, params],
         queryFn: async () => {
-            const resp = await fetchInventoryTopConsumedApiCall(businessId, params);
-            const data = resp.data?.data !== undefined ? resp.data.data : resp.data;
+            const data = await fetchInventoryTopConsumedApiCall(businessId, params);
             return Array.isArray(data) ? data : [];
         },
         enabled: !!businessId,
@@ -177,14 +165,10 @@ export const useInventoryMovements = (businessId: string, itemId: string | null,
     return useQuery({
         queryKey: ["inventory_movements", businessId, itemId, params],
         queryFn: async () => {
-            const resp = await fetchInventoryMovementsApiCall(businessId, itemId!, params);
-            const resData = resp.data?.data !== undefined ? resp.data.data : resp.data;
-            const isPaginated = resData?.data !== undefined && Array.isArray(resData.data);
+            const paged = await fetchInventoryMovementsApiCall(businessId, itemId!, params);
             return {
-                movements: isPaginated ? resData.data : (Array.isArray(resData) ? resData : []),
-                pagination: isPaginated
-                    ? { current: resData.page ?? 1, pages: resData.totalPages ?? 1 }
-                    : null,
+                movements: paged.data,
+                pagination: { current: paged.current, pages: paged.pages },
             };
         },
         enabled: !!businessId && !!itemId,
@@ -196,14 +180,10 @@ export const useInventoryTimeline = (businessId: string, params?: TimelineFilter
     return useQuery({
         queryKey: ["inventory_timeline", businessId, params],
         queryFn: async () => {
-            const resp = await fetchInventoryTimelineApiCall(businessId, params);
-            const resData = resp.data?.data !== undefined ? resp.data.data : resp.data;
-            const isPaginated = resData?.data !== undefined && Array.isArray(resData.data);
+            const paged = await fetchInventoryTimelineApiCall(businessId, params);
             return {
-                movements: isPaginated ? resData.data : (Array.isArray(resData) ? resData : []),
-                pagination: isPaginated
-                    ? { current: resData.page ?? 1, pages: resData.totalPages ?? 1 }
-                    : null,
+                movements: paged.data,
+                pagination: { current: paged.current, pages: paged.pages },
             };
         },
         enabled: !!businessId,
@@ -215,8 +195,7 @@ export const useInventoryAutocomplete = (businessId: string, query: string) => {
     return useQuery({
         queryKey: ["inventory_autocomplete", businessId, query],
         queryFn: async () => {
-            const resp = await fetchInventoryAutocompleteApiCall(businessId, query);
-            const data = resp.data?.data !== undefined ? resp.data.data : resp.data;
+            const data = await fetchInventoryAutocompleteApiCall(businessId, query);
             return Array.isArray(data) ? data : [];
         },
         enabled: !!businessId && query.length >= 1,

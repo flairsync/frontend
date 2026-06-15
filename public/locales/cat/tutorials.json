@@ -1,0 +1,531 @@
+{
+  "page": {
+    "title": "Guia d'usuari de FlairSync",
+    "subtitle": "Tutorials pas a pas per a cada funció de la plataforma. Tria un tema a continuació o utilitza la barra lateral per començar."
+  },
+  "ui": {
+    "search_placeholder": "Cerca temes…",
+    "contents": "Contingut",
+    "overview_label": "Descripció general",
+    "who_uses": "Qui utilitza això",
+    "how_to": "Com fer-ho",
+    "tips_label": "Consells",
+    "ready_to_try": "Preparat per provar-ho?",
+    "ready_desc": "Obre la secció corresponent a l'aplicació i segueix els passos anteriors.",
+    "part": "Part",
+    "topic": "tema",
+    "topics": "temes",
+    "prev_label": "Anterior",
+    "next_label": "Següent",
+    "no_results": "No s'han trobat resultats."
+  },
+  "parts": {
+    "1": "Primers passos",
+    "2": "Configuració del negoci",
+    "3": "Gestió del personal",
+    "4": "Horaris i torns",
+    "5": "Assistència i nòmina",
+    "6": "Gestió de menús",
+    "7": "Plànol de planta i taules",
+    "8": "Comandes",
+    "9": "Sistema de pantalla de cuina (KDS)",
+    "10": "Reserves",
+    "11": "Gestió d'inventari",
+    "12": "Notificacions",
+    "13": "Anàlisi",
+    "14": "Estació POS",
+    "15": "Descoberta i reserves de clients",
+    "16": "Subscripcions i facturació",
+    "17": "Tasques",
+    "18": "Feines i reclutament",
+    "19": "Marketplace",
+    "20": "Suport",
+    "21": "Compte i privacitat"
+  },
+  "sections": {
+    "1-1": {
+      "title": "Crear el teu compte",
+      "whatItIs": "Registra't i verifica la teva identitat per accedir a la plataforma.",
+      "whoUsesIt": "Qualsevol persona nova a FlairSync.",
+      "stepGroups": [{ "steps": ["Fes clic a Registra't a la pàgina d'inici de sessió.", "Introdueix el teu nom complet, adreça de correu i una contrasenya segura.", "Fes clic a Crea el compte.", "Obre la teva bústia — rebràs un codi de verificació de 6 dígits.", "Introdueix el codi a la pantalla de verificació.", "El teu compte ja és actiu. Seràs redirigit al teu tauler."] }],
+      "tips": ["El codi de verificació caduca en 10 minuts. Sol·licita'n un de nou si caduca.", "També pots registrar-te amb Continua amb Google — sense codi necessari."],
+      "appRouteLabel": "Registra't ara"
+    },
+    "1-2": {
+      "title": "Iniciar sessió",
+      "whatItIs": "Accedeix al teu compte amb correu/contrasenya o Google.",
+      "whoUsesIt": "Tots els usuaris.",
+      "stepGroups": [{ "steps": ["Ves a la pàgina d'inici de sessió i introdueix el teu correu i contrasenya.", "Fes clic a Inicia sessió.", "Si tens l'autenticació de dos factors activada, introdueix el codi de 6 dígits de la teva app.", "Ja has iniciat sessió."] }],
+      "tips": ["Les sessions caduquen després de 15 minuts d'inactivitat.", "Fes clic a He oblidat la contrasenya per rebre un enllaç de restabliment."],
+      "appRouteLabel": "Ves a l'inici de sessió"
+    },
+    "1-3": {
+      "title": "Restablir la teva contrasenya",
+      "whatItIs": "Recupera l'accés al teu compte quan has oblidat la contrasenya.",
+      "whoUsesIt": "Qualsevol usuari bloquejat fora del seu compte.",
+      "stepGroups": [{ "steps": ["A la pàgina d'inici de sessió, fes clic a He oblidat la contrasenya.", "Introdueix la teva adreça de correu registrada i fes clic a Envia l'enllaç.", "Obre la teva bústia i fes clic a l'enllaç del correu.", "Introdueix la teva nova contrasenya dues vegades per confirmar.", "Fes clic a Restableix la contrasenya — ja pots iniciar sessió amb la nova contrasenya."] }],
+      "appRouteLabel": "Restableix la contrasenya"
+    },
+    "1-4": {
+      "title": "Configurar l'autenticació de dos factors",
+      "whatItIs": "Una capa addicional de seguretat que requereix un codi temporal d'una app autenticadora a cada inici de sessió.",
+      "whoUsesIt": "Qualsevol usuari que vulgui més seguretat al seu compte.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del perfil → Seguretat.", "Fes clic a Activa l'autenticació de dos factors.", "Obre una app autenticadora (Google Authenticator, Authy o similar) al teu telèfon.", "Escaneja el codi QR que apareix a la pantalla.", "Introdueix el codi de 6 dígits de la teva app per confirmar.", "Desa els teus codis de còpia de seguretat en un lloc segur.", "El 2FA ja és actiu. Els propers inicis de sessió demanaran el codi."] }],
+      "tips": ["Per desactivar el 2FA, ves a Configuració del perfil → Seguretat → Desactiva el 2FA."],
+      "appRouteLabel": "Configura el 2FA"
+    },
+    "1-5": {
+      "title": "Actualitzar el teu perfil",
+      "whatItIs": "Edita el teu nom, foto de perfil i informació personal.",
+      "whoUsesIt": "Tots els usuaris.",
+      "stepGroups": [{ "steps": ["Fes clic al teu avatar a la cantonada superior dreta.", "Selecciona Configuració del perfil.", "Actualitza el teu nom, correu o altra informació.", "Per canviar la teva foto, fes clic a Puja l'avatar i tria un fitxer.", "Fes clic a Desa els canvis."] }],
+      "appRouteLabel": "Ves al perfil"
+    },
+    "1-6": {
+      "title": "Gestionar sessions actives",
+      "whatItIs": "Mira tots els dispositius connectats al teu compte i revoca l'accés des de qualsevol d'ells.",
+      "whoUsesIt": "Usuaris preocupats per la seguretat del seu compte.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del perfil → Sessions.", "Veuràs una llista de sessions actives amb informació del dispositiu.", "Per tancar la sessió en un dispositiu específic, fes clic a Revoca.", "Per tancar la sessió en tots els altres dispositius, fes clic a Revoca totes les altres sessions."] }],
+      "appRouteLabel": "Gestiona les sessions"
+    },
+    "2-1": {
+      "title": "Crear el teu negoci",
+      "whatItIs": "Registra el teu restaurant o local a FlairSync per gestionar personal, menús, comandes i molt més.",
+      "whoUsesIt": "Propietaris en la incorporació inicial.",
+      "stepGroups": [{ "steps": ["Des del teu tauler, fes clic a Crea un negoci.", "Introdueix el nom i selecciona el Tipus de negoci.", "Afegeix l'adreça i el país.", "Fes clic a Crea el negoci.", "Seràs redirigit al tauler del teu nou negoci."] }],
+      "tips": ["Pots gestionar diversos negocis des d'un sol compte.", "El teu pla de subscripció determina quants negocis pots crear."],
+      "appRouteLabel": "Ves al tauler"
+    },
+    "2-2": {
+      "title": "Completar el perfil del negoci",
+      "whatItIs": "Afegeix tots els detalls que els clients veuran en descobrir el teu negoci.",
+      "whoUsesIt": "Propietaris després de la configuració inicial.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del negoci → Perfil.", "Puja el teu Logotip.", "Afegeix una descripció breu.", "Selecciona etiquetes rellevants.", "Estableix el teu rang de preus.", "Afegeix telèfon i web si en tens.", "Puja fotos de la galeria.", "Fes clic a Desa."] }],
+      "appRouteLabel": "Obre el hub"
+    },
+    "2-3": {
+      "title": "Configurar l'horari d'obertura",
+      "whatItIs": "Defineix quan és obert el teu negoci per gestionar reserves i mostrar horaris correctes.",
+      "whoUsesIt": "Propietaris.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del negoci → Horari d'obertura.", "Per a cada dia, activa'l si estàs obert aquell dia.", "Estableix l'hora d'obertura i tancament.", "Deixa l'interruptor desactivat els dies tancats.", "Fes clic a Desa els horaris."] }],
+      "tips": ["Pots establir horaris diferents per a dies festius."],
+      "appRouteLabel": "Obre la configuració"
+    },
+    "2-4": {
+      "title": "Configurar tipus impositius",
+      "whatItIs": "Configura les taxes d'impostos que s'apliquen a les comandes del teu negoci.",
+      "whoUsesIt": "Propietaris responsables de la facturació.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del negoci → Impostos.", "Fes clic a Afegeix grup d'impostos i posa-li nom.", "Introdueix el Percentatge d'impost.", "Assigna el grup als articles del menú.", "Fes clic a Desa."] }],
+      "appRouteLabel": "Obre la configuració"
+    },
+    "3-1": {
+      "title": "Convidar membres del personal",
+      "whatItIs": "Envia invitacions per correu als empleats perquè s'uneixin al teu negoci a FlairSync.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Personal → Invitacions.", "Fes clic a Convida un membre.", "Introdueix l'adreça de correu.", "Selecciona el rol.", "Fes clic a Envia la invitació.", "El membre rebrà un correu amb un enllaç per acceptar."] }],
+      "tips": ["Pots reenviar o cancel·lar invitacions des de la llista.", "L'enllaç caduca al cap de 7 dies."],
+      "appRouteLabel": "Ves al personal"
+    },
+    "3-2": {
+      "title": "Crear i gestionar rols",
+      "whatItIs": "Defineix rols personalitzats i controla exactament què pot veure i fer cada rol.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Personal → Rols.", "Fes clic a Crea un rol.", "Assigna un nom i una descripció opcional.", "Fes clic a Crea.", "Fes clic a Edita els permisos.", "Activa els permisos necessaris.", "Fes clic a Desa els permisos."] }],
+      "tips": ["Els canvis tenen efecte immediat per a tots els membres amb aquell rol.", "Un membre pot tenir diversos rols."],
+      "appRouteLabel": "Ves als rols"
+    },
+    "3-3": {
+      "title": "Gestionar detalls dels empleats",
+      "whatItIs": "Consulta la teva llista de personal, actualitza detalls, estableix tarifes i gestiona accessos.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Personal → Empleats.", "Fes clic en un membre per obrir el seu perfil.", "Per actualitzar el seu rol, fes clic a Edita el rol.", "Per establir la seva tarifa, fes clic a Edita la tarifa.", "Per establir un PIN de POS, fes clic a Estableix el PIN.", "Per acomiadar, fes clic a Finalitza l'ocupació."] }],
+      "appRouteLabel": "Ves als empleats"
+    },
+    "3-4": {
+      "title": "Organitzar el personal en equips",
+      "whatItIs": "Agrupa empleats en equips per gestionar-los i programar-los junts.",
+      "whoUsesIt": "Gerents en locals grans.",
+      "stepGroups": [{ "steps": ["Ves a Personal → Equips.", "Fes clic a Crea un equip i posa-li nom.", "Obre l'equip i fes clic a Afegeix membres.", "Selecciona els empleats a afegir.", "Fes clic a Desa."] }],
+      "tips": ["Els equips fan molt més ràpida la creació massiva de torns."],
+      "appRouteLabel": "Ves als equips"
+    },
+    "4-1": {
+      "title": "Crear un torn per a un empleat",
+      "whatItIs": "Programa un torn de treball per a un empleat específic en una data concreta.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Programació → Horari.", "Fes clic a Afegeix torn o directament en un dia del calendari.", "Selecciona l'empleat.", "Estableix l'hora d'inici i fi.", "Opcionalment selecciona una plantilla.", "Fes clic a Desa el torn.", "L'empleat rebrà una notificació."] }],
+      "appRouteLabel": "Obre l'horari"
+    },
+    "4-2": {
+      "title": "Crear torns per a un equip",
+      "whatItIs": "Crea el mateix torn per a tots els membres d'un equip alhora.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Programació → Horari.", "Fes clic a Creació massiva → Torn d'equip.", "Selecciona l'equip.", "Estableix data, hora d'inici i fi.", "Fes clic a Crea els torns."] }],
+      "appRouteLabel": "Obre l'horari"
+    },
+    "4-3": {
+      "title": "Generar un esborrany d'horari setmanal",
+      "whatItIs": "Genera automàticament un esborrany setmanal basat en la disponibilitat del personal que els gerents poden ajustar abans de publicar.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Programació → Horari.", "Fes clic a Genera l'esborrany setmanal.", "Selecciona la setmana.", "El sistema crea torns en estat Esborrany.", "Revisa i ajusta els torns.", "Fes clic a Publica l'horari.", "Tot el personal serà notificat."] }],
+      "appRouteLabel": "Obre l'horari"
+    },
+    "4-4": {
+      "title": "Gestionar canvis de torn",
+      "whatItIs": "Permet al personal sol·licitar canviar un torn amb un company. Els gerents aproven o deneguen.",
+      "whoUsesIt": "Personal (sol·licitud) i Gerents (aprovació).",
+      "stepGroups": [
+        { "label": "Personal sol·licitant un canvi", "steps": ["Ves a El meu horari.", "Fes clic al torn que vols canviar.", "Fes clic a Sol·licita un canvi i selecciona un company.", "Envia la sol·licitud."] },
+        { "label": "Gerent aprovant el canvi", "steps": ["Ves a Programació → Sol·licituds de canvi.", "Revisa la sol·licitud pendent.", "Fes clic a Aprova o Denega.", "Tots dos empleats són notificats."] }
+      ],
+      "appRouteLabel": "Obre l'horari"
+    },
+    "4-5": {
+      "title": "Licitació de torns",
+      "whatItIs": "Publica un torn obert i deixa que el personal posi ofertes. Els gerents trien qui se l'emporta.",
+      "whoUsesIt": "Gerents i personal.",
+      "stepGroups": [
+        { "label": "Publicar torn obert", "steps": ["Crea un torn sense assignar-lo a cap empleat (deixa'l com 'Obert').", "El torn apareix al tauler de Torns oberts."] },
+        { "label": "Personal posant oferta", "steps": ["Ves a El meu horari → Torns oberts.", "Fes clic en un torn disponible i en Ofereix-te."] },
+        { "label": "Gerent seleccionant una oferta", "steps": ["Ves a Programació → Torns oberts.", "Obre el torn i revisa les ofertes.", "Fes clic a Accepta l'oferta de l'empleat triat."] }
+      ],
+      "appRouteLabel": "Obre l'horari"
+    },
+    "4-6": {
+      "title": "Gestionar sol·licituds de vacances",
+      "whatItIs": "El personal pot sol·licitar dies lliures. Els gerents revisen i aproven o rebutgen.",
+      "whoUsesIt": "Personal (sol·licitud) i Gerents (aprovació).",
+      "stepGroups": [
+        { "label": "Personal enviant sol·licitud", "steps": ["Ves a El meu horari → Vacances.", "Fes clic a Sol·licita vacances.", "Selecciona el rang de dates i afegeix-hi un motiu (opcional).", "Envia la sol·licitud."] },
+        { "label": "Gerent revisant sol·licituds", "steps": ["Ves a Programació → Sol·licituds de vacances.", "Revisa cada sol·licitud pendent.", "Fes clic a Aprova o Rebutja.", "El membre del personal és notificat."] }
+      ],
+      "appRouteLabel": "Obre l'horari"
+    },
+    "4-7": {
+      "title": "Establir disponibilitat del personal",
+      "whatItIs": "El personal pot declarar quins dies i hores està disponible generalment.",
+      "whoUsesIt": "Personal.",
+      "stepGroups": [{ "steps": ["Ves a El meu perfil → Disponibilitat.", "Per a cada dia, estableix les hores disponibles.", "Desactiva els dies en què mai estàs disponible.", "Fes clic a Desa la disponibilitat."] }],
+      "appRouteLabel": "Ves al meu horari"
+    },
+    "5-1": {
+      "title": "Registrar entrada i sortida",
+      "whatItIs": "Registra quan el personal comença i acaba la seva feina. Es pot fer des de l'app o una tauleta POS.",
+      "whoUsesIt": "Tot el personal.",
+      "stepGroups": [{ "steps": ["A l'inici del teu torn, ves a Assistència o utilitza l'estació POS.", "Fes clic a Registra l'entrada — es registra la teva hora d'inici.", "Per fer un descans, fes clic a Inicia el descans.", "Fes clic a Finalitza el descans en tornar.", "Al final del torn, fes clic a Registra la sortida."] }],
+      "appRouteLabel": "Ves a assistència"
+    },
+    "5-2": {
+      "title": "Registrar absències",
+      "whatItIs": "Els gerents poden registrar quan un empleat és absent per mantenir registres precisos.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Assistència → Absències.", "Fes clic a Registra una absència.", "Selecciona l'empleat i la data.", "Tria el tipus (Baixa, Permís no remunerat, Altre).", "Afegeix una nota si cal i fes clic a Desa."] }],
+      "appRouteLabel": "Ves a assistència"
+    },
+    "5-3": {
+      "title": "Generar la nòmina",
+      "whatItIs": "Calcula automàticament el que cada empleat ha de cobrar segons la seva assistència i tarifa horària.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Assegura't que tots els empleats tenen una tarifa horària establerta.", "Ves a Nòmina.", "Selecciona el període de pagament.", "Fes clic a Genera la nòmina.", "Revisa el desglossament — hores treballades × tarifa.", "Fes clic a Exporta a CSV per descarregar l'informe."] }],
+      "appRouteLabel": "Ves a la nòmina"
+    },
+    "6-1": {
+      "title": "Crear un menú",
+      "whatItIs": "Configura un menú que contindrà les teves categories i articles.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Menú.", "Fes clic a Crea un menú.", "Introdueix el nom i una descripció opcional.", "Fes clic a Crea."] }],
+      "appRouteLabel": "Ves al menú"
+    },
+    "6-2": {
+      "title": "Afegir categories i articles",
+      "whatItIs": "Organitza el teu menú agrupant articles en categories i afegint els articles corresponents.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [
+        { "label": "Afegir una categoria", "steps": ["Obre el teu menú i fes clic a Afegeix una categoria.", "Introdueix el nom i fes clic a Desa."] },
+        { "label": "Afegir un article", "steps": ["Fes clic en una categoria per expandir-la, després en Afegeix un article.", "Introdueix el nom, descripció, preu i puja una imatge.", "Estableix la informació dietètica i al·lèrgens.", "Fes clic a Desa l'article."] }
+      ],
+      "appRouteLabel": "Ves al menú"
+    },
+    "6-3": {
+      "title": "Afegir variants i modificadors",
+      "whatItIs": "Les variants permeten oferir el mateix plat en mides diferents. Els modificadors permeten personalitzar un article.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [
+        { "label": "Afegir variants", "steps": ["Obre un article i ves a Variants.", "Fes clic a Afegeix una variant, introdueix el nom i el preu.", "Repeteix per a cada variant."] },
+        { "label": "Afegir grup de modificadors", "steps": ["Obre un article i ves a Modificadors.", "Fes clic a Afegeix un grup i posa-li nom.", "Defineix si és obligatori o opcional.", "Afegeix cada opció amb el seu preu."] }
+      ],
+      "appRouteLabel": "Ves al menú"
+    },
+    "6-4": {
+      "title": "Programar un menú",
+      "whatItIs": "Activa o desactiva automàticament un menú en dates, hores o dies específics.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Obre un menú i fes clic a Programa.", "Estableix la data/hora d'activació i caducitat, o tria dies específics.", "Fes clic a Desa la programació.", "El menú s'activarà i caducarà automàticament."] }],
+      "appRouteLabel": "Ves al menú"
+    },
+    "7-1": {
+      "title": "Configurar el plànol de planta",
+      "whatItIs": "Crea un mapa visual del teu local amb taules per assignar comandes i reserves.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Plànol de planta.", "Fes clic a Afegeix una planta i posa-li nom.", "A la planta, fes clic a Afegeix una taula.", "Estableix el número, la capacitat i la posició.", "Repeteix per a totes les taules.", "Fes clic a Desa."] }],
+      "tips": ["Utilitza Afegeix diverses taules per crear-ne diverses alhora amb numeració seqüencial."],
+      "appRouteLabel": "Obre el plànol de planta"
+    },
+    "7-2": {
+      "title": "Veure l'estat de les taules",
+      "whatItIs": "Mira en temps real quines taules estan ocupades, disponibles o reservades.",
+      "whoUsesIt": "Amfitrions, cambrers, gerents.",
+      "stepGroups": [{ "steps": ["Ves a Plànol de planta o la vista de Taules al POS.", "Les taules estan codificades per colors: verd = disponible, vermell = ocupada, groc = reservada.", "Fes clic en una taula per veure qui hi és assegut, la comanda o la reserva."] }],
+      "appRouteLabel": "Obre el plànol de planta"
+    },
+    "8-1": {
+      "title": "Crear una comanda",
+      "whatItIs": "Obre una nova comanda per a una taula o per emportar/lliurament.",
+      "whoUsesIt": "Cambrers i personal POS.",
+      "stepGroups": [{ "steps": ["Ves a Comandes o utilitza l'estació POS.", "Fes clic a Nova comanda.", "Selecciona el tipus: Al local, Per emportar o Lliurament.", "Per al local, selecciona la taula.", "Navega pel menú i fes clic als articles.", "Per als articles amb variants, fes les seleccions requerides.", "Ajusta les quantitats.", "Fes clic a Envia la comanda — s'envia a la cuina."] }],
+      "appRouteLabel": "Ves a comandes"
+    },
+    "8-2": {
+      "title": "Gestionar el cicle de vida d'una comanda",
+      "whatItIs": "Segueix una comanda des de la recepció fins a la finalització.",
+      "whoUsesIt": "Personal de cuina, cambrers, gerents.",
+      "stepGroups": [{ "steps": ["Una nova comanda apareix com a Pendent.", "Fes clic a Accepta per confirmar (estat → Acceptada).", "En iniciar la preparació, fes clic a Preparant.", "Quan estigui llesta, fes clic a Llesta.", "Després de servir, fes clic a Completada."] }],
+      "tips": ["Pots cancel·lar una comanda en qualsevol etapa abans de completar-la."],
+      "appRouteLabel": "Ves a comandes"
+    },
+    "8-3": {
+      "title": "Cobrar el pagament",
+      "whatItIs": "Registra el pagament d'una comanda quan el client està llest per pagar.",
+      "whoUsesIt": "Cambrers i caixers.",
+      "stepGroups": [{ "steps": ["Obre la comanda i fes clic a Cobra.", "Selecciona el mètode de pagament.", "Introdueix l'import rebut.", "Per dividir el compte, fes clic a Divideix el compte primer.", "Fes clic a Confirma el pagament.", "La comanda queda marcada com a Pagada."] }],
+      "appRouteLabel": "Ves a comandes"
+    },
+    "8-4": {
+      "title": "Emetre un reemborsament",
+      "whatItIs": "Processa un reemborsament total o parcial sobre un pagament ja registrat.",
+      "whoUsesIt": "Gerents i caixers.",
+      "stepGroups": [{ "steps": ["Obre la comanda i ves a la pestanya Pagaments.", "Troba el pagament i fes clic a Reembossa.", "Introdueix l'import.", "Afegeix un motiu.", "Fes clic a Confirma el reemborsament."] }],
+      "appRouteLabel": "Ves a comandes"
+    },
+    "9-1": {
+      "title": "Configurar estacions de cuina",
+      "whatItIs": "Defineix estacions de cuina i assigna categories de menú perquè les comandes correctes apareguin a la pantalla correcta.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Cuina → Estacions.", "Fes clic a Afegeix una estació i posa-li nom.", "Selecciona les categories de menú.", "Fes clic a Desa.", "Configura una tauleta en aquella estació."] }],
+      "appRouteLabel": "Ves a estacions"
+    },
+    "9-2": {
+      "title": "Usar la pantalla de cuina",
+      "whatItIs": "La vista en temps real que el personal de cuina utilitza per veure les comandes entrants.",
+      "whoUsesIt": "Personal de cuina.",
+      "stepGroups": [{ "steps": ["Obre la vista KDS a la pantalla de cuina.", "Les noves comandes apareixen automàticament.", "Fes clic en una comanda per veure els seus detalls.", "Fes clic a Marca com a llesta quan el menjar estigui preparat.", "El cambrer és notificat."] }],
+      "appRouteLabel": "Ves a estacions"
+    },
+    "10-1": {
+      "title": "Crear una reserva",
+      "whatItIs": "Reserva una taula per a una data i hora futures per a un client.",
+      "whoUsesIt": "Personal de recepció.",
+      "stepGroups": [{ "steps": ["Ves a Reserves.", "Fes clic a Nova reserva.", "Introdueix el nom, telèfon o correu del client i la mida del grup.", "Selecciona data i hora.", "Selecciona una taula disponible.", "Afegeix notes especials si cal.", "Fes clic a Confirma la reserva.", "El client rebrà una confirmació."] }],
+      "appRouteLabel": "Ves a reserves"
+    },
+    "10-2": {
+      "title": "Gestionar el cicle de vida d'una reserva",
+      "whatItIs": "Segueix una reserva des de la confirmació fins a la sortida del client.",
+      "whoUsesIt": "Amfitrions i personal de recepció.",
+      "stepGroups": [{ "steps": ["Una nova reserva comença com a Pendent.", "Confirma-la (estat → Confirmada).", "En arribar el client, fes clic a Registra l'arribada.", "Després de la visita, fes clic a Completada.", "Si el client no apareix, fes clic a No presentat.", "Per cancel·lar, fes clic a Cancel·la."] }],
+      "appRouteLabel": "Ves a reserves"
+    },
+    "10-3": {
+      "title": "Reserves sense cita prèvia",
+      "whatItIs": "Asseu ràpidament un client que ha arribat sense reserva prèvia.",
+      "whoUsesIt": "Amfitrions.",
+      "stepGroups": [{ "steps": ["Ves a Reserves i fes clic a Sense cita.", "Selecciona una taula disponible.", "Introdueix el nombre de persones (el nom és opcional).", "Fes clic a Seu ara — la taula queda marcada com a ocupada."] }],
+      "appRouteLabel": "Ves a reserves"
+    },
+    "10-4": {
+      "title": "Verificar disponibilitat",
+      "whatItIs": "Mira quines taules estan disponibles per a una data, hora i mida de grup donades.",
+      "whoUsesIt": "Amfitrions i personal.",
+      "stepGroups": [{ "steps": ["Ves a Reserves → Verifica la disponibilitat.", "Introdueix data, hora i nombre de comensals.", "El sistema mostra taules disponibles.", "Selecciona'n una per omplir el formulari."] }],
+      "appRouteLabel": "Ves a reserves"
+    },
+    "11-1": {
+      "title": "Afegir articles d'inventari",
+      "whatItIs": "Crea un registre per a cada ingredient o subministrament que vulguis controlar.",
+      "whoUsesIt": "Gerents i caps de cuina.",
+      "stepGroups": [{ "steps": ["Ves a Inventari.", "Fes clic a Afegeix un article.", "Introdueix nom, unitat i quantitat actual.", "Estableix un nivell de reposició.", "Assigna'l opcionalment a un grup.", "Fes clic a Desa."] }],
+      "appRouteLabel": "Ves a inventari"
+    },
+    "11-2": {
+      "title": "Ajustar nivells d'estoc",
+      "whatItIs": "Registra canvis d'estoc en lliuraments, ús o pèrdues.",
+      "whoUsesIt": "Personal de cuina i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Inventari i troba l'article.", "Fes clic a Ajusta l'estoc.", "Selecciona el tipus: Afegeix, Dedueix o Pèrdua.", "Introdueix la quantitat i una nota.", "Fes clic a Desa."] }],
+      "appRouteLabel": "Ves a inventari"
+    },
+    "11-3": {
+      "title": "Vincular receptes als articles del menú",
+      "whatItIs": "Connecta un article del menú als seus ingredients perquè les quantitats es dedueixin automàticament a cada venda.",
+      "whoUsesIt": "Gerents i caps de cuina.",
+      "stepGroups": [{ "steps": ["Ves a Inventari → Receptes o obre un article del menú.", "Fes clic a Afegeix un ingredient.", "Selecciona l'article d'inventari i introdueix la quantitat per ració.", "Repeteix per a tots els ingredients.", "Fes clic a Desa la recepta."] }],
+      "tips": ["Un cop configurada la recepta, completar una comanda deduirà automàticament els ingredients."],
+      "appRouteLabel": "Ves a inventari"
+    },
+    "11-4": {
+      "title": "Veure l'historial de moviments d'estoc",
+      "whatItIs": "Consulta un registre complet de cada canvi d'estoc per a qualsevol article.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Inventari i fes clic en un article.", "Desplaça't a la pestanya Historial de moviments.", "Veuràs cada addició, deducció i pèrdua amb data, quantitat i autor."] }],
+      "appRouteLabel": "Ves a inventari"
+    },
+    "12-1": {
+      "title": "Gestionar les teves notificacions",
+      "whatItIs": "Consulta i gestiona les teves notificacions de noves comandes, canvis de reserves, torns i alertes de baix estoc.",
+      "whoUsesIt": "Tots els usuaris.",
+      "stepGroups": [{ "steps": ["Fes clic a la icona de campaneta a la barra de navegació.", "Apareix una llista de notificacions recents.", "Fes clic en una notificació per anar a la secció rellevant.", "Fes clic a Marca com a llegida o Marca-les totes com a llegides."] }],
+      "appRouteLabel": "Veure notificacions"
+    },
+    "12-2": {
+      "title": "Preferències de notificacions",
+      "whatItIs": "Controla quins tipus de notificacions reps.",
+      "whoUsesIt": "Tots els usuaris.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del perfil → Notificacions.", "Activa o desactiva cada tipus.", "Els canvis es desen automàticament."] }],
+      "appRouteLabel": "Ves al perfil"
+    },
+    "13-1": {
+      "title": "Veure el teu tauler de vendes",
+      "whatItIs": "Resum del rendiment del teu negoci — ingressos, comandes, articles més venuts i tendències.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Anàlisi.", "Selecciona el teu rang de dates.", "Consulta el Total de vendes.", "Revisa el recompte de comandes per tipus.", "Comprova els Articles més venuts.", "Explora el Gràfic de vendes diàries.", "Utilitza la pestanya Rendiment del personal."] }],
+      "appRouteLabel": "Ves a anàlisi"
+    },
+    "14-1": {
+      "title": "Configurar una estació POS",
+      "whatItIs": "Vincula una tauleta o terminal al teu compte FlairSync per prendre comandes i processar pagaments.",
+      "whoUsesIt": "Gerents configurant maquinari.",
+      "stepGroups": [{ "steps": ["Ves a Configuració → Estacions POS.", "Fes clic a Afegeix una estació i posa-li nom.", "Fes clic a Genera el codi d'emparellament.", "A la tauleta, obre FlairSync POS i introdueix el codi.", "L'estació ja és vinculada."] }],
+      "appRouteLabel": "Ves a configuració POS"
+    },
+    "14-2": {
+      "title": "Inici de sessió del personal al POS",
+      "whatItIs": "El personal utilitza un PIN curt per iniciar sessió ràpidament a l'estació POS.",
+      "whoUsesIt": "Tot el personal de sala i cuina.",
+      "stepGroups": [{ "steps": ["A l'estació POS, toca Inici de sessió del personal.", "Introdueix el teu PIN de 4-6 dígits.", "Ja has iniciat sessió i pots prendre comandes, registrar entrada, etc."] }],
+      "tips": ["Si encara no tens PIN, demana al teu gerent que l'estableixi a Personal → Empleats."],
+      "appRouteLabel": "Obre l'estació POS"
+    },
+    "15-1": {
+      "title": "Trobar un restaurant",
+      "whatItIs": "Explora restaurants a la plataforma FlairSync, filtra per tipus, ubicació i preferències.",
+      "whoUsesIt": "Clients.",
+      "stepGroups": [{ "steps": ["Ves a la pàgina Descobreix.", "Utilitza la barra de cerca.", "Filtra per tipus de cuina, rang de preus, etiquetes o valoració.", "Activa Prop meu per mostrar restaurants propers.", "Fes clic en qualsevol restaurant per veure el seu perfil i menú."] }],
+      "appRouteLabel": "Explora restaurants"
+    },
+    "15-2": {
+      "title": "Fer una reserva (com a client)",
+      "whatItIs": "Reserva una taula en un restaurant directament des de la plataforma.",
+      "whoUsesIt": "Clients.",
+      "stepGroups": [{ "steps": ["Obre el perfil d'un restaurant i fes clic a Reserva una taula.", "Selecciona data, hora i nombre de comensals.", "Tria un horari disponible.", "Introdueix el teu nom, telèfon i peticions especials.", "Fes clic a Confirma la reserva.", "Rebràs una confirmació per correu o SMS."] }],
+      "appRouteLabel": "Explora restaurants"
+    },
+    "15-3": {
+      "title": "Fer una comanda per emportar o a domicili",
+      "whatItIs": "Demana menjar online des d'un restaurant i tria recollir-lo o que te'l portin.",
+      "whoUsesIt": "Clients.",
+      "stepGroups": [{ "steps": ["Obre el perfil d'un restaurant i fes clic a Comanda.", "Selecciona Per emportar o A domicili.", "Navega pel menú i afegeix articles.", "Personalitza els articles si cal.", "Revisa el teu carret i fes clic a Fes la comanda.", "Rebràs la confirmació i podràs seguir l'estat."] }],
+      "appRouteLabel": "Explora restaurants"
+    },
+    "15-4": {
+      "title": "Escriure una ressenya",
+      "whatItIs": "Valora i comenta un restaurant després de la teva visita.",
+      "whoUsesIt": "Clients.",
+      "stepGroups": [{ "steps": ["Obre el perfil del restaurant.", "Fes clic a Escriu una ressenya.", "Selecciona una valoració d'estrelles (1-5).", "Escriu la teva ressenya.", "Fes clic a Envia la ressenya."] }],
+      "appRouteLabel": "Explora restaurants"
+    },
+    "16-1": {
+      "title": "Triar un pla de subscripció",
+      "whatItIs": "Selecciona el pla FlairSync que s'adapti al teu negoci i desbloqueja les funcions corresponents.",
+      "whoUsesIt": "Propietaris.",
+      "stepGroups": [{ "steps": ["Ves a Configuració → Subscripció.", "Consulta els plans disponibles i les seves funcions.", "Fes clic a Tria el pla.", "Seràs redirigit a la pàgina de facturació segura.", "Després del pagament, el teu pla s'activa de seguida."] }],
+      "appRouteLabel": "Veure plans"
+    },
+    "16-2": {
+      "title": "Gestionar la teva facturació",
+      "whatItIs": "Consulta el teu pla actual, descarrega factures i actualitza les dades de pagament.",
+      "whoUsesIt": "Propietaris.",
+      "stepGroups": [{ "steps": ["Ves a Configuració → Subscripció → Facturació.", "Consulta el teu pla i la propera data de cobrament.", "Per descarregar una factura, fes clic a Factures i després a Descarrega.", "Per actualitzar o cancel·lar, fes clic a Gestiona la facturació."] }],
+      "appRouteLabel": "Gestiona la facturació"
+    },
+    "17-1": {
+      "title": "Crear i assignar tasques",
+      "whatItIs": "Crea tasques per al personal i assigna-les a empleats específics.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Tasques.", "Fes clic a Crea una tasca.", "Introdueix el nom i una descripció opcional.", "Estableix una data límit si escau.", "Assigna-la a un empleat.", "Fes clic a Crea."] }],
+      "appRouteLabel": "Ves a tasques"
+    },
+    "17-2": {
+      "title": "Completar una tasca",
+      "whatItIs": "El personal actualitza l'estat de les tasques a mesura que treballa.",
+      "whoUsesIt": "Personal.",
+      "stepGroups": [{ "steps": ["Ves a Tasques → Les meves tasques.", "Fes clic en una tasca.", "Fes clic a Marca en progrés.", "Fes clic a Marca com a completada quan acabis.", "El gerent és notificat."] }],
+      "appRouteLabel": "Ves a tasques"
+    },
+    "18-1": {
+      "title": "Publicar una oferta de feina",
+      "whatItIs": "Llista una posició al teu restaurant perquè els candidats la trobin i s'hi presentin.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Feines → Les meves ofertes.", "Fes clic a Publica una oferta.", "Introdueix títol, descripció, requisits i tipus.", "Fes clic a Publica."] }],
+      "appRouteLabel": "Ves a feines"
+    },
+    "18-2": {
+      "title": "Revisar sol·licituds",
+      "whatItIs": "Consulta les sol·licituds dels candidats i mou-los per les etapes del procés.",
+      "whoUsesIt": "Gerents.",
+      "stepGroups": [{ "steps": ["Ves a Feines → Les meves ofertes i obre l'oferta.", "Fes clic a Veure sol·licituds.", "Revisa el perfil, CV i carta de cada candidat.", "Avança'ls: Selecció → Entrevista → Contractat o Rebutjat.", "El candidat és notificat en cada canvi."] }],
+      "appRouteLabel": "Ves a feines"
+    },
+    "18-3": {
+      "title": "Sol·licitar una feina",
+      "whatItIs": "Explora posicions obertes en restaurants i envia la teva sol·licitud.",
+      "whoUsesIt": "Cercadors de feina.",
+      "stepGroups": [{ "steps": ["Ves al Tauler de feines.", "Filtra per ubicació, tipus o restaurant.", "Fes clic en una oferta per llegir la descripció.", "Fes clic a Sol·licita ara.", "Puja el teu CV o introdueix-hi un enllaç.", "Afegeix una carta de presentació (opcional).", "Fes clic a Envia la sol·licitud.", "Segueix l'estat des de Les meves sol·licituds."] }],
+      "appRouteLabel": "Explora ofertes"
+    },
+    "19-1": {
+      "title": "Explorar el Marketplace",
+      "whatItIs": "Un espai compartit on els negocis poden publicar i descobrir recursos per intercanviar.",
+      "whoUsesIt": "Propietaris i gerents.",
+      "stepGroups": [{ "steps": ["Ves a Marketplace.", "Explora els anuncis o utilitza la cerca.", "Fes clic en un anunci per veure els detalls.", "Contacta el propietari o sol·licita l'article."] }],
+      "appRouteLabel": "Obre el Marketplace"
+    },
+    "19-2": {
+      "title": "Crear un anunci al Marketplace",
+      "whatItIs": "Comparteix alguna cosa del teu negoci amb altres restaurants a la plataforma.",
+      "whoUsesIt": "Propietaris.",
+      "stepGroups": [{ "steps": ["Ves a Marketplace i fes clic a Crea un anunci.", "Introdueix el títol, la descripció i els detalls.", "Afegeix una imatge si escau.", "Fes clic a Publica."] }],
+      "appRouteLabel": "Obre el Marketplace"
+    },
+    "20-1": {
+      "title": "Contactar el suport",
+      "whatItIs": "Envia una sol·licitud a l'equip de suport de FlairSync si tens problemes.",
+      "whoUsesIt": "Tots els usuaris.",
+      "stepGroups": [{ "steps": ["Ves a Ajuda → Contacta el suport o fes clic a la icona ?.", "Selecciona la categoria que descriu el teu problema.", "Escriu una descripció del que necessites.", "Fes clic a Envia."] }],
+      "appRouteLabel": "Contacta el suport"
+    },
+    "21-1": {
+      "title": "Exportar les teves dades",
+      "whatItIs": "Descarrega una còpia de totes les teves dades personals (dret d'accés RGPD).",
+      "whoUsesIt": "Qualsevol usuari.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del perfil → Privadesa.", "Fes clic a Exporta les meves dades.", "Es posa en cua una tasca — rebràs un correu amb un enllaç de descàrrega."] }],
+      "appRouteLabel": "Ves al perfil"
+    },
+    "21-2": {
+      "title": "Eliminar el teu compte",
+      "whatItIs": "Elimina permanentment el teu compte i totes les dades associades. Hi ha un període de gràcia de 30 dies.",
+      "whoUsesIt": "Qualsevol usuari que vulgui abandonar la plataforma.",
+      "stepGroups": [{ "steps": ["Ves a Configuració del perfil → Privadesa.", "Fes clic a Elimina el meu compte.", "Llegeix l'avís de confirmació atentament.", "Introdueix la teva contrasenya per confirmar.", "Fes clic a Programa l'eliminació.", "El teu compte entra en un període de gràcia de 30 dies.", "Després de 30 dies, el teu compte i totes les teves dades s'eliminen permanentment."] }],
+      "tips": ["Si ets propietari d'un negoci, assegura't de transferir la propietat abans d'eliminar el teu compte."],
+      "appRouteLabel": "Ves al perfil"
+    }
+  }
+}

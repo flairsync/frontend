@@ -44,7 +44,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Role } from "@/models/business/roles/Role";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 
-const RolesSection = () => {
+type RolesSectionProps = {
+    canCreate?: boolean;
+    canUpdate?: boolean;
+    canDelete?: boolean;
+};
+
+const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: RolesSectionProps) => {
 
     const {
         routeParams
@@ -60,6 +66,10 @@ const RolesSection = () => {
         deleteRolePermission
     } = useBusinessRoles(routeParams.id);
 
+    const { employees } = useBusinessEmployees(routeParams.id);
+
+    const getEmployeeCountForRole = (roleId: string) =>
+        employees.filter(emp => emp.roles.some(r => r.role.id === roleId)).length;
 
     // Roles
     const [roleModal, setRoleModal] = useState(false);
@@ -82,48 +92,56 @@ const RolesSection = () => {
                     <CardTitle>Roles</CardTitle>
                     <div className="flex gap-2">
                         <div className="flex justify-end">
-                            <AddRoleModal
-                                open={roleModal}
-                                onOpenChange={(open) => {
-                                    setRoleModal(open);
-                                    if (!open) {
+                            {canCreate && (
+                                <AddRoleModal
+                                    open={roleModal}
+                                    onOpenChange={(open) => {
+                                        setRoleModal(open);
+                                        if (!open) {
+                                            setEditRole(undefined);
+                                        }
+                                    }}
+                                    editRole={editRole}
+                                    onDeletePermission={(permissionKey) => {
+                                        if (editRole) {
+                                            deleteRolePermission({ roleId: editRole.id, permissionKey });
+                                        }
+                                    }}
+                                    onAdd={(data) => {
+                                        const payload = {
+                                            name: data.name,
+                                            permissions: data.permissions.map(val => {
+                                                return {
+                                                    permissionKey: val.key,
+                                                    canCreate: val.flags.canCreate,
+                                                    canDelete: val.flags.canDelete,
+                                                    canRead: val.flags.canRead,
+                                                    canUpdate: val.flags.canUpdate
+                                                }
+                                            }),
+                                            posAccess: data.posAccess,
+                                            kdsAccess: data.kdsAccess,
+                                            posCreateOrder: data.posCreateOrder,
+                                            posVoidItem: data.posVoidItem,
+                                            posCancelOrder: data.posCancelOrder,
+                                            posRefund: data.posRefund,
+                                            posApplyDiscount: data.posApplyDiscount,
+                                        }
+
+                                        if (data.editId) {
+                                            updateRole({
+                                                roleId: data.editId,
+                                                data: payload
+                                            })
+                                        } else {
+                                            createNewRole(payload)
+                                        }
+
+                                        setRoleModal(false);
                                         setEditRole(undefined);
-                                    }
-                                }}
-                                editRole={editRole}
-                                onDeletePermission={(permissionKey) => {
-                                    if (editRole) {
-                                        deleteRolePermission({ roleId: editRole.id, permissionKey });
-                                    }
-                                }}
-                                onAdd={(data) => {
-                                    const payload = {
-                                        name: data.name,
-                                        permissions: data.permissions.map(val => {
-                                            return {
-                                                permissionKey: val.key,
-                                                canCreate: val.flags.canCreate,
-                                                canDelete: val.flags.canDelete,
-                                                canRead: val.flags.canRead,
-                                                canUpdate: val.flags.canUpdate
-                                            }
-                                        })
-                                    }
-
-                                    if (data.editId) {
-                                        updateRole({
-                                            roleId: data.editId,
-                                            data: payload
-                                        })
-                                    } else {
-                                        createNewRole(payload)
-                                    }
-
-                                    setRoleModal(false);
-                                    setEditRole(undefined);
-
-                                }}
-                            />
+                                    }}
+                                />
+                            )}
                             <ViewRoleModal
                                 open={viewRoleModal}
                                 onOpenChange={setViewRoleModal}
@@ -144,9 +162,11 @@ const RolesSection = () => {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Role Name</TableHead>
-                                    <TableHead>Employees</TableHead>
+                                    {canUpdate && <TableHead>Employees</TableHead>}
                                     <TableHead className="text-center">Permissions</TableHead>
-                                    <TableHead className="sticky right-0 bg-card z-10 text-right">Actions</TableHead>
+                                    {(canUpdate || canDelete) && (
+                                        <TableHead className="sticky right-0 bg-card z-10 text-right">Actions</TableHead>
+                                    )}
                                 </TableRow>
                             </TableHeader>
 
@@ -170,53 +190,60 @@ const RolesSection = () => {
                                                 />
                                             </div>
                                         </TableCell>
-                                        <TableCell className="align-middle">
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="gap-2"
-                                                onClick={(e) => {
-                                                    // Stop propagation to avoid triggering the row's onDoubleClick
-                                                    e.stopPropagation();
-                                                    setBatchEditRole(role);
-                                                    setBatchEditRoleModal(true);
-                                                }}
-                                            >
-                                                {role.employeeCount} Emps.
-                                                <Edit className="h-4 w-4" />
-                                            </Button>
-                                        </TableCell>
+                                        {canUpdate && (
+                                            <TableCell className="align-middle">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="gap-2"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setBatchEditRole(role);
+                                                        setBatchEditRoleModal(true);
+                                                    }}
+                                                >
+                                                    {getEmployeeCountForRole(role.id)} Emps.
+                                                    <Edit className="h-4 w-4" />
+                                                </Button>
+                                            </TableCell>
+                                        )}
                                         <TableCell className="text-center align-middle">
                                             {role.permissions.length} Permissions
                                         </TableCell>
-                                        <TableCell className="sticky right-0 bg-card z-10 text-right align-middle">
-                                            <div className="flex justify-end gap-2">
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setEditRole(role);
-                                                        setRoleModal(true);
-                                                    }}
-                                                >
-                                                    <Edit className="h-4 w-4 mr-1" />
-                                                    Edit
-                                                </Button>
-                                                <Button
-                                                    size="sm"
-                                                    variant="destructive"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        if (confirm(`Are you sure you want to delete the role "${role.name}"?`)) {
-                                                            deleteRole(role.id)
-                                                        }
-                                                    }}
-                                                >
-                                                    <Trash className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-                                        </TableCell>
+                                        {(canUpdate || canDelete) && (
+                                            <TableCell className="sticky right-0 bg-card z-10 text-right align-middle">
+                                                <div className="flex justify-end gap-2">
+                                                    {canUpdate && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="outline"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setEditRole(role);
+                                                                setRoleModal(true);
+                                                            }}
+                                                        >
+                                                            <Edit className="h-4 w-4 mr-1" />
+                                                            Edit
+                                                        </Button>
+                                                    )}
+                                                    {canDelete && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="destructive"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (confirm(`Are you sure you want to delete the role "${role.name}"?`)) {
+                                                                    deleteRole(role.id)
+                                                                }
+                                                            }}
+                                                        >
+                                                            <Trash className="h-4 w-4" />
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 ))}
                             </TableBody>

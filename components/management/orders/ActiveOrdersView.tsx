@@ -25,10 +25,8 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
         isMarkingReady,
     } = useOrders(businessId);
 
-    const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
-    const [addItemsOpen, setAddItemsOpen] = useState(false);
-    const [detailsOpen, setDetailsOpen] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState<any>(null);
+    const [addItemsModal, setAddItemsModal] = useState<{ orderId: string | null; orderStatus?: string; open: boolean }>({ orderId: null, open: false });
+    const [detailsModal, setDetailsModal] = useState<{ order: any; open: boolean }>({ order: null, open: false });
 
     const activeOrders = orders?.filter(o => !["completed", "rejected", "canceled"].includes(o.status)) || [];
 
@@ -39,14 +37,12 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
         return activeOrders.find(o => o.tableId === tableId);
     };
 
-    const handleAddItems = (orderId: string) => {
-        setSelectedOrderId(orderId);
-        setAddItemsOpen(true);
+    const handleAddItems = (orderId: string, orderStatus?: string) => {
+        setAddItemsModal({ orderId, orderStatus, open: true });
     };
 
     const handleViewDetails = (order: any) => {
-        setSelectedOrder(order);
-        setDetailsOpen(true);
+        setDetailsModal({ order, open: true });
     };
 
     if (fetchingFloors || fetchingOrders) {
@@ -92,7 +88,7 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                                     <CheckCircle className="w-3 h-3" /> Mark Ready
                                                 </Button>
                                             )}
-                                            <Button size="sm" variant="secondary" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleAddItems(order.id)}>
+                                            <Button size="sm" variant="secondary" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleAddItems(order.id, order.status)}>
                                                 <Plus className="w-3 h-3" /> Add items
                                             </Button>
                                             <Button size="sm" variant="ghost" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleViewDetails(order)}>
@@ -114,16 +110,17 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
 
             <AddItemsModal
                 businessId={businessId}
-                orderId={selectedOrderId}
-                open={addItemsOpen}
-                onClose={() => setAddItemsOpen(false)}
+                orderId={addItemsModal.orderId}
+                orderStatus={addItemsModal.orderStatus}
+                open={addItemsModal.open}
+                onClose={() => setAddItemsModal(prev => ({ ...prev, open: false }))}
             />
 
             <OrderDetailsModal
                 businessId={businessId}
-                order={selectedOrder}
-                open={detailsOpen}
-                onClose={() => setDetailsOpen(false)}
+                order={detailsModal.order}
+                open={detailsModal.open}
+                onClose={() => setDetailsModal(prev => ({ ...prev, open: false }))}
             />
         </div>
     );

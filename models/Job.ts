@@ -25,7 +25,8 @@ export type ApplicationEventType =
   | 'accepted'
   | 'rejected'
   | 'resume_added'
-  | 'note_updated';
+  | 'note_updated'
+  | 'invited';
 
 export type ApplicationEventSource = 'applicant' | 'owner' | 'system';
 
@@ -87,6 +88,7 @@ export interface JobApplication {
   resumeType: ResumeType | null;
   status: ApplicationStatus;
   ownerNote: string | null;
+  invitedAt: string | null;
   events?: JobApplicationEvent[];
   createdAt: string;
   updatedAt: string;
@@ -154,4 +156,5 @@ export const EVENT_TYPE_LABELS: Record<ApplicationEventType, string> = {
   rejected: 'Application closed',
   resume_added: 'Resume attached',
   note_updated: 'Note updated',
+  invited: 'Staff invite sent',
 };

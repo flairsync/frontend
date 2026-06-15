@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 const InventoryManagementFeature = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
 
     const scope = useRef<Scope>(null);
 

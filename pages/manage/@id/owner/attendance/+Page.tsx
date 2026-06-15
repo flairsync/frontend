@@ -11,8 +11,39 @@ import { usePageContext } from "vike-react/usePageContext";
 import { useAttendance } from "@/features/shifts/useAttendance";
 import { BusinessAttendanceFilters, AttendanceLifecycleStatus, AttendanceStatus } from "@/models/business/shift/Attendance";
 import { Users, Activity, BarChart2, CalendarOff } from "lucide-react";
+import { usePageTour } from "@/features/tour/usePageTour";
+import type { TourStep } from "@/features/tour/types";
+
+const ATTENDANCE_TOUR_STEPS: TourStep[] = [
+    {
+        target: '[data-tour="attendance-tab-overview"]',
+        title: 'Overview',
+        description: 'A filterable table of all clock-in/out records for the selected date range. Filter by employee name, lifecycle status (e.g. pending, approved), or attendance status (e.g. present, late, no-show).',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="attendance-tab-live"]',
+        title: 'Live View',
+        description: 'See who is currently clocked in right now. This view updates in real time and is useful during a shift to monitor active staff.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="attendance-tab-reports"]',
+        title: 'Reports',
+        description: 'Aggregate attendance data over a date range — total hours worked, overtime, punctuality trends, and per-employee breakdowns for payroll or compliance.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="attendance-tab-absences"]',
+        title: 'Absences',
+        description: 'Review and manage unexcused absences and no-shows. Mark records as excused, add notes, or escalate for follow-up.',
+        position: 'bottom',
+    },
+]
 
 export default function AttendancePage() {
+  usePageTour(ATTENDANCE_TOUR_STEPS);
+
   const { routeParams } = usePageContext();
   const businessId = routeParams.id as string;
 
@@ -73,22 +104,22 @@ export default function AttendancePage() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
-            <TabsTrigger value="overview" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
+            <TabsTrigger data-tour="attendance-tab-overview" value="overview" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <Users className="h-4 w-4" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="live" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
+            <TabsTrigger data-tour="attendance-tab-live" value="live" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <div className="relative">
                 <Activity className="h-4 w-4" />
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               </div>
               Live View
             </TabsTrigger>
-            <TabsTrigger value="reports" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
+            <TabsTrigger data-tour="attendance-tab-reports" value="reports" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <BarChart2 className="h-4 w-4" />
               Reports
             </TabsTrigger>
-            <TabsTrigger value="absences" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
+            <TabsTrigger data-tour="attendance-tab-absences" value="absences" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <CalendarOff className="h-4 w-4" />
               Absences
             </TabsTrigger>

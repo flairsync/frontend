@@ -13,13 +13,10 @@ export const useStaffReviews = (businessId: string | undefined, params?: FetchSt
         queryFn: async () => {
             if (!businessId) return { data: [], page: 1, totalPages: 1 };
             const res = await fetchStaffReviewsApiCall(businessId, params);
-            // Shape: { data: { data: [...], current: 1, pages: N } }
-            const envelope = res.data?.data ?? res.data;
-            const items = envelope?.data ?? envelope ?? [];
             return {
-                data: Array.isArray(items) ? items : [],
-                page: envelope?.current ?? envelope?.page ?? 1,
-                totalPages: envelope?.pages ?? envelope?.totalPages ?? 1,
+                data: res.data,
+                page: res.current,
+                totalPages: res.pages,
             };
         },
         enabled: !!businessId,
@@ -31,8 +28,7 @@ export const useStaffReviewStats = (businessId: string | undefined) => {
         queryKey: ["staff_review_stats", businessId],
         queryFn: async () => {
             if (!businessId) return null;
-            const res = await fetchStaffReviewStatsApiCall(businessId);
-            return res.data.data ?? res.data;
+            return fetchStaffReviewStatsApiCall(businessId);
         },
         enabled: !!businessId,
     });

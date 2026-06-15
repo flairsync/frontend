@@ -5,19 +5,25 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
+    DialogFooter,
 } from "@/components/ui/dialog";
 import { Order } from "@/features/orders/service";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CreditCard, Banknote, CalendarClock, Ban, CheckCircle, Undo, Pencil, Trash2 } from "lucide-react";
+import { CreditCard, Banknote, CalendarClock, Ban, CheckCircle, Undo, Pencil, ChevronRight, Flame } from "lucide-react";
 import { RefundPaymentModal } from "@/components/staff/orders/RefundPaymentModal";
 import { ManageOrderItemModal } from "@/components/staff/orders/ManageOrderItemModal";
 
 import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
+import { useBusinessEmployment } from "@/features/business/employment/useBusinessEmployment";
+import { Input } from "@/components/ui/input";
+import { Tag } from "lucide-react";
 
 interface OrderDetailsModalProps {
     businessId: string;
@@ -28,18 +34,68 @@ interface OrderDetailsModalProps {
 
 export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId, order, open, onClose }) => {
     const { data: fullOrder } = useOrderDetails(businessId, order?.id || "");
-    const { voidOrderItem, isVoidingOrderItem } = useOrders(businessId);
+    const { voidOrderItem, isVoidingOrderItem, advanceOrderItem, isAdvancingOrderItem, firePending, isFiringPending, updateOrderDiscountAsync, isUpdatingDiscount } = useOrders(businessId);
+    const { businessEmployees } = useBusinessEmployment(businessId);
     const displayOrder = fullOrder || order;
+
+    const resolveEmployeeName = (employmentId: string): string => {
+        const emp = businessEmployees?.find(e => e.id === employmentId);
+        if (!emp?.professionalProfile) return `#${employmentId.slice(0, 8)}`;
+        const p = emp.professionalProfile;
+        return p.displayName || [p.firstName, p.lastName].filter(Boolean).join(' ') || `#${employmentId.slice(0, 8)}`;
+    };
 
     const [refundPaymentId, setRefundPaymentId] = useState<string | null>(null);
     const [manageItemId, setManageItemId] = useState<string | null>(null);
+    const [voidingItem, setVoidingItem] = useState<{ id: string; name: string } | null>(null);
+    const [voidReason, setVoidReason] = useState("");
+    const [editingDiscount, setEditingDiscount] = useState(false);
+    const [discountInput, setDiscountInput] = useState("");
 
     if (!displayOrder) return null;
 
-    const handleVoidItem = (itemId: string, itemName: string) => {
-        if (window.confirm(`Are you sure you want to void '${itemName}'?\nThis will remove it from the total and refund inventory if it was sent to the kitchen.`)) {
-            voidOrderItem({ orderId: displayOrder.id, itemId });
+    const getItemStatusBadgeClass = (status: string) => {
+        switch (status) {
+            case "pending":   return "bg-amber-100 text-amber-700 border-amber-200";
+            case "sent":      return "bg-blue-100 text-blue-700 border-blue-200";
+            case "ready":     return "bg-green-100 text-green-700 border-green-200";
+            case "served":    return "bg-gray-100 text-gray-600 border-gray-200";
+            case "voided":    return "bg-red-100 text-red-600 border-red-200";
+            case "cancelled": return "bg-red-100 text-red-600 border-red-200";
+            default:          return "bg-gray-100 text-gray-600 border-gray-200";
         }
+    };
+
+    const getAdvanceLabel = (status: string) => {
+        if (status === "pending") return "Fire to Kitchen";
+        if (status === "sent")    return "Mark Ready";
+        if (status === "ready")   return "Mark Served";
+        return null;
+    };
+
+    const handleAdvanceItem = (itemId: string) => {
+        advanceOrderItem({
+            orderId: displayOrder.id,
+            itemId,
+            tableName: displayOrder.table?.name,
+        });
+    };
+
+    const handleRemovePending = (itemId: string) => {
+        voidOrderItem({ orderId: displayOrder.id, itemId });
+    };
+
+    const handleOpenVoidModal = (itemId: string, itemName: string) => {
+        setVoidReason("");
+        setVoidingItem({ id: itemId, name: itemName });
+    };
+
+    const handleConfirmVoid = () => {
+        if (!voidingItem) return;
+        voidOrderItem(
+            { orderId: displayOrder.id, itemId: voidingItem.id, reason: voidReason.trim() || undefined },
+            { onSuccess: () => setVoidingItem(null) }
+        );
     };
 
     const getStatusColor = (status: string) => {
@@ -143,15 +199,30 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                         const unitPrice = basePrice + modifiersTotal;
                                         const totalItemPrice = unitPrice * item.quantity;
 
+                                        const itemStatus = item.status || "pending";
+                                        const isTerminalItemStatus = ["voided", "cancelled"].includes(itemStatus);
+                                        const advanceLabel = getAdvanceLabel(itemStatus);
+
+                                        const isVoided = itemStatus === 'voided';
+
                                         return (
-                                            <div key={item.id || idx} className={`flex justify-between p-3 rounded-lg border bg-card ${item.status === 'voided' ? 'opacity-50' : ''}`}>
-                                                <div className="flex flex-col">
-                                                    <span className="font-medium flex items-center gap-2">
+                                            <div key={item.id || idx} className="flex justify-between p-3 rounded-lg border bg-card">
+                                                <div className="flex flex-col flex-1">
+                                                    <span className={`font-medium flex items-center gap-2 flex-wrap ${isVoided ? 'line-through text-muted-foreground' : ''}`}>
                                                         {item.quantity}x {item.nameSnapshot || "Unknown Item"}
-                                                        {item.status === 'voided' && (
-                                                            <Badge variant="destructive" className="h-4 text-[10px] px-1.5">Voided</Badge>
-                                                        )}
+                                                        <Badge variant="outline" className={`h-4 text-[10px] px-1.5 ${getItemStatusBadgeClass(itemStatus)}`}>
+                                                            {isVoided ? 'VOIDED' : <span className="capitalize">{itemStatus}</span>}
+                                                        </Badge>
                                                     </span>
+                                                    {isVoided && item.voidReason && (
+                                                        <span className="text-xs text-red-500 mt-1 italic">{item.voidReason}</span>
+                                                    )}
+                                                    {isVoided && (item.voidedBy || item.voidedAt) && (
+                                                        <span className="text-xs text-muted-foreground mt-0.5">
+                                                            {item.voidedBy ? `Voided by ${resolveEmployeeName(item.voidedBy)}` : 'Voided'}
+                                                            {item.voidedAt && ` · ${format(new Date(item.voidedAt), "MMM d, h:mm a")}`}
+                                                        </span>
+                                                    )}
                                                     {item.notes && (
                                                         <span className="text-xs text-muted-foreground italic mt-1">Note: {item.notes}</span>
                                                     )}
@@ -161,35 +232,63 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                             {item.selectedModifiers.map(m => m.name).join(", ")}
                                                         </div>
                                                     )}
-                                                    <span className="text-xs text-muted-foreground mt-1 flex items-center gap-2">
+                                                    <span className="text-xs text-muted-foreground mt-1">
                                                         ${unitPrice.toFixed(2)} each {modifiersTotal > 0 ? `(Base: $${basePrice.toFixed(2)} + Mods: $${modifiersTotal.toFixed(2)})` : ""}
                                                     </span>
                                                 </div>
-                                                <div className="flex flex-col items-end gap-2">
+                                                <div className="flex flex-col items-end gap-2 ml-3">
                                                     <div className="font-bold text-right">
-                                                        {item.status === 'voided' ? <span className="line-through text-muted-foreground">${totalItemPrice.toFixed(2)}</span> : `$${totalItemPrice.toFixed(2)}`}
+                                                        {isTerminalItemStatus ? <span className="line-through text-muted-foreground">${totalItemPrice.toFixed(2)}</span> : `$${totalItemPrice.toFixed(2)}`}
                                                     </div>
-                                                    {item.status !== 'voided' && item.status === 'pending' && (displayOrder.status === 'created' || displayOrder.status === 'accepted') && (
+                                                    {!isTerminalItemStatus && (
                                                         <div className="flex items-center gap-1 mt-auto">
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-7 w-7 text-muted-foreground hover:text-foreground"
-                                                                onClick={() => setManageItemId(item.id)}
-                                                                title="Edit Item"
-                                                            >
-                                                                <Pencil className="w-3.5 h-3.5" />
-                                                            </Button>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-7 w-7 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                                                onClick={() => handleVoidItem(item.id, item.nameSnapshot || "Item")}
-                                                                disabled={isVoidingOrderItem}
-                                                                title="Void Item"
-                                                            >
-                                                                <Trash2 className="w-3.5 h-3.5" />
-                                                            </Button>
+                                                            {advanceLabel && (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="sm"
+                                                                    className="h-7 text-[11px] px-2 gap-1"
+                                                                    onClick={() => handleAdvanceItem(item.id)}
+                                                                    disabled={isAdvancingOrderItem}
+                                                                    title={advanceLabel}
+                                                                >
+                                                                    {itemStatus === "pending"
+                                                                        ? <Flame className="w-3 h-3" />
+                                                                        : <ChevronRight className="w-3 h-3" />}
+                                                                    {advanceLabel}
+                                                                </Button>
+                                                            )}
+                                                            {itemStatus === 'pending' && (
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                                                                    onClick={() => setManageItemId(item.id)}
+                                                                    title="Edit Item"
+                                                                >
+                                                                    <Pencil className="w-3.5 h-3.5" />
+                                                                </Button>
+                                                            )}
+                                                            {itemStatus === 'pending' ? (
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="sm"
+                                                                    className="h-7 text-[11px] px-2 text-muted-foreground hover:text-foreground"
+                                                                    onClick={() => handleRemovePending(item.id)}
+                                                                    disabled={isVoidingOrderItem}
+                                                                >
+                                                                    Remove
+                                                                </Button>
+                                                            ) : (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="sm"
+                                                                    className="h-7 text-[11px] px-2 text-destructive border-destructive/30 hover:bg-destructive/10 hover:text-destructive"
+                                                                    onClick={() => handleOpenVoidModal(item.id, item.nameSnapshot || "Item")}
+                                                                    disabled={isVoidingOrderItem}
+                                                                >
+                                                                    Void
+                                                                </Button>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </div>
@@ -200,6 +299,23 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                     <p className="text-muted-foreground italic">No items found for this order.</p>
                                 )}
                             </div>
+
+                            {(() => {
+                                const pendingCount = displayOrder.items?.filter((i: any) => (i.status || "pending") === "pending").length || 0;
+                                if (pendingCount === 0) return null;
+                                return (
+                                    <div className="mt-4 pt-4 border-t">
+                                        <Button
+                                            className="w-full gap-2"
+                                            onClick={() => firePending({ orderId: displayOrder.id, tableName: displayOrder.table?.name })}
+                                            disabled={isFiringPending}
+                                        >
+                                            <Flame className="w-4 h-4" />
+                                            Send to Kitchen ({pendingCount} pending item{pendingCount !== 1 ? "s" : ""})
+                                        </Button>
+                                    </div>
+                                );
+                            })()}
                         </TabsContent>
 
                         <TabsContent value="payments" className="mt-0">
@@ -221,6 +337,12 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                         <CalendarClock className="w-3 h-3" />
                                                         {format(new Date(payment.createdAt), "MMM d, h:mm a")}
                                                     </div>
+                                                    {payment.status === "refunded" && payment.refundedBy && (
+                                                        <div className="flex items-center gap-1 text-xs text-amber-600 mt-0.5">
+                                                            <Undo className="w-3 h-3" />
+                                                            Refunded by {resolveEmployeeName(payment.refundedBy)}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="flex flex-col items-end gap-1">
@@ -240,6 +362,11 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                         <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-[10px] h-4">
                                                             <Ban className="w-3 h-3 mr-1" />
                                                             Failed
+                                                        </Badge>
+                                                    ) : payment.status === "refunded" ? (
+                                                        <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-[10px] h-4">
+                                                            <Undo className="w-3 h-3 mr-1" />
+                                                            Refunded
                                                         </Badge>
                                                     ) : (
                                                         <Badge variant="outline" className="capitalize text-[10px] h-4">
@@ -277,20 +404,87 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                     </Tabs>
                 </ScrollArea>
 
-                <div className="p-6 border-t bg-muted/10 grid grid-cols-2">
-                    <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-muted-foreground uppercase">Paid Details</span>
-                        <div className="flex gap-4 mt-1">
-                            <div><span className="text-xs text-muted-foreground mr-1">Paid:</span><span className="font-medium text-sm">${Number(displayOrder.totalPaid || 0).toFixed(2)}</span></div>
-                            {displayOrder.totalTip && displayOrder.totalTip > 0 ? (
-                                <div><span className="text-xs text-muted-foreground mr-1">Tip:</span><span className="font-medium text-sm text-green-600">${Number(displayOrder.totalTip).toFixed(2)}</span></div>
-                            ) : null}
+                <div className="p-6 border-t bg-muted/10 space-y-3">
+                    <div className="grid grid-cols-2">
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-muted-foreground uppercase">Paid Details</span>
+                            <div className="flex gap-4 mt-1">
+                                <div><span className="text-xs text-muted-foreground mr-1">Paid:</span><span className="font-medium text-sm">${Number(displayOrder.totalPaid || 0).toFixed(2)}</span></div>
+                                {displayOrder.totalTip && displayOrder.totalTip > 0 ? (
+                                    <div><span className="text-xs text-muted-foreground mr-1">Tip:</span><span className="font-medium text-sm text-green-600">${Number(displayOrder.totalTip).toFixed(2)}</span></div>
+                                ) : null}
+                                {Number(displayOrder.discountAmount || 0) > 0 && (
+                                    <div><span className="text-xs text-muted-foreground mr-1">Discount:</span><span className="font-medium text-sm text-primary">−${Number(displayOrder.discountAmount).toFixed(2)}</span></div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-end justify-center">
+                            <span className="text-xs font-bold text-muted-foreground uppercase">Total</span>
+                            <span className="text-2xl font-bold">${Number(displayOrder.totalAmount || 0).toFixed(2)}</span>
                         </div>
                     </div>
-                    <div className="flex flex-col items-end justify-center">
-                        <span className="text-lg font-bold text-muted-foreground">Total Options</span>
-                        <span className="text-2xl font-bold">${Number(displayOrder.totalAmount || 0).toFixed(2)}</span>
-                    </div>
+
+                    {/* Edit Discount — hidden for terminal statuses */}
+                    {!["completed", "rejected", "canceled"].includes(displayOrder.status) && (
+                        <>
+                            {editingDiscount ? (
+                                <div className="flex items-center gap-2">
+                                    <Tag className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                    <Input
+                                        type="number"
+                                        placeholder="Discount amount ($)"
+                                        value={discountInput}
+                                        onChange={(e) => {
+                                            const v = e.target.value;
+                                            if (v === "" || parseFloat(v) >= 0) setDiscountInput(v);
+                                        }}
+                                        min={0}
+                                        step={0.01}
+                                        className="h-8 text-sm flex-1"
+                                        autoFocus
+                                    />
+                                    <Button
+                                        size="sm"
+                                        className="h-8"
+                                        disabled={isUpdatingDiscount}
+                                        onClick={async () => {
+                                            const amt = parseFloat(discountInput) || 0;
+                                            try {
+                                                await updateOrderDiscountAsync({ orderId: displayOrder.id, discountAmount: amt });
+                                                setEditingDiscount(false);
+                                                setDiscountInput("");
+                                            } catch { /* error handled in hook */ }
+                                        }}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className="h-8"
+                                        onClick={() => { setEditingDiscount(false); setDiscountInput(""); }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
+                            ) : (
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="gap-1.5 h-8 text-xs"
+                                    onClick={() => {
+                                        setDiscountInput(String(Number(displayOrder.discountAmount || 0)));
+                                        setEditingDiscount(true);
+                                    }}
+                                >
+                                    <Tag className="w-3.5 h-3.5" />
+                                    {Number(displayOrder.discountAmount || 0) > 0
+                                        ? "Edit Discount"
+                                        : "Add Discount"}
+                                </Button>
+                            )}
+                        </>
+                    )}
                 </div>
             </DialogContent>
 
@@ -311,6 +505,38 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                 orderId={displayOrder.id}
                 item={displayOrder.items?.find((i: any) => i.id === manageItemId) || null}
             />
+
+            {/* Void Reason Modal */}
+            <Dialog open={!!voidingItem} onOpenChange={(open) => !open && setVoidingItem(null)}>
+                <DialogContent className="sm:max-w-[380px]">
+                    <DialogHeader>
+                        <DialogTitle>Void &ldquo;{voidingItem?.name}&rdquo;?</DialogTitle>
+                        <DialogDescription>
+                            The item will be removed from the bill. Inventory will be restored automatically.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-2 py-1">
+                        <Label htmlFor="void-reason">Reason (optional)</Label>
+                        <Textarea
+                            id="void-reason"
+                            placeholder="e.g. Customer changed their mind"
+                            value={voidReason}
+                            onChange={(e) => setVoidReason(e.target.value)}
+                            rows={3}
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setVoidingItem(null)}>Cancel</Button>
+                        <Button
+                            variant="destructive"
+                            onClick={handleConfirmVoid}
+                            disabled={isVoidingOrderItem}
+                        >
+                            Void Item
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </Dialog>
     );
 };

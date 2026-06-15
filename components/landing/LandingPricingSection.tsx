@@ -12,7 +12,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 
 const LandingPricingSection = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
     const { user, urlParsed } = usePageContext();
     const [isMonthly, setIsMonthly] = useState(true);
     const scope = useRef<Scope>(null);
@@ -179,9 +179,9 @@ const LandingPricingSection = () => {
     };
 
     return (
-        <div className="min-h-screen bg-muted/50 font-sans text-foreground flex flex-col items-center justify-center p-8 py-20">
+        <div className="bg-muted/50 font-sans text-foreground flex flex-col items-center justify-center px-4 sm:px-8 py-16 sm:py-20">
             <div className="text-center mb-10">
-                <h1 className="text-5xl font-extrabold mb-2" id='landing_pricing_title'>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2" id='landing_pricing_title'>
                     {t('landing_page.pricing.title')}
                 </h1>
             </div>

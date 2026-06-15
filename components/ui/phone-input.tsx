@@ -4,6 +4,8 @@ import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import * as RPNI from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
+import { getExampleNumber } from "libphonenumber-js";
+import examples from "libphonenumber-js/examples.mobile.json";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -29,8 +31,28 @@ type PhoneInputProps = React.ComponentProps<"input"> & {
     defaultCountry?: Country;
 };
 
+function getCountryPlaceholder(country: Country): string {
+    try {
+        const example = getExampleNumber(country, examples as any);
+        return example?.formatNational() ?? "Enter phone number";
+    } catch {
+        return "Enter phone number";
+    }
+}
+
 const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
-    ({ className, value, onChange, defaultCountry = "TN", ...props }, ref) => {
+    ({ className, value, onChange, defaultCountry = "TN", placeholder, ...props }, ref) => {
+        const [selectedCountry, setSelectedCountry] = React.useState<Country>(defaultCountry);
+
+        React.useEffect(() => {
+            setSelectedCountry(defaultCountry);
+        }, [defaultCountry]);
+
+        const dynamicPlaceholder = React.useMemo(
+            () => placeholder ?? getCountryPlaceholder(selectedCountry),
+            [selectedCountry, placeholder]
+        );
+
         return (
             <RPNI.default
                 ref={ref as any}
@@ -39,11 +61,13 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
                 defaultCountry={defaultCountry}
                 value={value}
                 onChange={(val) => onChange?.(val || "")}
+                onCountryChange={(country) => country && setSelectedCountry(country)}
                 inputComponent={InputComponent}
                 smartCaret={false}
                 className={cn("flex", className)}
                 flagComponent={FlagComponent as any}
                 countrySelectComponent={CountrySelect as any}
+                placeholder={dynamicPlaceholder}
                 {...(props as any)}
             />
         );
@@ -72,17 +96,20 @@ type CountrySelectProps = {
     options: CountrySelectOption[];
 };
 
-const CountrySelect = ({
+const CountrySelect = React.memo(({
     disabled,
     value,
     onChange,
     options,
 }: CountrySelectProps) => {
     const handleSelect = React.useCallback(
-        (country: Country) => {
-            onChange(country);
-        },
+        (country: Country) => onChange(country),
         [onChange]
+    );
+
+    const filteredOptions = React.useMemo(
+        () => options.filter((x) => x.value),
+        [options]
     );
 
     return (
@@ -106,57 +133,48 @@ const CountrySelect = ({
             <PopoverContent className="w-[300px] p-0 shadow-2xl rounded-2xl border-none">
                 <Command>
                     <CommandInput placeholder="Search country..." />
-                    <CommandList className="max-h-none overflow-visible">
-                        <div
-                            className="h-72 overflow-y-auto overscroll-contain px-1"
-                            onWheel={(e) => e.stopPropagation()}
-                        >
-                            <CommandEmpty>No country found.</CommandEmpty>
-                            <CommandGroup>
-                                {options
-                                    .filter((x) => x.value)
-                                    .map((option) => (
-                                        <CommandItem
-                                            className="gap-2"
-                                            key={option.value}
-                                            onSelect={() => handleSelect(option.value)}
-                                        >
-                                            <FlagComponent
-                                                country={option.value}
-                                                countryName={option.label}
-                                            />
-                                            <span className="flex-1 text-sm">{option.label}</span>
-                                            {option.value && (
-                                                <span className="text-foreground/50 text-sm">
-                                                    +{getCountryCallingCode(option.value)}
-                                                </span>
-                                            )}
-                                            <Check
-                                                className={cn(
-                                                    "ml-auto h-4 w-4",
-                                                    option.value === value ? "opacity-100" : "opacity-0"
-                                                )}
-                                            />
-                                        </CommandItem>
-                                    ))}
-                            </CommandGroup>
-                        </div>
+                    <CommandList className="h-72 overflow-y-auto overscroll-contain px-1">
+                        <CommandEmpty>No country found.</CommandEmpty>
+                        <CommandGroup>
+                            {filteredOptions.map((option) => (
+                                <CommandItem
+                                    className="gap-2"
+                                    key={option.value}
+                                    onSelect={() => handleSelect(option.value)}
+                                >
+                                    <FlagComponent
+                                        country={option.value}
+                                        countryName={option.label}
+                                    />
+                                    <span className="flex-1 text-sm">{option.label}</span>
+                                    <span className="text-foreground/50 text-sm">
+                                        +{getCountryCallingCode(option.value)}
+                                    </span>
+                                    <Check
+                                        className={cn(
+                                            "ml-auto h-4 w-4",
+                                            option.value === value ? "opacity-100" : "opacity-0"
+                                        )}
+                                    />
+                                </CommandItem>
+                            ))}
+                        </CommandGroup>
                     </CommandList>
                 </Command>
             </PopoverContent>
         </Popover>
     );
-};
+});
+CountrySelect.displayName = "CountrySelect";
 
-const FlagComponent = ({ country, countryName }: { country: Country; countryName: string }) => {
+const FlagComponent = React.memo(({ country, countryName }: { country: Country; countryName: string }) => {
     const Flag = flags[country];
-
     return (
         <span className="bg-foreground/20 flex h-4 w-6 overflow-hidden rounded-sm">
             {Flag && <Flag title={countryName} />}
         </span>
     );
-};
+});
 FlagComponent.displayName = "FlagComponent";
 
 export { PhoneInput };

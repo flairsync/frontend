@@ -18,7 +18,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 
 const RegisterPage = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("auth");
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
     const [signupErrorText, setSignupErrorText] = useState<string>();

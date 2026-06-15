@@ -47,14 +47,18 @@ interface StationReceipt {
     payments: StationReceiptPayment[];
     createdAt: string;
     closedAt: string | null;
+    taxExempt?: boolean;
 }
 
 function fmt(n: number) {
     return `$${Number(n).toFixed(2)}`;
 }
 
-function fmtTime(iso: string) {
-    return new Date(iso).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+function fmtTime(iso: string | null | undefined) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
 }
 
 interface Props {
@@ -167,7 +171,12 @@ export default function StationReceiptView({ orderId, onClose, onNewOrder }: Pro
                                 <span>−{fmt(receipt.discountAmount)}</span>
                             </div>
                         )}
-                        {receipt.tax.rate > 0 && receipt.tax.amount > 0 && (
+                        {receipt.taxExempt ? (
+                            <div className="flex justify-between text-muted-foreground">
+                                <span>Tax (Exempt)</span>
+                                <span>{fmt(0)}</span>
+                            </div>
+                        ) : receipt.tax.rate > 0 && (
                             <div className="flex justify-between text-muted-foreground">
                                 <span>
                                     {receipt.tax.name} {receipt.tax.rate}%

@@ -2,16 +2,17 @@
 import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Users, CheckCircle2, XCircle, Loader2, LayoutGrid, Map } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BusinessDetailsReserveTableModal from "./BusinessDetailsReserveTableModal";
-import { FloorPlanLayout } from "@/features/floor-plan/components/types";
-import { useDiscoveryTableAvailability, useDiscoveryProfile } from "@/features/discovery/useDiscovery";
+import { useDiscoveryTableAvailability, useDiscoveryProfile, useDiscoveryFloors } from "@/features/discovery/useDiscovery";
 import { parseInTimezone } from "@/lib/dateUtils";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { OpeningHours } from "@/models/business/MyBusinessFullDetails";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import FloorPlanPublicView from "./FloorPlanPublicView";
 
 const DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
@@ -54,26 +55,23 @@ function formatTimeSlot(slot: string): string {
     return `${displayH}:${m.toString().padStart(2, '0')} ${period}`;
 }
 
-type Table = {
-    id: string;
-    number: string;
-    seats: number;
-    available: boolean;
-};
+type SelectedTable = { id: string; number: string; seats: number };
 
 interface BusinessDetailsTableReservationProps {
-    tables?: FloorPlanLayout[];
     businessId: string;
+    tables?: any; // kept for backward compat, data now fetched internally
 }
 
-const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationProps> = ({ tables = [], businessId }) => {
+const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationProps> = ({ businessId }) => {
     const [selectedDateObj, setSelectedDateObj] = useState<Date | undefined>(undefined);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedGuests, setSelectedGuests] = useState(1);
-    const [selectedTable, setSelectedTable] = useState<Table | null>(null);
+    const [selectedTable, setSelectedTable] = useState<SelectedTable | null>(null);
+    const [viewMode, setViewMode] = useState<'map' | 'grid'>('grid');
 
     const { data: profile } = useDiscoveryProfile(businessId);
+    const { data: floors = [], isLoading: isFloorsLoading } = useDiscoveryFloors(businessId);
 
     const today = useMemo(() => {
         const d = new Date();
@@ -126,37 +124,26 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
         canShowTables && !!reservationTime
     );
 
-    const extractedTables = useMemo(() => {
-        const allTables: Table[] = [];
-        const availableTableIds = new Set(availableTablesResponse?.map((t: any) => t.id) || []);
+    const availableTableIds: string[] = useMemo(
+        () => (availableTablesResponse?.map((t: any) => t.id) || []),
+        [availableTablesResponse]
+    );
 
-        if (Array.isArray(tables)) {
-            tables.forEach(layout => {
-                if (Array.isArray((layout as any).tables)) {
-                    (layout as any).tables.forEach((t: any) => {
-                        allTables.push({
-                            id: t.id,
-                            number: t.name || t.number?.toString() || 'T',
-                            seats: t.capacity || 2,
-                            available: canShowTables ? availableTableIds.has(t.id) : true
-                        });
-                    });
-                } else {
-                    layout.elements?.forEach(el => {
-                        if (el.type === 'table') {
-                            allTables.push({
-                                id: el.id,
-                                number: el.label || el.tableId || 'T',
-                                seats: el.props?.seats || 2,
-                                available: canShowTables ? availableTableIds.has(el.id) : true
-                            });
-                        }
-                    });
-                }
-            });
-        }
-        return allTables;
-    }, [tables, availableTablesResponse, canShowTables]);
+    // Flat list of all tables across all floors for the grid view
+    const allTables = useMemo(() => {
+        const availSet = new Set(availableTableIds);
+        return floors.flatMap(f =>
+            (f.tables ?? []).map(t => ({
+                id: t.id,
+                number: t.name || String(t.number),
+                seats: t.capacity ?? 2,
+                available: canShowTables ? availSet.has(t.id) : true,
+                floorName: f.name,
+            }))
+        );
+    }, [floors, availableTableIds, canShowTables]);
+
+    const hasFloorPlan = floors.some(f => (f.tables?.length ?? 0) > 0);
 
     return (
         <section className="space-y-12" id="reservation-section">
@@ -171,6 +158,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                 tableName={selectedTable?.number || ""}
             />
 
+            {/* Section header */}
             <div className="space-y-2 text-center max-w-2xl mx-auto">
                 <h2 className="text-3xl font-bold tracking-tight">Reserve a Table</h2>
                 <p className="text-muted-foreground leading-relaxed">
@@ -178,8 +166,9 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                 </p>
             </div>
 
+            {/* Date / Time / Guests pickers */}
             <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-card border border-border/50 rounded-[2.5rem] shadow-2xl shadow-primary/5">
-                {/* Date — calendar popover, only open days within booking window */}
+                {/* Date */}
                 <div className="space-y-3">
                     <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Date</Label>
                     <div className="relative group">
@@ -202,6 +191,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                     onSelect={(date) => {
                                         setSelectedDateObj(date);
                                         setSelectedTime('');
+                                        setSelectedTable(null);
                                         setCalendarOpen(false);
                                     }}
                                     disabled={disabledDays}
@@ -212,23 +202,19 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                     </div>
                 </div>
 
-                {/* Time — slots derived from the selected day's opening hours */}
+                {/* Time */}
                 <div className="space-y-3">
                     <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Time</Label>
                     <div className="relative group">
                         <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none group-hover:scale-110 transition-transform" size={18} />
                         <select
-                            className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none bg-no-repeat disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                             value={selectedTime}
-                            onChange={(e) => setSelectedTime(e.target.value)}
+                            onChange={(e) => { setSelectedTime(e.target.value); setSelectedTable(null); }}
                             disabled={!selectedDateObj || timeSlots.length === 0}
                         >
                             <option value="">
-                                {!selectedDateObj
-                                    ? 'Select date first'
-                                    : timeSlots.length === 0
-                                        ? 'No slots available'
-                                        : 'Select time'}
+                                {!selectedDateObj ? 'Select date first' : timeSlots.length === 0 ? 'No slots available' : 'Select time'}
                             </option>
                             {timeSlots.map(slot => (
                                 <option key={slot} value={slot}>{formatTimeSlot(slot)}</option>
@@ -237,15 +223,15 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                     </div>
                 </div>
 
-                {/* Guests — capped at maxPartySize */}
+                {/* Guests */}
                 <div className="space-y-3 sm:col-span-2 lg:col-span-1">
                     <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Guests</Label>
                     <div className="relative group">
                         <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
                         <select
-                            className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none bg-no-repeat"
+                            className="flex h-14 w-full rounded-2xl bg-muted/50 px-12 py-2 text-md font-bold ring-offset-background border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 appearance-none"
                             value={selectedGuests}
-                            onChange={(e) => setSelectedGuests(parseInt(e.target.value))}
+                            onChange={(e) => { setSelectedGuests(parseInt(e.target.value)); setSelectedTable(null); }}
                         >
                             {guestOptions.map(n => (
                                 <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
@@ -255,101 +241,174 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                 </div>
             </div>
 
-            {/* Tables grid */}
-            <div className="min-h-[300px] flex items-center justify-center">
-                <AnimatePresence mode="wait">
-                    {!canShowTables ? (
-                        <motion.div
-                            key="placeholder"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-center space-y-4"
+            {/* View toggle (only show when there is floor data) */}
+            {hasFloorPlan && (
+                <div className="flex justify-center">
+                    <div className="flex bg-muted/50 rounded-2xl p-1 gap-1 border border-border/40">
+                        <button
+                            onClick={() => setViewMode('grid')}
+                            className={cn(
+                                "flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition-all",
+                                viewMode === 'grid'
+                                    ? "bg-white shadow-sm text-foreground"
+                                    : "text-muted-foreground hover:text-foreground"
+                            )}
                         >
-                            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
-                                <CalendarIcon size={32} />
-                            </div>
-                            <p className="text-muted-foreground font-medium italic">
-                                Please select a date and time to view available tables.
-                            </p>
-                        </motion.div>
-                    ) : isAvailabilityLoading ? (
+                            <LayoutGrid size={15} />
+                            Table List
+                        </button>
+                        <button
+                            onClick={() => setViewMode('map')}
+                            className={cn(
+                                "flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold transition-all",
+                                viewMode === 'map'
+                                    ? "bg-white shadow-sm text-foreground"
+                                    : "text-muted-foreground hover:text-foreground"
+                            )}
+                        >
+                            <Map size={15} />
+                            Floor Plan
+                            <span className="text-[9px] bg-amber-100 text-amber-600 border border-amber-200 rounded px-1 py-0.5 font-black uppercase leading-none">
+                                BETA
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Content area */}
+            <div className="min-h-[320px]">
+                <AnimatePresence mode="wait">
+
+                    {/* Loading: availability query in-flight, or date/time selected but timezone not yet loaded */}
+                    {canShowTables && (isAvailabilityLoading || !reservationTime) ? (
                         <motion.div
                             key="loading"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="flex flex-col items-center justify-center space-y-4 py-8"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="flex flex-col items-center justify-center py-16 gap-4"
                         >
-                            <Loader2 className="w-12 h-12 text-primary animate-spin" />
-                            <p className="text-muted-foreground font-medium italic">Checking availability...</p>
+                            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                            <p className="text-muted-foreground font-medium">Checking availability…</p>
                         </motion.div>
-                    ) : availableTablesResponse?.length === 0 ? (
+                    ) : isFloorsLoading ? (
+                        <motion.div
+                            key="floors-loading"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="flex flex-col items-center justify-center py-16 gap-4"
+                        >
+                            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                        </motion.div>
+
+                    ) : /* No available tables at all for this time */ canShowTables && availableTablesResponse?.length === 0 ? (
                         <motion.div
                             key="no-availability"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-center space-y-4"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                            className="text-center space-y-4 py-12"
                         >
                             <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto text-rose-500">
                                 <XCircle size={32} />
                             </div>
-                            <p className="text-rose-600 font-medium">
-                                No tables are available for {selectedGuests} {selectedGuests === 1 ? 'guest' : 'guests'} at {selectedTime}.
+                            <p className="text-rose-600 font-semibold">
+                                No tables available for {selectedGuests} {selectedGuests === 1 ? 'guest' : 'guests'} at {formatTimeSlot(selectedTime)}.
                             </p>
-                            <p className="text-muted-foreground text-sm">
-                                Please try selecting a different time or adjusting your party size.
-                            </p>
+                            <p className="text-muted-foreground text-sm">Try a different time or party size.</p>
                         </motion.div>
-                    ) : extractedTables.length > 0 ? (
+
+                    ) : canShowTables && viewMode === 'map' && hasFloorPlan ? (
+                        /* ── Floor plan view ── */
+                        <motion.div
+                            key="map"
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                        >
+                            <FloorPlanPublicView
+                                floors={floors}
+                                availableTableIds={availableTableIds}
+                                canFilter={canShowTables}
+                                selectedTableId={selectedTable?.id}
+                                onSelectTable={(t) => setSelectedTable({ id: t.id, number: t.number, seats: t.seats })}
+                            />
+                        </motion.div>
+
+                    ) : allTables.length > 0 ? (
+                        /* ── Grid view ── */
                         <motion.div
                             key="grid"
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.98 }}
-                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full"
+                            exit={{ opacity: 0 }}
+                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
                         >
-                            {extractedTables.map((table) => (
+                            {allTables.map(table => (
                                 <motion.button
                                     key={table.id}
                                     whileHover={table.available ? { y: -4, scale: 1.02 } : {}}
                                     whileTap={table.available ? { scale: 0.98 } : {}}
                                     disabled={!table.available}
-                                    className={`relative p-6 rounded-[2rem] border transition-all flex flex-col items-center gap-4 ${table.available
-                                        ? "bg-card border-border/50 hover:border-primary hover:shadow-2xl hover:shadow-primary/10 cursor-pointer"
-                                        : "bg-muted/30 border-transparent opacity-60 cursor-not-allowed"
-                                        }`}
-                                    onClick={() => setSelectedTable(table)}
+                                    className={cn(
+                                        "relative p-6 rounded-[2rem] border transition-all flex flex-col items-center gap-4",
+                                        table.available
+                                            ? "bg-card border-border/50 hover:border-primary hover:shadow-2xl hover:shadow-primary/10 cursor-pointer"
+                                            : "bg-muted/30 border-transparent opacity-60 cursor-not-allowed"
+                                    )}
+                                    onClick={() => setSelectedTable({ id: table.id, number: table.number, seats: table.seats })}
                                 >
-                                    <div className={`p-4 rounded-2xl ${table.available ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+                                    <div className={cn("p-4 rounded-2xl", table.available ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
                                         <Users size={32} />
                                     </div>
                                     <div className="text-center space-y-1">
                                         <span className="text-lg font-black block">Table {table.number}</span>
                                         <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{table.seats} Seats</span>
+                                        {floors.length > 1 && (
+                                            <span className="text-[10px] text-muted-foreground block">{table.floorName}</span>
+                                        )}
                                     </div>
                                     <div className="absolute top-4 right-4">
-                                        {table.available ? (
-                                            <CheckCircle2 size={18} className="text-emerald-500" />
-                                        ) : (
-                                            <XCircle size={18} className="text-muted-foreground" />
-                                        )}
+                                        {table.available
+                                            ? <CheckCircle2 size={18} className="text-emerald-500" />
+                                            : <XCircle size={18} className="text-muted-foreground" />}
                                     </div>
                                 </motion.button>
                             ))}
                         </motion.div>
+
+                    ) : !canShowTables ? (
+                        /* ── Placeholder before date/time selection ── */
+                        <motion.div
+                            key="placeholder"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                            className="text-center space-y-4 py-12"
+                        >
+                            {viewMode === 'map' && hasFloorPlan ? (
+                                <FloorPlanPublicView
+                                    floors={floors}
+                                    availableTableIds={[]}
+                                    canFilter={false}
+                                    onSelectTable={() => {}}
+                                />
+                            ) : (
+                                <>
+                                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
+                                        <CalendarIcon size={32} />
+                                    </div>
+                                    <p className="text-muted-foreground font-medium italic">
+                                        Please select a date and time to view available tables.
+                                    </p>
+                                </>
+                            )}
+                        </motion.div>
+
                     ) : (
                         <motion.div
                             key="empty"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-center space-y-4"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                            className="text-center space-y-4 py-12"
                         >
-                            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto text-muted-foreground">
-                                <XCircle size={32} />
+                            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
+                                <XCircle size={32} className="text-muted-foreground opacity-40" />
                             </div>
-                            <p className="text-muted-foreground font-medium italic">
-                                No tables configured for this business yet.
-                            </p>
+                            <p className="text-muted-foreground font-medium italic">No tables configured for this venue yet.</p>
                         </motion.div>
                     )}
                 </AnimatePresence>

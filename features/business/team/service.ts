@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../../shared/api-response";
 
 const BASE_URL = `${import.meta.env.BASE_URL}/businesses`;
 
@@ -12,9 +13,8 @@ export interface UpdateTeamPayload {
     colorCode?: string;
 }
 
-export const fetchTeamsApiCall = async (businessId: string) => {
-    return flairapi.get(`${BASE_URL}/${businessId}/teams`);
-};
+export const fetchTeamsApiCall = async (businessId: string) =>
+    unwrap(await flairapi.get(`${BASE_URL}/${businessId}/teams`));
 
 export const fetchTeamApiCall = async (businessId: string, teamId: string) => {
     return flairapi.get(`${BASE_URL}/${businessId}/teams/${teamId}`);

@@ -31,8 +31,7 @@ export const useBusinessBasicDetails = (businessId: string | null = null) => {
     queryKey: ["business_basic_details", businessId],
     queryFn: async () => {
       if (!businessId) return undefined;
-      const res = await fetchBusinessBasicDetailsApiCall(businessId);
-      return res.data?.data;
+      return await fetchBusinessBasicDetailsApiCall(businessId) as BusinessBasicDetails;
     },
     enabled: !!businessId,
     gcTime: Infinity,

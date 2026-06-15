@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MarketplaceLayout } from '@/components/marketplace/MarketplaceLayout';
 import { MarketplaceGrid } from '@/components/marketplace/MarketplaceGrid';
 import { useBusinessMarketplaceItems } from '@/features/marketplace/useMarketplace';
@@ -6,11 +6,25 @@ import { usePageContext } from 'vike-react/usePageContext';
 
 export function Page() {
     const pageContext = usePageContext();
-    // In a generic guest marketplace, we might read businessId from URL query or route
-    // e.g. /marketplace/guest?businessId=uuid
     const businessId = (pageContext.urlParsed.search.businessId as string) || '';
 
-    const { data: items, isLoading } = useBusinessMarketplaceItems(businessId);
+    const [search, setSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        const t = setTimeout(() => {
+            setDebouncedSearch(search);
+            setPage(1);
+        }, 300);
+        return () => clearTimeout(t);
+    }, [search]);
+
+    const { data, isLoading } = useBusinessMarketplaceItems(businessId || undefined, {
+        search: debouncedSearch || undefined,
+        page,
+        limit: 20,
+    });
 
     return (
         <MarketplaceLayout
@@ -25,10 +39,15 @@ export function Page() {
                 </div>
             ) : isLoading ? (
                 <div className="flex justify-center items-center p-20">Loading items...</div>
-            ) : items && items.length > 0 ? (
-                <MarketplaceGrid items={items} />
             ) : (
-                <div className="flex justify-center items-center p-20 text-muted-foreground">This shop has no retail items yet.</div>
+                <MarketplaceGrid
+                    items={data?.data ?? []}
+                    search={search}
+                    onSearchChange={setSearch}
+                    currentPage={data?.current ?? 1}
+                    totalPages={data?.pages ?? 1}
+                    onPageChange={setPage}
+                />
             )}
         </MarketplaceLayout>
     );

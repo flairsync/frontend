@@ -17,8 +17,7 @@ export const useInventoryRecipes = (businessId: string, menuItemId: string | nul
     } = useQuery({
         queryKey: ["inventory_recipe", businessId, menuItemId],
         queryFn: async () => {
-            const resp = await getMenuItemRecipeApiCall(businessId, menuItemId!);
-            const data = resp.data?.data !== undefined ? resp.data.data : resp.data;
+            const data = await getMenuItemRecipeApiCall(businessId, menuItemId!);
             return Array.isArray(data) ? data : [];
         },
         enabled: !!businessId && !!menuItemId,

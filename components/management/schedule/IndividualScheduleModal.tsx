@@ -25,6 +25,11 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock } from "lucide-react";
 
+const formatShiftErrorMessage = (msg: string, tz: string) =>
+    msg.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z/g, (iso) =>
+        dayjs.utc(iso).tz(tz).format("MMM D, YYYY h:mm A")
+    );
+
 interface IndividualScheduleModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -48,15 +53,16 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
     
     const { businessRoles, loadingBusinessRoles } = useBusinessRoles(businessId);
 
+    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const businessTz = myBusinessFullDetails?.timezone || 'UTC';
+
     // We only need the mutations here, so we don't pass dates to avoid unnecessary (and infinite) fetches
-    const { 
-        createIndividualShift, 
+    const {
+        createIndividualShift,
         isCreatingIndividualShift,
         updateShift,
         isUpdatingShift
-    } = useShifts(businessId);
-    const { myBusinessFullDetails } = useMyBusiness(businessId);
-    const businessTz = myBusinessFullDetails?.timezone || 'UTC';
+    } = useShifts(businessId, undefined, undefined, undefined, businessTz);
 
     const [employmentId, setEmploymentId] = useState<string>("");
     const [isOpenShift, setIsOpenShift] = useState(false);
@@ -133,7 +139,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                 onSuccess: () => onOpenChange(false),
                 onError: (error: any) => {
                     const msg = error.response?.data?.message || "Failed to update shift";
-                    setErrorMessage(msg);
+                    setErrorMessage(formatShiftErrorMessage(msg, businessTz));
                 }
             });
         } else {
@@ -144,7 +150,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                 onSuccess: () => onOpenChange(false),
                 onError: (error: any) => {
                     const msg = error.response?.data?.message || "Failed to create shift";
-                    setErrorMessage(msg);
+                    setErrorMessage(formatShiftErrorMessage(msg, businessTz));
                 }
             });
         }

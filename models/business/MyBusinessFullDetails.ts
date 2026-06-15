@@ -5,6 +5,7 @@ import { BusinessMedia } from "./BusinessMedia";
 export type Country = {
   id: number;
   name: string;
+  code?: string;
 };
 
 export class OpeningPeriod {
@@ -131,6 +132,7 @@ export class MyBusinessFullDetails {
   maxOrderDistanceMeters: number;
   allowTableOrdering: boolean;
   allowTakeawayOrdering: boolean;
+  enableFloorPlanView: boolean;
   reservationCancellationWindow: number;
   reservationModificationLimit: number;
   reservationTimeoutMinutes: number;
@@ -221,6 +223,7 @@ export class MyBusinessFullDetails {
     taxRate?: number,
     taxName?: string,
     taxIncluded?: boolean,
+    enableFloorPlanView?: boolean,
   ) {
     this.id = id;
     this.name = name;
@@ -254,6 +257,7 @@ export class MyBusinessFullDetails {
     this.maxOrderDistanceMeters = maxOrderDistanceMeters;
     this.allowTableOrdering = allowTableOrdering;
     this.allowTakeawayOrdering = allowTakeawayOrdering;
+    this.enableFloorPlanView = enableFloorPlanView ?? false;
     this.reservationCancellationWindow = reservationCancellationWindow;
     this.reservationModificationLimit = reservationModificationLimit;
     this.reservationTimeoutMinutes = reservationTimeoutMinutes;
@@ -344,6 +348,7 @@ export class MyBusinessFullDetails {
         data.taxRate !== undefined ? Number(data.taxRate) : 0,
         data.taxName ?? "",
         data.taxIncluded !== undefined ? !!data.taxIncluded : true,
+        data.enableFloorPlanView !== undefined ? !!data.enableFloorPlanView : false,
       );
     } catch {
       return null;
@@ -409,4 +414,5 @@ export type UpdateBusinessDetailsDto = {
   taxRate?: number;
   taxName?: string;
   taxIncluded?: boolean;
+  enableFloorPlanView?: boolean;
 };

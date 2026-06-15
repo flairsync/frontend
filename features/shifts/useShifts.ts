@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { extractErrorMessage } from "@/utils/error-utils";
+import dayjs from "@/utils/date-utils";
 import {
   fetchShiftsApiCall,
   bulkScheduleTeamShiftsApiCall,
@@ -9,6 +10,7 @@ import {
   updateShiftApiCall,
   deleteShiftApiCall,
   generateWeeklyDraftApiCall,
+  generateDraftApiCall,
   publishWeeklyScheduleApiCall,
   copyPreviousWeekApiCall,
   bulkStaffWeeklySetupApiCall,
@@ -48,7 +50,12 @@ const formatToDateOnly = (date: Date | string) => {
   return format(d, "yyyy-MM-dd");
 };
 
-export const useShifts = (businessId: string, startDate?: Date | string, endDate?: Date | string, employmentId?: string) => {
+const fmtShiftError = (msg: string, tz: string) =>
+  msg.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z/g, (iso) =>
+    dayjs.utc(iso).tz(tz).format("MMM D, YYYY h:mm A")
+  );
+
+export const useShifts = (businessId: string, startDate?: Date | string, endDate?: Date | string, employmentId?: string, businessTz: string = 'UTC', options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();
 
   const startStr = startDate ? formatToDateOnly(startDate) : undefined;
@@ -59,18 +66,14 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
     queryKey: ["shifts", businessId, startStr, endStr, employmentId],
     queryFn: async () => {
       try {
-        const resp = await fetchShiftsApiCall(businessId, startStr, endStr, employmentId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-
-        if (actualData && Array.isArray(actualData)) return actualData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchShiftsApiCall(businessId, startStr, endStr, employmentId);
+        return Array.isArray(data) ? data : [];
       } catch (error) {
         console.warn("Failed to fetch shifts:", error);
         return [];
       }
     },
-    enabled: !!businessId && !!startDate && !!endDate && (employmentId !== undefined ? !!employmentId : true),
+    enabled: options?.enabled !== false && !!businessId && !!startDate && !!endDate && (employmentId !== undefined ? !!employmentId : true),
   });
 
   const bulkScheduleTeamMutation = useMutation({
@@ -87,7 +90,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
-      toast.error(extractErrorMessage(error, "Failed to schedule team shifts"));
+      toast.error(fmtShiftError(extractErrorMessage(error, "Failed to schedule team shifts"), businessTz));
     }
   });
 
@@ -106,7 +109,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      toast.error(extractErrorMessage(error, "Failed to schedule staff shifts"));
+      toast.error(fmtShiftError(extractErrorMessage(error, "Failed to schedule staff shifts"), businessTz));
     }
   });
 
@@ -124,7 +127,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      toast.error(extractErrorMessage(error, "Failed to create shift"));
+      toast.error(fmtShiftError(extractErrorMessage(error, "Failed to create shift"), businessTz));
     }
   });
 
@@ -141,7 +144,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
     onError: (error: any) => {
-      toast.error(extractErrorMessage(error, "Failed to update shift"));
+      toast.error(fmtShiftError(extractErrorMessage(error, "Failed to update shift"), businessTz));
     }
   });
 
@@ -166,6 +169,19 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
     },
     onError: (error: any) => {
       toast.error(extractErrorMessage(error, "Failed to generate weekly draft"));
+    }
+  });
+
+  const generateDraftMutation = useMutation({
+    mutationFn: (data: { startDate: string; endDate: string; employmentId?: string }) =>
+      generateDraftApiCall(businessId, formatToDateOnly(data.startDate), formatToDateOnly(data.endDate), data.employmentId),
+    onSuccess: () => {
+      toast.success("Draft shifts generated successfully");
+      queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
+    },
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to generate draft shifts"));
     }
   });
 
@@ -272,7 +288,8 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
     deleteShift: deleteShiftMutation.mutate,
     isDeletingShift: deleteShiftMutation.isPending,
     generateWeeklyDraft: generateWeeklyDraftMutation.mutate,
-    isGeneratingDraft: generateWeeklyDraftMutation.isPending,
+    generateDraft: generateDraftMutation.mutate,
+    isGeneratingDraft: generateDraftMutation.isPending,
     publishWeeklySchedule: publishWeeklyScheduleMutation.mutate,
     isPublishing: publishWeeklyScheduleMutation.isPending,
     copyPreviousWeek: copyPreviousWeekMutation.mutate,
@@ -298,10 +315,8 @@ export const useShiftBids = (shiftId?: string) => {
     queryKey: ["shift-bids", shiftId],
     queryFn: async () => {
       if (!shiftId) return [];
-      const resp = await fetchShiftBidsApiCall(shiftId);
-      const resData = resp.data;
-      const actualData = resData?.data !== undefined ? resData.data : resData;
-      return Array.isArray(actualData) ? actualData : [];
+      const data = await fetchShiftBidsApiCall(shiftId);
+      return Array.isArray(data) ? data : [];
     },
     enabled: !!shiftId,
   });
@@ -315,8 +330,8 @@ export const useManagerRoster = (businessId: string, startDate?: Date | string, 
     queryKey: ["manager-roster", businessId, startStr, endStr],
     queryFn: async () => {
       try {
-        const resp = await fetchManagerRosterApiCall(businessId, startStr || '', endStr || '');
-        return resp.data?.data || [];
+        const data = await fetchManagerRosterApiCall(businessId, startStr || '', endStr || '');
+        return Array.isArray(data) ? data : [];
       } catch (error) {
         console.warn("Failed to fetch manager roster:", error);
         return [];
@@ -340,22 +355,20 @@ export const useUpcomingShifts = (params: {
   endDate?: string;
   page?: number;
   limit?: number;
+  enabled?: boolean;
 }) => {
+  const { enabled: enabledOption, ...queryParams } = params;
   return useQuery<PaginatedResponse<Shift>>({
-    queryKey: ["upcoming-shifts", params],
+    queryKey: ["upcoming-shifts", queryParams],
     queryFn: async () => {
       try {
-        const resp = await getUpcomingShiftsApiCall(params);
-        const resData = resp.data;
-        // Handle both { data: [...] } and { data: { data: [...] } }
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return actualData;
+        return await getUpcomingShiftsApiCall(queryParams);
       } catch (error) {
         console.warn("Failed to fetch upcoming shifts:", error);
-        throw error; // Let React Query handle the error state
+        throw error;
       }
     },
-    enabled: !!params.businessId,
+    enabled: enabledOption !== false && !!params.businessId,
   });
 };
 
@@ -363,8 +376,8 @@ export const useAvailableShifts = (businessId: string) => {
   return useQuery<Shift[]>({
     queryKey: ["available-shifts", businessId],
     queryFn: async () => {
-      const resp = await fetchAvailableShiftsApiCall(businessId);
-      return resp.data?.data || [];
+      const data = await fetchAvailableShiftsApiCall(businessId);
+      return Array.isArray(data) ? data : [];
     },
     enabled: !!businessId,
   });
@@ -374,8 +387,8 @@ export const useMyBids = () => {
   return useQuery<any[]>({
     queryKey: ["my-bids"],
     queryFn: async () => {
-      const resp = await fetchMyBidsApiCall();
-      return resp.data?.data || [];
+      const data = await fetchMyBidsApiCall();
+      return Array.isArray(data) ? data : [];
     },
   });
 };
@@ -384,10 +397,8 @@ export const useAllBusinessBids = (businessId: string) => {
   return useQuery<any[]>({
     queryKey: ["business-bids", businessId],
     queryFn: async () => {
-      const resp = await fetchAllBusinessBidsApiCall(businessId);
-      const resData = resp.data;
-      const actualData = resData?.data !== undefined ? resData.data : resData;
-      return Array.isArray(actualData) ? actualData : [];
+      const data = await fetchAllBusinessBidsApiCall(businessId);
+      return Array.isArray(data) ? data : [];
     },
     enabled: !!businessId,
   });

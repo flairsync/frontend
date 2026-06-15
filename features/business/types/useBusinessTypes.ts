@@ -7,7 +7,7 @@ export const useBusinessTypes = () => {
     queryKey: ["business_types"],
     queryFn: async () => {
       const d = await getBusinessTypesApiCall();
-      return BusinessType.parseApiArrayResponse(d.data.data);
+      return BusinessType.parseApiArrayResponse(Array.isArray(d) ? d : []);
     },
   });
 

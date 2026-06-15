@@ -15,17 +15,19 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { BusinessCardDetails } from '@/models/BusinessCardDetails'
+import { DiscoveryBusiness } from '@/models/discovery/DiscoveryBusiness'
+import { fetchDiscoveryBusinessesApiCall, FetchDiscoveryBusinessesParams } from '@/features/discovery/discovery.api'
 
 // ✅ i18n
 import { useTranslation, Trans } from 'react-i18next'
 import WebsiteFooter from '@/components/shared/WebsiteFooter'
 
-// trying to optimize it 
 import { clientOnly } from 'vike-react/clientOnly'
 import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
-import { useDiscoverySearch } from '@/features/discovery/useDiscovery';
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries';
 import { useProfile } from '@/features/profile/useProfile';
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { withFallback } from 'vike-react-query'
 
 const FILTER_STORAGE_KEY = 'public_feed_filters';
 
@@ -42,34 +44,137 @@ const container = {
     show: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.05 // Faster stagger
+            staggerChildren: 0.05
         }
     }
 }
 
-const FeedPage = () => {
-    const { t } = useTranslation()
-    const {
-        businessTags
-    } = useBusinessTags();
+// Inner component — server-rendered via useSuspenseQuery with default params on first load
+const BusinessGrid = withFallback(
+    ({ params, page, limit, onPageChange, t }: {
+        params: FetchDiscoveryBusinessesParams;
+        page: number;
+        limit: number;
+        onPageChange: (p: number) => void;
+        t: ReturnType<typeof useTranslation<'feed'>>['t'];
+    }) => {
+        const { data: searchData } = useSuspenseQuery({
+            queryKey: ["discovery_search", params],
+            queryFn: async () => {
+                const res = await fetchDiscoveryBusinessesApiCall(params);
+                return {
+                    businesses: DiscoveryBusiness.parseApiArrayResponse(res.data),
+                    total: res.total ?? res.data.length,
+                    page: res.current ?? 1,
+                    limit: res.limit ?? 10,
+                };
+            },
+            refetchOnWindowFocus: false,
+        });
 
-    // Local Search State
+        const businesses = useMemo(() => {
+            if (!searchData?.businesses) return [];
+            return searchData.businesses.map((b: any) => BusinessCardDetails.fromDiscoveryBusiness(b));
+        }, [searchData]);
+
+        const totalResults = searchData?.total ?? 0;
+
+        return (
+            <>
+                {/* Controls Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card/30 backdrop-blur-sm p-4 rounded-3xl border border-border/40">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-primary/10 rounded-xl text-primary">
+                            <LayoutGrid size={20} />
+                        </div>
+                        <span className="text-sm font-semibold text-foreground/70">
+                            <Trans i18nKey="public_feed.resultsFound" count={totalResults} t={t}>
+                                Found <span className="text-foreground font-bold text-lg">{totalResults}</span> results
+                            </Trans>
+                        </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center space-x-2 text-sm font-bold text-muted-foreground bg-muted/50 px-3 py-2 rounded-xl">
+                            <ListFilter size={16} />
+                            <span>{t("public_feed.sortBy")}</span>
+                        </div>
+                        <Select defaultValue="default">
+                            <SelectTrigger className="w-[180px] h-10 rounded-xl border-border/50 bg-background shadow-sm">
+                                <SelectValue placeholder={t("public_feed.sortOptions.default")} />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl">
+                                <SelectItem value="default" className="rounded-lg">
+                                    {t("public_feed.sortOptions.default", "Default")}
+                                </SelectItem>
+                                <SelectItem value="rating_high" className="rounded-lg">
+                                    {t("public_feed.sortOptions.rating_high")}
+                                </SelectItem>
+                                <SelectItem value="rating_low" className="rounded-lg">
+                                    {t("public_feed.sortOptions.rating_low")}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                {/* Business cards grid */}
+                {businesses.length > 0 ? (
+                    <motion.div
+                        variants={container}
+                        initial="hidden"
+                        animate="show"
+                        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
+                    >
+                        {businesses.map((val, index) => (
+                            <PublicFeedBusinessCard key={val.link || index} businessDetails={val} />
+                        ))}
+                    </motion.div>
+                ) : (
+                    <div className="w-full py-20 flex flex-col items-center justify-center space-y-2">
+                        <h3 className="text-xl font-bold text-foreground">No businesses found</h3>
+                        <p className="text-muted-foreground">Try adjusting your search criteria</p>
+                    </div>
+                )}
+
+                {/* Pagination */}
+                {totalResults > 0 && (
+                    <div className="pt-8 border-t border-border/40">
+                        <DataPagination
+                            current={page}
+                            total={totalResults}
+                            pageSize={limit}
+                            onChange={onPageChange}
+                        />
+                    </div>
+                )}
+            </>
+        );
+    },
+    // Loading fallback
+    () => (
+        <div className="w-full py-20 flex flex-col items-center justify-center space-y-4">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        </div>
+    )
+);
+
+const FeedPage = () => {
+    const { t } = useTranslation("feed")
+    const { businessTags } = useBusinessTags();
+
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [page, setPage] = useState(1);
-    const limit = 30; // Matches dummy size
+    const limit = 30;
 
-    // Track initialization to avoid overwriting localStorage on mount
     const [isInitialized, setIsInitialized] = useState(false);
-
-    // Location State
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const [locationState, setLocationState] = useState<LocationFilterState>({
         useCustomLocation: false,
-        radius: 50000, // default 50km in meters
+        radius: 50000,
     });
 
-    // Sidebar Filter State
     const [selectedTypeId, setSelectedTypeId] = useState<string | undefined>();
     const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
     const [selectedMinRating, setSelectedMinRating] = useState<number | undefined>();
@@ -93,11 +198,10 @@ const FeedPage = () => {
 
     // ✅ Priority Logic on Mount
     React.useEffect(() => {
-        if (isInitialized) return; // Only run once on mount
+        if (isInitialized) return;
 
         let hasValidStoredFilters = false;
 
-        // 1. Check localStorage
         const stored = localStorage.getItem(FILTER_STORAGE_KEY);
         if (stored) {
             try {
@@ -114,7 +218,6 @@ const FeedPage = () => {
             }
         }
 
-        // 2. Geolocation
         const requestGeolocation = () => {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
@@ -125,14 +228,12 @@ const FeedPage = () => {
                             lat: latitude,
                             lng: longitude,
                             useCustomLocation: false,
-                            countryId: undefined // GPS overrides residency country
+                            countryId: undefined
                         }));
                     },
                     (error) => {
                         console.error("Geolocation error:", error);
-                        // 3. Fallback to User Country
                         handleFallbackToProfileCountry();
-
                         setIsLocationModalOpen(true);
                         if (error.code === error.PERMISSION_DENIED) {
                             setLocationErrorReason("denied");
@@ -164,30 +265,14 @@ const FeedPage = () => {
             requestGeolocation();
         }
 
-        // Add small delay to ensure state updates process before enabling persistence
         const timeoutId = setTimeout(() => setIsInitialized(true), 50);
-
         return () => clearTimeout(timeoutId);
 
     }, [userProfile?.id, userProfile?.countryId, isInitialized]);
 
-    // Fetch Discovery Businesses
-    const { data: searchData, isLoading } = useDiscoverySearch({
-        page,
-        limit,
-        q: searchQuery || undefined,
-        radius: locationState.radius,
-        lat: locationState.lat,
-        lng: locationState.lng,
-        countryId: locationState.countryId,
-        typeId: selectedTypeId === 'all' ? undefined : (selectedTypeId ? parseInt(selectedTypeId) : undefined),
-        tagIds: selectedTagIds.length > 0 ? selectedTagIds.join(',') : undefined,
-        minRating: selectedMinRating,
-    });
-
     const handleSearch = () => {
         setSearchQuery(searchInput);
-        setPage(1); // Reset page on new search
+        setPage(1);
     };
 
     const handleTagToggle = (tagId: string) => {
@@ -211,8 +296,6 @@ const FeedPage = () => {
         setPage(1);
     };
 
-
-    // Memoize location label
     const locationLabel = useMemo(() => {
         if (locationState.countryId && platformCountries) {
             const country = platformCountries.find(c => c.id === locationState.countryId);
@@ -227,13 +310,19 @@ const FeedPage = () => {
         return undefined;
     }, [locationState, platformCountries, t]);
 
-    // Memoize mapping
-    const businesses = useMemo(() => {
-        if (!searchData?.businesses) return [];
-        return searchData.businesses.map(b => BusinessCardDetails.fromDiscoveryBusiness(b));
-    }, [searchData]);
-
-    const totalResults = searchData?.total ?? 0;
+    // Build query params — on server these default to no-location (shows global results for crawlers)
+    const searchParams: FetchDiscoveryBusinessesParams = {
+        page,
+        limit,
+        q: searchQuery || undefined,
+        radius: locationState.radius ? locationState.radius / 1000 : undefined,
+        lat: locationState.lat,
+        lng: locationState.lng,
+        countryId: locationState.countryId,
+        typeId: selectedTypeId === 'all' ? undefined : (selectedTypeId ? parseInt(selectedTypeId) : undefined),
+        tagIds: selectedTagIds.length > 0 ? selectedTagIds.join(',') : undefined,
+        minRating: selectedMinRating,
+    };
 
     return (
         <div className="min-h-screen bg-background">
@@ -247,7 +336,6 @@ const FeedPage = () => {
                         onSearch={handleSearch}
                     />
 
-                    {/* Location Override Trigger */}
                     <div className="absolute bottom-6 right-6 md:right-12 z-20">
                         <button
                             onClick={() => setIsLocationModalOpen(true)}
@@ -270,13 +358,12 @@ const FeedPage = () => {
                     defaultState={locationState}
                     reason={locationErrorReason}
                     onSave={(newState) => {
-                        // Override logic: if countryId is set, clear lat/lng
                         if (newState.countryId) {
                             newState.lat = undefined;
                             newState.lng = undefined;
                         }
                         setLocationState(newState);
-                        setPage(1); // Reset page on new location
+                        setPage(1);
                         setLocationErrorReason(undefined);
                     }}
                 />
@@ -303,79 +390,15 @@ const FeedPage = () => {
                             locationLabel={locationLabel}
                         />
 
-                        {/* Main Content */}
+                        {/* Main Content — server-rendered on first load with default params */}
                         <div className="flex-1 space-y-8">
-                            {/* Controls Header */}
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card/30 backdrop-blur-sm p-4 rounded-3xl border border-border/40">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-primary/10 rounded-xl text-primary">
-                                        <LayoutGrid size={20} />
-                                    </div>
-                                    <span className="text-sm font-semibold text-foreground/70">
-                                        <Trans i18nKey="public_feed.resultsFound" count={totalResults}>
-                                            Found <span className="text-foreground font-bold text-lg">{totalResults}</span> results
-                                        </Trans>
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center gap-3">
-                                    <div className="flex items-center space-x-2 text-sm font-bold text-muted-foreground bg-muted/50 px-3 py-2 rounded-xl">
-                                        <ListFilter size={16} />
-                                        <span>{t("public_feed.sortBy")}</span>
-                                    </div>
-                                    <Select defaultValue="default">
-                                        <SelectTrigger className="w-[180px] h-10 rounded-xl border-border/50 bg-background shadow-sm">
-                                            <SelectValue placeholder={t("public_feed.sortOptions.default")} />
-                                        </SelectTrigger>
-                                        <SelectContent className="rounded-xl">
-                                            <SelectItem value="default" className="rounded-lg">
-                                                {t("public_feed.sortOptions.default", "Default")}
-                                            </SelectItem>
-                                            <SelectItem value="rating_high" className="rounded-lg">
-                                                {t("public_feed.sortOptions.rating_high")}
-                                            </SelectItem>
-                                            <SelectItem value="rating_low" className="rounded-lg">
-                                                {t("public_feed.sortOptions.rating_low")}
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            {/* Business cards grid */}
-                            {isLoading ? (
-                                <div className="w-full py-20 flex flex-col items-center justify-center space-y-4">
-                                    <Loader2 className="w-10 h-10 animate-spin text-primary" />
-                                </div>
-                            ) : businesses.length > 0 ? (
-                                <motion.div
-                                    variants={container}
-                                    initial="hidden"
-                                    animate="show"
-                                    className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
-                                >
-                                    {businesses.map((val, index) => (
-                                        <PublicFeedBusinessCard key={val.link || index} businessDetails={val} />
-                                    ))}
-                                </motion.div>
-                            ) : (
-                                <div className="w-full py-20 flex flex-col items-center justify-center space-y-2">
-                                    <h3 className="text-xl font-bold text-foreground">No businesses found</h3>
-                                    <p className="text-muted-foreground">Try adjusting your search criteria</p>
-                                </div>
-                            )}
-
-                            {/* Pagination */}
-                            {totalResults > 0 && (
-                                <div className="pt-8 border-t border-border/40">
-                                    <DataPagination
-                                        current={page}
-                                        total={totalResults}
-                                        pageSize={limit}
-                                        onChange={(p) => setPage(p)}
-                                    />
-                                </div>
-                            )}
+                            <BusinessGrid
+                                params={searchParams}
+                                page={page}
+                                limit={limit}
+                                onPageChange={setPage}
+                                t={t}
+                            />
                         </div>
                     </div>
                 </div>

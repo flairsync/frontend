@@ -1,5 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
+import { unwrap, unwrapPaginated } from "../shared/api-response";
 const baseUrl = `${import.meta.env.BASE_URL}`;
 const baseBusinessUrl = `${import.meta.env.BASE_URL}/business`;
 
@@ -31,12 +32,11 @@ const invitationsSuffix = "invitations";
 
 // Public business Routes
 
-export const getBusinessTagsApiCall = () => {
-  return flairapi.get(getBusinessTagsUrl);
-};
-export const getBusinessTypesApiCall = () => {
-  return flairapi.get(getBusinessTypesUrl);
-};
+export const getBusinessTagsApiCall = async () =>
+  unwrap(await flairapi.get(getBusinessTagsUrl));
+
+export const getBusinessTypesApiCall = async () =>
+  unwrap(await flairapi.get(getBusinessTypesUrl));
 
 // Private business routes
 
@@ -44,22 +44,14 @@ export const createNewBusinessApiCall = (data: any) => {
   return flairapi.post(createNewBusinessTypesUrl, data);
 };
 
-export const fetchMyBusinessesApiCall = (page: number, limit: number) => {
-  return flairapi.get(MyBusinessUrl, {
-    params: {
-      page,
-      limit,
-    },
-  });
-};
+export const fetchMyBusinessesApiCall = async (page: number, limit: number) =>
+  unwrapPaginated(await flairapi.get(MyBusinessUrl, { params: { page, limit } }));
 
-export const fetchMyBuysinessFullDetailsApiCall = (businessId: string) => {
-  return flairapi.get(`${MyBusinessUrl}/${businessId}`);
-};
+export const fetchMyBuysinessFullDetailsApiCall = async (businessId: string) =>
+  unwrap(await flairapi.get(`${MyBusinessUrl}/${businessId}`));
 
-export const fetchBusinessBasicDetailsApiCall = (businessId: string) => {
-  return flairapi.get(`${baseBusinessUrl}/${businessId}/basic-details`);
-};
+export const fetchBusinessBasicDetailsApiCall = async (businessId: string) =>
+  unwrap(await flairapi.get(`${baseBusinessUrl}/${businessId}/basic-details`));
 
 export const updateMyBusinessDetailsApiCall = (
   businessId: string,
@@ -129,11 +121,8 @@ export const updateMyBusinessOpenHoursApiCall = (
 
 // Roles =
 
-export const getBusinessRolesApiCall = (businessId: string) => {
-  return flairapi.get(
-    `${baseBusinessUrl}/${businessId}/${businessRolesSuffix}`,
-  );
-};
+export const getBusinessRolesApiCall = async (businessId: string) =>
+  unwrapPaginated(await flairapi.get(`${baseBusinessUrl}/${businessId}/${businessRolesSuffix}`));
 
 export type CreateRoleDataType = {
   name: string;
@@ -144,6 +133,13 @@ export type CreateRoleDataType = {
     canUpdate: boolean;
     canDelete: boolean;
   }[];
+  posAccess?: boolean;
+  kdsAccess?: boolean;
+  posCreateOrder?: boolean;
+  posVoidItem?: boolean;
+  posCancelOrder?: boolean;
+  posRefund?: boolean;
+  posApplyDiscount?: boolean;
 };
 
 export const createNewBusinessRoleApiCall = (
@@ -239,28 +235,14 @@ export const updateBusinessEmployeeSettingsApiCall = (
 
 // Employments
 
-export const fetchBusinessEmployeesApiCall = (
-  businessId: string,
-  page: number = 1,
-) => {
-  return flairapi.get(
+export const fetchBusinessEmployeesApiCall = async (businessId: string, page: number = 1) =>
+  unwrapPaginated(await flairapi.get(
     `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}`,
-    {
-      params: {
-        page: page,
-      },
-    },
-  );
-};
+    { params: { page } },
+  ));
 
-export const fetchMyEmploymentsApiCall = (page: number = 1, limit: number = 10) => {
-  return flairapi.get(myEmploymentsUrl, {
-    params: {
-      page,
-      limit,
-    },
-  });
-};
+export const fetchMyEmploymentsApiCall = async (page: number = 1, limit: number = 10) =>
+  unwrapPaginated(await flairapi.get(myEmploymentsUrl, { params: { page, limit } }));
 
 //Invitations
 export const inviteEmployeeApiCall = (businessId: string, email: string) => {
@@ -290,19 +272,11 @@ export const cancelInvitationToEmployeeApiCall = (
   );
 };
 
-export const fetchBusinessEmployeeInvitationsApiCall = (
-  businessId: string,
-  page: number = 1,
-) => {
-  return flairapi.get(
+export const fetchBusinessEmployeeInvitationsApiCall = async (businessId: string, page: number = 1) =>
+  unwrapPaginated(await flairapi.get(
     `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}`,
-    {
-      params: {
-        page: page,
-      },
-    },
-  );
-};
+    { params: { page } },
+  ));
 
 export const resyncInvitationsApiCall = (businessId: string) => {
   return flairapi.post(
@@ -310,9 +284,11 @@ export const resyncInvitationsApiCall = (businessId: string) => {
   );
 };
 
-export const fetchInvitationDetailsApiCall = (inviteId: string) => {
-  return flairapi.get(`${invitationsBaseUrl}/invitation/${inviteId}`);
-};
+export const fetchMyInvitationsApiCall = async () =>
+  unwrap(await flairapi.get(`${invitationsBaseUrl}/invitations/me`));
+
+export const fetchInvitationDetailsApiCall = async (inviteId: string) =>
+  unwrap(await flairapi.get(`${invitationsBaseUrl}/invitation/${inviteId}`));
 
 export const acceptInvitationApiCall = (inviteToken: string) => {
   return flairapi.post(`${invitationsBaseUrl}/invitation/${inviteToken}/accept`);
@@ -325,3 +301,17 @@ export const refuseInvitationApiCall = (inviteToken: string) => {
 export const deleteMyBusinessApiCall = (businessId: string) => {
   return flairapi.delete(`${MyBusinessUrl}/${businessId}`);
 };
+
+export const bulkAssignRoleToEmployeesApiCall = (
+  businessId: string,
+  roleId: string,
+  employmentIds: string[],
+) => {
+  return flairapi.post(
+    `${businessEmploymentsBaseUrl}/${businessId}/${roleId}/assign`,
+    { employmentIds },
+  );
+};
+
+export const fetchBusinessPlanApiCall = async (businessId: string) =>
+  unwrap(await flairapi.get(`${MyBusinessUrl}/${businessId}/plan`));

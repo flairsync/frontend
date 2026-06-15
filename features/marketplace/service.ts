@@ -1,42 +1,75 @@
 import flairapi from "@/lib/flairapi";
-import { MarketplaceItem } from "@/models/MarketplaceItem";
+import { unwrap, unwrapPaginated } from "../shared/api-response";
 
-const marketplaceUrl = `${import.meta.env.BASE_URL}/marketplace`;
+const publicBase = `${import.meta.env.BASE_URL}/marketplace`;
+const mgmtBase = (businessId: string) =>
+    `${import.meta.env.BASE_URL}/businesses/${businessId}/marketplace`;
 
-export interface CreateMarketplaceItemDto {
-    name: string;
+// ─── DTOs ────────────────────────────────────────────────────────────────────
+
+export interface UpdateMarketplaceItemDto {
+    name?: string;
     description?: string;
-    price: number;
+    price?: number;
     currency?: string;
-    images?: string[];
     isActive?: boolean;
-    businessId?: string;
+    stock?: number;
 }
 
-export interface UpdateMarketplaceItemDto extends Partial<CreateMarketplaceItemDto> { }
+// ─── Public / customer endpoints ─────────────────────────────────────────────
 
-export const getPlatformItemsApiCall = (page: number = 1, limit: number = 10) => {
-    return flairapi.get(`${marketplaceUrl}/items/platform`, {
-        params: { page, limit }
+export const getBusinessShopItemsApiCall = async (
+    businessId: string,
+    params?: { search?: string; page?: number; limit?: number }
+) =>
+    unwrapPaginated(await flairapi.get(`${publicBase}/items/business/${businessId}`, { params }));
+
+export const getItemDetailsApiCall = async (id: string) =>
+    unwrap(await flairapi.get(`${publicBase}/items/${id}`));
+
+// ─── Business dashboard / management endpoints ───────────────────────────────
+
+export const getMgmtItemsApiCall = async (businessId: string) =>
+    unwrap(await flairapi.get(`${mgmtBase(businessId)}/items`));
+
+export const createMgmtItemApiCall = (businessId: string, formData: FormData) => {
+    return flairapi.post(`${mgmtBase(businessId)}/items`, formData);
+};
+
+export const updateMgmtItemApiCall = (
+    businessId: string,
+    id: string,
+    data: UpdateMarketplaceItemDto
+) => {
+    return flairapi.patch(`${mgmtBase(businessId)}/items/${id}`, data);
+};
+
+export const updateMgmtItemStockApiCall = (
+    businessId: string,
+    id: string,
+    stock: number
+) => {
+    return flairapi.patch(`${mgmtBase(businessId)}/items/${id}/stock`, { stock });
+};
+
+export const uploadMgmtItemImagesApiCall = (
+    businessId: string,
+    id: string,
+    formData: FormData
+) => {
+    return flairapi.post(`${mgmtBase(businessId)}/items/${id}/images`, formData);
+};
+
+export const removeMgmtItemImageApiCall = (
+    businessId: string,
+    id: string,
+    imageUrl: string
+) => {
+    return flairapi.delete(`${mgmtBase(businessId)}/items/${id}/images`, {
+        data: { imageUrl },
     });
 };
 
-export const getBusinessShopItemsApiCall = (businessId: string) => {
-    return flairapi.get(`${marketplaceUrl}/items/business/${businessId}`);
-};
-
-export const getItemDetailsApiCall = (id: string) => {
-    return flairapi.get(`${marketplaceUrl}/items/${id}`);
-};
-
-export const createItemApiCall = (data: CreateMarketplaceItemDto) => {
-    return flairapi.post(`${marketplaceUrl}/items`, data);
-};
-
-export const updateItemApiCall = (id: string, data: UpdateMarketplaceItemDto) => {
-    return flairapi.patch(`${marketplaceUrl}/items/${id}`, data);
-};
-
-export const deleteItemApiCall = (id: string) => {
-    return flairapi.delete(`${marketplaceUrl}/items/${id}`);
+export const deleteMgmtItemApiCall = (businessId: string, id: string) => {
+    return flairapi.delete(`${mgmtBase(businessId)}/items/${id}`);
 };

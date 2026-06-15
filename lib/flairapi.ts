@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import { toast } from "sonner";
 import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
@@ -10,13 +10,49 @@ import NProgress from "nprogress";
 // Configure NProgress (optional tweak)
 NProgress.configure({ showSpinner: false });
 
+// Use these when a specific endpoint needs a tighter or looser bound than the default.
+// e.g. flairapi.get('/search', { timeout: Timeouts.SHORT })
+export const Timeouts = {
+  SHORT: 10_000,    // simple reads, autocomplete
+  DEFAULT: 60_000,  // general API calls (matches axios.create default below)
+  UPLOAD: 300_000,  // file / image uploads, bulk operations
+} as const;
+
 const flairapi = axios.create({
   withCredentials: true,
-  timeout: 60000,
+  timeout: Timeouts.DEFAULT,
   headers: {
     "x-client-type": "web",
   },
 });
+
+// Deduplicate identical in-flight GET/HEAD requests so concurrent callers share one network call.
+const inflightRequests = new Map<string, Promise<any>>();
+
+const getDedupeKey = (config: InternalAxiosRequestConfig): string | null => {
+  const method = (config.method ?? "get").toLowerCase();
+  if (!["get", "head"].includes(method)) return null;
+  const params = config.params ? JSON.stringify(config.params) : "";
+  return `${method}:${config.url ?? ""}:${params}`;
+};
+
+const capturedAdapter = flairapi.defaults.adapter;
+flairapi.defaults.adapter = (config) => {
+  const base: Function =
+    typeof capturedAdapter === "function"
+      ? capturedAdapter
+      : (axios as any).getAdapter(capturedAdapter ?? ["fetch", "xhr", "http"]);
+
+  const key = getDedupeKey(config);
+  if (!key) return base(config);
+
+  const existing = inflightRequests.get(key);
+  if (existing) return existing;
+
+  const promise = base(config).finally(() => inflightRequests.delete(key));
+  inflightRequests.set(key, promise);
+  return promise;
+};
 
 // To avoid multiple refreshes in parallel
 let isRefreshing = false;
@@ -110,7 +146,7 @@ flairapi.interceptors.response.use(
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
-          .then((token) => {
+          .then(() => {
             return flairapi(originalRequest);
           })
           .catch((err) => {
@@ -126,11 +162,15 @@ flairapi.interceptors.response.use(
 
         processQueue(null, null);
         return flairapi(originalRequest);
-      } catch (refreshError) {
+      } catch (refreshError: any) {
         processQueue(refreshError, null);
-        // Refresh failed — clear session by reloading
         if (typeof window !== "undefined") {
-          window.location.reload();
+          if (refreshError?.response?.data?.code === "auth.session.expired") {
+            localStorage.setItem('auth_logout_reason', 'inactivity');
+            window.location.href = '/login';
+          } else {
+            window.location.reload();
+          }
         }
         return Promise.reject(refreshError);
       } finally {
@@ -144,6 +184,9 @@ flairapi.interceptors.response.use(
         useSubscriptionStore.getState().openUpgradeModal(
           error.response?.data?.message || i18n.t("subscriptions.errors.limit_reached")
         );
+        return Promise.reject(error);
+      } else {
+        useSystemErrorStore.getState().openPermissionDenied();
         return Promise.reject(error);
       }
     }

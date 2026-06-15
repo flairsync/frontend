@@ -5,6 +5,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 
 type Props = {
     item: any;
@@ -25,6 +27,9 @@ export const MenuItemRowSortable = ({
     onDelete,
     onDuplicate
 }: Props) => {
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId ?? null);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
+
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: item.id,
         data: { type: "item", name: item.name },
@@ -50,7 +55,7 @@ export const MenuItemRowSortable = ({
                     {item.description && <p className="text-sm text-zinc-500 dark:text-zinc-400">{item.description}</p>}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400">{item.price}</span>
+                    <span className="font-semibold text-indigo-600 dark:text-indigo-400">{currencySymbol}{item.price}</span>
                     <Button
                         size="sm"
                         variant="destructive"

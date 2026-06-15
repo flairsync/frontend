@@ -46,7 +46,7 @@ const getCategoryIcon = (name: string) => {
 };
 
 const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, business }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("feed");
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedItem, setSelectedItem] = useState<BusinessMenuItem | null>(null);
     const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);

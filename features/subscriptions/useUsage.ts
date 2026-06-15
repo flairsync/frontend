@@ -28,10 +28,7 @@ export const useUsage = () => {
         queryKey: ["user_usage"],
         queryFn: async () => {
             const res = await getUserUsageApiCall();
-            if (res.data.success) {
-                return res.data.data;
-            }
-            return null;
+            return res.data as UsageData ?? null;
         },
         enabled: !!user,
     });

@@ -1,0 +1,179 @@
+{
+  "marketplace": {
+    "title": "Marketplace"
+  },
+  "footer": {
+    "follow_us": "Suivez-nous"
+  },
+  "landing_page": {
+    "header": {
+      "navLinks": {
+        "home_tab_title": "Accueil",
+        "businesses_tab_title": "Entreprises",
+        "features_tab_title": "Fonctionnalités",
+        "solution_tab_title": "Solution",
+        "integration_tab_title": "Intégration",
+        "pricing_tab_title": "Tarifs",
+        "faq_tab_title": "FAQ"
+      },
+      "joinUsButton": "Rejoignez-nous",
+      "jobs": "Offres d'emploi",
+      "findBusinessButton": "Trouvez votre entreprise préférée",
+      "explore": "Explorer"
+    },
+    "hero": {
+      "title": "Optimisez la gestion de votre café & restaurant",
+      "subtitle": "Le moyen le plus simple de gérer votre flux de travail et de collaborer avec votre équipe sans effort.",
+      "trialButton": "Commencer l'essai gratuit",
+      "explainButton": "Voir comment ça fonctionne"
+    },
+    "features": {
+      "globalTitle": "Tout ce dont vous avez besoin pour gérer votre café & restaurant",
+      "globalSubtitle": "Des menus au personnel, de l'inventaire à la découverte des clients — gérez tout sur une seule plateforme élégante. Gagnez du temps, réduisez les coûts et concentrez-vous sur la qualité de vos plats et expériences pendant que nous gérons les opérations.",
+      "inventoryManagement": {
+        "title": "Gestion des stocks",
+        "subtitle": "Surveillez les ingrédients en temps réel, recevez des alertes de faible stock et simplifiez les commandes aux fournisseurs pour maintenir votre cuisine efficace."
+      },
+      "staffManagement": {
+        "title": "Gestion du personnel",
+        "subtitle": "Créez et partagez les horaires du personnel en quelques minutes, gérez les shifts et suivez la présence — tout depuis un seul endroit. Fini le chaos de dernière minute."
+      }
+    },
+    "problemSolution": {
+      "title": "Nous connaissons les défis de la gestion d'un restaurant",
+      "subtitle": "Gérer le personnel, suivre les stocks, mettre à jour les menus et fidéliser les clients peut être accablant. C'est pourquoi nous avons créé un outil simple tout-en-un pour les cafés et restaurants.",
+      "leftPanelTitle": "Comment nous pouvons vous aider à développer votre entreprise",
+      "solutions": [
+        {
+          "id": 1,
+          "title": "Suivre facilement les stocks",
+          "description": "Gardez vos stocks à jour, recevez des alertes de faible stock et réapprovisionnez les ingrédients sans effort.",
+          "cardTitle": "Gestion des stocks",
+          "cardDescription": "Surveillez les ingrédients en temps réel, recevez des alertes de faible stock et simplifiez les commandes aux fournisseurs pour maintenir votre cuisine efficace."
+        },
+        {
+          "id": 2,
+          "title": "Gérer les horaires du personnel",
+          "description": "Créez et partagez les shifts, suivez la présence et communiquez facilement avec votre équipe.",
+          "cardTitle": "Gestion du personnel",
+          "cardDescription": "Créez et partagez les horaires du personnel en quelques minutes, gérez les shifts et suivez la présence — tout depuis un seul endroit."
+        },
+        {
+          "id": 3,
+          "title": "Mettre à jour les menus rapidement",
+          "description": "Ajoutez de nouveaux plats, supprimez les anciens et modifiez les prix sans tracas.",
+          "cardTitle": "Gestion des menus",
+          "cardDescription": "Gérez facilement votre menu et maintenez vos offres à jour pour vos clients."
+        },
+        {
+          "id": 4,
+          "title": "Fidéliser les clients",
+          "description": "Engagez vos clients et faites-les revenir grâce à des offres personnalisées.",
+          "cardTitle": "Engagement client",
+          "cardDescription": "Créez des programmes de fidélité, suivez les préférences clients et améliorez la rétention."
+        }
+      ]
+    },
+    "stats": {
+      "items": [
+        {
+          "prefix": "JUSQU'À",
+          "value": "35%",
+          "label": "Plus de revenus",
+          "sub": "grâce aux commandes optimisées & à la vente additionnelle"
+        },
+        {
+          "prefix": "JUSQU'À",
+          "value": "4h",
+          "label": "Économisées par jour",
+          "sub": "sur la planification, l'inventaire & les rapports"
+        },
+        {
+          "prefix": "JUSQU'À",
+          "value": "40%",
+          "label": "Moins de gaspillage",
+          "sub": "grâce aux alertes d'inventaire en temps réel"
+        },
+        {
+          "prefix": "JUSQU'À",
+          "value": "3×",
+          "label": "Plus de rotations",
+          "sub": "avec les réservations & plans de salle intelligents"
+        }
+      ]
+    },
+    "integration": {
+      "title": "Installation simple, zéro tracas",
+      "subtitle": "Pas d'intégrations compliquées. Créez simplement votre compte, configurez les détails de votre entreprise et commencez à tout gérer depuis un seul endroit — immédiatement.",
+      "buttonText": "Réservez une démo",
+      "mainCard": {
+        "title": "Prévention des découverts",
+        "status": "Actuellement activé",
+        "progress": "93%",
+        "progressLabel": "Progression hebdomadaire"
+      }
+    },
+    "pricing": {
+      "title": "Choisissez le plan qui vous convient !",
+      "monthly_label": "Facturation mensuelle",
+      "yearly_label": "Facturation annuelle (41% de réduction)",
+      "billed_note": "*Facturé annuellement, taxes de l'application en sus",
+      "choose_plan_button": "Choisir le plan"
+    },
+    "faq": {
+      "title": "Questions fréquemment posées",
+      "subtitle": "Vous avez des questions ? Nous avons des réponses. Voici quelques-unes des questions les plus fréquentes posées par les propriétaires de restaurants et cafés concernant notre plateforme.",
+      "cta_button": "Vous avez d'autres questions ?"
+    },
+    "footer": {
+      "logo": "FlairSync",
+      "follow_us": "Suivez-nous",
+      "quick_links_title": "Liens rapides",
+      "quick_links": [
+        "Accueil",
+        "À propos",
+        "Intégrations",
+        "Fonctionnalités",
+        "Tarifs",
+        "Contactez-nous"
+      ],
+      "support_title": "Support",
+      "support_links": [
+        "FAQ",
+        "Centre d'assistance",
+        "Politique de confidentialité",
+        "Conditions"
+      ],
+      "contact_title": "Contact",
+      "contact_address_line1": "Andorra La Vella, AD500, Andorre",
+      "contact_phone": "+376 123 456",
+      "newsletter_title": "Abonnez-vous à notre newsletter",
+      "newsletter_placeholder": "Entrez votre email",
+      "copyright": "© {{year}} FlairSync. Tous droits réservés."
+    }
+  },
+  "subscriptions": {
+    "current_plan": "Plan actuel",
+    "limits": {
+      "businesses": "{{count}} établissement",
+      "businesses_plural": "{{count}} établissements",
+      "employees": "{{count}} employé",
+      "employees_plural": "{{count}} employés",
+      "menus": "{{count}} menu",
+      "menus_plural": "{{count}} menus",
+      "products": "{{count}} produit",
+      "products_plural": "{{count}} produits"
+    },
+    "features": {
+      "basic_menu_mgmt": "Gestion de menu basique",
+      "menu_mgmt": "Gestion complète des menus",
+      "basic_analytics": "Analytiques de base",
+      "advanced_analytics": "Analytiques avancées",
+      "staff_scheduling": "Planification du personnel",
+      "reservation_system": "Système de réservation",
+      "priority_support": "Support prioritaire",
+      "ded_acc_manager": "Gestionnaire de compte dédié",
+      "custom_branding": "Image de marque personnalisée"
+    }
+  }
+}

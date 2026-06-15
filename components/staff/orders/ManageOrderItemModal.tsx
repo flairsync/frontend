@@ -43,7 +43,7 @@ export const ManageOrderItemModal: React.FC<ManageOrderItemModalProps> = ({ open
         notes: item.notes,
         variantId: item.variantId,
         modifiers: item.selectedModifiers?.map(m => ({
-            modifierItemId: m.id || "",
+            modifierItemId: m.modifierItemId || m.id || "",
             name: m.name,
             price: m.price
         })) || []

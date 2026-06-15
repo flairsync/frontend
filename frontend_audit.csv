@@ -1,0 +1,60 @@
+Category,Area,Finding,File,Lines,Severity,Effort,Status
+Request Layer,HTTP Client,Single Axios instance with withCredentials and 60s timeout,lib/flairapi.ts,13-19,Info,N/A,Good
+Request Layer,HTTP Client,Token refresh with request queuing - concurrent requests held and retried after refresh,lib/flairapi.ts,107-142,Info,N/A,Good
+Request Layer,HTTP Client,NProgress bar wired to active request count via startRequest/endRequest,lib/flairapi.ts,83-92,Info,N/A,Good
+Request Layer,HTTP Client,403 limit_reached auto-opens upgrade modal via SubscriptionStore,lib/flairapi.ts,145-155,Info,N/A,Good
+Request Layer,HTTP Client,Network and 5xx errors trigger SystemErrorStore.lock() overlay,lib/flairapi.ts,158-180,Info,N/A,Good
+Request Layer,HTTP Client,No per-endpoint timeout override - all endpoints share global 60s timeout,lib/flairapi.ts,13-19,Medium,Low,Fix Needed
+Request Layer,HTTP Client,No request deduplication at HTTP level - Axios does not deduplicate identical in-flight calls,lib/flairapi.ts,1-186,Medium,Medium,Fix Needed
+Request Layer,HTTP Client,sessionStorage used for logout reason (auth_logout_reason) - fragile across tabs,lib/flairapi.ts,133,Low,Low,Review
+Request Layer,Auth,Tokens managed server-side via Set-Cookie with credentials - no manual token header management,lib/flairapi.ts,1-186,Info,N/A,Good
+Request Layer,Auth,Slow network hint shown after 4 seconds of pending request,lib/flairapi.ts,50-57,Info,N/A,Good
+Data Fetching,React Query Config,Default stale time of 5 minutes configured globally,pages/+queryClientConfig.ts,1-15,Info,N/A,Good
+Data Fetching,React Query Config,Retry logic: retries once (failureCount < 1) with 403 exclusion,pages/+queryClientConfig.ts,1-15,Info,N/A,Good
+Data Fetching,React Query Config,refetchOnWindowFocus disabled - intentional but means focus does not refresh stale data,pages/+queryClientConfig.ts,1-15,Low,Low,Review
+Data Fetching,React Query Config,refetchOnReconnect disabled - data stays stale after network drop recovers,pages/+queryClientConfig.ts,1-15,Medium,Low,Fix Needed
+Data Fetching,React Query Config,No SSR query preloading visible - no +queryData.js files found - risks hydration mismatches with Vike SSR,pages/+queryClientConfig.ts,1-15,High,High,Fix Needed
+Data Fetching,Hooks Pattern,Clean service -> hook -> component pattern across 27 feature modules,features/*/useXXX.ts,N/A,Info,N/A,Good
+Data Fetching,Hooks Pattern,Infinity stale time correctly applied to truly static data (allergies platform permissions invitations),features/*/useXXX.ts,N/A,Info,N/A,Good
+Data Fetching,Hooks Pattern,Selective stale times by feature: employees=5s inventory=2-10min,features/*/useXXX.ts,N/A,Info,N/A,Good
+Data Fetching,Hooks Pattern,Custom useApiMutation wrapper adds type safety for Axios errors,hooks/use-api-mutation.ts,1-9,Info,N/A,Good
+Data Fetching,Response Handling,Inconsistent API response shape - every hook has custom unwrapping logic (resp?.data?.data vs resp.data),features/orders/useOrders.ts,43-50,High,Medium,Fix Needed
+Data Fetching,Response Handling,Error catch block returns empty array - UI may misinterpret as no data instead of error state,features/orders/useOrders.ts,47-50,High,Low,Fix Needed
+Data Fetching,Response Handling,No normalization layer between service and hooks - unwrapping duplicated across 27 features,features/*/useXXX.ts,N/A,High,Medium,Fix Needed
+Real-time,Notifications,FCM primary with SSE auto-reconnect fallback,features/notifications/useNotificationSocket.ts,32-85,Info,N/A,Good
+Real-time,Notifications,Notification-driven cache invalidation maps notification type to specific React Query key,features/notifications/useNotificationSocket.ts,93-134,Info,N/A,Good
+Real-time,Notifications,FCM device ID stored in localStorage for tracking across sessions,features/notifications/useNotificationSocket.ts,32-65,Info,N/A,Good
+Real-time,Notifications,SSE onmessage catch block silently swallows malformed events with no logging,features/notifications/useNotificationSocket.ts,79,High,Low,Fix Needed
+Real-time,Polling,Reservation dashboard polls every 60 seconds when pollingEnabled=true,features/reservations/useReservationDashboard.ts,N/A,Info,N/A,Good
+Real-time,Polling,Diner mode orders poll every 30-60 seconds,features/diner-mode/useDinerMode.ts,67-84,Info,N/A,Good
+Real-time,Polling,Data export uses dynamic interval based on export status,features/*/useDataExport.ts,N/A,Info,N/A,Good
+Real-time,Polling,All polling intervals are hardcoded in hooks - cannot be tuned from component layer,features/*/useXXX.ts,N/A,Medium,Medium,Fix Needed
+State Management,Zustand,SystemErrorStore tracks app lock state for network and server failures,features/system-errors/SystemErrorStore.ts,1-23,Info,N/A,Good
+State Management,Zustand,SubscriptionStore handles upgrade modal visibility,features/subscriptions/SubscriptionStore.ts,1-16,Info,N/A,Good
+State Management,Zustand,Clean split: React Query owns server state Zustand owns UI-only state,N/A,N/A,Info,N/A,Good
+State Management,Forms,Two form libraries coexist: React Hook Form and Formik - no rule for when to use which,Multiple components,N/A,Low,Medium,Fix Needed
+State Management,Props,ActiveOrdersView passes 6+ props to modals - prop drilling pattern,components/management/orders/ActiveOrdersView.tsx,117-120,Medium,Medium,Fix Needed
+Loading & Errors,Loading States,Skeleton component with animate-pulse used in tables and grids,components/ui/skeleton.tsx,1-13,Info,N/A,Good
+Loading & Errors,Loading States,React Query isPending/isFetching flags used in components for conditional rendering,components/management/orders/ActiveOrdersView.tsx,54-56,Info,N/A,Good
+Loading & Errors,Loading States,Inconsistent use of isPending vs isLoading across hooks (different React Query semantics),features/*/useXXX.ts,N/A,Low,Low,Fix Needed
+Loading & Errors,Error States,Full-screen SystemErrorOverlay blocks UI during critical failures with retry button,features/system-errors/SystemErrorOverlay.tsx,1-114,Info,N/A,Good
+Loading & Errors,Error States,sonner toast used for inline errors with deduplication via id prop,Multiple components,N/A,Info,N/A,Good
+Loading & Errors,Error States,extractErrorMessage utility normalizes array and string error messages,utils/error-utils.ts,N/A,Info,N/A,Good
+Loading & Errors,Error Boundaries,ZERO ErrorBoundary components exist - any render throw crashes the entire app tree,Global,N/A,Critical,Low,Fix Needed
+Caching,React Query,Targeted invalidateQueries on mutations prevents stale lists,features/*/useXXX.ts,N/A,Info,N/A,Good
+Caching,React Query,setQueryData used for optimistic cache update in addItemsToOrderMutation (only one instance),features/orders/useOrders.ts,85-91,Info,N/A,Good
+Caching,Optimistic Updates,Optimistic updates nearly absent - most mutations wait for full re-fetch causing visible latency,features/*/useXXX.ts,N/A,Medium,High,Fix Needed
+Caching,Local Storage,localStorage used for FCM device ID station token tax rate TFA cooldown,Multiple features,N/A,Low,N/A,Review
+Caching,Local Storage,localStorage values stored in plaintext - no encryption layer,Multiple features,N/A,Low,Low,Review
+Optimizations,Memoization,useMemo used in 6 places for derived data (chart transforms filtered lists context values),Multiple components,N/A,Info,N/A,Good
+Optimizations,Memoization,React.memo applied to PublicFeedBusinessCard and GetStars rating component,components/feed/PublicFeedBusinessCard.tsx,N/A,Info,N/A,Good
+Optimizations,Memoization,useCallback used in only one place - event handlers in heavy list components recreate on every render,components/ui/sidebar.tsx,N/A,Medium,Medium,Fix Needed
+Optimizations,Code Splitting,clientOnly dynamic imports for ThemeProvider and TourProvider prevent bundle bloat,Multiple providers,N/A,Info,N/A,Good
+Optimizations,Images,No image optimization - raw img tags with no lazy-loading or size hints (not using Next.js Image equivalent),Multiple components,N/A,Medium,Medium,Fix Needed
+Optimizations,List Rendering,No list virtualization (react-window / react-virtual) - large order/reservation/inventory lists render all rows,Multiple components,N/A,Medium,High,Fix Needed
+Optimizations,List Rendering,key={i} used on skeleton arrays - violates React best practices though not a runtime bug,Multiple components,N/A,Low,Low,Fix Needed
+Optimizations,Bundle,No explicit SSR preloading - may cause unnecessary double-fetches on page load,pages/,N/A,Medium,High,Review
+Architecture,Tech Stack,React 19 RC in production - risk of breaking changes before stable release,package.json,N/A,Medium,High,Review
+Architecture,Tech Stack,Framer Motion 12.x used for animations - large bundle dependency,package.json,N/A,Low,Low,Review
+Architecture,Feature Modules,27 feature modules each with service.ts / useXXX.ts / types.ts - consistent and scalable,features/,N/A,Info,N/A,Good
+Architecture,Feature Modules,Clean REST endpoint naming convention across all service files,features/*/service.ts,N/A,Info,N/A,Good

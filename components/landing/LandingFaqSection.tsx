@@ -10,7 +10,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LandingFaqSection = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
 
     const faqItems = [
         {
@@ -36,34 +36,34 @@ const LandingFaqSection = () => {
     ];
 
     return (
-        <div className="flex justify-center items-center min-h-[80vh] bg-background font-sans text-foreground py-16 px-4">
-            <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-12 lg:gap-24 px-4 sm:px-6">
+        <div className="flex justify-center items-center bg-background font-sans text-foreground py-16 px-4">
+            <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-8 lg:gap-24 px-4 sm:px-6">
                 {/* Left Section */}
                 <div className="flex-1 max-w-lg lg:sticky lg:top-24 h-fit">
-                    <span className="text-lg font-medium text-primary mb-2 block">
+                    <span className="text-base font-medium text-primary mb-2 block">
                         <span role="img" aria-label="fire" className="mr-2">🔥</span>FAQ
                     </span>
-                    <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 leading-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
                         {t('landing_page.faq.title')}
                     </h1>
-                    <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                    <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8 leading-relaxed">
                         {t('landing_page.faq.subtitle')}
                     </p>
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 px-8 text-lg transition-transform duration-200 hover:scale-105 active:scale-95 rounded-xl shadow-lg w-full sm:w-auto">
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 sm:py-6 px-6 sm:px-8 text-base sm:text-lg transition-transform duration-200 hover:scale-105 active:scale-95 rounded-xl shadow-lg w-full sm:w-auto">
                         {t('landing_page.faq.cta_button')}
                         <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                 </div>
 
                 {/* Right Section - Accordion */}
-                <div className="flex-1 w-full lg:max-w-2xl mt-8 lg:mt-0">
-                    <Accordion type="single" collapsible className="w-full space-y-4">
+                <div className="flex-1 w-full lg:max-w-2xl">
+                    <Accordion type="single" collapsible className="w-full space-y-3 md:space-y-4">
                         {faqItems.map((item, index) => (
-                            <AccordionItem key={index} value={`item-${index}`} className="border rounded-xl px-4 data-[state=open]:bg-muted data-[state=open]:border-border transition-colors">
-                                <AccordionTrigger className="text-lg text-left hover:no-underline hover:cursor-pointer font-semibold text-foreground py-6">
+                            <AccordionItem key={index} value={`item-${index}`} className="border rounded-xl px-3 sm:px-4 data-[state=open]:bg-muted data-[state=open]:border-border transition-colors">
+                                <AccordionTrigger className="text-sm sm:text-base md:text-lg text-left hover:no-underline hover:cursor-pointer font-semibold text-foreground py-4 sm:py-6">
                                     {item.question}
                                 </AccordionTrigger>
-                                <AccordionContent className="text-base text-muted-foreground pb-6 leading-relaxed">
+                                <AccordionContent className="text-sm sm:text-base text-muted-foreground pb-4 sm:pb-6 leading-relaxed">
                                     {item.answer}
                                 </AccordionContent>
                             </AccordionItem>

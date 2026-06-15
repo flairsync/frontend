@@ -1,5 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { TaskStatus } from "@/models/Task";
+import { unwrap } from "../shared/api-response";
 
 export interface CreateTaskDto {
   title: string;
@@ -21,13 +22,11 @@ export interface UpdateTaskStatusDto {
 
 const businessesBaseUrl = `${import.meta.env.BASE_URL}/businesses`;
 
-export const fetchBusinessTasksApiCall = (businessId: string) => {
-  return flairapi.get(`${businessesBaseUrl}/${businessId}/tasks`);
-};
+export const fetchBusinessTasksApiCall = async (businessId: string) =>
+  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks`));
 
-export const fetchBusinessTaskByIdApiCall = (businessId: string, taskId: string) => {
-  return flairapi.get(`${businessesBaseUrl}/${businessId}/tasks/${taskId}`);
-};
+export const fetchBusinessTaskByIdApiCall = async (businessId: string, taskId: string) =>
+  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks/${taskId}`));
 
 export const createTaskApiCall = (businessId: string, data: CreateTaskDto) => {
   return flairapi.post(`${businessesBaseUrl}/${businessId}/tasks`, data);

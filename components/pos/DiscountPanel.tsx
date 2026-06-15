@@ -38,17 +38,28 @@ export default function DiscountPanel({
         try {
             const payload: any = { reason: reason || undefined };
             if (mode === "code") {
-                if (!code.trim()) return;
+                if (!code.trim()) { setLoading(false); return; }
                 payload.code = code.trim().toUpperCase();
             } else {
                 const amt = parseFloat(manualAmount);
-                if (isNaN(amt) || amt <= 0) return;
+                if (isNaN(amt) || amt < 0) {
+                    setError("Discount amount must be 0 or greater");
+                    setLoading(false);
+                    return;
+                }
                 payload.manualAmount = amt;
             }
             const updated = await discountsApi.applyToOrder(businessId, orderId, payload);
             onApplied(updated);
         } catch (e: any) {
-            setError(e.response?.data?.message ?? "Discount could not be applied");
+            if (
+                e?.response?.status === 422 &&
+                e?.response?.data?.code === "order.discount_exceeds_total"
+            ) {
+                setError("Discount cannot exceed the order total");
+            } else {
+                setError(e.response?.data?.message ?? "Discount could not be applied");
+            }
         } finally {
             setLoading(false);
         }
@@ -119,7 +130,10 @@ export default function DiscountPanel({
                         type="number"
                         placeholder="Amount ($)"
                         value={manualAmount}
-                        onChange={(e) => setManualAmount(e.target.value)}
+                        onChange={(e) => {
+                            const v = e.target.value;
+                            if (v === "" || parseFloat(v) >= 0) setManualAmount(v);
+                        }}
                         min={0}
                         step={0.01}
                     />

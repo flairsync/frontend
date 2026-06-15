@@ -10,7 +10,14 @@
       "Bash(grep -rn '\"\\\\$\\\\|`\\\\$\\\\|dollar\\\\|fmt\\(\\\\|formatMoney\\\\|formatAmount\\\\|toFixed' /home/semeh/workspace/restaurant-saas/frontend/components/pos/ /home/semeh/workspace/restaurant-saas/frontend/pages/manage/ /home/semeh/workspace/restaurant-saas/frontend/components/management/)",
       "Bash(sed -n '13,35p' /home/semeh/workspace/restaurant-saas/frontend/components/pos/OrderCart.tsx)",
       "Bash(sed -n '5,20p' /home/semeh/workspace/restaurant-saas/frontend/components/pos/ProductCard.tsx)",
-      "Bash(grep -n '\\\\$' /home/semeh/workspace/restaurant-saas/frontend/components/pos/OrderCart.tsx)"
+      "Bash(grep -n '\\\\$' /home/semeh/workspace/restaurant-saas/frontend/components/pos/OrderCart.tsx)",
+      "Bash(xargs ls)",
+      "Bash(rm -rf /home/semeh/workspace/restaurant-saas/frontend/pages/explore /home/semeh/workspace/restaurant-saas/frontend/features/explore)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts|jsx|js\\)$\")",
+      "Bash(xargs cat -n)"
+    ],
+    "additionalDirectories": [
+      "/home/semeh/workspace/restaurant-saas/frontend/pages/explore"
     ]
   }
 }

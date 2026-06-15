@@ -17,8 +17,8 @@ export const useBusinessTeams = (businessId: string) => {
     const { data: teams, isPending: loadingTeams } = useQuery({
         queryKey: ["business_teams", businessId],
         queryFn: async () => {
-            const resp = await fetchTeamsApiCall(businessId);
-            return Team.parseApiArrayResponse(resp.data.data);
+            const data = await fetchTeamsApiCall(businessId);
+            return Team.parseApiArrayResponse(data);
         },
         enabled: !!businessId,
     });

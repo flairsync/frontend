@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function ViewRoleModal({ open, role, onOpenChange }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>

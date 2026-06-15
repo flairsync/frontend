@@ -53,8 +53,6 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
 
-    const isProfilePage = urlPathname.endsWith('/profile');
-
     if (loadingPermissions) {
         return (
             <div className="flex h-screen w-full items-center justify-center">
@@ -63,9 +61,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         );
     }
 
-    const isAwaysAllowedPage = 
-        urlPathname.endsWith('/profile') || 
-        urlPathname.endsWith('/dashboard') || 
+    const isAwaysAllowedPage =
+        urlPathname.endsWith('/dashboard') ||
         urlPathname.endsWith('/shifts');
 
     const hasAnyPermission = permissions && Object.values(permissions).some((p: any) => p.read || p.create || p.update || p.delete);
@@ -76,10 +73,10 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                 <ShieldAlert className="h-16 w-16 text-destructive" />
                 <h1 className="text-2xl font-bold">Access Denied</h1>
                 <p className="text-muted-foreground max-w-md">
-                    You don't have permission to access this area. Please contact your manager or go to your profile settings.
+                    You don't have permission to access this area. Please contact your manager or visit your professional profile.
                 </p>
-                <a href={`/manage/${routeParams.id}/staff/profile`}>
-                    <Button>Go to Profile & Settings</Button>
+                <a href="/manage/professional-profile">
+                    <Button>Go to Professional Profile</Button>
                 </a>
             </div>
         );

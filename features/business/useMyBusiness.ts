@@ -26,21 +26,21 @@ export const useMyBusiness = (businessId: string | null = null) => {
 
   const {
     data: myBusinessFullDetails,
-    isFetching: fetchingMyBusinessFullDetails,
+    isLoading: fetchingMyBusinessFullDetails,
+    isError: businessLoadError,
   } = useQuery({
     queryKey: ["my_business", businessId],
     queryFn: async () => {
       if (!businessId) return;
-      const res = await fetchMyBuysinessFullDetailsApiCall(businessId);
-      const data = res.data.data;
+      const res = await fetchMyBuysinessFullDetailsApiCall(businessId) as any;
 
-      if (data.usage) {
-        queryClient.setQueryData(["user_usage"], data.usage);
+      if (res.usage) {
+        queryClient.setQueryData(["user_usage"], res.usage);
       }
 
       return {
-        business: MyBusinessFullDetails.parseApiResponse(data.business) || undefined,
-        usage: data.usage
+        business: MyBusinessFullDetails.parseApiResponse(res.business) || undefined,
+        usage: res.usage
       };
     },
     enabled: businessId != null,
@@ -190,6 +190,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
     myBusinessFullDetails: myBusinessFullDetails?.business,
     usage: myBusinessFullDetails?.usage,
     fetchingMyBusinessFullDetails,
+    businessLoadError,
     updatingMyBusiness,
     updateMyBusinessDetails,
     updateBusinessLogo,

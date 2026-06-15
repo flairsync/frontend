@@ -1,0 +1,160 @@
+{
+  "shared": {
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "add": "Add",
+      "move": "Move",
+      "duplicate": "Duplicate",
+      "confirm": "Confirm",
+      "back": "Back",
+      "search": "Search",
+      "clear": "Clear",
+      "all": "All",
+      "previous": "Previous",
+      "next": "Next",
+      "retry": "Retry Connection"
+    },
+    "tags": {
+      "halal": "Halal",
+      "vegan": "Vegan",
+      "vegetarian": "Vegetarian",
+      "gluten_free": "Gluten-Free",
+      "organic": "Organic",
+      "kosher": "Kosher",
+      "dairy_free": "Dairy-Free",
+      "nut_free": "Nut-Free",
+      "locally_sourced": "Locally Sourced",
+      "fair_trade": "Fair Trade",
+      "pet_friendly": "Pet-Friendly",
+      "outdoor_seating": "Outdoor Seating",
+      "takeaway": "Takeaway",
+      "delivery": "Delivery",
+      "kid_friendly": "Kid-Friendly",
+      "wifi": "Wi-Fi",
+      "wheelchair_accessible": "Wheelchair Accessible",
+      "brunch": "Brunch",
+      "breakfast": "Breakfast",
+      "late_night": "Late Night",
+      "cozy": "Cozy",
+      "romantic": "Romantic",
+      "family_friendly": "Family-Friendly",
+      "trendy": "Trendy",
+      "quiet": "Quiet",
+      "lively": "Lively"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Page not found",
+      "description": "We can't find the page you're looking for. It may have been moved, renamed, or might never have existed.",
+      "quickSearch": "Quick search",
+      "searchPlaceholder": "Search pages, staff, or settings...",
+      "searchButton": "Search",
+      "goToDashboard": "Go to dashboard",
+      "contactSupport": "Contact support",
+      "reportError": "If you think this is an error, please report it — we'll investigate.",
+      "lostTitle": "Lost in the kitchen?",
+      "lostDescription": "Try one of the links below or return to the main dashboard.",
+      "staffManagement": "Staff Management",
+      "scheduleManagement": "Schedule Management",
+      "settings": "Settings",
+      "errorCode": "Error code:"
+    },
+    "500": {
+      "title": "500 Internal Server Error",
+      "description": "Something went wrong."
+    },
+    "technical": {
+      "network_title": "Connection Lost",
+      "error_title": "System Error",
+      "network_error": "Network error or connection lost. We're working on it.",
+      "server_error": "Internal server error. Please try again later.",
+      "session_expired": "Your session has expired. Please log in again.",
+      "unexpected_error": "An unexpected error occurred. Please try again.",
+      "working_on_it": "We're aware of the issue and working to restore access."
+    }
+  },
+  "input_errors": {
+    "email": {
+      "invalid": "Invalid email address",
+      "required": "Email is required"
+    },
+    "firstName": {
+      "required": "First name is required",
+      "too_long": "First name is too long"
+    },
+    "lastName": {
+      "required": "Last name is required",
+      "too_long": "Last name is too long"
+    },
+    "displayName": {
+      "required": "Display name is required",
+      "too_long": "Display name is too long"
+    },
+    "password": {
+      "min_length": "Password must be at least 8 characters long",
+      "requirements": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      "too_long": "Password is too long",
+      "required": "Password is required"
+    },
+    "repeat_password": {
+      "mismatch": "Passwords must match",
+      "required": "Please confirm your password"
+    },
+    "repeatNewPassword": {
+      "mismatch": "New passwords must match",
+      "required": "Please confirm your new password"
+    },
+    "checkbox": {
+      "required": "You must confirm this checkbox"
+    }
+  },
+  "business_types": {
+    "bakery": "Bakery",
+    "fast_food": "Fast Food",
+    "coffee_shop": "Coffee Shop",
+    "restaurant": "Restaurant",
+    "other": "Other"
+  },
+  "cookies": {
+    "banner_text": "We use cookies to enhance your experience, remember your preferences, and analyse site usage. By clicking \"Accept All\", you consent to all cookies.",
+    "learn_more": "Learn more in our Cookie & GDPR Policy",
+    "manage": "Manage preferences",
+    "reject_all": "Reject all",
+    "accept_all": "Accept all",
+    "always_active": "Always active",
+    "save_preferences": "Save my preferences",
+    "preferences_title": "Cookie Preferences",
+    "preferences_description": "Choose which cookies you allow. Strictly necessary cookies cannot be disabled as they are required for the platform to function.",
+    "categories": {
+      "necessary": {
+        "label": "Strictly Necessary",
+        "description": "Required for authentication, security, and core platform features. Cannot be disabled."
+      },
+      "functional": {
+        "label": "Functional",
+        "description": "Remember your language, theme, and other preferences to provide a personalised experience."
+      },
+      "analytics": {
+        "label": "Analytics",
+        "description": "Help us understand how you use the platform so we can improve it. All data is anonymised."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "description": "Used to deliver relevant content and measure campaign effectiveness. We do not sell your data."
+      }
+    }
+  }
+}

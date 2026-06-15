@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../shared/api-response";
 const tfaBaseUrl = `${import.meta.env.BASE_URL}/auth/tfa`;
 const passwordBaseUrl = `${import.meta.env.BASE_URL}/auth/password`;
 
@@ -22,9 +23,8 @@ export const updateUserPasswordApiCall = (data: UpdatePasswordDto) => {
 
 //tfa
 
-export const getTfaStatusApiCall = () => {
-  return flairapi.get(myTfaStatus);
-};
+export const getTfaStatusApiCall = async (): Promise<any> =>
+  unwrap(await flairapi.get(myTfaStatus));
 
 export const initializeTfaSetupApiCall = () => {
   return flairapi.post(initializeTfa);
@@ -45,4 +45,18 @@ export const checkTfaApiCall = (code: string) => {
   return flairapi.post(checkTfa, {
     tfaCode: code,
   });
+};
+
+const regenerateBackupCodesUrl = `${tfaBaseUrl}/backup-codes/regenerate`;
+
+export const regenerateBackupCodesApiCall = async (): Promise<Blob> => {
+  const res = await fetch(regenerateBackupCodesUrl, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ message: 'Failed to regenerate backup codes' }));
+    throw new Error(err.message || 'Failed to regenerate backup codes');
+  }
+  return res.blob();
 };

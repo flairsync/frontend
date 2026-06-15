@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReceiptApiCall, ReceiptData } from "@/features/orders/service";
+import { getReceiptApiCall, printReceiptApiCall, ReceiptData } from "@/features/orders/service";
 import { Button } from "@/components/ui/button";
-import { Printer, X } from "lucide-react";
+import { Download, Printer, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { useState } from "react";
 
 interface Props {
     businessId: string;
@@ -13,11 +14,11 @@ interface Props {
     onNewOrder?: () => void;
 }
 
-function fmtDate(iso: string) {
-    return new Date(iso).toLocaleString([], {
-        dateStyle: "medium",
-        timeStyle: "short",
-    });
+function fmtDate(iso: string | null | undefined) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
 }
 
 export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }: Props) {
@@ -28,6 +29,7 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currency = businessBasicDetails?.currency ?? "USD";
     const fmt = (amount: number) => formatCurrency(amount, currency);
+    const [isPrintingPdf, setIsPrintingPdf] = useState(false);
 
     if (isLoading) {
         return (
@@ -41,6 +43,19 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
     }
 
     if (!receipt) return null;
+
+    async function handleDownloadPdf() {
+        setIsPrintingPdf(true);
+        try {
+            const blob = await printReceiptApiCall(businessId, orderId);
+            const url = URL.createObjectURL(blob);
+            window.open(url, "_blank");
+        } catch {
+            // silently ignore — browser may block popup or request may fail
+        } finally {
+            setIsPrintingPdf(false);
+        }
+    }
 
     function handlePrint() {
         const el = document.getElementById("pos-receipt-content");
@@ -205,6 +220,10 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                 <Button variant="outline" className="flex-1 gap-2" onClick={handlePrint}>
                     <Printer className="w-4 h-4" />
                     Print
+                </Button>
+                <Button variant="outline" className="flex-1 gap-2" onClick={handleDownloadPdf} disabled={isPrintingPdf}>
+                    <Download className="w-4 h-4" />
+                    PDF
                 </Button>
                 {onNewOrder ? (
                     <Button className="flex-1" onClick={onNewOrder}>

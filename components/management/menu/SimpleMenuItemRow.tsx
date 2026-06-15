@@ -13,6 +13,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 
 type Props = {
     item: any;
@@ -38,7 +40,9 @@ export const SimpleMenuItemRow = ({
     onMoveDown?: () => void;
     onMoveToCategory?: () => void;
 }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId ?? null);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     return (
         <div className="flex p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:shadow-sm transition">
@@ -84,7 +88,7 @@ export const SimpleMenuItemRow = ({
                 </div>
                 {/* Desktop Actions */}
                 <div className="hidden sm:flex items-center gap-2">
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400 mr-2 text-base">{item.price}</span>
+                    <span className="font-semibold text-indigo-600 dark:text-indigo-400 mr-2 text-base">{currencySymbol}{item.price}</span>
 
                     {onMoveToCategory && (
                         <Button
@@ -146,7 +150,7 @@ export const SimpleMenuItemRow = ({
 
                 {/* Mobile Actions (Dropdown) */}
                 <div className="flex sm:hidden items-center gap-2">
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400 text-sm">{item.price}</span>
+                    <span className="font-semibold text-indigo-600 dark:text-indigo-400 text-sm">{currencySymbol}{item.price}</span>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">

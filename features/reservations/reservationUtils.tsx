@@ -13,6 +13,7 @@ const VALID_TRANSITIONS: Record<ReservationStatus, ReservationAction[]> = {
     cancelled: [],
     no_show:   [],
     expired:   [],
+    rejected:  [],
 };
 
 export function getAvailableActions(status: string): ReservationAction[] {
@@ -20,7 +21,7 @@ export function getAvailableActions(status: string): ReservationAction[] {
 }
 
 export function isTerminalStatus(status: string): boolean {
-    return ['completed', 'cancelled', 'no_show', 'expired'].includes(status?.toLowerCase());
+    return ['completed', 'cancelled', 'no_show', 'expired', 'rejected'].includes(status?.toLowerCase());
 }
 
 interface StatusBadgeConfig {
@@ -37,6 +38,7 @@ const STATUS_CONFIG: Record<string, StatusBadgeConfig> = {
     no_show:   { className: "bg-orange-50 text-orange-700 border-orange-200",  label: "No Show" },
     expired:   { className: "bg-gray-50 text-gray-500 border-gray-200",        label: "Expired" },
     waitlist:  { className: "bg-purple-50 text-purple-700 border-purple-200",  label: "Waitlist" },
+    rejected:  { className: "bg-red-50 text-red-600 border-red-200",           label: "Rejected" },
 };
 
 export function getStatusBadge(status: string) {

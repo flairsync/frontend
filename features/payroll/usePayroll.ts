@@ -25,9 +25,7 @@ export const usePayrollPreview = (
     queryKey: ["payroll_preview", businessId, startDate, endDate, employmentId],
     queryFn: async () => {
       try {
-        const resp = await fetchPayrollPreviewApiCall(businessId, startDate, endDate, employmentId);
-        const resData = resp.data;
-        return resData?.data !== undefined ? resData.data : resData;
+        return await fetchPayrollPreviewApiCall(businessId, startDate, endDate, employmentId);
       } catch {
         return null;
       }
@@ -48,10 +46,8 @@ export const usePayrollEntries = (
     queryKey: ["payroll_entries", businessId, startDate, endDate, status],
     queryFn: async () => {
       try {
-        const resp = await fetchPayrollEntriesApiCall(businessId, startDate, endDate, undefined, status);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchPayrollEntriesApiCall(businessId, startDate, endDate, undefined, status);
+        return Array.isArray(data) ? data : [];
       } catch {
         return [];
       }

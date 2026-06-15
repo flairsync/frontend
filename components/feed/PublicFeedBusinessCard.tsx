@@ -1,9 +1,10 @@
 import React, { memo } from "react"
 import { motion } from "framer-motion"
-import { Star, Clock, MapPin, ExternalLink, Heart } from "lucide-react"
+import { Star, Clock, MapPin, ExternalLink, Heart, ImageOff } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { BusinessCardDetails } from "@/models/BusinessCardDetails"
 import { useFavorites } from "@/features/favorites/useFavorites"
+import { usePageContext } from "vike-react/usePageContext"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -40,6 +41,7 @@ const GetStars = memo(({ rating, reviewCount }: { rating: number | null; reviewC
 GetStars.displayName = "GetStars"
 
 const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
+    const { user } = usePageContext();
     const { addFavorite, removeFavorite } = useFavorites();
 
     const toggleFavorite = async (e: React.MouseEvent) => {
@@ -70,43 +72,61 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
             <a href={`business/${businessDetails.link}`} className="flex flex-col h-full">
                 {/* Image Container */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                    <img
-                        src={businessDetails.image}
-                        alt={businessDetails.name}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                    {businessDetails.image ? (
+                        <img
+                            src={businessDetails.image}
+                            alt={businessDetails.name}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                    ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+                            <ImageOff size={36} className="text-muted-foreground/30" />
+                            <p className="text-xs text-muted-foreground/40 font-medium">No photo yet</p>
+                        </div>
+                    )}
 
                     {/* Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+                    {businessDetails.image && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+                    )}
 
                     {/* Status Badge */}
                     <div className="absolute top-4 left-4">
-                        <Badge className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 transition-colors rounded-full px-3 py-1 text-[10px] uppercase tracking-wider font-bold">
+                        <Badge className={cn(
+                            "transition-colors rounded-full px-3 py-1 text-[10px] uppercase tracking-wider font-bold",
+                            businessDetails.image
+                                ? "bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20"
+                                : "bg-muted-foreground/10 border-border text-muted-foreground"
+                        )}>
                             {businessDetails.status}
                         </Badge>
                     </div>
 
-                    {/* Favorite Button */}
-                    <div className="absolute top-4 right-4">
-                        <button
-                            onClick={toggleFavorite}
-                            className={cn(
-                                "flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300",
-                                businessDetails.isFavorite
-                                    ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
-                                    : "bg-white/10 border-white/20 text-white hover:bg-white/20"
-                            )}
-                        >
-                            <Heart
-                                size={18}
+                    {/* Favorite Button — logged-in users only */}
+                    {user && (
+                        <div className="absolute top-4 right-4">
+                            <button
+                                onClick={toggleFavorite}
                                 className={cn(
-                                    "transition-transform duration-300",
-                                    businessDetails.isFavorite && "fill-current scale-110"
+                                    "flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-300",
+                                    businessDetails.isFavorite
+                                        ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
+                                        : businessDetails.image
+                                            ? "backdrop-blur-md bg-white/10 border-white/20 text-white hover:bg-white/20"
+                                            : "bg-background border-border text-muted-foreground hover:bg-muted"
                                 )}
-                            />
-                        </button>
-                    </div>
+                            >
+                                <Heart
+                                    size={18}
+                                    className={cn(
+                                        "transition-transform duration-300",
+                                        businessDetails.isFavorite && "fill-current scale-110"
+                                    )}
+                                />
+                            </button>
+                        </div>
+                    )}
 
                     {/* Quick Action Button */}
                     <div className="absolute bottom-4 right-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">

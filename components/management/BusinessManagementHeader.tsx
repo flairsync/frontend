@@ -18,7 +18,7 @@ type HeaderProps = {
 
 const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { user } = usePageContext();
 
 

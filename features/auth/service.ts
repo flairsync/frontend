@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../shared/api-response";
 const baseUrl = `${import.meta.env.BASE_URL}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
@@ -28,12 +29,13 @@ export const loginUserWithGoogleApiCall = (tokenId: string) => {
   );
 };
 
-export const loginUserApiCall = (data: { email: string; password: string }) => {
+export const loginUserApiCall = (data: { email: string; password: string; stayConnected?: boolean }) => {
   return flairapi.post(
     loginUrl,
     {
       email: data.email,
       password: data.password,
+      stayConnected: data.stayConnected ?? false,
     },
     {
       headers: {
@@ -68,9 +70,8 @@ export const logoutUserApiCall = () => {
 
 // sessions
 
-export const getUserSessionsApiCall = () => {
-  return flairapi.get(sessionsUrl);
-};
+export const getUserSessionsApiCall = async (): Promise<any[]> =>
+  unwrap(await flairapi.get(sessionsUrl));
 
 export type DisconnectSessionData = {
   sessionId: string;

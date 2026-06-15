@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { format } from "date-fns";
-import { ChevronDown, ChevronUp, Mail, Loader2, FileText, ExternalLink, Link } from "lucide-react";
+import { ChevronDown, ChevronUp, Mail, Loader2, FileText, ExternalLink, Link, UserPlus } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,6 +28,7 @@ import {
   JobApplication,
 } from "@/models/Job";
 import { cn } from "@/lib/utils";
+import { useSendStaffInvite } from "@/features/jobs/useJobs";
 
 const STATUS_BADGE_CLASSES: Record<string, string> = {
   gray: "bg-muted text-muted-foreground",
@@ -56,6 +57,8 @@ export function ApplicantCard({
   const [editingNote, setEditingNote] = useState(false);
   const [noteValue, setNoteValue] = useState(application.ownerNote ?? "");
   const [acceptConfirmOpen, setAcceptConfirmOpen] = useState(false);
+
+  const { sendInvite, sendingInvite } = useSendStaffInvite(businessId, jobId, application.id);
 
   const profile = application.professionalProfile;
   const initials = profile
@@ -143,6 +146,29 @@ export function ApplicantCard({
               </DropdownMenu>
             </div>
           </div>
+
+          {/* Staff invite — shown only for accepted applicants */}
+          {application.status === "accepted" && (
+            <div className="flex items-center justify-between gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2">
+              <p className="text-xs text-green-700 font-medium">
+                Ready to onboard this applicant?
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-green-600 text-green-700 hover:bg-green-100 h-7 gap-1.5 shrink-0"
+                onClick={() => sendInvite()}
+                disabled={sendingInvite}
+              >
+                {sendingInvite ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <UserPlus className="h-3.5 w-3.5" />
+                )}
+                Send Staff Invite
+              </Button>
+            </div>
+          )}
 
           {/* Applied date + resume indicator */}
           <div className="flex items-center justify-between text-xs text-muted-foreground">

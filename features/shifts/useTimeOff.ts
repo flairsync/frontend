@@ -13,23 +13,21 @@ const formatToDateOnly = (date: Date | string) => {
   return format(d, "yyyy-MM-dd");
 };
 
-export const useTimeOff = (businessId: string, employmentId?: string) => {
+export const useTimeOff = (businessId: string, employmentId?: string, options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();
 
   const { data: requests, isFetching: fetchingRequests } = useQuery<TimeOffRequest[]>({
     queryKey: ["time_off_requests", businessId, employmentId],
     queryFn: async () => {
       try {
-        const resp = await fetchTimeOffRequestsApiCall(businessId, employmentId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchTimeOffRequestsApiCall(businessId, employmentId);
+        return Array.isArray(data) ? data : [];
       } catch (error) {
         console.warn("Failed to fetch time off requests:", error);
         return [];
       }
     },
-    enabled: !!businessId,
+    enabled: options?.enabled !== false && !!businessId,
   });
 
   const submitRequestMutation = useMutation({

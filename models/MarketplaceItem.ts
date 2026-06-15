@@ -8,6 +8,7 @@ export class MarketplaceItem {
         public currency: string,
         public images: string[],
         public isActive: boolean,
+        public stock: number,
         public createdAt: string,
         public updatedAt: string,
 
@@ -27,6 +28,7 @@ export class MarketplaceItem {
             data.currency || "USD",
             Array.isArray(data.images) ? data.images : (data.images ? [data.images] : []),
             data.isActive ?? true,
+            typeof data.stock === 'number' ? data.stock : parseInt(data.stock) || 0,
             data.createdAt || new Date().toISOString(),
             data.updatedAt || new Date().toISOString(),
             data.type,

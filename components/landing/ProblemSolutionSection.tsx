@@ -171,7 +171,7 @@ const visuals: Record<number, React.ReactNode> = {
 // ---
 
 const ProblemSolutionSection = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
     const [activeSolution, setActiveSolution] = useState<Solution>(solutions[0]);
     const scope = useRef<Scope>(null);
 
@@ -222,11 +222,11 @@ const ProblemSolutionSection = () => {
         <div className="font-sans bg-background text-foreground py-16 px-4">
             <div className="max-w-7xl mx-auto px-4 sm:px-6" id="landing_prob_sol_section">
                 {/* Top Section */}
-                <div className="mb-16">
-                    <h1 className="text-4xl font-bold mb-4 leading-[1.3]" id="prob_solution_title">
+                <div className="mb-10 md:mb-16">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-[1.3]" id="prob_solution_title">
                         {t("landing_page.problemSolution.title")}
                     </h1>
-                    <p className="text-lg text-muted-foreground max-w-3xl" id="prob_solution_subtitle">
+                    <p className="text-base sm:text-lg text-muted-foreground max-w-3xl" id="prob_solution_subtitle">
                         {t("landing_page.problemSolution.subtitle")}
                     </p>
                 </div>
@@ -237,15 +237,15 @@ const ProblemSolutionSection = () => {
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Left Panel */}
                     <div id="prob_sol_left_panel">
-                        <h2 className="text-3xl font-bold mb-8">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 md:mb-8">
                             {t("landing_page.problemSolution.leftPanelTitle")}
                         </h2>
-                        <div className="space-y-4">
+                        <div className="space-y-3 md:space-y-4">
                             {solutions.map((solution) => (
                                 <div
                                     key={solution.id}
                                     className={cn(
-                                        "p-6 rounded-lg cursor-pointer transition-colors duration-200 ease-in-out",
+                                        "p-4 md:p-6 rounded-lg cursor-pointer transition-colors duration-200 ease-in-out",
                                         activeSolution.id === solution.id
                                             ? solution.color + " text-primary-foreground shadow-xl"
                                             : "bg-muted hover:bg-muted/80 text-foreground"

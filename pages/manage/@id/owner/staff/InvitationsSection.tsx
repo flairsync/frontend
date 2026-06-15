@@ -37,23 +37,23 @@ import { Form, Formik } from "formik";
 import { inviteNewEmployeeSchema } from "@/misc/FormValidators";
 import { InputError } from "@/components/inputs/InputError";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import UpgradeModal from "@/components/subscriptions/UpgradeModal";
-import { useUsage } from '@/features/subscriptions/useUsage';
+import { useBusinessPlan } from '@/features/business/useBusinessPlan';
 import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
 import { cn } from '@/lib/utils';
-import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees';
 
 
-const InvitationsSection = () => {
+type InvitationsSectionProps = {
+    canCreate?: boolean;
+};
+
+const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
-    const { usage } = useUsage();
     const { openUpgradeModal } = useSubscriptionStore();
     const { routeParams } = usePageContext();
-    const { employees } = useBusinessEmployees(routeParams.id);
 
-    const ordinaryStaffCount = employees?.filter(emp => emp.type !== 'OWNER').length || 0;
-    const canAddEmployee = usage ? ordinaryStaffCount < usage.allowed.employees : true;
+    const { plan } = useBusinessPlan(routeParams.id);
+    const canAddEmployee = plan ? plan.canAddEmployee : true;
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()
@@ -116,7 +116,7 @@ const InvitationsSection = () => {
 
                     <div className="flex gap-2">
                         <div className="flex justify-end">
-                            <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
+                            {canCreate && <Dialog open={inviteModalOpen} onOpenChange={setInviteModalOpen}>
                                 <DialogTrigger asChild >
                                     <Button
                                         className={cn(
@@ -128,7 +128,11 @@ const InvitationsSection = () => {
                                         onClick={(e) => {
                                             if (!canAddEmployee) {
                                                 e.preventDefault();
-                                                openUpgradeModal("You've reached your employee limit. Upgrade to add more staff members.");
+                                                openUpgradeModal(
+                                                    plan
+                                                        ? `The business plan allows up to ${plan.allowed.employees} employees (${plan.current.employees} currently active). The owner needs to upgrade to add more.`
+                                                        : "The business plan employee limit has been reached. The owner needs to upgrade to add more staff."
+                                                );
                                             }
                                         }}
                                     >
@@ -170,7 +174,7 @@ const InvitationsSection = () => {
                                     </Formik>
 
                                 </DialogContent>
-                            </Dialog>
+                            </Dialog>}
 
                         </div>
                         {/* Example filter dropdown */}

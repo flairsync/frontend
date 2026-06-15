@@ -14,8 +14,8 @@ export const useBusinessMenus = (businessId: string) => {
     queryKey: ["business_menus", businessId],
     queryFn: async () => {
       try {
-        const resp = await fetchBusinessBasicMenusApiCall(businessId);
-        return BusinessMenuBasic.parseApiArrayResponse(resp.data.data);
+        const data = await fetchBusinessBasicMenusApiCall(businessId);
+        return BusinessMenuBasic.parseApiArrayResponse(Array.isArray(data) ? data : []);
       } catch (error) {
         return [];
       }
@@ -42,8 +42,7 @@ export const useBusinessMenus = (businessId: string) => {
   const { data: businessAllItems } = useQuery({
     queryKey: ["business_menu_items", businessId],
     queryFn: async () => {
-      const resp = await fetchBusinessBasicMenusApiCall(businessId);
-      const menus = resp.data.data;
+      const menus = await fetchBusinessBasicMenusApiCall(businessId) as any[];
       const allItems: BusinessMenuItem[] = [];
 
       menus.forEach((menu: any) => {
@@ -66,8 +65,7 @@ export const useBusinessMenus = (businessId: string) => {
   const { data: businessAllCategories } = useQuery({
     queryKey: ["business_menu_categories", businessId],
     queryFn: async () => {
-      const resp = await fetchBusinessBasicMenusApiCall(businessId);
-      const menus = resp.data.data;
+      const menus = await fetchBusinessBasicMenusApiCall(businessId) as any[];
       const allCategories: { id: string; name: string; items: BusinessMenuItem[] }[] = [];
 
       menus.forEach((menu: any) => {

@@ -11,7 +11,13 @@ import { CreateEditTeamModal } from "./CreateEditTeamModal";
 import { TeamRosterModal } from "./TeamRosterModal";
 import { AssignStaffModal } from "./AssignStaffModal";
 
-const TeamsSection = () => {
+type TeamsSectionProps = {
+    canCreate?: boolean;
+    canUpdate?: boolean;
+    canDelete?: boolean;
+};
+
+const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: TeamsSectionProps) => {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -99,12 +105,14 @@ const TeamsSection = () => {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Teams Management</h2>
-                <Button onClick={() => {
-                    setSelectedTeam(null);
-                    setIsCreateModalOpen(true);
-                }}>
-                    Create Team
-                </Button>
+                {canCreate && (
+                    <Button onClick={() => {
+                        setSelectedTeam(null);
+                        setIsCreateModalOpen(true);
+                    }}>
+                        Create Team
+                    </Button>
+                )}
             </div>
 
             {teams && teams.length === 0 ? (
@@ -148,29 +156,33 @@ const TeamsSection = () => {
                                         View Roster
                                     </Button>
                                     <div className="flex items-center shrink-0">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() => {
-                                                setSelectedTeam(team);
-                                                setIsCreateModalOpen(true);
-                                            }}
-                                        >
-                                            <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-                                        </Button>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-destructive hover:bg-destructive/10"
-                                            onClick={() => {
-                                                if (confirm("Are you sure you want to delete this team?")) {
-                                                    deleteTeam(team.id);
-                                                }
-                                            }}
-                                            disabled={deletingTeam}
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </Button>
+                                        {canUpdate && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => {
+                                                    setSelectedTeam(team);
+                                                    setIsCreateModalOpen(true);
+                                                }}
+                                            >
+                                                <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+                                            </Button>
+                                        )}
+                                        {canDelete && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="text-destructive hover:bg-destructive/10"
+                                                onClick={() => {
+                                                    if (confirm("Are you sure you want to delete this team?")) {
+                                                        deleteTeam(team.id);
+                                                    }
+                                                }}
+                                                disabled={deletingTeam}
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </Button>
+                                        )}
                                     </div>
                                 </div>
                             </CardContent>
@@ -186,13 +198,13 @@ const TeamsSection = () => {
                 team={selectedTeam}
                 onSubmit={handleSaveTeam}
                 isLoading={creatingTeam || updatingTeam}
-                onDelete={(teamId) => {
+                onDelete={canDelete ? (teamId) => {
                     if (confirm("Are you sure you want to delete this team?")) {
                         deleteTeam(teamId);
                         setIsCreateModalOpen(false);
                         setSelectedTeam(null);
                     }
-                }}
+                } : undefined}
             />
 
             <TeamRosterModal

@@ -12,16 +12,15 @@ export const useMyBusinesses = (page: number = 1, limit: number = 10) => {
   } = useQuery({
     queryKey: ["my_businesses", page, limit],
     queryFn: async () => {
-      const res = await fetchMyBusinessesApiCall(page, limit);
-      const data = res.data.data;
+      const res = await fetchMyBusinessesApiCall(page, limit) as any;
 
-      if (data.usage) {
-        queryClient.setQueryData(["user_usage"], data.usage);
+      if (res.usage) {
+        queryClient.setQueryData(["user_usage"], res.usage);
       }
 
       return {
-        myBusinesses: MyBusiness.parseApiArrayResponse(data.businesses || []),
-        usage: data.usage
+        myBusinesses: MyBusiness.parseApiArrayResponse(res.businesses || res.data || []),
+        usage: res.usage
       };
     },
   });

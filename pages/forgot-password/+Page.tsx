@@ -12,7 +12,7 @@ import { forgotPasswordApiCall } from '@/features/auth/service';
 import { Mail } from 'lucide-react';
 
 const ForgotPasswordPage = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("auth");
     const [sent, setSent] = useState(false);
     const [apiError, setApiError] = useState<string>();
 

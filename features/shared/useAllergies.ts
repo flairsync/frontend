@@ -6,8 +6,8 @@ export const useAllergies = () => {
     const { data: allergies, isFetching: fetchingAllergies } = useQuery({
         queryKey: ["allergies"],
         queryFn: async () => {
-            const res = await fetchAllergiesApiCall();
-            return Allergy.parseApiArrayResponse(res.data.data);
+            const data = await fetchAllergiesApiCall();
+            return Allergy.parseApiArrayResponse(data);
         },
         staleTime: Infinity,
         gcTime: Infinity,

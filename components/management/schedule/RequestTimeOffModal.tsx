@@ -36,7 +36,7 @@ export const RequestTimeOffModal: React.FC<RequestTimeOffModalProps> = ({
     const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
     const businessTz = businessBasicDetails?.timezone || 'UTC';
 
-    const { submitRequest, isSubmitting } = useTimeOff(businessId as string, employmentId);
+    const { submitRequest, isSubmitting } = useTimeOff(businessId as string, employmentId, { enabled: open });
 
     const [startDate, setStartDate] = useState<string>(dayjs().tz(businessTz).format('YYYY-MM-DD'));
     const [endDate, setEndDate] = useState<string>(dayjs().tz(businessTz).format('YYYY-MM-DD'));

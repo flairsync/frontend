@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrapPaginated } from "../shared/api-response";
 const baseUrl = `${import.meta.env.BASE_URL}`;
 const auditLogsUrl = `${baseUrl}/audit-logs`;
 export enum AuditAction {
@@ -37,6 +38,5 @@ export interface FetchAuditLogsParams {
   limit?: number;
 }
 
-export const fetchAuditLogsApiCall = (params: FetchAuditLogsParams) => {
-  return flairapi.get(auditLogsUrl, { params });
-};
+export const fetchAuditLogsApiCall = async (params: FetchAuditLogsParams) =>
+  unwrapPaginated<AuditLog>(await flairapi.get(auditLogsUrl, { params }));

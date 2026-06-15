@@ -12,10 +12,7 @@ import { DashboardResponse, WalkInReservationDto, AssignTableDto, CustomerLateDt
 export const useReservationDashboard = (businessId: string, pollingEnabled = true) => {
     return useQuery({
         queryKey: ["reservation-dashboard", businessId],
-        queryFn: async (): Promise<DashboardResponse> => {
-            const resp = await fetchReservationDashboardApiCall(businessId);
-            return resp.data?.data ?? resp.data;
-        },
+        queryFn: (): Promise<DashboardResponse> => fetchReservationDashboardApiCall(businessId),
         enabled: !!businessId,
         refetchInterval: pollingEnabled ? 60_000 : false,
     });
@@ -25,10 +22,7 @@ export const useWalkIn = (businessId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: WalkInReservationDto) => {
-            const resp = await createWalkInApiCall(businessId, data);
-            return resp.data?.data ?? resp.data;
-        },
+        mutationFn: (data: WalkInReservationDto) => createWalkInApiCall(businessId, data),
         onSuccess: () => {
             toast.success("Walk-in created successfully");
             queryClient.invalidateQueries({ queryKey: ["reservation-dashboard", businessId] });
@@ -60,10 +54,8 @@ export const useAssignTable = (businessId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ reservationId, data }: { reservationId: string; data: AssignTableDto }) => {
-            const resp = await assignTableApiCall(businessId, reservationId, data);
-            return resp.data?.data ?? resp.data;
-        },
+        mutationFn: ({ reservationId, data }: { reservationId: string; data: AssignTableDto }) =>
+            assignTableApiCall(businessId, reservationId, data),
         onSuccess: () => {
             toast.success("Table assigned successfully");
             queryClient.invalidateQueries({ queryKey: ["reservation-dashboard", businessId] });
@@ -93,10 +85,8 @@ export const useCustomerLate = (businessId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ reservationId, data }: { reservationId: string; data: CustomerLateDto }) => {
-            const resp = await recordCustomerLateApiCall(businessId, reservationId, data);
-            return resp.data?.data ?? resp.data;
-        },
+        mutationFn: ({ reservationId, data }: { reservationId: string; data: CustomerLateDto }) =>
+            recordCustomerLateApiCall(businessId, reservationId, data),
         onSuccess: () => {
             toast.success("Delay noted");
             queryClient.invalidateQueries({ queryKey: ["reservation-events"] });
@@ -111,8 +101,7 @@ export const useReservationEvents = (businessId: string, reservationId: string) 
     return useQuery({
         queryKey: ["reservation-events", businessId, reservationId],
         queryFn: async (): Promise<ReservationEvent[]> => {
-            const resp = await fetchReservationEventsApiCall(businessId, reservationId);
-            const data = resp.data?.data ?? resp.data;
+            const data = await fetchReservationEventsApiCall(businessId, reservationId);
             return Array.isArray(data) ? data : [];
         },
         enabled: !!businessId && !!reservationId,

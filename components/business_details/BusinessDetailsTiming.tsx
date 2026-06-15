@@ -19,7 +19,7 @@ const dayToNum: Record<string, number> = {
 };
 
 const BusinessDetailsTiming: React.FC<BusinessDetailsTimingProps> = ({ openingHours }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("feed");
 
     const sortedHours = [...openingHours].sort((a, b) => {
         const da = dayToNum[a.day.toLowerCase()] ?? 99;

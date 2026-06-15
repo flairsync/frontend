@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { MarketplaceItem } from '@/models/MarketplaceItem';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,8 +10,15 @@ interface MarketplaceCardProps {
     item: MarketplaceItem;
 }
 
+function formatPrice(price: number, currency: string) {
+    try {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(price);
+    } catch {
+        return `${currency} ${price.toFixed(2)}`;
+    }
+}
+
 export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
-    const isSaaS = item.type === 'saas';
     const detailUrl = `/marketplace/${item.type || 'saas'}/${item.id}`;
 
     const [api, setApi] = useState<CarouselApi>();
@@ -27,10 +34,10 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
 
     const hasImages = item.images && item.images.length > 0;
     const isMultiple = item.images && item.images.length > 1;
+    const inStock = item.stock > 0;
 
     const innerCard = (
         <Card className="h-full flex flex-col overflow-hidden border-none bg-secondary/20 hover:bg-secondary/40 transition-all duration-300 relative">
-            {/* Standardized Aspect Ratio for Images */}
             <div className="relative aspect-video w-full overflow-hidden shrink-0 bg-secondary/10 group/carousel">
                 {isMultiple ? (
                     <Carousel setApi={setApi} className="w-full h-full cursor-grab active:cursor-grabbing">
@@ -58,16 +65,14 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
                     </div>
                 )}
 
-                {/* Subtle overlay on hover */}
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                {/* Image counter if there are multiple images */}
                 {isMultiple && (
                     <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md rounded-full px-2 py-0.5 text-[10px] text-white">
                         {current} / {item.images.length}
                     </div>
                 )}
-                {/* Offline badge */}
+
                 {!item.isActive && (
                     <div className="absolute top-2 right-2 bg-destructive/80 backdrop-blur-md rounded-sm px-2 py-0.5 text-[10px] text-white font-bold uppercase pointer-events-none">
                         Unavailable
@@ -76,7 +81,12 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
             </div>
 
             <CardHeader className="p-4 pb-0 items-start gap-1">
-                <span className="text-[10px] font-semibold text-primary uppercase tracking-widest">{item.category || 'Item'}</span>
+                <div className="flex items-center gap-2 w-full">
+                    <span className="text-[10px] font-semibold text-primary uppercase tracking-widest">{item.category || 'Item'}</span>
+                    <span className={`ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${inStock ? 'bg-green-500/15 text-green-500' : 'bg-muted text-muted-foreground'}`}>
+                        {inStock ? 'In stock' : 'Out of stock'}
+                    </span>
+                </div>
                 <h3 className="font-semibold text-sm line-clamp-1 group-hover:text-primary transition-colors">{item.name}</h3>
             </CardHeader>
 
@@ -86,19 +96,21 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
                 </p>
             </CardContent>
 
-            {/* Footer: Price and Add to Cart */}
             <div className="flex items-center justify-between px-4 pb-4 pt-2 mt-auto shrink-0 relative z-10 bg-background/5">
                 <div className="flex flex-col">
                     <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Price</span>
-                    <span className="font-semibold text-sm text-foreground/90">{item.currency || '$'}{item.price.toFixed(2)}</span>
+                    <span className="font-semibold text-sm text-foreground/90">
+                        {formatPrice(item.price, item.currency || 'USD')}
+                    </span>
                 </div>
                 <Button
                     size="icon"
-                    className="rounded-full w-9 h-9 shadow-sm transition-transform hover:scale-105 relative z-20"
+                    disabled={!inStock}
+                    className="rounded-full w-9 h-9 shadow-sm transition-transform hover:scale-105 relative z-20 disabled:opacity-40"
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        // TODO: Implement actual Add to Cart logic
+                        // TODO: cart flow TBD
                     }}
                 >
                     <ShoppingCart className="w-4 h-4 cursor-pointer" />

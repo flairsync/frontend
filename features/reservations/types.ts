@@ -6,7 +6,8 @@ export type ReservationStatus =
     | 'cancelled'
     | 'no_show'
     | 'expired'
-    | 'waitlist';
+    | 'waitlist'
+    | 'rejected';
 
 export type EventSource = 'staff' | 'customer' | 'system';
 export type EventVisibility = 'staff_only' | 'customer_visible';

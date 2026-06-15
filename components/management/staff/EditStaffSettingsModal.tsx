@@ -25,7 +25,7 @@ export function EditStaffSettingsModal({
     onOpenChange,
     onSave,
 }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
 
     const [maxWeeklyHours, setMaxWeeklyHours] = useState<number | undefined>(staff.maxWeeklyHours);
     const [minGapBetweenShiftsHours, setMinGapBetweenShiftsHours] = useState<number | undefined>(staff.minGapBetweenShiftsHours);

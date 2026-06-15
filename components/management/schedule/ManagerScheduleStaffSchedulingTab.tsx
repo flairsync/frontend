@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Users, CalendarPlus, Wand2, Copy, Send, Settings2, PlusCircle, CheckCircle2, Lock, ShieldCheck } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText } from 'lucide-react'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
 import { useShifts } from '@/features/shifts/useShifts'
+import { buildShiftExportUrl } from '@/features/shifts/service'
 import { useTimeOff } from '@/features/shifts/useTimeOff'
 import { useUnvalidatedSummary } from '@/features/shifts/useUnvalidatedSummary'
 import { useManagerRoster } from '@/features/shifts/useShifts'
@@ -27,7 +28,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
     DropdownMenuSeparator,
-    DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
 import { Shift } from '@/models/business/shift/Shift'
 import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, startOfDay, endOfDay, addMonths, isSameMonth } from 'date-fns'
@@ -117,9 +117,9 @@ const ManagerScheduleStaffSchedulingTab = () => {
     const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
     const employees = allEmployees?.filter(emp => emp.type !== 'OWNER') || [];
     const { 
-        shifts, 
-        fetchingShifts, 
-        generateWeeklyDraft,
+        shifts,
+        fetchingShifts,
+        generateDraft,
         isGeneratingDraft,
         publishWeeklySchedule,
         isPublishing,
@@ -259,7 +259,19 @@ const ManagerScheduleStaffSchedulingTab = () => {
     };
 
     const handleGenerate = () => {
-        generateWeeklyDraft(format(dateStart, 'yyyy-MM-dd'));
+        if (calendarView === 'month' && filterStaffId) {
+            generateDraft({
+                startDate: format(startOfMonth(currentDate), 'yyyy-MM-dd'),
+                endDate: format(endOfMonth(currentDate), 'yyyy-MM-dd'),
+                employmentId: filterStaffId,
+            });
+        } else {
+            generateDraft({
+                startDate: format(dateStart, 'yyyy-MM-dd'),
+                endDate: format(dateEnd, 'yyyy-MM-dd'),
+                employmentId: filterStaffId || undefined,
+            });
+        }
     };
 
     const handleCopyWeek = () => {
@@ -270,31 +282,132 @@ const ManagerScheduleStaffSchedulingTab = () => {
         });
     };
 
+    const handleExport = (exportFormat: 'pdf' | 'excel') => {
+        const isMonthlyStaff = calendarView === 'month' && !!filterStaffId;
+        const start = isMonthlyStaff ? format(startOfMonth(currentDate), 'yyyy-MM-dd') : format(dateStart, 'yyyy-MM-dd');
+        const end = isMonthlyStaff ? format(endOfMonth(currentDate), 'yyyy-MM-dd') : format(dateEnd, 'yyyy-MM-dd');
+        const url = buildShiftExportUrl(businessId as string, start, end, exportFormat, filterStaffId || undefined);
+        window.location.href = url;
+    };
+
     return (
         <Card className="overflow-hidden">
-            <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between bg-muted/30 pb-4 border-b gap-4">
-                <div className="flex flex-wrap items-center gap-4">
-                    <CardTitle>Schedule</CardTitle>
-                    <div className="flex items-center gap-2 bg-background border rounded-md">
-                        <Button variant="ghost" size="icon" onClick={handlePrev}>
+            <CardHeader className="bg-muted/30 border-b space-y-3 pb-3">
+                {/* Row 1: Title + action buttons */}
+                <div className="flex items-center justify-between gap-4">
+                    <CardTitle className="text-lg">Schedule</CardTitle>
+
+                    <div className="flex items-center gap-1.5">
+                        {/* Export */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="gap-1.5 text-muted-foreground hover:text-foreground"
+                                    disabled={calendarView === 'month' && !filterStaffId}
+                                >
+                                    <Download className="w-4 h-4" />
+                                    Export
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                                <DropdownMenuItem onClick={() => handleExport('pdf')}>
+                                    <FileText className="w-4 h-4 mr-2 text-red-500" />
+                                    PDF
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleExport('excel')}>
+                                    <FileSpreadsheet className="w-4 h-4 mr-2 text-green-600" />
+                                    Excel
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <div className="w-px h-5 bg-border mx-1" />
+
+                        {/* Add shifts */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm" className="gap-1.5">
+                                    <PlusCircle className="w-4 h-4" />
+                                    Add Shifts
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-52">
+                                <DropdownMenuItem onClick={() => setIsBulkStaffModalOpen(true)}>
+                                    <CalendarPlus className="w-4 h-4 mr-2" />
+                                    Bulk Staff Setup
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setIsBulkModalOpen(true)}>
+                                    <Users className="w-4 h-4 mr-2" />
+                                    Schedule Team
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        {/* Generate Draft */}
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleGenerate}
+                            disabled={isGeneratingDraft}
+                            className="gap-1.5"
+                        >
+                            <Wand2 className="w-4 h-4" />
+                            {isGeneratingDraft ? 'Generating…' : 'Generate'}
+                        </Button>
+
+                        {/* Copy previous — icon-only to save space */}
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handleCopyWeek}
+                            disabled={isCopyingWeek}
+                            title="Copy previous week"
+                            className="shrink-0"
+                        >
+                            <Copy className="w-4 h-4" />
+                        </Button>
+
+                        <div className="w-px h-5 bg-border mx-1" />
+
+                        {/* Publish — primary CTA */}
+                        <Button
+                            size="sm"
+                            onClick={handlePublish}
+                            disabled={isPublishing}
+                            className="gap-1.5"
+                        >
+                            <Send className="w-4 h-4" />
+                            {isPublishing ? 'Publishing…' : 'Publish'}
+                        </Button>
+                    </div>
+                </div>
+
+                {/* Row 2: Navigation + filters */}
+                <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex items-center bg-background border rounded-md">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handlePrev}>
                             <ChevronLeft className="w-4 h-4" />
                         </Button>
-                        <span className="text-sm font-medium w-40 text-center cursor-default">
-                            {calendarView === 'day' ? format(currentDate, 'MMM d, yyyy') :
-                             calendarView === 'month' ? format(currentDate, 'MMMM yyyy') :
-                             `${format(dateStart, 'MMM d')} - ${format(dateEnd, 'MMM d, yyyy')}`}
+                        <span className="text-sm font-medium w-40 text-center select-none">
+                            {calendarView === 'day'
+                                ? format(currentDate, 'MMM d, yyyy')
+                                : calendarView === 'month'
+                                ? format(currentDate, 'MMMM yyyy')
+                                : `${format(dateStart, 'MMM d')} – ${format(dateEnd, 'MMM d, yyyy')}`}
                         </span>
-                        <Button variant="ghost" size="icon" onClick={handleNext}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleNext}>
                             <ChevronRight className="w-4 h-4" />
                         </Button>
                     </div>
 
                     <div className="flex items-center gap-1 bg-background border rounded-md p-1">
                         {(['day', 'week', 'month'] as const).map((view) => (
-                            <Button 
+                            <Button
                                 key={view}
-                                variant={calendarView === view ? 'secondary' : 'ghost'} 
-                                size="sm" 
+                                variant={calendarView === view ? 'secondary' : 'ghost'}
+                                size="sm"
                                 onClick={() => setCalendarView(view)}
                                 className="h-7 text-xs capitalize px-3"
                             >
@@ -303,83 +416,29 @@ const ManagerScheduleStaffSchedulingTab = () => {
                         ))}
                     </div>
 
-                    <div className="w-48">
-                        <Select 
-                            value={filterStaffId || "all"} 
-                            onValueChange={(val: string) => setFilterStaffId(val === "all" ? null : val)}
-                        >
-                            <SelectTrigger className="h-9">
-                                <SelectValue placeholder="All Staff" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All Staff</SelectItem>
-                                {employees.map(emp => (
-                                    <SelectItem key={emp.id} value={emp.id}>
-                                        {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Staff'}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                    <Select
+                        value={filterStaffId || 'all'}
+                        onValueChange={(val: string) => setFilterStaffId(val === 'all' ? null : val)}
+                    >
+                        <SelectTrigger className="h-8 w-44 text-sm">
+                            <SelectValue placeholder="All Staff" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Staff</SelectItem>
+                            {employees.map(emp => (
+                                <SelectItem key={emp.id} value={emp.id}>
+                                    {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Staff'}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
                     {phantomSummary && phantomSummary.total > 0 && (
                         <Badge variant="outline" className="h-7 px-3 border-amber-200 bg-amber-50 text-amber-700 flex items-center gap-1.5 font-medium animate-in fade-in slide-in-from-left-2 duration-500">
-                             <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                             {phantomSummary.total} Phantom Shifts (Next 4 weeks)
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                            {phantomSummary.total} unvalidated shifts
                         </Badge>
                     )}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm" className="gap-2">
-                                <PlusCircle className="w-4 h-4" />
-                                Scheduling Tools
-                                <ChevronRight className="w-3 h-3 rotate-90" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
-                            <DropdownMenuLabel>Manual Entry</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => setIsBulkStaffModalOpen(true)}>
-                                <CalendarPlus className="w-4 h-4 mr-2" />
-                                Bulk Staff Setup
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setIsBulkModalOpen(true)}>
-                                <Users className="w-4 h-4 mr-2" />
-                                Schedule Team
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="default" size="sm" className="gap-2">
-                                <Settings2 className="w-4 h-4" />
-                                Weekly Actions
-                                <ChevronRight className="w-3 h-3 rotate-90" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
-                            <DropdownMenuLabel>Automation</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={handleGenerate} disabled={isGeneratingDraft}>
-                                <Wand2 className="w-4 h-4 mr-2" />
-                                {isGeneratingDraft ? "Generating..." : "Generate Draft"}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={handleCopyWeek} disabled={isCopyingWeek}>
-                                <Copy className="w-4 h-4 mr-2" />
-                                {isCopyingWeek ? "Copying..." : "Copy Previous Week"}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuLabel>Finalize</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={handlePublish} disabled={isPublishing} className="text-primary focus:text-primary">
-                                <Send className="w-4 h-4 mr-2" />
-                                {isPublishing ? "Publishing..." : calendarView === 'week' ? "Publish Week" : "Publish Range"}
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
                 </div>
             </CardHeader>
             <CardContent className="p-0 overflow-x-auto min-h-[400px]">

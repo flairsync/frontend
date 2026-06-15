@@ -12,7 +12,7 @@ type PaginatedEmployeesType = {
 // ✅ Extract the page param key
 const EMPLOYEE_PAGE_PARAM = "etbl";
 
-export const useBusinessEmployees = (businessId: string) => {
+export const useBusinessEmployees = (businessId: string, options?: { enabled?: boolean }) => {
   const { urlParsed } = usePageContext();
 
   // Read epage from urlParsed.search or default to 1
@@ -31,18 +31,13 @@ export const useBusinessEmployees = (businessId: string) => {
 
   const { data, isPending, isFetching } = useQuery<PaginatedEmployeesType>({
     queryKey: ["business_emps", businessId, currentPage],
+    enabled: options?.enabled !== false && !!businessId,
     queryFn: async () => {
       const resp = await fetchBusinessEmployeesApiCall(businessId, currentPage);
 
-      if (!resp.data.success) {
-        throw new Error("Failed to fetch employees");
-      }
-
-      const emps = BusinessEmployee.parseApiArrayResponse(resp.data.data.data);
-
       return {
-        employees: emps,
-        totalPages: resp.data.data.pages,
+        employees: BusinessEmployee.parseApiArrayResponse(resp.data),
+        totalPages: resp.pages,
       };
     },
     staleTime: 5000,

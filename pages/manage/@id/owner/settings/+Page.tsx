@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -18,8 +18,50 @@ import BusinessSettingsLocation from "@/components/management/settings/BusinessS
 import BusinessSettingsLabor from "@/components/management/settings/BusinessSettingsLabor"
 import BusinessSettingsTax from "@/components/management/settings/BusinessSettingsTax"
 import { AuditLogHint } from "@/components/audit/AuditLogHint"
+import { usePageTour } from "@/features/tour/usePageTour"
+import type { TourStep } from "@/features/tour/types"
+
+const SETTINGS_TOUR_STEPS: TourStep[] = [
+    {
+        target: '[data-tour="settings-general-info"]',
+        title: 'General Information',
+        description: 'Set your restaurant name, cuisine type, contact details, and control whether your listing is publicly visible to customers.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="settings-location"]',
+        title: 'Location & Address',
+        description: 'Configure your physical address. This is shown on your public page and used for map-based discovery.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="settings-open-periods"]',
+        title: 'Open Periods',
+        description: 'Define your weekly operating hours. The system uses these to show availability to customers and to enforce scheduling rules.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="settings-labor"]',
+        title: 'Labor & Compliance',
+        description: 'Set default working hour rules, break policies, and overtime thresholds to stay compliant with labor regulations.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="settings-tax"]',
+        title: 'Tax Configuration',
+        description: 'Define your tax rates. These are automatically applied to customer orders, receipts, and invoices.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="settings-reservations"]',
+        title: 'Reservations & Orders',
+        description: 'Control whether customers can book tables or order online, set confirmation rules, party size limits, and booking windows.',
+        position: 'bottom',
+    },
+]
 
 const BusinessSettingsPage = () => {
+    usePageTour(SETTINGS_TOUR_STEPS)
 
     const {
         routeParams
@@ -78,23 +120,24 @@ const BusinessSettingsPage = () => {
     const setRes = <K extends keyof typeof resSettings>(key: K, value: typeof resSettings[K]) =>
         setResSettings(prev => ({ ...prev, [key]: value }))
 
-    // Staff Management
-    const [staffAlerts, setStaffAlerts] = useState(true)
-    const [autoAssignShifts, setAutoAssignShifts] = useState(false)
-    const [roles, setRoles] = useState("Admin, Manager, Waiter")
+    const [accordionValue, setAccordionValue] = useState<string>("")
+    const [highlightedSection, setHighlightedSection] = useState<string | null>(null)
+    const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
-    // Operations Automation
-    const [autoOpen, setAutoOpen] = useState(false)
-    const [notifications, setNotifications] = useState("")
-    const [inventoryAlerts, setInventoryAlerts] = useState("")
-
-    // Payments
-    const [paymentMethods, setPaymentMethods] = useState("Cash, Card, Online Payment")
-    const [receiptTemplate, setReceiptTemplate] = useState("")
-
-    const saveStaffManagement = () => alert("Staff management saved")
-    const saveAutomation = () => alert("Automation settings saved")
-    const savePayments = () => alert("Payments settings saved")
+    useEffect(() => {
+        const section = new URLSearchParams(window.location.search).get("section")
+        if (!section) return
+        setAccordionValue(section)
+        const tryScroll = () => {
+            const el = sectionRefs.current[section]
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" })
+                setHighlightedSection(section)
+                setTimeout(() => setHighlightedSection(null), 2500)
+            }
+        }
+        setTimeout(tryScroll, 150)
+    }, [])
 
     return (
         <div className="space-y-6">
@@ -108,56 +151,66 @@ const BusinessSettingsPage = () => {
             />
         </div>
         <Separator />
-        <Accordion type="single" collapsible className="w-full space-y-2">
+        <Accordion type="single" collapsible className="w-full space-y-2" value={accordionValue} onValueChange={setAccordionValue}>
             {/* General Info */}
-            <BusinessSettingsGeneralDetails
-                businessDetails={myBusinessFullDetails}
-                onSaveDetails={(data) => {
-                    updateMyBusinessDetails(data);
-                }}
-                onTogglePublished={(val) => updateMyBusinessDetails({ isPublished: val })}
-                disabled={updatingMyBusiness}
-            />
+            <div data-tour="settings-general-info">
+                <BusinessSettingsGeneralDetails
+                    businessDetails={myBusinessFullDetails}
+                    onSaveDetails={(data) => {
+                        updateMyBusinessDetails(data);
+                    }}
+                    onTogglePublished={(val) => updateMyBusinessDetails({ isPublished: val })}
+                    disabled={updatingMyBusiness}
+                />
+            </div>
 
             {/* Location & Address */}
-            <BusinessSettingsLocation
-                businessDetails={myBusinessFullDetails}
-                onSaveDetails={(data) => {
-                    updateMyBusinessDetails(data);
-                }}
-                disabled={updatingMyBusiness}
-            />
+            <div data-tour="settings-location">
+                <BusinessSettingsLocation
+                    businessDetails={myBusinessFullDetails}
+                    onSaveDetails={(data) => {
+                        updateMyBusinessDetails(data);
+                    }}
+                    disabled={updatingMyBusiness}
+                />
+            </div>
 
             {/* Business open periods */}
-            <BusinessSettingsOpenPeriods
-                businessDetails={myBusinessFullDetails}
-                disabled={updatingMyBusinessOpenHours}
-                onSaveDetails={(data) => {
-                    updateMyBusinessOpenHours(data);
-                }}
-            />
+            <div data-tour="settings-open-periods">
+                <BusinessSettingsOpenPeriods
+                    businessDetails={myBusinessFullDetails}
+                    disabled={updatingMyBusinessOpenHours}
+                    onSaveDetails={(data) => {
+                        updateMyBusinessOpenHours(data);
+                    }}
+                />
+            </div>
 
             {/* Labor & Compliance */}
-            <BusinessSettingsLabor
-                businessDetails={myBusinessFullDetails}
-                disabled={updatingMyBusiness}
-                onSaveDetails={(data) => {
-                    updateMyBusinessDetails(data);
-                }}
-            />
+            <div data-tour="settings-labor">
+                <BusinessSettingsLabor
+                    businessDetails={myBusinessFullDetails}
+                    disabled={updatingMyBusiness}
+                    onSaveDetails={(data) => {
+                        updateMyBusinessDetails(data);
+                    }}
+                />
+            </div>
 
             {/* Tax Configuration */}
-            <BusinessSettingsTax
-                businessDetails={myBusinessFullDetails}
-                disabled={updatingMyBusiness}
-                onSaveDetails={(data) => {
-                    updateMyBusinessDetails(data);
-                }}
-            />
+            <div data-tour="settings-tax">
+                <BusinessSettingsTax
+                    businessDetails={myBusinessFullDetails}
+                    disabled={updatingMyBusiness}
+                    onSaveDetails={(data) => {
+                        updateMyBusinessDetails(data);
+                    }}
+                />
+            </div>
 
 
             {/* Reservations & Orders */}
-            <AccordionItem value="reservations" className="border rounded-lg px-3">
+            <AccordionItem value="reservations" data-tour="settings-reservations" className="border rounded-lg px-3">
                 <AccordionTrigger>Reservations & Orders</AccordionTrigger>
                 <AccordionContent className="py-2">
                     <div className="divide-y divide-border">
@@ -370,74 +423,30 @@ const BusinessSettingsPage = () => {
                 </AccordionContent>
             </AccordionItem>
 
-            {/* Staff Management */}
-            <AccordionItem value="staff-management" className="border rounded-lg px-3">
-                <AccordionTrigger>Staff Alerts & Management</AccordionTrigger>
+            {/* Floor Plan */}
+            <AccordionItem
+                value="floor-plan"
+                ref={(el) => { sectionRefs.current["floor-plan"] = el as HTMLDivElement | null }}
+                className={`border rounded-lg px-3 transition-all duration-700 ${highlightedSection === "floor-plan" ? "ring-2 ring-primary ring-offset-2 shadow-md" : ""}`}
+            >
+                <AccordionTrigger>Floor Plan</AccordionTrigger>
                 <AccordionContent className="py-2">
                     <div className="divide-y divide-border">
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
-                            <Label>Notify Staff When Late</Label>
-                            <Switch checked={staffAlerts} onCheckedChange={setStaffAlerts} />
+                            <div className="space-y-0.5">
+                                <Label>Enable Floor Plan Layout View</Label>
+                                <p className="text-xs text-muted-foreground">Show the visual table layout to staff for managing seating and to customers when booking a table</p>
+                            </div>
+                            <Switch
+                                checked={myBusinessFullDetails?.enableFloorPlanView ?? false}
+                                onCheckedChange={(val) => updateMyBusinessDetails({ enableFloorPlanView: val })}
+                                disabled={updatingMyBusiness}
+                            />
                         </div>
-                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
-                            <Label>Auto-Assign Shifts</Label>
-                            <Switch checked={autoAssignShifts} onCheckedChange={setAutoAssignShifts} />
-                        </div>
-                    </div>
-                    <div className="pt-3 space-y-3">
-                        <Input
-                            placeholder="Roles (Admin, Manager, Waiter...)"
-                            value={roles}
-                            onChange={(e) => setRoles(e.target.value)}
-                        />
-                        <Button onClick={saveStaffManagement}>Save</Button>
                     </div>
                 </AccordionContent>
             </AccordionItem>
 
-            {/* Operations Automation */}
-            <AccordionItem value="automation" className="border rounded-lg px-3">
-                <AccordionTrigger>Operations Automation</AccordionTrigger>
-                <AccordionContent className="py-2">
-                    <div className="divide-y divide-border">
-                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
-                            <Label>Auto-Open Business</Label>
-                            <Switch checked={autoOpen} onCheckedChange={setAutoOpen} />
-                        </div>
-                    </div>
-                    <div className="pt-3 space-y-3">
-                        <Input
-                            placeholder="Notifications (Order ready, Reservation confirmed...)"
-                            value={notifications}
-                            onChange={(e) => setNotifications(e.target.value)}
-                        />
-                        <Input
-                            placeholder="Inventory Alerts"
-                            value={inventoryAlerts}
-                            onChange={(e) => setInventoryAlerts(e.target.value)}
-                        />
-                        <Button onClick={saveAutomation}>Save</Button>
-                    </div>
-                </AccordionContent>
-            </AccordionItem>
-
-            {/* Payments */}
-            <AccordionItem value="payments" className="border rounded-lg px-3">
-                <AccordionTrigger>Payments & Invoicing</AccordionTrigger>
-                <AccordionContent className="space-y-4 py-2">
-                    <Input
-                        placeholder="Accepted Payment Methods"
-                        value={paymentMethods}
-                        onChange={(e) => setPaymentMethods(e.target.value)}
-                    />
-                    <Input
-                        placeholder="Receipt Template URL / Editor"
-                        value={receiptTemplate}
-                        onChange={(e) => setReceiptTemplate(e.target.value)}
-                    />
-                    <Button onClick={savePayments}>Save</Button>
-                </AccordionContent>
-            </AccordionItem>
         </Accordion>
         </div>
     )

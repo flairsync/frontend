@@ -24,7 +24,7 @@ import { useAllergies } from "@/features/shared/useAllergies";
 export default function StaffMenuPage() {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
 
     // Permissions
     const { hasPermission, isLoading: loadingPermissions } = usePermissions(businessId);
@@ -249,6 +249,7 @@ export default function StaffMenuPage() {
 
                         <SimpleMenuCategories
                             categories={categories}
+                            businessId={businessId}
                             onEditCategory={(catId) => {
                                 if (!canUpdate) return;
                                 const cat = categories.find(c => c.id === catId);
@@ -397,12 +398,13 @@ export default function StaffMenuPage() {
                         description: data.description,
                         price: data.price,
                         allergies: data.allergyIds,
-                        images: data.images,
+                        files: data.images,
                         inventoryTrackingMode: data.trackingMode,
                         inventoryItemId: data.inventoryItemId,
                         createInventoryItem: data.createInventoryItem,
                         inventoryUnitId: data.inventoryUnit,
                         quantityPerSale: data.quantityPerSale,
+                        kitchenStationId: data.kitchenStationId,
                     } as any;
 
                     if (modalMode === 'create') {
@@ -410,6 +412,7 @@ export default function StaffMenuPage() {
                     } else {
                         updateItem({ categoryId: targetCategoryId!, itemId: editingItem.id, data: payload });
                     }
+                    setIsItemModalOpen(false);
                 }}
                 allergies={allergies || []}
                 initialData={editingItem ? (categories.find(c => c.id === targetCategoryId)?.items?.find(i => i.id === editingItem.id) || editingItem) : undefined}

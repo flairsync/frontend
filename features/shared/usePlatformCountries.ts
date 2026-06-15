@@ -6,9 +6,8 @@ export const usePlatformCountries = ({ includeAll = false }: { includeAll?: bool
   const { data: platformCountries, isLoading: isCountriesLoading } = useQuery({
     queryKey: ["platform_countries", includeAll],
     queryFn: async () => {
-      const resp = await getCountriesListApiCall(includeAll);
-
-      return PlatformCountry.parseApiArrayResponse(resp.data.data);
+      const data = await getCountriesListApiCall(includeAll);
+      return PlatformCountry.parseApiArrayResponse(data);
     },
   });
 

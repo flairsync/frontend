@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../../shared/api-response";
 const baseBusinessUrl = `${import.meta.env.BASE_URL}/businesses`;
 
 const getMenusUrl = (businessId: string) => {
@@ -25,9 +26,8 @@ export type MenuChanges = {
 };
 
 //#region Menu
-export const fetchBusinessBasicMenusApiCall = (businessId: string) => {
-  return flairapi.get(`${getMenusUrl(businessId)}/all`);
-};
+export const fetchBusinessBasicMenusApiCall = async (businessId: string) =>
+  unwrap(await flairapi.get(`${getMenusUrl(businessId)}/all`));
 
 export type CreateMenuDto = {
   name: string | null;
@@ -48,12 +48,11 @@ export const createBusinessMenuApiCall = (
   return flairapi.post(getMenusUrl(businessId), data);
 };
 
-export const fetchBusinessSingleMenuApiCall = (
+export const fetchBusinessSingleMenuApiCall = async (
   businessId: string,
   menuId: string,
-) => {
-  return flairapi.get(`${getMenusUrl(businessId)}/${menuId}`);
-};
+) =>
+  unwrap(await flairapi.get(`${getMenusUrl(businessId)}/${menuId}`));
 
 export type UpdateMenuDto = {
   name: string | null;

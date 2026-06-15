@@ -42,9 +42,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     queryKey: ["business_menu", businessId, menuId],
     queryFn: async () => {
       const resp = await fetchBusinessSingleMenuApiCall(businessId, menuId);
-      if (resp.data.success) {
-        return BusinessMenu.parseApiResponse(resp.data.data) || undefined;
-      }
+      return resp ? BusinessMenu.parseApiResponse(resp as any) || undefined : undefined;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: !!businessId && !!menuId,
@@ -174,6 +172,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       );
     },
     onSuccess(data, variables, context) {
+      toast.success("Item added!");
       refreshBusinessMenu();
     },
   });

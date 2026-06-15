@@ -24,7 +24,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { useProfile } from "@/features/profile/useProfile";
 
 import { PhoneInput } from "@/components/ui/phone-input";
-import { isValidPhoneNumber } from "react-phone-number-input";
+import { isValidPhoneNumber, type Country as PhoneCountry } from "react-phone-number-input";
 import * as Yup from "yup";
 
 interface Props {
@@ -125,6 +125,8 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
 
     const initialName = userProfile ? `${userProfile.firstName || ""} ${userProfile.lastName || ""}`.trim() : "";
     const initialEmail = userProfile?.email || "";
+    const initialPhone = userProfile?.phoneNumber || "";
+    const phoneDefaultCountry: PhoneCountry = (businessProfile?.country?.code?.toUpperCase() as PhoneCountry) || "TN";
 
     return (
         <Dialog open={props.isOpen} onOpenChange={(open) => !open && props.onClose()}>
@@ -142,7 +144,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                         initialValues={{
                             name: initialName,
                             email: initialEmail,
-                            phone: "",
+                            phone: initialPhone,
                             guests: props.guests,
                             notes: "",
                         }}
@@ -200,6 +202,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                         value={values.phone}
                                         onChange={(val) => setFieldValue("phone", val)}
                                         placeholder="Enter phone number"
+                                        defaultCountry={phoneDefaultCountry}
                                         required
                                     />
                                     {errors.phone && touched.phone && <span className="text-[10px] text-destructive font-bold uppercase">{errors.phone}</span>}

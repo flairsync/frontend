@@ -54,20 +54,13 @@ export default function StaffShiftsPage() {
     const [page, setPage] = useState(1);
     const limit = 10;
 
-    const { 
-        shifts, 
-        fetchingShifts, 
-        loadingShifts, 
-        respondToShift, 
-        isResponding,
-        bidOnShift,
-        isBidding
-    } = useShifts(
-        businessId as string,
+    // Personal shifts via the permission-free /upcoming endpoint
+    const { data: myShiftsData, isFetching: fetchingShifts, isLoading: loadingShifts } = useUpcomingShifts({
+        businessId: businessId as string,
         startDate,
         endDate,
-        employmentId
-    );
+    });
+    const shifts = Array.isArray(myShiftsData) ? myShiftsData : (myShiftsData?.data || []);
 
     const { data: upcomingData, isFetching: fetchingUpcoming } = useUpcomingShifts({
         businessId: businessId as string,
@@ -84,14 +77,14 @@ export default function StaffShiftsPage() {
     const { data: dashboard } = useTodayAttendanceDashboard(businessId as string);
     const isCheckedOut = !!dashboard?.attendance?.checkOutTime;
 
-    const { requests: timeOffRequests, fetchingRequests } = useTimeOff(businessId as string, employmentId);
-    const { swaps: shiftSwaps, fetchingSwaps } = useShiftSwaps(businessId as string, employmentId);
+    const [activeTab, setActiveTab] = useState(urlParsed.search.tab || "today");
+
+    const { requests: timeOffRequests, fetchingRequests } = useTimeOff(businessId as string, employmentId, { enabled: activeTab === "requests" });
+    const { swaps: shiftSwaps, fetchingSwaps } = useShiftSwaps(businessId as string, employmentId, { enabled: activeTab === "requests" });
 
     const { data: availableShifts, isLoading: loadingAvailable } = useAvailableShifts(businessId as string);
     const { data: myBids, isLoading: loadingMyBids } = useMyBids();
-    const { claimShift, isClaiming } = useShifts(businessId as string);
-
-    const [activeTab, setActiveTab] = useState(urlParsed.search.tab || "today");
+    const { claimShift, isClaiming, respondToShift, isResponding, bidOnShift, isBidding } = useShifts(businessId as string);
     const [isTimeOffOpen, setIsTimeOffOpen] = useState(false);
     const [isSwapOpen, setIsSwapOpen] = useState(false);
     const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false);

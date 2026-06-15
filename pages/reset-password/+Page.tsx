@@ -13,7 +13,7 @@ import { Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 import { navigate } from 'vike/client/router';
 
 const ResetPasswordPage = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("auth");
     const [token, setToken] = useState<string | null>(null);
     const [tokenInvalid, setTokenInvalid] = useState(false);
     const [success, setSuccess] = useState(false);

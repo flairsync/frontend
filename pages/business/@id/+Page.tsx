@@ -1,7 +1,11 @@
-import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { usePageContext } from 'vike-react/usePageContext';
-import { useDiscoveryProfile, useDiscoveryMenu, useDiscoveryTables } from '@/features/discovery/useDiscovery';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { withFallback } from 'vike-react-query';
+import { fetchDiscoveryProfileApiCall, fetchDiscoveryMenuApiCall } from '@/features/discovery/discovery.api';
+import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
+import { BusinessMenu } from '@/models/business/menu/BusinessMenu';
+import DinerModeBanner from '@/components/diner-mode/DinerModeBanner';
 
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import WebsiteFooter from '@/components/shared/WebsiteFooter';
@@ -35,67 +39,29 @@ const item = {
     show: { opacity: 1, y: 0 }
 }
 
-const BusinessPage = () => {
-    const pageContext = usePageContext();
-    const id = pageContext.routeParams?.id;
+// Inner component — fetches profile + menu in parallel, server-rendered via useSuspenseQuery
+const BusinessContent = withFallback(
+    ({ id, user }: { id: string; user: ReturnType<typeof usePageContext>['user'] }) => {
+        const { data } = useSuspenseQuery({
+            queryKey: ["business_page", id],
+            queryFn: async () => {
+                const [profileData, menuRaw] = await Promise.all([
+                    fetchDiscoveryProfileApiCall(id),
+                    fetchDiscoveryMenuApiCall(id),
+                ]);
+                const menuData = Array.isArray(menuRaw) ? menuRaw[0] : menuRaw;
+                const profile = DiscoveryBusinessProfile.parseApiResponse(profileData);
+                if (!profile) throw new Error("Business not found");
+                return {
+                    profile,
+                    menu: BusinessMenu.parseApiResponse(menuData),
+                };
+            },
+        });
 
-    const { data: profile, isLoading: isProfileLoading, error: profileError } = useDiscoveryProfile(id);
-    const { data: menu, isLoading: isMenuLoading } = useDiscoveryMenu(id);
-    const { data: tables, isLoading: isTablesLoading } = useDiscoveryTables(id);
+        const { profile, menu } = data;
 
-    const isLoading = isProfileLoading;
-
-    if (isLoading) {
         return (
-            <div className="min-h-screen bg-background">
-                <PublicFeedHeader />
-                <main className="pt-24 pb-20">
-                    <div className="max-w-6xl mx-auto px-6 space-y-12">
-                        <Skeleton className="h-[400px] w-full rounded-[2.5rem]" />
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <Skeleton className="h-32 w-full rounded-3xl" />
-                            <Skeleton className="h-32 w-full rounded-3xl" />
-                            <Skeleton className="h-32 w-full rounded-3xl" />
-                        </div>
-                        <Skeleton className="h-[500px] w-full rounded-[2.5rem]" />
-                    </div>
-                </main>
-                <WebsiteFooter />
-            </div>
-        )
-    }
-
-    if (profileError || !profile) {
-        return (
-            <div className="min-h-screen bg-background">
-                <PublicFeedHeader />
-                <main className="pt-24 pb-20 flex items-center justify-center min-h-[60vh]">
-                    <div className="max-w-md w-full px-6">
-                        <Alert variant="destructive" className="rounded-3xl p-6">
-                            <AlertCircle className="h-6 w-6" />
-                            <AlertTitle className="text-lg font-bold ml-2">Error</AlertTitle>
-                            <AlertDescription className="mt-2">
-                                We couldn't load the business profile. It might be private or doesn't exist.
-                            </AlertDescription>
-                            <Button
-                                variant="outline"
-                                className="mt-4 w-full rounded-xl border-destructive/20 hover:bg-destructive/10"
-                                onClick={() => window.location.reload()}
-                            >
-                                Try Again
-                            </Button>
-                        </Alert>
-                    </div>
-                </main>
-                <WebsiteFooter />
-            </div>
-        )
-    }
-
-    return (
-        <div className="min-h-screen bg-background">
-            <PublicFeedHeader />
-
             <main className="pt-24 pb-20">
                 <motion.div
                     variants={container}
@@ -111,7 +77,7 @@ const BusinessPage = () => {
                         <BusinessDetailsInfoCards profile={profile} />
                     </motion.div>
 
-                    {pageContext.user && (
+                    {user && (
                         <BusinessDetailsUserHistory businessId={id} />
                     )}
 
@@ -123,7 +89,7 @@ const BusinessPage = () => {
 
                     {profile.allowReservations && (
                         <motion.div variants={item}>
-                            <BusinessDetailsTableReservation tables={tables} businessId={id} />
+                            <BusinessDetailsTableReservation businessId={id} />
                         </motion.div>
                     )}
 
@@ -148,10 +114,57 @@ const BusinessPage = () => {
                     </motion.div>
                 </motion.div>
             </main>
-
-            <WebsiteFooter />
-        </div>
+        );
+    },
+    // Loading fallback — skeleton layout
+    () => (
+        <main className="pt-24 pb-20">
+            <div className="max-w-6xl mx-auto px-6 space-y-12">
+                <Skeleton className="h-[400px] w-full rounded-[2.5rem]" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <Skeleton className="h-32 w-full rounded-3xl" />
+                    <Skeleton className="h-32 w-full rounded-3xl" />
+                    <Skeleton className="h-32 w-full rounded-3xl" />
+                </div>
+                <Skeleton className="h-[500px] w-full rounded-[2.5rem]" />
+            </div>
+        </main>
+    ),
+    // Error fallback
+    ({ retry }) => (
+        <main className="pt-24 pb-20 flex items-center justify-center min-h-[60vh]">
+            <div className="max-w-md w-full px-6">
+                <Alert variant="destructive" className="rounded-3xl p-6">
+                    <AlertCircle className="h-6 w-6" />
+                    <AlertTitle className="text-lg font-bold ml-2">Error</AlertTitle>
+                    <AlertDescription className="mt-2">
+                        We couldn't load the business profile. It might be private or doesn't exist.
+                    </AlertDescription>
+                    <Button
+                        variant="outline"
+                        className="mt-4 w-full rounded-xl border-destructive/20 hover:bg-destructive/10"
+                        onClick={() => retry()}
+                    >
+                        Try Again
+                    </Button>
+                </Alert>
+            </div>
+        </main>
     )
+);
+
+const BusinessPage = () => {
+    const pageContext = usePageContext();
+    const id = pageContext.routeParams?.id;
+
+    return (
+        <div className="min-h-screen bg-background">
+            <PublicFeedHeader />
+            <BusinessContent id={id} user={pageContext.user} />
+            <WebsiteFooter />
+            {pageContext.user && id && <DinerModeBanner businessId={id} />}
+        </div>
+    );
 }
 
-export default BusinessPage
+export default BusinessPage;

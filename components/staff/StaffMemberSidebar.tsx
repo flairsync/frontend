@@ -1,7 +1,5 @@
 import * as React from "react"
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
 import {
     Sidebar,
     SidebarContent,
@@ -14,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, Calendar, ClipboardList, CreditCard, LayoutDashboard, MessageSquare, PackageOpen, Plug, Settings, ShieldAlert, ShoppingBag, User, Users, Utensils } from "lucide-react"
+import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, PackageOpen, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { usePermissions } from "@/features/auth/usePermissions"
 
@@ -36,6 +34,22 @@ const staffNavData = {
                     title: "My Shifts",
                     url: "/manage/:id/staff/shifts",
                     icon: Calendar,
+                },
+                {
+                    key: "schedule",
+                    title: "Shifts & Schedule",
+                    url: "/manage/:id/staff/schedule",
+                    icon: Calendar,
+                    requiredPermission: "STAFF",
+                    requiredAction: "read",
+                },
+                {
+                    key: "staff",
+                    title: "Staff Management",
+                    url: "/manage/:id/staff/staff",
+                    icon: Users,
+                    requiredPermission: "STAFF",
+                    requiredAction: "read",
                 },
                 {
                     key: "tasks",
@@ -84,12 +98,6 @@ const staffNavData = {
                     icon: MessageSquare,
                     requiredPermission: "BUSINESS_SETTINGS",
                     requiredAction: "read",
-                },
-                {
-                    key: "profile",
-                    title: "My Profile",
-                    url: "/manage/:id/staff/profile",
-                    icon: User,
                 },
             ],
         },

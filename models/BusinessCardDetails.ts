@@ -1,7 +1,7 @@
 import { DiscoveryBusiness } from "./discovery/DiscoveryBusiness";
 
 export class BusinessCardDetails {
-  image: string;
+  image: string | null;
   name: string;
   location: {
     lat: number;
@@ -17,7 +17,7 @@ export class BusinessCardDetails {
   isFavorite: boolean;
 
   constructor(
-    image: string,
+    image: string | null,
     name: string,
     location: { lat: number; lng: number },
     description: string,
@@ -116,11 +116,12 @@ export class BusinessCardDetails {
     const rating = b.rating ?? null;
     const reviewCount = b.reviewCount ?? 0;
 
-    let imageSrc = b.logo || "https://images.pexels.com/photos/1237073/pexels-photo-1237073.jpeg";
-    if (!b.logo && b.media?.length > 0) {
+    let imageSrc: string | null = null;
+    if (b.logo) {
+      imageSrc = b.logo;
+    } else if (b.media?.length > 0) {
       const imageMedia = b.media.find(m => m.url.match(/\.(jpeg|jpg|png|webp|gif)$/i));
-      if (imageMedia) imageSrc = imageMedia.url;
-      else imageSrc = b.media[0].url;
+      imageSrc = imageMedia?.url || b.media[0].url;
     }
 
     return new BusinessCardDetails(

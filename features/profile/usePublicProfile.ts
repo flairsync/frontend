@@ -15,10 +15,7 @@ export const usePublicProfile = (userId?: string) => {
         queryKey: ["public_user_display_name", userId],
         queryFn: async () => {
             if (!userId) return;
-            const userData = await getPublicUserDisplayName(userId);
-            if (userData.data.success) {
-                return userData.data.data;
-            }
+            return await getPublicUserDisplayName(userId);
         },
         enabled: userId != null,
         meta: {

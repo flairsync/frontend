@@ -1,5 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { ApplicationStatus, JobCategory, JobStatus, JobType } from "@/models/Job";
+import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 export interface CreateJobDto {
   title: string;
@@ -53,19 +54,18 @@ const businessesBaseUrl = `${import.meta.env.BASE_URL}/businesses`;
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
-export const fetchPublicJobsApiCall = (params: ListJobsParams = {}) => {
+export const fetchPublicJobsApiCall = async (params: ListJobsParams = {}) => {
   const qs = new URLSearchParams();
   if (params.page) qs.set('page', String(params.page));
   if (params.limit) qs.set('limit', String(params.limit));
   if (params.type) qs.set('type', params.type);
   if (params.category) qs.set('category', params.category);
   if (params.location) qs.set('location', params.location);
-  return flairapi.get(`${baseUrl}?${qs.toString()}`);
+  return unwrapPaginated(await flairapi.get(`${baseUrl}?${qs.toString()}`));
 };
 
-export const fetchPublicJobBySlugApiCall = (slug: string) => {
-  return flairapi.get(`${baseUrl}/${slug}`);
-};
+export const fetchPublicJobBySlugApiCall = async (slug: string) =>
+  unwrap(await flairapi.get(`${baseUrl}/${slug}`));
 
 export const applyToJobApiCall = (jobId: string, data: ApplyToJobDto) => {
   return flairapi.post(`${baseUrl}/${jobId}/apply`, data);
@@ -73,17 +73,19 @@ export const applyToJobApiCall = (jobId: string, data: ApplyToJobDto) => {
 
 // ─── Professional: My Application ────────────────────────────────────────────
 
-export const fetchMyApplicationsApiCall = (params: ListApplicationsParams = {}) => {
+export const fetchMyApplicationsApiCall = async (params: ListApplicationsParams = {}) => {
   const qs = new URLSearchParams();
   if (params.page) qs.set('page', String(params.page));
   if (params.limit) qs.set('limit', String(params.limit));
   if (params.status) qs.set('status', params.status);
-  return flairapi.get(`${baseUrl}/my/applications?${qs.toString()}`);
+  return unwrapPaginated(await flairapi.get(`${baseUrl}/my/applications?${qs.toString()}`));
 };
 
-export const fetchMyApplicationDetailApiCall = (jobId: string) => {
-  return flairapi.get(`${baseUrl}/${jobId}/my-application`);
-};
+export const fetchMyApplicationDetailApiCall = async (jobId: string) =>
+  unwrap(await flairapi.get(`${baseUrl}/${jobId}/my-application`));
+
+export const fetchMyApplicationByAppIdApiCall = async (applicationId: string) =>
+  unwrap(await flairapi.get(`${baseUrl}/my/applications/${applicationId}`));
 
 export const uploadResumeFileApiCall = (jobId: string, file: File) => {
   const form = new FormData();
@@ -99,19 +101,18 @@ export const setResumeUrlApiCall = (jobId: string, resumeUrl: string) => {
 
 // ─── Owner API ────────────────────────────────────────────────────────────────
 
-export const fetchBusinessJobsApiCall = (businessId: string, params: ListJobsParams = {}) => {
+export const fetchBusinessJobsApiCall = async (businessId: string, params: ListJobsParams = {}) => {
   const qs = new URLSearchParams();
   if (params.page) qs.set('page', String(params.page));
   if (params.limit) qs.set('limit', String(params.limit));
   if (params.status) qs.set('status', params.status);
   if (params.type) qs.set('type', params.type);
   if (params.category) qs.set('category', params.category);
-  return flairapi.get(`${businessesBaseUrl}/${businessId}/jobs?${qs.toString()}`);
+  return unwrapPaginated(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs?${qs.toString()}`));
 };
 
-export const fetchBusinessJobByIdApiCall = (businessId: string, jobId: string) => {
-  return flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}`);
-};
+export const fetchBusinessJobByIdApiCall = async (businessId: string, jobId: string) =>
+  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}`));
 
 export const createJobApiCall = (businessId: string, data: CreateJobDto) => {
   return flairapi.post(`${businessesBaseUrl}/${businessId}/jobs`, data);
@@ -125,7 +126,7 @@ export const deleteJobApiCall = (businessId: string, jobId: string) => {
   return flairapi.delete(`${businessesBaseUrl}/${businessId}/jobs/${jobId}`);
 };
 
-export const fetchJobApplicationsApiCall = (
+export const fetchJobApplicationsApiCall = async (
   businessId: string,
   jobId: string,
   params: ListApplicationsParams = {}
@@ -134,16 +135,15 @@ export const fetchJobApplicationsApiCall = (
   if (params.page) qs.set('page', String(params.page));
   if (params.limit) qs.set('limit', String(params.limit));
   if (params.status) qs.set('status', params.status);
-  return flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications?${qs.toString()}`);
+  return unwrapPaginated(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications?${qs.toString()}`));
 };
 
-export const fetchOwnerApplicationDetailApiCall = (
+export const fetchOwnerApplicationDetailApiCall = async (
   businessId: string,
   jobId: string,
   appId: string
-) => {
-  return flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications/${appId}`);
-};
+) =>
+  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications/${appId}`));
 
 export const updateApplicationStatusApiCall = (
   businessId: string,
@@ -154,5 +154,16 @@ export const updateApplicationStatusApiCall = (
   return flairapi.patch(
     `${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications/${applicationId}`,
     data
+  );
+};
+
+export const sendStaffInviteApiCall = (
+  businessId: string,
+  jobId: string,
+  applicationId: string
+) => {
+  return flairapi.post(
+    `${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications/${applicationId}/invite`,
+    {}
   );
 };

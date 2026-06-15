@@ -25,7 +25,7 @@ export const ManageGroupsModal: React.FC<ManageGroupsModalProps> = ({
     onDeleteGroup,
     isProcessing
 }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [groupName, setGroupName] = useState("");
     const [editingGroup, setEditingGroup] = useState<InventoryGroup | null>(null);
 

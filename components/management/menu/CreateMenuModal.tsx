@@ -42,7 +42,7 @@ type CreateMenuModalProps = {
 };
 
 export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, onClose, menu }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [icon, setIcon] = useState<string>("Coffee");

@@ -1,0 +1,160 @@
+{
+  "shared": {
+    "days": {
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado",
+      "sunday": "Domingo"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "add": "Añadir",
+      "move": "Mover",
+      "duplicate": "Duplicar",
+      "confirm": "Confirmar",
+      "back": "Atrás",
+      "search": "Buscar",
+      "clear": "Limpiar",
+      "all": "Todo",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "retry": "Reintentar conexión"
+    },
+    "tags": {
+      "halal": "Halal",
+      "vegan": "Vegano",
+      "vegetarian": "Vegetariano",
+      "gluten_free": "Sin gluten",
+      "organic": "Ecológico",
+      "kosher": "Kosher",
+      "dairy_free": "Sin lácteos",
+      "nut_free": "Sin frutos secos",
+      "locally_sourced": "Producto local",
+      "fair_trade": "Comercio justo",
+      "pet_friendly": "Mascotas permitidas",
+      "outdoor_seating": "Terraza",
+      "takeaway": "Para llevar",
+      "delivery": "A domicilio",
+      "kid_friendly": "Apto para niños",
+      "wifi": "Wi-Fi",
+      "wheelchair_accessible": "Accesible para sillas de ruedas",
+      "brunch": "Brunch",
+      "breakfast": "Desayuno",
+      "late_night": "Abierto de noche",
+      "cozy": "Acogedor",
+      "romantic": "Romántico",
+      "family_friendly": "Familiar",
+      "trendy": "Moderna",
+      "quiet": "Tranquilo",
+      "lively": "Animado"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Página no encontrada",
+      "description": "No podemos encontrar la página que buscas. Puede haber sido movida, renombrada o nunca haber existido.",
+      "quickSearch": "Búsqueda rápida",
+      "searchPlaceholder": "Buscar páginas, personal o configuraciones...",
+      "searchButton": "Buscar",
+      "goToDashboard": "Ir al panel",
+      "contactSupport": "Contactar soporte",
+      "reportError": "Si crees que esto es un error, repórtalo y lo investigaremos.",
+      "lostTitle": "¿Perdido en la cocina?",
+      "lostDescription": "Prueba uno de los enlaces a continuación o vuelve al panel principal.",
+      "staffManagement": "Gestión de personal",
+      "scheduleManagement": "Gestión de horarios",
+      "settings": "Configuraciones",
+      "errorCode": "Código de error:"
+    },
+    "500": {
+      "title": "500 Error interno del servidor",
+      "description": "Algo salió mal."
+    },
+    "technical": {
+      "network_title": "Conexión perdida",
+      "error_title": "Error del sistema",
+      "network_error": "Error de red o conexión perdida. Estamos trabajando en ello.",
+      "server_error": "Error interno del servidor. Por favor, inténtalo de nuevo más tarde.",
+      "session_expired": "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.",
+      "unexpected_error": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+      "working_on_it": "Somos conscientes del problema y estamos trabajando para restaurar el acceso."
+    }
+  },
+  "input_errors": {
+    "email": {
+      "invalid": "Dirección de correo inválida",
+      "required": "El correo es requerido"
+    },
+    "firstName": {
+      "required": "El nombre es requerido",
+      "too_long": "El nombre es demasiado largo"
+    },
+    "lastName": {
+      "required": "El apellido es requerido",
+      "too_long": "El apellido es demasiado largo"
+    },
+    "displayName": {
+      "required": "El nombre de usuario es requerido",
+      "too_long": "El nombre de usuario es demasiado largo"
+    },
+    "password": {
+      "min_length": "La contraseña debe tener al menos 8 caracteres",
+      "requirements": "La contraseña debe contener al menos una mayúscula, una minúscula y un número",
+      "too_long": "La contraseña es demasiado larga",
+      "required": "La contraseña es requerida"
+    },
+    "repeat_password": {
+      "mismatch": "Las contraseñas deben coincidir",
+      "required": "Por favor confirma tu contraseña"
+    },
+    "repeatNewPassword": {
+      "mismatch": "Las nuevas contraseñas deben coincidir",
+      "required": "Por favor confirma tu nueva contraseña"
+    },
+    "checkbox": {
+      "required": "Debes confirmar esta casilla"
+    }
+  },
+  "business_types": {
+    "bakery": "Panadería",
+    "fast_food": "Comida Rápida",
+    "coffee_shop": "Cafetería",
+    "restaurant": "Restaurante",
+    "other": "Otro"
+  },
+  "cookies": {
+    "banner_text": "Utilizamos cookies para mejorar su experiencia, recordar sus preferencias y analizar el uso del sitio. Al hacer clic en «Aceptar todo», acepta todas las cookies.",
+    "learn_more": "Más información en nuestra Política de cookies y RGPD",
+    "manage": "Gestionar preferencias",
+    "reject_all": "Rechazar todo",
+    "accept_all": "Aceptar todo",
+    "always_active": "Siempre activo",
+    "save_preferences": "Guardar mis preferencias",
+    "preferences_title": "Preferencias de cookies",
+    "preferences_description": "Elija qué cookies permite. Las cookies estrictamente necesarias no pueden desactivarse, ya que son imprescindibles para el funcionamiento de la plataforma.",
+    "categories": {
+      "necessary": {
+        "label": "Estrictamente necesarias",
+        "description": "Requeridas para la autenticación, la seguridad y las funciones principales. No se pueden desactivar."
+      },
+      "functional": {
+        "label": "Funcionales",
+        "description": "Recuerdan su idioma, tema y otras preferencias para ofrecer una experiencia personalizada."
+      },
+      "analytics": {
+        "label": "Analíticas",
+        "description": "Nos ayudan a entender cómo usa la plataforma para poder mejorarla. Todos los datos son anónimos."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "description": "Utilizadas para ofrecer contenido relevante y medir la efectividad de las campañas. No vendemos sus datos."
+      }
+    }
+  }
+}

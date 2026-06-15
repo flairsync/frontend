@@ -1,11 +1,11 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../shared/api-response";
 const baseUrl = `${import.meta.env.BASE_URL}/users`;
 
 const myUserProfileUrl = `${baseUrl}/me`;
 
-export const getUserProfileApiCall = () => {
-  return flairapi.get(myUserProfileUrl);
-};
+export const getUserProfileApiCall = async () =>
+  unwrap(await flairapi.get(myUserProfileUrl));
 
 export type UpdateUserProfileDTO = {
   firstName?: string;
@@ -23,9 +23,8 @@ export const updateUserProfileApiCall = (data: UpdateUserProfileDTO) => {
 };
 
 
-export const getPublicUserDisplayName = (userId: string) => {
-  return flairapi.get(`${baseUrl}/${userId}/display-name`);
-};
+export const getPublicUserDisplayName = async (userId: string) =>
+  unwrap(await flairapi.get(`${baseUrl}/${userId}/display-name`));
 
 export const requestAccountDeletionApiCall = () => {
   return flairapi.delete(myUserProfileUrl);
@@ -39,6 +38,5 @@ export const requestDataExportApiCall = () => {
   return flairapi.post(`${myUserProfileUrl}/data-export`);
 };
 
-export const getDataExportStatusApiCall = () => {
-  return flairapi.get(`${myUserProfileUrl}/data-export/status`);
-};
+export const getDataExportStatusApiCall = async () =>
+  unwrap(await flairapi.get(`${myUserProfileUrl}/data-export/status`));

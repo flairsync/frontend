@@ -19,7 +19,7 @@ export const useBusinessInvitation = (inviteId?: string) => {
     queryFn: async () => {
       if (!inviteId) return;
       const resp = await fetchInvitationDetailsApiCall(inviteId);
-      return BusinessEmployeeInvitation.parseApiResponse(resp.data.data);
+      return BusinessEmployeeInvitation.parseApiResponse(resp as any);
     },
     enabled: !!inviteId,
     gcTime: Infinity,

@@ -2,11 +2,12 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSystemErrorStore } from './SystemErrorStore';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, RefreshCw, WifiOff } from 'lucide-react';
+import { AlertTriangle, RefreshCw, WifiOff, ShieldOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 export const SystemErrorOverlay: React.FC = () => {
-    const { isLocked, errorType, unlock } = useSystemErrorStore();
+    const { isLocked, errorType, unlock, permissionDenied, closePermissionDenied } = useSystemErrorStore();
     const { t } = useTranslation();
 
     React.useEffect(() => {
@@ -27,9 +28,10 @@ export const SystemErrorOverlay: React.FC = () => {
         window.location.reload();
     };
 
-    if (!isLocked) return null;
+    if (!isLocked && !permissionDenied) return null;
 
     return (
+        <>
         <AnimatePresence>
             {isLocked && (
                 <motion.div
@@ -86,5 +88,27 @@ export const SystemErrorOverlay: React.FC = () => {
                 </motion.div>
             )}
         </AnimatePresence>
+
+        <Dialog open={permissionDenied} onOpenChange={(open) => !open && closePermissionDenied()}>
+            <DialogContent className="max-w-sm text-center">
+                <DialogHeader>
+                    <div className="flex justify-center mb-2">
+                        <div className="p-3 rounded-full bg-destructive/10 text-destructive">
+                            <ShieldOff size={32} />
+                        </div>
+                    </div>
+                    <DialogTitle>{t('errors.permission.title', 'Access Denied')}</DialogTitle>
+                    <DialogDescription>
+                        {t('errors.permission.description', "You don't have permission to view this resource.")}
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="justify-center">
+                    <Button onClick={closePermissionDenied} className="w-full">
+                        {t('shared.actions.dismiss', 'Dismiss')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+        </>
     );
 };

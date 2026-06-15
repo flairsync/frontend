@@ -3,11 +3,11 @@ import { usePageContext } from "vike-react/usePageContext";
 import { format } from "date-fns";
 import {
   ArrowLeft,
-  Mail,
   FileText,
   Link,
   ExternalLink,
   Loader2,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -28,7 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useOwnerApplicationDetail } from "@/features/jobs/useJobs";
+import { useOwnerApplicationDetail, useSendStaffInvite } from "@/features/jobs/useJobs";
 import {
   APPLICATION_STATUS_COLORS,
   APPLICATION_STATUS_OWNER_LABELS,
@@ -54,6 +54,8 @@ const OwnerApplicationDetailPage = () => {
   const { application, loadingApplication, isError, updateStatus, updatingStatus } =
     useOwnerApplicationDetail(businessId, jobId, appId);
 
+  const { sendInvite, sendingInvite } = useSendStaffInvite(businessId, jobId, appId);
+
   const [editingNote, setEditingNote] = useState(false);
   const [noteValue, setNoteValue] = useState("");
   const [acceptConfirmOpen, setAcceptConfirmOpen] = useState(false);
@@ -65,6 +67,8 @@ const OwnerApplicationDetailPage = () => {
 
   const colorKey = application ? APPLICATION_STATUS_COLORS[application.status] : "gray";
   const badgeClass = STATUS_BADGE_CLASSES[colorKey] ?? STATUS_BADGE_CLASSES.gray;
+  const isInviteFrozen = !!application?.invitedAt;
+  const canSendInvite = application?.status === "accepted" && !isInviteFrozen;
 
   const handleStatusUpdate = (status: ApplicationStatus, ownerNote?: string) => {
     updateStatus({ status, ownerNote });
@@ -146,14 +150,38 @@ const OwnerApplicationDetailPage = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
                   <span className={cn("text-xs font-medium px-2.5 py-1 rounded-full", badgeClass)}>
                     {APPLICATION_STATUS_OWNER_LABELS[application.status]}
                   </span>
 
+                  {isInviteFrozen ? (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                      <Mail className="h-3 w-3" />
+                      Invite Sent · {format(new Date(application.invitedAt!), "MMM d, yyyy")}
+                    </span>
+                  ) : canSendInvite ? (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 text-xs gap-1 border-indigo-300 text-indigo-700 hover:bg-indigo-50 dark:border-indigo-700 dark:text-indigo-400"
+                      onClick={() => sendInvite()}
+                      disabled={sendingInvite}
+                    >
+                      {sendingInvite ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <>
+                          <Mail className="h-3.5 w-3.5" />
+                          Send Staff Invite
+                        </>
+                      )}
+                    </Button>
+                  ) : null}
+
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" disabled={updatingStatus}>
+                      <Button variant="outline" size="sm" disabled={updatingStatus || isInviteFrozen}>
                         {updatingStatus ? (
                           <Loader2 className="h-3.5 w-3.5 animate-spin" />
                         ) : (

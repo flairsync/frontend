@@ -16,10 +16,8 @@ export const useAbsences = (businessId: string, employmentId?: string) => {
     queryKey: ["absences", businessId, employmentId],
     queryFn: async () => {
       try {
-        const resp = await fetchAbsenceRecordsApiCall(businessId, employmentId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchAbsenceRecordsApiCall(businessId, employmentId);
+        return Array.isArray(data) ? data : [];
       } catch {
         return [];
       }
@@ -78,10 +76,8 @@ export const useMyAbsences = (employmentId: string) => {
     queryKey: ["my_absences", employmentId],
     queryFn: async () => {
       try {
-        const resp = await fetchMyAbsencesApiCall(employmentId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchMyAbsencesApiCall(employmentId);
+        return Array.isArray(data) ? data : [];
       } catch {
         return [];
       }

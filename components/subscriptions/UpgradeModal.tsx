@@ -9,7 +9,7 @@ import { PricingType } from "@/models/SubscriptionPack";
 import { cn } from "@/lib/utils";
 
 const UpgradeModal: React.FC = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { isUpgradeModalOpen, closeUpgradeModal, limitMessage } = useSubscriptionStore();
     const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout } = useSubscriptions();
     const [isMonthly, setIsMonthly] = useState(true);

@@ -1,10 +1,16 @@
 import flairapi from "@/lib/flairapi";
-import { CreateOrderDto } from "../orders/service";
 import { WalkInReservationDto, AssignTableDto, CustomerLateDto } from "./types";
+import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const getReservationsUrl = (businessId: string) => {
     return `${import.meta.env.BASE_URL}/businesses/${businessId}/reservations`;
 };
+
+export interface PreOrderItem {
+    menuItemId: string;
+    quantity: number;
+    notes?: string;
+}
 
 // DTOs
 export interface CreateReservationDto {
@@ -14,9 +20,9 @@ export interface CreateReservationDto {
     reservationTime: string;
     guestCount: number;
     notes?: string;
-    tableId?: string; // Optional at creation
-    userId?: string; // Optional, links reservation to a known user profile
-    order?: CreateOrderDto; // Optional pre-order
+    tableId?: string;
+    userId?: string;
+    preOrderItems?: PreOrderItem[];
     reservationSource?: string;
     durationMinutes?: number;
 }
@@ -43,17 +49,15 @@ export interface UpdateReservationDto {
 }
 
 // API Calls
-export const fetchReservationsApiCall = (businessId: string, params?: FetchReservationsDto) => {
-    return flairapi.get(getReservationsUrl(businessId), { params });
-};
+export const fetchReservationsApiCall = async (businessId: string, params?: FetchReservationsDto) =>
+    unwrapPaginated(await flairapi.get(getReservationsUrl(businessId), { params }));
 
 export const createReservationApiCall = (businessId: string, data: CreateReservationDto) => {
     return flairapi.post(getReservationsUrl(businessId), data);
 };
 
-export const fetchReservationDetailsApiCall = (businessId: string, reservationId: string) => {
-    return flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}`);
-};
+export const fetchReservationDetailsApiCall = async (businessId: string, reservationId: string) =>
+    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}`));
 
 export const updateReservationApiCall = (businessId: string, reservationId: string, data: UpdateReservationDto) => {
     return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}`, data);
@@ -67,22 +71,15 @@ export const markReservationNoShowApiCall = (businessId: string, reservationId: 
     return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}/no-show`);
 };
 
-export const findAvailabilityApiCall = (businessId: string, date: string, guestCount: number) => {
-    return flairapi.get(`${getReservationsUrl(businessId)}/availability`, {
-        params: { date, guestCount }
-    });
-};
+export const findAvailabilityApiCall = async (businessId: string, date: string, guestCount: number) =>
+    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
 
-export const lookupUserApiCall = (email?: string, phone?: string) => {
-    return flairapi.get(`${import.meta.env.BASE_URL}/users/lookup`, {
-        params: { email, phone }
-    });
-};
+export const lookupUserApiCall = async (email?: string, phone?: string) =>
+    unwrap(await flairapi.get(`${import.meta.env.BASE_URL}/users/lookup`, { params: { email, phone } }));
 
 // V2 endpoints
-export const fetchReservationDashboardApiCall = (businessId: string) => {
-    return flairapi.get(`${getReservationsUrl(businessId)}/dashboard`);
-};
+export const fetchReservationDashboardApiCall = async (businessId: string) =>
+    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/dashboard`));
 
 export const createWalkInApiCall = (businessId: string, data: WalkInReservationDto) => {
     return flairapi.post(`${getReservationsUrl(businessId)}/walk-in`, data);
@@ -96,6 +93,5 @@ export const recordCustomerLateApiCall = (businessId: string, reservationId: str
     return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}/customer-late`, data);
 };
 
-export const fetchReservationEventsApiCall = (businessId: string, reservationId: string) => {
-    return flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}/events`);
-};
+export const fetchReservationEventsApiCall = async (businessId: string, reservationId: string) =>
+    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}/events`));

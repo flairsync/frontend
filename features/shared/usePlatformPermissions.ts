@@ -7,8 +7,8 @@ export const usePlatformPermissions = () => {
     {
       queryKey: ["permissions_list"],
       queryFn: async () => {
-        const permsD = await getPermissionsListApiCall();
-        return Permission.parseApiArrayResponse(permsD.data.data);
+        const data = await getPermissionsListApiCall();
+        return Permission.parseApiArrayResponse(data);
       },
       gcTime: Infinity,
       staleTime: Infinity,

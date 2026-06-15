@@ -12,7 +12,7 @@ const PublicFeedSearchHero = ({
     setSearchQuery: (val: string) => void;
     onSearch: () => void;
 }) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation("feed")
 
     return (
         <section className="relative overflow-hidden bg-background pt-16 pb-8 md:pt-24 md:pb-12">

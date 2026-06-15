@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrapPaginated, PaginatedData } from "../shared/api-response";
 
 const baseUrl = `${import.meta.env.BASE_URL}/user-favorites`;
 
@@ -15,6 +16,5 @@ export interface FetchFavoritesParams {
     limit?: number;
 }
 
-export const getFavoritesApiCall = (params: FetchFavoritesParams = {}) => {
-    return flairapi.get(baseUrl, { params });
-};
+export const getFavoritesApiCall = async (params: FetchFavoritesParams = {}): Promise<PaginatedData<any>> =>
+    unwrapPaginated(await flairapi.get(baseUrl, { params }));

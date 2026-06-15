@@ -8,7 +8,6 @@ import { usePageContext } from "vike-react/usePageContext";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { IconRenderer } from "@/components/shared/IconRenderer";
 import { useTranslation } from "react-i18next";
-import UpgradeModal from "@/components/subscriptions/UpgradeModal";
 import {
     Tooltip,
     TooltipContent,
@@ -19,8 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import { useUsage } from "@/features/subscriptions/useUsage";
-
+import { useBusinessPlan } from "@/features/business/useBusinessPlan";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
@@ -41,7 +39,7 @@ const getBadgeStyles = (level: number) => {
 };
 
 const MenusPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [createModal, setCreateModal] = useState(false);
     const {
         routeParams,
@@ -52,13 +50,13 @@ const MenusPage: React.FC = () => {
         createNewMenu
     } = useBusinessMenus(routeParams.id);
 
-    const { usage } = useUsage();
+    const { plan } = useBusinessPlan(routeParams.id);
     const { openUpgradeModal } = useSubscriptionStore();
 
-    const maxMenus = usage?.allowed.menus || 0;
-    const currentMenus = usage?.current.menus || 0;
+    const maxMenus = plan?.allowed.menus || 0;
+    const currentMenus = plan?.current.menus || 0;
     const remainingMenus = Math.max(0, maxMenus - currentMenus);
-    const canCreateMenu = usage?.canCreateMenu ?? true;
+    const canCreateMenu = plan ? plan.canCreateMenu : true;
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
@@ -92,7 +90,7 @@ const MenusPage: React.FC = () => {
 
                 {/* Subscription counter */}
                 <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 mb-4">
-                    {usage ? (
+                    {plan ? (
                         <>
                             <span>
                                 {canCreateMenu
@@ -104,7 +102,7 @@ const MenusPage: React.FC = () => {
                                     size="sm"
                                     variant="outline"
                                     className="ml-2 text-indigo-600 border-indigo-200"
-                                    onClick={() => openUpgradeModal()}
+                                    onClick={() => openUpgradeModal(`The business plan allows up to ${plan.allowed.menus} menus. The owner needs to upgrade to add more.`)}
                                 >
                                     {t('menu_management.list.upgrade')}
                                 </Button>
@@ -126,7 +124,7 @@ const MenusPage: React.FC = () => {
                                 if (canCreateMenu) {
                                     setCreateModal(true);
                                 } else {
-                                    openUpgradeModal("You've reached your menu limit. Upgrade to add more menus.");
+                                    openUpgradeModal(`The business plan allows up to ${plan?.allowed.menus ?? 0} menus. The owner needs to upgrade to add more.`);
                                 }
                             }}
                         >
@@ -233,7 +231,7 @@ const MenusPage: React.FC = () => {
                                     if (canCreateMenu) {
                                         setCreateModal(true);
                                     } else {
-                                        openUpgradeModal("You've reached your menu limit. Upgrade to add more menus.");
+                                        openUpgradeModal(`The business plan allows up to ${plan?.allowed.menus ?? 0} menus. The owner needs to upgrade to add more.`);
                                     }
                                 }}
                             >

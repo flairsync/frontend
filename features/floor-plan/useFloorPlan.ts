@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
     fetchFloorsApiCall,
+    fetchFloorStatsApiCall,
     createFloorApiCall,
     updateFloorApiCall,
     deleteFloorApiCall,
@@ -14,23 +15,40 @@ import {
     CreateTableDto,
     UpdateTableDto,
     BatchCreateTableDto,
-    batchCreateTablesApiCall
+    batchCreateTablesApiCall,
+    BatchCreateElementsDto,
+    UpdateElementDto,
+    batchCreateElementsApiCall,
+    updateElementApiCall,
+    deleteElementApiCall,
 } from "./service";
 
-export const useFloors = (businessId: string) => {
+export const useFloorStats = (businessId: string) => {
+    const { data: stats, isFetching: fetchingStats } = useQuery({
+        queryKey: ["floor-stats", businessId],
+        queryFn: async () => {
+            try {
+                return await fetchFloorStatsApiCall(businessId);
+            } catch (error) {
+                console.warn("Failed to fetch floor stats:", error);
+                return null;
+            }
+        },
+        enabled: !!businessId,
+    });
+
+    return { stats, fetchingStats };
+};
+
+export const useFloors = (businessId: string, publishedOnly?: boolean) => {
     const queryClient = useQueryClient();
 
     const { data: floors, isFetching: fetchingFloors, refetch } = useQuery({
         queryKey: ["floors", businessId],
         queryFn: async () => {
             try {
-                const resp = await fetchFloorsApiCall(businessId);
-                const resData = resp.data;
-                // Defensive extraction: look for data in resData.data or resData
-                const actualData = resData?.data !== undefined ? resData.data : resData;
-
-                if (actualData && actualData.data && Array.isArray(actualData.data)) return actualData.data;
-                return Array.isArray(actualData) ? actualData : [];
+                const data = await fetchFloorsApiCall(businessId, publishedOnly);
+                return Array.isArray(data) ? data : [];
             } catch (error) {
                 console.warn("Failed to fetch floors:", error);
                 return [];
@@ -44,6 +62,7 @@ export const useFloors = (businessId: string) => {
         onSuccess: () => {
             toast.success("Floor created successfully");
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floor-stats", businessId] });
         },
     });
 
@@ -53,6 +72,7 @@ export const useFloors = (businessId: string) => {
         onSuccess: () => {
             toast.success("Floor updated successfully");
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floor-stats", businessId] });
         },
     });
 
@@ -61,6 +81,7 @@ export const useFloors = (businessId: string) => {
         onSuccess: () => {
             toast.success("Floor deleted successfully");
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floor-stats", businessId] });
         },
     });
 
@@ -84,12 +105,8 @@ export const useTables = (businessId: string) => {
         queryKey: ["tables", businessId],
         queryFn: async () => {
             try {
-                const resp = await fetchTablesApiCall(businessId);
-                const resData = resp.data;
-                const actualData = resData?.data !== undefined ? resData.data : resData;
-
-                if (actualData && actualData.data && Array.isArray(actualData.data)) return actualData.data;
-                return Array.isArray(actualData) ? actualData : [];
+                const data = await fetchTablesApiCall(businessId);
+                return Array.isArray(data) ? data : [];
             } catch (error) {
                 console.warn("Failed to fetch tables:", error);
                 return [];
@@ -142,10 +159,32 @@ export const useTables = (businessId: string) => {
         createTable: createTableMutation.mutate,
         isCreatingTable: createTableMutation.isPending,
         updateTable: updateTableMutation.mutate,
+        updateTableAsync: updateTableMutation.mutateAsync,
         isUpdatingTable: updateTableMutation.isPending,
         deleteTable: deleteTableMutation.mutate,
         isDeletingTable: deleteTableMutation.isPending,
         batchCreateTables: batchCreateTableMutation.mutate,
         isBatchCreatingTables: batchCreateTableMutation.isPending,
+    };
+};
+
+export const useElements = (businessId: string) => {
+    const batchCreateMutation = useMutation({
+        mutationFn: (data: BatchCreateElementsDto) => batchCreateElementsApiCall(businessId, data),
+    });
+
+    const updateMutation = useMutation({
+        mutationFn: ({ elementId, data }: { elementId: string; data: UpdateElementDto }) =>
+            updateElementApiCall(businessId, elementId, data),
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (elementId: string) => deleteElementApiCall(businessId, elementId),
+    });
+
+    return {
+        batchCreateElements: batchCreateMutation.mutateAsync,
+        updateElement: updateMutation.mutateAsync,
+        deleteElement: deleteMutation.mutateAsync,
     };
 };

@@ -8,23 +8,21 @@ import {
 } from "./service";
 import { ShiftSwap } from "@/models/business/shift/ShiftSwap";
 
-export const useShiftSwaps = (businessId: string, employmentId?: string) => {
+export const useShiftSwaps = (businessId: string, employmentId?: string, options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();
 
   const { data: swaps, isFetching: fetchingSwaps } = useQuery<ShiftSwap[]>({
     queryKey: ["shift_swaps", businessId, employmentId],
     queryFn: async () => {
       try {
-        const resp = await fetchShiftSwapsApiCall(businessId, employmentId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchShiftSwapsApiCall(businessId, employmentId);
+        return Array.isArray(data) ? data : [];
       } catch (error) {
         console.warn("Failed to fetch shift swaps:", error);
         return [];
       }
     },
-    enabled: !!businessId,
+    enabled: options?.enabled !== false && !!businessId,
   });
 
   const requestSwapMutation = useMutation({

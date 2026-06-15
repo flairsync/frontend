@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, Building, Building2, Calendar, CreditCard, Heart, HelpCircle, LayoutDashboard, LucideNewspaper, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils } from "lucide-react"
+import { BarChart3, Building, Building2, Calendar, CreditCard, Heart, HelpCircle, LayoutDashboard, LucideNewspaper, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils, Briefcase } from "lucide-react"
 import WebsiteLogo from "@/components/shared/WebsiteLogo"
 
 // This is sample data.
@@ -53,6 +53,12 @@ const ownerNavData = {
                     title: "Plans",
                     url: "/manage/plans",
                     icon: CreditCard,
+                },
+                {
+                    key: "professional-profile",
+                    title: "Professional Profile",
+                    url: "/manage/professional-profile",
+                    icon: Briefcase,
                 },
                 {
                     key: "help",

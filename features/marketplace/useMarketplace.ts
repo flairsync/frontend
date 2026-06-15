@@ -1,48 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-    getPlatformItemsApiCall,
     getBusinessShopItemsApiCall,
     getItemDetailsApiCall,
-    createItemApiCall,
-    updateItemApiCall,
-    deleteItemApiCall,
-    CreateMarketplaceItemDto,
-    UpdateMarketplaceItemDto
+    getMgmtItemsApiCall,
+    createMgmtItemApiCall,
+    updateMgmtItemApiCall,
+    updateMgmtItemStockApiCall,
+    uploadMgmtItemImagesApiCall,
+    removeMgmtItemImageApiCall,
+    deleteMgmtItemApiCall,
+    UpdateMarketplaceItemDto,
 } from "./service";
 import { MarketplaceItem } from "@/models/MarketplaceItem";
 import { toast } from "sonner";
 
-export const usePlatformMarketplaceItems = (page: number = 1, limit: number = 10) => {
-    return useQuery({
-        queryKey: ["marketplace_items", "platform", page, limit],
-        queryFn: async () => {
-            const res = await getPlatformItemsApiCall(page, limit);
-            const apiResp = res.data;
-            if (apiResp?.success && apiResp?.data) {
-                return {
-                    data: (apiResp.data.data || []).map((item: any) => MarketplaceItem.parseApiResponse(item)),
-                    current: apiResp.data.current || 1,
-                    pages: apiResp.data.pages || 1
-                };
-            }
-            return { data: [], current: 1, pages: 1 };
-        }
-    });
-};
+// ─── Public / customer hooks ──────────────────────────────────────────────────
 
-export const useBusinessMarketplaceItems = (businessId?: string) => {
+export const useBusinessMarketplaceItems = (
+    businessId?: string,
+    params?: { search?: string; page?: number; limit?: number }
+) => {
     return useQuery({
-        queryKey: ["marketplace_items", "business", businessId],
+        queryKey: ["marketplace_items", "business", businessId, params],
         queryFn: async () => {
-            if (!businessId) return [];
-            const res = await getBusinessShopItemsApiCall(businessId);
-            const apiResp = res.data;
-            if (apiResp?.success && Array.isArray(apiResp.data)) {
-                return apiResp.data.map((item: any) => MarketplaceItem.parseApiResponse(item));
-            }
-            return [];
+            if (!businessId) return { data: [], current: 1, pages: 1 };
+            const res = await getBusinessShopItemsApiCall(businessId, params);
+            return {
+                data: (res.data || []).map((item: any) => MarketplaceItem.parseApiResponse(item)),
+                current: res.current || 1,
+                pages: res.pages || 1,
+            };
         },
-        enabled: !!businessId
+        enabled: !!businessId,
     });
 };
 
@@ -51,66 +40,112 @@ export const useMarketplaceItemDetails = (id?: string) => {
         queryKey: ["marketplace_item", id],
         queryFn: async () => {
             if (!id) return null;
-            const res = await getItemDetailsApiCall(id);
-            const apiResp = res.data;
-            if (apiResp?.success && apiResp?.data) {
-                return MarketplaceItem.parseApiResponse(apiResp.data);
-            }
-            return null;
+            const data = await getItemDetailsApiCall(id);
+            return data ? MarketplaceItem.parseApiResponse(data) : null;
         },
-        enabled: !!id
+        enabled: !!id,
     });
 };
 
-export const useMarketplaceMutations = () => {
+// ─── Management hooks ─────────────────────────────────────────────────────────
+
+export const useBusinessManagementItems = (businessId?: string) => {
+    return useQuery({
+        queryKey: ["marketplace_mgmt_items", businessId],
+        queryFn: async (): Promise<MarketplaceItem[]> => {
+            if (!businessId) return [];
+            const data = await getMgmtItemsApiCall(businessId);
+            return Array.isArray(data) ? data.map((item: any) => MarketplaceItem.parseApiResponse(item)) : [];
+        },
+        enabled: !!businessId,
+    });
+};
+
+export const useMarketplaceMutations = (businessId: string) => {
     const queryClient = useQueryClient();
 
-    const invalidateMarketplaceQueries = () => {
-        queryClient.invalidateQueries({ queryKey: ["marketplace_items"] });
-        queryClient.invalidateQueries({ queryKey: ["marketplace_item"] });
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ["marketplace_mgmt_items", businessId] });
+        queryClient.invalidateQueries({ queryKey: ["marketplace_items", "business", businessId] });
     };
 
     const createItem = useMutation({
-        mutationFn: async (data: CreateMarketplaceItemDto) => {
-            toast.loading("Creating item...", { id: "create-item" });
-            return await createItemApiCall(data);
+        mutationFn: (formData: FormData) => {
+            toast.loading("Creating item...", { id: "mp-create" });
+            return createMgmtItemApiCall(businessId, formData);
         },
         onSuccess: () => {
-            toast.success("Item created successfully", { id: "create-item" });
-            invalidateMarketplaceQueries();
+            toast.success("Item created", { id: "mp-create" });
+            invalidate();
         },
         onError: (err: any) => {
-            toast.error(err?.response?.data?.message || "Failed to create item", { id: "create-item" });
-        }
+            toast.error(err?.response?.data?.message || "Failed to create item", { id: "mp-create" });
+        },
     });
 
     const updateItem = useMutation({
-        mutationFn: async ({ id, data }: { id: string, data: UpdateMarketplaceItemDto }) => {
-            toast.loading("Updating item...", { id: "update-item" });
-            return await updateItemApiCall(id, data);
+        mutationFn: ({ id, data }: { id: string; data: UpdateMarketplaceItemDto }) => {
+            toast.loading("Updating item...", { id: "mp-update" });
+            return updateMgmtItemApiCall(businessId, id, data);
         },
         onSuccess: () => {
-            toast.success("Item updated successfully", { id: "update-item" });
-            invalidateMarketplaceQueries();
+            toast.success("Item updated", { id: "mp-update" });
+            invalidate();
         },
         onError: (err: any) => {
-            toast.error(err?.response?.data?.message || "Failed to update item", { id: "update-item" });
-        }
+            toast.error(err?.response?.data?.message || "Failed to update item", { id: "mp-update" });
+        },
+    });
+
+    const updateStock = useMutation({
+        mutationFn: ({ id, stock }: { id: string; stock: number }) =>
+            updateMgmtItemStockApiCall(businessId, id, stock),
+        onSuccess: () => {
+            invalidate();
+        },
+        onError: (err: any) => {
+            toast.error(err?.response?.data?.message || "Failed to update stock");
+        },
+    });
+
+    const uploadImages = useMutation({
+        mutationFn: ({ id, formData }: { id: string; formData: FormData }) => {
+            toast.loading("Uploading images...", { id: "mp-images" });
+            return uploadMgmtItemImagesApiCall(businessId, id, formData);
+        },
+        onSuccess: () => {
+            toast.success("Images uploaded", { id: "mp-images" });
+            invalidate();
+        },
+        onError: (err: any) => {
+            toast.error(err?.response?.data?.message || "Failed to upload images", { id: "mp-images" });
+        },
+    });
+
+    const removeImage = useMutation({
+        mutationFn: ({ id, imageUrl }: { id: string; imageUrl: string }) =>
+            removeMgmtItemImageApiCall(businessId, id, imageUrl),
+        onSuccess: () => {
+            invalidate();
+        },
+        onError: (err: any) => {
+            toast.error(err?.response?.data?.message || "Failed to remove image");
+        },
     });
 
     const deleteItem = useMutation({
-        mutationFn: async (id: string) => {
-            toast.loading("Deleting item...", { id: "delete-item" });
-            return await deleteItemApiCall(id);
+        mutationFn: (id: string) => {
+            toast.loading("Deleting item...", { id: "mp-delete" });
+            return deleteMgmtItemApiCall(businessId, id);
         },
         onSuccess: () => {
-            toast.success("Item deleted successfully", { id: "delete-item" });
-            invalidateMarketplaceQueries();
+            toast.success("Item deleted", { id: "mp-delete" });
+            invalidate();
         },
         onError: (err: any) => {
-            toast.error(err?.response?.data?.message || "Failed to delete item", { id: "delete-item" });
-        }
+            toast.error(err?.response?.data?.message || "Failed to delete item", { id: "mp-delete" });
+        },
     });
 
-    return { createItem, updateItem, deleteItem };
+    return { createItem, updateItem, updateStock, uploadImages, removeImage, deleteItem };
 };

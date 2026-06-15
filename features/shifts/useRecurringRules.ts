@@ -21,10 +21,8 @@ export const useRecurringRules = (businessId: string) => {
     queryKey: ["recurring_rules", businessId],
     queryFn: async () => {
       try {
-        const resp = await fetchRecurringRulesApiCall(businessId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchRecurringRulesApiCall(businessId);
+        return Array.isArray(data) ? data : [];
       } catch (error) {
         console.warn("Failed to fetch recurring rules:", error);
         return [];

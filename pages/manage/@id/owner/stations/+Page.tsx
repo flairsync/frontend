@@ -1,12 +1,30 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
   stationService,
   kitchenStationService,
+  categoryRuleService,
   type StationRecord,
   type KitchenStation,
+  type CategoryRule,
 } from "@/features/station/service";
+import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -40,7 +58,7 @@ import {
 import {
   Monitor, ChefHat, Plus, Unplug, RefreshCw,
   Wifi, WifiOff, Clock, Copy, Check, Loader2, Terminal,
-  Pencil, Trash2, UtensilsCrossed,
+  Pencil, Trash2, UtensilsCrossed, GripVertical, ArrowRightLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -332,6 +350,13 @@ function KitchenStationCard({
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(ks.name);
   const qc = useQueryClient();
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: ks.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+  };
 
   const { mutate: save, isPending } = useMutation({
     mutationFn: () => kitchenStationService.update(businessId, ks.id, { name }),
@@ -351,7 +376,15 @@ function KitchenStationCard({
   };
 
   return (
-    <div className="flex items-center gap-3 px-4 py-3 rounded-xl border bg-card hover:bg-accent/30 transition-colors group">
+    <div ref={setNodeRef} style={style} className="flex items-center gap-3 px-4 py-3 rounded-xl border bg-card hover:bg-accent/30 transition-colors group">
+      <button
+        className="flex-shrink-0 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+        {...attributes}
+        {...listeners}
+      >
+        <GripVertical className="w-4 h-4" />
+      </button>
+
       <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
         <UtensilsCrossed className="w-4 h-4 text-amber-600" />
       </div>
@@ -406,6 +439,113 @@ function KitchenStationCard({
   );
 }
 
+// ─── Category Routing Panel ───────────────────────────────────────────────────
+
+function CategoryRoutingPanel({
+  businessId,
+  kitchenStations,
+}: {
+  businessId: string;
+  kitchenStations: KitchenStation[];
+}) {
+  const qc = useQueryClient();
+  const { businessAllCategories } = useBusinessMenus(businessId);
+
+  const { data: rules = [], isLoading: rulesLoading } = useQuery({
+    queryKey: ["category-rules", businessId],
+    queryFn: () => categoryRuleService.list(businessId).then((r) => r.data.data),
+  });
+
+  const { mutate: assignRule, isPending: isAssigning } = useMutation({
+    mutationFn: ({ categoryId, kitchenStationId }: { categoryId: string; kitchenStationId: string }) =>
+      categoryRuleService.upsert(businessId, categoryId, kitchenStationId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["category-rules", businessId] });
+    },
+    onError: () => toast.error("Failed to assign category rule."),
+  });
+
+  const { mutate: removeRule } = useMutation({
+    mutationFn: (ruleId: string) => categoryRuleService.remove(businessId, ruleId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["category-rules", businessId] });
+    },
+    onError: () => toast.error("Failed to remove category rule."),
+  });
+
+  const ruleMap = useMemo(
+    () => new Map((rules ?? []).map((r: CategoryRule) => [r.categoryId, r])),
+    [rules],
+  );
+
+  const categories = businessAllCategories ?? [];
+  const loading = rulesLoading || !businessAllCategories;
+
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base flex items-center gap-2">
+          <ArrowRightLeft className="w-4 h-4 text-primary" />
+          Category Routing
+        </CardTitle>
+        <p className="text-xs text-muted-foreground">
+          Automatically route order items to a kitchen station based on their menu category.
+        </p>
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <div className="flex items-center justify-center py-6 text-muted-foreground">
+            <Loader2 className="w-5 h-5 animate-spin" />
+          </div>
+        ) : categories.length === 0 ? (
+          <div className="text-center py-6 text-muted-foreground text-sm border border-dashed rounded-xl">
+            No menu categories found. Add categories to your menus first.
+          </div>
+        ) : (
+          <div className="divide-y">
+            {categories.map((cat) => {
+              const rule = ruleMap.get(cat.id);
+              return (
+                <div key={cat.id} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+                  <p className="flex-1 text-sm font-medium truncate">{cat.name}</p>
+                  <Select
+                    value={rule?.kitchenStationId ?? "none"}
+                    onValueChange={(v) => {
+                      if (v === "none") {
+                        if (rule) removeRule(rule.id);
+                      } else {
+                        assignRule({ categoryId: cat.id, kitchenStationId: v });
+                      }
+                    }}
+                    disabled={isAssigning}
+                  >
+                    <SelectTrigger className="h-8 w-48 text-xs">
+                      <SelectValue placeholder="Not mapped" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">
+                        <span className="text-muted-foreground">Not mapped</span>
+                      </SelectItem>
+                      {kitchenStations.map((ks) => (
+                        <SelectItem key={ks.id} value={ks.id}>
+                          {ks.name}
+                          {!ks.active && (
+                            <span className="ml-1 text-muted-foreground">(inactive)</span>
+                          )}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function StationsPage() {
@@ -418,16 +558,49 @@ export default function StationsPage() {
   const [deletingKs, setDeletingKs] = useState<KitchenStation | null>(null);
   const [newKsName, setNewKsName] = useState("");
   const [addingKs, setAddingKs] = useState(false);
+  const [orderedKs, setOrderedKs] = useState<KitchenStation[]>([]);
+
+  const sensors = useSensors(useSensor(PointerSensor));
 
   const { data, isLoading } = useQuery({
     queryKey: ["stations", businessId],
     queryFn: () => stationService.listStations(businessId).then((r) => r.data.data),
   });
 
-  const { data: kitchenStations = [], isLoading: ksLoading } = useQuery({
+  const { data: kitchenStations, isLoading: ksLoading } = useQuery({
     queryKey: ["kitchen-stations", businessId],
     queryFn: () => kitchenStationService.list(businessId).then((r) => r.data.data),
   });
+
+  useEffect(() => {
+    setOrderedKs(kitchenStations ?? []);
+  }, [kitchenStations]);
+
+  const { mutate: reorderKs } = useMutation({
+    mutationFn: (order: { id: string; sortOrder: number }[]) =>
+      kitchenStationService.reorder(businessId, order),
+    onSuccess: (res) => {
+      qc.setQueryData(["kitchen-stations", businessId], res.data.data);
+    },
+    onError: () => {
+      setOrderedKs(kitchenStations ?? []);
+      toast.error("Failed to save order. Please try again.");
+    },
+  });
+
+  const handleKsDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    setOrderedKs((prev) => {
+      const oldIndex = prev.findIndex((s) => s.id === active.id);
+      const newIndex = prev.findIndex((s) => s.id === over.id);
+      const reordered = arrayMove(prev, oldIndex, newIndex);
+      const order = reordered.map((s, i) => ({ id: s.id, sortOrder: i }));
+      reorderKs(order);
+      return reordered;
+    });
+  }, [reorderKs]);
 
   const { mutate: revoke, isPending: isRevoking } = useMutation({
     mutationFn: ({ id }: { id: string; name: string }) =>
@@ -565,22 +738,29 @@ export default function StationsPage() {
             <div className="flex items-center justify-center py-6 text-muted-foreground">
               <Loader2 className="w-5 h-5 animate-spin" />
             </div>
-          ) : kitchenStations.length === 0 ? (
+          ) : orderedKs.length === 0 ? (
             <div className="text-center py-6 text-muted-foreground text-sm border border-dashed rounded-xl">
               No kitchen stations yet. Add one to assign KDS devices.
             </div>
           ) : (
-            kitchenStations.map((ks) => (
-              <KitchenStationCard
-                key={ks.id}
-                ks={ks}
-                businessId={businessId}
-                onDelete={setDeletingKs}
-              />
-            ))
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleKsDragEnd}>
+              <SortableContext items={orderedKs.map((s) => s.id)} strategy={verticalListSortingStrategy}>
+                {orderedKs.map((ks) => (
+                  <KitchenStationCard
+                    key={ks.id}
+                    ks={ks}
+                    businessId={businessId}
+                    onDelete={setDeletingKs}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
           )}
         </CardContent>
       </Card>
+
+      {/* Category Routing */}
+      <CategoryRoutingPanel businessId={businessId} kitchenStations={orderedKs} />
 
       {/* Station grid */}
       <div>
@@ -609,7 +789,7 @@ export default function StationsPage() {
                 key={s.id}
                 station={s}
                 businessId={businessId}
-                kitchenStations={kitchenStations}
+                kitchenStations={kitchenStations ?? []}
                 onRevoke={(id, name) => setRevoking({ id, name })}
               />
             ))}

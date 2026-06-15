@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Crown, CreditCard, Receipt, Download } from "lucide-react";
+import { Crown, AlertTriangle } from "lucide-react";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { Subscription, SubscriptionStatus } from "@/models/Subscription";
 import { BillingInvoicesTable } from "@/components/management/billing/BillingInvoicesTable";
@@ -21,7 +21,25 @@ const BillingPage = () => {
         fetchingUserSubscriptions,
         fetchPortalUrl,
         fetchingPortalUrl,
+        resumeSubscription,
     } = useSubscriptions();
+
+    const [resumingCurrent, setResumingCurrent] = useState(false);
+
+    const handleResumeCurrent = async () => {
+        if (!currentUserSubscription) return;
+        setResumingCurrent(true);
+        try {
+            await resumeSubscription(currentUserSubscription.id);
+        } finally {
+            setResumingCurrent(false);
+        }
+    };
+
+    const isCurrentCanceled =
+        currentUserSubscription?.status === SubscriptionStatus.CANCELED &&
+        currentUserSubscription.endsAt != null &&
+        currentUserSubscription.endsAt > new Date();
 
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
@@ -40,6 +58,27 @@ const BillingPage = () => {
             <p className="text-muted-foreground mb-8">
                 Manage your subscription, payment methods, and view past invoices.
             </p>
+
+            {/* Canceled subscription warning banner */}
+            {isCurrentCanceled && (
+                <div className="flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 mb-6 text-amber-800">
+                    <AlertTriangle className="h-5 w-5 mt-0.5 shrink-0 text-amber-500" />
+                    <div className="flex-1 text-sm">
+                        <span className="font-semibold">Your subscription is cancelled</span> and will end on{" "}
+                        <strong>{currentUserSubscription!.getEndDate("MMMM D, YYYY")}</strong>.
+                        You can resume at any time before that date.
+                    </div>
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-amber-400 text-amber-800 hover:bg-amber-100 shrink-0"
+                        disabled={resumingCurrent}
+                        onClick={handleResumeCurrent}
+                    >
+                        {resumingCurrent ? "Resuming…" : "Resume subscription"}
+                    </Button>
+                </div>
+            )}
 
             {/* Subscription Overview */}
             <Card className="mb-8 border border-border shadow-sm overflow-hidden">

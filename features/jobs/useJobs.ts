@@ -15,15 +15,13 @@ import {
   fetchJobApplicationsApiCall,
   updateApplicationStatusApiCall,
   updateJobApiCall,
+  sendStaffInviteApiCall,
 } from "./service";
 
 export const useBusinessJobs = (businessId: string, params: ListJobsParams = {}) => {
   const { data, isPending: loadingJobs, refetch } = useQuery<PaginatedResponse<Job>>({
     queryKey: ["business_jobs", businessId, params],
-    queryFn: async () => {
-      const resp = await fetchBusinessJobsApiCall(businessId, params);
-      return resp.data.data;
-    },
+    queryFn: () => fetchBusinessJobsApiCall(businessId, params),
     enabled: !!businessId,
   });
 
@@ -39,10 +37,7 @@ export const useBusinessJobs = (businessId: string, params: ListJobsParams = {})
 export const useBusinessJob = (businessId: string, jobId: string) => {
   const { data: job, isPending: loadingJob } = useQuery<Job>({
     queryKey: ["business_job", businessId, jobId],
-    queryFn: async () => {
-      const resp = await fetchBusinessJobByIdApiCall(businessId, jobId);
-      return resp.data.data;
-    },
+    queryFn: () => fetchBusinessJobByIdApiCall(businessId, jobId),
     enabled: !!businessId && !!jobId,
   });
 
@@ -54,10 +49,9 @@ export const useCreateJob = (businessId: string) => {
 
   const { mutate: createJob, isPending: creatingJob } = useMutation({
     mutationFn: (data: CreateJobDto) => createJobApiCall(businessId, data),
-    onSuccess: (resp) => {
+    onSuccess: () => {
       toast.success("Job posted successfully!");
       queryClient.invalidateQueries({ queryKey: ["business_jobs", businessId] });
-      return resp.data.data as Job;
     },
     onError: () => {
       toast.error("Failed to create job. Please try again.");
@@ -111,10 +105,7 @@ export const useJobApplications = (
 
   const { data, isPending: loadingApplications, refetch } = useQuery<PaginatedResponse<JobApplication>>({
     queryKey: ["job_applications", businessId, jobId, params],
-    queryFn: async () => {
-      const resp = await fetchJobApplicationsApiCall(businessId, jobId, params);
-      return resp.data.data;
-    },
+    queryFn: () => fetchJobApplicationsApiCall(businessId, jobId, params),
     enabled: !!businessId && !!jobId,
   });
 
@@ -163,15 +154,34 @@ export const useJobApplications = (
   };
 };
 
+export const useSendStaffInvite = (businessId: string, jobId: string, applicationId: string) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: sendInvite, isPending: sendingInvite } = useMutation({
+    mutationFn: () => sendStaffInviteApiCall(businessId, jobId, applicationId),
+    onSuccess: () => {
+      toast.success("Staff invite sent successfully!");
+      queryClient.invalidateQueries({ queryKey: ["owner_application_detail", businessId, jobId, applicationId] });
+      queryClient.invalidateQueries({ queryKey: ["job_applications", businessId, jobId] });
+    },
+    onError: (err: any) => {
+      if (err?.response?.status === 409) {
+        toast.error("An invite has already been sent for this applicant.");
+      } else {
+        toast.error("Failed to send invite. Please try again.");
+      }
+    },
+  });
+
+  return { sendInvite, sendingInvite };
+};
+
 export const useOwnerApplicationDetail = (businessId: string, jobId: string, appId: string) => {
   const queryClient = useQueryClient();
 
   const { data: application, isPending: loadingApplication, isError } = useQuery<JobApplication>({
     queryKey: ["owner_application_detail", businessId, jobId, appId],
-    queryFn: async () => {
-      const resp = await fetchOwnerApplicationDetailApiCall(businessId, jobId, appId);
-      return resp.data.data;
-    },
+    queryFn: () => fetchOwnerApplicationDetailApiCall(businessId, jobId, appId),
     enabled: !!businessId && !!jobId && !!appId,
     retry: false,
   });

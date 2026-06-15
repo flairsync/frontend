@@ -11,9 +11,7 @@ export const useMyEmployments = (page: number = 1, limit: number = 10) => {
         queryKey: ["my_employments", page, limit],
         queryFn: async () => {
             const res = await fetchMyEmploymentsApiCall(page, limit);
-            // The API returns a paginated object in res.data.data, 
-            // and the actual array is in res.data.data.data
-            return MyEmployment.parseApiArrayResponse(res.data.data.data || []);
+            return MyEmployment.parseApiArrayResponse(res.data || []);
         },
     });
 

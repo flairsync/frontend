@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUsage } from "@/features/subscriptions/useUsage";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const ownedBusinesses: Business[] = [
 ];
@@ -23,6 +24,7 @@ const OwnedPage = () => {
     const { currentUserSubscription } = useSubscriptions();
     const { openUpgradeModal } = useSubscriptionStore();
 
+    const { t } = useTranslation();
     const canCreateBusiness = usage?.canCreateBusiness ?? (currentUserSubscription ? true : false);
     const isLimitReached = !canCreateBusiness;
 
@@ -96,7 +98,7 @@ const OwnedPage = () => {
                                             </p>
                                             <p className="text-sm text-muted-foreground flex items-center gap-2">
                                                 <Building className="h-4 w-4 text-muted-foreground" />
-                                                <span className="font-medium text-foreground/80">{biz.type?.name || "Other"}</span>
+                                                <span className="font-medium text-foreground/80">{biz.type ? t(`business_types.${biz.type?.name ?? biz.type}`, { defaultValue: biz.type?.name ?? String(biz.type) }) : "Other"}</span>
                                             </p>
                                         </div>
 

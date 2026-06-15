@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
     Popover,
     PopoverContent,
@@ -36,6 +37,13 @@ type Props = {
     onAdd: (data: {
         name: string;
         permissions: any[];
+        posAccess: boolean;
+        kdsAccess: boolean;
+        posCreateOrder: boolean;
+        posVoidItem: boolean;
+        posCancelOrder: boolean;
+        posRefund: boolean;
+        posApplyDiscount: boolean;
         editId?: string;
     }) => void;
     onOpenChange: (open: boolean) => void;
@@ -44,7 +52,7 @@ type Props = {
 };
 
 export function AddRoleModal(props: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { loadingPermissionsList, permissionsList } =
         usePlatformPermissions();
 
@@ -63,11 +71,26 @@ export function AddRoleModal(props: Props) {
                         canDelete: p.canDelete,
                     },
                 })) ?? [],
+            posAccess: props.editRole?.posAccess ?? false,
+            kdsAccess: props.editRole?.kdsAccess ?? false,
+            posCreateOrder: props.editRole?.posCreateOrder ?? false,
+            posVoidItem: props.editRole?.posVoidItem ?? false,
+            posCancelOrder: props.editRole?.posCancelOrder ?? false,
+            posRefund: props.editRole?.posRefund ?? false,
+            posApplyDiscount: props.editRole?.posApplyDiscount ?? false,
         },
         validationSchema: RoleSchema,
         onSubmit: values => {
             props.onAdd({
-                ...values,
+                name: values.name,
+                permissions: values.permissions,
+                posAccess: values.posAccess,
+                kdsAccess: values.kdsAccess,
+                posCreateOrder: values.posCreateOrder,
+                posVoidItem: values.posVoidItem,
+                posCancelOrder: values.posCancelOrder,
+                posRefund: values.posRefund,
+                posApplyDiscount: values.posApplyDiscount,
                 editId: props.editRole?.id,
             });
         },
@@ -277,6 +300,63 @@ export function AddRoleModal(props: Props) {
                                     </div>
                                 </div>
                             )}
+
+                            {/* Station Permissions */}
+                            <div className="space-y-4">
+                                <Label className="text-base font-semibold">Station Permissions</Label>
+
+                                {/* Terminal Access */}
+                                <div className="space-y-3">
+                                    <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Terminal Access</p>
+                                    <div className="border rounded-md divide-y">
+                                        {([
+                                            { field: "posAccess", label: "Can access POS terminals" },
+                                            { field: "kdsAccess", label: "Can access KDS terminals" },
+                                        ] as const).map(({ field, label }) => (
+                                            <div key={field} className="flex items-center justify-between p-3">
+                                                <span className="text-sm">{label}</span>
+                                                <Switch
+                                                    checked={formik.values[field]}
+                                                    onCheckedChange={v => {
+                                                        formik.setFieldValue(field, v);
+                                                        if (field === "posAccess" && !v) {
+                                                            formik.setFieldValue("posCreateOrder", false);
+                                                            formik.setFieldValue("posVoidItem", false);
+                                                            formik.setFieldValue("posCancelOrder", false);
+                                                            formik.setFieldValue("posRefund", false);
+                                                            formik.setFieldValue("posApplyDiscount", false);
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* POS Actions — only shown when posAccess is on */}
+                                {formik.values.posAccess && (
+                                    <div className="space-y-3">
+                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">POS Actions</p>
+                                        <div className="border rounded-md divide-y">
+                                            {([
+                                                { field: "posCreateOrder", label: "Create & manage orders" },
+                                                { field: "posVoidItem", label: "Void line items" },
+                                                { field: "posCancelOrder", label: "Cancel orders" },
+                                                { field: "posRefund", label: "Process refunds" },
+                                                { field: "posApplyDiscount", label: "Apply discounts" },
+                                            ] as const).map(({ field, label }) => (
+                                                <div key={field} className="flex items-center justify-between p-3">
+                                                    <span className="text-sm">{label}</span>
+                                                    <Switch
+                                                        checked={formik.values[field]}
+                                                        onCheckedChange={v => formik.setFieldValue(field, v)}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* Footer */}

@@ -6,9 +6,9 @@ import React from "react";
 
 const LandingFooter = () => {
     return (
-        <footer className="bg-card text-card-foreground font-sans px-8">
+        <footer className="bg-card text-card-foreground font-sans px-4 sm:px-8 pt-12">
             <div className="container mx-auto max-w-7xl">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
                     {/* Logo & Social Links */}
                     <div className="flex flex-col items-center md:items-start">
                         <h2 className="text-3xl font-extrabold mb-4">FlairSync</h2>
@@ -97,18 +97,18 @@ const LandingFooter = () => {
                         </address>
 
                         <h4 className="text-xl font-bold mb-4">Subscribe to our Newsletter</h4>
-                        <form className="flex w-full max-w-sm items-center space-x-2">
+                        <form className="flex w-full max-w-sm items-center gap-2">
                             <Input
                                 type="email"
                                 placeholder="Enter your email"
-                                className="h-12 border-input focus-visible:ring-0 focus-visible:border-primary"
+                                className="h-12 min-w-0 border-input focus-visible:ring-0 focus-visible:border-primary"
                                 aria-label="Email address"
                                 required
                             />
                             <Button
                                 type="submit"
                                 size="icon"
-                                className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 w-12"
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 w-12 shrink-0"
                                 aria-label="Subscribe"
                             >
                                 <ArrowRight className="h-5 w-5" />

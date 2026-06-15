@@ -92,13 +92,13 @@ const HelpPage = () => {
                             Explore our guides to learn how to get the most out of the platform.
                         </p>
                         <div className="flex flex-col gap-2">
-                            <a href="/docs/getting-started" className="text-blue-600 hover:underline text-sm">
+                            <a href="/learn#1-1" className="text-blue-600 hover:underline text-sm">
                                 Getting Started Guide
                             </a>
-                            <a href="/docs/billing" className="text-blue-600 hover:underline text-sm">
+                            <a href="/learn#16-1" className="text-blue-600 hover:underline text-sm">
                                 Billing & Subscriptions
                             </a>
-                            <a href="/docs/invites" className="text-blue-600 hover:underline text-sm">
+                            <a href="/learn#3-1" className="text-blue-600 hover:underline text-sm">
                                 Inviting Team Members
                             </a>
                         </div>

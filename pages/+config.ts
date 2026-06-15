@@ -4,8 +4,6 @@ import Layout from "../layouts/LayoutDefault.js";
 import vikeReactQuery from "vike-react-query/config";
 import vikeServer from "vike-server/config";
 import React from "react";
-import { useSystemErrorStore } from "../features/system-errors/SystemErrorStore";
-import { AxiosError } from "axios";
 
 // Default config (can be overridden by pages)
 // https://vike.dev/config
@@ -24,16 +22,6 @@ export default {
 
   passToClient: ["user", "tfa", "session"],
 
-  queryClientConfig: {
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retry: 1,
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      },
-    },
-  },
 } satisfies Config;
 
 declare global {

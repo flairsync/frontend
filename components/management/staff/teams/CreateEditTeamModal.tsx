@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
+import { useFormik } from "formik";
 import { Team } from "@/models/business/Team";
 
 interface CreateEditTeamModalProps {
@@ -23,24 +23,19 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
     isLoading,
     onDelete,
 }) => {
-    const { register, handleSubmit, reset } = useForm<{
-        name: string;
-        colorCode: string;
-    }>({
-        defaultValues: {
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
             name: team?.name || "",
             colorCode: team?.colorCode || "#000000",
         },
+        onSubmit,
     });
 
     useEffect(() => {
-        if (open) {
-            reset({
-                name: team?.name || "",
-                colorCode: team?.colorCode || "#000000",
-            });
-        }
-    }, [open, team, reset]);
+        if (open) formik.resetForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -48,13 +43,16 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
                 <DialogHeader>
                     <DialogTitle>{team ? "Edit Team" : "Create New Team"}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-4">
+                <form onSubmit={formik.handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
                         <Label htmlFor="name">Team Name</Label>
                         <Input
                             id="name"
-                            {...register("name", { required: true })}
+                            name="name"
+                            value={formik.values.name}
+                            onChange={formik.handleChange}
                             placeholder="e.g. Kitchen Staff"
+                            required
                         />
                     </div>
                     <div className="space-y-2">
@@ -62,9 +60,11 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
                         <div className="flex gap-2 items-center">
                             <Input
                                 id="colorCode"
+                                name="colorCode"
                                 type="color"
                                 className="w-16 h-10 p-1 cursor-pointer"
-                                {...register("colorCode")}
+                                value={formik.values.colorCode}
+                                onChange={formik.handleChange}
                             />
                             <span className="text-sm text-muted-foreground">Select a color to identify this team</span>
                         </div>

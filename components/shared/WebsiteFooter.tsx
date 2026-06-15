@@ -28,13 +28,14 @@ const quickLinks = [
 const supportLinks = [
     { title: "FAQ's", url: "/#faq", icon: HelpCircle },
     { title: "Support Center", url: "/support", icon: HelpCircle },
+    { title: "User Guide", url: "/learn", icon: HelpCircle },
     { title: "Privacy Policy", url: "/privacy", icon: FileText },
     { title: "Terms of Use", url: "/terms", icon: FileText },
     { title: "GDPR & Cookies", url: "/gdpr", icon: FileText },
 ];
 
 const WebsiteFooter = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
 
     return (
         <footer className="bg-card text-card-foreground font-sans border-t border-border mt-16">

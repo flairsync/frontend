@@ -15,9 +15,10 @@ import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useAuth } from '@/features/auth/useAuth';
 import GoogleLoginButton from '@/components/inputs/GoogleLoginButton';
+import { toast } from 'sonner';
 
 const LoginPage = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("auth");
     const { urlParsed, user } = usePageContext();
     const [showPassword, setShowPassword] = useState(false);
     const [apiError, setApiError] = useState<string>();
@@ -32,6 +33,14 @@ const LoginPage = () => {
         const target = packId ? `${origin}?packId=${packId}` : origin;
         navigate(target);
     };
+
+    useEffect(() => {
+        const reason = localStorage.getItem('auth_logout_reason');
+        if (reason === 'inactivity') {
+            localStorage.removeItem('auth_logout_reason');
+            toast.error("You were logged out due to inactivity. Please sign in again.");
+        }
+    }, []);
 
     useEffect(() => {
         console.log("------ client ", user);
@@ -55,20 +64,20 @@ const LoginPage = () => {
                     <h1 className="text-4xl font-extrabold mb-2">{t("auth_page.signin_page_title")}</h1>
                     <p className="text-zinc-600 mb-8">{t("auth_page.please_login_label")}</p>
                     <Formik
-                        initialValues={{ email: '', password: '' }}
+                        initialValues={{ email: '', password: '', stayConnected: false }}
                         validationSchema={LoginFormSchema}
                         onSubmit={values => {
                             setApiError(undefined);
-                            // loginUser(values);
                             loginUser({
                                 email: values.email,
-                                password: values.password
+                                password: values.password,
+                                stayConnected: values.stayConnected,
                             }, {
                                 onSuccess: handlePostLogin
                             })
                         }}
                     >
-                        {({ errors, touched, handleChange }) => (
+                        {({ errors, touched, handleChange, values, setFieldValue }) => (
                             <Form className="space-y-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="email">{t("auth_page.email_label")}</Label>
@@ -107,7 +116,12 @@ const LoginPage = () => {
 
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
-                                        <Checkbox id="keep-logged-in" className="rounded-md border-zinc-300" />
+                                        <Checkbox
+                                            id="keep-logged-in"
+                                            className="rounded-md border-zinc-300"
+                                            checked={values.stayConnected}
+                                            onCheckedChange={(checked) => setFieldValue('stayConnected', checked === true)}
+                                        />
                                         <Label htmlFor="keep-logged-in" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                             {t("auth_page.stay_signedin_label")}
                                         </Label>

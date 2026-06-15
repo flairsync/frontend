@@ -1,0 +1,160 @@
+{
+  "shared": {
+    "days": {
+      "monday": "Dilluns",
+      "tuesday": "Dimarts",
+      "wednesday": "Dimecres",
+      "thursday": "Dijous",
+      "friday": "Divendres",
+      "saturday": "Dissabte",
+      "sunday": "Diumenge"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancel·lar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "add": "Afegir",
+      "move": "Moure",
+      "duplicate": "Duplicar",
+      "confirm": "Confirmar",
+      "back": "Enrere",
+      "search": "Cercar",
+      "clear": "Netejar",
+      "all": "Tot",
+      "previous": "Anterior",
+      "next": "Següent",
+      "retry": "Reintentar connexió"
+    },
+    "tags": {
+      "halal": "Halal",
+      "vegan": "Vegà",
+      "vegetarian": "Vegetarià",
+      "gluten_free": "Sense gluten",
+      "organic": "Ecològic",
+      "kosher": "Kosher",
+      "dairy_free": "Sense lactis",
+      "nut_free": "Sense fruits secs",
+      "locally_sourced": "Producte local",
+      "fair_trade": "Comerç just",
+      "pet_friendly": "Admet mascotes",
+      "outdoor_seating": "Terrassa",
+      "takeaway": "Per emportar",
+      "delivery": "A domicili",
+      "kid_friendly": "Apte per a nens",
+      "wifi": "Wi-Fi",
+      "wheelchair_accessible": "Accessible per a cadires de rodes",
+      "brunch": "Brunch",
+      "breakfast": "Esmorzar",
+      "late_night": "Obert de nit",
+      "cozy": "Acollidor",
+      "romantic": "Romàntic",
+      "family_friendly": "Familiar",
+      "trendy": "Modern",
+      "quiet": "Tranquil",
+      "lively": "Animat"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Pàgina no trobada",
+      "description": "No podem trobar la pàgina que cerques. Pot haver estat moguda, renombrada o potser mai no ha existit.",
+      "quickSearch": "Cerca ràpida",
+      "searchPlaceholder": "Cerca pàgines, personal o configuracions...",
+      "searchButton": "Cerca",
+      "goToDashboard": "Ves al tauler",
+      "contactSupport": "Contacta amb suport",
+      "reportError": "Si creus que això és un error, informa'ns i ho investigarem.",
+      "lostTitle": "Perdut a la cuina?",
+      "lostDescription": "Prova un dels enllaços següents o torna al tauler principal.",
+      "staffManagement": "Gestió del personal",
+      "scheduleManagement": "Gestió d'horaris",
+      "settings": "Configuració",
+      "errorCode": "Codi d'error:"
+    },
+    "500": {
+      "title": "500 Error intern del servidor",
+      "description": "Alguna cosa ha anat malament."
+    },
+    "technical": {
+      "network_title": "Connexió perduda",
+      "error_title": "Error del sistema",
+      "network_error": "Error de xarxa o connexió perduda. Hi estem treballant.",
+      "server_error": "Error intern del servidor. Si us plau, torna-ho a intentar més tard.",
+      "session_expired": "La teva sessió ha expirat. Si us plau, torna a iniciar sessió.",
+      "unexpected_error": "S'ha produït un error inesperat. Si us plau, torna-ho a intentar.",
+      "working_on_it": "Som conscients del problema i estem treballant per restaurar l'accés."
+    }
+  },
+  "input_errors": {
+    "email": {
+      "invalid": "Adreça de correu invàlida",
+      "required": "El correu és obligatori"
+    },
+    "firstName": {
+      "required": "El nom és obligatori",
+      "too_long": "El nom és massa llarg"
+    },
+    "lastName": {
+      "required": "El cognom és obligatori",
+      "too_long": "El cognom és massa llarg"
+    },
+    "displayName": {
+      "required": "El nom d'usuari és obligatori",
+      "too_long": "El nom d'usuari és massa llarg"
+    },
+    "password": {
+      "min_length": "La contrasenya ha de tenir almenys 8 caràcters",
+      "requirements": "La contrasenya ha de contenir almenys una majúscula, una minúscula i un número",
+      "too_long": "La contrasenya és massa llarga",
+      "required": "La contrasenya és obligatòria"
+    },
+    "repeat_password": {
+      "mismatch": "Les contrasenyes han de coincidir",
+      "required": "Si us plau confirma la teva contrasenya"
+    },
+    "repeatNewPassword": {
+      "mismatch": "Les noves contrasenyes han de coincidir",
+      "required": "Si us plau confirma la teva nova contrasenya"
+    },
+    "checkbox": {
+      "required": "Has de confirmar aquesta casella"
+    }
+  },
+  "business_types": {
+    "bakery": "Forn de Pa",
+    "fast_food": "Menjar Ràpid",
+    "coffee_shop": "Cafeteria",
+    "restaurant": "Restaurant",
+    "other": "Altres"
+  },
+  "cookies": {
+    "banner_text": "Fem servir galetes per millorar la seva experiència, recordar les seves preferències i analitzar l'ús del lloc. En fer clic a «Acceptar tot», accepta totes les galetes.",
+    "learn_more": "Més informació a la nostra Política de galetes i RGPD",
+    "manage": "Gestionar preferències",
+    "reject_all": "Rebutjar tot",
+    "accept_all": "Acceptar tot",
+    "always_active": "Sempre actiu",
+    "save_preferences": "Desar les meves preferències",
+    "preferences_title": "Preferències de galetes",
+    "preferences_description": "Trieu quines galetes permeteu. Les galetes estrictament necessàries no es poden desactivar, ja que són imprescindibles per al funcionament de la plataforma.",
+    "categories": {
+      "necessary": {
+        "label": "Estrictament necessàries",
+        "description": "Necessàries per a l'autenticació, la seguretat i les funcions principals. No es poden desactivar."
+      },
+      "functional": {
+        "label": "Funcionals",
+        "description": "Recorden el seu idioma, tema i altres preferències per oferir una experiència personalitzada."
+      },
+      "analytics": {
+        "label": "Analítiques",
+        "description": "Ens ajuden a entendre com utilitza la plataforma per poder millorar-la. Totes les dades són anònimes."
+      },
+      "marketing": {
+        "label": "Màrqueting",
+        "description": "Utilitzades per oferir contingut rellevant i mesurar l'efectivitat de les campanyes. No venem les seves dades."
+      }
+    }
+  }
+}

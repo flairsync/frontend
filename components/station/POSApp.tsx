@@ -56,18 +56,32 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { PosModeSwitcher } from "@/components/pos/PosModeSwitcher";
-import { stationApi, staffApi } from "@/features/station/station-api";
+import { stationApi, staffApi, pinLogout } from "@/features/station/station-api";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import { useStaffSession } from "@/features/pos/useStaffSession";
+import { useStationSocket } from "@/features/station/useStationSocket";
+import {
+    enqueueOperation, getAllPending, removeOperations, generateIdempotencyKey,
+    type QueuedOperation, type ReconcileResult, type StationOpType,
+} from "@/features/station/offlineQueue";
 import type { StationInfo } from "@/models/Station";
 import type {
     CartItem, PosBootstrapData, PosMenu, PosTable,
     MenuCategory, MenuItem,
 } from "@/features/pos/types";
-import { calcSubtotal, calcTax, calcTotal } from "@/features/pos/types";
+import { calcTotal } from "@/features/pos/types";
 import type { Order } from "@/features/orders/service";
 
 const ACTIVE_ORDER_STATUSES = "CREATED,ACCEPTED,PREPARING,READY";
+
+// Action → offline queue operation type
+const TRANSITION_OP_TYPE: Record<string, StationOpType> = {
+    accept: "accept_order",
+    prepare: "start_preparing",
+    ready: "mark_ready",
+    complete: "complete_order",
+    cancel: "cancel_order",
+};
 
 // ─── Inactivity lock ──────────────────────────────────────────────────────────
 
@@ -114,7 +128,13 @@ interface Props {
 export default function POSApp({ station, bootstrapData }: Props) {
     const { session, clearSession } = useStaffSession();
 
-    useInactivityLock(15 * 60 * 1000, clearSession);
+    // Call the backend to server-side invalidate the short token, then clear local state.
+    const handleLock = useCallback(async () => {
+        try { await pinLogout(); } catch { /* always clear locally even if API fails */ }
+        clearSession();
+    }, [clearSession]);
+
+    useInactivityLock(15 * 60 * 1000, handleLock);
 
     // Heartbeat
     useEffect(() => {
@@ -128,7 +148,7 @@ export default function POSApp({ station, bootstrapData }: Props) {
         return <StaffPinScreen businessId={station.businessId} onLogin={() => {}} />;
     }
 
-    return <POSMain station={station} bootstrapData={bootstrapData} onLock={clearSession} />;
+    return <POSMain station={station} bootstrapData={bootstrapData} onLock={handleLock} />;
 }
 
 // ─── POSMain ──────────────────────────────────────────────────────────────────
@@ -143,6 +163,7 @@ function POSMain({
     onLock: () => void;
 }) {
     const { session } = useStaffSession();
+    const perms = session?.posPermissions;
 
     // ── Resizable panels ──
     const leftPanel = useResizablePanel(192, 140, 300);
@@ -229,22 +250,25 @@ function POSMain({
 
     const cartTotal = useMemo(() => calcTotal(cart), [cart]);
 
-    // ── Polling ──
-    const refreshOrders = useCallback(async () => {
+    // ── Data fetching ──
+    const [orderPage, setOrderPage] = useState(1);
+    const ORDER_PAGE_LIMIT = 20;
+
+    const refreshOrders = useCallback(async (page = 1) => {
         try {
             const res = await stationApi.get("/station/orders", {
-                params: { status: ACTIVE_ORDER_STATUSES, limit: 100 },
+                params: { status: "created,accepted,preparing,ready", page, limit: ORDER_PAGE_LIMIT },
             });
             const raw = res.data?.data?.data ?? res.data?.data ?? [];
-            setActiveOrders(
-                Array.isArray(raw)
-                    ? raw.filter((o: Order) =>
-                          ["CREATED", "ACCEPTED", "PREPARING", "READY"].includes(
-                              o.status.toUpperCase(),
-                          ),
-                      )
-                    : [],
-            );
+            if (page === 1) {
+                setActiveOrders(Array.isArray(raw) ? raw : []);
+            } else {
+                setActiveOrders((prev) => [
+                    ...prev,
+                    ...(Array.isArray(raw) ? raw.filter((o: Order) => !prev.some((p) => p.id === o.id)) : []),
+                ]);
+            }
+            setOrderPage(page);
         } catch { /* silent */ }
     }, []);
 
@@ -256,9 +280,10 @@ function POSMain({
         } catch { /* silent */ }
     }, []);
 
+    // Initial load + 60s fallback poll (WebSocket handles real-time updates)
     useEffect(() => {
-        refreshOrders();
-        const ordersInterval = setInterval(refreshOrders, 10_000);
+        refreshOrders(1);
+        const ordersInterval = setInterval(() => refreshOrders(1), 60_000);
         const tablesInterval = setInterval(refreshTables, 15_000);
         return () => {
             clearInterval(ordersInterval);
@@ -266,10 +291,57 @@ function POSMain({
         };
     }, [refreshOrders, refreshTables]);
 
+    // Real-time order updates via WebSocket
+    useStationSocket(useCallback(() => {
+        refreshOrders();
+        refreshTables();
+    }, [refreshOrders, refreshTables]));
+
+    // Replay queued offline operations on reconnect
+    useEffect(() => {
+        const handleOnline = async () => {
+            const pending = await getAllPending();
+            if (!pending.length) return;
+
+            try {
+                const res = await staffApi.post("/station/reconcile", { operations: pending });
+                const results: ReconcileResult[] = res.data?.data ?? res.data ?? [];
+
+                const clearKeys = results
+                    .filter((r) => r.status === "applied" || r.status === "already_applied")
+                    .map((r) => r.idempotencyKey);
+                await removeOperations(clearKeys);
+
+                const issues = results.filter(
+                    (r) => r.status === "conflict" || r.status === "error",
+                );
+                if (issues.length > 0) {
+                    toast.warning(
+                        `${issues.length} offline action(s) could not be synced — please review`,
+                    );
+                } else if (clearKeys.length > 0) {
+                    toast.success(`${clearKeys.length} offline action(s) synced`);
+                }
+            } catch (err: any) {
+                if (err?.response?.status === 401) {
+                    toast.error("Session expired. Re-authenticate to sync offline changes.");
+                }
+            } finally {
+                await Promise.all([refreshOrders(), refreshTables()]);
+            }
+        };
+
+        window.addEventListener("online", handleOnline);
+        return () => window.removeEventListener("online", handleOnline);
+    }, [refreshOrders, refreshTables]);
+
+    // ── Kitchen notes & tax-exempt ──
+    const [kitchenNotes, setKitchenNotes] = useState("");
+    const [taxExempt, setTaxExempt] = useState(false);
+
     // ── Cart helpers ──
     const addToCart = (item: MenuItem) => {
-        // For items with required variants, we'd open a modal — for now add with base price
-        const cartId = item.id; // single-variant simplification; extend with variant suffix later
+        const cartId = item.id;
         setCart((prev) => {
             const existing = prev.find((c) => c.id === cartId);
             if (existing) {
@@ -296,6 +368,8 @@ function POSMain({
         setCart([]);
         setSelectedTableId(null);
         setOrderMode("dine-in");
+        setKitchenNotes("");
+        setTaxExempt(false);
     };
 
     // ── Order creation ──
@@ -309,15 +383,39 @@ function POSMain({
             modifiers: ci.modifiers,
             notes: ci.notes,
         })),
+        kitchenNotes: kitchenNotes.trim() || undefined,
+        taxExempt: taxExempt || undefined,
     });
 
+    // Throws an error with `queued: true` when offline so the caller can distinguish.
     const createAndAcceptOrder = async () => {
-        const res = await staffApi.post("/station/orders", buildOrderPayload());
+        const orderPayload = buildOrderPayload();
+
+        if (!navigator.onLine) {
+            const createKey = generateIdempotencyKey();
+            await enqueueOperation({
+                idempotencyKey: createKey,
+                type: "create_order",
+                payload: orderPayload,
+                clientTimestamp: new Date().toISOString(),
+            });
+            const offlineErr = Object.assign(new Error("offline"), { queued: true });
+            throw offlineErr;
+        }
+
+        const createKey = generateIdempotencyKey();
+        const res = await staffApi.post("/station/orders", orderPayload, {
+            headers: { "X-Idempotency-Key": createKey },
+        });
         const order: Order = res.data.data;
-        // Auto-accept (single-cashier flow)
+
         try {
-            await staffApi.patch(`/station/orders/${order.id}/accept`);
+            const acceptKey = generateIdempotencyKey();
+            await staffApi.patch(`/station/orders/${order.id}/accept`, {}, {
+                headers: { "X-Idempotency-Key": acceptKey },
+            });
         } catch { /* accept failure is non-fatal */ }
+
         return order;
     };
 
@@ -335,8 +433,12 @@ function POSMain({
             toast.success("Order sent to kitchen!");
             await Promise.all([refreshOrders(), refreshTables()]);
         } catch (err: any) {
-            const msg = err?.response?.data?.message ?? "Failed to create order";
-            toast.error(msg);
+            if (err.queued) {
+                resetActiveOrder();
+                toast.info("You're offline — order queued and will sync when connection returns");
+            } else {
+                toast.error(err?.response?.data?.message ?? "Failed to create order");
+            }
         } finally {
             setCreatingOrder(false);
         }
@@ -348,7 +450,6 @@ function POSMain({
         existingTotal?: number,
     ) => {
         if (existingOrderId) {
-            // Pay an already-created order
             setPayingOrderId(existingOrderId);
             setPayingOrderTotal(existingTotal ?? 0);
             setPaymentMethod(method);
@@ -356,7 +457,11 @@ function POSMain({
             return;
         }
 
-        // Cart payment — create order first, then open modal
+        if (!navigator.onLine) {
+            toast.error("Payment requires a connection. Please try again when online.");
+            return;
+        }
+
         if (cart.length === 0) return;
         if (orderMode === "dine-in" && !selectedTableId) {
             toast.error("Please select a table for Dine-In orders");
@@ -371,8 +476,7 @@ function POSMain({
             setPaymentMethod(method);
             setIsPaymentModalOpen(true);
         } catch (err: any) {
-            const msg = err?.response?.data?.message ?? "Failed to create order";
-            toast.error(msg);
+            toast.error(err?.response?.data?.message ?? "Failed to create order");
         } finally {
             setCreatingOrder(false);
         }
@@ -385,6 +489,67 @@ function POSMain({
         resetActiveOrder();
         Promise.all([refreshOrders(), refreshTables()]);
     };
+
+    // ── Order transition helpers ──
+    const handleTransition = useCallback(
+        async (orderId: string, action: string) => {
+            if (!navigator.onLine) {
+                const opType = TRANSITION_OP_TYPE[action] ?? "accept_order";
+                await enqueueOperation({
+                    idempotencyKey: generateIdempotencyKey(),
+                    type: opType,
+                    orderId,
+                    clientTimestamp: new Date().toISOString(),
+                });
+                toast.info("Offline — action queued for sync");
+                return;
+            }
+            try {
+                await staffApi.patch(`/station/orders/${orderId}/${action}`, {}, {
+                    headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+                });
+                refreshOrders();
+                refreshTables();
+            } catch {
+                toast.error("Failed to update order");
+            }
+        },
+        [refreshOrders, refreshTables],
+    );
+
+    const handleCancelOrder = useCallback(
+        (orderId: string) => {
+            setConfirmModal({
+                isOpen: true,
+                title: "Cancel Order?",
+                description: "Are you sure you want to cancel this order?",
+                variant: "destructive",
+                onConfirm: async () => {
+                    if (!navigator.onLine) {
+                        await enqueueOperation({
+                            idempotencyKey: generateIdempotencyKey(),
+                            type: "cancel_order",
+                            orderId,
+                            clientTimestamp: new Date().toISOString(),
+                        });
+                        toast.info("Offline — cancellation queued for sync");
+                        return;
+                    }
+                    try {
+                        await staffApi.patch(`/station/orders/${orderId}/cancel`, {}, {
+                            headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+                        });
+                        toast.success("Order cancelled");
+                        refreshOrders();
+                        refreshTables();
+                    } catch {
+                        toast.error("Failed to cancel order");
+                    }
+                },
+            });
+        },
+        [refreshOrders, refreshTables],
+    );
 
     const handleTableSelect = (table: PosTable) => {
         if (table.status === "OCCUPIED") {
@@ -672,7 +837,7 @@ function POSMain({
                                     variant="ghost"
                                     size="icon"
                                     className="h-7 w-7 ml-1 mb-0.5"
-                                    onClick={refreshOrders}
+                                    onClick={() => refreshOrders(1)}
                                     title="Refresh orders"
                                 >
                                     <RefreshCw className="w-3.5 h-3.5" />
@@ -691,6 +856,7 @@ function POSMain({
                                     <ActiveOrderCard
                                         key={order.id}
                                         order={order}
+                                        posPermissions={perms}
                                         onPay={(method) =>
                                             handlePayment(
                                                 method,
@@ -698,40 +864,37 @@ function POSMain({
                                                 Number(order.totalAmount),
                                             )
                                         }
-                                        onTransition={async (action) => {
+                                        onTransition={(action) => handleTransition(order.id, action)}
+                                        onCancel={() => handleCancelOrder(order.id)}
+                                        onReorder={async () => {
                                             try {
-                                                await staffApi.patch(`/station/orders/${order.id}/${action}`);
-                                                refreshOrders();
-                                                refreshTables();
+                                                const { reorderStationOrderApiCall } = await import("@/features/orders/service");
+                                                const res = await reorderStationOrderApiCall(order.id);
+                                                toast.success("Reorder created");
+                                                await refreshOrders(1);
+                                                const newOrder: Order = res.data?.data ?? res.data;
+                                                if (newOrder?.id) {
+                                                    setPayingOrderId(newOrder.id);
+                                                    setPayingOrderTotal(Number(newOrder.totalAmount) || 0);
+                                                }
                                             } catch {
-                                                toast.error("Failed to update order");
+                                                toast.error("Failed to reorder");
                                             }
                                         }}
-                                        onCancel={() =>
-                                            setConfirmModal({
-                                                isOpen: true,
-                                                title: "Cancel Order?",
-                                                description:
-                                                    "Are you sure you want to cancel this order?",
-                                                variant: "destructive",
-                                                onConfirm: async () => {
-                                                    try {
-                                                        await staffApi.patch(
-                                                            `/station/orders/${order.id}/cancel`,
-                                                            {},
-                                                        );
-                                                        toast.success("Order cancelled");
-                                                        refreshOrders();
-                                                        refreshTables();
-                                                    } catch {
-                                                        toast.error("Failed to cancel order");
-                                                    }
-                                                },
-                                            })
-                                        }
                                     />
                                 ))}
                             </div>
+                            {activeOrders.length >= ORDER_PAGE_LIMIT && (
+                                <div className="flex justify-center mt-6">
+                                    <Button
+                                        variant="outline"
+                                        className="font-black text-xs uppercase tracking-widest"
+                                        onClick={() => refreshOrders(orderPage + 1)}
+                                    >
+                                        Load More
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -835,6 +998,10 @@ function POSMain({
                         selectedTable={selectedTable?.name}
                         staffName={session?.name}
                         currency={station.business.currency}
+                        kitchenNotes={kitchenNotes}
+                        taxExempt={taxExempt}
+                        canCreateOrder={perms?.posCreateOrder ?? false}
+                        canApplyDiscount={perms?.posApplyDiscount ?? false}
                         onUpdateQuantity={(id, delta) =>
                             setCart((prev) =>
                                 prev.map((item) =>
@@ -850,6 +1017,8 @@ function POSMain({
                         onConfirm={handleConfirmOrder}
                         onChangeMode={setOrderMode}
                         onChangeTable={() => setActiveMainSection("tables")}
+                        onKitchenNotesChange={setKitchenNotes}
+                        onTaxExemptChange={setTaxExempt}
                     />
                 </aside>
             </div>
@@ -893,14 +1062,18 @@ const STATUS_COLOR: Record<string, string> = {
 
 function ActiveOrderCard({
     order,
+    posPermissions,
     onPay,
     onTransition,
     onCancel,
+    onReorder,
 }: {
     order: Order;
+    posPermissions?: { posCreateOrder: boolean; posVoidItem: boolean; posCancelOrder: boolean; posRefund: boolean; posApplyDiscount: boolean } | null;
     onPay: (method: "cash" | "card") => void;
     onTransition: (action: string) => void;
     onCancel: () => void;
+    onReorder?: () => void;
 }) {
     const time = new Date(order.createdAt).toLocaleTimeString([], {
         hour: "2-digit",
@@ -960,8 +1133,7 @@ function ActiveOrderCard({
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        {/* Status transition */}
-                        {transition && (
+                        {transition && posPermissions?.posCreateOrder && (
                             <Button
                                 variant="outline"
                                 className="w-full font-black text-[10px] h-9 gap-2"
@@ -971,8 +1143,7 @@ function ActiveOrderCard({
                             </Button>
                         )}
 
-                        {/* Payment buttons — only when order is past CREATED */}
-                        {canPay && (
+                        {canPay && posPermissions?.posRefund && (
                             <div className="grid grid-cols-2 gap-2">
                                 <Button
                                     className="font-black text-[10px] h-10 gap-2"
@@ -992,13 +1163,24 @@ function ActiveOrderCard({
                             </div>
                         )}
 
-                        <Button
-                            variant="ghost"
-                            className="col-span-2 text-destructive/40 hover:text-destructive hover:bg-destructive/10 font-bold text-[9px] h-8 uppercase tracking-widest"
-                            onClick={onCancel}
-                        >
-                            Cancel & Void Order
-                        </Button>
+                        {onReorder && posPermissions?.posCreateOrder && (
+                            <Button
+                                variant="ghost"
+                                className="w-full font-bold text-[9px] h-8 uppercase tracking-widest text-primary/60 hover:text-primary hover:bg-primary/10"
+                                onClick={onReorder}
+                            >
+                                Reorder
+                            </Button>
+                        )}
+                        {posPermissions?.posCancelOrder && (
+                            <Button
+                                variant="ghost"
+                                className="col-span-2 text-destructive/40 hover:text-destructive hover:bg-destructive/10 font-bold text-[9px] h-8 uppercase tracking-widest"
+                                onClick={onCancel}
+                            >
+                                Cancel & Void Order
+                            </Button>
+                        )}
                     </div>
                 </div>
             </CardContent>

@@ -15,6 +15,18 @@ import {
     SidebarRail,
 } from "@/components/ui/sidebar"
 import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
     BarChart3,
     CalendarCheck,
     Images,
@@ -30,10 +42,12 @@ import {
     Star,
     Banknote,
     MonitorSmartphone,
+    ChefHat,
     Briefcase,
     LayoutGrid,
     ClipboardList,
     Tablet,
+    Store,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { useMyBusinesses } from "@/features/business/useMyBusinesses"
@@ -41,13 +55,22 @@ import { cn } from "@/lib/utils"
 
 // ─── Nav structure ────────────────────────────────────────────────────────────
 
-const POS_ITEM = {
-    key: "pos",
-    title: "Launch Station",
-    url: "/station/pos",
-    icon: MonitorSmartphone,
-    external: true,
-}
+const STATION_OPTIONS = [
+    {
+        key: "pos",
+        label: "POS",
+        tooltip: "Point of Sale",
+        url: "/station/pos",
+        icon: MonitorSmartphone,
+    },
+    {
+        key: "kds",
+        label: "KDS",
+        tooltip: "Kitchen Display",
+        url: "/station/kds",
+        icon: ChefHat,
+    },
+] as const
 
 interface NavItem {
     key: string
@@ -94,6 +117,7 @@ const NAV_GROUPS: NavGroup[] = [
         icon: LayoutGrid,
         items: [
             { key: "inventory", title: "Inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
+            { key: "marketplace", title: "Marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
             { key: "menu", title: "Menu", url: "/manage/:id/owner/menu", icon: Utensils },
             { key: "floor-plan", title: "Floor Plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
             { key: "orders", title: "Orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
@@ -212,7 +236,7 @@ export function BusinessOwnerManagementSidebar({
             </SidebarHeader>
 
             <SidebarContent className="gap-0">
-                {/* POS — always visible */}
+                {/* Launch Station — dropdown for POS / KDS */}
                 <SidebarGroup className="pb-2 border-b border-sidebar-border mb-1">
                     <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
                         Point of Sale
@@ -220,17 +244,39 @@ export function BusinessOwnerManagementSidebar({
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild>
-                                    <a
-                                        href={POS_ITEM.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="font-semibold text-primary"
-                                    >
-                                        <POS_ITEM.icon />
-                                        {POS_ITEM.title}
-                                    </a>
-                                </SidebarMenuButton>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <SidebarMenuButton className="font-semibold text-primary">
+                                            <MonitorSmartphone />
+                                            Launch Station
+                                            <ChevronDown className="ml-auto h-3.5 w-3.5" />
+                                        </SidebarMenuButton>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent side="right" align="start" className="w-44">
+                                        <TooltipProvider>
+                                            {STATION_OPTIONS.map((opt) => (
+                                                <Tooltip key={opt.key}>
+                                                    <TooltipTrigger asChild>
+                                                        <DropdownMenuItem asChild>
+                                                            <a
+                                                                href={opt.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-center gap-2"
+                                                            >
+                                                                <opt.icon className="h-4 w-4" />
+                                                                {opt.label}
+                                                            </a>
+                                                        </DropdownMenuItem>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="right">
+                                                        {opt.tooltip}
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            ))}
+                                        </TooltipProvider>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>

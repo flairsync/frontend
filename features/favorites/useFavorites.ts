@@ -9,13 +9,12 @@ export const useFavorites = () => {
         return useQuery({
             queryKey: ["favorites", params],
             queryFn: async () => {
-                const response = await getFavoritesApiCall(params);
-                const data = response.data.data || {};
+                const res = await getFavoritesApiCall(params);
                 return {
-                    items: DiscoveryBusiness.parseApiArrayResponse(data.data || []),
-                    total: data.total || 0,
-                    page: data.page || 1,
-                    limit: data.limit || 10,
+                    items: DiscoveryBusiness.parseApiArrayResponse(res.data),
+                    total: res.total ?? 0,
+                    page: res.current ?? 1,
+                    limit: res.limit ?? 10,
                 };
             },
         });

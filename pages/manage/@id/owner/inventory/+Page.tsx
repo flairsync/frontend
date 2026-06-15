@@ -36,7 +36,7 @@ import { MovementTimelineView } from "@/components/management/inventory/Movement
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
 const BusinessOwnerInventoryManagement: React.FC = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 

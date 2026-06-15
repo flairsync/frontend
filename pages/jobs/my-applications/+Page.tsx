@@ -170,12 +170,20 @@ const MyApplicationsPage = () => {
                             )}
                           </div>
 
+                          {app.invitedAt && (
+                            <div className="mt-2">
+                              <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                                Staff Invite Sent
+                              </span>
+                            </div>
+                          )}
+
                           <div className="flex items-center justify-between mt-3">
                             <p className="text-xs text-muted-foreground">
                               Applied on {format(new Date(app.createdAt), "MMM d, yyyy")}
                             </p>
                             <a
-                              href={`/jobs/${app.jobId}/my-application`}
+                              href={`/jobs/my-applications/${app.id}`}
                               className="text-xs text-primary hover:underline flex items-center gap-1"
                             >
                               View details <ExternalLink className="h-3 w-3" />

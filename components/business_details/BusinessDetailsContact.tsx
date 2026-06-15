@@ -12,7 +12,7 @@ interface BusinessDetailsContactProps {
 }
 
 const BusinessDetailsContact: React.FC<BusinessDetailsContactProps> = ({ profile }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("feed");
 
     const socialLinks = [
         {

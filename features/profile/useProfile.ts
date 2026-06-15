@@ -15,9 +15,7 @@ export const useProfile = () => {
     queryKey: ["user_profile"],
     queryFn: async () => {
       const userData = await getUserProfileApiCall();
-      if (userData.data.success) {
-        return UserProfile.parseApiResponse(userData.data.data);
-      }
+      return userData ? UserProfile.parseApiResponse(userData as any) : undefined;
     },
     enabled: user != null,
     meta: {

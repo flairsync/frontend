@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useAttendance, useAttendanceById } from '@/features/shifts/useAttendance';
 import { useProfile } from '@/features/profile/useProfile';
-import { useMyBusiness } from '@/features/business/useMyBusiness';
+import { useBusinessBasicDetails } from '@/features/business/useBusinessBasicDetails';
 import { usePageContext } from 'vike-react/usePageContext';
 import { ShieldCheck, Lock } from 'lucide-react';
 import dayjs from '@/utils/date-utils';
@@ -43,8 +43,8 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     const { userProfile } = useProfile();
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
-    const { myBusinessFullDetails } = useMyBusiness(businessId as string);
-    const businessTz = myBusinessFullDetails?.timezone || 'UTC';
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
+    const businessTz = businessBasicDetails?.timezone || 'UTC';
 
     const [checkIn, setCheckIn] = useState('');
     const [checkOut, setCheckOut] = useState('');

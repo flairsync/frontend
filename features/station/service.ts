@@ -45,6 +45,9 @@ export const kitchenStationService = {
 
   remove: (businessId: string, ksId: string) =>
     flairapi.delete(`${ksBase(businessId)}/${ksId}`),
+
+  reorder: (businessId: string, order: { id: string; sortOrder: number }[]) =>
+    flairapi.patch<{ data: KitchenStation[] }>(`${ksBase(businessId)}/reorder`, { order }),
 };
 
 export type KitchenStationStatus = "getting_ready" | "ready" | "broken" | "offline";
@@ -54,7 +57,31 @@ export interface KitchenStation {
   name: string;
   status: KitchenStationStatus;
   active: boolean;
+  sortOrder: number;
 }
+
+const catRuleBase = (businessId: string) =>
+  `${ksBase(businessId)}/category-rules`;
+
+export interface CategoryRule {
+  id: string;
+  businessId: string;
+  categoryId: string;
+  kitchenStationId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const categoryRuleService = {
+  list: (businessId: string) =>
+    flairapi.get<{ data: CategoryRule[] }>(catRuleBase(businessId)),
+
+  upsert: (businessId: string, categoryId: string, kitchenStationId: string) =>
+    flairapi.post<{ data: CategoryRule }>(catRuleBase(businessId), { categoryId, kitchenStationId }),
+
+  remove: (businessId: string, ruleId: string) =>
+    flairapi.delete(`${catRuleBase(businessId)}/${ruleId}`),
+};
 
 export interface StationRecord {
   id: string;

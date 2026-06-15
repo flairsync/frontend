@@ -1,0 +1,223 @@
+{
+  "permissions": {
+    "MENU": { "label": "Gestió del menú", "description": "Crear, actualitzar i gestionar plats, categories i preus del menú." },
+    "RESERVATIONS": { "label": "Gestió de reserves", "description": "Veure, crear, actualitzar i gestionar les reserves i els clients." },
+    "STAFF": { "label": "Gestió del personal", "description": "Gestionar membres de l'equip, rols, permisos i assignacions de feina." },
+    "OPENING_HOURS": { "label": "Gestió de l'horari d'obertura", "description": "Configurar l'horari d'obertura, horaris especials i tancaments." },
+    "BUSINESS_SETTINGS": { "label": "Configuració del negoci", "description": "Gestionar informació, preferències i configuració operativa del negoci." },
+    "ORDERS": { "label": "Gestió de comandes", "description": "Veure, crear i gestionar comandes de clients per a consumició, per emportar i a domicili." },
+    "INVENTORY": { "label": "Gestió d'inventari", "description": "Controlar el nivell d'existències, gestionar articles d'inventari i unitats." }
+  },
+  "menu_management": {
+    "actions": {
+      "add_category": "Afegir categoria",
+      "add_item": "Afegir article",
+      "save_changes": "Guardar canvis",
+      "move_to_category": "Moure a categoria",
+      "delete_category": "Eliminar categoria"
+    },
+    "labels": {
+      "simple_view": "Simple",
+      "organize_view": "Organitzar",
+      "menu_hints": "Suggeriments del menú",
+      "no_items": "Encara no hi ha articles. Fes clic a \"Afegir article\" per començar.",
+      "no_items_category": "Encara no hi ha articles en aquesta categoria.",
+      "items_count": "{{count}} articles",
+      "add_first_item": "Afegeix el teu primer article",
+      "critical": "Crític",
+      "high": "Alt",
+      "medium": "Mitjà",
+      "low": "Baix",
+      "go_back_menus": "Tornar a tots els menús"
+    },
+    "messages": {
+      "delete_category_confirm": "Estàs segur que vols eliminar aquesta categoria? Aquesta acció no es pot desfer i eliminarà tots els articles que contingui.",
+      "delete_item_confirm_title": "Eliminar article?",
+      "delete_item_confirm_desc": "Això eliminarà permanentment \"{{name}}\".",
+      "move_item_select_category": "Selecciona la categoria on vols moure aquest article."
+    },
+    "modal": {
+      "create_title": "Crear nou menú",
+      "edit_title": "Editar menú",
+      "name": "Nom",
+      "description": "Descripció",
+      "icon": "Icona",
+      "start_date": "Data d'inici",
+      "end_date": "Data de fi",
+      "start_time": "Hora d'inici",
+      "end_time": "Hora de fi",
+      "repeat": "Repetir",
+      "repeat_yearly": "Repetir anualment",
+      "select_all_days": "Seleccionar tots els dies",
+      "unselect_all_days": "Deseleccionar tots els dies",
+      "update_button": "Actualitzar menú",
+      "create_button": "Crear menú",
+      "tooltips": {
+        "icon": "Tria una icona per representar aquest menú.",
+        "date_empty": "Deixar buit per a un menú sempre actiu.",
+        "time_empty": "Deixar buit per a un menú actiu tot el dia."
+      }
+    },
+    "list": {
+      "title": "Els teus Menús",
+      "description": "Fes clic en un menú per gestionar les seves categories i articles. Afegeix nous menús per començar!",
+      "remaining_menus": "Pots crear {{count}} menú més amb la teva subscripció.",
+      "remaining_menus_plural": "Pots crear {{count}} menús més amb la teva subscripció.",
+      "limit_reached": "Has assolit el límit de menús per a la teva subscripció.",
+      "upgrade": "Actualitzar pla",
+      "no_menus_title": "Encara no hi ha menús",
+      "no_menus_desc": "Crea el teu primer menú per començar a organitzar els teus articles.",
+      "create_menu": "Crear menú",
+      "categories_count": "{{count}} Categoria",
+      "categories_count_plural": "{{count}} Categories",
+      "items_count": "{{count}} Article",
+      "items_count_plural": "{{count}} Articles",
+      "hints": "Suggeriments",
+      "more_hints": "+{{count}} més",
+      "manage_menu_hint": "Fes clic per obrir i gestionar aquest menú.",
+      "create_new_menu_card": "Crear nou menú"
+    }
+  },
+  "item_modal": {
+    "create_title": "Crear nou article",
+    "edit_title": "Editar article",
+    "copy_label": "Copiar d'articles existents",
+    "copy_hint": "Selecciona un article per pre-emplenar el formulari. Tots els camps segueixen sent editables",
+    "name": "Nom",
+    "description": "Descripció",
+    "price": "Preu",
+    "allergies": "Al·lèrgies",
+    "images": "Imatges",
+    "tracking": {
+      "label": "Seguiment",
+      "tooltip": "Tria com es vincula aquest article amb el teu inventari.",
+      "none": "Cap",
+      "none_desc": "Sense seguiment d'inventari per a aquest article.",
+      "direct": "Vincle directe",
+      "direct_desc": "Aquest article del menú correspon directament a un article de l'inventari (ex: un article \"Coca Cola\" està vinculat a una \"Llauna de Coca\").",
+      "link_existing": "Vincular article existent",
+      "create_new": "Crear nou article d'inventari",
+      "unit": "Unitat",
+      "unit_placeholder": "Seleccionar unitat",
+      "quantity_per_sale": "Quina quantitat es consumeix per venda?",
+      "quantity_hint": "Si es ven en litres i aquest article usa 0.5 L, introdueix 0.5"
+    }
+  },
+  "inventory_management": {
+    "title": "Gestió d'Inventari",
+    "add_item": "Afegir Article",
+    "edit_item": "Editar Article",
+    "delete_item": "Eliminar Article",
+    "adjust_stock": "Ajustar Estoc",
+    "groups": "Grups",
+    "manage_groups": "Gestionar Grups",
+    "add_group": "Afegir Grup",
+    "edit_group": "Editar Grup",
+    "delete_group": "Eliminar Grup",
+    "items": "Articles",
+    "low_stock": "Estoc Baix",
+    "all_items": "Tots els Articles",
+    "table": {
+      "name": "Nom",
+      "quantity": "Quantitat",
+      "unit": "Unitat",
+      "group": "Grup",
+      "threshold": "Llindar",
+      "last_updated": "Actualitzat",
+      "actions": "Accions"
+    },
+    "form": {
+      "name": "Nom de l'Article",
+      "barcode": "Codi de Barres",
+      "description": "Descripció",
+      "quantity": "Quantitat",
+      "unit": "Unitat",
+      "threshold": "Llindar d'Alerta",
+      "group": "Grup",
+      "no_group": "Sense Grup",
+      "errors": {
+        "name_required": "El nom de l'article és obligatori",
+        "quantity_required": "La quantitat és obligatòria",
+        "quantity_min": "La quantitat no pot ser negativa",
+        "unit_required": "La unitat és obligatòria",
+        "threshold_required": "El llindar és obligatori",
+        "threshold_min": "El llindar no pot ser negatiu"
+      }
+    },
+    "search_barcode": "Cercar per Codi de Barres",
+    "edit_group_mode": "Actualitzant grup...",
+    "adjust": {
+      "title": "Ajustar Estoc per a {{name}}",
+      "current": "Quantitat Actual",
+      "adjustment": "Ajust",
+      "adjustment_placeholder": "ex: 5 o -2",
+      "reason": "Raó",
+      "reason_placeholder": "ex: Reabastiment, Mermes, etc.",
+      "new_quantity": "Nova Quantitat"
+    },
+    "messages": {
+      "delete_item_confirm": "Estàs segur que vols eliminar aquest article? Això també l'eliminarà de tots els articles del menú vinculats.",
+      "delete_group_confirm": "Estàs segur que vols eliminar aquest grup? Els articles d'aquest grup es mouran a 'Per Defecte'.",
+      "no_items": "No s'han trobat articles.",
+      "no_groups": "No s'han trobat grups."
+    }
+  },
+  "subscriptions": {
+    "features": {
+      "menu_mgmt": "Gestió de menús",
+      "basic_menu_mgmt": "Gestió de menú bàsica",
+      "advanced_analytics": "Anàlisi avançada",
+      "basic_analytics": "Anàlisi bàsica",
+      "staff_scheduling": "Programació de personal",
+      "reservation_system": "Sistema de reserves",
+      "priority_support": "Suport prioritari",
+      "ded_acc_manager": "Gestor de comptes dedicat",
+      "custom_branding": "Marca personalitzada"
+    },
+    "limits": {
+      "businesses": "Fins a {{count}} negoci",
+      "businesses_plural": "Fins a {{count}} negocis",
+      "employees": "Fins a {{count}} empleat",
+      "employees_plural": "Fins a {{count}} empleats",
+      "menus": "Fins a {{count}} menú",
+      "menus_plural": "Fins a {{count}} menús",
+      "products": "Fins a {{count}} producte",
+      "products_plural": "Fins a {{count}} productes"
+    }
+  },
+  "floor_plan": {
+    "title": "Plànol de planta",
+    "add_floor": "Afegir planta",
+    "edit_floor": "Editar planta",
+    "delete_floor": "Eliminar planta",
+    "floors": "Plantes",
+    "tables": "Taules",
+    "add_table": "Afegir taula",
+    "edit_table": "Editar taula",
+    "delete_table": "Eliminar taula",
+    "capacity": "Capacitat",
+    "position": "Posició",
+    "shape": "Forma"
+  },
+  "orders": {
+    "title": "Comandes",
+    "create_order": "Crear comanda",
+    "order_type": "Tipus de comanda",
+    "status": "Estat",
+    "items": "Articles",
+    "total": "Total",
+    "dine_in": "Per consumir",
+    "takeaway": "Per emportar",
+    "delivery": "A domicili"
+  },
+  "reservations": {
+    "title": "Reserves",
+    "add_reservation": "Afegir reserva",
+    "customer_name": "Nom del client",
+    "time": "Hora",
+    "guests": "Comensals",
+    "table": "Taula",
+    "assign_table": "Assignar taula",
+    "pre_order": "Pre-comanda"
+  }
+}

@@ -1,9 +1,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
     Minus, Plus, Trash2, CreditCard, Banknote,
-    Utensils, Package, MapPin, Send, AlertCircle,
+    Utensils, Package, MapPin, Send, AlertCircle, ChefHat,
 } from "lucide-react";
 import { ValidationAlert } from "./ValidationAlert";
 import { type CartItem, calcSubtotal, calcTax, getTaxRate } from "@/features/pos/types";
@@ -17,6 +20,10 @@ interface OrderCartProps {
     selectedTable?: string;
     staffName?: string;
     currency?: string;
+    kitchenNotes?: string;
+    taxExempt?: boolean;
+    canCreateOrder?: boolean;
+    canApplyDiscount?: boolean;
     onUpdateQuantity: (id: string, delta: number) => void;
     onRemoveItem: (id: string) => void;
     onClear: () => void;
@@ -24,6 +31,8 @@ interface OrderCartProps {
     onConfirm: () => void;
     onChangeMode: (mode: "dine-in" | "takeaway") => void;
     onChangeTable: () => void;
+    onKitchenNotesChange?: (notes: string) => void;
+    onTaxExemptChange?: (exempt: boolean) => void;
 }
 
 export function OrderCart({
@@ -32,6 +41,10 @@ export function OrderCart({
     selectedTable,
     staffName,
     currency = "USD",
+    kitchenNotes = "",
+    taxExempt = false,
+    canCreateOrder = true,
+    canApplyDiscount = true,
     onUpdateQuantity,
     onRemoveItem,
     onClear,
@@ -39,10 +52,12 @@ export function OrderCart({
     onConfirm,
     onChangeMode,
     onChangeTable,
+    onKitchenNotesChange,
+    onTaxExemptChange,
 }: OrderCartProps) {
     const subtotal = calcSubtotal(items);
     const taxRate = getTaxRate();
-    const tax = calcTax(subtotal);
+    const tax = taxExempt ? 0 : calcTax(subtotal);
     const total = subtotal + tax;
 
     const isDineInMissingTable = orderMode === "dine-in" && !selectedTable;
@@ -236,6 +251,35 @@ export function OrderCart({
                 )}
             </ScrollArea>
 
+            {/* Kitchen notes + tax-exempt */}
+            {!isCartEmpty && (
+                <div className="px-6 pb-3 space-y-3">
+                    <div className="space-y-1.5">
+                        <Label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                            <ChefHat className="w-3 h-3" />
+                            Kitchen Note / Allergy Info
+                        </Label>
+                        <Textarea
+                            placeholder="e.g. Severe nut allergy at table"
+                            value={kitchenNotes}
+                            onChange={(e) => onKitchenNotesChange?.(e.target.value)}
+                            rows={2}
+                            className="text-xs resize-none bg-background/50"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="tax-exempt-toggle" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+                            Tax Exempt
+                        </Label>
+                        <Switch
+                            id="tax-exempt-toggle"
+                            checked={taxExempt}
+                            onCheckedChange={onTaxExemptChange}
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* Validation hint */}
             <div className="px-6 py-2">
                 <ValidationAlert
@@ -257,7 +301,11 @@ export function OrderCart({
                         <span>{formatCurrency(subtotal, currency)}</span>
                     </div>
                     <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                        <span>Tax {taxRate > 0 ? `(${(taxRate * 100).toFixed(0)}%)` : ""}</span>
+                        <span>
+                            {taxExempt
+                                ? "Tax (Exempt)"
+                                : `Tax${taxRate > 0 ? ` (${(taxRate * 100).toFixed(0)}%)` : ""}`}
+                        </span>
                         <span>{formatCurrency(tax, currency)}</span>
                     </div>
                     <div className="flex justify-between items-baseline pt-2">
@@ -271,39 +319,43 @@ export function OrderCart({
                 </div>
 
                 <div className="flex flex-col gap-3 pt-2">
-                    <Button
-                        onClick={action.highlight ? onChangeTable : onConfirm}
-                        disabled={action.disabled}
-                        className={`w-full h-16 font-black text-sm gap-3 rounded-2xl shadow-xl transition-all active:scale-[0.98] ${
-                            action.highlight
-                                ? "bg-amber-500 hover:bg-amber-600 text-amber-950 animate-pulse"
-                                : ""
-                        }`}
-                    >
-                        {action.icon}
-                        {action.label.toUpperCase()}
-                    </Button>
+                    {canCreateOrder && (
+                        <Button
+                            onClick={action.highlight ? onChangeTable : onConfirm}
+                            disabled={action.disabled}
+                            className={`w-full h-16 font-black text-sm gap-3 rounded-2xl shadow-xl transition-all active:scale-[0.98] ${
+                                action.highlight
+                                    ? "bg-amber-500 hover:bg-amber-600 text-amber-950 animate-pulse"
+                                    : ""
+                            }`}
+                        >
+                            {action.icon}
+                            {action.label.toUpperCase()}
+                        </Button>
+                    )}
 
-                    <div className="grid grid-cols-2 gap-3">
-                        <Button
-                            variant="outline"
-                            className="h-14 flex flex-col items-center justify-center gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
-                            disabled={isCartEmpty || isDineInMissingTable}
-                            onClick={() => onPayment("cash")}
-                        >
-                            <Banknote className="h-4 w-4 text-muted-foreground" />
-                            CASH SETTLE
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="h-14 flex flex-col items-center justify-center gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
-                            disabled={isCartEmpty || isDineInMissingTable}
-                            onClick={() => onPayment("card")}
-                        >
-                            <CreditCard className="h-4 w-4 text-muted-foreground" />
-                            CARD SETTLE
-                        </Button>
-                    </div>
+                    {canCreateOrder && (
+                        <div className="grid grid-cols-2 gap-3">
+                            <Button
+                                variant="outline"
+                                className="h-14 flex flex-col items-center justify-center gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
+                                disabled={isCartEmpty || isDineInMissingTable}
+                                onClick={() => onPayment("cash")}
+                            >
+                                <Banknote className="h-4 w-4 text-muted-foreground" />
+                                CASH SETTLE
+                            </Button>
+                            <Button
+                                variant="outline"
+                                className="h-14 flex flex-col items-center justify-center gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
+                                disabled={isCartEmpty || isDineInMissingTable}
+                                onClick={() => onPayment("card")}
+                            >
+                                <CreditCard className="h-4 w-4 text-muted-foreground" />
+                                CARD SETTLE
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

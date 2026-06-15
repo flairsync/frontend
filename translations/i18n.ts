@@ -1,34 +1,32 @@
 import i18n from "i18next";
+import HttpBackend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
-import english_us from "./english_us";
-import french_fr from "./french_fr";
-import spanish_es from "./spanish_es";
-import catalan_cat from "./catalan_cat";
+import { getLangCookie } from "@/utils/cookies";
+
+function detectLang(): string {
+  const cookie = getLangCookie();
+  if (cookie) return cookie;
+  const browser = navigator.language?.split("-")[0] ?? "en";
+  return ["en", "fr", "es", "cat"].includes(browser) ? browser : "en";
+}
 
 i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
+  .use(HttpBackend)
+  .use(initReactI18next)
   .init({
-    // the translations
-    // (tip move them in a JSON file and import them,
-    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
-    resources: {
-      en: {
-        translation: english_us,
-      },
-      fr: {
-        translation: french_fr,
-      },
-      es: {
-        translation: spanish_es,
-      },
-      cat: {
-        translation: catalan_cat,
-      },
-    },
-    lng: "en", // if you're using a language detector, do not define the lng option
+    ns: ["common", "landing", "auth", "feed", "management", "tutorials"],
+    defaultNS: "common",
+    fallbackNS: "common",
+    lng: typeof window !== "undefined" ? detectLang() : "en",
     fallbackLng: "en",
+    backend: {
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
+    },
     interpolation: {
-      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
     },
   });
 

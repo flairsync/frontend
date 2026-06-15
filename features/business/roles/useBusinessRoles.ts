@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  bulkAssignRoleToEmployeesApiCall,
   createNewBusinessRoleApiCall,
   CreateRoleDataType,
   deleteBusinessRoleApiCall,
@@ -19,7 +20,7 @@ export const useBusinessRoles = (businessId?: string) => {
     queryFn: async () => {
       if (!businessId) return;
       const resp = await getBusinessRolesApiCall(businessId);
-      return Role.parseApiArrayResponse(resp.data.data);
+      return Role.parseApiArrayResponse(resp.data as any);
     },
   });
 
@@ -115,6 +116,17 @@ export const useBusinessRoles = (businessId?: string) => {
     },
   });
 
+  const { mutate: bulkAssignRole, isPending: bulkAssigningRole } = useMutation({
+    mutationKey: ["bulk_assign_role", businessId],
+    mutationFn: async (data: { roleId: string; employmentIds: string[] }) => {
+      if (!businessId) return;
+      return bulkAssignRoleToEmployeesApiCall(businessId, data.roleId, data.employmentIds);
+    },
+    onSuccess() {
+      queryClient.refetchQueries({ queryKey: ["business_emps", businessId] });
+    },
+  });
+
   //#endregion
 
   return {
@@ -137,5 +149,8 @@ export const useBusinessRoles = (businessId?: string) => {
     deletingRolePermission,
 
     updateEmployeeRoles,
+
+    bulkAssignRole,
+    bulkAssigningRole,
   };
 };

@@ -11,7 +11,7 @@ export const useAvailability = (employmentId?: string) => {
 
   const { data: availability, isLoading: isLoadingAvailability } = useQuery({
     queryKey: ["availability", employmentId],
-    queryFn: () => fetchAvailabilityApiCall(employmentId!).then((res) => res.data.data),
+    queryFn: () => fetchAvailabilityApiCall(employmentId!),
     enabled: !!employmentId,
   });
 

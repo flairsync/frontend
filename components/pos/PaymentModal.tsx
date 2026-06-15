@@ -6,9 +6,10 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2 } from "lucide-react";
+import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2, Download } from "lucide-react";
 import { toast } from "sonner";
 import { staffApi } from "@/features/station/station-api";
+import { printReceiptApiCall } from "@/features/orders/service";
 import DiscountPanel from "./DiscountPanel";
 import SplitBillPanel from "./SplitBillPanel";
 import ReceiptView from "./ReceiptView";
@@ -49,6 +50,7 @@ export function PaymentModal({
     const [discountAmount, setDiscountAmount] = useState(0);
     const [showReceipt, setShowReceipt] = useState(false);
     const [processing, setProcessing] = useState(false);
+    const [isPrintingPdf, setIsPrintingPdf] = useState(false);
 
     const effectiveTotal = total - discountAmount;
 
@@ -60,6 +62,7 @@ export function PaymentModal({
             setDiscountAmount(0);
             setShowReceipt(false);
             setProcessing(false);
+            setIsPrintingPdf(false);
         }
     }, [isOpen]);
 
@@ -191,6 +194,25 @@ export function PaymentModal({
                             >
                                 <Receipt className="h-4 w-4" />
                                 View Receipt
+                            </Button>
+                        )}
+                        {orderId && businessId && !stationMode && (
+                            <Button
+                                variant="outline"
+                                className="flex-1 gap-2 h-12"
+                                disabled={isPrintingPdf}
+                                onClick={async () => {
+                                    setIsPrintingPdf(true);
+                                    try {
+                                        const blob = await printReceiptApiCall(businessId, orderId);
+                                        window.open(URL.createObjectURL(blob), "_blank");
+                                    } finally {
+                                        setIsPrintingPdf(false);
+                                    }
+                                }}
+                            >
+                                <Download className="h-4 w-4" />
+                                Print PDF
                             </Button>
                         )}
                         <Button className="flex-1 gap-2 h-12 font-black" onClick={onClose}>

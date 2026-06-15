@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Briefcase, Search } from "lucide-react";
+import { useState } from "react";
+import { Briefcase, Search, UserCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,11 +10,34 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { JobCard } from "@/components/jobs/JobCard";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { withFallback } from "vike-react-query";
 import { fetchPublicJobsApiCall } from "@/features/jobs/service";
-import { Job, JobCategory, JobType, JOB_CATEGORY_LABELS, JOB_TYPE_LABELS, PaginatedResponse } from "@/models/Job";
+import { Job, JobCategory, JobType, JOB_CATEGORY_LABELS, JOB_TYPE_LABELS } from "@/models/Job";
+import { PaginatedData } from "@/features/shared/api-response";
 import PublicFeedHeader from "@/components/feed/PublicFeedHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
+import { usePageContext } from "vike-react/usePageContext";
+import { useProfessionalProfile } from "@/features/professionalProfile/useProfessionalProfile";
+
+const ProProfileBanner = () => {
+  const { userProfessionalProfile, loadingProfessionalProfile } = useProfessionalProfile();
+  if (loadingProfessionalProfile || userProfessionalProfile) return null;
+  return (
+    <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6 flex items-center justify-between gap-4 flex-wrap">
+      <div className="flex items-center gap-3">
+        <UserCircle className="h-5 w-5 text-primary shrink-0" />
+        <div>
+          <p className="text-sm font-semibold">You don't have a professional profile yet</p>
+          <p className="text-xs text-muted-foreground">Create one to apply for jobs and be discovered by employers.</p>
+        </div>
+      </div>
+      <a href="/profile/jobs">
+        <Button size="sm" className="rounded-full shrink-0">Create Profile</Button>
+      </a>
+    </div>
+  );
+};
 
 function getFiltersFromUrl() {
   if (typeof window === "undefined") return { type: "", category: "", location: "", page: 1 };
@@ -27,26 +50,78 @@ function getFiltersFromUrl() {
   };
 }
 
+type JobFilters = ReturnType<typeof getFiltersFromUrl>;
+
+// Inner component — server-rendered via useSuspenseQuery
+const JobsResults = withFallback(
+  ({ filters, setPage }: { filters: JobFilters; setPage: (p: number) => void }) => {
+    const { data } = useSuspenseQuery<PaginatedData<Job>>({
+      queryKey: ["public_jobs", filters],
+      queryFn: async (): Promise<PaginatedData<Job>> => {
+        const result = await fetchPublicJobsApiCall({
+          page: filters.page,
+          limit: 12,
+          type: filters.type as JobType || undefined,
+          category: filters.category as JobCategory || undefined,
+          location: filters.location || undefined,
+        });
+        return result as unknown as PaginatedData<Job>;
+      },
+    });
+
+    const jobs = data?.data ?? [];
+    const totalPages = data?.pages ?? 1;
+
+    if (jobs.length === 0) {
+      return (
+        <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-card">
+          <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
+          <p className="text-lg font-semibold mb-1">No open positions found</p>
+          <p className="text-sm text-muted-foreground">Try adjusting your filters.</p>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <p className="text-sm text-muted-foreground mb-4">
+          {jobs.length} position{jobs.length !== 1 ? "s" : ""} found
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          {jobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2">
+            <Button variant="outline" size="sm" disabled={filters.page <= 1} onClick={() => setPage(filters.page - 1)}>
+              Previous
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Page {filters.page} of {totalPages}
+            </span>
+            <Button variant="outline" size="sm" disabled={filters.page >= totalPages} onClick={() => setPage(filters.page + 1)}>
+              Next
+            </Button>
+          </div>
+        )}
+      </>
+    );
+  },
+  // Loading fallback
+  () => (
+    <div className="flex flex-col items-center justify-center py-20 gap-3">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      <p className="text-sm text-muted-foreground">Loading jobs...</p>
+    </div>
+  )
+);
+
 const JobBoardPage = () => {
+  const { user } = usePageContext();
   const [filters, setFilters] = useState(getFiltersFromUrl);
   const [locationInput, setLocationInput] = useState(filters.location);
-
-  const { data, isPending: loading } = useQuery<PaginatedResponse<Job>>({
-    queryKey: ["public_jobs", filters],
-    queryFn: async () => {
-      const resp = await fetchPublicJobsApiCall({
-        page: filters.page,
-        limit: 12,
-        type: filters.type as JobType || undefined,
-        category: filters.category as JobCategory || undefined,
-        location: filters.location || undefined,
-      });
-      return resp.data.data;
-    },
-  });
-
-  const jobs = data?.data ?? [];
-  const totalPages = data?.pages ?? 1;
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(window.location.search);
@@ -85,6 +160,7 @@ const JobBoardPage = () => {
         </div>
 
         <div className="max-w-5xl mx-auto px-4 py-8">
+          {user && <ProProfileBanner />}
           {/* Filters */}
           <div className="bg-card rounded-xl border border-border p-4 mb-6 flex flex-wrap gap-3 items-end">
             <div className="flex flex-col gap-1 min-w-[160px]">
@@ -155,44 +231,8 @@ const JobBoardPage = () => {
             )}
           </div>
 
-          {/* Results */}
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-3">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              <p className="text-sm text-muted-foreground">Loading jobs...</p>
-            </div>
-          ) : jobs.length === 0 ? (
-            <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-card">
-              <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-              <p className="text-lg font-semibold mb-1">No open positions found</p>
-              <p className="text-sm text-muted-foreground">Try adjusting your filters.</p>
-            </div>
-          ) : (
-            <>
-              <p className="text-sm text-muted-foreground mb-4">
-                {jobs.length} position{jobs.length !== 1 ? "s" : ""} found
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                {jobs.map((job) => (
-                  <JobCard key={job.id} job={job} />
-                ))}
-              </div>
-
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2">
-                  <Button variant="outline" size="sm" disabled={filters.page <= 1} onClick={() => setPage(filters.page - 1)}>
-                    Previous
-                  </Button>
-                  <span className="text-sm text-muted-foreground">
-                    Page {filters.page} of {totalPages}
-                  </span>
-                  <Button variant="outline" size="sm" disabled={filters.page >= totalPages} onClick={() => setPage(filters.page + 1)}>
-                    Next
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
+          {/* Results — server-rendered on first load */}
+          <JobsResults filters={filters} setPage={setPage} />
         </div>
       </main>
 

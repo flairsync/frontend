@@ -1,6 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
-import { CheckCircle2, Clock, FileText, StickyNote } from "lucide-react";
+import { CheckCircle2, Clock, FileText, Mail, StickyNote } from "lucide-react";
 import {
   ApplicationEventSource,
   ApplicationEventType,
@@ -20,6 +20,7 @@ function getProDescription(event: JobApplicationEvent): string {
     case 'accepted': return "You've been accepted for this position. Congratulations!";
     case 'rejected': return 'The employer has closed your application.';
     case 'resume_added': return event.note ?? 'You updated your resume.';
+    case 'invited': return 'A staff invite has been sent — check your email inbox.';
     default: return '';
   }
 }
@@ -51,6 +52,7 @@ const EVENT_ICON_CLASS: Partial<Record<ApplicationEventType, string>> = {
   rejected: 'bg-red-100 text-red-600',
   resume_added: 'bg-zinc-100 text-zinc-600',
   note_updated: 'bg-zinc-100 text-zinc-600',
+  invited: 'bg-indigo-100 text-indigo-600',
 };
 
 const TERMINAL_STATUSES: ApplicationStatus[] = ['accepted', 'rejected'];
@@ -64,7 +66,7 @@ interface ProTimelineProps {
 
 export function ProApplicationTimeline({ events, currentStatus }: ProTimelineProps) {
   const visibleEvents = events.filter(
-    (e) => e.source !== 'owner' || ['submitted', 'reviewed', 'shortlisted', 'accepted', 'rejected', 'resume_added'].includes(e.type)
+    (e) => e.source !== 'owner' || ['submitted', 'reviewed', 'shortlisted', 'accepted', 'rejected', 'resume_added', 'invited'].includes(e.type)
   );
 
   const isTerminal = TERMINAL_STATUSES.includes(currentStatus);
@@ -82,6 +84,8 @@ export function ProApplicationTimeline({ events, currentStatus }: ProTimelinePro
               <div className={cn("w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs", iconClass)}>
                 {event.type === 'resume_added' ? (
                   <FileText className="h-3.5 w-3.5" />
+                ) : event.type === 'invited' ? (
+                  <Mail className="h-3.5 w-3.5" />
                 ) : (
                   <CheckCircle2 className="h-3.5 w-3.5" />
                 )}
@@ -148,6 +152,8 @@ export function OwnerApplicationTimeline({ events }: OwnerTimelineProps) {
                   <FileText className="h-3.5 w-3.5" />
                 ) : event.type === 'note_updated' ? (
                   <StickyNote className="h-3.5 w-3.5" />
+                ) : event.type === 'invited' ? (
+                  <Mail className="h-3.5 w-3.5" />
                 ) : (
                   <CheckCircle2 className="h-3.5 w-3.5" />
                 )}

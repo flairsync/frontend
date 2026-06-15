@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useShiftSwaps } from "@/features/shifts/useShiftSwaps";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
-import { useShifts } from "@/features/shifts/useShifts";
+import { useUpcomingShifts } from "@/features/shifts/useShifts";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatInBusinessTimezone } from "@/utils/date-utils";
@@ -30,11 +30,12 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
     const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
     const businessTz = businessBasicDetails?.timezone || 'UTC';
 
-    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
+    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { enabled: open });
     const startDate = dayjs().tz(businessTz).format('YYYY-MM-DD');
     const endDate = dayjs().tz(businessTz).add(30, 'day').format('YYYY-MM-DD');
-    const { shifts, fetchingShifts } = useShifts(businessId, startDate, endDate, currentEmploymentId);
-    const { requestSwap, isRequesting } = useShiftSwaps(businessId as string, currentEmploymentId);
+    const { data: shiftsData, isFetching: fetchingShifts } = useUpcomingShifts({ businessId, startDate, endDate, enabled: open });
+    const shifts = Array.isArray(shiftsData) ? shiftsData : (shiftsData?.data || []);
+    const { requestSwap, isRequesting } = useShiftSwaps(businessId as string, currentEmploymentId, { enabled: open });
 
     const [shiftId, setShiftId] = useState<string>("");
     const [toEmploymentId, setToEmploymentId] = useState<string>("");

@@ -21,28 +21,27 @@ export const useReservations = (businessId: string, filters?: FetchReservationsD
         queryKey: ["reservations", businessId, filters],
         queryFn: async () => {
             try {
-                const resp = await fetchReservationsApiCall(businessId, filters);
-                return resp.data;
+                return await fetchReservationsApiCall(businessId, filters);
             } catch (error) {
                 console.warn("Failed to fetch reservations:", error);
-                return { data: [], meta: { totalPages: 1, totalItems: 0 } };
+                return { data: [], current: 1, pages: 1 };
             }
         },
         enabled: !!businessId,
     });
 
     const createReservationMutation = useMutation({
-        mutationFn: async (data: CreateReservationDto) => {
-            const response = await createReservationApiCall(businessId, data);
-            return response.data?.data !== undefined ? response.data.data : response.data;
-        },
+        mutationFn: (data: CreateReservationDto) => createReservationApiCall(businessId, data),
         onSuccess: () => {
             toast.success("Reservation created successfully");
             queryClient.invalidateQueries({ queryKey: ["reservations", businessId] });
         },
         onError: (error: any) => {
+            const code = error.response?.data?.code;
             const status = error.response?.status || error.status;
-            if (status === 400) {
+            if (code === "reservation.past_time") {
+                toast.error("Reservation time must be in the future.");
+            } else if (code === "reservation.capacity_exceeded" || (status === 400 && !code)) {
                 toast.error("Guest count exceeds the selected table's maximum capacity.");
             } else if (status === 409) {
                 toast.error("This table is already booked around this time. Please select another table or time.");
@@ -66,13 +65,8 @@ export const useReservations = (businessId: string, filters?: FetchReservationsD
         },
     });
 
-    // Extract arrays from backend response wrapping
-    const actualData = reservationsData?.data !== undefined ? reservationsData.data : reservationsData;
-    const reservationsArray = (actualData && actualData.data && Array.isArray(actualData.data))
-        ? actualData.data
-        : (Array.isArray(actualData) ? actualData : []);
-
-    const meta = reservationsData?.meta || reservationsData?.data?.meta || { totalPages: 1, totalItems: reservationsArray.length };
+    const reservationsArray = reservationsData?.data ?? [];
+    const meta = { totalPages: reservationsData?.pages ?? 1, totalItems: reservationsArray.length };
 
     const cancelReservationMutation = useMutation({
         mutationFn: ({ reservationId, cancelReason }: { reservationId: string; cancelReason?: string }) =>
@@ -114,26 +108,23 @@ export const useReservations = (businessId: string, filters?: FetchReservationsD
 
 export const useAvailability = (businessId: string) => {
     return useMutation({
-        mutationFn: async (data: { date: string; guestCount: number }) => {
-            const response = await findAvailabilityApiCall(businessId, data.date, data.guestCount);
-            return response.data?.data || response.data || [];
-        },
+        mutationFn: async (data: { date: string; guestCount: number }): Promise<any[]> =>
+            findAvailabilityApiCall(businessId, data.date, data.guestCount),
     });
 };
 
-export const useReservationDetails = (businessId: string, reservationId: string) => {
+export const useReservationDetails = (businessId: string, reservationId: string, options?: { enabled?: boolean }) => {
     return useQuery({
         queryKey: ["reservation", businessId, reservationId],
         queryFn: async () => {
             try {
-                const resp = await fetchReservationDetailsApiCall(businessId, reservationId);
-                return resp.data?.data || resp.data || null;
+                return await fetchReservationDetailsApiCall(businessId, reservationId);
             } catch (error) {
                 console.warn("Failed to fetch reservation details:", error);
                 return null;
             }
         },
-        enabled: !!businessId && !!reservationId,
+        enabled: (options?.enabled !== false) && !!businessId && !!reservationId,
     });
 };
 
@@ -143,8 +134,7 @@ export const useUserLookup = (email?: string, phone?: string) => {
         queryFn: async () => {
             if (!email && !phone) return null;
             try {
-                const resp = await lookupUserApiCall(email, phone);
-                return resp.data?.data || null;
+                return await lookupUserApiCall(email, phone);
             } catch (error) {
                 console.warn("User lookup failed:", error);
                 return null;

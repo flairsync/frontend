@@ -7,6 +7,7 @@ import {
   applyToJobApiCall,
   fetchMyApplicationsApiCall,
   fetchMyApplicationDetailApiCall,
+  fetchMyApplicationByAppIdApiCall,
   uploadResumeFileApiCall,
   setResumeUrlApiCall,
 } from "./service";
@@ -14,10 +15,7 @@ import {
 export const useMyApplications = (params: ListApplicationsParams = {}) => {
   const { data, isPending: loadingApplications, refetch } = useQuery<PaginatedResponse<JobApplication>>({
     queryKey: ["my_job_applications", params],
-    queryFn: async () => {
-      const resp = await fetchMyApplicationsApiCall(params);
-      return resp.data.data;
-    },
+    queryFn: () => fetchMyApplicationsApiCall(params),
   });
 
   return {
@@ -34,10 +32,7 @@ export const useMyApplicationDetail = (jobId: string) => {
 
   const { data: application, isPending: loadingApplication, isError } = useQuery<JobApplication>({
     queryKey: ["my_job_application_detail", jobId],
-    queryFn: async () => {
-      const resp = await fetchMyApplicationDetailApiCall(jobId);
-      return resp.data.data;
-    },
+    queryFn: () => fetchMyApplicationDetailApiCall(jobId),
     enabled: !!jobId,
     retry: false,
   });
@@ -75,6 +70,17 @@ export const useMyApplicationDetail = (jobId: string) => {
     setResumeUrl,
     settingResumeUrl,
   };
+};
+
+export const useMyApplicationByAppId = (applicationId: string) => {
+  const { data: application, isPending: loadingApplication, isError } = useQuery<JobApplication>({
+    queryKey: ["my_application_by_app_id", applicationId],
+    queryFn: () => fetchMyApplicationByAppIdApiCall(applicationId),
+    enabled: !!applicationId,
+    retry: false,
+  });
+
+  return { application, loadingApplication, isError };
 };
 
 export const useApplyToJob = (jobId: string) => {

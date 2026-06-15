@@ -152,14 +152,28 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
         try {
             const newOrder = await reorder.mutateAsync({ orderId });
             toast.success("Order placed! Redirecting...");
-            if (newOrder?.id) {
-                window.location.href = `/business/${businessId}?order=${newOrder.id}`;
+            const newOrderId = newOrder?.data?.id ?? newOrder?.id;
+            if (newOrderId) {
+                window.location.href = `/business/${businessId}?order=${newOrderId}`;
             }
         } catch (error: any) {
+            const code = error.response?.data?.code;
+            const stockData = error.response?.data?.data;
+
             if (error.response?.status === 403) {
                 toast.error("This business isn't accepting orders right now.");
+            } else if (code === "order.not_found") {
+                toast.error("This order could not be found.");
+            } else if (stockData?.itemName) {
+                toast.error(
+                    `${stockData.itemName} is out of stock (need ${stockData.required}, only ${stockData.available} available).`,
+                );
+            } else if (stockData?.ingredientName) {
+                toast.error(
+                    `${stockData.menuItemName} can't be made — ${stockData.ingredientName} is out of stock (need ${stockData.required}, only ${stockData.available} available).`,
+                );
             } else {
-                toast.error("Failed to place reorder. Please try again.");
+                toast.error(error.response?.data?.message ?? "Failed to place reorder. Please try again.");
             }
         }
     };

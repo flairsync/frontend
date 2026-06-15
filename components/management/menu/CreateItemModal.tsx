@@ -96,7 +96,7 @@ const ItemVariantsSection: React.FC<{
     itemId: string;
     variants: MenuItemVariant[];
 }> = ({ businessId, menuId, categoryId, itemId, variants }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { createVariant, updateVariant, deleteVariant } = useBusinessSingleMenu(businessId, menuId);
 
     const [isAdding, setIsAdding] = useState(false);
@@ -165,7 +165,7 @@ const ItemModifiersSection: React.FC<{
     itemId: string;
     modifierGroups: MenuItemModifierGroup[];
 }> = ({ businessId, menuId, categoryId, itemId, modifierGroups }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const {
         createModifierGroup, deleteModifierGroup,
         createModifierItem, deleteModifierItem
@@ -354,7 +354,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
         fetchingInventoryUnits
     } = useInventoryUnits(inventoryUnitSystem);
 
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
 
     // Prefill state when editing
     useEffect(() => {

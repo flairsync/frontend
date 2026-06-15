@@ -18,8 +18,7 @@ export const useDataExport = () => {
   } = useQuery({
     queryKey: ["data_export_status"],
     queryFn: async (): Promise<DataExportStatus> => {
-      const res = await getDataExportStatusApiCall();
-      return res.data.data;
+      return await getDataExportStatusApiCall() as DataExportStatus;
     },
     refetchInterval: (query) => {
       if (query.state.data?.status === "pending") return 10_000;

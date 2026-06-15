@@ -1,4 +1,5 @@
-export type DesignerItemType = 'table' | 'wall' | 'window' | 'object' | 'sign';
+export type ApiElementType = 'wall' | 'wc' | 'plant' | 'pillar' | 'bar' | 'window' | 'door' | 'stairs' | 'elevator' | 'label' | 'shape';
+export type DesignerItemType = 'table' | ApiElementType;
 
 export interface Point {
     x: number;
@@ -7,8 +8,9 @@ export interface Point {
 
 export interface DesignerElement {
     id: string;
+    apiId?: string;         // server-side element ID; absent for unsaved elements
     type: DesignerItemType;
-    subType: string;
+    subType: string;        // table shape ('circle'|'square'|'rectangle'); 'default' for elements
     xMeters: number;
     yMeters: number;
     widthMeters: number;
@@ -24,8 +26,8 @@ export interface FloorPlanLayout {
     id: string;
     name: string;
     elements: DesignerElement[];
-    gridSize: number; // in pixels
-    pixelsPerMeter: number; // conversion factor
+    gridSize: number;
+    pixelsPerMeter: number;
     widthMeters: number;
     heightMeters: number;
 }

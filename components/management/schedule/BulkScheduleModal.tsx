@@ -9,6 +9,16 @@ import { useShiftTemplates } from "@/features/shifts/useShiftTemplates";
 import { useShifts } from "@/features/shifts/useShifts";
 import { usePageContext } from "vike-react/usePageContext";
 import { Trash } from "lucide-react";
+import { eachDayOfInterval, format } from "date-fns";
+import dayjs from "@/utils/date-utils";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
+
+const formatShiftErrorMessage = (msg: string, tz: string) =>
+    msg.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z/g, (iso) =>
+        dayjs.utc(iso).tz(tz).format("MMM D, YYYY h:mm A")
+    );
 
 interface BulkScheduleModalProps {
     open: boolean;
@@ -19,9 +29,11 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
+    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const businessTz = myBusinessFullDetails?.timezone || 'UTC';
     const { teams, loadingTeams } = useBusinessTeams(businessId);
     const { templates, fetchingTemplates } = useShiftTemplates(businessId);
-    const { bulkScheduleTeam, isBulkScheduling } = useShifts(businessId);
+    const { bulkScheduleTeam, isBulkScheduling } = useShifts(businessId, undefined, undefined, undefined, businessTz);
 
     const [teamId, setTeamId] = useState<string>("");
     const [useTemplate, setUseTemplate] = useState<boolean>(true);
@@ -32,18 +44,20 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     
     // Dates
-    const [dateInput, setDateInput] = useState<string>("");
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
     const [dates, setDates] = useState<string[]>([]);
 
-    const handleAddDate = () => {
-        if (dateInput && !dates.includes(dateInput)) {
-            setDates([...dates, dateInput].sort());
-            setDateInput("");
+    const handleDateRangeChange = (range: DateRange | undefined) => {
+        setDateRange(range);
+        if (range?.from && range?.to) {
+            setDates(eachDayOfInterval({ start: range.from, end: range.to }).map(d => format(d, 'yyyy-MM-dd')));
+        } else {
+            setDates([]);
         }
     };
 
     const handleRemoveDate = (d: string) => {
-        setDates(dates.filter(date => date !== d));
+        setDates(prev => prev.filter(date => date !== d));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -59,13 +73,14 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
             onSuccess: () => {
                 onOpenChange(false);
                 setDates([]);
+                setDateRange(undefined);
                 setTeamId("");
                 setTemplateId("");
                 setErrorMessage(null);
             },
             onError: (error: any) => {
                 const msg = error.response?.data?.message || "Failed to schedule team shifts";
-                setErrorMessage(msg);
+                setErrorMessage(formatShiftErrorMessage(msg, businessTz));
             }
         });
     };
@@ -161,25 +176,24 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                     </div>
 
                     <div className="space-y-2 border-t pt-2">
-                        <Label>Dates to Schedule</Label>
-                        <div className="flex gap-2">
-                            <Input 
-                                type="date" 
-                                value={dateInput} 
-                                onChange={e => setDateInput(e.target.value)} 
-                            />
-                            <Button type="button" onClick={handleAddDate} variant="secondary">Add</Button>
-                        </div>
+                        <Label>Date Range</Label>
+                        <DatePickerWithRange date={dateRange} setDate={handleDateRangeChange} />
                         {dates.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-2 max-h-32 overflow-y-auto">
-                                {dates.map(d => (
-                                    <div key={d} className="flex items-center gap-1 bg-secondary text-secondary-foreground px-2 py-1 rounded text-sm">
-                                        <span>{d}</span>
-                                        <button type="button" onClick={() => handleRemoveDate(d)} className="text-muted-foreground hover:text-foreground">
-                                            <Trash className="w-3 h-3" />
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">{dates.length} day{dates.length !== 1 ? 's' : ''} selected — click to remove</p>
+                                <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
+                                    {dates.map(d => (
+                                        <button
+                                            key={d}
+                                            type="button"
+                                            onClick={() => handleRemoveDate(d)}
+                                            className="flex items-center gap-1 bg-secondary hover:bg-destructive/10 hover:text-destructive text-secondary-foreground px-2 py-0.5 rounded text-xs transition-colors"
+                                        >
+                                            {d}
+                                            <Trash className="w-2.5 h-2.5" />
                                         </button>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>

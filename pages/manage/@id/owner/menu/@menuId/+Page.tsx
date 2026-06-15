@@ -40,8 +40,7 @@ import { CategoryModal } from "@/components/management/menu/CreateCategoryModal"
 import { ItemModal } from "@/components/management/menu/CreateItemModal";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { ItemsDuplicationModal } from "@/components/management/menu/ItemsDuplicationModal";
-import UpgradeModal from "@/components/subscriptions/UpgradeModal";
-import { useUsage } from "@/features/subscriptions/useUsage";
+import { useBusinessPlan } from "@/features/business/useBusinessPlan";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
 import { useAllergies } from "@/features/shared/useAllergies";
@@ -91,7 +90,7 @@ const MenuDetailPage: React.FC = () => {
     // #region Routing
     const { routeParams } = usePageContext();
     const { menuId, id } = routeParams;
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     // #endregion
 
     // #region Hooks
@@ -137,11 +136,11 @@ const MenuDetailPage: React.FC = () => {
     const [deleteCategoryConfirm, setDeleteCategoryConfirm] = useState<string | null>(null);
     const [movingItem, setMovingItem] = useState<{ itemId: string, currentCatId: string } | null>(null);
 
-    const { usage } = useUsage();
+    const { plan } = useBusinessPlan(id);
     const { openUpgradeModal } = useSubscriptionStore();
 
-    const canCreateProduct = usage?.canCreateProduct ?? true;
-    const canCreateMenu = usage?.canCreateMenu ?? true;
+    const canCreateProduct = plan ? plan.canCreateProduct : true;
+    const canCreateMenu = plan ? plan.canCreateMenu : true;
 
     const { allergies } = useAllergies();
     // #endregion
@@ -587,7 +586,7 @@ const MenuDetailPage: React.FC = () => {
                             if (canCreateMenu) {
                                 setCreateCategoryModal(true);
                             } else {
-                                openUpgradeModal("You've reached your menu category limit. Upgrade to add more categories.");
+                                openUpgradeModal(`The business plan allows up to ${plan?.allowed.products ?? 0} menu items. The owner needs to upgrade to add more.`);
                             }
                         }}
                         className={cn(

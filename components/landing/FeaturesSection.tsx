@@ -3,7 +3,7 @@ import { animate, createScope, onScroll, Scope, utils } from "animejs";
 import { useTranslation } from "react-i18next";
 
 const FeaturesSection = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("landing");
     const scope = useRef<Scope>(null);
 
     useLayoutEffect(() => {
@@ -32,7 +32,7 @@ const FeaturesSection = () => {
             <div className="flex w-full py-16 md:py-24 bg-muted/50">
                 <div
                     id={"header_feature_section"}
-                    className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center gap-12 lg:gap-24"
+                    className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12 lg:gap-24"
                 >
                     {/* Image Section */}
                     <div className="flex-1 w-full gap-4 flex lg:flex-row flex-col items-center justify-center">

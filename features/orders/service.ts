@@ -1,4 +1,5 @@
 import flairapi from "@/lib/flairapi";
+import { unwrap } from "../shared/api-response";
 
 const getOrdersUrl = (businessId: string) => {
     return `${import.meta.env.BASE_URL}/businesses/${businessId}/orders`;
@@ -20,6 +21,8 @@ export interface CreateOrderDto {
     paymentMethod?: "cash" | "card" | "online" | "other";
     lat?: number;
     lng?: number;
+    kitchenNotes?: string;
+    taxExempt?: boolean;
 }
 
 export type OrderStatus =
@@ -68,7 +71,10 @@ export interface Order {
         nameSnapshot?: string;
         basePriceSnapshot?: string | number;
         totalPrice?: string | number;
-        selectedModifiers?: { id?: string; name: string; price: number }[];
+        voidReason?: string;
+        voidedBy?: string | null;
+        voidedAt?: string | null;
+        selectedModifiers?: { id?: string; modifierItemId?: string; name: string; price: number }[];
     }[];
     payments?: {
         id: string;
@@ -77,6 +83,7 @@ export interface Order {
         method: "cash" | "card" | "online" | "other";
         status: string;
         idempotencyKey: string | null;
+        refundedBy?: string | null;
         createdAt: string;
     }[];
     paymentStatus: "pending" | "partially_paid" | "paid" | "refunded" | "failed";
@@ -84,6 +91,8 @@ export interface Order {
     cancellationReason?: string;
     rejectionReason?: string | null;
     closingNotes?: string;
+    kitchenNotes?: string;
+    taxExempt?: boolean;
     createdAt: string;
     updatedAt: string;
 }
@@ -95,30 +104,31 @@ export interface CreatePaymentDto {
     cashTendered?: number;
 }
 
-export const fetchOrdersApiCall = (
+export const fetchOrdersApiCall = async (
     businessId: string,
     status?: "ongoing" | "all" | OrderStatus,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    tableId?: string,
+    customerName?: string,
 ) => {
     const url = getOrdersUrl(businessId);
     const params = new URLSearchParams();
-
     if (status) params.append("status", status);
     if (startDate) params.append("startDate", startDate);
     if (endDate) params.append("endDate", endDate);
-
+    if (tableId) params.append("tableId", tableId);
+    if (customerName) params.append("customerName", customerName);
     const qs = params.toString();
-    return flairapi.get(qs ? `${url}?${qs}` : url);
+    return unwrap(await flairapi.get(qs ? `${url}?${qs}` : url));
 };
 
 export const createOrderApiCall = (businessId: string, data: CreateOrderDto) => {
     return flairapi.post(getOrdersUrl(businessId), data);
 };
 
-export const fetchOrderDetailsApiCall = (businessId: string, orderId: string) => {
-    return flairapi.get(`${getOrdersUrl(businessId)}/${orderId}`);
-};
+export const fetchOrderDetailsApiCall = async (businessId: string, orderId: string) =>
+    unwrap(await flairapi.get(`${getOrdersUrl(businessId)}/${orderId}`));
 
 export const updateOrderApiCall = (businessId: string, orderId: string, data: UpdateOrderDto) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}`, data);
@@ -172,8 +182,17 @@ export const updateOrderItemApiCall = (businessId: string, orderId: string, item
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`, data);
 };
 
-export const voidOrderItemApiCall = (businessId: string, orderId: string, itemId: string) => {
-    return flairapi.delete(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`);
+export const voidOrderItemApiCall = (businessId: string, orderId: string, itemId: string, reason?: string) => {
+    const config = reason ? { data: { reason } } : undefined;
+    return flairapi.delete(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}`, config);
+};
+
+export const advanceOrderItemApiCall = (businessId: string, orderId: string, itemId: string) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/items/${itemId}/advance`, {});
+};
+
+export const firePendingItemsApiCall = (businessId: string, orderId: string) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/fire-pending`, {});
 };
 
 // ─── Receipt ──────────────────────────────────────────────────────────────────
@@ -233,62 +252,101 @@ export interface ReceiptData {
     totalTip: number;
 }
 
-export const getReceiptApiCall = (businessId: string, orderId: string) =>
-    flairapi.get(`${getOrdersUrl(businessId)}/${orderId}/receipt`).then((r) => r.data.data as ReceiptData);
+export const getReceiptApiCall = async (businessId: string, orderId: string) =>
+    unwrap<ReceiptData>(await flairapi.get(`${getOrdersUrl(businessId)}/${orderId}/receipt`));
+
+export const printReceiptApiCall = async (businessId: string, orderId: string): Promise<Blob> => {
+    const response = await flairapi.post(
+        `${getOrdersUrl(businessId)}/${orderId}/receipt/print`,
+        {},
+        { responseType: "blob" },
+    );
+    return response.data as Blob;
+};
 
 // ─── Split Bill ───────────────────────────────────────────────────────────────
 
-export type SplitPaymentStatus = "UNPAID" | "PARTIALLY_PAID" | "PAID";
+export type SplitPaymentStatus = "unpaid" | "partially_paid" | "paid";
+
+export interface OrderSplitItem {
+    id: string;
+    nameSnapshot?: string;
+    quantity: number;
+    totalPrice?: number;
+}
 
 export interface OrderSplit {
     id: string;
     orderId: string;
     label: string;
-    amount: number;
-    amountPaid: number;
+    totalAmount: number;
+    totalPaid: number;
     paymentStatus: SplitPaymentStatus;
-    itemIds: string[] | null;
+    items: OrderSplitItem[];
     createdAt: string;
 }
 
 export interface CreateSplitsPayload {
-    type: "equal" | "by_items";
-    count?: number;
-    parts?: Array<{ label: string; itemIds: string[] }>;
+    splits: Array<{ label: string; itemIds: string[] }>;
 }
 
 export interface PaySplitPayload {
     amount: number;
     method: "cash" | "card" | "online" | "other";
     tipAmount?: number;
+    cashTendered?: number;
 }
 
 export const splitsApi = {
-    create: (businessId: string, orderId: string, payload: CreateSplitsPayload) =>
-        flairapi
-            .post(`${getOrdersUrl(businessId)}/${orderId}/splits`, payload)
-            .then((r) => r.data.data as OrderSplit[]),
+    create: async (businessId: string, orderId: string, payload: CreateSplitsPayload) =>
+        unwrap<OrderSplit[]>(await flairapi.post(`${getOrdersUrl(businessId)}/${orderId}/splits`, payload)),
 
-    list: (businessId: string, orderId: string) =>
-        flairapi
-            .get(`${getOrdersUrl(businessId)}/${orderId}/splits`)
-            .then((r) => r.data.data as OrderSplit[]),
+    list: async (businessId: string, orderId: string) =>
+        unwrap<OrderSplit[]>(await flairapi.get(`${getOrdersUrl(businessId)}/${orderId}/splits`)),
 
     remove: (businessId: string, orderId: string) =>
         flairapi.delete(`${getOrdersUrl(businessId)}/${orderId}/splits`),
 
-    pay: (
+    pay: async (
         businessId: string,
         orderId: string,
         splitId: string,
         payload: PaySplitPayload,
         idempotencyKey?: string,
     ) =>
-        flairapi
-            .post(
-                `${getOrdersUrl(businessId)}/${orderId}/splits/${splitId}/pay`,
-                payload,
-                idempotencyKey ? { headers: { "Idempotency-Key": idempotencyKey } } : undefined,
-            )
-            .then((r) => r.data.data as { split: OrderSplit; payment: any }),
+        unwrap<{ split: OrderSplit; payment: any }>(await flairapi.post(
+            `${getOrdersUrl(businessId)}/${orderId}/splits/${splitId}/payments`,
+            payload,
+            idempotencyKey ? { headers: { "Idempotency-Key": idempotencyKey } } : undefined,
+        )),
 };
+
+export interface BatchUpdateOrdersDto {
+    orderIds: string[];
+    action: 'accept' | 'cancel' | 'reject';
+    reason?: string;
+}
+
+export interface BatchUpdateResult {
+    succeeded: string[];
+    failed: { id: string; reason: string }[];
+    total: number;
+}
+
+export const batchUpdateOrdersApiCall = (businessId: string, dto: BatchUpdateOrdersDto) =>
+    flairapi.post(`${getOrdersUrl(businessId)}/batch-update`, dto);
+
+export const updateOrderDiscountApiCall = (
+    businessId: string,
+    orderId: string,
+    discountAmount: number,
+) =>
+    flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/discount`, { discountAmount });
+
+export const reorderStationOrderApiCall = (
+    orderId: string,
+    data?: { type?: "dine_in" | "takeaway"; tableId?: string },
+) =>
+    import("@/features/station/station-api").then(({ staffApi }) =>
+        staffApi.patch(`/station/orders/${orderId}/reorder`, data ?? {}),
+    );

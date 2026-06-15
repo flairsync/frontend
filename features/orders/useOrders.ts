@@ -17,9 +17,15 @@ import {
     transferOrderApiCall,
     updateOrderItemApiCall,
     voidOrderItemApiCall,
+    advanceOrderItemApiCall,
+    firePendingItemsApiCall,
+    updateOrderDiscountApiCall,
+    batchUpdateOrdersApiCall,
     CreateOrderDto,
     UpdateOrderDto,
     CreatePaymentDto,
+    BatchUpdateOrdersDto,
+    BatchUpdateResult,
     Order,
     OrderStatus,
 } from "./service";
@@ -28,24 +34,17 @@ export const useOrders = (
     businessId: string,
     status?: "ongoing" | "all" | OrderStatus,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    tableId?: string,
+    customerName?: string,
 ) => {
     const queryClient = useQueryClient();
 
     const { data: orders, isFetching: fetchingOrders, refetch } = useQuery<Order[]>({
-        queryKey: ["orders", businessId, status || "ongoing", startDate, endDate],
+        queryKey: ["orders", businessId, status || "ongoing", startDate, endDate, tableId, customerName],
         queryFn: async () => {
-            try {
-                const resp = await fetchOrdersApiCall(businessId, status, startDate, endDate);
-                const resData = resp.data;
-                const actualData = resData?.data !== undefined ? resData.data : resData;
-
-                if (actualData && actualData.data && Array.isArray(actualData.data)) return actualData.data;
-                return Array.isArray(actualData) ? actualData : [];
-            } catch (error) {
-                console.warn("Failed to fetch orders:", error);
-                return [];
-            }
+            const data = await fetchOrdersApiCall(businessId, status, startDate, endDate, tableId, customerName);
+            return Array.isArray(data) ? data : [];
         },
         enabled: !!businessId,
     });
@@ -90,8 +89,9 @@ export const useOrders = (
             // Also invalidate just in case
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
         },
-        onError: () => {
-            toast.error("Failed to add items to order");
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || "Failed to add items to order";
+            toast.error(msg);
         }
     });
 
@@ -257,10 +257,20 @@ export const useOrders = (
     const updateOrderItemMutation = useMutation({
         mutationFn: ({ orderId, itemId, data }: { orderId: string, itemId: string, data: { variantId?: string | null; quantity?: number; modifiers?: any[]; notes?: string } }) =>
             updateOrderItemApiCall(businessId, orderId, itemId, data),
-        onSuccess: () => {
+        onSuccess: (response, { orderId }) => {
+            const updatedOrder = response.data?.data || response.data;
             toast.success("Item updated successfully");
+            if (updatedOrder?.id) {
+                queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) =>
+                    old ? { ...old, ...updatedOrder } : updatedOrder
+                );
+                queryClient.setQueryData(["orders", businessId], (old: Order[] | undefined) => {
+                    if (!old) return old;
+                    return old.map(o => o.id === orderId ? { ...o, ...updatedOrder } : o);
+                });
+            }
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
-            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Failed to update item";
@@ -269,17 +279,146 @@ export const useOrders = (
     });
 
     const voidOrderItemMutation = useMutation({
-        mutationFn: ({ orderId, itemId }: { orderId: string, itemId: string }) =>
-            voidOrderItemApiCall(businessId, orderId, itemId),
-        onSuccess: () => {
-            toast.success("Item voided successfully");
+        mutationFn: ({ orderId, itemId, reason }: { orderId: string; itemId: string; reason?: string }) =>
+            voidOrderItemApiCall(businessId, orderId, itemId, reason),
+        onSuccess: (response, { orderId }) => {
+            const updatedOrder = response.data?.data || response.data;
+            toast.success("Item voided — bill updated");
+            if (updatedOrder?.id) {
+                queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) =>
+                    old ? { ...old, ...updatedOrder } : updatedOrder
+                );
+                queryClient.setQueryData(["orders", businessId], (old: Order[] | undefined) => {
+                    if (!old) return old;
+                    return old.map(o => o.id === orderId ? { ...o, ...updatedOrder } : o);
+                });
+            }
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
+        },
+        onError: (error: any) => {
+            const code = error.response?.data?.code;
+            if (code === "order_item.already_voided") {
+                toast.error("This item is already voided.");
+            } else {
+                const msg = error.response?.data?.message || "Failed to void item";
+                toast.error(msg);
+            }
+        }
+    });
+
+    const advanceOrderItemMutation = useMutation({
+        mutationFn: ({ orderId, itemId }: { orderId: string; itemId: string; tableName?: string }) =>
+            advanceOrderItemApiCall(businessId, orderId, itemId),
+        onMutate: async ({ orderId, itemId }) => {
+            await queryClient.cancelQueries({ queryKey: ["order", businessId, orderId] });
+            const previousOrder = queryClient.getQueryData(["order", businessId, orderId]);
+            queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) => {
+                if (!old) return old;
+                return {
+                    ...old,
+                    items: old.items.map((item: any) => {
+                        if (item.id !== itemId) return item;
+                        const nextStatus = item.status === "pending" ? "sent" : item.status === "sent" ? "ready" : item.status === "ready" ? "served" : item.status;
+                        return { ...item, status: nextStatus };
+                    }),
+                };
+            });
+            return { previousOrder, orderId };
+        },
+        onSuccess: (response, { orderId, tableName }) => {
+            const data = response.data?.data || response.data;
+            const { item, orderStatus, allItemsReady } = data;
+            queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) => {
+                if (!old) return old;
+                return {
+                    ...old,
+                    status: orderStatus ?? old.status,
+                    items: old.items.map((i: any) => (i.id === item.id ? { ...i, ...item } : i)),
+                };
+            });
+            if (allItemsReady) {
+                toast.success(`All items ready${tableName ? ` for ${tableName}` : ""}!`);
+            }
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+        },
+        onError: (error: any, { orderId }, context) => {
+            if (context?.previousOrder !== undefined) {
+                queryClient.setQueryData(["order", businessId, orderId], context.previousOrder);
+            }
+            const msg = error.response?.data?.message || "Failed to advance item status";
+            toast.error(msg);
+        },
+    });
+
+    const firePendingMutation = useMutation({
+        mutationFn: ({ orderId }: { orderId: string; tableName?: string }) =>
+            firePendingItemsApiCall(businessId, orderId),
+        onSuccess: (response, { orderId, tableName }) => {
+            const data = response.data?.data || response.data;
+            const { firedCount, orderStatus } = data;
+            queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) => {
+                if (!old) return old;
+                return {
+                    ...old,
+                    status: orderStatus ?? old.status,
+                    items: old.items.map((i: any) =>
+                        i.status === "pending" ? { ...i, status: "sent" } : i
+                    ),
+                };
+            });
+            toast.success(`${firedCount} item${firedCount !== 1 ? "s" : ""} sent to kitchen${tableName ? ` for ${tableName}` : ""}.`);
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+        },
+        onError: (error: any) => {
+            const code = error.response?.data?.code;
+            if (code === "order.no_pending_items") {
+                toast.error("There are no pending items to send to the kitchen.");
+            } else {
+                const msg = error.response?.data?.message || "Failed to fire pending items";
+                toast.error(msg);
+            }
+        },
+    });
+
+    const batchUpdateMutation = useMutation({
+        mutationFn: (dto: BatchUpdateOrdersDto) => batchUpdateOrdersApiCall(businessId, dto),
+        onSuccess: (response) => {
+            const result = response.data?.data as BatchUpdateResult;
+            if (result.succeeded.length > 0) {
+                toast.success(`${result.succeeded.length} order${result.succeeded.length > 1 ? 's' : ''} updated`);
+            }
+            if (result.failed.length > 0) {
+                toast.error(`${result.failed.length} order${result.failed.length > 1 ? 's' : ''} could not be updated`);
+            }
+            queryClient.invalidateQueries({ queryKey: ['orders', businessId] });
+            queryClient.invalidateQueries({ queryKey: ['floors', businessId] });
+            queryClient.invalidateQueries({ queryKey: ['tables', businessId] });
+        },
+        onError: (error: any) => {
+            const msg = error.response?.data?.message || 'Failed to update orders';
+            toast.error(msg);
+        },
+    });
+
+    const updateOrderDiscountMutation = useMutation({
+        mutationFn: ({ orderId, discountAmount }: { orderId: string; discountAmount: number }) =>
+            updateOrderDiscountApiCall(businessId, orderId, discountAmount),
+        onSuccess: (_, { discountAmount }) => {
+            toast.success(discountAmount === 0 ? "Discount removed" : "Discount updated");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
             queryClient.invalidateQueries({ queryKey: ["order", businessId] });
         },
         onError: (error: any) => {
-            const msg = error.response?.data?.message || "Failed to void item";
-            toast.error(msg);
-        }
+            if (
+                error?.response?.status === 422 &&
+                error?.response?.data?.code === "order.discount_exceeds_total"
+            ) {
+                toast.error("Discount cannot exceed the order total");
+            } else {
+                toast.error(error?.response?.data?.message ?? "Failed to update discount");
+            }
+        },
     });
 
     return {
@@ -314,6 +453,15 @@ export const useOrders = (
         isUpdatingOrderItem: updateOrderItemMutation.isPending,
         voidOrderItem: voidOrderItemMutation.mutate,
         isVoidingOrderItem: voidOrderItemMutation.isPending,
+        advanceOrderItem: advanceOrderItemMutation.mutate,
+        isAdvancingOrderItem: advanceOrderItemMutation.isPending,
+        firePending: firePendingMutation.mutate,
+        isFiringPending: firePendingMutation.isPending,
+        updateOrderDiscount: updateOrderDiscountMutation.mutate,
+        updateOrderDiscountAsync: updateOrderDiscountMutation.mutateAsync,
+        isUpdatingDiscount: updateOrderDiscountMutation.isPending,
+        batchUpdateOrders: batchUpdateMutation.mutate,
+        isBatchUpdating: batchUpdateMutation.isPending,
     };
 };
 
@@ -321,13 +469,7 @@ export const useOrderDetails = (businessId: string, orderId: string) => {
     return useQuery<Order | null>({
         queryKey: ["order", businessId, orderId],
         queryFn: async () => {
-            try {
-                const resp = await fetchOrderDetailsApiCall(businessId, orderId);
-                return resp.data?.data || resp.data || null;
-            } catch (error) {
-                console.warn("Failed to fetch order details:", error);
-                return null;
-            }
+            return await fetchOrderDetailsApiCall(businessId, orderId) ?? null;
         },
         enabled: !!businessId && !!orderId,
     });

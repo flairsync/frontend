@@ -21,11 +21,12 @@ import { OrderItemConfigModal, ConfiguredOrderItem } from "./OrderItemConfigModa
 interface AddItemsModalProps {
     businessId: string;
     orderId: string | null;
+    orderStatus?: string;
     open: boolean;
     onClose: () => void;
 }
 
-export function AddItemsModal({ businessId, orderId, open, onClose }: AddItemsModalProps) {
+export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose }: AddItemsModalProps) {
     const { businessAllCategories } = useBusinessMenus(businessId);
     const { addItemsToOrder, isAddingItems } = useOrders(businessId);
 

@@ -10,7 +10,9 @@ import StaffAddOrderMenu from "./StaffAddOrderMenu"
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus"
 import { useFloors } from "@/features/floor-plan/useFloorPlan"
 import { useOrders } from "@/features/orders/useOrders"
-import { Plus, Minus, Trash2, ShoppingBag, UtensilsCrossed } from "lucide-react"
+import { Plus, Minus, Trash2, ShoppingBag, UtensilsCrossed, ChefHat } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
 import { OrderItemConfigModal, ConfiguredOrderItem } from "./OrderItemConfigModal"
 
 interface AddOrderDrawerProps {
@@ -26,6 +28,8 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
 
     const [orderType, setOrderType] = React.useState<"dine_in" | "takeaway" | "delivery">("dine_in")
     const [selectedTable, setSelectedTable] = React.useState<string>("none")
+    const [kitchenNotes, setKitchenNotes] = React.useState("")
+    const [taxExempt, setTaxExempt] = React.useState(false)
 
     // items state includes an internal id, menuItemId, quantity, variants, modifiers
     const [selectedItems, setSelectedItems] = React.useState<(ConfiguredOrderItem & { id: string })[]>([])
@@ -34,9 +38,15 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
     const [configModalOpen, setConfigModalOpen] = React.useState(false)
     const [selectedConfigItem, setSelectedConfigItem] = React.useState<any>(null)
 
-    // Flat tables list from floors
+    // Flat tables list from floors, sorted by table number
     const tables = React.useMemo(() => {
-        return floors?.flatMap((f: any) => f.tables || []) || []
+        const all = floors?.flatMap((f: any) => f.tables || []) || []
+        return all.sort((a: any, b: any) => {
+            const numA = parseInt(a.name.replace(/\D/g, ""), 10)
+            const numB = parseInt(b.name.replace(/\D/g, ""), 10)
+            if (!isNaN(numA) && !isNaN(numB)) return numA - numB
+            return a.name.localeCompare(b.name)
+        })
     }, [floors])
 
     const handleSelectItem = (menuItem: any) => {
@@ -96,6 +106,8 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
         setOrderType("dine_in")
         setSelectedTable("none")
         setSelectedItems([])
+        setKitchenNotes("")
+        setTaxExempt(false)
     }
 
     const handleSubmit = () => {
@@ -118,7 +130,9 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                 variantId: i.variantId,
                 modifiers: i.modifiers?.map(m => ({ modifierItemId: m.modifierItemId })),
                 notes: i.notes
-            }))
+            })),
+            kitchenNotes: kitchenNotes.trim() || undefined,
+            taxExempt: taxExempt || undefined,
         }, {
             onSuccess: () => {
                 toast.success("Order created successfully")
@@ -203,6 +217,33 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                                     </Select>
                                 </div>
                             )}
+                        </div>
+
+                        {/* Kitchen Notes */}
+                        <div className="space-y-2">
+                            <Label className="text-xs font-semibold uppercase text-muted-foreground flex items-center gap-1.5">
+                                <ChefHat className="w-3.5 h-3.5" />
+                                Kitchen Note / Allergy Info
+                            </Label>
+                            <Textarea
+                                placeholder="e.g. Severe nut allergy at table"
+                                value={kitchenNotes}
+                                onChange={(e) => setKitchenNotes(e.target.value)}
+                                rows={2}
+                                className="text-sm resize-none"
+                            />
+                        </div>
+
+                        {/* Tax Exempt */}
+                        <div className="flex items-center justify-between py-1">
+                            <Label htmlFor="staff-tax-exempt" className="text-xs font-semibold uppercase text-muted-foreground">
+                                Tax Exempt
+                            </Label>
+                            <Switch
+                                id="staff-tax-exempt"
+                                checked={taxExempt}
+                                onCheckedChange={setTaxExempt}
+                            />
                         </div>
 
                         {/* Selected Items List */}

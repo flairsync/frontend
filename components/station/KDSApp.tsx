@@ -3,18 +3,27 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   ChefHat, Clock, CheckCircle2, AlertCircle,
-  Utensils, Package, Building2, Loader2,
+  Utensils, Package, Building2, Loader2, Undo2,
+  Flame, Settings, ChevronUp, ChevronDown, Timer,
 } from "lucide-react";
 import { toast } from "sonner";
 import { stationApi, staffApi } from "@/features/station/station-api";
+import { useStationSocket } from "@/features/station/useStationSocket";
+import { generateIdempotencyKey } from "@/features/station/offlineQueue";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import StaffPinScreen from "@/components/pos/StaffPinScreen";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import type { StationInfo } from "@/models/Station";
+import ExpoScreen from "@/components/station/ExpoScreen";
 
-// ─── API types per kds_frontend_guide.md ─────────────────────────────────────
+// ─── API types ────────────────────────────────────────────────────────────────
 
 interface KdsOrderItem {
   id: string;
@@ -23,8 +32,10 @@ interface KdsOrderItem {
   selectedModifiers: { modifierItemId: string; name: string; price: number }[] | null;
   notes: string | null;
   status: "pending" | "sent" | "ready" | "served" | "cancelled" | "voided";
-  kitchenStationIdSnapshot: string;
+  kitchenStationIdSnapshot: string | null;
   createdAt: string;
+  sentAt: string | null;
+  readyAt: string | null;
 }
 
 interface KdsOrder {
@@ -33,6 +44,10 @@ interface KdsOrder {
   type: "dine_in" | "takeaway" | "delivery";
   tableId: string | null;
   tableName: string | null;
+  kitchenNotes: string | null;
+  priority: number;
+  readyAt: string | null;
+  requiresExpoConfirm: boolean;
   createdAt: string;
   stationItems: KdsOrderItem[];
   otherItemsCount: number;
@@ -52,11 +67,86 @@ function ageColor(createdAt: string): string {
   return "text-red-400 animate-pulse";
 }
 
-function formatAge(createdAt: string): string {
-  const diff = Math.floor((Date.now() - new Date(createdAt).getTime()) / 1000);
+function formatAge(ts: string): string {
+  const diff = Math.floor((Date.now() - new Date(ts).getTime()) / 1000);
   const m = Math.floor(diff / 60);
   const s = diff % 60;
   return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function itemAgeColor(sentAt: string | null): string {
+  if (!sentAt) return "text-slate-500";
+  const mins = (Date.now() - new Date(sentAt).getTime()) / 60_000;
+  if (mins < 5) return "text-green-400";
+  if (mins < 10) return "text-amber-400";
+  return "text-red-400";
+}
+
+function formatItemAge(sentAt: string | null): string {
+  if (!sentAt) return "--:--";
+  const diff = Math.floor((Date.now() - new Date(sentAt).getTime()) / 1000);
+  const m = Math.floor(diff / 60);
+  const s = diff % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function formatPrepTime(sentAt: string | null, readyAt: string | null): string {
+  if (!sentAt || !readyAt) return "";
+  const diff = Math.floor((new Date(readyAt).getTime() - new Date(sentAt).getTime()) / 1000);
+  const m = Math.floor(diff / 60);
+  const s = diff % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+// ─── Priority Badge ───────────────────────────────────────────────────────────
+
+function PriorityBadge({ value }: { value: number }) {
+  return (
+    <span className="flex items-center gap-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-widest">
+      <Flame className="w-3 h-3" />
+      {value > 1 ? `P${value}` : "Rush"}
+    </span>
+  );
+}
+
+// ─── KDS Settings Popover ─────────────────────────────────────────────────────
+
+function KdsSettingsPopover({
+  readyMaxAge,
+  onReadyMaxAgeChange,
+}: {
+  readyMaxAge: string;
+  onReadyMaxAgeChange: (v: string) => void;
+}) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+          <Settings className="w-4 h-4" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-64 bg-slate-900 border-slate-700 text-slate-100" align="end">
+        <div className="space-y-3">
+          <p className="text-xs font-black uppercase tracking-widest text-slate-400">KDS Settings</p>
+          <div className="space-y-1.5">
+            <Label htmlFor="ready-max-age" className="text-[11px] font-bold text-slate-300">
+              Hide completed tickets after (minutes)
+            </Label>
+            <Input
+              id="ready-max-age"
+              type="number"
+              min="1"
+              placeholder="Never"
+              value={readyMaxAge}
+              onChange={(e) => onReadyMaxAgeChange(e.target.value)}
+              className="h-8 bg-slate-800 border-slate-700 text-sm"
+            />
+            <p className="text-[10px] text-slate-500">Leave empty to always show completed tickets.</p>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
 }
 
 // ─── Ticket Card ─────────────────────────────────────────────────────────────
@@ -66,15 +156,23 @@ function KdsTicketCard({
   onBumpItem,
   onBumpAll,
   onStartPreparing,
+  onRecallItem,
+  onSetPriority,
   bumpingItems,
   startingPreparing,
+  recallingItems,
+  awaitingExpoConfirm,
 }: {
   order: KdsOrder;
   onBumpItem: (orderId: string, itemId: string) => void;
   onBumpAll: (order: KdsOrder) => void;
   onStartPreparing: (orderId: string) => void;
+  onRecallItem: (orderId: string, itemId: string) => void;
+  onSetPriority: (orderId: string, priority: number) => void;
   bumpingItems: Set<string>;
   startingPreparing: Set<string>;
+  recallingItems: Set<string>;
+  awaitingExpoConfirm: boolean;
 }) {
   const [, tick] = useState(0);
   useEffect(() => {
@@ -93,7 +191,7 @@ function KdsTicketCard({
       className={`flex flex-col border-2 bg-slate-900 shadow-2xl transition-all ${
         isReady
           ? "border-green-500 shadow-green-500/20"
-          : allStationItemsBumped
+          : awaitingExpoConfirm || allStationItemsBumped
           ? "border-green-500/30"
           : isAccepted
           ? "border-amber-500/40 opacity-75"
@@ -105,7 +203,7 @@ function KdsTicketCard({
         className={`p-4 rounded-t-lg flex flex-col gap-1.5 ${
           isReady
             ? "bg-green-500/15"
-            : allStationItemsBumped
+            : awaitingExpoConfirm || allStationItemsBumped
             ? "bg-green-500/5"
             : isAccepted
             ? "bg-amber-500/5"
@@ -113,7 +211,7 @@ function KdsTicketCard({
         }`}
       >
         <div className="flex justify-between items-start">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <div
               className={`p-1.5 rounded-lg ${
                 order.type === "dine_in"
@@ -130,47 +228,83 @@ function KdsTicketCard({
             <span className="text-2xl font-black text-white">
               {order.tableName ?? (order.type === "dine_in" ? "Dine In" : "Takeaway")}
             </span>
+            {order.priority > 0 && <PriorityBadge value={order.priority} />}
           </div>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end gap-1">
             <div className={`flex items-center gap-1.5 font-mono font-black text-lg ${ageColor(order.createdAt)}`}>
               <Clock className="w-4 h-4" />
               {formatAge(order.createdAt)}
             </div>
-            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest mt-0.5">
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">
               {order.type.replace("_", " ")}
             </span>
+            {/* Priority stepper — only on in-progress tickets */}
+            {(isPreparing || isAccepted) && (
+              <div className="flex items-center gap-1 mt-0.5">
+                <button
+                  onClick={() => onSetPriority(order.id, Math.max(0, order.priority - 1))}
+                  className="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                >
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+                <span className="text-[10px] font-mono text-slate-500 w-4 text-center">{order.priority}</span>
+                <button
+                  onClick={() => onSetPriority(order.id, order.priority + 1)}
+                  className="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                >
+                  <ChevronUp className="w-3 h-3" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <p className="text-[9px] text-slate-600 font-mono uppercase tracking-widest">
           #{order.id.slice(0, 8)}
         </p>
+        {order.kitchenNotes && (
+          <div className="mt-1.5 flex items-start gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
+            <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+            <p className="text-[11px] font-bold text-amber-300 leading-tight">{order.kitchenNotes}</p>
+          </div>
+        )}
+        {awaitingExpoConfirm && (
+          <div className="mt-1 flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
+            <Timer className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+            <p className="text-[11px] font-bold text-amber-300 uppercase tracking-wide">Waiting for Expo</p>
+          </div>
+        )}
       </div>
 
       {/* Items */}
       <ScrollArea className="px-4 py-2" style={{ maxHeight: "260px" }}>
         <div className="space-y-3 py-1">
           {order.stationItems.map((item) => {
-            const bumped = item.status !== "sent";
+            const isItemReady = item.status === "ready";
+            const isNotSent = item.status !== "sent" && item.status !== "ready";
             const bumping = bumpingItems.has(item.id);
+            const recalling = recallingItems.has(item.id);
+
             return (
               <div
                 key={item.id}
-                onClick={() => !bumped && !bumping && onBumpItem(order.id, item.id)}
+                onClick={() => !isItemReady && !isNotSent && !bumping && !recalling && onBumpItem(order.id, item.id)}
                 className={`p-3 rounded-2xl transition-all border ${
-                  bumped
+                  isNotSent
                     ? "bg-slate-950/50 border-slate-900 opacity-30 cursor-default"
-                    : bumping
+                    : isItemReady
+                    ? "bg-slate-950/50 border-slate-800 opacity-50 cursor-default"
+                    : bumping || recalling
                     ? "bg-slate-800/50 border-slate-700 cursor-wait"
                     : "bg-slate-800 hover:bg-slate-700 border-transparent cursor-pointer shadow-lg shadow-black/20 active:scale-95"
                 }`}
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex gap-3 flex-1 min-w-0">
-                    <span className={`text-xl font-black flex-shrink-0 ${bumped ? "text-slate-600" : "text-primary"}`}>
+                    <span className={`text-xl font-black flex-shrink-0 ${isItemReady || isNotSent ? "text-slate-600" : "text-primary"}`}>
                       {item.quantity}×
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h4 className={`text-sm font-black uppercase tracking-tight ${bumped ? "text-slate-500 line-through" : "text-white"}`}>
+                      <h4 className={`text-sm font-black uppercase tracking-tight ${isItemReady || isNotSent ? "text-slate-500 line-through" : "text-white"}`}>
                         {item.nameSnapshot}
                       </h4>
                       {item.selectedModifiers && item.selectedModifiers.length > 0 && (
@@ -188,13 +322,43 @@ function KdsTicketCard({
                           <p className="text-[10px] font-bold italic leading-tight">"{item.notes}"</p>
                         </div>
                       )}
+                      {/* Elapsed time for in-queue items */}
+                      {item.status === "sent" && item.sentAt && (
+                        <div className={`mt-1 flex items-center gap-1 ${itemAgeColor(item.sentAt)}`}>
+                          <Timer className="w-3 h-3 flex-shrink-0" />
+                          <span className="text-[10px] font-mono font-bold">{formatItemAge(item.sentAt)}</span>
+                        </div>
+                      )}
+                      {/* Prep time for finished items */}
+                      {item.status === "ready" && item.sentAt && item.readyAt && (
+                        <div className="mt-1 flex items-center gap-1 text-green-500/60">
+                          <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
+                          <span className="text-[10px] font-mono font-bold">
+                            Done in {formatPrepTime(item.sentAt, item.readyAt)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="flex-shrink-0">
-                    {bumping ? (
+                  <div className="flex-shrink-0 flex flex-col items-end gap-1">
+                    {bumping || recalling ? (
                       <Loader2 className="w-4 h-4 text-primary animate-spin" />
-                    ) : bumped ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    ) : isItemReady ? (
+                      <>
+                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onRecallItem(order.id, item.id);
+                          }}
+                          disabled={recalling}
+                          title="Un-bump this item"
+                          className="flex items-center gap-0.5 text-[9px] font-bold text-slate-500 hover:text-amber-400 border border-slate-700 hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
+                        >
+                          <Undo2 className="w-2.5 h-2.5" />
+                          Recall
+                        </button>
+                      </>
                     ) : null}
                   </div>
                 </div>
@@ -216,6 +380,11 @@ function KdsTicketCard({
             <CheckCircle2 className="w-5 h-5" />
             <span className="text-xs font-black uppercase tracking-widest">Ready for Pickup</span>
           </div>
+        ) : awaitingExpoConfirm ? (
+          <div className="flex items-center justify-center gap-2 py-2 text-amber-400">
+            <Timer className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-widest">Awaiting Expo Confirmation</span>
+          </div>
         ) : allStationItemsBumped ? (
           <div className="flex items-center justify-center gap-2 py-2 text-green-400/70">
             <CheckCircle2 className="w-4 h-4" />
@@ -229,19 +398,29 @@ function KdsTicketCard({
             onClick={() => onStartPreparing(order.id)}
             disabled={startingPreparing.has(order.id)}
           >
-            {startingPreparing.has(order.id) ? (
-              <Loader2 className="w-4 h-4 animate-spin mr-2" />
-            ) : null}
+            {startingPreparing.has(order.id) && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
             START PREPARING
           </Button>
         ) : (
-          <Button
-            className="w-full h-12 bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/10"
-            onClick={() => onBumpAll(order)}
-            disabled={sentItems.every((i) => bumpingItems.has(i.id))}
-          >
-            BUMP ALL ({sentItems.length})
-          </Button>
+          <div className="flex gap-2">
+            {order.priority === 0 && (
+              <Button
+                variant="outline"
+                className="h-12 px-3 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                onClick={() => onSetPriority(order.id, 1)}
+              >
+                <Flame className="w-3.5 h-3.5 mr-1" />
+                Rush
+              </Button>
+            )}
+            <Button
+              className="flex-1 h-12 bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/10"
+              onClick={() => onBumpAll(order)}
+              disabled={sentItems.every((i) => bumpingItems.has(i.id))}
+            >
+              BUMP ALL ({sentItems.length})
+            </Button>
+          </div>
         )}
       </div>
     </Card>
@@ -253,19 +432,23 @@ function KdsTicketCard({
 function KDSMain({ station }: { station: StationInfo }) {
   const [orders, setOrders] = useState<KdsOrder[]>([]);
   const [bumpingItems, setBumpingItems] = useState<Set<string>>(new Set());
+  const [recallingItems, setRecallingItems] = useState<Set<string>>(new Set());
   const [startingPreparing, setStartingPreparing] = useState<Set<string>>(new Set());
+  const [awaitingExpoOrders, setAwaitingExpoOrders] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [stationUnassigned, setStationUnassigned] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [readyMaxAge, setReadyMaxAge] = useState(
+    () => localStorage.getItem("kds_ready_max_age") ?? ""
+  );
   const knownIdsRef = useRef<Set<string>>(new Set());
   const firstPollRef = useRef(true);
 
-  // Clock tick
   useEffect(() => {
     const t = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
 
-  // Station online on mount, offline on unmount
   useEffect(() => {
     stationApi.patch("/station/kds-station/status", { status: "ready" }).catch(() => {});
     return () => {
@@ -273,7 +456,6 @@ function KDSMain({ station }: { station: StationInfo }) {
     };
   }, []);
 
-  // Heartbeat every 60s
   useEffect(() => {
     const t = setInterval(() => {
       stationApi.post("/station/heartbeat").catch(() => {});
@@ -281,9 +463,23 @@ function KDSMain({ station }: { station: StationInfo }) {
     return () => clearInterval(t);
   }, []);
 
+  useEffect(() => {
+    if (readyMaxAge) {
+      localStorage.setItem("kds_ready_max_age", readyMaxAge);
+    } else {
+      localStorage.removeItem("kds_ready_max_age");
+    }
+  }, [readyMaxAge]);
+
   const fetchOrders = useCallback(async () => {
     try {
-      const res = await stationApi.get<{ data: KdsOrder[] }>("/station/kds-orders");
+      const params: Record<string, string> = {};
+      const maxAge = localStorage.getItem("kds_ready_max_age");
+      if (maxAge) params.readyMaxAgeMinutes = maxAge;
+
+      // staffApi sends X-Staff-Token when a session exists, which handles kdsRequiresStaffAuth.
+      // Its 401 interceptor clears the session and the component re-renders to show PIN screen.
+      const res = await staffApi.get<{ data: KdsOrder[] }>("/station/kds-orders", { params });
       const incoming: KdsOrder[] = res.data.data ?? [];
 
       if (!firstPollRef.current) {
@@ -298,18 +494,27 @@ function KDSMain({ station }: { station: StationInfo }) {
       firstPollRef.current = false;
       knownIdsRef.current = new Set(incoming.map((o) => o.id));
       setOrders(incoming);
+      setStationUnassigned(false);
       setLoading(false);
-    } catch {
+    } catch (err: any) {
+      if (err?.response?.status === 400) {
+        setStationUnassigned(true);
+        setLoading(false);
+        return;
+      }
       setLoading(false);
     }
   }, []);
 
-  // Poll every 6 seconds
   useEffect(() => {
     fetchOrders();
-    const interval = setInterval(fetchOrders, 6_000);
+    const interval = setInterval(fetchOrders, 60_000);
     return () => clearInterval(interval);
   }, [fetchOrders]);
+
+  useStationSocket(useCallback(() => {
+    fetchOrders();
+  }, [fetchOrders]));
 
   const bumpItem = useCallback(async (orderId: string, itemId: string) => {
     // Optimistic: mark item ready locally
@@ -320,7 +525,7 @@ function KDSMain({ station }: { station: StationInfo }) {
           : {
               ...o,
               stationItems: o.stationItems.map((i) =>
-                i.id === itemId ? { ...i, status: "ready" as const } : i
+                i.id === itemId ? { ...i, status: "ready" as const, readyAt: new Date().toISOString() } : i
               ),
             }
       )
@@ -328,19 +533,76 @@ function KDSMain({ station }: { station: StationInfo }) {
     setBumpingItems((prev) => new Set([...prev, itemId]));
 
     try {
-      const res = await staffApi.patch(`/station/kds-orders/${orderId}/items/${itemId}/bump`);
-      const { allItemsReady } = res.data.data;
-      if (allItemsReady) {
+      const res = await staffApi.patch(
+        `/station/kds-orders/${orderId}/items/${itemId}/bump`,
+        {},
+        { headers: { "X-Idempotency-Key": generateIdempotencyKey() } },
+      );
+      const { allItemsReady, awaitingExpoConfirm } = res.data.data ?? {};
+
+      if (awaitingExpoConfirm) {
+        setAwaitingExpoOrders((prev) => new Set([...prev, orderId]));
+      } else if (allItemsReady) {
         toast.success("Order complete — ready for pickup!", { duration: 4000 });
         setTimeout(() => {
           setOrders((prev) => prev.filter((o) => o.id !== orderId));
           knownIdsRef.current.delete(orderId);
         }, 3000);
       }
-    } catch {
-      // next poll corrects state
+    } catch (err: any) {
+      if (err?.response?.status === 403) {
+        toast.error("This item is not assigned to your station");
+        fetchOrders();
+        return;
+      }
+      // next poll corrects state on other errors
     } finally {
       setBumpingItems((prev) => {
+        const next = new Set(prev);
+        next.delete(itemId);
+        return next;
+      });
+    }
+  }, [fetchOrders]);
+
+  const recallItem = useCallback(async (orderId: string, itemId: string) => {
+    setRecallingItems((prev) => new Set([...prev, itemId]));
+    try {
+      const res = await staffApi.patch(
+        `/station/kds-orders/${orderId}/items/${itemId}/recall`,
+        {},
+        { headers: { "X-Idempotency-Key": generateIdempotencyKey() } },
+      );
+      const { orderStatus } = res.data.data ?? {};
+
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id !== orderId
+            ? o
+            : {
+                ...o,
+                status: (orderStatus ?? o.status) as KdsOrder["status"],
+                stationItems: o.stationItems.map((i) =>
+                  i.id === itemId ? { ...i, status: "sent" as const, readyAt: null } : i
+                ),
+              }
+        )
+      );
+      if (orderStatus === "preparing") {
+        setAwaitingExpoOrders((prev) => {
+          const next = new Set(prev);
+          next.delete(orderId);
+          return next;
+        });
+      }
+    } catch (err: any) {
+      if (err?.response?.status === 403) {
+        toast.error("This item is not assigned to your station");
+        return;
+      }
+      toast.error("Failed to recall item — please try again.");
+    } finally {
+      setRecallingItems((prev) => {
         const next = new Set(prev);
         next.delete(itemId);
         return next;
@@ -361,7 +623,9 @@ function KDSMain({ station }: { station: StationInfo }) {
   const startPreparing = useCallback(async (orderId: string) => {
     setStartingPreparing((prev) => new Set([...prev, orderId]));
     try {
-      await staffApi.patch(`/station/orders/${orderId}/prepare`);
+      await staffApi.patch(`/station/orders/${orderId}/prepare`, {}, {
+        headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+      });
       setOrders((prev) =>
         prev.map((o) =>
           o.id !== orderId
@@ -386,9 +650,24 @@ function KDSMain({ station }: { station: StationInfo }) {
     }
   }, []);
 
-  const sorted = [...orders].sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  );
+  const setPriority = useCallback(async (orderId: string, priority: number) => {
+    // Optimistic update
+    setOrders((prev) =>
+      prev.map((o) => o.id === orderId ? { ...o, priority } : o)
+    );
+    try {
+      await staffApi.patch(`/station/kds-orders/${orderId}/priority`, { priority });
+    } catch {
+      toast.error("Failed to update priority.");
+      fetchOrders();
+    }
+  }, [fetchOrders]);
+
+  // Sort: priority DESC, createdAt ASC
+  const sorted = [...orders].sort((a, b) => {
+    if (b.priority !== a.priority) return b.priority - a.priority;
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+  });
 
   return (
     <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans antialiased">
@@ -405,7 +684,7 @@ function KDSMain({ station }: { station: StationInfo }) {
           </div>
         </div>
 
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex items-center gap-3">
           {orders.length > 0 && (
             <div className="flex items-center gap-2 bg-primary/20 px-3 py-1.5 rounded-xl">
               <span className="text-xs font-black text-primary uppercase tracking-widest">
@@ -424,12 +703,25 @@ function KDSMain({ station }: { station: StationInfo }) {
             </p>
           </div>
           <Separator orientation="vertical" className="h-8 bg-slate-800" />
+          <KdsSettingsPopover readyMaxAge={readyMaxAge} onReadyMaxAgeChange={setReadyMaxAge} />
           <StationQuickSettings station={station} />
         </div>
       </header>
 
       {/* Tickets */}
-      {loading ? (
+      {stationUnassigned ? (
+        <div className="flex-1 flex flex-col items-center justify-center text-slate-400 gap-4">
+          <ChefHat className="w-16 h-16 opacity-20" />
+          <div className="text-center px-8">
+            <p className="font-black uppercase tracking-widest text-sm text-white mb-2">
+              Station Unassigned
+            </p>
+            <p className="text-xs max-w-xs leading-relaxed">
+              This KDS has no kitchen station assigned. Ask a manager to re-assign it from the dashboard under Stations.
+            </p>
+          </div>
+        </div>
+      ) : loading ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3 text-slate-600">
             <Loader2 className="w-8 h-8 animate-spin" />
@@ -446,8 +738,12 @@ function KDSMain({ station }: { station: StationInfo }) {
                 onBumpItem={bumpItem}
                 onBumpAll={bumpAll}
                 onStartPreparing={startPreparing}
+                onRecallItem={recallItem}
+                onSetPriority={setPriority}
                 bumpingItems={bumpingItems}
                 startingPreparing={startingPreparing}
+                recallingItems={recallingItems}
+                awaitingExpoConfirm={awaitingExpoOrders.has(order.id)}
               />
             ))}
             {sorted.length === 0 && (
@@ -470,6 +766,15 @@ function KDSMain({ station }: { station: StationInfo }) {
 
 export default function KDSApp({ station }: Props) {
   const { session } = useStaffSession();
+  const kdsMode = typeof window !== "undefined" ? localStorage.getItem("kds_mode") : null;
+
+  if (!session) {
+    return <StaffPinScreen businessId={station.businessId} onLogin={() => {}} />;
+  }
+
+  if (kdsMode === "expo") {
+    return <ExpoScreen station={station} />;
+  }
 
   if (!station.kitchenStationId) {
     return (
@@ -485,10 +790,6 @@ export default function KDSApp({ station }: Props) {
         </div>
       </div>
     );
-  }
-
-  if (!session) {
-    return <StaffPinScreen businessId={station.businessId} onLogin={() => {}} />;
   }
 
   return <KDSMain station={station} />;

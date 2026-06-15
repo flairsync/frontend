@@ -1,76 +1,173 @@
 import { useEffect } from 'react';
-import { io, Socket } from 'socket.io-client';
-import { getJwtToken } from '@/misc/SecureStorage';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getJwtToken } from '@/misc/SecureStorage';
 import { NotificationPayload } from './types';
+import { registerDeviceTokenApiCall } from './service';
+import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
+import dayjs from '@/utils/date-utils';
 
-// Let's create a singleton socket connection to avoid multiple connections
-let socket: Socket | null = null;
+const fmtNotifDates = (msg: string, tz?: string) =>
+    msg.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z/g, (iso) =>
+        tz
+            ? dayjs.utc(iso).tz(tz).format("MMM D, YYYY h:mm A")
+            : dayjs.utc(iso).local().format("MMM D, YYYY h:mm A")
+    );
+
+const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY as string;
+
+function getOrCreateDeviceId(): string {
+    let deviceId = localStorage.getItem('fcm_device_id');
+    if (!deviceId) {
+        deviceId = crypto.randomUUID();
+        localStorage.setItem('fcm_device_id', deviceId);
+    }
+    return deviceId;
+}
+
+// Module-level singletons — one channel per browser session
+let channelMode: 'fcm' | 'sse' | null = null;
+let sseSource: EventSource | null = null;
+
+async function trySetupFcm(onNotification: (n: NotificationPayload) => void): Promise<boolean> {
+    try {
+        const { messaging } = await import('@/lib/firebase');
+        const { getToken, onMessage } = await import('firebase/messaging');
+
+        const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+        if (!token) return false;
+
+        const deviceId = getOrCreateDeviceId();
+        await registerDeviceTokenApiCall({ token, deviceType: 'WEB', deviceId });
+
+        // Register the service worker so Firebase can deliver background messages
+        if ('serviceWorker' in navigator) {
+            await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        }
+
+        onMessage(messaging, (payload) => {
+            onNotification({
+                id: payload.data?.notificationId ?? '',
+                type: (payload.data?.type ?? 'ALERT') as NotificationPayload['type'],
+                title: payload.notification?.title ?? '',
+                message: payload.notification?.body ?? '',
+                payload: {},
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            });
+        });
+
+        return true;
+    } catch (err) {
+        console.error('FCM setup failed, falling back to SSE:', err);
+        return false;
+    }
+}
+
+function setupSse(onNotification: (n: NotificationPayload) => void) {
+    if (sseSource) return; // already connected
+
+    const authToken = getJwtToken();
+    if (!authToken) return;
+
+    const apiBase = import.meta.env.BASE_URL as string;
+    sseSource = new EventSource(`${apiBase}/notifications/stream?token=${authToken}`);
+
+    sseSource.onmessage = (event) => {
+        try {
+            onNotification(JSON.parse(event.data));
+        } catch (err) {
+            console.warn('[SSE] Malformed notification event — could not parse payload:', event.data, err);
+        }
+    };
+
+    // EventSource reconnects automatically on drop — no retry logic needed
+}
 
 export const useNotificationSocket = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        // We'll connect if we have a socket isn't already created.
-        // The instructions suggest using HTTP-only cookies, so manual token passing is not required.
+        if (typeof window === 'undefined' || !('Notification' in window)) return;
 
-        // Connect to the specific namespace and authenticate
-        if (!socket) {
-            // Deriving apiUrl from BASE_URL if available
-            const baseUrl = import.meta.env.BASE_URL;
-            const apiUrl = baseUrl ? new URL(baseUrl).origin : window.location.origin;
-
-            socket = io(`${apiUrl}/notifications`, {
-                withCredentials: true,
-                transports: ['websocket', 'polling'] // Try WebSocket first
-            });
-
-            socket.on('connect', () => {
-                console.log('Connected to notifications socket namespace');
-            });
-
-            socket.on('connect_error', (err) => {
-                console.error('Socket connection error:', err);
-            });
-        }
-
-        const handleNewNotification = (notification: NotificationPayload) => {
+        function handleIncomingNotification(notification: NotificationPayload) {
             queryClient.invalidateQueries({ queryKey: ['notifications'] });
 
+            const tz = notification.payload?.timezone || notification.payload?.businessTz;
+            const message = fmtNotifDates(notification.message, tz);
+
             if (notification.type === 'ALERT' || notification.type === 'SECURITY') {
-                toast.error(notification.title, { description: notification.message });
+                toast.error(notification.title, { description: message });
             } else if (notification.type === 'INVENTORY_LOW_STOCK') {
                 queryClient.invalidateQueries({ queryKey: ['inventory_low_stock'] });
                 queryClient.invalidateQueries({ queryKey: ['inventory_dashboard'] });
-                toast.warning(notification.title, { description: notification.message });
+                toast.warning(notification.title, { description: message });
             } else if (notification.type === 'RESERVATION') {
-                // Refresh the specific reservation timeline if we have the ID
                 const { reservationId, businessId } = notification.payload ?? {};
                 if (businessId && reservationId) {
                     queryClient.invalidateQueries({
                         queryKey: ['reservation_timeline', businessId, reservationId],
                     });
                 }
-                // Also refresh the reservation dashboard (staff view) and list
                 if (businessId) {
                     queryClient.invalidateQueries({ queryKey: ['reservation-dashboard', businessId] });
                     queryClient.invalidateQueries({ queryKey: ['reservations', businessId] });
                 }
-                // Refresh the customer's personal reservations list
                 queryClient.invalidateQueries({ queryKey: ['my_reservations'] });
-                toast.info(notification.title, { description: notification.message });
+                toast.info(notification.title, { description: message });
+            } else if (notification.type === 'ORDER') {
+                const { orderId, businessId } = notification.payload ?? {};
+                if (orderId) {
+                    if (businessId) {
+                        queryClient.invalidateQueries({ queryKey: ['diner_active_order', businessId] });
+                        queryClient.invalidateQueries({ queryKey: ['diner_order_detail', businessId, orderId] });
+                    }
+                    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+                    if (currentPath.startsWith('/diner/')) {
+                        useDinerModeStore.getState().setOrderReadyId(orderId);
+                    } else {
+                        toast.info(notification.title, { description: message });
+                    }
+                }
             } else {
-                toast.info(notification.title, { description: notification.message });
+                toast.info(notification.title, { description: message });
             }
-        };
+        }
 
-        socket.on('new-notification', handleNewNotification);
+        // If SSE is already running, keep its handler up to date with the current queryClient reference
+        if (sseSource) {
+            sseSource.onmessage = (event) => {
+                try {
+                    handleIncomingNotification(JSON.parse(event.data));
+                } catch (err) {
+                    console.warn('[SSE] Malformed notification event — could not parse payload:', event.data, err);
+                }
+            };
+        }
 
-        return () => {
-            if (socket) {
-                socket.off('new-notification', handleNewNotification);
+        if (channelMode !== null) return; // channel already bootstrapped
+
+        async function init() {
+            const permission = Notification.permission;
+            let fcmOk = false;
+
+            if (permission === 'granted') {
+                fcmOk = await trySetupFcm(handleIncomingNotification);
+            } else if (permission === 'default') {
+                const result = await Notification.requestPermission();
+                if (result === 'granted') {
+                    fcmOk = await trySetupFcm(handleIncomingNotification);
+                }
             }
-        };
+
+            if (!fcmOk) {
+                channelMode = 'sse';
+                setupSse(handleIncomingNotification);
+            } else {
+                channelMode = 'fcm';
+            }
+        }
+
+        init();
     }, [queryClient]);
 };

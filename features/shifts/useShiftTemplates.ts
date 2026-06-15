@@ -17,12 +17,8 @@ export const useShiftTemplates = (businessId: string) => {
     queryKey: ["shift-templates", businessId],
     queryFn: async () => {
       try {
-        const resp = await fetchShiftTemplatesApiCall(businessId);
-        const resData = resp.data;
-        const actualData = resData?.data !== undefined ? resData.data : resData;
-
-        if (actualData && Array.isArray(actualData)) return actualData;
-        return Array.isArray(actualData) ? actualData : [];
+        const data = await fetchShiftTemplatesApiCall(businessId);
+        return Array.isArray(data) ? data : [];
       } catch (error) {
         console.warn("Failed to fetch shift templates:", error);
         return [];

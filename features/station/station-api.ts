@@ -56,3 +56,10 @@ export const publicApi = axios.create({
   baseURL: import.meta.env.BASE_URL,
   timeout: 30000,
 });
+
+// Calls POST /station/staff/pin-logout with both the device token (via Bearer) and the
+// staff short token (via X-Staff-Token, added automatically by staffApi interceptor).
+// The backend denylists the short token immediately so it cannot be reused.
+export async function pinLogout(): Promise<void> {
+  await staffApi.post('/station/staff/pin-logout');
+}

@@ -47,7 +47,7 @@ export const SimpleMenuCategoryCard = ({
     onMoveCategoryDown
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { usage } = useUsage();
     const { openUpgradeModal } = useSubscriptionStore();
     const canCreateProduct = usage?.canCreateProduct ?? true;

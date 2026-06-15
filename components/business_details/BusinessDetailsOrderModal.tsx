@@ -13,7 +13,6 @@ import { BusinessMenuItem } from "@/models/business/menu/BusinessMenuItem";
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
 import { useSubmitOrder } from "@/features/discovery/useDiscovery";
 import { Loader2, MapPin, CheckCircle2 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { getDistanceInMeters } from "@/lib/locationUtils";
 
 interface Props {
@@ -24,7 +23,6 @@ interface Props {
 }
 
 export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item, business }) => {
-    const { t } = useTranslation();
     const [orderType, setOrderType] = useState<"dine_in" | "takeaway">("dine_in");
     const [quantity, setQuantity] = useState(1);
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);

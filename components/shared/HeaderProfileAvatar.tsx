@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useTheme } from './theme-provider'
-import { CheckCircle, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { AlertTriangle, CheckCircle, CheckCircle2 } from 'lucide-react'
 // Import SVGs (place them in /src/assets/flags/)
 import EnFlag from "@/assets/flags/gb.svg";
 import FrFlag from "@/assets/flags/fr.svg";
@@ -67,8 +67,9 @@ const HeaderProfileAvatar = () => {
                 <DropdownMenuTrigger>
                     <div className="relative">
                         <Avatar className='hover:cursor-pointer'>
-                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                            <AvatarFallback>{userProfile?.getInitials()}</AvatarFallback>
+                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                                {userProfile?.getInitials() ?? "?"}
+                            </AvatarFallback>
                         </Avatar>
                         {user && user.verified === false && (
                             <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full"></span>
@@ -107,11 +108,15 @@ const HeaderProfileAvatar = () => {
                         </DropdownMenuItem>
                     </a>
 
-                    <a
-                        href='/profile/settings'
-                    >
+                    <a href='/profile/settings'>
                         <DropdownMenuItem className='hover:cursor-pointer'>
                             Settings
+                        </DropdownMenuItem>
+                    </a>
+
+                    <a href='/profile/jobs'>
+                        <DropdownMenuItem className='hover:cursor-pointer'>
+                            Jobs
                         </DropdownMenuItem>
                     </a>
 

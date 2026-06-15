@@ -69,7 +69,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     placeholder="Business Name"
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
-                    maxLength={20}
+                    maxLength={100}
                 />
                 <Textarea
                     disabled={props.disabled}

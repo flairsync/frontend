@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { useOrders } from "@/features/orders/useOrders";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt } from "lucide-react";
+import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import ReceiptView from "@/components/pos/ReceiptView";
@@ -28,7 +30,7 @@ import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
 import { DateRange } from "react-day-picker";
 
 const OwnerOrdersPage: React.FC = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -58,9 +60,14 @@ const OwnerOrdersPage: React.FC = () => {
     const [selectedOrderForReceipt, setSelectedOrderForReceipt] = useState<Order | null>(null);
 
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+    const [selectedOrderIds, setSelectedOrderIds] = useState<Set<string>>(new Set());
     const [statusFilter, setStatusFilter] = useState<"ongoing" | "all">("ongoing");
     const [filterType, setFilterType] = useState<string>("All");
     const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+    const [tableFilter, setTableFilter] = useState<string>("all");
+    const [customerNameInput, setCustomerNameInput] = useState<string>("");
+    const [customerNameFilter, setCustomerNameFilter] = useState<string>("");
+    const customerNameDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     React.useEffect(() => {
         if (typeof window !== "undefined") {
@@ -114,6 +121,16 @@ const OwnerOrdersPage: React.FC = () => {
         }
     }, [filterType, statusFilter, dateRange]);
 
+    useEffect(() => {
+        if (customerNameDebounceRef.current) clearTimeout(customerNameDebounceRef.current);
+        customerNameDebounceRef.current = setTimeout(() => {
+            setCustomerNameFilter(customerNameInput.trim());
+        }, 400);
+        return () => {
+            if (customerNameDebounceRef.current) clearTimeout(customerNameDebounceRef.current);
+        };
+    }, [customerNameInput]);
+
     const handleOpenAddItems = (orderId: string) => {
         setSelectedOrderId(orderId);
         setAddItemsModalOpen(true);
@@ -162,11 +179,15 @@ const OwnerOrdersPage: React.FC = () => {
         isMarkingReady,
         completeOrder,
         isCompletingOrder,
+        batchUpdateOrders,
+        isBatchUpdating,
     } = useOrders(
         businessId,
         statusFilter,
         dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined,
-        dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined
+        dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
+        tableFilter !== "all" ? tableFilter : undefined,
+        customerNameFilter || undefined,
     );
 
     // Fetch floors to get table mappings
@@ -222,6 +243,25 @@ const OwnerOrdersPage: React.FC = () => {
 
     const filteredOrders = filterType === "All" ? orders : orders?.filter((o: any) => o.type === filterType.toLowerCase());
 
+    const nonTerminalFiltered = (filteredOrders ?? []).filter((o: any) => !isTerminal(o.status));
+    const allSelected = nonTerminalFiltered.length > 0 && nonTerminalFiltered.every((o: any) => selectedOrderIds.has(o.id));
+    const someSelected = selectedOrderIds.size > 0;
+
+    const toggleOrder = (id: string) =>
+        setSelectedOrderIds(prev => {
+            const next = new Set(prev);
+            next.has(id) ? next.delete(id) : next.add(id);
+            return next;
+        });
+
+    const toggleAll = () =>
+        setSelectedOrderIds(allSelected ? new Set() : new Set(nonTerminalFiltered.map((o: any) => o.id)));
+
+    const handleBatchAction = (action: 'accept' | 'cancel' | 'reject') => {
+        batchUpdateOrders({ orderIds: Array.from(selectedOrderIds), action });
+        setSelectedOrderIds(new Set());
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -242,9 +282,9 @@ const OwnerOrdersPage: React.FC = () => {
 
                 <TabsContent value="list">
                     {/* Filter */}
-                    <div className="flex items-center gap-2 mb-4 justify-between">
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
                         <Select value={filterType} onValueChange={setFilterType}>
-                            <SelectTrigger className="w-40">
+                            <SelectTrigger className="w-36">
                                 <SelectValue placeholder="Filter by type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -255,7 +295,40 @@ const OwnerOrdersPage: React.FC = () => {
                             </SelectContent>
                         </Select>
 
-                        <div className="flex items-center gap-2">
+                        <Select value={tableFilter} onValueChange={setTableFilter}>
+                            <SelectTrigger className="w-44">
+                                <MapPin className="w-3.5 h-3.5 mr-1 text-muted-foreground" />
+                                <SelectValue placeholder="All Tables" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Tables</SelectItem>
+                                {allTables.map((tbl: any) => (
+                                    <SelectItem key={tbl.id} value={tbl.id}>
+                                        {tbl.floorName} – {tbl.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+
+                        <div className="relative">
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                            <Input
+                                className="pl-8 w-44 h-9"
+                                placeholder="Customer name"
+                                value={customerNameInput}
+                                onChange={e => setCustomerNameInput(e.target.value)}
+                            />
+                            {customerNameInput && (
+                                <button
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    onClick={() => setCustomerNameInput("")}
+                                >
+                                    <X className="w-3.5 h-3.5" />
+                                </button>
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-2 ml-auto">
                             <DatePickerWithRange date={dateRange} setDate={setDateRange} />
                             <Select value={statusFilter} onValueChange={(val: any) => setStatusFilter(val)}>
                                 <SelectTrigger className="w-40">
@@ -269,6 +342,54 @@ const OwnerOrdersPage: React.FC = () => {
                         </div>
                     </div>
 
+                    {/* Bulk action toolbar */}
+                    {someSelected && (
+                        <div className="flex items-center gap-3 rounded-lg border bg-muted/60 px-4 py-2.5 mb-3">
+                            <span className="text-sm font-medium text-muted-foreground">
+                                {selectedOrderIds.size} selected
+                            </span>
+                            <Separator orientation="vertical" className="h-5" />
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 gap-1.5 text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                                disabled={isBatchUpdating}
+                                onClick={() => handleBatchAction('accept')}
+                            >
+                                <CheckCircle className="w-3.5 h-3.5" />
+                                Accept All
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 gap-1.5 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                                disabled={isBatchUpdating}
+                                onClick={() => handleBatchAction('cancel')}
+                            >
+                                <XCircle className="w-3.5 h-3.5" />
+                                Cancel All
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 gap-1.5 text-orange-600 border-orange-200 hover:bg-orange-50 hover:text-orange-700"
+                                disabled={isBatchUpdating}
+                                onClick={() => handleBatchAction('reject')}
+                            >
+                                <ThumbsDown className="w-3.5 h-3.5" />
+                                Reject All
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="ml-auto h-8 w-8 p-0 text-muted-foreground"
+                                onClick={() => setSelectedOrderIds(new Set())}
+                            >
+                                <X className="w-4 h-4" />
+                            </Button>
+                        </div>
+                    )}
+
                     {/* Orders Table */}
                     <Card>
                         <CardHeader>
@@ -278,6 +399,13 @@ const OwnerOrdersPage: React.FC = () => {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
+                                        <TableHead className="w-10">
+                                            <Checkbox
+                                                checked={allSelected}
+                                                onCheckedChange={toggleAll}
+                                                aria-label="Select all"
+                                            />
+                                        </TableHead>
                                         <TableHead>Order</TableHead>
                                         <TableHead>Details</TableHead>
                                         <TableHead>Items</TableHead>
@@ -288,12 +416,21 @@ const OwnerOrdersPage: React.FC = () => {
                                 </TableHeader>
                                 <TableBody>
                                     {fetchingOrders ? (
-                                        <TableRow><TableCell colSpan={6} className="text-center">Loading...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={7} className="text-center">Loading...</TableCell></TableRow>
                                     ) : filteredOrders?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={6} className="text-center">No orders found.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={7} className="text-center">No orders found.</TableCell></TableRow>
                                     ) : (
                                         filteredOrders?.map((o: any) => (
-                                            <TableRow key={o.id}>
+                                            <TableRow key={o.id} data-state={selectedOrderIds.has(o.id) ? "selected" : undefined}>
+                                                <TableCell>
+                                                    {!isTerminal(o.status) && (
+                                                        <Checkbox
+                                                            checked={selectedOrderIds.has(o.id)}
+                                                            onCheckedChange={() => toggleOrder(o.id)}
+                                                            aria-label={`Select order ${o.id.substring(0, 8)}`}
+                                                        />
+                                                    )}
+                                                </TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 items-start">
                                                         <span className="font-mono text-xs">{o.id.substring(0, 8)}</span>
@@ -384,7 +521,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                                         <span>Force Complete</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {(o.status === "created" || o.status === "accepted") && (
+                                                                {["created", "accepted", "preparing"].includes(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenAddItems(o.id)}>
                                                                         <PlusCircle className="mr-2 h-4 w-4" />
                                                                         <span>Add Items</span>

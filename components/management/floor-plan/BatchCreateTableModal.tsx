@@ -35,7 +35,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
     onBatchCreate,
     isCreating
 }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [step, setStep] = useState<"config" | "review">("config");
 
     // Config Step State

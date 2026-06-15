@@ -31,10 +31,8 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
   const { data: logsPage, isLoading: isLoadingLogs } = useQuery<AttendancePage>({
     queryKey: ["attendance-logs", businessId, filters],
     queryFn: async () => {
-      const res = await fetchAttendanceLogsApiCall(businessId!, filters);
-      const raw = res.data?.data ?? res.data;
-      if (Array.isArray(raw)) return { data: raw, total: raw.length, page: 1, limit: raw.length };
-      return raw as AttendancePage;
+      const data = await fetchAttendanceLogsApiCall(businessId!, filters);
+      return data as unknown as AttendancePage;
     },
     enabled: !!businessId,
   });
@@ -124,10 +122,7 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
 export const useAttendanceById = (id?: string) => {
   return useQuery<AttendanceLog>({
     queryKey: ["attendance-by-id", id],
-    queryFn: async () => {
-      const res = await fetchAttendanceByIdApiCall(id!);
-      return res.data?.data ?? res.data;
-    },
+    queryFn: () => fetchAttendanceByIdApiCall(id!),
     enabled: !!id,
   });
 };
@@ -136,10 +131,8 @@ export const useMyAttendance = (businessId?: string, filters?: MyAttendanceFilte
   return useQuery<AttendancePage>({
     queryKey: ["my-attendance", businessId, filters],
     queryFn: async () => {
-      const res = await fetchMyAttendanceApiCall(businessId!, filters);
-      const raw = res.data?.data ?? res.data;
-      if (Array.isArray(raw)) return { data: raw, total: raw.length, page: 1, limit: raw.length };
-      return raw as AttendancePage;
+      const data = await fetchMyAttendanceApiCall(businessId!, filters);
+      return data as unknown as AttendancePage;
     },
     enabled: !!businessId,
   });
@@ -149,8 +142,7 @@ export const useTodayAttendanceDashboard = (businessId?: string) => {
   const todayDate = format(new Date(), 'yyyy-MM-dd');
   return useQuery({
     queryKey: ["attendance-today", businessId, todayDate],
-    queryFn: () =>
-      fetchTodayAttendanceDashboardApiCall(businessId!, todayDate).then((res) => res.data?.data ?? res.data),
+    queryFn: () => fetchTodayAttendanceDashboardApiCall(businessId!, todayDate),
     enabled: !!businessId,
   });
 };
@@ -164,9 +156,8 @@ export const useAttendanceSummary = (
   return useQuery<AttendanceSummaryEntry[]>({
     queryKey: ["attendance-summary", businessId, startDate, endDate, employmentId],
     queryFn: async () => {
-      const res = await fetchAttendanceSummaryApiCall(businessId!, startDate!, endDate!, employmentId);
-      const raw = res.data?.data ?? res.data;
-      return Array.isArray(raw) ? raw : [];
+      const data = await fetchAttendanceSummaryApiCall(businessId!, startDate!, endDate!, employmentId);
+      return Array.isArray(data) ? data : [];
     },
     enabled: !!businessId && !!startDate && !!endDate,
   });

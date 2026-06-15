@@ -39,7 +39,7 @@ const formatTimeString = (timeStr: string) => {
 };
 
 const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("feed");
 
     const getStatus = () => {
         const now = new Date();

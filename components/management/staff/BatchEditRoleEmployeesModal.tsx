@@ -24,7 +24,7 @@ type Props = {
 };
 
 export function BatchEditRoleEmployeesModal({ open, role, businessId, onOpenChange }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation("management");
     const [search, setSearch] = useState("");
     
     // We fetch employees. For a large business we might need to search the API, 

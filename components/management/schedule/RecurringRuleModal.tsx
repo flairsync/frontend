@@ -9,6 +9,9 @@ import { useRecurringRules } from "@/features/shifts/useRecurringRules";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { usePageContext } from "vike-react/usePageContext";
 import { RecurringShiftRule } from "@/models/business/shift/RecurringShiftRule";
+import { useMutation } from "@tanstack/react-query";
+import { generateDraftApiCall } from "@/features/shifts/service";
+import { format, startOfWeek, endOfWeek } from "date-fns";
 
 interface RecurringRuleModalProps {
     open: boolean;
@@ -36,6 +39,11 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
 
     const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
     const { createRule, updateRule, isCreatingRule, isUpdatingRule } = useRecurringRules(businessId);
+
+    const generateDraftMutation = useMutation({
+        mutationFn: ({ startDate, endDate, empId }: { startDate: string; endDate: string; empId: string }) =>
+            generateDraftApiCall(businessId as string, startDate, endDate, empId),
+    });
 
     const [employmentId, setEmploymentId] = useState<string>("");
     const [dayOfWeek, setDayOfWeek] = useState<number>(1);
@@ -85,13 +93,29 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
             interval
         };
 
+        const triggerDraft = (empId: string) => {
+            const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+            const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 });
+            generateDraftMutation.mutate({
+                startDate: format(weekStart, 'yyyy-MM-dd'),
+                endDate: format(weekEnd, 'yyyy-MM-dd'),
+                empId,
+            });
+        };
+
         if (rule) {
             updateRule({ ruleId: rule.id, data: payload }, {
-                onSuccess: () => onOpenChange(false)
+                onSuccess: () => {
+                    triggerDraft(employmentId);
+                    onOpenChange(false);
+                }
             });
         } else {
             createRule(payload, {
-                onSuccess: () => onOpenChange(false)
+                onSuccess: () => {
+                    triggerDraft(employmentId);
+                    onOpenChange(false);
+                }
             });
         }
     };
