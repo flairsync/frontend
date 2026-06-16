@@ -1,6 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-const baseUrl = `${import.meta.env.BASE_URL}/auth`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
 const googleAuthUrl = `${baseUrl}/google`;

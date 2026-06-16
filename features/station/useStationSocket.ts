@@ -19,7 +19,7 @@ export function useStationSocket(onOrderUpdate: (payload: OrderUpdatePayload) =>
     if (!token) return;
 
     // Derive the API server origin from the configured base URL
-    const apiOrigin = new URL(import.meta.env.BASE_URL as string).origin;
+    const apiOrigin = new URL(import.meta.env.PUBLIC_ENV__BASE_URL as string).origin;
     const socket: Socket = io(`${apiOrigin}/station`, {
       auth: { token },
       transports: ['websocket', 'polling'],

@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 import { GeneratePayrollDto, FinalizePayrollDto } from "@/models/business/shift/PayrollEntry";
 
-const baseUrl = `${import.meta.env.BASE_URL}/payroll`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/payroll`;
 
 export const fetchPayrollPreviewApiCall = async (
   businessId: string,

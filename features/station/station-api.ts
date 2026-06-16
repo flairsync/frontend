@@ -4,7 +4,7 @@ import { useStaffSession } from "@/features/pos/useStaffSession";
 
 // Station-authenticated requests (uses device token via Bearer header)
 export const stationApi = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.PUBLIC_ENV__BASE_URL,
   timeout: 30000,
 });
 
@@ -28,7 +28,7 @@ stationApi.interceptors.response.use(
 // Staff-authenticated requests: device token in Authorization + staff short token in X-Staff-Token
 // Both headers are required for all write operations per the station API spec
 export const staffApi = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.PUBLIC_ENV__BASE_URL,
   timeout: 30000,
 });
 
@@ -53,7 +53,7 @@ staffApi.interceptors.response.use(
 
 // Public endpoint for the pairing link call (no auth)
 export const publicApi = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.PUBLIC_ENV__BASE_URL,
   timeout: 30000,
 });
 

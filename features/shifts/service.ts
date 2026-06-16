@@ -94,7 +94,7 @@ export interface UnvalidatedShiftSummary {
   }[];
 }
 
-const baseUrl = `${import.meta.env.BASE_URL}/shifts`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/shifts`;
 
 // Templates API
 export const fetchShiftTemplatesApiCall = async (businessId: string) =>
@@ -190,7 +190,7 @@ export const buildShiftExportUrl = (
 ): string => {
   const params = new URLSearchParams({ businessId, startDate, endDate, format: exportFormat });
   if (employmentId) params.append('employmentId', employmentId);
-  return `${import.meta.env.BASE_URL}/shifts/export?${params.toString()}`;
+  return `${import.meta.env.PUBLIC_ENV__BASE_URL}/shifts/export?${params.toString()}`;
 };
 
 export const generateDraftApiCall = (
@@ -273,19 +273,19 @@ export const fetchUnvalidatedShiftSummaryApiCall = async (businessId: string, we
 
 // Attendance API
 export const checkInApiCall = (data: CheckInDto) => {
-  return flairapi.post(`${import.meta.env.BASE_URL}/attendance/check-in`, data);
+  return flairapi.post(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/check-in`, data);
 };
 
 export const checkOutApiCall = (data: CheckOutDto) => {
-  return flairapi.post(`${import.meta.env.BASE_URL}/attendance/check-out`, data);
+  return flairapi.post(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/check-out`, data);
 };
 
 export const startBreakApiCall = (data: CheckOutDto) => {
-  return flairapi.post(`${import.meta.env.BASE_URL}/attendance/break/start`, data);
+  return flairapi.post(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/break/start`, data);
 };
 
 export const endBreakApiCall = (data: CheckOutDto) => {
-  return flairapi.post(`${import.meta.env.BASE_URL}/attendance/break/end`, data);
+  return flairapi.post(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/break/end`, data);
 };
 
 export const fetchAttendanceLogsApiCall = async (
@@ -301,11 +301,11 @@ export const fetchAttendanceLogsApiCall = async (
   if (filters?.page) params.append('page', String(filters.page));
   if (filters?.limit) params.append('limit', String(filters.limit));
   const qs = params.toString();
-  return unwrapPaginated(await flairapi.get(`${import.meta.env.BASE_URL}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
+  return unwrapPaginated(await flairapi.get(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
 };
 
 export const fetchAttendanceByIdApiCall = async (id: string) =>
-  unwrap(await flairapi.get(`${import.meta.env.BASE_URL}/attendance/${id}`));
+  unwrap(await flairapi.get(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/${id}`));
 
 export const fetchMyAttendanceApiCall = async (
   businessId: string,
@@ -317,27 +317,27 @@ export const fetchMyAttendanceApiCall = async (
   if (filters?.lifecycleStatus) params.append('lifecycleStatus', filters.lifecycleStatus);
   if (filters?.page) params.append('page', String(filters.page));
   if (filters?.limit) params.append('limit', String(filters.limit));
-  return unwrapPaginated(await flairapi.get(`${import.meta.env.BASE_URL}/attendance/me?${params.toString()}`));
+  return unwrapPaginated(await flairapi.get(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/me?${params.toString()}`));
 };
 
 export const fetchTodayAttendanceDashboardApiCall = async (businessId: string, date?: string) => {
-  const url = `${import.meta.env.BASE_URL}/attendance/today?businessId=${businessId}`;
+  const url = `${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/today?businessId=${businessId}`;
   return unwrap(await flairapi.get(date ? `${url}&date=${date}` : url));
 };
 
 export const validateAttendanceApiCall = (attendanceId: string, data: ValidateAttendanceDto) => {
-  return flairapi.post(`${import.meta.env.BASE_URL}/attendance/${attendanceId}/validate`, data);
+  return flairapi.post(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/${attendanceId}/validate`, data);
 };
 
 // Attendance Summary API
 export const fetchAttendanceSummaryApiCall = async (businessId: string, startDate: string, endDate: string, employmentId?: string) => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append('employmentId', employmentId);
-  return unwrap(await flairapi.get(`${import.meta.env.BASE_URL}/attendance/summary?${params.toString()}`));
+  return unwrap(await flairapi.get(`${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/summary?${params.toString()}`));
 };
 
 // Absence Records API
-const absenceBaseUrl = `${import.meta.env.BASE_URL}/attendance/absences`;
+const absenceBaseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/attendance/absences`;
 
 export const createAbsenceRecordApiCall = (data: import('@/models/business/shift/AbsenceRecord').CreateAbsenceRecordDto) => {
   return flairapi.post(absenceBaseUrl, data);

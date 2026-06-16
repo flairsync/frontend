@@ -49,8 +49,8 @@ export interface ApplyToJobDto {
   resumeUrl?: string;
 }
 
-const baseUrl = `${import.meta.env.BASE_URL}/jobs`;
-const businessesBaseUrl = `${import.meta.env.BASE_URL}/businesses`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/jobs`;
+const businessesBaseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses`;
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 

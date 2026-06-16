@@ -1,6 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-const baseUrl = `${import.meta.env.BASE_URL}/subscriptions`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/subscriptions`;
 
 const currentSubscriptionUrl = `${baseUrl}/current`;
 const subscriptionsListUrl = `${baseUrl}/my`;

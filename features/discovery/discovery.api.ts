@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "../shared/api-response";
 import { CustomerActionPayload } from "./types";
 
-const baseUrl = `${import.meta.env.BASE_URL}/discovery`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/discovery`;
 
 export interface FetchDiscoveryBusinessesParams {
     lat?: number;

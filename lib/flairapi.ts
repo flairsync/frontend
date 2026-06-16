@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
-const baseUrl = `${import.meta.env.BASE_URL}/auth/refresh`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/auth/refresh`;
 
 import NProgress from "nprogress";
 

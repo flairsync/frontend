@@ -33,10 +33,10 @@ export interface ApplyDiscountPayload {
 }
 
 const getUrl = (businessId: string) =>
-    `${import.meta.env.BASE_URL}/businesses/${businessId}/discounts`;
+    `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/discounts`;
 
 const getOrderUrl = (businessId: string, orderId: string) =>
-    `${import.meta.env.BASE_URL}/businesses/${businessId}/orders/${orderId}/discount`;
+    `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/orders/${orderId}/discount`;
 
 export const discountsApi = {
     list: (businessId: string) =>

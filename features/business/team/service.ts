@@ -1,7 +1,7 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../../shared/api-response";
 
-const BASE_URL = `${import.meta.env.BASE_URL}/businesses`;
+const BASE_URL = `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses`;
 
 export interface CreateTeamPayload {
     name: string;

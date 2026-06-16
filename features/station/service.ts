@@ -1,7 +1,7 @@
 import flairapi from "@/lib/flairapi";
 
 const base = (businessId: string) =>
-  `${import.meta.env.BASE_URL}/station/businesses/${businessId}`;
+  `${import.meta.env.PUBLIC_ENV__BASE_URL}/station/businesses/${businessId}`;
 
 export const stationService = {
   generatePairingCode: (businessId: string) =>
@@ -27,7 +27,7 @@ export const stationService = {
 };
 
 const ksBase = (businessId: string) =>
-  `${import.meta.env.BASE_URL}/businesses/${businessId}/kitchen-stations`;
+  `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/kitchen-stations`;
 
 export const kitchenStationService = {
   list: (businessId: string) =>

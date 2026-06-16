@@ -1,6 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-const baseUrl = `${import.meta.env.BASE_URL}/professional-profile`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/professional-profile`;
 
 const myProfessionalProfileUrl = `${baseUrl}/me`;
 

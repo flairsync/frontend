@@ -70,7 +70,7 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
     const authToken = getJwtToken();
     if (!authToken) return;
 
-    const apiBase = import.meta.env.BASE_URL as string;
+    const apiBase = import.meta.env.PUBLIC_ENV__BASE_URL as string;
     sseSource = new EventSource(`${apiBase}/notifications/stream?token=${authToken}`);
 
     sseSource.onmessage = (event) => {

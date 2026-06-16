@@ -1,6 +1,6 @@
 import flairapi from "@/lib/flairapi";
 
-const baseUrl = `${import.meta.env.BASE_URL}/effective-employee-permissions`;
+const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/effective-employee-permissions`;
 
 export const fetchMyPermissionsApiCall = (businessId: string) => {
     return flairapi.get(`${baseUrl}/${businessId}`);
