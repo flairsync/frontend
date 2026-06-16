@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "../shared/api-response";
 import { CustomerActionPayload } from "./types";
 
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/discovery`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/discovery`;
 
 export interface FetchDiscoveryBusinessesParams {
     lat?: number;

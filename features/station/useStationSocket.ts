@@ -19,7 +19,7 @@ export function useStationSocket(onOrderUpdate: (payload: OrderUpdatePayload) =>
     if (!token) return;
 
     // Derive the API server origin from the configured base URL
-    const apiOrigin = new URL(import.meta.env.VITE_API_BASE_URL as string).origin;
+    const apiOrigin = new URL('https://api.flairsync.com/api/v1' as string).origin;
     const socket: Socket = io(`${apiOrigin}/station`, {
       auth: { token },
       transports: ['websocket', 'polling'],

@@ -1,7 +1,7 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "./api-response";
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/countries`;
-const permissionsUrl = `${import.meta.env.VITE_API_BASE_URL}/permissions`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/countries`;
+const permissionsUrl = `${'https://api.flairsync.com/api/v1'}/permissions`;
 
 const countriesListUrl = `${baseUrl}/list`;
 
@@ -14,4 +14,4 @@ export const getPermissionsListApiCall = async () =>
   unwrap(await flairapi.get(permissionsUrl));
 
 export const fetchAllergiesApiCall = async () =>
-  unwrap(await flairapi.get(`${import.meta.env.VITE_API_BASE_URL}/allergy`));
+  unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/allergy`));

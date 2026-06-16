@@ -22,7 +22,7 @@ interface Props {
 
 async function setStaffPin(businessId: string, empId: string, pin: string) {
     await flairapi.patch(
-        `${import.meta.env.VITE_API_BASE_URL}/employments/bus/${businessId}/employees/${empId}/pin`,
+        `${'https://api.flairsync.com/api/v1'}/employments/bus/${businessId}/employees/${empId}/pin`,
         { pin },
     );
 }

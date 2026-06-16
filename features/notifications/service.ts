@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { NotificationRecipient, NotificationPreference } from "./types";
 import { unwrap } from "../shared/api-response";
 
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/notifications`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/notifications`;
 
 export const getNotificationsApiCall = (limit: number = 20, offset: number = 0) =>
     flairapi.get<NotificationRecipient[]>(baseUrl, { params: { limit, offset } });

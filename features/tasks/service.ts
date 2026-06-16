@@ -20,7 +20,7 @@ export interface UpdateTaskStatusDto {
   comment?: string;
 }
 
-const businessesBaseUrl = `${import.meta.env.VITE_API_BASE_URL}/businesses`;
+const businessesBaseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
 
 export const fetchBusinessTasksApiCall = async (businessId: string) =>
   unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks`));

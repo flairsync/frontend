@@ -70,7 +70,7 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
     const authToken = getJwtToken();
     if (!authToken) return;
 
-    const apiBase = import.meta.env.VITE_API_BASE_URL as string;
+    const apiBase = 'https://api.flairsync.com/api/v1' as string;
     sseSource = new EventSource(`${apiBase}/notifications/stream?token=${authToken}`);
 
     sseSource.onmessage = (event) => {

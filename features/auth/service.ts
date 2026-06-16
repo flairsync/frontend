@@ -1,6 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/auth`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
 const googleAuthUrl = `${baseUrl}/google`;

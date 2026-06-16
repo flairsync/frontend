@@ -49,8 +49,8 @@ export interface ApplyToJobDto {
   resumeUrl?: string;
 }
 
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/jobs`;
-const businessesBaseUrl = `${import.meta.env.VITE_API_BASE_URL}/businesses`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/jobs`;
+const businessesBaseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 

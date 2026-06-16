@@ -3,7 +3,7 @@ import { WalkInReservationDto, AssignTableDto, CustomerLateDto } from "./types";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const getReservationsUrl = (businessId: string) => {
-    return `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/reservations`;
+    return `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/reservations`;
 };
 
 export interface PreOrderItem {
@@ -75,7 +75,7 @@ export const findAvailabilityApiCall = async (businessId: string, date: string, 
     unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
 
 export const lookupUserApiCall = async (email?: string, phone?: string) =>
-    unwrap(await flairapi.get(`${import.meta.env.VITE_API_BASE_URL}/users/lookup`, { params: { email, phone } }));
+    unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/users/lookup`, { params: { email, phone } }));
 
 // V2 endpoints
 export const fetchReservationDashboardApiCall = async (businessId: string) =>

@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "@/features/shared/api-response";
 
 const baseUrl = (businessId: string) =>
-    `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/reviews`;
+    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/reviews`;
 
 export interface FetchStaffReviewsParams {
     page?: number;

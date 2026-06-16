@@ -1,7 +1,7 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
-const baseBusinessUrl = `${import.meta.env.VITE_API_BASE_URL}/businesses`;
+const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
 
 const getInventoryUrl = (businessId: string) => {
     return `${baseBusinessUrl}/${businessId}/inventory`;
@@ -79,7 +79,7 @@ export interface SetRecipeDto {
 
 // API Calls - Units
 export const fetchInventoryUnitsApiCall = async (system?: string) =>
-    unwrap(await flairapi.get(`${import.meta.env.VITE_API_BASE_URL}/inventory/units`, { params: { system } }));
+    unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/inventory/units`, { params: { system } }));
 
 // API Calls - Groups
 export const fetchInventoryGroupsApiCall = async (businessId: string) =>

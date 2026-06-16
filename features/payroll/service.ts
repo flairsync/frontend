@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 import { GeneratePayrollDto, FinalizePayrollDto } from "@/models/business/shift/PayrollEntry";
 
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/payroll`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/payroll`;
 
 export const fetchPayrollPreviewApiCall = async (
   businessId: string,

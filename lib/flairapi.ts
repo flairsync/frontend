@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/auth/refresh`;
 
 import NProgress from "nprogress";
 

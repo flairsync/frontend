@@ -19,7 +19,7 @@ export interface CreateTaxRatePayload {
 }
 
 const getUrl = (businessId: string) =>
-    `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/taxes`;
+    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/taxes`;
 
 export const taxesApi = {
     list: (businessId: string) =>

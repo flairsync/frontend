@@ -1,7 +1,7 @@
 import flairapi from "@/lib/flairapi";
 import { unwrapPaginated, PaginatedData } from "../shared/api-response";
 
-const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/user-favorites`;
+const baseUrl = `${'https://api.flairsync.com/api/v1'}/user-favorites`;
 
 export const addFavoriteApiCall = (businessId: string) => {
     return flairapi.post(`${baseUrl}/${businessId}`);

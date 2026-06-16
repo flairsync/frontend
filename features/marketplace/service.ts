@@ -1,9 +1,9 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
-const publicBase = `${import.meta.env.VITE_API_BASE_URL}/marketplace`;
+const publicBase = `${'https://api.flairsync.com/api/v1'}/marketplace`;
 const mgmtBase = (businessId: string) =>
-    `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/marketplace`;
+    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/marketplace`;
 
 // ─── DTOs ────────────────────────────────────────────────────────────────────
 
