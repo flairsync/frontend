@@ -20,10 +20,10 @@ export interface BusinessTaxGroup {
 }
 
 const taxUrl = (businessId: string) =>
-    `${import.meta.env.PUBLIC_ENV__BASE_URL}/business/my/${businessId}/taxes`
+    `${import.meta.env.VITE_API_BASE_URL}/business/my/${businessId}/taxes`
 
 const groupUrl = (businessId: string) =>
-    `${import.meta.env.PUBLIC_ENV__BASE_URL}/business/my/${businessId}/taxes/groups`
+    `${import.meta.env.VITE_API_BASE_URL}/business/my/${businessId}/taxes/groups`
 
 const parseTax = (t: any): BusinessTax => ({ ...t, rate: Number(t.rate) })
 const parseGroup = (g: any): BusinessTaxGroup => ({ ...g, taxes: (g.taxes ?? []).map(parseTax) })

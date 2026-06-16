@@ -1,7 +1,7 @@
 import api from "@/lib/flairapi";
 import { DashboardAnalyticsResponse } from "@/models/analytics";
 
-const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}`;
+const baseUrl = `${import.meta.env.VITE_API_BASE_URL}`;
 
 export const getDashboardAnalytics = async (
     businessId: string,

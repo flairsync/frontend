@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 
 const getFloorPlanUrl = (businessId: string) => {
-    return `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/floor-plan`;
+    return `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/floor-plan`;
 };
 
 // DTOs

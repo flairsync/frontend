@@ -1,6 +1,6 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../../shared/api-response";
-const baseBusinessUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses`;
+const baseBusinessUrl = `${import.meta.env.VITE_API_BASE_URL}/businesses`;
 
 const getMenusUrl = (businessId: string) => {
   return `${baseBusinessUrl}/${businessId}/menus`;

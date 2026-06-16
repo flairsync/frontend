@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 
 const getOrdersUrl = (businessId: string) => {
-    return `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/orders`;
+    return `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/orders`;
 };
 
 // DTOs

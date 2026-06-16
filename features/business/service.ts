@@ -1,8 +1,8 @@
 import flairapi from "@/lib/flairapi";
 import { UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
-const baseUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}`;
-const baseBusinessUrl = `${import.meta.env.PUBLIC_ENV__BASE_URL}/business`;
+const baseUrl = `${import.meta.env.VITE_API_BASE_URL}`;
+const baseBusinessUrl = `${import.meta.env.VITE_API_BASE_URL}/business`;
 
 const getBusinessTagsUrl = `${baseUrl}/business-tags`;
 const getBusinessTypesUrl = `${baseUrl}/business-types`;

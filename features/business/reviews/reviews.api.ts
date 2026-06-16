@@ -2,7 +2,7 @@ import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "@/features/shared/api-response";
 
 const baseUrl = (businessId: string) =>
-    `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/reviews`;
+    `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/reviews`;
 
 export interface FetchStaffReviewsParams {
     page?: number;

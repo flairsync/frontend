@@ -19,7 +19,7 @@ export interface CreateTaxRatePayload {
 }
 
 const getUrl = (businessId: string) =>
-    `${import.meta.env.PUBLIC_ENV__BASE_URL}/businesses/${businessId}/taxes`;
+    `${import.meta.env.VITE_API_BASE_URL}/businesses/${businessId}/taxes`;
 
 export const taxesApi = {
     list: (businessId: string) =>
