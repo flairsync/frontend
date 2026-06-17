@@ -216,7 +216,7 @@ const PublicFeedSidebar = ({
     locationLabel,
 }: Props) => {
     const [filterModalOpen, setFilterModalOpen] = useState(false)
-    const { t } = useTranslation()
+    const { t } = useTranslation("feed")
     const { businessTypes } = useBusinessTypes()
 
     const typeOptions = [

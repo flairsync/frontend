@@ -57,7 +57,7 @@ const BusinessBrandingPage = () => {
                                 file: f
                             })
                         }}
-                        currentLogoUrl={myBusinessFullDetails?.logo}
+                        currentLogoUrl={myBusinessFullDetails?.logo ? `${myBusinessFullDetails.logo}?v=${new Date(myBusinessFullDetails.updatedAt).getTime()}` : undefined}
                         loading={fetchingMyBusinessFullDetails || updatingBusinessLogo}
 
                     />

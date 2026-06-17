@@ -63,7 +63,7 @@ export const updateMyBusinessDetailsApiCall = (
 export const updateMyBusinessLogoApiCall = (businessId: string, file: File) => {
   const formData = new FormData();
   formData.append("file", file);
-  flairapi.post(
+  return flairapi.post(
     `${MyBusinessUrl}/${businessId}/${updateMyBusinessLogoSuffix}`,
     formData,
   );
@@ -98,7 +98,7 @@ export const updateMyBusienssGalleryApiCall = (
     formData.append("order", JSON.stringify(data.order));
   }
 
-  flairapi.post(
+  return flairapi.post(
     `${MyBusinessUrl}/${businessId}/${updateMyBusinessGallerySuffix}`,
     formData,
     {

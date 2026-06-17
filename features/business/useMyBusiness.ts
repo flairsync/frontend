@@ -22,7 +22,6 @@ import { toast } from "sonner";
 
 export const useMyBusiness = (businessId: string | null = null) => {
   const queryClient = useQueryClient();
-  let toastId: string | number = "";
 
   const {
     data: myBusinessFullDetails,
@@ -52,7 +51,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
     useMutation({
       mutationKey: ["update_my_business", businessId],
       mutationFn: async (data: UpdateBusinessDetailsDto) => {
-        toastId = toast.loading("Updating business");
+        toast.loading("Updating business", { id: "update_business_toast" });
         if (!businessId) return;
         return updateMyBusinessDetailsApiCall(businessId, data);
       },
@@ -61,12 +60,16 @@ export const useMyBusiness = (businessId: string | null = null) => {
         queryClient.refetchQueries({
           queryKey: ["my_business", businessId],
         });
-        setTimeout(() => {
-          toast.dismiss(toastId);
-          toast.success("Updated", {
-            description: "Business details updated ...",
-          });
-        }, 3000);
+        toast.dismiss("update_business_toast");
+        toast.success("Updated", {
+          description: "Business details updated ...",
+        });
+      },
+      onError(error, variables, context) {
+        toast.dismiss("update_business_toast");
+        toast.error("Error updating", {
+          description: "An error occured while updating your business",
+        });
       },
     });
 
@@ -75,7 +78,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
     useMutation({
       mutationKey: ["update_my_business_logo", businessId],
       mutationFn: async (data: { file: File }) => {
-        toastId = toast.loading("Updating logo");
+        toast.loading("Updating logo", { id: "update_logo_toast" });
         if (!businessId) return;
         return updateMyBusinessLogoApiCall(businessId, data.file);
       },
@@ -83,13 +86,13 @@ export const useMyBusiness = (businessId: string | null = null) => {
         queryClient.refetchQueries({
           queryKey: ["my_business", businessId],
         });
-        toast.dismiss(toastId);
+        toast.dismiss("update_logo_toast");
         toast.success("Updated", {
           description: "Business details updated ...",
         });
       },
       onError(error, variables, context) {
-        toast.dismiss(toastId);
+        toast.dismiss("update_logo_toast");
         toast.error("Error updating", {
           description: "An error occured while updating your logo",
         });
@@ -170,11 +173,11 @@ export const useMyBusiness = (businessId: string | null = null) => {
     mutationKey: ["delete_my_business", businessId],
     mutationFn: async () => {
       if (!businessId) return;
-      toastId = toast.loading("Deleting business...");
+      toast.loading("Deleting business...", { id: "delete_business_toast" });
       return deleteMyBusinessApiCall(businessId);
     },
     onSuccess() {
-      toast.dismiss(toastId);
+      toast.dismiss("delete_business_toast");
       toast.success("Business deleted", {
         description: "Your business has been permanently deleted.",
       });
@@ -182,7 +185,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
       queryClient.invalidateQueries({ queryKey: ["my_businesses"] });
     },
     onError() {
-      toast.dismiss(toastId);
+      toast.dismiss("delete_business_toast");
     },
   });
 
