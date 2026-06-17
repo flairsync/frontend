@@ -33,6 +33,17 @@ export default function VerifyAccountPage() {
         text: string
     } | null>(null)
 
+    const RESEND_COOLDOWN_SECONDS = 30
+    const [resendCooldown, setResendCooldown] = React.useState(0)
+
+    React.useEffect(() => {
+        if (resendCooldown <= 0) return
+        const timer = setInterval(() => {
+            setResendCooldown((prev) => Math.max(0, prev - 1))
+        }, 1000)
+        return () => clearInterval(timer)
+    }, [resendCooldown])
+
     const handleOTPComplete = (value: string) => {
         setOtp(value)
     }
@@ -69,12 +80,15 @@ export default function VerifyAccountPage() {
     }
 
     const handleResend = () => {
+        if (resendCooldown > 0) return
+
         resendOtpCode(undefined, {
             onSuccess: () => {
                 setMessage({
                     type: "success",
                     text: t("auth_page.verify.resend_success"),
                 })
+                setResendCooldown(RESEND_COOLDOWN_SECONDS)
             },
             onError: () => {
                 setMessage({
@@ -134,10 +148,14 @@ export default function VerifyAccountPage() {
                             <Button
                                 variant="link"
                                 onClick={handleResend}
-                                disabled={resendingOtpCode}
-                                className="p-0 text-primary"
+                                disabled={resendingOtpCode || resendCooldown > 0}
+                                className="p-0 text-primary disabled:no-underline"
                             >
-                                {resendingOtpCode ? t("auth_page.verify.resending_button") : t("auth_page.verify.resend_button")}
+                                {resendingOtpCode
+                                    ? t("auth_page.verify.resending_button")
+                                    : resendCooldown > 0
+                                        ? t("auth_page.verify.resend_in", { seconds: resendCooldown })
+                                        : t("auth_page.verify.resend_button")}
                             </Button>
                         </div>
 
