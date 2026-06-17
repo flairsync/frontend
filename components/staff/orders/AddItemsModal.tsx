@@ -17,6 +17,7 @@ import { Check, Plus, Minus, Search, Trash2 } from "lucide-react";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { useOrders } from "@/features/orders/useOrders";
 import { OrderItemConfigModal, ConfiguredOrderItem } from "./OrderItemConfigModal";
+import { useTranslation } from "react-i18next";
 
 interface AddItemsModalProps {
     businessId: string;
@@ -27,6 +28,7 @@ interface AddItemsModalProps {
 }
 
 export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose }: AddItemsModalProps) {
+    const { t } = useTranslation("management");
     const { businessAllCategories } = useBusinessMenus(businessId);
     const { addItemsToOrder, isAddingItems } = useOrders(businessId);
 
@@ -155,9 +157,9 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="max-w-md max-h-[90vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Add Items to Order</DialogTitle>
+                    <DialogTitle>{t("staff_orders.add_items_modal.title")}</DialogTitle>
                     <DialogDescription>
-                        Select items to add to order <span className="font-mono text-xs">{orderId?.substring(0, 8)}</span>
+                        {t("staff_orders.add_items_modal.description")} <span className="font-mono text-xs">{orderId?.substring(0, 8)}</span>
                     </DialogDescription>
                 </DialogHeader>
 
@@ -166,7 +168,7 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                         <div className="relative flex-1">
                             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
-                                placeholder="Search menu items..."
+                                placeholder={t("staff_orders.add_items_modal.search_placeholder")}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="pl-9"
@@ -175,10 +177,10 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                         {businessAllCategories && businessAllCategories.length > 0 && (
                             <Select value={selectedCategoryId} onValueChange={setSelectedCategoryId}>
                                 <SelectTrigger className="w-[140px]">
-                                    <SelectValue placeholder="Category" />
+                                    <SelectValue placeholder={t("staff_orders.add_items_modal.category_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">All</SelectItem>
+                                    <SelectItem value="all">{t("staff_orders.add_items_modal.all_categories")}</SelectItem>
                                     {businessAllCategories.map(cat => (
                                         <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                                     ))}
@@ -190,23 +192,23 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                     <ScrollArea className="flex-1 pr-4 -mr-4 h-[400px]">
                         {selectedItems.length > 0 && (
                             <div className="mb-6 space-y-2">
-                                <h3 className="text-xs font-semibold uppercase text-muted-foreground">Selected Items</h3>
+                                <h3 className="text-xs font-semibold uppercase text-muted-foreground">{t("staff_orders.add_items_modal.selected_items_heading")}</h3>
                                 <div className="space-y-2">
                                     {selectedItems.map(item => (
                                         <div key={item.id} className="p-3 bg-muted/20 rounded-lg border flex items-center justify-between group">
                                             <div className="flex flex-col flex-1 truncate pr-3">
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-sm font-medium truncate">{item.name}</span>
-                                                    {item.variantId && <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">Variant Selected</span>}
+                                                    {item.variantId && <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{t("staff_orders.add_items_modal.variant_selected_badge")}</span>}
                                                 </div>
                                                 {item.modifiers && item.modifiers.length > 0 && (
                                                     <span className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
-                                                        Mods: {item.modifiers.map(m => m.name).join(", ")}
+                                                        {t("staff_orders.add_items_modal.mods_prefix")} {item.modifiers.map(m => m.name).join(", ")}
                                                     </span>
                                                 )}
                                                 {item.notes && (
                                                     <span className="text-[10px] text-amber-600 line-clamp-1 mt-0.5 italic">
-                                                        Note: {item.notes}
+                                                        {t("staff_orders.add_items_modal.note_prefix")} {item.notes}
                                                     </span>
                                                 )}
                                             </div>
@@ -226,7 +228,7 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                         )}
 
                         {filteredCategories.length === 0 ? (
-                            <p className="text-center text-muted-foreground py-8">No items found.</p>
+                            <p className="text-center text-muted-foreground py-8">{t("staff_orders.add_items_modal.no_items_found")}</p>
                         ) : (
                             <div className="space-y-4">
                                 {filteredCategories.map(category => (
@@ -270,7 +272,7 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                                                                     className="h-8 rounded-full px-4"
                                                                     onClick={() => handleQuantityChange(item, 1)}
                                                                 >
-                                                                    Add
+                                                                    {t("staff_orders.add_items_modal.add_button")}
                                                                 </Button>
                                                             )}
                                                         </div>
@@ -286,12 +288,12 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                 </div>
 
                 <DialogFooter className="pt-2 border-t mt-auto">
-                    <Button variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button variant="outline" onClick={onClose}>{t("staff_orders.add_items_modal.cancel")}</Button>
                     <Button
                         onClick={handleSave}
                         disabled={selectedItems.length === 0 || isAddingItems}
                     >
-                        {isAddingItems ? "Adding..." : `Add ${selectedItems.length} items`}
+                        {isAddingItems ? t("staff_orders.add_items_modal.adding") : t("staff_orders.add_items_modal.add_n_items", { count: selectedItems.length })}
                     </Button>
                 </DialogFooter>
             </DialogContent>

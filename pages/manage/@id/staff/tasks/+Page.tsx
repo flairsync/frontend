@@ -32,19 +32,20 @@ import {
   Task,
   TaskStatus,
   TASK_STATUS_COLORS,
-  TASK_STATUS_LABELS,
+  getTaskStatusLabel,
   getAssigneeName,
 } from "@/models/Task";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type FilterTab = "all" | "mine" | "team";
 
-const FILTER_TABS: Array<{ label: string; value: FilterTab }> = [
-  { label: "All", value: "all" },
-  { label: "My Tasks", value: "mine" },
-  { label: "Team Tasks", value: "team" },
+const FILTER_TABS: Array<{ labelKey: string; value: FilterTab }> = [
+  { labelKey: "staff_tasks.filters.all", value: "all" },
+  { labelKey: "staff_tasks.filters.mine", value: "mine" },
+  { labelKey: "staff_tasks.filters.team", value: "team" },
 ];
 
 const ALL_STATUSES: TaskStatus[] = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "ISSUE"];
@@ -59,6 +60,7 @@ interface StatusUpdateDialogProps {
 }
 
 function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpdateDialogProps) {
+  const { t } = useTranslation("management");
   const [newStatus, setNewStatus] = useState<TaskStatus>("NOT_STARTED");
   const [comment, setComment] = useState("");
   const { updateTaskStatus, updatingStatus } = useUpdateTaskStatus(businessId);
@@ -83,13 +85,13 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Update Status</DialogTitle>
-          <DialogDescription>Change the task status and optionally add a comment.</DialogDescription>
+          <DialogTitle>{t("staff_tasks.update_status_dialog_title")}</DialogTitle>
+          <DialogDescription>{t("staff_tasks.update_status_dialog_description")}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
           <div className="flex flex-col gap-1.5">
-            <Label>Status</Label>
+            <Label>{t("staff_tasks.status_label")}</Label>
             <Select value={newStatus} onValueChange={(v) => setNewStatus(v as TaskStatus)}>
               <SelectTrigger>
                 <SelectValue />
@@ -97,7 +99,7 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
               <SelectContent>
                 {ALL_STATUSES.map((s) => (
                   <SelectItem key={s} value={s}>
-                    {TASK_STATUS_LABELS[s]}
+                    {getTaskStatusLabel(s, t)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -106,13 +108,13 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
 
           <div className="flex flex-col gap-1.5">
             <Label>
-              Comment{newStatus === "ISSUE" && <span className="text-red-500 ml-1">*</span>}
+              {t("staff_tasks.comment_label")}{newStatus === "ISSUE" && <span className="text-red-500 ml-1">*</span>}
             </Label>
             <Textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder={
-                newStatus === "ISSUE" ? "Describe the issue..." : "Optional note..."
+                newStatus === "ISSUE" ? t("staff_tasks.describe_issue_placeholder") : t("staff_tasks.optional_note_placeholder")
               }
               rows={3}
               required={newStatus === "ISSUE"}
@@ -126,14 +128,14 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
               onClick={() => onOpenChange(false)}
               disabled={updatingStatus}
             >
-              Cancel
+              {t("staff_tasks.cancel")}
             </Button>
             <Button
               type="submit"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim())}
             >
-              {updatingStatus ? "Saving..." : "Update"}
+              {updatingStatus ? t("staff_tasks.saving") : t("staff_tasks.update")}
             </Button>
           </div>
         </form>
@@ -150,6 +152,7 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
+  const { t } = useTranslation("management");
   const isGlobal = task.assignedToEmploymentId === null;
 
   return (
@@ -163,7 +166,7 @@ function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
               TASK_STATUS_COLORS[task.status],
             )}
           >
-            {TASK_STATUS_LABELS[task.status]}
+            {getTaskStatusLabel(task.status, t)}
           </span>
         </div>
 
@@ -180,7 +183,7 @@ function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
             )}
             {getAssigneeName(task.assignedTo)}
           </span>
-          <span>Created {format(new Date(task.createdAt), "MMM d, yyyy")}</span>
+          <span>{t("staff_tasks.created_on", { date: format(new Date(task.createdAt), "MMM d, yyyy") })}</span>
         </div>
 
         {task.comment && (
@@ -197,7 +200,7 @@ function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
         className="shrink-0"
         onClick={() => onUpdateStatus(task)}
       >
-        Update Status
+        {t("staff_tasks.update_status_button")}
       </Button>
     </div>
   );
@@ -206,6 +209,7 @@ function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const StaffTasksPage = () => {
+  const { t } = useTranslation("management");
   const { routeParams } = usePageContext();
   const businessId = routeParams.id;
 
@@ -233,9 +237,9 @@ const StaffTasksPage = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Tasks</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("staff_tasks.title")}</h1>
         <p className="text-muted-foreground text-sm mt-0.5">
-          Your assigned tasks and team-wide responsibilities.
+          {t("staff_tasks.subtitle")}
         </p>
       </div>
 
@@ -254,7 +258,7 @@ const StaffTasksPage = () => {
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>
@@ -263,18 +267,18 @@ const StaffTasksPage = () => {
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-sm text-muted-foreground">Loading tasks...</p>
+          <p className="text-sm text-muted-foreground">{t("staff_tasks.loading")}</p>
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
           <ClipboardList className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-foreground mb-1">No tasks</p>
+          <p className="text-lg font-semibold text-foreground mb-1">{t("staff_tasks.empty_title")}</p>
           <p className="text-sm text-muted-foreground">
             {filter === "mine"
-              ? "You have no tasks assigned to you."
+              ? t("staff_tasks.empty_mine")
               : filter === "team"
-              ? "There are no team-wide tasks right now."
-              : "No tasks have been assigned yet."}
+              ? t("staff_tasks.empty_team")
+              : t("staff_tasks.empty_all")}
           </p>
         </div>
       ) : (

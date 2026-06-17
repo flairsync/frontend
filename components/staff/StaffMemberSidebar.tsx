@@ -15,29 +15,30 @@ import {
 import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, PackageOpen, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { usePermissions } from "@/features/auth/usePermissions"
+import { useTranslation } from "react-i18next"
 
 // This is sample data.
 const staffNavData = {
     navMain: [
         {
-            title: "Your Workspace",
+            titleKey: "staff_sidebar.workspace_group",
             url: "#",
             items: [
                 {
                     key: "dashboard",
-                    title: "Dashboard",
+                    titleKey: "staff_sidebar.items.dashboard",
                     url: "/manage/:id/staff/dashboard",
                     icon: LayoutDashboard,
                 },
                 {
                     key: "shifts",
-                    title: "My Shifts",
+                    titleKey: "staff_sidebar.items.my_shifts",
                     url: "/manage/:id/staff/shifts",
                     icon: Calendar,
                 },
                 {
                     key: "schedule",
-                    title: "Shifts & Schedule",
+                    titleKey: "staff_sidebar.items.schedule",
                     url: "/manage/:id/staff/schedule",
                     icon: Calendar,
                     requiredPermission: "STAFF",
@@ -45,7 +46,7 @@ const staffNavData = {
                 },
                 {
                     key: "staff",
-                    title: "Staff Management",
+                    titleKey: "staff_sidebar.items.staff",
                     url: "/manage/:id/staff/staff",
                     icon: Users,
                     requiredPermission: "STAFF",
@@ -53,7 +54,7 @@ const staffNavData = {
                 },
                 {
                     key: "tasks",
-                    title: "Tasks & Checklists",
+                    titleKey: "staff_sidebar.items.tasks",
                     url: "/manage/:id/staff/tasks",
                     icon: ClipboardList,
                     requiredPermission: "STAFF",
@@ -61,7 +62,7 @@ const staffNavData = {
                 },
                 {
                     key: "orders",
-                    title: "Orders",
+                    titleKey: "staff_sidebar.items.orders",
                     url: "/manage/:id/staff/orders",
                     icon: ShoppingBag,
                     requiredPermission: "ORDERS",
@@ -69,7 +70,7 @@ const staffNavData = {
                 },
                 {
                     key: "reservations",
-                    title: "Reservations",
+                    titleKey: "staff_sidebar.items.reservations",
                     url: "/manage/:id/staff/reservations",
                     icon: ShoppingBag,
                     requiredPermission: "RESERVATIONS",
@@ -77,7 +78,7 @@ const staffNavData = {
                 },
                 {
                     key: "inventory",
-                    title: "Inventory",
+                    titleKey: "staff_sidebar.items.inventory",
                     url: "/manage/:id/staff/inventory",
                     icon: PackageOpen,
                     requiredPermission: "INVENTORY",
@@ -85,7 +86,7 @@ const staffNavData = {
                 },
                 {
                     key: "menu",
-                    title: "Menu Lookup",
+                    titleKey: "staff_sidebar.items.menu",
                     url: "/manage/:id/staff/menu",
                     icon: Utensils,
                     requiredPermission: "MENU",
@@ -93,7 +94,7 @@ const staffNavData = {
                 },
                 {
                     key: "messages",
-                    title: "Messages & Announcements",
+                    titleKey: "staff_sidebar.items.messages",
                     url: "/manage/:id/staff/messages",
                     icon: MessageSquare,
                     requiredPermission: "BUSINESS_SETTINGS",
@@ -119,6 +120,7 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
     businessId: string
 }) {
     const { hasPermission, isLoading: loadingPermissions } = usePermissions(businessId);
+    const { t } = useTranslation("management");
 
     return (
         <Sidebar {...props}
@@ -127,7 +129,7 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
                 <BusinessSwitcher
                     businesses={[{
                         id: businessId,
-                        name: "Current Business"
+                        name: t("staff_sidebar.current_business_fallback")
                     }]}
                     selectedBusiness={businessId}
                 />
@@ -135,8 +137,8 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
             <SidebarContent>
                 {/* We create a SidebarGroup for each parent. */}
                 {staffNavData.navMain.map((group) => (
-                    <SidebarGroup key={group.title}>
-                        <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+                    <SidebarGroup key={group.titleKey}>
+                        <SidebarGroupLabel>{t(group.titleKey)}</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {group.items
@@ -150,7 +152,7 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
                                             <SidebarMenuButton asChild isActive={isActiveLink(item.key)}>
                                                 <a href={item.url.replace(":id", businessId)}>
                                                     <item.icon className="h-4 w-4" />
-                                                    <span>{item.title}</span>
+                                                    <span>{t(item.titleKey)}</span>
                                                 </a>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>

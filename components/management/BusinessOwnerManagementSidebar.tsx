@@ -52,21 +52,22 @@ import {
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { useMyBusinesses } from "@/features/business/useMyBusinesses"
 import { cn } from "@/lib/utils"
+import { useTranslation } from "react-i18next"
 
 // ─── Nav structure ────────────────────────────────────────────────────────────
 
 const STATION_OPTIONS = [
     {
         key: "pos",
-        label: "POS",
-        tooltip: "Point of Sale",
+        labelKey: "sidebar.station_pos_label",
+        tooltipKey: "sidebar.station_pos_tooltip",
         url: "/station/pos",
         icon: MonitorSmartphone,
     },
     {
         key: "kds",
-        label: "KDS",
-        tooltip: "Kitchen Display",
+        labelKey: "sidebar.station_kds_label",
+        tooltipKey: "sidebar.station_kds_tooltip",
         url: "/station/kds",
         icon: ChefHat,
     },
@@ -74,72 +75,72 @@ const STATION_OPTIONS = [
 
 interface NavItem {
     key: string
-    title: string
+    titleKey: string
     url: string
     icon: React.ElementType
 }
 
 interface NavGroup {
-    title: string
+    titleKey: string
     icon: React.ElementType
     items: NavItem[]
 }
 
 const OVERVIEW_ITEM: NavItem = {
     key: "dashboard",
-    title: "Dashboard",
+    titleKey: "sidebar.items.dashboard",
     url: "/manage/:id/owner/dashboard",
     icon: LayoutDashboard,
 }
 
 const NAV_GROUPS: NavGroup[] = [
     {
-        title: "Business",
+        titleKey: "sidebar.groups.business",
         icon: Settings,
         items: [
-            { key: "branding", title: "Business Branding", url: "/manage/:id/owner/branding", icon: Images },
-            { key: "settings", title: "Business Settings", url: "/manage/:id/owner/settings", icon: Settings },
+            { key: "branding", titleKey: "sidebar.items.branding", url: "/manage/:id/owner/branding", icon: Images },
+            { key: "settings", titleKey: "sidebar.items.settings", url: "/manage/:id/owner/settings", icon: Settings },
         ],
     },
     {
-        title: "Team & Workforce",
+        titleKey: "sidebar.groups.team_workforce",
         icon: Users,
         items: [
-            { key: "staff", title: "Staff Management", url: "/manage/:id/owner/staff", icon: Users },
-            { key: "schedule", title: "Schedule", url: "/manage/:id/owner/schedule", icon: CalendarCheck },
-            { key: "attendance", title: "Attendance", url: "/manage/:id/owner/attendance", icon: ClockFadingIcon },
-            { key: "payroll", title: "Payroll", url: "/manage/:id/owner/payroll", icon: Banknote },
-            { key: "jobs", title: "Job Postings", url: "/manage/:id/owner/jobs", icon: Briefcase },
+            { key: "staff", titleKey: "sidebar.items.staff", url: "/manage/:id/owner/staff", icon: Users },
+            { key: "schedule", titleKey: "sidebar.items.schedule", url: "/manage/:id/owner/schedule", icon: CalendarCheck },
+            { key: "attendance", titleKey: "sidebar.items.attendance", url: "/manage/:id/owner/attendance", icon: ClockFadingIcon },
+            { key: "payroll", titleKey: "sidebar.items.payroll", url: "/manage/:id/owner/payroll", icon: Banknote },
+            { key: "jobs", titleKey: "sidebar.items.jobs", url: "/manage/:id/owner/jobs", icon: Briefcase },
         ],
     },
     {
-        title: "Operations",
+        titleKey: "sidebar.groups.operations",
         icon: LayoutGrid,
         items: [
-            { key: "inventory", title: "Inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
-            { key: "marketplace", title: "Marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
-            { key: "menu", title: "Menu", url: "/manage/:id/owner/menu", icon: Utensils },
-            { key: "floor-plan", title: "Floor Plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
-            { key: "orders", title: "Orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
-            { key: "reservations", title: "Reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
-            { key: "tasks", title: "Tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
-            { key: "stations", title: "Stations", url: "/manage/:id/owner/stations", icon: Tablet },
+            { key: "inventory", titleKey: "sidebar.items.inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
+            { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
+            { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
+            { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
+            { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
+            { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
+            { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
+            { key: "stations", titleKey: "sidebar.items.stations", url: "/manage/:id/owner/stations", icon: Tablet },
         ],
     },
     {
-        title: "Insights",
+        titleKey: "sidebar.groups.insights",
         icon: BarChart3,
         items: [
-            { key: "analytics", title: "Analytics & Reports", url: "/manage/:id/owner/analytics", icon: BarChart3 },
-            { key: "reviews", title: "Reviews", url: "/manage/:id/owner/reviews", icon: Star },
+            { key: "analytics", titleKey: "sidebar.items.analytics", url: "/manage/:id/owner/analytics", icon: BarChart3 },
+            { key: "reviews", titleKey: "sidebar.items.reviews", url: "/manage/:id/owner/reviews", icon: Star },
         ],
     },
     {
-        title: "System",
+        titleKey: "sidebar.groups.system",
         icon: ScrollText,
         items: [
-            { key: "audit-logs", title: "Audit Logs", url: "/manage/:id/owner/audit-logs", icon: ScrollText },
-            { key: "danger", title: "Danger Zone", url: "/manage/:id/owner/danger", icon: ShieldAlert },
+            { key: "audit-logs", titleKey: "sidebar.items.audit_logs", url: "/manage/:id/owner/audit-logs", icon: ScrollText },
+            { key: "danger", titleKey: "sidebar.items.danger", url: "/manage/:id/owner/danger", icon: ShieldAlert },
         ],
     },
 ]
@@ -167,6 +168,7 @@ function CollapsibleNavGroup({
     defaultOpen: boolean
 }) {
     const [open, setOpen] = useState(defaultOpen)
+    const { t } = useTranslation("management")
 
     return (
         <SidebarGroup className="py-0">
@@ -177,7 +179,7 @@ function CollapsibleNavGroup({
             >
                 <span className="flex items-center gap-2">
                     <group.icon className="h-3.5 w-3.5" />
-                    {group.title}
+                    {t(group.titleKey)}
                 </span>
                 <ChevronDown
                     className={cn(
@@ -206,7 +208,7 @@ function CollapsibleNavGroup({
                                     >
                                         <a href={item.url.replace(":id", businessId)}>
                                             <item.icon />
-                                            {item.title}
+                                            {t(item.titleKey)}
                                         </a>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -226,6 +228,7 @@ export function BusinessOwnerManagementSidebar({
     ...props
 }: React.ComponentProps<typeof Sidebar> & { businessId: string }) {
     const { myBusinesses } = useMyBusinesses()
+    const { t } = useTranslation("management")
 
     const businesses = myBusinesses?.map((b) => ({ id: b.id, name: b.name })) ?? []
 
@@ -239,7 +242,7 @@ export function BusinessOwnerManagementSidebar({
                 {/* Launch Station — dropdown for POS / KDS */}
                 <SidebarGroup className="pb-2 border-b border-sidebar-border mb-1">
                     <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
-                        Point of Sale
+                        {t("sidebar.pos_section_label")}
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -248,7 +251,7 @@ export function BusinessOwnerManagementSidebar({
                                     <DropdownMenuTrigger asChild>
                                         <SidebarMenuButton className="font-semibold text-primary">
                                             <MonitorSmartphone />
-                                            Launch Station
+                                            {t("sidebar.launch_station")}
                                             <ChevronDown className="ml-auto h-3.5 w-3.5" />
                                         </SidebarMenuButton>
                                     </DropdownMenuTrigger>
@@ -265,12 +268,12 @@ export function BusinessOwnerManagementSidebar({
                                                                 className="flex items-center gap-2"
                                                             >
                                                                 <opt.icon className="h-4 w-4" />
-                                                                {opt.label}
+                                                                {t(opt.labelKey)}
                                                             </a>
                                                         </DropdownMenuItem>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="right">
-                                                        {opt.tooltip}
+                                                        {t(opt.tooltipKey)}
                                                     </TooltipContent>
                                                 </Tooltip>
                                             ))}
@@ -290,7 +293,7 @@ export function BusinessOwnerManagementSidebar({
                                 <SidebarMenuButton asChild isActive={isActiveLink(OVERVIEW_ITEM.key)}>
                                     <a href={OVERVIEW_ITEM.url.replace(":id", businessId)}>
                                         <OVERVIEW_ITEM.icon />
-                                        {OVERVIEW_ITEM.title}
+                                        {t(OVERVIEW_ITEM.titleKey)}
                                     </a>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
@@ -301,7 +304,7 @@ export function BusinessOwnerManagementSidebar({
                 {/* Collapsible groups */}
                 {NAV_GROUPS.map((group) => (
                     <CollapsibleNavGroup
-                        key={group.title}
+                        key={group.titleKey}
                         group={group}
                         businessId={businessId}
                         defaultOpen={groupHasActiveItem(group)}

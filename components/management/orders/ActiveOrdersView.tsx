@@ -7,12 +7,14 @@ import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { Loader2, Plus, CheckCircle, Utensils, ChefHat } from "lucide-react";
 import { AddItemsModal } from "@/components/staff/orders/AddItemsModal";
 import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
+import { useTranslation } from "react-i18next";
 
 interface ActiveOrdersViewProps {
     businessId: string;
 }
 
 export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }) => {
+    const { t } = useTranslation("management");
     const { floors, fetchingFloors } = useFloors(businessId);
     const {
         orders,
@@ -62,44 +64,44 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                     <p className="text-[10px] text-muted-foreground uppercase">{table.floorName}</p>
                                 </div>
                                 <Badge variant={order ? "default" : "outline"} className="text-[10px]">
-                                    {order ? order.status?.toUpperCase() || "UNKNOWN" : "VACANT"}
+                                    {order ? order.status?.toUpperCase() || t("staff_orders.active_view.unknown") : t("staff_orders.active_view.vacant")}
                                 </Badge>
                             </CardHeader>
                             <CardContent>
                                 {order ? (
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-center text-sm">
-                                            <span className="text-muted-foreground">Amount:</span>
+                                            <span className="text-muted-foreground">{t("staff_orders.active_view.amount_label")}</span>
                                             <span className="font-bold">${Number(order.totalAmount).toFixed(2)}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-1">
                                             {order.status === "created" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 text-blue-600 border-blue-200" onClick={() => acceptOrder(order.id)} disabled={isAcceptingOrder}>
-                                                    <CheckCircle className="w-3 h-3" /> Accept
+                                                    <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.accept")}
                                                 </Button>
                                             )}
                                             {order.status === "accepted" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 text-orange-600 border-orange-200" onClick={() => prepareOrder(order.id)} disabled={isPreparingOrder}>
-                                                    <ChefHat className="w-3 h-3" /> Prepare
+                                                    <ChefHat className="w-3 h-3" /> {t("staff_orders.active_view.prepare")}
                                                 </Button>
                                             )}
                                             {order.status === "preparing" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-amber-50 text-amber-600 border-amber-200" onClick={() => readyOrder(order.id)} disabled={isMarkingReady}>
-                                                    <CheckCircle className="w-3 h-3" /> Mark Ready
+                                                    <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.mark_ready")}
                                                 </Button>
                                             )}
                                             <Button size="sm" variant="secondary" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleAddItems(order.id, order.status)}>
-                                                <Plus className="w-3 h-3" /> Add items
+                                                <Plus className="w-3 h-3" /> {t("staff_orders.active_view.add_items")}
                                             </Button>
                                             <Button size="sm" variant="ghost" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleViewDetails(order)}>
-                                                Details
+                                                {t("staff_orders.active_view.details")}
                                             </Button>
                                         </div>
                                     </div>
                                 ) : (
                                     <div className="py-4 flex flex-col items-center justify-center text-muted-foreground">
                                         <Utensils className="w-6 h-6 mb-1 opacity-20" />
-                                        <span className="text-xs italic">Available</span>
+                                        <span className="text-xs italic">{t("staff_orders.active_view.available")}</span>
                                     </div>
                                 )}
                             </CardContent>

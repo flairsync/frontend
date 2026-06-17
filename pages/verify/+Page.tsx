@@ -10,15 +10,12 @@ import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { useVerification } from "@/features/auth/useVerification"
-import { usePageContext } from "vike-react/usePageContext"
 import { navigate } from "vike/client/router"
+import { useTranslation } from "react-i18next"
 
 export default function VerifyAccountPage() {
 
-    const {
-        user
-    } = usePageContext();
-    console.log("USERRRRRRRRRRRR ", user);
+    const { t } = useTranslation("auth")
 
     const {
         resendOtpCode,
@@ -42,11 +39,11 @@ export default function VerifyAccountPage() {
 
     const handleVerify = () => {
         if (otp.length < 6) {
-            setMessage({ type: "error", text: "Please enter the 6-digit code." })
+            setMessage({ type: "error", text: t("auth_page.verify.code_required") })
             return
         }
 
-        setMessage({ type: "info", text: "Verifying your account..." })
+        setMessage({ type: "info", text: t("auth_page.verify.verifying_label") })
 
         verifyEmailOtp(
             otp, // ← send OTP to your API
@@ -54,7 +51,7 @@ export default function VerifyAccountPage() {
                 onSuccess: () => {
                     setMessage({
                         type: "success",
-                        text: "✅ Account verified successfully!",
+                        text: t("auth_page.verify.success_message"),
                     })
                     const origin = new URLSearchParams(window.location.search).get('origin') || '/feed';
                     setTimeout(() => {
@@ -64,7 +61,7 @@ export default function VerifyAccountPage() {
                 onError: () => {
                     setMessage({
                         type: "error",
-                        text: "Invalid code. Please try again.",
+                        text: t("auth_page.verify.invalid_code"),
                     })
                 },
             }
@@ -76,13 +73,13 @@ export default function VerifyAccountPage() {
             onSuccess: () => {
                 setMessage({
                     type: "success",
-                    text: "A new code has been sent to your email.",
+                    text: t("auth_page.verify.resend_success"),
                 })
             },
             onError: () => {
                 setMessage({
                     type: "error",
-                    text: "Failed to resend the verification code.",
+                    text: t("auth_page.verify.resend_error"),
                 })
             },
         })
@@ -94,12 +91,10 @@ export default function VerifyAccountPage() {
                 <Card className="shadow-lg border-border">
                     <CardHeader>
                         <CardTitle className="text-2xl font-semibold text-foreground">
-                            Verify Your Account
+                            {t("auth_page.verify.title")}
                         </CardTitle>
                         <CardDescription className="text-muted-foreground">
-                            We’ve sent a one-time verification code to your email.
-                            Enter it below to verify your account. If you did not
-                            receive it, you can resend the code.
+                            {t("auth_page.verify.description")}
                         </CardDescription>
                     </CardHeader>
 
@@ -131,18 +126,18 @@ export default function VerifyAccountPage() {
                             className="w-full"
                             disabled={otp.length < 6 || verifyingEmailOtp}
                         >
-                            {verifyingEmailOtp ? "Verifying…" : "Verify Account"}
+                            {verifyingEmailOtp ? t("auth_page.verify.verifying_button") : t("auth_page.verify.verify_button")}
                         </Button>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Didn’t get the email?{" "}
+                            {t("auth_page.verify.no_email_label")}{" "}
                             <Button
                                 variant="link"
                                 onClick={handleResend}
                                 disabled={resendingOtpCode}
                                 className="p-0 text-primary"
                             >
-                                {resendingOtpCode ? "Resending…" : "Resend code"}
+                                {resendingOtpCode ? t("auth_page.verify.resending_button") : t("auth_page.verify.resend_button")}
                             </Button>
                         </div>
 
@@ -164,14 +159,14 @@ export default function VerifyAccountPage() {
                         {errorVerifyingEmailOtp && (
                             <p className="text-center text-sm text-destructive">
                                 {errorVerifyingEmailOtp.response?.data?.message ||
-                                    "Verification failed."}
+                                    t("auth_page.verify.verification_failed")}
                             </p>
                         )}
 
                         {errorResendingOtpCode && (
                             <p className="text-center text-sm text-destructive">
                                 {errorResendingOtpCode.response?.data?.message ||
-                                    "Failed to resend code."}
+                                    t("auth_page.verify.resend_failed")}
                             </p>
                         )}
                     </CardContent>

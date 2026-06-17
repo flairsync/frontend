@@ -39,11 +39,13 @@ import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
 import { usePermissions } from '@/features/auth/usePermissions';
 import { Loader, ShieldAlert, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 
 
 
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation("management");
     const {
         routeParams,
         urlPathname,
@@ -71,12 +73,12 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         return (
             <div className="flex h-screen w-full flex-col items-center justify-center space-y-4 p-6 text-center">
                 <ShieldAlert className="h-16 w-16 text-destructive" />
-                <h1 className="text-2xl font-bold">Access Denied</h1>
+                <h1 className="text-2xl font-bold">{t("staff_layout.access_denied_title")}</h1>
                 <p className="text-muted-foreground max-w-md">
-                    You don't have permission to access this area. Please contact your manager or visit your professional profile.
+                    {t("staff_layout.access_denied_message")}
                 </p>
                 <a href="/manage/professional-profile">
-                    <Button>Go to Professional Profile</Button>
+                    <Button>{t("staff_layout.go_to_professional_profile")}</Button>
                 </a>
             </div>
         );
@@ -104,12 +106,12 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
                                     <BreadcrumbLink href="/manage">
-                                        Business name
+                                        {t("staff_layout.business_name_breadcrumb")}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                                    <BreadcrumbPage>{t("staff_layout.dashboard_breadcrumb")}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>

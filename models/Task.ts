@@ -34,6 +34,17 @@ export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
   ISSUE: 'Issue',
 };
 
+const TASK_STATUS_KEYS: Record<TaskStatus, string> = {
+  NOT_STARTED: 'task_status.not_started',
+  IN_PROGRESS: 'task_status.in_progress',
+  COMPLETED: 'task_status.completed',
+  ISSUE: 'task_status.issue',
+};
+
+export function getTaskStatusLabel(status: TaskStatus, t: (key: string) => string): string {
+  return t(TASK_STATUS_KEYS[status]);
+}
+
 export const TASK_STATUS_COLORS: Record<TaskStatus, string> = {
   NOT_STARTED: 'bg-zinc-100 text-zinc-600',
   IN_PROGRESS: 'bg-blue-100 text-blue-700',

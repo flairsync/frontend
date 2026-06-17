@@ -24,6 +24,7 @@ import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
 import { useBusinessEmployment } from "@/features/business/employment/useBusinessEmployment";
 import { Input } from "@/components/ui/input";
 import { Tag } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface OrderDetailsModalProps {
     businessId: string;
@@ -33,6 +34,7 @@ interface OrderDetailsModalProps {
 }
 
 export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId, order, open, onClose }) => {
+    const { t } = useTranslation("management");
     const { data: fullOrder } = useOrderDetails(businessId, order?.id || "");
     const { voidOrderItem, isVoidingOrderItem, advanceOrderItem, isAdvancingOrderItem, firePending, isFiringPending, updateOrderDiscountAsync, isUpdatingDiscount } = useOrders(businessId);
     const { businessEmployees } = useBusinessEmployment(businessId);
@@ -67,9 +69,9 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
     };
 
     const getAdvanceLabel = (status: string) => {
-        if (status === "pending") return "Fire to Kitchen";
-        if (status === "sent")    return "Mark Ready";
-        if (status === "ready")   return "Mark Served";
+        if (status === "pending") return t("staff_orders.order_details_modal.fire_to_kitchen");
+        if (status === "sent")    return t("staff_orders.order_details_modal.mark_ready");
+        if (status === "ready")   return t("staff_orders.order_details_modal.mark_served");
         return null;
     };
 
@@ -113,13 +115,13 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
 
     const getStatusLabel = (status: string) => {
         switch (status) {
-            case "created": return "Pending";
-            case "accepted": return "Accepted";
-            case "preparing": return "Preparing";
-            case "ready": return "Ready";
-            case "completed": return "Completed";
-            case "rejected": return "Rejected";
-            case "canceled": return "Canceled";
+            case "created": return t("staff_orders.status_labels.pending");
+            case "accepted": return t("staff_orders.status_labels.accepted");
+            case "preparing": return t("staff_orders.status_labels.preparing");
+            case "ready": return t("staff_orders.status_labels.ready");
+            case "completed": return t("staff_orders.status_labels.completed");
+            case "rejected": return t("staff_orders.status_labels.rejected");
+            case "canceled": return t("staff_orders.status_labels.canceled");
             default: return status.toUpperCase();
         }
     };
@@ -130,7 +132,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                 <DialogHeader className="p-6 pb-4 border-b bg-muted/10">
                     <div className="flex items-center justify-between mb-2">
                         <DialogTitle className="text-xl font-bold flex items-center gap-2">
-                            Order #{displayOrder.id.split('-')[0]}
+                            {t("staff_orders.order_details_modal.order_hash", { id: displayOrder.id.split('-')[0] })}
                             <Badge variant="outline" className={getStatusColor(displayOrder.status)}>
                                 {getStatusLabel(displayOrder.status || "")}
                             </Badge>
@@ -142,22 +144,22 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                     <DialogDescription className="text-sm">
                         <div className="flex gap-4 mt-2">
                             <div>
-                                <span className="text-muted-foreground font-semibold uppercase text-xs">Type</span>
+                                <span className="text-muted-foreground font-semibold uppercase text-xs">{t("staff_orders.order_details_modal.type_label")}</span>
                                 <p className="font-medium capitalize">{displayOrder.type.replace("_", " ")}</p>
                             </div>
                             {displayOrder.table && (
                                 <div>
-                                    <span className="text-muted-foreground font-semibold uppercase text-xs">Table</span>
+                                    <span className="text-muted-foreground font-semibold uppercase text-xs">{t("staff_orders.order_details_modal.table_label")}</span>
                                     <p className="font-medium">{displayOrder.table.name}</p>
                                 </div>
                             )}
                             <div>
-                                <span className="text-muted-foreground font-semibold uppercase text-xs">Payment</span>
+                                <span className="text-muted-foreground font-semibold uppercase text-xs">{t("staff_orders.order_details_modal.payment_label")}</span>
                                 <p className="font-medium capitalize">{(displayOrder.paymentStatus || "pending").replace(/_/g, " ")}</p>
                             </div>
                             {displayOrder.cancellationReason && (
                                 <div>
-                                    <span className="font-semibold uppercase text-xs text-red-600">Cancel Reason</span>
+                                    <span className="font-semibold uppercase text-xs text-red-600">{t("staff_orders.order_details_modal.cancel_reason_label")}</span>
                                     <p className="font-medium text-red-700 max-w-[200px] truncate" title={displayOrder.cancellationReason}>
                                         {displayOrder.cancellationReason}
                                     </p>
@@ -165,7 +167,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                             )}
                             {displayOrder.rejectionReason && (
                                 <div>
-                                    <span className="font-semibold uppercase text-xs text-red-600">Rejection Reason</span>
+                                    <span className="font-semibold uppercase text-xs text-red-600">{t("staff_orders.order_details_modal.rejection_reason_label")}</span>
                                     <p className="font-medium text-red-700 max-w-[200px] truncate" title={displayOrder.rejectionReason}>
                                         {displayOrder.rejectionReason}
                                     </p>
@@ -173,7 +175,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                             )}
                             {displayOrder.closingNotes && (
                                 <div>
-                                    <span className="text-muted-foreground font-semibold uppercase text-xs">Closing Notes</span>
+                                    <span className="text-muted-foreground font-semibold uppercase text-xs">{t("staff_orders.order_details_modal.closing_notes_label")}</span>
                                     <p className="font-medium italic max-w-[200px] truncate" title={displayOrder.closingNotes}>
                                         {displayOrder.closingNotes}
                                     </p>
@@ -186,8 +188,8 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                 <ScrollArea className="flex-1 p-6">
                     <Tabs defaultValue="items" className="w-full">
                         <TabsList className="grid w-full grid-cols-2 mb-6">
-                            <TabsTrigger value="items">Order Items</TabsTrigger>
-                            <TabsTrigger value="payments">Payments</TabsTrigger>
+                            <TabsTrigger value="items">{t("staff_orders.order_details_modal.tab_items")}</TabsTrigger>
+                            <TabsTrigger value="payments">{t("staff_orders.order_details_modal.tab_payments")}</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="items" className="mt-0">
@@ -209,9 +211,9 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                             <div key={item.id || idx} className="flex justify-between p-3 rounded-lg border bg-card">
                                                 <div className="flex flex-col flex-1">
                                                     <span className={`font-medium flex items-center gap-2 flex-wrap ${isVoided ? 'line-through text-muted-foreground' : ''}`}>
-                                                        {item.quantity}x {item.nameSnapshot || "Unknown Item"}
+                                                        {item.quantity}x {item.nameSnapshot || t("staff_orders.order_details_modal.unknown_item")}
                                                         <Badge variant="outline" className={`h-4 text-[10px] px-1.5 ${getItemStatusBadgeClass(itemStatus)}`}>
-                                                            {isVoided ? 'VOIDED' : <span className="capitalize">{itemStatus}</span>}
+                                                            {isVoided ? t("staff_orders.order_details_modal.voided_badge") : <span className="capitalize">{itemStatus}</span>}
                                                         </Badge>
                                                     </span>
                                                     {isVoided && item.voidReason && (
@@ -219,21 +221,21 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     )}
                                                     {isVoided && (item.voidedBy || item.voidedAt) && (
                                                         <span className="text-xs text-muted-foreground mt-0.5">
-                                                            {item.voidedBy ? `Voided by ${resolveEmployeeName(item.voidedBy)}` : 'Voided'}
+                                                            {item.voidedBy ? t("staff_orders.order_details_modal.voided_by", { name: resolveEmployeeName(item.voidedBy) }) : t("staff_orders.order_details_modal.voided")}
                                                             {item.voidedAt && ` · ${format(new Date(item.voidedAt), "MMM d, h:mm a")}`}
                                                         </span>
                                                     )}
                                                     {item.notes && (
-                                                        <span className="text-xs text-muted-foreground italic mt-1">Note: {item.notes}</span>
+                                                        <span className="text-xs text-muted-foreground italic mt-1">{t("staff_orders.order_details_modal.note_prefix")} {item.notes}</span>
                                                     )}
                                                     {item.selectedModifiers && item.selectedModifiers.length > 0 && (
                                                         <div className="text-xs text-muted-foreground mt-1">
-                                                            <span className="font-semibold">Modifiers: </span>
+                                                            <span className="font-semibold">{t("staff_orders.order_details_modal.modifiers_label")} </span>
                                                             {item.selectedModifiers.map(m => m.name).join(", ")}
                                                         </div>
                                                     )}
                                                     <span className="text-xs text-muted-foreground mt-1">
-                                                        ${unitPrice.toFixed(2)} each {modifiersTotal > 0 ? `(Base: $${basePrice.toFixed(2)} + Mods: $${modifiersTotal.toFixed(2)})` : ""}
+                                                        ${unitPrice.toFixed(2)} {t("staff_orders.order_details_modal.each_suffix")} {modifiersTotal > 0 ? t("staff_orders.order_details_modal.base_mods_breakdown", { base: `$${basePrice.toFixed(2)}`, mods: `$${modifiersTotal.toFixed(2)}` }) : ""}
                                                     </span>
                                                 </div>
                                                 <div className="flex flex-col items-end gap-2 ml-3">
@@ -263,7 +265,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                                     size="icon"
                                                                     className="h-7 w-7 text-muted-foreground hover:text-foreground"
                                                                     onClick={() => setManageItemId(item.id)}
-                                                                    title="Edit Item"
+                                                                    title={t("staff_orders.order_details_modal.edit_item_title")}
                                                                 >
                                                                     <Pencil className="w-3.5 h-3.5" />
                                                                 </Button>
@@ -276,7 +278,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                                     onClick={() => handleRemovePending(item.id)}
                                                                     disabled={isVoidingOrderItem}
                                                                 >
-                                                                    Remove
+                                                                    {t("staff_orders.order_details_modal.remove")}
                                                                 </Button>
                                                             ) : (
                                                                 <Button
@@ -286,7 +288,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                                     onClick={() => handleOpenVoidModal(item.id, item.nameSnapshot || "Item")}
                                                                     disabled={isVoidingOrderItem}
                                                                 >
-                                                                    Void
+                                                                    {t("staff_orders.order_details_modal.void")}
                                                                 </Button>
                                                             )}
                                                         </div>
@@ -296,7 +298,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                         );
                                     })
                                 ) : (
-                                    <p className="text-muted-foreground italic">No items found for this order.</p>
+                                    <p className="text-muted-foreground italic">{t("staff_orders.order_details_modal.no_items_found")}</p>
                                 )}
                             </div>
 
@@ -311,7 +313,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                             disabled={isFiringPending}
                                         >
                                             <Flame className="w-4 h-4" />
-                                            Send to Kitchen ({pendingCount} pending item{pendingCount !== 1 ? "s" : ""})
+                                            {t("staff_orders.order_details_modal.send_to_kitchen", { count: pendingCount, plural: pendingCount !== 1 ? "s" : "" })}
                                         </Button>
                                     </div>
                                 );
@@ -332,7 +334,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="font-medium capitalize text-sm">{payment.method} Payment</span>
+                                                    <span className="font-medium capitalize text-sm">{payment.method} {t("staff_orders.order_details_modal.payment_method_suffix")}</span>
                                                     <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
                                                         <CalendarClock className="w-3 h-3" />
                                                         {format(new Date(payment.createdAt), "MMM d, h:mm a")}
@@ -340,7 +342,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     {payment.status === "refunded" && payment.refundedBy && (
                                                         <div className="flex items-center gap-1 text-xs text-amber-600 mt-0.5">
                                                             <Undo className="w-3 h-3" />
-                                                            Refunded by {resolveEmployeeName(payment.refundedBy)}
+                                                            {t("staff_orders.order_details_modal.refunded_by", { name: resolveEmployeeName(payment.refundedBy) })}
                                                         </div>
                                                     )}
                                                 </div>
@@ -349,24 +351,24 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                 <span className="font-bold text-lg">
                                                     ${Number(payment.amount).toFixed(2)}
                                                     {payment.tipAmount && payment.tipAmount > 0 && (
-                                                        <span className="text-xs text-muted-foreground ml-1 font-normal">(+${Number(payment.tipAmount).toFixed(2)} Tip)</span>
+                                                        <span className="text-xs text-muted-foreground ml-1 font-normal">(+${Number(payment.tipAmount).toFixed(2)} {t("staff_orders.order_details_modal.tip_suffix")})</span>
                                                     )}
                                                 </span>
                                                 <div className="flex gap-2 items-center">
                                                     {payment.status === "success" || payment.status === "paid" ? (
                                                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-[10px] h-4">
                                                             <CheckCircle className="w-3 h-3 mr-1" />
-                                                            Successful
+                                                            {t("staff_orders.order_details_modal.successful")}
                                                         </Badge>
                                                     ) : payment.status === "failed" ? (
                                                         <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-[10px] h-4">
                                                             <Ban className="w-3 h-3 mr-1" />
-                                                            Failed
+                                                            {t("staff_orders.order_details_modal.failed")}
                                                         </Badge>
                                                     ) : payment.status === "refunded" ? (
                                                         <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-[10px] h-4">
                                                             <Undo className="w-3 h-3 mr-1" />
-                                                            Refunded
+                                                            {t("staff_orders.order_details_modal.refunded")}
                                                         </Badge>
                                                     ) : (
                                                         <Badge variant="outline" className="capitalize text-[10px] h-4">
@@ -383,7 +385,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                                 e.stopPropagation();
                                                                 setRefundPaymentId(payment.id);
                                                             }}
-                                                            title="Refund Payment"
+                                                            title={t("staff_orders.order_details_modal.refund_payment_title")}
                                                         >
                                                             <Undo className="h-3.5 w-3.5" />
                                                         </Button>
@@ -395,8 +397,8 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                 ) : (
                                     <div className="text-center p-8 border border-dashed rounded-lg bg-muted/20">
                                         <Banknote className="w-8 h-8 text-muted-foreground mx-auto mb-3 opacity-50" />
-                                        <p className="text-muted-foreground font-medium">No payments recorded</p>
-                                        <p className="text-xs text-muted-foreground mt-1">Payments made for this order will appear here.</p>
+                                        <p className="text-muted-foreground font-medium">{t("staff_orders.order_details_modal.no_payments_recorded")}</p>
+                                        <p className="text-xs text-muted-foreground mt-1">{t("staff_orders.order_details_modal.payments_will_appear")}</p>
                                     </div>
                                 )}
                             </div>
@@ -407,19 +409,19 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                 <div className="p-6 border-t bg-muted/10 space-y-3">
                     <div className="grid grid-cols-2">
                         <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-muted-foreground uppercase">Paid Details</span>
+                            <span className="text-sm font-semibold text-muted-foreground uppercase">{t("staff_orders.order_details_modal.paid_details_label")}</span>
                             <div className="flex gap-4 mt-1">
-                                <div><span className="text-xs text-muted-foreground mr-1">Paid:</span><span className="font-medium text-sm">${Number(displayOrder.totalPaid || 0).toFixed(2)}</span></div>
+                                <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.paid_label")}</span><span className="font-medium text-sm">${Number(displayOrder.totalPaid || 0).toFixed(2)}</span></div>
                                 {displayOrder.totalTip && displayOrder.totalTip > 0 ? (
-                                    <div><span className="text-xs text-muted-foreground mr-1">Tip:</span><span className="font-medium text-sm text-green-600">${Number(displayOrder.totalTip).toFixed(2)}</span></div>
+                                    <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.tip_label")}</span><span className="font-medium text-sm text-green-600">${Number(displayOrder.totalTip).toFixed(2)}</span></div>
                                 ) : null}
                                 {Number(displayOrder.discountAmount || 0) > 0 && (
-                                    <div><span className="text-xs text-muted-foreground mr-1">Discount:</span><span className="font-medium text-sm text-primary">−${Number(displayOrder.discountAmount).toFixed(2)}</span></div>
+                                    <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.discount_label")}</span><span className="font-medium text-sm text-primary">−${Number(displayOrder.discountAmount).toFixed(2)}</span></div>
                                 )}
                             </div>
                         </div>
                         <div className="flex flex-col items-end justify-center">
-                            <span className="text-xs font-bold text-muted-foreground uppercase">Total</span>
+                            <span className="text-xs font-bold text-muted-foreground uppercase">{t("staff_orders.order_details_modal.total_label")}</span>
                             <span className="text-2xl font-bold">${Number(displayOrder.totalAmount || 0).toFixed(2)}</span>
                         </div>
                     </div>
@@ -432,7 +434,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                     <Tag className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                                     <Input
                                         type="number"
-                                        placeholder="Discount amount ($)"
+                                        placeholder={t("staff_orders.order_details_modal.discount_amount_placeholder")}
                                         value={discountInput}
                                         onChange={(e) => {
                                             const v = e.target.value;
@@ -456,7 +458,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                             } catch { /* error handled in hook */ }
                                         }}
                                     >
-                                        Save
+                                        {t("staff_orders.order_details_modal.save")}
                                     </Button>
                                     <Button
                                         size="sm"
@@ -464,7 +466,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                         className="h-8"
                                         onClick={() => { setEditingDiscount(false); setDiscountInput(""); }}
                                     >
-                                        Cancel
+                                        {t("staff_orders.order_details_modal.cancel")}
                                     </Button>
                                 </div>
                             ) : (
@@ -479,8 +481,8 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                 >
                                     <Tag className="w-3.5 h-3.5" />
                                     {Number(displayOrder.discountAmount || 0) > 0
-                                        ? "Edit Discount"
-                                        : "Add Discount"}
+                                        ? t("staff_orders.order_details_modal.edit_discount")
+                                        : t("staff_orders.order_details_modal.add_discount")}
                                 </Button>
                             )}
                         </>
@@ -510,29 +512,29 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
             <Dialog open={!!voidingItem} onOpenChange={(open) => !open && setVoidingItem(null)}>
                 <DialogContent className="sm:max-w-[380px]">
                     <DialogHeader>
-                        <DialogTitle>Void &ldquo;{voidingItem?.name}&rdquo;?</DialogTitle>
+                        <DialogTitle>{t("staff_orders.order_details_modal.void_item_title", { name: voidingItem?.name })}</DialogTitle>
                         <DialogDescription>
-                            The item will be removed from the bill. Inventory will be restored automatically.
+                            {t("staff_orders.order_details_modal.void_item_description")}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-2 py-1">
-                        <Label htmlFor="void-reason">Reason (optional)</Label>
+                        <Label htmlFor="void-reason">{t("staff_orders.order_details_modal.reason_optional_label")}</Label>
                         <Textarea
                             id="void-reason"
-                            placeholder="e.g. Customer changed their mind"
+                            placeholder={t("staff_orders.order_details_modal.void_reason_placeholder")}
                             value={voidReason}
                             onChange={(e) => setVoidReason(e.target.value)}
                             rows={3}
                         />
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setVoidingItem(null)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setVoidingItem(null)}>{t("staff_orders.order_details_modal.cancel")}</Button>
                         <Button
                             variant="destructive"
                             onClick={handleConfirmVoid}
                             disabled={isVoidingOrderItem}
                         >
-                            Void Item
+                            {t("staff_orders.order_details_modal.void_item_button")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

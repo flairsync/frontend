@@ -14,8 +14,10 @@ import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore
 import { SubscriptionStatus } from "@/models/Subscription";
 import { cn } from "@/lib/utils";
 import { MyEmployment } from "@/models/business/MyEmployment";
+import { useTranslation } from "react-i18next";
 
 const ManagePage: React.FC = () => {
+    const { t } = useTranslation("management");
     const { currentUserSubscription } = useSubscriptions();
     const { usage, isLoading: loadingUsage } = useUsage();
     const { myBusinesses, loadingMyBussinesses } = useMyBusinesses();
@@ -38,7 +40,7 @@ const ManagePage: React.FC = () => {
                         <CardHeader className="bg-muted/50 border-b border-border">
                             <CardTitle className="flex items-center gap-2 text-lg">
                                 <Crown className="h-5 w-5 text-primary" />
-                                Current Plan
+                                {t("manage_overview.current_plan_title")}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="pt-6">
@@ -59,15 +61,17 @@ const ManagePage: React.FC = () => {
                                                 )}
                                             >
                                                 {currentUserSubscription.isDefault
-                                                    ? "FREE PLAN"
+                                                    ? t("manage_overview.status.free_plan")
                                                     : currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
-                                                        ? "FREE TRIAL"
-                                                        : (currentUserSubscription.status?.toUpperCase() || "ACTIVE")}
+                                                        ? t("manage_overview.status.free_trial")
+                                                        : (currentUserSubscription.status?.toUpperCase() || t("manage_overview.status.active"))}
                                             </Badge>
                                             <span className="text-xs text-muted-foreground font-medium">
-                                                {currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
-                                                    ? `Trial ends on ${currentUserSubscription.getRenewalDate("MMM DD, YYYY") ?? "N/A"}`
-                                                    : `Renews on ${currentUserSubscription.getRenewalDate("MMM DD, YYYY")}`}
+                                                {currentUserSubscription.isDefault
+                                                    ? t("manage_overview.never_renews")
+                                                    : currentUserSubscription.status === SubscriptionStatus.ON_TRIAL
+                                                        ? t("manage_overview.trial_ends_on", { date: currentUserSubscription.getRenewalDate("MMM DD, YYYY") ?? "N/A" })
+                                                        : t("manage_overview.renews_on", { date: currentUserSubscription.getRenewalDate("MMM DD, YYYY") ?? "N/A" })}
                                             </span>
                                         </div>
                                     </div>
@@ -75,7 +79,7 @@ const ManagePage: React.FC = () => {
                                     <div className="pt-4 border-t border-border">
                                         <a href="/manage/plans">
                                             <Button variant="outline" className="w-full justify-between group">
-                                                Manage Subscription
+                                                {t("manage_overview.manage_subscription_button")}
                                                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                             </Button>
                                         </a>
@@ -86,10 +90,10 @@ const ManagePage: React.FC = () => {
                                     <div className="bg-muted p-4 rounded-full mb-4">
                                         <Ban className="h-8 w-8 text-muted-foreground" />
                                     </div>
-                                    <h3 className="font-bold text-lg mb-2">No Active Plan</h3>
-                                    <p className="text-sm text-muted-foreground mb-6">Unlock more features by choosing a plan.</p>
+                                    <h3 className="font-bold text-lg mb-2">{t("manage_overview.no_active_plan_title")}</h3>
+                                    <p className="text-sm text-muted-foreground mb-6">{t("manage_overview.no_active_plan_subtitle")}</p>
                                     <a href="/manage/plans">
-                                        <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">Explore Plans</Button>
+                                        <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">{t("manage_overview.explore_plans_button")}</Button>
                                     </a>
                                 </div>
                             )}
@@ -100,36 +104,36 @@ const ManagePage: React.FC = () => {
                         <CardHeader className="bg-muted/50 border-b border-border">
                             <CardTitle className="flex items-center gap-2 text-lg">
                                 <AlertCircle className="h-5 w-5 text-primary" />
-                                Resource Usage
+                                {t("manage_overview.resource_usage_title")}
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="pt-8 px-8">
                             {usage ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                                     <UsageItem
-                                        label="Businesses"
+                                        label={t("manage_overview.usage_labels.businesses")}
                                         current={usage.current.businesses}
                                         allowed={usage.allowed.businesses}
                                     />
                                     <UsageItem
-                                        label="Menus (Active)"
+                                        label={t("manage_overview.usage_labels.menus_active")}
                                         current={usage.current.menus}
                                         allowed={usage.allowed.menus}
                                     />
                                     <UsageItem
-                                        label="Products"
+                                        label={t("manage_overview.usage_labels.products")}
                                         current={usage.current.products}
                                         allowed={usage.allowed.products}
                                     />
                                     <UsageItem
-                                        label="Employees"
+                                        label={t("manage_overview.usage_labels.employees")}
                                         current={usage.current.employees}
                                         allowed={usage.allowed.employees}
                                     />
                                 </div>
                             ) : (
                                 <div className="flex items-center justify-center py-10 text-muted-foreground">
-                                    {loadingUsage ? "Loading usage data..." : "Usage data unavailable"}
+                                    {loadingUsage ? t("manage_overview.loading_usage") : t("manage_overview.usage_unavailable")}
                                 </div>
                             )}
                         </CardContent>
@@ -141,8 +145,8 @@ const ManagePage: React.FC = () => {
                     <section className="space-y-6">
                         <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">My Businesses</h2>
-                                <p className="text-sm text-muted-foreground mt-1">Manage and edit your business profiles.</p>
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">{t("manage_overview.my_businesses_title")}</h2>
+                                <p className="text-sm text-muted-foreground mt-1">{t("manage_overview.my_businesses_subtitle")}</p>
                             </div>
                             <div className="flex flex-col items-end gap-1 shrink-0">
                                 <Button
@@ -152,15 +156,15 @@ const ManagePage: React.FC = () => {
                                         if (canCreateBusiness) {
                                             window.location.href = "/manage/owned/new";
                                         } else {
-                                            openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                                            openUpgradeModal(t("manage_overview.business_limit_reached"));
                                         }
                                     }}
                                 >
                                     <Plus className="h-4 w-4" />
-                                    <span>Create New</span>
+                                    <span>{t("manage_overview.create_new_button")}</span>
                                 </Button>
                                 {!canCreateBusiness && (
-                                    <span className="text-[10px] font-bold text-primary uppercase tracking-tight">Upgrade Required</span>
+                                    <span className="text-[10px] font-bold text-primary uppercase tracking-tight">{t("manage_overview.upgrade_required_label")}</span>
                                 )}
                             </div>
                         </div>
@@ -189,7 +193,7 @@ const ManagePage: React.FC = () => {
                                                         </div>
                                                         <div>
                                                             <span className="font-bold text-lg block text-foreground">{biz.name}</span>
-                                                            <span className="text-xs text-muted-foreground font-medium">Owner Dashboard</span>
+                                                            <span className="text-xs text-muted-foreground font-medium">{t("manage_overview.owner_dashboard_label")}</span>
                                                         </div>
                                                     </div>
                                                     <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-primary transition-colors" />
@@ -199,12 +203,12 @@ const ManagePage: React.FC = () => {
                                                 {biz.counts && usage && (
                                                     <div className="pt-4 mt-2 border-t border-border/80 grid grid-cols-2 gap-4">
                                                         <UsageItem
-                                                            label="Employees"
+                                                            label={t("manage_overview.usage_labels.employees")}
                                                             current={biz.counts.employees}
                                                             allowed={usage.allowed.employees}
                                                         />
                                                         <UsageItem
-                                                            label="Menus"
+                                                            label={t("manage_overview.usage_labels.menus")}
                                                             current={biz.counts.menus}
                                                             allowed={usage.allowed.menus}
                                                         />
@@ -220,8 +224,8 @@ const ManagePage: React.FC = () => {
                                 <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground/50 mb-4">
                                     <Building2 className="h-8 w-8" />
                                 </div>
-                                <h3 className="font-bold text-lg text-foreground">No businesses yet</h3>
-                                <p className="text-sm text-muted-foreground max-w-xs mt-2">Start your journey by adding your first business.</p>
+                                <h3 className="font-bold text-lg text-foreground">{t("manage_overview.no_businesses_title")}</h3>
+                                <p className="text-sm text-muted-foreground max-w-xs mt-2">{t("manage_overview.no_businesses_subtitle")}</p>
                             </div>
                         )}
                     </section>
@@ -230,12 +234,12 @@ const ManagePage: React.FC = () => {
                     <section className="space-y-6">
                         <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">Joined Businesses</h2>
-                                <p className="text-sm text-muted-foreground mt-1">Businesses where you work as staff.</p>
+                                <h2 className="text-xl sm:text-2xl font-bold text-foreground">{t("manage_overview.joined_businesses_title")}</h2>
+                                <p className="text-sm text-muted-foreground mt-1">{t("manage_overview.joined_businesses_subtitle")}</p>
                             </div>
                             <Button variant="outline" className="gap-2 shadow-sm border-border h-11 shrink-0" onClick={() => window.location.href = "/manage/join"}>
                                 <LogIn className="h-4 w-4" />
-                                Join
+                                {t("manage_overview.join_button")}
                             </Button>
                         </div>
 
@@ -262,7 +266,7 @@ const ManagePage: React.FC = () => {
                                                     </div>
                                                     <div>
                                                         <span className="font-bold text-lg block text-foreground">{emp.business.name}</span>
-                                                        <span className="text-xs text-muted-foreground font-medium">Staff Member</span>
+                                                        <span className="text-xs text-muted-foreground font-medium">{t("manage_overview.staff_member_label")}</span>
                                                     </div>
                                                 </div>
                                                 <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-green-600 transition-colors" />
@@ -276,8 +280,8 @@ const ManagePage: React.FC = () => {
                                 <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground/50 mb-4">
                                     <Building2 className="h-8 w-8" />
                                 </div>
-                                <h3 className="font-bold text-lg text-foreground">Not in any teams</h3>
-                                <p className="text-sm text-muted-foreground max-w-xs mt-2">When you join a business team, it will appear here.</p>
+                                <h3 className="font-bold text-lg text-foreground">{t("manage_overview.no_teams_title")}</h3>
+                                <p className="text-sm text-muted-foreground max-w-xs mt-2">{t("manage_overview.no_teams_subtitle")}</p>
                             </div>
                         )}
                     </section>

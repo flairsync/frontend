@@ -38,7 +38,7 @@ const LoginPage = () => {
         const reason = localStorage.getItem('auth_logout_reason');
         if (reason === 'inactivity') {
             localStorage.removeItem('auth_logout_reason');
-            toast.error("You were logged out due to inactivity. Please sign in again.");
+            toast.error(t("auth_page.logged_out_inactivity_toast"));
         }
     }, []);
 
@@ -53,128 +53,130 @@ const LoginPage = () => {
     }, [loginError]);
 
     return (
-        <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-white font-sans text-zinc-900">
             {/* Left side - Login Form */}
-            <a href='/' className='absolute top-10 left-10'>
-                <WebsiteLogo />
-            </a>
+            <div className="flex-1 flex flex-col">
+                <a href='/' className='px-6 pt-8 lg:px-12 lg:pt-10'>
+                    <WebsiteLogo />
+                </a>
 
-            <div className="flex-1 flex-col flex items-center justify-center p-8 lg:p-12">
-                <div className="w-full max-w-md ">
-                    <h1 className="text-4xl font-extrabold mb-2">{t("auth_page.signin_page_title")}</h1>
-                    <p className="text-zinc-600 mb-8">{t("auth_page.please_login_label")}</p>
-                    <Formik
-                        initialValues={{ email: '', password: '', stayConnected: false }}
-                        validationSchema={LoginFormSchema}
-                        onSubmit={values => {
-                            setApiError(undefined);
-                            loginUser({
-                                email: values.email,
-                                password: values.password,
-                                stayConnected: values.stayConnected,
-                            }, {
-                                onSuccess: handlePostLogin
-                            })
-                        }}
-                    >
-                        {({ errors, touched, handleChange, values, setFieldValue }) => (
-                            <Form className="space-y-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="email">{t("auth_page.email_label")}</Label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        name='email'
-                                        onChange={handleChange}
-                                        placeholder="jonas_kahnwald@gmail.com"
-                                        className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
-                                    />
-                                </div>
-                                {errors.email && touched.email && <InputError message={errors.email} />}
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="password">{t("auth_page.password_label")}</Label>
-                                    <div className="relative">
+                <div className="flex-1 flex flex-col items-center justify-start lg:justify-center p-8 lg:p-12">
+                    <div className="w-full max-w-md ">
+                        <h1 className="text-4xl font-extrabold mb-2">{t("auth_page.signin_page_title")}</h1>
+                        <p className="text-zinc-600 mb-8">{t("auth_page.please_login_label")}</p>
+                        <Formik
+                            initialValues={{ email: '', password: '', stayConnected: false }}
+                            validationSchema={LoginFormSchema}
+                            onSubmit={values => {
+                                setApiError(undefined);
+                                loginUser({
+                                    email: values.email,
+                                    password: values.password,
+                                    stayConnected: values.stayConnected,
+                                }, {
+                                    onSuccess: handlePostLogin
+                                })
+                            }}
+                        >
+                            {({ errors, touched, handleChange, values, setFieldValue }) => (
+                                <Form className="space-y-6">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="email">{t("auth_page.email_label")}</Label>
                                         <Input
-                                            id="password"
-                                            name='password'
-                                            type={showPassword ? 'text' : 'password'}
+                                            id="email"
+                                            type="email"
+                                            name='email'
                                             onChange={handleChange}
-                                            placeholder={t("auth_page.password_label")}
+                                            placeholder="jonas_kahnwald@gmail.com"
                                             className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
-                                        >
-                                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                                        </button>
                                     </div>
-                                    {errors.password && touched.password && <InputError message={errors.password} />}
-                                </div>
+                                    {errors.email && touched.email && <InputError message={errors.email} />}
 
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox
-                                            id="keep-logged-in"
-                                            className="rounded-md border-zinc-300"
-                                            checked={values.stayConnected}
-                                            onCheckedChange={(checked) => setFieldValue('stayConnected', checked === true)}
+                                    <div className="space-y-2">
+                                        <Label htmlFor="password">{t("auth_page.password_label")}</Label>
+                                        <div className="relative">
+                                            <Input
+                                                id="password"
+                                                name='password'
+                                                type={showPassword ? 'text' : 'password'}
+                                                onChange={handleChange}
+                                                placeholder={t("auth_page.password_label")}
+                                                className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                                            >
+                                                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                            </button>
+                                        </div>
+                                        {errors.password && touched.password && <InputError message={errors.password} />}
+                                    </div>
+
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center space-x-2">
+                                            <Checkbox
+                                                id="keep-logged-in"
+                                                className="rounded-md border-zinc-300"
+                                                checked={values.stayConnected}
+                                                onCheckedChange={(checked) => setFieldValue('stayConnected', checked === true)}
+                                            />
+                                            <Label htmlFor="keep-logged-in" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                                {t("auth_page.stay_signedin_label")}
+                                            </Label>
+                                        </div>
+                                        <a href="/forgot-password" className="text-sm font-semibold text-[#6366F1] hover:underline">
+                                            {t("auth_page.forgot_password_link")}
+                                        </a>
+                                    </div>
+
+                                    {
+                                        apiError && <InputError
+                                            message={apiError}
                                         />
-                                        <Label htmlFor="keep-logged-in" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                            {t("auth_page.stay_signedin_label")}
-                                        </Label>
-                                    </div>
-                                    <a href="/forgot-password" className="text-sm font-semibold text-[#6366F1] hover:underline">
-                                        Forgot password?
-                                    </a>
-                                </div>
+                                    }
 
-                                {
-                                    apiError && <InputError
-                                        message={apiError}
-                                    />
-                                }
+                                    <Button
+                                        disabled={loggingIn}
+                                        type='submit'
+                                        className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                                    >
+                                        {t("auth_page.signin_button_label")}
+                                    </Button>
+                                </Form>
+                            )}
+                        </Formik>
 
-                                <Button
-                                    disabled={loggingIn}
-                                    type='submit'
-                                    className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
-                                >
-                                    {t("auth_page.signin_button_label")}
-                                </Button>
-                            </Form>
-                        )}
-                    </Formik>
+                        <div className="flex items-center my-6">
+                            <div className="flex-1 border-t border-zinc-300"></div>
+                            <span className="px-4 text-zinc-500">{t("auth_page.or_label")}</span>
+                            <div className="flex-1 border-t border-zinc-300"></div>
+                        </div>
 
-                    <div className="flex items-center my-6">
-                        <div className="flex-1 border-t border-zinc-300"></div>
-                        <span className="px-4 text-zinc-500">{t("auth_page.or_label")}</span>
-                        <div className="flex-1 border-t border-zinc-300"></div>
+                        {/*  <Button variant="outline" className="w-full h-12 rounded-lg border-zinc-300 hover:bg-zinc-100 text-zinc-800">
+                            <svg
+                                className="mr-2 h-5 w-5"
+                                fill="currentColor"
+                                viewBox="0 0 488 500"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M488 261.8C488 432 377.9 488 244 488 108.9 488 0 379.1 0 244S108.9 0 244 0c74.4 0 123.6 28.5 163.6 66.8l-49.9 48.9c-29.4-28-71.8-46.6-113.6-46.6-89 0-161 72-161 161s72 161 161 161c94.2 0 144.3-64.2 150-97.1h-150v-85h255.9c2.3 12.7 3.5 25.5 3.5 39.3z" />
+                            </svg>
+                            {t("auth_page.signin_with_google_label")}
+                        </Button> */}
+
+                        <GoogleLoginButton />
+
+
+                        <p className="mt-8 text-center text-sm text-zinc-600">
+                            {t("auth_page.need_account_label")}{' '}
+                            <a href={`/signup?origin=${encodeURIComponent(origin)}`} className="font-semibold text-[#6366F1] hover:underline">
+                                {t("auth_page.create_account_label")}
+                            </a>
+                        </p>
                     </div>
-
-                    {/*  <Button variant="outline" className="w-full h-12 rounded-lg border-zinc-300 hover:bg-zinc-100 text-zinc-800">
-                        <svg
-                            className="mr-2 h-5 w-5"
-                            fill="currentColor"
-                            viewBox="0 0 488 500"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path d="M488 261.8C488 432 377.9 488 244 488 108.9 488 0 379.1 0 244S108.9 0 244 0c74.4 0 123.6 28.5 163.6 66.8l-49.9 48.9c-29.4-28-71.8-46.6-113.6-46.6-89 0-161 72-161 161s72 161 161 161c94.2 0 144.3-64.2 150-97.1h-150v-85h255.9c2.3 12.7 3.5 25.5 3.5 39.3z" />
-                        </svg>
-                        {t("auth_page.signin_with_google_label")}
-                    </Button> */}
-
-                    <GoogleLoginButton />
-
-
-                    <p className="mt-8 text-center text-sm text-zinc-600">
-                        {t("auth_page.need_account_label")}{' '}
-                        <a href={`/signup?origin=${encodeURIComponent(origin)}`} className="font-semibold text-[#6366F1] hover:underline">
-                            {t("auth_page.create_account_label")}
-                        </a>
-                    </p>
                 </div>
             </div>
 

@@ -14,11 +14,14 @@ import { AxiosError } from "axios";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { usePageContext } from "vike-react/usePageContext";
 import { PageContext } from "vike/types";
+import { useTranslation } from "react-i18next";
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
 
   const pageContext = usePageContext();
+
+  const { t } = useTranslation("auth");
 
   const {
     mutate: loginUser,
@@ -73,7 +76,7 @@ export const useAuth = () => {
     mutationKey: ["signup_user"],
     mutationFn: signupUserApiCall,
     onSuccess(data, variables, context) {
-      toast("Account created");
+      toast(t("auth_page.register.account_created_toast"));
       hydrateSSR();
     },
   });

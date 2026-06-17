@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useTranslation } from "react-i18next"
 
 export default function StaffMessagesPage() {
+    const { t } = useTranslation("management");
     const announcements = [
         { id: 1, title: "Team Meeting", content: "Reminder: Team meeting at 5 PM in main hall.", read: false },
         { id: 2, title: "Seasonal Menu", content: "New seasonal menu starts tomorrow.", read: true },
@@ -19,14 +21,14 @@ export default function StaffMessagesPage() {
         <div className="space-y-6 p-6">
             {/* Page Title */}
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">Messages & Announcements</h1>
-                <p className="text-muted-foreground">Stay updated with the latest news and messages.</p>
+                <h1 className="text-2xl font-bold tracking-tight">{t("staff_messages.title")}</h1>
+                <p className="text-muted-foreground">{t("staff_messages.subtitle")}</p>
             </div>
 
             <Tabs defaultValue="announcements" className="w-full">
                 <TabsList>
-                    <TabsTrigger value="announcements">Announcements</TabsTrigger>
-                    <TabsTrigger value="messages">Messages</TabsTrigger>
+                    <TabsTrigger value="announcements">{t("staff_messages.announcements_tab")}</TabsTrigger>
+                    <TabsTrigger value="messages">{t("staff_messages.messages_tab")}</TabsTrigger>
                 </TabsList>
 
                 {/* Announcements */}
@@ -35,13 +37,13 @@ export default function StaffMessagesPage() {
                         <Card key={announcement.id}>
                             <CardHeader className="flex items-center justify-between">
                                 <CardTitle>{announcement.title}</CardTitle>
-                                {!announcement.read && <Badge variant="destructive">New</Badge>}
+                                {!announcement.read && <Badge variant="destructive">{t("staff_messages.new_badge")}</Badge>}
                             </CardHeader>
                             <CardContent>
                                 <p className="text-sm text-muted-foreground">{announcement.content}</p>
                                 {!announcement.read && (
                                     <Button size="sm" className="mt-2">
-                                        Mark as Read
+                                        {t("staff_messages.mark_as_read")}
                                     </Button>
                                 )}
                             </CardContent>
@@ -56,7 +58,7 @@ export default function StaffMessagesPage() {
                             <CardHeader className="flex items-center justify-between">
                                 <CardTitle>{message.subject}</CardTitle>
                                 <Badge variant={message.read ? "secondary" : "destructive"}>
-                                    {message.read ? "Read" : "New"}
+                                    {message.read ? t("staff_messages.read_badge") : t("staff_messages.new_badge")}
                                 </Badge>
                             </CardHeader>
                             <CardContent>
@@ -65,7 +67,7 @@ export default function StaffMessagesPage() {
                                 </p>
                                 {!message.read && (
                                     <Button size="sm" className="mt-2">
-                                        Mark as Read
+                                        {t("staff_messages.mark_as_read")}
                                     </Button>
                                 )}
                             </CardContent>
