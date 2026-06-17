@@ -33,6 +33,8 @@ function startServer() {
     await next();
   });
 
+  app.get("/health", (c) => c.json({ status: "ok" }));
+
   apply(app);
 
   return serve(app, {});
