@@ -16,6 +16,7 @@ export default {
   title: "FlairSync",
   description:
     "FlairSync is a modern platform that helps creators and businesses connect, manage their content, and streamline their workflow with powerful tools for collaboration, analytics, and payouts — all in one place.",
+  image: "https://flairsync.com/social-preview.png",
 
   extends: [vikeReact, vikeReactQuery, vikeServer],
   server: "server/index.js",
