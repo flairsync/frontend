@@ -55,7 +55,7 @@ const LandingHero = () => {
                 <div className="hero_image flex-1 flex justify-center md:justify-end w-full relative">
                     <div className="relative w-full max-w-[480px] md:max-w-[600px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl md:rotate-3 hover:rotate-0 transition-transform duration-500 ease-out">
                         <img
-                            src="./images/landing/hero.png"
+                            src="./images/landing/hero.webp"
                             alt="Hero Illustration"
                             className="w-full h-full object-cover"
                         />

@@ -12,7 +12,7 @@ import {
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet'
 import { useMap, useMapEvents } from 'react-leaflet/hooks'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
-import { LatLng, Map } from 'leaflet'
+import { LatLng, Map, DivIcon } from 'leaflet'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
@@ -20,6 +20,14 @@ import { Switch } from '../ui/switch'
 import { Slider } from '../ui/slider'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries'
+
+// Custom Marker Icon SVG to avoid missing image issues in production (leaflet's default icon images aren't bundled by Next.js)
+const customMarkerIcon = new DivIcon({
+    html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-red-500 drop-shadow-md"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    className: "custom-leaflet-marker",
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+});
 
 export type LocationFilterState = {
     useCustomLocation: boolean;
@@ -274,13 +282,13 @@ const LocationSelectionModal = (props: Props) => {
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
                             {currentLocation && !useCustomLocation && (
-                                <Marker position={getCurrentLocationInLeafletFormat()}>
+                                <Marker icon={customMarkerIcon} position={getCurrentLocationInLeafletFormat()}>
                                     <Popup>Your device location</Popup>
                                 </Marker>
                             )}
                             {useCustomLocation && customLocation && (
                                 <>
-                                    <Marker position={customLocation}>
+                                    <Marker icon={customMarkerIcon} position={customLocation}>
                                         <Popup>Custom override location</Popup>
                                     </Marker>
                                     <Circle
