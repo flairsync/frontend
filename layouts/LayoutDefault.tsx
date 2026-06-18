@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { SystemErrorOverlay } from "@/features/system-errors/SystemErrorOverlay";
 const UpgradeModal = clientOnly(() => import("@/components/subscriptions/UpgradeModal"));
 const DinerModeWatcher = clientOnly(() => import("@/components/diner-mode/DinerModeWatcher"));
+const ClockedInBanner = clientOnly(() => import("@/components/shift-tracking/ClockedInBanner"));
 const TourProvider = clientOnly(() => import("@/features/tour/components/TourProvider").then(m => ({ default: m.TourProvider })));
 const CookieConsentBanner = clientOnly(() => import("@/components/shared/CookieConsentBanner"));
 
@@ -24,6 +25,7 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
       >
         {children}
         <DinerModeWatcher />
+        <ClockedInBanner />
         <Toaster />
         <UpgradeModal />
         <SystemErrorOverlay />

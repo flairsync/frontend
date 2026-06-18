@@ -325,6 +325,10 @@
     "delivery": "Lliurament a domicili",
     "view_full_schedule": "Veure l'horari complet"
   },
+  "clocked_in_banner": {
+    "clocked_in": "Fitxat",
+    "on_break": "En pausa"
+  },
   "staff_layout": {
     "access_denied_title": "Accés denegat",
     "access_denied_message": "No tens permís per accedir a aquesta àrea. Contacta amb el teu encarregat o visita el teu perfil professional.",

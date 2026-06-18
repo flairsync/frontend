@@ -325,6 +325,10 @@
     "delivery": "Entrega a domicilio",
     "view_full_schedule": "Ver horario completo"
   },
+  "clocked_in_banner": {
+    "clocked_in": "Fichado",
+    "on_break": "En descanso"
+  },
   "staff_layout": {
     "access_denied_title": "Acceso denegado",
     "access_denied_message": "No tienes permiso para acceder a esta área. Contacta con tu encargado o visita tu perfil profesional.",

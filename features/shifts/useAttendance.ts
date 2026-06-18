@@ -24,6 +24,8 @@ import {
   BusinessAttendanceFilters,
   MyAttendanceFilters,
 } from "@/models/business/shift/Attendance";
+import { fetchMyEmploymentsApiCall } from "@/features/business/service";
+import { MyEmployment } from "@/models/business/MyEmployment";
 
 export const useAttendance = (businessId?: string, filters?: BusinessAttendanceFilters) => {
   const queryClient = useQueryClient();
@@ -144,6 +146,52 @@ export const useTodayAttendanceDashboard = (businessId?: string) => {
     queryKey: ["attendance-today", businessId, todayDate],
     queryFn: () => fetchTodayAttendanceDashboardApiCall(businessId!, todayDate),
     enabled: !!businessId,
+  });
+};
+
+export interface ActiveShiftInfo {
+  businessId: string;
+  businessName: string;
+  employmentId: string;
+  attendance: AttendanceLog;
+  onBreak: boolean;
+}
+
+// Scans across all of the logged-in user's employments to find one ongoing
+// (clocked-in, not checked-out) attendance log, so a global "you're clocked in"
+// reminder can be shown regardless of which business/page is currently open.
+export const useMyActiveShift = (enabled: boolean = true) => {
+  return useQuery<ActiveShiftInfo | null>({
+    queryKey: ["my-active-shift"],
+    queryFn: async () => {
+      const employmentsRes = await fetchMyEmploymentsApiCall(1, 50);
+      const employments = MyEmployment.parseApiArrayResponse(employmentsRes.data || []).filter(
+        (e) => e.status === "ACTIVE"
+      );
+
+      for (const employment of employments) {
+        try {
+          const dashboard = (await fetchTodayAttendanceDashboardApiCall(employment.business.id)) as
+            | { attendance?: AttendanceLog }
+            | undefined;
+          const attendance = dashboard?.attendance;
+          if (attendance?.checkInTime && !attendance.checkOutTime) {
+            return {
+              businessId: employment.business.id,
+              businessName: employment.business.name,
+              employmentId: employment.id,
+              attendance,
+              onBreak: !!attendance.breaks?.some((b) => !b.end),
+            };
+          }
+        } catch {
+          // Skip businesses we fail to fetch attendance for
+        }
+      }
+      return null;
+    },
+    enabled,
+    refetchInterval: 60_000,
   });
 };
 
