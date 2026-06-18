@@ -46,7 +46,7 @@ const InventoryManagementFeature = () => {
                     <div className="flex-1 w-full flex items-center justify-center">
                         <div className="relative w-full max-w-md lg:max-w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
                             <img
-                                src="https://images.pexels.com/photos/6169634/pexels-photo-6169634.jpeg"
+                                src="./images/landing/inventory.webp"
                                 alt="Inventory management interface"
                                 className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                             />

@@ -44,7 +44,7 @@ const StaffManagementFeature = () => {
                     <div className="flex-1 w-full order-1 md:order-2 flex items-center justify-center">
                         <div className="relative w-full max-w-md lg:max-w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
                             <img
-                                src="https://images.pexels.com/photos/7793719/pexels-photo-7793719.jpeg"
+                                src="./images/landing/staff.webp"
                                 alt="Staff management"
                                 className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                             />

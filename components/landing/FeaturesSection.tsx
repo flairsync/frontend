@@ -38,12 +38,12 @@ const FeaturesSection = () => {
                     <div className="flex-1 w-full gap-4 flex lg:flex-row flex-col items-center justify-center">
                         <div className="relative w-full max-w-md lg:max-w-none flex gap-4 items-center justify-center">
                             <img
-                                src="https://images.pexels.com/photos/2612334/pexels-photo-2612334.jpeg"
+                                src="./images/landing/left.webp"
                                 alt="Restaurant ambiance"
                                 className="w-[45%] aspect-[3/4] object-cover rounded-2xl shadow-xl mt-12"
                             />
                             <img
-                                src="https://images.pexels.com/photos/240223/pexels-photo-240223.jpeg"
+                                src="./images/landing/right.webp"
                                 alt="Customer dining"
                                 className="w-[55%] aspect-[3/4] object-cover rounded-2xl shadow-2xl"
                             />
