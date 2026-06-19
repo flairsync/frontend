@@ -140,6 +140,8 @@ export class MyBusinessFullDetails {
   requireGpsForAttendance: boolean;
   attendanceGeofenceRadiusMeters: number;
   strictGeofenceBlock: boolean;
+  attendanceGraceMinutes: number;
+  maxPaidBreakMinutes: number;
   counts?: {
     employees: number;
     menus: number;
@@ -201,6 +203,8 @@ export class MyBusinessFullDetails {
     requireGpsForAttendance: boolean,
     attendanceGeofenceRadiusMeters: number,
     strictGeofenceBlock: boolean,
+    attendanceGraceMinutes: number,
+    maxPaidBreakMinutes: number,
     createdAt: Date,
     updatedAt: Date,
     counts?: {
@@ -265,6 +269,8 @@ export class MyBusinessFullDetails {
     this.requireGpsForAttendance = requireGpsForAttendance;
     this.attendanceGeofenceRadiusMeters = attendanceGeofenceRadiusMeters;
     this.strictGeofenceBlock = strictGeofenceBlock;
+    this.attendanceGraceMinutes = attendanceGraceMinutes;
+    this.maxPaidBreakMinutes = maxPaidBreakMinutes;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.counts = counts;
@@ -329,6 +335,8 @@ export class MyBusinessFullDetails {
         !!data.requireGpsForAttendance,
         data.attendanceGeofenceRadiusMeters !== undefined ? Number(data.attendanceGeofenceRadiusMeters) : 50,
         !!data.strictGeofenceBlock,
+        data.attendanceGraceMinutes !== undefined && data.attendanceGraceMinutes !== null ? Number(data.attendanceGraceMinutes) : 15,
+        data.maxPaidBreakMinutes !== undefined && data.maxPaidBreakMinutes !== null ? Number(data.maxPaidBreakMinutes) : 30,
         new Date(data.createdAt),
         new Date(data.updatedAt),
         data.counts,
@@ -396,6 +404,8 @@ export type UpdateBusinessDetailsDto = {
   requireGpsForAttendance?: boolean;
   attendanceGeofenceRadiusMeters?: number;
   strictGeofenceBlock?: boolean;
+  attendanceGraceMinutes?: number;
+  maxPaidBreakMinutes?: number;
   countryId?: number;
   location?: { type: "Point"; coordinates: [number, number] };
   maxWeeklyHours?: number;

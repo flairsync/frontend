@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ShieldCheck, MapPin, Eye, CalendarOff } from "lucide-react";
+import { ShieldCheck, MapPin, Eye, CalendarOff, LogOut, Coffee } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { AttendanceLog } from "@/models/business/shift/Attendance";
 import { ValidationModal } from "@/components/management/schedule/ValidationModal";
@@ -98,6 +98,12 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                         <span className="text-foreground font-semibold">{employeeName}</span>
                         {record.isOutOfGeofence && (
                           <MapPin className="h-3.5 w-3.5 text-amber-500" aria-label="Clocked in outside geofence" />
+                        )}
+                        {record.isEarlyDeparture && (
+                          <LogOut className="h-3.5 w-3.5 text-red-500" aria-label="Left before shift ended" />
+                        )}
+                        {record.hasLongPaidBreak && (
+                          <Coffee className="h-3.5 w-3.5 text-amber-500" aria-label="Unusually long paid break — review breaks" />
                         )}
                       </div>
                     </TableCell>

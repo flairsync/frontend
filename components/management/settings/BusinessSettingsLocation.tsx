@@ -56,6 +56,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
     const [requireGpsForAttendance, setRequireGpsForAttendance] = useState(!!businessDetails?.requireGpsForAttendance);
     const [attendanceGeofenceRadiusMeters, setAttendanceGeofenceRadiusMeters] = useState(businessDetails?.attendanceGeofenceRadiusMeters || 50);
     const [strictGeofenceBlock, setStrictGeofenceBlock] = useState(!!businessDetails?.strictGeofenceBlock);
+    const [attendanceGraceMinutes, setAttendanceGraceMinutes] = useState(businessDetails?.attendanceGraceMinutes ?? 15);
+    const [maxPaidBreakMinutes, setMaxPaidBreakMinutes] = useState(businessDetails?.maxPaidBreakMinutes ?? 30);
 
     const handleLocationChange = (val: any) => {
         setLocationValue(val);
@@ -82,7 +84,9 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 maxOrderDistanceMeters,
                 requireGpsForAttendance,
                 attendanceGeofenceRadiusMeters,
-                strictGeofenceBlock
+                strictGeofenceBlock,
+                attendanceGraceMinutes,
+                maxPaidBreakMinutes
             });
         }
     };
@@ -183,6 +187,32 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                             <Switch
                                 checked={requireGpsForAttendance}
                                 onCheckedChange={setRequireGpsForAttendance}
+                                disabled={disabled}
+                            />
+                        </div>
+                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                            <div className="space-y-0.5">
+                                <Label>Attendance Grace Period (Minutes)</Label>
+                                <p className="text-xs text-muted-foreground">Minutes of leeway before a clock-in is marked late or a clock-out is marked an early departure</p>
+                            </div>
+                            <Input
+                                type="number"
+                                className="w-24"
+                                value={attendanceGraceMinutes}
+                                onChange={(e) => setAttendanceGraceMinutes(parseInt(e.target.value) || 0)}
+                                disabled={disabled}
+                            />
+                        </div>
+                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                            <div className="space-y-0.5">
+                                <Label>Max Paid Break (Minutes)</Label>
+                                <p className="text-xs text-muted-foreground">Paid breaks longer than this are flagged for manager review</p>
+                            </div>
+                            <Input
+                                type="number"
+                                className="w-24"
+                                value={maxPaidBreakMinutes}
+                                onChange={(e) => setMaxPaidBreakMinutes(parseInt(e.target.value) || 0)}
                                 disabled={disabled}
                             />
                         </div>

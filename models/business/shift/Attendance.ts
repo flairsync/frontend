@@ -26,6 +26,8 @@ export interface AttendanceLog {
   checkInLocation: { lat: number; lng: number } | null;
   checkOutLocation: { lat: number; lng: number } | null;
   isOutOfGeofence: boolean;
+  isEarlyDeparture: boolean;
+  hasLongPaidBreak: boolean;
 
   workedMinutes: number | null;
   regularMinutes: number | null;
