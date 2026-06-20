@@ -38,6 +38,7 @@ const APP_STATUS_MESSAGES: Record<ApplicationStatus, string> = {
   reviewed: "Being reviewed",
   shortlisted: "You've been shortlisted!",
   accepted: "You've been accepted!",
+  hired: "You're now part of the team!",
   rejected: "Not selected",
 };
 
@@ -119,7 +120,7 @@ const ApplicationsTab = () => {
                   key={app.id}
                   className={cn(
                     "rounded-xl border p-4",
-                    app.status === "accepted"
+                    app.status === "accepted" || app.status === "hired"
                       ? "border-green-300 bg-green-50/40 dark:border-green-800 dark:bg-green-950/20"
                       : "border-border bg-card"
                   )}

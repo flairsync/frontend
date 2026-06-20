@@ -26,6 +26,7 @@ export interface AbsenceRecord {
   shiftId: string | null;
   date: string; // 'YYYY-MM-DD'
   type: AbsenceType;
+  isPaid: boolean;
   notes: string | null;
   documentUrl: string | null;
   timeOffRequestId: string | null;
@@ -46,6 +47,7 @@ export interface CreateAbsenceRecordDto {
   employmentId: string;
   date: string; // 'YYYY-MM-DD'
   type: AbsenceType;
+  isPaid?: boolean;
   attendanceId?: string;
   shiftId?: string;
   timeOffRequestId?: string;
@@ -56,6 +58,7 @@ export interface CreateAbsenceRecordDto {
 
 export interface UpdateAbsenceRecordDto {
   type?: AbsenceType;
+  isPaid?: boolean;
   notes?: string;
   documentUrl?: string;
 }

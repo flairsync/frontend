@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import {
     Dialog,
     DialogContent,
@@ -40,6 +41,7 @@ const ABSENCE_TYPE_OPTIONS: AbsenceType[] = ['SICK_LEAVE', 'UNAUTHORIZED', 'PERS
 
 interface AbsenceFormState {
     type: AbsenceType;
+    isPaid: boolean;
     date: string;
     notes: string;
     documentUrl: string;
@@ -51,6 +53,7 @@ interface AbsenceFormState {
 
 const defaultForm = (): AbsenceFormState => ({
     type: 'SICK_LEAVE',
+    isPaid: true,
     date: dayjs().format('YYYY-MM-DD'),
     notes: '',
     documentUrl: '',
@@ -84,6 +87,7 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
         setEditTarget(record);
         setForm({
             type: record.type,
+            isPaid: record.isPaid,
             date: record.date,
             notes: record.notes ?? '',
             documentUrl: record.documentUrl ?? '',
@@ -101,6 +105,7 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
             employmentId: form.employmentId,
             date: form.date,
             type: form.type,
+            isPaid: form.isPaid,
             notes: form.notes || undefined,
             documentUrl: form.documentUrl || undefined,
             shiftId: form.shiftId || undefined,
@@ -114,6 +119,7 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
         if (!editTarget) return;
         const payload: UpdateAbsenceRecordDto = {
             type: form.type,
+            isPaid: form.isPaid,
             notes: form.notes || undefined,
             documentUrl: form.documentUrl || undefined,
         };
@@ -161,9 +167,14 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                                         : record.employmentId}
                                 </TableCell>
                                 <TableCell>
-                                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${ABSENCE_TYPE_BADGE_COLORS[record.type]}`}>
-                                        {ABSENCE_TYPE_LABELS[record.type]}
-                                    </span>
+                                    <div className="flex items-center gap-1">
+                                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${ABSENCE_TYPE_BADGE_COLORS[record.type]}`}>
+                                            {ABSENCE_TYPE_LABELS[record.type]}
+                                        </span>
+                                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${record.isPaid ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'}`}>
+                                            {record.isPaid ? 'Paid' : 'Unpaid'}
+                                        </span>
+                                    </div>
                                 </TableCell>
                                 <TableCell className="text-xs text-muted-foreground">
                                     {record.shift
@@ -278,6 +289,10 @@ const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => 
                     </SelectContent>
                 </Select>
             </div>
+        </div>
+        <div className="flex items-center gap-2">
+            <Switch id="absence-form-is-paid" checked={form.isPaid} onCheckedChange={(checked) => setField('isPaid', checked)} />
+            <Label htmlFor="absence-form-is-paid">Paid Leave</Label>
         </div>
         <div className="space-y-1">
             <Label>Notes</Label>

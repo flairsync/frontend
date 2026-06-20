@@ -14,7 +14,7 @@ export type JobCategory =
   | 'barista'
   | 'other';
 
-export type ApplicationStatus = 'pending' | 'reviewed' | 'shortlisted' | 'accepted' | 'rejected';
+export type ApplicationStatus = 'pending' | 'reviewed' | 'shortlisted' | 'accepted' | 'hired' | 'rejected';
 
 export type ResumeType = 'url' | 'file';
 
@@ -26,7 +26,8 @@ export type ApplicationEventType =
   | 'rejected'
   | 'resume_added'
   | 'note_updated'
-  | 'invited';
+  | 'invited'
+  | 'hired';
 
 export type ApplicationEventSource = 'applicant' | 'owner' | 'system';
 
@@ -128,6 +129,7 @@ export const APPLICATION_STATUS_LABELS: Record<ApplicationStatus, string> = {
   reviewed: 'Being reviewed',
   shortlisted: "You've been shortlisted!",
   accepted: "You've been accepted! 🎉",
+  hired: "You're now part of the team! 🎉",
   rejected: 'Not selected',
 };
 
@@ -136,6 +138,7 @@ export const APPLICATION_STATUS_COLORS: Record<ApplicationStatus, string> = {
   reviewed: 'blue',
   shortlisted: 'yellow',
   accepted: 'green',
+  hired: 'green',
   rejected: 'red',
 };
 
@@ -145,6 +148,7 @@ export const APPLICATION_STATUS_OWNER_LABELS: Record<ApplicationStatus, string> 
   reviewed: 'Reviewed',
   shortlisted: 'Shortlisted',
   accepted: 'Accepted',
+  hired: 'Hired',
   rejected: 'Rejected',
 };
 
@@ -157,4 +161,5 @@ export const EVENT_TYPE_LABELS: Record<ApplicationEventType, string> = {
   resume_added: 'Resume attached',
   note_updated: 'Note updated',
   invited: 'Staff invite sent',
+  hired: 'Hired — employment created',
 };

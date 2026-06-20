@@ -89,12 +89,20 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                       {format(parseISO(absence.date), "MMM d, yyyy")}
                     </TableCell>
                     <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={`${ABSENCE_TYPE_BADGE_COLORS[absence.type]} border-none font-medium rounded-full`}
-                      >
-                        {ABSENCE_TYPE_LABELS[absence.type]}
-                      </Badge>
+                      <div className="flex items-center gap-1.5">
+                        <Badge
+                          variant="secondary"
+                          className={`${ABSENCE_TYPE_BADGE_COLORS[absence.type]} border-none font-medium rounded-full`}
+                        >
+                          {ABSENCE_TYPE_LABELS[absence.type]}
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className={`${absence.isPaid ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'} border-none font-medium rounded-full`}
+                        >
+                          {absence.isPaid ? 'Paid' : 'Unpaid'}
+                        </Badge>
+                      </div>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm max-w-[200px] truncate">
                       {absence.notes ?? "—"}

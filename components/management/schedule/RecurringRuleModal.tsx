@@ -12,6 +12,7 @@ import { RecurringShiftRule } from "@/models/business/shift/RecurringShiftRule";
 import { useMutation } from "@tanstack/react-query";
 import { generateDraftApiCall } from "@/features/shifts/service";
 import { format, startOfWeek, endOfWeek } from "date-fns";
+import { Trash } from "lucide-react";
 
 interface RecurringRuleModalProps {
     open: boolean;
@@ -53,6 +54,8 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
     const [endDate, setEndDate] = useState<string>("");
     const [isActive, setIsActive] = useState<boolean>(true);
     const [interval, setIntervalValue] = useState<number>(1);
+    const [exceptionDates, setExceptionDates] = useState<string[]>([]);
+    const [newExceptionDate, setNewExceptionDate] = useState<string>("");
 
     useEffect(() => {
         if (open) {
@@ -65,6 +68,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                 setEndDate(rule.endDate || "");
                 setIsActive(rule.isActive);
                 setIntervalValue(rule.interval || 1);
+                setExceptionDates(rule.exceptionDates || []);
             } else {
                 setEmploymentId("");
                 setDayOfWeek(1);
@@ -74,9 +78,21 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                 setEndDate("");
                 setIsActive(true);
                 setIntervalValue(1);
+                setExceptionDates([]);
             }
+            setNewExceptionDate("");
         }
     }, [open, rule]);
+
+    const handleAddExceptionDate = () => {
+        if (!newExceptionDate || exceptionDates.includes(newExceptionDate)) return;
+        setExceptionDates(prev => [...prev, newExceptionDate].sort());
+        setNewExceptionDate("");
+    };
+
+    const handleRemoveExceptionDate = (date: string) => {
+        setExceptionDates(prev => prev.filter(d => d !== date));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -90,7 +106,8 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
             startDate,
             endDate: endDate || null,
             isActive,
-            interval
+            interval,
+            exceptionDates
         };
 
         const triggerDraft = (empId: string) => {
@@ -203,6 +220,30 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                             </SelectContent>
                         </Select>
                         <p className="text-[11px] text-muted-foreground">Bi-weekly and Monthly intervals only generate shifts on weeks that match the start date's modulo.</p>
+                    </div>
+
+                    <div className="space-y-2 border-t pt-2">
+                        <Label>Exception Dates (Optional)</Label>
+                        <p className="text-[11px] text-muted-foreground">Skip this recurrence on specific dates (e.g. a one-off holiday) without changing the rule's start/end date.</p>
+                        <div className="flex gap-2">
+                            <Input type="date" value={newExceptionDate} onChange={e => setNewExceptionDate(e.target.value)} />
+                            <Button type="button" variant="outline" onClick={handleAddExceptionDate} disabled={!newExceptionDate}>Add</Button>
+                        </div>
+                        {exceptionDates.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
+                                {exceptionDates.map(d => (
+                                    <button
+                                        key={d}
+                                        type="button"
+                                        onClick={() => handleRemoveExceptionDate(d)}
+                                        className="flex items-center gap-1 bg-secondary hover:bg-destructive/10 hover:text-destructive text-secondary-foreground px-2 py-0.5 rounded text-xs transition-colors"
+                                    >
+                                        {d}
+                                        <Trash className="w-2.5 h-2.5" />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">

@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import {
   ArrowLeft,
   Briefcase,
+  CheckCircle2,
   ExternalLink,
   FileText,
   Link,
@@ -84,6 +85,20 @@ const JobApplicationDetailPage = () => {
             </p>
             <p className="text-xs text-indigo-700 dark:text-indigo-400 mt-0.5">
               A staff invitation was sent on {format(new Date(application.invitedAt), "MMM d, yyyy")}. Check your email inbox.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {application.status === "hired" && (
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30 px-5 py-4 flex items-start gap-3">
+          <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+              You're now part of the team!
+            </p>
+            <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">
+              Your employment has been set up. Welcome aboard!
             </p>
           </div>
         </div>

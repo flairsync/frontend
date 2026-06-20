@@ -9,4 +9,5 @@ export interface RecurringShiftRule {
   endDate: string | null; // "YYYY-MM-DD" or null
   isActive: boolean;
   interval: number;
+  exceptionDates: string[]; // "YYYY-MM-DD" dates to skip for this recurrence
 }

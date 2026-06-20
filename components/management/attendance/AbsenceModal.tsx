@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useAbsences } from "@/features/shifts/useAbsences";
 import { AbsenceRecord, AbsenceType, ABSENCE_TYPE_LABELS } from "@/models/business/shift/AbsenceRecord";
 
@@ -41,6 +42,7 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
   const isEdit = !!existing;
 
   const [type, setType] = useState<AbsenceType>("SICK_LEAVE");
+  const [isPaid, setIsPaid] = useState(true);
   const [date, setDate] = useState("");
   const [employmentId, setEmploymentId] = useState("");
   const [notes, setNotes] = useState("");
@@ -53,12 +55,14 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
     if (!open) return;
     if (existing) {
       setType(existing.type);
+      setIsPaid(existing.isPaid);
       setDate(existing.date);
       setNotes(existing.notes ?? "");
       setDocumentUrl(existing.documentUrl ?? "");
       setTimeOffRequestId(existing.timeOffRequestId ?? "");
     } else {
       setType("SICK_LEAVE");
+      setIsPaid(true);
       setDate(prefill?.date ?? "");
       setEmploymentId(prefill?.employmentId ?? "");
       setNotes("");
@@ -73,7 +77,7 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
 
     if (isEdit && existing) {
       updateAbsence(
-        { absenceId: existing.id, data: { type, notes: notes || undefined, documentUrl: documentUrl || undefined } },
+        { absenceId: existing.id, data: { type, isPaid, notes: notes || undefined, documentUrl: documentUrl || undefined } },
         { onSuccess: () => onOpenChange(false) }
       );
     } else {
@@ -83,6 +87,7 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
           employmentId: prefill?.employmentId ?? employmentId,
           date,
           type,
+          isPaid,
           attendanceId: prefill?.attendanceId,
           shiftId: prefill?.shiftId,
           timeOffRequestId: timeOffRequestId || undefined,
@@ -149,6 +154,11 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Switch id="absence-is-paid" checked={isPaid} onCheckedChange={setIsPaid} />
+            <Label htmlFor="absence-is-paid">Paid Leave</Label>
           </div>
 
           {prefill?.attendanceId && (

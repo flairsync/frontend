@@ -59,7 +59,7 @@ export const useTimeOff = (businessId: string, employmentId?: string, options?: 
 
   const updateStatusMutation = useMutation({
     mutationFn: ({ requestId, status, reviewerId }: { requestId: string; status: string; reviewerId: string }) =>
-      updateTimeOffStatusApiCall(requestId, { status, reviewerId }),
+      updateTimeOffStatusApiCall(requestId, businessId, { status, reviewerId }),
     onSuccess: () => {
       toast.success("Time off request updated successfully");
       queryClient.invalidateQueries({ queryKey: ["time_off_requests", businessId] });

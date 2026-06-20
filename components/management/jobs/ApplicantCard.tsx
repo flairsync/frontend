@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { format } from "date-fns";
-import { ChevronDown, ChevronUp, Mail, Loader2, FileText, ExternalLink, Link, UserPlus } from "lucide-react";
+import { ChevronDown, ChevronUp, Mail, Loader2, FileText, ExternalLink, Link, UserPlus, CheckCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -167,6 +167,13 @@ export function ApplicantCard({
                 )}
                 Send Staff Invite
               </Button>
+            </div>
+          )}
+
+          {application.status === "hired" && (
+            <div className="flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <p className="text-xs text-emerald-700 font-medium">Hired — employment record created.</p>
             </div>
           )}
 

@@ -13,6 +13,7 @@ const ALL_TABS: Array<{ label: string; value: ApplicationStatus | "all" }> = [
   { label: "Reviewed", value: "reviewed" },
   { label: "Shortlisted", value: "shortlisted" },
   { label: "Accepted", value: "accepted" },
+  { label: "Hired", value: "hired" },
   { label: "Rejected", value: "rejected" },
 ];
 

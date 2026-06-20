@@ -21,9 +21,10 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertTriangle } from "lucide-react";
 import { usePayroll, usePayrollPreview, usePayrollEntries, minutesToHoursLabel } from "@/features/payroll/usePayroll";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
-import { PayrollSummaryEntry, PayrollEntry, PayPeriodType } from "@/models/business/shift/PayrollEntry";
+import { PayrollSummaryEntry, PayrollEntry, PayPeriodType, UnvalidatedAttendanceWarning } from "@/models/business/shift/PayrollEntry";
 import dayjs from "@/utils/date-utils";
 import { getCurrencySymbol } from "@/utils/currency";
 import AbsenceLogPanel from "./AbsenceLogPanel";
@@ -63,6 +64,7 @@ const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; c
                 <TableHead className="text-right">Total Hrs</TableHead>
                 <TableHead className="text-right">Regular Pay</TableHead>
                 <TableHead className="text-right">OT Pay</TableHead>
+                <TableHead className="text-right">Paid Leave</TableHead>
                 <TableHead className="text-right">Total Pay</TableHead>
             </TableRow>
         </TableHeader>
@@ -79,6 +81,9 @@ const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; c
                     <TableCell className="text-right">
                         {e.hourlyRate === 0 ? '—' : formatCurrency(e.overtimePay, currency)}
                     </TableCell>
+                    <TableCell className="text-right">
+                        {e.hourlyRate === 0 ? '—' : formatCurrency(e.paidLeavePay, currency)}
+                    </TableCell>
                     <TableCell className="text-right font-semibold">
                         {e.hourlyRate === 0 ? '—' : formatCurrency(e.totalPay, currency)}
                     </TableCell>
@@ -86,6 +91,23 @@ const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; c
             ))}
         </TableBody>
     </Table>
+);
+
+const UnvalidatedWarningBanner = ({ warnings }: { warnings: UnvalidatedAttendanceWarning[] }) => (
+    <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 space-y-2">
+        <div className="flex items-center gap-2 font-medium">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            {warnings.length} employee{warnings.length === 1 ? '' : 's'} have unvalidated or still-open attendance this period and are NOT included in the numbers below — validate their attendance and re-check this preview.
+        </div>
+        <ul className="space-y-1 pl-6 list-disc">
+            {warnings.map((w) => (
+                <li key={w.employmentId}>
+                    {w.employeeName} — {w.unvalidatedCount} unvalidated record{w.unvalidatedCount === 1 ? '' : 's'}
+                    {w.openCount > 0 ? `, ${w.openCount} still clocked in` : ''}
+                </li>
+            ))}
+        </ul>
+    </div>
 );
 
 const GeneratedTable = ({ entries }: { entries: PayrollEntry[] }) => (
@@ -98,6 +120,7 @@ const GeneratedTable = ({ entries }: { entries: PayrollEntry[] }) => (
                 <TableHead className="text-right">Total Hrs</TableHead>
                 <TableHead className="text-right">Regular Pay</TableHead>
                 <TableHead className="text-right">OT Pay</TableHead>
+                <TableHead className="text-right">Paid Leave</TableHead>
                 <TableHead className="text-right">Total Pay</TableHead>
                 <TableHead>Status</TableHead>
             </TableRow>
@@ -115,6 +138,7 @@ const GeneratedTable = ({ entries }: { entries: PayrollEntry[] }) => (
                     <TableCell className="text-right">{(e.totalWorkedMinutes / 60).toFixed(2)}</TableCell>
                     <TableCell className="text-right">{formatCurrency(e.regularPay, e.currency)}</TableCell>
                     <TableCell className="text-right">{formatCurrency(e.overtimePay, e.currency)}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(e.paidLeavePay, e.currency)}</TableCell>
                     <TableCell className="text-right font-semibold">{formatCurrency(e.totalPay, e.currency)}</TableCell>
                     <TableCell>
                         <Badge variant={e.status === 'FINALIZED' ? 'default' : 'secondary'}>
@@ -237,6 +261,9 @@ const PayrollPage = ({ businessId }: Props) => {
                                     {preview.periodStart} → {preview.periodEnd} · {preview.payPeriodType}
                                 </span>
                             </div>
+                            {preview.unvalidatedWarnings && preview.unvalidatedWarnings.length > 0 && (
+                                <UnvalidatedWarningBanner warnings={preview.unvalidatedWarnings} />
+                            )}
                             {fetchingPreview ? (
                                 <p className="text-sm text-muted-foreground">Loading preview…</p>
                             ) : preview.entries.length === 0 ? (
@@ -251,6 +278,7 @@ const PayrollPage = ({ businessId }: Props) => {
                                         <span>OT Hrs: <strong className="text-foreground">{preview.totals.totalOvertimeHours.toFixed(2)}</strong></span>
                                         <span>Regular Pay: <strong className="text-foreground">{formatCurrency(preview.totals.totalRegularPay, currency)}</strong></span>
                                         <span>OT Pay: <strong className="text-foreground">{formatCurrency(preview.totals.totalOvertimePay, currency)}</strong></span>
+                                        <span>Paid Leave: <strong className="text-foreground">{formatCurrency(preview.totals.totalPaidLeavePay, currency)}</strong></span>
                                         <span>Total: <strong className="text-foreground text-base">{formatCurrency(preview.totals.totalPay, currency)}</strong></span>
                                     </div>
                                 </>

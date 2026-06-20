@@ -42,7 +42,7 @@ export const useShiftTemplates = (businessId: string) => {
 
   const updateTemplateMutation = useMutation({
     mutationFn: ({ templateId, data }: { templateId: string; data: UpdateShiftTemplateDto }) =>
-      updateShiftTemplateApiCall(templateId, data),
+      updateShiftTemplateApiCall(templateId, businessId, data),
     onSuccess: () => {
       toast.success("Shift template updated successfully");
       queryClient.invalidateQueries({ queryKey: ["shift-templates", businessId] });
@@ -54,7 +54,7 @@ export const useShiftTemplates = (businessId: string) => {
   });
 
   const deleteTemplateMutation = useMutation({
-    mutationFn: (templateId: string) => deleteShiftTemplateApiCall(templateId),
+    mutationFn: (templateId: string) => deleteShiftTemplateApiCall(templateId, businessId),
     onSuccess: () => {
       toast.success("Shift template deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["shift-templates", businessId] });

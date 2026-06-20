@@ -10,6 +10,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatInBusinessTimezone } from "@/utils/date-utils";
 import dayjs from "@/utils/date-utils";
+import { ShiftStatus } from "@/models/business/shift/Shift";
 
 interface RequestShiftSwapModalProps {
     open: boolean;
@@ -63,8 +64,8 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
         });
     };
 
-    const myShifts = (shifts || []).filter(s => s.employmentId === currentEmploymentId && s.isPublished);
-    const otherEmployees = (employees || []).filter(e => e.id !== currentEmploymentId);
+    const myShifts = (shifts || []).filter(s => s.employmentId === currentEmploymentId && s.isPublished && s.status === ShiftStatus.SCHEDULED);
+    const otherEmployees = (employees || []).filter(e => e.id !== currentEmploymentId && e.status === 'ACTIVE');
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>

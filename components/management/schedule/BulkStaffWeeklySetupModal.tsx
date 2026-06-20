@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useShiftTemplates } from "@/features/shifts/useShiftTemplates";
 import { useShifts } from "@/features/shifts/useShifts";
+import { BulkShiftConflict } from "@/features/shifts/service";
 import { usePageContext } from "vike-react/usePageContext";
 import { Trash } from "lucide-react";
 import { eachDayOfInterval, format } from "date-fns";
@@ -43,7 +44,8 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
     const [endTime, setEndTime] = useState<string>("17:00");
     const [unpaidBreakMinutes, setUnpaidBreakMinutes] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    
+    const [conflicts, setConflicts] = useState<BulkShiftConflict[]>([]);
+
     // Dates
     const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
     const [dates, setDates] = useState<string[]>([]);
@@ -71,13 +73,19 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
             ...(useTemplate ? { templateId } : { startTime, endTime, unpaidBreakMinutes: unpaidBreakMinutes > 0 ? unpaidBreakMinutes : undefined }),
             dates: dates.map(d => ({ date: d }))
         }, {
-            onSuccess: () => {
-                onOpenChange(false);
-                setDates([]);
-                setDateRange(undefined);
-                setEmploymentId("");
-                setTemplateId("");
-                setErrorMessage(null);
+            onSuccess: (data) => {
+                if (data.conflicts.length === 0) {
+                    onOpenChange(false);
+                    setDates([]);
+                    setDateRange(undefined);
+                    setEmploymentId("");
+                    setTemplateId("");
+                    setErrorMessage(null);
+                    setConflicts([]);
+                } else {
+                    setErrorMessage(null);
+                    setConflicts(data.conflicts);
+                }
             },
             onError: (error: any) => {
                 const msg = error.response?.data?.message || "Failed to schedule staff shifts";
@@ -98,6 +106,19 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
                     <div className="mt-4 p-3 bg-destructive/10 text-destructive border border-destructive/20 rounded-md text-sm font-medium flex items-start gap-2 animate-in fade-in slide-in-from-top-2">
                         <span className="mt-0.5">⚠️</span>
                         <div>{errorMessage}</div>
+                    </div>
+                )}
+
+                {conflicts.length > 0 && (
+                    <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-900 space-y-1.5">
+                        <p className="font-medium">{conflicts.length} shift(s) could not be scheduled:</p>
+                        <ul className="space-y-1 pl-4 list-disc">
+                            {conflicts.map((c, i) => (
+                                <li key={i}>
+                                    {c.date}: {formatShiftErrorMessage(c.reason, businessTz)}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
 
@@ -202,7 +223,7 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
-                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button variant="outline" type="button" onClick={() => { onOpenChange(false); setConflicts([]); }}>Cancel</Button>
                         <Button type="submit" disabled={isBulkStaffScheduling || !employmentId || dates.length === 0 || (useTemplate && !templateId)}>
                             {isBulkStaffScheduling ? "Scheduling..." : "Schedule Staff"}
                         </Button>

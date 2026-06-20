@@ -40,7 +40,7 @@ export const useShiftSwaps = (businessId: string, employmentId?: string, options
 
   const updateStatusMutation = useMutation({
     mutationFn: ({ swapId, status }: { swapId: string; status: string }) =>
-      updateShiftSwapStatusApiCall(swapId, { status }),
+      updateShiftSwapStatusApiCall(swapId, businessId, { status }),
     onSuccess: () => {
       toast.success("Shift swap status updated");
       queryClient.invalidateQueries({ queryKey: ["shift_swaps", businessId] });

@@ -1,5 +1,5 @@
 import flairapi from "@/lib/flairapi";
-import { ShiftStatus } from "@/models/business/shift/Shift";
+import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 // DTOs
@@ -34,6 +34,17 @@ export interface BulkStaffWeeklyDto {
   startTime?: string;
   endTime?: string;
   dates: { date: string }[];
+}
+
+export interface BulkShiftConflict {
+  employmentId: string;
+  date: string;
+  reason: string;
+}
+
+export interface BulkShiftResult {
+  created: Shift[];
+  conflicts: BulkShiftConflict[];
 }
 
 export interface CreateIndividualShiftDto {
@@ -104,12 +115,12 @@ export const createShiftTemplateApiCall = (data: CreateShiftTemplateDto) => {
   return flairapi.post(`${baseUrl}/templates`, data);
 };
 
-export const updateShiftTemplateApiCall = (templateId: string, data: UpdateShiftTemplateDto) => {
-  return flairapi.patch(`${baseUrl}/templates/${templateId}`, data);
+export const updateShiftTemplateApiCall = (templateId: string, businessId: string, data: UpdateShiftTemplateDto) => {
+  return flairapi.patch(`${baseUrl}/templates/${templateId}`, { ...data, businessId });
 };
 
-export const deleteShiftTemplateApiCall = (templateId: string) => {
-  return flairapi.delete(`${baseUrl}/templates/${templateId}`);
+export const deleteShiftTemplateApiCall = (templateId: string, businessId: string) => {
+  return flairapi.delete(`${baseUrl}/templates/${templateId}?businessId=${businessId}`);
 };
 
 // Shifts API
@@ -134,24 +145,24 @@ export const fetchAvailableShiftsApiCall = async (businessId: string) =>
 export const fetchMyBidsApiCall = async () =>
   unwrap(await flairapi.get(`${baseUrl}/my-bids`));
 
-export const bulkScheduleTeamShiftsApiCall = (data: BulkScheduleTeamDto) => {
-  return flairapi.post(`${baseUrl}/bulk-team`, data);
+export const bulkScheduleTeamShiftsApiCall = async (data: BulkScheduleTeamDto) => {
+  return unwrap<BulkShiftResult>(await flairapi.post(`${baseUrl}/bulk-team`, data));
 };
 
 export const createIndividualShiftApiCall = (data: CreateIndividualShiftDto) => {
   return flairapi.post(`${baseUrl}/individual`, data);
 };
 
-export const bulkStaffWeeklySetupApiCall = (data: BulkStaffWeeklyDto) => {
-  return flairapi.post(`${baseUrl}/bulk-staff`, data);
+export const bulkStaffWeeklySetupApiCall = async (data: BulkStaffWeeklyDto) => {
+  return unwrap<BulkShiftResult>(await flairapi.post(`${baseUrl}/bulk-staff`, data));
 };
 
-export const updateShiftApiCall = (shiftId: string, data: UpdateShiftDto) => {
-  return flairapi.patch(`${baseUrl}/${shiftId}`, data);
+export const updateShiftApiCall = (shiftId: string, businessId: string, data: UpdateShiftDto) => {
+  return flairapi.patch(`${baseUrl}/${shiftId}`, { ...data, businessId });
 };
 
-export const deleteShiftApiCall = (shiftId: string) => {
-  return flairapi.delete(`${baseUrl}/${shiftId}`);
+export const deleteShiftApiCall = (shiftId: string, businessId: string) => {
+  return flairapi.delete(`${baseUrl}/${shiftId}?businessId=${businessId}`);
 };
 
 export const respondToShiftApiCall = (shiftId: string, response: 'ACCEPTED' | 'REJECTED') => {
@@ -172,8 +183,8 @@ export const fetchShiftBidsApiCall = async (shiftId: string) =>
 export const fetchAllBusinessBidsApiCall = async (businessId: string) =>
   unwrap(await flairapi.get(`${baseUrl}/bids/all?businessId=${businessId}`));
 
-export const updateShiftBidStatusApiCall = (bidId: string, status: 'APPROVED' | 'REJECTED') => {
-  return flairapi.patch(`${baseUrl}/bids/${bidId}/status`, { status });
+export const updateShiftBidStatusApiCall = (bidId: string, businessId: string, status: 'APPROVED' | 'REJECTED') => {
+  return flairapi.patch(`${baseUrl}/bids/${bidId}/status`, { status, businessId });
 };
 
 // Weekly Management API
@@ -208,8 +219,8 @@ export const publishWeeklyScheduleApiCall = (data: { businessId: string; startDa
   return flairapi.post(`${baseUrl}/publish-weekly-schedule`, data);
 };
 
-export const copyPreviousWeekApiCall = (data: { businessId: string; sourceWeekStart: string; targetWeekStart: string; employmentId?: string }) => {
-  return flairapi.post(`${baseUrl}/copy-previous-week`, data);
+export const copyPreviousWeekApiCall = async (data: { businessId: string; sourceWeekStart: string; targetWeekStart: string; employmentId?: string }) => {
+  return unwrap<BulkShiftResult>(await flairapi.post(`${baseUrl}/copy-previous-week`, data));
 };
 
 // Recurring Rules API
@@ -220,12 +231,12 @@ export const createRecurringRuleApiCall = (data: any) => {
   return flairapi.post(`${baseUrl}/rules`, data);
 };
 
-export const updateRecurringRuleApiCall = (ruleId: string, data: any) => {
-  return flairapi.patch(`${baseUrl}/rules/${ruleId}`, data);
+export const updateRecurringRuleApiCall = (ruleId: string, businessId: string, data: any) => {
+  return flairapi.patch(`${baseUrl}/rules/${ruleId}`, { ...data, businessId });
 };
 
-export const deleteRecurringRuleApiCall = (ruleId: string) => {
-  return flairapi.delete(`${baseUrl}/rules/${ruleId}`);
+export const deleteRecurringRuleApiCall = (ruleId: string, businessId: string) => {
+  return flairapi.delete(`${baseUrl}/rules/${ruleId}?businessId=${businessId}`);
 };
 
 // Availability API
@@ -248,8 +259,8 @@ export const submitTimeOffRequestApiCall = (data: { businessId: string; employme
   return flairapi.post(`${baseUrl}/time-off`, data);
 };
 
-export const updateTimeOffStatusApiCall = (requestId: string, data: { status: string; reviewerId: string }) => {
-  return flairapi.patch(`${baseUrl}/time-off/${requestId}/status`, data);
+export const updateTimeOffStatusApiCall = (requestId: string, businessId: string, data: { status: string; reviewerId: string }) => {
+  return flairapi.patch(`${baseUrl}/time-off/${requestId}/status`, { ...data, businessId });
 };
 
 // Shift Swaps API
@@ -264,8 +275,8 @@ export const requestShiftSwapApiCall = (data: { businessId: string; shiftId: str
   return flairapi.post(`${baseUrl}/swaps`, data);
 };
 
-export const updateShiftSwapStatusApiCall = (swapId: string, data: { status: string }) => {
-  return flairapi.patch(`${baseUrl}/swaps/${swapId}/status`, data);
+export const updateShiftSwapStatusApiCall = (swapId: string, businessId: string, data: { status: string }) => {
+  return flairapi.patch(`${baseUrl}/swaps/${swapId}/status`, { ...data, businessId });
 };
 
 export const fetchUnvalidatedShiftSummaryApiCall = async (businessId: string, weeks: number = 4) =>

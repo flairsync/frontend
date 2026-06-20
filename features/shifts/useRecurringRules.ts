@@ -52,7 +52,7 @@ export const useRecurringRules = (businessId: string) => {
 
   const updateRuleMutation = useMutation({
     mutationFn: ({ ruleId, data }: { ruleId: string; data: Partial<RecurringShiftRule> }) =>
-      updateRecurringRuleApiCall(ruleId, {
+      updateRecurringRuleApiCall(ruleId, businessId, {
         ...data,
         startDate: data.startDate ? formatToDateOnly(data.startDate) : undefined,
         endDate: data.endDate ? formatToDateOnly(data.endDate) : undefined, // Could be null
@@ -68,7 +68,7 @@ export const useRecurringRules = (businessId: string) => {
   });
 
   const deleteRuleMutation = useMutation({
-    mutationFn: (ruleId: string) => deleteRecurringRuleApiCall(ruleId),
+    mutationFn: (ruleId: string) => deleteRecurringRuleApiCall(ruleId, businessId),
     onSuccess: () => {
       toast.success("Recurring rule deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["recurring_rules", businessId] });

@@ -21,6 +21,7 @@ function getProDescription(event: JobApplicationEvent): string {
     case 'rejected': return 'The employer has closed your application.';
     case 'resume_added': return event.note ?? 'You updated your resume.';
     case 'invited': return 'A staff invite has been sent — check your email inbox.';
+    case 'hired': return "You're now officially part of the team. Welcome aboard!";
     default: return '';
   }
 }
@@ -53,9 +54,10 @@ const EVENT_ICON_CLASS: Partial<Record<ApplicationEventType, string>> = {
   resume_added: 'bg-zinc-100 text-zinc-600',
   note_updated: 'bg-zinc-100 text-zinc-600',
   invited: 'bg-indigo-100 text-indigo-600',
+  hired: 'bg-emerald-100 text-emerald-600',
 };
 
-const TERMINAL_STATUSES: ApplicationStatus[] = ['accepted', 'rejected'];
+const TERMINAL_STATUSES: ApplicationStatus[] = ['accepted', 'rejected', 'hired'];
 
 // ─── Professional timeline ────────────────────────────────────────────────────
 
@@ -120,6 +122,10 @@ export function ProApplicationTimeline({ events, currentStatus }: ProTimelinePro
       ) : currentStatus === 'accepted' ? (
         <div className="mt-3 rounded-lg bg-green-50 border border-green-200 px-3 py-2.5 text-sm text-green-800 font-medium">
           🎉 Congratulations! You've been accepted for this position.
+        </div>
+      ) : currentStatus === 'hired' ? (
+        <div className="mt-3 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2.5 text-sm text-emerald-800 font-medium">
+          🎉 Welcome to the team! You're officially hired.
         </div>
       ) : (
         <div className="mt-3 rounded-lg bg-zinc-50 border border-border px-3 py-2.5 text-sm text-muted-foreground">

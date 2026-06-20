@@ -26,6 +26,7 @@ import {
   fetchMyBidsApiCall,
   BulkScheduleTeamDto,
   BulkStaffWeeklyDto,
+  BulkShiftResult,
   CreateIndividualShiftDto,
   UpdateShiftDto
 } from "./service";
@@ -85,8 +86,14 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
         dates: formattedDates 
       });
     },
-    onSuccess: () => {
-      toast.success("Team shifts scheduled successfully");
+    onSuccess: (data: BulkShiftResult) => {
+      if (data.conflicts.length === 0) {
+        toast.success("Team shifts scheduled successfully");
+      } else if (data.created.length > 0) {
+        toast.success(`Scheduled ${data.created.length} shift(s) — ${data.conflicts.length} couldn't be created, see details`);
+      } else {
+        toast.error(`No shifts could be scheduled — ${data.conflicts.length} conflict(s)`);
+      }
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
@@ -103,8 +110,14 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
         dates: formattedDates 
       });
     },
-    onSuccess: () => {
-      toast.success("Staff shifts scheduled successfully");
+    onSuccess: (data: BulkShiftResult) => {
+      if (data.conflicts.length === 0) {
+        toast.success("Staff shifts scheduled successfully");
+      } else if (data.created.length > 0) {
+        toast.success(`Scheduled ${data.created.length} shift(s) — ${data.conflicts.length} couldn't be created, see details`);
+      } else {
+        toast.error(`No shifts could be scheduled — ${data.conflicts.length} conflict(s)`);
+      }
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },
@@ -133,7 +146,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
 
   const updateShiftMutation = useMutation({
     mutationFn: ({ shiftId, data }: { shiftId: string; data: UpdateShiftDto }) =>
-      updateShiftApiCall(shiftId, {
+      updateShiftApiCall(shiftId, businessId, {
         ...data,
         startTime: data.startTime ? formatToWallTime(data.startTime) : undefined,
         endTime: data.endTime ? formatToWallTime(data.endTime) : undefined,
@@ -149,7 +162,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
   });
 
   const deleteShiftMutation = useMutation({
-    mutationFn: (shiftId: string) => deleteShiftApiCall(shiftId),
+    mutationFn: (shiftId: string) => deleteShiftApiCall(shiftId, businessId),
     onSuccess: () => {
       toast.success("Shift deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
@@ -208,8 +221,14 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
       sourceWeekStart: formatToDateOnly(data.sourceWeekStart),
       targetWeekStart: formatToDateOnly(data.targetWeekStart)
     }),
-    onSuccess: () => {
-      toast.success("Shifts copied successfully");
+    onSuccess: (data: BulkShiftResult) => {
+      if (data.conflicts.length === 0) {
+        toast.success("Shifts copied successfully");
+      } else if (data.created.length > 0) {
+        toast.success(`Copied ${data.created.length} shift(s) — ${data.conflicts.length} couldn't be copied (conflicts)`);
+      } else {
+        toast.error(`No shifts could be copied — ${data.conflicts.length} conflict(s)`);
+      }
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
     },
     onError: (error: any) => {
@@ -260,8 +279,8 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
   });
 
   const updateShiftBidStatusMutation = useMutation({
-    mutationFn: ({ bidId, status }: { bidId: string; status: 'APPROVED' | 'REJECTED' }) => 
-      updateShiftBidStatusApiCall(bidId, status),
+    mutationFn: ({ bidId, status }: { bidId: string; status: 'APPROVED' | 'REJECTED' }) =>
+      updateShiftBidStatusApiCall(bidId, businessId, status),
     onSuccess: (_, variables) => {
       toast.success(`Bid ${variables.status.toLowerCase()} successfully`);
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });

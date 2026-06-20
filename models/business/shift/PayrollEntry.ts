@@ -20,10 +20,13 @@ export interface PayrollEntry {
   overtimeMultiplierSnapshot: number;
   regularPay: number;
   overtimePay: number;
+  paidLeaveMinutes: number;
+  paidLeavePay: number;
   totalPay: number;
   currency: string;
   attendanceCount: number;
   attendanceIds: string[];
+  absenceIds: string[];
   status: PayrollStatus;
   createdAt: string;
   updatedAt: string;
@@ -47,10 +50,22 @@ export interface PayrollSummaryEntry {
   totalHours: number;
   regularPay: number;
   overtimePay: number;
+  paidLeaveMinutes: number;
+  paidLeaveHours: number;
+  paidLeavePay: number;
   totalPay: number;
   currency: string;
   attendanceCount: number;
   attendanceIds: string[];
+  absenceCount: number;
+  absenceIds: string[];
+}
+
+export interface UnvalidatedAttendanceWarning {
+  employmentId: string;
+  employeeName: string;
+  unvalidatedCount: number;
+  openCount: number;
 }
 
 export interface PayrollPreview {
@@ -60,11 +75,14 @@ export interface PayrollPreview {
   payPeriodType: PayPeriodType;
   currency: string;
   entries: PayrollSummaryEntry[];
+  unvalidatedWarnings: UnvalidatedAttendanceWarning[];
   totals: {
     totalWorkedHours: number;
     totalOvertimeHours: number;
     totalRegularPay: number;
     totalOvertimePay: number;
+    totalPaidLeaveHours: number;
+    totalPaidLeavePay: number;
     totalPay: number;
   };
 }
