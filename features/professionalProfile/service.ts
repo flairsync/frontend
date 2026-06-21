@@ -28,3 +28,11 @@ export const updateMyProfessionalProfileApiCall = (
 ) => {
   return flairapi.patch(myProfessionalProfileUrl, data);
 };
+
+export const resendWorkEmailVerificationApiCall = () => {
+  return flairapi.post(`${myProfessionalProfileUrl}/work-email/resend`);
+};
+
+export const confirmWorkEmailVerificationApiCall = (otp: string) => {
+  return flairapi.post(`${myProfessionalProfileUrl}/work-email/confirm`, { otp });
+};

@@ -29,8 +29,14 @@ const LoginPage = () => {
     const origin = urlParsed.search.origin || '/';
     const packId = urlParsed.search.packId;
 
-    const handlePostLogin = () => {
+    const handlePostLogin = (res?: any) => {
         const target = packId ? `${origin}?packId=${packId}` : origin;
+
+        if (res?.data?.data?.tfaRequired) {
+            navigate(`/tfa?origin=${encodeURIComponent(target)}`);
+            return;
+        }
+
         navigate(target);
     };
 

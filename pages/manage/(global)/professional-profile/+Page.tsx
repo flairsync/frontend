@@ -6,9 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, User, Briefcase, Mail, Sparkles, CheckCircle2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, User, Briefcase, Mail, Sparkles, CheckCircle2, Clock } from "lucide-react";
 import { useProfessionalProfile } from "@/features/professionalProfile/useProfessionalProfile";
 import { useProfile } from "@/features/profile/useProfile";
+import TfaCodeModal from "@/components/inputs/TfaCodeModal";
+
+const RESEND_COOLDOWN_SECONDS = 30;
 
 const ProfessionalProfilePage: React.FC = () => {
     const {
@@ -18,8 +22,37 @@ const ProfessionalProfilePage: React.FC = () => {
         creatingProProfile,
         updateProProfile,
         updatingProProfile,
+        resendWorkEmailVerification,
+        resendingWorkEmailVerification,
+        confirmWorkEmailVerification,
+        confirmingWorkEmailVerification,
+        errorConfirmingWorkEmailVerification,
     } = useProfessionalProfile();
     const { userProfile } = useProfile();
+
+    const [verifyModalOpen, setVerifyModalOpen] = useState(false);
+    const [resendCooldown, setResendCooldown] = useState(0);
+
+    useEffect(() => {
+        if (resendCooldown <= 0) return;
+        const timer = setInterval(() => {
+            setResendCooldown((prev) => Math.max(0, prev - 1));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [resendCooldown]);
+
+    const handleResendWorkEmailCode = () => {
+        if (resendCooldown > 0) return;
+        resendWorkEmailVerification(undefined, {
+            onSuccess: () => setResendCooldown(RESEND_COOLDOWN_SECONDS),
+        });
+    };
+
+    const handleConfirmWorkEmailCode = (otp: string) => {
+        confirmWorkEmailVerification(otp, {
+            onSuccess: () => setVerifyModalOpen(false),
+        });
+    };
 
     const hasProfile = !!userProfessionalProfile;
 
@@ -230,10 +263,24 @@ const ProfessionalProfilePage: React.FC = () => {
                                 </p>
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="workEmail" className="flex items-center gap-1.5">
-                                    <Briefcase className="h-3.5 w-3.5 text-muted-foreground" />
-                                    Work Email <span className="text-destructive">*</span>
-                                </Label>
+                                <div className="flex items-center justify-between">
+                                    <Label htmlFor="workEmail" className="flex items-center gap-1.5">
+                                        <Briefcase className="h-3.5 w-3.5 text-muted-foreground" />
+                                        Work Email <span className="text-destructive">*</span>
+                                    </Label>
+                                    {hasProfile && (
+                                        userProfessionalProfile?.verified ? (
+                                            <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-50 gap-1">
+                                                <CheckCircle2 className="h-3 w-3" />
+                                                Verified
+                                            </Badge>
+                                        ) : (
+                                            <Badge variant="outline" className="text-amber-700 border-amber-300 bg-amber-50 gap-1">
+                                                Unverified
+                                            </Badge>
+                                        )
+                                    )}
+                                </div>
                                 <Input
                                     id="workEmail"
                                     name="workEmail"
@@ -243,6 +290,44 @@ const ProfessionalProfilePage: React.FC = () => {
                                     placeholder="you@work.com"
                                     required
                                 />
+                                <p className="text-xs text-muted-foreground">
+                                    Used for work-related communication, like payslips. Changing it requires verifying the new address.
+                                </p>
+                                {userProfessionalProfile?.hasPendingWorkEmail() && (
+                                    <Alert className="mt-2 border-amber-300 bg-amber-50 dark:bg-amber-950/30">
+                                        <Clock className="h-4 w-4 text-amber-600" />
+                                        <AlertDescription className="text-amber-800 dark:text-amber-300">
+                                            <p className="font-medium">
+                                                Verification pending for {userProfessionalProfile.pendingWorkEmail}
+                                            </p>
+                                            <p className="text-xs mt-0.5">
+                                                We sent a 6-digit code to that address. Your current work email stays active until it's confirmed.
+                                            </p>
+                                            <div className="flex items-center gap-3 mt-2">
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    onClick={() => setVerifyModalOpen(true)}
+                                                >
+                                                    Enter code
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    onClick={handleResendWorkEmailCode}
+                                                    disabled={resendingWorkEmailVerification || resendCooldown > 0}
+                                                >
+                                                    {resendingWorkEmailVerification
+                                                        ? "Sending…"
+                                                        : resendCooldown > 0
+                                                            ? `Resend in ${resendCooldown}s`
+                                                            : "Resend code"}
+                                                </Button>
+                                            </div>
+                                        </AlertDescription>
+                                    </Alert>
+                                )}
                             </div>
                         </div>
 
@@ -255,6 +340,20 @@ const ProfessionalProfilePage: React.FC = () => {
                     </form>
                 </CardContent>
             </Card>
+
+            <TfaCodeModal
+                open={verifyModalOpen}
+                onOpenChange={setVerifyModalOpen}
+                onConfirm={handleConfirmWorkEmailCode}
+                loading={confirmingWorkEmailVerification}
+                title="Verify Work Email"
+                description={`Enter the 6-digit code we sent to ${userProfessionalProfile?.pendingWorkEmail ?? "your new work email"}.`}
+            />
+            {verifyModalOpen && errorConfirmingWorkEmailVerification && (
+                <p className="text-center text-sm text-destructive">
+                    {errorConfirmingWorkEmailVerification.response?.data?.message || "Invalid or expired code."}
+                </p>
+            )}
         </div>
     );
 };

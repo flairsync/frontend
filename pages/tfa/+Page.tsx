@@ -8,21 +8,20 @@ import {
 } from "@/components/ui/input-otp"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
+import { checkTfaApiCall } from "@/features/profileSettings/service"
+import { usePageContext } from "vike-react/usePageContext"
+import { navigate } from "vike/client/router"
+import { useAuth } from "@/features/auth/useAuth"
 
 export default function TwoFactorAuthPage() {
+    const { urlParsed } = usePageContext()
+    const origin = urlParsed.search.origin || "/"
+    const { logoutUser, loggingOut } = useAuth()
+
     const [otp, setOtp] = React.useState("")
     const [isVerifying, setIsVerifying] = React.useState(false)
     const [message, setMessage] = React.useState<{
-        type: "info" | "error" | "success"
-        text: string
-    } | null>(null)
-
-    const [showBackupInput, setShowBackupInput] = React.useState(false)
-    const [backupPhrase, setBackupPhrase] = React.useState("")
-    const [isVerifyingBackup, setIsVerifyingBackup] = React.useState(false)
-    const [backupMessage, setBackupMessage] = React.useState<{
         type: "info" | "error" | "success"
         text: string
     } | null>(null)
@@ -39,32 +38,21 @@ export default function TwoFactorAuthPage() {
         setIsVerifying(true)
         setMessage({ type: "info", text: "Verifying 2FA code..." })
         try {
-            // TODO: call your backend API to verify 2FA code
-            await new Promise((r) => setTimeout(r, 1500))
-            setMessage({ type: "success", text: "✅ Two-factor authentication successful!" })
+            const res = await checkTfaApiCall(otp)
+            if (res.data.success) {
+                setMessage({ type: "success", text: "✅ Two-factor authentication successful!" })
+                // The access cookie was just reissued with tfaVerified=true — re-fetch
+                // SSR data on the way so the rest of the app reflects the new state.
+                navigate(origin, { keepScrollPosition: true })
+            } else {
+                setOtp("")
+                setMessage({ type: "error", text: "Invalid or expired code. Please try again." })
+            }
         } catch (err) {
+            setOtp("")
             setMessage({ type: "error", text: "Invalid or expired code. Please try again." })
         } finally {
             setIsVerifying(false)
-        }
-    }
-
-    const handleVerifyBackup = async () => {
-        const words = backupPhrase.trim().split(/\s+/);
-        if (words.length !== 12) {
-            setBackupMessage({ type: "error", text: "Please enter all 12 recovery words." })
-            return
-        }
-        setIsVerifyingBackup(true)
-        setBackupMessage({ type: "info", text: "Verifying backup code..." })
-        try {
-            // TODO: call backup-code login endpoint
-            await new Promise((r) => setTimeout(r, 1500))
-            setBackupMessage({ type: "success", text: "✅ Backup code accepted!" })
-        } catch (err) {
-            setBackupMessage({ type: "error", text: "Invalid backup code. Please check your words and try again." })
-        } finally {
-            setIsVerifyingBackup(false)
         }
     }
 
@@ -126,58 +114,17 @@ export default function TwoFactorAuthPage() {
                             </p>
                         )}
 
-                        <button
+                        <Button
                             type="button"
-                            className="w-full text-sm text-muted-foreground underline-offset-2 hover:underline text-center"
-                            onClick={() => {
-                                setShowBackupInput((v) => !v)
-                                setBackupMessage(null)
-                            }}
+                            variant="ghost"
+                            className="w-full text-sm text-muted-foreground"
+                            onClick={() => logoutUser()}
+                            disabled={loggingOut}
                         >
-                            Lost access to your authenticator? Use a backup code instead.
-                        </button>
+                            {loggingOut ? "Logging out…" : "Not you? Log out"}
+                        </Button>
                     </CardContent>
                 </Card>
-
-                {showBackupInput && (
-                    <Card className="shadow-lg border-border">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-semibold">Enter Backup Code</CardTitle>
-                            <CardDescription>
-                                Enter your 12-word recovery phrase, separated by spaces.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <Input
-                                placeholder="word1 word2 word3 … word12"
-                                value={backupPhrase}
-                                onChange={(e) => setBackupPhrase(e.target.value)}
-                                className="font-mono text-sm"
-                            />
-
-                            <Button
-                                onClick={handleVerifyBackup}
-                                className="w-full"
-                                disabled={isVerifyingBackup || backupPhrase.trim().split(/\s+/).length !== 12}
-                            >
-                                {isVerifyingBackup ? "Verifying…" : "Use Backup Code"}
-                            </Button>
-
-                            {backupMessage && (
-                                <p
-                                    className={`text-center text-sm ${backupMessage.type === "error"
-                                        ? "text-destructive"
-                                        : backupMessage.type === "success"
-                                            ? "text-green-500"
-                                            : "text-muted-foreground"
-                                        }`}
-                                >
-                                    {backupMessage.text}
-                                </p>
-                            )}
-                        </CardContent>
-                    </Card>
-                )}
             </div>
         </div>
     )

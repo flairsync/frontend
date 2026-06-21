@@ -16,6 +16,14 @@ export class ProfessionalProfile {
 
   workEmail?: string;
 
+  // A newly-submitted work email awaiting OTP confirmation. The active
+  // workEmail above stays unchanged (and keeps working) until this is confirmed.
+  pendingWorkEmail?: string | null;
+
+  // Whether `workEmail` has been confirmed (either via OTP, or because it
+  // matches the account's own verified login email).
+  verified: boolean;
+
   preferredWorkHours?: PreferredWorkHour[];
 
   createdAt?: Date;
@@ -30,7 +38,9 @@ export class ProfessionalProfile {
     workEmail?: string,
     preferredWorkHours?: PreferredWorkHour[],
     createdAt?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
+    pendingWorkEmail?: string | null,
+    verified?: boolean
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -41,6 +51,8 @@ export class ProfessionalProfile {
     this.preferredWorkHours = preferredWorkHours;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.pendingWorkEmail = pendingWorkEmail ?? null;
+    this.verified = verified ?? false;
   }
 
   /** Parse API response into a ProfessionalProfile instance */
@@ -56,7 +68,9 @@ export class ProfessionalProfile {
       data.workEmail,
       data.preferredWorkHours,
       data.createdAt ? new Date(data.createdAt) : undefined,
-      data.updatedAt ? new Date(data.updatedAt) : undefined
+      data.updatedAt ? new Date(data.updatedAt) : undefined,
+      data.pendingWorkEmail ?? null,
+      !!data.verified
     );
   }
 
@@ -81,6 +95,10 @@ export class ProfessionalProfile {
 
   hasWorkEmail(): boolean {
     return !!this.workEmail;
+  }
+
+  hasPendingWorkEmail(): boolean {
+    return !!this.pendingWorkEmail;
   }
 
   getCreatedDate(): string | null {

@@ -5,10 +5,13 @@ import {
   getMyProfessionalProfileApiCall,
   updateMyProfessionalProfileApiCall,
   UpdateProProfileDto,
+  resendWorkEmailVerificationApiCall,
+  confirmWorkEmailVerificationApiCall,
 } from "./service";
 import { toast } from "sonner";
 import { ProfessionalProfile } from "@/models/professional/ProfessionalProfile";
 import { navigate } from "vike/client/router";
+import { useApiMutation } from "@/hooks/use-api-mutation";
 
 export const useProfessionalProfile = () => {
   const queryClient = useQueryClient();
@@ -73,6 +76,28 @@ export const useProfessionalProfile = () => {
       },
     });
 
+  const {
+    mutate: resendWorkEmailVerification,
+    isPending: resendingWorkEmailVerification,
+    error: errorResendingWorkEmailVerification,
+  } = useApiMutation({
+    mutationKey: ["resend_work_email_verification"],
+    mutationFn: resendWorkEmailVerificationApiCall,
+  });
+
+  const {
+    mutate: confirmWorkEmailVerification,
+    isPending: confirmingWorkEmailVerification,
+    error: errorConfirmingWorkEmailVerification,
+  } = useApiMutation({
+    mutationKey: ["confirm_work_email_verification"],
+    mutationFn: confirmWorkEmailVerificationApiCall,
+    onSuccess() {
+      toast.success("Work email verified");
+      queryClient.refetchQueries({ queryKey: ["user_pro_profile"] });
+    },
+  });
+
   return {
     userProfessionalProfile,
     loadingProfessionalProfile,
@@ -82,5 +107,13 @@ export const useProfessionalProfile = () => {
 
     updateProProfile,
     updatingProProfile,
+
+    resendWorkEmailVerification,
+    resendingWorkEmailVerification,
+    errorResendingWorkEmailVerification,
+
+    confirmWorkEmailVerification,
+    confirmingWorkEmailVerification,
+    errorConfirmingWorkEmailVerification,
   };
 };

@@ -178,6 +178,16 @@ flairapi.interceptors.response.use(
       }
     }
 
+    // 2FA challenge pending — redirect to the challenge screen, preserving where
+    // the user was trying to go so they land there once it's confirmed.
+    if (errorCode === "auth.tfa.required") {
+      if (typeof window !== "undefined" && !window.location.pathname.startsWith("/tfa")) {
+        const origin = window.location.pathname + window.location.search;
+        window.location.href = `/tfa?origin=${encodeURIComponent(origin)}`;
+      }
+      return Promise.reject(error);
+    }
+
     // Handle Subscription Limits (403 Forbidden with limit_reached code or explicit legacy business message)
     if (error.response?.status === 403) {
       if ((errorCode as string)?.includes("limit_reached") || error.response?.data?.message?.includes("Upgrade your subscription to access this business")) {
