@@ -11,6 +11,7 @@ import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance"
 import { useBusinessTasks } from "@/features/tasks/useTasks"
 import { useOrders } from "@/features/orders/useOrders"
 import { useNotifications } from "@/features/notifications/useNotifications"
+import { usePermissions } from "@/features/auth/usePermissions"
 import { getTaskStatusLabel, TASK_STATUS_COLORS } from "@/models/Task"
 import { useTranslation } from "react-i18next"
 
@@ -23,9 +24,12 @@ export default function StaffDashboard() {
     const activeEmployment = myEmployments?.find(e => e.business?.id === businessId);
     const employmentId = activeEmployment?.id || "";
 
+    const { hasPermission } = usePermissions(businessId);
+    const canViewOrders = hasPermission("ORDERS", "read");
+
     const { data: dashboard, isLoading: isLoadingDashboard } = useTodayAttendanceDashboard(businessId);
     const { tasks, loadingTasks } = useBusinessTasks(businessId);
-    const { orders, fetchingOrders } = useOrders(businessId, "ongoing");
+    const { orders, fetchingOrders } = useOrders(businessId, "ongoing", undefined, undefined, undefined, undefined, canViewOrders);
     const { notifications, unreadCount, loadingNotifications } = useNotifications();
 
     const pendingTasks = tasks.filter(t => t.status !== "COMPLETED");
@@ -76,20 +80,22 @@ export default function StaffDashboard() {
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">{t("staff_dashboard.orders_card")}</CardTitle>
-                        <ShoppingBag className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        {fetchingOrders ? (
-                            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                        ) : (
-                            <div className="text-2xl font-bold">{orders?.length ?? 0}</div>
-                        )}
-                        <p className="text-xs text-muted-foreground">{t("staff_dashboard.active_right_now")}</p>
-                    </CardContent>
-                </Card>
+                {canViewOrders && (
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between pb-2">
+                            <CardTitle className="text-sm font-medium">{t("staff_dashboard.orders_card")}</CardTitle>
+                            <ShoppingBag className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            {fetchingOrders ? (
+                                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                            ) : (
+                                <div className="text-2xl font-bold">{orders?.length ?? 0}</div>
+                            )}
+                            <p className="text-xs text-muted-foreground">{t("staff_dashboard.active_right_now")}</p>
+                        </CardContent>
+                    </Card>
+                )}
 
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -110,7 +116,7 @@ export default function StaffDashboard() {
             <Tabs defaultValue="tasks" className="w-full">
                 <TabsList>
                     <TabsTrigger value="tasks">{t("staff_dashboard.tabs.tasks")}</TabsTrigger>
-                    <TabsTrigger value="orders">{t("staff_dashboard.tabs.orders")}</TabsTrigger>
+                    {canViewOrders && <TabsTrigger value="orders">{t("staff_dashboard.tabs.orders")}</TabsTrigger>}
                     <TabsTrigger value="notifications">{t("staff_dashboard.tabs.notifications")}</TabsTrigger>
                 </TabsList>
 
@@ -140,35 +146,37 @@ export default function StaffDashboard() {
                     </Card>
                 </TabsContent>
 
-                <TabsContent value="orders" className="mt-4 space-y-2">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{t("staff_dashboard.tabs.orders")}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            {fetchingOrders ? (
-                                <div className="flex justify-center py-4">
-                                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                                </div>
-                            ) : !orders || orders.length === 0 ? (
-                                <p className="text-sm text-muted-foreground text-center py-4">{t("staff_dashboard.no_active_orders")}</p>
-                            ) : (
-                                orders.map(order => (
-                                    <div key={order.id} className="flex items-center justify-between">
-                                        <span className="text-sm">
-                                            {order.table
-                                                ? t("staff_dashboard.table_label", { name: order.table.name ?? order.table.number })
-                                                : order.type === "takeaway" ? t("staff_dashboard.takeaway") : t("staff_dashboard.delivery")}
-                                            {" "}
-                                            <span className="text-muted-foreground text-xs">#{order.id.slice(-6)}</span>
-                                        </span>
-                                        <Badge variant="outline" className="capitalize">{order.status}</Badge>
+                {canViewOrders && (
+                    <TabsContent value="orders" className="mt-4 space-y-2">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>{t("staff_dashboard.tabs.orders")}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                                {fetchingOrders ? (
+                                    <div className="flex justify-center py-4">
+                                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                                     </div>
-                                ))
-                            )}
-                        </CardContent>
-                    </Card>
-                </TabsContent>
+                                ) : !orders || orders.length === 0 ? (
+                                    <p className="text-sm text-muted-foreground text-center py-4">{t("staff_dashboard.no_active_orders")}</p>
+                                ) : (
+                                    orders.map(order => (
+                                        <div key={order.id} className="flex items-center justify-between">
+                                            <span className="text-sm">
+                                                {order.table
+                                                    ? t("staff_dashboard.table_label", { name: order.table.name ?? order.table.number })
+                                                    : order.type === "takeaway" ? t("staff_dashboard.takeaway") : t("staff_dashboard.delivery")}
+                                                {" "}
+                                                <span className="text-muted-foreground text-xs">#{order.id.slice(-6)}</span>
+                                            </span>
+                                            <Badge variant="outline" className="capitalize">{order.status}</Badge>
+                                        </div>
+                                    ))
+                                )}
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                )}
 
                 <TabsContent value="notifications" className="mt-4 space-y-2">
                     <Card>

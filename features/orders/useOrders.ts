@@ -37,6 +37,7 @@ export const useOrders = (
     endDate?: string,
     tableId?: string,
     customerName?: string,
+    enabled: boolean = true,
 ) => {
     const queryClient = useQueryClient();
 
@@ -46,7 +47,7 @@ export const useOrders = (
             const data = await fetchOrdersApiCall(businessId, status, startDate, endDate, tableId, customerName);
             return Array.isArray(data) ? data : [];
         },
-        enabled: !!businessId,
+        enabled: !!businessId && enabled,
     });
 
     const createOrderMutation = useMutation({
