@@ -130,7 +130,9 @@ export const fetchShiftsApiCall = async (businessId: string, startDate?: string,
   if (startDate) params.append("startDate", startDate);
   if (endDate) params.append("endDate", endDate);
   if (employmentId) params.append("employmentId", employmentId);
-  return unwrap(await flairapi.get(`${baseUrl}?${params.toString()}`));
+  params.append("limit", "100");
+  const { data } = unwrapPaginated<Shift>(await flairapi.get(`${baseUrl}?${params.toString()}`));
+  return data;
 };
 
 export const getUpcomingShiftsApiCall = async (params: any) =>
