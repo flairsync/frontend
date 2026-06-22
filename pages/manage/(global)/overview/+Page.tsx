@@ -25,7 +25,7 @@ const ManagePage: React.FC = () => {
     const { openUpgradeModal } = useSubscriptionStore();
 
     const joinedBusinesses = myEmployments?.filter(
-        (emp: MyEmployment) => emp.type === "INVITED" && emp.status === "ACTIVE"
+        (emp: MyEmployment) => emp.type === "INVITED" && emp.status === "ACTIVE" && emp.business
     ) || [];
 
     const canCreateBusiness = usage?.canCreateBusiness ?? (currentUserSubscription ? true : false);

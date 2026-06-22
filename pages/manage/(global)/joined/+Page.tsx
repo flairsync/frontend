@@ -13,7 +13,7 @@ const JoinedPage = () => {
 
     // Filter by type === 'INVITED' and status === 'ACTIVE'
     const joinedBusinesses = myEmployments?.filter(
-        (emp) => emp.type === "INVITED" && emp.status === "ACTIVE"
+        (emp) => emp.type === "INVITED" && emp.status === "ACTIVE" && emp.business
     ) || [];
 
     return (
