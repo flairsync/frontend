@@ -235,10 +235,10 @@ export const updateBusinessEmployeeSettingsApiCall = (
 
 // Employments
 
-export const fetchBusinessEmployeesApiCall = async (businessId: string, page: number = 1) =>
+export const fetchBusinessEmployeesApiCall = async (businessId: string, page: number = 1, limit?: number) =>
   unwrapPaginated(await flairapi.get(
     `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}`,
-    { params: { page } },
+    { params: { page, limit } },
   ));
 
 export const fetchMyEmploymentsApiCall = async (page: number = 1, limit: number = 10) =>

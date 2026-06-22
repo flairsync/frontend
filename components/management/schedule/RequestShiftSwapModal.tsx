@@ -31,7 +31,7 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
     const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
     const businessTz = businessBasicDetails?.timezone || 'UTC';
 
-    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { enabled: open });
+    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { enabled: open, limit: 100 });
     const startDate = dayjs().tz(businessTz).format('YYYY-MM-DD');
     const endDate = dayjs().tz(businessTz).add(30, 'day').format('YYYY-MM-DD');
     const { data: shiftsData, isFetching: fetchingShifts } = useUpcomingShifts({ businessId, startDate, endDate, enabled: open });

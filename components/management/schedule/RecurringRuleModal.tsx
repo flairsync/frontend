@@ -38,7 +38,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
-    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
+    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { limit: 100 });
     const { createRule, updateRule, isCreatingRule, isUpdatingRule } = useRecurringRules(businessId);
 
     const generateDraftMutation = useMutation({

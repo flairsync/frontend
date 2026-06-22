@@ -48,7 +48,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
     const { routeParams } = usePageContext();
     const businessId = routeParams.id as string;
 
-    const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
+    const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { limit: 100 });
     const employees = allEmployees?.filter(emp => emp.type !== 'OWNER') || [];
     
     const { businessRoles, loadingBusinessRoles } = useBusinessRoles(businessId);

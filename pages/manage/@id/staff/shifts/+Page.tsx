@@ -172,14 +172,14 @@ export default function StaffShiftsPage() {
     };
 
     return (
-        <div className="space-y-6 p-6">
+        <div className="space-y-6 p-4 sm:p-6">
             {/* Page Title */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight">My Shifts</h1>
                     <p className="text-muted-foreground">Here’s your upcoming schedule and recent shifts.</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     <Button variant="outline" className="flex items-center gap-2" onClick={() => setIsAvailabilityOpen(true)} disabled={!employmentId}>
                         <Calendar className="h-4 w-4" />
                         My Availability
@@ -191,15 +191,15 @@ export default function StaffShiftsPage() {
                 </div>
             </div>
 
-            <Tabs 
-                value={activeTab} 
+            <Tabs
+                value={activeTab}
                 onValueChange={(val) => {
                     setActiveTab(val);
                     navigate(`/manage/${businessId}/staff/shifts?tab=${val}`);
-                }} 
+                }}
                 className="w-full"
             >
-                <TabsList className="mb-4">
+                <TabsList className="mb-4 w-full flex justify-start overflow-x-auto whitespace-nowrap">
                     <TabsTrigger value="today">Today</TabsTrigger>
                     <TabsTrigger value="schedule">Upcoming Schedule</TabsTrigger>
                     <TabsTrigger value="requests">Time Off & Swaps</TabsTrigger>

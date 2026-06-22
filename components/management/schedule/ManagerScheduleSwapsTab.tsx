@@ -15,7 +15,7 @@ const ManagerScheduleSwapsTab = () => {
     const businessId = routeParams.id;
 
     const { swaps, fetchingSwaps, updateStatus, isUpdatingStatus } = useShiftSwaps(businessId);
-    const { employees } = useBusinessEmployees(businessId);
+    const { employees } = useBusinessEmployees(businessId, { limit: 100 });
     const { shifts } = useShifts(businessId);
 
     const getEmployeeName = (id: string) => {

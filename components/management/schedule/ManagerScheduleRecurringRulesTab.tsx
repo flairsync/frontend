@@ -19,7 +19,7 @@ const ManagerScheduleRecurringRulesTab = () => {
         deleteRule, 
     } = useRecurringRules(businessId as string);
 
-    const { employees } = useBusinessEmployees(businessId as string);
+    const { employees } = useBusinessEmployees(businessId as string, { limit: 100 });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRule, setSelectedRule] = useState<RecurringShiftRule | null>(null);

@@ -61,6 +61,9 @@ const ManagerScheduleStaffSchedulingTab = () => {
             }
             if (view === "day" || view === "week" || view === "month") {
                 setCalendarView(view);
+            } else if (window.innerWidth < 768) {
+                // A 7-day grid doesn't fit a phone screen — default mobile visitors to the day view.
+                setCalendarView("day");
             }
             if (staffId) {
                 setFilterStaffId(staffId === "all" ? null : staffId);
@@ -114,7 +117,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
     const [validationInitialCheckOut, setValidationInitialCheckOut] = useState("");
 
     // Data
-    const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
+    const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { limit: 100 });
     const employees = allEmployees?.filter(emp => emp.type !== 'OWNER') || [];
     const { 
         shifts,
@@ -294,10 +297,10 @@ const ManagerScheduleStaffSchedulingTab = () => {
         <Card className="overflow-hidden">
             <CardHeader className="bg-muted/30 border-b space-y-3 pb-3">
                 {/* Row 1: Title + action buttons */}
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <CardTitle className="text-lg">Schedule</CardTitle>
 
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-1.5">
                         {/* Export */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -442,7 +445,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                 </div>
             </CardHeader>
             <CardContent className="p-0 overflow-x-auto min-h-[400px]">
-                <div className="min-w-[800px]">
+                <div className={calendarView === 'day' ? 'min-w-[420px]' : 'min-w-[800px]'}>
                     {/* Header Row */}
                     <div className={`grid border-b bg-muted/10 ${
                         calendarView === 'month' ? 'grid-cols-7' : 

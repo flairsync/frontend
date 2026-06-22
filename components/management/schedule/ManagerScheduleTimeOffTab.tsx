@@ -16,7 +16,7 @@ const ManagerScheduleTimeOffTab = () => {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { requests, fetchingRequests, updateStatus } = useTimeOff(businessId as string);
-    const { employees } = useBusinessEmployees(businessId as string);
+    const { employees } = useBusinessEmployees(businessId as string, { limit: 100 });
     const { myBusinessFullDetails } = useMyBusiness(businessId as string);
     const businessTz = myBusinessFullDetails?.timezone || 'UTC';
 

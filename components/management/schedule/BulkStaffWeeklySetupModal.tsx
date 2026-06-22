@@ -32,7 +32,7 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
 
     const { myBusinessFullDetails } = useMyBusiness(businessId);
     const businessTz = myBusinessFullDetails?.timezone || 'UTC';
-    const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
+    const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { limit: 100 });
     const employees = allEmployees?.filter(emp => emp.type !== 'OWNER') || [];
     const { templates, fetchingTemplates } = useShiftTemplates(businessId);
     const { bulkStaffWeeklySetup, isBulkStaffScheduling } = useShifts(businessId, undefined, undefined, undefined, businessTz);
