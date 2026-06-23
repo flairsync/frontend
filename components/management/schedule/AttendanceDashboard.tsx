@@ -39,6 +39,7 @@ export const AttendanceDashboard: React.FC<AttendanceDashboardProps> = ({ busine
   const activeBreak = activeLog?.breaks?.find((b: any) => !b.endTime && !b.end);
   const todaysShifts = dashboard?.shifts || [];
   const nextShift = todaysShifts.find((s: any) => s.status === 'SCHEDULED');
+  const isClockedIn = !!activeLog && !activeLog.checkOutTime;
 
   const getLocation = async (): Promise<{ lat: number; lng: number } | undefined> => {
     if (!businessBasicDetails?.requireGpsForAttendance) {
@@ -156,97 +157,91 @@ export const AttendanceDashboard: React.FC<AttendanceDashboardProps> = ({ busine
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-          {!activeLog ? (
-            todaysShifts.length > 0 ? (
-              nextShift?.staffResponse === 'ACCEPTED' ? (
-              <Button 
-                  onClick={handleCheckIn} 
-                  disabled={isCheckingIn || isLocalCheckingIn}
-                  size="lg"
-                  className="w-full h-14 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99]"
-                >
-                  {isCheckingIn || isLocalCheckingIn ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Play className="h-5 w-5 mr-2" />}
-                  Clock In Now
-                </Button>
-              ) : (
-                <div className="md:col-span-2 p-4 border border-amber-200 border-dashed rounded-lg bg-amber-50 flex flex-col items-center justify-center gap-2 text-center">
-                    <AlertCircle className="h-5 w-5 text-amber-600" />
-                    <p className="text-sm font-medium text-amber-800">You must accept your shift in the 'Today's Shift' section before you can clock in.</p>
-                </div>
-              )
-            ) : (
-                <div className="md:col-span-2 p-4 border border-dashed rounded-lg bg-muted/50 flex flex-col items-center justify-center gap-2 text-center">
-                    <AlertCircle className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">No shifts scheduled for today. You don't need to clock in.</p>
-                </div>
-            )
-          ) : (
-            <div className="md:col-span-2">
-              {!activeLog.checkOutTime ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button 
-                    onClick={handleCheckOut} 
-                    disabled={isCheckingOut || isLocalCheckingOut}
-                    variant="destructive"
-                    size="lg"
-                    className="w-full h-14 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99]"
-                  >
-                    {isCheckingOut || isLocalCheckingOut ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Square className="h-5 w-5 mr-2" />}
-                    Clock Out
-                  </Button>
+          {isClockedIn ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-2">
+              <Button
+                onClick={handleCheckOut}
+                disabled={isCheckingOut || isLocalCheckingOut}
+                variant="destructive"
+                size="lg"
+                className="w-full h-14 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99]"
+              >
+                {isCheckingOut || isLocalCheckingOut ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Square className="h-5 w-5 mr-2" />}
+                Clock Out
+              </Button>
 
-                  {!activeBreak ? (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button 
-                          disabled={isStartingBreak || isLocalStartingBreak || isCheckingOut || isLocalCheckingOut}
-                          variant="outline"
-                          size="lg"
-                          className="w-full h-14 text-base font-semibold border-2"
-                        >
-                          {isStartingBreak || isLocalStartingBreak ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Coffee className="h-5 w-5 mr-2 text-orange-500" />}
-                          Take a Break
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-56">
-                        <DropdownMenuItem onClick={() => handleStartBreak('PAID')}>
-                          Take Paid Rest Break
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStartBreak('UNPAID')}>
-                          Take Unpaid Meal Break
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  ) : (
-                    <Button 
-                      onClick={handleEndBreak} 
-                      disabled={isEndingBreak || isLocalEndingBreak || isCheckingOut || isLocalCheckingOut}
+              {!activeBreak ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      disabled={isStartingBreak || isLocalStartingBreak || isCheckingOut || isLocalCheckingOut}
                       variant="outline"
                       size="lg"
-                      className="w-full h-14 text-base font-semibold border-2 border-primary/20 bg-primary/5"
+                      className="w-full h-14 text-base font-semibold border-2"
                     >
-                      {isEndingBreak || isLocalEndingBreak ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Play className="h-5 w-5 mr-2 text-primary" />}
-                      Back to Work
+                      {isStartingBreak || isLocalStartingBreak ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Coffee className="h-5 w-5 mr-2 text-orange-500" />}
+                      Take a Break
                     </Button>
-                  )}
-                </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuItem onClick={() => handleStartBreak('PAID')}>
+                      Take Paid Rest Break
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleStartBreak('UNPAID')}>
+                      Take Unpaid Meal Break
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
-                <div className="p-6 border border-emerald-100 rounded-lg bg-emerald-50/30 flex flex-col items-center justify-center gap-3 text-center animate-in fade-in zoom-in-95 duration-500">
-                    <div className="p-3 bg-emerald-100 rounded-full">
-                        <CheckCircle2 className="h-6 w-6 text-emerald-600" />
-                    </div>
-                    <div>
-                        <p className="font-bold text-emerald-800 text-lg">Well Done!</p>
-                        <p className="text-sm text-emerald-600">Your shift for today has been recorded.</p>
-                        <div className="mt-4 p-3 bg-white/50 rounded-md border border-emerald-100 shadow-sm">
-                           <p className="text-xs text-emerald-700 font-medium">
-                              <span className="font-bold">Need to fix your times?</span> Contact your supervisor or an administrator to correct this record.
-                           </p>
-                        </div>
-                    </div>
-                </div>
+                <Button
+                  onClick={handleEndBreak}
+                  disabled={isEndingBreak || isLocalEndingBreak || isCheckingOut || isLocalCheckingOut}
+                  variant="outline"
+                  size="lg"
+                  className="w-full h-14 text-base font-semibold border-2 border-primary/20 bg-primary/5"
+                >
+                  {isEndingBreak || isLocalEndingBreak ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Play className="h-5 w-5 mr-2 text-primary" />}
+                  Back to Work
+                </Button>
               )}
             </div>
+          ) : nextShift ? (
+            nextShift.staffResponse === 'ACCEPTED' ? (
+              <Button
+                onClick={handleCheckIn}
+                disabled={isCheckingIn || isLocalCheckingIn}
+                size="lg"
+                className="w-full h-14 text-base font-semibold transition-all hover:scale-[1.01] active:scale-[0.99] md:col-span-2"
+              >
+                {isCheckingIn || isLocalCheckingIn ? <Clock className="h-5 w-5 animate-spin mr-2" /> : <Play className="h-5 w-5 mr-2" />}
+                Clock In Now
+              </Button>
+            ) : (
+              <div className="md:col-span-2 p-4 border border-amber-200 border-dashed rounded-lg bg-amber-50 flex flex-col items-center justify-center gap-2 text-center">
+                  <AlertCircle className="h-5 w-5 text-amber-600" />
+                  <p className="text-sm font-medium text-amber-800">You must accept your shift in the 'Today's Shift' section before you can clock in.</p>
+              </div>
+            )
+          ) : activeLog?.checkOutTime ? (
+            <div className="md:col-span-2 p-6 border border-emerald-100 rounded-lg bg-emerald-50/30 flex flex-col items-center justify-center gap-3 text-center animate-in fade-in zoom-in-95 duration-500">
+                <div className="p-3 bg-emerald-100 rounded-full">
+                    <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                </div>
+                <div>
+                    <p className="font-bold text-emerald-800 text-lg">Well Done!</p>
+                    <p className="text-sm text-emerald-600">Your shift for today has been recorded.</p>
+                    <div className="mt-4 p-3 bg-white/50 rounded-md border border-emerald-100 shadow-sm">
+                       <p className="text-xs text-emerald-700 font-medium">
+                          <span className="font-bold">Need to fix your times?</span> Contact your supervisor or an administrator to correct this record.
+                       </p>
+                    </div>
+                </div>
+            </div>
+          ) : (
+              <div className="md:col-span-2 p-4 border border-dashed rounded-lg bg-muted/50 flex flex-col items-center justify-center gap-2 text-center">
+                  <AlertCircle className="h-5 w-5 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">No shifts scheduled for today. You don't need to clock in.</p>
+              </div>
           )}
         </div>
 

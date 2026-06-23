@@ -15,6 +15,8 @@ import { format, parseISO } from "date-fns";
 import { AttendanceLog } from "@/models/business/shift/Attendance";
 import { ValidationModal } from "@/components/management/schedule/ValidationModal";
 import AbsenceModal from "./AbsenceModal";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 
 function minutesToLabel(minutes: number | null): string {
   if (minutes === null) return "—";
@@ -51,6 +53,8 @@ interface AttendanceTableProps {
 const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProps) => {
   const [validatingId, setValidatingId] = useState<string | null>(null);
   const [absenceRecord, setAbsenceRecord] = useState<AttendanceLog | null>(null);
+  const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+  const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
   const validating = validatingId ? records.find((r) => r.id === validatingId) : null;
 
@@ -132,7 +136,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                     </TableCell>
                     <TableCell className="text-slate-700 font-medium text-sm">
                       {showPay && record.totalPay !== null
-                        ? `$${Number(record.totalPay).toFixed(2)}`
+                        ? `${currencySymbol}${Number(record.totalPay).toFixed(2)}`
                         : record.lifecycleStatus === "ONGOING"
                         ? "—"
                         : hourlyRate === 0
