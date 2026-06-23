@@ -9,6 +9,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useOrders } from "@/features/orders/useOrders";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -68,6 +70,11 @@ const OwnerOrdersPage: React.FC = () => {
     const [customerNameInput, setCustomerNameInput] = useState<string>("");
     const [customerNameFilter, setCustomerNameFilter] = useState<string>("");
     const customerNameDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        setPage(1);
+    }, [statusFilter, dateRange, tableFilter, customerNameFilter]);
 
     React.useEffect(() => {
         if (typeof window !== "undefined") {
@@ -168,6 +175,8 @@ const OwnerOrdersPage: React.FC = () => {
 
     const {
         orders,
+        totalPages,
+        currentPage,
         fetchingOrders,
         acceptOrder,
         isAcceptingOrder,
@@ -188,11 +197,16 @@ const OwnerOrdersPage: React.FC = () => {
         dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
         tableFilter !== "all" ? tableFilter : undefined,
         customerNameFilter || undefined,
+        true,
+        page,
     );
 
     // Fetch floors to get table mappings
     const { floors } = useFloors(businessId);
     const allTables = floors?.flatMap((f: any) => (f.tables || []).map((t: any) => ({ ...t, floorName: f.name }))) || [];
+
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const getTableLabel = (tableId?: string) => {
         if (!tableId) return null;
@@ -458,7 +472,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                         {getItemsCount(o)}
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="font-semibold">${Number(o.totalAmount || 0).toFixed(2)}</TableCell>
+                                                <TableCell className="font-semibold">{currencySymbol}{Number(o.totalAmount || 0).toFixed(2)}</TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 items-start">
                                                         <Badge variant={getStatusVariant(o.status)} className="capitalize">
@@ -558,6 +572,30 @@ const OwnerOrdersPage: React.FC = () => {
                                     )}
                                 </TableBody>
                             </Table>
+
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-center gap-2 pt-4">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        disabled={currentPage <= 1 || fetchingOrders}
+                                        onClick={() => setPage(p => p - 1)}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <span className="text-sm text-muted-foreground">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        disabled={currentPage >= totalPages || fetchingOrders}
+                                        onClick={() => setPage(p => p + 1)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>

@@ -1,5 +1,5 @@
 import flairapi from "@/lib/flairapi";
-import { unwrap } from "../shared/api-response";
+import { unwrap, unwrapPaginated, PaginatedData } from "../shared/api-response";
 
 const getOrdersUrl = (businessId: string) => {
     return `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/orders`;
@@ -111,7 +111,9 @@ export const fetchOrdersApiCall = async (
     endDate?: string,
     tableId?: string,
     customerName?: string,
-) => {
+    page?: number,
+    limit?: number,
+): Promise<PaginatedData<Order>> => {
     const url = getOrdersUrl(businessId);
     const params = new URLSearchParams();
     if (status) params.append("status", status);
@@ -119,8 +121,10 @@ export const fetchOrdersApiCall = async (
     if (endDate) params.append("endDate", endDate);
     if (tableId) params.append("tableId", tableId);
     if (customerName) params.append("customerName", customerName);
+    if (page) params.append("page", String(page));
+    if (limit) params.append("limit", String(limit));
     const qs = params.toString();
-    return unwrap(await flairapi.get(qs ? `${url}?${qs}` : url));
+    return unwrapPaginated<Order>(await flairapi.get(qs ? `${url}?${qs}` : url));
 };
 
 export const createOrderApiCall = (businessId: string, data: CreateOrderDto) => {

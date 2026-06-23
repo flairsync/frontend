@@ -29,6 +29,7 @@ import {
     Order,
     OrderStatus,
 } from "./service";
+import { PaginatedData } from "../shared/api-response";
 
 export const useOrders = (
     businessId: string,
@@ -38,17 +39,20 @@ export const useOrders = (
     tableId?: string,
     customerName?: string,
     enabled: boolean = true,
+    page: number = 1,
+    limit?: number,
 ) => {
     const queryClient = useQueryClient();
 
-    const { data: orders, isFetching: fetchingOrders, refetch } = useQuery<Order[]>({
-        queryKey: ["orders", businessId, status || "ongoing", startDate, endDate, tableId, customerName],
-        queryFn: async () => {
-            const data = await fetchOrdersApiCall(businessId, status, startDate, endDate, tableId, customerName);
-            return Array.isArray(data) ? data : [];
-        },
+    const { data: ordersResponse, isFetching: fetchingOrders, refetch } = useQuery<PaginatedData<Order>>({
+        queryKey: ["orders", businessId, status || "ongoing", startDate, endDate, tableId, customerName, page, limit],
+        queryFn: () => fetchOrdersApiCall(businessId, status, startDate, endDate, tableId, customerName, page, limit),
         enabled: !!businessId && enabled,
     });
+
+    const orders = ordersResponse?.data;
+    const totalPages = ordersResponse?.pages ?? 1;
+    const currentPage = ordersResponse?.current ?? page;
 
     const createOrderMutation = useMutation({
         mutationFn: (data: CreateOrderDto) => createOrderApiCall(businessId, data),
@@ -424,6 +428,8 @@ export const useOrders = (
 
     return {
         orders,
+        totalPages,
+        currentPage,
         fetchingOrders,
         refetchOrders: refetch,
         createOrder: createOrderMutation.mutate,

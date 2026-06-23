@@ -11,6 +11,8 @@ import { StaffAddOrderMobileView } from "./StaffAddOrderMobileView"
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus"
 import { useFloors } from "@/features/floor-plan/useFloorPlan"
 import { useOrders } from "@/features/orders/useOrders"
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
+import { getCurrencySymbol } from "@/utils/currency"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Plus, Minus, Trash2, ShoppingBag, UtensilsCrossed, ChefHat } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
@@ -28,6 +30,8 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
     const { businessAllCategories } = useBusinessMenus(businessId)
     const { floors } = useFloors(businessId)
     const { createOrder, isCreatingOrder } = useOrders(businessId)
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId)
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency)
 
     const [orderType, setOrderType] = React.useState<"dine_in" | "takeaway" | "delivery">("dine_in")
     const [selectedTable, setSelectedTable] = React.useState<string>("none")
@@ -161,6 +165,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                     <StaffAddOrderMobileView
                         categories={businessAllCategories || []}
                         onSelectItem={handleSelectItem}
+                        currencySymbol={currencySymbol}
                         orderType={orderType}
                         setOrderType={setOrderType}
                         tables={tables}
@@ -196,6 +201,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                             <StaffAddOrderMenu
                                 categories={businessAllCategories || []}
                                 onSelectItem={handleSelectItem}
+                                currencySymbol={currencySymbol}
                             />
                         </div>
                     </div>
@@ -304,7 +310,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                                                             Note: {item.notes}
                                                         </span>
                                                     )}
-                                                    <span className="text-xs text-muted-foreground mt-0.5">${item.price.toFixed(2)} each</span>
+                                                    <span className="text-xs text-muted-foreground mt-0.5">{currencySymbol}{item.price.toFixed(2)} each</span>
                                                 </div>
                                                 <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm">
                                                     <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.id, -1)}>
@@ -326,7 +332,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                         <div className="p-6 border-t bg-muted/5">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="text-base text-muted-foreground">Subtotal</span>
-                                <span className="text-2xl font-bold tracking-tight">${totalAmount.toFixed(2)}</span>
+                                <span className="text-2xl font-bold tracking-tight">{currencySymbol}{totalAmount.toFixed(2)}</span>
                             </div>
                             <div className="flex gap-3">
                                 <Button variant="outline" className="flex-1" onClick={() => onOpenChange(false)}>
@@ -354,6 +360,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                 }}
                 item={selectedConfigItem}
                 onSave={handleSaveConfig}
+                currencySymbol={currencySymbol}
             />
         </Dialog>
     )

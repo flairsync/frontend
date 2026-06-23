@@ -16,6 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Check, Plus, Minus, Search, Trash2 } from "lucide-react";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { useOrders } from "@/features/orders/useOrders";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 import { OrderItemConfigModal, ConfiguredOrderItem } from "./OrderItemConfigModal";
 import { useTranslation } from "react-i18next";
 
@@ -31,6 +33,8 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
     const { t } = useTranslation("management");
     const { businessAllCategories } = useBusinessMenus(businessId);
     const { addItemsToOrder, isAddingItems } = useOrders(businessId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const [search, setSearch] = useState("");
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>("all");
@@ -241,7 +245,7 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                                                     <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors">
                                                         <div className="flex flex-col flex-1">
                                                             <span className="font-medium text-sm">{item.name}</span>
-                                                            <span className="text-xs text-muted-foreground">${Number(item.price || 0).toFixed(2)}</span>
+                                                            <span className="text-xs text-muted-foreground">{currencySymbol}{Number(item.price || 0).toFixed(2)}</span>
                                                         </div>
 
                                                         <div className="flex items-center gap-3">
@@ -305,6 +309,7 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                 }}
                 item={selectedConfigItem}
                 onSave={handleSaveConfig}
+                currencySymbol={currencySymbol}
             />
         </Dialog>
     );

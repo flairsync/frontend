@@ -26,9 +26,10 @@ interface OrderItemConfigModalProps {
     item: BusinessMenuItem | null;
     initialConfig?: Partial<ConfiguredOrderItem>;
     onSave: (config: ConfiguredOrderItem) => void;
+    currencySymbol?: string;
 }
 
-export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open, onClose, item, initialConfig, onSave }) => {
+export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open, onClose, item, initialConfig, onSave, currencySymbol = "$" }) => {
     const [quantity, setQuantity] = useState(1);
     const [notes, setNotes] = useState("");
     const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(undefined);
@@ -153,7 +154,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                 <RadioGroupItem value={variant.id} id={`variant-${variant.id}`} />
                                                 <Label htmlFor={`variant-${variant.id}`} className="cursor-pointer">{variant.name}</Label>
                                             </div>
-                                            <span className="text-sm font-medium">${Number(variant.price).toFixed(2)}</span>
+                                            <span className="text-sm font-medium">{currencySymbol}{Number(variant.price).toFixed(2)}</span>
                                         </div>
                                     ))}
                                 </RadioGroup>
@@ -205,7 +206,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                                 </Label>
                                                             </div>
                                                             {Number(mod.price) > 0 && (
-                                                                <span className="text-sm font-medium text-muted-foreground">+${Number(mod.price).toFixed(2)}</span>
+                                                                <span className="text-sm font-medium text-muted-foreground">+{currencySymbol}{Number(mod.price).toFixed(2)}</span>
                                                             )}
                                                         </div>
                                                     )
@@ -230,7 +231,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                             </Label>
                                                         </div>
                                                         {Number(mod.price) > 0 && (
-                                                            <span className="text-sm font-medium text-muted-foreground">+${Number(mod.price).toFixed(2)}</span>
+                                                            <span className="text-sm font-medium text-muted-foreground">+{currencySymbol}{Number(mod.price).toFixed(2)}</span>
                                                         )}
                                                     </div>
                                                 )
@@ -287,7 +288,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                 <DialogFooter className="p-4 border-t bg-muted/10 flex items-center justify-between sm:justify-between flex-row">
                     <div className="flex flex-col">
                         <span className="text-sm text-muted-foreground font-medium">Total</span>
-                        <span className="text-xl font-bold">${calculateTotal().toFixed(2)}</span>
+                        <span className="text-xl font-bold">{currencySymbol}{calculateTotal().toFixed(2)}</span>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" onClick={onClose}>Cancel</Button>

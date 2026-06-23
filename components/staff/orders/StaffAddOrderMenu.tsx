@@ -17,9 +17,10 @@ interface MenuCategory {
 interface MenuSelectorProps {
     categories: MenuCategory[];
     onSelectItem?: (item: BusinessMenuItem) => void;
+    currencySymbol?: string;
 }
 
-const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectItem }) => {
+const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectItem, currencySymbol = "$" }) => {
     const [search, setSearch] = useState("");
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>("all");
 
@@ -99,7 +100,7 @@ const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectIt
                                         >
                                             <div className="flex w-full justify-between items-center text-left gap-2">
                                                 <span className="font-medium text-gray-800">{item.name}</span>
-                                                <span className="font-semibold text-gray-900 shrink-0">${Number(item.price || 0).toFixed(2)}</span>
+                                                <span className="font-semibold text-gray-900 shrink-0">{currencySymbol}{Number(item.price || 0).toFixed(2)}</span>
                                             </div>
                                             {item.description && (
                                                 <span className="text-xs text-muted-foreground text-left mt-1 line-clamp-1">

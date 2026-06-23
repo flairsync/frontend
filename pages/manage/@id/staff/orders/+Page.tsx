@@ -21,6 +21,8 @@ import { format } from "date-fns"
 
 import { useOrders } from "@/features/orders/useOrders"
 import { useFloors } from "@/features/floor-plan/useFloorPlan"
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
+import { getCurrencySymbol } from "@/utils/currency"
 import { Order } from "@/features/orders/service"
 import { StaffAddOrderDrawer } from "@/components/staff/orders/StaffAddOrderDrawer"
 import { AddItemsModal } from "@/components/staff/orders/AddItemsModal"
@@ -65,6 +67,11 @@ export default function StaffOrdersPage() {
     const [customerNameInput, setCustomerNameInput] = useState<string>("");
     const [customerNameFilter, setCustomerNameFilter] = useState<string>("");
     const customerNameDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        setPage(1);
+    }, [statusFilter, dateRange, tableFilter, customerNameFilter]);
 
     React.useEffect(() => {
         if (typeof window !== "undefined") {
@@ -129,6 +136,8 @@ export default function StaffOrdersPage() {
 
     const {
         orders,
+        totalPages,
+        currentPage,
         fetchingOrders,
         acceptOrder,
         isAcceptingOrder,
@@ -147,10 +156,15 @@ export default function StaffOrdersPage() {
         dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
         tableFilter !== "all" ? tableFilter : undefined,
         customerNameFilter || undefined,
+        true,
+        page,
     );
 
     const { floors } = useFloors(businessId);
     const allTables = floors?.flatMap((f: any) => (f.tables || []).map((t: any) => ({ ...t, floorName: f.name }))) || [];
+
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const getItemsCount = (order: Order) =>
         order.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
@@ -356,7 +370,7 @@ export default function StaffOrdersPage() {
                                                         {getItemsCount(o)}
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="font-semibold">${Number(o.totalAmount || 0).toFixed(2)}</TableCell>
+                                                <TableCell className="font-semibold">{currencySymbol}{Number(o.totalAmount || 0).toFixed(2)}</TableCell>
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 items-start">
                                                         <Badge variant={getStatusVariant(o.status)} className="capitalize">
@@ -456,6 +470,30 @@ export default function StaffOrdersPage() {
                                     )}
                                 </TableBody>
                             </Table>
+
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-center gap-2 pt-4">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        disabled={currentPage <= 1 || fetchingOrders}
+                                        onClick={() => setPage(p => p - 1)}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <span className="text-sm text-muted-foreground">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        disabled={currentPage >= totalPages || fetchingOrders}
+                                        onClick={() => setPage(p => p + 1)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>

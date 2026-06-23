@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useOrders } from "@/features/orders/useOrders";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 import { Loader2, Plus, CheckCircle, Utensils, ChefHat } from "lucide-react";
 import { AddItemsModal } from "@/components/staff/orders/AddItemsModal";
 import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
@@ -26,6 +28,8 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
         readyOrder,
         isMarkingReady,
     } = useOrders(businessId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const [addItemsModal, setAddItemsModal] = useState<{ orderId: string | null; orderStatus?: string; open: boolean }>({ orderId: null, open: false });
     const [detailsModal, setDetailsModal] = useState<{ order: any; open: boolean }>({ order: null, open: false });
@@ -72,7 +76,7 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-muted-foreground">{t("staff_orders.active_view.amount_label")}</span>
-                                            <span className="font-bold">${Number(order.totalAmount).toFixed(2)}</span>
+                                            <span className="font-bold">{currencySymbol}{Number(order.totalAmount).toFixed(2)}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-1">
                                             {order.status === "created" && (

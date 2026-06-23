@@ -13,6 +13,7 @@ import { ConfiguredOrderItem } from "./OrderItemConfigModal"
 interface StaffAddOrderMobileViewProps {
     categories: any[]
     onSelectItem: (item: any) => void
+    currencySymbol?: string
 
     orderType: "dine_in" | "takeaway" | "delivery"
     setOrderType: (v: "dine_in" | "takeaway" | "delivery") => void
@@ -36,6 +37,7 @@ interface StaffAddOrderMobileViewProps {
 export function StaffAddOrderMobileView({
     categories,
     onSelectItem,
+    currencySymbol = "$",
     orderType,
     setOrderType,
     tables,
@@ -74,7 +76,7 @@ export function StaffAddOrderMobileView({
             {/* Step content */}
             {step === "menu" ? (
                 <div className="flex-1 overflow-hidden p-4">
-                    <StaffAddOrderMenu categories={categories} onSelectItem={onSelectItem} />
+                    <StaffAddOrderMenu categories={categories} onSelectItem={onSelectItem} currencySymbol={currencySymbol} />
                 </div>
             ) : (
                 <div className="flex-1 overflow-y-auto p-4 space-y-6">
@@ -168,7 +170,7 @@ export function StaffAddOrderMobileView({
                                                     Note: {item.notes}
                                                 </span>
                                             )}
-                                            <span className="text-xs text-muted-foreground mt-0.5">${item.price.toFixed(2)} each</span>
+                                            <span className="text-xs text-muted-foreground mt-0.5">{currencySymbol}{item.price.toFixed(2)} each</span>
                                         </div>
                                         <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm shrink-0">
                                             <Button size="icon" variant="ghost" className="h-7 w-7 rounded-sm hover:bg-muted" onClick={() => onUpdateQuantity(item.id, -1)}>
@@ -200,7 +202,7 @@ export function StaffAddOrderMobileView({
                             <ShoppingBag className="w-4 h-4" />
                             View Order
                         </span>
-                        <span>{itemCount} · ${totalAmount.toFixed(2)}</span>
+                        <span>{itemCount} · {currencySymbol}{totalAmount.toFixed(2)}</span>
                     </Button>
                 ) : (
                     <Button
@@ -209,7 +211,7 @@ export function StaffAddOrderMobileView({
                         onClick={onSubmit}
                         disabled={!canSubmit || isSubmitting}
                     >
-                        {isSubmitting ? "Processing..." : `Place Order · $${totalAmount.toFixed(2)}`}
+                        {isSubmitting ? "Processing..." : `Place Order · ${currencySymbol}${totalAmount.toFixed(2)}`}
                     </Button>
                 )}
             </div>

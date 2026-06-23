@@ -22,6 +22,8 @@ import { ManageOrderItemModal } from "@/components/staff/orders/ManageOrderItemM
 
 import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
 import { useBusinessEmployment } from "@/features/business/employment/useBusinessEmployment";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 import { Input } from "@/components/ui/input";
 import { Tag } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -38,6 +40,8 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
     const { data: fullOrder } = useOrderDetails(businessId, order?.id || "");
     const { voidOrderItem, isVoidingOrderItem, advanceOrderItem, isAdvancingOrderItem, firePending, isFiringPending, updateOrderDiscountAsync, isUpdatingDiscount } = useOrders(businessId);
     const { businessEmployees } = useBusinessEmployment(businessId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
     const displayOrder = fullOrder || order;
 
     const resolveEmployeeName = (employmentId: string): string => {
@@ -235,12 +239,12 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                         </div>
                                                     )}
                                                     <span className="text-xs text-muted-foreground mt-1">
-                                                        ${unitPrice.toFixed(2)} {t("staff_orders.order_details_modal.each_suffix")} {modifiersTotal > 0 ? t("staff_orders.order_details_modal.base_mods_breakdown", { base: `$${basePrice.toFixed(2)}`, mods: `$${modifiersTotal.toFixed(2)}` }) : ""}
+                                                        {currencySymbol}{unitPrice.toFixed(2)} {t("staff_orders.order_details_modal.each_suffix")} {modifiersTotal > 0 ? t("staff_orders.order_details_modal.base_mods_breakdown", { base: `${currencySymbol}${basePrice.toFixed(2)}`, mods: `${currencySymbol}${modifiersTotal.toFixed(2)}` }) : ""}
                                                     </span>
                                                 </div>
                                                 <div className="flex flex-col items-end gap-2 ml-3">
                                                     <div className="font-bold text-right">
-                                                        {isTerminalItemStatus ? <span className="line-through text-muted-foreground">${totalItemPrice.toFixed(2)}</span> : `$${totalItemPrice.toFixed(2)}`}
+                                                        {isTerminalItemStatus ? <span className="line-through text-muted-foreground">{currencySymbol}{totalItemPrice.toFixed(2)}</span> : `${currencySymbol}${totalItemPrice.toFixed(2)}`}
                                                     </div>
                                                     {!isTerminalItemStatus && (
                                                         <div className="flex items-center gap-1 mt-auto">
@@ -349,9 +353,9 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                             </div>
                                             <div className="flex flex-col items-end gap-1">
                                                 <span className="font-bold text-lg">
-                                                    ${Number(payment.amount).toFixed(2)}
+                                                    {currencySymbol}{Number(payment.amount).toFixed(2)}
                                                     {payment.tipAmount && payment.tipAmount > 0 && (
-                                                        <span className="text-xs text-muted-foreground ml-1 font-normal">(+${Number(payment.tipAmount).toFixed(2)} {t("staff_orders.order_details_modal.tip_suffix")})</span>
+                                                        <span className="text-xs text-muted-foreground ml-1 font-normal">(+{currencySymbol}{Number(payment.tipAmount).toFixed(2)} {t("staff_orders.order_details_modal.tip_suffix")})</span>
                                                     )}
                                                 </span>
                                                 <div className="flex gap-2 items-center">
@@ -411,18 +415,18 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                         <div className="flex flex-col">
                             <span className="text-sm font-semibold text-muted-foreground uppercase">{t("staff_orders.order_details_modal.paid_details_label")}</span>
                             <div className="flex gap-4 mt-1">
-                                <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.paid_label")}</span><span className="font-medium text-sm">${Number(displayOrder.totalPaid || 0).toFixed(2)}</span></div>
+                                <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.paid_label")}</span><span className="font-medium text-sm">{currencySymbol}{Number(displayOrder.totalPaid || 0).toFixed(2)}</span></div>
                                 {displayOrder.totalTip && displayOrder.totalTip > 0 ? (
-                                    <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.tip_label")}</span><span className="font-medium text-sm text-green-600">${Number(displayOrder.totalTip).toFixed(2)}</span></div>
+                                    <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.tip_label")}</span><span className="font-medium text-sm text-green-600">{currencySymbol}{Number(displayOrder.totalTip).toFixed(2)}</span></div>
                                 ) : null}
                                 {Number(displayOrder.discountAmount || 0) > 0 && (
-                                    <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.discount_label")}</span><span className="font-medium text-sm text-primary">−${Number(displayOrder.discountAmount).toFixed(2)}</span></div>
+                                    <div><span className="text-xs text-muted-foreground mr-1">{t("staff_orders.order_details_modal.discount_label")}</span><span className="font-medium text-sm text-primary">−{currencySymbol}{Number(displayOrder.discountAmount).toFixed(2)}</span></div>
                                 )}
                             </div>
                         </div>
                         <div className="flex flex-col items-end justify-center">
                             <span className="text-xs font-bold text-muted-foreground uppercase">{t("staff_orders.order_details_modal.total_label")}</span>
-                            <span className="text-2xl font-bold">${Number(displayOrder.totalAmount || 0).toFixed(2)}</span>
+                            <span className="text-2xl font-bold">{currencySymbol}{Number(displayOrder.totalAmount || 0).toFixed(2)}</span>
                         </div>
                     </div>
 

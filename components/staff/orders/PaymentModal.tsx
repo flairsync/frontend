@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 
 interface PaymentModalProps {
     businessId: string;
@@ -26,6 +28,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
     const displayOrder = fullOrder || order;
 
     const { createPayment, isCreatingPayment } = useOrders(businessId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     // Stable per form-mount — reused on retries, regenerated when the modal is closed and reopened
     const [idempotencyKey] = useState(() => crypto.randomUUID());
@@ -86,7 +90,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                     <DialogHeader>
                         <DialogTitle>Add Payment - Order #{displayOrder.id.substring(0, 8)}</DialogTitle>
                         <DialogDescription>
-                            Record a payment for this order. It currently has a remaining balance of <strong>${remainingBalance.toFixed(2)}</strong>.
+                            Record a payment for this order. It currently has a remaining balance of <strong>{currencySymbol}{remainingBalance.toFixed(2)}</strong>.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -94,16 +98,16 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <span className="text-sm font-medium text-muted-foreground">Order Total</span>
-                                <p className="text-lg font-semibold">${totalAmount.toFixed(2)}</p>
+                                <p className="text-lg font-semibold">{currencySymbol}{totalAmount.toFixed(2)}</p>
                             </div>
                             <div className="space-y-1">
                                 <span className="text-sm font-medium text-muted-foreground">Total Paid</span>
-                                <p className="text-lg font-semibold text-green-600">${totalPaid.toFixed(2)}</p>
+                                <p className="text-lg font-semibold text-green-600">{currencySymbol}{totalPaid.toFixed(2)}</p>
                             </div>
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="amount">Payment Amount ($)</Label>
+                            <Label htmlFor="amount">Payment Amount ({currencySymbol})</Label>
                             <Input
                                 id="amount"
                                 type="number"
@@ -117,7 +121,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="tipAmount">Tip Amount ($) <span className="text-muted-foreground text-xs font-normal">(Optional)</span></Label>
+                            <Label htmlFor="tipAmount">Tip Amount ({currencySymbol}) <span className="text-muted-foreground text-xs font-normal">(Optional)</span></Label>
                             <Input
                                 id="tipAmount"
                                 type="number"

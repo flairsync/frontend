@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Order } from "@/features/orders/service";
 import { useOrders } from "@/features/orders/useOrders";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 
 interface RefundPaymentModalProps {
     open: boolean;
@@ -16,6 +18,8 @@ interface RefundPaymentModalProps {
 
 export const RefundPaymentModal: React.FC<RefundPaymentModalProps> = ({ open, onClose, businessId, order, paymentId }) => {
     const { refundPayment, isRefundingPayment } = useOrders(businessId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
     const [reason, setReason] = useState("");
 
     const handleRefund = () => {
@@ -42,7 +46,7 @@ export const RefundPaymentModal: React.FC<RefundPaymentModalProps> = ({ open, on
                     <DialogTitle className="text-destructive">Refund Payment</DialogTitle>
                     <DialogDescription>
                         Are you sure you want to refund this <strong className="capitalize">{targetPayment?.method}</strong> payment?
-                        This action will deduct <strong>${Number(targetPayment?.amount || 0).toFixed(2)}</strong> from the order's total paid amount and recalculate its status.
+                        This action will deduct <strong>{currencySymbol}{Number(targetPayment?.amount || 0).toFixed(2)}</strong> from the order's total paid amount and recalculate its status.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="py-4 space-y-2">
