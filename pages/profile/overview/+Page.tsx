@@ -1,6 +1,7 @@
 import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import ProfileOverviewOrdersChart from "@/components/profile/ProfileOverviewOrdersChart"
 import { useProfile } from "@/features/profile/useProfile"
 
@@ -21,11 +22,11 @@ const ProfileOverviewPage = () => {
                     <CardTitle>Profile Overview</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col md:flex-row items-center gap-4">
-                    <img
-                        src="https://via.placeholder.com/80"
-                        alt="Avatar"
-                        className="w-20 h-20 rounded-full"
-                    />
+                    <Avatar className="w-20 h-20">
+                        <AvatarFallback className="bg-primary/10 text-primary text-2xl font-semibold">
+                            {userProfile?.getInitials() ?? "?"}
+                        </AvatarFallback>
+                    </Avatar>
                     <div className="flex-1">
                         <h2 className="text-xl font-bold">{userProfile?.getFullName()}</h2>
                         <p className="text-sm text-muted-foreground">{userProfile?.email}</p>

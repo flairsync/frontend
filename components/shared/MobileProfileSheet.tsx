@@ -1,7 +1,7 @@
 import React from "react";
 import { LogOut, User, Settings, Building2, Sun, Moon, Monitor, AlertTriangle } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useProfile } from "@/features/profile/useProfile";
 import { useAuth } from "@/features/auth/useAuth";
@@ -42,7 +42,6 @@ const MobileProfileSheet = () => {
                 <SheetTrigger asChild>
                     <button className="relative rounded-full" aria-label="Profile">
                         <Avatar className="h-8 w-8 hover:cursor-pointer">
-                            <AvatarImage src="https://github.com/shadcn.png" />
                             <AvatarFallback className="text-xs">{userProfile?.getInitials()}</AvatarFallback>
                         </Avatar>
                         {user?.verified === false && (
@@ -55,7 +54,6 @@ const MobileProfileSheet = () => {
                     {/* User info */}
                     <div className="flex items-center gap-3 px-2 pt-2 pb-4 border-b mb-2">
                         <Avatar className="h-11 w-11">
-                            <AvatarImage src="https://github.com/shadcn.png" />
                             <AvatarFallback>{userProfile?.getInitials()}</AvatarFallback>
                         </Avatar>
                         <div>
