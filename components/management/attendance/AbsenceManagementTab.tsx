@@ -10,11 +10,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { Plus, Pencil, Trash2, ExternalLink, ClipboardCheck } from "lucide-react";
 import { format, parseISO } from "date-fns";
+import { toast } from "sonner";
 import { useAbsences } from "@/features/shifts/useAbsences";
 import { AbsenceRecord, ABSENCE_TYPE_LABELS, ABSENCE_TYPE_BADGE_COLORS } from "@/models/business/shift/AbsenceRecord";
 import AbsenceModal from "./AbsenceModal";
+import { LogShiftWorkedModal } from "../schedule/LogShiftWorkedModal";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +38,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
   const [createOpen, setCreateOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<AbsenceRecord | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [logWorkedRecord, setLogWorkedRecord] = useState<AbsenceRecord | null>(null);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
@@ -124,6 +127,17 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                     <TableCell className="text-muted-foreground text-sm">{recordedBy}</TableCell>
                     <TableCell className="text-right pr-4">
                       <div className="flex justify-end gap-1">
+                        {absence.shiftId && absence.shift && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="Log as worked — converts this into a validated shift"
+                            className="h-8 w-8 text-muted-foreground hover:text-emerald-600 hover:bg-emerald-50"
+                            onClick={() => setLogWorkedRecord(absence)}
+                          >
+                            <ClipboardCheck className="h-3.5 w-3.5" />
+                          </Button>
+                        )}
                         <Button
                           variant="ghost"
                           size="icon"
@@ -170,6 +184,17 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
           existing={editingRecord}
         />
       )}
+
+      <LogShiftWorkedModal
+        open={!!logWorkedRecord}
+        onOpenChange={(open) => !open && setLogWorkedRecord(null)}
+        businessId={businessId}
+        shift={logWorkedRecord?.shift ?? null}
+        onAlreadyHasAttendance={() => {
+          setLogWorkedRecord(null);
+          toast.info("This shift now has an attendance record — resolve it from the Overview tab's Validate Shift action instead.");
+        }}
+      />
 
       <AlertDialog open={!!deletingId} onOpenChange={(open) => !open && setDeletingId(null)}>
         <AlertDialogContent>

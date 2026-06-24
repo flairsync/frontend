@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Clock, AlertCircle, Zap, ShieldCheck } from "lucide-react";
 import { AttendanceLog } from "@/models/business/shift/Attendance";
+import { AbsenceRecord } from "@/models/business/shift/AbsenceRecord";
 
 function minutesToHours(minutes: number | null): string {
   if (!minutes) return "0h";
@@ -12,13 +13,16 @@ function minutesToHours(minutes: number | null): string {
 
 interface AttendanceStatsProps {
   records: AttendanceLog[];
+  absences: AbsenceRecord[];
 }
 
-const AttendanceStats = ({ records }: AttendanceStatsProps) => {
+const AttendanceStats = ({ records, absences }: AttendanceStatsProps) => {
   const ongoing = records.filter((r) => r.lifecycleStatus === "ONGOING").length;
   const pending = records.filter((r) => r.lifecycleStatus === "FINISHED").length;
   const validated = records.filter((r) => r.lifecycleStatus === "VALIDATED").length;
-  const noShows = records.filter((r) => r.status === "NO_SHOW").length;
+  // Attendance.status is never set to NO_SHOW by the backend — the real signal lives
+  // on the absence records (auto-created for no-shows, also covers manual absences).
+  const noShows = absences.length;
   const lates = records.filter((r) => r.status === "LATE").length;
 
   const totalWorkedMinutes = records.reduce((acc, r) => acc + (r.workedMinutes ?? 0), 0);
@@ -60,7 +64,7 @@ const AttendanceStats = ({ records }: AttendanceStatsProps) => {
     {
       title: "Absences / Late",
       value: `${noShows} / ${lates}`,
-      description: "No shows · Late arrivals",
+      description: "Absences · Late arrivals",
       icon: AlertCircle,
       color: "text-red-600",
       bgColor: "bg-red-50",

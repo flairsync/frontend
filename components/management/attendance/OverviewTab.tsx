@@ -1,9 +1,11 @@
 import React from "react";
+import { isWithinInterval, parseISO } from "date-fns";
 import AttendanceStats from "./AttendanceStats";
 import AttendanceFilters from "./AttendanceFilters";
 import AttendanceTable from "./AttendanceTable";
 import { DateRange } from "react-day-picker";
 import { AttendanceLog, AttendanceLifecycleStatus, AttendanceStatus } from "@/models/business/shift/Attendance";
+import { useAbsences } from "@/features/shifts/useAbsences";
 
 interface OverviewTabProps {
   businessId: string;
@@ -34,9 +36,15 @@ const OverviewTab = ({
   statusFilter,
   setStatusFilter,
 }: OverviewTabProps) => {
+  const { absences } = useAbsences(businessId);
+
+  const absencesInRange = dateRange?.from && dateRange?.to
+    ? absences.filter((a) => isWithinInterval(parseISO(a.date), { start: dateRange.from!, end: dateRange.to! }))
+    : absences;
+
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 md:px-6">
-      <AttendanceStats records={records} />
+      <AttendanceStats records={records} absences={absencesInRange} />
 
       <AttendanceFilters
         dateRange={dateRange}

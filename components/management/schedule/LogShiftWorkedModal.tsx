@@ -24,7 +24,7 @@ function minutesToLabel(minutes: number | null | undefined): string {
 interface LogShiftWorkedModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  shift: Shift | null;
+  shift: Pick<Shift, 'id' | 'startTime' | 'endTime'> | null;
   businessId: string;
   onAlreadyHasAttendance?: (shiftId: string) => void;
 }
