@@ -88,6 +88,13 @@ export interface ValidateAttendanceDto {
   };
 }
 
+export interface LogShiftWorkedDto {
+  businessId: string;
+  checkInTime: string; // ISO 8601
+  checkOutTime: string; // ISO 8601
+  notes?: string;
+}
+
 // Availability DTOs
 export interface UpdateAvailabilityDto {
   employmentId: string;
@@ -341,6 +348,11 @@ export const fetchTodayAttendanceDashboardApiCall = async (businessId: string, d
 export const validateAttendanceApiCall = (attendanceId: string, data: ValidateAttendanceDto) => {
   return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/${attendanceId}/validate`, data);
 };
+
+export const logShiftWorkedApiCall = async (shiftId: string, data: LogShiftWorkedDto) =>
+  unwrap<import('@/models/business/shift/Attendance').AttendanceLog>(
+    await flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/${shiftId}/log-worked`, data)
+  );
 
 // Attendance Summary API
 export const fetchAttendanceSummaryApiCall = async (businessId: string, startDate: string, endDate: string, employmentId?: string) => {

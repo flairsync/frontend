@@ -3,7 +3,7 @@ import { useNotifications } from '@/features/notifications/useNotifications';
 import { NotificationPayload, NotificationRecipient } from '@/features/notifications/types';
 import { navigate } from 'vike/client/router';
 import { formatDistanceToNow } from 'date-fns';
-import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, Package } from 'lucide-react';
+import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, Package, UserX } from 'lucide-react';
 
 const getIconForType = (type: NotificationPayload['type']) => {
     switch (type) {
@@ -11,6 +11,7 @@ const getIconForType = (type: NotificationPayload['type']) => {
         case 'SHIFT_CREATED':
         case 'SHIFT_UPDATED':
             return <Calendar className="w-5 h-5 text-indigo-500" />;
+        case 'SHIFT_NO_SHOW': return <UserX className="w-5 h-5 text-red-500" />;
         case 'SECURITY': return <ShieldAlert className="w-5 h-5 text-red-500" />;
         case 'RESERVATION': return <Calendar className="w-5 h-5 text-blue-500" />;
         case 'PROMO': return <Tag className="w-5 h-5 text-green-500" />;
@@ -71,6 +72,11 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
             case 'TIME_OFF_APPROVED': {
                 const bizId = notification.payload?.businessId;
                 if (bizId) navigate(`/manage/${bizId}/staff/shifts?tab=requests`);
+                break;
+            }
+            case 'SHIFT_NO_SHOW': {
+                const bizId = notification.payload?.businessId;
+                if (bizId) navigate(`/manage/${bizId}/staff/shifts?tab=schedule`);
                 break;
             }
             case 'INVENTORY_LOW_STOCK': {

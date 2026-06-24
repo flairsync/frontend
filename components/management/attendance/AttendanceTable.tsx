@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableBody,
@@ -31,12 +32,6 @@ const lifecycleBadge: Record<string, string> = {
   VALIDATED: "bg-blue-100 text-blue-700",
 };
 
-const lifecycleLabel: Record<string, string> = {
-  ONGOING: "Active",
-  FINISHED: "Pending",
-  VALIDATED: "Validated",
-};
-
 const statusBadge: Record<string, string> = {
   PRESENT: "bg-green-100 text-green-700",
   LATE: "bg-amber-100 text-amber-700",
@@ -51,10 +46,24 @@ interface AttendanceTableProps {
 }
 
 const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProps) => {
+  const { t } = useTranslation("management");
   const [validatingId, setValidatingId] = useState<string | null>(null);
   const [absenceRecord, setAbsenceRecord] = useState<AttendanceLog | null>(null);
   const { businessBasicDetails } = useBusinessBasicDetails(businessId);
   const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
+
+  const lifecycleLabel: Record<string, string> = {
+    ONGOING: t("attendance_table.lifecycle_active"),
+    FINISHED: t("attendance_table.lifecycle_pending"),
+    VALIDATED: t("attendance_table.lifecycle_validated"),
+  };
+
+  const statusLabel: Record<string, string> = {
+    PRESENT: t("attendance_table.status_present"),
+    LATE: t("attendance_table.status_late"),
+    NO_SHOW: t("attendance_table.status_no_show"),
+    ON_BREAK: t("attendance_table.status_on_break"),
+  };
 
   const validating = validatingId ? records.find((r) => r.id === validatingId) : null;
 
@@ -74,16 +83,16 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow className="hover:bg-transparent border-border">
-              <TableHead className="font-semibold text-slate-600">Employee</TableHead>
-              <TableHead className="font-semibold text-slate-600">Date</TableHead>
-              <TableHead className="font-semibold text-slate-600">Clock In</TableHead>
-              <TableHead className="font-semibold text-slate-600">Clock Out</TableHead>
-              <TableHead className="font-semibold text-slate-600">Status</TableHead>
-              <TableHead className="font-semibold text-slate-600">Worked</TableHead>
-              <TableHead className="font-semibold text-slate-600">OT</TableHead>
-              <TableHead className="font-semibold text-slate-600">Pay Est.</TableHead>
-              <TableHead className="font-semibold text-slate-600">Lifecycle</TableHead>
-              <TableHead className="font-semibold text-slate-600 text-right pr-6">Actions</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_employee")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_date")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_clock_in")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_clock_out")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_status")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_worked")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_ot")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_pay_est")}</TableHead>
+              <TableHead className="font-semibold text-slate-600">{t("attendance_table.col_lifecycle")}</TableHead>
+              <TableHead className="font-semibold text-slate-600 text-right pr-6">{t("attendance_table.col_actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -101,13 +110,13 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                       <div className="flex items-center gap-2">
                         <span className="text-foreground font-semibold">{employeeName}</span>
                         {record.isOutOfGeofence && (
-                          <MapPin className="h-3.5 w-3.5 text-amber-500" aria-label="Clocked in outside geofence" />
+                          <MapPin className="h-3.5 w-3.5 text-amber-500" aria-label={t("attendance_table.aria_out_of_geofence")} />
                         )}
                         {record.isEarlyDeparture && (
-                          <LogOut className="h-3.5 w-3.5 text-red-500" aria-label="Left before shift ended" />
+                          <LogOut className="h-3.5 w-3.5 text-red-500" aria-label={t("attendance_table.aria_early_departure")} />
                         )}
                         {record.hasLongPaidBreak && (
-                          <Coffee className="h-3.5 w-3.5 text-amber-500" aria-label="Unusually long paid break — review breaks" />
+                          <Coffee className="h-3.5 w-3.5 text-amber-500" aria-label={t("attendance_table.aria_long_paid_break")} />
                         )}
                       </div>
                     </TableCell>
@@ -125,7 +134,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                         variant="secondary"
                         className={`${statusBadge[record.status] ?? ""} border-none font-medium px-2.5 py-0.5 rounded-full`}
                       >
-                        {record.status.replace("_", " ")}
+                        {statusLabel[record.status] ?? record.status.replace("_", " ")}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-medium text-slate-700">
@@ -140,7 +149,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                         : record.lifecycleStatus === "ONGOING"
                         ? "—"
                         : hourlyRate === 0
-                        ? <span className="text-xs text-slate-400">Rate not set</span>
+                        ? <span className="text-xs text-slate-400">{t("attendance_table.rate_not_set")}</span>
                         : "—"}
                     </TableCell>
                     <TableCell>
@@ -161,7 +170,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                             onClick={() => setValidatingId(record.id)}
                           >
                             <ShieldCheck className="h-3.5 w-3.5" />
-                            Validate
+                            {t("attendance_table.validate")}
                           </Button>
                         )}
                         {record.status === "NO_SHOW" && (
@@ -172,13 +181,13 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                             onClick={() => setAbsenceRecord(record)}
                           >
                             <CalendarOff className="h-3.5 w-3.5" />
-                            Absence
+                            {t("attendance_table.absence")}
                           </Button>
                         )}
                         {record.lifecycleStatus === "VALIDATED" && (
                           <span className="flex items-center gap-1 text-xs text-blue-500 px-2">
                             <ShieldCheck className="h-3.5 w-3.5" />
-                            Validated
+                            {t("attendance_table.validated")}
                           </span>
                         )}
                       </div>
@@ -189,7 +198,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
             ) : (
               <TableRow>
                 <TableCell colSpan={10} className="h-32 text-center text-slate-400 italic">
-                  No attendance records found for the selected filters.
+                  {t("attendance_table.no_records")}
                 </TableCell>
               </TableRow>
             )}

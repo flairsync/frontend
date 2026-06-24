@@ -1,7 +1,7 @@
 export interface NotificationPayload {
     id: string; // UUID
     type: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' |
-          'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' |
+          'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' | 'SHIFT_NO_SHOW' |
           'INVENTORY_LOW_STOCK' | 'TASK_ASSIGNED' | 'TASK_STATUS_CHANGED';
     title: string;
     message: string;
@@ -25,7 +25,7 @@ export interface NotificationPreference {
     id: string;
     userId: string;
     notificationType: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' |
-                      'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' |
+                      'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' | 'SHIFT_NO_SHOW' |
                       'INVENTORY_LOW_STOCK' | 'TASK_ASSIGNED' | 'TASK_STATUS_CHANGED';
     emailEnabled: boolean;
     inAppEnabled: boolean;

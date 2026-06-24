@@ -373,7 +373,10 @@
     "validate": "Valider",
     "absence": "Absence",
     "validated": "Validé",
-    "no_records": "Aucun enregistrement de présence trouvé pour les filtres sélectionnés."
+    "no_records": "Aucun enregistrement de présence trouvé pour les filtres sélectionnés.",
+    "aria_out_of_geofence": "Pointage effectué hors de la zone géographique",
+    "aria_early_departure": "Parti avant la fin du service",
+    "aria_long_paid_break": "Pause rémunérée anormalement longue — à vérifier"
   },
   "clocked_in_banner": {
     "clocked_in": "Pointé(e)",

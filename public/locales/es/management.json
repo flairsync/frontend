@@ -373,7 +373,10 @@
     "validate": "Validar",
     "absence": "Ausencia",
     "validated": "Validado",
-    "no_records": "No se encontraron registros de asistencia para los filtros seleccionados."
+    "no_records": "No se encontraron registros de asistencia para los filtros seleccionados.",
+    "aria_out_of_geofence": "Fichaje realizado fuera de la geocerca",
+    "aria_early_departure": "Se marchó antes de que terminara el turno",
+    "aria_long_paid_break": "Descanso pagado inusualmente largo — revisar descansos"
   },
   "clocked_in_banner": {
     "clocked_in": "Fichado",

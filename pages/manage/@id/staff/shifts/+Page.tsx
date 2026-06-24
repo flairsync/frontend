@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRightLeft, Loader2, DollarSign, ChevronLeft, ChevronRight, Filter, CheckCircle2, Lock, ShieldCheck, Clock, Info } from "lucide-react"
+import { Calendar, ArrowRightLeft, Loader2, DollarSign, ChevronLeft, ChevronRight, Filter, CheckCircle2, Lock, ShieldCheck, Clock, Info, UserX, ClipboardCheck } from "lucide-react"
 import { usePageContext } from "vike-react/usePageContext"
 import { navigate } from "vike/client/router"
+import { toast } from "sonner"
 import { useShifts, useUpcomingShifts, useAvailableShifts, useMyBids } from "@/features/shifts/useShifts"
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
+import { usePermissions } from "@/features/auth/usePermissions"
 import { formatInBusinessTimezone } from "@/utils/date-utils"
 import { getCurrencySymbol } from "@/utils/currency"
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift"
@@ -28,6 +30,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ValidationModal } from "@/components/management/schedule/ValidationModal"
+import { LogShiftWorkedModal } from "@/components/management/schedule/LogShiftWorkedModal"
 
 export default function StaffShiftsPage() {
     const { routeParams, urlParsed } = usePageContext();
@@ -41,6 +44,9 @@ export default function StaffShiftsPage() {
 
     const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
     const businessTz = businessBasicDetails?.timezone || 'UTC';
+
+    const { hasPermission } = usePermissions(businessId as string);
+    const canLogNoShow = hasPermission('STAFF', 'update');
 
     const { startDate, endDate } = useMemo(() => ({
         startDate: format(startOfDay(new Date()), 'yyyy-MM-dd'),
@@ -62,7 +68,7 @@ export default function StaffShiftsPage() {
     });
     const shifts = Array.isArray(myShiftsData) ? myShiftsData : (myShiftsData?.data || []);
 
-    const { data: upcomingData, isFetching: fetchingUpcoming } = useUpcomingShifts({
+    const { data: upcomingData, isFetching: fetchingUpcoming, refetch: refetchUpcoming } = useUpcomingShifts({
         businessId: businessId as string,
         status: status === "ALL" ? undefined : status,
         startDate: scheduleStartDate,
@@ -96,6 +102,10 @@ export default function StaffShiftsPage() {
     const [validationAttendanceId, setValidationAttendanceId] = useState("");
     const [validationInitialCheckIn, setValidationInitialCheckIn] = useState("");
     const [validationInitialCheckOut, setValidationInitialCheckOut] = useState("");
+
+    // No-show resolution state
+    const [isLogWorkedModalOpen, setIsLogWorkedModalOpen] = useState(false);
+    const [logWorkedShift, setLogWorkedShift] = useState<Shift | null>(null);
 
     // Sync tab with URL search params
     useEffect(() => {
@@ -140,6 +150,22 @@ export default function StaffShiftsPage() {
         setIsValidationModalOpen(true);
     };
 
+    const handleLogAsWorked = (shift: Shift) => {
+        setLogWorkedShift(shift);
+        setIsLogWorkedModalOpen(true);
+    };
+
+    const handleLogWorkedConflict = async (shiftId: string) => {
+        const refetched = await refetchUpcoming();
+        const refetchedShifts: Shift[] = Array.isArray(refetched.data) ? refetched.data : (refetched.data?.data || []);
+        const updatedShift = refetchedShifts.find((s) => s.id === shiftId);
+        if (updatedShift?.attendanceId) {
+            handleValidateShift(updatedShift);
+        } else {
+            toast.info("This shift now has an attendance record — use Validate to resolve it.");
+        }
+    };
+
     const getStatusBadge = (status: ShiftStatus) => {
         switch (status) {
             case ShiftStatus.SCHEDULED:
@@ -158,6 +184,13 @@ export default function StaffShiftsPage() {
                     <Badge variant="outline" className="border-green-500 bg-green-50 text-green-700 flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3" />
                         Validated
+                    </Badge>
+                );
+            case ShiftStatus.NO_SHOW:
+                return (
+                    <Badge variant="outline" className="border-red-500 bg-red-50 text-red-700 flex items-center gap-1">
+                        <UserX className="w-3 h-3" />
+                        No-show
                     </Badge>
                 );
             case ShiftStatus.OPEN:
@@ -489,6 +522,12 @@ export default function StaffShiftsPage() {
                                                                             Validate
                                                                         </Button>
                                                                     )}
+                                                                    {isManagerOrOwner && canLogNoShow && shift.status === ShiftStatus.NO_SHOW && (
+                                                                        <Button variant="ghost" size="sm" onClick={() => handleLogAsWorked(shift)} className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                                                                            <ClipboardCheck className="h-4 w-4 mr-2" />
+                                                                            Log as Worked
+                                                                        </Button>
+                                                                    )}
                                                                     {(shift.staffResponse === 'PENDING' || !shift.staffResponse) && (
                                                                         <Button variant="ghost" size="sm" onClick={() => handleResponse(shift.id, 'ACCEPTED')} disabled={isResponding} className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">Accept</Button>
                                                                     )}
@@ -734,6 +773,14 @@ export default function StaffShiftsPage() {
                 attendanceId={validationAttendanceId}
                 initialCheckIn={validationInitialCheckIn}
                 initialCheckOut={validationInitialCheckOut}
+            />
+
+            <LogShiftWorkedModal
+                open={isLogWorkedModalOpen}
+                onOpenChange={setIsLogWorkedModalOpen}
+                shift={logWorkedShift}
+                businessId={businessId as string}
+                onAlreadyHasAttendance={handleLogWorkedConflict}
             />
         </div>
     )

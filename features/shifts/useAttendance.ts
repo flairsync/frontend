@@ -10,10 +10,12 @@ import {
   fetchMyAttendanceApiCall,
   fetchTodayAttendanceDashboardApiCall,
   validateAttendanceApiCall,
+  logShiftWorkedApiCall,
   fetchAttendanceSummaryApiCall,
   CheckInDto,
   CheckOutDto,
   ValidateAttendanceDto,
+  LogShiftWorkedDto,
 } from "./service";
 import { toast } from "sonner";
 import { extractErrorMessage } from "@/utils/error-utils";
@@ -104,6 +106,23 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
     },
   });
 
+  const logShiftWorkedMutation = useMutation({
+    mutationFn: (args: { shiftId: string; data: LogShiftWorkedDto }) =>
+      logShiftWorkedApiCall(args.shiftId, args.data),
+    onSuccess: () => {
+      invalidateAll();
+      queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["absences", businessId] });
+      queryClient.invalidateQueries({ queryKey: ["upcoming-shifts"] });
+      queryClient.invalidateQueries({ queryKey: ["manager-roster"] });
+      toast.success("Shift marked as worked");
+    },
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to log shift as worked"));
+    },
+  });
+
   return {
     logsPage,
     logs: logsPage?.data ?? [],
@@ -113,11 +132,13 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
     startBreak: startBreakMutation.mutateAsync,
     endBreak: endBreakMutation.mutateAsync,
     validateAttendance: validateAttendanceMutation.mutateAsync,
+    logShiftWorked: logShiftWorkedMutation.mutateAsync,
     isCheckingIn: checkInMutation.isPending,
     isCheckingOut: checkOutMutation.isPending,
     isStartingBreak: startBreakMutation.isPending,
     isEndingBreak: endBreakMutation.isPending,
     isValidatingAttendance: validateAttendanceMutation.isPending,
+    isLoggingShiftWorked: logShiftWorkedMutation.isPending,
   };
 };
 

@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText, UserX, ClipboardCheck } from 'lucide-react'
+import { toast } from 'sonner'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
 import { useShifts } from '@/features/shifts/useShifts'
@@ -10,6 +11,7 @@ import { useTimeOff } from '@/features/shifts/useTimeOff'
 import { useUnvalidatedSummary } from '@/features/shifts/useUnvalidatedSummary'
 import { useManagerRoster } from '@/features/shifts/useShifts'
 import { useMyBusiness } from '@/features/business/useMyBusiness'
+import { usePermissions } from '@/features/auth/usePermissions'
 import { getCurrencySymbol } from '@/utils/currency'
 import { formatInBusinessTimezone } from '@/utils/date-utils'
 import { BulkScheduleModal } from './BulkScheduleModal'
@@ -34,6 +36,7 @@ import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO, startOfMo
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ValidationModal } from './ValidationModal'
+import { LogShiftWorkedModal } from './LogShiftWorkedModal'
 import { ShiftStatus } from '@/models/business/shift/Shift'
 
 const ManagerScheduleStaffSchedulingTab = () => {
@@ -116,12 +119,20 @@ const ManagerScheduleStaffSchedulingTab = () => {
     const [validationInitialCheckIn, setValidationInitialCheckIn] = useState("");
     const [validationInitialCheckOut, setValidationInitialCheckOut] = useState("");
 
+    // No-show resolution state
+    const [isLogWorkedModalOpen, setIsLogWorkedModalOpen] = useState(false);
+    const [logWorkedShift, setLogWorkedShift] = useState<Shift | null>(null);
+
+    const { hasPermission } = usePermissions(businessId as string);
+    const canLogNoShow = hasPermission('STAFF', 'update');
+
     // Data
     const { employees: allEmployees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { limit: 100 });
     const employees = allEmployees?.filter(emp => emp.type !== 'OWNER') || [];
-    const { 
+    const {
         shifts,
         fetchingShifts,
+        refetchShifts,
         generateDraft,
         isGeneratingDraft,
         publishWeeklySchedule,
@@ -130,8 +141,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
         isCopyingWeek,
         deleteShift
     } = useShifts(
-        businessId, 
-        dateStart, 
+        businessId,
+        dateStart,
         dateEnd,
         filterStaffId || undefined
     );
@@ -169,6 +180,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
         else if (calendarView === 'month') setCurrentDate(addMonths(currentDate, 1));
         else setCurrentDate(addDays(currentDate, 7));
     };
+
+    const noShowCount = (shifts || []).filter(s => s.status === ShiftStatus.NO_SHOW).length;
 
     // Intervals for viewing
     const viewInterval = eachDayOfInterval({ start: dateStart, end: dateEnd });
@@ -208,6 +221,23 @@ const ManagerScheduleStaffSchedulingTab = () => {
         setIsValidationModalOpen(true);
     };
 
+    const handleLogAsWorked = (shift: Shift) => {
+        setLogWorkedShift(shift);
+        setIsLogWorkedModalOpen(true);
+    };
+
+    // Cron and a real clock-in can race — if the shift already gained an attendance
+    // record by the time we submit, refetch and route into the validate flow instead.
+    const handleLogWorkedConflict = async (shiftId: string) => {
+        const refetched = await refetchShifts();
+        const updatedShift = refetched.data?.find((s: Shift) => s.id === shiftId);
+        if (updatedShift?.attendanceId) {
+            handleValidateShift(updatedShift);
+        } else {
+            toast.info("This shift now has an attendance record — use Validate Shift to resolve it.");
+        }
+    };
+
     const getStatusBadge = (status: ShiftStatus, staffResponse?: string) => {
         switch (status) {
             case ShiftStatus.SCHEDULED:
@@ -241,6 +271,13 @@ const ManagerScheduleStaffSchedulingTab = () => {
                     <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-green-500 bg-green-50 text-green-700 flex items-center gap-1">
                         <CheckCircle2 className="w-2 h-2" />
                         Validated
+                    </Badge>
+                );
+            case ShiftStatus.NO_SHOW:
+                return (
+                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-red-500 bg-red-50 text-red-700 flex items-center gap-1">
+                        <UserX className="w-2 h-2" />
+                        No-show
                     </Badge>
                 );
             case ShiftStatus.OPEN:
@@ -442,6 +479,13 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             {phantomSummary.total} unvalidated shifts
                         </Badge>
                     )}
+
+                    {noShowCount > 0 && (
+                        <Badge variant="outline" className="h-7 px-3 border-red-200 bg-red-50 text-red-700 flex items-center gap-1.5 font-medium animate-in fade-in slide-in-from-left-2 duration-500">
+                            <UserX className="w-3.5 h-3.5" />
+                            {noShowCount} no-show{noShowCount > 1 ? 's' : ''}
+                        </Badge>
+                    )}
                 </div>
             </CardHeader>
             <CardContent className="p-0 overflow-x-auto min-h-[400px]">
@@ -518,20 +562,22 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 key={shift.id}
                                                                 onClick={() => handleEditShift(shift)}
                                                                 className={`mb-1 p-1.5 transition-all border rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 ${
+                                                                    shift.status === ShiftStatus.NO_SHOW ? "border-red-500 ring-red-500/20 bg-red-50" :
                                                                     hasConflict ? "border-destructive ring-destructive/20 bg-destructive/5" :
                                                                     shift.status === ShiftStatus.VALIDATED
                                                                         ? "bg-green-500/10 border-green-500/20 ring-green-500/20" :
-                                                                    shift.isPublished 
-                                                                        ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20" 
+                                                                    shift.isPublished
+                                                                        ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20"
                                                                         : "bg-amber-500/10 hover:bg-amber-500/20 ring-amber-500/20 border-amber-500/30 border-dashed"
                                                                 } hover:ring-1`}
-                                                                title={hasConflict ? 'CONFLICT: Employee has approved time off' : shift.notes || (shift.isPublished ? 'Published' : 'Draft')}
+                                                                title={shift.status === ShiftStatus.NO_SHOW ? 'NO-SHOW: employee never clocked in' : hasConflict ? 'CONFLICT: Employee has approved time off' : shift.notes || (shift.isPublished ? 'Published' : 'Draft')}
                                                             >
                                                                 <div className="flex items-center justify-between gap-1">
-                                                                    <div className={`font-semibold truncate ${hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
+                                                                    <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
                                                                     {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2 h-2 text-green-600" />}
+                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600" />}
                                                                 </div>
                                                             </div>
                                                         );
@@ -552,6 +598,12 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                                     <ContextMenuItem onClick={() => handleValidateShift(s)} className="pl-4 text-green-600 focus:text-green-700">
                                                                                         <ShieldCheck className="w-4 h-4 mr-2" />
                                                                                         Validate Shift
+                                                                                    </ContextMenuItem>
+                                                                                )}
+                                                                                {s.status === ShiftStatus.NO_SHOW && canLogNoShow && (
+                                                                                    <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 focus:text-red-700">
+                                                                                        <ClipboardCheck className="w-4 h-4 mr-2" />
+                                                                                        Log as Worked
                                                                                     </ContextMenuItem>
                                                                                 )}
                                                                                 <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleEditShift(s)} className="pl-4">
@@ -672,19 +724,21 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 key={shift.id}
                                                                 onClick={() => handleEditShift(shift)}
                                                                 className={`mb-1 p-1.5 transition-all border rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 ${
+                                                                    shift.status === ShiftStatus.NO_SHOW ? "border-red-500 ring-red-500/20 bg-red-50" :
                                                                     hasConflict ? "border-destructive ring-destructive/20 bg-destructive/5" :
-                                                                    shift.isPublished 
-                                                                        ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20" 
+                                                                    shift.isPublished
+                                                                        ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20"
                                                                         : "bg-amber-500/10 hover:bg-amber-500/20 ring-amber-500/20 border-amber-500/30 border-dashed"
                                                                 } hover:ring-1`}
-                                                                title={hasConflict ? 'CONFLICT: Employee has approved time off' : shift.notes || (shift.isPublished ? 'Published' : 'Draft')}
+                                                                title={shift.status === ShiftStatus.NO_SHOW ? 'NO-SHOW: employee never clocked in' : hasConflict ? 'CONFLICT: Employee has approved time off' : shift.notes || (shift.isPublished ? 'Published' : 'Draft')}
                                                             >
                                                                 <div className="flex items-center justify-between gap-1">
-                                                                    <div className={`font-semibold truncate ${hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
+                                                                    <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatInBusinessTimezone(shift.startTime, businessTz, 'HH:mm')} - {formatInBusinessTimezone(shift.endTime, businessTz, 'HH:mm')}
                                                                     </div>
                                                                     <div className="flex items-center gap-1">
                                                                         {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2.5 h-2.5 text-green-600" />}
+                                                                        {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2.5 h-2.5 text-red-600" />}
                                                                         {hasConflict && <Badge variant="destructive" className="h-3 w-3 p-0 flex items-center justify-center text-[8px] rounded-full">!</Badge>}
                                                                     </div>
                                                                 </div>
@@ -718,14 +772,20 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                         Validate Shift
                                                                     </ContextMenuItem>
                                                                 )}
-                                                                <ContextMenuItem 
+                                                                {s.status === ShiftStatus.NO_SHOW && canLogNoShow && (
+                                                                    <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 focus:text-red-700">
+                                                                        <ClipboardCheck className="w-4 h-4 mr-2" />
+                                                                        Log as Worked
+                                                                    </ContextMenuItem>
+                                                                )}
+                                                                <ContextMenuItem
                                                                     disabled={s.status === ShiftStatus.VALIDATED}
                                                                     onClick={() => handleEditShift(s)}
                                                                     className="pl-4"
                                                                 >
                                                                     Edit {formatInBusinessTimezone(s.startTime, businessTz)}
                                                                 </ContextMenuItem>
-                                                                <ContextMenuItem 
+                                                                <ContextMenuItem
                                                                     disabled={s.status === ShiftStatus.VALIDATED}
                                                                     onClick={() => handleDeleteShift(s.id)}
                                                                     className="pl-4 text-destructive focus:text-destructive"
@@ -772,12 +832,17 @@ const ManagerScheduleStaffSchedulingTab = () => {
 
             <BulkScheduleModal open={isBulkModalOpen} onOpenChange={setIsBulkModalOpen} />
             <BulkStaffWeeklySetupModal open={isBulkStaffModalOpen} onOpenChange={setIsBulkStaffModalOpen} />
-            <IndividualScheduleModal 
-                open={isIndividualModalOpen} 
+            <IndividualScheduleModal
+                open={isIndividualModalOpen}
                 onOpenChange={setIsIndividualModalOpen}
                 defaultEmploymentId={selectedEmployeeId}
                 defaultDate={selectedDate}
                 shift={selectedShift}
+                canLogNoShow={canLogNoShow}
+                onLogAsWorked={(shift) => {
+                    setIsIndividualModalOpen(false);
+                    handleLogAsWorked(shift);
+                }}
             />
 
             <ValidationModal
@@ -786,6 +851,14 @@ const ManagerScheduleStaffSchedulingTab = () => {
                 attendanceId={validationAttendanceId}
                 initialCheckIn={validationInitialCheckIn}
                 initialCheckOut={validationInitialCheckOut}
+            />
+
+            <LogShiftWorkedModal
+                open={isLogWorkedModalOpen}
+                onOpenChange={setIsLogWorkedModalOpen}
+                shift={logWorkedShift}
+                businessId={businessId as string}
+                onAlreadyHasAttendance={handleLogWorkedConflict}
             />
         </Card>
     )

@@ -373,7 +373,10 @@
     "validate": "Validate",
     "absence": "Absence",
     "validated": "Validated",
-    "no_records": "No attendance records found for the selected filters."
+    "no_records": "No attendance records found for the selected filters.",
+    "aria_out_of_geofence": "Clocked in outside geofence",
+    "aria_early_departure": "Left before shift ended",
+    "aria_long_paid_break": "Unusually long paid break — review breaks"
   },
   "clocked_in_banner": {
     "clocked_in": "Clocked in",

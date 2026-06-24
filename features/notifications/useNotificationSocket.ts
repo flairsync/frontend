@@ -68,10 +68,19 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
     if (sseSource) return; // already connected
 
     const authToken = getJwtToken();
-    if (!authToken) return;
+    if (!authToken) {
+        console.warn('[SSE] No auth token available — skipping notification stream connection');
+        return;
+    }
 
+    // Auth is via the httpOnly `access` cookie (domain .flairsync.com, SameSite=None) —
+    // EventSource doesn't send cookies cross-subdomain unless withCredentials is set.
     const apiBase = 'https://api.flairsync.com/api/v1' as string;
-    sseSource = new EventSource(`${apiBase}/notifications/stream?token=${authToken}`);
+    sseSource = new EventSource(`${apiBase}/notifications/stream`, { withCredentials: true });
+
+    sseSource.onopen = () => {
+        console.log('[SSE] Notification stream connected');
+    };
 
     sseSource.onmessage = (event) => {
         try {
@@ -81,7 +90,11 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
         }
     };
 
-    // EventSource reconnects automatically on drop — no retry logic needed
+    sseSource.onerror = (event) => {
+        // EventSource reconnects automatically on drop, but a readyState of CLOSED here
+        // usually means the server rejected the connection (e.g. 401) and won't retry.
+        console.error('[SSE] Notification stream error (readyState=' + sseSource?.readyState + '):', event);
+    };
 }
 
 export const useNotificationSocket = () => {

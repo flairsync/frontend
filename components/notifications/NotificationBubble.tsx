@@ -5,7 +5,7 @@ import { useNotificationSocket } from '@/features/notifications/useNotificationS
 import { navigate } from 'vike/client/router';
 import { NotificationPayload } from '@/features/notifications/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, ChevronRight } from 'lucide-react';
+import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, ChevronRight, UserX } from 'lucide-react';
 import {
     Popover,
     PopoverContent,
@@ -18,6 +18,7 @@ const getIconForType = (type: NotificationPayload['type']) => {
         case 'SHIFT_CREATED':
         case 'SHIFT_UPDATED':
             return <Calendar className="w-5 h-5 text-indigo-500" />;
+        case 'SHIFT_NO_SHOW': return <UserX className="w-5 h-5 text-red-500" />;
         case 'SECURITY': return <ShieldAlert className="w-5 h-5 text-red-500" />;
         case 'RESERVATION': return <Calendar className="w-5 h-5 text-blue-500" />;
         case 'PROMO': return <Tag className="w-5 h-5 text-green-500" />;
@@ -66,6 +67,15 @@ export const NotificationBubble = () => {
                     navigate('/shifts');
                 }
                 break;
+            case 'SHIFT_NO_SHOW': {
+                const bizIdNoShow = notification.payload?.businessId;
+                if (bizIdNoShow) {
+                    navigate(`/manage/${bizIdNoShow}/staff/shifts?tab=schedule`);
+                } else {
+                    navigate('/shifts');
+                }
+                break;
+            }
             default:
                 // For other types, we might not have a specific redirection yet
                 break;

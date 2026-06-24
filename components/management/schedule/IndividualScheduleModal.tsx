@@ -14,9 +14,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 
-import { Shift } from "@/models/business/shift/Shift";
+import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, UserCheck, ShieldCheck, Loader2 } from "lucide-react";
+import { AlertCircle, UserCheck, ShieldCheck, Loader2, UserX, ClipboardCheck } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useShiftBids } from "@/features/shifts/useShifts";
 import { Separator } from "@/components/ui/separator";
@@ -36,14 +36,18 @@ interface IndividualScheduleModalProps {
     defaultEmploymentId?: string | null;
     defaultDate?: string; // format YYYY-MM-DD
     shift?: Shift | null;
+    canLogNoShow?: boolean;
+    onLogAsWorked?: (shift: Shift) => void;
 }
 
-export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = ({ 
-    open, 
-    onOpenChange, 
-    defaultEmploymentId, 
+export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = ({
+    open,
+    onOpenChange,
+    defaultEmploymentId,
     defaultDate,
-    shift
+    shift,
+    canLogNoShow,
+    onLogAsWorked
 }) => {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id as string;
@@ -191,6 +195,27 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                         {shift ? "Update details for this shift." : "Assign a shift to an individual employee."}
                     </DialogDescription>
                 </DialogHeader>
+
+                {shift?.status === ShiftStatus.NO_SHOW && (
+                    <div className="flex items-center justify-between gap-3 bg-red-50 text-red-700 rounded-lg px-4 py-3 text-sm mt-2">
+                        <div className="flex items-center gap-2">
+                            <UserX className="h-4 w-4 shrink-0" />
+                            This shift was flagged as a no-show.
+                        </div>
+                        {canLogNoShow && onLogAsWorked && (
+                            <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                className="h-7 text-xs gap-1.5 border-red-300 text-red-700 hover:bg-red-100 shrink-0"
+                                onClick={() => onLogAsWorked(shift)}
+                            >
+                                <ClipboardCheck className="w-3.5 h-3.5" />
+                                Log as Worked
+                            </Button>
+                        )}
+                    </div>
+                )}
 
                 {errorMessage && (
                     <Alert variant="destructive" className="mt-4">
