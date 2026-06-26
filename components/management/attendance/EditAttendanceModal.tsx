@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ interface EditAttendanceModalProps {
 }
 
 const EditAttendanceModal = ({ record, open, onOpenChange, onSave }: EditAttendanceModalProps) => {
+  const { t } = useTranslation("management");
   const [clockIn, setClockIn] = useState("");
   const [clockOut, setClockOut] = useState("");
 
@@ -58,15 +60,15 @@ const EditAttendanceModal = ({ record, open, onOpenChange, onSave }: EditAttenda
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Attendance</DialogTitle>
+          <DialogTitle>{t("attendance_modals.edit_attendance.title")}</DialogTitle>
           <DialogDescription>
-            Adjust clock-in and clock-out times for {record.employee.name}.
+            {t("attendance_modals.edit_attendance.description", { name: record.employee.name })}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="clock_in" className="text-right">
-              Clock In
+              {t("attendance_modals.edit_attendance.clock_in_label")}
             </Label>
             <Input
               id="clock_in"
@@ -78,7 +80,7 @@ const EditAttendanceModal = ({ record, open, onOpenChange, onSave }: EditAttenda
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="clock_out" className="text-right">
-              Clock Out
+              {t("attendance_modals.edit_attendance.clock_out_label")}
             </Label>
             <Input
               id="clock_out"
@@ -90,8 +92,8 @@ const EditAttendanceModal = ({ record, open, onOpenChange, onSave }: EditAttenda
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button type="submit" onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">Save changes</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>{t("attendance_modals.edit_attendance.cancel")}</Button>
+          <Button type="submit" onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">{t("attendance_modals.edit_attendance.save_changes")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

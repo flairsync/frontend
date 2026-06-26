@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit2, Users, Trash2 } from "lucide-react";
@@ -18,6 +19,7 @@ type TeamsSectionProps = {
 };
 
 const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: TeamsSectionProps) => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -95,7 +97,7 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
     };
 
     if (loadingTeams) {
-        return <div>Loading teams...</div>;
+        return <div>{t("staff_teams.section.loading")}</div>;
     }
 
     // To keep roster team modal updated after mutation refetches
@@ -104,13 +106,13 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Teams Management</h2>
+                <h2 className="text-xl font-semibold">{t("staff_teams.section.heading")}</h2>
                 {canCreate && (
                     <Button onClick={() => {
                         setSelectedTeam(null);
                         setIsCreateModalOpen(true);
                     }}>
-                        Create Team
+                        {t("staff_teams.section.create_team")}
                     </Button>
                 )}
             </div>
@@ -120,8 +122,8 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                     <CardContent className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground space-y-4">
                         <Users className="w-12 h-12 opacity-20" />
                         <div>
-                            <p className="text-lg font-medium text-foreground">No teams found</p>
-                            <p>Create groups to manage your staff easily.</p>
+                            <p className="text-lg font-medium text-foreground">{t("staff_teams.section.no_teams_title")}</p>
+                            <p>{t("staff_teams.section.no_teams_subtitle")}</p>
                         </div>
                     </CardContent>
                 </Card>
@@ -153,7 +155,7 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                             setIsRosterModalOpen(true);
                                         }}
                                     >
-                                        View Roster
+                                        {t("staff_teams.section.view_roster")}
                                     </Button>
                                     <div className="flex items-center shrink-0">
                                         {canUpdate && (
@@ -174,7 +176,7 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                 size="icon"
                                                 className="text-destructive hover:bg-destructive/10"
                                                 onClick={() => {
-                                                    if (confirm("Are you sure you want to delete this team?")) {
+                                                    if (confirm(t("staff_teams.section.delete_confirm"))) {
                                                         deleteTeam(team.id);
                                                     }
                                                 }}
@@ -199,7 +201,7 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                 onSubmit={handleSaveTeam}
                 isLoading={creatingTeam || updatingTeam}
                 onDelete={canDelete ? (teamId) => {
-                    if (confirm("Are you sure you want to delete this team?")) {
+                    if (confirm(t("staff_teams.section.delete_confirm"))) {
                         deleteTeam(teamId);
                         setIsCreateModalOpen(false);
                         setSelectedTeam(null);

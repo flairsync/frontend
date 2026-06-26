@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Clock, AlertCircle, Zap, ShieldCheck } from "lucide-react";
 import { AttendanceLog } from "@/models/business/shift/Attendance";
@@ -17,6 +18,7 @@ interface AttendanceStatsProps {
 }
 
 const AttendanceStats = ({ records, absences }: AttendanceStatsProps) => {
+  const { t } = useTranslation("management");
   const ongoing = records.filter((r) => r.lifecycleStatus === "ONGOING").length;
   const pending = records.filter((r) => r.lifecycleStatus === "FINISHED").length;
   const validated = records.filter((r) => r.lifecycleStatus === "VALIDATED").length;
@@ -30,41 +32,41 @@ const AttendanceStats = ({ records, absences }: AttendanceStatsProps) => {
 
   const statItems = [
     {
-      title: "Active Now",
+      title: t("attendance_stats.active_now.title"),
       value: ongoing,
-      description: "Currently clocked in",
+      description: t("attendance_stats.active_now.description"),
       icon: Users,
       color: "text-green-600",
       bgColor: "bg-green-50",
     },
     {
-      title: "Worked Hours",
+      title: t("attendance_stats.worked_hours.title"),
       value: minutesToHours(totalWorkedMinutes),
-      description: "Across all records",
+      description: t("attendance_stats.worked_hours.description"),
       icon: Clock,
       color: "text-blue-600",
       bgColor: "bg-blue-50",
     },
     {
-      title: "Pending Validation",
+      title: t("attendance_stats.pending_validation.title"),
       value: pending,
-      description: "Awaiting manager review",
+      description: t("attendance_stats.pending_validation.description"),
       icon: Zap,
       color: "text-amber-600",
       bgColor: "bg-amber-50",
     },
     {
-      title: "Validated",
+      title: t("attendance_stats.validated.title"),
       value: validated,
-      description: "Locked records",
+      description: t("attendance_stats.validated.description"),
       icon: ShieldCheck,
       color: "text-indigo-600",
       bgColor: "bg-indigo-50",
     },
     {
-      title: "Absences / Late",
+      title: t("attendance_stats.absences_late.title"),
       value: `${noShows} / ${lates}`,
-      description: "Absences · Late arrivals",
+      description: t("attendance_stats.absences_late.description"),
       icon: AlertCircle,
       color: "text-red-600",
       bgColor: "bg-red-50",

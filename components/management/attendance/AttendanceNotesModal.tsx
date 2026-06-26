@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,7 @@ interface AttendanceNotesModalProps {
 }
 
 const AttendanceNotesModal = ({ record, open, onOpenChange, onSave }: AttendanceNotesModalProps) => {
+  const { t } = useTranslation("management");
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -40,17 +42,17 @@ const AttendanceNotesModal = ({ record, open, onOpenChange, onSave }: Attendance
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Attendance Note</DialogTitle>
+          <DialogTitle>{t("attendance_modals.notes.title")}</DialogTitle>
           <DialogDescription>
-            Add a note about the shift for {record.employee.name}.
+            {t("attendance_modals.notes.description", { name: record.employee.name })}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="note">Note</Label>
+            <Label htmlFor="note">{t("attendance_modals.notes.note_label")}</Label>
             <Textarea
               id="note"
-              placeholder="e.g. Traffic delay, Personal leave, Worked through lunch..."
+              placeholder={t("attendance_modals.notes.note_placeholder")}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               className="min-h-[120px]"
@@ -58,8 +60,8 @@ const AttendanceNotesModal = ({ record, open, onOpenChange, onSave }: Attendance
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button type="submit" onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">Save Note</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>{t("attendance_modals.notes.cancel")}</Button>
+          <Button type="submit" onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">{t("attendance_modals.notes.save_note")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

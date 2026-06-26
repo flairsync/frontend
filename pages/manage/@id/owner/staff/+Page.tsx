@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StaffSection from "./StaffSection";
@@ -40,6 +41,7 @@ type TabValue = typeof VALID_TABS[number];
 
 const OwnerStaffManagementPage: React.FC = () => {
     usePageTour(STAFF_TOUR_STEPS);
+    const { t } = useTranslation("management");
 
     const [activeTab, setActiveTab] = useState<TabValue>("staff");
     const [isInitialized, setIsInitialized] = useState(false);
@@ -63,23 +65,23 @@ const OwnerStaffManagementPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight">Staff & Roles</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{t("staff_management_page.heading")}</h1>
 
             <Separator />
 
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabValue)} className="space-y-6">
                 <TabsList className="flex flex-wrap sm:flex-nowrap gap-2 overflow-x-auto scrollbar-none">
                     <TabsTrigger data-tour="staff-tab-staff" value="staff" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Staff Management
+                        {t("staff_management_page.owner_tabs.staff")}
                     </TabsTrigger>
                     <TabsTrigger data-tour="staff-tab-invitations" value="invitations" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Staff Invitations
+                        {t("staff_management_page.owner_tabs.invitations")}
                     </TabsTrigger>
                     <TabsTrigger data-tour="staff-tab-roles" value="roles" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Roles Management
+                        {t("staff_management_page.owner_tabs.roles")}
                     </TabsTrigger>
                     <TabsTrigger data-tour="staff-tab-teams" value="teams" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Teams Management
+                        {t("staff_management_page.owner_tabs.teams")}
                     </TabsTrigger>
                 </TabsList>
 

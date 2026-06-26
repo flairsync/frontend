@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableBody,
@@ -27,6 +28,7 @@ interface LiveTabProps {
 }
 
 const LiveTab = ({ records, isLoading }: LiveTabProps) => {
+  const { t } = useTranslation("management");
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
@@ -46,12 +48,12 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
     <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Who's Working Now</h2>
-          <p className="text-muted-foreground text-sm">Real-time status of clocked-in employees.</p>
+          <h2 className="text-xl font-bold text-foreground">{t("attendance_live.heading")}</h2>
+          <p className="text-muted-foreground text-sm">{t("attendance_live.subtitle")}</p>
         </div>
         <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground bg-muted px-3 py-1.5 rounded-lg border border-border">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          LIVE · {liveRecords.length} active
+          {t("attendance_live.live_active_count", { count: liveRecords.length })}
         </div>
       </div>
 
@@ -59,11 +61,11 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
-              <TableHead className="font-semibold text-muted-foreground">Employee</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Clock In</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Duration</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Status</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Break</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_live.col_employee")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_live.col_clock_in")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_live.col_duration")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_live.col_status")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_live.col_break")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -108,14 +110,14 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
                             : "bg-green-100 text-green-700 border-none"
                         }
                       >
-                        {onBreak ? "On Break" : "Working"}
+                        {onBreak ? t("attendance_live.status_on_break") : t("attendance_live.status_working")}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {activeBreak ? (
                         <span className="flex items-center gap-1">
                           <Coffee className="h-3.5 w-3.5 text-purple-400" />
-                          {activeBreak.type === "PAID" ? "Paid" : "Unpaid"} · {getElapsed(activeBreak.start)}
+                          {activeBreak.type === "PAID" ? t("attendance_live.break_paid") : t("attendance_live.break_unpaid")} · {getElapsed(activeBreak.start)}
                         </span>
                       ) : (
                         "—"
@@ -129,7 +131,7 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
                 <TableCell colSpan={5} className="h-48 text-center text-muted-foreground">
                   <div className="flex flex-col items-center gap-2">
                     <User className="h-8 w-8 text-muted-foreground/30" />
-                    <p className="italic">No employees currently clocked in.</p>
+                    <p className="italic">{t("attendance_live.no_one_clocked_in")}</p>
                   </div>
                 </TableCell>
               </TableRow>

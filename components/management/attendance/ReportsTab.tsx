@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { DateRange } from "react-day-picker";
 import { format, startOfWeek, endOfWeek } from "date-fns";
 import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
@@ -27,6 +28,7 @@ interface ReportsTabProps {
 }
 
 const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) => {
+  const { t } = useTranslation("management");
   const startDate = dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined;
   const endDate = dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined;
 
@@ -48,8 +50,8 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
     <div className="space-y-8 max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-card p-6 rounded-xl shadow-sm">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Labor Summary</h2>
-          <p className="text-muted-foreground text-sm">OT + pay breakdown — validated records only.</p>
+          <h2 className="text-xl font-bold text-foreground">{t("attendance_reports.heading")}</h2>
+          <p className="text-muted-foreground text-sm">{t("attendance_reports.subtitle")}</p>
         </div>
         <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-[280px]" />
       </div>
@@ -57,16 +59,16 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
       {!startDate || !endDate ? (
         <div className="flex items-center gap-2 text-slate-500 text-sm bg-amber-50 border border-amber-100 rounded-lg px-4 py-3">
           <Info className="h-4 w-4 text-amber-500 shrink-0" />
-          Select a date range to load the labor summary.
+          {t("attendance_reports.select_date_range_prompt")}
         </div>
       ) : (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "Total Hours", value: fmtHours(totals.totalHours), color: "text-blue-600" },
-              { label: "Regular Hours", value: fmtHours(totals.regularHours), color: "text-green-600" },
-              { label: "Overtime Hours", value: fmtHours(totals.overtimeHours), color: "text-amber-600" },
-              { label: "Total Pay", value: `${getCurrencySymbol(currency)}${totals.totalPay.toFixed(2)}`, color: "text-indigo-600" },
+              { label: t("attendance_reports.total_hours"), value: fmtHours(totals.totalHours), color: "text-blue-600" },
+              { label: t("attendance_reports.regular_hours"), value: fmtHours(totals.regularHours), color: "text-green-600" },
+              { label: t("attendance_reports.overtime_hours"), value: fmtHours(totals.overtimeHours), color: "text-amber-600" },
+              { label: t("attendance_reports.total_pay"), value: `${getCurrencySymbol(currency)}${totals.totalPay.toFixed(2)}`, color: "text-indigo-600" },
             ].map((card) => (
               <Card key={card.label} className="border-none shadow-sm">
                 <CardContent className="pt-5">
@@ -80,7 +82,7 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
           {summary.length > 0 && summary.some((e) => e.attendanceCount < (e.attendanceIds?.length ?? 0)) && (
             <div className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-4 py-3">
               <Info className="h-4 w-4 shrink-0" />
-              Some records are still pending validation and are not included in this summary.
+              {t("attendance_reports.pending_validation_notice")}
             </div>
           )}
 
@@ -88,12 +90,12 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
             <Table>
               <TableHeader className="bg-muted/50">
                 <TableRow>
-                  <TableHead className="font-semibold text-muted-foreground">Employee</TableHead>
-                  <TableHead className="font-semibold text-muted-foreground text-center">Records</TableHead>
-                  <TableHead className="font-semibold text-muted-foreground text-center">Total Hours</TableHead>
-                  <TableHead className="font-semibold text-muted-foreground text-center">Regular</TableHead>
-                  <TableHead className="font-semibold text-muted-foreground text-center text-amber-600">Overtime</TableHead>
-                  <TableHead className="font-semibold text-muted-foreground text-right pr-6">Total Pay</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground">{t("attendance_reports.col_employee")}</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center">{t("attendance_reports.col_records")}</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center">{t("attendance_reports.col_total_hours")}</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center">{t("attendance_reports.col_regular")}</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-center text-amber-600">{t("attendance_reports.col_overtime")}</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground text-right pr-6">{t("attendance_reports.col_total_pay")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -117,7 +119,7 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
                       </TableCell>
                       <TableCell className="text-right pr-6 font-bold text-primary">
                         {entry.hourlyRate === 0
-                          ? <span className="text-xs font-normal text-muted-foreground">Rate not set</span>
+                          ? <span className="text-xs font-normal text-muted-foreground">{t("attendance_reports.rate_not_set")}</span>
                           : `${getCurrencySymbol(entry.currency)}${entry.totalPay.toFixed(2)}`}
                       </TableCell>
                     </TableRow>
@@ -125,7 +127,7 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
                 ) : (
                   <TableRow>
                     <TableCell colSpan={6} className="h-32 text-center text-muted-foreground italic">
-                      No validated records for this period.
+                      {t("attendance_reports.no_validated_records")}
                     </TableCell>
                   </TableRow>
                 )}

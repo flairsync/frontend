@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { isWithinInterval, parseISO } from "date-fns";
 import AttendanceStats from "./AttendanceStats";
 import AttendanceFilters from "./AttendanceFilters";
@@ -36,6 +37,7 @@ const OverviewTab = ({
   statusFilter,
   setStatusFilter,
 }: OverviewTabProps) => {
+  const { t } = useTranslation("management");
   const { absences } = useAbsences(businessId);
 
   const absencesInRange = dateRange?.from && dateRange?.to
@@ -59,9 +61,9 @@ const OverviewTab = ({
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-foreground">Attendance Logs</h2>
+          <h2 className="text-xl font-bold text-foreground">{t("attendance_overview.heading")}</h2>
           <span className="text-sm text-muted-foreground font-medium bg-muted px-3 py-1 rounded-full">
-            {records.length} of {total} records
+            {t("attendance_overview.records_count", { count: records.length, total })}
           </span>
         </div>
         <AttendanceTable

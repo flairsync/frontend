@@ -701,5 +701,228 @@
     "table": "Mesa",
     "assign_table": "Asignar mesa",
     "pre_order": "Pre-pedido"
+  },
+  "staff_teams": {
+    "section": {
+      "loading": "Cargando equipos...",
+      "heading": "Gestión de equipos",
+      "create_team": "Crear equipo",
+      "no_teams_title": "No se encontraron equipos",
+      "no_teams_subtitle": "Crea grupos para gestionar fácilmente a tu personal.",
+      "view_roster": "Ver plantilla",
+      "delete_confirm": "¿Seguro que quieres eliminar este equipo?"
+    },
+    "edit_modal": {
+      "create_title": "Crear nuevo equipo",
+      "edit_title": "Editar equipo",
+      "name_label": "Nombre del equipo",
+      "name_placeholder": "ej. Personal de cocina",
+      "color_label": "Color del equipo",
+      "color_hint": "Selecciona un color para identificar este equipo",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "saving": "Guardando..."
+    },
+    "roster_modal": {
+      "title": "Plantilla del equipo: {{name}}",
+      "add_staff": "Añadir personal",
+      "no_staff_assigned": "Aún no hay personal asignado a este equipo.",
+      "col_staff_member": "Miembro del personal",
+      "col_email": "Correo electrónico",
+      "col_actions": "Acciones",
+      "removing": "Eliminando..."
+    },
+    "assign_modal": {
+      "title": "Asignar personal al equipo",
+      "no_staff_available": "No hay personal disponible para asignar. Es posible que ya formen parte de este equipo.",
+      "unknown_user": "Usuario desconocido",
+      "cancel": "Cancelar",
+      "assigning": "Asignando...",
+      "assign": "Asignar",
+      "assign_with_count": "Asignar ({{count}})"
+    }
+  },
+  "staff_pin": {
+    "title": "Establecer PIN — {{name}}",
+    "description": "El miembro del personal usará este PIN para iniciar sesión en cualquier terminal POS.",
+    "new_pin_label": "Nuevo PIN",
+    "confirm_pin_label": "Confirmar PIN",
+    "pins_do_not_match": "Los PIN no coinciden",
+    "cancel": "Cancelar",
+    "saving": "Guardando...",
+    "save_pin": "Guardar PIN",
+    "set_success": "PIN establecido para {{name}}. Ya puede iniciar sesión en cualquier terminal POS.",
+    "set_failed": "No se pudo establecer el PIN"
+  },
+  "staff_management_page": {
+    "heading": "Personal y roles",
+    "tabs": {
+      "staff": "Personal",
+      "invitations": "Invitaciones",
+      "roles": "Roles",
+      "teams": "Equipos"
+    },
+    "owner_tabs": {
+      "staff": "Gestión de personal",
+      "invitations": "Invitaciones de personal",
+      "roles": "Gestión de roles",
+      "teams": "Gestión de equipos"
+    },
+    "bulk_assign_modal": {
+      "title": "Asignación masiva de rol",
+      "select_role_placeholder": "Selecciona un rol",
+      "no_staff_found": "No se encontraron miembros del personal.",
+      "unnamed": "Sin nombre",
+      "cancel": "Cancelar",
+      "assign_role": "Asignar rol"
+    },
+    "staff_tab": {
+      "bulk_assign_role": "Asignación masiva de rol",
+      "all_staff": "Todo el personal",
+      "col_name": "Nombre",
+      "col_status": "Estado",
+      "col_roles": "Roles",
+      "col_actions": "Acciones",
+      "no_staff_found": "No se encontraron miembros del personal.",
+      "you_badge": "Tú",
+      "business_owner_badge": "Propietario del negocio",
+      "no_roles_badge": "Sin roles",
+      "edit_roles_title": "Editar roles",
+      "status_active": "ACTIVO",
+      "status_suspended": "SUSPENDIDO"
+    }
+  },
+  "attendance_page": {
+    "heading": "Asistencia",
+    "tabs": {
+      "overview": "Resumen",
+      "live": "Vista en vivo",
+      "reports": "Informes",
+      "absences": "Ausencias"
+    }
+  },
+  "attendance_overview": {
+    "heading": "Registros de asistencia",
+    "records_count": "{{count}} de {{total}} registros"
+  },
+  "attendance_live": {
+    "heading": "Quién está trabajando ahora",
+    "subtitle": "Estado en tiempo real de los empleados con fichaje activo.",
+    "live_active_count": "EN VIVO · {{count}} activos",
+    "col_employee": "Empleado",
+    "col_clock_in": "Entrada",
+    "col_duration": "Duración",
+    "col_status": "Estado",
+    "col_break": "Descanso",
+    "status_on_break": "En descanso",
+    "status_working": "Trabajando",
+    "break_paid": "Pagado",
+    "break_unpaid": "No pagado",
+    "no_one_clocked_in": "Ningún empleado tiene un fichaje activo en este momento."
+  },
+  "attendance_reports": {
+    "heading": "Resumen de mano de obra",
+    "subtitle": "Desglose de horas extra y pago — solo registros validados.",
+    "select_date_range_prompt": "Selecciona un rango de fechas para cargar el resumen de mano de obra.",
+    "total_hours": "Horas totales",
+    "regular_hours": "Horas regulares",
+    "overtime_hours": "Horas extra",
+    "total_pay": "Pago total",
+    "pending_validation_notice": "Algunos registros aún están pendientes de validación y no se incluyen en este resumen.",
+    "col_employee": "Empleado",
+    "col_records": "Registros",
+    "col_total_hours": "Horas totales",
+    "col_regular": "Regulares",
+    "col_overtime": "Horas extra",
+    "col_total_pay": "Pago total",
+    "rate_not_set": "Tarifa no establecida",
+    "no_validated_records": "No hay registros validados para este período."
+  },
+  "attendance_absences": {
+    "heading": "Registro de ausencias",
+    "subtitle": "Ausencias registradas por los encargados para todo el personal.",
+    "add_absence": "Añadir ausencia",
+    "col_employee": "Empleado",
+    "col_date": "Fecha",
+    "col_type": "Tipo",
+    "col_notes": "Notas",
+    "col_document": "Documento",
+    "col_recorded_by": "Registrado por",
+    "col_actions": "Acciones",
+    "not_available": "—",
+    "paid": "Pagada",
+    "unpaid": "No pagada",
+    "view_document": "Ver",
+    "log_as_worked_title": "Registrar como trabajado — convierte esto en un turno validado",
+    "no_records": "No se encontraron registros de ausencias.",
+    "already_has_attendance_toast": "Este turno ya tiene un registro de asistencia — resuélvelo desde la acción \"Validar turno\" de la pestaña Resumen.",
+    "delete_dialog": {
+      "title": "Eliminar registro de ausencia",
+      "description": "Esto eliminará permanentemente el registro de ausencia. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando..."
+    }
+  },
+  "attendance_modals": {
+    "edit_attendance": {
+      "title": "Editar asistencia",
+      "description": "Ajusta las horas de entrada y salida de {{name}}.",
+      "clock_in_label": "Entrada",
+      "clock_out_label": "Salida",
+      "cancel": "Cancelar",
+      "save_changes": "Guardar cambios"
+    },
+    "absence": {
+      "create_title": "Registrar ausencia",
+      "edit_title": "Editar registro de ausencia",
+      "employee_label": "Empleado",
+      "employment_id_label": "ID de empleo",
+      "employment_id_placeholder": "UUID del empleo del empleado",
+      "date_label": "Fecha",
+      "type_label": "Tipo de ausencia",
+      "type_placeholder": "Selecciona el tipo",
+      "paid_leave_label": "Permiso pagado",
+      "linked_attendance_label": "Asistencia vinculada",
+      "time_off_request_label": "ID de solicitud de permiso vinculada (opcional)",
+      "time_off_request_placeholder": "UUID de la solicitud de permiso aprobada",
+      "notes_label": "Notas",
+      "notes_placeholder": "ej. Cita médica confirmada",
+      "document_url_label": "URL del documento (opcional)",
+      "document_url_placeholder": "https://... justificante médico o enlace de carga",
+      "cancel": "Cancelar",
+      "saving": "Guardando...",
+      "update": "Actualizar",
+      "record_absence": "Registrar ausencia"
+    },
+    "notes": {
+      "title": "Nota de asistencia",
+      "description": "Añade una nota sobre el turno de {{name}}.",
+      "note_label": "Nota",
+      "note_placeholder": "ej. Retraso por tráfico, permiso personal, trabajó durante el almuerzo...",
+      "cancel": "Cancelar",
+      "save_note": "Guardar nota"
+    }
+  },
+  "attendance_filters": {
+    "all_lifecycles": "Todos los ciclos",
+    "lifecycle_active": "Activo",
+    "lifecycle_pending_validation": "Pendiente de validación",
+    "lifecycle_validated": "Validado",
+    "all_statuses": "Todos los estados",
+    "status_present": "Presente",
+    "status_late": "Tarde",
+    "status_no_show": "Ausente",
+    "status_on_break": "En descanso",
+    "search_employee_placeholder": "Buscar empleado...",
+    "clear": "Limpiar"
+  },
+  "attendance_stats": {
+    "active_now": { "title": "Activos ahora", "description": "Actualmente con fichaje activo" },
+    "worked_hours": { "title": "Horas trabajadas", "description": "En todos los registros" },
+    "pending_validation": { "title": "Pendiente de validación", "description": "Esperando revisión del encargado" },
+    "validated": { "title": "Validados", "description": "Registros bloqueados" },
+    "absences_late": { "title": "Ausencias / Tardanzas", "description": "Ausencias · Llegadas tarde" }
   }
 }

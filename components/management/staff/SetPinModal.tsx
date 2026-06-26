@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import flairapi from "@/lib/flairapi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ async function setStaffPin(businessId: string, empId: string, pin: string) {
 }
 
 export default function SetPinModal({ open, businessId, employee, onClose }: Props) {
+    const { t } = useTranslation("management");
     const [pin, setPin] = useState("");
     const [confirm, setConfirm] = useState("");
     const [loading, setLoading] = useState(false);
@@ -45,12 +47,12 @@ export default function SetPinModal({ open, businessId, employee, onClose }: Pro
         setError("");
         try {
             await setStaffPin(businessId, employee.id, pin);
-            toast.success(`PIN set for ${employee.name}. They can now log in at any POS terminal.`);
+            toast.success(t("staff_pin.set_success", { name: employee.name }));
             setPin("");
             setConfirm("");
             onClose();
         } catch (e: any) {
-            setError(e.response?.data?.message ?? "Failed to set PIN");
+            setError(e.response?.data?.message ?? t("staff_pin.set_failed"));
         } finally {
             setLoading(false);
         }
@@ -74,29 +76,29 @@ export default function SetPinModal({ open, businessId, employee, onClose }: Pro
                             <KeyRound className="w-4 h-4 text-primary" />
                         </div>
                         <div>
-                            <DialogTitle>Set PIN — {employee.name}</DialogTitle>
+                            <DialogTitle>{t("staff_pin.title", { name: employee.name })}</DialogTitle>
                             <DialogDescription>
-                                The staff member will use this PIN to log in at any POS terminal.
+                                {t("staff_pin.description")}
                             </DialogDescription>
                         </div>
                     </div>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-                    <PinInput label="New PIN" value={pin} onChange={setPin} />
-                    <PinInput label="Confirm PIN" value={confirm} onChange={setConfirm} />
+                    <PinInput label={t("staff_pin.new_pin_label")} value={pin} onChange={setPin} />
+                    <PinInput label={t("staff_pin.confirm_pin_label")} value={confirm} onChange={setConfirm} />
 
                     {pin.length === 4 && confirm.length === 4 && pin !== confirm && (
-                        <p className="text-destructive text-sm">PINs do not match</p>
+                        <p className="text-destructive text-sm">{t("staff_pin.pins_do_not_match")}</p>
                     )}
                     {error && <p className="text-destructive text-sm">{error}</p>}
 
                     <div className="flex gap-2 justify-end pt-2">
                         <Button type="button" variant="outline" onClick={onClose}>
-                            Cancel
+                            {t("staff_pin.cancel")}
                         </Button>
                         <Button type="submit" disabled={!isValid || loading}>
-                            {loading ? "Saving..." : "Save PIN"}
+                            {loading ? t("staff_pin.saving") : t("staff_pin.save_pin")}
                         </Button>
                     </div>
                 </form>

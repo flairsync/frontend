@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { DateRange } from "react-day-picker";
 import { startOfWeek, endOfWeek, format } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -43,6 +44,7 @@ const ATTENDANCE_TOUR_STEPS: TourStep[] = [
 
 export default function AttendancePage() {
   usePageTour(ATTENDANCE_TOUR_STEPS);
+  const { t } = useTranslation("management");
 
   const { routeParams } = usePageContext();
   const businessId = routeParams.id as string;
@@ -97,7 +99,7 @@ export default function AttendancePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Attendance</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("attendance_page.heading")}</h1>
       </div>
 
       <Separator />
@@ -106,22 +108,22 @@ export default function AttendancePage() {
           <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
             <TabsTrigger data-tour="attendance-tab-overview" value="overview" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <Users className="h-4 w-4" />
-              Overview
+              {t("attendance_page.tabs.overview")}
             </TabsTrigger>
             <TabsTrigger data-tour="attendance-tab-live" value="live" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <div className="relative">
                 <Activity className="h-4 w-4" />
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               </div>
-              Live View
+              {t("attendance_page.tabs.live")}
             </TabsTrigger>
             <TabsTrigger data-tour="attendance-tab-reports" value="reports" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <BarChart2 className="h-4 w-4" />
-              Reports
+              {t("attendance_page.tabs.reports")}
             </TabsTrigger>
             <TabsTrigger data-tour="attendance-tab-absences" value="absences" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <CalendarOff className="h-4 w-4" />
-              Absences
+              {t("attendance_page.tabs.absences")}
             </TabsTrigger>
           </TabsList>
 

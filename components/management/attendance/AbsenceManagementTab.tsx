@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableBody,
@@ -33,6 +34,7 @@ interface AbsenceManagementTabProps {
 }
 
 const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
+  const { t } = useTranslation("management");
   const { absences, fetchingAbsences, deleteAbsence, isDeleting } = useAbsences(businessId);
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -44,15 +46,15 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
     <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Absence Log</h2>
-          <p className="text-muted-foreground text-sm">Manager-recorded absences for all staff.</p>
+          <h2 className="text-xl font-bold text-foreground">{t("attendance_absences.heading")}</h2>
+          <p className="text-muted-foreground text-sm">{t("attendance_absences.subtitle")}</p>
         </div>
         <Button
           className="bg-indigo-600 hover:bg-indigo-700 gap-2"
           onClick={() => setCreateOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          Add Absence
+          {t("attendance_absences.add_absence")}
         </Button>
       </div>
 
@@ -60,13 +62,13 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
-              <TableHead className="font-semibold text-muted-foreground">Employee</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Date</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Type</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Notes</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Document</TableHead>
-              <TableHead className="font-semibold text-muted-foreground">Recorded By</TableHead>
-              <TableHead className="font-semibold text-muted-foreground text-right pr-6">Actions</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_absences.col_employee")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_absences.col_date")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_absences.col_type")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_absences.col_notes")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_absences.col_document")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground">{t("attendance_absences.col_recorded_by")}</TableHead>
+              <TableHead className="font-semibold text-muted-foreground text-right pr-6">{t("attendance_absences.col_actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -83,7 +85,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                   : absence.employmentId.slice(0, 8);
                 const recordedBy = (absence as any).recordedBy
                   ? `${(absence as any).recordedBy.professionalProfile.firstName} ${(absence as any).recordedBy.professionalProfile.lastName}`
-                  : "—";
+                  : t("attendance_absences.not_available");
 
                 return (
                   <TableRow key={absence.id} className="hover:bg-muted/50">
@@ -103,7 +105,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                           variant="secondary"
                           className={`${absence.isPaid ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'} border-none font-medium rounded-full`}
                         >
-                          {absence.isPaid ? 'Paid' : 'Unpaid'}
+                          {absence.isPaid ? t("attendance_absences.paid") : t("attendance_absences.unpaid")}
                         </Badge>
                       </div>
                     </TableCell>
@@ -118,7 +120,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                           rel="noopener noreferrer"
                           className="flex items-center gap-1 text-primary hover:underline text-sm"
                         >
-                          View <ExternalLink className="h-3 w-3" />
+                          {t("attendance_absences.view_document")} <ExternalLink className="h-3 w-3" />
                         </a>
                       ) : (
                         <span className="text-muted-foreground/40 text-sm">—</span>
@@ -131,7 +133,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            title="Log as worked — converts this into a validated shift"
+                            title={t("attendance_absences.log_as_worked_title")}
                             className="h-8 w-8 text-muted-foreground hover:text-emerald-600 hover:bg-emerald-50"
                             onClick={() => setLogWorkedRecord(absence)}
                           >
@@ -162,7 +164,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
             ) : (
               <TableRow>
                 <TableCell colSpan={7} className="h-32 text-center text-muted-foreground italic">
-                  No absence records found.
+                  {t("attendance_absences.no_records")}
                 </TableCell>
               </TableRow>
             )}
@@ -192,20 +194,20 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
         shift={logWorkedRecord?.shift ?? null}
         onAlreadyHasAttendance={() => {
           setLogWorkedRecord(null);
-          toast.info("This shift now has an attendance record — resolve it from the Overview tab's Validate Shift action instead.");
+          toast.info(t("attendance_absences.already_has_attendance_toast"));
         }}
       />
 
       <AlertDialog open={!!deletingId} onOpenChange={(open) => !open && setDeletingId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Absence Record</AlertDialogTitle>
+            <AlertDialogTitle>{t("attendance_absences.delete_dialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the absence record. This action cannot be undone.
+              {t("attendance_absences.delete_dialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("attendance_absences.delete_dialog.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700"
               onClick={() => {
@@ -214,7 +216,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                 }
               }}
             >
-              {isDeleting ? "Deleting..." : "Delete"}
+              {isDeleting ? t("attendance_absences.delete_dialog.deleting") : t("attendance_absences.delete_dialog.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

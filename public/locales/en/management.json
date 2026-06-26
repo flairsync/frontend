@@ -701,5 +701,228 @@
     "table": "Table",
     "assign_table": "Assign Table",
     "pre_order": "Pre-order"
+  },
+  "staff_teams": {
+    "section": {
+      "loading": "Loading teams...",
+      "heading": "Teams Management",
+      "create_team": "Create Team",
+      "no_teams_title": "No teams found",
+      "no_teams_subtitle": "Create groups to manage your staff easily.",
+      "view_roster": "View Roster",
+      "delete_confirm": "Are you sure you want to delete this team?"
+    },
+    "edit_modal": {
+      "create_title": "Create New Team",
+      "edit_title": "Edit Team",
+      "name_label": "Team Name",
+      "name_placeholder": "e.g. Kitchen Staff",
+      "color_label": "Team Color",
+      "color_hint": "Select a color to identify this team",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "roster_modal": {
+      "title": "Team Roster: {{name}}",
+      "add_staff": "Add Staff",
+      "no_staff_assigned": "No staff assigned to this team yet.",
+      "col_staff_member": "Staff Member",
+      "col_email": "Email",
+      "col_actions": "Actions",
+      "removing": "Removing..."
+    },
+    "assign_modal": {
+      "title": "Assign Staff to Team",
+      "no_staff_available": "No staff available to assign. All staff might already be in this team.",
+      "unknown_user": "Unknown User",
+      "cancel": "Cancel",
+      "assigning": "Assigning...",
+      "assign": "Assign",
+      "assign_with_count": "Assign ({{count}})"
+    }
+  },
+  "staff_pin": {
+    "title": "Set PIN — {{name}}",
+    "description": "The staff member will use this PIN to log in at any POS terminal.",
+    "new_pin_label": "New PIN",
+    "confirm_pin_label": "Confirm PIN",
+    "pins_do_not_match": "PINs do not match",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "save_pin": "Save PIN",
+    "set_success": "PIN set for {{name}}. They can now log in at any POS terminal.",
+    "set_failed": "Failed to set PIN"
+  },
+  "staff_management_page": {
+    "heading": "Staff & Roles",
+    "tabs": {
+      "staff": "Staff",
+      "invitations": "Invitations",
+      "roles": "Roles",
+      "teams": "Teams"
+    },
+    "owner_tabs": {
+      "staff": "Staff Management",
+      "invitations": "Staff Invitations",
+      "roles": "Roles Management",
+      "teams": "Teams Management"
+    },
+    "bulk_assign_modal": {
+      "title": "Bulk Assign Role",
+      "select_role_placeholder": "Select a role",
+      "no_staff_found": "No staff members found.",
+      "unnamed": "Unnamed",
+      "cancel": "Cancel",
+      "assign_role": "Assign Role"
+    },
+    "staff_tab": {
+      "bulk_assign_role": "Bulk Assign Role",
+      "all_staff": "All Staff",
+      "col_name": "Name",
+      "col_status": "Status",
+      "col_roles": "Roles",
+      "col_actions": "Actions",
+      "no_staff_found": "No staff members found.",
+      "you_badge": "You",
+      "business_owner_badge": "Business Owner",
+      "no_roles_badge": "No roles",
+      "edit_roles_title": "Edit Roles",
+      "status_active": "ACTIVE",
+      "status_suspended": "SUSPENDED"
+    }
+  },
+  "attendance_page": {
+    "heading": "Attendance",
+    "tabs": {
+      "overview": "Overview",
+      "live": "Live View",
+      "reports": "Reports",
+      "absences": "Absences"
+    }
+  },
+  "attendance_overview": {
+    "heading": "Attendance Logs",
+    "records_count": "{{count}} of {{total}} records"
+  },
+  "attendance_live": {
+    "heading": "Who's Working Now",
+    "subtitle": "Real-time status of clocked-in employees.",
+    "live_active_count": "LIVE · {{count}} active",
+    "col_employee": "Employee",
+    "col_clock_in": "Clock In",
+    "col_duration": "Duration",
+    "col_status": "Status",
+    "col_break": "Break",
+    "status_on_break": "On Break",
+    "status_working": "Working",
+    "break_paid": "Paid",
+    "break_unpaid": "Unpaid",
+    "no_one_clocked_in": "No employees currently clocked in."
+  },
+  "attendance_reports": {
+    "heading": "Labor Summary",
+    "subtitle": "OT + pay breakdown — validated records only.",
+    "select_date_range_prompt": "Select a date range to load the labor summary.",
+    "total_hours": "Total Hours",
+    "regular_hours": "Regular Hours",
+    "overtime_hours": "Overtime Hours",
+    "total_pay": "Total Pay",
+    "pending_validation_notice": "Some records are still pending validation and are not included in this summary.",
+    "col_employee": "Employee",
+    "col_records": "Records",
+    "col_total_hours": "Total Hours",
+    "col_regular": "Regular",
+    "col_overtime": "Overtime",
+    "col_total_pay": "Total Pay",
+    "rate_not_set": "Rate not set",
+    "no_validated_records": "No validated records for this period."
+  },
+  "attendance_absences": {
+    "heading": "Absence Log",
+    "subtitle": "Manager-recorded absences for all staff.",
+    "add_absence": "Add Absence",
+    "col_employee": "Employee",
+    "col_date": "Date",
+    "col_type": "Type",
+    "col_notes": "Notes",
+    "col_document": "Document",
+    "col_recorded_by": "Recorded By",
+    "col_actions": "Actions",
+    "not_available": "—",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "view_document": "View",
+    "log_as_worked_title": "Log as worked — converts this into a validated shift",
+    "no_records": "No absence records found.",
+    "already_has_attendance_toast": "This shift now has an attendance record — resolve it from the Overview tab's Validate Shift action instead.",
+    "delete_dialog": {
+      "title": "Delete Absence Record",
+      "description": "This will permanently delete the absence record. This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    }
+  },
+  "attendance_modals": {
+    "edit_attendance": {
+      "title": "Edit Attendance",
+      "description": "Adjust clock-in and clock-out times for {{name}}.",
+      "clock_in_label": "Clock In",
+      "clock_out_label": "Clock Out",
+      "cancel": "Cancel",
+      "save_changes": "Save changes"
+    },
+    "absence": {
+      "create_title": "Record Absence",
+      "edit_title": "Edit Absence Record",
+      "employee_label": "Employee",
+      "employment_id_label": "Employment ID",
+      "employment_id_placeholder": "Employee employment UUID",
+      "date_label": "Date",
+      "type_label": "Absence Type",
+      "type_placeholder": "Select type",
+      "paid_leave_label": "Paid Leave",
+      "linked_attendance_label": "Linked Attendance",
+      "time_off_request_label": "Linked Time-Off Request ID (optional)",
+      "time_off_request_placeholder": "UUID of the approved time-off request",
+      "notes_label": "Notes",
+      "notes_placeholder": "e.g. Doctor's appointment confirmed",
+      "document_url_label": "Document URL (optional)",
+      "document_url_placeholder": "https://... doctor's note or upload link",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "update": "Update",
+      "record_absence": "Record Absence"
+    },
+    "notes": {
+      "title": "Attendance Note",
+      "description": "Add a note about the shift for {{name}}.",
+      "note_label": "Note",
+      "note_placeholder": "e.g. Traffic delay, Personal leave, Worked through lunch...",
+      "cancel": "Cancel",
+      "save_note": "Save Note"
+    }
+  },
+  "attendance_filters": {
+    "all_lifecycles": "All Lifecycles",
+    "lifecycle_active": "Active",
+    "lifecycle_pending_validation": "Pending Validation",
+    "lifecycle_validated": "Validated",
+    "all_statuses": "All Statuses",
+    "status_present": "Present",
+    "status_late": "Late",
+    "status_no_show": "No Show",
+    "status_on_break": "On Break",
+    "search_employee_placeholder": "Search employee...",
+    "clear": "Clear"
+  },
+  "attendance_stats": {
+    "active_now": { "title": "Active Now", "description": "Currently clocked in" },
+    "worked_hours": { "title": "Worked Hours", "description": "Across all records" },
+    "pending_validation": { "title": "Pending Validation", "description": "Awaiting manager review" },
+    "validated": { "title": "Validated", "description": "Locked records" },
+    "absences_late": { "title": "Absences / Late", "description": "Absences · Late arrivals" }
   }
 }

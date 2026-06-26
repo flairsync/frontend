@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,7 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
     isLoading,
     onDelete,
 }) => {
+    const { t } = useTranslation("management");
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -41,22 +43,22 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{team ? "Edit Team" : "Create New Team"}</DialogTitle>
+                    <DialogTitle>{team ? t("staff_teams.edit_modal.edit_title") : t("staff_teams.edit_modal.create_title")}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={formik.handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">Team Name</Label>
+                        <Label htmlFor="name">{t("staff_teams.edit_modal.name_label")}</Label>
                         <Input
                             id="name"
                             name="name"
                             value={formik.values.name}
                             onChange={formik.handleChange}
-                            placeholder="e.g. Kitchen Staff"
+                            placeholder={t("staff_teams.edit_modal.name_placeholder")}
                             required
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="colorCode">Team Color</Label>
+                        <Label htmlFor="colorCode">{t("staff_teams.edit_modal.color_label")}</Label>
                         <div className="flex gap-2 items-center">
                             <Input
                                 id="colorCode"
@@ -66,7 +68,7 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
                                 value={formik.values.colorCode}
                                 onChange={formik.handleChange}
                             />
-                            <span className="text-sm text-muted-foreground">Select a color to identify this team</span>
+                            <span className="text-sm text-muted-foreground">{t("staff_teams.edit_modal.color_hint")}</span>
                         </div>
                     </div>
                     <div className="flex justify-between items-center pt-4">
@@ -77,16 +79,16 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
                                     variant="destructive"
                                     onClick={() => onDelete(team.id)}
                                 >
-                                    Delete
+                                    {t("staff_teams.edit_modal.delete")}
                                 </Button>
                             )}
                         </div>
                         <div className="flex gap-2">
                             <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>
-                                Cancel
+                                {t("staff_teams.edit_modal.cancel")}
                             </Button>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? "Saving..." : "Save"}
+                                {isLoading ? t("staff_teams.edit_modal.saving") : t("staff_teams.edit_modal.save")}
                             </Button>
                         </div>
                     </div>

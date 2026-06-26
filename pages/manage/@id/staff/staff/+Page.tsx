@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from "vike/client/router";
 import { usePermissions } from "@/features/auth/usePermissions";
@@ -55,6 +56,7 @@ type BulkAssignModalProps = {
 };
 
 function BulkAssignRoleModal({ open, onOpenChange, businessId }: BulkAssignModalProps) {
+    const { t } = useTranslation("management");
     const { employees } = useBusinessEmployees(businessId);
     const { businessRoles, bulkAssignRole, bulkAssigningRole } = useBusinessRoles(businessId);
 
@@ -89,13 +91,13 @@ function BulkAssignRoleModal({ open, onOpenChange, businessId }: BulkAssignModal
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md flex flex-col max-h-[90vh]">
                 <DialogHeader>
-                    <DialogTitle>Bulk Assign Role</DialogTitle>
+                    <DialogTitle>{t("staff_management_page.bulk_assign_modal.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-4">
                     <Select value={selectedRoleId} onValueChange={setSelectedRoleId}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select a role" />
+                            <SelectValue placeholder={t("staff_management_page.bulk_assign_modal.select_role_placeholder")} />
                         </SelectTrigger>
                         <SelectContent>
                             {businessRoles?.map(r => (
@@ -107,7 +109,7 @@ function BulkAssignRoleModal({ open, onOpenChange, businessId }: BulkAssignModal
                     <ScrollArea className="border rounded-md p-2 h-64">
                         {nonOwnerEmployees.length === 0 ? (
                             <p className="text-sm text-muted-foreground py-4 text-center">
-                                No staff members found.
+                                {t("staff_management_page.bulk_assign_modal.no_staff_found")}
                             </p>
                         ) : (
                             nonOwnerEmployees.map(emp => (
@@ -123,7 +125,7 @@ function BulkAssignRoleModal({ open, onOpenChange, businessId }: BulkAssignModal
                                     />
                                     <div>
                                         <p className="text-sm font-medium">
-                                            {emp.professionalProfile?.displayName || "Unnamed"}
+                                            {emp.professionalProfile?.displayName || t("staff_management_page.bulk_assign_modal.unnamed")}
                                         </p>
                                         <p className="text-xs text-muted-foreground">
                                             {emp.professionalProfile?.workEmail}
@@ -136,13 +138,13 @@ function BulkAssignRoleModal({ open, onOpenChange, businessId }: BulkAssignModal
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4 border-t">
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                    <Button variant="outline" onClick={() => onOpenChange(false)}>{t("staff_management_page.bulk_assign_modal.cancel")}</Button>
                     <Button
                         onClick={handleAssign}
                         disabled={!selectedRoleId || selectedEmpIds.size === 0 || bulkAssigningRole}
                     >
                         {bulkAssigningRole && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Assign Role
+                        {t("staff_management_page.bulk_assign_modal.assign_role")}
                     </Button>
                 </div>
             </DialogContent>
@@ -159,6 +161,7 @@ type StaffTabProps = {
 };
 
 function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const { employees, isPending: loadingEmployees } = useBusinessEmployees(routeParams.id);
     const { businessRoles, updateEmployeeRoles } = useBusinessRoles(routeParams.id);
@@ -174,7 +177,7 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                 <div className="flex justify-end">
                     <Button variant="outline" onClick={() => setBulkAssignOpen(true)}>
                         <Users className="h-4 w-4 mr-2" />
-                        Bulk Assign Role
+                        {t("staff_management_page.staff_tab.bulk_assign_role")}
                     </Button>
                 </div>
             )}
@@ -199,16 +202,16 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>All Staff</CardTitle>
+                    <CardTitle>{t("staff_management_page.staff_tab.all_staff")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Roles</TableHead>
-                                {hasActionsColumn && <TableHead>Actions</TableHead>}
+                                <TableHead>{t("staff_management_page.staff_tab.col_name")}</TableHead>
+                                <TableHead>{t("staff_management_page.staff_tab.col_status")}</TableHead>
+                                <TableHead>{t("staff_management_page.staff_tab.col_roles")}</TableHead>
+                                {hasActionsColumn && <TableHead>{t("staff_management_page.staff_tab.col_actions")}</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -221,7 +224,7 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                             ) : employees.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={hasActionsColumn ? 4 : 3} className="text-center py-8 text-muted-foreground">
-                                        No staff members found.
+                                        {t("staff_management_page.staff_tab.no_staff_found")}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -231,7 +234,7 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                                             <div className="flex items-center gap-2">
                                                 {member.professionalProfile?.displayName ?? "—"}
                                                 {member.id === myEmploymentId && (
-                                                    <Badge variant="outline" className="text-xs">You</Badge>
+                                                    <Badge variant="outline" className="text-xs">{t("staff_management_page.staff_tab.you_badge")}</Badge>
                                                 )}
                                             </div>
                                         </TableCell>
@@ -243,16 +246,16 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                                                     : "secondary"
                                                 }
                                             >
-                                                {member.status}
+                                                {t(`staff_management_page.staff_tab.status_${member.status.toLowerCase()}`, { defaultValue: member.status })}
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
                                             {member.type === "OWNER" ? (
-                                                <Badge className="bg-indigo-600 hover:bg-indigo-700">Business Owner</Badge>
+                                                <Badge className="bg-indigo-600 hover:bg-indigo-700">{t("staff_management_page.staff_tab.business_owner_badge")}</Badge>
                                             ) : (
                                                 <div className="flex flex-wrap gap-1">
                                                     {member.roles.length === 0 ? (
-                                                        <Badge variant="secondary">No roles</Badge>
+                                                        <Badge variant="secondary">{t("staff_management_page.staff_tab.no_roles_badge")}</Badge>
                                                     ) : (
                                                         <>
                                                             {member.roles.slice(0, 2).map(r => (
@@ -274,7 +277,7 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                                                             <Button
                                                                 size="sm"
                                                                 variant="outline"
-                                                                title="Edit Roles"
+                                                                title={t("staff_management_page.staff_tab.edit_roles_title")}
                                                                 onClick={() => setSelectedStaff(member)}
                                                             >
                                                                 <Edit className="h-4 w-4" />
@@ -308,6 +311,7 @@ type TabValue = typeof VALID_TABS[number];
 // ─── Main Page ───────────────────────────────────────────────────────────────
 
 const StaffManagementPage: React.FC = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const { hasPermission, isLoading: loadingPermissions } = usePermissions(routeParams.id);
     const { myEmployments } = useMyEmployments();
@@ -353,23 +357,23 @@ const StaffManagementPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight">Staff & Roles</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{t("staff_management_page.heading")}</h1>
 
             <Separator />
 
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabValue)} className="space-y-6">
                 <TabsList className="flex flex-wrap sm:flex-nowrap gap-2 overflow-x-auto scrollbar-none">
                     <TabsTrigger value="staff" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Staff
+                        {t("staff_management_page.tabs.staff")}
                     </TabsTrigger>
                     <TabsTrigger value="invitations" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Invitations
+                        {t("staff_management_page.tabs.invitations")}
                     </TabsTrigger>
                     <TabsTrigger value="roles" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Roles
+                        {t("staff_management_page.tabs.roles")}
                     </TabsTrigger>
                     <TabsTrigger value="teams" className="flex-1 sm:flex-none min-w-[120px] text-center">
-                        Teams
+                        {t("staff_management_page.tabs.teams")}
                     </TabsTrigger>
                 </TabsList>
 

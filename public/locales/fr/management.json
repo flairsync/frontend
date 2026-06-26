@@ -701,5 +701,228 @@
     "table": "Table",
     "assign_table": "Attribuer une table",
     "pre_order": "Pré-commande"
+  },
+  "staff_teams": {
+    "section": {
+      "loading": "Chargement des équipes...",
+      "heading": "Gestion des équipes",
+      "create_team": "Créer une équipe",
+      "no_teams_title": "Aucune équipe trouvée",
+      "no_teams_subtitle": "Créez des groupes pour gérer facilement votre personnel.",
+      "view_roster": "Voir l'effectif",
+      "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette équipe ?"
+    },
+    "edit_modal": {
+      "create_title": "Créer une nouvelle équipe",
+      "edit_title": "Modifier l'équipe",
+      "name_label": "Nom de l'équipe",
+      "name_placeholder": "ex. Personnel de cuisine",
+      "color_label": "Couleur de l'équipe",
+      "color_hint": "Sélectionnez une couleur pour identifier cette équipe",
+      "delete": "Supprimer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "saving": "Enregistrement..."
+    },
+    "roster_modal": {
+      "title": "Effectif de l'équipe : {{name}}",
+      "add_staff": "Ajouter du personnel",
+      "no_staff_assigned": "Aucun membre du personnel n'est encore assigné à cette équipe.",
+      "col_staff_member": "Membre du personnel",
+      "col_email": "E-mail",
+      "col_actions": "Actions",
+      "removing": "Suppression..."
+    },
+    "assign_modal": {
+      "title": "Assigner du personnel à l'équipe",
+      "no_staff_available": "Aucun membre du personnel disponible. Ils font peut-être déjà tous partie de cette équipe.",
+      "unknown_user": "Utilisateur inconnu",
+      "cancel": "Annuler",
+      "assigning": "Attribution en cours...",
+      "assign": "Assigner",
+      "assign_with_count": "Assigner ({{count}})"
+    }
+  },
+  "staff_pin": {
+    "title": "Définir le code PIN — {{name}}",
+    "description": "Le membre du personnel utilisera ce code PIN pour se connecter sur n'importe quel terminal POS.",
+    "new_pin_label": "Nouveau code PIN",
+    "confirm_pin_label": "Confirmer le code PIN",
+    "pins_do_not_match": "Les codes PIN ne correspondent pas",
+    "cancel": "Annuler",
+    "saving": "Enregistrement...",
+    "save_pin": "Enregistrer le code PIN",
+    "set_success": "Code PIN défini pour {{name}}. Il peut désormais se connecter sur n'importe quel terminal POS.",
+    "set_failed": "Échec de la définition du code PIN"
+  },
+  "staff_management_page": {
+    "heading": "Personnel et rôles",
+    "tabs": {
+      "staff": "Personnel",
+      "invitations": "Invitations",
+      "roles": "Rôles",
+      "teams": "Équipes"
+    },
+    "owner_tabs": {
+      "staff": "Gestion du personnel",
+      "invitations": "Invitations du personnel",
+      "roles": "Gestion des rôles",
+      "teams": "Gestion des équipes"
+    },
+    "bulk_assign_modal": {
+      "title": "Attribution groupée de rôle",
+      "select_role_placeholder": "Sélectionner un rôle",
+      "no_staff_found": "Aucun membre du personnel trouvé.",
+      "unnamed": "Sans nom",
+      "cancel": "Annuler",
+      "assign_role": "Attribuer le rôle"
+    },
+    "staff_tab": {
+      "bulk_assign_role": "Attribution groupée de rôle",
+      "all_staff": "Tout le personnel",
+      "col_name": "Nom",
+      "col_status": "Statut",
+      "col_roles": "Rôles",
+      "col_actions": "Actions",
+      "no_staff_found": "Aucun membre du personnel trouvé.",
+      "you_badge": "Vous",
+      "business_owner_badge": "Propriétaire de l'entreprise",
+      "no_roles_badge": "Aucun rôle",
+      "edit_roles_title": "Modifier les rôles",
+      "status_active": "ACTIF",
+      "status_suspended": "SUSPENDU"
+    }
+  },
+  "attendance_page": {
+    "heading": "Présence",
+    "tabs": {
+      "overview": "Vue d'ensemble",
+      "live": "Vue en direct",
+      "reports": "Rapports",
+      "absences": "Absences"
+    }
+  },
+  "attendance_overview": {
+    "heading": "Journaux de présence",
+    "records_count": "{{count}} sur {{total}} enregistrements"
+  },
+  "attendance_live": {
+    "heading": "Qui travaille actuellement",
+    "subtitle": "Statut en temps réel des employés pointés.",
+    "live_active_count": "EN DIRECT · {{count}} actif(s)",
+    "col_employee": "Employé",
+    "col_clock_in": "Arrivée",
+    "col_duration": "Durée",
+    "col_status": "Statut",
+    "col_break": "Pause",
+    "status_on_break": "En pause",
+    "status_working": "En service",
+    "break_paid": "Payée",
+    "break_unpaid": "Non payée",
+    "no_one_clocked_in": "Aucun employé n'est actuellement pointé."
+  },
+  "attendance_reports": {
+    "heading": "Résumé de la main-d'œuvre",
+    "subtitle": "Répartition des heures sup. et de la paie — enregistrements validés uniquement.",
+    "select_date_range_prompt": "Sélectionnez une plage de dates pour charger le résumé de la main-d'œuvre.",
+    "total_hours": "Heures totales",
+    "regular_hours": "Heures normales",
+    "overtime_hours": "Heures supplémentaires",
+    "total_pay": "Paie totale",
+    "pending_validation_notice": "Certains enregistrements sont encore en attente de validation et ne sont pas inclus dans ce résumé.",
+    "col_employee": "Employé",
+    "col_records": "Enregistrements",
+    "col_total_hours": "Heures totales",
+    "col_regular": "Normales",
+    "col_overtime": "Heures sup.",
+    "col_total_pay": "Paie totale",
+    "rate_not_set": "Taux non défini",
+    "no_validated_records": "Aucun enregistrement validé pour cette période."
+  },
+  "attendance_absences": {
+    "heading": "Journal des absences",
+    "subtitle": "Absences enregistrées par les responsables pour tout le personnel.",
+    "add_absence": "Ajouter une absence",
+    "col_employee": "Employé",
+    "col_date": "Date",
+    "col_type": "Type",
+    "col_notes": "Notes",
+    "col_document": "Document",
+    "col_recorded_by": "Enregistré par",
+    "col_actions": "Actions",
+    "not_available": "—",
+    "paid": "Payée",
+    "unpaid": "Non payée",
+    "view_document": "Voir",
+    "log_as_worked_title": "Enregistrer comme travaillé — convertit ceci en un quart de travail validé",
+    "no_records": "Aucun enregistrement d'absence trouvé.",
+    "already_has_attendance_toast": "Ce quart de travail a maintenant un enregistrement de présence — résolvez-le plutôt depuis l'action « Valider le quart » de l'onglet Vue d'ensemble.",
+    "delete_dialog": {
+      "title": "Supprimer l'enregistrement d'absence",
+      "description": "Cela supprimera définitivement l'enregistrement d'absence. Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression..."
+    }
+  },
+  "attendance_modals": {
+    "edit_attendance": {
+      "title": "Modifier la présence",
+      "description": "Ajustez les heures d'arrivée et de départ pour {{name}}.",
+      "clock_in_label": "Arrivée",
+      "clock_out_label": "Départ",
+      "cancel": "Annuler",
+      "save_changes": "Enregistrer les modifications"
+    },
+    "absence": {
+      "create_title": "Enregistrer une absence",
+      "edit_title": "Modifier l'enregistrement d'absence",
+      "employee_label": "Employé",
+      "employment_id_label": "ID d'emploi",
+      "employment_id_placeholder": "UUID de l'emploi de l'employé",
+      "date_label": "Date",
+      "type_label": "Type d'absence",
+      "type_placeholder": "Sélectionner le type",
+      "paid_leave_label": "Congé payé",
+      "linked_attendance_label": "Présence liée",
+      "time_off_request_label": "ID de demande de congé liée (facultatif)",
+      "time_off_request_placeholder": "UUID de la demande de congé approuvée",
+      "notes_label": "Notes",
+      "notes_placeholder": "ex. Rendez-vous médical confirmé",
+      "document_url_label": "URL du document (facultatif)",
+      "document_url_placeholder": "https://... justificatif médical ou lien de téléchargement",
+      "cancel": "Annuler",
+      "saving": "Enregistrement...",
+      "update": "Mettre à jour",
+      "record_absence": "Enregistrer l'absence"
+    },
+    "notes": {
+      "title": "Note de présence",
+      "description": "Ajoutez une note concernant le quart de travail de {{name}}.",
+      "note_label": "Note",
+      "note_placeholder": "ex. Retard dû à la circulation, congé personnel, travail pendant la pause déjeuner...",
+      "cancel": "Annuler",
+      "save_note": "Enregistrer la note"
+    }
+  },
+  "attendance_filters": {
+    "all_lifecycles": "Tous les statuts de cycle",
+    "lifecycle_active": "Actif",
+    "lifecycle_pending_validation": "En attente de validation",
+    "lifecycle_validated": "Validé",
+    "all_statuses": "Tous les statuts",
+    "status_present": "Présent",
+    "status_late": "En retard",
+    "status_no_show": "Absent",
+    "status_on_break": "En pause",
+    "search_employee_placeholder": "Rechercher un employé...",
+    "clear": "Effacer"
+  },
+  "attendance_stats": {
+    "active_now": { "title": "Actifs maintenant", "description": "Actuellement pointés" },
+    "worked_hours": { "title": "Heures travaillées", "description": "Tous enregistrements confondus" },
+    "pending_validation": { "title": "En attente de validation", "description": "En attente de l'examen du responsable" },
+    "validated": { "title": "Validés", "description": "Enregistrements verrouillés" },
+    "absences_late": { "title": "Absences / Retards", "description": "Absences · Arrivées en retard" }
   }
 }

@@ -701,5 +701,228 @@
     "table": "Taula",
     "assign_table": "Assignar taula",
     "pre_order": "Pre-comanda"
+  },
+  "staff_teams": {
+    "section": {
+      "loading": "Carregant equips...",
+      "heading": "Gestió d'equips",
+      "create_team": "Crear equip",
+      "no_teams_title": "No s'han trobat equips",
+      "no_teams_subtitle": "Crea grups per gestionar fàcilment el teu personal.",
+      "view_roster": "Veure plantilla",
+      "delete_confirm": "Segur que vols eliminar aquest equip?"
+    },
+    "edit_modal": {
+      "create_title": "Crear nou equip",
+      "edit_title": "Editar equip",
+      "name_label": "Nom de l'equip",
+      "name_placeholder": "ex. Personal de cuina",
+      "color_label": "Color de l'equip",
+      "color_hint": "Selecciona un color per identificar aquest equip",
+      "delete": "Eliminar",
+      "cancel": "Cancel·lar",
+      "save": "Desar",
+      "saving": "Desant..."
+    },
+    "roster_modal": {
+      "title": "Plantilla de l'equip: {{name}}",
+      "add_staff": "Afegir personal",
+      "no_staff_assigned": "Encara no hi ha personal assignat a aquest equip.",
+      "col_staff_member": "Membre del personal",
+      "col_email": "Correu electrònic",
+      "col_actions": "Accions",
+      "removing": "Eliminant..."
+    },
+    "assign_modal": {
+      "title": "Assignar personal a l'equip",
+      "no_staff_available": "No hi ha personal disponible per assignar. Potser ja formen part d'aquest equip.",
+      "unknown_user": "Usuari desconegut",
+      "cancel": "Cancel·lar",
+      "assigning": "Assignant...",
+      "assign": "Assignar",
+      "assign_with_count": "Assignar ({{count}})"
+    }
+  },
+  "staff_pin": {
+    "title": "Establir PIN — {{name}}",
+    "description": "El membre del personal utilitzarà aquest PIN per iniciar sessió a qualsevol terminal POS.",
+    "new_pin_label": "PIN nou",
+    "confirm_pin_label": "Confirmar PIN",
+    "pins_do_not_match": "Els PIN no coincideixen",
+    "cancel": "Cancel·lar",
+    "saving": "Desant...",
+    "save_pin": "Desar PIN",
+    "set_success": "PIN establert per a {{name}}. Ja pot iniciar sessió a qualsevol terminal POS.",
+    "set_failed": "No s'ha pogut establir el PIN"
+  },
+  "staff_management_page": {
+    "heading": "Personal i rols",
+    "tabs": {
+      "staff": "Personal",
+      "invitations": "Invitacions",
+      "roles": "Rols",
+      "teams": "Equips"
+    },
+    "owner_tabs": {
+      "staff": "Gestió del personal",
+      "invitations": "Invitacions del personal",
+      "roles": "Gestió de rols",
+      "teams": "Gestió d'equips"
+    },
+    "bulk_assign_modal": {
+      "title": "Assignació massiva de rol",
+      "select_role_placeholder": "Selecciona un rol",
+      "no_staff_found": "No s'ha trobat cap membre del personal.",
+      "unnamed": "Sense nom",
+      "cancel": "Cancel·lar",
+      "assign_role": "Assignar rol"
+    },
+    "staff_tab": {
+      "bulk_assign_role": "Assignació massiva de rol",
+      "all_staff": "Tot el personal",
+      "col_name": "Nom",
+      "col_status": "Estat",
+      "col_roles": "Rols",
+      "col_actions": "Accions",
+      "no_staff_found": "No s'ha trobat cap membre del personal.",
+      "you_badge": "Tu",
+      "business_owner_badge": "Propietari del negoci",
+      "no_roles_badge": "Sense rols",
+      "edit_roles_title": "Editar rols",
+      "status_active": "ACTIU",
+      "status_suspended": "SUSPÈS"
+    }
+  },
+  "attendance_page": {
+    "heading": "Assistència",
+    "tabs": {
+      "overview": "Resum",
+      "live": "Vista en directe",
+      "reports": "Informes",
+      "absences": "Absències"
+    }
+  },
+  "attendance_overview": {
+    "heading": "Registres d'assistència",
+    "records_count": "{{count}} de {{total}} registres"
+  },
+  "attendance_live": {
+    "heading": "Qui treballa ara",
+    "subtitle": "Estat en temps real dels empleats fitxats.",
+    "live_active_count": "EN DIRECTE · {{count}} actius",
+    "col_employee": "Empleat",
+    "col_clock_in": "Entrada",
+    "col_duration": "Durada",
+    "col_status": "Estat",
+    "col_break": "Pausa",
+    "status_on_break": "En pausa",
+    "status_working": "Treballant",
+    "break_paid": "Pagada",
+    "break_unpaid": "No pagada",
+    "no_one_clocked_in": "Cap empleat té un fitxatge actiu en aquest moment."
+  },
+  "attendance_reports": {
+    "heading": "Resum de mà d'obra",
+    "subtitle": "Desglossament d'hores extra i pagament — només registres validats.",
+    "select_date_range_prompt": "Selecciona un interval de dates per carregar el resum de mà d'obra.",
+    "total_hours": "Hores totals",
+    "regular_hours": "Hores regulars",
+    "overtime_hours": "Hores extra",
+    "total_pay": "Pagament total",
+    "pending_validation_notice": "Alguns registres encara estan pendents de validació i no s'inclouen en aquest resum.",
+    "col_employee": "Empleat",
+    "col_records": "Registres",
+    "col_total_hours": "Hores totals",
+    "col_regular": "Regulars",
+    "col_overtime": "Hores extra",
+    "col_total_pay": "Pagament total",
+    "rate_not_set": "Tarifa no establerta",
+    "no_validated_records": "No hi ha registres validats per a aquest període."
+  },
+  "attendance_absences": {
+    "heading": "Registre d'absències",
+    "subtitle": "Absències registrades pels responsables per a tot el personal.",
+    "add_absence": "Afegir absència",
+    "col_employee": "Empleat",
+    "col_date": "Data",
+    "col_type": "Tipus",
+    "col_notes": "Notes",
+    "col_document": "Document",
+    "col_recorded_by": "Registrat per",
+    "col_actions": "Accions",
+    "not_available": "—",
+    "paid": "Pagada",
+    "unpaid": "No pagada",
+    "view_document": "Veure",
+    "log_as_worked_title": "Registrar com a treballat — converteix això en un torn validat",
+    "no_records": "No s'han trobat registres d'absències.",
+    "already_has_attendance_toast": "Aquest torn ja té un registre d'assistència — resol-ho des de l'acció «Validar torn» de la pestanya Resum.",
+    "delete_dialog": {
+      "title": "Eliminar registre d'absència",
+      "description": "Això eliminarà permanentment el registre d'absència. Aquesta acció no es pot desfer.",
+      "cancel": "Cancel·lar",
+      "delete": "Eliminar",
+      "deleting": "Eliminant..."
+    }
+  },
+  "attendance_modals": {
+    "edit_attendance": {
+      "title": "Editar assistència",
+      "description": "Ajusta les hores d'entrada i sortida de {{name}}.",
+      "clock_in_label": "Entrada",
+      "clock_out_label": "Sortida",
+      "cancel": "Cancel·lar",
+      "save_changes": "Desar els canvis"
+    },
+    "absence": {
+      "create_title": "Registrar absència",
+      "edit_title": "Editar registre d'absència",
+      "employee_label": "Empleat",
+      "employment_id_label": "ID d'ocupació",
+      "employment_id_placeholder": "UUID de l'ocupació de l'empleat",
+      "date_label": "Data",
+      "type_label": "Tipus d'absència",
+      "type_placeholder": "Selecciona el tipus",
+      "paid_leave_label": "Permís pagat",
+      "linked_attendance_label": "Assistència vinculada",
+      "time_off_request_label": "ID de sol·licitud de permís vinculada (opcional)",
+      "time_off_request_placeholder": "UUID de la sol·licitud de permís aprovada",
+      "notes_label": "Notes",
+      "notes_placeholder": "ex. Cita mèdica confirmada",
+      "document_url_label": "URL del document (opcional)",
+      "document_url_placeholder": "https://... justificant mèdic o enllaç de pujada",
+      "cancel": "Cancel·lar",
+      "saving": "Desant...",
+      "update": "Actualitzar",
+      "record_absence": "Registrar absència"
+    },
+    "notes": {
+      "title": "Nota d'assistència",
+      "description": "Afegeix una nota sobre el torn de {{name}}.",
+      "note_label": "Nota",
+      "note_placeholder": "ex. Retard per trànsit, permís personal, va treballar durant el dinar...",
+      "cancel": "Cancel·lar",
+      "save_note": "Desar nota"
+    }
+  },
+  "attendance_filters": {
+    "all_lifecycles": "Tots els cicles",
+    "lifecycle_active": "Actiu",
+    "lifecycle_pending_validation": "Pendent de validació",
+    "lifecycle_validated": "Validat",
+    "all_statuses": "Tots els estats",
+    "status_present": "Present",
+    "status_late": "Tard",
+    "status_no_show": "Absent",
+    "status_on_break": "En pausa",
+    "search_employee_placeholder": "Cercar empleat...",
+    "clear": "Netejar"
+  },
+  "attendance_stats": {
+    "active_now": { "title": "Actius ara", "description": "Actualment fitxats" },
+    "worked_hours": { "title": "Hores treballades", "description": "En tots els registres" },
+    "pending_validation": { "title": "Pendent de validació", "description": "Esperant la revisió del responsable" },
+    "validated": { "title": "Validats", "description": "Registres bloquejats" },
+    "absences_late": { "title": "Absències / Retards", "description": "Absències · Arribades tardanes" }
   }
 }

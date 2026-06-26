@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,6 +23,7 @@ export const AssignStaffModal: React.FC<AssignStaffModalProps> = ({
     onAssign,
     isAssigning,
 }) => {
+    const { t } = useTranslation("management");
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
     // Filter out already assigned staff
@@ -46,12 +48,12 @@ export const AssignStaffModal: React.FC<AssignStaffModalProps> = ({
         }}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Assign Staff to Team</DialogTitle>
+                    <DialogTitle>{t("staff_teams.assign_modal.title")}</DialogTitle>
                 </DialogHeader>
                 <div className="py-4 space-y-4">
                     {availableStaff.length === 0 ? (
                         <div className="text-center py-8 text-muted-foreground">
-                            No staff available to assign. All staff might already be in this team.
+                            {t("staff_teams.assign_modal.no_staff_available")}
                         </div>
                     ) : (
                         <ScrollArea className="h-64 border rounded-md p-2">
@@ -67,7 +69,7 @@ export const AssignStaffModal: React.FC<AssignStaffModalProps> = ({
                                             htmlFor={`staff-${staff.id}`}
                                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer flex-1"
                                         >
-                                            {staff.professionalProfile?.displayName || staff.professionalProfile?.workEmail || 'Unknown User'}
+                                            {staff.professionalProfile?.displayName || staff.professionalProfile?.workEmail || t("staff_teams.assign_modal.unknown_user")}
                                         </label>
                                     </div>
                                 ))}
@@ -77,13 +79,17 @@ export const AssignStaffModal: React.FC<AssignStaffModalProps> = ({
 
                     <div className="flex justify-end gap-2 pt-2">
                         <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isAssigning}>
-                            Cancel
+                            {t("staff_teams.assign_modal.cancel")}
                         </Button>
                         <Button
                             onClick={handleSubmit}
                             disabled={selectedIds.size === 0 || isAssigning}
                         >
-                            {isAssigning ? "Assigning..." : `Assign ${selectedIds.size > 0 ? `(${selectedIds.size})` : ""}`}
+                            {isAssigning
+                                ? t("staff_teams.assign_modal.assigning")
+                                : selectedIds.size > 0
+                                    ? t("staff_teams.assign_modal.assign_with_count", { count: selectedIds.size })
+                                    : t("staff_teams.assign_modal.assign")}
                         </Button>
                     </div>
                 </div>
