@@ -201,16 +201,21 @@ export const generateWeeklyDraftApiCall = (businessId: string, weekStartDate: st
   return flairapi.post(`${baseUrl}/generate-weekly-draft?businessId=${businessId}&weekStartDate=${weekStartDate}`);
 };
 
-export const buildShiftExportUrl = (
+// Goes through flairapi (not a raw URL navigation) so the request carries
+// auth + the x-custom-lang header — a plain <a href>/window.location navigation
+// can't attach custom headers, so the export would always come back in the
+// server's fallback language regardless of the user's selected language.
+export const fetchShiftExportApiCall = async (
   businessId: string,
   startDate: string,
   endDate: string,
   exportFormat: 'pdf' | 'excel',
   employmentId?: string
-): string => {
+): Promise<Blob> => {
   const params = new URLSearchParams({ businessId, startDate, endDate, format: exportFormat });
   if (employmentId) params.append('employmentId', employmentId);
-  return `${'https://api.flairsync.com/api/v1'}/shifts/export?${params.toString()}`;
+  const response = await flairapi.get(`${baseUrl}/export?${params.toString()}`, { responseType: 'blob' });
+  return response.data as Blob;
 };
 
 export const generateDraftApiCall = (

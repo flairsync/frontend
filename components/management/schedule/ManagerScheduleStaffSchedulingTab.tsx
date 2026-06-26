@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
 import { useShifts } from '@/features/shifts/useShifts'
-import { buildShiftExportUrl } from '@/features/shifts/service'
+import { fetchShiftExportApiCall } from '@/features/shifts/service'
 import { useTimeOff } from '@/features/shifts/useTimeOff'
 import { useUnvalidatedSummary } from '@/features/shifts/useUnvalidatedSummary'
 import { useManagerRoster } from '@/features/shifts/useShifts'
@@ -322,12 +322,23 @@ const ManagerScheduleStaffSchedulingTab = () => {
         });
     };
 
-    const handleExport = (exportFormat: 'pdf' | 'excel') => {
+    const handleExport = async (exportFormat: 'pdf' | 'excel') => {
         const isMonthlyStaff = calendarView === 'month' && !!filterStaffId;
         const start = isMonthlyStaff ? format(startOfMonth(currentDate), 'yyyy-MM-dd') : format(dateStart, 'yyyy-MM-dd');
         const end = isMonthlyStaff ? format(endOfMonth(currentDate), 'yyyy-MM-dd') : format(dateEnd, 'yyyy-MM-dd');
-        const url = buildShiftExportUrl(businessId as string, start, end, exportFormat, filterStaffId || undefined);
-        window.location.href = url;
+        try {
+            const blob = await fetchShiftExportApiCall(businessId as string, start, end, exportFormat, filterStaffId || undefined);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `schedule-${start}-to-${end}.${exportFormat === 'excel' ? 'xlsx' : 'pdf'}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        } catch {
+            toast.error('Failed to export schedule');
+        }
     };
 
     return (

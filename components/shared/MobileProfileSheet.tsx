@@ -9,6 +9,7 @@ import { useTheme } from "@/components/shared/theme-provider";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { NotificationBubble } from "@/components/notifications/NotificationBubble";
+import { setLangCookie } from "@/utils/cookies";
 
 import EnFlag from "@/assets/flags/gb.svg";
 import FrFlag from "@/assets/flags/fr.svg";
@@ -86,6 +87,7 @@ const MobileProfileSheet = () => {
                                         key={lang.code}
                                         onClick={() => {
                                             i18n.changeLanguage(lang.code);
+                                            setLangCookie(lang.code);
                                             updateUserProfile({ language: lang.code });
                                         }}
                                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${

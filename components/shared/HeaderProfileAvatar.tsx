@@ -29,6 +29,7 @@ import { useAuth } from '@/features/auth/useAuth'
 import { useProfile } from '@/features/profile/useProfile'
 import { NotificationBubble } from '@/components/notifications/NotificationBubble'
 import { usePageContext } from 'vike-react/usePageContext'
+import { setLangCookie } from '@/utils/cookies'
 
 
 const languages = [
@@ -57,6 +58,7 @@ const HeaderProfileAvatar = () => {
 
     const handleSelect = (code: string) => {
         i18n.changeLanguage(code);
+        setLangCookie(code);
         updateUserProfile({ language: code });
     };
 
