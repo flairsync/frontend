@@ -44,7 +44,7 @@ const HeaderProfileAvatar = () => {
         logoutUser, loggingOut
     } = useAuth();
 
-    const { userProfile, loadingUserProfile } = useProfile();
+    const { userProfile, loadingUserProfile, updateUserProfile } = useProfile();
     const { user } = usePageContext() as any;
 
     const {
@@ -57,6 +57,7 @@ const HeaderProfileAvatar = () => {
 
     const handleSelect = (code: string) => {
         i18n.changeLanguage(code);
+        updateUserProfile({ language: code });
     };
 
 

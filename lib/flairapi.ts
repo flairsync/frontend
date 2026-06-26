@@ -119,6 +119,7 @@ const processQueue = (error: any, token: string | null = null) => {
 flairapi.interceptors.request.use(
   (config) => {
     startRequest();
+    config.headers["x-custom-lang"] = i18n.language;
     return config;
   },
   (error) => {

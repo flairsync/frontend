@@ -29,7 +29,7 @@ const themes = [
 ];
 
 const MobileProfileSheet = () => {
-    const { userProfile } = useProfile();
+    const { userProfile, updateUserProfile } = useProfile();
     const { logoutUser } = useAuth();
     const { setTheme, theme } = useTheme();
     const { i18n } = useTranslation();
@@ -84,7 +84,10 @@ const MobileProfileSheet = () => {
                                 {languages.map((lang) => (
                                     <button
                                         key={lang.code}
-                                        onClick={() => i18n.changeLanguage(lang.code)}
+                                        onClick={() => {
+                                            i18n.changeLanguage(lang.code);
+                                            updateUserProfile({ language: lang.code });
+                                        }}
                                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                                             i18n.language === lang.code
                                                 ? "border-primary bg-primary/10 text-primary"
