@@ -1,0 +1,354 @@
+{
+  "staff_pin_screen": {
+    "title": "Inici de sessió del personal",
+    "subtitle": "Introdueix el teu PIN de 4 xifres",
+    "verifying": "Verificant...",
+    "errors": {
+      "incorrect_pin": "PIN incorrecte",
+      "no_access": "No tens accés a aquest terminal",
+      "terminal_locked": "Terminal bloquejat durant 15 minuts"
+    }
+  },
+  "product_card": {
+    "from_price": "Des de {{price}}",
+    "unavailable": "No disponible"
+  },
+  "discount_panel": {
+    "discount_applied": "Descompte aplicat",
+    "mode": {
+      "code": "Codi de descompte",
+      "manual": "Import manual"
+    },
+    "code_placeholder": "Introdueix el codi de descompte",
+    "amount_placeholder": "Import ($)",
+    "reason_placeholder": "Motiu (obligatori)",
+    "applying": "Aplicant...",
+    "apply_button": "Aplicar descompte",
+    "errors": {
+      "amount_must_be_positive": "L'import del descompte ha de ser 0 o més",
+      "exceeds_total": "El descompte no pot superar el total de la comanda",
+      "apply_failed": "No s'ha pogut aplicar el descompte"
+    }
+  },
+  "receipt": {
+    "print_title": "Rebut",
+    "thank_you": "Gràcies per la vostra visita!",
+    "fields": {
+      "receipt": "Rebut",
+      "date": "Data",
+      "type": "Tipus",
+      "table": "Taula",
+      "subtotal": "Subtotal",
+      "discount": "Descompte",
+      "total": "Total",
+      "tax_included_suffix": "inclòs",
+      "tendered": "Lliurat",
+      "change": "Canvi",
+      "tip": "Propina",
+      "balance_due": "Saldo pendent"
+    },
+    "actions": {
+      "print": "Imprimir",
+      "pdf": "PDF",
+      "new_order": "Nova comanda",
+      "close": "Tancar"
+    }
+  },
+  "confirmation_modal": {
+    "confirm": "Confirmar",
+    "cancel": "Cancel·lar"
+  },
+  "order_cart": {
+    "header": {
+      "active_order": "Comanda activa",
+      "operator": "Operador: {{name}}",
+      "no_staff_logged_in": "Cap membre del personal ha iniciat sessió",
+      "discard": "Descartar"
+    },
+    "mode": {
+      "dine_in": "Per menjar aquí",
+      "takeaway": "Per emportar"
+    },
+    "table": {
+      "location": "Ubicació",
+      "assign_a_table": "Assignar una taula",
+      "change": "Canviar"
+    },
+    "empty": {
+      "title": "Terminal buit",
+      "description": "Afegeix articles per començar una comanda"
+    },
+    "item": {
+      "price_per_unit": "{{price}} / unitat"
+    },
+    "kitchen_note": {
+      "label": "Nota de cuina / Informació d'al·lèrgies",
+      "placeholder": "Ex.: Al·lèrgia greu als fruits secs en aquesta taula"
+    },
+    "tax_exempt": "Exempt d'impostos",
+    "validation": {
+      "table_required": "Cal assignar una taula per continuar.",
+      "ready_for_kitchen": "Articles preparats per enviar a cuina."
+    },
+    "totals": {
+      "subtotal": "Subtotal",
+      "tax": "Impost",
+      "tax_exempt": "Impost (Exempt)",
+      "tax_with_rate": "Impost ({{rate}}%)",
+      "total_amount": "Import total"
+    },
+    "actions": {
+      "cart_empty": "El carret està buit",
+      "select_table": "Seleccionar una taula",
+      "confirm_and_send": "Confirmar i enviar"
+    },
+    "payment": {
+      "cash_settle": "PAGAR EN EFECTIU",
+      "card_settle": "PAGAR AMB TARGETA"
+    }
+  },
+  "payment_modal": {
+    "method": {
+      "cash": "Efectiu",
+      "card": "Targeta"
+    },
+    "errors": {
+      "payment_failed": "El pagament ha fallat. Torna-ho a provar."
+    },
+    "success": {
+      "title": "Pagament completat",
+      "processed_via": "Processat mitjançant {{method}}",
+      "total_charged": "Total cobrat",
+      "discount": "Descompte",
+      "cash_received": "Efectiu rebut",
+      "change_due": "Canvi a retornar",
+      "view_receipt": "Veure el rebut",
+      "print_pdf": "Imprimir PDF",
+      "new_order": "Nova comanda"
+    },
+    "confirm": {
+      "cash_payment": "Pagament en efectiu",
+      "card_payment": "Pagament amb targeta",
+      "settle_order": "Liquidar comanda",
+      "total_due": "Total a pagar",
+      "discount": "Descompte",
+      "split_bill": "Dividir el compte",
+      "cash_tendered": "Efectiu lliurat",
+      "change_amount": "Canvi: {{amount}} $",
+      "short_by_amount": "Falten {{amount}} $",
+      "present_card": "Presenta la targeta o acosta el dispositiu al terminal",
+      "processing": "Processant...",
+      "confirm_payment": "CONFIRMAR PAGAMENT"
+    }
+  },
+  "keypad": {
+    "confirm": "Confirmar"
+  },
+  "attendance_panel": {
+    "no_staff_logged_in": "Cap membre del personal ha iniciat sessió",
+    "status": {
+      "clocked_in": "Torn iniciat",
+      "on_break": "En pausa",
+      "not_clocked_in": "Torn no iniciat"
+    },
+    "since": "Des de les {{time}} · {{elapsed}}",
+    "break_started": "Pausa iniciada a les {{time}} · {{elapsed}}",
+    "actions": {
+      "clock_in": "INICIAR TORN",
+      "break": "PAUSA",
+      "clock_out": "FINALITZAR TORN",
+      "end_break": "ACABAR PAUSA"
+    },
+    "toasts": {
+      "clocked_in": "Torn iniciat",
+      "clock_in_failed": "S'ha produït un error en iniciar el torn",
+      "break_started": "Pausa iniciada",
+      "break_start_failed": "S'ha produït un error en iniciar la pausa",
+      "clocked_out": "Torn finalitzat",
+      "clock_out_failed": "S'ha produït un error en finalitzar el torn",
+      "break_ended": "Pausa finalitzada",
+      "break_end_failed": "S'ha produït un error en finalitzar la pausa"
+    },
+    "todays_breaks": "Pauses d'avui",
+    "ongoing": "en curs",
+    "break_type": {
+      "paid": "PAGADA",
+      "unpaid": "NO PAGADA"
+    }
+  },
+  "station_receipt": {
+    "print_title": "Rebut",
+    "unavailable": "Rebut no disponible",
+    "thank_you": "Gràcies!",
+    "fields": {
+      "receipt": "Rebut",
+      "subtotal": "Subtotal",
+      "discount": "Descompte",
+      "tax_exempt": "Impost (Exempt)",
+      "tax_included_suffix": "inclòs",
+      "total": "Total",
+      "tendered": "Lliurat",
+      "change": "Canvi",
+      "tip": "Propina"
+    },
+    "actions": {
+      "print": "Imprimir",
+      "new_order": "Nova comanda",
+      "close": "Tancar"
+    }
+  },
+  "pos_mode_switcher": {
+    "modes": {
+      "terminal": "Terminal POS",
+      "kds": "Pantalla de cuina (KDS)"
+    },
+    "switch_device_role": "Canviar el rol del dispositiu",
+    "split_mode_coming_soon": "Mode dividit (Properament)"
+  },
+  "split_bill_panel": {
+    "all_checks_paid": "Tots els comptes estan pagats",
+    "complete_order": "Completar comanda",
+    "checks_count_one": "{{count}} compte",
+    "checks_count_other": "{{count}} comptes",
+    "cannot_remove_has_payment": "No es pot eliminar — ja s'ha registrat un pagament",
+    "removing": "Eliminant…",
+    "remove_split": "Eliminar divisió",
+    "split_bill_button": "Dividir el compte",
+    "assign_items_heading": "Assignar articles als comptes",
+    "assign_items_description": "Toca una etiqueta de compte al costat de cada article. Tots els articles han d'estar assignats.",
+    "checks_label": "Comptes",
+    "unnamed_item": "Article",
+    "cancel": "Cancel·lar",
+    "creating": "Creant…",
+    "confirm_split": "Confirmar divisió",
+    "cash_tendered_placeholder": "Efectiu lliurat (mín. {{amount}})",
+    "tip_placeholder": "Afegir propina (opcional)",
+    "processing": "Processant…",
+    "charge_button": "Cobrar {{amount}}",
+    "pay_check": "Pagar compte",
+    "status": {
+      "paid": "Pagat",
+      "remaining": "{{amount}} restant",
+      "unpaid": "Sense pagar"
+    },
+    "errors": {
+      "create_failed": "Error en crear les divisions",
+      "remove_has_payment": "No es poden eliminar les divisions — almenys un compte ja té un pagament registrat",
+      "remove_failed": "Error en eliminar les divisions",
+      "need_two_checks": "Assigna els articles a almenys 2 comptes diferents",
+      "label_too_long": "L'etiqueta del compte ha de tenir 60 caràcters o menys",
+      "all_items_must_be_assigned": "Tots els articles s'han d'assignar a un compte abans de dividir.",
+      "items_need_two_checks": "Els articles s'han de repartir en almenys 2 comptes.",
+      "payment_failed": "El pagament ha fallat"
+    }
+  },
+  "pos_app": {
+    "nav": {
+      "menu": "MENÚ",
+      "orders": "COMANDES",
+      "tables": "TAULES"
+    },
+    "titles": {
+      "lock_terminal": "Bloquejar terminal",
+      "drag_to_resize": "Arrossega per redimensionar",
+      "refresh_orders": "Actualitzar comandes",
+      "refresh_tables": "Actualitzar taules"
+    },
+    "sidebar": {
+      "category": "Categoria",
+      "floor": "Planta",
+      "filter": "Filtre",
+      "menu": "Menú",
+      "no_categories": "Sense categories",
+      "all_floors": "Totes les plantes"
+    },
+    "order_filters": {
+      "all_active": "Totes actives",
+      "created": "Creada",
+      "preparing": "En preparació",
+      "ready": "Llesta"
+    },
+    "menu_view": {
+      "search_placeholder": "Cercar articles del menú...",
+      "no_menu_configured": "No hi ha cap menú configurat",
+      "no_items_in_category": "No hi ha articles en aquesta categoria"
+    },
+    "orders_view": {
+      "active_orders": "Comandes actives",
+      "total_count_one": "{{count}} en total",
+      "total_count_other": "{{count}} en total",
+      "no_active_orders": "No hi ha comandes actives",
+      "load_more": "Carregar més"
+    },
+    "tables_view": {
+      "select_a_table": "Seleccionar una taula",
+      "no_tables_configured": "No hi ha taules configurades",
+      "current": "Actual",
+      "active_badge": "ACTIVA"
+    },
+    "table_status": {
+      "available": "Lliure",
+      "occupied": "Ocupada",
+      "reserved": "Reservada",
+      "cleaning": "Neteja"
+    },
+    "order_card": {
+      "table": "Taula",
+      "takeaway": "Per emportar",
+      "total": "Total: {{amount}} $",
+      "unnamed_item": "Article",
+      "more_items_one": "+ {{count}} article més",
+      "more_items_other": "+ {{count}} articles més",
+      "pay_card": "PAGAR AMB TARGETA",
+      "pay_cash": "PAGAR EN EFECTIU",
+      "reorder": "Tornar a comandar",
+      "cancel_and_void": "Cancel·lar i anul·lar comanda",
+      "status": {
+        "created": "CREADA",
+        "accepted": "ACCEPTADA",
+        "preparing": "EN PREPARACIÓ",
+        "ready": "LLESTA"
+      },
+      "transition": {
+        "accept": "ACCEPTAR",
+        "preparing": "EN PREPARACIÓ",
+        "mark_ready": "MARCAR LLESTA"
+      }
+    },
+    "confirm_modals": {
+      "cancel_order": {
+        "title": "Cancel·lar comanda?",
+        "description": "Segur que vols cancel·lar aquesta comanda?"
+      },
+      "clear_cart": {
+        "title": "Buidar la comanda activa?",
+        "description": "Això eliminarà tots els articles del carret actual."
+      },
+      "table_occupied": {
+        "title": "{{name}} està ocupada",
+        "description": "Aquesta taula té una comanda activa ({{amount}} $). Vols veure-la?"
+      }
+    },
+    "toasts": {
+      "offline_sync_issues_one": "{{count}} acció/ons sense connexió no s'ha/han pogut sincronitzar — revisa-ho",
+      "offline_sync_issues_other": "{{count}} acció/ons sense connexió no s'ha/han pogut sincronitzar — revisa-ho",
+      "offline_sync_success_one": "{{count}} acció/ons sense connexió sincronitzada/es",
+      "offline_sync_success_other": "{{count}} acció/ons sense connexió sincronitzada/es",
+      "session_expired_offline_sync": "La sessió ha caducat. Torna a autenticar-te per sincronitzar els canvis sense connexió.",
+      "select_table_to_continue": "Selecciona una taula per continuar",
+      "order_sent_to_kitchen": "Comanda enviada a cuina!",
+      "offline_order_queued": "Estàs sense connexió — la comanda s'ha posat a la cua i se sincronitzarà quan tornis a tenir connexió",
+      "create_order_failed": "Error en crear la comanda",
+      "payment_requires_connection": "El pagament requereix connexió. Torna-ho a provar quan estiguis en línia.",
+      "select_table_dine_in": "Selecciona una taula per a les comandes per menjar aquí",
+      "offline_action_queued": "Sense connexió — acció posada a la cua per sincronitzar",
+      "update_order_failed": "Error en actualitzar la comanda",
+      "offline_cancel_queued": "Sense connexió — cancel·lació posada a la cua per sincronitzar",
+      "order_cancelled": "Comanda cancel·lada",
+      "cancel_order_failed": "Error en cancel·lar la comanda",
+      "table_assigned_to_cart": "{{name}} assignada al carret",
+      "reorder_created": "Comanda repetida creada",
+      "reorder_failed": "Error en repetir la comanda"
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "kds_app": {
+    "header": {
+      "title": "Pantalla de Cocina",
+      "active_orders_count_one": "{{count}} Activo",
+      "active_orders_count_other": "{{count}} Activos"
+    },
+    "loading": "Cargando pedidos...",
+    "station_unassigned": {
+      "title": "Estación sin asignar",
+      "description": "Este KDS no tiene una estación de cocina asignada. Pide a un encargado que la reasigne desde el panel, en Estaciones."
+    },
+    "empty_state": {
+      "title": "Cocina despejada",
+      "description": "Esperando nuevos pedidos del terminal..."
+    },
+    "no_kitchen_station": {
+      "title": "Sin estación de cocina asignada",
+      "description": "Pide a un propietario que asigne una estación de cocina a este dispositivo desde el panel, en Estaciones."
+    },
+    "settings_popover": {
+      "title": "Ajustes del KDS",
+      "hide_after_label": "Ocultar pedidos completados después de (minutos)",
+      "never_placeholder": "Nunca",
+      "hint": "Deja vacío para mostrar siempre los pedidos completados."
+    },
+    "ticket": {
+      "rush": "Urgente",
+      "priority_value": "P{{value}}",
+      "order_type_dine_in": "Para comer aquí",
+      "order_type_takeaway": "Para llevar",
+      "order_type_labels": {
+        "dine_in": "para comer aquí",
+        "takeaway": "para llevar",
+        "delivery": "a domicilio"
+      },
+      "waiting_for_expo": "Esperando al expo",
+      "done_in": "Terminado en {{time}}",
+      "unbump_title": "Deshacer validación de este artículo",
+      "recall": "Recuperar",
+      "other_items_count_one": "{{count}} artículo más de otras estaciones",
+      "other_items_count_other": "{{count}} artículos más de otras estaciones",
+      "ready_for_pickup": "Listo para recoger",
+      "awaiting_expo_confirmation": "Esperando confirmación del expo",
+      "station_done_waiting": "Estación terminada — esperando a otras estaciones",
+      "start_preparing": "Empezar a preparar",
+      "bump_all": "Validar todo ({{count}})"
+    },
+    "toasts": {
+      "new_orders_arrived_one": "{{count}} pedido nuevo recibido",
+      "new_orders_arrived_other": "{{count}} pedidos nuevos recibidos",
+      "order_complete": "Pedido completo — ¡listo para recoger!",
+      "item_not_assigned": "Este artículo no está asignado a tu estación",
+      "recall_failed": "No se pudo recuperar el artículo — inténtalo de nuevo.",
+      "start_preparing_failed": "No se pudo iniciar la preparación — inténtalo de nuevo.",
+      "priority_update_failed": "No se pudo actualizar la prioridad."
+    }
+  },
+  "expo_screen": {
+    "header": {
+      "title": "Estación Expo",
+      "business_all_stations": "{{businessName}} · Todas las estaciones",
+      "active_orders_count_one": "{{count}} Pedido",
+      "active_orders_count_other": "{{count}} Pedidos"
+    },
+    "loading": "Cargando pedidos...",
+    "empty_state": {
+      "title": "Todo despejado",
+      "description": "No hay pedidos activos en ninguna estación"
+    },
+    "ticket": {
+      "takeaway": "Para llevar",
+      "rush": "Urgente",
+      "ready_ago": "Listo hace {{time}}",
+      "station_pill": "Estación {{index}}",
+      "ready_awaiting_pickup": "Listo — Esperando recogida",
+      "confirm_and_send": "Confirmar y enviar",
+      "all_stations_done": "Todas las estaciones terminadas",
+      "in_progress": "En curso"
+    },
+    "toasts": {
+      "confirm_success": "Pedido confirmado — ¡listo para recoger!",
+      "items_not_ready": "Algunos artículos todavía se están preparando.",
+      "invalid_status": "El pedido no está en un estado confirmable.",
+      "confirm_failed": "No se pudo confirmar el pedido."
+    }
+  },
+  "station_bootstrap": {
+    "initializing": "Inicializando estación...",
+    "error": {
+      "title": "No se pudieron cargar los datos de la estación.",
+      "description": "Comprueba tu conexión e inténtalo de nuevo.",
+      "retry": "Reintentar"
+    }
+  },
+  "pairing_screen": {
+    "title": "Vincular este dispositivo",
+    "subtitle": "Pide al propietario del negocio que genere un código de vinculación desde el panel.",
+    "station_type_kds": "Pantalla de Cocina (KDS)",
+    "station_type_pos": "Terminal POS",
+    "form": {
+      "station_name_label": "Nombre de la estación",
+      "station_name_placeholder": "ej. Terminal Barra Principal",
+      "pairing_code_label": "Código de vinculación",
+      "pairing_code_placeholder": "Código de 8 caracteres",
+      "linking": "Vinculando...",
+      "link_device": "Vincular dispositivo"
+    },
+    "errors": {
+      "invalid_code": "Código no válido. Inténtalo de nuevo."
+    },
+    "device_id_footer": "ID del dispositivo: {{deviceId}}..."
+  },
+  "quick_settings": {
+    "title": "Ajustes de la estación",
+    "this_device": "Este dispositivo",
+    "station_type_kds": "Pantalla de Cocina",
+    "station_type_pos": "Terminal POS",
+    "attendance": "Asistencia",
+    "switch_mode": "Cambiar modo",
+    "active_badge": "Activo",
+    "mode_switcher": {
+      "pos_label": "Terminal POS",
+      "kds_label": "Pantalla de Cocina (KDS)"
+    }
+  }
+}

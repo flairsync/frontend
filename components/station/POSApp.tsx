@@ -55,6 +55,7 @@ import {
     Settings, Lock, RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { PosModeSwitcher } from "@/components/pos/PosModeSwitcher";
 import { stationApi, staffApi, pinLogout } from "@/features/station/station-api";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
@@ -111,12 +112,14 @@ const TABLE_STATUS_STYLES: Record<string, string> = {
     CLEANING: "bg-muted border-border text-muted-foreground hover:bg-muted/80",
 };
 
-const TABLE_STATUS_LABELS: Record<string, string> = {
-    AVAILABLE: "Vacant",
-    OCCUPIED: "Occupied",
-    RESERVED: "Reserved",
-    CLEANING: "Cleaning",
-};
+function getTableStatusLabels(t: (key: string) => string): Record<string, string> {
+    return {
+        AVAILABLE: t("pos_app.table_status.available"),
+        OCCUPIED: t("pos_app.table_status.occupied"),
+        RESERVED: t("pos_app.table_status.reserved"),
+        CLEANING: t("pos_app.table_status.cleaning"),
+    };
+}
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
@@ -162,6 +165,7 @@ function POSMain({
     bootstrapData: PosBootstrapData;
     onLock: () => void;
 }) {
+    const { t } = useTranslation("pos");
     const { session } = useStaffSession();
     const perms = session?.posPermissions;
 
@@ -317,14 +321,14 @@ function POSMain({
                 );
                 if (issues.length > 0) {
                     toast.warning(
-                        `${issues.length} offline action(s) could not be synced — please review`,
+                        t("pos_app.toasts.offline_sync_issues", { count: issues.length }),
                     );
                 } else if (clearKeys.length > 0) {
-                    toast.success(`${clearKeys.length} offline action(s) synced`);
+                    toast.success(t("pos_app.toasts.offline_sync_success", { count: clearKeys.length }));
                 }
             } catch (err: any) {
                 if (err?.response?.status === 401) {
-                    toast.error("Session expired. Re-authenticate to sync offline changes.");
+                    toast.error(t("pos_app.toasts.session_expired_offline_sync"));
                 }
             } finally {
                 await Promise.all([refreshOrders(), refreshTables()]);
@@ -422,7 +426,7 @@ function POSMain({
     const handleConfirmOrder = async () => {
         if (cart.length === 0) return;
         if (orderMode === "dine-in" && !selectedTableId) {
-            toast.error("Please select a table to continue");
+            toast.error(t("pos_app.toasts.select_table_to_continue"));
             setActiveMainSection("tables");
             return;
         }
@@ -430,14 +434,14 @@ function POSMain({
         try {
             await createAndAcceptOrder();
             resetActiveOrder();
-            toast.success("Order sent to kitchen!");
+            toast.success(t("pos_app.toasts.order_sent_to_kitchen"));
             await Promise.all([refreshOrders(), refreshTables()]);
         } catch (err: any) {
             if (err.queued) {
                 resetActiveOrder();
-                toast.info("You're offline — order queued and will sync when connection returns");
+                toast.info(t("pos_app.toasts.offline_order_queued"));
             } else {
-                toast.error(err?.response?.data?.message ?? "Failed to create order");
+                toast.error(err?.response?.data?.message ?? t("pos_app.toasts.create_order_failed"));
             }
         } finally {
             setCreatingOrder(false);
@@ -458,13 +462,13 @@ function POSMain({
         }
 
         if (!navigator.onLine) {
-            toast.error("Payment requires a connection. Please try again when online.");
+            toast.error(t("pos_app.toasts.payment_requires_connection"));
             return;
         }
 
         if (cart.length === 0) return;
         if (orderMode === "dine-in" && !selectedTableId) {
-            toast.error("Please select a table for Dine-In orders");
+            toast.error(t("pos_app.toasts.select_table_dine_in"));
             setActiveMainSection("tables");
             return;
         }
@@ -476,7 +480,7 @@ function POSMain({
             setPaymentMethod(method);
             setIsPaymentModalOpen(true);
         } catch (err: any) {
-            toast.error(err?.response?.data?.message ?? "Failed to create order");
+            toast.error(err?.response?.data?.message ?? t("pos_app.toasts.create_order_failed"));
         } finally {
             setCreatingOrder(false);
         }
@@ -501,7 +505,7 @@ function POSMain({
                     orderId,
                     clientTimestamp: new Date().toISOString(),
                 });
-                toast.info("Offline — action queued for sync");
+                toast.info(t("pos_app.toasts.offline_action_queued"));
                 return;
             }
             try {
@@ -511,18 +515,18 @@ function POSMain({
                 refreshOrders();
                 refreshTables();
             } catch {
-                toast.error("Failed to update order");
+                toast.error(t("pos_app.toasts.update_order_failed"));
             }
         },
-        [refreshOrders, refreshTables],
+        [refreshOrders, refreshTables, t],
     );
 
     const handleCancelOrder = useCallback(
         (orderId: string) => {
             setConfirmModal({
                 isOpen: true,
-                title: "Cancel Order?",
-                description: "Are you sure you want to cancel this order?",
+                title: t("pos_app.confirm_modals.cancel_order.title"),
+                description: t("pos_app.confirm_modals.cancel_order.description"),
                 variant: "destructive",
                 onConfirm: async () => {
                     if (!navigator.onLine) {
@@ -532,23 +536,23 @@ function POSMain({
                             orderId,
                             clientTimestamp: new Date().toISOString(),
                         });
-                        toast.info("Offline — cancellation queued for sync");
+                        toast.info(t("pos_app.toasts.offline_cancel_queued"));
                         return;
                     }
                     try {
                         await staffApi.patch(`/station/orders/${orderId}/cancel`, {}, {
                             headers: { "X-Idempotency-Key": generateIdempotencyKey() },
                         });
-                        toast.success("Order cancelled");
+                        toast.success(t("pos_app.toasts.order_cancelled"));
                         refreshOrders();
                         refreshTables();
                     } catch {
-                        toast.error("Failed to cancel order");
+                        toast.error(t("pos_app.toasts.cancel_order_failed"));
                     }
                 },
             });
         },
-        [refreshOrders, refreshTables],
+        [refreshOrders, refreshTables, t],
     );
 
     const handleTableSelect = (table: PosTable) => {
@@ -557,8 +561,8 @@ function POSMain({
             if (existing) {
                 setConfirmModal({
                     isOpen: true,
-                    title: `${table.name} is Occupied`,
-                    description: `This table has an active order ($${Number(existing.totalAmount).toFixed(2)}). Would you like to view it?`,
+                    title: t("pos_app.confirm_modals.table_occupied.title", { name: table.name }),
+                    description: t("pos_app.confirm_modals.table_occupied.description", { amount: Number(existing.totalAmount).toFixed(2) }),
                     onConfirm: () => {
                         setActiveMainSection("orders");
                     },
@@ -569,15 +573,15 @@ function POSMain({
         setSelectedTableId(table.id);
         setOrderMode("dine-in");
         setActiveMainSection("menu");
-        toast.info(`${table.name} assigned to cart`);
+        toast.info(t("pos_app.toasts.table_assigned_to_cart", { name: table.name }));
     };
 
     const handleClearCart = () => {
         if (cart.length === 0) return;
         setConfirmModal({
             isOpen: true,
-            title: "Clear Active Order?",
-            description: "This will remove all items from the current cart.",
+            title: t("pos_app.confirm_modals.clear_cart.title"),
+            description: t("pos_app.confirm_modals.clear_cart.description"),
             variant: "destructive",
             onConfirm: resetActiveOrder,
         });
@@ -593,20 +597,20 @@ function POSMain({
 
                 <div className="flex bg-muted/50 p-1 rounded-xl">
                     {[
-                        { id: "menu", label: "MENU", icon: <Package className="w-4 h-4" /> },
+                        { id: "menu", label: t("pos_app.nav.menu"), icon: <Package className="w-4 h-4" /> },
                         {
                             id: "orders",
-                            label: "ORDERS",
+                            label: t("pos_app.nav.orders"),
                             icon: <ClipboardList className="w-4 h-4" />,
                         },
                         {
                             id: "tables",
-                            label: "TABLES",
+                            label: t("pos_app.nav.tables"),
                             icon: <LayoutGrid className="w-4 h-4" />,
                             hidden: !station.business.allowTableOrdering,
                         },
                     ]
-                        .filter((t) => !t.hidden)
+                        .filter((tab) => !tab.hidden)
                         .map((tab) => (
                             <button
                                 key={tab.id}
@@ -649,7 +653,7 @@ function POSMain({
                         size="icon"
                         onClick={onLock}
                         className="h-9 w-9 text-muted-foreground hover:text-foreground"
-                        title="Lock terminal"
+                        title={t("pos_app.titles.lock_terminal")}
                     >
                         <Lock className="w-4 h-4" />
                     </Button>
@@ -666,10 +670,10 @@ function POSMain({
                 >
                     <p className="text-[9px] font-black text-muted-foreground tracking-widest uppercase px-4 mb-3">
                         {activeMainSection === "menu"
-                            ? "Category"
+                            ? t("pos_app.sidebar.category")
                             : activeMainSection === "tables"
-                            ? "Floor"
-                            : "Filter"}
+                            ? t("pos_app.sidebar.floor")
+                            : t("pos_app.sidebar.filter")}
                     </p>
                     <ScrollArea className="flex-1">
                         <div className="flex flex-col gap-1 px-2">
@@ -679,7 +683,7 @@ function POSMain({
                                     {activeMenus.length > 1 && (
                                         <div className="mb-2 px-1">
                                             <p className="text-[9px] text-muted-foreground font-bold uppercase mb-1">
-                                                Menu
+                                                {t("pos_app.sidebar.menu")}
                                             </p>
                                             {activeMenus.map((m) => (
                                                 <button
@@ -715,7 +719,7 @@ function POSMain({
                                     ))}
                                     {categories.length === 0 && (
                                         <p className="text-[10px] text-muted-foreground px-3 italic">
-                                            No categories
+                                            {t("pos_app.sidebar.no_categories")}
                                         </p>
                                     )}
                                 </>
@@ -733,7 +737,7 @@ function POSMain({
                                         }`}
                                     >
                                         <LayoutGrid className="w-4 h-4 flex-shrink-0" />
-                                        All Floors
+                                        {t("pos_app.sidebar.all_floors")}
                                     </button>
                                     {floors.map((floor) => (
                                         <button
@@ -755,7 +759,12 @@ function POSMain({
                             {/* Orders section: filters */}
                             {activeMainSection === "orders" && (
                                 <>
-                                    {["All Active", "Created", "Preparing", "Ready"].map((f) => (
+                                    {[
+                                        t("pos_app.order_filters.all_active"),
+                                        t("pos_app.order_filters.created"),
+                                        t("pos_app.order_filters.preparing"),
+                                        t("pos_app.order_filters.ready"),
+                                    ].map((f) => (
                                         <button
                                             key={f}
                                             className="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-bold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
@@ -776,7 +785,7 @@ function POSMain({
                     onTouchStart={leftPanel.startResize}
                     style={{ touchAction: "none" }}
                     className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
-                    title="Drag to resize"
+                    title={t("pos_app.titles.drag_to_resize")}
                 />
 
                 {/* MAIN CONTENT */}
@@ -787,7 +796,7 @@ function POSMain({
                             <div className="h-14 flex items-center px-6 gap-4 border-b border-border bg-card/30 flex-shrink-0">
                                 <Search className="h-4 w-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search menu items..."
+                                    placeholder={t("pos_app.menu_view.search_placeholder")}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="bg-transparent border-none focus-visible:ring-0 text-xs p-0 h-auto placeholder:text-muted-foreground/50 font-medium"
@@ -799,8 +808,8 @@ function POSMain({
                                         <Package className="w-12 h-12 mb-3 opacity-10" />
                                         <p className="text-xs font-bold uppercase tracking-widest">
                                             {categories.length === 0
-                                                ? "No menu configured"
-                                                : "No items in this category"}
+                                                ? t("pos_app.menu_view.no_menu_configured")
+                                                : t("pos_app.menu_view.no_items_in_category")}
                                         </p>
                                     </div>
                                 ) : (
@@ -828,17 +837,17 @@ function POSMain({
                         <div className="h-full p-8 overflow-auto">
                             <div className="flex items-end gap-3 mb-8">
                                 <h2 className="text-2xl font-black tracking-tight">
-                                    Active Orders
+                                    {t("pos_app.orders_view.active_orders")}
                                 </h2>
                                 <span className="text-xs text-muted-foreground font-bold mb-1 uppercase tracking-widest">
-                                    {activeOrders.length} Total
+                                    {t("pos_app.orders_view.total_count", { count: activeOrders.length })}
                                 </span>
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     className="h-7 w-7 ml-1 mb-0.5"
                                     onClick={() => refreshOrders(1)}
-                                    title="Refresh orders"
+                                    title={t("pos_app.titles.refresh_orders")}
                                 >
                                     <RefreshCw className="w-3.5 h-3.5" />
                                 </Button>
@@ -848,7 +857,7 @@ function POSMain({
                                     <div className="col-span-full py-20 flex flex-col items-center justify-center text-muted-foreground bg-card/30 rounded-3xl border border-dashed border-border">
                                         <ClipboardList className="w-12 h-12 mb-4 opacity-10" />
                                         <p className="font-bold uppercase tracking-widest text-xs">
-                                            No active orders
+                                            {t("pos_app.orders_view.no_active_orders")}
                                         </p>
                                     </div>
                                 )}
@@ -870,7 +879,7 @@ function POSMain({
                                             try {
                                                 const { reorderStationOrderApiCall } = await import("@/features/orders/service");
                                                 const res = await reorderStationOrderApiCall(order.id);
-                                                toast.success("Reorder created");
+                                                toast.success(t("pos_app.toasts.reorder_created"));
                                                 await refreshOrders(1);
                                                 const newOrder: Order = res.data?.data ?? res.data;
                                                 if (newOrder?.id) {
@@ -878,7 +887,7 @@ function POSMain({
                                                     setPayingOrderTotal(Number(newOrder.totalAmount) || 0);
                                                 }
                                             } catch {
-                                                toast.error("Failed to reorder");
+                                                toast.error(t("pos_app.toasts.reorder_failed"));
                                             }
                                         }}
                                     />
@@ -891,7 +900,7 @@ function POSMain({
                                         className="font-black text-xs uppercase tracking-widest"
                                         onClick={() => refreshOrders(orderPage + 1)}
                                     >
-                                        Load More
+                                        {t("pos_app.orders_view.load_more")}
                                     </Button>
                                 </div>
                             )}
@@ -903,14 +912,14 @@ function POSMain({
                         <div className="h-full p-8 overflow-auto">
                             <div className="flex items-center gap-3 mb-8">
                                 <h2 className="text-2xl font-black tracking-tight">
-                                    Select a Table
+                                    {t("pos_app.tables_view.select_a_table")}
                                 </h2>
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     className="h-7 w-7"
                                     onClick={refreshTables}
-                                    title="Refresh tables"
+                                    title={t("pos_app.titles.refresh_tables")}
                                 >
                                     <RefreshCw className="w-3.5 h-3.5" />
                                 </Button>
@@ -920,7 +929,7 @@ function POSMain({
                                 <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
                                     <LayoutGrid className="w-12 h-12 mb-3 opacity-10" />
                                     <p className="text-xs font-bold uppercase tracking-widest">
-                                        No tables configured
+                                        {t("pos_app.tables_view.no_tables_configured")}
                                     </p>
                                 </div>
                             ) : (
@@ -930,6 +939,7 @@ function POSMain({
                                         const statusStyle =
                                             TABLE_STATUS_STYLES[table.status] ??
                                             TABLE_STATUS_STYLES.AVAILABLE;
+                                        const tableStatusLabels = getTableStatusLabels(t);
                                         return (
                                             <div
                                                 key={table.id}
@@ -959,14 +969,14 @@ function POSMain({
                                                         }`}
                                                     >
                                                         {isActive
-                                                            ? "Current"
-                                                            : TABLE_STATUS_LABELS[table.status] ??
+                                                            ? t("pos_app.tables_view.current")
+                                                            : tableStatusLabels[table.status] ??
                                                               table.status}
                                                     </span>
                                                 </div>
                                                 {table.status === "OCCUPIED" && !isActive && (
                                                     <Badge className="absolute -top-2 -right-2 px-1.5 h-5 font-black text-[9px] bg-red-500">
-                                                        ACTIVE
+                                                        {t("pos_app.tables_view.active_badge")}
                                                     </Badge>
                                                 )}
                                             </div>
@@ -984,7 +994,7 @@ function POSMain({
                     onTouchStart={rightPanel.startResize}
                     style={{ touchAction: "none" }}
                     className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
-                    title="Drag to resize"
+                    title={t("pos_app.titles.drag_to_resize")}
                 />
 
                 {/* RIGHT CART SIDEBAR */}
@@ -1047,11 +1057,22 @@ function POSMain({
 
 // ─── Active Order Card ────────────────────────────────────────────────────────
 
-const STATUS_TRANSITION: Record<string, { label: string; action: string }> = {
-    CREATED: { label: "ACCEPT", action: "accept" },
-    ACCEPTED: { label: "PREPARING", action: "prepare" },
-    PREPARING: { label: "MARK READY", action: "ready" },
-};
+function getStatusTransition(t: (key: string) => string): Record<string, { label: string; action: string }> {
+    return {
+        CREATED: { label: t("pos_app.order_card.transition.accept"), action: "accept" },
+        ACCEPTED: { label: t("pos_app.order_card.transition.preparing"), action: "prepare" },
+        PREPARING: { label: t("pos_app.order_card.transition.mark_ready"), action: "ready" },
+    };
+}
+
+function getOrderStatusLabels(t: (key: string) => string): Record<string, string> {
+    return {
+        CREATED: t("pos_app.order_card.status.created"),
+        ACCEPTED: t("pos_app.order_card.status.accepted"),
+        PREPARING: t("pos_app.order_card.status.preparing"),
+        READY: t("pos_app.order_card.status.ready"),
+    };
+}
 
 const STATUS_COLOR: Record<string, string> = {
     CREATED: "bg-yellow-500/10 text-yellow-600",
@@ -1075,12 +1096,13 @@ function ActiveOrderCard({
     onCancel: () => void;
     onReorder?: () => void;
 }) {
+    const { t } = useTranslation("pos");
     const time = new Date(order.createdAt).toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
     });
     const statusUpper = order.status.toUpperCase();
-    const transition = STATUS_TRANSITION[statusUpper];
+    const transition = getStatusTransition(t)[statusUpper];
     const canPay = ["ACCEPTED", "PREPARING", "READY"].includes(statusUpper);
 
     return (
@@ -1104,10 +1126,10 @@ function ActiveOrderCard({
                             </div>
                             <div>
                                 <h3 className="font-black text-sm">
-                                    {order.table?.name ?? (order.type === "dine_in" ? "Table" : "Takeaway")}
+                                    {order.table?.name ?? (order.type === "dine_in" ? t("pos_app.order_card.table") : t("pos_app.order_card.takeaway"))}
                                 </h3>
                                 <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${STATUS_COLOR[statusUpper] ?? "bg-muted text-muted-foreground"}`}>
-                                    {order.status}
+                                    {getOrderStatusLabels(t)[statusUpper] ?? order.status}
                                 </span>
                             </div>
                         </div>
@@ -1118,16 +1140,16 @@ function ActiveOrderCard({
 
                     <div className="space-y-1 mb-5">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest font-mono">
-                            Total: ${Number(order.totalAmount).toFixed(2)}
+                            {t("pos_app.order_card.total", { amount: Number(order.totalAmount).toFixed(2) })}
                         </p>
                         {order.items.slice(0, 2).map((it, idx) => (
                             <p key={idx} className="text-xs text-muted-foreground">
-                                {it.quantity}× {it.nameSnapshot ?? "Item"}
+                                {it.quantity}× {it.nameSnapshot ?? t("pos_app.order_card.unnamed_item")}
                             </p>
                         ))}
                         {order.items.length > 2 && (
                             <p className="text-[10px] text-muted-foreground font-bold">
-                                + {order.items.length - 2} more items
+                                {t("pos_app.order_card.more_items", { count: order.items.length - 2 })}
                             </p>
                         )}
                     </div>
@@ -1150,7 +1172,7 @@ function ActiveOrderCard({
                                     onClick={() => onPay("card")}
                                 >
                                     <CreditCard className="w-3 h-3" />
-                                    PAY CARD
+                                    {t("pos_app.order_card.pay_card")}
                                 </Button>
                                 <Button
                                     variant="outline"
@@ -1158,7 +1180,7 @@ function ActiveOrderCard({
                                     onClick={() => onPay("cash")}
                                 >
                                     <Settings className="w-3 h-3" />
-                                    PAY CASH
+                                    {t("pos_app.order_card.pay_cash")}
                                 </Button>
                             </div>
                         )}
@@ -1169,7 +1191,7 @@ function ActiveOrderCard({
                                 className="w-full font-bold text-[9px] h-8 uppercase tracking-widest text-primary/60 hover:text-primary hover:bg-primary/10"
                                 onClick={onReorder}
                             >
-                                Reorder
+                                {t("pos_app.order_card.reorder")}
                             </Button>
                         )}
                         {posPermissions?.posCancelOrder && (
@@ -1178,7 +1200,7 @@ function ActiveOrderCard({
                                 className="col-span-2 text-destructive/40 hover:text-destructive hover:bg-destructive/10 font-bold text-[9px] h-8 uppercase tracking-widest"
                                 onClick={onCancel}
                             >
-                                Cancel & Void Order
+                                {t("pos_app.order_card.cancel_and_void")}
                             </Button>
                         )}
                     </div>

@@ -13,6 +13,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     businessId: string;
@@ -31,6 +32,7 @@ export default function SplitBillPanel({
     orderItems,
     onAllPaid,
 }: Props) {
+    const { t } = useTranslation("pos");
     const qc = useQueryClient();
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currency = businessBasicDetails?.currency ?? "USD";
@@ -55,7 +57,7 @@ export default function SplitBillPanel({
             setItemAssignments({});
         },
         onError: (e: any) => {
-            toast.error(e?.response?.data?.message ?? "Failed to create splits");
+            toast.error(e?.response?.data?.message ?? t("split_bill_panel.errors.create_failed"));
         },
     });
 
@@ -67,9 +69,9 @@ export default function SplitBillPanel({
         },
         onError: (e: any) => {
             if (e?.response?.status === 422) {
-                toast.error("Cannot remove splits — at least one check already has a payment");
+                toast.error(t("split_bill_panel.errors.remove_has_payment"));
             } else {
-                toast.error("Failed to remove splits");
+                toast.error(t("split_bill_panel.errors.remove_failed"));
             }
         },
     });
@@ -87,13 +89,13 @@ export default function SplitBillPanel({
         // Must have at least 2 checks
         const labels = Object.keys(groups);
         if (labels.length < 2) {
-            toast.error("Assign items to at least 2 different checks");
+            toast.error(t("split_bill_panel.errors.need_two_checks"));
             return;
         }
         // Validate label length
         for (const label of labels) {
             if (label.length > 60) {
-                toast.error("Check label must be 60 characters or less");
+                toast.error(t("split_bill_panel.errors.label_too_long"));
                 return;
             }
         }
@@ -111,9 +113,9 @@ export default function SplitBillPanel({
         return (
             <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 text-center space-y-3">
                 <CheckCircle2 className="w-10 h-10 text-primary mx-auto" />
-                <p className="font-semibold">All checks paid</p>
+                <p className="font-semibold">{t("split_bill_panel.all_checks_paid")}</p>
                 <Button onClick={onAllPaid} className="w-full">
-                    Complete Order
+                    {t("split_bill_panel.complete_order")}
                 </Button>
             </div>
         );
@@ -125,7 +127,7 @@ export default function SplitBillPanel({
             {hasSplits && (
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <p className="text-sm font-semibold">{splits.length} Checks</p>
+                        <p className="text-sm font-semibold">{t("split_bill_panel.checks_count", { count: splits.length })}</p>
                         <button
                             onClick={() => deleteMutation.mutate()}
                             disabled={deleteMutation.isPending || anyPaid}
@@ -134,9 +136,9 @@ export default function SplitBillPanel({
                                     ? "text-muted-foreground cursor-not-allowed"
                                     : "text-destructive hover:text-destructive/80"
                             }`}
-                            title={anyPaid ? "Cannot remove — a payment has been recorded" : undefined}
+                            title={anyPaid ? t("split_bill_panel.cannot_remove_has_payment") : undefined}
                         >
-                            {deleteMutation.isPending ? "Removing…" : "Remove Split"}
+                            {deleteMutation.isPending ? t("split_bill_panel.removing") : t("split_bill_panel.remove_split")}
                         </button>
                     </div>
                     {splits.map((split) => (
@@ -160,18 +162,18 @@ export default function SplitBillPanel({
                             className="w-full"
                             onClick={() => setShowConfigurator(true)}
                         >
-                            Split Bill
+                            {t("split_bill_panel.split_bill_button")}
                         </Button>
                     ) : (
                         <div className="bg-card border border-border rounded-xl p-4 space-y-4">
-                            <p className="text-sm font-semibold">Assign items to checks</p>
+                            <p className="text-sm font-semibold">{t("split_bill_panel.assign_items_heading")}</p>
                             <p className="text-xs text-muted-foreground">
-                                Tap a check label next to each item. All items must be assigned.
+                                {t("split_bill_panel.assign_items_description")}
                             </p>
 
                             {/* Number of checks selector */}
                             <div className="flex items-center gap-2">
-                                <span className="text-xs text-muted-foreground flex-1">Checks</span>
+                                <span className="text-xs text-muted-foreground flex-1">{t("split_bill_panel.checks_label")}</span>
                                 {[2, 3, 4, 5, 6].map((n) => (
                                     <button
                                         key={n}
@@ -214,7 +216,7 @@ export default function SplitBillPanel({
                                             <div className="flex items-center justify-between gap-2 mb-1.5">
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-xs font-medium truncate">
-                                                        {item.nameSnapshot ?? "Item"}
+                                                        {item.nameSnapshot ?? t("split_bill_panel.unnamed_item")}
                                                     </p>
                                                     {item.totalPrice !== undefined && (
                                                         <p className="text-[10px] text-muted-foreground">
@@ -250,13 +252,13 @@ export default function SplitBillPanel({
 
                             {!allAssigned && activeItems.length > 0 && (
                                 <p className="text-xs text-destructive font-medium">
-                                    All items must be assigned to a check before splitting.
+                                    {t("split_bill_panel.errors.all_items_must_be_assigned")}
                                 </p>
                             )}
 
                             {usedLabels.length < 2 && allAssigned && (
                                 <p className="text-xs text-destructive font-medium">
-                                    Items must be spread across at least 2 checks.
+                                    {t("split_bill_panel.errors.items_need_two_checks")}
                                 </p>
                             )}
 
@@ -269,7 +271,7 @@ export default function SplitBillPanel({
                                         setItemAssignments({});
                                     }}
                                 >
-                                    Cancel
+                                    {t("split_bill_panel.cancel")}
                                 </Button>
                                 <Button
                                     className="flex-1"
@@ -280,7 +282,7 @@ export default function SplitBillPanel({
                                         createMutation.isPending
                                     }
                                 >
-                                    {createMutation.isPending ? "Creating…" : "Confirm Split"}
+                                    {createMutation.isPending ? t("split_bill_panel.creating") : t("split_bill_panel.confirm_split")}
                                 </Button>
                             </div>
                         </div>
@@ -302,6 +304,7 @@ function SplitRow({
     orderId: string;
     onPaid: () => void;
 }) {
+    const { t } = useTranslation("pos");
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currency = businessBasicDetails?.currency ?? "USD";
     const fmt = (n: number) => formatCurrency(n, currency);
@@ -328,7 +331,7 @@ function SplitRow({
             setShowPayment(false);
             onPaid();
         } catch (e: any) {
-            toast.error(e?.response?.data?.message ?? "Payment failed");
+            toast.error(e?.response?.data?.message ?? t("split_bill_panel.errors.payment_failed"));
         } finally {
             setLoading(false);
         }
@@ -348,15 +351,15 @@ function SplitRow({
                     <p className="font-semibold text-sm">{split.label}</p>
                     {split.items && split.items.length > 0 && (
                         <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
-                            {split.items.map((i) => i.nameSnapshot ?? "Item").join(", ")}
+                            {split.items.map((i) => i.nameSnapshot ?? t("split_bill_panel.unnamed_item")).join(", ")}
                         </p>
                     )}
                     <Badge variant={statusVariant} className="text-[10px] mt-1">
                         {split.paymentStatus === "paid"
-                            ? "Paid"
+                            ? t("split_bill_panel.status.paid")
                             : split.paymentStatus === "partially_paid"
-                            ? `${fmt(remaining)} remaining`
-                            : "Unpaid"}
+                            ? t("split_bill_panel.status.remaining", { amount: fmt(remaining) })
+                            : t("split_bill_panel.status.unpaid")}
                     </Badge>
                 </div>
                 <div className="text-right flex-shrink-0">
@@ -366,7 +369,7 @@ function SplitRow({
                             onClick={() => setShowPayment((v) => !v)}
                             className="text-xs text-primary underline mt-1"
                         >
-                            {showPayment ? "Cancel" : "Pay Check"}
+                            {showPayment ? t("split_bill_panel.cancel") : t("split_bill_panel.pay_check")}
                         </button>
                     )}
                     {split.paymentStatus === "paid" && (
@@ -395,7 +398,7 @@ function SplitRow({
                     {method === "cash" && (
                         <Input
                             type="number"
-                            placeholder={`Cash tendered (min ${fmt(remaining)})`}
+                            placeholder={t("split_bill_panel.cash_tendered_placeholder", { amount: fmt(remaining) })}
                             value={cashTendered}
                             onChange={(e) => setCashTendered(e.target.value)}
                             min={remaining}
@@ -405,7 +408,7 @@ function SplitRow({
                     )}
                     <Input
                         type="number"
-                        placeholder="Add tip (optional)"
+                        placeholder={t("split_bill_panel.tip_placeholder")}
                         value={tip}
                         onChange={(e) => setTip(e.target.value)}
                         min={0}
@@ -418,7 +421,7 @@ function SplitRow({
                         className="w-full text-sm"
                         size="sm"
                     >
-                        {loading ? "Processing…" : `Charge ${fmt(remaining + tipNum)}`}
+                        {loading ? t("split_bill_panel.processing") : t("split_bill_panel.charge_button", { amount: fmt(remaining + tipNum) })}
                     </Button>
                 </div>
             )}

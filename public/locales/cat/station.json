@@ -1,0 +1,127 @@
+{
+  "kds_app": {
+    "header": {
+      "title": "Pantalla de Cuina",
+      "active_orders_count_one": "{{count}} Actiu",
+      "active_orders_count_other": "{{count}} Actius"
+    },
+    "loading": "Carregant comandes...",
+    "station_unassigned": {
+      "title": "Estació sense assignar",
+      "description": "Aquest KDS no té cap estació de cuina assignada. Demana a un responsable que la reassigni des del tauler, a Estacions."
+    },
+    "empty_state": {
+      "title": "Cuina lliure",
+      "description": "Esperant noves comandes del terminal..."
+    },
+    "no_kitchen_station": {
+      "title": "Sense estació de cuina assignada",
+      "description": "Demana a un propietari que assigni una estació de cuina a aquest dispositiu des del tauler, a Estacions."
+    },
+    "settings_popover": {
+      "title": "Configuració del KDS",
+      "hide_after_label": "Amaga els tiquets completats després de (minuts)",
+      "never_placeholder": "Mai",
+      "hint": "Deixa-ho buit per mostrar sempre els tiquets completats."
+    },
+    "ticket": {
+      "rush": "Urgent",
+      "priority_value": "P{{value}}",
+      "order_type_dine_in": "Per menjar aquí",
+      "order_type_takeaway": "Per emportar",
+      "order_type_labels": {
+        "dine_in": "per menjar aquí",
+        "takeaway": "per emportar",
+        "delivery": "a domicili"
+      },
+      "waiting_for_expo": "Esperant l'expo",
+      "done_in": "Acabat en {{time}}",
+      "unbump_title": "Desfés la validació d'aquest article",
+      "recall": "Recupera",
+      "other_items_count_one": "{{count}} article més d'altres estacions",
+      "other_items_count_other": "{{count}} articles més d'altres estacions",
+      "ready_for_pickup": "Llest per recollir",
+      "awaiting_expo_confirmation": "Esperant confirmació de l'expo",
+      "station_done_waiting": "Estació acabada — esperant altres estacions",
+      "start_preparing": "Comença a preparar",
+      "bump_all": "Valida-ho tot ({{count}})"
+    },
+    "toasts": {
+      "new_orders_arrived_one": "{{count}} comanda nova rebuda",
+      "new_orders_arrived_other": "{{count}} comandes noves rebudes",
+      "order_complete": "Comanda completa — llesta per recollir!",
+      "item_not_assigned": "Aquest article no està assignat a la teva estació",
+      "recall_failed": "No s'ha pogut recuperar l'article — torna-ho a provar.",
+      "start_preparing_failed": "No s'ha pogut iniciar la preparació — torna-ho a provar.",
+      "priority_update_failed": "No s'ha pogut actualitzar la prioritat."
+    }
+  },
+  "expo_screen": {
+    "header": {
+      "title": "Estació Expo",
+      "business_all_stations": "{{businessName}} · Totes les estacions",
+      "active_orders_count_one": "{{count}} Comanda",
+      "active_orders_count_other": "{{count}} Comandes"
+    },
+    "loading": "Carregant comandes...",
+    "empty_state": {
+      "title": "Tot lliure",
+      "description": "No hi ha comandes actives en cap estació"
+    },
+    "ticket": {
+      "takeaway": "Per emportar",
+      "rush": "Urgent",
+      "ready_ago": "Llest fa {{time}}",
+      "station_pill": "Estació {{index}}",
+      "ready_awaiting_pickup": "Llest — Esperant recollida",
+      "confirm_and_send": "Confirma i envia",
+      "all_stations_done": "Totes les estacions acabades",
+      "in_progress": "En curs"
+    },
+    "toasts": {
+      "confirm_success": "Comanda confirmada — llesta per recollir!",
+      "items_not_ready": "Alguns articles encara s'estan preparant.",
+      "invalid_status": "La comanda no està en un estat confirmable.",
+      "confirm_failed": "No s'ha pogut confirmar la comanda."
+    }
+  },
+  "station_bootstrap": {
+    "initializing": "Inicialitzant estació...",
+    "error": {
+      "title": "No s'han pogut carregar les dades de l'estació.",
+      "description": "Comprova la connexió i torna-ho a provar.",
+      "retry": "Torna-ho a provar"
+    }
+  },
+  "pairing_screen": {
+    "title": "Vincula aquest dispositiu",
+    "subtitle": "Demana al propietari del negoci que generi un codi de vinculació des del tauler.",
+    "station_type_kds": "Pantalla de Cuina (KDS)",
+    "station_type_pos": "Terminal POS",
+    "form": {
+      "station_name_label": "Nom de l'estació",
+      "station_name_placeholder": "p. ex. Terminal Barra Principal",
+      "pairing_code_label": "Codi de vinculació",
+      "pairing_code_placeholder": "Codi de 8 caràcters",
+      "linking": "Vinculant...",
+      "link_device": "Vincula el dispositiu"
+    },
+    "errors": {
+      "invalid_code": "Codi no vàlid. Torna-ho a provar."
+    },
+    "device_id_footer": "ID del dispositiu: {{deviceId}}..."
+  },
+  "quick_settings": {
+    "title": "Configuració de l'estació",
+    "this_device": "Aquest dispositiu",
+    "station_type_kds": "Pantalla de Cuina",
+    "station_type_pos": "Terminal POS",
+    "attendance": "Assistència",
+    "switch_mode": "Canvia de mode",
+    "active_badge": "Actiu",
+    "mode_switcher": {
+      "pos_label": "Terminal POS",
+      "kds_label": "Pantalla de Cuina (KDS)"
+    }
+  }
+}

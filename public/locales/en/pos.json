@@ -1,0 +1,354 @@
+{
+  "staff_pin_screen": {
+    "title": "Staff Login",
+    "subtitle": "Enter your 4-digit PIN",
+    "verifying": "Verifying...",
+    "errors": {
+      "incorrect_pin": "Incorrect PIN",
+      "no_access": "You don't have access to this terminal",
+      "terminal_locked": "Terminal locked for 15 minutes"
+    }
+  },
+  "product_card": {
+    "from_price": "From {{price}}",
+    "unavailable": "Unavailable"
+  },
+  "discount_panel": {
+    "discount_applied": "Discount applied",
+    "mode": {
+      "code": "Discount Code",
+      "manual": "Manual Amount"
+    },
+    "code_placeholder": "Enter discount code",
+    "amount_placeholder": "Amount ($)",
+    "reason_placeholder": "Reason (required)",
+    "applying": "Applying...",
+    "apply_button": "Apply Discount",
+    "errors": {
+      "amount_must_be_positive": "Discount amount must be 0 or greater",
+      "exceeds_total": "Discount cannot exceed the order total",
+      "apply_failed": "Discount could not be applied"
+    }
+  },
+  "receipt": {
+    "print_title": "Receipt",
+    "thank_you": "Thank you for dining with us!",
+    "fields": {
+      "receipt": "Receipt",
+      "date": "Date",
+      "type": "Type",
+      "table": "Table",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "tax_included_suffix": "incl.",
+      "tendered": "Tendered",
+      "change": "Change",
+      "tip": "Tip",
+      "balance_due": "Balance Due"
+    },
+    "actions": {
+      "print": "Print",
+      "pdf": "PDF",
+      "new_order": "New Order",
+      "close": "Close"
+    }
+  },
+  "confirmation_modal": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "order_cart": {
+    "header": {
+      "active_order": "Active Order",
+      "operator": "Operator: {{name}}",
+      "no_staff_logged_in": "No staff logged in",
+      "discard": "Discard"
+    },
+    "mode": {
+      "dine_in": "Dine-In",
+      "takeaway": "Takeaway"
+    },
+    "table": {
+      "location": "Location",
+      "assign_a_table": "Assign a Table",
+      "change": "Change"
+    },
+    "empty": {
+      "title": "Terminal Empty",
+      "description": "Add items to begin order"
+    },
+    "item": {
+      "price_per_unit": "{{price}} / unit"
+    },
+    "kitchen_note": {
+      "label": "Kitchen Note / Allergy Info",
+      "placeholder": "e.g. Severe nut allergy at table"
+    },
+    "tax_exempt": "Tax Exempt",
+    "validation": {
+      "table_required": "A table assignment is required to continue.",
+      "ready_for_kitchen": "Items ready for kitchen transmission."
+    },
+    "totals": {
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "tax_exempt": "Tax (Exempt)",
+      "tax_with_rate": "Tax ({{rate}}%)",
+      "total_amount": "Total Amount"
+    },
+    "actions": {
+      "cart_empty": "Cart is Empty",
+      "select_table": "Select a Table",
+      "confirm_and_send": "Confirm and Send"
+    },
+    "payment": {
+      "cash_settle": "CASH SETTLE",
+      "card_settle": "CARD SETTLE"
+    }
+  },
+  "payment_modal": {
+    "method": {
+      "cash": "Cash",
+      "card": "Card"
+    },
+    "errors": {
+      "payment_failed": "Payment failed. Please try again."
+    },
+    "success": {
+      "title": "Payment Complete",
+      "processed_via": "Processed via {{method}}",
+      "total_charged": "Total Charged",
+      "discount": "Discount",
+      "cash_received": "Cash Received",
+      "change_due": "Change Due",
+      "view_receipt": "View Receipt",
+      "print_pdf": "Print PDF",
+      "new_order": "New Order"
+    },
+    "confirm": {
+      "cash_payment": "Cash Payment",
+      "card_payment": "Card Payment",
+      "settle_order": "Settle Order",
+      "total_due": "Total Due",
+      "discount": "Discount",
+      "split_bill": "Split Bill",
+      "cash_tendered": "Cash Tendered",
+      "change_amount": "Change: ${{amount}}",
+      "short_by_amount": "Short by ${{amount}}",
+      "present_card": "Present card or tap device to terminal",
+      "processing": "Processing...",
+      "confirm_payment": "CONFIRM PAYMENT"
+    }
+  },
+  "keypad": {
+    "confirm": "Confirm"
+  },
+  "attendance_panel": {
+    "no_staff_logged_in": "No staff logged in",
+    "status": {
+      "clocked_in": "Clocked In",
+      "on_break": "On Break",
+      "not_clocked_in": "Not Clocked In"
+    },
+    "since": "Since {{time}} · {{elapsed}}",
+    "break_started": "Break started {{time}} · {{elapsed}}",
+    "actions": {
+      "clock_in": "CLOCK IN",
+      "break": "BREAK",
+      "clock_out": "CLOCK OUT",
+      "end_break": "END BREAK"
+    },
+    "toasts": {
+      "clocked_in": "Clocked in",
+      "clock_in_failed": "Clock in failed",
+      "break_started": "Break started",
+      "break_start_failed": "Starting break failed",
+      "clocked_out": "Clocked out",
+      "clock_out_failed": "Clock out failed",
+      "break_ended": "Break ended",
+      "break_end_failed": "Ending break failed"
+    },
+    "todays_breaks": "Today's Breaks",
+    "ongoing": "ongoing",
+    "break_type": {
+      "paid": "PAID",
+      "unpaid": "UNPAID"
+    }
+  },
+  "station_receipt": {
+    "print_title": "Receipt",
+    "unavailable": "Receipt unavailable",
+    "thank_you": "Thank you!",
+    "fields": {
+      "receipt": "Receipt",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "tax_exempt": "Tax (Exempt)",
+      "tax_included_suffix": "incl.",
+      "total": "Total",
+      "tendered": "Tendered",
+      "change": "Change",
+      "tip": "Tip"
+    },
+    "actions": {
+      "print": "Print",
+      "new_order": "New Order",
+      "close": "Close"
+    }
+  },
+  "pos_mode_switcher": {
+    "modes": {
+      "terminal": "POS Terminal",
+      "kds": "Kitchen Display (KDS)"
+    },
+    "switch_device_role": "Switch Device Role",
+    "split_mode_coming_soon": "Split Mode (Coming Soon)"
+  },
+  "split_bill_panel": {
+    "all_checks_paid": "All checks paid",
+    "complete_order": "Complete Order",
+    "checks_count_one": "{{count}} Check",
+    "checks_count_other": "{{count}} Checks",
+    "cannot_remove_has_payment": "Cannot remove — a payment has been recorded",
+    "removing": "Removing…",
+    "remove_split": "Remove Split",
+    "split_bill_button": "Split Bill",
+    "assign_items_heading": "Assign items to checks",
+    "assign_items_description": "Tap a check label next to each item. All items must be assigned.",
+    "checks_label": "Checks",
+    "unnamed_item": "Item",
+    "cancel": "Cancel",
+    "creating": "Creating…",
+    "confirm_split": "Confirm Split",
+    "cash_tendered_placeholder": "Cash tendered (min {{amount}})",
+    "tip_placeholder": "Add tip (optional)",
+    "processing": "Processing…",
+    "charge_button": "Charge {{amount}}",
+    "pay_check": "Pay Check",
+    "status": {
+      "paid": "Paid",
+      "remaining": "{{amount}} remaining",
+      "unpaid": "Unpaid"
+    },
+    "errors": {
+      "create_failed": "Failed to create splits",
+      "remove_has_payment": "Cannot remove splits — at least one check already has a payment",
+      "remove_failed": "Failed to remove splits",
+      "need_two_checks": "Assign items to at least 2 different checks",
+      "label_too_long": "Check label must be 60 characters or less",
+      "all_items_must_be_assigned": "All items must be assigned to a check before splitting.",
+      "items_need_two_checks": "Items must be spread across at least 2 checks.",
+      "payment_failed": "Payment failed"
+    }
+  },
+  "pos_app": {
+    "nav": {
+      "menu": "MENU",
+      "orders": "ORDERS",
+      "tables": "TABLES"
+    },
+    "titles": {
+      "lock_terminal": "Lock terminal",
+      "drag_to_resize": "Drag to resize",
+      "refresh_orders": "Refresh orders",
+      "refresh_tables": "Refresh tables"
+    },
+    "sidebar": {
+      "category": "Category",
+      "floor": "Floor",
+      "filter": "Filter",
+      "menu": "Menu",
+      "no_categories": "No categories",
+      "all_floors": "All Floors"
+    },
+    "order_filters": {
+      "all_active": "All Active",
+      "created": "Created",
+      "preparing": "Preparing",
+      "ready": "Ready"
+    },
+    "menu_view": {
+      "search_placeholder": "Search menu items...",
+      "no_menu_configured": "No menu configured",
+      "no_items_in_category": "No items in this category"
+    },
+    "orders_view": {
+      "active_orders": "Active Orders",
+      "total_count_one": "{{count}} Total",
+      "total_count_other": "{{count}} Total",
+      "no_active_orders": "No active orders",
+      "load_more": "Load More"
+    },
+    "tables_view": {
+      "select_a_table": "Select a Table",
+      "no_tables_configured": "No tables configured",
+      "current": "Current",
+      "active_badge": "ACTIVE"
+    },
+    "table_status": {
+      "available": "Vacant",
+      "occupied": "Occupied",
+      "reserved": "Reserved",
+      "cleaning": "Cleaning"
+    },
+    "order_card": {
+      "table": "Table",
+      "takeaway": "Takeaway",
+      "total": "Total: ${{amount}}",
+      "unnamed_item": "Item",
+      "more_items_one": "+ {{count}} more item",
+      "more_items_other": "+ {{count}} more items",
+      "pay_card": "PAY CARD",
+      "pay_cash": "PAY CASH",
+      "reorder": "Reorder",
+      "cancel_and_void": "Cancel & Void Order",
+      "status": {
+        "created": "CREATED",
+        "accepted": "ACCEPTED",
+        "preparing": "PREPARING",
+        "ready": "READY"
+      },
+      "transition": {
+        "accept": "ACCEPT",
+        "preparing": "PREPARING",
+        "mark_ready": "MARK READY"
+      }
+    },
+    "confirm_modals": {
+      "cancel_order": {
+        "title": "Cancel Order?",
+        "description": "Are you sure you want to cancel this order?"
+      },
+      "clear_cart": {
+        "title": "Clear Active Order?",
+        "description": "This will remove all items from the current cart."
+      },
+      "table_occupied": {
+        "title": "{{name}} is Occupied",
+        "description": "This table has an active order (${{amount}}). Would you like to view it?"
+      }
+    },
+    "toasts": {
+      "offline_sync_issues_one": "{{count}} offline action(s) could not be synced — please review",
+      "offline_sync_issues_other": "{{count}} offline action(s) could not be synced — please review",
+      "offline_sync_success_one": "{{count}} offline action(s) synced",
+      "offline_sync_success_other": "{{count}} offline action(s) synced",
+      "session_expired_offline_sync": "Session expired. Re-authenticate to sync offline changes.",
+      "select_table_to_continue": "Please select a table to continue",
+      "order_sent_to_kitchen": "Order sent to kitchen!",
+      "offline_order_queued": "You're offline — order queued and will sync when connection returns",
+      "create_order_failed": "Failed to create order",
+      "payment_requires_connection": "Payment requires a connection. Please try again when online.",
+      "select_table_dine_in": "Please select a table for Dine-In orders",
+      "offline_action_queued": "Offline — action queued for sync",
+      "update_order_failed": "Failed to update order",
+      "offline_cancel_queued": "Offline — cancellation queued for sync",
+      "order_cancelled": "Order cancelled",
+      "cancel_order_failed": "Failed to cancel order",
+      "table_assigned_to_cart": "{{name}} assigned to cart",
+      "reorder_created": "Reorder created",
+      "reorder_failed": "Failed to reorder"
+    }
+  }
+}

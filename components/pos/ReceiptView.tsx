@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     businessId: string;
@@ -22,6 +23,7 @@ function fmtDate(iso: string | null | undefined) {
 }
 
 export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }: Props) {
+    const { t } = useTranslation("pos");
     const { data: receipt, isLoading } = useQuery({
         queryKey: ["receipt", orderId],
         queryFn: () => getReceiptApiCall(businessId, orderId),
@@ -65,7 +67,7 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
         win.document.write(`
       <html>
         <head>
-          <title>Receipt</title>
+          <title>${t("receipt.print_title")}</title>
           <style>
             body { font-family: monospace; font-size: 12px; margin: 0; padding: 16px; }
             * { box-sizing: border-box; }
@@ -101,20 +103,20 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                     {/* Order info */}
                     <div className="px-4 py-3 border-b border-border space-y-1 text-xs text-muted-foreground">
                         <div className="flex justify-between">
-                            <span>Receipt</span>
+                            <span>{t("receipt.fields.receipt")}</span>
                             <span className="font-semibold text-foreground">{receipt.receiptNumber}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Date</span>
+                            <span>{t("receipt.fields.date")}</span>
                             <span>{fmtDate(receipt.generatedAt)}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Type</span>
+                            <span>{t("receipt.fields.type")}</span>
                             <span className="capitalize">{receipt.type.replace("_", " ")}</span>
                         </div>
                         {receipt.tableName && (
                             <div className="flex justify-between">
-                                <span>Table</span>
+                                <span>{t("receipt.fields.table")}</span>
                                 <span>{receipt.tableName}</span>
                             </div>
                         )}
@@ -149,12 +151,12 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                     {/* Totals */}
                     <div className="px-4 py-3 border-b border-border space-y-1 text-xs">
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Subtotal</span>
+                            <span>{t("receipt.fields.subtotal")}</span>
                             <span>{fmt(receipt.subtotal)}</span>
                         </div>
                         {receipt.discountAmount > 0 && (
                             <div className="flex justify-between text-primary">
-                                <span>Discount</span>
+                                <span>{t("receipt.fields.discount")}</span>
                                 <span>−{fmt(receipt.discountAmount)}</span>
                             </div>
                         )}
@@ -162,13 +164,13 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                             <div className="flex justify-between text-muted-foreground">
                                 <span>
                                     {receipt.tax.name} {receipt.tax.rate}%
-                                    {receipt.tax.included && " incl."}
+                                    {receipt.tax.included && ` ${t("receipt.fields.tax_included_suffix")}`}
                                 </span>
                                 <span>{fmt(receipt.tax.amount)}</span>
                             </div>
                         )}
                         <div className="flex justify-between font-bold text-sm border-t border-border pt-2 mt-1">
-                            <span>Total</span>
+                            <span>{t("receipt.fields.total")}</span>
                             <span>{fmt(receipt.totalAmount)}</span>
                         </div>
                     </div>
@@ -184,11 +186,11 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                                 {p.method === "cash" && p.cashTendered !== null && (
                                     <>
                                         <div className="flex justify-between text-muted-foreground pl-3">
-                                            <span>Tendered</span>
+                                            <span>{t("receipt.fields.tendered")}</span>
                                             <span>{fmt(p.cashTendered)}</span>
                                         </div>
                                         <div className="flex justify-between font-semibold text-primary pl-3">
-                                            <span>Change</span>
+                                            <span>{t("receipt.fields.change")}</span>
                                             <span>{fmt(p.changeGiven ?? 0)}</span>
                                         </div>
                                     </>
@@ -197,20 +199,20 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                         ))}
                         {receipt.totalTip > 0 && (
                             <div className="flex justify-between text-muted-foreground">
-                                <span>Tip</span>
+                                <span>{t("receipt.fields.tip")}</span>
                                 <span>{fmt(receipt.totalTip)}</span>
                             </div>
                         )}
                         {balanceDue > 0 && (
                             <div className="flex justify-between font-semibold text-destructive">
-                                <span>Balance Due</span>
+                                <span>{t("receipt.fields.balance_due")}</span>
                                 <span>{fmt(balanceDue)}</span>
                             </div>
                         )}
                     </div>
 
                     <div className="text-center py-3 text-xs text-muted-foreground">
-                        Thank you for dining with us!
+                        {t("receipt.thank_you")}
                     </div>
                 </div>
             </div>
@@ -219,20 +221,20 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
             <div className="flex gap-2 p-4 border-t border-border bg-card">
                 <Button variant="outline" className="flex-1 gap-2" onClick={handlePrint}>
                     <Printer className="w-4 h-4" />
-                    Print
+                    {t("receipt.actions.print")}
                 </Button>
                 <Button variant="outline" className="flex-1 gap-2" onClick={handleDownloadPdf} disabled={isPrintingPdf}>
                     <Download className="w-4 h-4" />
-                    PDF
+                    {t("receipt.actions.pdf")}
                 </Button>
                 {onNewOrder ? (
                     <Button className="flex-1" onClick={onNewOrder}>
-                        New Order
+                        {t("receipt.actions.new_order")}
                     </Button>
                 ) : (
                     <Button className="flex-1 gap-2" onClick={onClose}>
                         <X className="w-4 h-4" />
-                        Close
+                        {t("receipt.actions.close")}
                     </Button>
                 )}
             </div>

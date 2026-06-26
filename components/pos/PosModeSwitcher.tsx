@@ -9,22 +9,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Monitor, ChefHat, Layout } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface PosModeSwitcherProps {
     currentMode: "terminal" | "kds";
 }
 
 export function PosModeSwitcher({ currentMode }: PosModeSwitcherProps) {
+    const { t } = useTranslation("pos");
     const modes = [
         {
             id: "terminal",
-            label: "POS Terminal",
+            label: t("pos_mode_switcher.modes.terminal"),
             icon: <Monitor className="w-4 h-4" />,
             href: "/station/pos",
         },
         {
             id: "kds",
-            label: "Kitchen Display (KDS)",
+            label: t("pos_mode_switcher.modes.kds"),
             icon: <ChefHat className="w-4 h-4" />,
             href: "/station/kds",
         },
@@ -52,7 +54,7 @@ export function PosModeSwitcher({ currentMode }: PosModeSwitcherProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">
                 <DropdownMenuLabel className="text-[10px] font-black text-muted-foreground uppercase tracking-widest px-3 py-2">
-                    Switch Device Role
+                    {t("pos_mode_switcher.switch_device_role")}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {modes.map((mode) => (
@@ -82,7 +84,7 @@ export function PosModeSwitcher({ currentMode }: PosModeSwitcherProps) {
                 >
                     <Layout className="w-4 h-4" />
                     <span className="text-xs font-bold italic opacity-50">
-                        Split Mode (Coming Soon)
+                        {t("pos_mode_switcher.split_mode_coming_soon")}
                     </span>
                 </DropdownMenuItem>
             </DropdownMenuContent>

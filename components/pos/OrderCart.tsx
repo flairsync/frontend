@@ -11,6 +11,7 @@ import {
 import { ValidationAlert } from "./ValidationAlert";
 import { type CartItem, calcSubtotal, calcTax, getTaxRate } from "@/features/pos/types";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { useTranslation } from "react-i18next";
 
 export type { CartItem };
 
@@ -55,6 +56,7 @@ export function OrderCart({
     onKitchenNotesChange,
     onTaxExemptChange,
 }: OrderCartProps) {
+    const { t } = useTranslation("pos");
     const subtotal = calcSubtotal(items);
     const taxRate = getTaxRate();
     const tax = taxExempt ? 0 : calcTax(subtotal);
@@ -66,19 +68,19 @@ export function OrderCart({
     const getMainAction = () => {
         if (isCartEmpty)
             return {
-                label: "Cart is Empty",
+                label: t("order_cart.actions.cart_empty"),
                 disabled: true,
                 icon: <AlertCircle className="w-4 h-4" />,
             };
         if (isDineInMissingTable)
             return {
-                label: "Select a Table",
+                label: t("order_cart.actions.select_table"),
                 disabled: false,
                 icon: <MapPin className="w-4 h-4" />,
                 highlight: true,
             };
         return {
-            label: "Confirm and Send",
+            label: t("order_cart.actions.confirm_and_send"),
             disabled: false,
             icon: <Send className="w-4 h-4" />,
         };
@@ -92,9 +94,9 @@ export function OrderCart({
             <div className="p-6 border-b border-border space-y-5 bg-card/50">
                 <div className="flex justify-between items-center">
                     <div className="space-y-0.5">
-                        <h2 className="text-xl font-black tracking-tight">Active Order</h2>
+                        <h2 className="text-xl font-black tracking-tight">{t("order_cart.header.active_order")}</h2>
                         <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
-                            {staffName ? `Operator: ${staffName}` : "No staff logged in"}
+                            {staffName ? t("order_cart.header.operator", { name: staffName }) : t("order_cart.header.no_staff_logged_in")}
                         </p>
                     </div>
                     {!isCartEmpty && (
@@ -104,7 +106,7 @@ export function OrderCart({
                             onClick={onClear}
                             className="text-destructive hover:bg-destructive/10 h-8 font-black text-[10px] uppercase tracking-widest"
                         >
-                            Discard
+                            {t("order_cart.header.discard")}
                         </Button>
                     )}
                 </div>
@@ -120,7 +122,7 @@ export function OrderCart({
                         }`}
                     >
                         <Utensils className="w-3.5 h-3.5" />
-                        Dine-In
+                        {t("order_cart.mode.dine_in")}
                     </button>
                     <button
                         onClick={() => onChangeMode("takeaway")}
@@ -131,7 +133,7 @@ export function OrderCart({
                         }`}
                     >
                         <Package className="w-3.5 h-3.5" />
-                        Takeaway
+                        {t("order_cart.mode.takeaway")}
                     </button>
                 </div>
 
@@ -157,7 +159,7 @@ export function OrderCart({
                             </div>
                             <div>
                                 <p className="text-[9px] uppercase font-black text-muted-foreground tracking-tighter">
-                                    Location
+                                    {t("order_cart.table.location")}
                                 </p>
                                 <p
                                     className={`text-sm font-black ${
@@ -166,13 +168,13 @@ export function OrderCart({
                                             : "text-destructive italic underline decoration-wavy underline-offset-4"
                                     }`}
                                 >
-                                    {selectedTable || "Assign a Table"}
+                                    {selectedTable || t("order_cart.table.assign_a_table")}
                                 </p>
                             </div>
                         </div>
                         {selectedTable && (
                             <span className="text-[10px] font-black text-primary/60 uppercase">
-                                Change
+                                {t("order_cart.table.change")}
                             </span>
                         )}
                     </div>
@@ -187,9 +189,9 @@ export function OrderCart({
                             <Package className="w-8 h-8 opacity-20" />
                         </div>
                         <p className="text-xs font-black uppercase tracking-widest">
-                            Terminal Empty
+                            {t("order_cart.empty.title")}
                         </p>
-                        <p className="text-[10px] mt-1 italic">Add items to begin order</p>
+                        <p className="text-[10px] mt-1 italic">{t("order_cart.empty.description")}</p>
                     </div>
                 ) : (
                     <div className="space-y-5">
@@ -213,7 +215,7 @@ export function OrderCart({
                                         </p>
                                     )}
                                     <p className="text-[10px] text-muted-foreground font-bold mt-0.5">
-                                        {formatCurrency(item.price, currency)} / unit
+                                        {t("order_cart.item.price_per_unit", { price: formatCurrency(item.price, currency) })}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -257,10 +259,10 @@ export function OrderCart({
                     <div className="space-y-1.5">
                         <Label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
                             <ChefHat className="w-3 h-3" />
-                            Kitchen Note / Allergy Info
+                            {t("order_cart.kitchen_note.label")}
                         </Label>
                         <Textarea
-                            placeholder="e.g. Severe nut allergy at table"
+                            placeholder={t("order_cart.kitchen_note.placeholder")}
                             value={kitchenNotes}
                             onChange={(e) => onKitchenNotesChange?.(e.target.value)}
                             rows={2}
@@ -269,7 +271,7 @@ export function OrderCart({
                     </div>
                     <div className="flex items-center justify-between">
                         <Label htmlFor="tax-exempt-toggle" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
-                            Tax Exempt
+                            {t("order_cart.tax_exempt")}
                         </Label>
                         <Switch
                             id="tax-exempt-toggle"
@@ -286,8 +288,8 @@ export function OrderCart({
                     type={isDineInMissingTable ? "error" : "info"}
                     message={
                         isDineInMissingTable
-                            ? "A table assignment is required to continue."
-                            : "Items ready for kitchen transmission."
+                            ? t("order_cart.validation.table_required")
+                            : t("order_cart.validation.ready_for_kitchen")
                     }
                     isVisible={!isCartEmpty}
                 />
@@ -297,20 +299,22 @@ export function OrderCart({
             <div className="p-6 bg-background space-y-5 border-t border-border">
                 <div className="space-y-1.5">
                     <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                        <span>Subtotal</span>
+                        <span>{t("order_cart.totals.subtotal")}</span>
                         <span>{formatCurrency(subtotal, currency)}</span>
                     </div>
                     <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                         <span>
                             {taxExempt
-                                ? "Tax (Exempt)"
-                                : `Tax${taxRate > 0 ? ` (${(taxRate * 100).toFixed(0)}%)` : ""}`}
+                                ? t("order_cart.totals.tax_exempt")
+                                : taxRate > 0
+                                ? t("order_cart.totals.tax_with_rate", { rate: (taxRate * 100).toFixed(0) })
+                                : t("order_cart.totals.tax")}
                         </span>
                         <span>{formatCurrency(tax, currency)}</span>
                     </div>
                     <div className="flex justify-between items-baseline pt-2">
                         <span className="text-sm font-black uppercase tracking-tighter">
-                            Total Amount
+                            {t("order_cart.totals.total_amount")}
                         </span>
                         <span className="text-3xl font-black text-primary">
                             {formatCurrency(total, currency)}
@@ -343,7 +347,7 @@ export function OrderCart({
                                 onClick={() => onPayment("cash")}
                             >
                                 <Banknote className="h-4 w-4 text-muted-foreground" />
-                                CASH SETTLE
+                                {t("order_cart.payment.cash_settle")}
                             </Button>
                             <Button
                                 variant="outline"
@@ -352,7 +356,7 @@ export function OrderCart({
                                 onClick={() => onPayment("card")}
                             >
                                 <CreditCard className="h-4 w-4 text-muted-foreground" />
-                                CARD SETTLE
+                                {t("order_cart.payment.card_settle")}
                             </Button>
                         </div>
                     )}

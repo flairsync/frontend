@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { stationApi } from "@/features/station/station-api";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import { Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     businessId: string;
@@ -11,6 +12,7 @@ interface Props {
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "⌫"];
 
 export default function StaffPinScreen({ businessId, onLogin }: Props) {
+    const { t } = useTranslation("pos");
     const [pin, setPin] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -59,11 +61,11 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
             const status = err?.response?.status;
             const message = err?.response?.data?.message ?? "";
 
-            let errorMsg = "Incorrect PIN";
+            let errorMsg = t("staff_pin_screen.errors.incorrect_pin");
             if (status === 403) {
-                errorMsg = "You don't have access to this terminal";
+                errorMsg = t("staff_pin_screen.errors.no_access");
             } else if (status === 401 && message.toLowerCase().includes("lock")) {
-                errorMsg = "Terminal locked for 15 minutes";
+                errorMsg = t("staff_pin_screen.errors.terminal_locked");
             }
 
             setError(errorMsg);
@@ -84,8 +86,8 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
                         <Lock className="w-7 h-7 text-primary" />
                     </div>
                     <div className="text-center">
-                        <h1 className="text-xl font-bold">Staff Login</h1>
-                        <p className="text-sm text-muted-foreground mt-1">Enter your 4-digit PIN</p>
+                        <h1 className="text-xl font-bold">{t("staff_pin_screen.title")}</h1>
+                        <p className="text-sm text-muted-foreground mt-1">{t("staff_pin_screen.subtitle")}</p>
                     </div>
                 </div>
 
@@ -129,7 +131,7 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
                 </div>
 
                 {loading && (
-                    <p className="text-muted-foreground text-sm animate-pulse">Verifying...</p>
+                    <p className="text-muted-foreground text-sm animate-pulse">{t("staff_pin_screen.verifying")}</p>
                 )}
             </div>
         </div>

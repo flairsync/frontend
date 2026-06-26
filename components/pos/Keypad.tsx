@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Delete, DeleteIcon, Eraser } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface KeypadProps {
   onInput: (value: string) => void;
@@ -11,6 +12,7 @@ interface KeypadProps {
 }
 
 export function Keypad({ onInput, onClear, onDelete, onAction, actionLabel }: KeypadProps) {
+  const { t } = useTranslation('pos');
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', 'DEL'];
 
   return (
@@ -59,7 +61,7 @@ export function Keypad({ onInput, onClear, onDelete, onAction, actionLabel }: Ke
           className="col-span-3 h-16 text-xl font-bold mt-2"
           onClick={onAction}
         >
-          {actionLabel || 'Confirm'}
+          {actionLabel || t('keypad.confirm')}
         </Button>
       )}
     </div>

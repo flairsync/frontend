@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
@@ -71,6 +72,7 @@ function ExpoTicket({
   onConfirm: (orderId: string) => void;
   confirmingIds: Set<string>;
 }) {
+  const { t } = useTranslation("station");
   const [, tick] = useState(0);
   useEffect(() => {
     const t = setInterval(() => tick((n) => n + 1), 1000);
@@ -104,12 +106,12 @@ function ExpoTicket({
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-2xl font-black text-white">
-              {order.tableName ?? "Takeaway"}
+              {order.tableName ?? t("expo_screen.ticket.takeaway")}
             </span>
             {order.priority > 0 && (
               <span className="flex items-center gap-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-widest">
                 <Flame className="w-3 h-3" />
-                Rush
+                {t("expo_screen.ticket.rush")}
               </span>
             )}
           </div>
@@ -132,7 +134,7 @@ function ExpoTicket({
           <div className="flex items-center gap-1.5 text-green-400/70">
             <Timer className="w-3 h-3" />
             <span className="text-[10px] font-mono font-bold">
-              Ready {formatAge(order.readyAt)} ago
+              {t("expo_screen.ticket.ready_ago", { time: formatAge(order.readyAt) })}
             </span>
           </div>
         )}
@@ -154,7 +156,7 @@ function ExpoTicket({
             ) : (
               <Loader2 className="w-3 h-3 animate-spin" />
             )}
-            <span>Station {idx + 1}</span>
+            <span>{t("expo_screen.ticket.station_pill", { index: idx + 1 })}</span>
             <span className="opacity-50">({s.items.length})</span>
           </div>
         ))}
@@ -165,7 +167,7 @@ function ExpoTicket({
         {isReady ? (
           <div className="flex items-center justify-center gap-2 py-2 text-green-400">
             <CheckCheck className="w-5 h-5" />
-            <span className="text-xs font-black uppercase tracking-widest">Ready — Awaiting Pickup</span>
+            <span className="text-xs font-black uppercase tracking-widest">{t("expo_screen.ticket.ready_awaiting_pickup")}</span>
           </div>
         ) : needsConfirm ? (
           <Button
@@ -178,17 +180,17 @@ function ExpoTicket({
             ) : (
               <CheckCheck className="w-4 h-4 mr-2" />
             )}
-            Confirm & Send
+            {t("expo_screen.ticket.confirm_and_send")}
           </Button>
         ) : order.allStationsDone ? (
           <div className="flex items-center justify-center gap-2 py-2 text-green-400/70">
             <CheckCircle2 className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">All Stations Done</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">{t("expo_screen.ticket.all_stations_done")}</span>
           </div>
         ) : (
           <div className="flex items-center justify-center gap-2 py-2 text-slate-500">
             <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-[10px] font-black uppercase tracking-widest">In Progress</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">{t("expo_screen.ticket.in_progress")}</span>
           </div>
         )}
       </div>
@@ -199,6 +201,7 @@ function ExpoTicket({
 // ─── ExpoScreen ───────────────────────────────────────────────────────────────
 
 export default function ExpoScreen({ station }: Props) {
+  const { t } = useTranslation("station");
   const [orders, setOrders] = useState<ExpoOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirmingIds, setConfirmingIds] = useState<Set<string>>(new Set());
@@ -248,15 +251,15 @@ export default function ExpoScreen({ station }: Props) {
       setOrders((prev) =>
         prev.map((o) => o.id === orderId ? { ...o, status: "ready" } : o)
       );
-      toast.success("Order confirmed — ready for pickup!", { duration: 4000 });
+      toast.success(t("expo_screen.toasts.confirm_success"), { duration: 4000 });
     } catch (err: any) {
       const code = err?.response?.data?.code;
       if (code === "order.items_not_ready") {
-        toast.error("Some items are still being prepared.");
+        toast.error(t("expo_screen.toasts.items_not_ready"));
       } else if (code === "order.invalid_status") {
-        toast.error("Order is not in a confirmable state.");
+        toast.error(t("expo_screen.toasts.invalid_status"));
       } else {
-        toast.error("Failed to confirm order.");
+        toast.error(t("expo_screen.toasts.confirm_failed"));
       }
       fetchOrders();
     } finally {
@@ -275,10 +278,10 @@ export default function ExpoScreen({ station }: Props) {
         <div className="flex items-center gap-3">
           <CheckCheck className="w-6 h-6 text-green-400" />
           <div className="leading-none">
-            <h1 className="font-black tracking-tight text-lg uppercase">Expo Station</h1>
+            <h1 className="font-black tracking-tight text-lg uppercase">{t("expo_screen.header.title")}</h1>
             <p className="text-[9px] text-slate-500 font-bold flex items-center gap-1 mt-0.5">
               <Building2 className="w-2.5 h-2.5" />
-              {station.business.name} · All Stations
+              {t("expo_screen.header.business_all_stations", { businessName: station.business.name })}
             </p>
           </div>
         </div>
@@ -287,7 +290,7 @@ export default function ExpoScreen({ station }: Props) {
           {orders.length > 0 && (
             <div className="flex items-center gap-2 bg-green-500/15 px-3 py-1.5 rounded-xl">
               <span className="text-xs font-black text-green-400 uppercase tracking-widest">
-                {orders.length} Orders
+                {t("expo_screen.header.active_orders_count", { count: orders.length })}
               </span>
             </div>
           )}
@@ -310,7 +313,7 @@ export default function ExpoScreen({ station }: Props) {
         <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3 text-slate-600">
             <Loader2 className="w-8 h-8 animate-spin" />
-            <p className="text-xs font-black uppercase tracking-widest">Loading orders...</p>
+            <p className="text-xs font-black uppercase tracking-widest">{t("expo_screen.loading")}</p>
           </div>
         </div>
       ) : (
@@ -327,9 +330,9 @@ export default function ExpoScreen({ station }: Props) {
             {orders.length === 0 && (
               <div className="col-span-full h-[60vh] flex flex-col items-center justify-center text-slate-700">
                 <CheckCheck className="w-20 h-20 mb-4 opacity-10" />
-                <p className="font-black uppercase tracking-[0.3em] text-sm">All Clear</p>
+                <p className="font-black uppercase tracking-[0.3em] text-sm">{t("expo_screen.empty_state.title")}</p>
                 <p className="text-[10px] mt-2 italic font-bold">
-                  No active orders across all stations
+                  {t("expo_screen.empty_state.description")}
                 </p>
               </div>
             )}

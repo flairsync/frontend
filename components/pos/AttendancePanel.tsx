@@ -7,6 +7,7 @@ import {
     LogIn, LogOut, Coffee, Play, Clock, CheckCircle2, AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type ClockState = "not_clocked_in" | "clocked_in" | "on_break";
 
@@ -38,6 +39,7 @@ function elapsed(from: string) {
 }
 
 export default function AttendancePanel() {
+    const { t } = useTranslation("pos");
     const { session } = useStaffSession();
     const [attendance, setAttendance] = useState<AttendanceRecord | null>(null);
     const [loading, setLoading] = useState(true);
@@ -59,14 +61,14 @@ export default function AttendancePanel() {
         else setLoading(false);
     }, [session, fetchStatus]);
 
-    async function act(endpoint: string, label: string, body?: object) {
+    async function act(endpoint: string, label: string, failureLabel: string, body?: object) {
         setActing(true);
         try {
             await staffApi.post(`/station/staff/attendance/${endpoint}`, body ?? {});
             await fetchStatus();
             toast.success(label);
         } catch (e: any) {
-            toast.error(e?.response?.data?.message ?? `${label} failed`);
+            toast.error(e?.response?.data?.message ?? failureLabel);
         } finally {
             setActing(false);
         }
@@ -76,7 +78,7 @@ export default function AttendancePanel() {
         return (
             <div className="flex items-center gap-2 text-muted-foreground text-xs py-2">
                 <AlertCircle className="w-4 h-4" />
-                No staff logged in
+                {t("attendance_panel.no_staff_logged_in")}
             </div>
         );
     }
@@ -109,19 +111,19 @@ export default function AttendancePanel() {
                 <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold text-foreground">
                         {clockState === "clocked_in"
-                            ? "Clocked In"
+                            ? t("attendance_panel.status.clocked_in")
                             : clockState === "on_break"
-                            ? "On Break"
-                            : "Not Clocked In"}
+                            ? t("attendance_panel.status.on_break")
+                            : t("attendance_panel.status.not_clocked_in")}
                     </p>
                     {attendance?.checkInTime && clockState !== "not_clocked_in" && (
                         <p className="text-[10px] text-muted-foreground">
-                            Since {formatTime(attendance.checkInTime)} · {elapsed(attendance.checkInTime)}
+                            {t("attendance_panel.since", { time: formatTime(attendance.checkInTime), elapsed: elapsed(attendance.checkInTime) })}
                         </p>
                     )}
                     {activeBreak && (
                         <p className="text-[10px] text-amber-600 font-bold">
-                            Break started {formatTime(activeBreak.start)} · {elapsed(activeBreak.start)}
+                            {t("attendance_panel.break_started", { time: formatTime(activeBreak.start), elapsed: elapsed(activeBreak.start) })}
                         </p>
                     )}
                 </div>
@@ -132,10 +134,10 @@ export default function AttendancePanel() {
                 <Button
                     className="w-full gap-2 font-black text-xs h-10"
                     disabled={acting}
-                    onClick={() => act("clock-in", "Clocked in")}
+                    onClick={() => act("clock-in", t("attendance_panel.toasts.clocked_in"), t("attendance_panel.toasts.clock_in_failed"))}
                 >
                     <LogIn className="w-4 h-4" />
-                    CLOCK IN
+                    {t("attendance_panel.actions.clock_in")}
                 </Button>
             )}
 
@@ -145,19 +147,19 @@ export default function AttendancePanel() {
                         variant="outline"
                         className="flex-1 gap-2 font-black text-xs h-10"
                         disabled={acting}
-                        onClick={() => act("break/start", "Break started", { type: "UNPAID" })}
+                        onClick={() => act("break/start", t("attendance_panel.toasts.break_started"), t("attendance_panel.toasts.break_start_failed"), { type: "UNPAID" })}
                     >
                         <Coffee className="w-4 h-4" />
-                        BREAK
+                        {t("attendance_panel.actions.break")}
                     </Button>
                     <Button
                         variant="outline"
                         className="flex-1 gap-2 font-black text-xs h-10 text-destructive border-destructive/30 hover:bg-destructive/10"
                         disabled={acting}
-                        onClick={() => act("clock-out", "Clocked out")}
+                        onClick={() => act("clock-out", t("attendance_panel.toasts.clocked_out"), t("attendance_panel.toasts.clock_out_failed"))}
                     >
                         <LogOut className="w-4 h-4" />
-                        CLOCK OUT
+                        {t("attendance_panel.actions.clock_out")}
                     </Button>
                 </div>
             )}
@@ -166,10 +168,10 @@ export default function AttendancePanel() {
                 <Button
                     className="w-full gap-2 font-black text-xs h-10 bg-amber-500 hover:bg-amber-600 text-amber-950"
                     disabled={acting}
-                    onClick={() => act("break/end", "Break ended")}
+                    onClick={() => act("break/end", t("attendance_panel.toasts.break_ended"), t("attendance_panel.toasts.break_end_failed"))}
                 >
                     <Play className="w-4 h-4" />
-                    END BREAK
+                    {t("attendance_panel.actions.end_break")}
                 </Button>
             )}
 
@@ -177,7 +179,7 @@ export default function AttendancePanel() {
             {attendance?.breaks && attendance.breaks.length > 0 && (
                 <div className="space-y-1">
                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                        Today's Breaks
+                        {t("attendance_panel.todays_breaks")}
                     </p>
                     {attendance.breaks.map((b, i) => (
                         <div key={i} className="flex justify-between items-center text-[10px] text-muted-foreground px-2">
@@ -187,9 +189,11 @@ export default function AttendancePanel() {
                                 ) : (
                                     <Clock className="w-3 h-3 text-amber-500" />
                                 )}
-                                {formatTime(b.start)} — {b.end ? formatTime(b.end) : "ongoing"}
+                                {formatTime(b.start)} — {b.end ? formatTime(b.end) : t("attendance_panel.ongoing")}
                             </span>
-                            <span className="uppercase font-bold">{b.type}</span>
+                            <span className="uppercase font-bold">
+                                {b.type === "PAID" ? t("attendance_panel.break_type.paid") : t("attendance_panel.break_type.unpaid")}
+                            </span>
                         </div>
                     ))}
                 </div>

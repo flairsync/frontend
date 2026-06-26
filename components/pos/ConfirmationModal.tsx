@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -27,10 +28,13 @@ export function ConfirmationModal({
   onConfirm,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  confirmLabel,
+  cancelLabel,
   variant = 'default',
 }: ConfirmationModalProps) {
+  const { t } = useTranslation('pos');
+  const resolvedConfirmLabel = confirmLabel ?? t('confirmation_modal.confirm');
+  const resolvedCancelLabel = cancelLabel ?? t('confirmation_modal.cancel');
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -47,17 +51,17 @@ export function ConfirmationModal({
         </DialogHeader>
         <DialogFooter className="flex flex-col sm:flex-row gap-2 pt-4">
           <Button variant="outline" className="flex-1 h-12 font-bold" onClick={onClose}>
-            {cancelLabel}
+            {resolvedCancelLabel}
           </Button>
-          <Button 
-            variant={variant} 
-            className="flex-1 h-12 font-bold" 
+          <Button
+            variant={variant}
+            className="flex-1 h-12 font-bold"
             onClick={() => {
                 onConfirm();
                 onClose();
             }}
           >
-            {confirmLabel}
+            {resolvedConfirmLabel}
           </Button>
         </DialogFooter>
       </DialogContent>

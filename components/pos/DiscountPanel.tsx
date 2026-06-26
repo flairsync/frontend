@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Tag, X } from "lucide-react";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     businessId: string;
@@ -23,6 +24,7 @@ export default function DiscountPanel({
     onApplied,
     onRemoved,
 }: Props) {
+    const { t } = useTranslation("pos");
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currency = businessBasicDetails?.currency ?? "USD";
     const [mode, setMode] = useState<DiscountMode>("code");
@@ -43,7 +45,7 @@ export default function DiscountPanel({
             } else {
                 const amt = parseFloat(manualAmount);
                 if (isNaN(amt) || amt < 0) {
-                    setError("Discount amount must be 0 or greater");
+                    setError(t("discount_panel.errors.amount_must_be_positive"));
                     setLoading(false);
                     return;
                 }
@@ -56,9 +58,9 @@ export default function DiscountPanel({
                 e?.response?.status === 422 &&
                 e?.response?.data?.code === "order.discount_exceeds_total"
             ) {
-                setError("Discount cannot exceed the order total");
+                setError(t("discount_panel.errors.exceeds_total"));
             } else {
-                setError(e.response?.data?.message ?? "Discount could not be applied");
+                setError(e.response?.data?.message ?? t("discount_panel.errors.apply_failed"));
             }
         } finally {
             setLoading(false);
@@ -81,7 +83,7 @@ export default function DiscountPanel({
                 <div className="flex items-center gap-3">
                     <Tag className="w-4 h-4 text-primary" />
                     <div>
-                        <p className="text-sm font-semibold text-foreground">Discount applied</p>
+                        <p className="text-sm font-semibold text-foreground">{t("discount_panel.discount_applied")}</p>
                         <p className="text-primary font-bold">−{formatCurrency(currentDiscount, currency)}</p>
                     </div>
                 </div>
@@ -112,14 +114,14 @@ export default function DiscountPanel({
                                 : "text-muted-foreground"
                         }`}
                     >
-                        {m === "code" ? "Discount Code" : "Manual Amount"}
+                        {m === "code" ? t("discount_panel.mode.code") : t("discount_panel.mode.manual")}
                     </button>
                 ))}
             </div>
 
             {mode === "code" ? (
                 <Input
-                    placeholder="Enter discount code"
+                    placeholder={t("discount_panel.code_placeholder")}
                     value={code}
                     onChange={(e) => setCode(e.target.value.toUpperCase())}
                     className="font-mono tracking-widest uppercase"
@@ -128,7 +130,7 @@ export default function DiscountPanel({
                 <>
                     <Input
                         type="number"
-                        placeholder="Amount ($)"
+                        placeholder={t("discount_panel.amount_placeholder")}
                         value={manualAmount}
                         onChange={(e) => {
                             const v = e.target.value;
@@ -138,7 +140,7 @@ export default function DiscountPanel({
                         step={0.01}
                     />
                     <Input
-                        placeholder="Reason (required)"
+                        placeholder={t("discount_panel.reason_placeholder")}
                         value={reason}
                         onChange={(e) => setReason(e.target.value)}
                     />
@@ -153,7 +155,7 @@ export default function DiscountPanel({
                 className="w-full"
                 size="sm"
             >
-                {loading ? "Applying..." : "Apply Discount"}
+                {loading ? t("discount_panel.applying") : t("discount_panel.apply_button")}
             </Button>
         </div>
     );

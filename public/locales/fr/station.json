@@ -1,0 +1,127 @@
+{
+  "kds_app": {
+    "header": {
+      "title": "Écran Cuisine",
+      "active_orders_count_one": "{{count}} active",
+      "active_orders_count_other": "{{count}} actives"
+    },
+    "loading": "Chargement des commandes...",
+    "station_unassigned": {
+      "title": "Poste non assigné",
+      "description": "Ce KDS n'a pas de poste de cuisine assigné. Demandez à un responsable de le réassigner depuis le tableau de bord, dans Postes."
+    },
+    "empty_state": {
+      "title": "Cuisine dégagée",
+      "description": "En attente de nouvelles commandes du terminal..."
+    },
+    "no_kitchen_station": {
+      "title": "Aucun poste de cuisine assigné",
+      "description": "Demandez à un propriétaire d'assigner un poste de cuisine à cet appareil depuis le tableau de bord, dans Postes."
+    },
+    "settings_popover": {
+      "title": "Paramètres KDS",
+      "hide_after_label": "Masquer les tickets terminés après (minutes)",
+      "never_placeholder": "Jamais",
+      "hint": "Laissez vide pour toujours afficher les tickets terminés."
+    },
+    "ticket": {
+      "rush": "Urgent",
+      "priority_value": "P{{value}}",
+      "order_type_dine_in": "Sur place",
+      "order_type_takeaway": "À emporter",
+      "order_type_labels": {
+        "dine_in": "sur place",
+        "takeaway": "à emporter",
+        "delivery": "livraison"
+      },
+      "waiting_for_expo": "En attente de l'expo",
+      "done_in": "Terminé en {{time}}",
+      "unbump_title": "Annuler la validation de cet article",
+      "recall": "Rappeler",
+      "other_items_count_one": "{{count}} article supplémentaire d'autres postes",
+      "other_items_count_other": "{{count}} articles supplémentaires d'autres postes",
+      "ready_for_pickup": "Prêt à servir",
+      "awaiting_expo_confirmation": "En attente de confirmation de l'expo",
+      "station_done_waiting": "Poste terminé — en attente des autres postes",
+      "start_preparing": "Commencer la préparation",
+      "bump_all": "Tout valider ({{count}})"
+    },
+    "toasts": {
+      "new_orders_arrived_one": "{{count}} nouvelle commande reçue",
+      "new_orders_arrived_other": "{{count}} nouvelles commandes reçues",
+      "order_complete": "Commande terminée — prête à servir !",
+      "item_not_assigned": "Cet article n'est pas assigné à votre poste",
+      "recall_failed": "Échec du rappel de l'article — veuillez réessayer.",
+      "start_preparing_failed": "Échec du démarrage de la préparation — veuillez réessayer.",
+      "priority_update_failed": "Échec de la mise à jour de la priorité."
+    }
+  },
+  "expo_screen": {
+    "header": {
+      "title": "Poste Expo",
+      "business_all_stations": "{{businessName}} · Tous les postes",
+      "active_orders_count_one": "{{count}} commande",
+      "active_orders_count_other": "{{count}} commandes"
+    },
+    "loading": "Chargement des commandes...",
+    "empty_state": {
+      "title": "Tout est dégagé",
+      "description": "Aucune commande active sur tous les postes"
+    },
+    "ticket": {
+      "takeaway": "À emporter",
+      "rush": "Urgent",
+      "ready_ago": "Prêt depuis {{time}}",
+      "station_pill": "Poste {{index}}",
+      "ready_awaiting_pickup": "Prêt — En attente de retrait",
+      "confirm_and_send": "Confirmer et envoyer",
+      "all_stations_done": "Tous les postes terminés",
+      "in_progress": "En cours"
+    },
+    "toasts": {
+      "confirm_success": "Commande confirmée — prête à servir !",
+      "items_not_ready": "Certains articles sont encore en préparation.",
+      "invalid_status": "La commande n'est pas dans un état confirmable.",
+      "confirm_failed": "Échec de la confirmation de la commande."
+    }
+  },
+  "station_bootstrap": {
+    "initializing": "Initialisation du poste...",
+    "error": {
+      "title": "Échec du chargement des données du poste.",
+      "description": "Vérifiez votre connexion et réessayez.",
+      "retry": "Réessayer"
+    }
+  },
+  "pairing_screen": {
+    "title": "Associer cet appareil",
+    "subtitle": "Demandez au propriétaire de l'établissement de générer un code d'association depuis le tableau de bord.",
+    "station_type_kds": "Écran Cuisine (KDS)",
+    "station_type_pos": "Terminal POS",
+    "form": {
+      "station_name_label": "Nom du poste",
+      "station_name_placeholder": "ex. Terminal Bar Principal",
+      "pairing_code_label": "Code d'association",
+      "pairing_code_placeholder": "Code à 8 caractères",
+      "linking": "Association en cours...",
+      "link_device": "Associer l'appareil"
+    },
+    "errors": {
+      "invalid_code": "Code invalide. Veuillez réessayer."
+    },
+    "device_id_footer": "ID de l'appareil : {{deviceId}}..."
+  },
+  "quick_settings": {
+    "title": "Paramètres du poste",
+    "this_device": "Cet appareil",
+    "station_type_kds": "Écran Cuisine",
+    "station_type_pos": "Terminal POS",
+    "attendance": "Présence",
+    "switch_mode": "Changer de mode",
+    "active_badge": "Actif",
+    "mode_switcher": {
+      "pos_label": "Terminal POS",
+      "kds_label": "Écran Cuisine (KDS)"
+    }
+  }
+}

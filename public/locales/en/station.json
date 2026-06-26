@@ -1,0 +1,127 @@
+{
+  "kds_app": {
+    "header": {
+      "title": "Kitchen Display",
+      "active_orders_count_one": "{{count}} Active",
+      "active_orders_count_other": "{{count}} Active"
+    },
+    "loading": "Loading orders...",
+    "station_unassigned": {
+      "title": "Station Unassigned",
+      "description": "This KDS has no kitchen station assigned. Ask a manager to re-assign it from the dashboard under Stations."
+    },
+    "empty_state": {
+      "title": "Kitchen Clear",
+      "description": "Waiting for new orders from terminal..."
+    },
+    "no_kitchen_station": {
+      "title": "No Kitchen Station Assigned",
+      "description": "Ask an owner to assign a kitchen station to this device in the dashboard under Stations."
+    },
+    "settings_popover": {
+      "title": "KDS Settings",
+      "hide_after_label": "Hide completed tickets after (minutes)",
+      "never_placeholder": "Never",
+      "hint": "Leave empty to always show completed tickets."
+    },
+    "ticket": {
+      "rush": "Rush",
+      "priority_value": "P{{value}}",
+      "order_type_dine_in": "Dine In",
+      "order_type_takeaway": "Takeaway",
+      "order_type_labels": {
+        "dine_in": "dine in",
+        "takeaway": "takeaway",
+        "delivery": "delivery"
+      },
+      "waiting_for_expo": "Waiting for Expo",
+      "done_in": "Done in {{time}}",
+      "unbump_title": "Un-bump this item",
+      "recall": "Recall",
+      "other_items_count_one": "{{count}} more item from other stations",
+      "other_items_count_other": "{{count}} more items from other stations",
+      "ready_for_pickup": "Ready for Pickup",
+      "awaiting_expo_confirmation": "Awaiting Expo Confirmation",
+      "station_done_waiting": "Station done — waiting for other stations",
+      "start_preparing": "Start Preparing",
+      "bump_all": "Bump All ({{count}})"
+    },
+    "toasts": {
+      "new_orders_arrived_one": "{{count}} new order arrived",
+      "new_orders_arrived_other": "{{count}} new orders arrived",
+      "order_complete": "Order complete — ready for pickup!",
+      "item_not_assigned": "This item is not assigned to your station",
+      "recall_failed": "Failed to recall item — please try again.",
+      "start_preparing_failed": "Failed to start preparing — please try again.",
+      "priority_update_failed": "Failed to update priority."
+    }
+  },
+  "expo_screen": {
+    "header": {
+      "title": "Expo Station",
+      "business_all_stations": "{{businessName}} · All Stations",
+      "active_orders_count_one": "{{count}} Order",
+      "active_orders_count_other": "{{count}} Orders"
+    },
+    "loading": "Loading orders...",
+    "empty_state": {
+      "title": "All Clear",
+      "description": "No active orders across all stations"
+    },
+    "ticket": {
+      "takeaway": "Takeaway",
+      "rush": "Rush",
+      "ready_ago": "Ready {{time}} ago",
+      "station_pill": "Station {{index}}",
+      "ready_awaiting_pickup": "Ready — Awaiting Pickup",
+      "confirm_and_send": "Confirm & Send",
+      "all_stations_done": "All Stations Done",
+      "in_progress": "In Progress"
+    },
+    "toasts": {
+      "confirm_success": "Order confirmed — ready for pickup!",
+      "items_not_ready": "Some items are still being prepared.",
+      "invalid_status": "Order is not in a confirmable state.",
+      "confirm_failed": "Failed to confirm order."
+    }
+  },
+  "station_bootstrap": {
+    "initializing": "Initializing station...",
+    "error": {
+      "title": "Failed to load station data.",
+      "description": "Check your connection and try again.",
+      "retry": "Retry"
+    }
+  },
+  "pairing_screen": {
+    "title": "Link this device",
+    "subtitle": "Ask the business owner to generate a pairing code from the dashboard.",
+    "station_type_kds": "Kitchen Display (KDS)",
+    "station_type_pos": "POS Terminal",
+    "form": {
+      "station_name_label": "Station Name",
+      "station_name_placeholder": "e.g. Main Bar Terminal",
+      "pairing_code_label": "Pairing Code",
+      "pairing_code_placeholder": "8-character code",
+      "linking": "Linking...",
+      "link_device": "Link Device"
+    },
+    "errors": {
+      "invalid_code": "Invalid code. Please try again."
+    },
+    "device_id_footer": "Device ID: {{deviceId}}..."
+  },
+  "quick_settings": {
+    "title": "Station Settings",
+    "this_device": "This Device",
+    "station_type_kds": "Kitchen Display",
+    "station_type_pos": "POS Terminal",
+    "attendance": "Attendance",
+    "switch_mode": "Switch Mode",
+    "active_badge": "Active",
+    "mode_switcher": {
+      "pos_label": "POS Terminal",
+      "kds_label": "Kitchen Display (KDS)"
+    }
+  }
+}

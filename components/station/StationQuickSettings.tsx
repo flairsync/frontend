@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function StationQuickSettings({ station }: Props) {
+    const { t } = useTranslation("station");
     const deviceId = getOrCreateDeviceUuid();
     const StationType = station.type === "kds" ? ChefHat : Monitor;
 
@@ -34,7 +36,7 @@ export default function StationQuickSettings({ station }: Props) {
                 <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
                     <SheetTitle className="flex items-center gap-2">
                         <Settings className="w-4 h-4 text-primary" />
-                        Station Settings
+                        {t("quick_settings.title")}
                     </SheetTitle>
                 </SheetHeader>
 
@@ -42,7 +44,7 @@ export default function StationQuickSettings({ station }: Props) {
                     {/* Station identity */}
                     <div className="flex flex-col gap-3">
                         <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                            This Device
+                            {t("quick_settings.this_device")}
                         </Label>
                         <div className="bg-muted/40 rounded-xl border border-border p-4 flex flex-col gap-3">
                             <div className="flex items-center gap-3">
@@ -52,7 +54,7 @@ export default function StationQuickSettings({ station }: Props) {
                                 <div className="leading-none">
                                     <p className="text-sm font-bold">{station.name}</p>
                                     <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-0.5">
-                                        {station.type === "kds" ? "Kitchen Display" : "POS Terminal"}
+                                        {station.type === "kds" ? t("quick_settings.station_type_kds") : t("quick_settings.station_type_pos")}
                                     </p>
                                 </div>
                             </div>
@@ -72,7 +74,7 @@ export default function StationQuickSettings({ station }: Props) {
                     <div className="flex flex-col gap-3">
                         <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
                             <Clock className="w-3 h-3" />
-                            Attendance
+                            {t("quick_settings.attendance")}
                         </Label>
                         <AttendancePanel />
                     </div>
@@ -82,7 +84,7 @@ export default function StationQuickSettings({ station }: Props) {
                     {/* Mode switcher */}
                     <div className="flex flex-col gap-3">
                         <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                            Switch Mode
+                            {t("quick_settings.switch_mode")}
                         </Label>
                         <div className="flex flex-col gap-2">
                             <a
@@ -95,10 +97,10 @@ export default function StationQuickSettings({ station }: Props) {
                                 )}
                             >
                                 <Monitor className="w-4 h-4" />
-                                POS Terminal
+                                {t("quick_settings.mode_switcher.pos_label")}
                                 {station.type === "pos" && (
                                     <span className="ml-auto text-[9px] font-black uppercase tracking-widest opacity-70">
-                                        Active
+                                        {t("quick_settings.active_badge")}
                                     </span>
                                 )}
                             </a>
@@ -112,10 +114,10 @@ export default function StationQuickSettings({ station }: Props) {
                                 )}
                             >
                                 <ChefHat className="w-4 h-4" />
-                                Kitchen Display (KDS)
+                                {t("quick_settings.mode_switcher.kds_label")}
                                 {station.type === "kds" && (
                                     <span className="ml-auto text-[9px] font-black uppercase tracking-widest opacity-70">
-                                        Active
+                                        {t("quick_settings.active_badge")}
                                     </span>
                                 )}
                             </a>

@@ -1,0 +1,354 @@
+{
+  "staff_pin_screen": {
+    "title": "Connexion du personnel",
+    "subtitle": "Saisissez votre code PIN à 4 chiffres",
+    "verifying": "Vérification...",
+    "errors": {
+      "incorrect_pin": "Code PIN incorrect",
+      "no_access": "Vous n'avez pas accès à ce terminal",
+      "terminal_locked": "Terminal verrouillé pendant 15 minutes"
+    }
+  },
+  "product_card": {
+    "from_price": "À partir de {{price}}",
+    "unavailable": "Indisponible"
+  },
+  "discount_panel": {
+    "discount_applied": "Remise appliquée",
+    "mode": {
+      "code": "Code de remise",
+      "manual": "Montant manuel"
+    },
+    "code_placeholder": "Saisir le code de remise",
+    "amount_placeholder": "Montant ($)",
+    "reason_placeholder": "Motif (requis)",
+    "applying": "Application en cours...",
+    "apply_button": "Appliquer la remise",
+    "errors": {
+      "amount_must_be_positive": "Le montant de la remise doit être égal ou supérieur à 0",
+      "exceeds_total": "La remise ne peut pas dépasser le total de la commande",
+      "apply_failed": "La remise n'a pas pu être appliquée"
+    }
+  },
+  "receipt": {
+    "print_title": "Reçu",
+    "thank_you": "Merci de votre visite !",
+    "fields": {
+      "receipt": "Reçu",
+      "date": "Date",
+      "type": "Type",
+      "table": "Table",
+      "subtotal": "Sous-total",
+      "discount": "Remise",
+      "total": "Total",
+      "tax_included_suffix": "TTC",
+      "tendered": "Reçu",
+      "change": "Monnaie",
+      "tip": "Pourboire",
+      "balance_due": "Solde dû"
+    },
+    "actions": {
+      "print": "Imprimer",
+      "pdf": "PDF",
+      "new_order": "Nouvelle commande",
+      "close": "Fermer"
+    }
+  },
+  "confirmation_modal": {
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "order_cart": {
+    "header": {
+      "active_order": "Commande active",
+      "operator": "Opérateur : {{name}}",
+      "no_staff_logged_in": "Aucun membre du personnel connecté",
+      "discard": "Annuler"
+    },
+    "mode": {
+      "dine_in": "Sur place",
+      "takeaway": "À emporter"
+    },
+    "table": {
+      "location": "Emplacement",
+      "assign_a_table": "Attribuer une table",
+      "change": "Changer"
+    },
+    "empty": {
+      "title": "Terminal vide",
+      "description": "Ajoutez des articles pour commencer une commande"
+    },
+    "item": {
+      "price_per_unit": "{{price}} / unité"
+    },
+    "kitchen_note": {
+      "label": "Note cuisine / Info allergie",
+      "placeholder": "Ex. : Allergie sévère aux noix à cette table"
+    },
+    "tax_exempt": "Exonéré de taxe",
+    "validation": {
+      "table_required": "Une table doit être attribuée pour continuer.",
+      "ready_for_kitchen": "Articles prêts à être envoyés en cuisine."
+    },
+    "totals": {
+      "subtotal": "Sous-total",
+      "tax": "Taxe",
+      "tax_exempt": "Taxe (Exonérée)",
+      "tax_with_rate": "Taxe ({{rate}}%)",
+      "total_amount": "Montant total"
+    },
+    "actions": {
+      "cart_empty": "Le panier est vide",
+      "select_table": "Sélectionner une table",
+      "confirm_and_send": "Confirmer et envoyer"
+    },
+    "payment": {
+      "cash_settle": "RÉGLER EN ESPÈCES",
+      "card_settle": "RÉGLER PAR CARTE"
+    }
+  },
+  "payment_modal": {
+    "method": {
+      "cash": "Espèces",
+      "card": "Carte"
+    },
+    "errors": {
+      "payment_failed": "Le paiement a échoué. Veuillez réessayer."
+    },
+    "success": {
+      "title": "Paiement effectué",
+      "processed_via": "Traité par {{method}}",
+      "total_charged": "Total facturé",
+      "discount": "Remise",
+      "cash_received": "Espèces reçues",
+      "change_due": "Monnaie à rendre",
+      "view_receipt": "Voir le reçu",
+      "print_pdf": "Imprimer le PDF",
+      "new_order": "Nouvelle commande"
+    },
+    "confirm": {
+      "cash_payment": "Paiement en espèces",
+      "card_payment": "Paiement par carte",
+      "settle_order": "Régler la commande",
+      "total_due": "Total à payer",
+      "discount": "Remise",
+      "split_bill": "Partager l'addition",
+      "cash_tendered": "Montant remis",
+      "change_amount": "Monnaie : {{amount}} $",
+      "short_by_amount": "Manque {{amount}} $",
+      "present_card": "Présentez la carte ou approchez l'appareil du terminal",
+      "processing": "Traitement en cours...",
+      "confirm_payment": "CONFIRMER LE PAIEMENT"
+    }
+  },
+  "keypad": {
+    "confirm": "Confirmer"
+  },
+  "attendance_panel": {
+    "no_staff_logged_in": "Aucun membre du personnel connecté",
+    "status": {
+      "clocked_in": "Pointé",
+      "on_break": "En pause",
+      "not_clocked_in": "Non pointé"
+    },
+    "since": "Depuis {{time}} · {{elapsed}}",
+    "break_started": "Pause débutée à {{time}} · {{elapsed}}",
+    "actions": {
+      "clock_in": "POINTER L'ARRIVÉE",
+      "break": "PAUSE",
+      "clock_out": "POINTER LE DÉPART",
+      "end_break": "TERMINER LA PAUSE"
+    },
+    "toasts": {
+      "clocked_in": "Arrivée pointée",
+      "clock_in_failed": "Le pointage d'arrivée a échoué",
+      "break_started": "Pause débutée",
+      "break_start_failed": "Le début de pause a échoué",
+      "clocked_out": "Départ pointé",
+      "clock_out_failed": "Le pointage de départ a échoué",
+      "break_ended": "Pause terminée",
+      "break_end_failed": "La fin de pause a échoué"
+    },
+    "todays_breaks": "Pauses du jour",
+    "ongoing": "en cours",
+    "break_type": {
+      "paid": "PAYÉE",
+      "unpaid": "NON PAYÉE"
+    }
+  },
+  "station_receipt": {
+    "print_title": "Reçu",
+    "unavailable": "Reçu indisponible",
+    "thank_you": "Merci !",
+    "fields": {
+      "receipt": "Reçu",
+      "subtotal": "Sous-total",
+      "discount": "Remise",
+      "tax_exempt": "Taxe (Exonérée)",
+      "tax_included_suffix": "TTC",
+      "total": "Total",
+      "tendered": "Reçu",
+      "change": "Monnaie",
+      "tip": "Pourboire"
+    },
+    "actions": {
+      "print": "Imprimer",
+      "new_order": "Nouvelle commande",
+      "close": "Fermer"
+    }
+  },
+  "pos_mode_switcher": {
+    "modes": {
+      "terminal": "Terminal POS",
+      "kds": "Écran cuisine (KDS)"
+    },
+    "switch_device_role": "Changer le rôle de l'appareil",
+    "split_mode_coming_soon": "Mode partagé (Bientôt disponible)"
+  },
+  "split_bill_panel": {
+    "all_checks_paid": "Toutes les additions sont payées",
+    "complete_order": "Finaliser la commande",
+    "checks_count_one": "{{count}} addition",
+    "checks_count_other": "{{count}} additions",
+    "cannot_remove_has_payment": "Suppression impossible — un paiement a déjà été enregistré",
+    "removing": "Suppression…",
+    "remove_split": "Supprimer le partage",
+    "split_bill_button": "Partager l'addition",
+    "assign_items_heading": "Attribuer les articles aux additions",
+    "assign_items_description": "Touchez une étiquette d'addition à côté de chaque article. Tous les articles doivent être attribués.",
+    "checks_label": "Additions",
+    "unnamed_item": "Article",
+    "cancel": "Annuler",
+    "creating": "Création…",
+    "confirm_split": "Confirmer le partage",
+    "cash_tendered_placeholder": "Montant remis (min {{amount}})",
+    "tip_placeholder": "Ajouter un pourboire (facultatif)",
+    "processing": "Traitement…",
+    "charge_button": "Encaisser {{amount}}",
+    "pay_check": "Payer l'addition",
+    "status": {
+      "paid": "Payée",
+      "remaining": "{{amount}} restant",
+      "unpaid": "Non payée"
+    },
+    "errors": {
+      "create_failed": "Échec de la création des partages",
+      "remove_has_payment": "Impossible de supprimer les partages — un paiement a déjà été enregistré sur une addition",
+      "remove_failed": "Échec de la suppression des partages",
+      "need_two_checks": "Attribuez les articles à au moins 2 additions différentes",
+      "label_too_long": "L'étiquette de l'addition doit comporter 60 caractères maximum",
+      "all_items_must_be_assigned": "Tous les articles doivent être attribués à une addition avant le partage.",
+      "items_need_two_checks": "Les articles doivent être répartis sur au moins 2 additions.",
+      "payment_failed": "Le paiement a échoué"
+    }
+  },
+  "pos_app": {
+    "nav": {
+      "menu": "MENU",
+      "orders": "COMMANDES",
+      "tables": "TABLES"
+    },
+    "titles": {
+      "lock_terminal": "Verrouiller le terminal",
+      "drag_to_resize": "Faites glisser pour redimensionner",
+      "refresh_orders": "Actualiser les commandes",
+      "refresh_tables": "Actualiser les tables"
+    },
+    "sidebar": {
+      "category": "Catégorie",
+      "floor": "Étage",
+      "filter": "Filtre",
+      "menu": "Menu",
+      "no_categories": "Aucune catégorie",
+      "all_floors": "Tous les étages"
+    },
+    "order_filters": {
+      "all_active": "Toutes actives",
+      "created": "Créée",
+      "preparing": "En préparation",
+      "ready": "Prête"
+    },
+    "menu_view": {
+      "search_placeholder": "Rechercher des articles du menu...",
+      "no_menu_configured": "Aucun menu configuré",
+      "no_items_in_category": "Aucun article dans cette catégorie"
+    },
+    "orders_view": {
+      "active_orders": "Commandes actives",
+      "total_count_one": "{{count}} au total",
+      "total_count_other": "{{count}} au total",
+      "no_active_orders": "Aucune commande active",
+      "load_more": "Charger plus"
+    },
+    "tables_view": {
+      "select_a_table": "Sélectionner une table",
+      "no_tables_configured": "Aucune table configurée",
+      "current": "Actuelle",
+      "active_badge": "ACTIVE"
+    },
+    "table_status": {
+      "available": "Libre",
+      "occupied": "Occupée",
+      "reserved": "Réservée",
+      "cleaning": "Nettoyage"
+    },
+    "order_card": {
+      "table": "Table",
+      "takeaway": "À emporter",
+      "total": "Total : {{amount}} $",
+      "unnamed_item": "Article",
+      "more_items_one": "+ {{count}} article supplémentaire",
+      "more_items_other": "+ {{count}} articles supplémentaires",
+      "pay_card": "PAYER PAR CARTE",
+      "pay_cash": "PAYER EN ESPÈCES",
+      "reorder": "Recommander",
+      "cancel_and_void": "Annuler et invalider la commande",
+      "status": {
+        "created": "CRÉÉE",
+        "accepted": "ACCEPTÉE",
+        "preparing": "EN PRÉPARATION",
+        "ready": "PRÊTE"
+      },
+      "transition": {
+        "accept": "ACCEPTER",
+        "preparing": "EN PRÉPARATION",
+        "mark_ready": "MARQUER PRÊTE"
+      }
+    },
+    "confirm_modals": {
+      "cancel_order": {
+        "title": "Annuler la commande ?",
+        "description": "Êtes-vous sûr de vouloir annuler cette commande ?"
+      },
+      "clear_cart": {
+        "title": "Vider la commande active ?",
+        "description": "Cela supprimera tous les articles du panier actuel."
+      },
+      "table_occupied": {
+        "title": "{{name}} est occupée",
+        "description": "Cette table a une commande active ({{amount}} $). Souhaitez-vous la consulter ?"
+      }
+    },
+    "toasts": {
+      "offline_sync_issues_one": "{{count}} action(s) hors ligne n'a/n'ont pas pu être synchronisée(s) — veuillez vérifier",
+      "offline_sync_issues_other": "{{count}} action(s) hors ligne n'a/n'ont pas pu être synchronisée(s) — veuillez vérifier",
+      "offline_sync_success_one": "{{count}} action(s) hors ligne synchronisée(s)",
+      "offline_sync_success_other": "{{count}} action(s) hors ligne synchronisée(s)",
+      "session_expired_offline_sync": "Session expirée. Reconnectez-vous pour synchroniser les modifications hors ligne.",
+      "select_table_to_continue": "Veuillez sélectionner une table pour continuer",
+      "order_sent_to_kitchen": "Commande envoyée en cuisine !",
+      "offline_order_queued": "Vous êtes hors ligne — la commande est en attente et sera synchronisée à la reconnexion",
+      "create_order_failed": "Échec de la création de la commande",
+      "payment_requires_connection": "Le paiement nécessite une connexion. Veuillez réessayer une fois en ligne.",
+      "select_table_dine_in": "Veuillez sélectionner une table pour les commandes sur place",
+      "offline_action_queued": "Hors ligne — action mise en attente pour synchronisation",
+      "update_order_failed": "Échec de la mise à jour de la commande",
+      "offline_cancel_queued": "Hors ligne — annulation mise en attente pour synchronisation",
+      "order_cancelled": "Commande annulée",
+      "cancel_order_failed": "Échec de l'annulation de la commande",
+      "table_assigned_to_cart": "{{name}} attribuée au panier",
+      "reorder_created": "Nouvelle commande créée",
+      "reorder_failed": "Échec de la recommande"
+    }
+  }
+}

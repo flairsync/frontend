@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2, Download } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { staffApi } from "@/features/station/station-api";
 import { printReceiptApiCall } from "@/features/orders/service";
 import DiscountPanel from "./DiscountPanel";
@@ -44,6 +45,7 @@ export function PaymentModal({
     businessId,
     orderItems = [],
 }: PaymentModalProps) {
+    const { t } = useTranslation("pos");
     const [step, setStep] = useState<Step>("confirm");
     const [cashInput, setCashInput] = useState("");
     const [activePanel, setActivePanel] = useState<Panel>("none");
@@ -108,7 +110,7 @@ export function PaymentModal({
                 } catch { /* kitchen may not have marked it ready — staff completes manually */ }
                 setStep("success");
             } catch (e: any) {
-                toast.error(e?.response?.data?.message ?? "Payment failed. Please try again.");
+                toast.error(e?.response?.data?.message ?? t("payment_modal.errors.payment_failed"));
             } finally {
                 setProcessing(false);
             }
@@ -149,33 +151,33 @@ export function PaymentModal({
                             <CheckCircle2 className="h-12 w-12 text-primary" />
                         </div>
                         <DialogTitle className="text-2xl font-black text-center">
-                            Payment Complete
+                            {t("payment_modal.success.title")}
                         </DialogTitle>
                         <p className="text-muted-foreground text-sm text-center">
-                            Processed via {method === "cash" ? "Cash" : "Card"}
+                            {t("payment_modal.success.processed_via", { method: method === "cash" ? t("payment_modal.method.cash") : t("payment_modal.method.card") })}
                         </p>
                     </DialogHeader>
 
                     <div className="bg-muted/30 p-5 rounded-2xl border border-border space-y-3 mx-2 my-2">
                         <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground text-sm">Total Charged</span>
+                            <span className="text-muted-foreground text-sm">{t("payment_modal.success.total_charged")}</span>
                             <span className="text-xl font-black">${effectiveTotal.toFixed(2)}</span>
                         </div>
                         {discountAmount > 0 && (
                             <div className="flex justify-between items-center">
-                                <span className="text-muted-foreground text-sm">Discount</span>
+                                <span className="text-muted-foreground text-sm">{t("payment_modal.success.discount")}</span>
                                 <span className="font-bold text-primary">−${discountAmount.toFixed(2)}</span>
                             </div>
                         )}
                         {method === "cash" && cashGiven > 0 && (
                             <>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground text-sm">Cash Received</span>
+                                    <span className="text-muted-foreground text-sm">{t("payment_modal.success.cash_received")}</span>
                                     <span className="font-bold">${cashGiven.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center border-t border-border pt-3">
                                     <span className="text-muted-foreground text-sm font-black uppercase tracking-wider">
-                                        Change Due
+                                        {t("payment_modal.success.change_due")}
                                     </span>
                                     <span className="text-2xl font-black text-primary">
                                         ${Math.max(0, change).toFixed(2)}
@@ -193,7 +195,7 @@ export function PaymentModal({
                                 onClick={() => setShowReceipt(true)}
                             >
                                 <Receipt className="h-4 w-4" />
-                                View Receipt
+                                {t("payment_modal.success.view_receipt")}
                             </Button>
                         )}
                         {orderId && businessId && !stationMode && (
@@ -212,11 +214,11 @@ export function PaymentModal({
                                 }}
                             >
                                 <Download className="h-4 w-4" />
-                                Print PDF
+                                {t("payment_modal.success.print_pdf")}
                             </Button>
                         )}
                         <Button className="flex-1 gap-2 h-12 font-black" onClick={onClose}>
-                            New Order
+                            {t("payment_modal.success.new_order")}
                             <ArrowRight className="h-4 w-4" />
                         </Button>
                     </div>
@@ -248,10 +250,10 @@ export function PaymentModal({
                         </div>
                         <div>
                             <DialogTitle className="text-lg font-black">
-                                {method === "cash" ? "Cash Payment" : "Card Payment"}
+                                {method === "cash" ? t("payment_modal.confirm.cash_payment") : t("payment_modal.confirm.card_payment")}
                             </DialogTitle>
                             <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
-                                Settle Order
+                                {t("payment_modal.confirm.settle_order")}
                             </p>
                         </div>
                     </div>
@@ -260,7 +262,7 @@ export function PaymentModal({
                 {/* Total Due */}
                 <div className="px-6 py-4 bg-muted/20 flex items-baseline justify-between border-b border-border">
                     <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
-                        Total Due
+                        {t("payment_modal.confirm.total_due")}
                     </span>
                     <div className="text-right">
                         <span className="text-4xl font-black text-primary">
@@ -286,7 +288,7 @@ export function PaymentModal({
                             }`}
                         >
                             <Tag className="w-3 h-3" />
-                            Discount
+                            {t("payment_modal.confirm.discount")}
                         </button>
                         <button
                             onClick={() => togglePanel("split")}
@@ -297,7 +299,7 @@ export function PaymentModal({
                             }`}
                         >
                             <Split className="w-3 h-3" />
-                            Split Bill
+                            {t("payment_modal.confirm.split_bill")}
                         </button>
                     </div>
                 )}
@@ -339,7 +341,7 @@ export function PaymentModal({
                     <div className="p-4 space-y-3">
                         <div className="bg-muted/30 rounded-2xl p-4 border border-border text-center">
                             <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest mb-1">
-                                Cash Tendered
+                                {t("payment_modal.confirm.cash_tendered")}
                             </p>
                             <p className="text-3xl font-black font-mono">
                                 ${cashInput || "0.00"}
@@ -351,8 +353,8 @@ export function PaymentModal({
                                     }`}
                                 >
                                     {change >= 0
-                                        ? `Change: $${change.toFixed(2)}`
-                                        : `Short by $${Math.abs(change).toFixed(2)}`}
+                                        ? t("payment_modal.confirm.change_amount", { amount: change.toFixed(2) })
+                                        : t("payment_modal.confirm.short_by_amount", { amount: Math.abs(change).toFixed(2) })}
                                 </p>
                             )}
                         </div>
@@ -394,7 +396,7 @@ export function PaymentModal({
                             <CreditCard className="w-10 h-10 text-primary" />
                         </div>
                         <p className="text-muted-foreground text-sm text-center">
-                            Present card or tap device to terminal
+                            {t("payment_modal.confirm.present_card")}
                         </p>
                     </div>
                 )}
@@ -409,12 +411,12 @@ export function PaymentModal({
                             {processing ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                    Processing...
+                                    {t("payment_modal.confirm.processing")}
                                 </>
                             ) : (
                                 <>
                                     <CheckCircle2 className="w-4 h-4" />
-                                    CONFIRM PAYMENT
+                                    {t("payment_modal.confirm.confirm_payment")}
                                 </>
                             )}
                         </Button>

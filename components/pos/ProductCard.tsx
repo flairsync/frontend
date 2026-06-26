@@ -2,6 +2,7 @@ import React from "react";
 import { Plus, AlertCircle } from "lucide-react";
 import type { MenuItem } from "@/features/pos/types";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { useTranslation } from "react-i18next";
 
 interface ProductCardProps {
     product: MenuItem;
@@ -11,9 +12,10 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onClick, quantity, currency = "USD" }: ProductCardProps) {
+    const { t } = useTranslation("pos");
     const hasVariants = product.variants.length > 0;
     const displayPrice = hasVariants
-        ? `From ${formatCurrency(Math.min(...product.variants.map((v) => v.price)), currency)}`
+        ? t("product_card.from_price", { price: formatCurrency(Math.min(...product.variants.map((v) => v.price)), currency) })
         : formatCurrency(product.basePrice, currency);
 
     const thumbnail = product.images?.[0] ?? null;
@@ -75,7 +77,7 @@ export function ProductCard({ product, onClick, quantity, currency = "USD" }: Pr
                 <span className="text-sm font-black text-primary">{displayPrice}</span>
                 {!product.isAvailable && (
                     <span className="text-[10px] text-muted-foreground font-bold uppercase">
-                        Unavailable
+                        {t("product_card.unavailable")}
                     </span>
                 )}
             </div>
