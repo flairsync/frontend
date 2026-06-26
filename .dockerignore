@@ -1,0 +1,31 @@
+# Dependencies & build output
+node_modules
+dist
+
+# Git
+.git
+.gitignore
+
+# Environment files (passed in as build args / runtime env, never baked into the image)
+.env
+.env.*
+
+# Logs
+*.log
+
+# IDE / editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude
+
+# Docker (don't copy compose files into the build context)
+docker-compose*.yml
+Dockerfile*
