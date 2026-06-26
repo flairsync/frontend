@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Minus, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import {
     Sheet,
     SheetContent,
@@ -21,6 +22,7 @@ interface DinerMenuItemSheetProps {
 }
 
 export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheetProps) {
+    const { t } = useTranslation('diner');
     const { addToCart } = useDinerModeStore();
 
     const [quantity, setQuantity] = useState(1);
@@ -120,7 +122,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                         <div className="space-y-5 mt-4">
                             {hasVariants && (
                                 <div>
-                                    <p className="text-sm font-semibold mb-2">Choose a variant</p>
+                                    <p className="text-sm font-semibold mb-2">{t('menu_item_sheet.choose_variant')}</p>
                                     <RadioGroup
                                         value={selectedVariantId}
                                         onValueChange={setSelectedVariantId}
@@ -146,7 +148,9 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                     <div className="flex items-center justify-between mb-2">
                                         <p className="text-sm font-semibold">{group.name}</p>
                                         <span className="text-xs text-muted-foreground capitalize">
-                                            {group.selectionMode === 'single' ? 'Choose one' : `Up to ${group.maxSelections}`}
+                                            {group.selectionMode === 'single'
+                                                ? t('menu_item_sheet.choose_one')
+                                                : t('menu_item_sheet.choose_up_to', { count: group.maxSelections })}
                                         </span>
                                     </div>
                                     <div className="space-y-2">
@@ -187,9 +191,9 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                             ))}
 
                             <div>
-                                <p className="text-sm font-semibold mb-2">Special instructions</p>
+                                <p className="text-sm font-semibold mb-2">{t('menu_item_sheet.special_instructions')}</p>
                                 <Textarea
-                                    placeholder="E.g. No onions, extra sauce…"
+                                    placeholder={t('menu_item_sheet.special_instructions_placeholder')}
                                     value={notes}
                                     onChange={(e) => setNotes(e.target.value)}
                                     className="rounded-xl resize-none text-sm"
@@ -226,7 +230,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                 onClick={handleAdd}
                                 disabled={hasVariants && !selectedVariantId}
                             >
-                                Add to order · ${lineTotal.toFixed(2)}
+                                {t('menu_item_sheet.add_to_order', { price: lineTotal.toFixed(2) })}
                             </Button>
                         </div>
                     </>

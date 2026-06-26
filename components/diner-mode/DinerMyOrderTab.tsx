@@ -8,6 +8,7 @@ import {
     ShoppingCart,
     Plus,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -25,52 +26,53 @@ interface DinerMyOrderTabProps {
     onRemoveCartItem: (index: number) => void;
 }
 
-const STATUS_CONFIG: Record<
-    string,
-    { label: string; icon: React.ReactNode; color: string; pulse?: boolean }
-> = {
-    created: {
-        label: 'Order received',
-        icon: <Loader2 className="w-5 h-5 animate-spin" />,
-        color: 'text-blue-500',
-    },
-    accepted: {
-        label: 'Order confirmed',
-        icon: <CheckCircle2 className="w-5 h-5" />,
-        color: 'text-green-500',
-    },
-    preparing: {
-        label: 'Being prepared',
-        icon: <ChefHat className="w-5 h-5" />,
-        color: 'text-orange-500',
-    },
-    ready: {
-        label: 'Ready to serve!',
-        icon: <PartyPopper className="w-5 h-5" />,
-        color: 'text-emerald-500',
-        pulse: true,
-    },
-    completed: {
-        label: 'Enjoy your meal!',
-        icon: <CheckCircle2 className="w-5 h-5" />,
-        color: 'text-muted-foreground',
-    },
-    canceled: {
-        label: 'Order cancelled',
-        icon: <XCircle className="w-5 h-5" />,
-        color: 'text-destructive',
-    },
-    rejected: {
-        label: 'Order cancelled',
-        icon: <XCircle className="w-5 h-5" />,
-        color: 'text-destructive',
-    },
-};
+function getStatusConfig(
+    t: (key: string) => string
+): Record<string, { label: string; icon: React.ReactNode; color: string; pulse?: boolean }> {
+    return {
+        created: {
+            label: t('my_order_tab.status.created'),
+            icon: <Loader2 className="w-5 h-5 animate-spin" />,
+            color: 'text-blue-500',
+        },
+        accepted: {
+            label: t('my_order_tab.status.accepted'),
+            icon: <CheckCircle2 className="w-5 h-5" />,
+            color: 'text-green-500',
+        },
+        preparing: {
+            label: t('my_order_tab.status.preparing'),
+            icon: <ChefHat className="w-5 h-5" />,
+            color: 'text-orange-500',
+        },
+        ready: {
+            label: t('my_order_tab.status.ready'),
+            icon: <PartyPopper className="w-5 h-5" />,
+            color: 'text-emerald-500',
+            pulse: true,
+        },
+        completed: {
+            label: t('my_order_tab.status.completed'),
+            icon: <CheckCircle2 className="w-5 h-5" />,
+            color: 'text-muted-foreground',
+        },
+        canceled: {
+            label: t('my_order_tab.status.canceled'),
+            icon: <XCircle className="w-5 h-5" />,
+            color: 'text-destructive',
+        },
+        rejected: {
+            label: t('my_order_tab.status.rejected'),
+            icon: <XCircle className="w-5 h-5" />,
+            color: 'text-destructive',
+        },
+    };
+}
 
 const ORDER_EDITABLE_STATUSES = ['created', 'accepted'];
 
-function getItemName(item: DinerOrder['items'][number]): string {
-    return item.nameSnapshot || item.name || 'Item';
+function getItemName(item: DinerOrder['items'][number], fallback: string): string {
+    return item.nameSnapshot || item.name || fallback;
 }
 
 function getItemTotal(item: DinerOrder['items'][number]): number {
@@ -87,17 +89,18 @@ export default function DinerMyOrderTab({
     onPlaceOrder,
     onRemoveCartItem,
 }: DinerMyOrderTabProps) {
+    const { t } = useTranslation('diner');
     const menuHref = `/diner/${businessId}/menu`;
-    const statusConfig = activeOrder ? STATUS_CONFIG[activeOrder.status] : null;
+    const statusConfig = activeOrder ? getStatusConfig(t)[activeOrder.status] : null;
     const isEditable = activeOrder && ORDER_EDITABLE_STATUSES.includes(activeOrder.status);
 
     if (!activeOrder && cart.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center h-full px-8 pb-24 text-center">
                 <ShoppingCart className="w-12 h-12 text-muted-foreground/40 mb-3" />
-                <p className="font-semibold text-base">Your order is empty</p>
+                <p className="font-semibold text-base">{t('my_order_tab.empty_title')}</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Browse the menu and add items to get started.
+                    {t('my_order_tab.empty_description')}
                 </p>
                 {allowOrders && (
                     <Button
@@ -105,7 +108,7 @@ export default function DinerMyOrderTab({
                         className="mt-4 rounded-full"
                         onClick={() => { window.location.href = menuHref; }}
                     >
-                        Browse Menu
+                        {t('my_order_tab.browse_menu')}
                     </Button>
                 )}
             </div>
@@ -125,7 +128,7 @@ export default function DinerMyOrderTab({
                     <div>
                         <p className="font-semibold text-sm">{statusConfig.label}</p>
                         {activeOrder.paymentStatus === 'unpaid' && (
-                            <p className="text-xs text-muted-foreground">Payment pending</p>
+                            <p className="text-xs text-muted-foreground">{t('my_order_tab.payment_pending')}</p>
                         )}
                     </div>
                     <span className="ml-auto text-sm font-bold">
@@ -137,7 +140,7 @@ export default function DinerMyOrderTab({
             {activeOrder && (
                 <div className="rounded-2xl border bg-card overflow-hidden">
                     <div className="px-4 py-3 border-b flex items-center justify-between">
-                        <p className="text-sm font-semibold">Your order</p>
+                        <p className="text-sm font-semibold">{t('my_order_tab.your_order_heading')}</p>
                         {isEditable && allowOrders && (
                             <Button
                                 variant="ghost"
@@ -146,7 +149,7 @@ export default function DinerMyOrderTab({
                                 onClick={() => { window.location.href = menuHref; }}
                             >
                                 <Plus className="w-3 h-3" />
-                                Add more
+                                {t('my_order_tab.add_more')}
                             </Button>
                         )}
                     </div>
@@ -155,7 +158,7 @@ export default function DinerMyOrderTab({
                             <div key={item.id} className="px-4 py-3 flex justify-between items-start gap-2">
                                 <div className="min-w-0 flex-1">
                                     <p className="text-sm font-medium">
-                                        {item.quantity}× {getItemName(item)}
+                                        {item.quantity}× {getItemName(item, t('my_order_tab.unnamed_item'))}
                                     </p>
                                     {item.variantName && (
                                         <p className="text-xs text-muted-foreground">{item.variantName}</p>
@@ -182,9 +185,11 @@ export default function DinerMyOrderTab({
                 <div className="rounded-2xl border bg-card overflow-hidden">
                     <div className="px-4 py-3 border-b flex items-center justify-between">
                         <p className="text-sm font-semibold">
-                            {activeOrder ? 'Items to add' : 'New order'}
+                            {activeOrder ? t('my_order_tab.items_to_add_heading') : t('my_order_tab.new_order_heading')}
                         </p>
-                        <Badge variant="secondary">{cart.reduce((s, i) => s + i.quantity, 0)} items</Badge>
+                        <Badge variant="secondary">
+                            {t('my_order_tab.items_count', { count: cart.reduce((s, i) => s + i.quantity, 0) })}
+                        </Badge>
                     </div>
                     <div className="divide-y">
                         {cart.map((item, index) => (
@@ -221,7 +226,7 @@ export default function DinerMyOrderTab({
                     <Separator />
 
                     <div className="px-4 py-3 flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Subtotal</span>
+                        <span className="text-sm text-muted-foreground">{t('my_order_tab.subtotal')}</span>
                         <span className="text-sm font-bold">
                             ${cart.reduce((s, i) => s + i.lineTotal, 0).toFixed(2)}
                         </span>
@@ -236,15 +241,15 @@ export default function DinerMyOrderTab({
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                                    Placing order…
+                                    {t('my_order_tab.placing_order')}
                                 </>
                             ) : activeOrder ? (
                                 <>
                                     <Plus className="w-4 h-4 mr-1" />
-                                    Add to existing order
+                                    {t('my_order_tab.add_to_existing_order')}
                                 </>
                             ) : (
-                                'Place order'
+                                t('my_order_tab.place_order')
                             )}
                         </Button>
                     </div>

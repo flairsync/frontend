@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -125,6 +126,7 @@ interface MenuItemCardProps {
 }
 
 function MenuItemCard({ item, allowOrders, onAdd }: MenuItemCardProps) {
+    const { t } = useTranslation('diner');
     const image = item.media?.[0]?.url;
     const isUnavailable = (item as any).isAvailable === false;
 
@@ -154,7 +156,7 @@ function MenuItemCard({ item, allowOrders, onAdd }: MenuItemCardProps) {
                         )}
                     </div>
                     {isUnavailable && (
-                        <Badge variant="secondary" className="text-xs shrink-0">Unavailable</Badge>
+                        <Badge variant="secondary" className="text-xs shrink-0">{t('menu_tab.unavailable')}</Badge>
                     )}
                 </div>
 

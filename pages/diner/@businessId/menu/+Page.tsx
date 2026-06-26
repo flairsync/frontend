@@ -1,6 +1,7 @@
 import React from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { AlertCircle, RefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useDiscoveryMenu, useDiscoveryProfile } from '@/features/discovery/useDiscovery';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -8,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import DinerMenuTab from '@/components/diner-mode/DinerMenuTab';
 
 export default function DinerMenuPage() {
+    const { t } = useTranslation('diner');
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
 
@@ -30,15 +32,15 @@ export default function DinerMenuPage() {
             <div className="flex items-center justify-center flex-1 px-6">
                 <Alert className="rounded-3xl max-w-sm">
                     <AlertCircle className="h-5 w-5" />
-                    <AlertTitle>Menu unavailable</AlertTitle>
-                    <AlertDescription>The menu could not be loaded right now.</AlertDescription>
+                    <AlertTitle>{t('menu_page.unavailable_title')}</AlertTitle>
+                    <AlertDescription>{t('menu_page.unavailable_description')}</AlertDescription>
                     <Button
                         variant="outline"
                         className="mt-3 w-full rounded-xl gap-2"
                         onClick={() => refetch()}
                     >
                         <RefreshCw className="w-4 h-4" />
-                        Retry
+                        {t('menu_page.retry')}
                     </Button>
                 </Alert>
             </div>

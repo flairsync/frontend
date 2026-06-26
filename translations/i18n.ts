@@ -14,7 +14,21 @@ i18n
   .use(HttpBackend)
   .use(initReactI18next)
   .init({
-    ns: ["common", "landing", "auth", "feed", "management", "tutorials"],
+    ns: [
+      "common",
+      "landing",
+      "auth",
+      "feed",
+      "management",
+      "tutorials",
+      "pos",
+      "station",
+      "diner",
+      "profile",
+      "jobs",
+      "marketplace",
+      "business",
+    ],
     defaultNS: "common",
     fallbackNS: "common",
     lng: typeof window !== "undefined" ? detectLang() : "en",

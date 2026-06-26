@@ -1,5 +1,6 @@
 import React from 'react';
 import { UtensilsCrossed, ClipboardList } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
 import { BusinessMenu } from '@/models/business/menu/BusinessMenu';
@@ -33,6 +34,7 @@ export default function DinerModeLayout({
     onRemoveCartItem,
     onExit,
 }: DinerModeLayoutProps) {
+    const { t } = useTranslation('diner');
     const { activeTab, setTab } = useDinerModeStore();
 
     const orderBadgeCount = activeOrder
@@ -63,13 +65,13 @@ export default function DinerModeLayout({
                 <div className="flex items-center h-16">
                     <TabButton
                         icon={<UtensilsCrossed className="w-5 h-5" />}
-                        label="Menu"
+                        label={t('layout.tab_menu')}
                         isActive={activeTab === 'menu'}
                         onClick={() => setTab('menu')}
                     />
                     <TabButton
                         icon={<ClipboardList className="w-5 h-5" />}
-                        label="My Order"
+                        label={t('layout.tab_my_order')}
                         isActive={activeTab === 'order'}
                         badge={orderBadgeCount > 0 ? orderBadgeCount : undefined}
                         onClick={() => setTab('order')}

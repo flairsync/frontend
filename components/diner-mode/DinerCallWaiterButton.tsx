@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BellRing, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { callWaiterApiCall } from '@/features/discovery/discovery.api';
 
@@ -18,6 +19,7 @@ export default function DinerCallWaiterButton({
     tableId,
     reservationId,
 }: DinerCallWaiterButtonProps) {
+    const { t } = useTranslation('diner');
     const [cooldown, setCooldown] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -41,14 +43,14 @@ export default function DinerCallWaiterButton({
         setIsLoading(true);
         try {
             await callWaiterApiCall(businessId, { tableId, reservationId });
-            toast.success('Your waiter has been notified', {
-                description: 'Someone will be with you shortly.',
+            toast.success(t('call_waiter.success_title'), {
+                description: t('call_waiter.success_description'),
                 duration: 3000,
             });
             setCooldown(COOLDOWN_SECONDS);
         } catch {
-            toast.error('Could not reach staff', {
-                description: 'Please try again or ask for assistance directly.',
+            toast.error(t('call_waiter.error_title'), {
+                description: t('call_waiter.error_description'),
             });
         } finally {
             setIsLoading(false);
@@ -73,11 +75,11 @@ export default function DinerCallWaiterButton({
                 <BellRing className="w-4 h-4" />
             )}
             {isLoading ? (
-                <span>Calling…</span>
+                <span>{t('call_waiter.calling')}</span>
             ) : cooldown > 0 ? (
-                <span>Waiter notified ({cooldown}s)</span>
+                <span>{t('call_waiter.notified_cooldown', { seconds: cooldown })}</span>
             ) : (
-                <span>Call Waiter</span>
+                <span>{t('call_waiter.button_label')}</span>
             )}
         </Button>
     );

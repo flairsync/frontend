@@ -1,10 +1,12 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { usePageContext } from 'vike-react/usePageContext';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 
 export default function DinerCartFab() {
+    const { t } = useTranslation('diner');
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
     const { cartItemCount, cartTotal, cart } = useDinerModeStore();
@@ -25,7 +27,7 @@ export default function DinerCartFab() {
                         {count}
                     </span>
                 </div>
-                <span>View Order</span>
+                <span>{t('cart_fab.view_order')}</span>
                 <span className="opacity-80">·</span>
                 <span>${total.toFixed(2)}</span>
             </Button>

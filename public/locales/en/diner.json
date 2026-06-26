@@ -1,0 +1,76 @@
+{
+  "watcher": {
+    "seated_single": "You're seated — Open Diner Mode",
+    "seated_multiple": "You're seated ({{count}})",
+    "open_diner_for": "Open diner — {{businessId}}"
+  },
+  "call_waiter": {
+    "success_title": "Your waiter has been notified",
+    "success_description": "Someone will be with you shortly.",
+    "error_title": "Could not reach staff",
+    "error_description": "Please try again or ask for assistance directly.",
+    "calling": "Calling…",
+    "notified_cooldown": "Waiter notified ({{seconds}}s)",
+    "button_label": "Call Waiter"
+  },
+  "cart_fab": {
+    "view_order": "View Order"
+  },
+  "layout": {
+    "tab_menu": "Menu",
+    "tab_my_order": "My Order"
+  },
+  "banner": {
+    "seated_title": "You're seated here",
+    "active_order_title": "You have an active order",
+    "seated_subtitle": "Switch to diner mode to order",
+    "active_order_subtitle": "Track your order in diner mode",
+    "enter_button": "Enter"
+  },
+  "my_order_tab": {
+    "status": {
+      "created": "Order received",
+      "accepted": "Order confirmed",
+      "preparing": "Being prepared",
+      "ready": "Ready to serve!",
+      "completed": "Enjoy your meal!",
+      "canceled": "Order cancelled",
+      "rejected": "Order cancelled"
+    },
+    "empty_title": "Your order is empty",
+    "empty_description": "Browse the menu and add items to get started.",
+    "browse_menu": "Browse Menu",
+    "payment_pending": "Payment pending",
+    "your_order_heading": "Your order",
+    "add_more": "Add more",
+    "unnamed_item": "Item",
+    "items_to_add_heading": "Items to add",
+    "new_order_heading": "New order",
+    "items_count_one": "{{count}} item",
+    "items_count_other": "{{count}} items",
+    "subtotal": "Subtotal",
+    "placing_order": "Placing order…",
+    "add_to_existing_order": "Add to existing order",
+    "place_order": "Place order"
+  },
+  "menu_item_sheet": {
+    "choose_variant": "Choose a variant",
+    "choose_one": "Choose one",
+    "choose_up_to": "Up to {{count}}",
+    "special_instructions": "Special instructions",
+    "special_instructions_placeholder": "E.g. No onions, extra sauce…",
+    "add_to_order": "Add to order · ${{price}}"
+  },
+  "header": {
+    "table_label": "Table {{table}}",
+    "leave_diner_mode": "Leave diner mode"
+  },
+  "menu_tab": {
+    "unavailable": "Unavailable"
+  },
+  "menu_page": {
+    "unavailable_title": "Menu unavailable",
+    "unavailable_description": "The menu could not be loaded right now.",
+    "retry": "Retry"
+  }
+}

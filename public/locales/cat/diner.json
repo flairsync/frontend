@@ -1,0 +1,76 @@
+{
+  "watcher": {
+    "seated_single": "Estàs assegut — Obre el mode client",
+    "seated_multiple": "Estàs assegut ({{count}})",
+    "open_diner_for": "Obre el mode client — {{businessId}}"
+  },
+  "call_waiter": {
+    "success_title": "S'ha avisat el cambrer",
+    "success_description": "Algú vindrà a atendre't de seguida.",
+    "error_title": "No s'ha pogut contactar amb el personal",
+    "error_description": "Torna-ho a provar o demana ajuda directament.",
+    "calling": "Trucant…",
+    "notified_cooldown": "Cambrer avisat ({{seconds}}s)",
+    "button_label": "Trucar al cambrer"
+  },
+  "cart_fab": {
+    "view_order": "Veure comanda"
+  },
+  "layout": {
+    "tab_menu": "Menú",
+    "tab_my_order": "La meva comanda"
+  },
+  "banner": {
+    "seated_title": "Estàs assegut aquí",
+    "active_order_title": "Tens una comanda activa",
+    "seated_subtitle": "Passa al mode client per fer la comanda",
+    "active_order_subtitle": "Segueix la teva comanda en mode client",
+    "enter_button": "Entra"
+  },
+  "my_order_tab": {
+    "status": {
+      "created": "Comanda rebuda",
+      "accepted": "Comanda confirmada",
+      "preparing": "S'està preparant",
+      "ready": "Llesta per servir!",
+      "completed": "Bon profit!",
+      "canceled": "Comanda cancel·lada",
+      "rejected": "Comanda cancel·lada"
+    },
+    "empty_title": "La teva comanda està buida",
+    "empty_description": "Explora el menú i afegeix plats per començar.",
+    "browse_menu": "Veure el menú",
+    "payment_pending": "Pagament pendent",
+    "your_order_heading": "La teva comanda",
+    "add_more": "Afegeix-ne més",
+    "unnamed_item": "Article",
+    "items_to_add_heading": "Articles per afegir",
+    "new_order_heading": "Nova comanda",
+    "items_count_one": "{{count}} article",
+    "items_count_other": "{{count}} articles",
+    "subtotal": "Subtotal",
+    "placing_order": "Enviant la comanda…",
+    "add_to_existing_order": "Afegeix a la comanda en curs",
+    "place_order": "Fes la comanda"
+  },
+  "menu_item_sheet": {
+    "choose_variant": "Tria una variant",
+    "choose_one": "Tria'n una",
+    "choose_up_to": "Fins a {{count}}",
+    "special_instructions": "Instruccions especials",
+    "special_instructions_placeholder": "Ex. Sense ceba, salsa extra…",
+    "add_to_order": "Afegeix a la comanda · {{price}} $"
+  },
+  "header": {
+    "table_label": "Taula {{table}}",
+    "leave_diner_mode": "Surt del mode client"
+  },
+  "menu_tab": {
+    "unavailable": "No disponible"
+  },
+  "menu_page": {
+    "unavailable_title": "Menú no disponible",
+    "unavailable_description": "El menú no s'ha pogut carregar en aquest moment.",
+    "retry": "Torna-ho a provar"
+  }
+}

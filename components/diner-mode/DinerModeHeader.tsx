@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
 import { DinerReservation } from '@/features/diner-mode/useDinerMode';
@@ -11,6 +12,7 @@ interface DinerModeHeaderProps {
 }
 
 export default function DinerModeHeader({ profile, reservation, onExit }: DinerModeHeaderProps) {
+    const { t } = useTranslation('diner');
     return (
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border/40">
             <div className="flex items-center justify-between px-4 h-14">
@@ -27,7 +29,7 @@ export default function DinerModeHeader({ profile, reservation, onExit }: DinerM
                         {reservation?.tableId && (
                             <p className="text-xs text-muted-foreground flex items-center gap-1">
                                 <MapPin className="w-3 h-3 shrink-0" />
-                                <span className="truncate">Table {reservation.tableId}</span>
+                                <span className="truncate">{t('header.table_label', { table: reservation.tableId })}</span>
                             </p>
                         )}
                     </div>
@@ -38,7 +40,7 @@ export default function DinerModeHeader({ profile, reservation, onExit }: DinerM
                     size="icon"
                     className="rounded-full shrink-0"
                     onClick={onExit}
-                    title="Leave diner mode"
+                    title={t('header.leave_diner_mode')}
                 >
                     <X className="w-4 h-4" />
                 </Button>

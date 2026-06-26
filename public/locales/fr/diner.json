@@ -1,0 +1,76 @@
+{
+  "watcher": {
+    "seated_single": "Tu es installé — Ouvrir le mode client",
+    "seated_multiple": "Tu es installé ({{count}})",
+    "open_diner_for": "Ouvrir le mode client — {{businessId}}"
+  },
+  "call_waiter": {
+    "success_title": "Le serveur a été prévenu",
+    "success_description": "Quelqu'un va arriver très vite.",
+    "error_title": "Impossible de joindre le personnel",
+    "error_description": "Réessaie ou demande de l'aide directement.",
+    "calling": "Appel en cours…",
+    "notified_cooldown": "Serveur prévenu ({{seconds}}s)",
+    "button_label": "Appeler le serveur"
+  },
+  "cart_fab": {
+    "view_order": "Voir la commande"
+  },
+  "layout": {
+    "tab_menu": "Menu",
+    "tab_my_order": "Ma commande"
+  },
+  "banner": {
+    "seated_title": "Tu es installé ici",
+    "active_order_title": "Tu as une commande en cours",
+    "seated_subtitle": "Passe en mode client pour commander",
+    "active_order_subtitle": "Suis ta commande en mode client",
+    "enter_button": "Entrer"
+  },
+  "my_order_tab": {
+    "status": {
+      "created": "Commande reçue",
+      "accepted": "Commande confirmée",
+      "preparing": "En préparation",
+      "ready": "Prête à servir !",
+      "completed": "Bon appétit !",
+      "canceled": "Commande annulée",
+      "rejected": "Commande annulée"
+    },
+    "empty_title": "Ta commande est vide",
+    "empty_description": "Parcours le menu et ajoute des plats pour commencer.",
+    "browse_menu": "Voir le menu",
+    "payment_pending": "Paiement en attente",
+    "your_order_heading": "Ta commande",
+    "add_more": "Ajouter",
+    "unnamed_item": "Article",
+    "items_to_add_heading": "Articles à ajouter",
+    "new_order_heading": "Nouvelle commande",
+    "items_count_one": "{{count}} article",
+    "items_count_other": "{{count}} articles",
+    "subtotal": "Sous-total",
+    "placing_order": "Envoi de la commande…",
+    "add_to_existing_order": "Ajouter à la commande en cours",
+    "place_order": "Commander"
+  },
+  "menu_item_sheet": {
+    "choose_variant": "Choisis une variante",
+    "choose_one": "Choisis-en un",
+    "choose_up_to": "Jusqu'à {{count}}",
+    "special_instructions": "Instructions spéciales",
+    "special_instructions_placeholder": "Ex. Sans oignons, sauce en plus…",
+    "add_to_order": "Ajouter à la commande · {{price}} $"
+  },
+  "header": {
+    "table_label": "Table {{table}}",
+    "leave_diner_mode": "Quitter le mode client"
+  },
+  "menu_tab": {
+    "unavailable": "Indisponible"
+  },
+  "menu_page": {
+    "unavailable_title": "Menu indisponible",
+    "unavailable_description": "Le menu n'a pas pu être chargé pour le moment.",
+    "retry": "Réessayer"
+  }
+}

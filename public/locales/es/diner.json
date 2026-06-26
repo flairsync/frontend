@@ -1,0 +1,76 @@
+{
+  "watcher": {
+    "seated_single": "Estás sentado — Abrir modo cliente",
+    "seated_multiple": "Estás sentado ({{count}})",
+    "open_diner_for": "Abrir modo cliente — {{businessId}}"
+  },
+  "call_waiter": {
+    "success_title": "Se ha avisado a tu camarero",
+    "success_description": "Alguien vendrá a atenderte enseguida.",
+    "error_title": "No se pudo contactar con el personal",
+    "error_description": "Inténtalo de nuevo o pide ayuda directamente.",
+    "calling": "Llamando…",
+    "notified_cooldown": "Camarero avisado ({{seconds}}s)",
+    "button_label": "Llamar al camarero"
+  },
+  "cart_fab": {
+    "view_order": "Ver pedido"
+  },
+  "layout": {
+    "tab_menu": "Menú",
+    "tab_my_order": "Mi pedido"
+  },
+  "banner": {
+    "seated_title": "Estás sentado aquí",
+    "active_order_title": "Tienes un pedido activo",
+    "seated_subtitle": "Pasa al modo cliente para pedir",
+    "active_order_subtitle": "Sigue tu pedido en el modo cliente",
+    "enter_button": "Entrar"
+  },
+  "my_order_tab": {
+    "status": {
+      "created": "Pedido recibido",
+      "accepted": "Pedido confirmado",
+      "preparing": "En preparación",
+      "ready": "¡Listo para servir!",
+      "completed": "¡Buen provecho!",
+      "canceled": "Pedido cancelado",
+      "rejected": "Pedido cancelado"
+    },
+    "empty_title": "Tu pedido está vacío",
+    "empty_description": "Explora el menú y añade platos para empezar.",
+    "browse_menu": "Ver menú",
+    "payment_pending": "Pago pendiente",
+    "your_order_heading": "Tu pedido",
+    "add_more": "Añadir más",
+    "unnamed_item": "Artículo",
+    "items_to_add_heading": "Artículos para añadir",
+    "new_order_heading": "Nuevo pedido",
+    "items_count_one": "{{count}} artículo",
+    "items_count_other": "{{count}} artículos",
+    "subtotal": "Subtotal",
+    "placing_order": "Enviando pedido…",
+    "add_to_existing_order": "Añadir al pedido en curso",
+    "place_order": "Hacer pedido"
+  },
+  "menu_item_sheet": {
+    "choose_variant": "Elige una variante",
+    "choose_one": "Elige una opción",
+    "choose_up_to": "Hasta {{count}}",
+    "special_instructions": "Instrucciones especiales",
+    "special_instructions_placeholder": "Ej. Sin cebolla, más salsa…",
+    "add_to_order": "Añadir al pedido · {{price}} $"
+  },
+  "header": {
+    "table_label": "Mesa {{table}}",
+    "leave_diner_mode": "Salir del modo cliente"
+  },
+  "menu_tab": {
+    "unavailable": "No disponible"
+  },
+  "menu_page": {
+    "unavailable_title": "Menú no disponible",
+    "unavailable_description": "No se ha podido cargar el menú en este momento.",
+    "retry": "Reintentar"
+  }
+}

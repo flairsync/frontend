@@ -1,5 +1,6 @@
 import React from 'react';
 import { UtensilsCrossed, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { useBusinessSeatedReservation, useActiveDineInOrder } from '@/features/diner-mode/useDinerMode';
 
@@ -8,6 +9,7 @@ interface DinerModeBannerProps {
 }
 
 export default function DinerModeBanner({ businessId }: DinerModeBannerProps) {
+    const { t } = useTranslation('diner');
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: activeOrder } = useActiveDineInOrder(businessId);
 
@@ -28,10 +30,10 @@ export default function DinerModeBanner({ businessId }: DinerModeBannerProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm leading-snug">
-                        {isSeated ? "You're seated here" : "You have an active order"}
+                        {isSeated ? t('banner.seated_title') : t('banner.active_order_title')}
                     </p>
                     <p className="text-xs opacity-75 mt-0.5">
-                        {isSeated ? "Switch to diner mode to order" : "Track your order in diner mode"}
+                        {isSeated ? t('banner.seated_subtitle') : t('banner.active_order_subtitle')}
                     </p>
                 </div>
                 <Button
@@ -40,7 +42,7 @@ export default function DinerModeBanner({ businessId }: DinerModeBannerProps) {
                     className="rounded-xl shrink-0 gap-1 font-semibold"
                     onClick={handleEnter}
                 >
-                    Enter
+                    {t('banner.enter_button')}
                     <ArrowRight className="w-3.5 h-3.5" />
                 </Button>
             </div>
