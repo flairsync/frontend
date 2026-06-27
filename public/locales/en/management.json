@@ -1062,7 +1062,8 @@
     "all_staff_placeholder": "All Staff",
     "staff_fallback_name": "Staff",
     "unvalidated_shifts_count": "{{count}} unvalidated shifts",
-    "no_show_count": "{{count}} no-show{{plural}}",
+    "no_show_count_one": "{{count}} no-show",
+    "no_show_count_other": "{{count}} no-shows",
     "col_staff_member": "Staff Member",
     "days_short": {
       "mon": "Mon",
@@ -1246,7 +1247,8 @@
       "unpaid_break_placeholder": "e.g. 30",
       "unpaid_break_hint": "This time will be deducted from paid hours.",
       "date_range_label": "Date Range",
-      "days_selected": "{{count}} day{{plural}} selected — click to remove",
+      "days_selected_one": "{{count}} day selected — click to remove",
+      "days_selected_other": "{{count}} days selected — click to remove",
       "cancel": "Cancel",
       "scheduling": "Scheduling...",
       "schedule_staff": "Schedule Staff"
@@ -1351,7 +1353,8 @@
       "unpaid_break_placeholder": "e.g. 30",
       "unpaid_break_hint": "This time will be deducted from paid hours.",
       "date_range_label": "Date Range",
-      "days_selected": "{{count}} day{{plural}} selected — click to remove",
+      "days_selected_one": "{{count}} day selected — click to remove",
+      "days_selected_other": "{{count}} days selected — click to remove",
       "cancel": "Cancel",
       "scheduling": "Scheduling...",
       "schedule_team": "Schedule Team"

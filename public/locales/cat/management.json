@@ -1062,7 +1062,8 @@
     "all_staff_placeholder": "Tot el personal",
     "staff_fallback_name": "Personal",
     "unvalidated_shifts_count": "{{count}} torns sense validar",
-    "no_show_count": "{{count}} absència{{plural}}",
+    "no_show_count_one": "{{count}} absència",
+    "no_show_count_other": "{{count}} absències",
     "col_staff_member": "Membre del personal",
     "days_short": {
       "mon": "Dl",
@@ -1246,7 +1247,8 @@
       "unpaid_break_placeholder": "p. ex. 30",
       "unpaid_break_hint": "Aquest temps es deduirà de les hores pagades.",
       "date_range_label": "Interval de dates",
-      "days_selected": "{{count}} dia{{plural}} seleccionat{{plural}} — fes clic per eliminar",
+      "days_selected_one": "{{count}} dia seleccionat — fes clic per eliminar",
+      "days_selected_other": "{{count}} dies seleccionats — fes clic per eliminar",
       "cancel": "Cancel·lar",
       "scheduling": "Programant...",
       "schedule_staff": "Programar personal"
@@ -1351,7 +1353,8 @@
       "unpaid_break_placeholder": "p. ex. 30",
       "unpaid_break_hint": "Aquest temps es deduirà de les hores pagades.",
       "date_range_label": "Interval de dates",
-      "days_selected": "{{count}} dia{{plural}} seleccionat{{plural}} — fes clic per eliminar",
+      "days_selected_one": "{{count}} dia seleccionat — fes clic per eliminar",
+      "days_selected_other": "{{count}} dies seleccionats — fes clic per eliminar",
       "cancel": "Cancel·lar",
       "scheduling": "Programant...",
       "schedule_team": "Programar equip"

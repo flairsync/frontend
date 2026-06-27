@@ -1062,7 +1062,8 @@
     "all_staff_placeholder": "Todo el personal",
     "staff_fallback_name": "Personal",
     "unvalidated_shifts_count": "{{count}} turnos sin validar",
-    "no_show_count": "{{count}} ausencia{{plural}}",
+    "no_show_count_one": "{{count}} ausencia",
+    "no_show_count_other": "{{count}} ausencias",
     "col_staff_member": "Miembro del personal",
     "days_short": {
       "mon": "Lun",
@@ -1246,7 +1247,8 @@
       "unpaid_break_placeholder": "ej. 30",
       "unpaid_break_hint": "Este tiempo se deducirá de las horas pagadas.",
       "date_range_label": "Rango de fechas",
-      "days_selected": "{{count}} día{{plural}} seleccionado{{plural}} — haz clic para quitar",
+      "days_selected_one": "{{count}} día seleccionado — haz clic para quitar",
+      "days_selected_other": "{{count}} días seleccionados — haz clic para quitar",
       "cancel": "Cancelar",
       "scheduling": "Programando...",
       "schedule_staff": "Programar personal"
@@ -1351,7 +1353,8 @@
       "unpaid_break_placeholder": "ej. 30",
       "unpaid_break_hint": "Este tiempo se deducirá de las horas pagadas.",
       "date_range_label": "Rango de fechas",
-      "days_selected": "{{count}} día{{plural}} seleccionado{{plural}} — haz clic para quitar",
+      "days_selected_one": "{{count}} día seleccionado — haz clic para quitar",
+      "days_selected_other": "{{count}} días seleccionados — haz clic para quitar",
       "cancel": "Cancelar",
       "scheduling": "Programando...",
       "schedule_team": "Programar equipo"

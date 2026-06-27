@@ -1062,7 +1062,8 @@
     "all_staff_placeholder": "Tout le personnel",
     "staff_fallback_name": "Personnel",
     "unvalidated_shifts_count": "{{count}} créneaux non validés",
-    "no_show_count": "{{count}} absence{{plural}}",
+    "no_show_count_one": "{{count}} absence",
+    "no_show_count_other": "{{count}} absences",
     "col_staff_member": "Membre du personnel",
     "days_short": {
       "mon": "Lun",
@@ -1246,7 +1247,8 @@
       "unpaid_break_placeholder": "ex. 30",
       "unpaid_break_hint": "Ce temps sera déduit des heures rémunérées.",
       "date_range_label": "Plage de dates",
-      "days_selected": "{{count}} jour{{plural}} sélectionné{{plural}} — cliquez pour retirer",
+      "days_selected_one": "{{count}} jour sélectionné — cliquez pour retirer",
+      "days_selected_other": "{{count}} jours sélectionnés — cliquez pour retirer",
       "cancel": "Annuler",
       "scheduling": "Planification...",
       "schedule_staff": "Planifier le personnel"
@@ -1351,7 +1353,8 @@
       "unpaid_break_placeholder": "ex. 30",
       "unpaid_break_hint": "Ce temps sera déduit des heures rémunérées.",
       "date_range_label": "Plage de dates",
-      "days_selected": "{{count}} jour{{plural}} sélectionné{{plural}} — cliquez pour retirer",
+      "days_selected_one": "{{count}} jour sélectionné — cliquez pour retirer",
+      "days_selected_other": "{{count}} jours sélectionnés — cliquez pour retirer",
       "cancel": "Annuler",
       "scheduling": "Planification...",
       "schedule_team": "Planifier l'équipe"
