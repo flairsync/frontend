@@ -28,6 +28,11 @@ function getOrCreateDeviceId(): string {
 // Module-level singletons — one channel per browser session
 let channelMode: 'fcm' | 'sse' | null = null;
 let sseSource: EventSource | null = null;
+// Claimed synchronously before init() starts. channelMode itself is only set after several
+// awaits, so without this, two hook instances mounted in the same tick (e.g. the desktop and
+// mobile header both render a NotificationBubble) can both pass the channelMode check and each
+// register their own FCM listener — doubling every push notification.
+let bootstrapStarted = false;
 
 async function trySetupFcm(onNotification: (n: NotificationPayload) => void): Promise<boolean> {
     try {
@@ -158,7 +163,8 @@ export const useNotificationSocket = () => {
             };
         }
 
-        if (channelMode !== null) return; // channel already bootstrapped
+        if (bootstrapStarted) return; // channel already bootstrapped or bootstrapping
+        bootstrapStarted = true;
 
         async function init() {
             const permission = Notification.permission;
