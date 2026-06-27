@@ -9,7 +9,9 @@
     },
     "searchHero": {
       "title": "Deixa de buscar un restaurant - troba'l.",
-      "searchPlaceholder": "Cerca restaurants, cuines o ubicacions..."
+      "subtitle": "Descobreix els millors negocis locals, seleccionats per a tu.",
+      "searchPlaceholder": "Cerca restaurants, cuines o ubicacions...",
+      "searchButton": "Cercar"
     },
     "sidebar": {
       "filterTitle": "Filtra",
@@ -21,7 +23,8 @@
       "typeTitle": "Tipus",
       "anyType": "Qualsevol tipus",
       "anyTag": "Qualsevol etiqueta",
-      "tagsTitle": "Etiquetes"
+      "tagsTitle": "Etiquetes",
+      "filterButton": "Filtres"
     }
   },
   "business_page": {
@@ -39,11 +42,26 @@
     },
     "menu": {
       "section_title": "Menú",
+      "subtitle": "Seleccions artesanals per a tots els gustos.",
+      "items_count": "Articles disponibles",
+      "allergy_badge": "Info al·lèrgens",
       "categories": { "coffee_drinks": "Cafè i Begudes", "food": "Menjar" }
     },
-    "timing": { "section_title": "Horari d'obertura" },
+    "timing": {
+      "section_title": "Horari d'obertura",
+      "subtitle": "Planifica la teva visita segons el nostre horari. Obrim tota la setmana per servir-te millor.",
+      "closed": "Tancat",
+      "no_hours": "Encara no s'han configurat els horaris d'obertura d'aquest negoci."
+    },
     "contact": {
       "section_title": "Contacte i Xarxes socials",
+      "subtitle": "Tens preguntes o vols fer una sol·licitud especial? Som aquí per fer la teva visita perfecta.",
+      "phone_label": "Telèfon",
+      "email_label": "Email",
+      "send_message_button": "Envia'ns un missatge",
+      "social_title": "Troba'ns a les xarxes socials",
+      "social_subtitle": "Mantén-te al dia amb les nostres últimes notícies, esdeveniments i ofertes diàries.",
+      "visit_website": "Visita el nostre lloc web",
       "buttons": { "instagram": "Instagram", "facebook": "Facebook", "website": "Web" }
     }
   }

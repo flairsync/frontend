@@ -3,7 +3,18 @@
     "title": "Marketplace"
   },
   "footer": {
-    "follow_us": "Segueix-nos"
+    "follow_us": "Segueix-nos",
+    "quick_links": { "title": "Enllaços ràpids" },
+    "support": { "title": "Suport" },
+    "contact": { "title": "Contacte" },
+    "newsletter": {
+      "title": "Subscriu-te al nostre butlletí",
+      "placeholder": "Introdueix el teu correu"
+    },
+    "rights": "Tots els drets reservats."
+  },
+  "public_feed": {
+    "title": "Explorar feed"
   },
   "landing_page": {
     "header": {

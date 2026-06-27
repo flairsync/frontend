@@ -24,7 +24,11 @@
       "all": "Tot",
       "previous": "Anterior",
       "next": "Següent",
-      "retry": "Reintentar connexió"
+      "retry": "Reintentar connexió",
+      "search_placeholder": "Cercar..."
+    },
+    "messages": {
+      "no_results_found": "No s'han trobat resultats."
     },
     "tags": {
       "halal": "Halal",

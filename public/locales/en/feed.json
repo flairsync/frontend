@@ -9,7 +9,9 @@
     },
     "searchHero": {
       "title": "Stop looking for a restaurant - find it.",
-      "searchPlaceholder": "Search for restaurants, cuisines, or locations..."
+      "subtitle": "Discover the best local businesses, curated just for you.",
+      "searchPlaceholder": "Search for restaurants, cuisines, or locations...",
+      "searchButton": "Search"
     },
     "sidebar": {
       "filterTitle": "Filter",
@@ -21,7 +23,8 @@
       "typeTitle": "Type",
       "anyType": "Any type",
       "anyTag": "Any tag",
-      "tagsTitle": "Tags"
+      "tagsTitle": "Tags",
+      "filterButton": "Filters"
     }
   },
   "business_page": {
@@ -39,11 +42,26 @@
     },
     "menu": {
       "section_title": "Menu",
+      "subtitle": "Handcrafted selections for every taste.",
+      "items_count": "Items Available",
+      "allergy_badge": "Allergy Info",
       "categories": { "coffee_drinks": "Coffee & Drinks", "food": "Food" }
     },
-    "timing": { "section_title": "Opening Hours" },
+    "timing": {
+      "section_title": "Opening Hours",
+      "subtitle": "Plan your visit around our schedule. We're open weekly to serve you best.",
+      "closed": "Closed",
+      "no_hours": "No opening hours have been configured for this business yet."
+    },
     "contact": {
       "section_title": "Contact & Socials",
+      "subtitle": "Have questions or want to make a special request? We're here to help you make your visit perfect.",
+      "phone_label": "Phone",
+      "email_label": "Email",
+      "send_message_button": "Send us a Message",
+      "social_title": "Find us on Social Media",
+      "social_subtitle": "Stay updated with our latest news, events and daily specials.",
+      "visit_website": "Visit our Website",
       "buttons": { "instagram": "Instagram", "facebook": "Facebook", "website": "Website" }
     }
   }

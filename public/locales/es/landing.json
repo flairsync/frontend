@@ -3,7 +3,18 @@
     "title": "Marketplace"
   },
   "footer": {
-    "follow_us": "Síguenos"
+    "follow_us": "Síguenos",
+    "quick_links": { "title": "Enlaces rápidos" },
+    "support": { "title": "Soporte" },
+    "contact": { "title": "Contacto" },
+    "newsletter": {
+      "title": "Suscríbete a nuestro boletín",
+      "placeholder": "Introduce tu email"
+    },
+    "rights": "Todos los derechos reservados."
+  },
+  "public_feed": {
+    "title": "Explorar feed"
   },
   "landing_page": {
     "header": {

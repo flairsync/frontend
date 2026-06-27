@@ -24,7 +24,11 @@
       "all": "All",
       "previous": "Previous",
       "next": "Next",
-      "retry": "Retry Connection"
+      "retry": "Retry Connection",
+      "search_placeholder": "Search..."
+    },
+    "messages": {
+      "no_results_found": "No results found."
     },
     "tags": {
       "halal": "Halal",

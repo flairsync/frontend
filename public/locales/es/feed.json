@@ -9,7 +9,9 @@
     },
     "searchHero": {
       "title": "Deja de buscar un restaurante - encuéntralo.",
-      "searchPlaceholder": "Buscar restaurantes, cocinas o ubicaciones..."
+      "subtitle": "Descubre los mejores negocios locales, seleccionados para ti.",
+      "searchPlaceholder": "Buscar restaurantes, cocinas o ubicaciones...",
+      "searchButton": "Buscar"
     },
     "sidebar": {
       "filterTitle": "Filtrar",
@@ -21,7 +23,8 @@
       "typeTitle": "Tipo",
       "anyType": "Cualquier tipo",
       "anyTag": "Cualquier etiqueta",
-      "tagsTitle": "Etiquetas"
+      "tagsTitle": "Etiquetas",
+      "filterButton": "Filtros"
     }
   },
   "business_page": {
@@ -39,11 +42,26 @@
     },
     "menu": {
       "section_title": "Menú",
+      "subtitle": "Selecciones artesanales para todos los gustos.",
+      "items_count": "Artículos disponibles",
+      "allergy_badge": "Info. alérgenos",
       "categories": { "coffee_drinks": "Café & Bebidas", "food": "Comida" }
     },
-    "timing": { "section_title": "Horario de apertura" },
+    "timing": {
+      "section_title": "Horario de apertura",
+      "subtitle": "Planifica tu visita según nuestro horario. Abrimos toda la semana para atenderte mejor.",
+      "closed": "Cerrado",
+      "no_hours": "Aún no se han configurado los horarios de apertura de este negocio."
+    },
     "contact": {
       "section_title": "Contacto y redes sociales",
+      "subtitle": "¿Tienes preguntas o quieres hacer una solicitud especial? Estamos aquí para que tu visita sea perfecta.",
+      "phone_label": "Teléfono",
+      "email_label": "Email",
+      "send_message_button": "Envíanos un mensaje",
+      "social_title": "Encuéntranos en redes sociales",
+      "social_subtitle": "Mantente al día con nuestras últimas noticias, eventos y ofertas diarias.",
+      "visit_website": "Visitar nuestro sitio web",
       "buttons": { "instagram": "Instagram", "facebook": "Facebook", "website": "Sitio web" }
     }
   }
