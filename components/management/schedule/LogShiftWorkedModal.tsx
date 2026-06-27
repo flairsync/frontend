@@ -13,6 +13,7 @@ import { extractErrorMessage } from '@/utils/error-utils';
 import { Shift } from '@/models/business/shift/Shift';
 import { AttendanceLog } from '@/models/business/shift/Attendance';
 import dayjs from '@/utils/date-utils';
+import { useTranslation } from 'react-i18next';
 
 function minutesToLabel(minutes: number | null | undefined): string {
   if (minutes === null || minutes === undefined) return "—";
@@ -36,6 +37,7 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
   businessId,
   onAlreadyHasAttendance,
 }) => {
+  const { t } = useTranslation('management');
   const { logShiftWorked, isLoggingShiftWorked } = useAttendance(businessId);
   const { businessBasicDetails } = useBusinessBasicDetails(businessId);
   const businessTz = businessBasicDetails?.timezone || 'UTC';
@@ -90,7 +92,7 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
       });
       setResult(attendance);
     } catch (error: any) {
-      const msg = extractErrorMessage(error, "Failed to log shift as worked");
+      const msg = extractErrorMessage(error, t('schedule_modals.log_shift_worked.fallback_error'));
       if (msg.toLowerCase().includes('already has an attendance record')) {
         onOpenChange(false);
         onAlreadyHasAttendance?.(shift.id);
@@ -106,10 +108,10 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ClipboardCheck className="h-5 w-5 text-indigo-600" />
-            Log Shift as Worked
+            {t('schedule_modals.log_shift_worked.title')}
           </DialogTitle>
           <DialogDescription>
-            Resolve this no-show by entering the employee's real check-in and check-out times.
+            {t('schedule_modals.log_shift_worked.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -118,33 +120,33 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
             <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-100 rounded-lg p-4">
               <CheckCircle2 className="h-6 w-6 text-emerald-600 shrink-0" />
               <div>
-                <p className="font-bold text-emerald-800 text-sm">Shift marked as worked</p>
-                <p className="text-xs text-emerald-600">The attendance record has been created and validated.</p>
+                <p className="font-bold text-emerald-800 text-sm">{t('schedule_modals.log_shift_worked.success_title')}</p>
+                <p className="text-xs text-emerald-600">{t('schedule_modals.log_shift_worked.success_description')}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="p-3 rounded-lg border bg-muted/30">
-                <p className="text-[10px] text-muted-foreground uppercase font-semibold">Worked</p>
+                <p className="text-[10px] text-muted-foreground uppercase font-semibold">{t('schedule_modals.log_shift_worked.worked_label')}</p>
                 <p className="font-semibold text-foreground">{minutesToLabel(result.workedMinutes)}</p>
               </div>
               <div className="p-3 rounded-lg border bg-muted/30">
-                <p className="text-[10px] text-muted-foreground uppercase font-semibold">Overtime</p>
+                <p className="text-[10px] text-muted-foreground uppercase font-semibold">{t('schedule_modals.log_shift_worked.overtime_label')}</p>
                 <p className="font-semibold text-foreground">{minutesToLabel(result.overtimeMinutes)}</p>
               </div>
               <div className="p-3 rounded-lg border bg-muted/30 col-span-2">
-                <p className="text-[10px] text-muted-foreground uppercase font-semibold">Estimated Pay</p>
+                <p className="text-[10px] text-muted-foreground uppercase font-semibold">{t('schedule_modals.log_shift_worked.estimated_pay_label')}</p>
                 <p className="font-semibold text-foreground">{currencySymbol}{Number(result.totalPay ?? 0).toFixed(2)}</p>
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={() => onOpenChange(false)}>Done</Button>
+              <Button onClick={() => onOpenChange(false)}>{t('schedule_modals.log_shift_worked.done')}</Button>
             </DialogFooter>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 py-2">
             <div className="flex items-center gap-2 bg-red-50 text-red-700 rounded-lg px-4 py-3 text-sm">
               <UserX className="h-4 w-4 shrink-0" />
-              This shift was flagged as a no-show. Logging it as worked clears the unauthorized absence.
+              {t('schedule_modals.log_shift_worked.no_show_notice')}
             </div>
 
             {errorMessage && (
@@ -155,7 +157,7 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="low-checkIn">Check-In Time</Label>
+              <Label htmlFor="low-checkIn">{t('schedule_modals.log_shift_worked.check_in_label')}</Label>
               <Input
                 id="low-checkIn"
                 type="datetime-local"
@@ -165,7 +167,7 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="low-checkOut">Check-Out Time</Label>
+              <Label htmlFor="low-checkOut">{t('schedule_modals.log_shift_worked.check_out_label')}</Label>
               <Input
                 id="low-checkOut"
                 type="datetime-local"
@@ -174,24 +176,24 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
                 required
               />
               {checkOut && checkIn && !checkoutAfterCheckin() && (
-                <p className="text-xs text-red-500">Check-out must be after check-in.</p>
+                <p className="text-xs text-red-500">{t('schedule_modals.log_shift_worked.checkout_after_checkin_error')}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="low-notes">Notes</Label>
+              <Label htmlFor="low-notes">{t('schedule_modals.log_shift_worked.notes_label')}</Label>
               <Textarea
                 id="low-notes"
-                placeholder="e.g. confirmed by phone call, forgot to clock in"
+                placeholder={t('schedule_modals.log_shift_worked.notes_placeholder')}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
               />
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('schedule_modals.log_shift_worked.cancel')}
               </Button>
               <Button type="submit" disabled={isLoggingShiftWorked || !checkIn || !checkOut || !checkoutAfterCheckin()}>
-                {isLoggingShiftWorked ? "Saving..." : "Log as Worked"}
+                {isLoggingShiftWorked ? t('schedule_modals.log_shift_worked.saving') : t('schedule_modals.log_shift_worked.log_as_worked')}
               </Button>
             </DialogFooter>
           </form>

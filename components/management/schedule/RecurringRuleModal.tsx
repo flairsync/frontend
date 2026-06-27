@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,23 +21,24 @@ interface RecurringRuleModalProps {
     rule?: RecurringShiftRule | null;
 }
 
-const DAYS = [
-    { value: 0, label: 'Sunday' },
-    { value: 1, label: 'Monday' },
-    { value: 2, label: 'Tuesday' },
-    { value: 3, label: 'Wednesday' },
-    { value: 4, label: 'Thursday' },
-    { value: 5, label: 'Friday' },
-    { value: 6, label: 'Saturday' },
-];
-
-export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({ 
-    open, 
-    onOpenChange, 
-    rule 
+export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
+    open,
+    onOpenChange,
+    rule
 }) => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
+
+    const DAYS = [
+        { value: 0, label: t("schedule_modals.recurring_rule.days.sunday") },
+        { value: 1, label: t("schedule_modals.recurring_rule.days.monday") },
+        { value: 2, label: t("schedule_modals.recurring_rule.days.tuesday") },
+        { value: 3, label: t("schedule_modals.recurring_rule.days.wednesday") },
+        { value: 4, label: t("schedule_modals.recurring_rule.days.thursday") },
+        { value: 5, label: t("schedule_modals.recurring_rule.days.friday") },
+        { value: 6, label: t("schedule_modals.recurring_rule.days.saturday") },
+    ];
 
     const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId, { limit: 100 });
     const { createRule, updateRule, isCreatingRule, isUpdatingRule } = useRecurringRules(businessId);
@@ -141,22 +143,22 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>{rule ? "Edit Recurring Rule" : "Create Recurring Rule"}</DialogTitle>
+                    <DialogTitle>{rule ? t("schedule_modals.recurring_rule.edit_title") : t("schedule_modals.recurring_rule.create_title")}</DialogTitle>
                     <DialogDescription>
-                        Define a shift pattern that repeats every week.
+                        {t("schedule_modals.recurring_rule.description")}
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                        <Label>Employee</Label>
+                        <Label>{t("schedule_modals.recurring_rule.employee_label")}</Label>
                         <Select value={employmentId} onValueChange={setEmploymentId} disabled={!!rule}>
                             <SelectTrigger>
-                                <SelectValue placeholder={fetchingEmployees ? "Loading employees..." : "Choose an employee"} />
+                                <SelectValue placeholder={fetchingEmployees ? t("schedule_modals.recurring_rule.loading_employees") : t("schedule_modals.recurring_rule.choose_employee")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {employees?.map(emp => (
                                     <SelectItem key={emp.id} value={emp.id}>
-                                        {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Unnamed Staff'}
+                                        {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || t("schedule_modals.recurring_rule.unnamed_staff")}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -164,7 +166,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Day of Week</Label>
+                        <Label>{t("schedule_modals.recurring_rule.day_of_week_label")}</Label>
                         <Select value={dayOfWeek.toString()} onValueChange={(val) => setDayOfWeek(parseInt(val))}>
                             <SelectTrigger>
                                 <SelectValue />
@@ -179,55 +181,55 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">Start Time</Label>
+                            <Label className="text-xs text-muted-foreground">{t("schedule_modals.recurring_rule.start_time_label")}</Label>
                             <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">End Time</Label>
+                            <Label className="text-xs text-muted-foreground">{t("schedule_modals.recurring_rule.end_time_label")}</Label>
                             <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">Effective Start Date</Label>
+                            <Label className="text-xs text-muted-foreground">{t("schedule_modals.recurring_rule.effective_start_date_label")}</Label>
                             <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required />
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">End Date (Optional)</Label>
+                            <Label className="text-xs text-muted-foreground">{t("schedule_modals.recurring_rule.end_date_label")}</Label>
                             <Input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
                         </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-2">
                         <div className="space-y-0.5">
-                            <Label>Active</Label>
-                            <p className="text-[12px] text-muted-foreground">Determines if this rule is used during draft generation.</p>
+                            <Label>{t("schedule_modals.recurring_rule.active_label")}</Label>
+                            <p className="text-[12px] text-muted-foreground">{t("schedule_modals.recurring_rule.active_hint")}</p>
                         </div>
                         <Switch checked={isActive} onCheckedChange={setIsActive} />
                     </div>
 
                     <div className="space-y-2 border-t pt-2">
-                        <Label>Repetition Interval</Label>
+                        <Label>{t("schedule_modals.recurring_rule.repetition_interval_label")}</Label>
                         <Select value={interval.toString()} onValueChange={(val) => setIntervalValue(parseInt(val))}>
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="1">Every week</SelectItem>
-                                <SelectItem value="2">Every 2 weeks (Bi-weekly)</SelectItem>
-                                <SelectItem value="4">Every 4 weeks (Monthly)</SelectItem>
+                                <SelectItem value="1">{t("schedule_modals.recurring_rule.interval_weekly")}</SelectItem>
+                                <SelectItem value="2">{t("schedule_modals.recurring_rule.interval_biweekly")}</SelectItem>
+                                <SelectItem value="4">{t("schedule_modals.recurring_rule.interval_monthly")}</SelectItem>
                             </SelectContent>
                         </Select>
-                        <p className="text-[11px] text-muted-foreground">Bi-weekly and Monthly intervals only generate shifts on weeks that match the start date's modulo.</p>
+                        <p className="text-[11px] text-muted-foreground">{t("schedule_modals.recurring_rule.interval_hint")}</p>
                     </div>
 
                     <div className="space-y-2 border-t pt-2">
-                        <Label>Exception Dates (Optional)</Label>
-                        <p className="text-[11px] text-muted-foreground">Skip this recurrence on specific dates (e.g. a one-off holiday) without changing the rule's start/end date.</p>
+                        <Label>{t("schedule_modals.recurring_rule.exception_dates_label")}</Label>
+                        <p className="text-[11px] text-muted-foreground">{t("schedule_modals.recurring_rule.exception_dates_hint")}</p>
                         <div className="flex gap-2">
                             <Input type="date" value={newExceptionDate} onChange={e => setNewExceptionDate(e.target.value)} />
-                            <Button type="button" variant="outline" onClick={handleAddExceptionDate} disabled={!newExceptionDate}>Add</Button>
+                            <Button type="button" variant="outline" onClick={handleAddExceptionDate} disabled={!newExceptionDate}>{t("schedule_modals.recurring_rule.add")}</Button>
                         </div>
                         {exceptionDates.length > 0 && (
                             <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
@@ -247,9 +249,9 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
-                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>{t("schedule_modals.recurring_rule.cancel")}</Button>
                         <Button type="submit" disabled={isCreatingRule || isUpdatingRule || !employmentId}>
-                            {isCreatingRule || isUpdatingRule ? "Saving..." : rule ? "Update Rule" : "Create Rule"}
+                            {isCreatingRule || isUpdatingRule ? t("schedule_modals.recurring_rule.saving") : rule ? t("schedule_modals.recurring_rule.update_rule") : t("schedule_modals.recurring_rule.create_rule")}
                         </Button>
                     </div>
                 </form>

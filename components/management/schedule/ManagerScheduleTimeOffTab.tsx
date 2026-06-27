@@ -11,8 +11,10 @@ import { format, parseISO } from 'date-fns'
 import { useProfile } from '@/features/profile/useProfile'
 import { formatInBusinessTimezone } from '@/utils/date-utils'
 import { useMyBusiness } from '@/features/business/useMyBusiness'
+import { useTranslation } from 'react-i18next'
 
 const ManagerScheduleTimeOffTab = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { requests, fetchingRequests, updateStatus } = useTimeOff(businessId as string);
@@ -22,7 +24,7 @@ const ManagerScheduleTimeOffTab = () => {
 
     const getEmployeeName = (id: string) => {
         const emp = employees?.find(e => e.id === id);
-        return emp?.professionalProfile?.displayName || emp?.professionalProfile?.firstName || 'Unknown Staff';
+        return emp?.professionalProfile?.displayName || emp?.professionalProfile?.firstName || t("schedule_time_off_tab.unknown_staff");
     };
 
     const { userProfile } = useProfile();
@@ -34,28 +36,28 @@ const ManagerScheduleTimeOffTab = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Time Off Requests</CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">Review and manage staff time off requests.</p>
+                <CardTitle>{t("schedule_time_off_tab.heading")}</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">{t("schedule_time_off_tab.subheading")}</p>
             </CardHeader>
             <CardContent>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Staff Member</TableHead>
-                            <TableHead>Dates</TableHead>
-                            <TableHead>Reason</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
+                            <TableHead>{t("schedule_time_off_tab.col_staff_member")}</TableHead>
+                            <TableHead>{t("schedule_time_off_tab.col_dates")}</TableHead>
+                            <TableHead>{t("schedule_time_off_tab.col_reason")}</TableHead>
+                            <TableHead>{t("schedule_time_off_tab.col_status")}</TableHead>
+                            <TableHead className="text-right">{t("schedule_time_off_tab.col_actions")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {fetchingRequests && (!requests || requests.length === 0) ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center py-4">Loading...</TableCell>
+                                <TableCell colSpan={5} className="text-center py-4">{t("schedule_time_off_tab.loading")}</TableCell>
                             </TableRow>
                         ) : !requests || requests.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">No time off requests found.</TableCell>
+                                <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">{t("schedule_time_off_tab.no_requests")}</TableCell>
                             </TableRow>
                         ) : (
                             requests.map((request) => (
@@ -70,7 +72,7 @@ const ManagerScheduleTimeOffTab = () => {
                                             request.status === 'APPROVED' ? 'default' :
                                                 request.status === 'REJECTED' ? 'destructive' : 'secondary'
                                         }>
-                                            {request.status}
+                                            {t(`schedule_time_off_tab.status_options.${request.status}`)}
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-right">

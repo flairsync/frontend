@@ -7,8 +7,10 @@ import { usePageContext } from 'vike-react/usePageContext'
 import { useShiftTemplates } from '@/features/shifts/useShiftTemplates'
 import { ShiftTemplateModal } from './ShiftTemplateModal'
 import { ShiftTemplate } from '@/models/business/shift/ShiftTemplate'
+import { useTranslation } from 'react-i18next'
 
 const ManagerScheduleShiftsTab = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { 
@@ -55,31 +57,31 @@ const ManagerScheduleShiftsTab = () => {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Shift Templates</CardTitle>
+                <CardTitle>{t("schedule_shifts_tab.heading")}</CardTitle>
                 <Button onClick={handleCreate} size="sm">
                     <Plus className="w-4 h-4 mr-2" />
-                    New Template
+                    {t("schedule_shifts_tab.new_template")}
                 </Button>
             </CardHeader>
             <CardContent>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[50px]">Color</TableHead>
-                            <TableHead>Shift Name</TableHead>
-                            <TableHead>Start Time</TableHead>
-                            <TableHead>End Time</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
+                            <TableHead className="w-[50px]">{t("schedule_shifts_tab.col_color")}</TableHead>
+                            <TableHead>{t("schedule_shifts_tab.col_shift_name")}</TableHead>
+                            <TableHead>{t("schedule_shifts_tab.col_start_time")}</TableHead>
+                            <TableHead>{t("schedule_shifts_tab.col_end_time")}</TableHead>
+                            <TableHead className="text-right">{t("schedule_shifts_tab.col_actions")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {fetchingTemplates && (!templates || templates.length === 0) ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center py-4">Loading...</TableCell>
+                                <TableCell colSpan={5} className="text-center py-4">{t("schedule_shifts_tab.loading")}</TableCell>
                             </TableRow>
                         ) : !templates || templates.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">No templates found. Create one to get started.</TableCell>
+                                <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">{t("schedule_shifts_tab.no_templates")}</TableCell>
                             </TableRow>
                         ) : (
                             templates.map((template) => (
@@ -96,7 +98,7 @@ const ManagerScheduleShiftsTab = () => {
                                     <TableCell className="text-right">
                                         <Button variant="outline" size="sm" onClick={() => handleEdit(template)}>
                                             <Edit className="w-4 h-4 mr-2" />
-                                            Edit
+                                            {t("schedule_shifts_tab.edit")}
                                         </Button>
                                     </TableCell>
                                 </TableRow>

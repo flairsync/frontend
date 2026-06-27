@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ interface BulkScheduleModalProps {
 }
 
 export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOpenChange }) => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -87,7 +89,7 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                 }
             },
             onError: (error: any) => {
-                const msg = error.response?.data?.message || "Failed to schedule team shifts";
+                const msg = error.response?.data?.message || t("schedule_modals.bulk_schedule.error_default");
                 setErrorMessage(formatShiftErrorMessage(msg, businessTz));
             }
         });
@@ -97,8 +99,8 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Bulk Schedule Team</DialogTitle>
-                    <DialogDescription>Assign shifts to all active employees in a team across multiple dates.</DialogDescription>
+                    <DialogTitle>{t("schedule_modals.bulk_schedule.title")}</DialogTitle>
+                    <DialogDescription>{t("schedule_modals.bulk_schedule.description")}</DialogDescription>
                 </DialogHeader>
 
                 {errorMessage && (
@@ -110,11 +112,11 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
 
                 {conflicts.length > 0 && (
                     <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md text-sm text-amber-900 space-y-1.5">
-                        <p className="font-medium">{conflicts.length} shift(s) could not be scheduled:</p>
+                        <p className="font-medium">{t("schedule_modals.bulk_schedule.conflicts_count", { count: conflicts.length })}</p>
                         <ul className="space-y-1 pl-4 list-disc">
                             {conflicts.map((c, i) => (
                                 <li key={i}>
-                                    {c.date} — Employee {c.employmentId.slice(0, 8)}: {formatShiftErrorMessage(c.reason, businessTz)}
+                                    {t("schedule_modals.bulk_schedule.conflict_employee_line", { date: c.date, employmentId: c.employmentId.slice(0, 8) })}: {formatShiftErrorMessage(c.reason, businessTz)}
                                 </li>
                             ))}
                         </ul>
@@ -123,48 +125,48 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
 
                 <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                        <Label>Select Team</Label>
+                        <Label>{t("schedule_modals.bulk_schedule.select_team_label")}</Label>
                         <Select value={teamId} onValueChange={setTeamId}>
                             <SelectTrigger>
-                                <SelectValue placeholder={loadingTeams ? "Loading teams..." : "Choose a team"} />
+                                <SelectValue placeholder={loadingTeams ? t("schedule_modals.bulk_schedule.loading_teams") : t("schedule_modals.bulk_schedule.choose_team")} />
                             </SelectTrigger>
                             <SelectContent>
-                                {teams?.map(t => (
-                                    <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
+                                {teams?.map(team => (
+                                    <SelectItem key={team.id} value={team.id}>{team.name}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="space-y-2 border-t pt-2">
-                        <Label>Shift Time</Label>
+                        <Label>{t("schedule_modals.bulk_schedule.shift_time_label")}</Label>
                         <div className="flex gap-4 mb-2">
                             <label className="flex items-center gap-2 text-sm">
-                                <input 
-                                    type="radio" 
-                                    checked={useTemplate} 
-                                    onChange={() => setUseTemplate(true)} 
+                                <input
+                                    type="radio"
+                                    checked={useTemplate}
+                                    onChange={() => setUseTemplate(true)}
                                 />
-                                Use Template
+                                {t("schedule_modals.bulk_schedule.use_template")}
                             </label>
                             <label className="flex items-center gap-2 text-sm">
-                                <input 
-                                    type="radio" 
-                                    checked={!useTemplate} 
-                                    onChange={() => setUseTemplate(false)} 
+                                <input
+                                    type="radio"
+                                    checked={!useTemplate}
+                                    onChange={() => setUseTemplate(false)}
                                 />
-                                Custom Time
+                                {t("schedule_modals.bulk_schedule.custom_time")}
                             </label>
                         </div>
-                        
+
                         {useTemplate ? (
                             <Select value={templateId} onValueChange={setTemplateId}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={fetchingTemplates ? "Loading templates..." : "Choose a template"} />
+                                    <SelectValue placeholder={fetchingTemplates ? t("schedule_modals.bulk_schedule.loading_templates") : t("schedule_modals.bulk_schedule.choose_template")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {templates?.map(t => (
-                                        <SelectItem key={t.id} value={t.id}>{t.name} ({t.startTime} - {t.endTime})</SelectItem>
+                                    {templates?.map(tpl => (
+                                        <SelectItem key={tpl.id} value={tpl.id}>{tpl.name} ({tpl.startTime} - {tpl.endTime})</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -172,36 +174,36 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                             <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label className="text-xs text-muted-foreground">Start</Label>
+                                        <Label className="text-xs text-muted-foreground">{t("schedule_modals.bulk_schedule.start_label")}</Label>
                                         <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-xs text-muted-foreground">End</Label>
+                                        <Label className="text-xs text-muted-foreground">{t("schedule_modals.bulk_schedule.end_label")}</Label>
                                         <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-xs text-muted-foreground">Unpaid Break (Minutes)</Label>
-                                    <Input 
+                                    <Label className="text-xs text-muted-foreground">{t("schedule_modals.bulk_schedule.unpaid_break_label")}</Label>
+                                    <Input
                                         type="number"
                                         min="0"
                                         step="5"
-                                        value={unpaidBreakMinutes} 
-                                        onChange={e => setUnpaidBreakMinutes(Number(e.target.value))} 
-                                        placeholder="e.g. 30"
+                                        value={unpaidBreakMinutes}
+                                        onChange={e => setUnpaidBreakMinutes(Number(e.target.value))}
+                                        placeholder={t("schedule_modals.bulk_schedule.unpaid_break_placeholder")}
                                     />
-                                    <p className="text-[10px] text-muted-foreground">This time will be deducted from paid hours.</p>
+                                    <p className="text-[10px] text-muted-foreground">{t("schedule_modals.bulk_schedule.unpaid_break_hint")}</p>
                                 </div>
                             </div>
                         )}
                     </div>
 
                     <div className="space-y-2 border-t pt-2">
-                        <Label>Date Range</Label>
+                        <Label>{t("schedule_modals.bulk_schedule.date_range_label")}</Label>
                         <DatePickerWithRange date={dateRange} setDate={handleDateRangeChange} />
                         {dates.length > 0 && (
                             <div className="space-y-1">
-                                <p className="text-xs text-muted-foreground">{dates.length} day{dates.length !== 1 ? 's' : ''} selected — click to remove</p>
+                                <p className="text-xs text-muted-foreground">{t("schedule_modals.bulk_schedule.days_selected", { count: dates.length })}</p>
                                 <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
                                     {dates.map(d => (
                                         <button
@@ -220,9 +222,9 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
-                        <Button variant="outline" type="button" onClick={() => { onOpenChange(false); setConflicts([]); }}>Cancel</Button>
+                        <Button variant="outline" type="button" onClick={() => { onOpenChange(false); setConflicts([]); }}>{t("schedule_modals.bulk_schedule.cancel")}</Button>
                         <Button type="submit" disabled={isBulkScheduling || !teamId || dates.length === 0 || (useTemplate && !templateId)}>
-                            {isBulkScheduling ? "Scheduling..." : "Schedule Team"}
+                            {isBulkScheduling ? t("schedule_modals.bulk_schedule.scheduling") : t("schedule_modals.bulk_schedule.schedule_team")}
                         </Button>
                     </div>
                 </form>

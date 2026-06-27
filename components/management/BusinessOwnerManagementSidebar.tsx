@@ -73,7 +73,7 @@ const STATION_OPTIONS = [
     },
 ] as const
 
-interface NavItem {
+export interface NavItem {
     key: string
     titleKey: string
     url: string
@@ -86,14 +86,14 @@ interface NavGroup {
     items: NavItem[]
 }
 
-const OVERVIEW_ITEM: NavItem = {
+export const OVERVIEW_ITEM: NavItem = {
     key: "dashboard",
     titleKey: "sidebar.items.dashboard",
     url: "/manage/:id/owner/dashboard",
     icon: LayoutDashboard,
 }
 
-const NAV_GROUPS: NavGroup[] = [
+export const NAV_GROUPS: NavGroup[] = [
     {
         titleKey: "sidebar.groups.business",
         icon: Settings,

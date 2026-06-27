@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,6 +50,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
     canLogNoShow,
     onLogAsWorked
 }) => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id as string;
 
@@ -142,7 +144,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
             }, {
                 onSuccess: () => onOpenChange(false),
                 onError: (error: any) => {
-                    const msg = error.response?.data?.message || "Failed to update shift";
+                    const msg = error.response?.data?.message || t("schedule_modals.individual_schedule.error_update");
                     setErrorMessage(formatShiftErrorMessage(msg, businessTz));
                 }
             });
@@ -153,7 +155,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
             }, {
                 onSuccess: () => onOpenChange(false),
                 onError: (error: any) => {
-                    const msg = error.response?.data?.message || "Failed to create shift";
+                    const msg = error.response?.data?.message || t("schedule_modals.individual_schedule.error_create");
                     setErrorMessage(formatShiftErrorMessage(msg, businessTz));
                 }
             });
@@ -163,7 +165,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
     const handleApproveBid = (bidId: string) => {
         approveShiftBid(bidId, {
             onSuccess: () => {
-                toast.success("Bid approved and shift assigned!");
+                toast.success(t("schedule_modals.individual_schedule.bid_approved_toast"));
                 onOpenChange(false);
             }
         });
@@ -174,12 +176,12 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
             <DialogContent className="max-w-md">
                 <DialogHeader>
                     <div className="flex items-center justify-between">
-                        <DialogTitle>{shift ? "Edit Employee Shift" : "Schedule Employee Shift"}</DialogTitle>
+                        <DialogTitle>{shift ? t("schedule_modals.individual_schedule.edit_title") : t("schedule_modals.individual_schedule.create_title")}</DialogTitle>
                         {shift && shift.isPublished && (
-                            <Badge 
+                            <Badge
                                 variant={
-                                    shift.staffResponse === 'ACCEPTED' ? 'outline' : 
-                                    shift.staffResponse === 'REJECTED' ? 'destructive' : 
+                                    shift.staffResponse === 'ACCEPTED' ? 'outline' :
+                                    shift.staffResponse === 'REJECTED' ? 'destructive' :
                                     'secondary'
                                 }
                                 className={shift.staffResponse === 'ACCEPTED' ? 'border-emerald-500 text-emerald-700 bg-emerald-50 flex items-center gap-1 font-bold' : 'flex items-center gap-1 font-bold'}
@@ -187,12 +189,14 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                                 {shift.staffResponse === 'ACCEPTED' && <CheckCircle2 className="w-3 h-3" />}
                                 {shift.staffResponse === 'REJECTED' && <XCircle className="w-3 h-3" />}
                                 {(!shift.staffResponse || shift.staffResponse === 'PENDING') && <Clock className="w-3 h-3" />}
-                                {shift.staffResponse || 'PENDING RESPONSE'}
+                                {shift.staffResponse === 'ACCEPTED' ? t("schedule_modals.individual_schedule.status_accepted") :
+                                 shift.staffResponse === 'REJECTED' ? t("schedule_modals.individual_schedule.status_rejected") :
+                                 t("schedule_modals.individual_schedule.status_pending_response")}
                             </Badge>
                         )}
                     </div>
                     <DialogDescription>
-                        {shift ? "Update details for this shift." : "Assign a shift to an individual employee."}
+                        {shift ? t("schedule_modals.individual_schedule.edit_description") : t("schedule_modals.individual_schedule.create_description")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -200,7 +204,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                     <div className="flex items-center justify-between gap-3 bg-red-50 text-red-700 rounded-lg px-4 py-3 text-sm mt-2">
                         <div className="flex items-center gap-2">
                             <UserX className="h-4 w-4 shrink-0" />
-                            This shift was flagged as a no-show.
+                            {t("schedule_modals.individual_schedule.no_show_flagged")}
                         </div>
                         {canLogNoShow && onLogAsWorked && (
                             <Button
@@ -211,7 +215,7 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                                 onClick={() => onLogAsWorked(shift)}
                             >
                                 <ClipboardCheck className="w-3.5 h-3.5" />
-                                Log as Worked
+                                {t("schedule_modals.individual_schedule.log_as_worked")}
                             </Button>
                         )}
                     </div>
@@ -228,29 +232,29 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                         <div className="space-y-4 pt-4 pr-4">
                             <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-dashed">
                                 <div className="space-y-0.5">
-                                    <Label className="text-sm font-semibold">Post as Open Shift</Label>
-                                    <p className="text-[10px] text-muted-foreground">Allows any eligible staff to bid or claim.</p>
+                                    <Label className="text-sm font-semibold">{t("schedule_modals.individual_schedule.post_open_shift_label")}</Label>
+                                    <p className="text-[10px] text-muted-foreground">{t("schedule_modals.individual_schedule.post_open_shift_hint")}</p>
                                 </div>
-                                <Switch 
-                                    checked={isOpenShift} 
+                                <Switch
+                                    checked={isOpenShift}
                                     onCheckedChange={(checked) => {
                                         setIsOpenShift(checked);
                                         if (checked) setEmploymentId("");
-                                    }} 
+                                    }}
                                 />
                             </div>
 
                             {!isOpenShift && (
                                 <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                                    <Label>Select Employee</Label>
+                                    <Label>{t("schedule_modals.individual_schedule.select_employee_label")}</Label>
                                     <Select value={employmentId} onValueChange={setEmploymentId}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={fetchingEmployees ? "Loading employees..." : "Choose an employee"} />
+                                            <SelectValue placeholder={fetchingEmployees ? t("schedule_modals.individual_schedule.loading_employees") : t("schedule_modals.individual_schedule.choose_employee")} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {employees?.map(emp => (
                                                 <SelectItem key={emp.id} value={emp.id}>
-                                                    {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Unnamed Staff'}
+                                                    {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || t("schedule_modals.individual_schedule.unnamed_staff")}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -259,40 +263,40 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                             )}
 
                             <div className="space-y-2">
-                                <Label>Date</Label>
-                                <Input 
-                                    type="date" 
-                                    value={dateInput} 
-                                    onChange={e => setDateInput(e.target.value)} 
-                                    required 
+                                <Label>{t("schedule_modals.individual_schedule.date_label")}</Label>
+                                <Input
+                                    type="date"
+                                    value={dateInput}
+                                    onChange={e => setDateInput(e.target.value)}
+                                    required
                                 />
                                 {dateInput && dayjs.tz(dateInput, businessTz).isBefore(dayjs().tz(businessTz).startOf('day')) && (
                                     <p className="text-xs text-amber-600 flex items-center gap-1 mt-1 font-medium">
                                         <AlertCircle className="w-3.5 h-3.5" />
-                                        Warning: You are scheduling a shift in the past.
+                                        {t("schedule_modals.individual_schedule.past_shift_warning")}
                                     </p>
                                 )}
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <Label className="text-xs text-muted-foreground">Start Time</Label>
+                                    <Label className="text-xs text-muted-foreground">{t("schedule_modals.individual_schedule.start_time_label")}</Label>
                                     <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} required />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label className="text-xs text-muted-foreground">End Time</Label>
+                                    <Label className="text-xs text-muted-foreground">{t("schedule_modals.individual_schedule.end_time_label")}</Label>
                                     <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
                                 </div>
                             </div>
-                            
+
                             <div className="space-y-2">
-                                <Label>Required Role (Optional)</Label>
+                                <Label>{t("schedule_modals.individual_schedule.required_role_label")}</Label>
                                 <Select value={requiredRoleId} onValueChange={setRequiredRoleId}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={loadingBusinessRoles ? "Loading roles..." : "Choose a required role"} />
+                                        <SelectValue placeholder={loadingBusinessRoles ? t("schedule_modals.individual_schedule.loading_roles") : t("schedule_modals.individual_schedule.choose_required_role")} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="none">No specific role required</SelectItem>
+                                        <SelectItem value="none">{t("schedule_modals.individual_schedule.no_role_required")}</SelectItem>
                                         {businessRoles?.map(role => (
                                             <SelectItem key={role.id} value={role.id}>
                                                 {role.name}
@@ -300,59 +304,59 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <p className="text-[10px] text-muted-foreground">If set, the system will verify the employee has this role.</p>
+                                <p className="text-[10px] text-muted-foreground">{t("schedule_modals.individual_schedule.required_role_hint")}</p>
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Notes (Optional)</Label>
-                                <Input 
-                                    value={notes} 
-                                    onChange={e => setNotes(e.target.value)} 
-                                    placeholder="e.g. Front desk duty"
+                                <Label>{t("schedule_modals.individual_schedule.notes_label")}</Label>
+                                <Input
+                                    value={notes}
+                                    onChange={e => setNotes(e.target.value)}
+                                    placeholder={t("schedule_modals.individual_schedule.notes_placeholder")}
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Unpaid Break (Minutes)</Label>
-                                <Input 
+                                <Label>{t("schedule_modals.individual_schedule.unpaid_break_label")}</Label>
+                                <Input
                                     type="number"
                                     min="0"
                                     step="5"
-                                    value={unpaidBreakMinutes} 
-                                    onChange={e => setUnpaidBreakMinutes(Number(e.target.value))} 
-                                    placeholder="e.g. 30"
+                                    value={unpaidBreakMinutes}
+                                    onChange={e => setUnpaidBreakMinutes(Number(e.target.value))}
+                                    placeholder={t("schedule_modals.individual_schedule.unpaid_break_placeholder")}
                                 />
-                                <p className="text-[10px] text-muted-foreground">This time will be deducted from paid hours.</p>
+                                <p className="text-[10px] text-muted-foreground">{t("schedule_modals.individual_schedule.unpaid_break_hint")}</p>
                             </div>
 
                             {shift && !shift.employmentId && bids && bids.length > 0 && (
                                 <div className="mt-6 pt-6 border-t font-semibold space-y-4 px-1">
                                     <div className="flex items-center gap-2 text-sm text-primary">
                                         <UserCheck className="w-4 h-4" />
-                                        <span>Recent Applicants ({bids.length})</span>
+                                        <span>{t("schedule_modals.individual_schedule.recent_applicants", { count: bids.length })}</span>
                                     </div>
                                     <div className="space-y-3">
                                         {bids.map((bid: any) => (
                                             <div key={bid.id} className="flex items-center justify-between p-2 rounded-md border bg-muted/10">
                                                 <div className="flex flex-col">
                                                     <span className="text-sm font-medium">
-                                                        {bid.employment?.professionalProfile?.displayName || 
-                                                         `${bid.employment?.professionalProfile?.firstName || ''} ${bid.employment?.professionalProfile?.lastName || ''}`.trim() || 
-                                                         'Staff Member'}
+                                                        {bid.employment?.professionalProfile?.displayName ||
+                                                         `${bid.employment?.professionalProfile?.firstName || ''} ${bid.employment?.professionalProfile?.lastName || ''}`.trim() ||
+                                                         t("schedule_modals.individual_schedule.staff_member_fallback")}
                                                     </span>
                                                     <span className="text-[10px] text-muted-foreground">
-                                                        Applied {dayjs(bid.createdAt).fromNow()}
+                                                        {t("schedule_modals.individual_schedule.applied_ago", { time: dayjs(bid.createdAt).fromNow() })}
                                                     </span>
                                                 </div>
-                                                <Button 
-                                                    size="sm" 
-                                                    variant="outline" 
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
                                                     className="h-8 text-xs gap-1.5 border-primary/30 text-primary hover:bg-primary/10"
                                                     onClick={() => handleApproveBid(bid.id)}
                                                     disabled={isApprovingBid}
                                                 >
                                                     {isApprovingBid ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3 h-3" />}
-                                                    Approve
+                                                    {t("schedule_modals.individual_schedule.approve")}
                                                 </Button>
                                             </div>
                                         ))}
@@ -363,9 +367,15 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                     </ScrollArea>
 
                     <div className="flex justify-end gap-2 pt-4 mt-4 border-t bg-background">
-                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>{t("schedule_modals.individual_schedule.cancel")}</Button>
                         <Button type="submit" disabled={isCreatingIndividualShift || isUpdatingShift || (!isOpenShift && !employmentId) || !dateInput}>
-                            {isCreatingIndividualShift || isUpdatingShift ? "Saving..." : shift ? "Update Shift" : isOpenShift ? "Post Open Shift" : "Schedule Employee"}
+                            {isCreatingIndividualShift || isUpdatingShift
+                                ? t("schedule_modals.individual_schedule.saving")
+                                : shift
+                                    ? t("schedule_modals.individual_schedule.update_shift")
+                                    : isOpenShift
+                                        ? t("schedule_modals.individual_schedule.post_open_shift")
+                                        : t("schedule_modals.individual_schedule.schedule_employee")}
                         </Button>
                     </div>
                 </form>

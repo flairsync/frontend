@@ -9,8 +9,10 @@ import { formatInBusinessTimezone } from '@/utils/date-utils';
 import { useMyBusiness } from '@/features/business/useMyBusiness';
 import { Loader2, Inbox, AlertCircle, RefreshCw, Check, X, Shield } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useTranslation } from 'react-i18next';
 
 export default function ManagerScheduleBidsTab() {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id as string;
     const { myBusinessFullDetails } = useMyBusiness(businessId);
@@ -28,13 +30,13 @@ export default function ManagerScheduleBidsTab() {
                     <div>
                         <CardTitle className="text-xl font-bold flex items-center gap-2">
                             <Shield className="w-5 h-5 text-primary" />
-                            Request Inbox
+                            {t("schedule_bids_tab.heading")}
                         </CardTitle>
-                        <CardDescription>Review and manage staff applications for open shifts.</CardDescription>
+                        <CardDescription>{t("schedule_bids_tab.subheading")}</CardDescription>
                     </div>
                     <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching} className="h-8">
                         <RefreshCw className={`h-3.5 w-3.5 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
-                        Refresh
+                        {t("schedule_bids_tab.refresh")}
                     </Button>
                 </div>
             </CardHeader>
@@ -42,11 +44,11 @@ export default function ManagerScheduleBidsTab() {
                 {error ? (
                     <Alert variant="destructive" className="mb-6">
                         <AlertCircle className="h-4 w-4" />
-                        <AlertTitle>Error fetching bids</AlertTitle>
+                        <AlertTitle>{t("schedule_bids_tab.error_title")}</AlertTitle>
                         <AlertDescription className="flex flex-col gap-3">
-                            <p>We encountered an issue while loading the bid requests. Please try again or contact support if the issue persists.</p>
+                            <p>{t("schedule_bids_tab.error_description")}</p>
                             <Button variant="outline" size="sm" className="w-fit" onClick={() => refetch()}>
-                                Try Again
+                                {t("schedule_bids_tab.try_again")}
                             </Button>
                         </AlertDescription>
                     </Alert>
@@ -60,8 +62,8 @@ export default function ManagerScheduleBidsTab() {
                             <Inbox className="h-6 w-6 text-muted-foreground/40" />
                         </div>
                         <div className="space-y-1">
-                            <p className="font-semibold text-muted-foreground">Your inbox is clear</p>
-                            <p className="text-sm text-muted-foreground/60">No pending shift bids at the moment.</p>
+                            <p className="font-semibold text-muted-foreground">{t("schedule_bids_tab.empty_title")}</p>
+                            <p className="text-sm text-muted-foreground/60">{t("schedule_bids_tab.empty_description")}</p>
                         </div>
                     </div>
                 ) : (
@@ -69,10 +71,10 @@ export default function ManagerScheduleBidsTab() {
                         <Table>
                             <TableHeader className="bg-muted/30">
                                 <TableRow>
-                                    <TableHead className="font-semibold">Staff Member</TableHead>
-                                    <TableHead className="font-semibold">Shift Details</TableHead>
-                                    <TableHead className="font-semibold">Applied</TableHead>
-                                    <TableHead className="text-right font-semibold">Decisions</TableHead>
+                                    <TableHead className="font-semibold">{t("schedule_bids_tab.col_staff_member")}</TableHead>
+                                    <TableHead className="font-semibold">{t("schedule_bids_tab.col_shift_details")}</TableHead>
+                                    <TableHead className="font-semibold">{t("schedule_bids_tab.col_applied")}</TableHead>
+                                    <TableHead className="text-right font-semibold">{t("schedule_bids_tab.col_decisions")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -81,12 +83,12 @@ export default function ManagerScheduleBidsTab() {
                                         <TableCell>
                                             <div className="flex flex-col">
                                                 <span className="font-bold text-sm">
-                                                    {bid.employment?.professionalProfile?.displayName || 
-                                                     `${bid.employment?.professionalProfile?.firstName || ''} ${bid.employment?.professionalProfile?.lastName || ''}`.trim() || 
-                                                     'Unnamed Staff'}
+                                                    {bid.employment?.professionalProfile?.displayName ||
+                                                     `${bid.employment?.professionalProfile?.firstName || ''} ${bid.employment?.professionalProfile?.lastName || ''}`.trim() ||
+                                                     t("schedule_bids_tab.unnamed_staff")}
                                                 </span>
                                                 <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
-                                                    ID: {bid.employmentId.split('-')[0]}
+                                                    {t("schedule_bids_tab.id_prefix", { id: bid.employmentId.split('-')[0] })}
                                                 </span>
                                             </div>
                                         </TableCell>
@@ -97,7 +99,7 @@ export default function ManagerScheduleBidsTab() {
                                                         {formatInBusinessTimezone(bid.shift?.startTime, businessTz, 'ddd, MMM D')}
                                                     </span>
                                                     <Badge variant="secondary" className="text-[10px] px-1.5 h-4 font-bold bg-primary/10 text-primary border-none">
-                                                        OPEN
+                                                        {t("schedule_bids_tab.open_badge")}
                                                     </Badge>
                                                 </div>
                                                 <span className="text-xs text-muted-foreground">
@@ -116,12 +118,12 @@ export default function ManagerScheduleBidsTab() {
                                                     className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                                                     onClick={() => updateBidStatus({ bidId: bid.id, status: 'REJECTED' })}
                                                     disabled={isUpdatingBidStatus}
-                                                    title="Reject Application"
+                                                    title={t("schedule_bids_tab.reject_application")}
                                                 >
                                                     <X className="w-4 h-4" />
                                                 </Button>
-                                                <Button 
-                                                    size="sm" 
+                                                <Button
+                                                    size="sm"
                                                     className="h-8 gap-1.5 px-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                                                     onClick={() => updateBidStatus({ bidId: bid.id, status: 'APPROVED' })}
                                                     disabled={isUpdatingBidStatus}
@@ -131,7 +133,7 @@ export default function ManagerScheduleBidsTab() {
                                                     ) : (
                                                         <Check className="w-3.5 h-3.5" />
                                                     )}
-                                                    Approve
+                                                    {t("schedule_bids_tab.approve")}
                                                 </Button>
                                             </div>
                                         </TableCell>

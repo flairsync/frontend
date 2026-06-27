@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { usePageContext } from "vike-react/usePageContext";
 import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
+import { PinnedLinksWidget } from "@/components/dashboard/PinnedLinksWidget";
 
 const OwnerDashboardPage: React.FC = () => {
     const { routeParams } = usePageContext();
@@ -15,7 +16,10 @@ const OwnerDashboardPage: React.FC = () => {
             <Separator />
 
             {businessId ? (
-                <AnalyticsDashboard businessId={businessId} showTimeFilter={false} />
+                <>
+                    <PinnedLinksWidget businessId={businessId} role="owner" />
+                    <AnalyticsDashboard businessId={businessId} showTimeFilter={false} />
+                </>
             ) : (
                 <div>Loading dashboard...</div>
             )}

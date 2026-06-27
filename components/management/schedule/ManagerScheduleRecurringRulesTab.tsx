@@ -9,8 +9,10 @@ import { useBusinessEmployees } from '@/features/business/employment/useBusiness
 import { RecurringShiftRule } from '@/models/business/shift/RecurringShiftRule'
 import { Badge } from '@/components/ui/badge'
 import { RecurringRuleModal } from './RecurringRuleModal'
+import { useTranslation } from 'react-i18next'
 
 const ManagerScheduleRecurringRulesTab = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { 
@@ -36,44 +38,52 @@ const ManagerScheduleRecurringRulesTab = () => {
 
     const getEmployeeName = (id: string) => {
         const emp = employees?.find(e => e.id === id);
-        return emp?.professionalProfile?.displayName || emp?.professionalProfile?.firstName || 'Unknown Staff';
+        return emp?.professionalProfile?.displayName || emp?.professionalProfile?.firstName || t("schedule_recurring_rules_tab.unknown_staff");
     };
 
-    const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const DAYS = [
+        t("schedule_recurring_rules_tab.days.sunday"),
+        t("schedule_recurring_rules_tab.days.monday"),
+        t("schedule_recurring_rules_tab.days.tuesday"),
+        t("schedule_recurring_rules_tab.days.wednesday"),
+        t("schedule_recurring_rules_tab.days.thursday"),
+        t("schedule_recurring_rules_tab.days.friday"),
+        t("schedule_recurring_rules_tab.days.saturday"),
+    ];
 
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                    <CardTitle>Recurring Shift Rules</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">Manage long-term shift patterns for your staff.</p>
+                    <CardTitle>{t("schedule_recurring_rules_tab.heading")}</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-1">{t("schedule_recurring_rules_tab.subheading")}</p>
                 </div>
                 <Button size="sm" onClick={handleAdd}>
                     <Plus className="w-4 h-4 mr-2" />
-                    New Rule
+                    {t("schedule_recurring_rules_tab.new_rule")}
                 </Button>
             </CardHeader>
             <CardContent>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Staff Member</TableHead>
-                            <TableHead>Day of Week</TableHead>
-                            <TableHead>Start Time</TableHead>
-                            <TableHead>End Time</TableHead>
-                            <TableHead>Start Date</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_staff_member")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_day_of_week")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_start_time")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_end_time")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_start_date")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_status")}</TableHead>
+                            <TableHead className="text-right">{t("schedule_recurring_rules_tab.col_actions")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {fetchingRules && (!rules || rules.length === 0) ? (
                             <TableRow>
-                                <TableCell colSpan={7} className="text-center py-4">Loading...</TableCell>
+                                <TableCell colSpan={7} className="text-center py-4">{t("schedule_recurring_rules_tab.loading")}</TableCell>
                             </TableRow>
                         ) : !rules || rules.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={7} className="text-center py-4 text-muted-foreground">No recurring rules found.</TableCell>
+                                <TableCell colSpan={7} className="text-center py-4 text-muted-foreground">{t("schedule_recurring_rules_tab.no_rules")}</TableCell>
                             </TableRow>
                         ) : (
                             rules.map((rule) => (
@@ -85,7 +95,7 @@ const ManagerScheduleRecurringRulesTab = () => {
                                     <TableCell>{rule.startDate}</TableCell>
                                     <TableCell>
                                         <Badge variant={rule.isActive ? "default" : "secondary"}>
-                                            {rule.isActive ? "Active" : "Inactive"}
+                                            {rule.isActive ? t("schedule_recurring_rules_tab.status_active") : t("schedule_recurring_rules_tab.status_inactive")}
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-right">

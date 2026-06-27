@@ -18,7 +18,7 @@ import { usePermissions } from "@/features/auth/usePermissions"
 import { useTranslation } from "react-i18next"
 
 // This is sample data.
-const staffNavData = {
+export const staffNavData = {
     navMain: [
         {
             titleKey: "staff_sidebar.workspace_group",

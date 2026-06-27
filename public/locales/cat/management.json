@@ -924,5 +924,14 @@
     "pending_validation": { "title": "Pendent de validació", "description": "Esperant la revisió del responsable" },
     "validated": { "title": "Validats", "description": "Registres bloquejats" },
     "absences_late": { "title": "Absències / Retards", "description": "Absències · Arribades tardanes" }
+  },
+  "pinned_links": {
+    "title": "Accessos ràpids",
+    "add": "Afegir",
+    "drag_handle": "Arrossega per reordenar",
+    "remove": "Desfixar",
+    "empty_state": "Fixa aquí les pàgines que més utilitzes per accedir-hi ràpidament.",
+    "nothing_to_add": "Ja has fixat totes les pàgines disponibles.",
+    "max_reached": "Has arribat al màxim de 12 accessos fixats."
   }
 }

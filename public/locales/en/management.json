@@ -924,5 +924,14 @@
     "pending_validation": { "title": "Pending Validation", "description": "Awaiting manager review" },
     "validated": { "title": "Validated", "description": "Locked records" },
     "absences_late": { "title": "Absences / Late", "description": "Absences · Late arrivals" }
+  },
+  "pinned_links": {
+    "title": "Quick Links",
+    "add": "Add",
+    "drag_handle": "Drag to reorder",
+    "remove": "Unpin",
+    "empty_state": "Pin your most-used pages here for quick access.",
+    "nothing_to_add": "All available pages are already pinned.",
+    "max_reached": "You've reached the maximum of 12 pinned links."
   }
 }

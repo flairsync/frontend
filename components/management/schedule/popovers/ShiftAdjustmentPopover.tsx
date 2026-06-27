@@ -9,6 +9,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { parseISO, format } from "date-fns";
 import { Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ShiftAdjustmentPopoverProps {
     shift: Shift;
@@ -17,6 +18,7 @@ interface ShiftAdjustmentPopoverProps {
 }
 
 export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ shift, children, disabled }) => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { updateShift, deleteShift, isUpdatingShift, isDeletingShift } = useShifts(businessId);
@@ -66,7 +68,7 @@ export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ 
     };
 
     const handleDelete = () => {
-        if (confirm("Are you sure you want to delete this shift?")) {
+        if (confirm(t("schedule_modals.shift_adjustment_popover.confirm_delete"))) {
             deleteShift(shift.id, {
                 onSuccess: () => setOpen(false)
             });
@@ -80,46 +82,46 @@ export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ 
             </PopoverTrigger>
             <PopoverContent className="w-80 p-4">
                 <div className="space-y-4">
-                    <h4 className="font-medium leading-none">Adjust Shift</h4>
-                    
+                    <h4 className="font-medium leading-none">{t("schedule_modals.shift_adjustment_popover.heading")}</h4>
+
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                            <Label className="text-xs">Start Time</Label>
+                            <Label className="text-xs">{t("schedule_modals.shift_adjustment_popover.start_time_label")}</Label>
                             <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} />
                         </div>
                         <div className="space-y-1.5">
-                            <Label className="text-xs">End Time</Label>
+                            <Label className="text-xs">{t("schedule_modals.shift_adjustment_popover.end_time_label")}</Label>
                             <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
                         </div>
                     </div>
 
                     <div className="space-y-1.5">
-                        <Label className="text-xs">Status</Label>
+                        <Label className="text-xs">{t("schedule_modals.shift_adjustment_popover.status_label")}</Label>
                         <Select value={status} onValueChange={(val: ShiftStatus) => setStatus(val)}>
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                                 {Object.values(ShiftStatus).map(s => (
-                                    <SelectItem key={s} value={s}>{s}</SelectItem>
+                                    <SelectItem key={s} value={s}>{t(`schedule_modals.shift_adjustment_popover.status_options.${s}`)}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="space-y-1.5">
-                        <Label className="text-xs">Notes</Label>
-                        <Input value={notes} onChange={e => setNotes(e.target.value)} placeholder="e.g. Assigned to front desk" />
+                        <Label className="text-xs">{t("schedule_modals.shift_adjustment_popover.notes_label")}</Label>
+                        <Input value={notes} onChange={e => setNotes(e.target.value)} placeholder={t("schedule_modals.shift_adjustment_popover.notes_placeholder")} />
                     </div>
 
                     <div className="flex justify-between items-center pt-2">
                         <Button variant="ghost" size="sm" className="text-destructive px-2" onClick={handleDelete} disabled={isDeletingShift}>
                             <Trash className="w-4 h-4 mr-1" />
-                            Delete
+                            {t("schedule_modals.shift_adjustment_popover.delete")}
                         </Button>
                         <div className="flex gap-2">
-                            <Button variant="outline" size="sm" onClick={() => setOpen(false)}>Cancel</Button>
-                            <Button size="sm" onClick={handleSave} disabled={isUpdatingShift}>Save</Button>
+                            <Button variant="outline" size="sm" onClick={() => setOpen(false)}>{t("schedule_modals.shift_adjustment_popover.cancel")}</Button>
+                            <Button size="sm" onClick={handleSave} disabled={isUpdatingShift}>{t("schedule_modals.shift_adjustment_popover.save")}</Button>
                         </div>
                     </div>
                 </div>

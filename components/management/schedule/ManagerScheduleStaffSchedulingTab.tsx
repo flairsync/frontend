@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronLeft, ChevronRight, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText, UserX, ClipboardCheck } from 'lucide-react'
 import { toast } from 'sonner'
 import { usePageContext } from 'vike-react/usePageContext'
@@ -40,6 +41,7 @@ import { LogShiftWorkedModal } from './LogShiftWorkedModal'
 import { ShiftStatus } from '@/models/business/shift/Shift'
 
 const ManagerScheduleStaffSchedulingTab = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -208,7 +210,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
     };
 
     const handleDeleteShift = (shiftId: string) => {
-        if (confirm("Are you sure you want to delete this shift?")) {
+        if (confirm(t("schedule_staff_scheduling_tab.confirm_delete_shift"))) {
             deleteShift(shiftId);
         }
     };
@@ -234,7 +236,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
         if (updatedShift?.attendanceId) {
             handleValidateShift(updatedShift);
         } else {
-            toast.info("This shift now has an attendance record — use Validate Shift to resolve it.");
+            toast.info(t("schedule_staff_scheduling_tab.toast_already_has_attendance"));
         }
     };
 
@@ -245,45 +247,45 @@ const ManagerScheduleStaffSchedulingTab = () => {
                     return (
                         <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-emerald-500 bg-emerald-50 text-emerald-700 flex items-center gap-1">
                             <CheckCircle2 className="w-2 h-2" />
-                            Accepted
+                            {t("schedule_staff_scheduling_tab.status_accepted")}
                         </Badge>
                     );
                 }
                 if (staffResponse === 'REJECTED') {
                     return (
                         <Badge variant="destructive" className="text-[8px] px-1 py-0 h-3.5 bg-red-50 text-red-700 border-red-200">
-                            Rejected
+                            {t("schedule_staff_scheduling_tab.status_rejected")}
                         </Badge>
                     );
                 }
-                return <Badge variant="secondary" className="text-[8px] px-1 py-0 h-3.5 bg-gray-100 text-gray-600 font-normal">Pending</Badge>;
+                return <Badge variant="secondary" className="text-[8px] px-1 py-0 h-3.5 bg-gray-100 text-gray-600 font-normal">{t("schedule_staff_scheduling_tab.status_pending")}</Badge>;
             case ShiftStatus.IN_PROGRESS:
                 return (
                     <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-green-200 bg-green-50 text-green-700 flex items-center gap-1">
                         <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
-                        Ongoing
+                        {t("schedule_staff_scheduling_tab.status_ongoing")}
                     </Badge>
                 );
             case ShiftStatus.COMPLETED:
-                return <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-amber-200 bg-amber-50 text-amber-700">Finished</Badge>;
+                return <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-amber-200 bg-amber-50 text-amber-700">{t("schedule_staff_scheduling_tab.status_finished")}</Badge>;
             case ShiftStatus.VALIDATED:
                 return (
                     <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-green-500 bg-green-50 text-green-700 flex items-center gap-1">
                         <CheckCircle2 className="w-2 h-2" />
-                        Validated
+                        {t("schedule_staff_scheduling_tab.status_validated")}
                     </Badge>
                 );
             case ShiftStatus.NO_SHOW:
                 return (
                     <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-red-500 bg-red-50 text-red-700 flex items-center gap-1">
                         <UserX className="w-2 h-2" />
-                        No-show
+                        {t("schedule_staff_scheduling_tab.status_no_show")}
                     </Badge>
                 );
             case ShiftStatus.OPEN:
                 return (
                     <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-orange-500 bg-orange-50 text-orange-700 font-bold uppercase">
-                        OPEN
+                        {t("schedule_staff_scheduling_tab.status_open")}
                     </Badge>
                 );
             default:
@@ -337,7 +339,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
             a.remove();
             URL.revokeObjectURL(url);
         } catch {
-            toast.error('Failed to export schedule');
+            toast.error(t("schedule_staff_scheduling_tab.toast_export_failed"));
         }
     };
 
@@ -346,7 +348,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
             <CardHeader className="bg-muted/30 border-b space-y-3 pb-3">
                 {/* Row 1: Title + action buttons */}
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <CardTitle className="text-lg">Schedule</CardTitle>
+                    <CardTitle className="text-lg">{t("schedule_staff_scheduling_tab.title")}</CardTitle>
 
                     <div className="flex flex-wrap items-center gap-1.5">
                         {/* Export */}
@@ -359,17 +361,17 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                     disabled={calendarView === 'month' && !filterStaffId}
                                 >
                                     <Download className="w-4 h-4" />
-                                    Export
+                                    {t("schedule_staff_scheduling_tab.export_button")}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-44">
                                 <DropdownMenuItem onClick={() => handleExport('pdf')}>
                                     <FileText className="w-4 h-4 mr-2 text-red-500" />
-                                    PDF
+                                    {t("schedule_staff_scheduling_tab.export_pdf")}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => handleExport('excel')}>
                                     <FileSpreadsheet className="w-4 h-4 mr-2 text-green-600" />
-                                    Excel
+                                    {t("schedule_staff_scheduling_tab.export_excel")}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -381,17 +383,17 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" size="sm" className="gap-1.5">
                                     <PlusCircle className="w-4 h-4" />
-                                    Add Shifts
+                                    {t("schedule_staff_scheduling_tab.add_shifts_button")}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-52">
                                 <DropdownMenuItem onClick={() => setIsBulkStaffModalOpen(true)}>
                                     <CalendarPlus className="w-4 h-4 mr-2" />
-                                    Bulk Staff Setup
+                                    {t("schedule_staff_scheduling_tab.bulk_staff_setup")}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => setIsBulkModalOpen(true)}>
                                     <Users className="w-4 h-4 mr-2" />
-                                    Schedule Team
+                                    {t("schedule_staff_scheduling_tab.schedule_team")}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -405,7 +407,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             className="gap-1.5"
                         >
                             <Wand2 className="w-4 h-4" />
-                            {isGeneratingDraft ? 'Generating…' : 'Generate'}
+                            {isGeneratingDraft ? t("schedule_staff_scheduling_tab.generating") : t("schedule_staff_scheduling_tab.generate_button")}
                         </Button>
 
                         {/* Copy previous — icon-only to save space */}
@@ -414,7 +416,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             size="icon"
                             onClick={handleCopyWeek}
                             disabled={isCopyingWeek}
-                            title="Copy previous week"
+                            title={t("schedule_staff_scheduling_tab.copy_previous_week_title")}
                             className="shrink-0"
                         >
                             <Copy className="w-4 h-4" />
@@ -430,7 +432,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             className="gap-1.5"
                         >
                             <Send className="w-4 h-4" />
-                            {isPublishing ? 'Publishing…' : 'Publish'}
+                            {isPublishing ? t("schedule_staff_scheduling_tab.publishing") : t("schedule_staff_scheduling_tab.publish_button")}
                         </Button>
                     </div>
                 </div>
@@ -462,7 +464,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                 onClick={() => setCalendarView(view)}
                                 className="h-7 text-xs capitalize px-3"
                             >
-                                {view}
+                                {t(`schedule_staff_scheduling_tab.view_${view}`)}
                             </Button>
                         ))}
                     </div>
@@ -472,13 +474,13 @@ const ManagerScheduleStaffSchedulingTab = () => {
                         onValueChange={(val: string) => setFilterStaffId(val === 'all' ? null : val)}
                     >
                         <SelectTrigger className="h-8 w-44 text-sm">
-                            <SelectValue placeholder="All Staff" />
+                            <SelectValue placeholder={t("schedule_staff_scheduling_tab.all_staff_placeholder")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Staff</SelectItem>
+                            <SelectItem value="all">{t("schedule_staff_scheduling_tab.all_staff_placeholder")}</SelectItem>
                             {employees.map(emp => (
                                 <SelectItem key={emp.id} value={emp.id}>
-                                    {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Staff'}
+                                    {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || t("schedule_staff_scheduling_tab.staff_fallback_name")}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -487,14 +489,14 @@ const ManagerScheduleStaffSchedulingTab = () => {
                     {phantomSummary && phantomSummary.total > 0 && (
                         <Badge variant="outline" className="h-7 px-3 border-amber-200 bg-amber-50 text-amber-700 flex items-center gap-1.5 font-medium animate-in fade-in slide-in-from-left-2 duration-500">
                             <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                            {phantomSummary.total} unvalidated shifts
+                            {t("schedule_staff_scheduling_tab.unvalidated_shifts_count", { count: phantomSummary.total })}
                         </Badge>
                     )}
 
                     {noShowCount > 0 && (
                         <Badge variant="outline" className="h-7 px-3 border-red-200 bg-red-50 text-red-700 flex items-center gap-1.5 font-medium animate-in fade-in slide-in-from-left-2 duration-500">
                             <UserX className="w-3.5 h-3.5" />
-                            {noShowCount} no-show{noShowCount > 1 ? 's' : ''}
+                            {t("schedule_staff_scheduling_tab.no_show_count", { count: noShowCount })}
                         </Badge>
                     )}
                 </div>
@@ -509,11 +511,19 @@ const ManagerScheduleStaffSchedulingTab = () => {
                     }`}>
                         {calendarView !== 'month' && (
                             <div className="p-3 font-semibold text-sm border-r flex items-center justify-center text-center">
-                                Staff Member
+                                {t("schedule_staff_scheduling_tab.col_staff_member")}
                             </div>
                         )}
                         {calendarView === 'month' ? (
-                            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(dayName => (
+                            [
+                                t("schedule_staff_scheduling_tab.days_short.mon"),
+                                t("schedule_staff_scheduling_tab.days_short.tue"),
+                                t("schedule_staff_scheduling_tab.days_short.wed"),
+                                t("schedule_staff_scheduling_tab.days_short.thu"),
+                                t("schedule_staff_scheduling_tab.days_short.fri"),
+                                t("schedule_staff_scheduling_tab.days_short.sat"),
+                                t("schedule_staff_scheduling_tab.days_short.sun"),
+                            ].map(dayName => (
                                 <div key={dayName} className="p-3 font-semibold text-sm text-center border-r last:border-r-0">
                                     {dayName}
                                 </div>
@@ -534,14 +544,14 @@ const ManagerScheduleStaffSchedulingTab = () => {
 
                     {/* Content Rows */}
                     {fetchingEmployees || fetchingShifts ? (
-                        <div className="p-8 text-center text-muted-foreground animate-pulse">Loading schedule...</div>
+                        <div className="p-8 text-center text-muted-foreground animate-pulse">{t("schedule_staff_scheduling_tab.loading_schedule")}</div>
                     ) : employees?.length === 0 ? (
-                        <div className="p-8 text-center text-muted-foreground">No employees found.</div>
+                        <div className="p-8 text-center text-muted-foreground">{t("schedule_staff_scheduling_tab.empty_no_employees")}</div>
                     ) : calendarView === 'month' && !filterStaffId ? (
                          <div className="p-12 text-center text-muted-foreground">
                             <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                            <p className="text-lg font-medium">Monthly Overview</p>
-                            <p className="text-sm">Please select a staff member to view their monthly schedule.</p>
+                            <p className="text-lg font-medium">{t("schedule_staff_scheduling_tab.monthly_overview_title")}</p>
+                            <p className="text-sm">{t("schedule_staff_scheduling_tab.monthly_overview_select_staff")}</p>
                          </div>
                     ) : calendarView === 'month' && filterStaffId ? (
                         calendarWeeks.map((week, weekIdx) => (
@@ -581,7 +591,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                         ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20"
                                                                         : "bg-amber-500/10 hover:bg-amber-500/20 ring-amber-500/20 border-amber-500/30 border-dashed"
                                                                 } hover:ring-1`}
-                                                                title={shift.status === ShiftStatus.NO_SHOW ? 'NO-SHOW: employee never clocked in' : hasConflict ? 'CONFLICT: Employee has approved time off' : shift.notes || (shift.isPublished ? 'Published' : 'Draft')}
+                                                                title={shift.status === ShiftStatus.NO_SHOW ? t("schedule_staff_scheduling_tab.tooltip_no_show") : hasConflict ? t("schedule_staff_scheduling_tab.tooltip_conflict") : shift.notes || (shift.isPublished ? t("schedule_staff_scheduling_tab.tooltip_published") : t("schedule_staff_scheduling_tab.tooltip_draft"))}
                                                             >
                                                                 <div className="flex items-center justify-between gap-1">
                                                                     <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
@@ -597,31 +607,31 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                             </ContextMenuTrigger>
                                             <ContextMenuContent className="w-48">
                                                 <ContextMenuItem onClick={() => handleRightClick(employee.id, day)}>
-                                                    Add New Shift
+                                                    {t("schedule_staff_scheduling_tab.context_add_new_shift")}
                                                 </ContextMenuItem>
                                                                 {dayShifts.length > 0 && (
                                                                     <>
                                                                         <ContextMenuSeparator />
-                                                                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Shifts ({dayShifts.length})</div>
+                                                                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">{t("schedule_staff_scheduling_tab.context_shifts_count", { count: dayShifts.length })}</div>
                                                                         {dayShifts.map(s => (
                                                                             <div key={s.id}>
                                                                                 {s.status === ShiftStatus.COMPLETED && (
                                                                                     <ContextMenuItem onClick={() => handleValidateShift(s)} className="pl-4 text-green-600 focus:text-green-700">
                                                                                         <ShieldCheck className="w-4 h-4 mr-2" />
-                                                                                        Validate Shift
+                                                                                        {t("schedule_staff_scheduling_tab.context_validate_shift")}
                                                                                     </ContextMenuItem>
                                                                                 )}
                                                                                 {s.status === ShiftStatus.NO_SHOW && canLogNoShow && (
                                                                                     <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 focus:text-red-700">
                                                                                         <ClipboardCheck className="w-4 h-4 mr-2" />
-                                                                                        Log as Worked
+                                                                                        {t("schedule_staff_scheduling_tab.context_log_as_worked")}
                                                                                     </ContextMenuItem>
                                                                                 )}
                                                                                 <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleEditShift(s)} className="pl-4">
-                                                                                    Edit {formatInBusinessTimezone(s.startTime, businessTz)}
+                                                                                    {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
                                                                                 </ContextMenuItem>
                                                                                 <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleDeleteShift(s.id)} className="pl-4 text-destructive focus:text-destructive">
-                                                                                    Delete {formatInBusinessTimezone(s.startTime, businessTz)}
+                                                                                    {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
                                                                                 </ContextMenuItem>
                                                                             </div>
                                                                         ))}
@@ -643,7 +653,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                 <div className="p-3 text-sm font-bold border-r bg-orange-100/20 flex items-center overflow-hidden text-orange-700">
                                     <span className="truncate flex items-center gap-2">
                                         <Users className="w-4 h-4" />
-                                        OPEN / VACANT
+                                        {t("schedule_staff_scheduling_tab.open_vacant_row_label")}
                                     </span>
                                 </div>
                                 {viewInterval.map(day => {
@@ -668,7 +678,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 <div className="font-bold text-orange-800 truncate">
                                                                     {formatInBusinessTimezone(shift.startTime, businessTz, 'HH:mm')} - {formatInBusinessTimezone(shift.endTime, businessTz, 'HH:mm')}
                                                                 </div>
-                                                                <Badge variant="outline" className="text-[7px] px-1 py-0 h-3 bg-white border-orange-200 text-orange-700 font-bold uppercase">OPEN</Badge>
+                                                                <Badge variant="outline" className="text-[7px] px-1 py-0 h-3 bg-white border-orange-200 text-orange-700 font-bold uppercase">{t("schedule_staff_scheduling_tab.status_open")}</Badge>
                                                             </div>
                                                         </div>
                                                     ))}
@@ -688,7 +698,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                             </ContextMenuTrigger>
                                             <ContextMenuContent className="w-48">
                                                 <ContextMenuItem onClick={() => handleRightClick("", day)}>
-                                                    Create Open Shift
+                                                    {t("schedule_staff_scheduling_tab.context_create_open_shift")}
                                                 </ContextMenuItem>
                                             </ContextMenuContent>
                                         </ContextMenu>
@@ -706,7 +716,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             >
                                 <div className="p-3 text-sm font-medium border-r bg-muted/5 flex items-center overflow-hidden">
                                    <span className="truncate">
-                                        {employee.professionalProfile?.displayName || employee.professionalProfile?.firstName || 'Unnamed Staff'}
+                                        {employee.professionalProfile?.displayName || employee.professionalProfile?.firstName || t("schedule_staff_scheduling_tab.unnamed_staff_fallback")}
                                    </span>
                                 </div>
                                 
@@ -741,7 +751,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                         ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20"
                                                                         : "bg-amber-500/10 hover:bg-amber-500/20 ring-amber-500/20 border-amber-500/30 border-dashed"
                                                                 } hover:ring-1`}
-                                                                title={shift.status === ShiftStatus.NO_SHOW ? 'NO-SHOW: employee never clocked in' : hasConflict ? 'CONFLICT: Employee has approved time off' : shift.notes || (shift.isPublished ? 'Published' : 'Draft')}
+                                                                title={shift.status === ShiftStatus.NO_SHOW ? t("schedule_staff_scheduling_tab.tooltip_no_show") : hasConflict ? t("schedule_staff_scheduling_tab.tooltip_conflict") : shift.notes || (shift.isPublished ? t("schedule_staff_scheduling_tab.tooltip_published") : t("schedule_staff_scheduling_tab.tooltip_draft"))}
                                                             >
                                                                 <div className="flex items-center justify-between gap-1">
                                                                     <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
@@ -757,7 +767,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     <div className="flex items-center gap-1">
                                                                         {getStatusBadge(shift.status, shift.staffResponse)}
                                                                         {!shift.isPublished && (
-                                                                            <Badge variant="secondary" className="text-[7px] px-1 py-0 h-3 bg-amber-100 text-amber-700 hover:bg-amber-100 font-bold">DRAFT</Badge>
+                                                                            <Badge variant="secondary" className="text-[7px] px-1 py-0 h-3 bg-amber-100 text-amber-700 hover:bg-amber-100 font-bold">{t("schedule_staff_scheduling_tab.status_draft")}</Badge>
                                                                         )}
                                                                     </div>
                                                                 </div>
@@ -768,25 +778,25 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                             </ContextMenuTrigger>
                                             <ContextMenuContent className="w-48">
                                                 <ContextMenuItem onClick={() => handleRightClick(employee.id, day)}>
-                                                    Add New Shift
+                                                    {t("schedule_staff_scheduling_tab.context_add_new_shift")}
                                                 </ContextMenuItem>
-                                                
+
                                                 {dayShifts.length > 0 && (
                                                     <>
                                                         <ContextMenuSeparator />
-                                                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Shifts ({dayShifts.length})</div>
+                                                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">{t("schedule_staff_scheduling_tab.context_shifts_count", { count: dayShifts.length })}</div>
                                                         {dayShifts.map(s => (
                                                             <div key={s.id}>
                                                                 {s.status === ShiftStatus.COMPLETED && (
                                                                     <ContextMenuItem onClick={() => handleValidateShift(s)} className="pl-4 text-green-600 focus:text-green-700">
                                                                         <ShieldCheck className="w-4 h-4 mr-2" />
-                                                                        Validate Shift
+                                                                        {t("schedule_staff_scheduling_tab.context_validate_shift")}
                                                                     </ContextMenuItem>
                                                                 )}
                                                                 {s.status === ShiftStatus.NO_SHOW && canLogNoShow && (
                                                                     <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 focus:text-red-700">
                                                                         <ClipboardCheck className="w-4 h-4 mr-2" />
-                                                                        Log as Worked
+                                                                        {t("schedule_staff_scheduling_tab.context_log_as_worked")}
                                                                     </ContextMenuItem>
                                                                 )}
                                                                 <ContextMenuItem
@@ -794,14 +804,14 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     onClick={() => handleEditShift(s)}
                                                                     className="pl-4"
                                                                 >
-                                                                    Edit {formatInBusinessTimezone(s.startTime, businessTz)}
+                                                                    {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
                                                                 </ContextMenuItem>
                                                                 <ContextMenuItem
                                                                     disabled={s.status === ShiftStatus.VALIDATED}
                                                                     onClick={() => handleDeleteShift(s.id)}
                                                                     className="pl-4 text-destructive focus:text-destructive"
                                                                 >
-                                                                    Delete {formatInBusinessTimezone(s.startTime, businessTz)}
+                                                                    {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
                                                                 </ContextMenuItem>
                                                             </div>
                                                         ))}
@@ -824,8 +834,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             'grid-cols-[200px_repeat(7,1fr)]'
                         }`}>
                             <div className="p-3 text-xs font-bold border-r flex flex-col justify-center bg-muted/10">
-                                <div>DAILY TOTALS</div>
-                                <div className="text-[10px] text-muted-foreground font-normal">Hrs / Est. Cost</div>
+                                <div>{t("schedule_staff_scheduling_tab.footer_daily_totals")}</div>
+                                <div className="text-[10px] text-muted-foreground font-normal">{t("schedule_staff_scheduling_tab.footer_hrs_est_cost")}</div>
                             </div>
                             {viewInterval.map(day => {
                                 const dayData = managerRoster?.find((r: any) => r.date === format(day, 'yyyy-MM-dd'));

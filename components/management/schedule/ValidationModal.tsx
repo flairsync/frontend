@@ -20,6 +20,7 @@ import { useBusinessBasicDetails } from '@/features/business/useBusinessBasicDet
 import { usePageContext } from 'vike-react/usePageContext';
 import { ShieldCheck, Lock } from 'lucide-react';
 import dayjs from '@/utils/date-utils';
+import { useTranslation } from 'react-i18next';
 
 interface ValidationModalProps {
     open: boolean;
@@ -38,6 +39,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     initialCheckOut,
     onSuccess,
 }) => {
+    const { t } = useTranslation('management');
     const { validateAttendance, isValidatingAttendance } = useAttendance();
     const { data: fullRecord } = useAttendanceById(open ? attendanceId : undefined);
     const { userProfile } = useProfile();
@@ -118,10 +120,10 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <ShieldCheck className="h-5 w-5 text-indigo-600" />
-                            Validate Attendance
+                            {t('schedule_modals.validation.title')}
                         </DialogTitle>
                         <DialogDescription>
-                            Review and adjust times before locking this record.
+                            {t('schedule_modals.validation.description')}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -129,24 +131,26 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                         <div className="py-4 space-y-3">
                             <div className="flex items-center gap-2 bg-blue-50 text-blue-700 rounded-lg px-4 py-3 text-sm font-medium">
                                 <Lock className="h-4 w-4 shrink-0" />
-                                This record has already been validated and is locked.
+                                {t('schedule_modals.validation.already_validated')}
                             </div>
                             {validatedByName && (
                                 <p className="text-sm text-slate-500">
-                                    Validated by <strong>{validatedByName}</strong>
                                     {fullRecord?.validatedAt
-                                        ? ` on ${dayjs(fullRecord.validatedAt).tz(businessTz).format("MMM D, YYYY HH:mm")}`
-                                        : ""}
+                                        ? t('schedule_modals.validation.validated_by_on', {
+                                            name: validatedByName,
+                                            date: dayjs(fullRecord.validatedAt).tz(businessTz).format("MMM D, YYYY HH:mm"),
+                                        })
+                                        : t('schedule_modals.validation.validated_by', { name: validatedByName })}
                                 </p>
                             )}
                             <DialogFooter>
-                                <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+                                <Button variant="outline" onClick={() => onOpenChange(false)}>{t('schedule_modals.validation.close')}</Button>
                             </DialogFooter>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-4 py-4">
                             <div className="space-y-2">
-                                <Label htmlFor="val-checkIn">Check-In Time</Label>
+                                <Label htmlFor="val-checkIn">{t('schedule_modals.validation.check_in_label')}</Label>
                                 <Input
                                     id="val-checkIn"
                                     type="datetime-local"
@@ -156,7 +160,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="val-checkOut">Check-Out Time</Label>
+                                <Label htmlFor="val-checkOut">{t('schedule_modals.validation.check_out_label')}</Label>
                                 <Input
                                     id="val-checkOut"
                                     type="datetime-local"
@@ -166,28 +170,28 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                                     required={!!initialCheckOut}
                                 />
                                 {checkOut && checkIn && !checkoutAfterCheckin() && (
-                                    <p className="text-xs text-red-500">Check-out must be after check-in.</p>
+                                    <p className="text-xs text-red-500">{t('schedule_modals.validation.checkout_after_checkin_error')}</p>
                                 )}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="val-notes">Notes</Label>
+                                <Label htmlFor="val-notes">{t('schedule_modals.validation.notes_label')}</Label>
                                 <Textarea
                                     id="val-notes"
-                                    placeholder="Add any validation notes..."
+                                    placeholder={t('schedule_modals.validation.notes_placeholder')}
                                     value={notes}
                                     onChange={(e) => setNotes(e.target.value)}
                                 />
                             </div>
                             <DialogFooter>
                                 <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                                    Cancel
+                                    {t('schedule_modals.validation.cancel')}
                                 </Button>
                                 <Button
                                     type="submit"
                                     disabled={isValidatingAttendance || !checkoutAfterCheckin()}
                                     className="bg-indigo-600 hover:bg-indigo-700"
                                 >
-                                    Validate Record
+                                    {t('schedule_modals.validation.validate_record')}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -198,18 +202,18 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
             <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Confirm Validation</AlertDialogTitle>
+                        <AlertDialogTitle>{t('schedule_modals.validation.confirm_title')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will lock the attendance record and recompute pay. <strong>This action cannot be undone.</strong>
+                            {t('schedule_modals.validation.confirm_description_prefix')} <strong>{t('schedule_modals.validation.confirm_description_strong')}</strong>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Go Back</AlertDialogCancel>
+                        <AlertDialogCancel>{t('schedule_modals.validation.go_back')}</AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handleConfirmedSubmit}
                             className="bg-indigo-600 hover:bg-indigo-700"
                         >
-                            {isValidatingAttendance ? "Validating..." : "Confirm & Lock"}
+                            {isValidatingAttendance ? t('schedule_modals.validation.validating') : t('schedule_modals.validation.confirm_and_lock')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

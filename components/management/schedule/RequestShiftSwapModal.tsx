@@ -11,6 +11,7 @@ import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDet
 import { formatInBusinessTimezone } from "@/utils/date-utils";
 import dayjs from "@/utils/date-utils";
 import { ShiftStatus } from "@/models/business/shift/Shift";
+import { useTranslation } from "react-i18next";
 
 interface RequestShiftSwapModalProps {
     open: boolean;
@@ -25,6 +26,7 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
     currentEmploymentId,
     initialShiftId
 }) => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -71,17 +73,17 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Request Shift Swap</DialogTitle>
+                    <DialogTitle>{t("schedule_modals.request_shift_swap.title")}</DialogTitle>
                     <DialogDescription>
-                        Propose a shift swap with another staff member.
+                        {t("schedule_modals.request_shift_swap.description")}
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                        <Label>Select Your Shift</Label>
+                        <Label>{t("schedule_modals.request_shift_swap.select_shift_label")}</Label>
                         <Select value={shiftId} onValueChange={setShiftId}>
                             <SelectTrigger>
-                                <SelectValue placeholder={fetchingShifts ? "Loading shifts..." : "Choose a shift"} />
+                                <SelectValue placeholder={fetchingShifts ? t("schedule_modals.request_shift_swap.loading_shifts") : t("schedule_modals.request_shift_swap.choose_shift_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {myShifts.map(shift => (
@@ -90,22 +92,22 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
                                     </SelectItem>
                                 ))}
                                 {myShifts.length === 0 && !fetchingShifts && (
-                                    <SelectItem value="none" disabled>No upcoming shifts</SelectItem>
+                                    <SelectItem value="none" disabled>{t("schedule_modals.request_shift_swap.no_upcoming_shifts")}</SelectItem>
                                 )}
                             </SelectContent>
                         </Select>
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Swap With</Label>
+                        <Label>{t("schedule_modals.request_shift_swap.swap_with_label")}</Label>
                         <Select value={toEmploymentId} onValueChange={setToEmploymentId}>
                             <SelectTrigger>
-                                <SelectValue placeholder={fetchingEmployees ? "Loading employees..." : "Choose a staff member"} />
+                                <SelectValue placeholder={fetchingEmployees ? t("schedule_modals.request_shift_swap.loading_employees") : t("schedule_modals.request_shift_swap.choose_staff_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {otherEmployees.map(emp => (
                                     <SelectItem key={emp.id} value={emp.id}>
-                                        {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || 'Unnamed Staff'}
+                                        {emp.professionalProfile?.displayName || emp.professionalProfile?.firstName || t("schedule_modals.request_shift_swap.unnamed_staff")}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -113,9 +115,9 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
-                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>{t("schedule_modals.request_shift_swap.cancel")}</Button>
                         <Button type="submit" disabled={isRequesting || isLocalSubmitting || !shiftId || !toEmploymentId}>
-                            {isRequesting || isLocalSubmitting ? "Submitting..." : "Send Swap Request"}
+                            {isRequesting || isLocalSubmitting ? t("schedule_modals.request_shift_swap.submitting") : t("schedule_modals.request_shift_swap.send_swap_request")}
                         </Button>
                     </div>
                 </form>

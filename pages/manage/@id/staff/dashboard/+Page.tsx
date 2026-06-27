@@ -14,6 +14,7 @@ import { useNotifications } from "@/features/notifications/useNotifications"
 import { usePermissions } from "@/features/auth/usePermissions"
 import { getTaskStatusLabel, TASK_STATUS_COLORS } from "@/models/Task"
 import { useTranslation } from "react-i18next"
+import { PinnedLinksWidget } from "@/components/dashboard/PinnedLinksWidget"
 
 export default function StaffDashboard() {
     const { t } = useTranslation("management");
@@ -48,6 +49,8 @@ export default function StaffDashboard() {
                 <h1 className="text-2xl font-bold tracking-tight">{t("staff_dashboard.title")}</h1>
                 <p className="text-muted-foreground">{t("staff_dashboard.subtitle")}</p>
             </div>
+
+            {businessId && <PinnedLinksWidget businessId={businessId as string} role="staff" />}
 
             {businessId && employmentId && (
                 <AttendanceDashboard businessId={businessId as string} employmentId={employmentId} />

@@ -924,5 +924,14 @@
     "pending_validation": { "title": "En attente de validation", "description": "En attente de l'examen du responsable" },
     "validated": { "title": "Validés", "description": "Enregistrements verrouillés" },
     "absences_late": { "title": "Absences / Retards", "description": "Absences · Arrivées en retard" }
+  },
+  "pinned_links": {
+    "title": "Accès rapides",
+    "add": "Ajouter",
+    "drag_handle": "Glisser pour réorganiser",
+    "remove": "Désépingler",
+    "empty_state": "Épinglez ici les pages que vous utilisez le plus pour y accéder rapidement.",
+    "nothing_to_add": "Toutes les pages disponibles sont déjà épinglées.",
+    "max_reached": "Vous avez atteint la limite de 12 liens épinglés."
   }
 }

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { ShiftTemplate } from "@/models/business/shift/ShiftTemplate";
+import { useTranslation } from "react-i18next";
 
 interface ShiftTemplateModalProps {
     open: boolean;
@@ -23,6 +24,7 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
     isLoading,
     onDelete,
 }) => {
+    const { t } = useTranslation("management");
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -43,23 +45,23 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{template ? "Edit Shift Template" : "Create New Template"}</DialogTitle>
+                    <DialogTitle>{template ? t("schedule_modals.shift_template.edit_title") : t("schedule_modals.shift_template.create_title")}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={formik.handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name">Template Name</Label>
+                        <Label htmlFor="name">{t("schedule_modals.shift_template.name_label")}</Label>
                         <Input
                             id="name"
                             name="name"
                             value={formik.values.name}
                             onChange={formik.handleChange}
-                            placeholder="e.g. Morning Shift"
+                            placeholder={t("schedule_modals.shift_template.name_placeholder")}
                             required
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="startTime">Start Time</Label>
+                            <Label htmlFor="startTime">{t("schedule_modals.shift_template.start_time_label")}</Label>
                             <Input
                                 id="startTime"
                                 name="startTime"
@@ -70,7 +72,7 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="endTime">End Time</Label>
+                            <Label htmlFor="endTime">{t("schedule_modals.shift_template.end_time_label")}</Label>
                             <Input
                                 id="endTime"
                                 name="endTime"
@@ -82,7 +84,7 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="colorCode">Template Color</Label>
+                        <Label htmlFor="colorCode">{t("schedule_modals.shift_template.color_label")}</Label>
                         <div className="flex gap-2 items-center">
                             <Input
                                 id="colorCode"
@@ -92,7 +94,7 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
                                 value={formik.values.colorCode}
                                 onChange={formik.handleChange}
                             />
-                            <span className="text-sm text-muted-foreground">Select a color to identify this template</span>
+                            <span className="text-sm text-muted-foreground">{t("schedule_modals.shift_template.color_hint")}</span>
                         </div>
                     </div>
                     <div className="flex justify-between items-center pt-4">
@@ -103,16 +105,16 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
                                     variant="destructive"
                                     onClick={() => onDelete(template.id)}
                                 >
-                                    Delete
+                                    {t("schedule_modals.shift_template.delete")}
                                 </Button>
                             )}
                         </div>
                         <div className="flex gap-2">
                             <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>
-                                Cancel
+                                {t("schedule_modals.shift_template.cancel")}
                             </Button>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? "Saving..." : "Save"}
+                                {isLoading ? t("schedule_modals.shift_template.saving") : t("schedule_modals.shift_template.save")}
                             </Button>
                         </div>
                     </div>
