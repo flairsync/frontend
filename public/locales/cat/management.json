@@ -929,10 +929,9 @@
   },
   "pinned_links": {
     "title": "Accessos ràpids",
+    "pin": "Fixa als accessos ràpids",
     "add": "Afegir",
-    "drag_handle": "Arrossega per reordenar",
     "remove": "Desfixar",
-    "empty_state": "Fixa aquí les pàgines que més utilitzes per accedir-hi ràpidament.",
     "nothing_to_add": "Ja has fixat totes les pàgines disponibles.",
     "max_reached": "Has arribat al màxim de 12 accessos fixats."
   },

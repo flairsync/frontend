@@ -33,6 +33,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { BusinessOwnerManagementSidebar } from '@/components/management/BusinessOwnerManagementSidebar';
+import { QuickLinksDropdown } from '@/components/management/QuickLinksDropdown';
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
@@ -116,9 +117,9 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div
-                            className=' flex flex-1  justify-end mr-10'
+                            className='flex flex-1 items-center justify-end gap-1 mr-10'
                         >
-
+                            <QuickLinksDropdown businessId={routeParams.id} role="staff" />
                             <HeaderProfileAvatar />
                         </div>
                     </header>

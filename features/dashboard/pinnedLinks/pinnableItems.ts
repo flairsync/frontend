@@ -8,6 +8,8 @@ export interface PinnableItem {
   icon: ElementType;
 }
 
+export const MAX_PINNED_LINKS = 12;
+
 export function getOwnerPinnableItems(): PinnableItem[] {
   const items: NavItem[] = [OVERVIEW_ITEM, ...NAV_GROUPS.flatMap((g) => g.items)];
   return items.map((item) => ({

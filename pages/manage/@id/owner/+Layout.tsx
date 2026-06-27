@@ -21,6 +21,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { BusinessOwnerManagementSidebar } from '@/components/management/BusinessOwnerManagementSidebar';
+import { QuickLinksDropdown } from '@/components/management/QuickLinksDropdown';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -142,7 +143,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
-                        <div className="flex flex-1 justify-end mr-10">
+                        <div className="flex flex-1 items-center justify-end gap-1 mr-10">
+                            <QuickLinksDropdown businessId={routeParams.id} role="owner" />
                             <HeaderProfileAvatar />
                         </div>
                     </header>

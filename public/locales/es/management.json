@@ -929,10 +929,9 @@
   },
   "pinned_links": {
     "title": "Accesos rápidos",
+    "pin": "Anclar a accesos rápidos",
     "add": "Añadir",
-    "drag_handle": "Arrastrar para reordenar",
     "remove": "Desanclar",
-    "empty_state": "Ancla aquí las páginas que más usas para acceder rápidamente.",
     "nothing_to_add": "Ya has anclado todas las páginas disponibles.",
     "max_reached": "Has alcanzado el máximo de 12 accesos anclados."
   },

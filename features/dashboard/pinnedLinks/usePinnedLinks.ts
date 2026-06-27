@@ -5,7 +5,6 @@ import {
   createPinnedLinkApiCall,
   deletePinnedLinkApiCall,
   fetchPinnedLinksApiCall,
-  reorderPinnedLinksApiCall,
 } from "./service";
 
 const pinnedLinksKey = (businessId: string) => ["pinned_links", businessId];
@@ -50,22 +49,4 @@ export const useRemovePinnedLink = (businessId: string) => {
   });
 
   return { removePinnedLink, removingPinnedLink };
-};
-
-export const useReorderPinnedLinks = (businessId: string) => {
-  const queryClient = useQueryClient();
-
-  const { mutate: reorderPinnedLinks } = useMutation({
-    mutationFn: (items: { id: string; order: number }[]) =>
-      reorderPinnedLinksApiCall(businessId, items),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: pinnedLinksKey(businessId) });
-    },
-    onError: () => {
-      toast.error("Failed to save the new order. Please try again.");
-      queryClient.invalidateQueries({ queryKey: pinnedLinksKey(businessId) });
-    },
-  });
-
-  return { reorderPinnedLinks };
 };

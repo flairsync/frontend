@@ -50,7 +50,16 @@ import {
     Store,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
+import { SidebarPinToggle } from "./SidebarPinToggle"
 import { useMyBusinesses } from "@/features/business/useMyBusinesses"
+import {
+    MAX_PINNED_LINKS,
+} from "@/features/dashboard/pinnedLinks/pinnableItems"
+import {
+    useAddPinnedLink,
+    usePinnedLinks,
+    useRemovePinnedLink,
+} from "@/features/dashboard/pinnedLinks/usePinnedLinks"
 import { cn } from "@/lib/utils"
 import { useTranslation } from "react-i18next"
 
@@ -162,10 +171,16 @@ function CollapsibleNavGroup({
     group,
     businessId,
     defaultOpen,
+    pinnedPaths,
+    atMax,
+    onTogglePin,
 }: {
     group: NavGroup
     businessId: string
     defaultOpen: boolean
+    pinnedPaths: Set<string>
+    atMax: boolean
+    onTogglePin: (path: string) => void
 }) {
     const [open, setOpen] = useState(defaultOpen)
     const { t } = useTranslation("management")
@@ -199,20 +214,28 @@ function CollapsibleNavGroup({
                 <div className="overflow-hidden">
                     <SidebarGroupContent className="pt-1 pb-2">
                         <SidebarMenu>
-                            {group.items.map((item) => (
-                                <SidebarMenuItem key={item.key}>
-                                    <SidebarMenuButton
-                                        asChild
-                                        isActive={isActiveLink(item.key)}
-                                        className="pl-7"
-                                    >
-                                        <a href={item.url.replace(":id", businessId)}>
-                                            <item.icon />
-                                            {t(item.titleKey)}
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            {group.items.map((item) => {
+                                const path = `owner/${item.key}`
+                                return (
+                                    <SidebarMenuItem key={item.key}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={isActiveLink(item.key)}
+                                            className="pl-7"
+                                        >
+                                            <a href={item.url.replace(":id", businessId)}>
+                                                <item.icon />
+                                                {t(item.titleKey)}
+                                            </a>
+                                        </SidebarMenuButton>
+                                        <SidebarPinToggle
+                                            pinned={pinnedPaths.has(path)}
+                                            atMax={atMax}
+                                            onToggle={() => onTogglePin(path)}
+                                        />
+                                    </SidebarMenuItem>
+                                )
+                            })}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </div>
@@ -231,6 +254,17 @@ export function BusinessOwnerManagementSidebar({
     const { t } = useTranslation("management")
 
     const businesses = myBusinesses?.map((b) => ({ id: b.id, name: b.name })) ?? []
+
+    const { pinnedLinks } = usePinnedLinks(businessId)
+    const { addPinnedLink } = useAddPinnedLink(businessId)
+    const { removePinnedLink } = useRemovePinnedLink(businessId)
+    const pinnedByPath = new Map(pinnedLinks.map((p) => [p.path, p.id]))
+    const atMax = pinnedLinks.length >= MAX_PINNED_LINKS
+    const togglePin = (path: string) => {
+        const pinId = pinnedByPath.get(path)
+        if (pinId) removePinnedLink(pinId)
+        else addPinnedLink(path)
+    }
 
     return (
         <Sidebar {...props}>
@@ -296,6 +330,11 @@ export function BusinessOwnerManagementSidebar({
                                         {t(OVERVIEW_ITEM.titleKey)}
                                     </a>
                                 </SidebarMenuButton>
+                                <SidebarPinToggle
+                                    pinned={pinnedByPath.has(`owner/${OVERVIEW_ITEM.key}`)}
+                                    atMax={atMax}
+                                    onToggle={() => togglePin(`owner/${OVERVIEW_ITEM.key}`)}
+                                />
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
@@ -308,6 +347,9 @@ export function BusinessOwnerManagementSidebar({
                         group={group}
                         businessId={businessId}
                         defaultOpen={groupHasActiveItem(group)}
+                        pinnedPaths={new Set(pinnedByPath.keys())}
+                        atMax={atMax}
+                        onTogglePin={togglePin}
                     />
                 ))}
             </SidebarContent>

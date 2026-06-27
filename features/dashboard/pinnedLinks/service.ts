@@ -10,10 +10,5 @@ export const fetchPinnedLinksApiCall = async (businessId: string) =>
 export const createPinnedLinkApiCall = (businessId: string, path: string) =>
   flairapi.post(`${businessesBaseUrl}/${businessId}/pinned-links`, { path });
 
-export const reorderPinnedLinksApiCall = (
-  businessId: string,
-  items: { id: string; order: number }[],
-) => flairapi.patch(`${businessesBaseUrl}/${businessId}/pinned-links/reorder`, { items });
-
 export const deletePinnedLinkApiCall = (businessId: string, id: string) =>
   flairapi.delete(`${businessesBaseUrl}/${businessId}/pinned-links/${id}`);

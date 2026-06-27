@@ -14,7 +14,14 @@ import {
 } from "@/components/ui/sidebar"
 import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, PackageOpen, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
+import { SidebarPinToggle } from "../management/SidebarPinToggle"
 import { usePermissions } from "@/features/auth/usePermissions"
+import { MAX_PINNED_LINKS } from "@/features/dashboard/pinnedLinks/pinnableItems"
+import {
+    useAddPinnedLink,
+    usePinnedLinks,
+    useRemovePinnedLink,
+} from "@/features/dashboard/pinnedLinks/usePinnedLinks"
 import { useTranslation } from "react-i18next"
 
 // This is sample data.
@@ -122,6 +129,17 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
     const { hasPermission, isLoading: loadingPermissions } = usePermissions(businessId);
     const { t } = useTranslation("management");
 
+    const { pinnedLinks } = usePinnedLinks(businessId);
+    const { addPinnedLink } = useAddPinnedLink(businessId);
+    const { removePinnedLink } = useRemovePinnedLink(businessId);
+    const pinnedByPath = new Map(pinnedLinks.map((p) => [p.path, p.id]));
+    const atMax = pinnedLinks.length >= MAX_PINNED_LINKS;
+    const togglePin = (path: string) => {
+        const pinId = pinnedByPath.get(path);
+        if (pinId) removePinnedLink(pinId);
+        else addPinnedLink(path);
+    };
+
     return (
         <Sidebar {...props}
         >
@@ -147,16 +165,24 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
                                         if (loadingPermissions) return false;
                                         return hasPermission((item as any).requiredPermission as any, (item as any).requiredAction as any);
                                     })
-                                    .map((item) => (
-                                        <SidebarMenuItem key={item.key}>
-                                            <SidebarMenuButton asChild isActive={isActiveLink(item.key)}>
-                                                <a href={item.url.replace(":id", businessId)}>
-                                                    <item.icon className="h-4 w-4" />
-                                                    <span>{t(item.titleKey)}</span>
-                                                </a>
-                                            </SidebarMenuButton>
-                                        </SidebarMenuItem>
-                                    ))}
+                                    .map((item) => {
+                                        const path = `staff/${item.key}`
+                                        return (
+                                            <SidebarMenuItem key={item.key}>
+                                                <SidebarMenuButton asChild isActive={isActiveLink(item.key)}>
+                                                    <a href={item.url.replace(":id", businessId)}>
+                                                        <item.icon className="h-4 w-4" />
+                                                        <span>{t(item.titleKey)}</span>
+                                                    </a>
+                                                </SidebarMenuButton>
+                                                <SidebarPinToggle
+                                                    pinned={pinnedByPath.has(path)}
+                                                    atMax={atMax}
+                                                    onToggle={() => togglePin(path)}
+                                                />
+                                            </SidebarMenuItem>
+                                        )
+                                    })}
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>

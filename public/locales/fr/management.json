@@ -929,10 +929,9 @@
   },
   "pinned_links": {
     "title": "Accès rapides",
+    "pin": "Épingler aux accès rapides",
     "add": "Ajouter",
-    "drag_handle": "Glisser pour réorganiser",
     "remove": "Désépingler",
-    "empty_state": "Épinglez ici les pages que vous utilisez le plus pour y accéder rapidement.",
     "nothing_to_add": "Toutes les pages disponibles sont déjà épinglées.",
     "max_reached": "Vous avez atteint la limite de 12 liens épinglés."
   },

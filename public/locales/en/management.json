@@ -929,10 +929,9 @@
   },
   "pinned_links": {
     "title": "Quick Links",
+    "pin": "Pin to quick links",
     "add": "Add",
-    "drag_handle": "Drag to reorder",
     "remove": "Unpin",
-    "empty_state": "Pin your most-used pages here for quick access.",
     "nothing_to_add": "All available pages are already pinned.",
     "max_reached": "You've reached the maximum of 12 pinned links."
   },
