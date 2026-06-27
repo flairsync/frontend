@@ -166,14 +166,14 @@
   "subscriptions": {
     "current_plan": "Pla actual",
     "limits": {
-      "businesses": "{{count}} negoci",
-      "businesses_plural": "{{count}} negocis",
-      "employees": "{{count}} empleat",
-      "employees_plural": "{{count}} empleats",
-      "menus": "{{count}} menú",
-      "menus_plural": "{{count}} menús",
-      "products": "{{count}} producte",
-      "products_plural": "{{count}} productes"
+      "businesses_one": "{{count}} negoci",
+      "businesses_other": "{{count}} negocis",
+      "employees_one": "{{count}} empleat",
+      "employees_other": "{{count}} empleats",
+      "menus_one": "{{count}} menú",
+      "menus_other": "{{count}} menús",
+      "products_one": "{{count}} producte",
+      "products_other": "{{count}} productes"
     },
     "features": {
       "basic_menu_mgmt": "Gestió bàsica de menú",

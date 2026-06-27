@@ -166,14 +166,14 @@
   "subscriptions": {
     "current_plan": "Plan actual",
     "limits": {
-      "businesses": "{{count}} negocio",
-      "businesses_plural": "{{count}} negocios",
-      "employees": "{{count}} empleado",
-      "employees_plural": "{{count}} empleados",
-      "menus": "{{count}} menú",
-      "menus_plural": "{{count}} menús",
-      "products": "{{count}} producto",
-      "products_plural": "{{count}} productos"
+      "businesses_one": "{{count}} negocio",
+      "businesses_other": "{{count}} negocios",
+      "employees_one": "{{count}} empleado",
+      "employees_other": "{{count}} empleados",
+      "menus_one": "{{count}} menú",
+      "menus_other": "{{count}} menús",
+      "products_one": "{{count}} producto",
+      "products_other": "{{count}} productos"
     },
     "features": {
       "basic_menu_mgmt": "Gestión básica de menú",
