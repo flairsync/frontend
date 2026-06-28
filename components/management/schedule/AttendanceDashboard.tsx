@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Play, Square, Coffee, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useBusinessBasicDetails } from '@/features/business/useBusinessBasicDetails';
-import { formatInBusinessTimezone } from '@/utils/date-utils';
+import { formatTimeInBusinessTimezone } from '@/utils/date-utils';
 import { toast } from 'sonner';
 
 interface AttendanceDashboardProps {
@@ -251,24 +251,24 @@ export const AttendanceDashboard: React.FC<AttendanceDashboardProps> = ({ busine
           <div className="mt-6 flex flex-col gap-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Clock className="h-4 w-4" />
-              <span>{t('attendance_dashboard.checked_in_at', { time: formatInBusinessTimezone(activeLog.checkInTime, businessTz) })}</span>
+              <span>{t('attendance_dashboard.checked_in_at', { time: formatTimeInBusinessTimezone(activeLog.checkInTime, businessTz) })}</span>
             </div>
             {activeLog.checkOutTime && (
               <div className="flex items-center gap-2 text-sm text-emerald-600 font-medium">
                 <CheckCircle2 className="h-4 w-4" />
-                <span>{t('attendance_dashboard.checked_out_at', { time: formatInBusinessTimezone(activeLog.checkOutTime, businessTz) })}</span>
+                <span>{t('attendance_dashboard.checked_out_at', { time: formatTimeInBusinessTimezone(activeLog.checkOutTime, businessTz) })}</span>
               </div>
             )}
             {activeBreak && (
               <div className="flex items-center gap-2 text-sm text-orange-500 font-medium">
                 <Coffee className="h-4 w-4" />
-                <span>{t('attendance_dashboard.on_break_since', { time: formatInBusinessTimezone(activeBreak.start || activeBreak.startTime, businessTz) })}</span>
+                <span>{t('attendance_dashboard.on_break_since', { time: formatTimeInBusinessTimezone(activeBreak.start || activeBreak.startTime, businessTz) })}</span>
               </div>
             )}
             {nextShift && !activeLog.checkOutTime && (
               <div className="flex items-center gap-2 text-sm text-blue-500">
                 <AlertCircle className="h-4 w-4" />
-                <span>{t('attendance_dashboard.working_shift', { start: formatInBusinessTimezone(nextShift.startTime, businessTz), end: formatInBusinessTimezone(nextShift.endTime, businessTz) })}</span>
+                <span>{t('attendance_dashboard.working_shift', { start: formatTimeInBusinessTimezone(nextShift.startTime, businessTz), end: formatTimeInBusinessTimezone(nextShift.endTime, businessTz) })}</span>
               </div>
             )}
           </div>

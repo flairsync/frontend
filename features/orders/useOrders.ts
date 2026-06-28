@@ -11,6 +11,7 @@ import {
     prepareOrderApiCall,
     readyOrderApiCall,
     completeOrderApiCall,
+    quickCompleteOrderApiCall,
     cancelOrderApiCall,
     createPaymentApiCall,
     refundPaymentApiCall,
@@ -182,6 +183,31 @@ export const useOrders = (
                 const msg = error.response?.data?.message || "Failed to complete order";
                 toast.error(msg);
             }
+        }
+    });
+
+    const quickCompleteOrderMutation = useMutation({
+        mutationFn: (orderId: string) => quickCompleteOrderApiCall(businessId, orderId),
+        onSuccess: (order) => {
+            toast.success(order.status === "completed" ? "Order completed" : "Order is ready — payment required to complete");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["inventory_items", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["inventory_dashboard", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+        },
+        onError: (error: any) => {
+            const code = error.response?.data?.code;
+            if (code === "inventory.insufficient_stock") {
+                const msg = error.response?.data?.message || "Insufficient stock to complete this order.";
+                toast.error("Insufficient Stock", {
+                    description: msg,
+                    duration: 8000,
+                });
+                return;
+            }
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (code !== "order.invalid_transition") toast.error("Failed to quick complete order");
         }
     });
 
@@ -448,6 +474,8 @@ export const useOrders = (
         isMarkingReady: readyOrderMutation.isPending,
         completeOrder: completeOrderMutation.mutate,
         isCompletingOrder: completeOrderMutation.isPending,
+        quickCompleteOrder: quickCompleteOrderMutation.mutate,
+        isQuickCompletingOrder: quickCompleteOrderMutation.isPending,
         cancelOrder: cancelOrderMutation.mutate,
         isCancellingOrder: cancelOrderMutation.isPending,
         createPayment: createPaymentMutation.mutateAsync,

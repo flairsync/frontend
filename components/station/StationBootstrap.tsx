@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { usePageContext } from "vike-react/usePageContext";
 import { getOrCreateDeviceUuid, getStationToken, setActiveStationType } from "@/features/station/useStationAuth";
 import { stationApi } from "@/features/station/station-api";
 import type { StationInfo } from "@/models/Station";
@@ -67,6 +68,8 @@ function FullScreenLoader() {
 
 export default function StationBootstrap({ stationType }: Props) {
   const { t } = useTranslation("station");
+  const { urlParsed } = usePageContext();
+  const linkCode = (urlParsed.search.linkCode as string) || undefined;
   // Must be set synchronously before any API call or token read so that
   // stationApi / staffApi interceptors pick up the right per-type token.
   setActiveStationType(stationType);
@@ -142,6 +145,7 @@ export default function StationBootstrap({ stationType }: Props) {
     return (
       <PairingScreen
         stationType={stationType}
+        initialCode={linkCode}
         onLinked={() => window.location.reload()}
       />
     );

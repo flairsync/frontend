@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useShifts, useAllBusinessBids } from '@/features/shifts/useShifts';
-import { formatInBusinessTimezone } from '@/utils/date-utils';
+import { formatInBusinessTimezone, formatTimeInBusinessTimezone } from '@/utils/date-utils';
 import { useMyBusiness } from '@/features/business/useMyBusiness';
 import { Loader2, Inbox, AlertCircle, RefreshCw, Check, X, Shield } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -103,12 +103,12 @@ export default function ManagerScheduleBidsTab() {
                                                     </Badge>
                                                 </div>
                                                 <span className="text-xs text-muted-foreground">
-                                                    {formatInBusinessTimezone(bid.shift?.startTime, businessTz, 'HH:mm')} - {formatInBusinessTimezone(bid.shift?.endTime, businessTz, 'HH:mm')}
+                                                    {formatTimeInBusinessTimezone(bid.shift?.startTime, businessTz)} - {formatTimeInBusinessTimezone(bid.shift?.endTime, businessTz)}
                                                 </span>
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-muted-foreground text-xs italic">
-                                            {formatInBusinessTimezone(bid.createdAt, businessTz, 'MMM D, HH:mm')}
+                                            {formatInBusinessTimezone(bid.createdAt, businessTz, 'MMM D')}, {formatTimeInBusinessTimezone(bid.createdAt, businessTz)}
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">

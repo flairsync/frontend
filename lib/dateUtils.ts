@@ -56,4 +56,24 @@ export const parseInTimezone = (
     }
 };
 
+/**
+ * Formats the time-of-day portion of a date using the browser's locale-preferred
+ * hour cycle (12h AM/PM vs 24h) instead of a hardcoded format, so displayed times
+ * are consistent with the viewer's own browser/OS language settings.
+ */
+export const formatTime = (
+    date: string | Date | undefined | null,
+    tz?: string | null
+): string => {
+    if (!date) return '';
+
+    try {
+        const d = (tz ? dayjs(date).tz(tz) : dayjs(date)).toDate();
+        return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    } catch (e) {
+        console.error(`Error formatting time in timezone ${tz}:`, e);
+        return dayjs(date).toDate().toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    }
+};
+
 export default dayjs;

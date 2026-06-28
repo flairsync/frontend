@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
+import { formatTime } from "@/lib/dateUtils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CreditCard, Banknote, CalendarClock, Ban, CheckCircle, Undo, Pencil, ChevronRight, Flame } from "lucide-react";
 import { RefundPaymentModal } from "@/components/staff/orders/RefundPaymentModal";
@@ -142,7 +143,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                             </Badge>
                         </DialogTitle>
                         <span className="text-sm text-muted-foreground">
-                            {format(new Date(displayOrder.createdAt), "MMM d, h:mm a")}
+                            {format(new Date(displayOrder.createdAt), "MMM d")}, {formatTime(displayOrder.createdAt)}
                         </span>
                     </div>
                     <DialogDescription className="text-sm">
@@ -226,7 +227,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     {isVoided && (item.voidedBy || item.voidedAt) && (
                                                         <span className="text-xs text-muted-foreground mt-0.5">
                                                             {item.voidedBy ? t("staff_orders.order_details_modal.voided_by", { name: resolveEmployeeName(item.voidedBy) }) : t("staff_orders.order_details_modal.voided")}
-                                                            {item.voidedAt && ` · ${format(new Date(item.voidedAt), "MMM d, h:mm a")}`}
+                                                            {item.voidedAt && ` · ${format(new Date(item.voidedAt), "MMM d")}, ${formatTime(item.voidedAt)}`}
                                                         </span>
                                                     )}
                                                     {item.notes && (
@@ -341,7 +342,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     <span className="font-medium capitalize text-sm">{payment.method} {t("staff_orders.order_details_modal.payment_method_suffix")}</span>
                                                     <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
                                                         <CalendarClock className="w-3 h-3" />
-                                                        {format(new Date(payment.createdAt), "MMM d, h:mm a")}
+                                                        {format(new Date(payment.createdAt), "MMM d")}, {formatTime(payment.createdAt)}
                                                     </div>
                                                     {payment.status === "refunded" && payment.refundedBy && (
                                                         <div className="flex items-center gap-1 text-xs text-amber-600 mt-0.5">

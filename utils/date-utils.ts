@@ -23,6 +23,20 @@ export const formatInBusinessTimezone = (
 };
 
 /**
+ * Formats the time-of-day portion of a UTC date string in a business's timezone,
+ * using the browser's locale-preferred hour cycle (12h AM/PM vs 24h) rather than a
+ * hardcoded 'HH:mm', so displayed times match the viewer's own browser/OS settings.
+ */
+export const formatTimeInBusinessTimezone = (
+  utcString: string | undefined | null,
+  businessTz: string | undefined,
+): string => {
+  if (!utcString) return '--:--';
+  const tz = businessTz || 'UTC';
+  return dayjs.utc(utcString).tz(tz).toDate().toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+};
+
+/**
  * Parses a local time string (HH:mm) and a reference date in a specific timezone
  * and returns the corresponding UTC ISO string.
  * Useful for updating check-in/out times.

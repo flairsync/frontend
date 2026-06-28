@@ -12,7 +12,7 @@ import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { getCurrencySymbol } from "@/utils/currency";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin } from "lucide-react";
+import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin, Zap } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import ReceiptView from "@/components/pos/ReceiptView";
@@ -30,6 +30,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ActiveOrdersView } from "@/components/management/orders/ActiveOrdersView";
 import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
 import { DateRange } from "react-day-picker";
+import { formatTime } from "@/lib/dateUtils";
 
 const OwnerOrdersPage: React.FC = () => {
     const { t } = useTranslation("management");
@@ -188,6 +189,8 @@ const OwnerOrdersPage: React.FC = () => {
         isMarkingReady,
         completeOrder,
         isCompletingOrder,
+        quickCompleteOrder,
+        isQuickCompletingOrder,
         batchUpdateOrders,
         isBatchUpdating,
     } = useOrders(
@@ -219,12 +222,6 @@ const OwnerOrdersPage: React.FC = () => {
 
     const getItemsCount = (order: Order) => {
         return order.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
-    };
-
-    const formatTime = (isoString?: string) => {
-        if (!isoString) return "";
-        const date = new Date(isoString);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
     const getStatusVariant = (status: string) => {
@@ -493,6 +490,20 @@ const OwnerOrdersPage: React.FC = () => {
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end">
+                                                                {!isTerminal(o.status) && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => quickCompleteOrder(o.id, {
+                                                                            onSuccess: (updated: Order) => {
+                                                                                if (updated.status === "ready") handleOpenPayment(o);
+                                                                            },
+                                                                        })}
+                                                                        disabled={isQuickCompletingOrder}
+                                                                        className="text-purple-600 focus:text-purple-700"
+                                                                    >
+                                                                        <Zap className="mr-2 h-4 w-4" />
+                                                                        <span>Quick Complete</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                                 {o.paymentStatus !== "paid" && !isTerminal(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
                                                                         <CreditCard className="mr-2 h-4 w-4" />

@@ -14,7 +14,7 @@ import { useManagerRoster } from '@/features/shifts/useShifts'
 import { useMyBusiness } from '@/features/business/useMyBusiness'
 import { usePermissions } from '@/features/auth/usePermissions'
 import { getCurrencySymbol } from '@/utils/currency'
-import { formatInBusinessTimezone } from '@/utils/date-utils'
+import { formatTimeInBusinessTimezone } from '@/utils/date-utils'
 import { BulkScheduleModal } from './BulkScheduleModal'
 import { BulkStaffWeeklySetupModal } from './BulkStaffWeeklySetupModal'
 import { IndividualScheduleModal } from './IndividualScheduleModal'
@@ -595,7 +595,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                             >
                                                                 <div className="flex items-center justify-between gap-1">
                                                                     <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
-                                                                        {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
+                                                                        {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
                                                                     {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2 h-2 text-green-600" />}
                                                                     {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600" />}
@@ -628,10 +628,10 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                                     </ContextMenuItem>
                                                                                 )}
                                                                                 <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleEditShift(s)} className="pl-4">
-                                                                                    {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
+                                                                                    {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
                                                                                 </ContextMenuItem>
                                                                                 <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleDeleteShift(s.id)} className="pl-4 text-destructive focus:text-destructive">
-                                                                                    {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
+                                                                                    {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
                                                                                 </ContextMenuItem>
                                                                             </div>
                                                                         ))}
@@ -676,7 +676,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                         >
                                                             <div className="flex items-center justify-between gap-1">
                                                                 <div className="font-bold text-orange-800 truncate">
-                                                                    {formatInBusinessTimezone(shift.startTime, businessTz, 'HH:mm')} - {formatInBusinessTimezone(shift.endTime, businessTz, 'HH:mm')}
+                                                                    {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                 </div>
                                                                 <Badge variant="outline" className="text-[7px] px-1 py-0 h-3 bg-white border-orange-200 text-orange-700 font-bold uppercase">{t("schedule_staff_scheduling_tab.status_open")}</Badge>
                                                             </div>
@@ -755,7 +755,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                             >
                                                                 <div className="flex items-center justify-between gap-1">
                                                                     <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
-                                                                        {formatInBusinessTimezone(shift.startTime, businessTz, 'HH:mm')} - {formatInBusinessTimezone(shift.endTime, businessTz, 'HH:mm')}
+                                                                        {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
                                                                     <div className="flex items-center gap-1">
                                                                         {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2.5 h-2.5 text-green-600" />}
@@ -804,14 +804,14 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     onClick={() => handleEditShift(s)}
                                                                     className="pl-4"
                                                                 >
-                                                                    {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
+                                                                    {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
                                                                 </ContextMenuItem>
                                                                 <ContextMenuItem
                                                                     disabled={s.status === ShiftStatus.VALIDATED}
                                                                     onClick={() => handleDeleteShift(s.id)}
                                                                     className="pl-4 text-destructive focus:text-destructive"
                                                                 >
-                                                                    {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatInBusinessTimezone(s.startTime, businessTz) })}
+                                                                    {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
                                                                 </ContextMenuItem>
                                                             </div>
                                                         ))}

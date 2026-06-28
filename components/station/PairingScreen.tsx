@@ -10,12 +10,17 @@ import { Monitor, ChefHat, Loader2, Unplug } from "lucide-react";
 
 interface Props {
   stationType: "pos" | "kds";
+  initialCode?: string;
   onLinked: () => void;
 }
 
-export default function PairingScreen({ stationType, onLinked }: Props) {
+function sanitizeCode(val: string) {
+  return val.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
+}
+
+export default function PairingScreen({ stationType, initialCode, onLinked }: Props) {
   const { t } = useTranslation("station");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(() => sanitizeCode(initialCode ?? ""));
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,8 +49,7 @@ export default function PairingScreen({ stationType, onLinked }: Props) {
   }
 
   function handleCodeChange(val: string) {
-    const sanitized = val.toUpperCase().replace(/[^A-Z0-9]/g, "");
-    if (sanitized.length <= 8) setCode(sanitized);
+    setCode(sanitizeCode(val));
   }
 
   const Icon = stationType === "kds" ? ChefHat : Monitor;
@@ -80,6 +84,7 @@ export default function PairingScreen({ stationType, onLinked }: Props) {
                 placeholder={t("pairing_screen.form.station_name_placeholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                autoFocus={code.length === 8}
                 className="bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-600 focus-visible:ring-primary/50"
               />
             </div>

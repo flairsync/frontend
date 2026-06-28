@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useInventoryMovements } from "@/features/inventory/useInventory";
 import { format } from "date-fns";
+import { formatTime } from "@/lib/dateUtils";
 import { ChevronLeft, ChevronRight, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -83,7 +84,7 @@ export const MovementHistoryDrawer: React.FC<MovementHistoryDrawerProps> = ({
                                                 <span className="ml-1 font-mono">#{String(m.referenceId).slice(0, 8)}</span>
                                             )}
                                         </span>
-                                        <span>{format(new Date(m.createdAt), "MMM d, h:mm a")}</span>
+                                        <span>{format(new Date(m.createdAt), "MMM d")}, {formatTime(m.createdAt)}</span>
                                     </div>
                                     {m.notes && (
                                         <p className="text-xs text-muted-foreground italic mt-0.5">{m.notes}</p>

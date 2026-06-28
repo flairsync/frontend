@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin } from "lucide-react"
+import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin, Zap } from "lucide-react"
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -33,6 +33,7 @@ import { ForceCloseOrderModal } from "@/components/staff/orders/ForceCloseOrderM
 import { TransferTableModal } from "@/components/staff/orders/TransferTableModal"
 import { ActiveOrdersView } from "@/components/management/orders/ActiveOrdersView"
 import ReceiptView from "@/components/pos/ReceiptView"
+import { formatTime } from "@/lib/dateUtils"
 
 export default function StaffOrdersPage() {
     const { routeParams } = usePageContext();
@@ -149,6 +150,8 @@ export default function StaffOrdersPage() {
         isMarkingReady,
         completeOrder,
         isCompletingOrder,
+        quickCompleteOrder,
+        isQuickCompletingOrder,
     } = useOrders(
         businessId,
         statusFilter,
@@ -168,11 +171,6 @@ export default function StaffOrdersPage() {
 
     const getItemsCount = (order: Order) =>
         order.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
-
-    const formatTime = (isoString?: string) => {
-        if (!isoString) return "";
-        return new Date(isoString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    };
 
     const getStatusVariant = (status: string) => {
         switch (status) {
@@ -391,6 +389,20 @@ export default function StaffOrdersPage() {
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end">
+                                                                {!isTerminal(o.status) && (
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => quickCompleteOrder(o.id, {
+                                                                            onSuccess: (updated: Order) => {
+                                                                                if (updated.status === "ready") handleOpenPayment(o);
+                                                                            },
+                                                                        })}
+                                                                        disabled={isQuickCompletingOrder}
+                                                                        className="text-purple-600 focus:text-purple-700"
+                                                                    >
+                                                                        <Zap className="mr-2 h-4 w-4" />
+                                                                        <span>Quick Complete</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                                 {o.paymentStatus !== "paid" && !isTerminal(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
                                                                         <CreditCard className="mr-2 h-4 w-4" />

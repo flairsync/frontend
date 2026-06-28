@@ -8,7 +8,7 @@ import { useBusinessEmployees } from "@/features/business/employment/useBusiness
 import { useUpcomingShifts } from "@/features/shifts/useShifts";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
-import { formatInBusinessTimezone } from "@/utils/date-utils";
+import { formatInBusinessTimezone, formatTimeInBusinessTimezone } from "@/utils/date-utils";
 import dayjs from "@/utils/date-utils";
 import { ShiftStatus } from "@/models/business/shift/Shift";
 import { useTranslation } from "react-i18next";
@@ -88,7 +88,7 @@ export const RequestShiftSwapModal: React.FC<RequestShiftSwapModalProps> = ({
                             <SelectContent>
                                 {myShifts.map(shift => (
                                     <SelectItem key={shift.id} value={shift.id}>
-                                        {formatInBusinessTimezone(shift.startTime, businessTz, 'ddd, MMM D')}: {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
+                                        {formatInBusinessTimezone(shift.startTime, businessTz, 'ddd, MMM D')}: {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                     </SelectItem>
                                 ))}
                                 {myShifts.length === 0 && !fetchingShifts && (

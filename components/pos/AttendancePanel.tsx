@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { formatTime } from "@/lib/dateUtils";
 
 type ClockState = "not_clocked_in" | "clocked_in" | "on_break";
 
@@ -25,10 +26,6 @@ function deriveClockState(attendance: AttendanceRecord | null): ClockState {
     if (attendance.status === "ON_BREAK") return "on_break";
     if (attendance.checkInTime && !attendance.checkOutTime) return "clocked_in";
     return "not_clocked_in";
-}
-
-function formatTime(iso: string) {
-    return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
 function elapsed(from: string) {

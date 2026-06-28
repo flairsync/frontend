@@ -1,5 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
+import { formatTime } from "@/lib/dateUtils";
 import { CheckCircle2, Clock, FileText, Mail, StickyNote } from "lucide-react";
 import {
   ApplicationEventSource,
@@ -100,7 +101,7 @@ export function ProApplicationTimeline({ events, currentStatus }: ProTimelinePro
               <p className="text-sm font-medium">{EVENT_TYPE_LABELS[event.type]}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{getProDescription(event)}</p>
               <p className="text-xs text-muted-foreground/60 mt-1">
-                {format(new Date(event.createdAt), "MMM d, yyyy · h:mm a")}
+                {format(new Date(event.createdAt), "MMM d, yyyy")} · {formatTime(event.createdAt)}
               </p>
             </div>
           </div>
@@ -178,7 +179,7 @@ export function OwnerApplicationTimeline({ events }: OwnerTimelineProps) {
                 <p className="text-xs text-muted-foreground mt-0.5 italic">"{event.note}"</p>
               )}
               <p className="text-xs text-muted-foreground/60 mt-1">
-                {format(new Date(event.createdAt), "MMM d, yyyy · h:mm a")}
+                {format(new Date(event.createdAt), "MMM d, yyyy")} · {formatTime(event.createdAt)}
               </p>
             </div>
           </div>

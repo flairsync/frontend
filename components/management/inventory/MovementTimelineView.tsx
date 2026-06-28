@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useInventoryTimeline } from "@/features/inventory/useInventory";
 import { format } from "date-fns";
+import { formatTime } from "@/lib/dateUtils";
 import { ChevronLeft, ChevronRight, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -118,7 +119,7 @@ export const MovementTimelineView: React.FC<MovementTimelineViewProps> = ({ busi
                                             <span className="ml-1 font-mono">#{String(m.referenceId).slice(0, 8)}</span>
                                         )}
                                     </span>
-                                    <span>{format(new Date(m.createdAt), "MMM d, h:mm a")}</span>
+                                    <span>{format(new Date(m.createdAt), "MMM d")}, {formatTime(m.createdAt)}</span>
                                 </div>
                                 {m.notes && (
                                     <p className="text-xs text-muted-foreground italic">{m.notes}</p>

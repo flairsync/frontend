@@ -23,6 +23,7 @@ import { useState } from "react"
 import { useReservations } from "@/features/reservations/useReservations"
 import { usePageContext } from "vike-react/usePageContext"
 import { format } from "date-fns"
+import { formatTime } from "@/lib/dateUtils"
 import { useTranslation } from "react-i18next"
 import DataPagination from "@/components/inputs/DataPagination"
 
@@ -233,7 +234,7 @@ export default function StaffReservationsPage() {
                                                             </div>
                                                             <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                                                                 <Clock className="w-3 h-3" />
-                                                                <span>{format(new Date(rsv.reservationTime), "h:mm a")}</span>
+                                                                <span>{formatTime(rsv.reservationTime)}</span>
                                                             </div>
                                                         </div>
                                                     </TableCell>
@@ -358,7 +359,7 @@ export default function StaffReservationsPage() {
                                                     <TableCell>
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <Clock className="w-4 h-4 text-muted-foreground" />
-                                                            <span>{format(new Date(rsv.reservationTime), "h:mm a")}</span>
+                                                            <span>{formatTime(rsv.reservationTime)}</span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>{rsv.guestCount}</TableCell>

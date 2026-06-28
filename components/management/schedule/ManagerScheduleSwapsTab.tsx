@@ -8,7 +8,7 @@ import { useShiftSwaps } from '@/features/shifts/useShiftSwaps'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
 import { useShifts } from '@/features/shifts/useShifts'
 import { Badge } from '@/components/ui/badge'
-import { formatInBusinessTimezone } from '@/utils/date-utils'
+import { formatInBusinessTimezone, formatTimeInBusinessTimezone } from '@/utils/date-utils'
 import { useTranslation } from 'react-i18next'
 
 const ManagerScheduleSwapsTab = () => {
@@ -29,7 +29,7 @@ const ManagerScheduleSwapsTab = () => {
         const shift = shifts?.find(s => s.id === shiftId);
         if (!shift) return t("schedule_swaps_tab.unknown_shift");
         // Get timezone if we can
-        return `${formatInBusinessTimezone(shift.startTime, 'UTC', 'MMM D, HH:mm')} - ${formatInBusinessTimezone(shift.endTime, 'UTC', 'HH:mm')}`;
+        return `${formatInBusinessTimezone(shift.startTime, 'UTC', 'MMM D')}, ${formatTimeInBusinessTimezone(shift.startTime, 'UTC')} - ${formatTimeInBusinessTimezone(shift.endTime, 'UTC')}`;
     };
 
     return (

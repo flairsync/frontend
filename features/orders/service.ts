@@ -162,6 +162,9 @@ export const completeOrderApiCall = (businessId: string, orderId: string, data?:
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/complete`, data || {});
 };
 
+export const quickCompleteOrderApiCall = async (businessId: string, orderId: string) =>
+    unwrap<Order>(await flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/quick-complete`, {}));
+
 export const cancelOrderApiCall = (businessId: string, orderId: string, data?: { reason?: string }) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/cancel`, data || {});
 };

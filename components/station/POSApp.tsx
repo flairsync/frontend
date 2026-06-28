@@ -72,6 +72,7 @@ import type {
 } from "@/features/pos/types";
 import { calcTotal } from "@/features/pos/types";
 import type { Order } from "@/features/orders/service";
+import { formatTime } from "@/lib/dateUtils";
 
 const ACTIVE_ORDER_STATUSES = "CREATED,ACCEPTED,PREPARING,READY";
 
@@ -1097,10 +1098,7 @@ function ActiveOrderCard({
     onReorder?: () => void;
 }) {
     const { t } = useTranslation("pos");
-    const time = new Date(order.createdAt).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+    const time = formatTime(order.createdAt);
     const statusUpper = order.status.toUpperCase();
     const transition = getStatusTransition(t)[statusUpper];
     const canPay = ["ACCEPTED", "PREPARING", "READY"].includes(statusUpper);

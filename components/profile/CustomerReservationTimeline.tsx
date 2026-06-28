@@ -1,12 +1,7 @@
 import React from "react";
 import { CustomerTimelineEvent, CustomerEventType } from "@/features/discovery/types";
 import { formatDistanceToNow } from "date-fns";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { formatTime } from "@/lib/dateUtils";
 
 interface CustomerReservationTimelineProps {
     events: CustomerTimelineEvent[];
@@ -82,7 +77,7 @@ export const CustomerReservationTimeline: React.FC<CustomerReservationTimelinePr
                 const config = EVENT_CONFIG[event.type] ?? { label: event.type, icon: "•" };
                 const metaSub = getMetaSub(event);
                 const formattedTime = tz
-                    ? dayjs(event.createdAt).tz(tz).format("h:mm A")
+                    ? formatTime(event.createdAt, tz)
                     : formatDistanceToNow(new Date(event.createdAt), { addSuffix: true });
 
                 return (

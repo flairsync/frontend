@@ -12,7 +12,7 @@ import { useShifts, useUpcomingShifts, useAvailableShifts, useMyBids } from "@/f
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
 import { usePermissions } from "@/features/auth/usePermissions"
-import { formatInBusinessTimezone } from "@/utils/date-utils"
+import { formatInBusinessTimezone, formatTimeInBusinessTimezone } from "@/utils/date-utils"
 import { getCurrencySymbol } from "@/utils/currency"
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift"
 import { format, parseISO, addDays, startOfDay, differenceInHours } from "date-fns"
@@ -260,7 +260,7 @@ export default function StaffShiftsPage() {
                                         <div className="space-y-1">
                                             <span className="font-bold text-lg">{formatInBusinessTimezone(nextShift.startTime, businessTz, 'dddd, MMM D')}</span>
                                             <p className="text-sm text-muted-foreground">
-                                                {formatInBusinessTimezone(nextShift.startTime, businessTz)} - {formatInBusinessTimezone(nextShift.endTime, businessTz)}
+                                                {formatTimeInBusinessTimezone(nextShift.startTime, businessTz)} - {formatTimeInBusinessTimezone(nextShift.endTime, businessTz)}
                                             </p>
                                         </div>
                                         <div className="flex gap-2">
@@ -358,7 +358,7 @@ export default function StaffShiftsPage() {
                                                             )}
                                                         </div>
                                                         <div className="text-sm text-muted-foreground">
-                                                            {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
+                                                            {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                         </div>
                                                         {shift.estimatedCost && (
                                                             <div className="mt-2 flex items-center gap-1 text-sm font-medium text-emerald-600">
@@ -485,7 +485,7 @@ export default function StaffShiftsPage() {
                                                 <TableRow key={shift.id}>
                                                     <TableCell className="font-medium">{formatInBusinessTimezone(shift.startTime, businessTz, 'ddd, MMM D')}</TableCell>
                                                     <TableCell>
-                                                        {formatInBusinessTimezone(shift.startTime, businessTz)} - {formatInBusinessTimezone(shift.endTime, businessTz)}
+                                                        {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                     </TableCell>
                                                     <TableCell>
                                                         {shift.estimatedCost ? (
@@ -653,7 +653,7 @@ export default function StaffShiftsPage() {
                                         (shiftSwaps || []).map((swap: any) => (
                                             <TableRow key={swap.id}>
                                                 <TableCell className="text-sm">
-                                                    {swap.shift ? `${formatInBusinessTimezone(swap.shift.startTime, businessTz, 'MMM D')}: ${formatInBusinessTimezone(swap.shift.startTime, businessTz)} - ${formatInBusinessTimezone(swap.shift.endTime, businessTz)}` : 'Unknown Shift'}
+                                                    {swap.shift ? `${formatInBusinessTimezone(swap.shift.startTime, businessTz, 'MMM D')}: ${formatTimeInBusinessTimezone(swap.shift.startTime, businessTz)} - ${formatTimeInBusinessTimezone(swap.shift.endTime, businessTz)}` : 'Unknown Shift'}
                                                 </TableCell>
                                                 <TableCell className="text-sm">
                                                     {swap.fromEmploymentId === employmentId ? `With: ${swap.toEmployment?.professionalProfile?.displayName || 'Colleague'}` : `From: ${swap.fromEmployment?.professionalProfile?.displayName || 'Colleague'}`}
@@ -711,14 +711,14 @@ export default function StaffShiftsPage() {
                                                     </TableCell>
                                                     <TableCell>
                                                         {bid.shift ? (
-                                                            `${formatInBusinessTimezone(bid.shift.startTime, businessTz)} - ${formatInBusinessTimezone(bid.shift.endTime, businessTz)}`
+                                                            `${formatTimeInBusinessTimezone(bid.shift.startTime, businessTz)} - ${formatTimeInBusinessTimezone(bid.shift.endTime, businessTz)}`
                                                         ) : (
                                                             'N/A'
                                                         )}
                                                     </TableCell>
                                                     <TableCell>{bid.shift?.business?.name || 'Your Restaurant'}</TableCell>
                                                     <TableCell className="text-xs text-muted-foreground">
-                                                        {formatInBusinessTimezone(bid.createdAt, businessTz, 'MMM D, HH:mm')}
+                                                        {formatInBusinessTimezone(bid.createdAt, businessTz, 'MMM D')}, {formatTimeInBusinessTimezone(bid.createdAt, businessTz)}
                                                     </TableCell>
                                                     <TableCell>
                                                         {bid.status === 'PENDING' && (

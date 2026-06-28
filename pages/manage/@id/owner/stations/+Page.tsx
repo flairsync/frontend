@@ -61,6 +61,8 @@ import {
   Pencil, Trash2, UtensilsCrossed, GripVertical, ArrowRightLeft,
 } from "lucide-react";
 import { toast } from "sonner";
+import { formatTime } from "@/lib/dateUtils";
+import QRCode from "react-qr-code";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -96,6 +98,7 @@ function PairingCodeDialog({
   const [code, setCode] = useState<string | null>(null);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
   const [copied, setCopied] = useState(false);
+  const [stationType, setStationType] = useState<"pos" | "kds">("pos");
   const secsLeft = useCountdown(expiresAt);
   const expired = secsLeft === 0 && code !== null;
 
@@ -111,7 +114,10 @@ function PairingCodeDialog({
   }, [businessId]);
 
   useEffect(() => {
-    if (open) generate();
+    if (open) {
+      generate();
+      setStationType("pos");
+    }
   }, [open]);
 
   function handleCopy() {
@@ -120,6 +126,11 @@ function PairingCodeDialog({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
+
+  const linkUrl =
+    code && typeof window !== "undefined"
+      ? `${window.location.origin}/station/${stationType}?linkCode=${encodeURIComponent(code)}`
+      : null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -130,11 +141,44 @@ function PairingCodeDialog({
             Pair a New Station
           </DialogTitle>
           <DialogDescription>
-            Enter this code on the station device within 5 minutes.
+            Scan the QR code on the device, or enter the code manually, within 5 minutes.
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-5 py-2">
+          <div className="flex flex-col gap-1.5">
+            <Label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+              Station Type
+            </Label>
+            <Select value={stationType} onValueChange={(v: "pos" | "kds") => setStationType(v)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pos">
+                  <span className="flex items-center gap-2">
+                    <Monitor className="w-3.5 h-3.5" /> POS Terminal
+                  </span>
+                </SelectItem>
+                <SelectItem value="kds">
+                  <span className="flex items-center gap-2">
+                    <ChefHat className="w-3.5 h-3.5" /> Kitchen Display (KDS)
+                  </span>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex justify-center p-4 bg-white rounded-2xl border">
+            {linkUrl ? (
+              <QRCode size={180} value={linkUrl} viewBox="0 0 180 180" />
+            ) : (
+              <div className="flex items-center justify-center h-[180px] w-[180px]">
+                <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+              </div>
+            )}
+          </div>
+
           <div className="relative bg-muted rounded-2xl p-6 text-center border">
             {code ? (
               <>
@@ -318,7 +362,7 @@ function StationCard({
           <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
             <Clock className="w-3.5 h-3.5" />
             {station.lastSeenAt
-              ? `Last seen ${new Date(station.lastSeenAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+              ? `Last seen ${formatTime(station.lastSeenAt)}`
               : "Never connected"}
           </div>
           <Button
@@ -774,8 +818,8 @@ export default function StationsPage() {
             <Monitor className="w-12 h-12 mb-4 opacity-20" />
             <p className="font-semibold">No stations linked yet</p>
             <p className="text-sm mt-1 max-w-xs">
-              Click "Add Station" to generate a pairing code, then enter it on any device running
-              the station app.
+              Click "Add Station" to generate a pairing code, then scan the QR code (or enter the
+              code manually) on any device running the station app.
             </p>
             <Button className="mt-6 gap-2" onClick={() => setPairOpen(true)}>
               <Plus className="w-4 h-4" />
