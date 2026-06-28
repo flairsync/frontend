@@ -21,3 +21,48 @@ messaging.onBackgroundMessage((payload) => {
     data: payload.data,
   });
 });
+
+// Mirrors the in-app redirection switch in components/notifications/NotificationBubble.tsx
+// and NotificationList.tsx — keep them in sync when adding a new notification type.
+function resolveNotificationUrl(data) {
+  const businessId = data?.businessId;
+
+  switch (data?.type) {
+    case 'SHIFT_PUBLISHED':
+    case 'SHIFT_CREATED':
+    case 'SHIFT_UPDATED':
+    case 'SHIFT_NO_SHOW':
+      return businessId ? `/manage/${businessId}/staff/shifts?tab=schedule` : '/notifications';
+    case 'SHIFT_SWAP_REQUEST':
+    case 'TIME_OFF_APPROVED':
+      return businessId ? `/manage/${businessId}/staff/shifts?tab=requests` : '/notifications';
+    case 'INVENTORY_LOW_STOCK':
+      return businessId ? `/manage/${businessId}/owner/inventory?tab=low-stock` : '/notifications';
+    case 'RESERVATION':
+      if (businessId && data?.reservationId) {
+        return `/manage/${businessId}/owner/reservations?reservationId=${data.reservationId}`;
+      }
+      return businessId ? `/manage/${businessId}/owner/reservations` : '/notifications';
+    case 'ORDER':
+      return businessId ? `/diner/${businessId}/order` : '/notifications';
+    default:
+      return '/notifications';
+  }
+}
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const url = resolveNotificationUrl(event.notification.data);
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientsList) => {
+      for (const client of clientsList) {
+        if ('navigate' in client && 'focus' in client) {
+          return client.navigate(url).then((c) => c && c.focus());
+        }
+      }
+      return self.clients.openWindow(url);
+    })
+  );
+});

@@ -214,11 +214,13 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                     </a>
 
                     <div className="flex-1 flex items-center justify-center px-3">
-                        <DinerCallWaiterButton
-                            businessId={businessId}
-                            tableId={reservation?.tableId ?? activeOrderSummary?.tableId}
-                            reservationId={reservation?.id}
-                        />
+                        {(hasSeatedReservation || hasActiveOrder) && (
+                            <DinerCallWaiterButton
+                                businessId={businessId}
+                                tableId={reservation?.tableId ?? activeOrderSummary?.tableId}
+                                reservationId={reservation?.id}
+                            />
+                        )}
                     </div>
                 </div>
             </nav>
