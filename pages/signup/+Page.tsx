@@ -16,6 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
+import GoogleLoginButton from '@/components/inputs/GoogleLoginButton';
 
 const RegisterPage = () => {
     const { t } = useTranslation("auth");
@@ -314,20 +315,7 @@ const RegisterPage = () => {
                                     </div>
 
                                     {/* Google Button */}
-                                    <Button
-                                        variant="outline"
-                                        className="w-full h-11 md:h-12 rounded-lg border-zinc-200 bg-white hover:bg-zinc-50 hover:border-zinc-300 text-zinc-800 text-sm md:text-base font-medium shadow-sm transition-all"
-                                    >
-                                        <svg
-                                            className="mr-3 h-5 w-5"
-                                            fill="currentColor"
-                                            viewBox="0 0 488 500"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path d="M488 261.8C488 432 377.9 488 244 488 108.9 488 0 379.1 0 244S108.9 0 244 0c74.4 0 123.6 28.5 163.6 66.8l-49.9 48.9c-29.4-28-71.8-46.6-113.6-46.6-89 0-161 72-161 161s72 161 161 161c94.2 0 144.3-64.2 150-97.1h-150v-85h255.9c2.3 12.7 3.5 25.5 3.5 39.3z" />
-                                        </svg>
-                                        {t("auth_page.register.signin_with_google_label")}
-                                    </Button>
+                                    <GoogleLoginButton />
 
                                     {/* Already have account */}
                                     <p className="mt-6 text-center text-xs md:text-sm text-zinc-600">

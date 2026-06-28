@@ -62,16 +62,12 @@ const IntegrationSection = () => {
                                             strokeDashoffset="20.1"
                                             transform="rotate(-90 50 50)"
                                         ></circle>
-                                        <text
-                                            x="50"
-                                            y="50"
-                                            textAnchor="middle"
-                                            dy="0.35em"
-                                            className="text-3xl font-bold fill-gray-800"
-                                        >
-                                            {t("landing_page.integration.mainCard.progress")}
-                                        </text>
                                     </svg>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span className="text-2xl sm:text-3xl font-bold text-gray-800">
+                                            {t("landing_page.integration.mainCard.progress")}
+                                        </span>
+                                    </div>
                                 </div>
                                 <span className="text-sm font-medium mt-3 text-gray-500">
                                     {t("landing_page.integration.mainCard.progressLabel")}
