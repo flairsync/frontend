@@ -10,12 +10,11 @@ import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
 import { toast } from "sonner";
 
 const PlansPage: React.FC = () => {
-  const { subscriptionPacks, handleUserCheckoutApiCall } = useSubscriptions();
+  const { subscriptionPacks, createCheckout, creatingCheckout } = useSubscriptions();
 
 
   const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
   const [displayedPacks, setDisplayedPacks] = useState<SubscriptionPack[]>([]);
-  const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [checkoutLink, setCheckoutLink] = useState<string>();
 
   useEffect(() => {
@@ -26,16 +25,11 @@ const PlansPage: React.FC = () => {
 
 
   const onChoosePlan = (packId: string) => {
-    setLoadingCheckout(true);
-    handleUserCheckoutApiCall({
-      packId: packId
-    }).then(res => {
-      if (res.data.success) {
-        setCheckoutLink(res.data.data.data.url);
+    createCheckout({ packId }, {
+      onSuccess: (url) => {
+        if (url) setCheckoutLink(url);
       }
-    }).finally(() => {
-      setLoadingCheckout(false);
-    })
+    });
   }
 
   return (
@@ -79,7 +73,7 @@ const PlansPage: React.FC = () => {
           </Button>
         </div>
       </div>
-      {loadingCheckout && (
+      {creatingCheckout && (
         <div className="flex flex-col items-center justify-center py-6">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mb-2" />
           <p className="text-sm text-muted-foreground">Loading, please wait...</p>

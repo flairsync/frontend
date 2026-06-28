@@ -168,7 +168,6 @@ export const useSubscriptions = () => {
     checkoutData,
     creatingCheckout,
     createCheckout,
-    handleUserCheckoutApiCall,
 
     // subs list
     userSubscriptionsList,
