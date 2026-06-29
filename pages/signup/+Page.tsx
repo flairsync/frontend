@@ -9,6 +9,8 @@ import AbstractBG from "@/assets/svg/vecteezy_abstract-blue-color-background-dyn
 import { useTranslation } from 'react-i18next';
 import { SignupFormSchema } from '@/misc/FormValidators';
 import { InputError } from '@/components/inputs/InputError';
+import { EmailSuggestionHint } from '@/components/inputs/EmailSuggestionHint';
+import { suggestEmailCorrection } from '@/lib/emailUtils';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { useAuth } from '@/features/auth/useAuth';
 import { AxiosError } from 'axios';
@@ -96,7 +98,9 @@ const RegisterPage = () => {
                                 });
                             }}
                         >
-                            {({ errors, touched, handleChange, setFieldValue, values }) => (
+                            {({ errors, touched, handleChange, handleBlur, setFieldValue, values }) => {
+                                const emailSuggestion = suggestEmailCorrection(values.email);
+                                return (
                                 <Form className="space-y-5 md:space-y-6 pb-10">
                                     {/* First Name */}
                                     <div className="space-y-1.5">
@@ -134,10 +138,17 @@ const RegisterPage = () => {
                                             type="email"
                                             name="email"
                                             onChange={handleChange}
+                                            onBlur={handleBlur}
                                             placeholder="email@gmail.com"
                                             className="h-11 md:h-12 bg-zinc-50 border-zinc-200 focus:bg-white focus:border-[#6366F1] focus:ring-4 focus:ring-[#6366F1]/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.email && touched.email && <InputError message={errors.email} />}
+                                        {!errors.email && touched.email && emailSuggestion && (
+                                            <EmailSuggestionHint
+                                                suggestion={emailSuggestion}
+                                                onAccept={(email) => setFieldValue('email', email)}
+                                            />
+                                        )}
                                     </div>
 
                                     {/* Password */}
@@ -325,7 +336,8 @@ const RegisterPage = () => {
                                         </a>
                                     </p>
                                 </Form>
-                            )}
+                                );
+                            }}
                         </Formik>
                     </div>
                 </div>

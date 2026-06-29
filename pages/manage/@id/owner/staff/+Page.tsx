@@ -6,6 +6,7 @@ import StaffSection from "./StaffSection";
 import RolesSection from "./RolesSection";
 import InvitationsSection from "./InvitationsSection";
 import TeamsSection from "@/components/management/staff/teams/TeamsSection";
+import MessagesSection from "./MessagesSection";
 import { usePageTour } from "@/features/tour/usePageTour";
 import type { TourStep } from "@/features/tour/types";
 
@@ -34,9 +35,15 @@ const STAFF_TOUR_STEPS: TourStep[] = [
         description: 'Organise staff into teams for easier scheduling and communication. Assign team leads and manage team rosters from here.',
         position: 'bottom',
     },
+    {
+        target: '[data-tour="staff-tab-messages"]',
+        title: 'Messages & Announcements',
+        description: 'Send announcements or direct messages to all staff, a specific team, or individual employees, and track who has read them.',
+        position: 'bottom',
+    },
 ]
 
-const VALID_TABS = ["staff", "invitations", "roles", "teams"] as const;
+const VALID_TABS = ["staff", "invitations", "roles", "teams", "messages"] as const;
 type TabValue = typeof VALID_TABS[number];
 
 const OwnerStaffManagementPage: React.FC = () => {
@@ -83,6 +90,9 @@ const OwnerStaffManagementPage: React.FC = () => {
                     <TabsTrigger data-tour="staff-tab-teams" value="teams" className="flex-1 sm:flex-none min-w-[120px] text-center">
                         {t("staff_management_page.owner_tabs.teams")}
                     </TabsTrigger>
+                    <TabsTrigger data-tour="staff-tab-messages" value="messages" className="flex-1 sm:flex-none min-w-[120px] text-center">
+                        {t("staff_management_page.owner_tabs.messages")}
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="staff" className="space-y-6">
@@ -99,6 +109,10 @@ const OwnerStaffManagementPage: React.FC = () => {
 
                 <TabsContent value="teams" className="space-y-6">
                     <TeamsSection />
+                </TabsContent>
+
+                <TabsContent value="messages" className="space-y-6">
+                    <MessagesSection />
                 </TabsContent>
             </Tabs>
         </div>

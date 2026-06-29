@@ -300,7 +300,9 @@
     "messages_tab": "Messages",
     "new_badge": "Nouveau",
     "read_badge": "Lu",
-    "mark_as_read": "Marquer comme lu"
+    "mark_as_read": "Marquer comme lu",
+    "no_announcements": "Aucune annonce pour le moment",
+    "no_messages": "Aucun message pour le moment"
   },
   "staff_dashboard": {
     "title": "Tableau de bord du personnel",
@@ -769,7 +771,8 @@
       "staff": "Gestion du personnel",
       "invitations": "Invitations du personnel",
       "roles": "Gestion des rôles",
-      "teams": "Gestion des équipes"
+      "teams": "Gestion des équipes",
+      "messages": "Messages"
     },
     "bulk_assign_modal": {
       "title": "Attribution groupée de rôle",
@@ -1358,5 +1361,31 @@
       "scheduling": "Planification...",
       "schedule_team": "Planifier l'équipe"
     }
+  },
+  "staff_messages_compose": {
+    "heading": "Envoyer des annonces et des messages",
+    "compose_button": "Rédiger",
+    "dialog_title": "Nouvelle annonce ou message",
+    "kind_label": "Type",
+    "title_label": "Titre",
+    "content_label": "Message",
+    "audience_label": "Envoyer à",
+    "audience_all_staff": "Tout le personnel",
+    "audience_team": "Une équipe",
+    "audience_specific_staff": "Personnel spécifique",
+    "select_team_placeholder": "Sélectionner une équipe",
+    "unknown_staff": "Membre du personnel inconnu",
+    "cancel": "Annuler",
+    "send": "Envoyer",
+    "sending": "Envoi en cours...",
+    "send_success": "Envoyé avec succès",
+    "delete_success": "Supprimé avec succès",
+    "history_title": "Titre",
+    "history_audience": "Destinataires",
+    "history_read": "Lu",
+    "history_sent_at": "Envoyé le",
+    "no_history": "Rien n'a encore été envoyé",
+    "previous": "Précédent",
+    "next": "Suivant"
   }
 }

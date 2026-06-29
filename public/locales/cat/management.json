@@ -300,7 +300,9 @@
     "messages_tab": "Missatges",
     "new_badge": "Nou",
     "read_badge": "Llegit",
-    "mark_as_read": "Marcar com a llegit"
+    "mark_as_read": "Marcar com a llegit",
+    "no_announcements": "Encara no hi ha anuncis",
+    "no_messages": "Encara no hi ha missatges"
   },
   "staff_dashboard": {
     "title": "Tauler del personal",
@@ -769,7 +771,8 @@
       "staff": "Gestió del personal",
       "invitations": "Invitacions del personal",
       "roles": "Gestió de rols",
-      "teams": "Gestió d'equips"
+      "teams": "Gestió d'equips",
+      "messages": "Missatges"
     },
     "bulk_assign_modal": {
       "title": "Assignació massiva de rol",
@@ -1358,5 +1361,31 @@
       "scheduling": "Programant...",
       "schedule_team": "Programar equip"
     }
+  },
+  "staff_messages_compose": {
+    "heading": "Enviar anuncis i missatges",
+    "compose_button": "Redactar",
+    "dialog_title": "Nou anunci o missatge",
+    "kind_label": "Tipus",
+    "title_label": "Títol",
+    "content_label": "Missatge",
+    "audience_label": "Enviar a",
+    "audience_all_staff": "Tot el personal",
+    "audience_team": "Un equip",
+    "audience_specific_staff": "Personal específic",
+    "select_team_placeholder": "Selecciona un equip",
+    "unknown_staff": "Membre del personal desconegut",
+    "cancel": "Cancel·lar",
+    "send": "Enviar",
+    "sending": "Enviant...",
+    "send_success": "Enviat correctament",
+    "delete_success": "Eliminat correctament",
+    "history_title": "Títol",
+    "history_audience": "Destinataris",
+    "history_read": "Llegit",
+    "history_sent_at": "Enviat el",
+    "no_history": "Encara no s'ha enviat res",
+    "previous": "Anterior",
+    "next": "Següent"
   }
 }

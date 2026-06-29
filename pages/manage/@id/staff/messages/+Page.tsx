@@ -1,21 +1,56 @@
+import { useMemo } from "react"
+import dayjs from "dayjs"
+import { usePageContext } from "vike-react/usePageContext"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTranslation } from "react-i18next"
+import { useAnnouncementsInbox } from "@/features/business/announcements/useAnnouncementsInbox"
+import { AnnouncementInboxItem } from "@/models/business/Announcement"
 
 export default function StaffMessagesPage() {
     const { t } = useTranslation("management");
-    const announcements = [
-        { id: 1, title: "Team Meeting", content: "Reminder: Team meeting at 5 PM in main hall.", read: false },
-        { id: 2, title: "Seasonal Menu", content: "New seasonal menu starts tomorrow.", read: true },
-    ]
+    const { routeParams } = usePageContext();
+    const businessId = routeParams.id;
 
-    const messages = [
-        { id: 1, sender: "Manager", subject: "Shift Swap Request", content: "Can you swap your shift on Sep 26?", read: false },
-        { id: 2, sender: "Owner", subject: "Policy Update", content: "New cleaning protocol to follow.", read: true },
-    ]
+    const { items, loadingInbox, markAsRead, markingAsRead } = useAnnouncementsInbox(businessId);
+
+    const announcements = useMemo(
+        () => items.filter((item) => item.kind === "ANNOUNCEMENT"),
+        [items],
+    );
+    const messages = useMemo(
+        () => items.filter((item) => item.kind === "MESSAGE"),
+        [items],
+    );
+
+    const renderItem = (item: AnnouncementInboxItem) => (
+        <Card key={item.id}>
+            <CardHeader className="flex items-center justify-between">
+                <div>
+                    <CardTitle>{item.title}</CardTitle>
+                    {item.authorName && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                            {item.authorName} · {dayjs(item.createdAt).format("MMM D, YYYY h:mm A")}
+                        </p>
+                    )}
+                </div>
+                <Badge variant={item.isRead ? "secondary" : "destructive"}>
+                    {item.isRead ? t("staff_messages.read_badge") : t("staff_messages.new_badge")}
+                </Badge>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground">{item.content}</p>
+                {!item.isRead && (
+                    <Button size="sm" className="mt-2" disabled={markingAsRead} onClick={() => markAsRead(item.id)}>
+                        {t("staff_messages.mark_as_read")}
+                    </Button>
+                )}
+            </CardContent>
+        </Card>
+    );
 
     return (
         <div className="space-y-6 p-6">
@@ -33,46 +68,18 @@ export default function StaffMessagesPage() {
 
                 {/* Announcements */}
                 <TabsContent value="announcements" className="mt-4 space-y-4">
-                    {announcements.map((announcement) => (
-                        <Card key={announcement.id}>
-                            <CardHeader className="flex items-center justify-between">
-                                <CardTitle>{announcement.title}</CardTitle>
-                                {!announcement.read && <Badge variant="destructive">{t("staff_messages.new_badge")}</Badge>}
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-muted-foreground">{announcement.content}</p>
-                                {!announcement.read && (
-                                    <Button size="sm" className="mt-2">
-                                        {t("staff_messages.mark_as_read")}
-                                    </Button>
-                                )}
-                            </CardContent>
-                        </Card>
-                    ))}
+                    {!loadingInbox && announcements.length === 0 && (
+                        <p className="text-center text-muted-foreground py-8">{t("staff_messages.no_announcements")}</p>
+                    )}
+                    {announcements.map(renderItem)}
                 </TabsContent>
 
                 {/* Messages */}
                 <TabsContent value="messages" className="mt-4 space-y-4">
-                    {messages.map((message) => (
-                        <Card key={message.id}>
-                            <CardHeader className="flex items-center justify-between">
-                                <CardTitle>{message.subject}</CardTitle>
-                                <Badge variant={message.read ? "secondary" : "destructive"}>
-                                    {message.read ? t("staff_messages.read_badge") : t("staff_messages.new_badge")}
-                                </Badge>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-muted-foreground">
-                                    <span className="font-medium">{message.sender}:</span> {message.content}
-                                </p>
-                                {!message.read && (
-                                    <Button size="sm" className="mt-2">
-                                        {t("staff_messages.mark_as_read")}
-                                    </Button>
-                                )}
-                            </CardContent>
-                        </Card>
-                    ))}
+                    {!loadingInbox && messages.length === 0 && (
+                        <p className="text-center text-muted-foreground py-8">{t("staff_messages.no_messages")}</p>
+                    )}
+                    {messages.map(renderItem)}
                 </TabsContent>
             </Tabs>
         </div>

@@ -300,7 +300,9 @@
     "messages_tab": "Messages",
     "new_badge": "New",
     "read_badge": "Read",
-    "mark_as_read": "Mark as Read"
+    "mark_as_read": "Mark as Read",
+    "no_announcements": "No announcements yet",
+    "no_messages": "No messages yet"
   },
   "staff_dashboard": {
     "title": "Staff Dashboard",
@@ -769,7 +771,8 @@
       "staff": "Staff Management",
       "invitations": "Staff Invitations",
       "roles": "Roles Management",
-      "teams": "Teams Management"
+      "teams": "Teams Management",
+      "messages": "Messages"
     },
     "bulk_assign_modal": {
       "title": "Bulk Assign Role",
@@ -1358,5 +1361,31 @@
       "scheduling": "Scheduling...",
       "schedule_team": "Schedule Team"
     }
+  },
+  "staff_messages_compose": {
+    "heading": "Send Announcements & Messages",
+    "compose_button": "Compose",
+    "dialog_title": "New Announcement or Message",
+    "kind_label": "Type",
+    "title_label": "Title",
+    "content_label": "Message",
+    "audience_label": "Send to",
+    "audience_all_staff": "All Staff",
+    "audience_team": "A Team",
+    "audience_specific_staff": "Specific Staff",
+    "select_team_placeholder": "Select a team",
+    "unknown_staff": "Unknown staff member",
+    "cancel": "Cancel",
+    "send": "Send",
+    "sending": "Sending...",
+    "send_success": "Sent successfully",
+    "delete_success": "Deleted successfully",
+    "history_title": "Title",
+    "history_audience": "Audience",
+    "history_read": "Read",
+    "history_sent_at": "Sent At",
+    "no_history": "Nothing sent yet",
+    "previous": "Previous",
+    "next": "Next"
   }
 }

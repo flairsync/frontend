@@ -11,6 +11,8 @@ import AbstractBG from "@/assets/svg/vecteezy_abstract-blue-color-background-dyn
 import { useTranslation } from 'react-i18next';
 import { LoginFormSchema, SignupFormSchema } from '@/misc/FormValidators';
 import { InputError } from '@/components/inputs/InputError';
+import { EmailSuggestionHint } from '@/components/inputs/EmailSuggestionHint';
+import { suggestEmailCorrection } from '@/lib/emailUtils';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useAuth } from '@/features/auth/useAuth';
@@ -84,7 +86,9 @@ const LoginPage = () => {
                                 })
                             }}
                         >
-                            {({ errors, touched, handleChange, values, setFieldValue }) => (
+                            {({ errors, touched, handleChange, handleBlur, values, setFieldValue }) => {
+                                const emailSuggestion = suggestEmailCorrection(values.email);
+                                return (
                                 <Form className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="email">{t("auth_page.email_label")}</Label>
@@ -93,11 +97,18 @@ const LoginPage = () => {
                                             type="email"
                                             name='email'
                                             onChange={handleChange}
+                                            onBlur={handleBlur}
                                             placeholder="jonas_kahnwald@gmail.com"
                                             className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
                                         />
                                     </div>
                                     {errors.email && touched.email && <InputError message={errors.email} />}
+                                    {!errors.email && touched.email && emailSuggestion && (
+                                        <EmailSuggestionHint
+                                            suggestion={emailSuggestion}
+                                            onAccept={(email) => setFieldValue('email', email)}
+                                        />
+                                    )}
 
                                     <div className="space-y-2">
                                         <Label htmlFor="password">{t("auth_page.password_label")}</Label>
@@ -152,7 +163,8 @@ const LoginPage = () => {
                                         {t("auth_page.signin_button_label")}
                                     </Button>
                                 </Form>
-                            )}
+                                );
+                            }}
                         </Formik>
 
                         <div className="flex items-center my-6">
