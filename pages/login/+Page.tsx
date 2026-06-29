@@ -96,6 +96,7 @@ const LoginPage = () => {
                                             id="email"
                                             type="email"
                                             name='email'
+                                            value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             placeholder="jonas_kahnwald@gmail.com"

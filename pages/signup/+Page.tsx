@@ -137,6 +137,7 @@ const RegisterPage = () => {
                                             id="email"
                                             type="email"
                                             name="email"
+                                            value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             placeholder="email@gmail.com"
