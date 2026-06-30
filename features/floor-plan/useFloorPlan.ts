@@ -169,17 +169,28 @@ export const useTables = (businessId: string) => {
 };
 
 export const useElements = (businessId: string) => {
+    const queryClient = useQueryClient();
+
     const batchCreateMutation = useMutation({
         mutationFn: (data: BatchCreateElementsDto) => batchCreateElementsApiCall(businessId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+        },
     });
 
     const updateMutation = useMutation({
         mutationFn: ({ elementId, data }: { elementId: string; data: UpdateElementDto }) =>
             updateElementApiCall(businessId, elementId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+        },
     });
 
     const deleteMutation = useMutation({
         mutationFn: (elementId: string) => deleteElementApiCall(businessId, elementId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+        },
     });
 
     return {

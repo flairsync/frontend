@@ -22,6 +22,7 @@ import {
     usePinnedLinks,
     useRemovePinnedLink,
 } from "@/features/dashboard/pinnedLinks/usePinnedLinks"
+import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
 import { useTranslation } from "react-i18next"
 
 // This is sample data.
@@ -128,6 +129,11 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
 }) {
     const { hasPermission, isLoading: loadingPermissions } = usePermissions(businessId);
     const { t } = useTranslation("management");
+    const { myEmployments } = useMyEmployments();
+
+    const businesses = myEmployments
+        ?.filter((e) => e.status === "ACTIVE")
+        .map((e) => ({ id: e.business.id, name: e.business.name })) ?? [];
 
     const { pinnedLinks } = usePinnedLinks(businessId);
     const { addPinnedLink } = useAddPinnedLink(businessId);
@@ -145,11 +151,11 @@ export function StaffMemberSidebar({ businessId, ...props }: React.ComponentProp
         >
             <SidebarHeader>
                 <BusinessSwitcher
-                    businesses={[{
-                        id: businessId,
-                        name: t("staff_sidebar.current_business_fallback")
-                    }]}
+                    businesses={businesses}
                     selectedBusiness={businessId}
+                    onBusinessChange={(b) => {
+                        window.location.href = `/manage/${b.id}/staff/dashboard`;
+                    }}
                 />
             </SidebarHeader>
             <SidebarContent>

@@ -74,6 +74,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.dismiss("menu_sturcture_update");
       toast.success("Menu structure updated");
+      refreshBusinessMenu();
     },
     onError(error, variables, context) {
       toast.dismiss("menu_sturcture_update");
@@ -102,6 +103,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     },
     onSuccess(data, variables, context) {
       toast.success("Categories order updated !");
+      refreshBusinessMenu();
     },
   });
 

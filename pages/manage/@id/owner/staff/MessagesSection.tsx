@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { toast } from "sonner";
 import dayjs from "dayjs";
+import { Users, UsersRound, User, Send, Trash2, Megaphone, MessageSquare } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,11 +17,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import {
     Table,
     TableBody,
@@ -29,13 +29,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Trash2, Send } from "lucide-react";
 import { ConfirmationPopup } from "@/components/shared/ConfirmationPopup";
 
 import { useBusinessAnnouncements } from "@/features/business/announcements/useBusinessAnnouncements";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useBusinessTeams } from "@/features/business/team/useBusinessTeams";
 import { AnnouncementKind, AnnouncementAudienceType } from "@/models/business/Announcement";
+import { cn } from "@/lib/utils";
+
+const TITLE_MAX = 150;
+const CONTENT_MAX = 2000;
 
 const MessagesSection = () => {
     const { t } = useTranslation("management");
@@ -76,10 +79,12 @@ const MessagesSection = () => {
     };
 
     const handleToggleStaff = (id: string, checked: boolean) => {
-        const next = new Set(selectedStaffIds);
-        if (checked) next.add(id);
-        else next.delete(id);
-        setSelectedStaffIds(next);
+        setSelectedStaffIds((prev) => {
+            const next = new Set(prev);
+            if (checked) next.add(id);
+            else next.delete(id);
+            return next;
+        });
     };
 
     const canSubmit =
@@ -107,6 +112,12 @@ const MessagesSection = () => {
         }
     };
 
+    const audienceOptions: { value: AnnouncementAudienceType; icon: React.ReactNode; label: string }[] = [
+        { value: "ALL_STAFF", icon: <Users className="h-4 w-4" />, label: t("staff_messages_compose.audience_all_staff") },
+        { value: "TEAM", icon: <UsersRound className="h-4 w-4" />, label: t("staff_messages_compose.audience_team") },
+        { value: "STAFF", icon: <User className="h-4 w-4" />, label: t("staff_messages_compose.audience_specific_staff") },
+    ];
+
     return (
         <div className="space-y-6">
             <Card>
@@ -125,87 +136,102 @@ const MessagesSection = () => {
                                 <Send className="h-4 w-4" /> {t("staff_messages_compose.compose_button")}
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+
+                        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
                             <DialogHeader>
                                 <DialogTitle>{t("staff_messages_compose.dialog_title")}</DialogTitle>
                             </DialogHeader>
 
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label>{t("staff_messages_compose.kind_label")}</Label>
-                                    <RadioGroup
-                                        value={kind}
-                                        onValueChange={(v) => setKind(v as AnnouncementKind)}
-                                        className="flex gap-4"
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <RadioGroupItem value="ANNOUNCEMENT" id="kind-announcement" />
-                                            <Label htmlFor="kind-announcement" className="font-normal cursor-pointer">
-                                                {t("staff_messages.announcements_tab")}
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <RadioGroupItem value="MESSAGE" id="kind-message" />
-                                            <Label htmlFor="kind-message" className="font-normal cursor-pointer">
-                                                {t("staff_messages.messages_tab")}
-                                            </Label>
-                                        </div>
-                                    </RadioGroup>
+                            <div className="space-y-5 pt-1">
+                                {/* Kind toggle */}
+                                <div className="grid grid-cols-2 gap-2">
+                                    {(["ANNOUNCEMENT", "MESSAGE"] as AnnouncementKind[]).map((k) => (
+                                        <button
+                                            key={k}
+                                            type="button"
+                                            onClick={() => setKind(k)}
+                                            className={cn(
+                                                "flex items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
+                                                kind === k
+                                                    ? "border-primary bg-primary text-primary-foreground"
+                                                    : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                                            )}
+                                        >
+                                            {k === "ANNOUNCEMENT" ? (
+                                                <Megaphone className="h-4 w-4 shrink-0" />
+                                            ) : (
+                                                <MessageSquare className="h-4 w-4 shrink-0" />
+                                            )}
+                                            {k === "ANNOUNCEMENT"
+                                                ? t("staff_messages.announcements_tab")
+                                                : t("staff_messages.messages_tab")}
+                                        </button>
+                                    ))}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="announcement-title">
-                                        {t("staff_messages_compose.title_label")}
-                                    </Label>
+                                {/* Title */}
+                                <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="announcement-title">
+                                            {t("staff_messages_compose.title_label")}
+                                        </Label>
+                                        <span className="text-xs text-muted-foreground">
+                                            {title.length}/{TITLE_MAX}
+                                        </span>
+                                    </div>
                                     <Input
                                         id="announcement-title"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
-                                        maxLength={150}
+                                        maxLength={TITLE_MAX}
+                                        placeholder={t("staff_messages_compose.title_label")}
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="announcement-content">
-                                        {t("staff_messages_compose.content_label")}
-                                    </Label>
+                                {/* Content */}
+                                <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="announcement-content">
+                                            {t("staff_messages_compose.content_label")}
+                                        </Label>
+                                        <span className="text-xs text-muted-foreground">
+                                            {content.length}/{CONTENT_MAX}
+                                        </span>
+                                    </div>
                                     <Textarea
                                         id="announcement-content"
                                         value={content}
                                         onChange={(e) => setContent(e.target.value)}
-                                        maxLength={2000}
+                                        maxLength={CONTENT_MAX}
                                         rows={4}
+                                        placeholder={t("staff_messages_compose.content_label")}
                                     />
                                 </div>
 
+                                {/* Audience */}
                                 <div className="space-y-2">
                                     <Label>{t("staff_messages_compose.audience_label")}</Label>
-                                    <RadioGroup
-                                        value={audienceType}
-                                        onValueChange={(v) => setAudienceType(v as AnnouncementAudienceType)}
-                                        className="space-y-2"
-                                    >
-                                        <div className="flex items-center gap-2">
-                                            <RadioGroupItem value="ALL_STAFF" id="audience-all" />
-                                            <Label htmlFor="audience-all" className="font-normal cursor-pointer">
-                                                {t("staff_messages_compose.audience_all_staff")}
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <RadioGroupItem value="TEAM" id="audience-team" />
-                                            <Label htmlFor="audience-team" className="font-normal cursor-pointer">
-                                                {t("staff_messages_compose.audience_team")}
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <RadioGroupItem value="STAFF" id="audience-staff" />
-                                            <Label htmlFor="audience-staff" className="font-normal cursor-pointer">
-                                                {t("staff_messages_compose.audience_specific_staff")}
-                                            </Label>
-                                        </div>
-                                    </RadioGroup>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {audienceOptions.map(({ value, icon, label }) => (
+                                            <button
+                                                key={value}
+                                                type="button"
+                                                onClick={() => setAudienceType(value)}
+                                                className={cn(
+                                                    "flex flex-col items-center gap-1.5 rounded-lg border px-2 py-3 text-xs font-medium transition-colors",
+                                                    audienceType === value
+                                                        ? "border-primary bg-primary/10 text-primary"
+                                                        : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                                                )}
+                                            >
+                                                {icon}
+                                                <span className="text-center leading-tight">{label}</span>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
 
+                                {/* Team picker */}
                                 {audienceType === "TEAM" && (
                                     <Select value={teamId} onValueChange={setTeamId}>
                                         <SelectTrigger>
@@ -221,40 +247,63 @@ const MessagesSection = () => {
                                     </Select>
                                 )}
 
+                                {/* Staff picker — plain div avoids Radix ScrollArea pointer-event capture inside Dialog */}
                                 {audienceType === "STAFF" && (
-                                    <ScrollArea className="h-48 border rounded-md p-2">
-                                        <div className="space-y-2">
-                                            {employees.map((employee) => (
-                                                <div key={employee.id} className="flex items-center gap-3 p-1">
-                                                    <Checkbox
-                                                        id={`staff-${employee.id}`}
-                                                        checked={selectedStaffIds.has(employee.id)}
-                                                        onCheckedChange={(checked) =>
-                                                            handleToggleStaff(employee.id, checked === true)
-                                                        }
-                                                    />
-                                                    <Label
+                                    <div className="space-y-1.5">
+                                        {selectedStaffIds.size > 0 && (
+                                            <p className="text-xs text-muted-foreground">
+                                                {selectedStaffIds.size} selected
+                                            </p>
+                                        )}
+                                        <div className="max-h-48 overflow-y-auto rounded-md border divide-y">
+                                            {employees.map((employee) => {
+                                                const name =
+                                                    employee.professionalProfile?.displayName ??
+                                                    t("staff_messages_compose.unknown_staff");
+                                                const initials =
+                                                    employee.professionalProfile?.getInitials() ?? "?";
+                                                const isChecked = selectedStaffIds.has(employee.id);
+                                                return (
+                                                    <label
+                                                        key={employee.id}
                                                         htmlFor={`staff-${employee.id}`}
-                                                        className="cursor-pointer flex-1 font-normal"
+                                                        className={cn(
+                                                            "flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-accent transition-colors",
+                                                            isChecked && "bg-primary/5"
+                                                        )}
                                                     >
-                                                        {employee.professionalProfile?.displayName ??
-                                                            t("staff_messages_compose.unknown_staff")}
-                                                    </Label>
-                                                </div>
-                                            ))}
+                                                        <Checkbox
+                                                            id={`staff-${employee.id}`}
+                                                            checked={isChecked}
+                                                            onCheckedChange={(checked) =>
+                                                                handleToggleStaff(employee.id, checked === true)
+                                                            }
+                                                        />
+                                                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                                                            {initials}
+                                                        </div>
+                                                        <span className="text-sm">{name}</span>
+                                                    </label>
+                                                );
+                                            })}
                                         </div>
-                                    </ScrollArea>
+                                    </div>
                                 )}
                             </div>
 
-                            <div className="flex justify-end gap-2 pt-2">
+                            <div className="flex justify-end gap-2 pt-3 border-t mt-2">
                                 <Button variant="outline" onClick={() => setComposeOpen(false)}>
                                     {t("staff_messages_compose.cancel")}
                                 </Button>
                                 <Button onClick={handleSubmit} disabled={!canSubmit || creatingAnnouncement}>
-                                    {creatingAnnouncement
-                                        ? t("staff_messages_compose.sending")
-                                        : t("staff_messages_compose.send")}
+                                    {creatingAnnouncement ? (
+                                        t("staff_messages_compose.sending")
+                                    ) : (
+                                        <>
+                                            <Send className="h-4 w-4 mr-1.5" />
+                                            {t("staff_messages_compose.send")}
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                         </DialogContent>
@@ -270,8 +319,14 @@ const MessagesSection = () => {
                         }}
                     >
                         <TabsList>
-                            <TabsTrigger value="ANNOUNCEMENT">{t("staff_messages.announcements_tab")}</TabsTrigger>
-                            <TabsTrigger value="MESSAGE">{t("staff_messages.messages_tab")}</TabsTrigger>
+                            <TabsTrigger value="ANNOUNCEMENT" className="flex items-center gap-1.5">
+                                <Megaphone className="h-3.5 w-3.5" />
+                                {t("staff_messages.announcements_tab")}
+                            </TabsTrigger>
+                            <TabsTrigger value="MESSAGE" className="flex items-center gap-1.5">
+                                <MessageSquare className="h-3.5 w-3.5" />
+                                {t("staff_messages.messages_tab")}
+                            </TabsTrigger>
                         </TabsList>
                     </Tabs>
 
@@ -293,15 +348,31 @@ const MessagesSection = () => {
                                         <div className="text-sm text-muted-foreground line-clamp-1">{a.content}</div>
                                     </TableCell>
                                     <TableCell>
-                                        {a.audienceType === "ALL_STAFF" && t("staff_messages_compose.audience_all_staff")}
-                                        {a.audienceType === "TEAM" &&
-                                            (a.teamName ?? t("staff_messages_compose.audience_team"))}
-                                        {a.audienceType === "STAFF" && t("staff_messages_compose.audience_specific_staff")}
+                                        <Badge variant="outline" className="whitespace-nowrap">
+                                            {a.audienceType === "ALL_STAFF" && (
+                                                <><Users className="h-3 w-3 mr-1" />{t("staff_messages_compose.audience_all_staff")}</>
+                                            )}
+                                            {a.audienceType === "TEAM" && (
+                                                <><UsersRound className="h-3 w-3 mr-1" />{a.teamName ?? t("staff_messages_compose.audience_team")}</>
+                                            )}
+                                            {a.audienceType === "STAFF" && (
+                                                <><User className="h-3 w-3 mr-1" />{t("staff_messages_compose.audience_specific_staff")}</>
+                                            )}
+                                        </Badge>
                                     </TableCell>
                                     <TableCell>
-                                        {a.readCount} / {a.recipientCount}
+                                        <span className={cn(
+                                            "text-sm font-medium",
+                                            a.readCount === a.recipientCount && a.recipientCount > 0
+                                                ? "text-green-600 dark:text-green-400"
+                                                : "text-muted-foreground"
+                                        )}>
+                                            {a.readCount} / {a.recipientCount}
+                                        </span>
                                     </TableCell>
-                                    <TableCell>{dayjs(a.createdAt).format("MMM D, YYYY h:mm A")}</TableCell>
+                                    <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
+                                        {dayjs(a.createdAt).format("MMM D, YYYY h:mm A")}
+                                    </TableCell>
                                     <TableCell>
                                         <Button variant="ghost" size="icon" onClick={() => setDeleteId(a.id)}>
                                             <Trash2 className="h-4 w-4 text-destructive" />
@@ -311,7 +382,7 @@ const MessagesSection = () => {
                             ))}
                             {!loadingAnnouncements && announcements.length === 0 && (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                                    <TableCell colSpan={5} className="text-center text-muted-foreground py-10">
                                         {t("staff_messages_compose.no_history")}
                                     </TableCell>
                                 </TableRow>
@@ -319,21 +390,24 @@ const MessagesSection = () => {
                         </TableBody>
                     </Table>
 
-                    <div className="flex justify-end mt-4 gap-2">
-                        <Button variant="outline" disabled={currentPage <= 1} onClick={() => setPage(currentPage - 1)}>
-                            {t("staff_messages_compose.previous")}
-                        </Button>
-                        <span className="px-2 py-1 border rounded text-sm">
-                            {currentPage} / {totalPages}
-                        </span>
-                        <Button
-                            variant="outline"
-                            disabled={currentPage >= totalPages}
-                            onClick={() => setPage(currentPage + 1)}
-                        >
-                            {t("staff_messages_compose.next")}
-                        </Button>
-                    </div>
+                    {totalPages > 1 && (
+                        <div className="flex justify-end mt-4 gap-2">
+                            <Button variant="outline" size="sm" disabled={currentPage <= 1} onClick={() => setPage(currentPage - 1)}>
+                                {t("staff_messages_compose.previous")}
+                            </Button>
+                            <span className="px-3 py-1 border rounded text-sm flex items-center">
+                                {currentPage} / {totalPages}
+                            </span>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={currentPage >= totalPages}
+                                onClick={() => setPage(currentPage + 1)}
+                            >
+                                {t("staff_messages_compose.next")}
+                            </Button>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 

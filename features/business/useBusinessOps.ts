@@ -74,7 +74,9 @@ export const useBusinessOps = () => {
       const mapped = mapBusinessFormToCreateBusinessDto(val);
       return createNewBusinessApiCall(mapped);
     },
-    onSuccess(data, variables, context) { },
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({ queryKey: ["my_businesses"] });
+    },
     onError(error, variables, context) { },
   });
 
