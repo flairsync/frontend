@@ -14,6 +14,7 @@ interface ProfileReviewCardProps {
     date?: string
     onEdit?: (id: string | number) => void
     onDelete?: (id: string | number) => void
+    deleteDisabled?: boolean
 }
 
 const TRUNCATE_AT = 150
@@ -28,6 +29,7 @@ const ProfileReviewCard: React.FC<ProfileReviewCardProps> = ({
     date,
     onEdit,
     onDelete,
+    deleteDisabled,
 }) => {
     const [expanded, setExpanded] = useState(false)
     const isLong = review.length > TRUNCATE_AT
@@ -107,6 +109,7 @@ const ProfileReviewCard: React.FC<ProfileReviewCardProps> = ({
                             <Button
                                 size="sm"
                                 variant="ghost"
+                                disabled={deleteDisabled}
                                 onClick={(e) => { e.stopPropagation(); onDelete(id) }}
                                 className="text-muted-foreground hover:text-destructive"
                             >

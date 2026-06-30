@@ -130,8 +130,10 @@ export const useNotificationSocket = () => {
                 if (businessId) {
                     queryClient.invalidateQueries({ queryKey: ['reservation-dashboard', businessId] });
                     queryClient.invalidateQueries({ queryKey: ['reservations', businessId] });
+                    queryClient.invalidateQueries({ queryKey: ['diner_seated_reservation', businessId] });
                 }
                 queryClient.invalidateQueries({ queryKey: ['my_reservations'] });
+                queryClient.invalidateQueries({ queryKey: ['diner_all_seated'] });
                 toast.info(notification.title, { description: message });
             } else if (notification.type === 'ORDER') {
                 const { orderId, businessId } = notification.payload ?? {};

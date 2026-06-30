@@ -14,7 +14,7 @@ export const useReservationDashboard = (businessId: string, pollingEnabled = tru
         queryKey: ["reservation-dashboard", businessId],
         queryFn: (): Promise<DashboardResponse> => fetchReservationDashboardApiCall(businessId),
         enabled: !!businessId,
-        refetchInterval: pollingEnabled ? 60_000 : false,
+        refetchInterval: pollingEnabled ? 5 * 60_000 : false,
     });
 };
 

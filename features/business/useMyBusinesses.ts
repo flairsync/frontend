@@ -11,6 +11,7 @@ export const useMyBusinesses = (page: number = 1, limit: number = 10) => {
     refetch: refreshMyBusinesses,
   } = useQuery({
     queryKey: ["my_businesses", page, limit],
+    staleTime: Infinity,
     queryFn: async () => {
       const res = await fetchMyBusinessesApiCall(page, limit) as any;
 

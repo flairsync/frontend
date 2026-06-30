@@ -85,14 +85,12 @@ export const useOrders = (
             const updatedOrderData = response.data?.data !== undefined ? response.data.data : response.data;
             toast.success("Items added to order successfully");
 
-            // Update cache dynamically
             queryClient.setQueryData(["orders", businessId], (oldOrders: Order[] | undefined) => {
                 if (!oldOrders) return oldOrders;
                 return oldOrders.map(order =>
                     order.id === variables.orderId ? updatedOrderData : order
                 );
             });
-            // Also invalidate just in case
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
         },
         onError: (error: any) => {
@@ -239,16 +237,16 @@ export const useOrders = (
             if (status && status < 500) return false;
             return true;
         },
-        onSuccess: () => {
+        onSuccess: (_, { orderId }) => {
             toast.success("Payment recorded successfully");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
-            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
         },
-        onError: (error: any) => {
+        onError: (error: any, { orderId }) => {
             if (error.response?.data?.code === "payment.idempotency_key_conflict") {
                 toast.error("Something went wrong with this payment. Please refresh and try again.");
                 queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
-                queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+                queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
             } else {
                 const msg = error.response?.data?.message || "Failed to record payment";
                 toast.error(msg);
@@ -259,10 +257,10 @@ export const useOrders = (
     const refundPaymentMutation = useMutation({
         mutationFn: ({ orderId, paymentId, data }: { orderId: string, paymentId: string, data?: { reason?: string } }) =>
             refundPaymentApiCall(businessId, orderId, paymentId, data),
-        onSuccess: () => {
+        onSuccess: (_, { orderId }) => {
             toast.success("Payment refunded successfully");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
-            queryClient.invalidateQueries({ queryKey: ["order", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Failed to refund payment";
@@ -300,8 +298,8 @@ export const useOrders = (
                     return old.map(o => o.id === orderId ? { ...o, ...updatedOrder } : o);
                 });
             }
+            // Only invalidate the list — setQueryData already has fresh data for the single order
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
-            queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Failed to update item";
@@ -324,8 +322,8 @@ export const useOrders = (
                     return old.map(o => o.id === orderId ? { ...o, ...updatedOrder } : o);
                 });
             }
+            // Only invalidate the list — setQueryData already has fresh data for the single order
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
-            queryClient.invalidateQueries({ queryKey: ["order", businessId, orderId] });
         },
         onError: (error: any) => {
             const code = error.response?.data?.code;

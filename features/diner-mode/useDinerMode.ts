@@ -62,7 +62,7 @@ export const useBusinessSeatedReservation = (businessId: string | undefined) => 
             );
         },
         enabled: !!businessId,
-        refetchInterval: 60_000,
+        refetchInterval: 5 * 60_000,
     });
 };
 
@@ -77,7 +77,7 @@ export const useAllSeatedReservations = () => {
             return res.data.filter((r: any) => r.status === 'seated');
         },
         enabled: isLoggedIn,
-        refetchInterval: 60_000,
+        refetchInterval: 5 * 60_000,
     });
 };
 
@@ -96,7 +96,7 @@ export const useActiveDineInOrder = (businessId: string | undefined) => {
             );
         },
         enabled: !!businessId,
-        refetchInterval: 30_000,
+        refetchInterval: 5 * 60_000,
     });
 };
 
@@ -114,7 +114,7 @@ export const useActiveOrderDetail = (
         refetchInterval: (query) => {
             const status: string | undefined = (query.state.data as any)?.status;
             if (status && TERMINAL_ORDER_STATUSES.includes(status as any)) return false;
-            return 30_000;
+            return 5 * 60_000;
         },
     });
 };

@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { usePageContext } from "vike-react/usePageContext";
 import {
     getNotificationsApiCall,
     getUnreadCountApiCall,
@@ -10,6 +11,7 @@ import {
 
 export const useNotifications = (limit: number = 20, offset: number = 0) => {
     const queryClient = useQueryClient();
+    const { user } = usePageContext();
 
     const {
         data: notificationsData,
@@ -18,7 +20,8 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
         refetch: refetchNotifications
     } = useQuery({
         queryKey: ['notifications', limit, offset],
-        queryFn: () => getNotificationsApiCall(limit, offset)
+        queryFn: () => getNotificationsApiCall(limit, offset),
+        enabled: user != null,
     });
 
     const {
@@ -28,7 +31,8 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
         refetch: refetchUnreadCount
     } = useQuery({
         queryKey: ['notifications', 'unread-count'],
-        queryFn: getUnreadCountApiCall
+        queryFn: getUnreadCountApiCall,
+        enabled: user != null,
     });
 
     const {
@@ -72,6 +76,7 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
 
 export const useNotificationPreferences = () => {
     const queryClient = useQueryClient();
+    const { user } = usePageContext();
 
     const {
         data: preferencesData,
@@ -79,7 +84,8 @@ export const useNotificationPreferences = () => {
         error: preferencesError,
     } = useQuery({
         queryKey: ['notification-preferences'],
-        queryFn: getPreferencesApiCall
+        queryFn: getPreferencesApiCall,
+        enabled: user != null,
     });
 
     const {

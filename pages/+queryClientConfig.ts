@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 export default {
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       refetchOnReconnect: true,
       retry: (failureCount: number, error: unknown) => {
         if ((error as AxiosError)?.response?.status === 403) return false;

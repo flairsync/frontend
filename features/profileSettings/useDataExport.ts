@@ -21,7 +21,7 @@ export const useDataExport = () => {
       return await getDataExportStatusApiCall() as DataExportStatus;
     },
     refetchInterval: (query) => {
-      if (query.state.data?.status === "pending") return 10_000;
+      if (query.state.data?.status === "pending") return 30_000;
       return false;
     },
   });

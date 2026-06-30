@@ -11,7 +11,7 @@ const MyReviewsPage = () => {
     const queryClient = useQueryClient()
     const { data: reviews = [], isLoading } = useMyReviews()
 
-    const { mutate: deleteReview } = useMutation({
+    const { mutate: deleteReview, isPending: deletingReview } = useMutation({
         mutationFn: async ({ businessId, reviewId }: { businessId: string; reviewId: string }) => {
             const res = await deleteReviewApiCall(businessId, reviewId)
             return res.data
@@ -57,6 +57,7 @@ const MyReviewsPage = () => {
                                 review={review.comment ?? ""}
                                 date={review.createdAt}
                                 onDelete={() => handleDelete(review)}
+                                deleteDisabled={deletingReview}
                             />
                         )
                     })

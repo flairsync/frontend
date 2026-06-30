@@ -42,10 +42,11 @@ function InlineStockEditor({ item, businessId }: { item: MarketplaceItem; busine
     if (!editing) {
         return (
             <button
-                className="text-sm font-medium underline-offset-2 hover:underline cursor-pointer"
+                className="text-sm font-medium underline-offset-2 hover:underline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={updateStock.isPending}
                 onClick={() => { setValue(String(item.stock)); setEditing(true); }}
             >
-                {item.stock}
+                {updateStock.isPending ? <Loader2 className="w-3 h-3 inline animate-spin" /> : item.stock}
             </button>
         );
     }
@@ -70,6 +71,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
 
     const { data: items = [], isLoading } = useBusinessManagementItems(businessId);
     const { updateItem, deleteItem } = useMarketplaceMutations(businessId);
+    const isMutating = updateItem.isPending || deleteItem.isPending;
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<MarketplaceItem | null>(null);
@@ -158,6 +160,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                         <div className="flex items-center gap-2">
                                             <Switch
                                                 checked={item.isActive}
+                                                disabled={isMutating}
                                                 onCheckedChange={(v) =>
                                                     updateItem.mutate({ id: item.id, data: { isActive: v } })
                                                 }
@@ -177,6 +180,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8"
+                                                disabled={isMutating}
                                                 onClick={() => openEdit(item)}
                                             >
                                                 <Pencil className="w-3.5 h-3.5" />
@@ -190,6 +194,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                                     variant="ghost"
                                                     size="icon"
                                                     className="h-8 w-8 text-destructive hover:text-destructive"
+                                                    disabled={isMutating}
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" />
                                                 </Button>

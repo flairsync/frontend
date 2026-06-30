@@ -212,7 +212,7 @@ export const useMyActiveShift = (enabled: boolean = true) => {
       return null;
     },
     enabled,
-    refetchInterval: 60_000,
+    refetchInterval: 3 * 60_000,
   });
 };
 
