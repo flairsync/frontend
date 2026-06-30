@@ -13,8 +13,8 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  const title = payload.notification?.title ?? 'New notification';
-  const body = payload.notification?.body ?? '';
+  const title = payload.data?.title ?? 'New notification';
+  const body = payload.data?.body ?? '';
   self.registration.showNotification(title, {
     body,
     icon: '/images/logo.png',
@@ -22,8 +22,7 @@ messaging.onBackgroundMessage((payload) => {
   });
 });
 
-// Mirrors the in-app redirection switch in components/notifications/NotificationBubble.tsx
-// and NotificationList.tsx — keep them in sync when adding a new notification type.
+// Keep in sync with the in-app switch in components/notifications/NotificationBubble.tsx
 function resolveNotificationUrl(data) {
   const businessId = data?.businessId;
 
