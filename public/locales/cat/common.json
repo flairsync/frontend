@@ -74,6 +74,9 @@
       "staffManagement": "Gestió del personal",
       "scheduleManagement": "Gestió d'horaris",
       "settings": "Configuració",
+      "goHome": "Anar a l'inici",
+      "goToFeed": "Anar al feed",
+      "goToHub": "Anar al hub de negoci",
       "errorCode": "Codi d'error:"
     },
     "500": {

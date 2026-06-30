@@ -74,6 +74,9 @@
       "staffManagement": "Gestion du personnel",
       "scheduleManagement": "Gestion des horaires",
       "settings": "Paramètres",
+      "goHome": "Aller à l'accueil",
+      "goToFeed": "Aller au fil d'actualité",
+      "goToHub": "Aller au hub professionnel",
       "errorCode": "Code d'erreur :"
     },
     "500": {

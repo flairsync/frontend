@@ -27,7 +27,6 @@ import {
   Menu,
   X,
   ChevronRight,
-  ArrowRight,
   Lightbulb,
   User,
   Search,
@@ -405,22 +404,6 @@ function TutorialContent({
               </li>
             ))}
           </ul>
-        </div>
-      )}
-
-      {/* CTA */}
-      {section.appRoute && (
-        <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 flex items-center justify-between gap-4 flex-wrap">
-          <div>
-            <p className="text-sm font-semibold">{t("ui.ready_to_try")}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{t("ui.ready_desc")}</p>
-          </div>
-          <a href={section.appRoute.href}>
-            <Button size="sm" className="gap-1.5 shrink-0">
-              {t(`sections.${slug}.appRouteLabel`)}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
-          </a>
         </div>
       )}
 

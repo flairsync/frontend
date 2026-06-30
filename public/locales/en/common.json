@@ -74,6 +74,9 @@
       "staffManagement": "Staff Management",
       "scheduleManagement": "Schedule Management",
       "settings": "Settings",
+      "goHome": "Go to Home",
+      "goToFeed": "Go to Feed",
+      "goToHub": "Go to Business Hub",
       "errorCode": "Error code:"
     },
     "500": {
