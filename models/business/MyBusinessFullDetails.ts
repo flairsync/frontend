@@ -99,6 +99,7 @@ export class OpeningHours {
 
 export class MyBusinessFullDetails {
   id: string;
+  slug?: string;
   name: string;
   description?: string;
   creatorId: string;
@@ -295,7 +296,7 @@ export class MyBusinessFullDetails {
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
     if (!data) return null;
     try {
-      return new MyBusinessFullDetails(
+      const instance = new MyBusinessFullDetails(
         data.id,
         data.name,
         data.description,
@@ -358,6 +359,8 @@ export class MyBusinessFullDetails {
         data.taxIncluded !== undefined ? !!data.taxIncluded : true,
         data.enableFloorPlanView !== undefined ? !!data.enableFloorPlanView : false,
       );
+      instance.slug = data.slug ?? undefined;
+      return instance;
     } catch {
       return null;
     }
@@ -376,6 +379,7 @@ export class MyBusinessFullDetails {
 // OPS types
 
 export type UpdateBusinessDetailsDto = {
+  slug?: string;
   name?: string;
   description?: string;
   phone?: string;

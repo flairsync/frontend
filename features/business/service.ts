@@ -315,3 +315,6 @@ export const bulkAssignRoleToEmployeesApiCall = (
 
 export const fetchBusinessPlanApiCall = async (businessId: string) =>
   unwrap(await flairapi.get(`${MyBusinessUrl}/${businessId}/plan`));
+
+export const checkSlugAvailabilityApiCall = async (slug: string, excludeId: string): Promise<{ available: boolean }> =>
+  unwrap(await flairapi.get(`${baseBusinessUrl}/slug/${encodeURIComponent(slug)}/check`, { params: { excludeId } }));

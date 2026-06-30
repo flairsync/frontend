@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -24,6 +24,8 @@ import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { toIsoCurrencyCode } from '@/utils/currency'
+import { checkSlugAvailabilityApiCall } from '@/features/business/service'
+import { CheckCircle, XCircle, Loader2 } from 'lucide-react'
 
 type BusinessGeneralInfo = {
     name?: string,
@@ -31,7 +33,10 @@ type BusinessGeneralInfo = {
     email?: string,
     phone?: string,
     currency?: string,
+    slug?: string,
 }
+
+type SlugStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid'
 
 type Props = {
     businessDetails?: MyBusinessFullDetails,
@@ -46,6 +51,41 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [contactEmail, setContactEmail] = useState(props.businessDetails?.email)
     const [phone, setPhone] = useState(props.businessDetails?.phone);
     const [currency, setCurrency] = useState(toIsoCurrencyCode(props.businessDetails?.currency || "USD"));
+    const [slug, setSlug] = useState(props.businessDetails?.slug ?? '')
+    const [slugStatus, setSlugStatus] = useState<SlugStatus>('idle')
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+
+    const handleSlugChange = (value: string) => {
+        const normalized = value.toLowerCase().replace(/[^a-z0-9-]/g, '')
+        setSlug(normalized)
+
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+
+        if (!normalized) {
+            setSlugStatus('idle')
+            return
+        }
+        if (!SLUG_REGEX.test(normalized)) {
+            setSlugStatus('invalid')
+            return
+        }
+        if (normalized === props.businessDetails?.slug) {
+            setSlugStatus('idle')
+            return
+        }
+
+        setSlugStatus('checking')
+        debounceRef.current = setTimeout(async () => {
+            try {
+                const res = await checkSlugAvailabilityApiCall(normalized, props.businessDetails!.id)
+                setSlugStatus(res.available ? 'available' : 'taken')
+            } catch {
+                setSlugStatus('idle')
+            }
+        }, 500)
+    }
 
     const onSaveDetails = () => {
         if (props.onSaveDetails) {
@@ -54,10 +94,13 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 email: contactEmail,
                 name: businessName,
                 phone: phone,
-                currency: currency
+                currency: currency,
+                slug: slug || undefined,
             })
         }
     }
+
+    const canSave = slugStatus !== 'taken' && slugStatus !== 'checking' && slugStatus !== 'invalid'
 
     return (
         <AccordionItem value="general-info" className="border rounded-lg px-3">
@@ -95,6 +138,34 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
+
+                <div className="space-y-1.5 pt-2 border-t mt-4">
+                    <Label>Public URL Slug</Label>
+                    <div className="relative">
+                        <Input
+                            disabled={props.disabled}
+                            placeholder="your-restaurant-name"
+                            value={slug}
+                            onChange={(e) => handleSlugChange(e.target.value)}
+                            className={
+                                slugStatus === 'taken' || slugStatus === 'invalid'
+                                    ? 'border-destructive pr-9'
+                                    : slugStatus === 'available'
+                                    ? 'border-green-500 pr-9'
+                                    : 'pr-9'
+                            }
+                        />
+                        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
+                            {slugStatus === 'checking' && <Loader2 className="h-4 w-4 animate-spin" />}
+                            {slugStatus === 'available' && <CheckCircle className="h-4 w-4 text-green-500" />}
+                            {(slugStatus === 'taken' || slugStatus === 'invalid') && <XCircle className="h-4 w-4 text-destructive" />}
+                        </span>
+                    </div>
+                    {slugStatus === 'taken' && <p className="text-xs text-destructive">This slug is already taken</p>}
+                    {slugStatus === 'invalid' && <p className="text-xs text-destructive">Only lowercase letters, numbers, and hyphens allowed</p>}
+                    {slugStatus === 'available' && <p className="text-xs text-green-600">Slug is available</p>}
+                    {slugStatus === 'idle' && <p className="text-xs text-muted-foreground">Used in your public page URL. Lowercase letters, numbers, and hyphens only.</p>}
+                </div>
 
                 <div className="space-y-1.5 pt-2 border-t mt-4">
                     <Label>Currency</Label>
@@ -135,7 +206,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 </div>
 
                 <Button
-                    disabled={props.disabled}
+                    disabled={props.disabled || !canSave}
                     onClick={onSaveDetails}>Save</Button>
             </AccordionContent>
         </AccordionItem>
