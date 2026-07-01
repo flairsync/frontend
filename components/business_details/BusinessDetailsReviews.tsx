@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { formatInTimezone } from "@/lib/dateUtils";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { useTranslation } from "react-i18next";
 
 // ---- Stars ---- //
 function RenderStars({ rating, size = 14 }: { rating: number; size?: number }) {
@@ -60,6 +61,7 @@ interface ReviewFormDialogProps {
 }
 
 function ReviewFormDialog({ businessId, existingReview, open, onClose, onReviewSaved }: ReviewFormDialogProps) {
+    const { t } = useTranslation("feed");
     const [rating, setRating] = useState(existingReview?.rating ?? 0);
     const [comment, setComment] = useState(existingReview?.comment ?? "");
     const createReview = useCreateReview(businessId);
@@ -71,27 +73,27 @@ function ReviewFormDialog({ businessId, existingReview, open, onClose, onReviewS
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!rating) {
-            toast.error("Please select a star rating.");
+            toast.error(t("business_page.reviews.rating_star_select", "Please select a star rating."));
             return;
         }
         try {
             if (isEditing) {
                 await updateReview.mutateAsync({ reviewId: existingReview.id, payload: { rating, comment: comment || undefined } });
-                toast.success("Review updated!");
+                toast.success(t("business_page.reviews.updated_toast", "Review updated!"));
             } else {
                 await createReview.mutateAsync({ rating, comment: comment || undefined });
-                toast.success("Review submitted!");
+                toast.success(t("business_page.reviews.submitted_toast", "Review submitted!"));
             }
             onReviewSaved?.();
             onClose();
         } catch (error: any) {
             const status = error.response?.status;
             if (status === 403) {
-                toast.error("You can only review businesses you've visited.");
+                toast.error(t("business_page.reviews.only_visited_error", "You can only review businesses you've visited."));
             } else if (status === 409) {
-                toast.error("You already have a review. Editing it instead.");
+                toast.error(t("business_page.reviews.already_reviewed_error", "You already have a review. Editing it instead."));
             } else {
-                toast.error("Failed to submit review. Please try again.");
+                toast.error(t("business_page.reviews.submit_failed_error", "Failed to submit review. Please try again."));
             }
         }
     };
@@ -100,29 +102,29 @@ function ReviewFormDialog({ businessId, existingReview, open, onClose, onReviewS
         <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
             <DialogContent className="rounded-3xl sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>{isEditing ? "Edit Your Review" : "Write a Review"}</DialogTitle>
+                    <DialogTitle>{isEditing ? t("business_page.reviews.edit_dialog_title", "Edit Your Review") : t("business_page.reviews.write_dialog_title", "Write a Review")}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-6 mt-2">
                     <div className="space-y-2">
-                        <p className="text-sm font-semibold">Rating</p>
+                        <p className="text-sm font-semibold">{t("business_page.reviews.rating_label", "Rating")}</p>
                         <StarPicker value={rating} onChange={setRating} />
                     </div>
                     <div className="space-y-2">
-                        <p className="text-sm font-semibold">Comment <span className="text-muted-foreground font-normal">(optional)</span></p>
+                        <p className="text-sm font-semibold">{t("business_page.reviews.comment_label", "Comment")} <span className="text-muted-foreground font-normal">{t("business_page.reviews.optional_label", "(optional)")}</span></p>
                         <Textarea
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
-                            placeholder="Share your experience..."
+                            placeholder={t("business_page.reviews.comment_placeholder", "Share your experience...")}
                             className="rounded-2xl resize-none min-h-[100px]"
                         />
                     </div>
                     <div className="flex gap-3">
                         <Button type="button" variant="outline" className="flex-1 rounded-xl" onClick={onClose}>
-                            Cancel
+                            {t("business_page.reviews.cancel_button", "Cancel")}
                         </Button>
                         <Button type="submit" disabled={isPending || !rating} className="flex-1 rounded-xl">
                             {isPending && <Loader2 size={14} className="mr-2 animate-spin" />}
-                            {isEditing ? "Update" : "Submit"}
+                            {isEditing ? t("business_page.reviews.update_button", "Update") : t("business_page.reviews.submit_button", "Submit")}
                         </Button>
                     </div>
                 </form>
@@ -133,9 +135,10 @@ function ReviewFormDialog({ businessId, existingReview, open, onClose, onReviewS
 
 // ---- Stats Widget ---- //
 function ReviewStats({ stats }: { stats: { average: number | null; total: number; distribution: Record<string, number> } }) {
+    const { t } = useTranslation("feed");
     if (stats.average === null) {
         return (
-            <div className="text-center py-6 text-muted-foreground text-sm">No reviews yet</div>
+            <div className="text-center py-6 text-muted-foreground text-sm">{t("business_page.reviews.no_reviews_yet", "No reviews yet")}</div>
         );
     }
 
@@ -147,7 +150,7 @@ function ReviewStats({ stats }: { stats: { average: number | null; total: number
             <div className="text-center shrink-0">
                 <p className="text-5xl font-black">{stats.average.toFixed(1)}</p>
                 <RenderStars rating={Math.round(stats.average)} size={18} />
-                <p className="text-xs text-muted-foreground mt-1">{stats.total} {stats.total === 1 ? "review" : "reviews"}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t("business_page.reviews.review_count", { count: stats.total })}</p>
             </div>
 
             {/* Distribution bars */}
@@ -190,6 +193,7 @@ interface BusinessDetailsReviewsProps {
 }
 
 const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ businessId, businessName, initialStats }) => {
+    const { t } = useTranslation("feed");
     const pageContext = usePageContext();
     const isLoggedIn = !!pageContext.user;
 
@@ -216,10 +220,10 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
         if (!myReview) return;
         try {
             await deleteReview.mutateAsync(myReview.id);
-            toast.success("Review deleted.");
+            toast.success(t("business_page.reviews.deleted_toast", "Review deleted."));
             setNeedsStatsRefresh(true);
         } catch {
-            toast.error("Failed to delete review.");
+            toast.error(t("business_page.reviews.delete_failed_toast", "Failed to delete review."));
         }
     };
 
@@ -228,9 +232,9 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                 <div className="space-y-2">
-                    <h2 className="text-3xl font-bold tracking-tight">What Guests Say</h2>
+                    <h2 className="text-3xl font-bold tracking-tight">{t("business_page.reviews.title", "What Guests Say")}</h2>
                     <p className="text-muted-foreground max-w-xl leading-relaxed">
-                        Hear from our community about their experiences{businessName ? ` at ${businessName}` : ""}. Verified reviews from recent visits.
+                        {t("business_page.reviews.subtitle", { atBusiness: businessName ? t("business_page.reviews.at_business", { name: businessName }) : "" })}
                     </p>
                 </div>
 
@@ -246,13 +250,13 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
                                     onClick={() => setReviewDialogOpen(true)}
                                 >
                                     <Pencil size={14} />
-                                    Edit Your Review
+                                    {t("business_page.reviews.edit_review_button", "Edit Your Review")}
                                 </Button>
                                 <ConfirmAction
                                     onConfirm={handleDelete}
-                                    title="Delete Review?"
-                                    description="This will permanently remove your review."
-                                    confirmText="Delete"
+                                    title={t("business_page.reviews.delete_title", "Delete Review?")}
+                                    description={t("business_page.reviews.delete_desc", "This will permanently remove your review.")}
+                                    confirmText={t("business_page.reviews.delete_button", "Delete")}
                                 >
                                     <Button
                                         variant="ghost"
@@ -271,7 +275,7 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
                                 onClick={() => setReviewDialogOpen(true)}
                             >
                                 <PlusCircle size={14} />
-                                Write a Review
+                                {t("business_page.reviews.write_review_button", "Write a Review")}
                             </Button>
                         )}
                     </div>
@@ -287,7 +291,7 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
             {myReview && (
                 <div className="p-4 rounded-2xl border border-primary/20 bg-primary/5 space-y-2">
                     <div className="flex items-center justify-between">
-                        <p className="text-xs font-black uppercase tracking-widest text-primary">Your Review</p>
+                        <p className="text-xs font-black uppercase tracking-widest text-primary">{t("business_page.reviews.your_review_label", "Your Review")}</p>
                         <RenderStars rating={myReview.rating} />
                     </div>
                     {myReview.comment && <p className="text-sm text-muted-foreground italic">"{myReview.comment}"</p>}
@@ -299,7 +303,7 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
                 <div className="flex justify-center py-10"><Loader2 className="animate-spin text-muted-foreground" size={24} /></div>
             ) : reviews.length === 0 ? (
                 <div className="text-center py-10 text-muted-foreground text-sm">
-                    {stats?.average === null ? "Be the first to leave a review!" : "No reviews to show."}
+                    {stats?.average === null ? t("business_page.reviews.be_first", "Be the first to leave a review!") : t("business_page.reviews.no_reviews_to_show", "No reviews to show.")}
                 </div>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

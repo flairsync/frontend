@@ -9,6 +9,7 @@ import { CustomerReservationTimeline } from "@/components/profile/CustomerReserv
 import { CustomerReservationActionBar } from "@/components/profile/CustomerReservationActionBar";
 import { getStatusBadge } from "@/features/reservations/reservationUtils";
 import { formatInTimezone } from "@/lib/dateUtils";
+import { useTranslation } from "react-i18next";
 
 interface BusinessDetailsReservationConversationProps {
     businessId: string;
@@ -23,6 +24,7 @@ export const BusinessDetailsReservationConversation: React.FC<BusinessDetailsRes
     reservationId,
     timezone,
 }) => {
+    const { t } = useTranslation("feed");
     const [open, setOpen] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,7 @@ export const BusinessDetailsReservationConversation: React.FC<BusinessDetailsRes
                 onClick={() => setOpen(true)}
             >
                 <MessagesSquare className="w-3.5 h-3.5" />
-                Conversation
+                {t("business_page.reservation_conversation.button_label", "Conversation")}
             </Button>
 
             <Sheet open={open} onOpenChange={setOpen}>
@@ -62,7 +64,7 @@ export const BusinessDetailsReservationConversation: React.FC<BusinessDetailsRes
                                 <Skeleton className="h-5 w-40" />
                             ) : (
                                 <>
-                                    <span>Reservation</span>
+                                    <span>{t("business_page.reservation_conversation.title", "Reservation")}</span>
                                     {reservation && getStatusBadge(reservation.status)}
                                 </>
                             )}
@@ -80,12 +82,12 @@ export const BusinessDetailsReservationConversation: React.FC<BusinessDetailsRes
                                 </span>
                                 <span className="flex items-center gap-1">
                                     <Users className="w-3.5 h-3.5" />
-                                    {reservation.guestCount} guests
+                                    {t("business_page.reservation_conversation.guests_count", { count: reservation.guestCount })}
                                 </span>
                                 {reservation.table && (
                                     <span className="flex items-center gap-1">
                                         <Table2 className="w-3.5 h-3.5" />
-                                        {reservation.table.name || `Table ${reservation.table.number}`}
+                                        {reservation.table.name || t("business_page.reservation_conversation.table_prefix", { number: reservation.table.number })}
                                     </span>
                                 )}
                             </div>
@@ -122,7 +124,7 @@ export const BusinessDetailsReservationConversation: React.FC<BusinessDetailsRes
                         )}
                         {!isLoading && isTerminal && (
                             <p className="py-3 text-center text-sm text-muted-foreground border-t">
-                                This reservation is {reservation?.status?.toLowerCase().replace("_", "-")}.
+                                {t("business_page.reservation_conversation.terminal_status", { status: reservation?.status?.toLowerCase().replace("_", "-") })}
                             </p>
                         )}
                     </div>

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from "react"
 import { Users, ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DiscoveryFloor, DiscoveryTableRecord, DiscoveryElementRecord } from "@/features/discovery/useDiscovery";
+import { useTranslation } from "react-i18next";
 
 const PPM = 64; // pixels per meter
 const MIN_ZOOM = 0.3;
@@ -177,6 +178,7 @@ function TableShape({
     onEnter: () => void;
     onLeave: () => void;
 }) {
+    const { t } = useTranslation("feed");
     const x = (table.position?.x ?? 0) * PPM;
     const y = (table.position?.y ?? 0) * PPM;
     const w = (table.position?.width ?? 1.2) * PPM;
@@ -242,7 +244,7 @@ function TableShape({
                     <text x={x + w / 2} y={y + h / 2 + Math.min(w, h) * 0.14}
                         textAnchor="middle" dominantBaseline="middle"
                         fontSize={Math.min(w, h) * 0.17} fill={colour.text} opacity={0.8}>
-                        {seats} seats
+                        {t("business_page.floor_plan.seats_count", { count: seats })}
                     </text>
                 )}
             </g>
@@ -263,6 +265,7 @@ interface FloorPlanPublicViewProps {
 const FloorPlanPublicView: React.FC<FloorPlanPublicViewProps> = ({
     floors, availableTableIds, canFilter, selectedTableId, onSelectTable,
 }) => {
+    const { t } = useTranslation("feed");
     const [activeFloorId, setActiveFloorId] = useState<string>(() => floors[0]?.id ?? "");
     const [hoveredId, setHoveredId] = useState<string | null>(null);
     const [zoom, setZoom] = useState(1);
@@ -444,8 +447,8 @@ const FloorPlanPublicView: React.FC<FloorPlanPublicViewProps> = ({
                 <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
                     <Users size={28} className="opacity-30" />
                 </div>
-                <p className="font-medium">No floor plan available</p>
-                <p className="text-sm opacity-70">The venue hasn't set up their floor plan yet.</p>
+                <p className="font-medium">{t("business_page.floor_plan.no_floor_plan", "No floor plan available")}</p>
+                <p className="text-sm opacity-70">{t("business_page.floor_plan.no_floor_plan_desc", "The venue hasn't set up their floor plan yet.")}</p>
             </div>
         );
     }
@@ -473,13 +476,13 @@ const FloorPlanPublicView: React.FC<FloorPlanPublicViewProps> = ({
                 <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
                     {canFilter && (
                         <span className="text-emerald-600 font-semibold">
-                            {availCount} table{availCount !== 1 ? "s" : ""} available
+                            {t("business_page.floor_plan.tables_available", { count: availCount })}
                         </span>
                     )}
                     <div className="flex items-center gap-3">
-                        <LegendDot color="#dcfce7" stroke="#16a34a" label="Available" />
-                        <LegendDot color="#f1f5f9" stroke="#cbd5e1" label="Taken" />
-                        {!canFilter && <LegendDot color="#e0f2fe" stroke="#38bdf8" label="Select date & time" />}
+                        <LegendDot color="#dcfce7" stroke="#16a34a" label={t("business_page.floor_plan.legend_available", "Available")} />
+                        <LegendDot color="#f1f5f9" stroke="#cbd5e1" label={t("business_page.floor_plan.legend_taken", "Taken")} />
+                        {!canFilter && <LegendDot color="#e0f2fe" stroke="#38bdf8" label={t("business_page.floor_plan.legend_select_date", "Select date & time")} />}
                     </div>
                 </div>
             </div>
@@ -549,21 +552,21 @@ const FloorPlanPublicView: React.FC<FloorPlanPublicViewProps> = ({
                     <button
                         onClick={() => zoomBy(1.25)}
                         className="w-8 h-8 rounded-lg bg-white/90 backdrop-blur-sm border border-border/60 shadow-sm flex items-center justify-center text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
-                        title="Zoom in"
+                        title={t("business_page.floor_plan.zoom_in", "Zoom in")}
                     >
                         <ZoomIn className="w-3.5 h-3.5" />
                     </button>
                     <button
                         onClick={() => zoomBy(1 / 1.25)}
                         className="w-8 h-8 rounded-lg bg-white/90 backdrop-blur-sm border border-border/60 shadow-sm flex items-center justify-center text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
-                        title="Zoom out"
+                        title={t("business_page.floor_plan.zoom_out", "Zoom out")}
                     >
                         <ZoomOut className="w-3.5 h-3.5" />
                     </button>
                     <button
                         onClick={resetView}
                         className="w-8 h-8 rounded-lg bg-white/90 backdrop-blur-sm border border-border/60 shadow-sm flex items-center justify-center text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
-                        title="Reset view"
+                        title={t("business_page.floor_plan.reset_view", "Reset view")}
                     >
                         <Maximize2 className="w-3.5 h-3.5" />
                     </button>
@@ -576,13 +579,13 @@ const FloorPlanPublicView: React.FC<FloorPlanPublicViewProps> = ({
 
                 {!canFilter && (
                     <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm border border-blue-100 text-blue-700 text-xs font-semibold px-4 py-2 rounded-full shadow-sm pointer-events-none">
-                        Select a date & time above to see availability
+                        {t("business_page.floor_plan.select_prompt", "Select a date & time above to see availability")}
                     </div>
                 )}
             </div>
 
             <p className="text-[10px] text-center text-muted-foreground">
-                Scroll to zoom · Drag to pan · Pinch on mobile
+                {t("business_page.floor_plan.controls_hint", "Scroll to zoom · Drag to pan · Pinch on mobile")}
             </p>
         </div>
     );

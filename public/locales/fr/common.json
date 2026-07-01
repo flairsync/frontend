@@ -57,6 +57,24 @@
       "trendy": "Tendance",
       "quiet": "Calme",
       "lively": "Animé"
+    },
+    "user_menu": {
+      "default_user": "Utilisateur",
+      "profile": "Profil",
+      "settings": "Paramètres",
+      "jobs": "Offres d'emploi",
+      "language": "Langue",
+      "theme": "Thème",
+      "business_hub": "Espace établissement",
+      "logout": "Déconnexion",
+      "unverified_account": "Compte non vérifié",
+      "profile_aria_label": "Profil",
+      "verify_email": "Vérifier l'e-mail"
+    },
+    "theme": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "auto": "Auto"
     }
   },
   "errors": {

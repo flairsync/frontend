@@ -23,25 +23,25 @@ const languages = [
     { code: "cat", label: "CAT", flag: CatFlag },
 ];
 
-const themes = [
-    { value: "light" as const, label: "Light", icon: Sun },
-    { value: "dark" as const, label: "Dark", icon: Moon },
-    { value: "system" as const, label: "Auto", icon: Monitor },
-];
-
 const MobileProfileSheet = () => {
     const { userProfile, updateUserProfile } = useProfile();
     const { logoutUser } = useAuth();
     const { setTheme, theme } = useTheme();
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user } = usePageContext() as any;
+
+    const themes = [
+        { value: "light" as const, label: t("shared.theme.light", "Light"), icon: Sun },
+        { value: "dark" as const, label: t("shared.theme.dark", "Dark"), icon: Moon },
+        { value: "system" as const, label: t("shared.theme.auto", "Auto"), icon: Monitor },
+    ];
 
     return (
         <div className="flex items-center gap-1">
             <NotificationBubble />
             <Sheet>
                 <SheetTrigger asChild>
-                    <button className="relative rounded-full" aria-label="Profile">
+                    <button className="relative rounded-full" aria-label={t("shared.user_menu.profile_aria_label", "Profile")}>
                         <Avatar className="h-8 w-8 hover:cursor-pointer">
                             <AvatarFallback className="text-xs">{userProfile?.getInitials()}</AvatarFallback>
                         </Avatar>
@@ -58,10 +58,10 @@ const MobileProfileSheet = () => {
                             <AvatarFallback>{userProfile?.getInitials()}</AvatarFallback>
                         </Avatar>
                         <div>
-                            <p className="font-semibold text-sm leading-tight">{userProfile?.getFullName() ?? "User"}</p>
+                            <p className="font-semibold text-sm leading-tight">{userProfile?.getFullName() ?? t("shared.user_menu.default_user", "User")}</p>
                             {user?.verified === false && (
                                 <p className="text-xs text-red-500 flex items-center gap-1 mt-0.5">
-                                    <AlertTriangle className="w-3 h-3" /> Unverified Account
+                                    <AlertTriangle className="w-3 h-3" /> {t("shared.user_menu.unverified_account", "Unverified Account")}
                                 </p>
                             )}
                         </div>
@@ -69,18 +69,18 @@ const MobileProfileSheet = () => {
 
                     <div className="space-y-1 pb-4">
                         <a href="/profile/overview" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
-                            <User className="w-4 h-4 text-muted-foreground" /> Profile
+                            <User className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.profile", "Profile")}
                         </a>
                         <a href="/profile/settings" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
-                            <Settings className="w-4 h-4 text-muted-foreground" /> Settings
+                            <Settings className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.settings", "Settings")}
                         </a>
                         <a href="/manage/overview" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
-                            <Building2 className="w-4 h-4 text-muted-foreground" /> BusinessHub
+                            <Building2 className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.business_hub", "BusinessHub")}
                         </a>
 
                         {/* Language */}
                         <div className="px-3 py-2">
-                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">Language</p>
+                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">{t("shared.user_menu.language", "Language")}</p>
                             <div className="flex gap-2 flex-wrap">
                                 {languages.map((lang) => (
                                     <button
@@ -105,7 +105,7 @@ const MobileProfileSheet = () => {
 
                         {/* Theme */}
                         <div className="px-3 py-2">
-                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">Theme</p>
+                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">{t("shared.user_menu.theme", "Theme")}</p>
                             <div className="flex gap-2">
                                 {themes.map(({ value, label, icon: Icon }) => (
                                     <button
@@ -129,7 +129,7 @@ const MobileProfileSheet = () => {
                             onClick={() => logoutUser()}
                             className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-red-500/5 text-sm font-medium text-red-500 transition-colors"
                         >
-                            <LogOut className="w-4 h-4" /> Logout
+                            <LogOut className="w-4 h-4" /> {t("shared.user_menu.logout", "Logout")}
                         </button>
                     </div>
                 </SheetContent>

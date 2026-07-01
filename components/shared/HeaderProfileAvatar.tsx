@@ -36,7 +36,7 @@ const languages = [
     { code: "en", label: "English", flag: EnFlag },
     { code: "fr", label: "Français", flag: FrFlag },
     { code: "es", label: "Español", flag: EsFlag },
-    { code: "cat", label: "Catalan", flag: CatFlag },
+    { code: "cat", label: "Català", flag: CatFlag },
 ];
 const HeaderProfileAvatar = () => {
 
@@ -81,11 +81,11 @@ const HeaderProfileAvatar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuLabel className="flex flex-col">
-                        <span>{userProfile?.getFullName() ?? "User"}</span>
+                        <span>{userProfile?.getFullName() ?? i18n.t("shared.user_menu.default_user", "User")}</span>
                         {user && user.verified === false && (
                             <span className="text-xs text-red-500 font-normal flex items-center gap-1 mt-1">
                                 <AlertTriangle className="w-3 h-3" />
-                                {i18n.t("auth_page.register.unverified_account", "Unverified Account")}
+                                {i18n.t("shared.user_menu.unverified_account", "Unverified Account")}
                             </span>
                         )}
                     </DropdownMenuLabel>
@@ -96,7 +96,7 @@ const HeaderProfileAvatar = () => {
                             <a href='/verify'>
                                 <DropdownMenuItem className='hover:cursor-pointer text-red-600 focus:text-red-700 focus:bg-red-50'>
                                     <AlertTriangle className="w-4 h-4 mr-2" />
-                                    {i18n.t("auth_page.register.verify_email", "Verify Email")}
+                                    {i18n.t("shared.user_menu.verify_email", "Verify Email")}
                                 </DropdownMenuItem>
                             </a>
                             <DropdownMenuSeparator />
@@ -107,25 +107,25 @@ const HeaderProfileAvatar = () => {
                         href='/profile/overview'
                     >
                         <DropdownMenuItem className='hover:cursor-pointer'>
-                            Profile
+                            {i18n.t("shared.user_menu.profile", "Profile")}
                         </DropdownMenuItem>
                     </a>
 
                     <a href='/profile/settings'>
                         <DropdownMenuItem className='hover:cursor-pointer'>
-                            Settings
+                            {i18n.t("shared.user_menu.settings", "Settings")}
                         </DropdownMenuItem>
                     </a>
 
                     <a href='/profile/jobs'>
                         <DropdownMenuItem className='hover:cursor-pointer'>
-                            Jobs
+                            {i18n.t("shared.user_menu.jobs", "Jobs")}
                         </DropdownMenuItem>
                     </a>
 
                     <DropdownMenuGroup>
                         <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>Language</DropdownMenuSubTrigger>
+                            <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.language", "Language")}</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                                 <DropdownMenuSubContent>
 
@@ -148,18 +148,18 @@ const HeaderProfileAvatar = () => {
                     </DropdownMenuGroup>
                     <DropdownMenuGroup>
                         <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
+                            <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.theme", "Theme")}</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                                 <DropdownMenuSubContent>
                                     <DropdownMenuItem onClick={() => setTheme("light")}>
                                         {theme == "light" && <CheckCircle2 />}
-                                        Light</DropdownMenuItem>
+                                        {i18n.t("shared.theme.light", "Light")}</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => setTheme("dark")}>
                                         {theme == "dark" && <CheckCircle2 />}
-                                        Dark</DropdownMenuItem>
+                                        {i18n.t("shared.theme.dark", "Dark")}</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => setTheme("system")}>
                                         {theme == "system" && <CheckCircle2 />}
-                                        Auto</DropdownMenuItem>
+                                        {i18n.t("shared.theme.auto", "Auto")}</DropdownMenuItem>
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
                         </DropdownMenuSub>
@@ -170,7 +170,7 @@ const HeaderProfileAvatar = () => {
                         href='/manage/overview'
                     >
                         <DropdownMenuItem className='hover:cursor-pointer'>
-                            BusinessHub
+                            {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
                         </DropdownMenuItem>
                     </a>
 
@@ -201,7 +201,7 @@ const HeaderProfileAvatar = () => {
                         onClick={() => {
                             logoutUser();
                         }}
-                    >Logout</DropdownMenuItem>
+                    >{i18n.t("shared.user_menu.logout", "Logout")}</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>

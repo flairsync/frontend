@@ -40,7 +40,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
         const url = window.location.href;
         const shareData = {
             title: profile.name,
-            text: profile.description || `Check out ${profile.name}`,
+            text: profile.description || t("business_page.hero.share_text", { name: profile.name, defaultValue: `Check out ${profile.name}` }),
             url,
         };
 
@@ -49,16 +49,16 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                 await navigator.share(shareData);
             } catch (err: any) {
                 // User cancelled — not an error worth toasting
-                if (err.name !== "AbortError") toast.error("Couldn't open share sheet.");
+                if (err.name !== "AbortError") toast.error(t("business_page.hero.share_failed", "Couldn't open share sheet."));
             }
         } else {
             try {
                 await navigator.clipboard.writeText(url);
                 setCopied(true);
-                toast.success("Link copied to clipboard!");
+                toast.success(t("business_page.hero.link_copied", "Link copied to clipboard!"));
                 setTimeout(() => setCopied(false), 2000);
             } catch {
-                toast.error("Couldn't copy link.");
+                toast.error(t("business_page.hero.copy_failed", "Couldn't copy link."));
             }
         }
     };
@@ -106,7 +106,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                 ) : (
                     <div className="relative aspect-[21/9] w-full overflow-hidden rounded-[2.5rem] shadow-2xl bg-muted flex flex-col items-center justify-center gap-3 border border-border/40">
                         <ImageOff size={48} className="text-muted-foreground/30" />
-                        <p className="text-sm text-muted-foreground/50 font-medium">No photos uploaded yet</p>
+                        <p className="text-sm text-muted-foreground/50 font-medium">{t("business_page.hero.no_photos", "No photos uploaded yet")}</p>
                     </div>
                 )}
 
@@ -184,11 +184,11 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                                 <Star size={16} className="text-yellow-400 fill-yellow-400" />
                                                 <span className="text-sm font-bold text-white">{profile.rating}</span>
                                                 {profile.reviewCount > 0 && (
-                                                    <span className="text-xs text-white/50">({profile.reviewCount} reviews)</span>
+                                                    <span className="text-xs text-white/50">({t("business_page.reviews.review_count", { count: profile.reviewCount })})</span>
                                                 )}
                                             </div>
                                         ) : (
-                                            <span className="text-xs text-white/50">No reviews yet</span>
+                                            <span className="text-xs text-white/50">{t("business_page.info_cards.no_reviews_yet", "No reviews yet")}</span>
                                         )}
                                     </div>
                                 </div>
@@ -237,11 +237,11 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                     <Star size={16} className="text-yellow-400 fill-yellow-400" />
                                     <span className="text-sm font-bold text-foreground">{profile.rating}</span>
                                     {profile.reviewCount > 0 && (
-                                        <span className="text-xs text-muted-foreground">({profile.reviewCount} reviews)</span>
+                                        <span className="text-xs text-muted-foreground">({t("business_page.reviews.review_count", { count: profile.reviewCount })})</span>
                                     )}
                                 </div>
                             ) : (
-                                <span className="text-xs text-muted-foreground">No reviews yet</span>
+                                <span className="text-xs text-muted-foreground">{t("business_page.info_cards.no_reviews_yet", "No reviews yet")}</span>
                             )}
                         </div>
                     </div>

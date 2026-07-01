@@ -26,6 +26,7 @@ import { useProfile } from "@/features/profile/useProfile";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { isValidPhoneNumber, type Country as PhoneCountry } from "react-phone-number-input";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     onClose: () => void;
@@ -38,23 +39,24 @@ interface Props {
     tableName: string;
 }
 
-const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    phone: Yup.string()
-        .required("Phone number is required")
-        .test("is-valid-phone", "Invalid phone number", (value) => {
-            if (!value) return false;
-            return isValidPhoneNumber(value);
-        }),
-    guests: Yup.number().min(1, "Minimum 1 guest").required("Required"),
-});
-
 const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
+    const { t } = useTranslation("feed");
     const [isSuccess, setIsSuccess] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [preOrders, setPreOrders] = useState<Record<string, number>>({});
     const { userProfile } = useProfile();
+
+    const validationSchema = React.useMemo(() => Yup.object().shape({
+        name: Yup.string().required(t("business_page.reserve_modal.name_required", "Name is required")),
+        email: Yup.string().email(t("business_page.reserve_modal.email_invalid", "Invalid email")).required(t("business_page.reserve_modal.email_required", "Email is required")),
+        phone: Yup.string()
+            .required(t("business_page.reserve_modal.phone_required", "Phone number is required"))
+            .test("is-valid-phone", t("business_page.reserve_modal.phone_invalid", "Invalid phone number"), (value) => {
+                if (!value) return false;
+                return isValidPhoneNumber(value);
+            }),
+        guests: Yup.number().min(1, t("business_page.reserve_modal.min_guests", "Minimum 1 guest")).required(t("business_page.reserve_modal.field_required", "Required")),
+    }), [t]);
     const submitReservation = useSubmitReservation(props.businessId);
     const { data: businessProfile } = useDiscoveryProfile(props.businessId);
     const { data: menu } = useDiscoveryMenu(props.businessId);
@@ -94,7 +96,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
             });
             setIsSuccess(true);
         } catch (error: any) {
-            const message = error?.response?.data?.message || "Something went wrong. Please try again.";
+            const message = error?.response?.data?.message || t("business_page.reserve_modal.generic_error", "Something went wrong. Please try again.");
             setSubmitError(message);
         }
     };
@@ -108,15 +110,15 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                             <CheckCircle2 size={40} />
                         </div>
                         <div className="space-y-2">
-                            <h2 className="text-2xl font-bold">Reservation Received!</h2>
+                            <h2 className="text-2xl font-bold">{t("business_page.reserve_modal.received_title", "Reservation Received!")}</h2>
                             <p className="text-muted-foreground">
-                                Your reservation for <strong>{props.tableName}</strong> on <strong>{props.date}</strong> at <strong>{props.time}</strong> is currently <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 uppercase font-black px-2 ml-1">PENDING</Badge> confirmation.
+                                {t("business_page.reserve_modal.received_message_prefix", { tableName: props.tableName, date: props.date, time: props.time })} <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 uppercase font-black px-2 ml-1">{t("business_page.reserve_modal.pending_badge", "PENDING")}</Badge> {t("business_page.reserve_modal.received_message_suffix", "confirmation.")}
                             </p>
                             <p className="text-sm text-muted-foreground/80 mt-4">
-                                Keep an eye on your email/phone for the confirmation notice.
+                                {t("business_page.reserve_modal.keep_eye", "Keep an eye on your email/phone for the confirmation notice.")}
                             </p>
                         </div>
-                        <Button onClick={props.onClose} className="w-full mt-6">Back to Business</Button>
+                        <Button onClick={props.onClose} className="w-full mt-6">{t("business_page.reserve_modal.back_to_business", "Back to Business")}</Button>
                     </div>
                 </DialogContent>
             </Dialog>
@@ -133,8 +135,8 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
             <DialogContent className="sm:max-w-[500px] p-0 overflow-y-auto max-h-[90vh] border-none rounded-[2rem]">
                 <div className="bg-primary p-8 text-primary-foreground relative overflow-hidden">
                     <div className="relative z-10 space-y-1">
-                        <h2 className="text-2xl font-bold italic tracking-tight">Complete Your Reservation</h2>
-                        <p className="text-primary-foreground/80 font-medium">Table {props.tableName} • {props.date} • {props.time}</p>
+                        <h2 className="text-2xl font-bold italic tracking-tight">{t("business_page.reserve_modal.complete_title", "Complete Your Reservation")}</h2>
+                        <p className="text-primary-foreground/80 font-medium">{t("business_page.reserve_modal.table_summary", { tableName: props.tableName, date: props.date, time: props.time })}</p>
                     </div>
                     <Calendar className="absolute -right-4 -bottom-4 text-white/10 w-32 h-32 rotate-12" />
                 </div>
@@ -156,7 +158,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                             <Form className="space-y-4 mt-2">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="flex flex-col gap-1.5">
-                                        <Label htmlFor="name">Name</Label>
+                                        <Label htmlFor="name">{t("business_page.reserve_modal.name_label", "Name")}</Label>
                                         <Input
                                             id="name"
                                             name="name"
@@ -168,7 +170,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                         {errors.name && touched.name && <span className="text-[10px] text-destructive font-bold uppercase">{errors.name}</span>}
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label htmlFor="email">{t("business_page.reserve_modal.email_label", "Email")}</Label>
                                         <Input
                                             id="email"
                                             name="email"
@@ -180,7 +182,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                         {errors.email && touched.email && <span className="text-[10px] text-destructive font-bold uppercase">{errors.email}</span>}
                                     </div>
                                     <div className="flex flex-col gap-1.5">
-                                        <Label htmlFor="guests">Guests</Label>
+                                        <Label htmlFor="guests">{t("business_page.reserve_modal.guests_label", "Guests")}</Label>
                                         <Input
                                             id="guests"
                                             name="guests"
@@ -195,13 +197,13 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
-                                    <Label htmlFor="phone">Phone Number</Label>
+                                    <Label htmlFor="phone">{t("business_page.reserve_modal.phone_label", "Phone Number")}</Label>
                                     <PhoneInput
                                         id="phone"
                                         name="phone"
                                         value={values.phone}
                                         onChange={(val) => setFieldValue("phone", val)}
-                                        placeholder="Enter phone number"
+                                        placeholder={t("business_page.reserve_modal.phone_placeholder", "Enter phone number")}
                                         defaultCountry={phoneDefaultCountry}
                                         required
                                     />
@@ -209,13 +211,13 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
-                                    <Label htmlFor="notes">Special Requests / Notes</Label>
+                                    <Label htmlFor="notes">{t("business_page.reserve_modal.notes_label", "Special Requests / Notes")}</Label>
                                     <Textarea
                                         id="notes"
                                         name="notes"
                                         value={values.notes}
                                         onChange={handleChange}
-                                        placeholder="Any special requests?"
+                                        placeholder={t("business_page.reserve_modal.notes_placeholder", "Any special requests?")}
                                         rows={3}
                                     />
                                 </div>
@@ -224,7 +226,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                     <div className="flex flex-col gap-1.5 mt-4">
                                         <Label className="flex items-center gap-2">
                                             <UtensilsCrossed size={16} className="text-primary" />
-                                            Pre-order Items (Optional)
+                                            {t("business_page.reserve_modal.preorder_label", "Pre-order Items (Optional)")}
                                         </Label>
                                         <div className="rounded-xl border border-border/50 bg-card/50 overflow-hidden">
                                             <Accordion type="single" collapsible className="w-full">
@@ -273,7 +275,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                         </div>
                                         {Object.keys(preOrders).length > 0 && (
                                             <p className="text-xs text-muted-foreground mt-1">
-                                                {Object.values(preOrders).reduce((a, b) => a + b, 0)} item(s) selected for pre-order.
+                                                {t("business_page.reserve_modal.preorder_selected", { count: Object.values(preOrders).reduce((a, b) => a + b, 0) })}
                                             </p>
                                         )}
                                     </div>
@@ -287,11 +289,11 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
 
                                 <div className="flex justify-end gap-3 mt-4">
                                     <Button type="button" variant="outline" onClick={props.onClose}>
-                                        Cancel
+                                        {t("business_page.reserve_modal.cancel_button", "Cancel")}
                                     </Button>
                                     <Button type="submit" disabled={submitReservation.isPending}>
                                         {submitReservation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                        Book Now
+                                        {t("business_page.reserve_modal.book_now_button", "Book Now")}
                                     </Button>
                                 </div>
                             </Form>

@@ -13,6 +13,7 @@ import { OpeningHours } from "@/models/business/MyBusinessFullDetails";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import FloorPlanPublicView from "./FloorPlanPublicView";
+import { useTranslation } from "react-i18next";
 
 const DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
@@ -63,6 +64,7 @@ interface BusinessDetailsTableReservationProps {
 }
 
 const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationProps> = ({ businessId }) => {
+    const { t } = useTranslation("feed");
     const [selectedDateObj, setSelectedDateObj] = useState<Date | undefined>(undefined);
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [selectedTime, setSelectedTime] = useState("");
@@ -160,9 +162,9 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
 
             {/* Section header */}
             <div className="space-y-2 text-center max-w-2xl mx-auto">
-                <h2 className="text-3xl font-bold tracking-tight">Reserve a Table</h2>
+                <h2 className="text-3xl font-bold tracking-tight">{t("business_page.table_reservation.section_title", "Reserve a Table")}</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                    Select your preferred date and time to see available tables. We'll make sure everything is ready for your arrival.
+                    {t("business_page.table_reservation.section_subtitle", "Select your preferred date and time to see available tables. We'll make sure everything is ready for your arrival.")}
                 </p>
             </div>
 
@@ -170,7 +172,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
             <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-card border border-border/50 rounded-[2.5rem] shadow-2xl shadow-primary/5">
                 {/* Date */}
                 <div className="space-y-3">
-                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Date</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.table_reservation.date_label", "Date")}</Label>
                     <div className="relative group">
                         <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none group-hover:scale-110 transition-transform" size={18} />
                         <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
@@ -181,7 +183,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                 >
                                     {selectedDateObj
                                         ? format(selectedDateObj, 'MMM d, yyyy')
-                                        : <span className="font-normal text-muted-foreground">Select date</span>}
+                                        : <span className="font-normal text-muted-foreground">{t("business_page.table_reservation.select_date", "Select date")}</span>}
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
@@ -204,7 +206,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
 
                 {/* Time */}
                 <div className="space-y-3">
-                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Time</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.table_reservation.time_label", "Time")}</Label>
                     <div className="relative group">
                         <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-primary z-10 pointer-events-none group-hover:scale-110 transition-transform" size={18} />
                         <select
@@ -214,7 +216,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             disabled={!selectedDateObj || timeSlots.length === 0}
                         >
                             <option value="">
-                                {!selectedDateObj ? 'Select date first' : timeSlots.length === 0 ? 'No slots available' : 'Select time'}
+                                {!selectedDateObj ? t("business_page.table_reservation.select_date_first", "Select date first") : timeSlots.length === 0 ? t("business_page.table_reservation.no_slots_available", "No slots available") : t("business_page.table_reservation.select_time", "Select time")}
                             </option>
                             {timeSlots.map(slot => (
                                 <option key={slot} value={slot}>{formatTimeSlot(slot)}</option>
@@ -225,7 +227,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
 
                 {/* Guests */}
                 <div className="space-y-3 sm:col-span-2 lg:col-span-1">
-                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Guests</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.table_reservation.guests_label", "Guests")}</Label>
                     <div className="relative group">
                         <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-primary group-hover:scale-110 transition-transform" size={18} />
                         <select
@@ -234,7 +236,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             onChange={(e) => { setSelectedGuests(parseInt(e.target.value)); setSelectedTable(null); }}
                         >
                             {guestOptions.map(n => (
-                                <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>
+                                <option key={n} value={n}>{t("business_page.table_reservation.guest_count", { count: n })}</option>
                             ))}
                         </select>
                     </div>
@@ -255,7 +257,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             )}
                         >
                             <LayoutGrid size={15} />
-                            Table List
+                            {t("business_page.table_reservation.table_list_tab", "Table List")}
                         </button>
                         <button
                             onClick={() => setViewMode('map')}
@@ -267,9 +269,9 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             )}
                         >
                             <Map size={15} />
-                            Floor Plan
+                            {t("business_page.table_reservation.floor_plan_tab", "Floor Plan")}
                             <span className="text-[9px] bg-amber-100 text-amber-600 border border-amber-200 rounded px-1 py-0.5 font-black uppercase leading-none">
-                                BETA
+                                {t("business_page.table_reservation.beta_badge", "BETA")}
                             </span>
                         </button>
                     </div>
@@ -288,7 +290,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             className="flex flex-col items-center justify-center py-16 gap-4"
                         >
                             <Loader2 className="w-10 h-10 text-primary animate-spin" />
-                            <p className="text-muted-foreground font-medium">Checking availability…</p>
+                            <p className="text-muted-foreground font-medium">{t("business_page.table_reservation.checking_availability", "Checking availability…")}</p>
                         </motion.div>
                     ) : isFloorsLoading ? (
                         <motion.div
@@ -309,9 +311,9 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                 <XCircle size={32} />
                             </div>
                             <p className="text-rose-600 font-semibold">
-                                No tables available for {selectedGuests} {selectedGuests === 1 ? 'guest' : 'guests'} at {formatTimeSlot(selectedTime)}.
+                                {t("business_page.table_reservation.no_tables_available", { count: selectedGuests, guestLabel: t(selectedGuests === 1 ? "business_page.table_reservation.guest_one" : "business_page.table_reservation.guest_other"), time: formatTimeSlot(selectedTime) })}
                             </p>
-                            <p className="text-muted-foreground text-sm">Try a different time or party size.</p>
+                            <p className="text-muted-foreground text-sm">{t("business_page.table_reservation.try_different_time", "Try a different time or party size.")}</p>
                         </motion.div>
 
                     ) : canShowTables && viewMode === 'map' && hasFloorPlan ? (
@@ -358,8 +360,8 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                         <Users size={32} />
                                     </div>
                                     <div className="text-center space-y-1">
-                                        <span className="text-lg font-black block">Table {table.number}</span>
-                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{table.seats} Seats</span>
+                                        <span className="text-lg font-black block">{t("business_page.table_reservation.table_number", { number: table.number })}</span>
+                                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t("business_page.table_reservation.seats_count", { count: table.seats })}</span>
                                         {floors.length > 1 && (
                                             <span className="text-[10px] text-muted-foreground block">{table.floorName}</span>
                                         )}
@@ -393,7 +395,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                                         <CalendarIcon size={32} />
                                     </div>
                                     <p className="text-muted-foreground font-medium italic">
-                                        Please select a date and time to view available tables.
+                                        {t("business_page.table_reservation.select_date_time_prompt", "Please select a date and time to view available tables.")}
                                     </p>
                                 </>
                             )}
@@ -408,7 +410,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
                                 <XCircle size={32} className="text-muted-foreground opacity-40" />
                             </div>
-                            <p className="text-muted-foreground font-medium italic">No tables configured for this venue yet.</p>
+                            <p className="text-muted-foreground font-medium italic">{t("business_page.table_reservation.no_tables_configured", "No tables configured for this venue yet.")}</p>
                         </motion.div>
                     )}
                 </AnimatePresence>

@@ -12,6 +12,7 @@ import { formatInTimezone } from "@/lib/dateUtils";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { toast } from "sonner";
 import { BusinessDetailsReservationConversation } from "@/components/business_details/BusinessDetailsReservationConversation";
+import { useTranslation } from "react-i18next";
 
 interface BusinessDetailsUserHistoryProps {
     businessId: string;
@@ -53,20 +54,21 @@ function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
     open: boolean;
     onClose: () => void;
 }) {
+    const { t } = useTranslation("feed");
     const { data: order, isLoading } = useSingleOrder(open ? businessId : undefined, open ? orderId : undefined);
 
     return (
         <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
             <SheetContent className="w-full sm:max-w-md overflow-y-auto">
                 <SheetHeader>
-                    <SheetTitle>Order Details</SheetTitle>
+                    <SheetTitle>{t("business_page.user_history.order_details_title", "Order Details")}</SheetTitle>
                 </SheetHeader>
                 {isLoading ? (
                     <div className="flex justify-center py-12"><Loader2 className="animate-spin text-muted-foreground" size={24} /></div>
                 ) : order ? (
                     <div className="mt-6 space-y-6">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">Order #{order.id.slice(0, 8)}</span>
+                            <span className="text-sm text-muted-foreground">{t("business_page.user_history.order_number", { id: order.id.slice(0, 8) })}</span>
                             <StatusBadge status={order.status} styleMap={ORDER_STATUS_STYLES} />
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -76,7 +78,7 @@ function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
                         </div>
 
                         <div className="space-y-3">
-                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Items</p>
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t("business_page.user_history.items_label", "Items")}</p>
                             {order.items?.map((item: any, i: number) => (
                                 <div key={i} className="flex items-start justify-between gap-3 py-2 border-b border-border/30 last:border-0">
                                     <div className="space-y-0.5">
@@ -97,12 +99,12 @@ function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
                         </div>
 
                         <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                            <span className="font-black text-sm">Total</span>
+                            <span className="font-black text-sm">{t("business_page.user_history.total_label", "Total")}</span>
                             <span className="font-black text-lg">${order.totalAmount}</span>
                         </div>
                     </div>
                 ) : (
-                    <p className="text-sm text-muted-foreground mt-6">Order not found.</p>
+                    <p className="text-sm text-muted-foreground mt-6">{t("business_page.user_history.order_not_found", "Order not found.")}</p>
                 )}
             </SheetContent>
         </Sheet>
@@ -110,6 +112,7 @@ function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
 }
 
 const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({ businessId }) => {
+    const { t } = useTranslation("feed");
     const { data: businessProfile } = useDiscoveryProfile(businessId);
     const timezone = businessProfile?.timezone;
 
@@ -138,12 +141,12 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
     const handleCancel = async (id: string, customerName: string) => {
         try {
             await cancelReservation.mutateAsync({ businessId, reservationId: id });
-            toast.success(`Reservation for ${customerName} cancelled`);
+            toast.success(t("business_page.user_history.cancel_success", { name: customerName }));
         } catch (error: any) {
             if (error.response?.status === 403) {
-                toast.error(error.response?.data?.message || "Cannot cancel within the cancellation window.");
+                toast.error(error.response?.data?.message || t("business_page.user_history.cancel_window_error", "Cannot cancel within the cancellation window."));
             } else {
-                toast.error("Failed to cancel reservation.");
+                toast.error(t("business_page.user_history.cancel_failed", "Failed to cancel reservation."));
             }
         }
     };
@@ -151,7 +154,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
     const handleReorder = async (orderId: string) => {
         try {
             const newOrder = await reorder.mutateAsync({ orderId });
-            toast.success("Order placed! Redirecting...");
+            toast.success(t("business_page.user_history.reorder_success", "Order placed! Redirecting..."));
             const newOrderId = newOrder?.data?.id ?? newOrder?.id;
             if (newOrderId) {
                 window.location.href = `/business/${businessId}?order=${newOrderId}`;
@@ -161,19 +164,19 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
             const stockData = error.response?.data?.data;
 
             if (error.response?.status === 403) {
-                toast.error("This business isn't accepting orders right now.");
+                toast.error(t("business_page.user_history.business_not_accepting_orders", "This business isn't accepting orders right now."));
             } else if (code === "order.not_found") {
-                toast.error("This order could not be found.");
+                toast.error(t("business_page.user_history.order_not_found_error", "This order could not be found."));
             } else if (stockData?.itemName) {
                 toast.error(
-                    `${stockData.itemName} is out of stock (need ${stockData.required}, only ${stockData.available} available).`,
+                    t("business_page.user_history.item_out_of_stock", { itemName: stockData.itemName, required: stockData.required, available: stockData.available }),
                 );
             } else if (stockData?.ingredientName) {
                 toast.error(
-                    `${stockData.menuItemName} can't be made — ${stockData.ingredientName} is out of stock (need ${stockData.required}, only ${stockData.available} available).`,
+                    t("business_page.user_history.ingredient_out_of_stock", { menuItemName: stockData.menuItemName, ingredientName: stockData.ingredientName, required: stockData.required, available: stockData.available }),
                 );
             } else {
-                toast.error(error.response?.data?.message ?? "Failed to place reorder. Please try again.");
+                toast.error(error.response?.data?.message ?? t("business_page.user_history.reorder_failed", "Failed to place reorder. Please try again."));
             }
         }
     };
@@ -185,13 +188,13 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             <div className="flex items-center gap-3 ml-1">
                 <div className="h-8 w-1 bg-primary rounded-full" />
-                <h3 className="text-xl font-bold tracking-tight">Your Activity</h3>
+                <h3 className="text-xl font-bold tracking-tight">{t("business_page.user_history.your_activity_title", "Your Activity")}</h3>
             </div>
 
             <Tabs defaultValue={activeOrders.length > 0 || completedOrders.length > 0 ? "orders" : "reservations"}>
                 <TabsList className="rounded-2xl h-auto p-1 gap-1">
                     <TabsTrigger value="orders" className="rounded-xl text-xs font-black uppercase tracking-widest px-4 py-2">
-                        Orders
+                        {t("business_page.user_history.orders_tab", "Orders")}
                         {activeOrders.length > 0 && (
                             <span className="ml-2 bg-primary text-primary-foreground rounded-full text-[10px] w-4 h-4 flex items-center justify-center">
                                 {activeOrders.length}
@@ -199,7 +202,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                         )}
                     </TabsTrigger>
                     <TabsTrigger value="reservations" className="rounded-xl text-xs font-black uppercase tracking-widest px-4 py-2">
-                        Reservations
+                        {t("business_page.user_history.reservations_tab", "Reservations")}
                         {upcomingReservations.length > 0 && (
                             <span className="ml-2 bg-primary text-primary-foreground rounded-full text-[10px] w-4 h-4 flex items-center justify-center">
                                 {upcomingReservations.length}
@@ -213,7 +216,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                     {/* Active orders */}
                     {activeOrders.length > 0 && (
                         <div className="space-y-3">
-                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Active</p>
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.user_history.active_label", "Active")}</p>
                             {activeOrders.map((order: any) => (
                                 <Card key={order.id} className="overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm rounded-2xl">
                                     <CardContent className="p-4 flex items-center justify-between">
@@ -222,7 +225,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                                 <Utensils size={20} />
                                             </div>
                                             <div className="space-y-1">
-                                                <p className="font-bold text-sm">Order #{order.id.slice(0, 8)}</p>
+                                                <p className="font-bold text-sm">{t("business_page.user_history.order_number", { id: order.id.slice(0, 8) })}</p>
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                                     <Clock size={12} />
                                                     <span>{formatInTimezone(order.createdAt, 'HH:mm', timezone)}</span>
@@ -242,7 +245,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                         <div className="flex justify-center py-6"><Loader2 className="animate-spin text-muted-foreground" size={20} /></div>
                     ) : completedOrders.length > 0 ? (
                         <div className="space-y-3">
-                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Past Orders</p>
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.user_history.past_orders_label", "Past Orders")}</p>
                             {completedOrders.map((order: any) => (
                                 <Card
                                     key={order.id}
@@ -255,7 +258,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                                 <Receipt size={18} className="text-muted-foreground" />
                                             </div>
                                             <div className="space-y-1">
-                                                <p className="font-bold text-sm">Order #{order.id.slice(0, 8)}</p>
+                                                <p className="font-bold text-sm">{t("business_page.user_history.order_number", { id: order.id.slice(0, 8) })}</p>
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                                     <Clock size={12} />
                                                     <span>{formatInTimezone(order.createdAt, 'MMM D, HH:mm', timezone)}</span>
@@ -275,7 +278,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                                 }}
                                             >
                                                 {reorder.isPending ? <Loader2 size={12} className="animate-spin" /> : <RotateCcw size={12} />}
-                                                Reorder
+                                                {t("business_page.user_history.reorder_button", "Reorder")}
                                             </Button>
                                             <ChevronRight size={16} className="text-muted-foreground" />
                                         </div>
@@ -284,7 +287,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                             ))}
                         </div>
                     ) : activeOrders.length === 0 ? (
-                        <div className="text-center py-10 text-muted-foreground text-sm">No orders yet at this business.</div>
+                        <div className="text-center py-10 text-muted-foreground text-sm">{t("business_page.user_history.no_orders_yet", "No orders yet at this business.")}</div>
                     ) : null}
                 </TabsContent>
 
@@ -292,7 +295,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                 <TabsContent value="reservations" className="mt-4 space-y-4">
                     {upcomingReservations.length > 0 && (
                         <div className="space-y-3">
-                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Upcoming</p>
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.user_history.upcoming_label", "Upcoming")}</p>
                             {upcomingReservations.map((res: any) => (
                                 <Card key={res.id} className="overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm rounded-2xl">
                                     <CardContent className="p-4 flex items-center justify-between">
@@ -302,12 +305,12 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                             </div>
                                             <div className="space-y-1">
                                                 <p className="font-bold text-sm">
-                                                    Table {res.table?.name || res.table?.number || res.tableName || 'TBD'}
+                                                    {res.table?.name || (res.table?.number || res.tableName ? t("business_page.user_history.table_prefix", { number: res.table?.number || res.tableName }) : t("business_page.user_history.table_tbd", "TBD"))}
                                                 </p>
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                                     <Clock size={12} />
                                                     <span>{formatInTimezone(res.reservationTime, 'MMM D, HH:mm', timezone)}</span>
-                                                    <span>• {res.guestCount} guests</span>
+                                                    <span>• {t("business_page.user_history.guests_count", { count: res.guestCount })}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,9 +323,9 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                             />
                                             <ConfirmAction
                                                 onConfirm={() => handleCancel(res.id, res.customerName)}
-                                                title="Cancel Reservation?"
-                                                description="Are you sure you want to cancel this reservation? This cannot be undone."
-                                                confirmText="Yes, Cancel"
+                                                title={t("business_page.user_history.cancel_reservation_title", "Cancel Reservation?")}
+                                                description={t("business_page.user_history.cancel_reservation_desc", "Are you sure you want to cancel this reservation? This cannot be undone.")}
+                                                confirmText={t("business_page.user_history.cancel_confirm_button", "Yes, Cancel")}
                                             >
                                                 <Button
                                                     variant="ghost"
@@ -342,7 +345,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
 
                     {pastReservations.length > 0 && (
                         <div className="space-y-3">
-                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Past</p>
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">{t("business_page.user_history.past_label", "Past")}</p>
                             {pastReservations.map((res: any) => (
                                 <Card key={res.id} className="overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm rounded-2xl">
                                     <CardContent className="p-4 flex items-center justify-between">
@@ -352,12 +355,12 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                             </div>
                                             <div className="space-y-1">
                                                 <p className="font-bold text-sm">
-                                                    Table {res.table?.name || res.table?.number || res.tableName || 'TBD'}
+                                                    {res.table?.name || (res.table?.number || res.tableName ? t("business_page.user_history.table_prefix", { number: res.table?.number || res.tableName }) : t("business_page.user_history.table_tbd", "TBD"))}
                                                 </p>
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                                     <Clock size={12} />
                                                     <span>{formatInTimezone(res.reservationTime, 'MMM D, YYYY HH:mm', timezone)}</span>
-                                                    <span>• {res.guestCount} guests</span>
+                                                    <span>• {t("business_page.user_history.guests_count", { count: res.guestCount })}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -376,7 +379,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                     )}
 
                     {upcomingReservations.length === 0 && pastReservations.length === 0 && (
-                        <div className="text-center py-10 text-muted-foreground text-sm">No reservations yet at this business.</div>
+                        <div className="text-center py-10 text-muted-foreground text-sm">{t("business_page.user_history.no_reservations_yet", "No reservations yet at this business.")}</div>
                     )}
                 </TabsContent>
             </Tabs>

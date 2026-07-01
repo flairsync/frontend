@@ -57,6 +57,24 @@
       "trendy": "Modern",
       "quiet": "Tranquil",
       "lively": "Animat"
+    },
+    "user_menu": {
+      "default_user": "Usuari",
+      "profile": "Perfil",
+      "settings": "Configuració",
+      "jobs": "Feines",
+      "language": "Idioma",
+      "theme": "Tema",
+      "business_hub": "Panell del negoci",
+      "logout": "Tanca la sessió",
+      "unverified_account": "Compte no verificat",
+      "profile_aria_label": "Perfil",
+      "verify_email": "Verifica el correu"
+    },
+    "theme": {
+      "light": "Clar",
+      "dark": "Fosc",
+      "auto": "Automàtic"
     }
   },
   "errors": {

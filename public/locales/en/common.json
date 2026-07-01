@@ -57,6 +57,24 @@
       "trendy": "Trendy",
       "quiet": "Quiet",
       "lively": "Lively"
+    },
+    "user_menu": {
+      "default_user": "User",
+      "profile": "Profile",
+      "settings": "Settings",
+      "jobs": "Jobs",
+      "language": "Language",
+      "theme": "Theme",
+      "business_hub": "BusinessHub",
+      "logout": "Logout",
+      "unverified_account": "Unverified Account",
+      "profile_aria_label": "Profile",
+      "verify_email": "Verify Email"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Auto"
     }
   },
   "errors": {

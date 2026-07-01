@@ -110,8 +110,8 @@ const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) =>
             <InfoCard
                 icon={Star}
                 title={t("business_page.info_cards.rating_title")}
-                content={profile.rating !== null ? `${profile.rating} / 5` : "No reviews yet"}
-                subContent={profile.reviewCount > 0 ? `Based on ${profile.reviewCount} ${profile.reviewCount === 1 ? "review" : "reviews"}` : "Be the first to leave a review"}
+                content={profile.rating !== null ? `${profile.rating} / 5` : t("business_page.info_cards.no_reviews_yet", "No reviews yet")}
+                subContent={profile.reviewCount > 0 ? t("business_page.info_cards.reviews_count", { count: profile.reviewCount }) : t("business_page.info_cards.be_first_review", "Be the first to leave a review")}
             />
 
             <InfoCard
@@ -129,7 +129,7 @@ const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) =>
             <InfoCard
                 icon={MapPin}
                 title={t("business_page.info_cards.location_title")}
-                content={profile.city || profile.country?.name || 'Location'}
+                content={profile.city || profile.country?.name || t("business_page.info_cards.location_fallback", "Location")}
                 subContent={profile.address}
                 action={
                     <Button

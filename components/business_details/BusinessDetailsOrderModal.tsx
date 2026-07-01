@@ -14,6 +14,7 @@ import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessPr
 import { useSubmitOrder } from "@/features/discovery/useDiscovery";
 import { Loader2, MapPin, CheckCircle2 } from "lucide-react";
 import { getDistanceInMeters } from "@/lib/locationUtils";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     open: boolean;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item, business }) => {
+    const { t } = useTranslation("feed");
     const [orderType, setOrderType] = useState<"dine_in" | "takeaway">("dine_in");
     const [quantity, setQuantity] = useState(1);
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -46,7 +48,7 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
         setLocationError(null);
 
         if (!navigator.geolocation) {
-            setLocationError("Geolocation is not supported by your browser");
+            setLocationError(t("business_page.order_modal.geolocation_unsupported", "Geolocation is not supported by your browser"));
             setIsLocating(false);
             return;
         }
@@ -61,7 +63,7 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
             },
             (error) => {
                 console.error("Geolocation error:", error);
-                setLocationError("Could not determine your location. Please enable location permissions.");
+                setLocationError(t("business_page.order_modal.location_error", "Could not determine your location. Please enable location permissions."));
                 setIsLocating(false);
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
@@ -83,7 +85,7 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                 const maxDist = business.maxOrderDistanceMeters || 500;
 
                 if (dist > maxDist) {
-                    setLocationError(`You are too far away to order. Maximum distance is ${Math.round(maxDist)}m, but you are ${Math.round(dist)}m away.`);
+                    setLocationError(t("business_page.order_modal.too_far", { maxDist: Math.round(maxDist), dist: Math.round(dist) }));
                     return;
                 }
             }
@@ -118,15 +120,15 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                             <CheckCircle2 size={40} />
                         </div>
                         <div className="space-y-2">
-                            <h2 className="text-2xl font-bold">Order Received!</h2>
+                            <h2 className="text-2xl font-bold">{t("business_page.order_modal.order_received_title", "Order Received!")}</h2>
                             <p className="text-muted-foreground">
                                 {business?.requireOrderConfirmation
-                                    ? "Your order is pending confirmation from the staff."
-                                    : "Your order has been placed successfully."}
+                                    ? t("business_page.order_modal.order_pending_confirmation", "Your order is pending confirmation from the staff.")
+                                    : t("business_page.order_modal.order_placed_success", "Your order has been placed successfully.")}
                             </p>
                         </div>
                         <Button onClick={onClose} className="mt-4">
-                            Close
+                            {t("business_page.order_modal.close_button", "Close")}
                         </Button>
                     </div>
                 </DialogContent>
@@ -138,12 +140,12 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Place Order: {item?.name}</DialogTitle>
+                    <DialogTitle>{t("business_page.order_modal.place_order_title", { itemName: item?.name, defaultValue: `Place Order: ${item?.name}` })}</DialogTitle>
                 </DialogHeader>
 
                 <div className="grid gap-6 py-4">
                     <div className="space-y-3">
-                        <Label>Order Type</Label>
+                        <Label>{t("business_page.order_modal.order_type_label", "Order Type")}</Label>
                         <RadioGroup
                             value={orderType}
                             onValueChange={(val: any) => setOrderType(val)}
@@ -152,20 +154,20 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                             {business?.allowTableOrdering && (
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="dine_in" id="dine_in" />
-                                    <Label htmlFor="dine_in" className="cursor-pointer">Dine-in</Label>
+                                    <Label htmlFor="dine_in" className="cursor-pointer">{t("business_page.order_modal.dine_in", "Dine-in")}</Label>
                                 </div>
                             )}
                             {business?.allowTakeawayOrdering && (
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="takeaway" id="takeaway" />
-                                    <Label htmlFor="takeaway" className="cursor-pointer">Takeaway</Label>
+                                    <Label htmlFor="takeaway" className="cursor-pointer">{t("business_page.order_modal.takeaway", "Takeaway")}</Label>
                                 </div>
                             )}
                         </RadioGroup>
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <Label>Quantity</Label>
+                        <Label>{t("business_page.order_modal.quantity_label", "Quantity")}</Label>
                         <div className="flex items-center gap-3">
                             <Button
                                 variant="outline"
@@ -192,9 +194,9 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                             <div className="flex items-start gap-3">
                                 <MapPin className="text-primary mt-1 shrink-0" size={18} />
                                 <div className="space-y-1">
-                                    <p className="text-sm font-bold">Location Required</p>
+                                    <p className="text-sm font-bold">{t("business_page.order_modal.location_required_title", "Location Required")}</p>
                                     <p className="text-xs text-muted-foreground">
-                                        This business only allows orders from nearby guests (within 500m).
+                                        {t("business_page.order_modal.location_required_desc", "This business only allows orders from nearby guests (within 500m).")}
                                     </p>
                                 </div>
                             </div>
@@ -208,12 +210,12 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                                     disabled={isLocating}
                                 >
                                     {isLocating ? <Loader2 className="animate-spin mr-2" size={14} /> : null}
-                                    Verify My Location
+                                    {t("business_page.order_modal.verify_location_button", "Verify My Location")}
                                 </Button>
                             ) : (
                                 <div className="flex items-center gap-2 text-xs text-green-600 font-medium bg-green-50 px-3 py-2 rounded-md border border-green-100">
                                     <CheckCircle2 size={14} />
-                                    Location verified
+                                    {t("business_page.order_modal.location_verified", "Location verified")}
                                 </div>
                             )}
 
@@ -226,11 +228,11 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
 
                 <DialogFooter>
                     <Button variant="outline" onClick={onClose}>
-                        Cancel
+                        {t("business_page.order_modal.cancel_button", "Cancel")}
                     </Button>
                     <Button onClick={handleSubmit} disabled={!canSubmit}>
                         {submitOrder.isPending && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
-                        Confirm Order - {business?.currency || "$"}{(item?.price || 0) * quantity}
+                        {t("business_page.order_modal.confirm_order_button", { price: `${business?.currency || "$"}${(item?.price || 0) * quantity}`, defaultValue: `Confirm Order - ${business?.currency || "$"}${(item?.price || 0) * quantity}` })}
                     </Button>
                 </DialogFooter>
             </DialogContent>

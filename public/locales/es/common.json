@@ -57,6 +57,24 @@
       "trendy": "Moderna",
       "quiet": "Tranquilo",
       "lively": "Animado"
+    },
+    "user_menu": {
+      "default_user": "Usuario",
+      "profile": "Perfil",
+      "settings": "Configuración",
+      "jobs": "Empleos",
+      "language": "Idioma",
+      "theme": "Tema",
+      "business_hub": "Panel del negocio",
+      "logout": "Cerrar sesión",
+      "unverified_account": "Cuenta no verificada",
+      "profile_aria_label": "Perfil",
+      "verify_email": "Verificar correo"
+    },
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "auto": "Automático"
     }
   },
   "errors": {

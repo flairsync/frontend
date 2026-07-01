@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { usePageContext } from 'vike-react/usePageContext';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { withFallback } from 'vike-react-query';
+import { useTranslation } from 'react-i18next';
 import { fetchDiscoveryProfileApiCall, fetchDiscoveryMenuApiCall } from '@/features/discovery/discovery.api';
 import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
 import { BusinessMenu } from '@/models/business/menu/BusinessMenu';
@@ -131,26 +132,29 @@ const BusinessContent = withFallback(
         </main>
     ),
     // Error fallback
-    ({ retry }) => (
-        <main className="pt-24 pb-20 flex items-center justify-center min-h-[60vh]">
-            <div className="max-w-md w-full px-6">
-                <Alert variant="destructive" className="rounded-3xl p-6">
-                    <AlertCircle className="h-6 w-6" />
-                    <AlertTitle className="text-lg font-bold ml-2">Error</AlertTitle>
-                    <AlertDescription className="mt-2">
-                        We couldn't load the business profile. It might be private or doesn't exist.
-                    </AlertDescription>
-                    <Button
-                        variant="outline"
-                        className="mt-4 w-full rounded-xl border-destructive/20 hover:bg-destructive/10"
-                        onClick={() => retry()}
-                    >
-                        Try Again
-                    </Button>
-                </Alert>
-            </div>
-        </main>
-    )
+    ({ retry }) => {
+        const { t } = useTranslation("feed");
+        return (
+            <main className="pt-24 pb-20 flex items-center justify-center min-h-[60vh]">
+                <div className="max-w-md w-full px-6">
+                    <Alert variant="destructive" className="rounded-3xl p-6">
+                        <AlertCircle className="h-6 w-6" />
+                        <AlertTitle className="text-lg font-bold ml-2">{t("business_page.error.title", "Error")}</AlertTitle>
+                        <AlertDescription className="mt-2">
+                            {t("business_page.error.message", "We couldn't load the business profile. It might be private or doesn't exist.")}
+                        </AlertDescription>
+                        <Button
+                            variant="outline"
+                            className="mt-4 w-full rounded-xl border-destructive/20 hover:bg-destructive/10"
+                            onClick={() => retry()}
+                        >
+                            {t("business_page.error.try_again", "Try Again")}
+                        </Button>
+                    </Alert>
+                </div>
+            </main>
+        );
+    }
 );
 
 const BusinessPage = () => {
