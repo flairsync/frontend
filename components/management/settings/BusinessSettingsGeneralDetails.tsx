@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
-import { CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
 
 type BusinessGeneralInfo = {
     name?: string,
@@ -165,6 +165,12 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     {slugStatus === 'invalid' && <p className="text-xs text-destructive">Only lowercase letters, numbers, and hyphens allowed</p>}
                     {slugStatus === 'available' && <p className="text-xs text-green-600">Slug is available</p>}
                     {slugStatus === 'idle' && <p className="text-xs text-muted-foreground">Used in your public page URL. Lowercase letters, numbers, and hyphens only.</p>}
+                    {!!props.businessDetails?.slug && slug !== props.businessDetails.slug && (
+                        <p className="text-xs text-amber-600 flex items-center gap-1 font-medium">
+                            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                            Changing the slug will break any shared links using the current one
+                        </p>
+                    )}
                 </div>
 
                 <div className="space-y-1.5 pt-2 border-t mt-4">
