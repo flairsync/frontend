@@ -17,6 +17,7 @@ interface DinerModeState {
     cart: CartItem[];
     selectedItem: BusinessMenuItem | null;
     orderReadyId: string | null;
+    scannedTableId: string | null;
 
     openItemSheet: (item: BusinessMenuItem) => void;
     closeItemSheet: () => void;
@@ -26,12 +27,14 @@ interface DinerModeState {
     cartItemCount: () => number;
     cartTotal: () => number;
     setOrderReadyId: (id: string | null) => void;
+    setScannedTableId: (id: string | null) => void;
 }
 
 export const useDinerModeStore = create<DinerModeState>((set, get) => ({
     cart: [],
     selectedItem: null,
     orderReadyId: null,
+    scannedTableId: null,
 
     openItemSheet: (item) => set({ selectedItem: item }),
     closeItemSheet: () => set({ selectedItem: null }),
@@ -50,4 +53,6 @@ export const useDinerModeStore = create<DinerModeState>((set, get) => ({
         get().cart.reduce((sum, item) => sum + item.lineTotal, 0),
 
     setOrderReadyId: (id) => set({ orderReadyId: id }),
+
+    setScannedTableId: (id) => set({ scannedTableId: id }),
 }));

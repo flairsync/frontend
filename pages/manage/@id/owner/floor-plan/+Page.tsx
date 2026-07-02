@@ -18,6 +18,8 @@ import { FloorPlanDesigner } from "@/features/floor-plan/components/FloorPlanDes
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { BatchCreateTableModal } from "@/components/management/floor-plan/BatchCreateTableModal";
+import { PrintQrCodesButton } from "@/components/qr/PrintQrCodesButton";
+import { DownloadTableQrButton } from "@/components/qr/DownloadTableQrButton";
 
 const FloorPlanPage: React.FC = () => {
     const { t } = useTranslation("management");
@@ -156,6 +158,7 @@ const FloorPlanPage: React.FC = () => {
                         <Grid2X2 className="w-4 h-4" />
                         Batch Create
                     </Button>
+                    <PrintQrCodesButton businessId={businessId} floors={floors || []} />
                 </div>
             </div>
 
@@ -277,6 +280,7 @@ const FloorPlanPage: React.FC = () => {
                                                 <TableCell>{floors?.find((f: any) => f.id === table.floorId)?.name || "-"}</TableCell>
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
+                                                        <DownloadTableQrButton businessId={businessId} tableId={table.id} tableName={table.name} />
                                                         <Button size="icon" variant="ghost" onClick={() => handleEditTable(table)}>
                                                             <Pencil className="w-4 h-4" />
                                                         </Button>

@@ -15,6 +15,7 @@ import DinerModeHeader from '@/components/diner-mode/DinerModeHeader';
 import DinerCallWaiterButton from '@/components/diner-mode/DinerCallWaiterButton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { getTableCookie } from '@/utils/cookies';
 
 const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const pageContext = usePageContext();
@@ -24,7 +25,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const { data: profile, isLoading } = useDiscoveryProfile(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: activeOrderSummary } = useActiveDineInOrder(businessId);
-    const { cart, orderReadyId, setOrderReadyId } = useDinerModeStore();
+    const { cart, orderReadyId, setOrderReadyId, scannedTableId, setScannedTableId } = useDinerModeStore();
 
     const [entryVisible, setEntryVisible] = useState(true);
     const [exitVisible, setExitVisible] = useState(false);
@@ -34,16 +35,24 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
         return () => clearTimeout(t);
     }, []);
 
+    // Hydrate from the cookie dropped by /tbl/{businessId}/{tableId} — only trust it
+    // for the business it was actually scanned for.
+    useEffect(() => {
+        const scanned = getTableCookie();
+        setScannedTableId(scanned?.businessId === businessId ? scanned.tableId : null);
+    }, [businessId, setScannedTableId]);
+
     const hasSeatedReservation = !!reservation;
     const hasActiveOrder =
         !!activeOrderSummary &&
         ACTIVE_ORDER_STATUSES.includes(activeOrderSummary.status as any);
+    const hasScannedTable = !!scannedTableId;
 
     useEffect(() => {
-        if (!isLoading && !hasSeatedReservation && !hasActiveOrder && cart.length === 0) {
+        if (!isLoading && !hasSeatedReservation && !hasActiveOrder && !hasScannedTable && cart.length === 0) {
             setExitVisible(true);
         }
-    }, [hasSeatedReservation, hasActiveOrder, isLoading, cart.length]);
+    }, [hasSeatedReservation, hasActiveOrder, hasScannedTable, isLoading, cart.length]);
 
     // Auto-dismiss the order-ready banner when the order moves to completed
     useEffect(() => {
@@ -170,7 +179,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
 
             <DinerModeHeader
                 profile={profile}
-                reservation={reservation ?? null}
+                tableId={reservation?.tableId ?? activeOrderSummary?.tableId ?? scannedTableId ?? null}
                 onExit={() => { window.location.href = '/'; }}
             />
 
@@ -214,10 +223,10 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                     </a>
 
                     <div className="flex-1 flex items-center justify-center px-3">
-                        {(hasSeatedReservation || hasActiveOrder) && (
+                        {(hasSeatedReservation || hasActiveOrder || hasScannedTable) && (
                             <DinerCallWaiterButton
                                 businessId={businessId}
-                                tableId={reservation?.tableId ?? activeOrderSummary?.tableId}
+                                tableId={reservation?.tableId ?? activeOrderSummary?.tableId ?? scannedTableId ?? undefined}
                                 reservationId={reservation?.id}
                             />
                         )}

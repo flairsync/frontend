@@ -24,7 +24,7 @@ export default function DinerOrderPage() {
 
     const placeDineInOrder = usePlaceDineInOrder(businessId);
     const addItemsToOrder = useAddItemsToOrder(businessId, activeOrderId ?? '');
-    const { cart, clearCart, removeFromCart } = useDinerModeStore();
+    const { cart, clearCart, removeFromCart, scannedTableId } = useDinerModeStore();
 
     const handlePlaceOrder = useCallback(() => {
         if (cart.length === 0) return;
@@ -41,15 +41,17 @@ export default function DinerOrderPage() {
             const payload: AddItemsToOrderPayload = { items };
             addItemsToOrder.mutate(payload, { onSuccess: () => clearCart() });
         } else {
+            // Reservation/active-order data is live backend state and always wins;
+            // the scanned-table cookie is only a fallback for walk-ins with neither.
             const payload: PlaceDineInOrderPayload = {
                 type: 'dine_in',
-                tableId: reservation?.tableId ?? activeOrder?.tableId ?? '',
+                tableId: reservation?.tableId ?? activeOrder?.tableId ?? scannedTableId ?? '',
                 reservationId: reservation?.id,
                 items,
             };
             placeDineInOrder.mutate(payload, { onSuccess: () => clearCart() });
         }
-    }, [cart, activeOrderId, activeOrder, reservation, addItemsToOrder, placeDineInOrder, clearCart]);
+    }, [cart, activeOrderId, activeOrder, reservation, scannedTableId, addItemsToOrder, placeDineInOrder, clearCart]);
 
     const isSubmitting = placeDineInOrder.isPending || addItemsToOrder.isPending;
 

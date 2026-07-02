@@ -3,15 +3,14 @@ import { X, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
-import { DinerReservation } from '@/features/diner-mode/useDinerMode';
 
 interface DinerModeHeaderProps {
     profile: DiscoveryBusinessProfile;
-    reservation: DinerReservation | null;
+    tableId: string | null;
     onExit: () => void;
 }
 
-export default function DinerModeHeader({ profile, reservation, onExit }: DinerModeHeaderProps) {
+export default function DinerModeHeader({ profile, tableId, onExit }: DinerModeHeaderProps) {
     const { t } = useTranslation('diner');
     return (
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border/40">
@@ -26,10 +25,10 @@ export default function DinerModeHeader({ profile, reservation, onExit }: DinerM
                     )}
                     <div className="min-w-0">
                         <p className="font-semibold text-sm truncate leading-tight">{profile.name}</p>
-                        {reservation?.tableId && (
+                        {tableId && (
                             <p className="text-xs text-muted-foreground flex items-center gap-1">
                                 <MapPin className="w-3 h-3 shrink-0" />
-                                <span className="truncate">{t('header.table_label', { table: reservation.tableId })}</span>
+                                <span className="truncate">{t('header.table_label', { table: tableId })}</span>
                             </p>
                         )}
                     </div>

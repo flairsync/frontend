@@ -13,9 +13,11 @@ import BusinessBrandingLogoUpload from "@/components/management/branding/Busines
 import BusinessBrandingGalleryUpload from "@/components/management/branding/BusinessBrandingGalleryUpload"
 import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
+import { DownloadBusinessQrButton } from "@/components/qr/DownloadBusinessQrButton"
 const BusinessBrandingVirtualViewer = clientOnly(() =>
     import("@/components/management/branding/BusinessBrandingVirtualViewer")
 )
+const QrDesignEditor = clientOnly(() => import("@/components/qr/QrDesignEditor"))
 
 
 const BusinessBrandingPage = () => {
@@ -46,6 +48,17 @@ const BusinessBrandingPage = () => {
             <Accordion type="single" collapsible className="w-full space-y-2" onValueChange={(val) => {
 
             }} >
+            {/* QR Code */}
+            <AccordionItem value="qr-code" className="border rounded-lg px-3">
+                <AccordionTrigger className="hover:cursor-pointer ">QR Code</AccordionTrigger>
+                <AccordionContent className="space-y-4 py-2">
+                    <div className="flex justify-end">
+                        <DownloadBusinessQrButton businessId={routeParams.id} />
+                    </div>
+                    <QrDesignEditor businessId={routeParams.id} />
+                </AccordionContent>
+            </AccordionItem>
+
             {/* Logo */}
             <AccordionItem value="logo" className="border rounded-lg px-3  ">
                 <AccordionTrigger className="hover:cursor-pointer ">Logo</AccordionTrigger>
