@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
 import {
@@ -11,20 +11,30 @@ import {
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import { PlaceDineInOrderPayload, AddItemsToOrderPayload } from '@/features/diner-mode/diner-mode.api';
 import DinerMyOrderTab from '@/components/diner-mode/DinerMyOrderTab';
+import GuestEmailPrompt from '@/components/diner-mode/GuestEmailPrompt';
 
 export default function DinerOrderPage() {
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
+    const isLoggedIn = !!pageContext.user;
 
     const { data: profile } = useDiscoveryProfile(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
-    const { data: activeOrderSummary } = useActiveDineInOrder(businessId);
-    const activeOrderId = activeOrderSummary?.id;
+    const { data: myOrderSummary } = useActiveDineInOrder(businessId);
+    const { cart, clearCart, removeFromCart, scannedTableId, guestOrderId } = useDinerModeStore();
+    // Logged-in diners are looked up via their account; guests track the order
+    // id they were handed at checkout time (held in a cookie-backed store).
+    const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
     const { data: activeOrder } = useActiveOrderDetail(businessId, activeOrderId);
 
     const placeDineInOrder = usePlaceDineInOrder(businessId);
     const addItemsToOrder = useAddItemsToOrder(businessId, activeOrderId ?? '');
-    const { cart, clearCart, removeFromCart, scannedTableId } = useDinerModeStore();
+
+    // Ask guests for an email only after they've placed an order — never
+    // before, and never at all if they're already logged in (we have theirs).
+    const [emailPromptDismissed, setEmailPromptDismissed] = useState(false);
+    const showEmailPrompt =
+        !isLoggedIn && !emailPromptDismissed && !!activeOrder && !activeOrder.guestEmail;
 
     const handlePlaceOrder = useCallback(() => {
         if (cart.length === 0) return;
@@ -56,14 +66,24 @@ export default function DinerOrderPage() {
     const isSubmitting = placeDineInOrder.isPending || addItemsToOrder.isPending;
 
     return (
-        <DinerMyOrderTab
-            businessId={businessId}
-            activeOrder={activeOrder ?? null}
-            cart={cart}
-            allowOrders={profile?.allowOrders ?? false}
-            isSubmitting={isSubmitting}
-            onPlaceOrder={handlePlaceOrder}
-            onRemoveCartItem={removeFromCart}
-        />
+        <>
+            <DinerMyOrderTab
+                businessId={businessId}
+                activeOrder={activeOrder ?? null}
+                cart={cart}
+                allowOrders={profile?.allowOrders ?? false}
+                isSubmitting={isSubmitting}
+                onPlaceOrder={handlePlaceOrder}
+                onRemoveCartItem={removeFromCart}
+            />
+            {activeOrderId && (
+                <GuestEmailPrompt
+                    businessId={businessId}
+                    orderId={activeOrderId}
+                    open={showEmailPrompt}
+                    onClose={() => setEmailPromptDismissed(true)}
+                />
+            )}
+        </>
     );
 }

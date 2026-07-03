@@ -16,6 +16,15 @@
   "cart_fab": {
     "view_order": "Veure comanda"
   },
+  "guest_email_prompt": {
+    "title": "Vols rebre novetats de la teva comanda?",
+    "description": "Deixa'ns el teu email i l'usarem per contactar-te sobre aquesta comanda. Totalment opcional.",
+    "placeholder": "tu@exemple.com",
+    "submit": "Desar email",
+    "skip": "No, gràcies",
+    "success": "Gràcies! Usarem aquest email per informar-te de la teva comanda.",
+    "invalid": "Introdueix una adreça de correu vàlida."
+  },
   "layout": {
     "tab_menu": "Menú",
     "tab_my_order": "La meva comanda"

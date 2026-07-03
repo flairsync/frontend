@@ -5,10 +5,13 @@ import {
     fetchSingleOrderApiCall,
     submitOrderApiCall,
     addItemsToOrderApiCall,
+    setGuestOrderEmailApiCall,
 } from "@/features/discovery/discovery.api";
 import { AddItemsToOrderPayload, PlaceDineInOrderPayload } from "./diner-mode.api";
 import { toast } from "sonner";
 import { usePageContext } from "vike-react/usePageContext";
+import { useDinerModeStore } from "./DinerModeStore";
+import { setGuestOrderCookie } from "@/utils/cookies";
 
 export const ACTIVE_ORDER_STATUSES = ['created', 'accepted', 'preparing', 'ready'] as const;
 export const TERMINAL_ORDER_STATUSES = ['completed', 'canceled', 'rejected'] as const;
@@ -31,6 +34,7 @@ export interface DinerOrder {
     items: DinerOrderItem[];
     totalAmount: number;
     paymentStatus: string;
+    guestEmail?: string | null;
 }
 
 export interface DinerOrderItem {
@@ -50,6 +54,9 @@ export interface DinerOrderItem {
 }
 
 export const useBusinessSeatedReservation = (businessId: string | undefined) => {
+    const pageContext = usePageContext();
+    const isLoggedIn = !!pageContext.user;
+
     return useQuery({
         queryKey: ["diner_seated_reservation", businessId],
         queryFn: async (): Promise<DinerReservation | null> => {
@@ -61,7 +68,9 @@ export const useBusinessSeatedReservation = (businessId: string | undefined) => 
                 ) ?? null
             );
         },
-        enabled: !!businessId,
+        // "mine" endpoint requires a logged-in user — guests get their table
+        // context from the scanned-table cookie instead, never from this query.
+        enabled: !!businessId && isLoggedIn,
         refetchInterval: 5 * 60_000,
     });
 };
@@ -82,6 +91,9 @@ export const useAllSeatedReservations = () => {
 };
 
 export const useActiveDineInOrder = (businessId: string | undefined) => {
+    const pageContext = usePageContext();
+    const isLoggedIn = !!pageContext.user;
+
     return useQuery({
         queryKey: ["diner_active_order", businessId],
         queryFn: async (): Promise<DinerOrder | null> => {
@@ -95,7 +107,9 @@ export const useActiveDineInOrder = (businessId: string | undefined) => {
                 ) ?? null
             );
         },
-        enabled: !!businessId,
+        // "mine" endpoint requires a logged-in user — guests track their own
+        // order via the guest-order cookie + useActiveOrderDetail instead.
+        enabled: !!businessId && isLoggedIn,
         refetchInterval: 5 * 60_000,
     });
 };
@@ -121,17 +135,41 @@ export const useActiveOrderDetail = (
 
 export const usePlaceDineInOrder = (businessId: string) => {
     const queryClient = useQueryClient();
+    const pageContext = usePageContext();
+    const isLoggedIn = !!pageContext.user;
+    const setGuestOrderId = useDinerModeStore((s) => s.setGuestOrderId);
+
     return useMutation({
         mutationFn: async (payload: PlaceDineInOrderPayload) => {
             const res = await submitOrderApiCall(businessId, payload);
             return res.data.data ?? res.data;
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["diner_active_order", businessId] });
+            // Guests have no account to look their order up by later — the
+            // cookie + store are the only record that this order is "theirs".
+            if (!isLoggedIn && data?.id) {
+                setGuestOrderCookie(businessId, data.id);
+                setGuestOrderId(data.id);
+            }
         },
         onError: (error: any) => {
             const msg =
                 error.response?.data?.message ?? "Failed to place order. Please try again.";
+            toast.error(msg);
+        },
+    });
+};
+
+export const useSetGuestOrderEmail = (businessId: string) => {
+    return useMutation({
+        mutationFn: async ({ orderId, email }: { orderId: string; email: string }) => {
+            const res = await setGuestOrderEmailApiCall(businessId, orderId, email);
+            return res.data.data ?? res.data;
+        },
+        onError: (error: any) => {
+            const msg =
+                error.response?.data?.message ?? "Failed to save your email. Please try again.";
             toast.error(msg);
         },
     });

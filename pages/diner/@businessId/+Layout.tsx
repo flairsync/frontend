@@ -8,24 +8,33 @@ import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
 import {
     useBusinessSeatedReservation,
     useActiveDineInOrder,
+    useActiveOrderDetail,
     ACTIVE_ORDER_STATUSES,
+    TERMINAL_ORDER_STATUSES,
 } from '@/features/diner-mode/useDinerMode';
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import DinerModeHeader from '@/components/diner-mode/DinerModeHeader';
 import DinerCallWaiterButton from '@/components/diner-mode/DinerCallWaiterButton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { getTableCookie } from '@/utils/cookies';
+import { getTableCookie, getGuestOrderCookie, clearGuestOrderCookie } from '@/utils/cookies';
 
 const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
     const currentPath = pageContext.urlPathname;
+    const isLoggedIn = !!pageContext.user;
 
     const { data: profile, isLoading } = useDiscoveryProfile(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
-    const { data: activeOrderSummary } = useActiveDineInOrder(businessId);
-    const { cart, orderReadyId, setOrderReadyId, scannedTableId, setScannedTableId } = useDinerModeStore();
+    const { data: myOrderSummary } = useActiveDineInOrder(businessId);
+    const { cart, orderReadyId, setOrderReadyId, scannedTableId, setScannedTableId, guestOrderId, setGuestOrderId } = useDinerModeStore();
+
+    // Logged-in diners are looked up via their account; guests have no account,
+    // so the order id they were handed at checkout time (held in a cookie) is
+    // the only thing that lets them find their own order again.
+    const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
+    const { data: activeOrderSummary } = useActiveOrderDetail(businessId, activeOrderId);
 
     const [entryVisible, setEntryVisible] = useState(true);
     const [exitVisible, setExitVisible] = useState(false);
@@ -35,12 +44,28 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
         return () => clearTimeout(t);
     }, []);
 
-    // Hydrate from the cookie dropped by /tbl/{businessId}/{tableId} — only trust it
-    // for the business it was actually scanned for.
+    // Hydrate from the cookies dropped when the table was scanned / an order was
+    // placed as a guest — only trust them for the business they were set for.
     useEffect(() => {
         const scanned = getTableCookie();
         setScannedTableId(scanned?.businessId === businessId ? scanned.tableId : null);
-    }, [businessId, setScannedTableId]);
+
+        const guestOrder = getGuestOrderCookie();
+        setGuestOrderId(guestOrder?.businessId === businessId ? guestOrder.orderId : null);
+    }, [businessId, setScannedTableId, setGuestOrderId]);
+
+    // Once a guest's order reaches a terminal state, stop tracking it —
+    // otherwise a finished order would keep "claiming" the table forever.
+    useEffect(() => {
+        if (
+            !isLoggedIn &&
+            activeOrderSummary &&
+            TERMINAL_ORDER_STATUSES.includes(activeOrderSummary.status as any)
+        ) {
+            clearGuestOrderCookie();
+            setGuestOrderId(null);
+        }
+    }, [isLoggedIn, activeOrderSummary, setGuestOrderId]);
 
     const hasSeatedReservation = !!reservation;
     const hasActiveOrder =

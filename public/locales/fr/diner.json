@@ -16,6 +16,15 @@
   "cart_fab": {
     "view_order": "Voir la commande"
   },
+  "guest_email_prompt": {
+    "title": "Envie d'être informé de votre commande ?",
+    "description": "Laissez votre email et nous l'utiliserons pour vous contacter à propos de cette commande. Totalement optionnel.",
+    "placeholder": "vous@exemple.com",
+    "submit": "Enregistrer l'email",
+    "skip": "Non merci",
+    "success": "Merci ! Nous utiliserons cet email pour vous informer de votre commande.",
+    "invalid": "Veuillez saisir une adresse email valide."
+  },
   "layout": {
     "tab_menu": "Menu",
     "tab_my_order": "Ma commande"

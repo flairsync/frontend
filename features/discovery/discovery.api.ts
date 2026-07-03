@@ -154,6 +154,9 @@ export const addItemsToOrderApiCall = (
 ) =>
     flairapi.post(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}/items`, payload);
 
+export const setGuestOrderEmailApiCall = (businessId: string, orderId: string, email: string) =>
+    flairapi.post(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}/email`, { email });
+
 // ─── Misc ─────────────────────────────────────────────────────────────────────
 
 export const callWaiterApiCall = (businessId: string, payload: { tableId?: string; reservationId?: string }) =>

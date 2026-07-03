@@ -16,6 +16,15 @@
   "cart_fab": {
     "view_order": "View Order"
   },
+  "guest_email_prompt": {
+    "title": "Want updates on your order?",
+    "description": "Leave your email and we'll use it to reach you about this order. Totally optional.",
+    "placeholder": "you@example.com",
+    "submit": "Save email",
+    "skip": "No thanks",
+    "success": "Thanks! We'll use this email for updates on your order.",
+    "invalid": "Please enter a valid email address."
+  },
   "layout": {
     "tab_menu": "Menu",
     "tab_my_order": "My Order"
