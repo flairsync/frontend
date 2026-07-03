@@ -1,8 +1,13 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 
+// Matches every other feature module's service.ts (floor-plan, business, shifts, ...):
+// `import.meta.env.BASE_URL` is Vite's own reserved deploy-base-path variable (default
+// "/"), not the custom BASE_URL from .env — that var isn't VITE_-prefixed, so Vite
+// never exposes it to client code. Using it here produced "//businesses/..." (a
+// protocol-relative URL), which the browser resolved to the wrong host in production.
 const getQrUrl = (businessId: string) =>
-    `${import.meta.env.BASE_URL}/businesses/${businessId}/qr`;
+    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/qr`;
 
 export type DotsType = "square" | "dots" | "rounded" | "classy" | "classy-rounded" | "extra-rounded";
 export type CornersSquareType = "square" | "dot" | "extra-rounded";

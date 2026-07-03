@@ -7,4 +7,5 @@ We are currently in a Development Environment.
 - Always prioritize functionality within the `npm run dev` server.
 
 # API Guidelines
-- ALWAYS use `import.meta.env.BASE_URL` as a prefix for any new backend API call endpoints. Never hardcode absolute paths like `/businesses/...` directly. Use `flairapi` from `lib/flairapi` to make the requests.
+- Prefix every new backend API call with the literal string `'https://api.flairsync.com/api/v1'` (see any existing `features/*/service.ts` for the pattern), never a bare `/businesses/...` path. Use `flairapi` from `lib/flairapi` to make the requests.
+- Do NOT use `import.meta.env.BASE_URL` for this — it's Vite's own reserved deploy-base-path constant (default `"/"`), not a project env var. The `BASE_URL` entry in `.env` is missing the `VITE_` prefix Vite requires to expose a var to client code, so it was never actually wired up; using it silently produces a broken protocol-relative URL (`//businesses/...`) at runtime. Every service file already works around this by hardcoding the literal — keep doing that.

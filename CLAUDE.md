@@ -44,7 +44,7 @@ Pages (`pages/**/+Page.tsx`) call feature hooks and pass data down; they own loc
 ## Non-Negotiable Rules
 
 - Never run `npm run build`/production builds unless explicitly asked — stay inside `npm run dev`.
-- Every new API call must be prefixed with the `BASE_URL` env var (`import.meta.env.BASE_URL`, currently `https://api.flairsync.com/api/v1`) — never hardcode absolute paths.
+- Every new API call must be prefixed with the literal string `'https://api.flairsync.com/api/v1'` (see any `features/*/service.ts`) — never a bare path. Do **not** use `import.meta.env.BASE_URL`: it's Vite's own reserved deploy-base-path constant (default `"/"`), not this project's API host — the `.env` `BASE_URL` entry lacks the `VITE_` prefix Vite requires to expose it to client code, so it silently resolves to a broken protocol-relative URL. See "Known Doc Drift" below.
 - Always call through `flairapi` (`@/lib/flairapi`). Never instantiate a new axios client, never set `withCredentials`/`timeout`/global headers anywhere else.
 - Never use `localStorage`/`sessionStorage` for auth/session data — use `@/misc/SecureStorage`.
 - Use the `@/` path alias everywhere; never relative-import more than one level up.
@@ -119,7 +119,7 @@ Nested: `business/` (employee, invitation, tag, type, media, team, employment), 
 
 ## `lib/flairapi.ts` — Verified Behavior
 
-- The axios instance has **no `baseURL`** configured — every service call must build its own full path, prefixed with `import.meta.env.BASE_URL`. The one exception is the token-refresh call, which hardcodes the literal string `https://api.flairsync.com/api/v1/auth/refresh`.
+- The axios instance has **no `baseURL`** configured — every service call builds its own full path, prefixed with the hardcoded literal `https://api.flairsync.com/api/v1` (e.g. the token-refresh call uses `https://api.flairsync.com/api/v1/auth/refresh`). This isn't an exception — it's the pattern every `features/*/service.ts` file follows; see "Known Doc Drift".
 - `withCredentials: true`, header `x-client-type: web`.
 - `Timeouts` enum exported: `SHORT` (10s), `DEFAULT` (60s, the instance default), `UPLOAD` (300s) — pass via `{ timeout: Timeouts.SHORT }` per call.
 - In-flight GET/HEAD requests are deduplicated by `method:url:params` key so concurrent identical calls share one network request.
@@ -184,3 +184,4 @@ These are point-in-time specs written when a backend feature shipped/changed —
 
 - **i18n**: `VIKE_PROJECT_GUIDE.md`'s i18n section shows TS-object translation files (`translations/english_us.ts` etc.) and manual `resources` config. The actual code uses `i18next-http-backend` + JSON files in `public/locales/`. Trust the code (and the section above), not that guide's example.
 - **Marketplace**: two near-duplicate AiFiles docs exist (`Marketplace/frontend-instructions.md` and `marketplace/marketplace-frontend-instructions.md`, different casing). Check both and look at git history/dates if they conflict.
+- **API base URL**: `.cursorrules` and this doc used to instruct using `import.meta.env.BASE_URL` for API calls. That var is Vite's own reserved deploy-base-path constant (default `"/"`) — the project's `BASE_URL` in `.env` lacks the required `VITE_` prefix, so it was never actually exposed to client code, and using it produced a broken protocol-relative URL (`//businesses/...`) in production. Every `features/*/service.ts` file hardcodes `'https://api.flairsync.com/api/v1'` instead — that's the real, working convention. Both docs have been corrected; if you see the old instruction anywhere else (a stale AiFiles doc, a comment), don't follow it.
