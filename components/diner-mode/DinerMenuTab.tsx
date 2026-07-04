@@ -129,11 +129,17 @@ function MenuItemCard({ item, allowOrders, onAdd }: MenuItemCardProps) {
     const { t } = useTranslation('diner');
     const image = item.media?.[0]?.url;
     const isUnavailable = (item as any).isAvailable === false;
+    const isSelectable = allowOrders && !isUnavailable;
 
     return (
         <div
+            role={isSelectable ? "button" : undefined}
+            tabIndex={isSelectable ? 0 : undefined}
+            onClick={isSelectable ? onAdd : undefined}
+            onKeyDown={isSelectable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAdd(); } } : undefined}
             className={cn(
                 "flex gap-3 rounded-2xl border p-3 bg-card transition-opacity",
+                isSelectable && "cursor-pointer active:bg-muted/50",
                 isUnavailable && "opacity-50 pointer-events-none"
             )}
         >

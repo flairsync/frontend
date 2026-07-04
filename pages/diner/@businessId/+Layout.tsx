@@ -4,7 +4,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UtensilsCrossed, ClipboardList, Star, X, PartyPopper } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
+import { useDiscoveryProfile, useDiscoveryFloors } from '@/features/discovery/useDiscovery';
 import {
     useBusinessSeatedReservation,
     useActiveDineInOrder,
@@ -26,6 +26,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const isLoggedIn = !!pageContext.user;
 
     const { data: profile, isLoading } = useDiscoveryProfile(businessId);
+    const { data: floors } = useDiscoveryFloors(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: myOrderSummary } = useActiveDineInOrder(businessId);
     const { cart, orderReadyId, setOrderReadyId, scannedTableId, setScannedTableId, guestOrderId, setGuestOrderId } = useDinerModeStore();
@@ -66,6 +67,10 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
             setGuestOrderId(null);
         }
     }, [isLoggedIn, activeOrderSummary, setGuestOrderId]);
+
+    const resolvedTableId = reservation?.tableId ?? activeOrderSummary?.tableId ?? scannedTableId ?? null;
+    const resolvedTable = floors?.flatMap((f) => f.tables ?? []).find((t) => t.id === resolvedTableId);
+    const tableLabel = resolvedTable ? (resolvedTable.name || `Table ${resolvedTable.number}`) : resolvedTableId;
 
     const hasSeatedReservation = !!reservation;
     const hasActiveOrder =
@@ -204,7 +209,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
 
             <DinerModeHeader
                 profile={profile}
-                tableId={reservation?.tableId ?? activeOrderSummary?.tableId ?? scannedTableId ?? null}
+                tableLabel={tableLabel}
                 onExit={() => { window.location.href = '/'; }}
             />
 
@@ -251,7 +256,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         {(hasSeatedReservation || hasActiveOrder || hasScannedTable) && (
                             <DinerCallWaiterButton
                                 businessId={businessId}
-                                tableId={reservation?.tableId ?? activeOrderSummary?.tableId ?? scannedTableId ?? undefined}
+                                tableId={resolvedTableId ?? undefined}
                                 reservationId={reservation?.id}
                             />
                         )}

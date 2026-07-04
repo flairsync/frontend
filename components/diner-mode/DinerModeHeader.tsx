@@ -6,11 +6,11 @@ import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessPr
 
 interface DinerModeHeaderProps {
     profile: DiscoveryBusinessProfile;
-    tableId: string | null;
+    tableLabel: string | null;
     onExit: () => void;
 }
 
-export default function DinerModeHeader({ profile, tableId, onExit }: DinerModeHeaderProps) {
+export default function DinerModeHeader({ profile, tableLabel, onExit }: DinerModeHeaderProps) {
     const { t } = useTranslation('diner');
     return (
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border/40">
@@ -25,10 +25,10 @@ export default function DinerModeHeader({ profile, tableId, onExit }: DinerModeH
                     )}
                     <div className="min-w-0">
                         <p className="font-semibold text-sm truncate leading-tight">{profile.name}</p>
-                        {tableId && (
+                        {tableLabel && (
                             <p className="text-xs text-muted-foreground flex items-center gap-1">
                                 <MapPin className="w-3 h-3 shrink-0" />
-                                <span className="truncate">{t('header.table_label', { table: tableId })}</span>
+                                <span className="truncate">{t('header.table_label', { table: tableLabel })}</span>
                             </p>
                         )}
                     </div>
