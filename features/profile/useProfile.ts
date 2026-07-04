@@ -5,11 +5,15 @@ import { UserProfile } from "@/models/UserProfile";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-export const useProfile = () => {
+export const useProfile = (options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();
   const { user } = usePageContext();
 
   const { t } = useTranslation();
+
+  // Callers on prerendered/static pages have no reliable pageContext.user
+  // (it's frozen at build time) and pass enabled explicitly to force a live check.
+  const enabled = options?.enabled ?? user != null;
 
   const { data: userProfile, isPending: loadingUserProfile } = useQuery({
     queryKey: ["user_profile"],
@@ -17,7 +21,7 @@ export const useProfile = () => {
       const userData = await getUserProfileApiCall();
       return userData ? UserProfile.parseApiResponse(userData as any) : undefined;
     },
-    enabled: user != null,
+    enabled,
     meta: {
       onError: (error: any) => {
         // If we are supposed to be logged in but profile fetch fails

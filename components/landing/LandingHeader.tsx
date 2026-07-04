@@ -15,6 +15,7 @@ import MobileProfileSheet from "../shared/MobileProfileSheet";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { ThemeToggle } from "../shared/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
+import { useProfile } from "@/features/profile/useProfile";
 
 const NAV_LINKS = [
     { name: "home_tab_title", href: "#home" },
@@ -55,10 +56,17 @@ type HeaderProps = {
     showSectionNav?: boolean;
     disableEntryAnimation?: boolean;
     className?: string;
+    // Pages that are prerendered (built once, no per-request SSR) can't rely on
+    // pageContext.user — it's frozen at build time. Those pages pass this to
+    // force a live client-side auth check instead.
+    liveAuthCheck?: boolean;
 };
 
-const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation, className }: HeaderProps) => {
-    const { user } = usePageContext();
+const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation, className, liveAuthCheck = false }: HeaderProps) => {
+    const { user: ssrUser } = usePageContext();
+    const { userProfile, loadingUserProfile } = useProfile({ enabled: liveAuthCheck });
+    const user = liveAuthCheck ? (userProfile ?? null) : ssrUser;
+    const authResolved = !liveAuthCheck || !loadingUserProfile;
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation("landing");
     const headerRef = useRef<HTMLElement>(null);
@@ -157,12 +165,14 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                         )}
                     </div>
 
-                    {!user && <LanguageSwitcher compact />}
-                    {!user && <ThemeToggle />}
+                    {authResolved && !user && <LanguageSwitcher compact />}
+                    {authResolved && !user && <ThemeToggle />}
 
                     {/* Desktop auth */}
                     <div className="hidden md:flex items-center pl-2 border-l border-border/50">
-                        {user ? (
+                        {!authResolved ? (
+                            <div className="w-9 h-9" />
+                        ) : user ? (
                             <HeaderProfileAvatar />
                         ) : (
                             <a href="/login">
@@ -175,7 +185,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
 
                     {/* Mobile: avatar sheet (logged in) + hamburger */}
                     <div className="md:hidden flex items-center gap-2">
-                        {user && <MobileProfileSheet />}
+                        {authResolved && user && <MobileProfileSheet />}
                         <button
                             className="lg:hidden p-2 text-foreground/80 hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
                             onClick={() => setIsOpen(!isOpen)}
@@ -222,14 +232,14 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                                 {t("marketplace.title", "Marketplace")}
                             </a>
 
-                            {!user && (
+                            {authResolved && !user && (
                                 <div className="pt-1 flex items-center gap-2">
                                     <LanguageSwitcher />
                                     <ThemeToggle />
                                 </div>
                             )}
 
-                            {!user && (
+                            {authResolved && !user && (
                                 <div className="pt-4">
                                     <a href="/login" onClick={() => setIsOpen(false)}>
                                         <Button className="w-full rounded-full bg-primary text-primary-foreground">

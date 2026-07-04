@@ -39,6 +39,7 @@ export default function Page() {
     >
       <LandingHeader
         activeTag={activeTag}
+        liveAuthCheck
       />
       <div
         className='pt-50 md:pt-20 gap-10 flex flex-col'
