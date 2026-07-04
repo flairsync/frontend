@@ -15,6 +15,7 @@ import { usePlatformCountries } from '@/features/shared/usePlatformCountries'
 import { cn } from '@/lib/utils'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { CountryStatus } from '@/models/shared/PlatformCountry'
+import { Gender } from '@/models/UserProfile'
 import { Badge } from '@/components/ui/badge'
 import { PhoneInput } from '@/components/ui/phone-input'
 
@@ -138,9 +139,11 @@ const ProfileInfoSettings = () => {
                                             <SelectValue placeholder="Select gender" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="male">Male</SelectItem>
-                                            <SelectItem value="female">Female</SelectItem>
-                                            <SelectItem value="other">Other</SelectItem>
+                                            <SelectItem value={Gender.MALE}>Male</SelectItem>
+                                            <SelectItem value={Gender.FEMALE}>Female</SelectItem>
+                                            <SelectItem value={Gender.NON_BINARY}>Non-binary</SelectItem>
+                                            <SelectItem value={Gender.OTHER}>Other</SelectItem>
+                                            <SelectItem value={Gender.PREFER_NOT_TO_SAY}>Prefer not to say</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

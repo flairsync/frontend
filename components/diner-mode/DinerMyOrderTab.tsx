@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Loader2,
     CheckCircle2,
@@ -7,6 +7,7 @@ import {
     XCircle,
     ShoppingCart,
     Plus,
+    RefreshCw,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,26 @@ interface DinerMyOrderTabProps {
     isSubmitting: boolean;
     onPlaceOrder: () => void;
     onRemoveCartItem: (index: number) => void;
+    onRefresh: () => void;
+    isRefreshing: boolean;
+    lastUpdatedAt: number;
+}
+
+// Ticks once a second so the "updated Xs ago" text stays live without polling.
+function useElapsedSeconds(since: number): number {
+    const [, tick] = useState(0);
+    useEffect(() => {
+        if (!since) return;
+        const id = setInterval(() => tick((n) => n + 1), 1000);
+        return () => clearInterval(id);
+    }, [since]);
+    return since ? Math.max(0, Math.floor((Date.now() - since) / 1000)) : 0;
+}
+
+function formatUpdatedAgo(t: (key: string, opts?: any) => string, seconds: number): string {
+    if (seconds < 5) return t('my_order_tab.updated_just_now');
+    if (seconds < 60) return t('my_order_tab.updated_seconds_ago', { count: seconds });
+    return t('my_order_tab.updated_minutes_ago', { count: Math.floor(seconds / 60) });
 }
 
 function getStatusConfig(
@@ -88,11 +109,15 @@ export default function DinerMyOrderTab({
     isSubmitting,
     onPlaceOrder,
     onRemoveCartItem,
+    onRefresh,
+    isRefreshing,
+    lastUpdatedAt,
 }: DinerMyOrderTabProps) {
     const { t } = useTranslation('diner');
     const menuHref = `/diner/${businessId}/menu`;
     const statusConfig = activeOrder ? getStatusConfig(t)[activeOrder.status] : null;
     const isEditable = activeOrder && ORDER_EDITABLE_STATUSES.includes(activeOrder.status);
+    const elapsedSeconds = useElapsedSeconds(lastUpdatedAt);
 
     if (!activeOrder && cart.length === 0) {
         return (
@@ -121,6 +146,24 @@ export default function DinerMyOrderTab({
 
     return (
         <div className="flex-1 overflow-y-auto pb-32 px-4 py-4 space-y-5">
+            {activeOrder && (
+                <div className="flex items-center justify-between px-1">
+                    <p className="text-xs text-muted-foreground">
+                        {formatUpdatedAgo(t, elapsedSeconds)}
+                    </p>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs h-7 rounded-full gap-1 -mr-2"
+                        onClick={onRefresh}
+                        disabled={isRefreshing}
+                    >
+                        <RefreshCw className={cn('w-3 h-3', isRefreshing && 'animate-spin')} />
+                        {t('my_order_tab.refresh')}
+                    </Button>
+                </div>
+            )}
+
             {activeOrder && statusConfig && (
                 <div
                     className={cn(

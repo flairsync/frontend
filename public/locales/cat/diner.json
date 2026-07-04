@@ -60,7 +60,13 @@
     "subtotal": "Subtotal",
     "placing_order": "Enviant la comanda…",
     "add_to_existing_order": "Afegeix a la comanda en curs",
-    "place_order": "Fes la comanda"
+    "place_order": "Fes la comanda",
+    "refresh": "Actualitza",
+    "updated_just_now": "Actualitzat ara mateix",
+    "updated_seconds_ago_one": "Actualitzat fa {{count}} segon",
+    "updated_seconds_ago_other": "Actualitzat fa {{count}} segons",
+    "updated_minutes_ago_one": "Actualitzat fa {{count}} minut",
+    "updated_minutes_ago_other": "Actualitzat fa {{count}} minuts"
   },
   "menu_item_sheet": {
     "choose_variant": "Tria una variant",

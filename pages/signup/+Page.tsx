@@ -30,6 +30,7 @@ const RegisterPage = () => {
 
     const origin = urlParsed.search.origin || '/';
     const packId = urlParsed.search.packId;
+    const prefilledEmail = urlParsed.search.email || '';
 
     const handlePostSignup = () => {
         const target = packId ? `${origin}?packId=${packId}` : origin;
@@ -79,7 +80,7 @@ const RegisterPage = () => {
                             initialValues={{
                                 firstName: '',
                                 lastName: '',
-                                email: '',
+                                email: prefilledEmail,
                                 password: '',
                                 repeatPassword: '',
                                 termsAccepted: false,

@@ -60,10 +60,15 @@ export const useAuth = () => {
     mutationKey: ["logout_user"],
     mutationFn: logoutUserApiCall,
     onSuccess(data, variables, context) {
+      // Wipe cached server state (e.g. user_profile) so components reading
+      // from the query cache (like the landing header) don't keep showing
+      // the logged-in user until this soft nav's SSR round-trip lands.
+      queryClient.clear();
       // refresh to hydrate ssr
       hydrateSSR();
     },
     onError(error, variables, context) {
+      queryClient.clear();
       hydrateSSR();
     },
   });

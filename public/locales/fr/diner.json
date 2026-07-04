@@ -60,7 +60,13 @@
     "subtotal": "Sous-total",
     "placing_order": "Envoi de la commande…",
     "add_to_existing_order": "Ajouter à la commande en cours",
-    "place_order": "Commander"
+    "place_order": "Commander",
+    "refresh": "Actualiser",
+    "updated_just_now": "Mis à jour à l'instant",
+    "updated_seconds_ago_one": "Mis à jour il y a {{count}} seconde",
+    "updated_seconds_ago_other": "Mis à jour il y a {{count}} secondes",
+    "updated_minutes_ago_one": "Mis à jour il y a {{count}} minute",
+    "updated_minutes_ago_other": "Mis à jour il y a {{count}} minutes"
   },
   "menu_item_sheet": {
     "choose_variant": "Choisis une variante",

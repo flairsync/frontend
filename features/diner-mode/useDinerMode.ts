@@ -125,10 +125,13 @@ export const useActiveOrderDetail = (
             return fetchSingleOrderApiCall(businessId, orderId);
         },
         enabled: !!businessId && !!orderId,
+        // Polls every 15s while the tab is visible (TanStack pauses this
+        // automatically when the page is hidden/unfocused) so diners see
+        // status changes without a manual refresh; stops once terminal.
         refetchInterval: (query) => {
             const status: string | undefined = (query.state.data as any)?.status;
             if (status && TERMINAL_ORDER_STATUSES.includes(status as any)) return false;
-            return 5 * 60_000;
+            return 15_000;
         },
     });
 };

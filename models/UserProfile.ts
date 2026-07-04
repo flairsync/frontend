@@ -1,6 +1,15 @@
 import dayjs from "dayjs";
 import { Subscription } from "./Subscription";
 import { PlatformCountry } from "./shared/PlatformCountry";
+
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+  NON_BINARY = 'non_binary',
+  OTHER = 'other',
+  PREFER_NOT_TO_SAY = 'prefer_not_to_say',
+}
+
 export class UserProfile {
   id: string;
   email: string;

@@ -60,7 +60,13 @@
     "subtotal": "Subtotal",
     "placing_order": "Placing order…",
     "add_to_existing_order": "Add to existing order",
-    "place_order": "Place order"
+    "place_order": "Place order",
+    "refresh": "Refresh",
+    "updated_just_now": "Updated just now",
+    "updated_seconds_ago_one": "Updated {{count}} second ago",
+    "updated_seconds_ago_other": "Updated {{count}} seconds ago",
+    "updated_minutes_ago_one": "Updated {{count}} minute ago",
+    "updated_minutes_ago_other": "Updated {{count}} minutes ago"
   },
   "menu_item_sheet": {
     "choose_variant": "Choose a variant",

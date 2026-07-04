@@ -60,7 +60,13 @@
     "subtotal": "Subtotal",
     "placing_order": "Enviando pedido…",
     "add_to_existing_order": "Añadir al pedido en curso",
-    "place_order": "Hacer pedido"
+    "place_order": "Hacer pedido",
+    "refresh": "Actualizar",
+    "updated_just_now": "Actualizado justo ahora",
+    "updated_seconds_ago_one": "Actualizado hace {{count}} segundo",
+    "updated_seconds_ago_other": "Actualizado hace {{count}} segundos",
+    "updated_minutes_ago_one": "Actualizado hace {{count}} minuto",
+    "updated_minutes_ago_other": "Actualizado hace {{count}} minutos"
   },
   "menu_item_sheet": {
     "choose_variant": "Elige una variante",

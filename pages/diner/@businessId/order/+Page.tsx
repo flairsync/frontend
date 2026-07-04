@@ -12,6 +12,7 @@ import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import { PlaceDineInOrderPayload, AddItemsToOrderPayload } from '@/features/diner-mode/diner-mode.api';
 import DinerMyOrderTab from '@/components/diner-mode/DinerMyOrderTab';
 import GuestEmailPrompt from '@/components/diner-mode/GuestEmailPrompt';
+import { getEmailPromptSeenOrderId, setEmailPromptSeenOrderId } from '@/utils/cookies';
 
 export default function DinerOrderPage() {
     const pageContext = usePageContext();
@@ -25,16 +26,36 @@ export default function DinerOrderPage() {
     // Logged-in diners are looked up via their account; guests track the order
     // id they were handed at checkout time (held in a cookie-backed store).
     const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
-    const { data: activeOrder } = useActiveOrderDetail(businessId, activeOrderId);
+    const {
+        data: activeOrder,
+        refetch: refetchActiveOrder,
+        isFetching: isRefreshingOrder,
+        dataUpdatedAt: orderUpdatedAt,
+    } = useActiveOrderDetail(businessId, activeOrderId);
 
     const placeDineInOrder = usePlaceDineInOrder(businessId);
     const addItemsToOrder = useAddItemsToOrder(businessId, activeOrderId ?? '');
 
     // Ask guests for an email only after they've placed an order — never
     // before, and never at all if they're already logged in (we have theirs).
-    const [emailPromptDismissed, setEmailPromptDismissed] = useState(false);
+    // The dismissal is cookie-backed and keyed to the order id, so a refresh
+    // doesn't show it again for the same order, but a new order gets asked again.
+    const [emailPromptSeenId, setEmailPromptSeenId] = useState<string | null>(
+        () => getEmailPromptSeenOrderId()
+    );
     const showEmailPrompt =
-        !isLoggedIn && !emailPromptDismissed && !!activeOrder && !activeOrder.guestEmail;
+        !isLoggedIn &&
+        !!activeOrder &&
+        !activeOrder.guestEmail &&
+        activeOrderId !== undefined &&
+        activeOrderId !== emailPromptSeenId;
+
+    const dismissEmailPrompt = useCallback(() => {
+        if (activeOrderId) {
+            setEmailPromptSeenOrderId(activeOrderId);
+            setEmailPromptSeenId(activeOrderId);
+        }
+    }, [activeOrderId]);
 
     const handlePlaceOrder = useCallback(() => {
         if (cart.length === 0) return;
@@ -75,13 +96,16 @@ export default function DinerOrderPage() {
                 isSubmitting={isSubmitting}
                 onPlaceOrder={handlePlaceOrder}
                 onRemoveCartItem={removeFromCart}
+                onRefresh={() => refetchActiveOrder()}
+                isRefreshing={isRefreshingOrder}
+                lastUpdatedAt={orderUpdatedAt}
             />
             {activeOrderId && (
                 <GuestEmailPrompt
                     businessId={businessId}
                     orderId={activeOrderId}
                     open={showEmailPrompt}
-                    onClose={() => setEmailPromptDismissed(true)}
+                    onClose={dismissEmailPrompt}
                 />
             )}
         </>
