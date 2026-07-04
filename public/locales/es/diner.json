@@ -75,7 +75,9 @@
     "leave_diner_mode": "Salir del modo cliente"
   },
   "menu_tab": {
-    "unavailable": "No disponible"
+    "unavailable": "No disponible",
+    "ordering_unavailable_title": "Pedidos en línea no disponibles",
+    "ordering_unavailable_description": "Este restaurante no acepta pedidos en línea en este momento — por favor pide a tu camarero."
   },
   "menu_page": {
     "unavailable_title": "Menú no disponible",

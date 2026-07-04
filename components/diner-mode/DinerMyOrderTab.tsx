@@ -20,7 +20,7 @@ interface DinerMyOrderTabProps {
     businessId: string;
     activeOrder: DinerOrder | null;
     cart: CartItem[];
-    allowOrders: boolean;
+    canOrder: boolean;
     isSubmitting: boolean;
     onPlaceOrder: () => void;
     onRemoveCartItem: (index: number) => void;
@@ -84,7 +84,7 @@ export default function DinerMyOrderTab({
     businessId,
     activeOrder,
     cart,
-    allowOrders,
+    canOrder,
     isSubmitting,
     onPlaceOrder,
     onRemoveCartItem,
@@ -102,7 +102,7 @@ export default function DinerMyOrderTab({
                 <p className="text-sm text-muted-foreground mt-1">
                     {t('my_order_tab.empty_description')}
                 </p>
-                {allowOrders && (
+                {canOrder ? (
                     <Button
                         variant="outline"
                         className="mt-4 rounded-full"
@@ -110,6 +110,10 @@ export default function DinerMyOrderTab({
                     >
                         {t('my_order_tab.browse_menu')}
                     </Button>
+                ) : (
+                    <p className="text-xs text-muted-foreground mt-4 max-w-xs">
+                        {t('menu_tab.ordering_unavailable_description')}
+                    </p>
                 )}
             </div>
         );
@@ -141,7 +145,7 @@ export default function DinerMyOrderTab({
                 <div className="rounded-2xl border bg-card overflow-hidden">
                     <div className="px-4 py-3 border-b flex items-center justify-between">
                         <p className="text-sm font-semibold">{t('my_order_tab.your_order_heading')}</p>
-                        {isEditable && allowOrders && (
+                        {isEditable && canOrder && (
                             <Button
                                 variant="ghost"
                                 size="sm"

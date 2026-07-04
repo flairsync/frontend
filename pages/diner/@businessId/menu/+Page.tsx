@@ -47,5 +47,5 @@ export default function DinerMenuPage() {
         );
     }
 
-    return <DinerMenuTab menu={menu} allowOrders={profile?.allowOrders ?? false} />;
+    return <DinerMenuTab menu={menu} canOrder={profile?.allowTableOrdering ?? false} />;
 }

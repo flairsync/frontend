@@ -75,7 +75,9 @@
     "leave_diner_mode": "Surt del mode client"
   },
   "menu_tab": {
-    "unavailable": "No disponible"
+    "unavailable": "No disponible",
+    "ordering_unavailable_title": "Comandes en línia no disponibles",
+    "ordering_unavailable_description": "Aquest restaurant no accepta comandes en línia ara mateix — si us plau, demana-ho al teu cambrer."
   },
   "menu_page": {
     "unavailable_title": "Menú no disponible",

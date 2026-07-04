@@ -75,7 +75,9 @@
     "leave_diner_mode": "Leave diner mode"
   },
   "menu_tab": {
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "ordering_unavailable_title": "Online ordering unavailable",
+    "ordering_unavailable_description": "This restaurant doesn't accept online orders right now — please order with your waiter."
   },
   "menu_page": {
     "unavailable_title": "Menu unavailable",

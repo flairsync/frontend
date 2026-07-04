@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { BusinessMenu } from '@/models/business/menu/BusinessMenu';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
@@ -12,10 +13,11 @@ import DinerCartFab from './DinerCartFab';
 
 interface DinerMenuTabProps {
     menu: BusinessMenu;
-    allowOrders: boolean;
+    canOrder: boolean;
 }
 
-export default function DinerMenuTab({ menu, allowOrders }: DinerMenuTabProps) {
+export default function DinerMenuTab({ menu, canOrder }: DinerMenuTabProps) {
+    const { t } = useTranslation('diner');
     const { openItemSheet, selectedItem, closeItemSheet } = useDinerModeStore();
     const [activeCategoryId, setActiveCategoryId] = useState<string>('');
     const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -87,6 +89,13 @@ export default function DinerMenuTab({ menu, allowOrders }: DinerMenuTabProps) {
 
             <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-32">
                 <div className="px-4 py-4 space-y-8">
+                    {!canOrder && (
+                        <Alert>
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertTitle>{t('menu_tab.ordering_unavailable_title')}</AlertTitle>
+                            <AlertDescription>{t('menu_tab.ordering_unavailable_description')}</AlertDescription>
+                        </Alert>
+                    )}
                     {categories.map((category) => (
                         <div
                             key={category.id}
@@ -99,7 +108,7 @@ export default function DinerMenuTab({ menu, allowOrders }: DinerMenuTabProps) {
                                     <MenuItemCard
                                         key={menuItem.id}
                                         item={menuItem}
-                                        allowOrders={allowOrders}
+                                        canOrder={canOrder}
                                         onAdd={() => openItemSheet(menuItem)}
                                     />
                                 ))}
@@ -109,7 +118,7 @@ export default function DinerMenuTab({ menu, allowOrders }: DinerMenuTabProps) {
                 </div>
             </div>
 
-            {allowOrders && (
+            {canOrder && (
                 <>
                     <DinerMenuItemSheet item={selectedItem} onClose={closeItemSheet} />
                     <DinerCartFab />
@@ -121,15 +130,15 @@ export default function DinerMenuTab({ menu, allowOrders }: DinerMenuTabProps) {
 
 interface MenuItemCardProps {
     item: BusinessMenuItem;
-    allowOrders: boolean;
+    canOrder: boolean;
     onAdd: () => void;
 }
 
-function MenuItemCard({ item, allowOrders, onAdd }: MenuItemCardProps) {
+function MenuItemCard({ item, canOrder, onAdd }: MenuItemCardProps) {
     const { t } = useTranslation('diner');
     const image = item.media?.[0]?.url;
     const isUnavailable = (item as any).isAvailable === false;
-    const isSelectable = allowOrders && !isUnavailable;
+    const isSelectable = canOrder && !isUnavailable;
 
     return (
         <div
@@ -170,7 +179,7 @@ function MenuItemCard({ item, allowOrders, onAdd }: MenuItemCardProps) {
                     <span className="text-sm font-semibold">
                         ${item.price.toFixed(2)}
                     </span>
-                    {allowOrders && !isUnavailable && (
+                    {canOrder && !isUnavailable && (
                         <Button
                             size="icon"
                             className="h-7 w-7 rounded-full shrink-0"
