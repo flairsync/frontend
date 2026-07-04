@@ -27,16 +27,8 @@ const AnimatedScrollArrow = () => {
     }, []);
 
     return (
-        <div ref={root}>
-            <div
-                className='arrow_logo 
-                 bottom-[-24]   
-            md:absolute md:bottom-0 
-
-                  left-0 right-0 self-center justify-center align-middle flex'
-
-
-            >
+        <div ref={root} className="w-full flex justify-center">
+            <div className="arrow_logo">
                 <svg width="137" height="168" viewBox="0 0 137 168" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g opacity="0.52">
                         <path d="M68.5 118.908L34.25 84.6583L42.2417 76.6666L68.5 102.925L94.7583 76.6666L102.75 84.6583L68.5 118.908Z" fill="#BAB8FB" />

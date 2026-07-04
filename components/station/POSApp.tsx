@@ -515,8 +515,8 @@ function POSMain({
                 });
                 refreshOrders();
                 refreshTables();
-            } catch {
-                toast.error(t("pos_app.toasts.update_order_failed"));
+            } catch (err: any) {
+                toast.error(err?.response?.data?.message ?? t("pos_app.toasts.update_order_failed"));
             }
         },
         [refreshOrders, refreshTables, t],
@@ -547,8 +547,8 @@ function POSMain({
                         toast.success(t("pos_app.toasts.order_cancelled"));
                         refreshOrders();
                         refreshTables();
-                    } catch {
-                        toast.error(t("pos_app.toasts.cancel_order_failed"));
+                    } catch (err: any) {
+                        toast.error(err?.response?.data?.message ?? t("pos_app.toasts.cancel_order_failed"));
                     }
                 },
             });

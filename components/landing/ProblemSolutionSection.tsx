@@ -30,6 +30,8 @@ const inventoryItems = [
     { name: "Tomato Sauce",   unit: "2 cans",  stock: 18, status: "low"      },
     { name: "Olive Oil",      unit: "5.5 L",   stock: 55, status: "ok"       },
     { name: "Mozzarella",     unit: "0.5 kg",  stock: 5,  status: "critical" },
+    { name: "Basil",          unit: "1.2 kg",  stock: 40, status: "ok"       },
+    { name: "Parmesan",       unit: "3 kg",    stock: 22, status: "low"      },
 ];
 
 const InventoryVisual = () => (
@@ -81,6 +83,8 @@ const staffMembers = [
     { name: "Ahmed K.",  role: "Head Chef",  time: "12:00 – 22:00", color: "bg-orange-500" },
     { name: "Lisa M.",   role: "Manager",    time: "08:00 – 16:00", color: "bg-emerald-500" },
     { name: "Carlos R.", role: "Bartender",  time: "17:00 – 01:00", color: "bg-sky-500"     },
+    { name: "Elena V.",  role: "Host",       time: "10:00 – 18:00", color: "bg-pink-500"    },
+    { name: "Tom B.",    role: "Sous Chef",  time: "11:00 – 19:00", color: "bg-teal-500"    },
 ];
 
 const StaffVisual = () => (
@@ -109,6 +113,8 @@ const menuItems = [
     { name: "Caesar Salad",        price: "$9.99",  available: true  },
     { name: "Tiramisu",            price: "$7.99",  available: false },
     { name: "Sparkling Water",     price: "$2.99",  available: true  },
+    { name: "Margherita Pizza",    price: "$12.99", available: true  },
+    { name: "Espresso",            price: "$3.49",  available: true  },
 ];
 const menuCategories = ["Starters", "Mains", "Desserts", "Drinks"];
 
@@ -145,6 +151,8 @@ const engagementMetrics = [
     { icon: Heart,         label: "Loyal Customers",  value: "1,240",    bg: "bg-rose-100 dark:bg-rose-900/30",     text: "text-rose-500"   },
     { icon: Gift,          label: "Active Offers",    value: "48",       bg: "bg-violet-100 dark:bg-violet-900/30", text: "text-violet-500" },
     { icon: MessageSquare, label: "Positive Feedback",value: "94%",      bg: "bg-emerald-100 dark:bg-emerald-900/30",text:"text-emerald-600"},
+    { icon: Users,         label: "Repeat Customers", value: "68%",      bg: "bg-sky-100 dark:bg-sky-900/30",       text: "text-sky-500"    },
+    { icon: Clock,         label: "Avg Reply Time",   value: "2 min",    bg: "bg-orange-100 dark:bg-orange-900/30", text: "text-orange-500" },
 ];
 
 const EngagementVisual = () => (
@@ -279,8 +287,18 @@ const ProblemSolutionSection = () => {
                     </div>
 
                     {/* Right Panel */}
-                    <div id="prob_sol_right_panel">
-                        <Card className="rounded-2xl bg-muted border-none h-full flex flex-col">
+                    <div id="prob_sol_right_panel" className="relative">
+                        <motion.div
+                            className="absolute -top-8 -right-8 w-56 h-56 rounded-full bg-primary/20 blur-3xl pointer-events-none"
+                            animate={{ y: [0, -16, 0], opacity: [0.5, 0.8, 0.5] }}
+                            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                        <motion.div
+                            className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-violet-500/20 blur-3xl pointer-events-none"
+                            animate={{ y: [0, 16, 0], opacity: [0.4, 0.7, 0.4] }}
+                            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                        />
+                        <Card className="relative z-10 rounded-2xl bg-muted border-none h-full flex flex-col">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-2xl font-bold">
                                     {t(`landing_page.problemSolution.solutions.${activeSolution.id - 1}.cardTitle`)}
@@ -289,7 +307,7 @@ const ProblemSolutionSection = () => {
                                     {t(`landing_page.problemSolution.solutions.${activeSolution.id - 1}.cardDescription`)}
                                 </CardDescription>
                             </CardHeader>
-                            <CardContent className="pt-4 flex-1">
+                            <CardContent className="pt-4 flex-1 flex flex-col justify-center">
                                 <AnimatePresence mode="wait">
                                     <motion.div
                                         key={activeSolution.id}

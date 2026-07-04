@@ -103,7 +103,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                         <WebsiteLogo />
                     </a>
                     {showSectionNav && (
-                        <nav className="hidden lg:flex space-x-8 items-center mt-1">
+                        <nav className="hidden lg:flex space-x-8 items-center">
                             {NAV_LINKS.map((val) => (
                                 <AnimatedNavLink key={val.name} active={isActiveHash(val.href)} href={val.href}>
                                     {t(`landing_page.header.navLinks.${val.name}`)}

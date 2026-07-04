@@ -19,7 +19,7 @@ const ScrollArrow = clientOnly(() => import("@/components/landing/AnimatedScroll
 
 const ScrollMoreArrow = () => {
   return <div
-    className='relative md:top-24'
+    className='flex justify-center py-6 md:py-10'
   >
     <ScrollArrow
     />
@@ -49,12 +49,7 @@ export default function Page() {
         >
 
           <LandingHero />
-          <div
-            className='md:pt-30 md:pb-10 lg:pt-0 lg:pb-0'
-          >
-            <ScrollMoreArrow />
-
-          </div>
+          <ScrollMoreArrow />
         </div>
 
         <LandingStatsBar />

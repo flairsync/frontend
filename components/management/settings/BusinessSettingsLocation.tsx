@@ -58,6 +58,7 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
     const [strictGeofenceBlock, setStrictGeofenceBlock] = useState(!!businessDetails?.strictGeofenceBlock);
     const [attendanceGraceMinutes, setAttendanceGraceMinutes] = useState(businessDetails?.attendanceGraceMinutes ?? 15);
     const [maxPaidBreakMinutes, setMaxPaidBreakMinutes] = useState(businessDetails?.maxPaidBreakMinutes ?? 30);
+    const [requireClockInForPos, setRequireClockInForPos] = useState(!!businessDetails?.requireClockInForPos);
 
     const handleLocationChange = (val: any) => {
         setLocationValue(val);
@@ -86,7 +87,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 attendanceGeofenceRadiusMeters,
                 strictGeofenceBlock,
                 attendanceGraceMinutes,
-                maxPaidBreakMinutes
+                maxPaidBreakMinutes,
+                requireClockInForPos
             });
         }
     };
@@ -213,6 +215,17 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                                 className="w-24"
                                 value={maxPaidBreakMinutes}
                                 onChange={(e) => setMaxPaidBreakMinutes(parseInt(e.target.value) || 0)}
+                                disabled={disabled}
+                            />
+                        </div>
+                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                            <div className="space-y-0.5">
+                                <Label>Require Clock-In to Use POS</Label>
+                                <p className="text-xs text-muted-foreground">Staff must be clocked in to take orders, accept payments, or manage tables on a shared POS terminal. Owners are always exempt.</p>
+                            </div>
+                            <Switch
+                                checked={requireClockInForPos}
+                                onCheckedChange={setRequireClockInForPos}
                                 disabled={disabled}
                             />
                         </div>

@@ -42,10 +42,10 @@ const LandingHero = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start" id="hero_trial_bt">
-                        <Button asChild className="px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg w-full sm:w-auto rounded-lg font-bold transition hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
+                        <Button asChild className="h-auto px-5 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base w-full sm:w-auto rounded-lg font-bold border-2 border-transparent transition hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
                             <a href="#pricing">{t("landing_page.hero.trialButton")}</a>
                         </Button>
-                        <Button asChild variant="outline" className="px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg w-full sm:w-auto rounded-lg font-bold transition hover:scale-105 active:scale-95 border-2">
+                        <Button asChild variant="outline" className="h-auto px-5 sm:px-7 py-3 sm:py-3.5 text-sm sm:text-base w-full sm:w-auto rounded-lg font-bold border-2 transition hover:scale-105 active:scale-95">
                             <a href="/learn">{t("landing_page.hero.explainButton")}</a>
                         </Button>
                     </div>
