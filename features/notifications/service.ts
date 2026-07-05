@@ -1,11 +1,16 @@
 import flairapi from "@/lib/flairapi";
 import { NotificationRecipient, NotificationPreference } from "./types";
-import { unwrap } from "../shared/api-response";
+import { unwrap, unwrapPaginated, PaginatedData } from "../shared/api-response";
 
 const baseUrl = `${'https://api.flairsync.com/api/v1'}/notifications`;
 
-export const getNotificationsApiCall = (limit: number = 20, offset: number = 0) =>
-    flairapi.get<NotificationRecipient[]>(baseUrl, { params: { limit, offset } });
+export const getNotificationsApiCall = async (
+    limit: number = 20,
+    offset: number = 0,
+): Promise<PaginatedData<NotificationRecipient>> =>
+    unwrapPaginated<NotificationRecipient>(
+        await flairapi.get(baseUrl, { params: { limit, offset } }),
+    );
 
 export const getUnreadCountApiCall = () =>
     flairapi.get<{ count: number }>(`${baseUrl}/unread-count`);

@@ -8,6 +8,8 @@ import {
     getPreferencesApiCall,
     updatePreferencesApiCall
 } from "./service";
+import { NotificationRecipient } from "./types";
+import { PaginatedData } from "../shared/api-response";
 
 export const useNotifications = (limit: number = 20, offset: number = 0) => {
     const queryClient = useQueryClient();
@@ -18,7 +20,7 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
         isLoading: loadingNotifications,
         error: notificationsError,
         refetch: refetchNotifications
-    } = useQuery({
+    } = useQuery<PaginatedData<NotificationRecipient>>({
         queryKey: ['notifications', limit, offset],
         queryFn: () => getNotificationsApiCall(limit, offset),
         enabled: user != null,
@@ -57,6 +59,8 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
 
     return {
         notifications: notificationsData?.data || [],
+        totalPages: notificationsData?.pages ?? 1,
+        currentPage: notificationsData?.current ?? 1,
         loadingNotifications,
         notificationsError,
         refetchNotifications,

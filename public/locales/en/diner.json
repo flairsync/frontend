@@ -9,6 +9,8 @@
     "success_description": "Someone will be with you shortly.",
     "error_title": "Could not reach staff",
     "error_description": "Please try again or ask for assistance directly.",
+    "unavailable_title": "No waiters available right now",
+    "unavailable_description": "Please ask for assistance directly.",
     "calling": "Calling…",
     "notified_cooldown": "Waiter notified ({{seconds}}s)",
     "button_label": "Call Waiter"

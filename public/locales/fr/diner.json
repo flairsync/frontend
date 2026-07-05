@@ -9,6 +9,8 @@
     "success_description": "Quelqu'un va arriver très vite.",
     "error_title": "Impossible de joindre le personnel",
     "error_description": "Réessaie ou demande de l'aide directement.",
+    "unavailable_title": "Aucun serveur disponible pour le moment",
+    "unavailable_description": "Merci de demander de l'aide directement.",
     "calling": "Appel en cours…",
     "notified_cooldown": "Serveur prévenu ({{seconds}}s)",
     "button_label": "Appeler le serveur"

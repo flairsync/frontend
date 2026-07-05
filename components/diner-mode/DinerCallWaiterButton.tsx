@@ -42,12 +42,18 @@ export default function DinerCallWaiterButton({
 
         setIsLoading(true);
         try {
-            await callWaiterApiCall(businessId, { tableId, reservationId });
-            toast.success(t('call_waiter.success_title'), {
-                description: t('call_waiter.success_description'),
-                duration: 3000,
-            });
-            setCooldown(COOLDOWN_SECONDS);
+            const res = await callWaiterApiCall(businessId, { tableId, reservationId });
+            if (res.data?.data?.available === false) {
+                toast.error(t('call_waiter.unavailable_title'), {
+                    description: t('call_waiter.unavailable_description'),
+                });
+            } else {
+                toast.success(t('call_waiter.success_title'), {
+                    description: t('call_waiter.success_description'),
+                    duration: 3000,
+                });
+                setCooldown(COOLDOWN_SECONDS);
+            }
         } catch {
             toast.error(t('call_waiter.error_title'), {
                 description: t('call_waiter.error_description'),

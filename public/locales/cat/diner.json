@@ -9,6 +9,8 @@
     "success_description": "Algú vindrà a atendre't de seguida.",
     "error_title": "No s'ha pogut contactar amb el personal",
     "error_description": "Torna-ho a provar o demana ajuda directament.",
+    "unavailable_title": "Ara mateix no hi ha cap cambrer disponible",
+    "unavailable_description": "Demana ajuda directament, si us plau.",
     "calling": "Trucant…",
     "notified_cooldown": "Cambrer avisat ({{seconds}}s)",
     "button_label": "Trucar al cambrer"

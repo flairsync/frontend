@@ -9,6 +9,8 @@
     "success_description": "Alguien vendrá a atenderte enseguida.",
     "error_title": "No se pudo contactar con el personal",
     "error_description": "Inténtalo de nuevo o pide ayuda directamente.",
+    "unavailable_title": "No hay camareros disponibles ahora mismo",
+    "unavailable_description": "Pide ayuda directamente, por favor.",
     "calling": "Llamando…",
     "notified_cooldown": "Camarero avisado ({{seconds}}s)",
     "button_label": "Llamar al camarero"
