@@ -193,10 +193,10 @@ const ProblemSolutionSection = () => {
                 animate($el, {
                     opacity: [0, 1],
                     x: ["10rem", "0rem"],
-                    duration: 3000,
+                    duration: 900,
                     alternate: true,
                     easing: "inOutQuad",
-                    autoplay: onScroll({ sync: 1, enter: "bottom top", leave: "center top" }),
+                    autoplay: onScroll({ sync: "play", enter: "bottom top", leave: "center top" }),
                 });
             });
 
@@ -204,10 +204,10 @@ const ProblemSolutionSection = () => {
                 animate($el, {
                     opacity: [0, 1],
                     x: ["-10rem", "0rem"],
-                    duration: 3000,
+                    duration: 900,
                     easing: "inOutQuad",
-                    autoplay: onScroll({ sync: 1, enter: "bottom top", leave: "center top" }),
-                    delay: index * 500,
+                    autoplay: onScroll({ sync: "play", enter: "bottom top", leave: "center top" }),
+                    delay: index * 150,
                 });
             });
 
@@ -215,10 +215,10 @@ const ProblemSolutionSection = () => {
                 animate($el, {
                     opacity: [0, 1],
                     x: ["10rem", "0rem"],
-                    duration: 3000,
+                    duration: 900,
                     alternate: true,
                     easing: "inOutQuad",
-                    autoplay: onScroll({ sync: 1, enter: "bottom top", leave: "center top" }),
+                    autoplay: onScroll({ sync: "play", enter: "bottom top", leave: "center top" }),
                 });
             });
         });

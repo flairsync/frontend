@@ -12,4 +12,8 @@ export const guard = (pageContext: PageContext) => {
   if (!user.hasPP) {
     throw redirect("/manage/join");
   }
+
+  if (!user.ppVerified) {
+    throw redirect("/manage/professional-profile");
+  }
 };

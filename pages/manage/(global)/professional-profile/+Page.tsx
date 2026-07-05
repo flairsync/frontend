@@ -293,15 +293,17 @@ const ProfessionalProfilePage: React.FC = () => {
                                 <p className="text-xs text-muted-foreground">
                                     Used for work-related communication, like payslips. Changing it requires verifying the new address.
                                 </p>
-                                {userProfessionalProfile?.hasPendingWorkEmail() && (
+                                {hasProfile && !userProfessionalProfile?.verified && (
                                     <Alert className="mt-2 border-amber-300 bg-amber-50 dark:bg-amber-950/30">
                                         <Clock className="h-4 w-4 text-amber-600" />
                                         <AlertDescription className="text-amber-800 dark:text-amber-300">
                                             <p className="font-medium">
-                                                Verification pending for {userProfessionalProfile.pendingWorkEmail}
+                                                Verification pending for {userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail}
                                             </p>
                                             <p className="text-xs mt-0.5">
-                                                We sent a 6-digit code to that address. Your current work email stays active until it's confirmed.
+                                                {userProfessionalProfile?.hasPendingWorkEmail()
+                                                    ? "We sent a 6-digit code to that address. Your current work email stays active until it's confirmed."
+                                                    : "We sent a 6-digit code to that address. Confirm it to finish verifying your professional profile."}
                                             </p>
                                             <div className="flex items-center gap-3 mt-2">
                                                 <Button
@@ -347,7 +349,7 @@ const ProfessionalProfilePage: React.FC = () => {
                 onConfirm={handleConfirmWorkEmailCode}
                 loading={confirmingWorkEmailVerification}
                 title="Verify Work Email"
-                description={`Enter the 6-digit code we sent to ${userProfessionalProfile?.pendingWorkEmail ?? "your new work email"}.`}
+                description={`Enter the 6-digit code we sent to ${userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail ?? "your work email"}.`}
             />
             {verifyModalOpen && errorConfirmingWorkEmailVerification && (
                 <p className="text-center text-sm text-destructive">

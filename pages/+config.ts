@@ -32,6 +32,7 @@ declare global {
       user?: {
         verified: boolean;
         hasPP: boolean;
+        ppVerified: boolean;
       };
       tfa?: {
         tfaEnabled: boolean;

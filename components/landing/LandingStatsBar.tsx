@@ -52,10 +52,10 @@ const LandingStatsBar = () => {
                 animate($el, {
                     opacity: [0, 1],
                     y: ["2rem", "0rem"],
-                    duration: 700,
+                    duration: 500,
                     easing: "easeOutQuad",
-                    autoplay: onScroll({ sync: 1, enter: "bottom top", leave: "center top" }),
-                    delay: index * 120,
+                    autoplay: onScroll({ sync: "play", enter: "bottom top", leave: "center top" }),
+                    delay: index * 80,
                 });
             });
         });

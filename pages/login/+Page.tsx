@@ -191,7 +191,7 @@ const LoginPage = () => {
 
                         <p className="mt-8 text-center text-sm text-zinc-600">
                             {t("auth_page.need_account_label")}{' '}
-                            <a href={`/signup?origin=${encodeURIComponent(origin)}`} className="font-semibold text-[#6366F1] hover:underline">
+                            <a href={`/signup?origin=${encodeURIComponent(origin)}${packId ? `&packId=${packId}` : ''}`} className="font-semibold text-[#6366F1] hover:underline">
                                 {t("auth_page.create_account_label")}
                             </a>
                         </p>

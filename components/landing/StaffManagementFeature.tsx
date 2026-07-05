@@ -12,11 +12,11 @@ const StaffManagementFeature = () => {
                 animate($square, {
                     opacity: [0, 1],
                     x: ["10rem", "0rem"],
-                    duration: 3000,
+                    duration: 900,
                     alternate: true,
                     easing: "inOutQuad",
                     autoplay: onScroll({
-                        sync: 1,
+                        sync: "play",
                         enter: "bottom top",
                         leave: "center top",
                     }),

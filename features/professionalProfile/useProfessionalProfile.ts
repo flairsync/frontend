@@ -10,7 +10,6 @@ import {
 } from "./service";
 import { toast } from "sonner";
 import { ProfessionalProfile } from "@/models/professional/ProfessionalProfile";
-import { navigate } from "vike/client/router";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 
 export const useProfessionalProfile = () => {
@@ -42,14 +41,14 @@ export const useProfessionalProfile = () => {
         toast.success("Created", {
           description: "You professional profile was created!",
         });
+        // Don't force an SSR reload here: if the work email still needs OTP
+        // confirmation, the caller keeps the user on the current page to
+        // collect it. Reloading would re-run the page guard with the now-true
+        // hasPP claim and bounce the user away before they can verify.
+        // Once the profile is actually verified, the caller navigates for real,
+        // which re-fetches guarded pageContext against the already-updated cookie.
         queryClient.refetchQueries({
           queryKey: ["user_pro_profile"],
-        });
-
-        // refresh to hydrate ssr and get new permissions/hasPP state
-        navigate(window.location.href, {
-          keepScrollPosition: true,
-          overwriteLastHistoryEntry: true,
         });
       },
     });

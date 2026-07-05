@@ -34,7 +34,7 @@ const RegisterPage = () => {
 
     const handlePostSignup = () => {
         const target = packId ? `${origin}?packId=${packId}` : origin;
-        navigate(target);
+        navigate(`/verify?origin=${encodeURIComponent(target)}`);
     };
 
     // Terms & Conditions Modal State

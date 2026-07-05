@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,6 +15,10 @@ import { navigate } from "vike/client/router";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessInvitation } from "@/features/business/invitations/useBusinessInvitation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+
+const RESEND_COOLDOWN_SECONDS = 30;
 
 const JoinProfessionalPage = () => {
     const { urlParsed } = usePageContext();
@@ -24,9 +28,26 @@ const JoinProfessionalPage = () => {
         createProProfile,
         creatingProProfile,
         userProfessionalProfile,
+        resendWorkEmailVerification,
+        resendingWorkEmailVerification,
+        errorResendingWorkEmailVerification,
+        confirmWorkEmailVerification,
+        confirmingWorkEmailVerification,
+        errorConfirmingWorkEmailVerification,
     } = useProfessionalProfile();
 
-    if (userProfessionalProfile) {
+    const [otp, setOtp] = useState("");
+    const [resendCooldown, setResendCooldown] = useState(0);
+
+    React.useEffect(() => {
+        if (resendCooldown <= 0) return;
+        const timer = setInterval(() => {
+            setResendCooldown((prev) => Math.max(0, prev - 1));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [resendCooldown]);
+
+    const goToDestination = () => {
         const invitation = urlParsed.search["invitation"];
         const origin = urlParsed.search["origin"];
         if (invitation) {
@@ -36,7 +57,29 @@ const JoinProfessionalPage = () => {
         } else {
             navigate("/manage/overview");
         }
+    };
+
+    // A professional profile exists but its work email still needs OTP
+    // confirmation (different from, or not covered by, the verified login email).
+    const needsWorkEmailVerification = !!userProfessionalProfile && !userProfessionalProfile.verified;
+
+    if (userProfessionalProfile?.verified) {
+        goToDestination();
     }
+
+    const handleVerifyWorkEmail = () => {
+        if (otp.length < 6) return;
+        confirmWorkEmailVerification(otp, {
+            onSuccess: () => setOtp(""),
+        });
+    };
+
+    const handleResendWorkEmailCode = () => {
+        if (resendCooldown > 0) return;
+        resendWorkEmailVerification(undefined, {
+            onSuccess: () => setResendCooldown(RESEND_COOLDOWN_SECONDS),
+        });
+    };
 
     console.log(urlParsed.search["invitation"]);
 
@@ -97,6 +140,82 @@ const JoinProfessionalPage = () => {
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
                     {/* Form Section */}
                     <div className="md:col-span-2">
+                        {needsWorkEmailVerification ? (
+                            <Card className="border border-zinc-200 shadow-sm">
+                                <CardHeader>
+                                    <CardTitle className="text-xl font-bold flex items-center gap-2">
+                                        <User className="h-5 w-5 text-blue-600" />
+                                        Verify Your Work Email
+                                    </CardTitle>
+                                    <CardDescription>
+                                        We sent a 6-digit code to{" "}
+                                        <span className="font-medium text-foreground">
+                                            {userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail}
+                                        </span>
+                                        . Enter it below to finish setting up your professional profile.
+                                    </CardDescription>
+                                </CardHeader>
+
+                                <CardContent className="space-y-6">
+                                    <div className="flex justify-center">
+                                        <InputOTP
+                                            maxLength={6}
+                                            value={otp}
+                                            onChange={setOtp}
+                                            className="gap-2"
+                                            pattern={REGEXP_ONLY_DIGITS}
+                                        >
+                                            <InputOTPGroup>
+                                                <InputOTPSlot index={0} />
+                                                <InputOTPSlot index={1} />
+                                                <InputOTPSlot index={2} />
+                                            </InputOTPGroup>
+                                            <InputOTPSeparator />
+                                            <InputOTPGroup>
+                                                <InputOTPSlot index={3} />
+                                                <InputOTPSlot index={4} />
+                                                <InputOTPSlot index={5} />
+                                            </InputOTPGroup>
+                                        </InputOTP>
+                                    </div>
+
+                                    <Button
+                                        onClick={handleVerifyWorkEmail}
+                                        className="w-full rounded-xl bg-blue-600 hover:bg-blue-700"
+                                        disabled={otp.length < 6 || confirmingWorkEmailVerification}
+                                    >
+                                        {confirmingWorkEmailVerification ? "Verifying…" : "Verify Work Email"}
+                                    </Button>
+
+                                    <div className="text-center text-sm text-muted-foreground">
+                                        Didn't get a code?{" "}
+                                        <Button
+                                            variant="link"
+                                            onClick={handleResendWorkEmailCode}
+                                            disabled={resendingWorkEmailVerification || resendCooldown > 0}
+                                            className="p-0 text-primary disabled:no-underline"
+                                        >
+                                            {resendingWorkEmailVerification
+                                                ? "Sending…"
+                                                : resendCooldown > 0
+                                                    ? `Resend in ${resendCooldown}s`
+                                                    : "Resend code"}
+                                        </Button>
+                                    </div>
+
+                                    {errorConfirmingWorkEmailVerification && (
+                                        <p className="text-center text-sm text-destructive">
+                                            {errorConfirmingWorkEmailVerification.response?.data?.message || "Invalid or expired code."}
+                                        </p>
+                                    )}
+                                    {errorResendingWorkEmailVerification && (
+                                        <p className="text-center text-sm text-destructive">
+                                            {errorResendingWorkEmailVerification.response?.data?.message || "Couldn't resend the code."}
+                                        </p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        ) : (
                         <Card className="border border-zinc-200 shadow-sm">
                             <CardHeader>
                                 <CardTitle className="text-xl font-bold flex items-center gap-2">
@@ -237,6 +356,7 @@ const JoinProfessionalPage = () => {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
                     </div>
 
                     {/* Info Section */}

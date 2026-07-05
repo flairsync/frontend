@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -8,21 +8,23 @@ import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
 import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
 import { toast } from "sonner";
+import { usePageContext } from "vike-react/usePageContext";
 
 const PlansPage: React.FC = () => {
+  const { urlParsed } = usePageContext();
   const { subscriptionPacks, createCheckout, creatingCheckout } = useSubscriptions();
 
 
   const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
   const [displayedPacks, setDisplayedPacks] = useState<SubscriptionPack[]>([]);
   const [checkoutLink, setCheckoutLink] = useState<string>();
+  const autoCheckoutHandled = useRef(false);
 
   useEffect(() => {
     if (subscriptionPacks) {
       setDisplayedPacks(subscriptionPacks.filter((pack) => pack.pricingType === billingType));
     }
   }, [subscriptionPacks, billingType]);
-
 
   const onChoosePlan = (packId: string) => {
     createCheckout({ packId }, {
@@ -31,6 +33,25 @@ const PlansPage: React.FC = () => {
       }
     });
   }
+
+  // Auto-trigger checkout when arriving from the landing page / login with a packId in the URL.
+  useEffect(() => {
+    const packId = urlParsed.search.packId;
+    if (!packId || autoCheckoutHandled.current || !subscriptionPacks) return;
+
+    const pack = subscriptionPacks.find((p) => p.id === packId);
+    if (pack) {
+      autoCheckoutHandled.current = true;
+      setBillingType(pack.pricingType);
+
+      const newUrl = window.location.pathname + window.location.search
+        .replace(new RegExp(`[?&]packId=${packId}`), '')
+        .replace(/^&/, '?');
+      window.history.replaceState({}, '', newUrl);
+
+      onChoosePlan(packId);
+    }
+  }, [urlParsed.search.packId, subscriptionPacks]);
 
   return (
     <div className="p-6 w-full max-w-6xl mx-auto">

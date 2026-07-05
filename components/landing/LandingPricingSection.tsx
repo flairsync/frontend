@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -13,48 +13,25 @@ import { navigate } from 'vike/client/router';
 
 const LandingPricingSection = () => {
     const { t } = useTranslation("landing");
-    const { user, urlParsed } = usePageContext();
+    const { user } = usePageContext();
     const [isMonthly, setIsMonthly] = useState(true);
     const scope = useRef<Scope>(null);
 
-    const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout } = useSubscriptions();
+    const { subscriptionPacks, fetchingPacks, currentUserSubscription, creatingCheckout } = useSubscriptions();
 
     const displayedPacks = subscriptionPacks?.filter(p => p.pricingType === (isMonthly ? PricingType.MONTHLY : PricingType.YEARLY)) || [];
     const freePack = displayedPacks.find(p => parseFloat(p.price.toString()) === 0);
     const paidPacks = displayedPacks.filter(p => parseFloat(p.price.toString()) > 0).slice(0, 3);
 
-    // Auto-trigger checkout if packId is in URL and user is logged in
-    useEffect(() => {
-        const packId = urlParsed.search.packId;
-        if (packId && user && subscriptionPacks) {
-            const pack = subscriptionPacks.find(p => p.id === packId);
-            if (pack && currentUserSubscription?.pack?.id !== pack.id) {
-                // Clear the param and start checkout
-                const newUrl = window.location.pathname + (window.location.search.replace(new RegExp(`[?&]packId=${packId}`), '').replace(/^&/, '?'));
-                window.history.replaceState({}, '', newUrl);
-
-                createCheckout({ packId }, {
-                    onSuccess: (url) => {
-                        if (url) window.location.href = url;
-                    }
-                });
-            }
-        }
-    }, [user, subscriptionPacks, currentUserSubscription]);
-
     const handleSubscribe = (pack: any) => {
         if (!user) {
-            navigate(`/login?origin=${encodeURIComponent(window.location.pathname)}&packId=${pack.id}`);
+            navigate(`/login?origin=${encodeURIComponent('/manage/plans')}&packId=${pack.id}`);
             return;
         }
 
         if (currentUserSubscription?.pack?.id === pack.id) return;
 
-        createCheckout({ packId: pack.id }, {
-            onSuccess: (url) => {
-                if (url) window.location.href = url;
-            }
-        });
+        navigate(`/manage/plans?packId=${pack.id}`);
     };
 
     useLayoutEffect(() => {
@@ -63,11 +40,11 @@ const LandingPricingSection = () => {
                 animate($el, {
                     opacity: [0, 1],
                     y: ["10rem", "0rem"],
-                    duration: 3000,
+                    duration: 900,
                     alternate: true,
                     easing: 'inOutQuad',
                     autoplay: onScroll({
-                        sync: 1,
+                        sync: 'play',
                         enter: 'bottom top',
                         leave: 'center top',
                     }),
@@ -77,12 +54,12 @@ const LandingPricingSection = () => {
             const headerTxt = text.split('#landing_pricing_title', { chars: { wrap: 'clip' } });
             animate(headerTxt.chars, {
                 y: [{ to: ['100%', '0%'] }],
-                duration: 750,
+                duration: 500,
                 ease: 'out(3)',
-                delay: stagger(50),
+                delay: stagger(30),
                 loop: false,
                 autoplay: onScroll({
-                    sync: 1,
+                    sync: 'play',
                     enter: 'bottom top',
                     leave: 'center top',
                 }),

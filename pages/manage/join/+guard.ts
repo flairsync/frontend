@@ -9,6 +9,10 @@ export const guard = (pageContext: PageContext) => {
     throw redirect("/login?origin=" + encodeURIComponent(urlParsed.pathname + urlParsed.searchOriginal));
   }
 
+  if (!user.verified) {
+    throw redirect(`/verify?origin=${encodeURIComponent(urlParsed.pathname + urlParsed.searchOriginal)}`);
+  }
+
   if (user.hasPP) {
     if (urlParsed.search["invitation"]) {
       throw redirect("/join?invitation=" + urlParsed.search["invitation"]);
