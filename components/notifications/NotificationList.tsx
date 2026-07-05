@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNotifications } from '@/features/notifications/useNotifications';
 import { NotificationPayload, NotificationRecipient } from '@/features/notifications/types';
 import { navigate } from 'vike/client/router';
@@ -22,19 +22,28 @@ const getIconForType = (type: NotificationPayload['type']) => {
     }
 };
 
+const PAGE_SIZE = 50;
+
 export const NotificationList = ({ filterType = 'all' }: { filterType?: string }) => {
+    const [limit, setLimit] = useState(PAGE_SIZE);
     const {
         notifications,
+        totalPages,
+        currentPage,
         loadingNotifications,
+        fetchingNotifications,
         markAsRead,
         markAllAsRead,
         markingAsRead,
         markingAllAsRead
-    } = useNotifications(50, 0);
+    } = useNotifications(limit, 0);
 
     if (loadingNotifications) {
         return <div className="p-8 text-center text-muted-foreground animate-pulse">Loading notifications...</div>;
     }
+
+    const hasMore = currentPage < totalPages;
+    const handleLoadMore = () => setLimit((prev) => prev + PAGE_SIZE);
 
     const filteredNotifications = filterType === 'all'
         ? notifications
@@ -156,6 +165,17 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
                     );
                 })}
             </div>
+            {hasMore && (
+                <div className="p-3 border-t text-center">
+                    <button
+                        onClick={handleLoadMore}
+                        disabled={fetchingNotifications}
+                        className="text-sm text-primary hover:underline disabled:opacity-50"
+                    >
+                        {fetchingNotifications ? 'Loading...' : 'Load more'}
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

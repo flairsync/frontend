@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { usePageContext } from "vike-react/usePageContext";
 import {
     getNotificationsApiCall,
@@ -18,12 +18,14 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
     const {
         data: notificationsData,
         isLoading: loadingNotifications,
+        isFetching: fetchingNotifications,
         error: notificationsError,
         refetch: refetchNotifications
     } = useQuery<PaginatedData<NotificationRecipient>>({
         queryKey: ['notifications', limit, offset],
         queryFn: () => getNotificationsApiCall(limit, offset),
         enabled: user != null,
+        placeholderData: keepPreviousData,
     });
 
     const {
@@ -62,6 +64,7 @@ export const useNotifications = (limit: number = 20, offset: number = 0) => {
         totalPages: notificationsData?.pages ?? 1,
         currentPage: notificationsData?.current ?? 1,
         loadingNotifications,
+        fetchingNotifications,
         notificationsError,
         refetchNotifications,
 
