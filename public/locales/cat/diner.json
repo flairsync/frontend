@@ -46,6 +46,11 @@
       "canceled": "Comanda cancel·lada",
       "rejected": "Comanda cancel·lada"
     },
+    "status_description": {
+      "created": "Esperant que el restaurant confirmi la teva comanda",
+      "accepted": "Confirmada — la cuina la començarà a preparar aviat",
+      "preparing": "La cuina està preparant la teva comanda"
+    },
     "empty_title": "La teva comanda està buida",
     "empty_description": "Explora el menú i afegeix plats per començar.",
     "browse_menu": "Veure el menú",

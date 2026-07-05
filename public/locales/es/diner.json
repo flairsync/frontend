@@ -46,6 +46,11 @@
       "canceled": "Pedido cancelado",
       "rejected": "Pedido cancelado"
     },
+    "status_description": {
+      "created": "Esperando a que el restaurante confirme tu pedido",
+      "accepted": "Confirmado — la cocina empezará a prepararlo en breve",
+      "preparing": "La cocina está preparando tu pedido"
+    },
     "empty_title": "Tu pedido está vacío",
     "empty_description": "Explora el menú y añade platos para empezar.",
     "browse_menu": "Ver menú",

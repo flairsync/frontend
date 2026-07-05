@@ -49,20 +49,23 @@ function formatUpdatedAgo(t: (key: string, opts?: any) => string, seconds: numbe
 
 function getStatusConfig(
     t: (key: string) => string
-): Record<string, { label: string; icon: React.ReactNode; color: string; pulse?: boolean }> {
+): Record<string, { label: string; description?: string; icon: React.ReactNode; color: string; pulse?: boolean }> {
     return {
         created: {
             label: t('my_order_tab.status.created'),
+            description: t('my_order_tab.status_description.created'),
             icon: <Loader2 className="w-5 h-5 animate-spin" />,
             color: 'text-blue-500',
         },
         accepted: {
             label: t('my_order_tab.status.accepted'),
+            description: t('my_order_tab.status_description.accepted'),
             icon: <CheckCircle2 className="w-5 h-5" />,
             color: 'text-green-500',
         },
         preparing: {
             label: t('my_order_tab.status.preparing'),
+            description: t('my_order_tab.status_description.preparing'),
             icon: <ChefHat className="w-5 h-5" />,
             color: 'text-orange-500',
         },
@@ -174,7 +177,10 @@ export default function DinerMyOrderTab({
                     <span className={statusConfig.color}>{statusConfig.icon}</span>
                     <div>
                         <p className="font-semibold text-sm">{statusConfig.label}</p>
-                        {activeOrder.paymentStatus === 'unpaid' && (
+                        {statusConfig.description && (
+                            <p className="text-xs text-muted-foreground">{statusConfig.description}</p>
+                        )}
+                        {activeOrder.status === 'completed' && activeOrder.paymentStatus === 'unpaid' && (
                             <p className="text-xs text-muted-foreground">{t('my_order_tab.payment_pending')}</p>
                         )}
                     </div>

@@ -92,7 +92,7 @@ export default function DinerOrderPage() {
                 businessId={businessId}
                 activeOrder={activeOrder ?? null}
                 cart={cart}
-                canOrder={profile?.allowTableOrdering ?? false}
+                canOrder={(profile?.allowOrders && profile?.allowTableOrdering) ?? false}
                 isSubmitting={isSubmitting}
                 onPlaceOrder={handlePlaceOrder}
                 onRemoveCartItem={removeFromCart}

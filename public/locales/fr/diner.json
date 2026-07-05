@@ -46,6 +46,11 @@
       "canceled": "Commande annulée",
       "rejected": "Commande annulée"
     },
+    "status_description": {
+      "created": "En attente de confirmation du restaurant",
+      "accepted": "Confirmée — la cuisine va bientôt commencer à la préparer",
+      "preparing": "La cuisine prépare ta commande"
+    },
     "empty_title": "Ta commande est vide",
     "empty_description": "Parcours le menu et ajoute des plats pour commencer.",
     "browse_menu": "Voir le menu",

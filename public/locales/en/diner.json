@@ -46,6 +46,11 @@
       "canceled": "Order cancelled",
       "rejected": "Order cancelled"
     },
+    "status_description": {
+      "created": "Waiting for the restaurant to confirm your order",
+      "accepted": "Confirmed — the kitchen will start preparing it shortly",
+      "preparing": "The kitchen is preparing your order"
+    },
     "empty_title": "Your order is empty",
     "empty_description": "Browse the menu and add items to get started.",
     "browse_menu": "Browse Menu",
