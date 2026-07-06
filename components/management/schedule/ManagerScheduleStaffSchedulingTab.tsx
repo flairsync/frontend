@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChevronLeft, ChevronRight, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText, UserX, ClipboardCheck } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText, UserX, ClipboardCheck } from 'lucide-react'
 import { toast } from 'sonner'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
@@ -384,6 +384,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                 <Button variant="outline" size="sm" className="gap-1.5">
                                     <PlusCircle className="w-4 h-4" />
                                     {t("schedule_staff_scheduling_tab.add_shifts_button")}
+                                    <ChevronDown className="w-3.5 h-3.5 opacity-60" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-52">
