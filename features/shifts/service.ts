@@ -115,8 +115,10 @@ export interface UnvalidatedShiftSummary {
 const baseUrl = `${'https://api.flairsync.com/api/v1'}/shifts`;
 
 // Templates API
-export const fetchShiftTemplatesApiCall = async (businessId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/templates?businessId=${businessId}`));
+export const fetchShiftTemplatesApiCall = async (businessId: string) => {
+  const { data } = unwrapPaginated(await flairapi.get(`${baseUrl}/templates?businessId=${businessId}`));
+  return data;
+};
 
 export const createShiftTemplateApiCall = (data: CreateShiftTemplateDto) => {
   return flairapi.post(`${baseUrl}/templates`, data);
@@ -238,8 +240,10 @@ export const copyPreviousWeekApiCall = async (data: { businessId: string; source
 };
 
 // Recurring Rules API
-export const fetchRecurringRulesApiCall = async (businessId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/rules?businessId=${businessId}`));
+export const fetchRecurringRulesApiCall = async (businessId: string) => {
+  const { data } = unwrapPaginated(await flairapi.get(`${baseUrl}/rules?businessId=${businessId}`));
+  return data;
+};
 
 export const createRecurringRuleApiCall = (data: any) => {
   return flairapi.post(`${baseUrl}/rules`, data);

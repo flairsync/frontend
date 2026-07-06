@@ -43,7 +43,7 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{template ? t("schedule_modals.shift_template.edit_title") : t("schedule_modals.shift_template.create_title")}</DialogTitle>
                 </DialogHeader>
