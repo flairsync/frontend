@@ -506,8 +506,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                     {/* Header Row */}
                     <div className={`grid border-b bg-muted/10 ${
                         calendarView === 'month' ? 'grid-cols-7' : 
-                        calendarView === 'day' ? 'grid-cols-[200px_1fr]' : 
-                        'grid-cols-[200px_repeat(7,1fr)]'
+                        calendarView === 'day' ? 'grid-cols-[200px_minmax(0,1fr)]' : 
+                        'grid-cols-[200px_repeat(7,minmax(0,1fr))]'
                     }`}>
                         {calendarView !== 'month' && (
                             <div className="p-3 font-semibold text-sm border-r flex items-center justify-center text-center">
@@ -570,8 +570,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                     return (
                                         <ContextMenu key={day.toString()}>
                                             <ContextMenuTrigger asChild>
-                                                <div 
-                                                    className={`p-2 border-r last:border-r-0 min-h-[100px] hover:bg-muted/10 transition-colors cursor-default ${
+                                                <div
+                                                    className={`p-2 border-r last:border-r-0 min-h-[100px] min-w-0 hover:bg-muted/10 transition-colors cursor-default ${
                                                         !isSameMonth(day, currentDate) ? 'bg-muted/5 opacity-40' : ''
                                                     } ${isSameDay(day, new Date()) ? 'bg-primary/5 ring-1 ring-inset ring-primary/20' : ''}`}
                                                 >
@@ -593,12 +593,12 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 } hover:ring-1`}
                                                                 title={shift.status === ShiftStatus.NO_SHOW ? t("schedule_staff_scheduling_tab.tooltip_no_show") : hasConflict ? t("schedule_staff_scheduling_tab.tooltip_conflict") : shift.notes || (shift.isPublished ? t("schedule_staff_scheduling_tab.tooltip_published") : t("schedule_staff_scheduling_tab.tooltip_draft"))}
                                                             >
-                                                                <div className="flex items-center justify-between gap-1">
-                                                                    <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
+                                                                <div className="flex items-center justify-between gap-1 min-w-0">
+                                                                    <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
-                                                                    {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2 h-2 text-green-600" />}
-                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600" />}
+                                                                    {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2 h-2 text-green-600 shrink-0" />}
+                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600 shrink-0" />}
                                                                 </div>
                                                             </div>
                                                         );
@@ -647,8 +647,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                         <>
                             {/* Open Shifts Row for Managers */}
                             <div className={`grid border-b last:border-b-0 group bg-orange-50/30 ${
-                                calendarView === 'day' ? 'grid-cols-[200px_1fr]' : 
-                                'grid-cols-[200px_repeat(7,1fr)]'
+                                calendarView === 'day' ? 'grid-cols-[200px_minmax(0,1fr)]' : 
+                                'grid-cols-[200px_repeat(7,minmax(0,1fr))]'
                             }`}>
                                 <div className="p-3 text-sm font-bold border-r bg-orange-100/20 flex items-center overflow-hidden text-orange-700">
                                     <span className="truncate flex items-center gap-2">
@@ -663,22 +663,22 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                     return (
                                         <ContextMenu key={day.toString()}>
                                             <ContextMenuTrigger asChild>
-                                                <div 
-                                                    className={`p-2 border-r last:border-r-0 min-h-[80px] hover:bg-orange-100/10 transition-colors cursor-default ${
+                                                <div
+                                                    className={`p-2 border-r last:border-r-0 min-h-[80px] min-w-0 hover:bg-orange-100/10 transition-colors cursor-default ${
                                                         isSameDay(day, new Date()) ? 'bg-orange-50/50' : ''
                                                     }`}
                                                 >
                                                     {dayOpenShifts.map((shift) => (
-                                                        <div 
+                                                        <div
                                                             key={shift.id}
                                                             onClick={() => handleEditShift(shift)}
-                                                            className="mb-1 p-1.5 transition-all border-2 border-dashed border-orange-300 bg-orange-50 hover:bg-orange-100 rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5"
+                                                            className="mb-1 p-1.5 transition-all border-2 border-dashed border-orange-300 bg-orange-50 hover:bg-orange-100 rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 min-w-0"
                                                         >
-                                                            <div className="flex items-center justify-between gap-1">
-                                                                <div className="font-bold text-orange-800 truncate">
+                                                            <div className="flex items-center justify-between gap-1 min-w-0">
+                                                                <div className="font-bold text-orange-800 truncate min-w-0">
                                                                     {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                 </div>
-                                                                <Badge variant="outline" className="text-[7px] px-1 py-0 h-3 bg-white border-orange-200 text-orange-700 font-bold uppercase">{t("schedule_staff_scheduling_tab.status_open")}</Badge>
+                                                                <Badge variant="outline" className="text-[7px] px-1 py-0 h-3 bg-white border-orange-200 text-orange-700 font-bold uppercase shrink-0">{t("schedule_staff_scheduling_tab.status_open")}</Badge>
                                                             </div>
                                                         </div>
                                                     ))}
@@ -710,8 +710,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             <div 
                                 key={employee.id} 
                                 className={`grid border-b last:border-b-0 group ${
-                                    calendarView === 'day' ? 'grid-cols-[200px_1fr]' : 
-                                    'grid-cols-[200px_repeat(7,1fr)]'
+                                    calendarView === 'day' ? 'grid-cols-[200px_minmax(0,1fr)]' : 
+                                    'grid-cols-[200px_repeat(7,minmax(0,1fr))]'
                                 }`}
                             >
                                 <div className="p-3 text-sm font-medium border-r bg-muted/5 flex items-center overflow-hidden">
@@ -733,18 +733,18 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                     return (
                                         <ContextMenu key={day.toString()}>
                                             <ContextMenuTrigger asChild>
-                                                <div 
-                                                    className={`p-2 border-r last:border-r-0 min-h-[80px] hover:bg-muted/10 transition-colors cursor-default ${
+                                                <div
+                                                    className={`p-2 border-r last:border-r-0 min-h-[80px] min-w-0 hover:bg-muted/10 transition-colors cursor-default ${
                                                         isSameDay(day, new Date()) ? 'bg-primary/5' : ''
                                                     }`}
                                                 >
                                                     {dayShifts.map((shift) => {
                                                         const hasConflict = checkConflict(shift);
                                                         return (
-                                                            <div 
+                                                            <div
                                                                 key={shift.id}
                                                                 onClick={() => handleEditShift(shift)}
-                                                                className={`mb-1 p-1.5 transition-all border rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 ${
+                                                                className={`mb-1 p-1.5 transition-all border rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 min-w-0 ${
                                                                     shift.status === ShiftStatus.NO_SHOW ? "border-red-500 ring-red-500/20 bg-red-50" :
                                                                     hasConflict ? "border-destructive ring-destructive/20 bg-destructive/5" :
                                                                     shift.isPublished
@@ -753,11 +753,11 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 } hover:ring-1`}
                                                                 title={shift.status === ShiftStatus.NO_SHOW ? t("schedule_staff_scheduling_tab.tooltip_no_show") : hasConflict ? t("schedule_staff_scheduling_tab.tooltip_conflict") : shift.notes || (shift.isPublished ? t("schedule_staff_scheduling_tab.tooltip_published") : t("schedule_staff_scheduling_tab.tooltip_draft"))}
                                                             >
-                                                                <div className="flex items-center justify-between gap-1">
-                                                                    <div className={`font-semibold truncate ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
+                                                                <div className="flex items-center justify-between gap-1 min-w-0">
+                                                                    <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
-                                                                    <div className="flex items-center gap-1">
+                                                                    <div className="flex items-center gap-1 shrink-0">
                                                                         {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2.5 h-2.5 text-green-600" />}
                                                                         {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2.5 h-2.5 text-red-600" />}
                                                                         {hasConflict && <Badge variant="destructive" className="h-3 w-3 p-0 flex items-center justify-center text-[8px] rounded-full">!</Badge>}
@@ -830,8 +830,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                     {/* Footer Row (Totals) */}
                     {!fetchingShifts && !fetchingEmployees && calendarView !== 'month' && (
                         <div className={`grid border-t bg-muted/20 sticky bottom-0 z-10 ${
-                            calendarView === 'day' ? 'grid-cols-[200px_1fr]' : 
-                            'grid-cols-[200px_repeat(7,1fr)]'
+                            calendarView === 'day' ? 'grid-cols-[200px_minmax(0,1fr)]' : 
+                            'grid-cols-[200px_repeat(7,minmax(0,1fr))]'
                         }`}>
                             <div className="p-3 text-xs font-bold border-r flex flex-col justify-center bg-muted/10">
                                 <div>{t("schedule_staff_scheduling_tab.footer_daily_totals")}</div>

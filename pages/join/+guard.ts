@@ -9,10 +9,10 @@ export const guard = (pageContext: PageContext) => {
 
   if (!user) {
     // Render the error page and show message to the user
-    throw redirect(`/login?origin=${encodeURIComponent(urlParsed.pathname + urlParsed.searchOriginal)}`);
+    throw redirect(`/login?origin=${encodeURIComponent(urlParsed.pathname + (urlParsed.searchOriginal ?? ""))}`);
   }
   if (!user.verified) {
-    throw redirect(`/verify?origin=${encodeURIComponent(urlParsed.pathname + urlParsed.searchOriginal)}`);
+    throw redirect(`/verify?origin=${encodeURIComponent(urlParsed.pathname + (urlParsed.searchOriginal ?? ""))}`);
   }
   if (!user.hasPP) {
     throw redirect(`/manage/join?invitation=${urlParsed.search["invitation"]}`);
