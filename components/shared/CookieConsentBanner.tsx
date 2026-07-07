@@ -14,6 +14,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { getCookieConsent, setCookieConsent, type CookieConsent } from "@/utils/cookies";
+import { setAnalyticsConsent } from "@/lib/firebase";
 
 type Prefs = Omit<CookieConsent, "necessary">;
 
@@ -30,13 +31,17 @@ export default function CookieConsentBanner() {
   const [prefs, setPrefs] = useState<Prefs>(defaultPrefs);
 
   useEffect(() => {
-    if (getCookieConsent() === null) {
+    const consent = getCookieConsent();
+    if (consent === null) {
       setVisible(true);
+    } else {
+      setAnalyticsConsent(consent.analytics);
     }
   }, []);
 
   const save = (consent: CookieConsent) => {
     setCookieConsent(consent);
+    setAnalyticsConsent(consent.analytics);
     setVisible(false);
     setSheetOpen(false);
   };

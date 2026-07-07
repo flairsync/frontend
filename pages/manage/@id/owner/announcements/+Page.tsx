@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import dayjs from "dayjs";
 import { Users, UsersRound, User, Send, Trash2, Megaphone, MessageSquare } from "lucide-react";
 
+import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,7 +41,15 @@ import { cn } from "@/lib/utils";
 const TITLE_MAX = 150;
 const CONTENT_MAX = 2000;
 
-const MessagesSection = () => {
+type ExpiryPreset = "NEVER" | "1_DAY" | "3_DAYS" | "1_WEEK";
+
+const EXPIRY_PRESET_TO_DATE: Record<Exclude<ExpiryPreset, "NEVER">, () => Date> = {
+    "1_DAY": () => dayjs().add(1, "day").toDate(),
+    "3_DAYS": () => dayjs().add(3, "day").toDate(),
+    "1_WEEK": () => dayjs().add(1, "week").toDate(),
+};
+
+const AnnouncementsPage = () => {
     const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
@@ -67,6 +76,7 @@ const MessagesSection = () => {
     const [audienceType, setAudienceType] = useState<AnnouncementAudienceType>("ALL_STAFF");
     const [teamId, setTeamId] = useState<string | undefined>(undefined);
     const [selectedStaffIds, setSelectedStaffIds] = useState<Set<string>>(new Set());
+    const [expiryPreset, setExpiryPreset] = useState<ExpiryPreset>("NEVER");
     const [deleteId, setDeleteId] = useState<string>();
 
     const resetForm = () => {
@@ -76,6 +86,7 @@ const MessagesSection = () => {
         setAudienceType("ALL_STAFF");
         setTeamId(undefined);
         setSelectedStaffIds(new Set());
+        setExpiryPreset("NEVER");
     };
 
     const handleToggleStaff = (id: string, checked: boolean) => {
@@ -103,6 +114,10 @@ const MessagesSection = () => {
                 teamId: audienceType === "TEAM" ? teamId : undefined,
                 staffEmploymentIds:
                     audienceType === "STAFF" ? Array.from(selectedStaffIds) : undefined,
+                expiresAt:
+                    expiryPreset === "NEVER"
+                        ? undefined
+                        : EXPIRY_PRESET_TO_DATE[expiryPreset]().toISOString(),
             });
             toast.success(t("staff_messages_compose.send_success"));
             setComposeOpen(false);
@@ -118,11 +133,22 @@ const MessagesSection = () => {
         { value: "STAFF", icon: <User className="h-4 w-4" />, label: t("staff_messages_compose.audience_specific_staff") },
     ];
 
+    const expiryOptions: { value: ExpiryPreset; label: string }[] = [
+        { value: "NEVER", label: t("staff_messages_compose.expires_never") },
+        { value: "1_DAY", label: t("staff_messages_compose.expires_1_day") },
+        { value: "3_DAYS", label: t("staff_messages_compose.expires_3_days") },
+        { value: "1_WEEK", label: t("staff_messages_compose.expires_1_week") },
+    ];
+
     return (
         <div className="space-y-6">
+            <h1 className="text-3xl font-bold tracking-tight">{t("staff_messages_compose.heading")}</h1>
+
+            <Separator />
+
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between gap-2">
-                    <CardTitle>{t("staff_messages_compose.heading")}</CardTitle>
+                    <CardTitle>{t("staff_messages_compose.history_title")}</CardTitle>
 
                     <Dialog
                         open={composeOpen}
@@ -289,6 +315,26 @@ const MessagesSection = () => {
                                         </div>
                                     </div>
                                 )}
+
+                                {/* Expiry */}
+                                <div className="space-y-1.5">
+                                    <Label>{t("staff_messages_compose.expires_label")}</Label>
+                                    <Select value={expiryPreset} onValueChange={(v) => setExpiryPreset(v as ExpiryPreset)}>
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {expiryOptions.map((opt) => (
+                                                <SelectItem key={opt.value} value={opt.value}>
+                                                    {opt.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <p className="text-xs text-muted-foreground">
+                                        {t("staff_messages_compose.expires_help")}
+                                    </p>
+                                </div>
                             </div>
 
                             <div className="flex justify-end gap-2 pt-3 border-t mt-2">
@@ -337,6 +383,7 @@ const MessagesSection = () => {
                                 <TableHead>{t("staff_messages_compose.history_audience")}</TableHead>
                                 <TableHead>{t("staff_messages_compose.history_read")}</TableHead>
                                 <TableHead>{t("staff_messages_compose.history_sent_at")}</TableHead>
+                                <TableHead>{t("staff_messages_compose.history_expires")}</TableHead>
                                 <TableHead />
                             </TableRow>
                         </TableHeader>
@@ -373,6 +420,17 @@ const MessagesSection = () => {
                                     <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
                                         {dayjs(a.createdAt).format("MMM D, YYYY h:mm A")}
                                     </TableCell>
+                                    <TableCell className="text-sm whitespace-nowrap">
+                                        {a.expiresAt ? (
+                                            <Badge variant={a.isExpired ? "secondary" : "outline"}>
+                                                {a.isExpired
+                                                    ? t("staff_messages_compose.expired_badge")
+                                                    : dayjs(a.expiresAt).format("MMM D, h:mm A")}
+                                            </Badge>
+                                        ) : (
+                                            <span className="text-muted-foreground">{t("staff_messages_compose.expires_never")}</span>
+                                        )}
+                                    </TableCell>
                                     <TableCell>
                                         <Button variant="ghost" size="icon" onClick={() => setDeleteId(a.id)}>
                                             <Trash2 className="h-4 w-4 text-destructive" />
@@ -382,7 +440,7 @@ const MessagesSection = () => {
                             ))}
                             {!loadingAnnouncements && announcements.length === 0 && (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center text-muted-foreground py-10">
+                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-10">
                                         {t("staff_messages_compose.no_history")}
                                     </TableCell>
                                 </TableRow>
@@ -427,4 +485,4 @@ const MessagesSection = () => {
     );
 };
 
-export default MessagesSection;
+export default AnnouncementsPage;

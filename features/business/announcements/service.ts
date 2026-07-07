@@ -12,6 +12,7 @@ export interface CreateAnnouncementPayload {
     audienceType: AnnouncementAudienceType;
     teamId?: string;
     staffEmploymentIds?: string[];
+    expiresAt?: string;
 }
 
 export const createAnnouncementApiCall = async (

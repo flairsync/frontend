@@ -14,6 +14,8 @@ export interface SentAnnouncement {
   recipientCount: number;
   readCount: number;
   createdAt: string;
+  expiresAt: string | null;
+  isExpired: boolean;
 }
 
 export interface AnnouncementInboxItem {
@@ -25,5 +27,6 @@ export interface AnnouncementInboxItem {
   isRead: boolean;
   readAt: string | null;
   createdAt: string;
+  expiresAt: string | null;
   authorName: string | null;
 }

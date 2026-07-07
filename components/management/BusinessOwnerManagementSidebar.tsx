@@ -48,6 +48,7 @@ import {
     ClipboardList,
     Tablet,
     Store,
+    Megaphone,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -116,6 +117,7 @@ export const NAV_GROUPS: NavGroup[] = [
         icon: Users,
         items: [
             { key: "staff", titleKey: "sidebar.items.staff", url: "/manage/:id/owner/staff", icon: Users },
+            { key: "announcements", titleKey: "sidebar.items.announcements", url: "/manage/:id/owner/announcements", icon: Megaphone },
             { key: "schedule", titleKey: "sidebar.items.schedule", url: "/manage/:id/owner/schedule", icon: CalendarCheck },
             { key: "attendance", titleKey: "sidebar.items.attendance", url: "/manage/:id/owner/attendance", icon: ClockFadingIcon },
             { key: "payroll", titleKey: "sidebar.items.payroll", url: "/manage/:id/owner/payroll", icon: Banknote },

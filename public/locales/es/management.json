@@ -427,6 +427,7 @@
       "branding": "Marca del negocio",
       "settings": "Configuración del negocio",
       "staff": "Gestión del personal",
+      "announcements": "Anuncios y mensajes",
       "schedule": "Horario",
       "attendance": "Asistencia",
       "payroll": "Nómina",
@@ -771,8 +772,7 @@
       "staff": "Gestión de personal",
       "invitations": "Invitaciones de personal",
       "roles": "Gestión de roles",
-      "teams": "Gestión de equipos",
-      "messages": "Mensajes"
+      "teams": "Gestión de equipos"
     },
     "bulk_assign_modal": {
       "title": "Asignación masiva de rol",
@@ -1386,6 +1386,14 @@
     "history_sent_at": "Enviado el",
     "no_history": "Aún no se ha enviado nada",
     "previous": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "expires_label": "Caduca",
+    "expires_help": "Deja \"Nunca\" para mantenerlo visible indefinidamente.",
+    "expires_never": "Nunca",
+    "expires_1_day": "En 1 día",
+    "expires_3_days": "En 3 días",
+    "expires_1_week": "En 1 semana",
+    "history_expires": "Caduca",
+    "expired_badge": "Caducado"
   }
 }

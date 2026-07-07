@@ -427,6 +427,7 @@
       "branding": "Business Branding",
       "settings": "Business Settings",
       "staff": "Staff Management",
+      "announcements": "Announcements & Messages",
       "schedule": "Schedule",
       "attendance": "Attendance",
       "payroll": "Payroll",
@@ -771,8 +772,7 @@
       "staff": "Staff Management",
       "invitations": "Staff Invitations",
       "roles": "Roles Management",
-      "teams": "Teams Management",
-      "messages": "Messages"
+      "teams": "Teams Management"
     },
     "bulk_assign_modal": {
       "title": "Bulk Assign Role",
@@ -1386,6 +1386,14 @@
     "history_sent_at": "Sent At",
     "no_history": "Nothing sent yet",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "expires_label": "Expires",
+    "expires_help": "Leave as \"Never\" to keep it visible indefinitely.",
+    "expires_never": "Never",
+    "expires_1_day": "In 1 day",
+    "expires_3_days": "In 3 days",
+    "expires_1_week": "In 1 week",
+    "history_expires": "Expires",
+    "expired_badge": "Expired"
   }
 }

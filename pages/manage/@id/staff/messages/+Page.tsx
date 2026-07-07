@@ -36,6 +36,11 @@ export default function StaffMessagesPage() {
                             {item.authorName} · {dayjs(item.createdAt).format("MMM D, YYYY h:mm A")}
                         </p>
                     )}
+                    {item.expiresAt && (
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                            {t("staff_messages_compose.history_expires")}: {dayjs(item.expiresAt).format("MMM D, h:mm A")}
+                        </p>
+                    )}
                 </div>
                 <Badge variant={item.isRead ? "secondary" : "destructive"}>
                     {item.isRead ? t("staff_messages.read_badge") : t("staff_messages.new_badge")}

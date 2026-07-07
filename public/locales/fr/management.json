@@ -427,6 +427,7 @@
       "branding": "Image de l'établissement",
       "settings": "Paramètres de l'établissement",
       "staff": "Gestion du personnel",
+      "announcements": "Annonces et messages",
       "schedule": "Planning",
       "attendance": "Présence",
       "payroll": "Paie",
@@ -771,8 +772,7 @@
       "staff": "Gestion du personnel",
       "invitations": "Invitations du personnel",
       "roles": "Gestion des rôles",
-      "teams": "Gestion des équipes",
-      "messages": "Messages"
+      "teams": "Gestion des équipes"
     },
     "bulk_assign_modal": {
       "title": "Attribution groupée de rôle",
@@ -1386,6 +1386,14 @@
     "history_sent_at": "Envoyé le",
     "no_history": "Rien n'a encore été envoyé",
     "previous": "Précédent",
-    "next": "Suivant"
+    "next": "Suivant",
+    "expires_label": "Expire",
+    "expires_help": "Laissez \"Jamais\" pour le garder visible indéfiniment.",
+    "expires_never": "Jamais",
+    "expires_1_day": "Dans 1 jour",
+    "expires_3_days": "Dans 3 jours",
+    "expires_1_week": "Dans 1 semaine",
+    "history_expires": "Expire",
+    "expired_badge": "Expiré"
   }
 }

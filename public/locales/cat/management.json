@@ -427,6 +427,7 @@
       "branding": "Marca del negoci",
       "settings": "Configuració del negoci",
       "staff": "Gestió del personal",
+      "announcements": "Anuncis i missatges",
       "schedule": "Horari",
       "attendance": "Assistència",
       "payroll": "Nòmina",
@@ -771,8 +772,7 @@
       "staff": "Gestió del personal",
       "invitations": "Invitacions del personal",
       "roles": "Gestió de rols",
-      "teams": "Gestió d'equips",
-      "messages": "Missatges"
+      "teams": "Gestió d'equips"
     },
     "bulk_assign_modal": {
       "title": "Assignació massiva de rol",
@@ -1386,6 +1386,14 @@
     "history_sent_at": "Enviat el",
     "no_history": "Encara no s'ha enviat res",
     "previous": "Anterior",
-    "next": "Següent"
+    "next": "Següent",
+    "expires_label": "Caduca",
+    "expires_help": "Deixa \"Mai\" per mantenir-lo visible indefinidament.",
+    "expires_never": "Mai",
+    "expires_1_day": "En 1 dia",
+    "expires_3_days": "En 3 dies",
+    "expires_1_week": "En 1 setmana",
+    "history_expires": "Caduca",
+    "expired_badge": "Caducat"
   }
 }
