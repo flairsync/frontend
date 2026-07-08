@@ -302,7 +302,10 @@
     "read_badge": "Llegit",
     "mark_as_read": "Marcar com a llegit",
     "no_announcements": "Encara no hi ha anuncis",
-    "no_messages": "Encara no hi ha missatges"
+    "no_messages": "Encara no hi ha missatges",
+    "previous_page": "Anterior",
+    "next_page": "Següent",
+    "page_indicator": "Pàgina {{current}} de {{total}}"
   },
   "staff_dashboard": {
     "title": "Tauler del personal",
@@ -427,7 +430,7 @@
       "branding": "Marca del negoci",
       "settings": "Configuració del negoci",
       "staff": "Gestió del personal",
-      "announcements": "Anuncis i missatges",
+      "announcements": "Anuncis",
       "schedule": "Horari",
       "attendance": "Assistència",
       "payroll": "Nòmina",

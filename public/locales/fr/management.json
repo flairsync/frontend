@@ -302,7 +302,10 @@
     "read_badge": "Lu",
     "mark_as_read": "Marquer comme lu",
     "no_announcements": "Aucune annonce pour le moment",
-    "no_messages": "Aucun message pour le moment"
+    "no_messages": "Aucun message pour le moment",
+    "previous_page": "Précédent",
+    "next_page": "Suivant",
+    "page_indicator": "Page {{current}} sur {{total}}"
   },
   "staff_dashboard": {
     "title": "Tableau de bord du personnel",
@@ -427,7 +430,7 @@
       "branding": "Image de l'établissement",
       "settings": "Paramètres de l'établissement",
       "staff": "Gestion du personnel",
-      "announcements": "Annonces et messages",
+      "announcements": "Annonces",
       "schedule": "Planning",
       "attendance": "Présence",
       "payroll": "Paie",

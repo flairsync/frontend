@@ -30,3 +30,11 @@ export interface AnnouncementInboxItem {
   expiresAt: string | null;
   authorName: string | null;
 }
+
+export interface GlobalInboxBusiness {
+  businessId: string;
+  businessName: string;
+  businessLogo: string | null;
+  unreadCount: number;
+  latest: AnnouncementInboxItem[];
+}

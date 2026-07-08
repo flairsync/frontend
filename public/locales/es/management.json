@@ -302,7 +302,10 @@
     "read_badge": "Leído",
     "mark_as_read": "Marcar como leído",
     "no_announcements": "Aún no hay anuncios",
-    "no_messages": "Aún no hay mensajes"
+    "no_messages": "Aún no hay mensajes",
+    "previous_page": "Anterior",
+    "next_page": "Siguiente",
+    "page_indicator": "Página {{current}} de {{total}}"
   },
   "staff_dashboard": {
     "title": "Panel del personal",
@@ -427,7 +430,7 @@
       "branding": "Marca del negocio",
       "settings": "Configuración del negocio",
       "staff": "Gestión del personal",
-      "announcements": "Anuncios y mensajes",
+      "announcements": "Anuncios",
       "schedule": "Horario",
       "attendance": "Asistencia",
       "payroll": "Nómina",

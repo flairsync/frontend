@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import dayjs from "dayjs"
 import { usePageContext } from "vike-react/usePageContext"
 
@@ -14,8 +14,10 @@ export default function StaffMessagesPage() {
     const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
+    const [page, setPage] = useState(1);
 
-    const { items, loadingInbox, markAsRead, markingAsRead } = useAnnouncementsInbox(businessId);
+    const { items, currentPage, totalPages, loadingInbox, markAsRead, markingAsRead } =
+        useAnnouncementsInbox(businessId, page);
 
     const announcements = useMemo(
         () => items.filter((item) => item.kind === "ANNOUNCEMENT"),
@@ -87,6 +89,30 @@ export default function StaffMessagesPage() {
                     {messages.map(renderItem)}
                 </TabsContent>
             </Tabs>
+
+            {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-4 pt-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage <= 1 || loadingInbox}
+                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    >
+                        {t("staff_messages.previous_page")}
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                        {t("staff_messages.page_indicator", { current: currentPage, total: totalPages })}
+                    </span>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage >= totalPages || loadingInbox}
+                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    >
+                        {t("staff_messages.next_page")}
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

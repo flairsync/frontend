@@ -1,9 +1,11 @@
 import flairapi from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "@/features/shared/api-response";
-import { AnnouncementInboxItem, AnnouncementKind, AnnouncementAudienceType, SentAnnouncement } from "@/models/business/Announcement";
+import { AnnouncementInboxItem, AnnouncementKind, AnnouncementAudienceType, SentAnnouncement, GlobalInboxBusiness } from "@/models/business/Announcement";
+
+const apiRoot = 'https://api.flairsync.com/api/v1';
 
 const baseUrl = (businessId: string) =>
-    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/announcements`;
+    `${apiRoot}/businesses/${businessId}/announcements`;
 
 export interface CreateAnnouncementPayload {
     kind: AnnouncementKind;
@@ -31,9 +33,13 @@ export const deleteAnnouncementApiCall = async (businessId: string, id: string) 
 
 export const fetchAnnouncementsInboxApiCall = async (
     businessId: string,
-    params?: { kind?: AnnouncementKind },
-): Promise<AnnouncementInboxItem[]> =>
-    unwrap(await flairapi.get(`${baseUrl(businessId)}/inbox`, { params }));
+    params?: { page?: number; limit?: number; kind?: AnnouncementKind },
+): Promise<PaginatedData<AnnouncementInboxItem>> =>
+    unwrapPaginated(await flairapi.get(`${baseUrl(businessId)}/inbox`, { params }));
 
 export const markAnnouncementReadApiCall = async (businessId: string, recipientId: string) =>
     flairapi.patch(`${baseUrl(businessId)}/inbox/${recipientId}/read`);
+
+// Cross-business preview: latest 3 messages per joined business, no businessId needed.
+export const fetchGlobalAnnouncementsInboxApiCall = async (): Promise<GlobalInboxBusiness[]> =>
+    unwrap(await flairapi.get(`${apiRoot}/announcements/inbox`));

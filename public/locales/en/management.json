@@ -302,7 +302,10 @@
     "read_badge": "Read",
     "mark_as_read": "Mark as Read",
     "no_announcements": "No announcements yet",
-    "no_messages": "No messages yet"
+    "no_messages": "No messages yet",
+    "previous_page": "Previous",
+    "next_page": "Next",
+    "page_indicator": "Page {{current}} of {{total}}"
   },
   "staff_dashboard": {
     "title": "Staff Dashboard",
@@ -427,7 +430,7 @@
       "branding": "Business Branding",
       "settings": "Business Settings",
       "staff": "Staff Management",
-      "announcements": "Announcements & Messages",
+      "announcements": "Announcements",
       "schedule": "Schedule",
       "attendance": "Attendance",
       "payroll": "Payroll",

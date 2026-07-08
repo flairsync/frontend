@@ -1,15 +1,19 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Users, ArrowRight, Loader } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Building2, Users, ArrowRight, Loader, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import dayjs from "dayjs";
 
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
+import { useGlobalAnnouncementsInbox } from "@/features/business/announcements/useAnnouncementsInbox";
 
 const JoinedPage = () => {
     const {
         myEmployments,
         loadingMyEmployments: isLoading
     } = useMyEmployments();
+    const { businesses: inboxByBusiness } = useGlobalAnnouncementsInbox();
 
     // Filter by type === 'INVITED' and status === 'ACTIVE'
     const joinedBusinesses = myEmployments?.filter(
@@ -30,43 +34,69 @@ const JoinedPage = () => {
                 </div>
             ) : joinedBusinesses.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {joinedBusinesses.map((emp) => (
-                        <Card
-                            key={emp.id}
-                            className="hover:shadow-lg transition-all border border-border group relative overflow-hidden"
-                        >
-                            <CardHeader className="pb-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 rounded-lg bg-green-50 flex items-center justify-center text-green-600 border border-green-100">
-                                        <Building2 className="h-5 w-5" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <CardTitle className="text-lg group-hover:text-green-600 transition-colors">
-                                            {emp.business.name}
-                                        </CardTitle>
-                                        <p className="text-xs text-muted-foreground font-medium">Staff Member</p>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    <p className="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
-                                        {emp.business.description || "You are an active member of this business's team."}
-                                    </p>
+                    {joinedBusinesses.map((emp) => {
+                        const inbox = inboxByBusiness.find((b) => b.businessId === emp.business.id);
 
-                                    <div className="pt-4 border-t border-border">
-                                        <a
-                                            href={`/manage/${emp.business.id}/staff/dashboard`}
-                                            className="inline-flex items-center text-green-600 text-sm font-semibold hover:text-green-700 transition-colors gap-1 group/link"
-                                        >
-                                            Open Business Hub
-                                            <ArrowRight className="h-4 w-4 group-hover/link:translate-x-0.5 transition-transform" />
-                                        </a>
+                        return (
+                            <Card
+                                key={emp.id}
+                                className="hover:shadow-lg transition-all border border-border group relative overflow-hidden"
+                            >
+                                <CardHeader className="pb-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-lg bg-green-50 flex items-center justify-center text-green-600 border border-green-100">
+                                            <Building2 className="h-5 w-5" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <CardTitle className="text-lg group-hover:text-green-600 transition-colors">
+                                                {emp.business.name}
+                                            </CardTitle>
+                                            <p className="text-xs text-muted-foreground font-medium">Staff Member</p>
+                                        </div>
+                                        {!!inbox?.unreadCount && (
+                                            <Badge variant="destructive">{inbox.unreadCount}</Badge>
+                                        )}
                                     </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-4">
+                                        <p className="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
+                                            {emp.business.description || "You are an active member of this business's team."}
+                                        </p>
+
+                                        {!!inbox?.latest.length && (
+                                            <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+                                                <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                                                    <MessageSquare className="h-3.5 w-3.5" />
+                                                    Latest messages
+                                                </div>
+                                                {inbox.latest.map((item) => (
+                                                    <div key={item.id} className="text-xs">
+                                                        <p className={`truncate font-medium ${item.isRead ? "text-muted-foreground" : "text-foreground"}`}>
+                                                            {item.title}
+                                                        </p>
+                                                        <p className="text-muted-foreground">
+                                                            {dayjs(item.createdAt).format("MMM D, h:mm A")}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        <div className="pt-4 border-t border-border">
+                                            <a
+                                                href={`/manage/${emp.business.id}/staff/dashboard`}
+                                                className="inline-flex items-center text-green-600 text-sm font-semibold hover:text-green-700 transition-colors gap-1 group/link"
+                                            >
+                                                Open Business Hub
+                                                <ArrowRight className="h-4 w-4 group-hover/link:translate-x-0.5 transition-transform" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        );
+                    })}
                 </div>
             ) : (
                 <div className="text-center text-muted-foreground border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
