@@ -1397,6 +1397,8 @@
     "expires_3_days": "In 3 days",
     "expires_1_week": "In 1 week",
     "history_expires": "Expires",
-    "expired_badge": "Expired"
+    "expired_badge": "Expired",
+    "search_staff_placeholder": "Search staff by name...",
+    "no_staff_found": "No staff found"
   }
 }

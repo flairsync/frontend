@@ -1397,6 +1397,8 @@
     "expires_3_days": "En 3 dies",
     "expires_1_week": "En 1 setmana",
     "history_expires": "Caduca",
-    "expired_badge": "Caducat"
+    "expired_badge": "Caducat",
+    "search_staff_placeholder": "Cerca personal per nom...",
+    "no_staff_found": "No s'ha trobat personal"
   }
 }

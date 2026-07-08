@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { toast } from "sonner";
 import dayjs from "dayjs";
-import { Users, UsersRound, User, Send, Trash2, Megaphone, MessageSquare } from "lucide-react";
+import { Users, UsersRound, User, Send, Trash2, Megaphone, MessageSquare, Search } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -76,6 +76,7 @@ const AnnouncementsPage = () => {
     const [audienceType, setAudienceType] = useState<AnnouncementAudienceType>("ALL_STAFF");
     const [teamId, setTeamId] = useState<string | undefined>(undefined);
     const [selectedStaffIds, setSelectedStaffIds] = useState<Set<string>>(new Set());
+    const [staffSearch, setStaffSearch] = useState("");
     const [expiryPreset, setExpiryPreset] = useState<ExpiryPreset>("NEVER");
     const [deleteId, setDeleteId] = useState<string>();
 
@@ -86,8 +87,17 @@ const AnnouncementsPage = () => {
         setAudienceType("ALL_STAFF");
         setTeamId(undefined);
         setSelectedStaffIds(new Set());
+        setStaffSearch("");
         setExpiryPreset("NEVER");
     };
+
+    const filteredEmployees = staffSearch.trim()
+        ? employees.filter((employee) =>
+              (employee.professionalProfile?.displayName ?? "")
+                  .toLowerCase()
+                  .includes(staffSearch.trim().toLowerCase())
+          )
+        : employees;
 
     const handleToggleStaff = (id: string, checked: boolean) => {
         setSelectedStaffIds((prev) => {
@@ -281,8 +291,22 @@ const AnnouncementsPage = () => {
                                                 {selectedStaffIds.size} selected
                                             </p>
                                         )}
+                                        <div className="relative">
+                                            <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                            <Input
+                                                value={staffSearch}
+                                                onChange={(e) => setStaffSearch(e.target.value)}
+                                                placeholder={t("staff_messages_compose.search_staff_placeholder")}
+                                                className="pl-8"
+                                            />
+                                        </div>
                                         <div className="max-h-48 overflow-y-auto rounded-md border divide-y">
-                                            {employees.map((employee) => {
+                                            {filteredEmployees.length === 0 && (
+                                                <p className="px-3 py-4 text-center text-sm text-muted-foreground">
+                                                    {t("staff_messages_compose.no_staff_found")}
+                                                </p>
+                                            )}
+                                            {filteredEmployees.map((employee) => {
                                                 const name =
                                                     employee.professionalProfile?.displayName ??
                                                     t("staff_messages_compose.unknown_staff");

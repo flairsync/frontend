@@ -1397,6 +1397,8 @@
     "expires_3_days": "En 3 días",
     "expires_1_week": "En 1 semana",
     "history_expires": "Caduca",
-    "expired_badge": "Caducado"
+    "expired_badge": "Caducado",
+    "search_staff_placeholder": "Buscar empleado por nombre...",
+    "no_staff_found": "No se encontró personal"
   }
 }
