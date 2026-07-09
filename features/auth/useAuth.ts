@@ -7,11 +7,12 @@ import {
 } from "./service";
 import { UserAuthProfile } from "@/models/UserAuthProfile";
 import { UserProfile } from "@/models/UserProfile";
-import { saveJwtToken } from "@/misc/SecureStorage";
+import { saveJwtToken, clearJwtToken } from "@/misc/SecureStorage";
 import { navigate } from "vike/client/router";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useApiMutation } from "@/hooks/use-api-mutation";
+import { disconnectNotificationChannel } from "@/features/notifications/useNotificationSocket";
 import { usePageContext } from "vike-react/usePageContext";
 import { PageContext } from "vike/types";
 import { useTranslation } from "react-i18next";
@@ -58,17 +59,24 @@ export const useAuth = () => {
 
   const { mutate: logoutUser, isPending: loggingOut } = useMutation({
     mutationKey: ["logout_user"],
-    mutationFn: logoutUserApiCall,
+    mutationFn: async () => {
+      // Unregister this device's push token / close the notification stream
+      // while the session is still authenticated, before the auth cookie is cleared.
+      await disconnectNotificationChannel().catch(() => {});
+      return logoutUserApiCall();
+    },
     onSuccess(data, variables, context) {
       // Wipe cached server state (e.g. user_profile) so components reading
       // from the query cache (like the landing header) don't keep showing
       // the logged-in user until this soft nav's SSR round-trip lands.
       queryClient.clear();
+      clearJwtToken();
       // refresh to hydrate ssr
       hydrateSSR();
     },
     onError(error, variables, context) {
       queryClient.clear();
+      clearJwtToken();
       hydrateSSR();
     },
   });

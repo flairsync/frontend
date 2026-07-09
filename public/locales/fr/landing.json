@@ -165,6 +165,7 @@
   },
   "subscriptions": {
     "current_plan": "Plan actuel",
+    "current_plan_badge": "Votre plan actuel",
     "limits": {
       "businesses_one": "{{count}} établissement",
       "businesses_other": "{{count}} établissements",

@@ -165,6 +165,7 @@
   },
   "subscriptions": {
     "current_plan": "Pla actual",
+    "current_plan_badge": "El teu pla actual",
     "limits": {
       "businesses_one": "{{count}} negoci",
       "businesses_other": "{{count}} negocis",

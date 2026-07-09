@@ -7,3 +7,7 @@ export const saveJwtToken = (token: string) => {
 export const getJwtToken = () => {
   return secureLocalStorage.getItem("jwt")?.toString();
 };
+
+export const clearJwtToken = () => {
+  secureLocalStorage.removeItem("jwt");
+};

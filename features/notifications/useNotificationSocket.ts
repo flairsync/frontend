@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getJwtToken } from '@/misc/SecureStorage';
 import { NotificationPayload } from './types';
-import { registerDeviceTokenApiCall } from './service';
+import { registerDeviceTokenApiCall, removeDeviceTokenByDeviceIdApiCall } from './service';
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import dayjs from '@/utils/date-utils';
 
@@ -100,6 +100,40 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
         // usually means the server rejected the connection (e.g. 401) and won't retry.
         console.error('[SSE] Notification stream error (readyState=' + sseSource?.readyState + '):', event);
     };
+}
+
+// Tears down the notification channel and unregisters this device's push token.
+// Must run before the auth cookie is invalidated, since the device-token removal
+// call still needs to be authenticated. Call this from the logout flow.
+export async function disconnectNotificationChannel(): Promise<void> {
+    if (typeof window === 'undefined') return;
+
+    if (channelMode === 'fcm') {
+        try {
+            const { messaging } = await import('@/lib/firebase');
+            const { deleteToken } = await import('firebase/messaging');
+            await deleteToken(messaging);
+        } catch (err) {
+            console.warn('[Notifications] Failed to delete FCM token on logout:', err);
+        }
+    }
+
+    if (sseSource) {
+        sseSource.close();
+        sseSource = null;
+    }
+
+    channelMode = null;
+    bootstrapStarted = false;
+
+    const deviceId = localStorage.getItem('fcm_device_id');
+    if (deviceId) {
+        try {
+            await removeDeviceTokenByDeviceIdApiCall(deviceId);
+        } catch (err) {
+            console.warn('[Notifications] Failed to remove device token on logout:', err);
+        }
+    }
 }
 
 export const useNotificationSocket = () => {

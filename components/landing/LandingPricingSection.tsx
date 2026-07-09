@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
+import { BadgeCheck, Check } from 'lucide-react';
 import React from 'react';
 import { animate, createScope, onScroll, Scope, stagger, text, utils } from 'animejs';
 import { useTranslation } from 'react-i18next';
@@ -71,16 +71,24 @@ const LandingPricingSection = () => {
 
     const PricingCard = ({ pack, isHighlighted }: { pack: any, isHighlighted: boolean }) => {
         const isFree = parseFloat(pack.price.toString()) === 0;
+        const isCurrentPlan = !!user && currentUserSubscription?.pack?.id === pack.id;
 
         return (
             <Card
                 className={cn(
-                    "rounded-xl p-6 shadow-lg transform transition-all duration-300 hover:scale-[1.02] border-none flex flex-col h-full",
+                    "relative rounded-xl p-6 shadow-lg transform transition-all duration-300 hover:scale-[1.02] border-none flex flex-col h-full",
                     isHighlighted
                         ? 'bg-gradient-to-b from-[#8A89F9] to-[#6366F1] text-white ring-4 ring-[#8A89F9]/50 shadow-2xl z-10'
-                        : 'bg-muted'
+                        : 'bg-muted',
+                    isCurrentPlan && 'ring-4 ring-emerald-500'
                 )}
             >
+                {isCurrentPlan && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-md z-20">
+                        <BadgeCheck className="w-3.5 h-3.5" />
+                        {t('subscriptions.current_plan_badge', 'Your Current Plan')}
+                    </div>
+                )}
                 <CardHeader className="p-0 mb-6">
                     <CardTitle className={cn("text-2xl font-bold mb-4", !isHighlighted && 'text-foreground')}>
                         {pack.name}
@@ -131,12 +139,12 @@ const LandingPricingSection = () => {
                                     ? 'bg-[#98D26C] hover:bg-[#8ac263] text-zinc-900 shadow-md'
                                     : 'bg-background hover:bg-muted text-primary border border-primary'
                             )}
-                            disabled={creatingCheckout || (user && currentUserSubscription?.pack?.id === pack.id)}
+                            disabled={creatingCheckout || isCurrentPlan}
                             onClick={() => handleSubscribe(pack)}
                         >
                             {creatingCheckout ? (
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                            ) : (user && currentUserSubscription?.pack?.id === pack.id) ? (
+                            ) : isCurrentPlan ? (
                                 t('subscriptions.current_plan', 'Current Plan')
                             ) : isFree ? (
                                 t('landing_page.hero.trialButton')
