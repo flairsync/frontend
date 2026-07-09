@@ -686,13 +686,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="min-w-[var(--radix-select-trigger-width)]">
-                                <SelectItem value="none">
+                                <SelectItem value="none" className="[&>span:last-child]:min-w-0">
                                     <div className="flex min-w-0 flex-col">
                                         <span className="font-medium">{t('item_modal.tracking.none')}</span>
                                         <span className="text-xs text-muted-foreground whitespace-normal">{t('item_modal.tracking.none_desc')}</span>
                                     </div>
                                 </SelectItem>
-                                <SelectItem value="direct_item">
+                                <SelectItem value="direct_item" className="[&>span:last-child]:min-w-0">
                                     <div className="flex min-w-0 flex-col">
                                         <span className="font-medium">{t('item_modal.tracking.direct')}</span>
                                         <span className="text-xs text-muted-foreground whitespace-normal">{t('item_modal.tracking.direct_desc')}</span>
