@@ -685,17 +685,17 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="min-w-[var(--radix-select-trigger-width)]">
                                 <SelectItem value="none">
-                                    <div className="flex flex-col">
+                                    <div className="flex min-w-0 flex-col">
                                         <span className="font-medium">{t('item_modal.tracking.none')}</span>
-                                        <span className="text-xs text-muted-foreground">{t('item_modal.tracking.none_desc')}</span>
+                                        <span className="text-xs text-muted-foreground whitespace-normal">{t('item_modal.tracking.none_desc')}</span>
                                     </div>
                                 </SelectItem>
                                 <SelectItem value="direct_item">
-                                    <div className="flex flex-col">
+                                    <div className="flex min-w-0 flex-col">
                                         <span className="font-medium">{t('item_modal.tracking.direct')}</span>
-                                        <span className="text-xs text-muted-foreground">{t('item_modal.tracking.direct_desc')}</span>
+                                        <span className="text-xs text-muted-foreground whitespace-normal">{t('item_modal.tracking.direct_desc')}</span>
                                     </div>
                                 </SelectItem>
                             </SelectContent>
