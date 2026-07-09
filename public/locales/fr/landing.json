@@ -166,6 +166,8 @@
   "subscriptions": {
     "current_plan": "Plan actuel",
     "current_plan_badge": "Votre plan actuel",
+    "upgrade": "Passer à ce plan",
+    "downgrade": "Rétrograder",
     "limits": {
       "businesses_one": "{{count}} établissement",
       "businesses_other": "{{count}} établissements",

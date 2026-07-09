@@ -34,6 +34,19 @@ const LandingPricingSection = () => {
         navigate(`/manage/plans?packId=${pack.id}`);
     };
 
+    // Relative to the user's active subscription (price is the only reliable tier signal —
+    // there's no dedicated tier/rank field on SubscriptionPack).
+    const getPlanAction = (pack: any): 'current' | 'upgrade' | 'downgrade' | 'default' => {
+        if (!user || !currentUserSubscription?.pack) return 'default';
+        if (currentUserSubscription.pack.id === pack.id) return 'current';
+
+        const currentPrice = parseFloat(currentUserSubscription.pack.price.toString());
+        const packPrice = parseFloat(pack.price.toString());
+        if (packPrice > currentPrice) return 'upgrade';
+        if (packPrice < currentPrice) return 'downgrade';
+        return 'default';
+    };
+
     useLayoutEffect(() => {
         scope.current = createScope().add(() => {
             utils.$(["#landing_pricing_cards_container", "#landing_pricing_free_container", "#landing_pricing_selector"]).forEach(($el) => {
@@ -71,7 +84,8 @@ const LandingPricingSection = () => {
 
     const PricingCard = ({ pack, isHighlighted }: { pack: any, isHighlighted: boolean }) => {
         const isFree = parseFloat(pack.price.toString()) === 0;
-        const isCurrentPlan = !!user && currentUserSubscription?.pack?.id === pack.id;
+        const planAction = getPlanAction(pack);
+        const isCurrentPlan = planAction === 'current';
 
         return (
             <Card
@@ -146,6 +160,10 @@ const LandingPricingSection = () => {
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
                             ) : isCurrentPlan ? (
                                 t('subscriptions.current_plan', 'Current Plan')
+                            ) : planAction === 'upgrade' ? (
+                                t('subscriptions.upgrade', 'Upgrade')
+                            ) : planAction === 'downgrade' ? (
+                                t('subscriptions.downgrade', 'Downgrade')
                             ) : isFree ? (
                                 t('landing_page.hero.trialButton')
                             ) : (

@@ -166,6 +166,8 @@
   "subscriptions": {
     "current_plan": "Pla actual",
     "current_plan_badge": "El teu pla actual",
+    "upgrade": "Millorar pla",
+    "downgrade": "Reduir pla",
     "limits": {
       "businesses_one": "{{count}} negoci",
       "businesses_other": "{{count}} negocis",

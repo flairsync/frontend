@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowLeft, Loader2 } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck } from "lucide-react";
 import { SubscriptionPack, PricingType } from "@/models/SubscriptionPack";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
@@ -12,7 +13,7 @@ import { usePageContext } from "vike-react/usePageContext";
 
 const PlansPage: React.FC = () => {
   const { urlParsed } = usePageContext();
-  const { subscriptionPacks, createCheckout, creatingCheckout } = useSubscriptions();
+  const { subscriptionPacks, currentUserSubscription, createCheckout, creatingCheckout } = useSubscriptions();
 
 
   const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
@@ -25,6 +26,25 @@ const PlansPage: React.FC = () => {
       setDisplayedPacks(subscriptionPacks.filter((pack) => pack.pricingType === billingType));
     }
   }, [subscriptionPacks, billingType]);
+
+  const getPlanAction = (pack: SubscriptionPack): "current" | "upgrade" | "downgrade" | "select" => {
+    const currentPackId = currentUserSubscription?.pack?.id;
+    if (!currentPackId) return "select";
+    if (currentPackId === pack.id) return "current";
+
+    const currentPrice = currentUserSubscription?.pack?.price;
+    if (currentPrice == null) return "select";
+    if (pack.price > currentPrice) return "upgrade";
+    if (pack.price < currentPrice) return "downgrade";
+    return "select";
+  };
+
+  const planActionLabel: Record<ReturnType<typeof getPlanAction>, string> = {
+    current: "Current Plan",
+    upgrade: "Upgrade",
+    downgrade: "Downgrade",
+    select: "Select Plan",
+  };
 
   const onChoosePlan = (packId: string) => {
     createCheckout({ packId }, {
@@ -102,13 +122,26 @@ const PlansPage: React.FC = () => {
       )}
       {/* Plans grid */}
       <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-        {displayedPacks.map((pack) => (
+        {displayedPacks.map((pack) => {
+          const planAction = getPlanAction(pack);
+          const isCurrentPlan = planAction === "current";
+
+          return (
           <motion.div
             key={pack.id}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
-            <Card className="border border-border shadow-sm hover:shadow-lg transition bg-card flex flex-col h-full">
+            <Card className={cn(
+              "relative border border-border shadow-sm hover:shadow-lg transition bg-card flex flex-col h-full",
+              isCurrentPlan && "ring-2 ring-emerald-500 border-emerald-500"
+            )}>
+              {isCurrentPlan && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-md z-10">
+                  <BadgeCheck className="w-3.5 h-3.5" />
+                  Your Current Plan
+                </div>
+              )}
               <CardHeader>
                 <CardTitle className="text-2xl font-semibold text-primary mb-1">
                   {pack.name}
@@ -157,11 +190,14 @@ const PlansPage: React.FC = () => {
                   onClick={() => {
                     onChoosePlan(pack.id)
                   }}
-                  className="w-full mt-auto">Select Plan</Button>
+                  disabled={isCurrentPlan || creatingCheckout}
+                  variant={isCurrentPlan ? "outline" : planAction === "downgrade" ? "secondary" : "default"}
+                  className="w-full mt-auto">{planActionLabel[planAction]}</Button>
               </CardContent>
             </Card>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
