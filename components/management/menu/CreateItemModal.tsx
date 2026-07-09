@@ -683,7 +683,9 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             onValueChange={(val: any) => setTrackingMode(val)}
                         >
                             <SelectTrigger>
-                                <SelectValue />
+                                <SelectValue>
+                                    {trackingMode === 'direct_item' ? t('item_modal.tracking.direct') : t('item_modal.tracking.none')}
+                                </SelectValue>
                             </SelectTrigger>
                             <SelectContent className="min-w-[var(--radix-select-trigger-width)]">
                                 <SelectItem value="none" className="[&>span:last-child]:min-w-0">
