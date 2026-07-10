@@ -40,7 +40,7 @@ export interface RegistryEntry {
 // Shared prop schema across every header variant — keeping keys identical means an
 // owner's color/button choices carry over when they switch variants.
 const HEADER_PROPS_SCHEMA: PropFieldSchema[] = [
-    { key: "primaryColor", label: "Background Color", type: "color", defaultValue: "#111827" },
+    { key: "primaryColor", label: "Background Color", type: "color", defaultValue: "#1c1a2e" },
     { key: "textColor", label: "Text Color", type: "color", defaultValue: "#ffffff" },
     { key: "backgroundImage", label: "Background Image URL", type: "image" },
     { key: "showLogo", label: "Show Logo", type: "boolean", defaultValue: true },
@@ -48,11 +48,17 @@ const HEADER_PROPS_SCHEMA: PropFieldSchema[] = [
     { key: "buttonHref", label: "Button Link", type: "linkPreset" },
 ];
 
-// Business name/tagline/logo are facts, not owner-typed text — always auto-bound.
+// Business name/tagline/logo/photo/rating are facts, not owner-typed text — always
+// auto-bound. `defaultBackgroundImage` lets a freshly-dropped header use one of the
+// business's own gallery photos instead of rendering as a flat color block; the
+// owner's explicit `backgroundImage` prop (if set) still wins.
 const HEADER_BUSINESS_BINDINGS: Record<string, any> = {
     businessName: { source: "businessProfile", field: "name" },
     tagline: { source: "businessProfile", field: "description" },
     logo: { source: "businessProfile", field: "logo" },
+    defaultBackgroundImage: { source: "businessProfile", field: "firstMediaUrl" },
+    rating: { source: "businessProfile", field: "rating" },
+    reviewCount: { source: "businessProfile", field: "reviewCount" },
 };
 
 const MENU_LIST_PROPS_SCHEMA: PropFieldSchema[] = [

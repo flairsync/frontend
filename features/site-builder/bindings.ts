@@ -41,6 +41,9 @@ export async function resolveBinding(businessId: string, binding: Binding): Prom
             if (binding.field === "address") {
                 return profile.address || [profile.city, profile.country?.name].filter(Boolean).join(", ");
             }
+            if (binding.field === "firstMediaUrl") {
+                return profile.media?.[0]?.url ?? null;
+            }
             return (profile as any)[binding.field] ?? null;
         }
         default:

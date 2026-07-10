@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { resolveLinkHref } from "@/features/site-builder/linkPresets";
 
@@ -15,10 +16,13 @@ export interface HeaderSplitProps {
     businessName?: string;
     tagline?: string;
     logo?: string;
+    defaultBackgroundImage?: string;
+    rating?: number | null;
+    reviewCount?: number;
 }
 
 const HeaderSplit: React.FC<HeaderSplitProps> = ({
-    primaryColor = "#111827",
+    primaryColor = "#1c1a2e",
     textColor = "#ffffff",
     backgroundImage,
     showLogo = true,
@@ -28,47 +32,61 @@ const HeaderSplit: React.FC<HeaderSplitProps> = ({
     businessName,
     tagline,
     logo,
+    defaultBackgroundImage,
+    rating,
+    reviewCount,
 }) => {
+    const image = backgroundImage || defaultBackgroundImage;
+
     const textBlock = (
         <motion.div
             initial={{ opacity: 0, x: imageOnRight ? -24 : 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col justify-center gap-5 p-10 sm:p-14"
+            className="relative overflow-hidden flex flex-col justify-center gap-4 p-10 sm:p-14"
             style={{ backgroundColor: primaryColor, color: textColor }}
         >
-            {showLogo && logo && (
-                <img
-                    src={logo}
-                    alt={businessName || "Logo"}
-                    className="h-16 w-16 rounded-2xl object-cover shadow-xl ring-4 ring-white/20"
-                />
-            )}
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
-                {businessName || "Your Restaurant"}
-            </h1>
-            {tagline && <p className="text-base sm:text-lg opacity-80 leading-relaxed max-w-md">{tagline}</p>}
-            {buttonText && (
-                <Button
-                    asChild
-                    size="lg"
-                    className="rounded-full w-fit px-8 py-6 text-base font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 mt-2"
-                >
-                    <a href={resolveLinkHref(buttonHref)}>{buttonText}</a>
-                </Button>
-            )}
+            <div className="absolute -top-20 -left-16 h-56 w-56 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -right-10 h-64 w-64 rounded-full bg-black/20 blur-3xl pointer-events-none" />
+
+            <div className="relative space-y-4">
+                {showLogo && logo && (
+                    <img
+                        src={logo}
+                        alt={businessName || "Logo"}
+                        className="h-14 w-14 rounded-2xl object-cover shadow-xl ring-4 ring-white/20"
+                    />
+                )}
+                {rating != null && (
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-bold backdrop-blur-md">
+                        <Star size={12} className="text-yellow-400 fill-yellow-400" />
+                        {rating}
+                        {reviewCount ? <span className="opacity-70 font-medium">({reviewCount})</span> : null}
+                    </div>
+                )}
+                <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+                    {businessName || "Your Restaurant"}
+                </h1>
+                {tagline && <p className="text-base sm:text-lg opacity-80 leading-relaxed max-w-md">{tagline}</p>}
+                {buttonText && (
+                    <Button
+                        asChild
+                        size="lg"
+                        className="rounded-full w-fit px-8 py-6 text-base font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 mt-1"
+                    >
+                        <a href={resolveLinkHref(buttonHref)}>{buttonText}</a>
+                    </Button>
+                )}
+            </div>
         </motion.div>
     );
 
     const imageBlock = (
-        <div
-            className="relative min-h-[320px] bg-cover bg-center bg-muted overflow-hidden"
-            style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : undefined}
-        >
-            {backgroundImage && (
+        <div className="relative min-h-[340px] bg-cover bg-center bg-muted overflow-hidden" style={image ? { backgroundImage: `url(${image})` } : undefined}>
+            {image && (
                 <div
-                    className={`absolute inset-y-0 w-24 bg-gradient-to-r ${imageOnRight ? "left-0 from-black/20 to-transparent" : "right-0 from-transparent to-black/20"
+                    className={`absolute inset-y-0 w-28 bg-gradient-to-r ${imageOnRight ? "left-0 from-black/25 to-transparent" : "right-0 from-transparent to-black/25"
                         }`}
                 />
             )}
@@ -76,7 +94,7 @@ const HeaderSplit: React.FC<HeaderSplitProps> = ({
     );
 
     return (
-        <section className="grid sm:grid-cols-2 rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <section className="relative grid sm:grid-cols-2 rounded-[2.5rem] overflow-hidden shadow-2xl">
             {imageOnRight ? (
                 <>
                     {textBlock}
