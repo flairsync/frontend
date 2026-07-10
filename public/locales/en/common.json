@@ -65,6 +65,7 @@
       "jobs": "Jobs",
       "language": "Language",
       "theme": "Theme",
+      "text_size": "Text Size",
       "business_hub": "BusinessHub",
       "logout": "Logout",
       "unverified_account": "Unverified Account",
@@ -75,6 +76,11 @@
       "light": "Light",
       "dark": "Dark",
       "auto": "Auto"
+    },
+    "text_size": {
+      "default": "Default",
+      "large": "Large",
+      "xlarge": "Extra Large"
     }
   },
   "errors": {

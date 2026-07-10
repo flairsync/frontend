@@ -14,6 +14,7 @@ import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
 import MobileProfileSheet from "../shared/MobileProfileSheet";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { ThemeToggle } from "../shared/ThemeToggle";
+import { TextSizeToggle } from "../shared/TextSizeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/features/profile/useProfile";
 
@@ -167,6 +168,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
 
                     {authResolved && !user && <LanguageSwitcher compact />}
                     {authResolved && !user && <ThemeToggle />}
+                    {authResolved && !user && <TextSizeToggle />}
 
                     {/* Desktop auth */}
                     <div className="hidden md:flex items-center pl-2 border-l border-border/50">
@@ -236,6 +238,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                                 <div className="pt-1 flex items-center gap-2">
                                     <LanguageSwitcher />
                                     <ThemeToggle />
+                                    <TextSizeToggle />
                                 </div>
                             )}
 

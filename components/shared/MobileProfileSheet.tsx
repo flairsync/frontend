@@ -1,11 +1,12 @@
 import React from "react";
-import { LogOut, User, Settings, Building2, Sun, Moon, Monitor, AlertTriangle } from "lucide-react";
+import { LogOut, User, Settings, Building2, Sun, Moon, Monitor, AlertTriangle, ALargeSmall } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useProfile } from "@/features/profile/useProfile";
 import { useAuth } from "@/features/auth/useAuth";
 import { useTheme } from "@/components/shared/theme-provider";
+import { useTextSize, type TextSize } from "@/components/shared/text-size-provider";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { NotificationBubble } from "@/components/notifications/NotificationBubble";
@@ -27,6 +28,7 @@ const MobileProfileSheet = () => {
     const { userProfile, updateUserProfile } = useProfile();
     const { logoutUser } = useAuth();
     const { setTheme, theme } = useTheme();
+    const { setTextSize, textSize } = useTextSize();
     const { t, i18n } = useTranslation();
     const { user } = usePageContext() as any;
 
@@ -34,6 +36,12 @@ const MobileProfileSheet = () => {
         { value: "light" as const, label: t("shared.theme.light", "Light"), icon: Sun },
         { value: "dark" as const, label: t("shared.theme.dark", "Dark"), icon: Moon },
         { value: "system" as const, label: t("shared.theme.auto", "Auto"), icon: Monitor },
+    ];
+
+    const textSizes: { value: TextSize; label: string }[] = [
+        { value: "default", label: t("shared.text_size.default", "Default") },
+        { value: "large", label: t("shared.text_size.large", "Large") },
+        { value: "xlarge", label: t("shared.text_size.xlarge", "Extra Large") },
     ];
 
     return (
@@ -118,6 +126,26 @@ const MobileProfileSheet = () => {
                                         }`}
                                     >
                                         <Icon className="w-3.5 h-3.5" /> {label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Text size */}
+                        <div className="px-3 py-2">
+                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">{t("shared.user_menu.text_size", "Text Size")}</p>
+                            <div className="flex gap-2">
+                                {textSizes.map(({ value, label }) => (
+                                    <button
+                                        key={value}
+                                        onClick={() => setTextSize(value)}
+                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                                            textSize === value
+                                                ? "border-primary bg-primary/10 text-primary"
+                                                : "border-border hover:bg-muted"
+                                        }`}
+                                    >
+                                        <ALargeSmall className="w-3.5 h-3.5" /> {label}
                                     </button>
                                 ))}
                             </div>

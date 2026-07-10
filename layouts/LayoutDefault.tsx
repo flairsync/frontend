@@ -7,6 +7,7 @@ import "@/translations/i18n"
 import { clientOnly } from "vike-react/clientOnly";
 import 'radar-sdk-js/dist/radar.css';
 const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provider"));
+const TextSizeProvider = clientOnly(() => import("@/components/shared/text-size-provider"));
 import { Toaster } from "@/components/ui/sonner"
 import { SystemErrorOverlay } from "@/features/system-errors/SystemErrorOverlay";
 const UpgradeModal = clientOnly(() => import("@/components/subscriptions/UpgradeModal"));
@@ -23,14 +24,16 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
         storageKey="vite-ui-theme"
 
       >
-        {children}
-        <DinerModeWatcher />
-        <ClockedInBanner />
-        <Toaster />
-        <UpgradeModal />
-        <SystemErrorOverlay />
-        <TourProvider />
-        <CookieConsentBanner />
+        <TextSizeProvider>
+          {children}
+          <DinerModeWatcher />
+          <ClockedInBanner />
+          <Toaster />
+          <UpgradeModal />
+          <SystemErrorOverlay />
+          <TourProvider />
+          <CookieConsentBanner />
+        </TextSizeProvider>
       </ThemeProvider>
     </>
   );

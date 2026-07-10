@@ -65,6 +65,7 @@
       "jobs": "Empleos",
       "language": "Idioma",
       "theme": "Tema",
+      "text_size": "Tamaño del texto",
       "business_hub": "Panel del negocio",
       "logout": "Cerrar sesión",
       "unverified_account": "Cuenta no verificada",
@@ -75,6 +76,11 @@
       "light": "Claro",
       "dark": "Oscuro",
       "auto": "Automático"
+    },
+    "text_size": {
+      "default": "Predeterminado",
+      "large": "Grande",
+      "xlarge": "Muy grande"
     }
   },
   "errors": {

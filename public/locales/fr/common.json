@@ -65,6 +65,7 @@
       "jobs": "Offres d'emploi",
       "language": "Langue",
       "theme": "Thème",
+      "text_size": "Taille du texte",
       "business_hub": "Espace établissement",
       "logout": "Déconnexion",
       "unverified_account": "Compte non vérifié",
@@ -75,6 +76,11 @@
       "light": "Clair",
       "dark": "Sombre",
       "auto": "Auto"
+    },
+    "text_size": {
+      "default": "Par défaut",
+      "large": "Grand",
+      "xlarge": "Très grand"
     }
   },
   "errors": {

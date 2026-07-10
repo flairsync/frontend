@@ -65,6 +65,7 @@
       "jobs": "Feines",
       "language": "Idioma",
       "theme": "Tema",
+      "text_size": "Mida del text",
       "business_hub": "Panell del negoci",
       "logout": "Tanca la sessió",
       "unverified_account": "Compte no verificat",
@@ -75,6 +76,11 @@
       "light": "Clar",
       "dark": "Fosc",
       "auto": "Automàtic"
+    },
+    "text_size": {
+      "default": "Per defecte",
+      "large": "Gran",
+      "xlarge": "Molt gran"
     }
   },
   "errors": {

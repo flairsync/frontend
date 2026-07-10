@@ -18,6 +18,7 @@ import {
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useTheme } from './theme-provider'
+import { useTextSize, type TextSize } from './text-size-provider'
 import { AlertTriangle, CheckCircle, CheckCircle2 } from 'lucide-react'
 // Import SVGs (place them in /src/assets/flags/)
 import EnFlag from "@/assets/flags/gb.svg";
@@ -41,6 +42,7 @@ const languages = [
 const HeaderProfileAvatar = () => {
 
     const { setTheme, theme } = useTheme();
+    const { setTextSize, textSize } = useTextSize();
     const {
         logoutUser, loggingOut
     } = useAuth();
@@ -61,6 +63,12 @@ const HeaderProfileAvatar = () => {
         setLangCookie(code);
         updateUserProfile({ language: code });
     };
+
+    const textSizeOptions: { value: TextSize; labelKey: string; fallback: string }[] = [
+        { value: "default", labelKey: "shared.text_size.default", fallback: "Default" },
+        { value: "large", labelKey: "shared.text_size.large", fallback: "Large" },
+        { value: "xlarge", labelKey: "shared.text_size.xlarge", fallback: "Extra Large" },
+    ];
 
 
     return (
@@ -160,6 +168,21 @@ const HeaderProfileAvatar = () => {
                                     <DropdownMenuItem onClick={() => setTheme("system")}>
                                         {theme == "system" && <CheckCircle2 />}
                                         {i18n.t("shared.theme.auto", "Auto")}</DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.text_size", "Text Size")}</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    {textSizeOptions.map(({ value, labelKey, fallback }) => (
+                                        <DropdownMenuItem key={value} onClick={() => setTextSize(value)}>
+                                            {textSize == value && <CheckCircle2 />}
+                                            {i18n.t(labelKey, fallback)}
+                                        </DropdownMenuItem>
+                                    ))}
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
                         </DropdownMenuSub>
