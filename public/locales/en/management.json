@@ -408,7 +408,8 @@
       "reservations": "Reservations",
       "inventory": "Inventory",
       "menu": "Menu Lookup",
-      "messages": "Messages & Announcements"
+      "messages": "Messages & Announcements",
+      "website": "Website"
     }
   },
   "sidebar": {
@@ -457,7 +458,12 @@
     "OPENING_HOURS": { "label": "Opening hours management", "description": "Configure business opening hours, special schedules, and closures." },
     "BUSINESS_SETTINGS": { "label": "Business settings", "description": "Manage business information, preferences, and operational settings." },
     "ORDERS": { "label": "Orders management", "description": "View, create, and manage customer orders for dine-in, takeaway, and delivery." },
-    "INVENTORY": { "label": "Inventory management", "description": "Track ingredients and stock levels, manage inventory items and units." }
+    "INVENTORY": { "label": "Inventory management", "description": "Track ingredients and stock levels, manage inventory items and units." },
+    "REVIEWS": { "label": "Review management", "description": "View and respond to reviews left by customers." },
+    "JOBS": { "label": "Jobs management", "description": "Create and manage job postings and applications." },
+    "TASKS": { "label": "Tasks management", "description": "Create, assign, and track staff tasks." },
+    "COMMUNICATIONS": { "label": "Announcements & messages", "description": "Send announcements and messages to staff." },
+    "WEBSITE": { "label": "Website builder", "description": "Create, edit, and publish the business's public website pages." }
   },
   "menu_management": {
     "actions": {

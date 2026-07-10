@@ -408,7 +408,8 @@
       "reservations": "Reserves",
       "inventory": "Inventari",
       "menu": "Consultar el menú",
-      "messages": "Missatges i anuncis"
+      "messages": "Missatges i anuncis",
+      "website": "Lloc web"
     }
   },
   "sidebar": {
@@ -439,6 +440,7 @@
       "marketplace": "Marketplace",
       "menu": "Menú",
       "floor_plan": "Pla del local",
+      "website": "Lloc web",
       "orders": "Comandes",
       "reservations": "Reserves",
       "tasks": "Tasques",
@@ -456,7 +458,12 @@
     "OPENING_HOURS": { "label": "Gestió de l'horari d'obertura", "description": "Configurar l'horari d'obertura, horaris especials i tancaments." },
     "BUSINESS_SETTINGS": { "label": "Configuració del negoci", "description": "Gestionar informació, preferències i configuració operativa del negoci." },
     "ORDERS": { "label": "Gestió de comandes", "description": "Veure, crear i gestionar comandes de clients per a consumició, per emportar i a domicili." },
-    "INVENTORY": { "label": "Gestió d'inventari", "description": "Controlar el nivell d'existències, gestionar articles d'inventari i unitats." }
+    "INVENTORY": { "label": "Gestió d'inventari", "description": "Controlar el nivell d'existències, gestionar articles d'inventari i unitats." },
+    "REVIEWS": { "label": "Gestió de ressenyes", "description": "Veure i respondre a les ressenyes deixades pels clients." },
+    "JOBS": { "label": "Gestió d'ofertes de feina", "description": "Crear i gestionar ofertes de feina i candidatures." },
+    "TASKS": { "label": "Gestió de tasques", "description": "Crear, assignar i fer seguiment de les tasques del personal." },
+    "COMMUNICATIONS": { "label": "Anuncis i missatges", "description": "Enviar anuncis i missatges al personal." },
+    "WEBSITE": { "label": "Constructor de lloc web", "description": "Crear, editar i publicar les pàgines del lloc web del negoci." }
   },
   "menu_management": {
     "actions": {

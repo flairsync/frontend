@@ -408,7 +408,8 @@
       "reservations": "Réservations",
       "inventory": "Inventaire",
       "menu": "Consulter le menu",
-      "messages": "Messages et annonces"
+      "messages": "Messages et annonces",
+      "website": "Site web"
     }
   },
   "sidebar": {
@@ -439,6 +440,7 @@
       "marketplace": "Marketplace",
       "menu": "Menu",
       "floor_plan": "Plan de salle",
+      "website": "Site web",
       "orders": "Commandes",
       "reservations": "Réservations",
       "tasks": "Tâches",
@@ -456,7 +458,12 @@
     "OPENING_HOURS": { "label": "Gestion des horaires d'ouverture", "description": "Configurer les horaires d'ouverture, les horaires spéciaux et les fermetures." },
     "BUSINESS_SETTINGS": { "label": "Paramètres de l'établissement", "description": "Gérer les informations, préférences et paramètres opérationnels de l'établissement." },
     "ORDERS": { "label": "Gestion des commandes", "description": "Consulter, créer et gérer les commandes clients sur place, à emporter et en livraison." },
-    "INVENTORY": { "label": "Gestion des stocks", "description": "Suivre les niveaux de stock, gérer les articles d'inventaire et les unités." }
+    "INVENTORY": { "label": "Gestion des stocks", "description": "Suivre les niveaux de stock, gérer les articles d'inventaire et les unités." },
+    "REVIEWS": { "label": "Gestion des avis", "description": "Consulter et répondre aux avis laissés par les clients." },
+    "JOBS": { "label": "Gestion des offres d'emploi", "description": "Créer et gérer les offres d'emploi et les candidatures." },
+    "TASKS": { "label": "Gestion des tâches", "description": "Créer, assigner et suivre les tâches du personnel." },
+    "COMMUNICATIONS": { "label": "Annonces et messages", "description": "Envoyer des annonces et des messages au personnel." },
+    "WEBSITE": { "label": "Constructeur de site web", "description": "Créer, modifier et publier les pages du site web de l'établissement." }
   },
   "menu_management": {
     "actions": {

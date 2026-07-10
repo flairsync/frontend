@@ -408,7 +408,8 @@
       "reservations": "Reservas",
       "inventory": "Inventario",
       "menu": "Consultar menú",
-      "messages": "Mensajes y anuncios"
+      "messages": "Mensajes y anuncios",
+      "website": "Sitio web"
     }
   },
   "sidebar": {
@@ -439,6 +440,7 @@
       "marketplace": "Marketplace",
       "menu": "Menú",
       "floor_plan": "Plano del local",
+      "website": "Sitio web",
       "orders": "Pedidos",
       "reservations": "Reservas",
       "tasks": "Tareas",
@@ -456,7 +458,12 @@
     "OPENING_HOURS": { "label": "Gestión del horario de apertura", "description": "Configurar el horario de apertura, horarios especiales y cierres." },
     "BUSINESS_SETTINGS": { "label": "Configuración del negocio", "description": "Gestionar información, preferencias y configuración operativa del negocio." },
     "ORDERS": { "label": "Gestión de pedidos", "description": "Ver, crear y gestionar pedidos de clientes para consumo en local, para llevar y a domicilio." },
-    "INVENTORY": { "label": "Gestión de inventario", "description": "Controlar el nivel de existencias, gestionar artículos de inventario y unidades." }
+    "INVENTORY": { "label": "Gestión de inventario", "description": "Controlar el nivel de existencias, gestionar artículos de inventario y unidades." },
+    "REVIEWS": { "label": "Gestión de reseñas", "description": "Ver y responder a las reseñas dejadas por los clientes." },
+    "JOBS": { "label": "Gestión de ofertas de empleo", "description": "Crear y gestionar ofertas de empleo y candidaturas." },
+    "TASKS": { "label": "Gestión de tareas", "description": "Crear, asignar y seguir las tareas del personal." },
+    "COMMUNICATIONS": { "label": "Anuncios y mensajes", "description": "Enviar anuncios y mensajes al personal." },
+    "WEBSITE": { "label": "Constructor de sitio web", "description": "Crear, editar y publicar las páginas del sitio web del negocio." }
   },
   "menu_management": {
     "actions": {
