@@ -130,10 +130,15 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                                 Live
                                             </span>
                                         ) : (
-                                            <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20 font-medium">
+                                            <button
+                                                type="button"
+                                                onClick={() => navigate(`/manage/${routeParams.id}/owner/settings?section=general-info`)}
+                                                className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20 font-medium hover:bg-amber-500/20 transition-colors cursor-pointer"
+                                                title="Business is not published — click to publish it"
+                                            >
                                                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                                                 Draft
-                                            </span>
+                                            </button>
                                         )
                                     )}
                                 </BreadcrumbItem>

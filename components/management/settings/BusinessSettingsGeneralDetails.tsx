@@ -42,7 +42,9 @@ type Props = {
     businessDetails?: MyBusinessFullDetails,
     onSaveDetails?: (data: BusinessGeneralInfo) => void,
     onTogglePublished?: (val: boolean) => void,
-    disabled?: boolean
+    disabled?: boolean,
+    sectionRef?: (el: HTMLDivElement | null) => void,
+    highlighted?: boolean,
 }
 const BusinessSettingsGeneralDetails = (props: Props) => {
 
@@ -103,7 +105,11 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const canSave = slugStatus !== 'taken' && slugStatus !== 'checking' && slugStatus !== 'invalid'
 
     return (
-        <AccordionItem value="general-info" className="border rounded-lg px-3">
+        <AccordionItem
+            value="general-info"
+            ref={props.sectionRef}
+            className={`border rounded-lg px-3 transition-all duration-700 ${props.highlighted ? "ring-2 ring-primary ring-offset-2 shadow-md" : ""}`}
+        >
             <AccordionTrigger>General Information</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 <Input

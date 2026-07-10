@@ -161,6 +161,8 @@ const BusinessSettingsPage = () => {
                     }}
                     onTogglePublished={(val) => updateMyBusinessDetails({ isPublished: val })}
                     disabled={updatingMyBusiness}
+                    sectionRef={(el) => { sectionRefs.current["general-info"] = el }}
+                    highlighted={highlightedSection === "general-info"}
                 />
             </div>
 
