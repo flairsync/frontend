@@ -1,31 +1,32 @@
 import React from "react";
 import { ImageOff } from "lucide-react";
 
-export interface GalleryMasonryProps {
+export interface GalleryGridProps {
     title?: string;
     columns?: number;
     images?: { url: string }[];
 }
 
-const GalleryMasonry: React.FC<GalleryMasonryProps> = ({ title = "Gallery", columns = 3, images = [] }) => {
+const GalleryGrid: React.FC<GalleryGridProps> = ({ title = "Gallery", columns = 3, images = [] }) => {
     const media = Array.isArray(images) ? images : [];
-    const colClass = columns >= 4 ? "columns-2 sm:columns-4" : columns === 3 ? "columns-2 sm:columns-3" : "columns-1 sm:columns-2";
+    const gridClass = columns >= 4 ? "grid-cols-2 sm:grid-cols-4" : columns === 3 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2";
 
     return (
         <section className="space-y-8">
             {title && <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-center">{title}</h2>}
             {media.length > 0 ? (
-                <div className={`${colClass} gap-4 space-y-4`}>
+                <div className={`grid ${gridClass} gap-4`}>
                     {media.map((m, i) => (
                         <div
                             key={i}
-                            className="group break-inside-avoid overflow-hidden rounded-2xl bg-muted shadow-sm hover:shadow-xl transition-shadow duration-300"
+                            className="group relative aspect-square overflow-hidden rounded-2xl bg-muted shadow-sm hover:shadow-xl transition-shadow duration-300"
                         >
                             <img
                                 src={m.url}
                                 alt={`${title} ${i + 1}`}
-                                className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                     ))}
                 </div>
@@ -39,4 +40,4 @@ const GalleryMasonry: React.FC<GalleryMasonryProps> = ({ title = "Gallery", colu
     );
 };
 
-export default GalleryMasonry;
+export default GalleryGrid;

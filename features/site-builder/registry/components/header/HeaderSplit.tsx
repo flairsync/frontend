@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { resolveLinkHref } from "@/features/site-builder/linkPresets";
 
@@ -29,32 +30,53 @@ const HeaderSplit: React.FC<HeaderSplitProps> = ({
     logo,
 }) => {
     const textBlock = (
-        <div
-            className="flex flex-col justify-center gap-4 p-8 sm:p-12"
+        <motion.div
+            initial={{ opacity: 0, x: imageOnRight ? -24 : 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex flex-col justify-center gap-5 p-10 sm:p-14"
             style={{ backgroundColor: primaryColor, color: textColor }}
         >
             {showLogo && logo && (
-                <img src={logo} alt={businessName || "Logo"} className="h-14 w-14 rounded-2xl object-cover shadow-lg" />
+                <img
+                    src={logo}
+                    alt={businessName || "Logo"}
+                    className="h-16 w-16 rounded-2xl object-cover shadow-xl ring-4 ring-white/20"
+                />
             )}
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{businessName || "Your Restaurant"}</h1>
-            {tagline && <p className="text-base opacity-80 max-w-md">{tagline}</p>}
+            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.05]">
+                {businessName || "Your Restaurant"}
+            </h1>
+            {tagline && <p className="text-base sm:text-lg opacity-80 leading-relaxed max-w-md">{tagline}</p>}
             {buttonText && (
-                <Button asChild size="lg" className="rounded-2xl w-fit mt-2">
+                <Button
+                    asChild
+                    size="lg"
+                    className="rounded-full w-fit px-8 py-6 text-base font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 mt-2"
+                >
                     <a href={resolveLinkHref(buttonHref)}>{buttonText}</a>
                 </Button>
             )}
-        </div>
+        </motion.div>
     );
 
     const imageBlock = (
         <div
-            className="min-h-[280px] bg-cover bg-center bg-muted"
+            className="relative min-h-[320px] bg-cover bg-center bg-muted overflow-hidden"
             style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : undefined}
-        />
+        >
+            {backgroundImage && (
+                <div
+                    className={`absolute inset-y-0 w-24 bg-gradient-to-r ${imageOnRight ? "left-0 from-black/20 to-transparent" : "right-0 from-transparent to-black/20"
+                        }`}
+                />
+            )}
+        </div>
     );
 
     return (
-        <section className="grid sm:grid-cols-2 rounded-[2rem] overflow-hidden">
+        <section className="grid sm:grid-cols-2 rounded-[2.5rem] overflow-hidden shadow-2xl">
             {imageOnRight ? (
                 <>
                     {textBlock}

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { resolveLinkHref } from "@/features/site-builder/linkPresets";
 
@@ -28,29 +29,46 @@ const HeaderCentered: React.FC<HeaderCenteredProps> = ({
 }) => {
     return (
         <section
-            className="relative overflow-hidden rounded-[2rem] px-8 py-16 sm:py-24 text-center space-y-6 bg-cover bg-center"
+            className="relative overflow-hidden rounded-[2.5rem] shadow-2xl bg-cover bg-center"
             style={{
                 backgroundColor: primaryColor,
-                color: textColor,
-                backgroundImage: backgroundImage
-                    ? `linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url(${backgroundImage})`
-                    : undefined,
+                backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
             }}
         >
-            {showLogo && logo && (
-                <img
-                    src={logo}
-                    alt={businessName || "Logo"}
-                    className="mx-auto h-16 w-16 rounded-2xl object-cover shadow-lg"
-                />
+            {backgroundImage && (
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
             )}
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">{businessName || "Your Restaurant"}</h1>
-            {tagline && <p className="max-w-xl mx-auto text-base sm:text-lg opacity-80">{tagline}</p>}
-            {buttonText && (
-                <Button asChild size="lg" className="rounded-2xl mt-2">
-                    <a href={resolveLinkHref(buttonHref)}>{buttonText}</a>
-                </Button>
-            )}
+            <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="relative px-8 py-20 sm:py-32 text-center space-y-6"
+                style={{ color: textColor }}
+            >
+                {showLogo && logo && (
+                    <img
+                        src={logo}
+                        alt={businessName || "Logo"}
+                        className="mx-auto h-20 w-20 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20"
+                    />
+                )}
+                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.05]">
+                    {businessName || "Your Restaurant"}
+                </h1>
+                {tagline && (
+                    <p className="max-w-xl mx-auto text-lg sm:text-xl opacity-80 leading-relaxed">{tagline}</p>
+                )}
+                {buttonText && (
+                    <Button
+                        asChild
+                        size="lg"
+                        className="rounded-full px-8 py-6 text-base font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 mt-2"
+                    >
+                        <a href={resolveLinkHref(buttonHref)}>{buttonText}</a>
+                    </Button>
+                )}
+            </motion.div>
         </section>
     );
 };

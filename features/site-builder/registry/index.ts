@@ -2,11 +2,17 @@ import React from "react";
 import HeaderCentered from "./components/header/HeaderCentered";
 import HeaderSplit from "./components/header/HeaderSplit";
 import MenuListGrid from "./components/menu-list/MenuListGrid";
+import MenuListElegant from "./components/menu-list/MenuListElegant";
 import GalleryMasonry from "./components/gallery/GalleryMasonry";
-import OpeningHours from "./components/OpeningHours";
-import Contact from "./components/Contact";
-import Reviews from "./components/Reviews";
-import CallToAction from "./components/CallToAction";
+import GalleryGrid from "./components/gallery/GalleryGrid";
+import OpeningHoursList from "./components/opening-hours/OpeningHoursList";
+import OpeningHoursCompact from "./components/opening-hours/OpeningHoursCompact";
+import ContactCard from "./components/contact/ContactCard";
+import ContactSplit from "./components/contact/ContactSplit";
+import ReviewsGrid from "./components/reviews/ReviewsGrid";
+import ReviewsSpotlight from "./components/reviews/ReviewsSpotlight";
+import CtaBanner from "./components/call-to-action/CtaBanner";
+import CtaSplit from "./components/call-to-action/CtaSplit";
 import Fallback from "./components/Fallback";
 
 export type PropFieldType = "text" | "textarea" | "color" | "number" | "boolean" | "url" | "image" | "linkPreset";
@@ -49,6 +55,57 @@ const HEADER_BUSINESS_BINDINGS: Record<string, any> = {
     logo: { source: "businessProfile", field: "logo" },
 };
 
+const MENU_LIST_PROPS_SCHEMA: PropFieldSchema[] = [
+    { key: "title", label: "Title", type: "text", defaultValue: "Our Menu" },
+    { key: "description", label: "Description", type: "textarea" },
+];
+
+const MENU_LIST_BINDINGS: Record<string, any> = {
+    items: { source: "menuCategory" },
+    currency: { source: "businessProfile", field: "currency" },
+};
+
+const GALLERY_PROPS_SCHEMA: PropFieldSchema[] = [
+    { key: "title", label: "Title", type: "text", defaultValue: "Gallery" },
+    { key: "columns", label: "Columns", type: "number", defaultValue: 3 },
+];
+
+const GALLERY_BINDINGS: Record<string, any> = {
+    images: { source: "businessProfile", field: "media" },
+};
+
+const CONTACT_PROPS_SCHEMA: PropFieldSchema[] = [
+    { key: "title", label: "Title", type: "text", defaultValue: "Contact & Location" },
+];
+
+const CONTACT_BINDINGS: Record<string, any> = {
+    address: { source: "businessProfile", field: "address" },
+    phone: { source: "businessProfile", field: "phone" },
+    email: { source: "businessProfile", field: "email" },
+    website: { source: "businessProfile", field: "website" },
+};
+
+const REVIEWS_PROPS_SCHEMA: PropFieldSchema[] = [
+    { key: "title", label: "Title", type: "text", defaultValue: "What Guests Say" },
+    { key: "limit", label: "Max Reviews", type: "number", defaultValue: 6 },
+];
+
+const REVIEWS_BINDINGS: Record<string, any> = {
+    reviews: { source: "businessReviews" },
+    stats: { source: "businessReviewStats" },
+};
+
+// Shared prop schema across CTA variants. Static — no business data, just a
+// marketing button — so no defaultBindings at all for this category.
+const CTA_PROPS_SCHEMA: PropFieldSchema[] = [
+    { key: "title", label: "Title", type: "text", defaultValue: "Ready to visit us?" },
+    { key: "subtitle", label: "Subtitle", type: "textarea" },
+    { key: "buttonText", label: "Button Label", type: "text", defaultValue: "Reserve a Table" },
+    { key: "buttonHref", label: "Button Link", type: "linkPreset", defaultValue: "reservations" },
+    { key: "backgroundColor", label: "Background Color", type: "color", defaultValue: "#f5b400" },
+    { key: "textColor", label: "Text Color", type: "color", defaultValue: "#111827" },
+];
+
 export const COMPONENT_REGISTRY: Record<string, RegistryEntry> = {
     "header-centered@1": {
         component: HeaderCentered,
@@ -68,7 +125,6 @@ export const COMPONENT_REGISTRY: Record<string, RegistryEntry> = {
         defaultBindings: HEADER_BUSINESS_BINDINGS,
     },
     // Deprecated — superseded by the curated header-*@1 variants (see guide §3.1).
-    // Kept only so pages saved before the variant split still resolve to something live.
     "header@1": {
         deprecated: true,
         migrateTo: "header-centered@1",
@@ -85,13 +141,17 @@ export const COMPONENT_REGISTRY: Record<string, RegistryEntry> = {
         component: MenuListGrid,
         category: "menu-list",
         label: "Grid",
-        propsSchema: [
-            { key: "title", label: "Title", type: "text", defaultValue: "Our Menu" },
-            { key: "description", label: "Description", type: "textarea" },
-        ],
-        defaultBindings: { items: { source: "menuCategory" } },
+        propsSchema: MENU_LIST_PROPS_SCHEMA,
+        defaultBindings: MENU_LIST_BINDINGS,
     },
-    // Deprecated — renamed to menu-list-grid@1 now that menu-list is a variant category.
+    "menu-list-elegant@1": {
+        component: MenuListElegant,
+        category: "menu-list",
+        label: "Elegant",
+        propsSchema: MENU_LIST_PROPS_SCHEMA,
+        defaultBindings: MENU_LIST_BINDINGS,
+    },
+    // Deprecated — renamed now that menu-list is a variant category.
     "menu-list@1": {
         deprecated: true,
         migrateTo: "menu-list-grid@1",
@@ -102,67 +162,110 @@ export const COMPONENT_REGISTRY: Record<string, RegistryEntry> = {
         component: GalleryMasonry,
         category: "gallery",
         label: "Masonry",
-        propsSchema: [
-            { key: "title", label: "Title", type: "text", defaultValue: "Gallery" },
-            { key: "columns", label: "Columns", type: "number", defaultValue: 3 },
-        ],
-        defaultBindings: { images: { source: "businessProfile", field: "media" } },
+        propsSchema: GALLERY_PROPS_SCHEMA,
+        defaultBindings: GALLERY_BINDINGS,
     },
-    // Deprecated — renamed to gallery-masonry@1 now that gallery is a variant category.
+    "gallery-grid@1": {
+        component: GalleryGrid,
+        category: "gallery",
+        label: "Grid",
+        propsSchema: GALLERY_PROPS_SCHEMA,
+        defaultBindings: GALLERY_BINDINGS,
+    },
+    // Deprecated — renamed now that gallery is a variant category.
     "gallery@1": {
         deprecated: true,
         migrateTo: "gallery-masonry@1",
         migrate: (old) => old,
     },
 
-    "opening-hours@1": {
-        component: OpeningHours,
+    "opening-hours-list@1": {
+        component: OpeningHoursList,
         category: "opening-hours",
-        label: "Opening Hours",
+        label: "List",
         propsSchema: [{ key: "title", label: "Title", type: "text", defaultValue: "Opening Hours" }],
         defaultBindings: { hours: { source: "businessProfile", field: "openingHours" } },
     },
+    "opening-hours-compact@1": {
+        component: OpeningHoursCompact,
+        category: "opening-hours",
+        label: "Compact",
+        propsSchema: [{ key: "title", label: "Title", type: "text", defaultValue: "Opening Hours" }],
+        defaultBindings: { hours: { source: "businessProfile", field: "openingHours" } },
+    },
+    // Deprecated — renamed now that opening-hours is a variant category.
+    "opening-hours@1": {
+        deprecated: true,
+        migrateTo: "opening-hours-list@1",
+        migrate: (old) => old,
+    },
 
-    "contact@1": {
-        component: Contact,
+    "contact-card@1": {
+        component: ContactCard,
         category: "contact",
-        label: "Contact & Map",
-        propsSchema: [{ key: "title", label: "Title", type: "text", defaultValue: "Contact & Location" }],
-        defaultBindings: {
-            address: { source: "businessProfile", field: "address" },
-            phone: { source: "businessProfile", field: "phone" },
-            email: { source: "businessProfile", field: "email" },
-            website: { source: "businessProfile", field: "website" },
-        },
+        label: "Card",
+        propsSchema: CONTACT_PROPS_SCHEMA,
+        defaultBindings: CONTACT_BINDINGS,
+    },
+    "contact-split@1": {
+        component: ContactSplit,
+        category: "contact",
+        label: "Split",
+        propsSchema: [{ key: "title", label: "Title", type: "text", defaultValue: "Visit Us" }],
+        defaultBindings: CONTACT_BINDINGS,
+    },
+    // Deprecated — renamed now that contact is a variant category. Note: the pre-variant
+    // contact@1 bound the whole profile object under a single "profile" key, not
+    // individual fields, so old saved instances need re-binding (see defaultBindings
+    // fallback in bindings.ts) rather than a prop-level migrate().
+    "contact@1": {
+        deprecated: true,
+        migrateTo: "contact-card@1",
+        migrate: (old) => old,
     },
 
-    "reviews@1": {
-        component: Reviews,
+    "reviews-grid@1": {
+        component: ReviewsGrid,
         category: "reviews",
-        label: "Reviews",
-        propsSchema: [
-            { key: "title", label: "Title", type: "text", defaultValue: "What Guests Say" },
-            { key: "limit", label: "Max Reviews", type: "number", defaultValue: 6 },
-        ],
-        defaultBindings: {
-            reviews: { source: "businessReviews" },
-            stats: { source: "businessReviewStats" },
-        },
+        label: "Grid",
+        propsSchema: REVIEWS_PROPS_SCHEMA,
+        defaultBindings: REVIEWS_BINDINGS,
+    },
+    "reviews-spotlight@1": {
+        component: ReviewsSpotlight,
+        category: "reviews",
+        label: "Spotlight",
+        propsSchema: REVIEWS_PROPS_SCHEMA,
+        defaultBindings: REVIEWS_BINDINGS,
+    },
+    // Deprecated — renamed now that reviews is a variant category.
+    "reviews@1": {
+        deprecated: true,
+        migrateTo: "reviews-grid@1",
+        migrate: (old) => old,
     },
 
-    // Static — no business data at all, just a marketing button. No bindings.
-    "call-to-action@1": {
-        component: CallToAction,
+    "cta-banner@1": {
+        component: CtaBanner,
         category: "call-to-action",
-        label: "Button",
+        label: "Banner",
+        propsSchema: CTA_PROPS_SCHEMA,
+    },
+    "cta-split@1": {
+        component: CtaSplit,
+        category: "call-to-action",
+        label: "Split",
         propsSchema: [
-            { key: "title", label: "Title", type: "text", defaultValue: "Ready to visit us?" },
-            { key: "subtitle", label: "Subtitle", type: "textarea" },
-            { key: "buttonText", label: "Button Label", type: "text", defaultValue: "Reserve a Table" },
-            { key: "buttonHref", label: "Button Link", type: "linkPreset", defaultValue: "reservations" },
-            { key: "backgroundColor", label: "Background Color", type: "color", defaultValue: "#f5b400" },
-            { key: "textColor", label: "Text Color", type: "color", defaultValue: "#111827" },
+            ...CTA_PROPS_SCHEMA,
+            { key: "backgroundImage", label: "Background Image URL", type: "image" },
+            { key: "imageOnRight", label: "Image on Right", type: "boolean", defaultValue: true },
         ],
+    },
+    // Deprecated — renamed now that call-to-action is a variant category.
+    "call-to-action@1": {
+        deprecated: true,
+        migrateTo: "cta-banner@1",
+        migrate: (old) => old,
     },
 
     // Reserved — never delete this key. Fallback for unresolvable/deprecated typeKeys.
