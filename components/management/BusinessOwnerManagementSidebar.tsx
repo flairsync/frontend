@@ -49,6 +49,7 @@ import {
     Tablet,
     Store,
     Megaphone,
+    Globe,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -132,6 +133,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
             { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
             { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
+            { key: "website", titleKey: "sidebar.items.website", url: "/manage/:id/owner/website", icon: Globe },
             { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
             { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
             { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
