@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DailySalesMetric } from "@/models/analytics";
 import {
@@ -17,6 +18,8 @@ interface AnalyticsRevenueChartProps {
 }
 
 export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sales }) => {
+    const { t } = useTranslation("management");
+
     // Format the data for the chart, enforcing number types
     const chartData = useMemo(() => {
         return sales.map(day => ({
@@ -29,8 +32,8 @@ export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sa
     return (
         <Card className="shadow-sm">
             <CardHeader>
-                <CardTitle>Revenue Over Time</CardTitle>
-                <CardDescription>Daily revenue trends for the selected period</CardDescription>
+                <CardTitle>{t("analytics.revenue_chart.title")}</CardTitle>
+                <CardDescription>{t("analytics.revenue_chart.description")}</CardDescription>
             </CardHeader>
             <CardContent className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
@@ -49,8 +52,8 @@ export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sa
                             tickFormatter={(value) => `$${value}`}
                         />
                         <Tooltip
-                            formatter={(value: number) => [`$${value.toFixed(2)}`, "Revenue"]}
-                            labelFormatter={(label) => `Date: ${label}`}
+                            formatter={(value: number) => [`$${value.toFixed(2)}`, t("analytics.revenue_chart.tooltip_label")]}
+                            labelFormatter={(label) => t("analytics.revenue_chart.date_label", { date: label })}
                         />
                         <Line
                             type="monotone"

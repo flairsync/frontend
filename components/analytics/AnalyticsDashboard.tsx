@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 import { useDashboardAnalytics } from "@/features/analytics/useDashboardAnalytics";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { getCurrencySymbol } from "@/utils/currency";
 import { AnalyticsTimeFilter, TimeRangePreset } from "./AnalyticsTimeFilter";
 import { subDays, startOfDay, endOfDay, formatISO } from "date-fns";
+import { clientOnly } from "vike-react/clientOnly";
+import { Card, CardContent } from "@/components/ui/card";
 
 // We will implement these next:
 import { AnalyticsKpiCards } from "./AnalyticsKpiCards";
-import { AnalyticsRevenueChart } from "./AnalyticsRevenueChart";
-import { AnalyticsOrderTypesChart } from "./AnalyticsOrderTypesChart";
 import { AnalyticsTopProductsTable } from "./AnalyticsTopProductsTable";
+
+// recharts is a heavy dependency — defer it off the initial render path so the
+// KPI cards and top-products table become interactive without waiting on it.
+const AnalyticsRevenueChart = clientOnly(() =>
+    import("./AnalyticsRevenueChart").then((m) => ({ default: m.AnalyticsRevenueChart }))
+);
+const AnalyticsOrderTypesChart = clientOnly(() =>
+    import("./AnalyticsOrderTypesChart").then((m) => ({ default: m.AnalyticsOrderTypesChart }))
+);
+
+const chartSkeleton = (
+    <Card className="shadow-sm">
+        <CardContent className="h-72 animate-pulse bg-muted rounded-md mt-6" />
+    </Card>
+);
 
 interface AnalyticsDashboardProps {
     businessId: string;
@@ -21,6 +37,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
     businessId,
     showTimeFilter = true,
 }) => {
+    const { t } = useTranslation("management");
     const [timeRange, setTimeRange] = useState<TimeRangePreset>("Last 7 Days");
 
     // Initialize dates for "Last 7 Days"
@@ -58,7 +75,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
     if (isError) {
         return (
             <div className="flex justify-center items-center h-64">
-                <p className="text-secondary font-medium">Failed to load analytics data.</p>
+                <p className="text-secondary font-medium">{t("analytics.error_message")}</p>
             </div>
         );
     }
@@ -78,8 +95,8 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     <AnalyticsKpiCards sales={data.sales} currency={currency} />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <AnalyticsRevenueChart sales={data.sales} />
-                        <AnalyticsOrderTypesChart sales={data.sales} />
+                        <AnalyticsRevenueChart sales={data.sales} fallback={chartSkeleton} />
+                        <AnalyticsOrderTypesChart sales={data.sales} fallback={chartSkeleton} />
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">

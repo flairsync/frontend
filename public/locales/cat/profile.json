@@ -1,1 +1,9 @@
-{}
+{
+  "overview": {
+    "title": "Resum del perfil",
+    "joined_label": "Es va unir el",
+    "reservations_label": "Reserves",
+    "meals_ordered_label": "Àpats demanats",
+    "orders_chart_title": "Comandes per dia (últims 30 dies)"
+  }
+}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
     LineChart,
@@ -47,11 +48,13 @@ const ordersPerDay = [
 
 
 const ProfileOverviewOrdersChart = () => {
+    const { t } = useTranslation('profile')
+
     return (
         <div>
             <Card>
                 <CardHeader>
-                    <CardTitle>Orders Per Day (Last 30 Days)</CardTitle>
+                    <CardTitle>{t('overview.orders_chart_title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-72">
                     <ResponsiveContainer width="100%" height="100%">

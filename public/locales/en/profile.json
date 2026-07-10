@@ -1,1 +1,9 @@
-{}
+{
+  "overview": {
+    "title": "Profile Overview",
+    "joined_label": "Joined",
+    "reservations_label": "Reservations",
+    "meals_ordered_label": "Meals Ordered",
+    "orders_chart_title": "Orders Per Day (Last 30 Days)"
+  }
+}

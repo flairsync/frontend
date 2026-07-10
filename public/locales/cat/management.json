@@ -1400,5 +1400,23 @@
     "expired_badge": "Caducat",
     "search_staff_placeholder": "Cerca personal per nom...",
     "no_staff_found": "No s'ha trobat personal"
+  },
+  "analytics": {
+    "error_message": "No s'han pogut carregar les dades analítiques.",
+    "revenue_chart": {
+      "title": "Ingressos al llarg del temps",
+      "description": "Tendències diàries d'ingressos per al període seleccionat",
+      "tooltip_label": "Ingressos",
+      "date_label": "Data: {{date}}"
+    },
+    "order_types_chart": {
+      "title": "Comandes per tipus",
+      "description": "Desglossament dels tipus de comanda",
+      "no_data": "No hi ha dades de comandes disponibles.",
+      "dine_in": "Al local",
+      "takeaway": "Per emportar",
+      "delivery": "Lliurament a domicili",
+      "tooltip_label": "Comandes"
+    }
   }
 }

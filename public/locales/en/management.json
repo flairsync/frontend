@@ -1400,5 +1400,23 @@
     "expired_badge": "Expired",
     "search_staff_placeholder": "Search staff by name...",
     "no_staff_found": "No staff found"
+  },
+  "analytics": {
+    "error_message": "Failed to load analytics data.",
+    "revenue_chart": {
+      "title": "Revenue Over Time",
+      "description": "Daily revenue trends for the selected period",
+      "tooltip_label": "Revenue",
+      "date_label": "Date: {{date}}"
+    },
+    "order_types_chart": {
+      "title": "Orders by Type",
+      "description": "Breakdown of fulfillments",
+      "no_data": "No order data available.",
+      "dine_in": "Dine-In",
+      "takeaway": "Takeaway",
+      "delivery": "Delivery",
+      "tooltip_label": "Orders"
+    }
   }
 }

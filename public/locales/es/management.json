@@ -1400,5 +1400,23 @@
     "expired_badge": "Caducado",
     "search_staff_placeholder": "Buscar empleado por nombre...",
     "no_staff_found": "No se encontró personal"
+  },
+  "analytics": {
+    "error_message": "Error al cargar los datos analíticos.",
+    "revenue_chart": {
+      "title": "Ingresos a lo largo del tiempo",
+      "description": "Tendencias diarias de ingresos para el período seleccionado",
+      "tooltip_label": "Ingresos",
+      "date_label": "Fecha: {{date}}"
+    },
+    "order_types_chart": {
+      "title": "Pedidos por tipo",
+      "description": "Desglose de los tipos de pedido",
+      "no_data": "No hay datos de pedidos disponibles.",
+      "dine_in": "En el local",
+      "takeaway": "Para llevar",
+      "delivery": "Entrega a domicilio",
+      "tooltip_label": "Pedidos"
+    }
   }
 }

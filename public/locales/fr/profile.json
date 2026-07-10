@@ -1,1 +1,9 @@
-{}
+{
+  "overview": {
+    "title": "Aperçu du profil",
+    "joined_label": "Inscrit le",
+    "reservations_label": "Réservations",
+    "meals_ordered_label": "Repas commandés",
+    "orders_chart_title": "Commandes par jour (30 derniers jours)"
+  }
+}

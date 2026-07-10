@@ -1,12 +1,17 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import ProfileOverviewOrdersChart from "@/components/profile/ProfileOverviewOrdersChart"
+import { clientOnly } from "vike-react/clientOnly"
 import { useProfile } from "@/features/profile/useProfile"
 
+// recharts is a heavy dependency — defer it off the initial render path so the
+// rest of the page (profile card, stats) becomes interactive immediately.
+const ProfileOverviewOrdersChart = clientOnly(() => import("@/components/profile/ProfileOverviewOrdersChart"))
 
 const ProfileOverviewPage = () => {
+    const { t } = useTranslation("profile")
     const {
         userProfile
     } = useProfile();
@@ -14,12 +19,21 @@ const ProfileOverviewPage = () => {
     const reservationsMade = 27
     const mealsOrdered = 134
 
+    const chartSkeleton = (
+        <Card className="shadow-sm">
+            <CardHeader>
+                <CardTitle>{t("overview.orders_chart_title")}</CardTitle>
+            </CardHeader>
+            <CardContent className="h-72 animate-pulse bg-muted rounded-md" />
+        </Card>
+    )
+
     return (
         <div className="space-y-6">
             {/* Profile Card */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Profile Overview</CardTitle>
+                    <CardTitle>{t("overview.title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col md:flex-row items-center gap-4">
                     <Avatar className="w-20 h-20">
@@ -41,7 +55,7 @@ const ProfileOverviewPage = () => {
                 {/* Joined */}
                 <Card className="text-center">
                     <CardHeader>
-                        <CardTitle>Joined</CardTitle>
+                        <CardTitle>{t("overview.joined_label")}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-lg font-bold">{userProfile?.getJoinDate()}</p>
@@ -51,7 +65,7 @@ const ProfileOverviewPage = () => {
                 {/* Reservations Made */}
                 <Card className="text-center">
                     <CardHeader>
-                        <CardTitle>Reservations</CardTitle>
+                        <CardTitle>{t("overview.reservations_label")}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-lg font-bold">{reservationsMade}</p>
@@ -61,7 +75,7 @@ const ProfileOverviewPage = () => {
                 {/* Meals Ordered */}
                 <Card className="text-center">
                     <CardHeader>
-                        <CardTitle>Meals Ordered</CardTitle>
+                        <CardTitle>{t("overview.meals_ordered_label")}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-lg font-bold">{mealsOrdered}</p>
@@ -69,7 +83,7 @@ const ProfileOverviewPage = () => {
                 </Card>
             </div>
 
-            <ProfileOverviewOrdersChart />
+            <ProfileOverviewOrdersChart fallback={chartSkeleton} />
 
         </div>
     )

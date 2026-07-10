@@ -1400,5 +1400,23 @@
     "expired_badge": "Expiré",
     "search_staff_placeholder": "Rechercher un employé par nom...",
     "no_staff_found": "Aucun employé trouvé"
+  },
+  "analytics": {
+    "error_message": "Échec du chargement des données analytiques.",
+    "revenue_chart": {
+      "title": "Évolution du chiffre d'affaires",
+      "description": "Tendances quotidiennes des revenus pour la période sélectionnée",
+      "tooltip_label": "Revenus",
+      "date_label": "Date : {{date}}"
+    },
+    "order_types_chart": {
+      "title": "Commandes par type",
+      "description": "Répartition des types de commandes",
+      "no_data": "Aucune donnée de commande disponible.",
+      "dine_in": "Sur place",
+      "takeaway": "À emporter",
+      "delivery": "Livraison",
+      "tooltip_label": "Commandes"
+    }
   }
 }
