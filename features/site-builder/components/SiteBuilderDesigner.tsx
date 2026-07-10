@@ -18,7 +18,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { COMPONENT_REGISTRY, PropFieldSchema } from "../registry";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { COMPONENT_REGISTRY, PropFieldSchema, RegistryEntry } from "../registry";
+import { LINK_PRESET_OPTIONS } from "../linkPresets";
 import SiteBuilderCanvas from "./SiteBuilderCanvas";
 import { SitePageContent, SiteComponentInstance, SiteSection } from "../types";
 
@@ -135,6 +137,7 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                 typeKey: activeData.typeKey,
                 order: 0,
                 props: defaultPropsFor(entry.propsSchema),
+                bindings: entry.defaultBindings ? { ...entry.defaultBindings } : undefined,
             };
 
             const newSections = sections.map((s) => {
@@ -198,19 +201,30 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
         ([key, entry]) => key !== "fallback@1" && !entry.deprecated && entry.label
     );
 
+    const paletteGroups = paletteEntries.reduce<Record<string, [string, RegistryEntry][]>>((acc, [key, entry]) => {
+        const category = entry.category || "other";
+        (acc[category] ||= []).push([key, entry]);
+        return acc;
+    }, {});
+
     const selectedSchema = selectedInstance ? COMPONENT_REGISTRY[selectedInstance.typeKey]?.propsSchema : undefined;
 
     return (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <div className="grid grid-cols-[220px_1fr_280px] gap-6 items-start">
                 {/* Palette */}
-                <div className="space-y-3 sticky top-4">
+                <div className="space-y-5 sticky top-4">
                     <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Components</h3>
-                    <div className="space-y-2">
-                        {paletteEntries.map(([key, entry]) => (
-                            <PaletteItem key={key} typeKey={key} label={entry.label!} />
-                        ))}
-                    </div>
+                    {Object.entries(paletteGroups).map(([category, items]) => (
+                        <div key={category} className="space-y-2">
+                            <p className="text-xs font-medium text-muted-foreground capitalize">{category.replace(/-/g, " ")}</p>
+                            <div className="space-y-2">
+                                {items.map(([key, entry]) => (
+                                    <PaletteItem key={key} typeKey={key} label={entry.label!} />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
                 {/* Canvas */}
@@ -253,6 +267,34 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                                         )}
                                         {field.type === "url" && (
                                             <Input value={value} onChange={(e) => handlePropChange(field.key, e.target.value)} placeholder="https://" />
+                                        )}
+                                        {field.type === "image" && (
+                                            <Input value={value} onChange={(e) => handlePropChange(field.key, e.target.value)} placeholder="https://.../image.jpg" />
+                                        )}
+                                        {field.type === "linkPreset" && (
+                                            <div className="space-y-2">
+                                                <Select
+                                                    value={LINK_PRESET_OPTIONS.some((o) => o.value === value) ? value : "custom"}
+                                                    onValueChange={(v) => handlePropChange(field.key, v === "custom" ? "" : v)}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {LINK_PRESET_OPTIONS.map((opt) => (
+                                                            <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                                                        ))}
+                                                        <SelectItem value="custom">Custom URL</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                {!LINK_PRESET_OPTIONS.some((o) => o.value === value) && (
+                                                    <Input
+                                                        value={value}
+                                                        onChange={(e) => handlePropChange(field.key, e.target.value)}
+                                                        placeholder="https://"
+                                                    />
+                                                )}
+                                            </div>
                                         )}
                                         {field.type === "textarea" && (
                                             <Textarea value={value} onChange={(e) => handlePropChange(field.key, e.target.value)} rows={3} />

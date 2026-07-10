@@ -1,26 +1,24 @@
 import React from "react";
 import { ImageOff } from "lucide-react";
 
-export interface GalleryProps {
+export interface GalleryMasonryProps {
     title?: string;
     columns?: number;
     images?: { url: string }[];
 }
 
-const Gallery: React.FC<GalleryProps> = ({ title = "Gallery", columns = 3, images = [] }) => {
+const GalleryMasonry: React.FC<GalleryMasonryProps> = ({ title = "Gallery", columns = 3, images = [] }) => {
     const media = Array.isArray(images) ? images : [];
+    const colClass = columns >= 4 ? "columns-2 sm:columns-4" : columns === 3 ? "columns-2 sm:columns-3" : "columns-1 sm:columns-2";
 
     return (
         <section className="space-y-6">
             {title && <h2 className="text-3xl font-bold tracking-tight text-center">{title}</h2>}
             {media.length > 0 ? (
-                <div
-                    className="grid gap-4"
-                    style={{ gridTemplateColumns: `repeat(${Math.min(Math.max(columns, 1), 4)}, minmax(0, 1fr))` }}
-                >
+                <div className={`${colClass} gap-4 space-y-4`}>
                     {media.map((m, i) => (
-                        <div key={i} className="aspect-square overflow-hidden rounded-2xl bg-muted">
-                            <img src={m.url} alt={`${title} ${i + 1}`} className="w-full h-full object-cover" />
+                        <div key={i} className="break-inside-avoid overflow-hidden rounded-2xl bg-muted">
+                            <img src={m.url} alt={`${title} ${i + 1}`} className="w-full h-auto object-cover" />
                         </div>
                     ))}
                 </div>
@@ -34,4 +32,4 @@ const Gallery: React.FC<GalleryProps> = ({ title = "Gallery", columns = 3, image
     );
 };
 
-export default Gallery;
+export default GalleryMasonry;

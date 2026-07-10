@@ -6,12 +6,15 @@ import {
 } from "@/features/discovery/discovery.api";
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
-import { SitePageContent } from "./types";
+import { SitePageContent, SiteComponentInstance } from "./types";
+import { COMPONENT_REGISTRY, resolveComponent } from "./registry";
 
 export type BindingSource = "menuCategory" | "businessReviews" | "businessReviewStats" | "businessProfile";
 
 export interface Binding {
     source: BindingSource;
+    /** For "businessProfile": pluck a single field (e.g. "name", "logo", "openingHours") instead of the whole profile. */
+    field?: string;
     [key: string]: any;
 }
 
@@ -32,7 +35,13 @@ export async function resolveBinding(businessId: string, binding: Binding): Prom
             return fetchReviewStatsApiCall(businessId);
         case "businessProfile": {
             const data = await fetchDiscoveryProfileApiCall(businessId);
-            return DiscoveryBusinessProfile.parseApiResponse(data);
+            const profile = DiscoveryBusinessProfile.parseApiResponse(data);
+            if (!profile) return null;
+            if (!binding.field) return profile;
+            if (binding.field === "address") {
+                return profile.address || [profile.city, profile.country?.name].filter(Boolean).join(", ");
+            }
+            return (profile as any)[binding.field] ?? null;
         }
         default:
             return null;
@@ -51,6 +60,25 @@ export async function resolveComponentBindings(
 }
 
 /**
+ * A component's effective bindings are the registry variant's `defaultBindings`
+ * (auto-bound business facts, see the registry) with any instance-specific overrides
+ * layered on top. This keeps older saved instances (created before a variant declared
+ * a given default binding) working without a data migration.
+ */
+function getEffectiveBindings(instance: Pick<SiteComponentInstance, "typeKey" | "bindings">): Record<string, Binding> {
+    const { resolvedTypeKey } = resolveComponent(instance.typeKey);
+    const defaultBindings = COMPONENT_REGISTRY[resolvedTypeKey]?.defaultBindings || {};
+    return { ...defaultBindings, ...(instance.bindings || {}) };
+}
+
+export async function resolveInstanceBindings(
+    businessId: string,
+    instance: Pick<SiteComponentInstance, "typeKey" | "bindings">
+): Promise<Record<string, any>> {
+    return resolveComponentBindings(businessId, getEffectiveBindings(instance));
+}
+
+/**
  * Resolves bindings for every component instance across every section of a page
  * in parallel — keyed by component instance id. Call once alongside the page-content
  * fetch (e.g. inside a useSuspenseQuery) so the public renderer stays server-rendered.
@@ -61,7 +89,7 @@ export async function resolveAllPageBindings(
 ): Promise<Record<string, Record<string, any>>> {
     const instances = content.sections.flatMap((s) => s.components);
     const entries = await Promise.all(
-        instances.map(async (instance) => [instance.id, await resolveComponentBindings(businessId, instance.bindings)] as const)
+        instances.map(async (instance) => [instance.id, await resolveInstanceBindings(businessId, instance)] as const)
     );
     return Object.fromEntries(entries);
 }

@@ -1,15 +1,18 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Globe } from "lucide-react";
-import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
 
 export interface ContactProps {
     title?: string;
-    profile?: DiscoveryBusinessProfile | null;
+    // Auto-bound business facts — never owner-editable text, see registry defaultBindings.
+    address?: string;
+    phone?: string;
+    email?: string;
+    website?: string;
 }
 
-const Contact: React.FC<ContactProps> = ({ title = "Contact & Location", profile }) => {
-    const address = profile?.address || [profile?.city, profile?.country?.name].filter(Boolean).join(", ");
+const Contact: React.FC<ContactProps> = ({ title = "Contact & Location", address, phone, email, website }) => {
+    const hasAny = !!(address || phone || email || website);
 
     return (
         <section className="space-y-6">
@@ -22,32 +25,32 @@ const Contact: React.FC<ContactProps> = ({ title = "Contact & Location", profile
                             <span>{address}</span>
                         </div>
                     )}
-                    {profile?.phone && (
+                    {phone && (
                         <div className="flex items-center gap-3">
                             <Phone size={18} className="text-primary shrink-0" />
-                            <a href={`tel:${profile.phone}`} className="hover:underline">{profile.phone}</a>
+                            <a href={`tel:${phone}`} className="hover:underline">{phone}</a>
                         </div>
                     )}
-                    {profile?.email && (
+                    {email && (
                         <div className="flex items-center gap-3">
                             <Mail size={18} className="text-primary shrink-0" />
-                            <a href={`mailto:${profile.email}`} className="hover:underline">{profile.email}</a>
+                            <a href={`mailto:${email}`} className="hover:underline">{email}</a>
                         </div>
                     )}
-                    {profile?.website && (
+                    {website && (
                         <div className="flex items-center gap-3">
                             <Globe size={18} className="text-primary shrink-0" />
                             <a
-                                href={profile.website.startsWith("http") ? profile.website : `https://${profile.website}`}
+                                href={website.startsWith("http") ? website : `https://${website}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="hover:underline"
                             >
-                                {profile.website}
+                                {website}
                             </a>
                         </div>
                     )}
-                    {!address && !profile?.phone && !profile?.email && !profile?.website && (
+                    {!hasAny && (
                         <p className="text-muted-foreground text-sm">No contact information available yet.</p>
                     )}
                 </CardContent>
