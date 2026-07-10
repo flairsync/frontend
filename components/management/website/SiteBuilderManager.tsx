@@ -12,6 +12,7 @@ import { usePermissions } from "@/features/auth/usePermissions";
 import { useSitePages, useSitePage } from "@/features/site-builder/useSiteBuilder";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import SiteBuilderDesigner from "@/features/site-builder/components/SiteBuilderDesigner";
+import SiteBuilderPreview from "@/features/site-builder/components/SiteBuilderPreview";
 import { SitePageContent } from "@/features/site-builder/types";
 
 const SLUG_REGEX = /^[a-z0-9-]+$/;
@@ -46,6 +47,7 @@ const SiteBuilderManager: React.FC = () => {
 
     const { page, fetchingPage, saveDraft, isSavingDraft } = useSitePage(businessId, editingPageId || undefined);
     const [content, setContent] = useState<SitePageContent>({ sections: [] });
+    const [previewOpen, setPreviewOpen] = useState(false);
 
     useEffect(() => {
         if (page) setContent(page.draftContent || { sections: [] });
@@ -85,6 +87,9 @@ const SiteBuilderManager: React.FC = () => {
                         {page?.isPublished && <Badge>Published</Badge>}
                     </div>
                     <div className="flex gap-2">
+                        <Button variant="outline" onClick={() => setPreviewOpen(true)}>
+                            <Eye className="w-4 h-4 mr-1" /> Preview
+                        </Button>
                         <Button
                             variant="outline"
                             disabled={!canUpdate || isSavingDraft}
@@ -111,6 +116,14 @@ const SiteBuilderManager: React.FC = () => {
                 ) : (
                     <SiteBuilderDesigner content={content} onContentChange={setContent} />
                 )}
+
+                <SiteBuilderPreview
+                    open={previewOpen}
+                    onClose={() => setPreviewOpen(false)}
+                    businessId={businessId}
+                    content={content}
+                    pageTitle={page?.title}
+                />
             </div>
         );
     }

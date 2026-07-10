@@ -14,6 +14,7 @@ import {
     UpdateSitePageDto,
 } from "./service";
 import { SitePageContent } from "./types";
+import { resolveAllPageBindings } from "./bindings";
 
 export const useSitePages = (businessId: string) => {
     const queryClient = useQueryClient();
@@ -108,6 +109,20 @@ export const useSitePage = (businessId: string, pageId: string | undefined) => {
         saveDraftAsync: saveDraftMutation.mutateAsync,
         isSavingDraft: saveDraftMutation.isPending,
     };
+};
+
+/**
+ * Resolves live bindings for the current (unsaved) draft content — powers the
+ * designer's "Preview" overlay so an owner sees real business data (name, photos,
+ * menu, reviews) without publishing first. Only fetches while `enabled` (the
+ * overlay is open), and re-resolves whenever the draft content changes.
+ */
+export const useSiteBuilderPreview = (businessId: string, content: SitePageContent, enabled: boolean) => {
+    return useQuery({
+        queryKey: ["site_builder_preview", businessId, content],
+        queryFn: () => resolveAllPageBindings(businessId, content),
+        enabled: enabled && !!businessId,
+    });
 };
 
 export const usePublicSitePage = (businessId: string | undefined, slug: string) => {
