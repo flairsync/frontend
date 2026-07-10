@@ -23,6 +23,17 @@ export default {
 
   passToClient: ["user", "tfa", "session"],
 
+  // Default TanStack Query staleTime: without this it's 0, so every query
+  // refetches on mount/window-focus. Screens that need fresher data (KDS,
+  // live orders) already override staleTime per-hook.
+  queryClientConfig: {
+    defaultOptions: {
+      queries: {
+        staleTime: 30_000,
+      },
+    },
+  },
+
 } satisfies Config;
 
 declare global {
