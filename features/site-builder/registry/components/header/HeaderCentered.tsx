@@ -4,18 +4,11 @@ import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { resolveLinkHref } from "@/features/site-builder/linkPresets";
 
-export interface HeaderNavLink {
-    id: string;
-    text: string;
-    href: string;
-}
-
 export interface HeaderCenteredProps {
     primaryColor?: string;
     textColor?: string;
     backgroundImage?: string;
     showLogo?: boolean;
-    navLinks?: HeaderNavLink[];
     buttonText?: string;
     buttonHref?: string;
     // Auto-bound business facts — never owner-editable text, see registry defaultBindings.
@@ -32,7 +25,6 @@ const HeaderCentered: React.FC<HeaderCenteredProps> = ({
     textColor = "#ffffff",
     backgroundImage,
     showLogo = true,
-    navLinks,
     buttonText,
     buttonHref,
     businessName,
@@ -45,21 +37,8 @@ const HeaderCentered: React.FC<HeaderCenteredProps> = ({
     const image = backgroundImage || defaultBackgroundImage;
 
     return (
-        <section className="relative overflow-hidden rounded-[2.5rem] shadow-2xl min-h-[460px] sm:min-h-[560px] flex flex-col">
-            {navLinks && navLinks.length > 0 && (
-                <nav
-                    className="relative z-10 flex flex-wrap justify-center gap-x-6 gap-y-2 px-6 py-4 text-sm font-semibold bg-black/20 backdrop-blur-md"
-                    style={{ color: textColor }}
-                >
-                    {navLinks.map((link) => (
-                        <a key={link.id} href={resolveLinkHref(link.href)} className="opacity-80 hover:opacity-100 transition-opacity">
-                            {link.text}
-                        </a>
-                    ))}
-                </nav>
-            )}
-            <div className="relative flex-1 flex items-end">
-                {image ? (
+        <section className="relative overflow-hidden rounded-[2.5rem] shadow-2xl min-h-[460px] sm:min-h-[560px] flex items-end">
+            {image ? (
                     <>
                         <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
@@ -112,7 +91,6 @@ const HeaderCentered: React.FC<HeaderCenteredProps> = ({
                         )}
                     </div>
                 </motion.div>
-            </div>
         </section>
     );
 };

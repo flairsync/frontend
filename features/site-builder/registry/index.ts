@@ -1,6 +1,7 @@
 import React from "react";
 import {
     PanelTop,
+    AlignJustify,
     UtensilsCrossed,
     Image as ImageIcon,
     Clock,
@@ -11,6 +12,7 @@ import {
 } from "lucide-react";
 import HeaderCentered from "./components/header/HeaderCentered";
 import HeaderSplit from "./components/header/HeaderSplit";
+import NavbarSimple from "./components/navbar/NavbarSimple";
 import MenuListGrid from "./components/menu-list/MenuListGrid";
 import MenuListElegant from "./components/menu-list/MenuListElegant";
 import GalleryMasonry from "./components/gallery/GalleryMasonry";
@@ -36,6 +38,7 @@ export interface PropFieldSchema {
 
 /** Groups + icons for the component picker modal, keyed by the `category` string used on registry entries. */
 export const CATEGORY_META: Record<string, { label: string; icon: LucideIcon }> = {
+    navbar: { label: "Navbar", icon: AlignJustify },
     header: { label: "Header", icon: PanelTop },
     "menu-list": { label: "Menu List", icon: UtensilsCrossed },
     gallery: { label: "Gallery", icon: ImageIcon },
@@ -65,10 +68,23 @@ const HEADER_PROPS_SCHEMA: PropFieldSchema[] = [
     { key: "textColor", label: "Text Color", type: "color", defaultValue: "#ffffff" },
     { key: "backgroundImage", label: "Background Image URL", type: "image" },
     { key: "showLogo", label: "Show Logo", type: "boolean", defaultValue: true },
+    { key: "buttonText", label: "Button Label", type: "text" },
+    { key: "buttonHref", label: "Button Link", type: "linkPreset" },
+];
+
+const NAVBAR_PROPS_SCHEMA: PropFieldSchema[] = [
+    { key: "primaryColor", label: "Background Color", type: "color", defaultValue: "#1c1a2e" },
+    { key: "textColor", label: "Text Color", type: "color", defaultValue: "#ffffff" },
+    { key: "showLogo", label: "Show Logo", type: "boolean", defaultValue: true },
     { key: "navLinks", label: "Navigation Links", type: "navLinks", defaultValue: [] },
     { key: "buttonText", label: "Button Label", type: "text" },
     { key: "buttonHref", label: "Button Link", type: "linkPreset" },
 ];
+
+const NAVBAR_BUSINESS_BINDINGS: Record<string, any> = {
+    businessName: { source: "businessProfile", field: "name" },
+    logo: { source: "businessProfile", field: "logo" },
+};
 
 // Business name/tagline/logo/photo/rating are facts, not owner-typed text — always
 // auto-bound. `defaultBackgroundImage` lets a freshly-dropped header use one of the
@@ -135,6 +151,14 @@ const CTA_PROPS_SCHEMA: PropFieldSchema[] = [
 ];
 
 export const COMPONENT_REGISTRY: Record<string, RegistryEntry> = {
+    "navbar-simple@1": {
+        component: NavbarSimple,
+        category: "navbar",
+        label: "Simple",
+        propsSchema: NAVBAR_PROPS_SCHEMA,
+        defaultBindings: NAVBAR_BUSINESS_BINDINGS,
+    },
+
     "header-centered@1": {
         component: HeaderCentered,
         category: "header",

@@ -1,3 +1,10 @@
+/** A single entry in a `navLinks` prop field (Navbar component) — see registry `PropFieldType`. */
+export interface NavLinkItem {
+    id: string;
+    text: string;
+    href: string;
+}
+
 export interface SiteComponentInstance {
     id: string;
     typeKey: string;

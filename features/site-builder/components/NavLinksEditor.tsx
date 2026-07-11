@@ -4,17 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LINK_PRESET_OPTIONS, isSectionLink, sectionIdFromLink, sectionLinkValue } from "../linkPresets";
-import { SiteSection } from "../types";
-
-export interface NavLink {
-    id: string;
-    text: string;
-    href: string;
-}
+import { SiteSection, NavLinkItem } from "../types";
 
 interface NavLinksEditorProps {
-    value: NavLink[];
-    onChange: (links: NavLink[]) => void;
+    value: NavLinkItem[];
+    onChange: (links: NavLinkItem[]) => void;
     sections: SiteSection[];
 }
 
@@ -31,7 +25,7 @@ const kindOf = (href: string): HrefKind => {
 const NavLinksEditor: React.FC<NavLinksEditorProps> = ({ value, onChange, sections }) => {
     const links = value || [];
 
-    const updateLink = (id: string, patch: Partial<NavLink>) => {
+    const updateLink = (id: string, patch: Partial<NavLinkItem>) => {
         onChange(links.map((l) => (l.id === id ? { ...l, ...patch } : l)));
     };
 
