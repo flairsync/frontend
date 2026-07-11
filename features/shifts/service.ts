@@ -82,11 +82,13 @@ export interface CheckOutDto {
 }
 
 export interface ValidateAttendanceDto {
+  businessId: string;
   adminId: string;
   updateData: {
     checkInTime: string; // "YYYY-MM-DD HH:mm:ss"
     checkOutTime: string; // "YYYY-MM-DD HH:mm:ss"
     notes: string;
+    breaks?: { start: string; end: string; type: 'PAID' | 'UNPAID' }[];
   };
 }
 
@@ -406,6 +408,14 @@ export const updateAbsenceRecordApiCall = (absenceId: string, data: import('@/mo
   return flairapi.patch(`${absenceBaseUrl}/${absenceId}`, data);
 };
 
-export const deleteAbsenceRecordApiCall = (absenceId: string) => {
-  return flairapi.delete(`${absenceBaseUrl}/${absenceId}`);
+export const deleteAbsenceRecordApiCall = (absenceId: string, businessId: string) => {
+  return flairapi.delete(`${absenceBaseUrl}/${absenceId}?businessId=${businessId}`);
+};
+
+export const lockAbsenceRecordApiCall = (absenceId: string, businessId: string) => {
+  return flairapi.post(`${absenceBaseUrl}/${absenceId}/lock`, { businessId });
+};
+
+export const unlockAbsenceRecordApiCall = (absenceId: string, businessId: string) => {
+  return flairapi.post(`${absenceBaseUrl}/${absenceId}/unlock`, { businessId });
 };

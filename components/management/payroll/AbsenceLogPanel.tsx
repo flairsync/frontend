@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Lock, Unlock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -68,7 +69,20 @@ interface Props {
 }
 
 const AbsenceLogPanel = ({ businessId }: Props) => {
-    const { absences, fetchingAbsences, createAbsence, isCreating, updateAbsence, isUpdating, deleteAbsence, isDeleting } = useAbsences(businessId);
+    const {
+        absences,
+        fetchingAbsences,
+        createAbsence,
+        isCreating,
+        updateAbsence,
+        isUpdating,
+        deleteAbsence,
+        isDeleting,
+        lockAbsence,
+        isLocking,
+        unlockAbsence,
+        isUnlocking,
+    } = useAbsences(businessId);
 
     const [createOpen, setCreateOpen] = useState(false);
     const [editTarget, setEditTarget] = useState<AbsenceRecord | null>(null);
@@ -118,6 +132,7 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
     const handleUpdate = () => {
         if (!editTarget) return;
         const payload: UpdateAbsenceRecordDto = {
+            businessId,
             type: form.type,
             isPaid: form.isPaid,
             notes: form.notes || undefined,
@@ -129,6 +144,14 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
     const handleDelete = () => {
         if (!deleteTarget) return;
         deleteAbsence(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) });
+    };
+
+    const handleToggleLock = (record: AbsenceRecord) => {
+        if (record.locked) {
+            unlockAbsence(record.id);
+        } else {
+            lockAbsence(record.id);
+        }
     };
 
     return (
@@ -174,6 +197,11 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${record.isPaid ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'}`}>
                                             {record.isPaid ? 'Paid' : 'Unpaid'}
                                         </span>
+                                        {record.locked && (
+                                            <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-blue-100 text-blue-800">
+                                                <Lock className="h-3 w-3" /> Locked
+                                            </span>
+                                        )}
                                     </div>
                                 </TableCell>
                                 <TableCell className="text-xs text-muted-foreground">
@@ -189,8 +217,18 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex gap-1">
-                                        <Button variant="ghost" size="sm" onClick={() => openEdit(record)}>Edit</Button>
-                                        <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setDeleteTarget(record)}>Delete</Button>
+                                        <Button variant="ghost" size="sm" onClick={() => openEdit(record)} disabled={record.locked}>Edit</Button>
+                                        <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setDeleteTarget(record)} disabled={record.locked}>Delete</Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="gap-1"
+                                            disabled={isLocking || isUnlocking}
+                                            onClick={() => handleToggleLock(record)}
+                                        >
+                                            {record.locked ? <Unlock className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
+                                            {record.locked ? 'Unlock' : 'Lock'}
+                                        </Button>
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -222,10 +260,16 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                     <DialogHeader>
                         <DialogTitle>Edit Absence</DialogTitle>
                     </DialogHeader>
-                    <AbsenceForm form={form} setField={setField} showEmploymentId={false} />
+                    {editTarget?.locked && (
+                        <div className="flex items-center gap-2 bg-blue-50 text-blue-700 rounded-lg px-4 py-3 text-sm font-medium">
+                            <Lock className="h-4 w-4 shrink-0" />
+                            This absence is locked and can no longer be edited. Unlock it first if a correction is needed.
+                        </div>
+                    )}
+                    <AbsenceForm form={form} setField={setField} showEmploymentId={false} disabled={editTarget?.locked} />
                     <div className="flex justify-end gap-2 pt-2">
                         <Button variant="outline" onClick={() => setEditTarget(null)}>Cancel</Button>
-                        <Button onClick={handleUpdate} disabled={isUpdating}>
+                        <Button onClick={handleUpdate} disabled={isUpdating || editTarget?.locked}>
                             {isUpdating ? "Saving…" : "Save"}
                         </Button>
                     </div>
@@ -257,9 +301,10 @@ interface AbsenceFormProps {
     form: AbsenceFormState;
     setField: <K extends keyof AbsenceFormState>(key: K, value: AbsenceFormState[K]) => void;
     showEmploymentId?: boolean;
+    disabled?: boolean;
 }
 
-const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => (
+const AbsenceForm = ({ form, setField, showEmploymentId, disabled }: AbsenceFormProps) => (
     <div className="space-y-3">
         {showEmploymentId && (
             <div className="space-y-1">
@@ -268,17 +313,18 @@ const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => 
                     value={form.employmentId}
                     onChange={(e) => setField('employmentId', e.target.value)}
                     placeholder="Staff employment ID"
+                    disabled={disabled}
                 />
             </div>
         )}
         <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
                 <Label>Date</Label>
-                <Input type="date" value={form.date} onChange={(e) => setField('date', e.target.value)} />
+                <Input type="date" value={form.date} onChange={(e) => setField('date', e.target.value)} disabled={disabled} />
             </div>
             <div className="space-y-1">
                 <Label>Type</Label>
-                <Select value={form.type} onValueChange={(v) => setField('type', v as AbsenceType)}>
+                <Select value={form.type} onValueChange={(v) => setField('type', v as AbsenceType)} disabled={disabled}>
                     <SelectTrigger>
                         <SelectValue />
                     </SelectTrigger>
@@ -291,7 +337,7 @@ const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => 
             </div>
         </div>
         <div className="flex items-center gap-2">
-            <Switch id="absence-form-is-paid" checked={form.isPaid} onCheckedChange={(checked) => setField('isPaid', checked)} />
+            <Switch id="absence-form-is-paid" checked={form.isPaid} onCheckedChange={(checked) => setField('isPaid', checked)} disabled={disabled} />
             <Label htmlFor="absence-form-is-paid">Paid Leave</Label>
         </div>
         <div className="space-y-1">
@@ -301,6 +347,7 @@ const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => 
                 onChange={(e) => setField('notes', e.target.value)}
                 placeholder="e.g. Staff called in sick"
                 rows={2}
+                disabled={disabled}
             />
         </div>
         <div className="space-y-1">
@@ -309,6 +356,7 @@ const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => 
                 value={form.documentUrl}
                 onChange={(e) => setField('documentUrl', e.target.value)}
                 placeholder="e.g. https://storage.com/doctors-note.pdf"
+                disabled={disabled}
             />
         </div>
         <div className="space-y-1">
@@ -317,6 +365,7 @@ const AbsenceForm = ({ form, setField, showEmploymentId }: AbsenceFormProps) => 
                 value={form.timeOffRequestId}
                 onChange={(e) => setField('timeOffRequestId', e.target.value)}
                 placeholder="Link to approved time-off request"
+                disabled={disabled}
             />
         </div>
     </div>

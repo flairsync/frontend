@@ -31,6 +31,9 @@ export interface AbsenceRecord {
   documentUrl: string | null;
   timeOffRequestId: string | null;
   recordedById: string | null;
+  locked: boolean;
+  lockedAt: string | null;
+  lockedById: string | null;
   createdAt: string;
   updatedAt: string;
 
@@ -57,6 +60,7 @@ export interface CreateAbsenceRecordDto {
 }
 
 export interface UpdateAbsenceRecordDto {
+  businessId: string;
   type?: AbsenceType;
   isPaid?: boolean;
   notes?: string;

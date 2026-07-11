@@ -914,7 +914,10 @@
       "cancel": "Cancelar",
       "saving": "Guardando...",
       "update": "Actualizar",
-      "record_absence": "Registrar ausencia"
+      "record_absence": "Registrar ausencia",
+      "locked_notice": "Esta ausencia ha sido bloqueada y ya no se puede editar. Desbloquéala primero si es necesaria una corrección.",
+      "lock": "Bloquear",
+      "unlock": "Desbloquear"
     },
     "notes": {
       "title": "Nota de asistencia",
@@ -1137,6 +1140,9 @@
     "validation": {
       "title": "Validar asistencia",
       "description": "Revisa y ajusta los horarios antes de bloquear este registro.",
+      "correction_title": "Corregir registro validado",
+      "correction_description": "Este registro ya fue validado. Las correcciones recalcularán el pago.",
+      "correction_warning": "Estás corrigiendo un registro ya validado.",
       "already_validated": "Este registro ya ha sido validado y está bloqueado.",
       "validated_by": "Validado por {{name}}",
       "validated_by_on": "Validado por {{name}} el {{date}}",
@@ -1144,15 +1150,22 @@
       "check_in_label": "Hora de entrada",
       "check_out_label": "Hora de salida",
       "checkout_after_checkin_error": "La hora de salida debe ser posterior a la de entrada.",
+      "breaks_label": "Descansos",
+      "add_break": "Añadir descanso",
+      "no_breaks": "No hay descansos registrados.",
+      "break_paid": "Pagado",
+      "break_unpaid": "No pagado",
+      "break_order_error": "El fin de cada descanso debe ser posterior a su inicio.",
       "notes_label": "Notas",
       "notes_placeholder": "Añadir notas de validación...",
       "cancel": "Cancelar",
       "validate_record": "Validar registro",
+      "save_correction": "Guardar corrección",
       "confirm_title": "Confirmar validación",
       "confirm_description_prefix": "Esto bloqueará el registro de asistencia y recalculará el pago.",
-      "confirm_description_strong": "Esta acción no se puede deshacer.",
+      "confirm_description_strong": "Un gerente aún podrá corregirlo más tarde si es necesario.",
       "go_back": "Volver",
-      "validating": "Validando...",
+      "validating": "Guardando...",
       "confirm_and_lock": "Confirmar y bloquear"
     },
     "request_time_off": {

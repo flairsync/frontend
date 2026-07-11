@@ -914,7 +914,10 @@
       "cancel": "Cancel",
       "saving": "Saving...",
       "update": "Update",
-      "record_absence": "Record Absence"
+      "record_absence": "Record Absence",
+      "locked_notice": "This absence has been locked and can no longer be edited. Unlock it first if a correction is needed.",
+      "lock": "Lock",
+      "unlock": "Unlock"
     },
     "notes": {
       "title": "Attendance Note",
@@ -1137,6 +1140,9 @@
     "validation": {
       "title": "Validate Attendance",
       "description": "Review and adjust times before locking this record.",
+      "correction_title": "Correct Validated Record",
+      "correction_description": "This record was already validated. Corrections will recompute pay.",
+      "correction_warning": "You're correcting an already-validated record.",
       "already_validated": "This record has already been validated and is locked.",
       "validated_by": "Validated by {{name}}",
       "validated_by_on": "Validated by {{name}} on {{date}}",
@@ -1144,15 +1150,22 @@
       "check_in_label": "Check-In Time",
       "check_out_label": "Check-Out Time",
       "checkout_after_checkin_error": "Check-out must be after check-in.",
+      "breaks_label": "Breaks",
+      "add_break": "Add break",
+      "no_breaks": "No breaks recorded.",
+      "break_paid": "Paid",
+      "break_unpaid": "Unpaid",
+      "break_order_error": "Each break's end must be after its start.",
       "notes_label": "Notes",
       "notes_placeholder": "Add any validation notes...",
       "cancel": "Cancel",
       "validate_record": "Validate Record",
+      "save_correction": "Save Correction",
       "confirm_title": "Confirm Validation",
       "confirm_description_prefix": "This will lock the attendance record and recompute pay.",
-      "confirm_description_strong": "This action cannot be undone.",
+      "confirm_description_strong": "A manager can still correct it later if needed.",
       "go_back": "Go Back",
-      "validating": "Validating...",
+      "validating": "Saving...",
       "confirm_and_lock": "Confirm & Lock"
     },
     "request_time_off": {

@@ -6,6 +6,8 @@ import {
   deleteAbsenceRecordApiCall,
   fetchAbsenceRecordsApiCall,
   fetchMyAbsencesApiCall,
+  lockAbsenceRecordApiCall,
+  unlockAbsenceRecordApiCall,
   updateAbsenceRecordApiCall,
 } from "./service";
 
@@ -49,13 +51,35 @@ export const useAbsences = (businessId: string, employmentId?: string) => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (absenceId: string) => deleteAbsenceRecordApiCall(absenceId),
+    mutationFn: (absenceId: string) => deleteAbsenceRecordApiCall(absenceId, businessId),
     onSuccess: () => {
       toast.success("Absence record deleted");
       queryClient.invalidateQueries({ queryKey: ["absences", businessId] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Failed to delete absence record");
+    },
+  });
+
+  const lockMutation = useMutation({
+    mutationFn: (absenceId: string) => lockAbsenceRecordApiCall(absenceId, businessId),
+    onSuccess: () => {
+      toast.success("Absence record locked");
+      queryClient.invalidateQueries({ queryKey: ["absences", businessId] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to lock absence record");
+    },
+  });
+
+  const unlockMutation = useMutation({
+    mutationFn: (absenceId: string) => unlockAbsenceRecordApiCall(absenceId, businessId),
+    onSuccess: () => {
+      toast.success("Absence record unlocked");
+      queryClient.invalidateQueries({ queryKey: ["absences", businessId] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to unlock absence record");
     },
   });
 
@@ -68,6 +92,10 @@ export const useAbsences = (businessId: string, employmentId?: string) => {
     isUpdating: updateMutation.isPending,
     deleteAbsence: deleteMutation.mutate,
     isDeleting: deleteMutation.isPending,
+    lockAbsence: lockMutation.mutate,
+    isLocking: lockMutation.isPending,
+    unlockAbsence: unlockMutation.mutate,
+    isUnlocking: unlockMutation.isPending,
   };
 };
 

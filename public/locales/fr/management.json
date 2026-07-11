@@ -914,7 +914,10 @@
       "cancel": "Annuler",
       "saving": "Enregistrement...",
       "update": "Mettre à jour",
-      "record_absence": "Enregistrer l'absence"
+      "record_absence": "Enregistrer l'absence",
+      "locked_notice": "Cette absence a été verrouillée et ne peut plus être modifiée. Déverrouillez-la d'abord si une correction est nécessaire.",
+      "lock": "Verrouiller",
+      "unlock": "Déverrouiller"
     },
     "notes": {
       "title": "Note de présence",
@@ -1137,6 +1140,9 @@
     "validation": {
       "title": "Valider la présence",
       "description": "Vérifiez et ajustez les horaires avant de verrouiller cet enregistrement.",
+      "correction_title": "Corriger un enregistrement validé",
+      "correction_description": "Cet enregistrement a déjà été validé. Les corrections recalculeront la paie.",
+      "correction_warning": "Vous corrigez un enregistrement déjà validé.",
       "already_validated": "Cet enregistrement a déjà été validé et est verrouillé.",
       "validated_by": "Validé par {{name}}",
       "validated_by_on": "Validé par {{name}} le {{date}}",
@@ -1144,15 +1150,22 @@
       "check_in_label": "Heure d'arrivée",
       "check_out_label": "Heure de départ",
       "checkout_after_checkin_error": "L'heure de départ doit être après l'heure d'arrivée.",
+      "breaks_label": "Pauses",
+      "add_break": "Ajouter une pause",
+      "no_breaks": "Aucune pause enregistrée.",
+      "break_paid": "Payée",
+      "break_unpaid": "Non payée",
+      "break_order_error": "La fin de chaque pause doit être après son début.",
       "notes_label": "Notes",
       "notes_placeholder": "Ajouter des notes de validation...",
       "cancel": "Annuler",
       "validate_record": "Valider l'enregistrement",
+      "save_correction": "Enregistrer la correction",
       "confirm_title": "Confirmer la validation",
       "confirm_description_prefix": "Cela verrouillera l'enregistrement de présence et recalculera la paie.",
-      "confirm_description_strong": "Cette action est irréversible.",
+      "confirm_description_strong": "Un manager pourra encore le corriger plus tard si nécessaire.",
       "go_back": "Retour",
-      "validating": "Validation...",
+      "validating": "Enregistrement...",
       "confirm_and_lock": "Confirmer et verrouiller"
     },
     "request_time_off": {

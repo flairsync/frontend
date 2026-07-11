@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Lock, Unlock } from "lucide-react";
 import { useAbsences } from "@/features/shifts/useAbsences";
 import { AbsenceRecord, AbsenceType, ABSENCE_TYPE_LABELS } from "@/models/business/shift/AbsenceRecord";
 
@@ -51,7 +52,8 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
   const [documentUrl, setDocumentUrl] = useState("");
   const [timeOffRequestId, setTimeOffRequestId] = useState("");
 
-  const { createAbsence, isCreating, updateAbsence, isUpdating } = useAbsences(businessId);
+  const { createAbsence, isCreating, updateAbsence, isUpdating, lockAbsence, isLocking, unlockAbsence, isUnlocking } = useAbsences(businessId);
+  const isLocked = !!existing?.locked;
 
   useEffect(() => {
     if (!open) return;
@@ -75,11 +77,11 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !type) return;
+    if (!date || !type || isLocked) return;
 
     if (isEdit && existing) {
       updateAbsence(
-        { absenceId: existing.id, data: { type, isPaid, notes: notes || undefined, documentUrl: documentUrl || undefined } },
+        { absenceId: existing.id, data: { businessId, type, isPaid, notes: notes || undefined, documentUrl: documentUrl || undefined } },
         { onSuccess: () => onOpenChange(false) }
       );
     } else {
@@ -114,6 +116,12 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 py-2">
+          {isLocked && (
+            <div className="flex items-center gap-2 bg-blue-50 text-blue-700 rounded-lg px-4 py-3 text-sm font-medium">
+              <Lock className="h-4 w-4 shrink-0" />
+              {t("attendance_modals.absence.locked_notice")}
+            </div>
+          )}
           {employeeName ? (
             <div className="space-y-1">
               <Label>{t("attendance_modals.absence.employee_label")}</Label>
@@ -139,14 +147,14 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              disabled={isEdit}
+              disabled={isEdit || isLocked}
               required
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="absence-type">{t("attendance_modals.absence.type_label")}</Label>
-            <Select value={type} onValueChange={(v) => setType(v as AbsenceType)} required>
+            <Select value={type} onValueChange={(v) => setType(v as AbsenceType)} required disabled={isLocked}>
               <SelectTrigger id="absence-type">
                 <SelectValue placeholder={t("attendance_modals.absence.type_placeholder")} />
               </SelectTrigger>
@@ -159,7 +167,7 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
           </div>
 
           <div className="flex items-center gap-2">
-            <Switch id="absence-is-paid" checked={isPaid} onCheckedChange={setIsPaid} />
+            <Switch id="absence-is-paid" checked={isPaid} onCheckedChange={setIsPaid} disabled={isLocked} />
             <Label htmlFor="absence-is-paid">{t("attendance_modals.absence.paid_leave_label")}</Label>
           </div>
 
@@ -190,6 +198,7 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
+              disabled={isLocked}
             />
           </div>
 
@@ -201,16 +210,39 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
               placeholder={t("attendance_modals.absence.document_url_placeholder")}
               value={documentUrl}
               onChange={(e) => setDocumentUrl(e.target.value)}
+              disabled={isLocked}
             />
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              {t("attendance_modals.absence.cancel")}
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending ? t("attendance_modals.absence.saving") : isEdit ? t("attendance_modals.absence.update") : t("attendance_modals.absence.record_absence")}
-            </Button>
+          <DialogFooter className="gap-2 sm:justify-between">
+            {isEdit && existing ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="gap-2"
+                disabled={isLocking || isUnlocking}
+                onClick={() =>
+                  isLocked
+                    ? unlockAbsence(existing.id)
+                    : lockAbsence(existing.id)
+                }
+              >
+                {isLocked ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+                {isLocking || isUnlocking
+                  ? t("attendance_modals.absence.saving")
+                  : isLocked
+                    ? t("attendance_modals.absence.unlock")
+                    : t("attendance_modals.absence.lock")}
+              </Button>
+            ) : <span />}
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                {t("attendance_modals.absence.cancel")}
+              </Button>
+              <Button type="submit" disabled={isPending || isLocked}>
+                {isPending ? t("attendance_modals.absence.saving") : isEdit ? t("attendance_modals.absence.update") : t("attendance_modals.absence.record_absence")}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

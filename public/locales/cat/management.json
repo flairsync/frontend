@@ -914,7 +914,10 @@
       "cancel": "Cancel·lar",
       "saving": "Desant...",
       "update": "Actualitzar",
-      "record_absence": "Registrar absència"
+      "record_absence": "Registrar absència",
+      "locked_notice": "Aquesta absència s'ha bloquejat i ja no es pot editar. Desbloqueja-la primer si cal una correcció.",
+      "lock": "Bloquejar",
+      "unlock": "Desbloquejar"
     },
     "notes": {
       "title": "Nota d'assistència",
@@ -1137,6 +1140,9 @@
     "validation": {
       "title": "Validar assistència",
       "description": "Revisa i ajusta els horaris abans de bloquejar aquest registre.",
+      "correction_title": "Corregir registre validat",
+      "correction_description": "Aquest registre ja s'ha validat. Les correccions recalcularan la paga.",
+      "correction_warning": "Estàs corregint un registre ja validat.",
       "already_validated": "Aquest registre ja s'ha validat i està bloquejat.",
       "validated_by": "Validat per {{name}}",
       "validated_by_on": "Validat per {{name}} el {{date}}",
@@ -1144,15 +1150,22 @@
       "check_in_label": "Hora d'entrada",
       "check_out_label": "Hora de sortida",
       "checkout_after_checkin_error": "L'hora de sortida ha de ser posterior a la d'entrada.",
+      "breaks_label": "Descansos",
+      "add_break": "Afegeix descans",
+      "no_breaks": "No hi ha descansos registrats.",
+      "break_paid": "Pagat",
+      "break_unpaid": "No pagat",
+      "break_order_error": "El final de cada descans ha de ser posterior al seu inici.",
       "notes_label": "Notes",
       "notes_placeholder": "Afegeix notes de validació...",
       "cancel": "Cancel·lar",
       "validate_record": "Validar registre",
+      "save_correction": "Desar correcció",
       "confirm_title": "Confirmar validació",
       "confirm_description_prefix": "Això bloquejarà el registre d'assistència i recalcularà la paga.",
-      "confirm_description_strong": "Aquesta acció no es pot desfer.",
+      "confirm_description_strong": "Un gerent encara podrà corregir-lo més tard si cal.",
       "go_back": "Tornar",
-      "validating": "Validant...",
+      "validating": "Desant...",
       "confirm_and_lock": "Confirmar i bloquejar"
     },
     "request_time_off": {
