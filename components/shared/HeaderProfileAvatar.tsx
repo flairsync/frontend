@@ -31,6 +31,8 @@ import { useProfile } from '@/features/profile/useProfile'
 import { NotificationBubble } from '@/components/notifications/NotificationBubble'
 import { usePageContext } from 'vike-react/usePageContext'
 import { setLangCookie } from '@/utils/cookies'
+import { useMyBusinesses } from '@/features/business/useMyBusinesses'
+import { useMyEmployments } from '@/features/business/employment/useMyEmployments'
 
 
 const languages = [
@@ -49,6 +51,14 @@ const HeaderProfileAvatar = () => {
 
     const { userProfile, loadingUserProfile, updateUserProfile } = useProfile();
     const { user } = usePageContext() as any;
+
+    const { myBusinesses } = useMyBusinesses(1, 50);
+    const { myEmployments } = useMyEmployments(1, 50);
+    const joinedBusinesses = (myEmployments || []).filter(
+        (emp) => emp.type === "INVITED" && emp.status === "ACTIVE" && emp.business
+    );
+    const hasOwnedBusinesses = myBusinesses.length > 0;
+    const hasJoinedBusinesses = joinedBusinesses.length > 0;
 
     const {
         i18n
@@ -189,33 +199,79 @@ const HeaderProfileAvatar = () => {
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
 
-                    <a
-                        href='/manage/overview'
-                    >
-                        <DropdownMenuItem className='hover:cursor-pointer'>
-                            {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
-                        </DropdownMenuItem>
-                    </a>
-
-                    {/* <DropdownMenuGroup>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>BusinessHub</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-
-                                <a
-                                    href='/manage'
-                                >
-                                    <DropdownMenuItem className='hover:cursor-pointer'>
-                                        Manage your business
-                                    </DropdownMenuItem>
-                                </a>
-
-
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                </DropdownMenuGroup> */}
+                    {hasOwnedBusinesses || hasJoinedBusinesses ? (
+                        <DropdownMenuGroup>
+                            <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>
+                                    {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuPortal>
+                                    <DropdownMenuSubContent>
+                                        {hasOwnedBusinesses && hasJoinedBusinesses ? (
+                                            <>
+                                                <DropdownMenuSub>
+                                                    <DropdownMenuSubTrigger>
+                                                        {i18n.t("shared.user_menu.owned_businesses", "Owned")}
+                                                    </DropdownMenuSubTrigger>
+                                                    <DropdownMenuPortal>
+                                                        <DropdownMenuSubContent>
+                                                            {myBusinesses.map((biz) => (
+                                                                <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`}>
+                                                                    <DropdownMenuItem className='hover:cursor-pointer'>
+                                                                        {biz.name}
+                                                                    </DropdownMenuItem>
+                                                                </a>
+                                                            ))}
+                                                        </DropdownMenuSubContent>
+                                                    </DropdownMenuPortal>
+                                                </DropdownMenuSub>
+                                                <DropdownMenuSub>
+                                                    <DropdownMenuSubTrigger>
+                                                        {i18n.t("shared.user_menu.joined_businesses", "Joined")}
+                                                    </DropdownMenuSubTrigger>
+                                                    <DropdownMenuPortal>
+                                                        <DropdownMenuSubContent>
+                                                            {joinedBusinesses.map((emp) => (
+                                                                <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`}>
+                                                                    <DropdownMenuItem className='hover:cursor-pointer'>
+                                                                        {emp.business.name}
+                                                                    </DropdownMenuItem>
+                                                                </a>
+                                                            ))}
+                                                        </DropdownMenuSubContent>
+                                                    </DropdownMenuPortal>
+                                                </DropdownMenuSub>
+                                            </>
+                                        ) : hasOwnedBusinesses ? (
+                                            myBusinesses.map((biz) => (
+                                                <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`}>
+                                                    <DropdownMenuItem className='hover:cursor-pointer'>
+                                                        {biz.name}
+                                                    </DropdownMenuItem>
+                                                </a>
+                                            ))
+                                        ) : (
+                                            joinedBusinesses.map((emp) => (
+                                                <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`}>
+                                                    <DropdownMenuItem className='hover:cursor-pointer'>
+                                                        {emp.business.name}
+                                                    </DropdownMenuItem>
+                                                </a>
+                                            ))
+                                        )}
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                        </DropdownMenuGroup>
+                    ) : (
+                        <a
+                            href='/manage/overview'
+                        >
+                            <DropdownMenuItem className='hover:cursor-pointer'>
+                                {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                            </DropdownMenuItem>
+                        </a>
+                    )}
 
                     <DropdownMenuSeparator />
 

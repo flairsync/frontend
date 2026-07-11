@@ -67,6 +67,8 @@
       "theme": "Tema",
       "text_size": "Mida del text",
       "business_hub": "Panell del negoci",
+      "owned_businesses": "Els meus negocis",
+      "joined_businesses": "Negocis on treballo",
       "logout": "Tanca la sessió",
       "unverified_account": "Compte no verificat",
       "profile_aria_label": "Perfil",

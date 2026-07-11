@@ -11,6 +11,9 @@ import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { NotificationBubble } from "@/components/notifications/NotificationBubble";
 import { setLangCookie } from "@/utils/cookies";
+import { useMyBusinesses } from "@/features/business/useMyBusinesses";
+import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 import EnFlag from "@/assets/flags/gb.svg";
 import FrFlag from "@/assets/flags/fr.svg";
@@ -31,6 +34,14 @@ const MobileProfileSheet = () => {
     const { setTextSize, textSize } = useTextSize();
     const { t, i18n } = useTranslation();
     const { user } = usePageContext() as any;
+
+    const { myBusinesses } = useMyBusinesses(1, 50);
+    const { myEmployments } = useMyEmployments(1, 50);
+    const joinedBusinesses = (myEmployments || []).filter(
+        (emp) => emp.type === "INVITED" && emp.status === "ACTIVE" && emp.business
+    );
+    const hasOwnedBusinesses = myBusinesses.length > 0;
+    const hasJoinedBusinesses = joinedBusinesses.length > 0;
 
     const themes = [
         { value: "light" as const, label: t("shared.theme.light", "Light"), icon: Sun },
@@ -82,9 +93,59 @@ const MobileProfileSheet = () => {
                         <a href="/profile/settings" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
                             <Settings className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.settings", "Settings")}
                         </a>
-                        <a href="/manage/overview" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
-                            <Building2 className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.business_hub", "BusinessHub")}
-                        </a>
+                        {hasOwnedBusinesses || hasJoinedBusinesses ? (
+                            <Accordion type="single" collapsible>
+                                <AccordionItem value="business-hub" className="border-none">
+                                    <AccordionTrigger className="px-3 py-3 rounded-xl hover:bg-primary/5 hover:no-underline text-sm font-medium">
+                                        <span className="flex items-center gap-3">
+                                            <Building2 className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.business_hub", "BusinessHub")}
+                                        </span>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="pl-4">
+                                        {hasOwnedBusinesses && hasJoinedBusinesses ? (
+                                            <div className="space-y-3">
+                                                <div>
+                                                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider px-3 mb-1">
+                                                        {t("shared.user_menu.owned_businesses", "Owned")}
+                                                    </p>
+                                                    {myBusinesses.map((biz) => (
+                                                        <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
+                                                            {biz.name}
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider px-3 mb-1">
+                                                        {t("shared.user_menu.joined_businesses", "Joined")}
+                                                    </p>
+                                                    {joinedBusinesses.map((emp) => (
+                                                        <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
+                                                            {emp.business.name}
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ) : hasOwnedBusinesses ? (
+                                            myBusinesses.map((biz) => (
+                                                <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
+                                                    {biz.name}
+                                                </a>
+                                            ))
+                                        ) : (
+                                            joinedBusinesses.map((emp) => (
+                                                <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
+                                                    {emp.business.name}
+                                                </a>
+                                            ))
+                                        )}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        ) : (
+                            <a href="/manage/overview" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
+                                <Building2 className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.business_hub", "BusinessHub")}
+                            </a>
+                        )}
 
                         {/* Language */}
                         <div className="px-3 py-2">

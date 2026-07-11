@@ -67,6 +67,8 @@
       "theme": "Thème",
       "text_size": "Taille du texte",
       "business_hub": "Espace établissement",
+      "owned_businesses": "Mes établissements",
+      "joined_businesses": "Établissements rejoints",
       "logout": "Déconnexion",
       "unverified_account": "Compte non vérifié",
       "profile_aria_label": "Profil",

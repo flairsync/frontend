@@ -67,6 +67,8 @@
       "theme": "Theme",
       "text_size": "Text Size",
       "business_hub": "BusinessHub",
+      "owned_businesses": "Owned",
+      "joined_businesses": "Joined",
       "logout": "Logout",
       "unverified_account": "Unverified Account",
       "profile_aria_label": "Profile",

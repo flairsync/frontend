@@ -67,6 +67,8 @@
       "theme": "Tema",
       "text_size": "Tamaño del texto",
       "business_hub": "Panel del negocio",
+      "owned_businesses": "Mis negocios",
+      "joined_businesses": "Negocios donde trabajo",
       "logout": "Cerrar sesión",
       "unverified_account": "Cuenta no verificada",
       "profile_aria_label": "Perfil",
