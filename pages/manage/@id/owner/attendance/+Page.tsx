@@ -145,7 +145,7 @@ export default function AttendancePage() {
           </TabsContent>
 
           <TabsContent value="live">
-            <LiveTab records={filteredLogs} isLoading={isLoadingLogs} />
+            <LiveTab businessId={businessId} records={filteredLogs} isLoading={isLoadingLogs} />
           </TabsContent>
 
           <TabsContent value="reports">

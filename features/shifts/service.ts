@@ -70,6 +70,7 @@ export interface CheckInDto {
   employmentId: string;
   shiftId?: string;
   location?: { lat: number; lng: number };
+  qrToken?: string;
 }
 
 export interface CheckOutDto {
@@ -77,6 +78,7 @@ export interface CheckOutDto {
   employmentId: string;
   location?: { lat: number; lng: number };
   type?: 'PAID' | 'UNPAID';
+  qrToken?: string;
 }
 
 export interface ValidateAttendanceDto {
@@ -316,6 +318,20 @@ export const startBreakApiCall = (data: CheckOutDto) => {
 export const endBreakApiCall = (data: CheckOutDto) => {
   return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/break/end`, data);
 };
+
+// Mints a fresh single-use QR token for the business's clock-in display. Callers should
+// re-invoke this on a ~15s interval and re-render the code each time (see ATTENDANCE_QR
+// constants below) — an old, photographed code becomes worthless quickly.
+export const generateAttendanceQrApiCall = (businessId: string) => {
+  return flairapi.post<{ data: { token: string; expiresAt: string } }>(
+    `${'https://api.flairsync.com/api/v1'}/attendance/qr/generate`,
+    { businessId }
+  );
+};
+
+// Matches the backend's QR_ROTATION_SECONDS (attendance.service.ts) — how often the
+// display should fetch a new token so it's always showing a live, unused code.
+export const ATTENDANCE_QR_ROTATION_SECONDS = 15;
 
 export const fetchAttendanceLogsApiCall = async (
   businessId: string,

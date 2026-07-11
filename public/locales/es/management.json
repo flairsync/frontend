@@ -834,7 +834,12 @@
     "status_working": "Trabajando",
     "break_paid": "Pagado",
     "break_unpaid": "No pagado",
-    "no_one_clocked_in": "Ningún empleado tiene un fichaje activo en este momento."
+    "no_one_clocked_in": "Ningún empleado tiene un fichaje activo en este momento.",
+    "qr_button": "QR de fichaje",
+    "qr_dialog_title": "Código QR de fichaje",
+    "qr_dialog_description": "El personal escanea esto desde la app móvil para fichar entrada o salida. Se actualiza automáticamente cada pocos segundos para que una foto no pueda reutilizarse.",
+    "qr_refreshing_in": "Se actualiza en {{secs}}s",
+    "qr_generate_error": "No se pudo generar el código QR. Inténtalo de nuevo."
   },
   "attendance_reports": {
     "heading": "Resumen de mano de obra",

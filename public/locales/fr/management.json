@@ -834,7 +834,12 @@
     "status_working": "En service",
     "break_paid": "Payée",
     "break_unpaid": "Non payée",
-    "no_one_clocked_in": "Aucun employé n'est actuellement pointé."
+    "no_one_clocked_in": "Aucun employé n'est actuellement pointé.",
+    "qr_button": "QR de pointage",
+    "qr_dialog_title": "Code QR de pointage",
+    "qr_dialog_description": "Le personnel scanne ce code depuis l'application mobile pour pointer l'arrivée ou le départ. Il se régénère automatiquement toutes les quelques secondes pour qu'une photo ne puisse pas être réutilisée.",
+    "qr_refreshing_in": "Actualisation dans {{secs}}s",
+    "qr_generate_error": "Échec de la génération du code QR. Veuillez réessayer."
   },
   "attendance_reports": {
     "heading": "Résumé de la main-d'œuvre",

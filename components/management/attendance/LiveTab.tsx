@@ -10,9 +10,12 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { format, parseISO, differenceInSeconds } from "date-fns";
-import { User, Coffee } from "lucide-react";
+import { User, Coffee, QrCode } from "lucide-react";
 import { AttendanceLog } from "@/models/business/shift/Attendance";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import ClockInQrDialog from "./ClockInQrDialog";
 
 function getElapsed(fromIso: string): string {
   const diff = differenceInSeconds(new Date(), parseISO(fromIso));
@@ -23,13 +26,16 @@ function getElapsed(fromIso: string): string {
 }
 
 interface LiveTabProps {
+  businessId: string;
   records: AttendanceLog[];
   isLoading?: boolean;
 }
 
-const LiveTab = ({ records, isLoading }: LiveTabProps) => {
+const LiveTab = ({ businessId, records, isLoading }: LiveTabProps) => {
   const { t } = useTranslation("management");
   const [tick, setTick] = useState(0);
+  const [qrDialogOpen, setQrDialogOpen] = useState(false);
+  const { myBusinessFullDetails } = useMyBusiness(businessId);
 
   useEffect(() => {
     const timer = setInterval(() => setTick((t) => t + 1), 1000);
@@ -51,11 +57,26 @@ const LiveTab = ({ records, isLoading }: LiveTabProps) => {
           <h2 className="text-xl font-bold text-foreground">{t("attendance_live.heading")}</h2>
           <p className="text-muted-foreground text-sm">{t("attendance_live.subtitle")}</p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground bg-muted px-3 py-1.5 rounded-lg border border-border">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          {t("attendance_live.live_active_count", { count: liveRecords.length })}
+        <div className="flex items-center gap-2">
+          {myBusinessFullDetails?.requireQrForAttendance && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1.5 text-xs"
+              onClick={() => setQrDialogOpen(true)}
+            >
+              <QrCode className="w-3.5 h-3.5" />
+              {t("attendance_live.qr_button")}
+            </Button>
+          )}
+          <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground bg-muted px-3 py-1.5 rounded-lg border border-border">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            {t("attendance_live.live_active_count", { count: liveRecords.length })}
+          </div>
         </div>
       </div>
+
+      <ClockInQrDialog open={qrDialogOpen} onOpenChange={setQrDialogOpen} businessId={businessId} />
 
       <div className="bg-card rounded-xl shadow-sm overflow-hidden">
         <Table>

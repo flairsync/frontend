@@ -834,7 +834,12 @@
     "status_working": "Working",
     "break_paid": "Paid",
     "break_unpaid": "Unpaid",
-    "no_one_clocked_in": "No employees currently clocked in."
+    "no_one_clocked_in": "No employees currently clocked in.",
+    "qr_button": "Clock-In QR",
+    "qr_dialog_title": "Clock-In QR Code",
+    "qr_dialog_description": "Staff scan this from the mobile app to clock in or out. It refreshes automatically every few seconds so a photo of it can't be reused.",
+    "qr_refreshing_in": "Refreshing in {{secs}}s",
+    "qr_generate_error": "Failed to generate QR code. Please try again."
   },
   "attendance_reports": {
     "heading": "Labor Summary",

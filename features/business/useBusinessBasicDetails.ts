@@ -18,6 +18,7 @@ export interface BusinessBasicDetails {
     name: string;
   };
   requireGpsForAttendance?: boolean;
+  requireQrForAttendance?: boolean;
   taxRate?: number;
   taxName?: string;
   taxIncluded?: boolean;

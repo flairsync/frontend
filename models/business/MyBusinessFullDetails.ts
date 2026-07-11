@@ -141,6 +141,7 @@ export class MyBusinessFullDetails {
   requireGpsForAttendance: boolean;
   attendanceGeofenceRadiusMeters: number;
   strictGeofenceBlock: boolean;
+  requireQrForAttendance: boolean;
   attendanceGraceMinutes: number;
   maxPaidBreakMinutes: number;
   requireClockInForPos: boolean;
@@ -231,6 +232,7 @@ export class MyBusinessFullDetails {
     taxName?: string,
     taxIncluded?: boolean,
     enableFloorPlanView?: boolean,
+    requireQrForAttendance?: boolean,
   ) {
     this.id = id;
     this.name = name;
@@ -294,6 +296,7 @@ export class MyBusinessFullDetails {
     this.taxRate = taxRate ?? 0;
     this.taxName = taxName ?? "";
     this.taxIncluded = taxIncluded ?? true;
+    this.requireQrForAttendance = requireQrForAttendance ?? false;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -362,6 +365,7 @@ export class MyBusinessFullDetails {
         data.taxName ?? "",
         data.taxIncluded !== undefined ? !!data.taxIncluded : true,
         data.enableFloorPlanView !== undefined ? !!data.enableFloorPlanView : false,
+        !!data.requireQrForAttendance,
       );
       instance.slug = data.slug ?? undefined;
       return instance;
@@ -412,6 +416,7 @@ export type UpdateBusinessDetailsDto = {
   requireGpsForAttendance?: boolean;
   attendanceGeofenceRadiusMeters?: number;
   strictGeofenceBlock?: boolean;
+  requireQrForAttendance?: boolean;
   attendanceGraceMinutes?: number;
   maxPaidBreakMinutes?: number;
   requireClockInForPos?: boolean;

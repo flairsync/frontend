@@ -834,7 +834,12 @@
     "status_working": "Treballant",
     "break_paid": "Pagada",
     "break_unpaid": "No pagada",
-    "no_one_clocked_in": "Cap empleat té un fitxatge actiu en aquest moment."
+    "no_one_clocked_in": "Cap empleat té un fitxatge actiu en aquest moment.",
+    "qr_button": "QR de fitxatge",
+    "qr_dialog_title": "Codi QR de fitxatge",
+    "qr_dialog_description": "El personal escaneja això des de l'app mòbil per fitxar entrada o sortida. Es refresca automàticament cada pocs segons perquè una foto no es pugui reutilitzar.",
+    "qr_refreshing_in": "S'actualitza en {{secs}}s",
+    "qr_generate_error": "No s'ha pogut generar el codi QR. Torna-ho a provar."
   },
   "attendance_reports": {
     "heading": "Resum de mà d'obra",

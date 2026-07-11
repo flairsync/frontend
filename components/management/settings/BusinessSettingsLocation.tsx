@@ -56,6 +56,7 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
     const [requireGpsForAttendance, setRequireGpsForAttendance] = useState(!!businessDetails?.requireGpsForAttendance);
     const [attendanceGeofenceRadiusMeters, setAttendanceGeofenceRadiusMeters] = useState(businessDetails?.attendanceGeofenceRadiusMeters || 50);
     const [strictGeofenceBlock, setStrictGeofenceBlock] = useState(!!businessDetails?.strictGeofenceBlock);
+    const [requireQrForAttendance, setRequireQrForAttendance] = useState(!!businessDetails?.requireQrForAttendance);
     const [attendanceGraceMinutes, setAttendanceGraceMinutes] = useState(businessDetails?.attendanceGraceMinutes ?? 15);
     const [maxPaidBreakMinutes, setMaxPaidBreakMinutes] = useState(businessDetails?.maxPaidBreakMinutes ?? 30);
     const [requireClockInForPos, setRequireClockInForPos] = useState(!!businessDetails?.requireClockInForPos);
@@ -86,6 +87,7 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 requireGpsForAttendance,
                 attendanceGeofenceRadiusMeters,
                 strictGeofenceBlock,
+                requireQrForAttendance,
                 attendanceGraceMinutes,
                 maxPaidBreakMinutes,
                 requireClockInForPos
@@ -226,6 +228,17 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                             <Switch
                                 checked={requireClockInForPos}
                                 onCheckedChange={setRequireClockInForPos}
+                                disabled={disabled}
+                            />
+                        </div>
+                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                            <div className="space-y-0.5">
+                                <Label>Require QR Code for Attendance</Label>
+                                <p className="text-xs text-muted-foreground">Staff must scan a rotating QR code (shown on the Attendance page's Live tab) to clock in or out — a photo of it stops working within seconds. Combine with GPS above for the strongest protection.</p>
+                            </div>
+                            <Switch
+                                checked={requireQrForAttendance}
+                                onCheckedChange={setRequireQrForAttendance}
                                 disabled={disabled}
                             />
                         </div>
