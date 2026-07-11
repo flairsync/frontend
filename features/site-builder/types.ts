@@ -9,6 +9,8 @@ export interface SiteComponentInstance {
 export interface SiteSection {
     id: string;
     order: number;
+    /** Owner-set label, used both as the designer's section label and as the target list for "jump to section" nav links. */
+    name?: string;
     components: SiteComponentInstance[];
 }
 

@@ -1,4 +1,14 @@
 import React from "react";
+import {
+    PanelTop,
+    UtensilsCrossed,
+    Image as ImageIcon,
+    Clock,
+    MapPin,
+    Star,
+    MousePointerClick,
+    type LucideIcon,
+} from "lucide-react";
 import HeaderCentered from "./components/header/HeaderCentered";
 import HeaderSplit from "./components/header/HeaderSplit";
 import MenuListGrid from "./components/menu-list/MenuListGrid";
@@ -15,7 +25,7 @@ import CtaBanner from "./components/call-to-action/CtaBanner";
 import CtaSplit from "./components/call-to-action/CtaSplit";
 import Fallback from "./components/Fallback";
 
-export type PropFieldType = "text" | "textarea" | "color" | "number" | "boolean" | "url" | "image" | "linkPreset";
+export type PropFieldType = "text" | "textarea" | "color" | "number" | "boolean" | "url" | "image" | "linkPreset" | "navLinks";
 
 export interface PropFieldSchema {
     key: string;
@@ -23,6 +33,17 @@ export interface PropFieldSchema {
     type: PropFieldType;
     defaultValue?: any;
 }
+
+/** Groups + icons for the component picker modal, keyed by the `category` string used on registry entries. */
+export const CATEGORY_META: Record<string, { label: string; icon: LucideIcon }> = {
+    header: { label: "Header", icon: PanelTop },
+    "menu-list": { label: "Menu List", icon: UtensilsCrossed },
+    gallery: { label: "Gallery", icon: ImageIcon },
+    "opening-hours": { label: "Opening Hours", icon: Clock },
+    contact: { label: "Contact", icon: MapPin },
+    reviews: { label: "Reviews", icon: Star },
+    "call-to-action": { label: "Call to Action", icon: MousePointerClick },
+};
 
 export interface RegistryEntry {
     component?: React.ComponentType<any>;
@@ -44,6 +65,7 @@ const HEADER_PROPS_SCHEMA: PropFieldSchema[] = [
     { key: "textColor", label: "Text Color", type: "color", defaultValue: "#ffffff" },
     { key: "backgroundImage", label: "Background Image URL", type: "image" },
     { key: "showLogo", label: "Show Logo", type: "boolean", defaultValue: true },
+    { key: "navLinks", label: "Navigation Links", type: "navLinks", defaultValue: [] },
     { key: "buttonText", label: "Button Label", type: "text" },
     { key: "buttonHref", label: "Button Link", type: "linkPreset" },
 ];

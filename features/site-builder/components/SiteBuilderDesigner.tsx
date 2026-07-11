@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-    DndContext,
-    closestCenter,
-    PointerSensor,
-    useSensor,
-    useSensors,
-    DragOverlay,
-    DragStartEvent,
-    DragEndEvent,
-    useDraggable,
-} from "@dnd-kit/core";
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,34 +9,17 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { COMPONENT_REGISTRY, PropFieldSchema, RegistryEntry } from "../registry";
+import { COMPONENT_REGISTRY, PropFieldSchema } from "../registry";
 import { LINK_PRESET_OPTIONS } from "../linkPresets";
 import SiteBuilderCanvas from "./SiteBuilderCanvas";
+import ComponentPickerModal from "./ComponentPickerModal";
+import NavLinksEditor from "./NavLinksEditor";
 import { SitePageContent, SiteComponentInstance, SiteSection } from "../types";
 
 interface SiteBuilderDesignerProps {
     content: SitePageContent;
     onContentChange: (content: SitePageContent) => void;
 }
-
-const PaletteItem: React.FC<{ typeKey: string; label: string }> = ({ typeKey, label }) => {
-    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-        id: `palette:${typeKey}`,
-        data: { type: "palette-item", typeKey },
-    });
-
-    return (
-        <button
-            ref={setNodeRef}
-            {...listeners}
-            {...attributes}
-            className="w-full text-left px-4 py-3 rounded-xl border border-border bg-card hover:border-primary/50 hover:bg-primary/5 transition-colors cursor-grab active:cursor-grabbing text-sm font-medium"
-            style={{ opacity: isDragging ? 0.4 : 1 }}
-        >
-            {label}
-        </button>
-    );
-};
 
 const newId = () => (crypto.randomUUID ? crypto.randomUUID() : `id_${Date.now()}_${Math.random().toString(36).slice(2)}`);
 
@@ -56,7 +29,7 @@ const defaultPropsFor = (schema?: PropFieldSchema[]) =>
 const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onContentChange }) => {
     const sections = content.sections || [];
     const [selected, setSelected] = useState<{ sectionId: string; componentId: string } | null>(null);
-    const [activeDrag, setActiveDrag] = useState<any>(null);
+    const [pickerSectionId, setPickerSectionId] = useState<string | null>(null);
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
@@ -75,6 +48,10 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
         onContentChange({ sections: remaining });
     };
 
+    const handleRenameSection = (sectionId: string, name: string) => {
+        onContentChange({ sections: sections.map((s) => (s.id === sectionId ? { ...s, name } : s)) });
+    };
+
     const handleRemoveComponent = (sectionId: string, componentId: string) => {
         if (selected?.componentId === componentId) setSelected(null);
         const newSections = sections.map((s) =>
@@ -83,6 +60,32 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                 : s
         );
         onContentChange({ sections: newSections });
+    };
+
+    const handleSelectComponentType = (typeKey: string) => {
+        const targetSectionId = pickerSectionId;
+        setPickerSectionId(null);
+        if (!targetSectionId) return;
+
+        const entry = COMPONENT_REGISTRY[typeKey];
+        if (!entry) return;
+
+        const instance: SiteComponentInstance = {
+            id: newId(),
+            typeKey,
+            order: 0,
+            props: defaultPropsFor(entry.propsSchema),
+            bindings: entry.defaultBindings ? { ...entry.defaultBindings } : undefined,
+        };
+
+        const newSections = sections.map((s) => {
+            if (s.id !== targetSectionId) return s;
+            const insertedComponents = [...s.components, instance].map((c, i) => ({ ...c, order: i }));
+            return { ...s, components: insertedComponents };
+        });
+
+        onContentChange({ sections: newSections });
+        setSelected({ sectionId: targetSectionId, componentId: instance.id });
     };
 
     const handlePropChange = (key: string, value: any) => {
@@ -99,11 +102,8 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
         onContentChange({ sections: newSections });
     };
 
-    const handleDragStart = (event: DragStartEvent) => setActiveDrag(event.active.data.current);
-
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
-        setActiveDrag(null);
         if (!over) return;
 
         const activeData: any = active.data.current;
@@ -117,41 +117,6 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                 const reordered = arrayMove(sections, oldIndex, newIndex).map((s, i) => ({ ...s, order: i }));
                 onContentChange({ sections: reordered });
             }
-            return;
-        }
-
-        // Dragging a new component in from the palette
-        if (activeData?.type === "palette-item") {
-            const targetSectionId: string | undefined =
-                overData?.type === "section-drop" ? overData.sectionId :
-                overData?.type === "component" ? overData.sectionId :
-                overData?.type === "section" ? (over.id as string) :
-                undefined;
-            if (!targetSectionId) return;
-
-            const entry = COMPONENT_REGISTRY[activeData.typeKey];
-            if (!entry) return;
-
-            const instance: SiteComponentInstance = {
-                id: newId(),
-                typeKey: activeData.typeKey,
-                order: 0,
-                props: defaultPropsFor(entry.propsSchema),
-                bindings: entry.defaultBindings ? { ...entry.defaultBindings } : undefined,
-            };
-
-            const newSections = sections.map((s) => {
-                if (s.id !== targetSectionId) return s;
-                const components = [...s.components];
-                const insertIndex = overData?.type === "component"
-                    ? components.findIndex((c) => c.id === over.id)
-                    : components.length;
-                components.splice(insertIndex < 0 ? components.length : insertIndex, 0, instance);
-                return { ...s, components: components.map((c, i) => ({ ...c, order: i })) };
-            });
-
-            onContentChange({ sections: newSections });
-            setSelected({ sectionId: targetSectionId, componentId: instance.id });
             return;
         }
 
@@ -197,36 +162,11 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
         }
     };
 
-    const paletteEntries = Object.entries(COMPONENT_REGISTRY).filter(
-        ([key, entry]) => key !== "fallback@1" && !entry.deprecated && entry.label
-    );
-
-    const paletteGroups = paletteEntries.reduce<Record<string, [string, RegistryEntry][]>>((acc, [key, entry]) => {
-        const category = entry.category || "other";
-        (acc[category] ||= []).push([key, entry]);
-        return acc;
-    }, {});
-
     const selectedSchema = selectedInstance ? COMPONENT_REGISTRY[selectedInstance.typeKey]?.propsSchema : undefined;
 
     return (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-            <div className="grid grid-cols-[220px_1fr_280px] gap-6 items-start">
-                {/* Palette */}
-                <div className="space-y-5 sticky top-4">
-                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Components</h3>
-                    {Object.entries(paletteGroups).map(([category, items]) => (
-                        <div key={category} className="space-y-2">
-                            <p className="text-xs font-medium text-muted-foreground capitalize">{category.replace(/-/g, " ")}</p>
-                            <div className="space-y-2">
-                                {items.map(([key, entry]) => (
-                                    <PaletteItem key={key} typeKey={key} label={entry.label!} />
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <div className="grid grid-cols-[1fr_280px] gap-6 items-start">
                 {/* Canvas */}
                 <div className="space-y-6" onClick={() => setSelected(null)}>
                     <SiteBuilderCanvas
@@ -236,6 +176,8 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                         onSelectComponent={(sectionId, componentId) => setSelected({ sectionId, componentId })}
                         onRemoveComponent={handleRemoveComponent}
                         onRemoveSection={handleRemoveSection}
+                        onRenameSection={handleRenameSection}
+                        onAddComponent={(sectionId) => setPickerSectionId(sectionId)}
                     />
                     <Button variant="outline" className="w-full gap-2" onClick={handleAddSection}>
                         <Plus className="w-4 h-4" /> Add Section
@@ -296,6 +238,13 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                                                 )}
                                             </div>
                                         )}
+                                        {field.type === "navLinks" && (
+                                            <NavLinksEditor
+                                                value={value || []}
+                                                onChange={(links) => handlePropChange(field.key, links)}
+                                                sections={sections}
+                                            />
+                                        )}
                                         {field.type === "textarea" && (
                                             <Textarea value={value} onChange={(e) => handlePropChange(field.key, e.target.value)} rows={3} />
                                         )}
@@ -325,13 +274,11 @@ const SiteBuilderDesigner: React.FC<SiteBuilderDesignerProps> = ({ content, onCo
                 </div>
             </div>
 
-            <DragOverlay>
-                {activeDrag?.type === "palette-item" ? (
-                    <div className="px-4 py-3 rounded-xl border border-primary bg-card shadow-lg text-sm font-medium">
-                        {COMPONENT_REGISTRY[activeDrag.typeKey]?.label}
-                    </div>
-                ) : null}
-            </DragOverlay>
+            <ComponentPickerModal
+                open={pickerSectionId !== null}
+                onOpenChange={(open) => !open && setPickerSectionId(null)}
+                onSelect={handleSelectComponentType}
+            />
         </DndContext>
     );
 };

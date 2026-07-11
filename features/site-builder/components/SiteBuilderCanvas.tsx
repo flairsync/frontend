@@ -3,7 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, X } from "lucide-react";
+import { GripVertical, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { resolveComponent } from "../registry";
 import { SiteSection, SiteComponentInstance } from "../types";
@@ -16,6 +16,8 @@ interface SiteBuilderCanvasProps {
     onSelectComponent?: (sectionId: string, componentId: string) => void;
     onRemoveComponent?: (sectionId: string, componentId: string) => void;
     onRemoveSection?: (sectionId: string) => void;
+    onRenameSection?: (sectionId: string, name: string) => void;
+    onAddComponent?: (sectionId: string) => void;
 }
 
 const renderComponentInstance = (
@@ -104,13 +106,27 @@ const ComponentShell: React.FC<{
 
 const SectionShell: React.FC<{
     section: SiteSection;
+    sectionIndex: number;
     mode: "edit" | "public";
     resolvedBindings?: Record<string, Record<string, any>>;
     selectedComponentId?: string | null;
     onSelectComponent?: (componentId: string) => void;
     onRemoveComponent?: (componentId: string) => void;
     onRemoveSection?: () => void;
-}> = ({ section, mode, resolvedBindings, selectedComponentId, onSelectComponent, onRemoveComponent, onRemoveSection }) => {
+    onRenameSection?: (name: string) => void;
+    onAddComponent?: () => void;
+}> = ({
+    section,
+    sectionIndex,
+    mode,
+    resolvedBindings,
+    selectedComponentId,
+    onSelectComponent,
+    onRemoveComponent,
+    onRemoveSection,
+    onRenameSection,
+    onAddComponent,
+}) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: section.id,
         data: { type: "section" },
@@ -127,7 +143,7 @@ const SectionShell: React.FC<{
 
     if (mode === "public") {
         return (
-            <div className="space-y-8">
+            <div id={`section-${section.id}`} className="space-y-8">
                 {components.map((c) => (
                     <React.Fragment key={c.id}>{renderComponentInstance(c, resolvedBindings, mode)}</React.Fragment>
                 ))}
@@ -150,6 +166,22 @@ const SectionShell: React.FC<{
                     <GripVertical size={14} />
                 </button>
             </div>
+
+            <div className="flex items-center justify-between gap-3 pl-8 pr-24">
+                <input
+                    value={section.name || ""}
+                    onChange={(e) => onRenameSection?.(e.target.value)}
+                    placeholder={`Section ${sectionIndex + 1}`}
+                    className="bg-transparent text-sm font-semibold text-muted-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:text-foreground border-b border-transparent focus:border-primary/40 py-0.5"
+                />
+                <button
+                    onClick={onAddComponent}
+                    className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:border-primary/50 hover:bg-primary/5 transition-colors"
+                >
+                    <Plus className="w-3.5 h-3.5" /> Add Component
+                </button>
+            </div>
+
             <button
                 onClick={onRemoveSection}
                 className="absolute right-3 top-3 text-xs text-destructive/70 hover:text-destructive font-medium"
@@ -174,7 +206,7 @@ const SectionShell: React.FC<{
                         ))
                     ) : (
                         <p className="text-sm text-muted-foreground italic py-4 text-center">
-                            Drag a component here from the palette.
+                            Click "Add Component" above to get started.
                         </p>
                     )}
                 </SortableContext>
@@ -191,14 +223,16 @@ const SiteBuilderCanvas: React.FC<SiteBuilderCanvasProps> = ({
     onSelectComponent,
     onRemoveComponent,
     onRemoveSection,
+    onRenameSection,
+    onAddComponent,
 }) => {
     const sorted = [...sections].sort((a, b) => a.order - b.order);
 
     if (mode === "public") {
         return (
             <div className="space-y-24">
-                {sorted.map((section) => (
-                    <SectionShell key={section.id} section={section} mode={mode} resolvedBindings={resolvedBindings} />
+                {sorted.map((section, i) => (
+                    <SectionShell key={section.id} section={section} sectionIndex={i} mode={mode} resolvedBindings={resolvedBindings} />
                 ))}
             </div>
         );
@@ -207,9 +241,10 @@ const SiteBuilderCanvas: React.FC<SiteBuilderCanvasProps> = ({
     return (
         <SortableContext items={sorted.map((s) => s.id)} strategy={verticalListSortingStrategy}>
             <div className="space-y-8">
-                {sorted.map((section) => (
+                {sorted.map((section, sectionIndex) => (
                     <SectionShell
                         key={section.id}
+                        sectionIndex={sectionIndex}
                         section={section}
                         mode={mode}
                         resolvedBindings={resolvedBindings}
@@ -217,6 +252,8 @@ const SiteBuilderCanvas: React.FC<SiteBuilderCanvasProps> = ({
                         onSelectComponent={(componentId) => onSelectComponent?.(section.id, componentId)}
                         onRemoveComponent={(componentId) => onRemoveComponent?.(section.id, componentId)}
                         onRemoveSection={() => onRemoveSection?.(section.id)}
+                        onRenameSection={(name) => onRenameSection?.(section.id, name)}
+                        onAddComponent={() => onAddComponent?.(section.id)}
                     />
                 ))}
             </div>

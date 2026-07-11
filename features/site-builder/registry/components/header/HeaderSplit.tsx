@@ -3,12 +3,14 @@ import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { resolveLinkHref } from "@/features/site-builder/linkPresets";
+import type { HeaderNavLink } from "./HeaderCentered";
 
 export interface HeaderSplitProps {
     primaryColor?: string;
     textColor?: string;
     backgroundImage?: string;
     showLogo?: boolean;
+    navLinks?: HeaderNavLink[];
     buttonText?: string;
     buttonHref?: string;
     imageOnRight?: boolean;
@@ -26,6 +28,7 @@ const HeaderSplit: React.FC<HeaderSplitProps> = ({
     textColor = "#ffffff",
     backgroundImage,
     showLogo = true,
+    navLinks,
     buttonText,
     buttonHref,
     imageOnRight = true,
@@ -94,18 +97,32 @@ const HeaderSplit: React.FC<HeaderSplitProps> = ({
     );
 
     return (
-        <section className="relative grid sm:grid-cols-2 rounded-[2.5rem] overflow-hidden shadow-2xl">
-            {imageOnRight ? (
-                <>
-                    {textBlock}
-                    {imageBlock}
-                </>
-            ) : (
-                <>
-                    {imageBlock}
-                    {textBlock}
-                </>
+        <section className="relative rounded-[2.5rem] overflow-hidden shadow-2xl">
+            {navLinks && navLinks.length > 0 && (
+                <nav
+                    className="relative z-10 flex flex-wrap justify-center gap-x-6 gap-y-2 px-6 py-4 text-sm font-semibold"
+                    style={{ backgroundColor: primaryColor, color: textColor }}
+                >
+                    {navLinks.map((link) => (
+                        <a key={link.id} href={resolveLinkHref(link.href)} className="opacity-80 hover:opacity-100 transition-opacity">
+                            {link.text}
+                        </a>
+                    ))}
+                </nav>
             )}
+            <div className="grid sm:grid-cols-2">
+                {imageOnRight ? (
+                    <>
+                        {textBlock}
+                        {imageBlock}
+                    </>
+                ) : (
+                    <>
+                        {imageBlock}
+                        {textBlock}
+                    </>
+                )}
+            </div>
         </section>
     );
 };
