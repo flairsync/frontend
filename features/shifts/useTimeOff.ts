@@ -16,7 +16,7 @@ const formatToDateOnly = (date: Date | string) => {
 export const useTimeOff = (businessId: string, employmentId?: string, options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();
 
-  const { data: requests, isFetching: fetchingRequests } = useQuery<TimeOffRequest[]>({
+  const { data: requests, isFetching: fetchingRequests, refetch: refetchRequests } = useQuery<TimeOffRequest[]>({
     queryKey: ["time_off_requests", businessId, employmentId],
     queryFn: async () => {
       try {
@@ -74,6 +74,7 @@ export const useTimeOff = (businessId: string, employmentId?: string, options?: 
   return {
     requests,
     fetchingRequests,
+    refetchRequests,
     submitRequest: submitRequestMutation.mutate,
     isSubmitting: submitRequestMutation.isPending,
     updateStatus: updateStatusMutation.mutate,

@@ -63,7 +63,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
   const endStr = endDate ? formatToDateOnly(endDate) : undefined;
 
   // For the active calendar view, we often only want shifts within a date range
-  const { data: shifts, isFetching: fetchingShifts, isLoading: loadingShifts, refetch } = useQuery<Shift[]>({
+  const { data: shifts, isFetching: fetchingShifts, isLoading: loadingShifts, dataUpdatedAt, refetch } = useQuery<Shift[]>({
     queryKey: ["shifts", businessId, startStr, endStr, employmentId],
     queryFn: async () => {
       try {
@@ -297,6 +297,7 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
     shifts,
     fetchingShifts,
     loadingShifts,
+    shiftsUpdatedAt: dataUpdatedAt,
     refetchShifts: refetch,
     bulkScheduleTeam: bulkScheduleTeamMutation.mutate,
     isBulkScheduling: bulkScheduleTeamMutation.isPending,

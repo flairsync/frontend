@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChevronLeft, ChevronRight, ChevronDown, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText, UserX, ClipboardCheck } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, Users, CalendarPlus, Wand2, Copy, Send, PlusCircle, CheckCircle2, Lock, ShieldCheck, Download, FileSpreadsheet, FileText, UserX, ClipboardCheck, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
@@ -33,7 +33,7 @@ import {
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { Shift } from '@/models/business/shift/Shift'
-import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, startOfDay, endOfDay, addMonths, isSameMonth } from 'date-fns'
+import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, startOfDay, endOfDay, addMonths, isSameMonth, differenceInMinutes, differenceInSeconds } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ValidationModal } from './ValidationModal'
@@ -134,6 +134,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
     const {
         shifts,
         fetchingShifts,
+        shiftsUpdatedAt,
         refetchShifts,
         generateDraft,
         isGeneratingDraft,
@@ -149,9 +150,33 @@ const ManagerScheduleStaffSchedulingTab = () => {
         filterStaffId || undefined
     );
 
-    const { requests: timeOffRequests } = useTimeOff(businessId);
-    const { data: phantomSummary } = useUnvalidatedSummary(businessId);
-    const { roster: managerRoster, fetchingRoster } = useManagerRoster(businessId, dateStart, dateEnd);
+    const { requests: timeOffRequests, refetchRequests } = useTimeOff(businessId);
+    const { data: phantomSummary, refetch: refetchSummary } = useUnvalidatedSummary(businessId);
+    const { roster: managerRoster, fetchingRoster, refetchRoster } = useManagerRoster(businessId, dateStart, dateEnd);
+
+    // Drives the "updated X ago" label — the query data itself only changes on refetch,
+    // so without this tick the label would freeze at whatever it said on the last render.
+    const [, setClockTick] = useState(0);
+    useEffect(() => {
+        const interval = setInterval(() => setClockTick(t => t + 1), 30_000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const isRefreshingAll = fetchingShifts || fetchingRoster;
+    const handleRefreshAll = () => {
+        refetchShifts();
+        refetchRoster();
+        refetchRequests();
+        refetchSummary();
+    };
+
+    const lastUpdatedLabel = (() => {
+        if (!shiftsUpdatedAt) return null;
+        const seconds = differenceInSeconds(new Date(), shiftsUpdatedAt);
+        if (seconds < 60) return t("schedule_staff_scheduling_tab.last_updated_just_now");
+        const minutes = differenceInMinutes(new Date(), shiftsUpdatedAt);
+        return t("schedule_staff_scheduling_tab.last_updated_minutes_ago", { count: minutes });
+    })();
 
     const [viewMode, setViewMode] = useState<'all' | 'published' | 'draft'>('all');
 
@@ -348,7 +373,22 @@ const ManagerScheduleStaffSchedulingTab = () => {
             <CardHeader className="bg-muted/30 border-b space-y-3 pb-3">
                 {/* Row 1: Title + action buttons */}
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <CardTitle className="text-lg">{t("schedule_staff_scheduling_tab.title")}</CardTitle>
+                    <div className="flex items-center gap-2">
+                        <CardTitle className="text-lg">{t("schedule_staff_scheduling_tab.title")}</CardTitle>
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            {lastUpdatedLabel && <span className="select-none">{lastUpdatedLabel}</span>}
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 shrink-0"
+                                onClick={handleRefreshAll}
+                                disabled={isRefreshingAll}
+                                title={t("schedule_staff_scheduling_tab.refresh_button")}
+                            >
+                                <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingAll ? 'animate-spin' : ''}`} />
+                            </Button>
+                        </div>
+                    </div>
 
                     <div className="flex flex-wrap items-center gap-1.5">
                         {/* Export */}
