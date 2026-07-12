@@ -152,7 +152,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
     return (
         <>
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent className="sm:max-w-[460px]">
+                <DialogContent className="sm:max-w-[460px] max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <ShieldCheck className="h-5 w-5 text-indigo-600" />
@@ -220,19 +220,19 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                             ) : (
                                 <div className="space-y-2">
                                     {breaks.map((b, i) => (
-                                        <div key={i} className="flex items-center gap-1.5">
+                                        <div key={i} className="flex flex-wrap items-center gap-1.5">
                                             <Input
                                                 type="datetime-local"
                                                 value={b.start}
                                                 onChange={(e) => updateBreak(i, { start: e.target.value })}
-                                                className="text-xs"
+                                                className="min-w-0 flex-1 basis-[8.5rem] text-xs"
                                                 required
                                             />
                                             <Input
                                                 type="datetime-local"
                                                 value={b.end}
                                                 onChange={(e) => updateBreak(i, { end: e.target.value })}
-                                                className="text-xs"
+                                                className="min-w-0 flex-1 basis-[8.5rem] text-xs"
                                                 required
                                             />
                                             <Select value={b.type} onValueChange={(v) => updateBreak(i, { type: v as 'PAID' | 'UNPAID' })}>
