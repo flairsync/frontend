@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { Switch } from "@/components/ui/switch"
 import {
     AccordionContent,
     AccordionItem,
@@ -17,6 +18,8 @@ import {
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { PayPeriodType, PAY_PERIOD_TYPE_LABELS } from "@/models/business/shift/PayrollEntry"
 
+type TipPoolStrategy = 'EQUAL_SPLIT' | 'HOURS_WEIGHTED'
+
 type BusinessLaborInfo = {
     maxWeeklyHours?: number
     minGapBetweenShiftsHours?: number
@@ -25,6 +28,8 @@ type BusinessLaborInfo = {
     overtimeWeeklyThresholdHours?: number
     overtimeMultiplier?: number
     payPeriodType?: PayPeriodType
+    tipPoolEnabled?: boolean
+    tipPoolStrategy?: TipPoolStrategy
 }
 
 type Props = {
@@ -43,6 +48,8 @@ const BusinessSettingsLabor = (props: Props) => {
     const [overtimeWeeklyThresholdHours, setOvertimeWeeklyThresholdHours] = useState<number | undefined>(props.businessDetails?.overtimeWeeklyThresholdHours ?? 40)
     const [overtimeMultiplier, setOvertimeMultiplier] = useState<number | undefined>(props.businessDetails?.overtimeMultiplier ?? 1.5)
     const [payPeriodType, setPayPeriodType] = useState<PayPeriodType>(props.businessDetails?.payPeriodType ?? 'WEEKLY')
+    const [tipPoolEnabled, setTipPoolEnabled] = useState<boolean>(props.businessDetails?.tipPoolEnabled ?? false)
+    const [tipPoolStrategy, setTipPoolStrategy] = useState<TipPoolStrategy>(props.businessDetails?.tipPoolStrategy ?? 'EQUAL_SPLIT')
 
     const onSaveDetails = () => {
         if (props.onSaveDetails) {
@@ -54,6 +61,8 @@ const BusinessSettingsLabor = (props: Props) => {
                 overtimeWeeklyThresholdHours,
                 overtimeMultiplier,
                 payPeriodType,
+                tipPoolEnabled,
+                tipPoolStrategy,
             })
         }
     }
@@ -173,6 +182,41 @@ const BusinessSettingsLabor = (props: Props) => {
                             </SelectContent>
                         </Select>
                     </div>
+
+                    <p className="pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tip Pooling</p>
+
+                    <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                        <div className="space-y-0.5">
+                            <Label>Enable Tip Pooling</Label>
+                            <p className="text-xs text-muted-foreground">Split collected tips across staff who worked instead of per-order attribution</p>
+                        </div>
+                        <Switch
+                            disabled={props.disabled}
+                            checked={tipPoolEnabled}
+                            onCheckedChange={(val) => setTipPoolEnabled(val)}
+                        />
+                    </div>
+                    {tipPoolEnabled && (
+                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                            <div className="space-y-0.5">
+                                <Label>Split Strategy</Label>
+                                <p className="text-xs text-muted-foreground">How the pooled tips are divided among staff</p>
+                            </div>
+                            <Select
+                                disabled={props.disabled}
+                                value={tipPoolStrategy}
+                                onValueChange={(v) => setTipPoolStrategy(v as TipPoolStrategy)}
+                            >
+                                <SelectTrigger className="w-44">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="EQUAL_SPLIT">Equal Split</SelectItem>
+                                    <SelectItem value="HOURS_WEIGHTED">Hours Worked</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
                 </div>
                 <div className="pt-3">
                     <Button

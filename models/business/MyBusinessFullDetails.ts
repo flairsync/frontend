@@ -156,6 +156,8 @@ export class MyBusinessFullDetails {
   overtimeWeeklyThresholdHours?: number;
   overtimeMultiplier?: number;
   payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
+  tipPoolEnabled?: boolean;
+  tipPoolStrategy?: 'EQUAL_SPLIT' | 'HOURS_WEIGHTED';
   maxPartySize: number;
   reservationBookingWindowDays: number;
   reservationBufferMinutes: number;
@@ -222,6 +224,8 @@ export class MyBusinessFullDetails {
     overtimeWeeklyThresholdHours?: number,
     overtimeMultiplier?: number,
     payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY',
+    tipPoolEnabled?: boolean,
+    tipPoolStrategy?: 'EQUAL_SPLIT' | 'HOURS_WEIGHTED',
     maxPartySize?: number,
     reservationBookingWindowDays?: number,
     reservationBufferMinutes?: number,
@@ -287,6 +291,8 @@ export class MyBusinessFullDetails {
     this.overtimeWeeklyThresholdHours = overtimeWeeklyThresholdHours;
     this.overtimeMultiplier = overtimeMultiplier;
     this.payPeriodType = payPeriodType;
+    this.tipPoolEnabled = tipPoolEnabled ?? false;
+    this.tipPoolStrategy = tipPoolStrategy ?? 'EQUAL_SPLIT';
     this.maxPartySize = maxPartySize ?? 20;
     this.reservationBookingWindowDays = reservationBookingWindowDays ?? 60;
     this.reservationBufferMinutes = reservationBufferMinutes ?? 0;
@@ -355,6 +361,8 @@ export class MyBusinessFullDetails {
         data.overtimeWeeklyThresholdHours !== undefined && data.overtimeWeeklyThresholdHours !== null ? Number(data.overtimeWeeklyThresholdHours) : undefined,
         data.overtimeMultiplier !== undefined && data.overtimeMultiplier !== null ? Number(data.overtimeMultiplier) : undefined,
         data.payPeriodType ?? undefined,
+        data.tipPoolEnabled !== undefined ? !!data.tipPoolEnabled : false,
+        data.tipPoolStrategy ?? 'EQUAL_SPLIT',
         data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
         data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
         data.reservationBufferMinutes !== undefined ? Number(data.reservationBufferMinutes) : 0,
@@ -429,6 +437,8 @@ export type UpdateBusinessDetailsDto = {
   overtimeWeeklyThresholdHours?: number;
   overtimeMultiplier?: number;
   payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
+  tipPoolEnabled?: boolean;
+  tipPoolStrategy?: 'EQUAL_SPLIT' | 'HOURS_WEIGHTED';
   maxPartySize?: number;
   reservationBookingWindowDays?: number;
   reservationBufferMinutes?: number;

@@ -50,6 +50,7 @@ import {
     Store,
     Megaphone,
     Globe,
+    HandCoins,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -122,6 +123,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "schedule", titleKey: "sidebar.items.schedule", url: "/manage/:id/owner/schedule", icon: CalendarCheck },
             { key: "attendance", titleKey: "sidebar.items.attendance", url: "/manage/:id/owner/attendance", icon: ClockFadingIcon },
             { key: "payroll", titleKey: "sidebar.items.payroll", url: "/manage/:id/owner/payroll", icon: Banknote },
+            { key: "tip-pooling", titleKey: "sidebar.items.tip_pooling", url: "/manage/:id/owner/tip-pooling", icon: HandCoins },
             { key: "jobs", titleKey: "sidebar.items.jobs", url: "/manage/:id/owner/jobs", icon: Briefcase },
         ],
     },

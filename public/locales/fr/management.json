@@ -435,6 +435,7 @@
       "schedule": "Planning",
       "attendance": "Présence",
       "payroll": "Paie",
+      "tip_pooling": "Pot commun de pourboires",
       "jobs": "Offres d'emploi",
       "inventory": "Inventaire",
       "marketplace": "Marketplace",
