@@ -28,7 +28,7 @@ export default function StaffDashboard() {
     const canViewOrders = hasPermission("ORDERS", "read");
 
     const { data: dashboard, isLoading: isLoadingDashboard } = useTodayAttendanceDashboard(businessId);
-    const { tasks, loadingTasks } = useBusinessTasks(businessId);
+    const { tasks, loadingTasks } = useBusinessTasks(businessId, { limit: 50 });
     const { orders, fetchingOrders } = useOrders(businessId, "ongoing", undefined, undefined, undefined, undefined, canViewOrders);
     const { notifications, unreadCount, loadingNotifications } = useNotifications();
 

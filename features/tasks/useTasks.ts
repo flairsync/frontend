@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Task } from "@/models/Task";
+import { PaginatedResponse, Task } from "@/models/Task";
 import {
   CreateTaskDto,
+  ListTasksParams,
   UpdateTaskDto,
   UpdateTaskStatusDto,
   createTaskApiCall,
@@ -13,14 +14,20 @@ import {
   updateTaskStatusApiCall,
 } from "./service";
 
-export const useBusinessTasks = (businessId: string) => {
-  const { data: tasks, isPending: loadingTasks, refetch } = useQuery<Task[]>({
-    queryKey: ["business_tasks", businessId],
-    queryFn: () => fetchBusinessTasksApiCall(businessId),
+export const useBusinessTasks = (businessId: string, params: ListTasksParams = {}) => {
+  const { data, isPending: loadingTasks, refetch } = useQuery<PaginatedResponse<Task>>({
+    queryKey: ["business_tasks", businessId, params],
+    queryFn: () => fetchBusinessTasksApiCall(businessId, params),
     enabled: !!businessId,
   });
 
-  return { tasks: tasks ?? [], loadingTasks, refetch };
+  return {
+    tasks: data?.data ?? [],
+    totalPages: data?.pages ?? 1,
+    currentPage: data?.current ?? 1,
+    loadingTasks,
+    refetch,
+  };
 };
 
 export const useBusinessTask = (businessId: string, taskId: string) => {

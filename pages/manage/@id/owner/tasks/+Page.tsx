@@ -57,6 +57,7 @@ import { useBusinessEmployees } from "@/features/business/employment/useBusiness
 import {
   Task,
   TaskStatus,
+  TASK_ALLOWED_TRANSITIONS,
   TASK_STATUS_COLORS,
   TASK_STATUS_LABELS,
   getAssigneeName,
@@ -91,6 +92,8 @@ function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFormDialog
   const [description, setDescription] = useState("");
   const [assignedToEmploymentId, setAssignedToEmploymentId] = useState<string>("");
   const [status, setStatus] = useState<TaskStatus>("NOT_STARTED");
+  const [dueDate, setDueDate] = useState("");
+  const [dueDateError, setDueDateError] = useState("");
 
   const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
   const { createTask, creatingTask } = useCreateTask(businessId);
@@ -102,6 +105,8 @@ function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFormDialog
       setDescription(task?.description ?? "");
       setAssignedToEmploymentId(task?.assignedToEmploymentId ?? "");
       setStatus(task?.status ?? "NOT_STARTED");
+      setDueDate(task?.dueDate ? task.dueDate.split("T")[0] : "");
+      setDueDateError("");
     }
   }, [open, task]);
 
@@ -111,10 +116,21 @@ function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFormDialog
     e.preventDefault();
     if (!title.trim()) return;
 
+    if (dueDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (new Date(dueDate) < today) {
+        setDueDateError("Due date must be today or later.");
+        return;
+      }
+    }
+    setDueDateError("");
+
     const payload = {
       title: title.trim(),
       description: description.trim() || undefined,
       assignedToEmploymentId: assignedToEmploymentId || undefined,
+      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
     };
 
     if (isEdit) {
@@ -192,6 +208,18 @@ function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFormDialog
             </Select>
           </div>
 
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="task-due-date">Due date (optional)</Label>
+            <Input
+              id="task-due-date"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="max-w-xs"
+            />
+            {dueDateError && <p className="text-xs text-red-600">{dueDateError}</p>}
+          </div>
+
           {isEdit && (
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="task-status">Status</Label>
@@ -263,6 +291,8 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
     );
   };
 
+  const allowedStatuses = task ? TASK_ALLOWED_TRANSITIONS[task.status] : [];
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm">
@@ -279,7 +309,7 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {ALL_STATUSES.map((s) => (
+                {allowedStatuses.map((s) => (
                   <SelectItem key={s} value={s}>
                     {TASK_STATUS_LABELS[s]}
                   </SelectItem>
@@ -369,6 +399,10 @@ function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardProps) {
             {getAssigneeName(task.assignedTo)}
           </span>
           <span>Created {format(new Date(task.createdAt), "MMM d, yyyy")}</span>
+          {task.dueDate && <span>Due {format(new Date(task.dueDate), "MMM d, yyyy")}</span>}
+          {task.lastActionBy && (
+            <span>Last updated by {getAssigneeName(task.lastActionBy)}</span>
+          )}
         </div>
 
         {task.comment && (
@@ -411,14 +445,17 @@ const OwnerTasksPage = () => {
   const businessId = routeParams.id;
 
   const [filter, setFilter] = useState<FilterTab>("all");
+  const [page, setPage] = useState(1);
   const [createOpen, setCreateOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Task | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
   const [statusTarget, setStatusTarget] = useState<Task | null>(null);
 
-  const { tasks, loadingTasks } = useBusinessTasks(businessId);
+  const { tasks, totalPages, loadingTasks } = useBusinessTasks(businessId, { page, limit: 10 });
   const { deleteTask, deletingTask } = useDeleteTask(businessId);
 
+  // Filter tabs apply client-side to the current page of results — a task on
+  // another page won't show up in a tab until you page to it.
   const filtered = tasks.filter((t) => {
     if (filter === "global") return t.assignedToEmploymentId === null;
     if (filter === "assigned") return t.assignedToEmploymentId !== null;
@@ -453,7 +490,7 @@ const OwnerTasksPage = () => {
         {FILTER_TABS.map((tab) => (
           <button
             key={tab.value}
-            onClick={() => setFilter(tab.value)}
+            onClick={() => { setFilter(tab.value); setPage(1); }}
             className={cn(
               "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
               filter === tab.value
@@ -497,6 +534,18 @@ const OwnerTasksPage = () => {
               onUpdateStatus={setStatusTarget}
             />
           ))}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+                Previous
+              </Button>
+              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+              <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+                Next
+              </Button>
+            </div>
+          )}
         </div>
       )}
 

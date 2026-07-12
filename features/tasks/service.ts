@@ -1,11 +1,12 @@
 import flairapi from "@/lib/flairapi";
-import { TaskStatus } from "@/models/Task";
-import { unwrap } from "../shared/api-response";
+import { Task, TaskStatus } from "@/models/Task";
+import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 export interface CreateTaskDto {
   title: string;
   description?: string;
   assignedToEmploymentId?: string;
+  dueDate?: string | null;
 }
 
 export interface UpdateTaskDto {
@@ -13,6 +14,7 @@ export interface UpdateTaskDto {
   description?: string;
   assignedToEmploymentId?: string | null;
   status?: TaskStatus;
+  dueDate?: string | null;
 }
 
 export interface UpdateTaskStatusDto {
@@ -20,13 +22,24 @@ export interface UpdateTaskStatusDto {
   comment?: string;
 }
 
+export interface ListTasksParams {
+  page?: number;
+  limit?: number;
+  status?: TaskStatus;
+}
+
 const businessesBaseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
 
-export const fetchBusinessTasksApiCall = async (businessId: string) =>
-  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks`));
+export const fetchBusinessTasksApiCall = async (businessId: string, params: ListTasksParams = {}) => {
+  const qs = new URLSearchParams();
+  if (params.page) qs.set('page', String(params.page));
+  if (params.limit) qs.set('limit', String(params.limit));
+  if (params.status) qs.set('status', params.status);
+  return unwrapPaginated<Task>(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks?${qs.toString()}`));
+};
 
 export const fetchBusinessTaskByIdApiCall = async (businessId: string, taskId: string) =>
-  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks/${taskId}`));
+  unwrap<Task>(await flairapi.get(`${businessesBaseUrl}/${businessId}/tasks/${taskId}`));
 
 export const createTaskApiCall = (businessId: string, data: CreateTaskDto) => {
   return flairapi.post(`${businessesBaseUrl}/${businessId}/tasks`, data);

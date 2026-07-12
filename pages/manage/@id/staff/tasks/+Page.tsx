@@ -31,6 +31,7 @@ import { useMyEmployments } from "@/features/business/employment/useMyEmployment
 import {
   Task,
   TaskStatus,
+  TASK_ALLOWED_TRANSITIONS,
   TASK_STATUS_COLORS,
   getTaskStatusLabel,
   getAssigneeName,
@@ -47,8 +48,6 @@ const FILTER_TABS: Array<{ labelKey: string; value: FilterTab }> = [
   { labelKey: "staff_tasks.filters.mine", value: "mine" },
   { labelKey: "staff_tasks.filters.team", value: "team" },
 ];
-
-const ALL_STATUSES: TaskStatus[] = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "ISSUE"];
 
 // ─── Status Update Dialog ─────────────────────────────────────────────────────
 
@@ -81,6 +80,8 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
     );
   };
 
+  const allowedStatuses = task ? TASK_ALLOWED_TRANSITIONS[task.status] : [];
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm">
@@ -97,7 +98,7 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {ALL_STATUSES.map((s) => (
+                {allowedStatuses.map((s) => (
                   <SelectItem key={s} value={s}>
                     {getTaskStatusLabel(s, t)}
                   </SelectItem>
@@ -184,6 +185,10 @@ function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
             {getAssigneeName(task.assignedTo)}
           </span>
           <span>{t("staff_tasks.created_on", { date: format(new Date(task.createdAt), "MMM d, yyyy") })}</span>
+          {task.dueDate && <span>Due {format(new Date(task.dueDate), "MMM d, yyyy")}</span>}
+          {task.lastActionBy && (
+            <span>Last updated by {getAssigneeName(task.lastActionBy)}</span>
+          )}
         </div>
 
         {task.comment && (
@@ -214,13 +219,14 @@ const StaffTasksPage = () => {
   const businessId = routeParams.id;
 
   const [filter, setFilter] = useState<FilterTab>("all");
+  const [page, setPage] = useState(1);
   const [statusTarget, setStatusTarget] = useState<Task | null>(null);
 
   const { myEmployments, loadingMyEmployments } = useMyEmployments();
   const activeEmployment = myEmployments?.find((e) => e.business?.id === businessId);
   const myEmploymentId = activeEmployment?.id;
 
-  const { tasks, loadingTasks } = useBusinessTasks(businessId);
+  const { tasks, totalPages, loadingTasks } = useBusinessTasks(businessId, { page, limit: 10 });
 
   const relevantTasks = tasks.filter(
     (t) => t.assignedToEmploymentId === null || t.assignedToEmploymentId === myEmploymentId,
@@ -250,7 +256,7 @@ const StaffTasksPage = () => {
         {FILTER_TABS.map((tab) => (
           <button
             key={tab.value}
-            onClick={() => setFilter(tab.value)}
+            onClick={() => { setFilter(tab.value); setPage(1); }}
             className={cn(
               "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
               filter === tab.value
@@ -286,6 +292,18 @@ const StaffTasksPage = () => {
           {filtered.map((task) => (
             <TaskCard key={task.id} task={task} onUpdateStatus={setStatusTarget} />
           ))}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-4">
+              <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+                Previous
+              </Button>
+              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+              <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+                Next
+              </Button>
+            </div>
+          )}
         </div>
       )}
 

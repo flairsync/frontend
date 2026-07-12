@@ -19,11 +19,28 @@ export interface Task {
   status: TaskStatus;
   assignedToEmploymentId: string | null;
   assignedTo: TaskAssignedTo | null;
-  createdByUserId: string;
+  createdByUserId: string | null;
+  createdBy: { id: string; email: string } | null;
+  lastActionByEmploymentId: string | null;
+  lastActionBy: TaskAssignedTo | null;
   comment: string | null;
+  dueDate: string | null;
   createdAt: string;
   updatedAt: string;
 }
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  current: number;
+  pages: number;
+}
+
+export const TASK_ALLOWED_TRANSITIONS: Record<TaskStatus, TaskStatus[]> = {
+  NOT_STARTED: ['NOT_STARTED', 'IN_PROGRESS'],
+  IN_PROGRESS: ['IN_PROGRESS', 'COMPLETED', 'ISSUE'],
+  COMPLETED: ['COMPLETED'],
+  ISSUE: ['ISSUE', 'IN_PROGRESS'],
+};
 
 // ─── Display helpers ──────────────────────────────────────────────────────────
 
