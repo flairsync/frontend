@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
     Sheet,
@@ -113,6 +113,17 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                             <SheetTitle className="text-xl">{item.name}</SheetTitle>
                             {item.description && (
                                 <p className="text-sm text-muted-foreground">{item.description}</p>
+                            )}
+                            {item.allergies && item.allergies.length > 0 && (
+                                <p className="text-xs text-amber-600 flex items-start gap-1.5">
+                                    <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                                    <span>{t('menu_tab.contains_allergens')}: {item.allergies.map((a) => a.name).join(', ')}</span>
+                                </p>
+                            )}
+                            {item.isBundle && item.bundleComponentDetails && item.bundleComponentDetails.length > 0 && (
+                                <p className="text-xs text-muted-foreground">
+                                    {t('menu_tab.includes_label')}: {item.bundleComponentDetails.map((c) => `${c.name} ×${c.quantity}`).join(', ')}
+                                </p>
                             )}
                             <p className="text-base font-semibold text-primary">
                                 ${item.price.toFixed(2)}

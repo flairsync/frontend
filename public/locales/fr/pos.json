@@ -11,7 +11,10 @@
   },
   "product_card": {
     "from_price": "À partir de {{price}}",
-    "unavailable": "Indisponible"
+    "unavailable": "Indisponible",
+    "contains_allergens": "Contient : {{list}}",
+    "allergens_label": "Contient",
+    "includes_label": "Comprend"
   },
   "discount_panel": {
     "discount_applied": "Remise appliquée",
@@ -290,7 +293,8 @@
       "available": "Libre",
       "occupied": "Occupée",
       "reserved": "Réservée",
-      "cleaning": "Nettoyage"
+      "cleaning": "Nettoyage",
+      "out_of_service": "Hors service"
     },
     "order_card": {
       "table": "Table",
@@ -327,6 +331,10 @@
       "table_occupied": {
         "title": "{{name}} est occupée",
         "description": "Cette table a une commande active ({{amount}} $). Souhaitez-vous la consulter ?"
+      },
+      "table_cleaning": {
+        "title": "{{name}} doit être nettoyée",
+        "description": "Marquer cette table comme propre et à nouveau disponible ?"
       }
     },
     "toasts": {
@@ -348,7 +356,9 @@
       "cancel_order_failed": "Échec de l'annulation de la commande",
       "table_assigned_to_cart": "{{name}} attribuée au panier",
       "reorder_created": "Nouvelle commande créée",
-      "reorder_failed": "Échec de la recommande"
+      "reorder_failed": "Échec de la recommande",
+      "table_marked_clean": "{{name}} marquée comme disponible",
+      "table_mark_clean_failed": "Échec de la mise à jour du statut de la table"
     }
   }
 }

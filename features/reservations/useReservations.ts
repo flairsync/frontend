@@ -62,6 +62,9 @@ export const useReservations = (businessId: string, filters?: FetchReservationsD
             // Tables might be marked as reserved
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
+            // A waitlist entry may have just been seated
+            queryClient.invalidateQueries({ queryKey: ["waitlist", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["reservation-dashboard", businessId] });
         },
     });
 

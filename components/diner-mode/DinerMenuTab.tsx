@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Plus, AlertCircle } from 'lucide-react';
+import { Plus, AlertCircle, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -167,6 +167,19 @@ function MenuItemCard({ item, canOrder, onAdd }: MenuItemCardProps) {
                         {item.description && (
                             <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
                                 {item.description}
+                            </p>
+                        )}
+                        {item.allergies && item.allergies.length > 0 && (
+                            <p className="text-[10px] text-amber-600 mt-0.5 flex items-center gap-1">
+                                <AlertTriangle className="w-3 h-3 flex-shrink-0" />
+                                <span className="line-clamp-1">
+                                    {t('menu_tab.contains_allergens')}: {item.allergies.map((a) => a.name).join(', ')}
+                                </span>
+                            </p>
+                        )}
+                        {item.isBundle && item.bundleComponentDetails && item.bundleComponentDetails.length > 0 && (
+                            <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1">
+                                {t('menu_tab.includes_label')}: {item.bundleComponentDetails.map((c) => `${c.name} ×${c.quantity}`).join(', ')}
                             </p>
                         )}
                     </div>

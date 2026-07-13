@@ -6,8 +6,10 @@ import {
     assignTableApiCall,
     recordCustomerLateApiCall,
     fetchReservationEventsApiCall,
+    joinWaitlistApiCall,
+    fetchWaitlistApiCall,
 } from "./service";
-import { DashboardResponse, WalkInReservationDto, AssignTableDto, CustomerLateDto, ReservationEvent } from "./types";
+import { DashboardResponse, WalkInReservationDto, AssignTableDto, CustomerLateDto, ReservationEvent, JoinWaitlistDto, WaitlistEntry } from "./types";
 
 export const useReservationDashboard = (businessId: string, pollingEnabled = true) => {
     return useQuery({
@@ -93,6 +95,38 @@ export const useCustomerLate = (businessId: string) => {
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.message || "Failed to record delay");
+        },
+    });
+};
+
+export const useWaitlist = (businessId: string, pollingEnabled = true) => {
+    return useQuery({
+        queryKey: ["waitlist", businessId],
+        queryFn: (): Promise<WaitlistEntry[]> => fetchWaitlistApiCall(businessId),
+        enabled: !!businessId,
+        refetchInterval: pollingEnabled ? 30_000 : false,
+    });
+};
+
+export const useJoinWaitlist = (businessId: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: JoinWaitlistDto) => joinWaitlistApiCall(businessId, data),
+        onSuccess: () => {
+            toast.success("Added to waitlist");
+            queryClient.invalidateQueries({ queryKey: ["waitlist", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["reservation-dashboard", businessId] });
+        },
+        onError: (error: any) => {
+            const code = error.response?.data?.code;
+            const message = error.response?.data?.message;
+            if (code === "reservation.party_too_large") {
+                const max = error.response?.data?.details?.maxPartySize;
+                toast.error(`Exceeds maximum party size${max ? ` (${max})` : ""}`);
+            } else {
+                toast.error(message || "Failed to add to waitlist");
+            }
         },
     });
 };

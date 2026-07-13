@@ -90,7 +90,9 @@
   "menu_tab": {
     "unavailable": "Indisponible",
     "ordering_unavailable_title": "Commande en ligne indisponible",
-    "ordering_unavailable_description": "Cet établissement n'accepte pas les commandes en ligne pour le moment — merci de commander auprès de votre serveur."
+    "ordering_unavailable_description": "Cet établissement n'accepte pas les commandes en ligne pour le moment — merci de commander auprès de votre serveur.",
+    "contains_allergens": "Contient",
+    "includes_label": "Comprend"
   },
   "menu_page": {
     "unavailable_title": "Menu indisponible",

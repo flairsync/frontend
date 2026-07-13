@@ -21,6 +21,19 @@ export interface Variant {
   price: number;
 }
 
+export interface Allergen {
+  id: string;
+  code: string;
+  name: string;
+}
+
+export interface BundleComponentDetail {
+  menuItemId: string;
+  quantity: number;
+  name: string;
+  price: number;
+}
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -30,6 +43,9 @@ export interface MenuItem {
   isAvailable: boolean;
   variants: Variant[];
   modifierGroups: ModifierGroup[];
+  allergies?: Allergen[];
+  isBundle?: boolean;
+  bundleComponentDetails?: BundleComponentDetail[];
 }
 
 export interface MenuCategory {
@@ -49,7 +65,7 @@ export interface PosTable {
   id: string;
   name: string;
   capacity: number;
-  status: "AVAILABLE" | "OCCUPIED" | "RESERVED" | "CLEANING";
+  status: "available" | "occupied" | "reserved" | "cleaning" | "out_of_service";
   floorId: string;
   floorName?: string;
   positionX: number;

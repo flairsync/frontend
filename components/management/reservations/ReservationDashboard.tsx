@@ -17,11 +17,13 @@ import { ReservationActionButtons } from "./ReservationActionButtons";
 import { AssignTableModal } from "./AssignTableModal";
 import { CustomerLatePopover } from "./CustomerLatePopover";
 import { WalkInModal } from "./WalkInModal";
+import { JoinWaitlistModal } from "./JoinWaitlistModal";
+import { WaitlistPanel } from "./WaitlistPanel";
 import DataPagination from "@/components/inputs/DataPagination";
 import { formatInTimezone } from "@/lib/dateUtils";
 import {
     Users, CheckCircle, Armchair, Flag, XCircle, UserX,
-    CalendarCheck, Clock, Plus, Eye, RefreshCw
+    CalendarCheck, Clock, Plus, Eye, RefreshCw, Hourglass
 } from "lucide-react";
 
 
@@ -61,7 +63,9 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
     businessId, timezone, onViewReservation, onEditReservation, onCreateReservation
 }) => {
     const [walkInOpen, setWalkInOpen] = useState(false);
+    const [waitlistOpen, setWaitlistOpen] = useState(false);
     const [assignTarget, setAssignTarget] = useState<any>(null);
+    const [seatTarget, setSeatTarget] = useState<any>(null);
     const [statFilter, setStatFilter] = useState<string>("all");
 
     // Pagination for "All Today" section
@@ -113,6 +117,9 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                     <Button variant="outline" size="sm" onClick={onCreateReservation}>
                         <Plus className="w-4 h-4 mr-1" /> New Reservation
                     </Button>
+                    <Button variant="outline" size="sm" onClick={() => setWaitlistOpen(true)}>
+                        <Hourglass className="w-4 h-4 mr-1" /> Waitlist
+                    </Button>
                     <Button size="sm" onClick={() => setWalkInOpen(true)}>
                         <Users className="w-4 h-4 mr-1" /> Walk-In
                     </Button>
@@ -136,6 +143,9 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                     ))
                 }
             </div>
+
+            {/* Waitlist */}
+            <WaitlistPanel businessId={businessId} onSeat={(res) => setSeatTarget(res)} />
 
             {/* Currently Seated */}
             {(dashboard?.currentlySeated?.length ?? 0) > 0 && (
@@ -392,12 +402,21 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
 
             {/* Modals */}
             <WalkInModal businessId={businessId} open={walkInOpen} onOpenChange={setWalkInOpen} />
+            <JoinWaitlistModal businessId={businessId} open={waitlistOpen} onOpenChange={setWaitlistOpen} />
             <AssignTableModal
                 businessId={businessId}
                 reservation={assignTarget}
                 open={!!assignTarget}
                 onOpenChange={(v) => { if (!v) setAssignTarget(null); }}
                 onSuccess={() => refetchDashboard()}
+            />
+            <AssignTableModal
+                businessId={businessId}
+                reservation={seatTarget}
+                open={!!seatTarget}
+                onOpenChange={(v) => { if (!v) setSeatTarget(null); }}
+                onSuccess={() => refetchDashboard()}
+                seatOnAssign
             />
         </div>
     );

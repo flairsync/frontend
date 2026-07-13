@@ -1,5 +1,5 @@
 import React from "react";
-import { Plus, AlertCircle } from "lucide-react";
+import { Plus, AlertCircle, AlertTriangle } from "lucide-react";
 import type { MenuItem } from "@/features/pos/types";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useTranslation } from "react-i18next";
@@ -45,6 +45,16 @@ export function ProductCard({ product, onClick, quantity, currency = "USD" }: Pr
                     </span>
                 )}
 
+                {/* Allergen warning */}
+                {product.allergies && product.allergies.length > 0 && (
+                    <div
+                        className="absolute top-2 left-2 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg"
+                        title={t("product_card.contains_allergens", { list: product.allergies.map((a) => a.name).join(", ") })}
+                    >
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                    </div>
+                )}
+
                 {/* Quantity badge */}
                 {quantity && quantity > 0 ? (
                     <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary text-primary-foreground text-[10px] font-black flex items-center justify-center shadow-lg">
@@ -75,6 +85,16 @@ export function ProductCard({ product, onClick, quantity, currency = "USD" }: Pr
                     {product.name}
                 </h3>
                 <span className="text-sm font-black text-primary">{displayPrice}</span>
+                {product.isBundle && product.bundleComponentDetails && product.bundleComponentDetails.length > 0 && (
+                    <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-tight line-clamp-1">
+                        {t("product_card.includes_label")}: {product.bundleComponentDetails.map((c) => `${c.name} ×${c.quantity}`).join(", ")}
+                    </span>
+                )}
+                {product.allergies && product.allergies.length > 0 && (
+                    <span className="text-[9px] text-amber-600 font-bold uppercase tracking-tight line-clamp-1">
+                        {t("product_card.allergens_label")}: {product.allergies.map((a) => a.name).join(", ")}
+                    </span>
+                )}
                 {!product.isAvailable && (
                     <span className="text-[10px] text-muted-foreground font-bold uppercase">
                         {t("product_card.unavailable")}

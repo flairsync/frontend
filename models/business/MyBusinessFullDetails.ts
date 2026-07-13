@@ -158,6 +158,7 @@ export class MyBusinessFullDetails {
   payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
   tipPoolEnabled?: boolean;
   tipPoolStrategy?: 'EQUAL_SPLIT' | 'HOURS_WEIGHTED';
+  autoDisableOutOfStock?: boolean;
   maxPartySize: number;
   reservationBookingWindowDays: number;
   reservationBufferMinutes: number;
@@ -226,6 +227,7 @@ export class MyBusinessFullDetails {
     payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY',
     tipPoolEnabled?: boolean,
     tipPoolStrategy?: 'EQUAL_SPLIT' | 'HOURS_WEIGHTED',
+    autoDisableOutOfStock?: boolean,
     maxPartySize?: number,
     reservationBookingWindowDays?: number,
     reservationBufferMinutes?: number,
@@ -293,6 +295,7 @@ export class MyBusinessFullDetails {
     this.payPeriodType = payPeriodType;
     this.tipPoolEnabled = tipPoolEnabled ?? false;
     this.tipPoolStrategy = tipPoolStrategy ?? 'EQUAL_SPLIT';
+    this.autoDisableOutOfStock = autoDisableOutOfStock ?? false;
     this.maxPartySize = maxPartySize ?? 20;
     this.reservationBookingWindowDays = reservationBookingWindowDays ?? 60;
     this.reservationBufferMinutes = reservationBufferMinutes ?? 0;
@@ -363,6 +366,7 @@ export class MyBusinessFullDetails {
         data.payPeriodType ?? undefined,
         data.tipPoolEnabled !== undefined ? !!data.tipPoolEnabled : false,
         data.tipPoolStrategy ?? 'EQUAL_SPLIT',
+        data.autoDisableOutOfStock !== undefined ? !!data.autoDisableOutOfStock : false,
         data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
         data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
         data.reservationBufferMinutes !== undefined ? Number(data.reservationBufferMinutes) : 0,
@@ -439,6 +443,7 @@ export type UpdateBusinessDetailsDto = {
   payPeriodType?: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY';
   tipPoolEnabled?: boolean;
   tipPoolStrategy?: 'EQUAL_SPLIT' | 'HOURS_WEIGHTED';
+  autoDisableOutOfStock?: boolean;
   maxPartySize?: number;
   reservationBookingWindowDays?: number;
   reservationBufferMinutes?: number;

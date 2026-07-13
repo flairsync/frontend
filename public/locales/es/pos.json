@@ -11,7 +11,10 @@
   },
   "product_card": {
     "from_price": "Desde {{price}}",
-    "unavailable": "No disponible"
+    "unavailable": "No disponible",
+    "contains_allergens": "Contiene: {{list}}",
+    "allergens_label": "Contiene",
+    "includes_label": "Incluye"
   },
   "discount_panel": {
     "discount_applied": "Descuento aplicado",
@@ -290,7 +293,8 @@
       "available": "Libre",
       "occupied": "Ocupada",
       "reserved": "Reservada",
-      "cleaning": "Limpieza"
+      "cleaning": "Limpieza",
+      "out_of_service": "Fuera de servicio"
     },
     "order_card": {
       "table": "Mesa",
@@ -327,6 +331,10 @@
       "table_occupied": {
         "title": "{{name}} está ocupada",
         "description": "Esta mesa tiene un pedido activo ({{amount}} $). ¿Quieres verlo?"
+      },
+      "table_cleaning": {
+        "title": "{{name}} necesita limpieza",
+        "description": "¿Marcar esta mesa como limpia y disponible de nuevo?"
       }
     },
     "toasts": {
@@ -348,7 +356,9 @@
       "cancel_order_failed": "Error al cancelar el pedido",
       "table_assigned_to_cart": "{{name}} asignada al carrito",
       "reorder_created": "Pedido repetido creado",
-      "reorder_failed": "Error al repetir el pedido"
+      "reorder_failed": "Error al repetir el pedido",
+      "table_marked_clean": "{{name}} marcada como disponible",
+      "table_mark_clean_failed": "Error al actualizar el estado de la mesa"
     }
   }
 }

@@ -14,6 +14,7 @@ import {
   ChefHat, Clock, CheckCircle2, AlertCircle,
   Utensils, Package, Building2, Loader2, Undo2,
   Flame, Settings, ChevronUp, ChevronDown, Timer,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { stationApi, staffApi } from "@/features/station/station-api";
@@ -32,6 +33,8 @@ interface KdsOrderItem {
   nameSnapshot: string;
   quantity: number;
   selectedModifiers: { modifierItemId: string; name: string; price: number }[] | null;
+  allergensSnapshot: { code: string; name: string }[] | null;
+  bundleComponentsSnapshot: { name: string; quantity: number }[] | null;
   notes: string | null;
   status: "pending" | "sent" | "ready" | "served" | "cancelled" | "voided";
   kitchenStationIdSnapshot: string | null;
@@ -318,6 +321,23 @@ function KdsTicketCard({
                               + {m.name}
                             </p>
                           ))}
+                        </div>
+                      )}
+                      {item.bundleComponentsSnapshot && item.bundleComponentsSnapshot.length > 0 && (
+                        <div className="mt-0.5 space-y-0.5">
+                          {item.bundleComponentsSnapshot.map((c, idx) => (
+                            <p key={idx} className="text-[10px] text-slate-400 font-bold">
+                              • {c.name} ×{c.quantity}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                      {item.allergensSnapshot && item.allergensSnapshot.length > 0 && (
+                        <div className="mt-1 flex items-start gap-1.5 text-red-400">
+                          <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <p className="text-[10px] font-black uppercase tracking-tight leading-tight">
+                            {item.allergensSnapshot.map((a) => a.name).join(", ")}
+                          </p>
                         </div>
                       )}
                       {item.notes && (

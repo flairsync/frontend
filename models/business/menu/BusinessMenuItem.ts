@@ -20,6 +20,9 @@ export class BusinessMenuItem {
   inventoryUnitId?: string | number;
   quantityPerSale?: number;
   kitchenStationId?: string | null;
+  isBundle?: boolean;
+  bundleComponents?: { menuItemId: string; quantity: number }[];
+  bundleComponentDetails?: { menuItemId: string; quantity: number; name: string; price: number }[];
 
   constructor(
     id: string,
@@ -36,6 +39,9 @@ export class BusinessMenuItem {
     inventoryUnitId?: string | number,
     quantityPerSale?: number,
     kitchenStationId?: string | null,
+    isBundle?: boolean,
+    bundleComponents?: { menuItemId: string; quantity: number }[],
+    bundleComponentDetails?: { menuItemId: string; quantity: number; name: string; price: number }[],
   ) {
     this.id = id;
     this.name = name;
@@ -51,6 +57,9 @@ export class BusinessMenuItem {
     this.inventoryUnitId = inventoryUnitId;
     this.quantityPerSale = quantityPerSale;
     this.kitchenStationId = kitchenStationId;
+    this.isBundle = isBundle ?? false;
+    this.bundleComponents = bundleComponents;
+    this.bundleComponentDetails = bundleComponentDetails;
   }
 
   static parseApiResponse(data: any): BusinessMenuItem | null {
@@ -75,6 +84,9 @@ export class BusinessMenuItem {
         data.inventoryUnitId,
         data.quantityPerSale,
         data.kitchenStationId ?? null,
+        !!data.isBundle,
+        data.bundleComponents ?? undefined,
+        data.bundleComponentDetails ?? undefined,
       );
     } catch (error) {
       console.log("ERROR PARSING THE MENU ITEM ", error);

@@ -398,6 +398,8 @@ const MenuDetailPage: React.FC = () => {
                                 inventoryUnitId: data.inventoryUnit,
                                 quantityPerSale: data.quantityPerSale,
                                 kitchenStationId: data.kitchenStationId,
+                                isBundle: data.isBundle,
+                                bundleComponents: data.bundleComponents,
                             },
                         }, {
                             onError: (err: any) => {
@@ -420,6 +422,8 @@ const MenuDetailPage: React.FC = () => {
                                 inventoryUnitId: data.inventoryUnit,
                                 quantityPerSale: data.quantityPerSale,
                                 kitchenStationId: data.kitchenStationId,
+                                isBundle: data.isBundle,
+                                bundleComponents: data.bundleComponents,
                             }
                         });
                     }

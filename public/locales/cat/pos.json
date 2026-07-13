@@ -11,7 +11,10 @@
   },
   "product_card": {
     "from_price": "Des de {{price}}",
-    "unavailable": "No disponible"
+    "unavailable": "No disponible",
+    "contains_allergens": "Conté: {{list}}",
+    "allergens_label": "Conté",
+    "includes_label": "Inclou"
   },
   "discount_panel": {
     "discount_applied": "Descompte aplicat",
@@ -290,7 +293,8 @@
       "available": "Lliure",
       "occupied": "Ocupada",
       "reserved": "Reservada",
-      "cleaning": "Neteja"
+      "cleaning": "Neteja",
+      "out_of_service": "Fora de servei"
     },
     "order_card": {
       "table": "Taula",
@@ -327,6 +331,10 @@
       "table_occupied": {
         "title": "{{name}} està ocupada",
         "description": "Aquesta taula té una comanda activa ({{amount}} $). Vols veure-la?"
+      },
+      "table_cleaning": {
+        "title": "{{name}} necessita neteja",
+        "description": "Marcar aquesta taula com a neta i disponible de nou?"
       }
     },
     "toasts": {
@@ -348,7 +356,9 @@
       "cancel_order_failed": "Error en cancel·lar la comanda",
       "table_assigned_to_cart": "{{name}} assignada al carret",
       "reorder_created": "Comanda repetida creada",
-      "reorder_failed": "Error en repetir la comanda"
+      "reorder_failed": "Error en repetir la comanda",
+      "table_marked_clean": "{{name}} marcada com a disponible",
+      "table_mark_clean_failed": "Error en actualitzar l'estat de la taula"
     }
   }
 }

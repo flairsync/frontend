@@ -79,6 +79,8 @@ interface ItemModalProps {
         inventoryUnit?: string;
         quantityPerSale?: number;
         kitchenStationId?: string | null;
+        isBundle?: boolean;
+        bundleComponents?: { menuItemId: string; quantity: number }[];
     }) => void;
     allergies: Allergy[];
     initialData?: BusinessMenuItem;
@@ -344,6 +346,20 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     const [inventoryUnit, setInventoryUnit] = useState<string>('');
     const [quantityPerSale, setQuantityPerSale] = useState<string>('1');
 
+    // Bundle state
+    const [isBundle, setIsBundle] = useState(false);
+    const [bundleComponents, setBundleComponents] = useState<{ menuItemId: string; quantity: number }[]>([]);
+    const [newComponentId, setNewComponentId] = useState<string>('');
+    const [newComponentQty, setNewComponentQty] = useState<string>('1');
+
+    const handleAddBundleComponent = () => {
+        if (!newComponentId) return;
+        const qty = parseInt(newComponentQty, 10) || 1;
+        setBundleComponents((prev) => [...prev, { menuItemId: newComponentId, quantity: qty }]);
+        setNewComponentId('');
+        setNewComponentQty('1');
+    };
+
     const {
         inventoryItems,
         fetchingInventoryItems,
@@ -374,6 +390,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             setInventoryUnit(initialData.inventoryUnitId?.toString() || '');
             setQuantityPerSale(initialData.quantityPerSale?.toString() || '1');
             setKitchenStationId(initialData.kitchenStationId ?? null);
+            setIsBundle(initialData.isBundle ?? false);
+            setBundleComponents(initialData.bundleComponents ?? []);
         } else {
             setName('');
             setDescription('');
@@ -386,6 +404,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             setInventoryUnit('');
             setQuantityPerSale('1');
             setKitchenStationId(null);
+            setIsBundle(false);
+            setBundleComponents([]);
         }
     }, [initialData?.id, open]);
 
@@ -419,6 +439,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
             inventoryUnit: (trackingMode === 'direct_item' && createInventoryItem) ? inventoryUnit : undefined,
             quantityPerSale: trackingMode === 'direct_item' ? parseFloat(quantityPerSale) : undefined,
             kitchenStationId,
+            isBundle,
+            bundleComponents: isBundle ? bundleComponents : [],
         });
 
         onClose();
@@ -838,6 +860,68 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                         </p>
                                     </div>
                                 </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Bundle Section */}
+                    <div className="space-y-4 pt-4 border-t">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <label className="text-sm font-medium">Bundle / Combo</label>
+                                <p className="text-xs text-muted-foreground">Sell this as a fixed set of other menu items at one price</p>
+                            </div>
+                            <Switch checked={isBundle} onCheckedChange={setIsBundle} />
+                        </div>
+
+                        {isBundle && (
+                            <div className="space-y-3 pl-4 border-l-2 border-muted animate-in fade-in slide-in-from-left-2">
+                                <div className="flex gap-2">
+                                    <Select value={newComponentId} onValueChange={setNewComponentId}>
+                                        <SelectTrigger className="flex-1">
+                                            <SelectValue placeholder="Add an item..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {(availableItems ?? [])
+                                                .filter((item) => item.id !== initialData?.id && !bundleComponents.some((c) => c.menuItemId === item.id))
+                                                .map((item) => (
+                                                    <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
+                                                ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <Input
+                                        type="number"
+                                        min={1}
+                                        className="w-20"
+                                        value={newComponentQty}
+                                        onChange={(e) => setNewComponentQty(e.target.value)}
+                                    />
+                                    <Button type="button" size="sm" variant="outline" onClick={handleAddBundleComponent} disabled={!newComponentId}>
+                                        <Plus className="w-4 h-4" />
+                                    </Button>
+                                </div>
+
+                                {bundleComponents.length > 0 && (
+                                    <div className="space-y-1">
+                                        {bundleComponents.map((c) => {
+                                            const item = availableItems?.find((i) => i.id === c.menuItemId);
+                                            return (
+                                                <div key={c.menuItemId} className="flex items-center justify-between text-sm bg-muted/50 rounded-md px-3 py-1.5">
+                                                    <span>{item?.name ?? c.menuItemId} × {c.quantity}</span>
+                                                    <Button
+                                                        type="button"
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        className="h-6 w-6"
+                                                        onClick={() => setBundleComponents((prev) => prev.filter((x) => x.menuItemId !== c.menuItemId))}
+                                                    >
+                                                        <X className="w-3.5 h-3.5" />
+                                                    </Button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

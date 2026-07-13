@@ -11,7 +11,10 @@
   },
   "product_card": {
     "from_price": "From {{price}}",
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "contains_allergens": "Contains: {{list}}",
+    "allergens_label": "Contains",
+    "includes_label": "Includes"
   },
   "discount_panel": {
     "discount_applied": "Discount applied",
@@ -290,7 +293,8 @@
       "available": "Vacant",
       "occupied": "Occupied",
       "reserved": "Reserved",
-      "cleaning": "Cleaning"
+      "cleaning": "Cleaning",
+      "out_of_service": "Out of Service"
     },
     "order_card": {
       "table": "Table",
@@ -327,6 +331,10 @@
       "table_occupied": {
         "title": "{{name}} is Occupied",
         "description": "This table has an active order (${{amount}}). Would you like to view it?"
+      },
+      "table_cleaning": {
+        "title": "{{name}} Needs Cleaning",
+        "description": "Mark this table as clean and available again?"
       }
     },
     "toasts": {
@@ -348,7 +356,9 @@
       "cancel_order_failed": "Failed to cancel order",
       "table_assigned_to_cart": "{{name}} assigned to cart",
       "reorder_created": "Reorder created",
-      "reorder_failed": "Failed to reorder"
+      "reorder_failed": "Failed to reorder",
+      "table_marked_clean": "{{name}} marked as available",
+      "table_mark_clean_failed": "Failed to update table status"
     }
   }
 }

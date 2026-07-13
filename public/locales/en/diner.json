@@ -90,7 +90,9 @@
   "menu_tab": {
     "unavailable": "Unavailable",
     "ordering_unavailable_title": "Online ordering unavailable",
-    "ordering_unavailable_description": "This restaurant doesn't accept online orders right now — please order with your waiter."
+    "ordering_unavailable_description": "This restaurant doesn't accept online orders right now — please order with your waiter.",
+    "contains_allergens": "Contains",
+    "includes_label": "Includes"
   },
   "menu_page": {
     "unavailable_title": "Menu unavailable",

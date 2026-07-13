@@ -1,5 +1,5 @@
 import flairapi from "@/lib/flairapi";
-import { WalkInReservationDto, AssignTableDto, CustomerLateDto } from "./types";
+import { WalkInReservationDto, AssignTableDto, CustomerLateDto, JoinWaitlistDto, WaitlistEntry } from "./types";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const getReservationsUrl = (businessId: string) => {
@@ -45,6 +45,7 @@ export interface UpdateReservationDto {
     guestCount?: number;
     notes?: string;
     tableId?: string;
+    combinedTableIds?: string[];
     status?: "PENDING" | "CONFIRMED" | "SEATED" | "COMPLETED" | "CANCELLED" | "NO_SHOW" | "EXPIRED" | "WAITLIST";
 }
 
@@ -95,3 +96,11 @@ export const recordCustomerLateApiCall = (businessId: string, reservationId: str
 
 export const fetchReservationEventsApiCall = async (businessId: string, reservationId: string) =>
     unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}/events`));
+
+// Waitlist
+export const joinWaitlistApiCall = (businessId: string, data: JoinWaitlistDto) => {
+    return flairapi.post(`${getReservationsUrl(businessId)}/waitlist`, data);
+};
+
+export const fetchWaitlistApiCall = async (businessId: string): Promise<WaitlistEntry[]> =>
+    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/waitlist`));

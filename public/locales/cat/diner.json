@@ -90,7 +90,9 @@
   "menu_tab": {
     "unavailable": "No disponible",
     "ordering_unavailable_title": "Comandes en línia no disponibles",
-    "ordering_unavailable_description": "Aquest restaurant no accepta comandes en línia ara mateix — si us plau, demana-ho al teu cambrer."
+    "ordering_unavailable_description": "Aquest restaurant no accepta comandes en línia ara mateix — si us plau, demana-ho al teu cambrer.",
+    "contains_allergens": "Conté",
+    "includes_label": "Inclou"
   },
   "menu_page": {
     "unavailable_title": "Menú no disponible",

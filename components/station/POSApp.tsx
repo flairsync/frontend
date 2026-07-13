@@ -107,18 +107,20 @@ function useInactivityLock(timeoutMs: number, onLock: () => void) {
 // ─── Status helpers ───────────────────────────────────────────────────────────
 
 const TABLE_STATUS_STYLES: Record<string, string> = {
-    AVAILABLE: "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/20",
-    OCCUPIED: "bg-red-500/10 border-red-500/30 text-red-600 hover:bg-red-500/20",
-    RESERVED: "bg-amber-500/10 border-amber-500/30 text-amber-600 hover:bg-amber-500/20",
-    CLEANING: "bg-muted border-border text-muted-foreground hover:bg-muted/80",
+    available: "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/20",
+    occupied: "bg-red-500/10 border-red-500/30 text-red-600 hover:bg-red-500/20",
+    reserved: "bg-amber-500/10 border-amber-500/30 text-amber-600 hover:bg-amber-500/20",
+    cleaning: "bg-muted border-border text-muted-foreground hover:bg-muted/80",
+    out_of_service: "bg-slate-500/10 border-slate-500/30 text-slate-500 hover:bg-slate-500/20",
 };
 
 function getTableStatusLabels(t: (key: string) => string): Record<string, string> {
     return {
-        AVAILABLE: t("pos_app.table_status.available"),
-        OCCUPIED: t("pos_app.table_status.occupied"),
-        RESERVED: t("pos_app.table_status.reserved"),
-        CLEANING: t("pos_app.table_status.cleaning"),
+        available: t("pos_app.table_status.available"),
+        occupied: t("pos_app.table_status.occupied"),
+        reserved: t("pos_app.table_status.reserved"),
+        cleaning: t("pos_app.table_status.cleaning"),
+        out_of_service: t("pos_app.table_status.out_of_service"),
     };
 }
 
@@ -556,8 +558,18 @@ function POSMain({
         [refreshOrders, refreshTables, t],
     );
 
+    const handleMarkTableClean = useCallback(async (table: PosTable) => {
+        try {
+            await stationApi.patch(`/station/tables/${table.id}/status`, { status: "available" });
+            toast.success(t("pos_app.toasts.table_marked_clean", { name: table.name }));
+            refreshTables();
+        } catch {
+            toast.error(t("pos_app.toasts.table_mark_clean_failed"));
+        }
+    }, [refreshTables, t]);
+
     const handleTableSelect = (table: PosTable) => {
-        if (table.status === "OCCUPIED") {
+        if (table.status === "occupied") {
             const existing = activeOrders.find((o) => o.tableId === table.id);
             if (existing) {
                 setConfirmModal({
@@ -571,6 +583,16 @@ function POSMain({
                 return;
             }
         }
+        if (table.status === "cleaning") {
+            setConfirmModal({
+                isOpen: true,
+                title: t("pos_app.confirm_modals.table_cleaning.title", { name: table.name }),
+                description: t("pos_app.confirm_modals.table_cleaning.description"),
+                onConfirm: () => handleMarkTableClean(table),
+            });
+            return;
+        }
+        if (table.status === "out_of_service") return;
         setSelectedTableId(table.id);
         setOrderMode("dine-in");
         setActiveMainSection("menu");
@@ -975,9 +997,14 @@ function POSMain({
                                                               table.status}
                                                     </span>
                                                 </div>
-                                                {table.status === "OCCUPIED" && !isActive && (
+                                                {table.status === "occupied" && !isActive && (
                                                     <Badge className="absolute -top-2 -right-2 px-1.5 h-5 font-black text-[9px] bg-red-500">
                                                         {t("pos_app.tables_view.active_badge")}
+                                                    </Badge>
+                                                )}
+                                                {table.status === "cleaning" && !isActive && (
+                                                    <Badge className="absolute -top-2 -right-2 px-1.5 h-5 font-black text-[9px] bg-slate-500">
+                                                        {t("pos_app.table_status.cleaning")}
                                                     </Badge>
                                                 )}
                                             </div>

@@ -96,9 +96,22 @@ export interface WalkInReservationDto {
 
 export interface AssignTableDto {
     tableId: string;
+    combinedTableIds?: string[];
 }
 
 export interface CustomerLateDto {
     estimatedDelayMinutes?: number;
     notes?: string;
+}
+
+export interface JoinWaitlistDto {
+    customerName: string;
+    customerEmail?: string;
+    customerPhone?: string;
+    guestCount: number;
+    notes?: string;
+}
+
+export interface WaitlistEntry extends ReservationSummary {
+    waitingMinutes: number;
 }

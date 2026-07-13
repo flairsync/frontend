@@ -21,6 +21,22 @@ import { BatchCreateTableModal } from "@/components/management/floor-plan/BatchC
 import { PrintQrCodesButton } from "@/components/qr/PrintQrCodesButton";
 import { DownloadTableQrButton } from "@/components/qr/DownloadTableQrButton";
 
+const TABLE_STATUS_LABELS: Record<string, string> = {
+    available: "Available",
+    occupied: "Occupied",
+    reserved: "Reserved",
+    cleaning: "Needs Cleaning",
+    out_of_service: "Out of Service",
+};
+
+const TABLE_STATUS_BADGE_CLASS: Record<string, string> = {
+    available: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    occupied: "bg-red-50 text-red-700 border-red-200",
+    reserved: "bg-amber-50 text-amber-700 border-amber-200",
+    cleaning: "bg-slate-100 text-slate-700 border-slate-300",
+    out_of_service: "bg-slate-100 text-slate-500 border-slate-300",
+};
+
 const FloorPlanPage: React.FC = () => {
     const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
@@ -263,14 +279,15 @@ const FloorPlanPage: React.FC = () => {
                                         <TableHead>{t("inventory_management.table.name")}</TableHead>
                                         <TableHead>{t("floor_plan.capacity")}</TableHead>
                                         <TableHead>{t("floor_plan.title")}</TableHead>
+                                        <TableHead>Status</TableHead>
                                         <TableHead className="text-right">{t("shared.actions.all")}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {fetchingTables ? (
-                                        <TableRow><TableCell colSpan={5} className="text-center">Loading...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={6} className="text-center">Loading...</TableCell></TableRow>
                                     ) : tables?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={5} className="text-center">No tables found.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={6} className="text-center">No tables found.</TableCell></TableRow>
                                     ) : (
                                         tables?.map((table: any) => (
                                             <TableRow key={table.id}>
@@ -278,8 +295,22 @@ const FloorPlanPage: React.FC = () => {
                                                 <TableCell className="font-medium">{table.name}</TableCell>
                                                 <TableCell>{table.capacity}</TableCell>
                                                 <TableCell>{floors?.find((f: any) => f.id === table.floorId)?.name || "-"}</TableCell>
+                                                <TableCell>
+                                                    <Badge variant="outline" className={TABLE_STATUS_BADGE_CLASS[table.status] ?? ""}>
+                                                        {TABLE_STATUS_LABELS[table.status] ?? table.status}
+                                                    </Badge>
+                                                </TableCell>
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
+                                                        {table.status === "cleaning" && (
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                onClick={() => updateTable({ tableId: table.id, data: { status: "available" } })}
+                                                            >
+                                                                Mark Available
+                                                            </Button>
+                                                        )}
                                                         <DownloadTableQrButton businessId={businessId} tableId={table.id} tableName={table.name} />
                                                         <Button size="icon" variant="ghost" onClick={() => handleEditTable(table)}>
                                                             <Pencil className="w-4 h-4" />

@@ -42,6 +42,7 @@ type Props = {
     businessDetails?: MyBusinessFullDetails,
     onSaveDetails?: (data: BusinessGeneralInfo) => void,
     onTogglePublished?: (val: boolean) => void,
+    onToggleAutoDisableOutOfStock?: (val: boolean) => void,
     disabled?: boolean,
     sectionRef?: (el: HTMLDivElement | null) => void,
     highlighted?: boolean,
@@ -213,6 +214,17 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             disabled={props.disabled}
                             checked={props.businessDetails?.isPublished ?? false}
                             onCheckedChange={(val) => props.onTogglePublished?.(val)}
+                        />
+                    </div>
+                    <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                        <div className="space-y-0.5">
+                            <Label>Auto-Disable Out-of-Stock Items</Label>
+                            <p className="text-xs text-muted-foreground">Automatically hide a menu item once its tracked stock hits zero, and bring it back once restocked</p>
+                        </div>
+                        <Switch
+                            disabled={props.disabled}
+                            checked={props.businessDetails?.autoDisableOutOfStock ?? false}
+                            onCheckedChange={(val) => props.onToggleAutoDisableOutOfStock?.(val)}
                         />
                     </div>
                 </div>

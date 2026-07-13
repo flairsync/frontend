@@ -43,6 +43,7 @@ export interface UpdateTableDto {
     capacity?: number;
     floorId?: string;
     position?: TablePosition;
+    status?: "available" | "occupied" | "reserved" | "out_of_service" | "cleaning";
 }
 
 // Floors

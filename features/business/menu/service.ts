@@ -169,6 +169,8 @@ export type CreateMenuItemDto = {
   inventoryUnitId?: string | number;
   quantityPerSale?: number;
   kitchenStationId?: string | null;
+  isBundle?: boolean;
+  bundleComponents?: { menuItemId: string; quantity: number }[];
 };
 
 export const createNewMenuItemApiCall = (
@@ -201,6 +203,13 @@ export const createNewMenuItemApiCall = (
 
   if (data.kitchenStationId !== undefined) {
     payload.append("kitchenStationId", data.kitchenStationId ?? "");
+  }
+
+  if (data.isBundle !== undefined) {
+    payload.append("isBundle", data.isBundle.toString());
+  }
+  if (data.bundleComponents !== undefined) {
+    payload.append("bundleComponents", JSON.stringify(data.bundleComponents));
   }
 
   // allergies[] → backend-friendly
@@ -247,6 +256,8 @@ export type UpdateMenuItemDto = {
   inventoryUnitId?: string | number;
   quantityPerSale?: number;
   kitchenStationId?: string | null;
+  isBundle?: boolean;
+  bundleComponents?: { menuItemId: string; quantity: number }[];
 };
 
 export const updateMenuItemApiCall = (
@@ -281,6 +292,13 @@ export const updateMenuItemApiCall = (
 
   if (data.kitchenStationId !== undefined) {
     payload.append("kitchenStationId", data.kitchenStationId ?? "");
+  }
+
+  if (data.isBundle !== undefined) {
+    payload.append("isBundle", data.isBundle.toString());
+  }
+  if (data.bundleComponents !== undefined) {
+    payload.append("bundleComponents", JSON.stringify(data.bundleComponents));
   }
 
   // allergies[] → backend-friendly

@@ -51,6 +51,7 @@ import {
     Megaphone,
     Globe,
     HandCoins,
+    Tag,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -134,6 +135,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "inventory", titleKey: "sidebar.items.inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
             { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
             { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
+            { key: "discounts", titleKey: "sidebar.items.discounts", url: "/manage/:id/owner/discounts", icon: Tag },
             { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
             { key: "website", titleKey: "sidebar.items.website", url: "/manage/:id/owner/website", icon: Globe },
             { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
