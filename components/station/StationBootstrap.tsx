@@ -11,7 +11,7 @@ import KDSApp from "./KDSApp";
 import { Loader2 } from "lucide-react";
 
 // Map raw API response fields to the PosMenu shape expected by the UI
-function normalizePosMenus(raw: any[]): PosMenu[] {
+export function normalizePosMenus(raw: any[]): PosMenu[] {
   return raw.map((menu) => ({
     id: menu.id,
     name: menu.name,

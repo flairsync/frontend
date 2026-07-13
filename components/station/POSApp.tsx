@@ -58,6 +58,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { PosModeSwitcher } from "@/components/pos/PosModeSwitcher";
 import { stationApi, staffApi, pinLogout } from "@/features/station/station-api";
+import { normalizePosMenus } from "@/components/station/StationBootstrap";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import { useStationSocket } from "@/features/station/useStationSocket";
@@ -177,7 +178,7 @@ function POSMain({
     const rightPanel = useResizablePanel(340, 260, 500, true);
 
     // ── Data state ──
-    const [menus] = useState<PosMenu[]>(bootstrapData.menus);
+    const [menus, setMenus] = useState<PosMenu[]>(bootstrapData.menus);
     const [tables, setTables] = useState<PosTable[]>(bootstrapData.tables);
     const [activeOrders, setActiveOrders] = useState<Order[]>([]);
 
@@ -287,22 +288,36 @@ function POSMain({
         } catch { /* silent */ }
     }, []);
 
+    // Menu items are otherwise only fetched once at station bootstrap, so
+    // server-side changes (auto-disable on out-of-stock, manual edits) never
+    // reach an already-open POS session without this.
+    const refreshMenus = useCallback(async () => {
+        try {
+            const res = await stationApi.get("/station/menu");
+            const raw: any[] = Array.isArray(res.data) ? res.data : Array.isArray(res.data?.data) ? res.data.data : [];
+            setMenus(normalizePosMenus(raw));
+        } catch { /* silent */ }
+    }, []);
+
     // Initial load + 60s fallback poll (WebSocket handles real-time updates)
     useEffect(() => {
         refreshOrders(1);
         const ordersInterval = setInterval(() => refreshOrders(1), 60_000);
         const tablesInterval = setInterval(refreshTables, 15_000);
+        const menusInterval = setInterval(refreshMenus, 30_000);
         return () => {
             clearInterval(ordersInterval);
             clearInterval(tablesInterval);
+            clearInterval(menusInterval);
         };
-    }, [refreshOrders, refreshTables]);
+    }, [refreshOrders, refreshTables, refreshMenus]);
 
     // Real-time order updates via WebSocket
     useStationSocket(useCallback(() => {
         refreshOrders();
         refreshTables();
-    }, [refreshOrders, refreshTables]));
+        refreshMenus();
+    }, [refreshOrders, refreshTables, refreshMenus]));
 
     // Replay queued offline operations on reconnect
     useEffect(() => {

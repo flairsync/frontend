@@ -96,6 +96,10 @@ export const useDiscoveryMenu = (businessId: string | undefined) => {
             return BusinessMenu.parseApiResponse(menuData);
         },
         enabled: !!businessId,
+        // Diners can browse for a while before ordering — poll so item
+        // availability (e.g. auto-disabled out-of-stock items) and newly
+        // added items/combos show up without a manual refresh.
+        refetchInterval: 2 * 60_000,
     });
 };
 

@@ -37,6 +37,15 @@ import { toast } from "sonner";
 export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
   const queryClient = useQueryClient();
 
+  // Item/category changes here also affect the business-wide aggregate views
+  // (copy-from lists, bundle component pickers, duplication modal) that
+  // useBusinessMenus builds from all menus — keep them in sync too.
+  const invalidateBusinessMenuAggregates = () => {
+    queryClient.invalidateQueries({ queryKey: ["business_menus", businessId] });
+    queryClient.invalidateQueries({ queryKey: ["business_menu_items", businessId] });
+    queryClient.invalidateQueries({ queryKey: ["business_menu_categories", businessId] });
+  };
+
   //#region Menu
   const { data: businessMenu, refetch: refreshBusinessMenu } = useQuery({
     queryKey: ["business_menu", businessId, menuId],
@@ -93,6 +102,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     },
     onSuccess(data, variables, context) {
       refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
     },
   });
 
@@ -137,6 +147,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Category Removed !");
       refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
     },
   });
 
@@ -156,6 +167,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Items added !");
       refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
     },
   });
 
@@ -176,6 +188,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Item added!");
       refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
     },
   });
 
@@ -191,6 +204,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     },
     onSuccess(data, variables, context) {
       refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
     },
   });
 
@@ -211,6 +225,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     },
     onSuccess(data, variables, context) {
       refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
     },
   });
 

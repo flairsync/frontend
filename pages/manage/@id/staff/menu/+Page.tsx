@@ -34,7 +34,7 @@ export default function StaffMenuPage() {
     const canDelete = hasPermission('MENU', 'delete');
 
     // Menus State
-    const { businessBasicMenus, createNewMenu } = useBusinessMenus(businessId);
+    const { businessBasicMenus, createNewMenu, businessAllItems } = useBusinessMenus(businessId);
     const [selectedMenuId, setSelectedMenuId] = useState<string | null>(null);
 
     // Selected Menu Details
@@ -405,6 +405,8 @@ export default function StaffMenuPage() {
                         inventoryUnitId: data.inventoryUnit,
                         quantityPerSale: data.quantityPerSale,
                         kitchenStationId: data.kitchenStationId,
+                        isBundle: data.isBundle,
+                        bundleComponents: data.bundleComponents,
                     } as any;
 
                     if (modalMode === 'create') {
@@ -417,7 +419,7 @@ export default function StaffMenuPage() {
                 allergies={allergies || []}
                 initialData={editingItem ? (categories.find(c => c.id === targetCategoryId)?.items?.find(i => i.id === editingItem.id) || editingItem) : undefined}
                 businessId={businessId}
-                availableItems={[]}
+                availableItems={businessAllItems}
             />
 
             <Dialog open={movingItem != null} onOpenChange={(open) => !open && setMovingItem(null)}>

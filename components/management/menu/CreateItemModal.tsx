@@ -904,10 +904,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                 {bundleComponents.length > 0 && (
                                     <div className="space-y-1">
                                         {bundleComponents.map((c) => {
+                                            // Prefer the backend-resolved name (always correct, even if
+                                            // availableItems hasn't refreshed yet or lacks cross-menu items).
+                                            const savedDetail = initialData?.bundleComponentDetails?.find((d) => d.menuItemId === c.menuItemId);
                                             const item = availableItems?.find((i) => i.id === c.menuItemId);
+                                            const componentName = savedDetail?.name ?? item?.name ?? c.menuItemId;
                                             return (
                                                 <div key={c.menuItemId} className="flex items-center justify-between text-sm bg-muted/50 rounded-md px-3 py-1.5">
-                                                    <span>{item?.name ?? c.menuItemId} × {c.quantity}</span>
+                                                    <span>{componentName} × {c.quantity}</span>
                                                     <Button
                                                         type="button"
                                                         size="icon"
