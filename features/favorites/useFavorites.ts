@@ -27,6 +27,7 @@ export const useFavorites = () => {
             await queryClient.cancelQueries({ queryKey: ["discovery_search"] });
             await queryClient.cancelQueries({ queryKey: ["discovery_search_infinite"] });
             await queryClient.cancelQueries({ queryKey: ["discovery_profile"] });
+            await queryClient.cancelQueries({ queryKey: ["business_page"] });
 
             const previousFavorites = queryClient.getQueryData(["favorites"]);
 
@@ -35,6 +36,9 @@ export const useFavorites = () => {
 
             // Update Discovery Profile
             queryClient.setQueriesData({ queryKey: ["discovery_profile", businessId] }, (old: any) => old ? { ...old, isFavorite: true } : old);
+
+            // Update Business Page (public profile page — data shape is { profile, menu })
+            queryClient.setQueriesData({ queryKey: ["business_page", businessId] }, (old: any) => old ? { ...old, profile: { ...old.profile, isFavorite: true } } : old);
 
             // Update Discovery Search
             queryClient.setQueriesData({ queryKey: ["discovery_search"] }, (old: any) => {
@@ -66,6 +70,7 @@ export const useFavorites = () => {
             queryClient.invalidateQueries({ queryKey: ["discovery_search"] });
             queryClient.invalidateQueries({ queryKey: ["discovery_search_infinite"] });
             queryClient.invalidateQueries({ queryKey: ["discovery_profile", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["business_page", businessId] });
         },
     });
 
@@ -76,6 +81,7 @@ export const useFavorites = () => {
             await queryClient.cancelQueries({ queryKey: ["discovery_search"] });
             await queryClient.cancelQueries({ queryKey: ["discovery_search_infinite"] });
             await queryClient.cancelQueries({ queryKey: ["discovery_profile"] });
+            await queryClient.cancelQueries({ queryKey: ["business_page"] });
 
             const previousFavorites = queryClient.getQueryData(["favorites"]);
 
@@ -91,6 +97,9 @@ export const useFavorites = () => {
             // Update Discovery Profile
             queryClient.setQueriesData({ queryKey: ["discovery_profile", businessId] }, (old: any) => old ? { ...old, isFavorite: false } : old);
 
+            // Update Business Page (public profile page — data shape is { profile, menu })
+            queryClient.setQueriesData({ queryKey: ["business_page", businessId] }, (old: any) => old ? { ...old, profile: { ...old.profile, isFavorite: false } } : old);
+
             // Update Discovery Search
             queryClient.setQueriesData({ queryKey: ["discovery_search"] }, (old: any) => {
                 if (!old) return old;
@@ -121,6 +130,7 @@ export const useFavorites = () => {
             queryClient.invalidateQueries({ queryKey: ["discovery_search"] });
             queryClient.invalidateQueries({ queryKey: ["discovery_search_infinite"] });
             queryClient.invalidateQueries({ queryKey: ["discovery_profile", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["business_page", businessId] });
         },
     });
 
