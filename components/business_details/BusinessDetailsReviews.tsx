@@ -88,7 +88,8 @@ function ReviewFormDialog({ businessId, existingReview, open, onClose, onReviewS
             onClose();
         } catch (error: any) {
             const status = error.response?.status;
-            if (status === 403) {
+            const message = error.response?.data?.message;
+            if (status === 400 && message?.includes("completed order or confirmed reservation")) {
                 toast.error(t("business_page.reviews.only_visited_error", "You can only review businesses you've visited."));
             } else if (status === 409) {
                 toast.error(t("business_page.reviews.already_reviewed_error", "You already have a review. Editing it instead."));
