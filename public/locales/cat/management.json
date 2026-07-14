@@ -1448,6 +1448,12 @@
       "takeaway": "Per emportar",
       "delivery": "Lliurament a domicili",
       "tooltip_label": "Comandes"
+    },
+    "busiest_hours_chart": {
+      "title": "Hores de més afluència",
+      "description": "Clients asseguts per hora del dia en el període seleccionat",
+      "no_data": "No hi ha dades d'afluència disponibles.",
+      "tooltip_visitors": "Clients asseguts"
     }
   }
 }

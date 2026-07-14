@@ -18,9 +18,16 @@ export interface TopProductMetric {
     totalRevenue: string | number;
 }
 
+export interface HourlyVisitorMetric {
+    hour: number; // 0-23
+    visitorCount: string | number;
+    reservationCount: string | number;
+}
+
 export interface DashboardAnalyticsData {
     sales: DailySalesMetric[];
     topProducts: TopProductMetric[];
+    hourlyVisitors: HourlyVisitorMetric[];
 }
 
 export interface ApiResponse<T = any> {

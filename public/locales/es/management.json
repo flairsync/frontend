@@ -1448,6 +1448,12 @@
       "takeaway": "Para llevar",
       "delivery": "Entrega a domicilio",
       "tooltip_label": "Pedidos"
+    },
+    "busiest_hours_chart": {
+      "title": "Horas de mayor afluencia",
+      "description": "Clientes sentados por hora del día en el período seleccionado",
+      "no_data": "No hay datos de afluencia disponibles.",
+      "tooltip_visitors": "Clientes sentados"
     }
   }
 }

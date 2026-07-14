@@ -1448,6 +1448,12 @@
       "takeaway": "À emporter",
       "delivery": "Livraison",
       "tooltip_label": "Commandes"
+    },
+    "busiest_hours_chart": {
+      "title": "Heures d'affluence",
+      "description": "Clients installés par heure sur la période sélectionnée",
+      "no_data": "Aucune donnée de fréquentation disponible.",
+      "tooltip_visitors": "Clients installés"
     }
   }
 }

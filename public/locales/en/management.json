@@ -1448,6 +1448,12 @@
       "takeaway": "Takeaway",
       "delivery": "Delivery",
       "tooltip_label": "Orders"
+    },
+    "busiest_hours_chart": {
+      "title": "Busiest Hours",
+      "description": "Guests seated by hour of day for the selected period",
+      "no_data": "No visitor data available.",
+      "tooltip_visitors": "Guests seated"
     }
   }
 }

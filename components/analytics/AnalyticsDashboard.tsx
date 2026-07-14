@@ -21,6 +21,9 @@ const AnalyticsRevenueChart = clientOnly(() =>
 const AnalyticsOrderTypesChart = clientOnly(() =>
     import("./AnalyticsOrderTypesChart").then((m) => ({ default: m.AnalyticsOrderTypesChart }))
 );
+const AnalyticsBusiestHoursChart = clientOnly(() =>
+    import("./AnalyticsBusiestHoursChart").then((m) => ({ default: m.AnalyticsBusiestHoursChart }))
+);
 
 const chartSkeleton = (
     <Card className="shadow-sm">
@@ -97,6 +100,10 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <AnalyticsRevenueChart sales={data.sales} fallback={chartSkeleton} />
                         <AnalyticsOrderTypesChart sales={data.sales} fallback={chartSkeleton} />
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                        <AnalyticsBusiestHoursChart hourlyVisitors={data.hourlyVisitors} fallback={chartSkeleton} />
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
