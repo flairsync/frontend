@@ -76,7 +76,8 @@
         "instagram": "Instagram",
         "facebook": "Facebook",
         "website": "Web"
-      }
+      },
+      "message_subject": "Consulta sobre {{name}}"
     },
     "error": {
       "title": "Error",
@@ -88,7 +89,11 @@
       "share_text": "Descobreix {{name}}",
       "share_failed": "No s'ha pogut obrir el menú per compartir.",
       "link_copied": "Enllaç copiat al porta-retalls!",
-      "copy_failed": "No s'ha pogut copiar l'enllaç."
+      "copy_failed": "No s'ha pogut copiar l'enllaç.",
+      "share_button": "Comparteix aquest negoci",
+      "favorite_button": "Afegeix a preferits",
+      "unfavorite_button": "Treu de preferits",
+      "price_level_label": "Nivell de preu"
     },
     "order_modal": {
       "geolocation_unsupported": "El teu navegador no admet la geolocalització",
@@ -251,6 +256,13 @@
       "guests_count": "{{count}} comensals",
       "table_prefix": "Taula {{number}}",
       "terminal_status": "Aquesta reserva està {{status}}."
+    },
+    "nav": {
+      "overview": "Resum",
+      "menu": "Menú",
+      "reserve": "Reserva",
+      "reviews": "Ressenyes",
+      "contact": "Contacte"
     }
   }
 }

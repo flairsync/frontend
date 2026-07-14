@@ -116,6 +116,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                         variant="outline"
                         size="icon"
                         onClick={handleShare}
+                        aria-label={t("business_page.hero.share_button", "Share this business")}
                         className={cn(
                             "rounded-full hover:scale-110 transition-all",
                             hasMedia
@@ -130,6 +131,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                             variant="outline"
                             size="icon"
                             onClick={toggleFavorite}
+                            aria-label={t(profile.isFavorite ? "business_page.hero.unfavorite_button" : "business_page.hero.favorite_button", profile.isFavorite ? "Remove from favorites" : "Add to favorites")}
                             className={cn(
                                 "rounded-full transition-all duration-300",
                                 profile.isFavorite
@@ -159,7 +161,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                         className="absolute bottom-10 left-10 right-10 hidden md:block"
                     >
                         <div className="flex justify-between items-end p-8 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[2rem] shadow-2xl">
-                            <div className="space-y-4">
+                            <div className="space-y-4 max-w-2xl">
                                 <div className="flex gap-2">
                                     {profile.type && (
                                         <Badge className="bg-primary/20 backdrop-blur-md border-primary/20 text-primary-foreground capitalize">
@@ -173,8 +175,17 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                     ))}
                                 </div>
                                 <div className="space-y-1">
-                                    <h1 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">{profile.name}</h1>
-                                    <div className="flex items-center gap-4 text-white/70">
+                                    <div className="flex items-center gap-3">
+                                        {profile.logo && (
+                                            <img
+                                                src={profile.logo}
+                                                alt=""
+                                                className="w-12 h-12 rounded-2xl object-cover border-2 border-white/30 shadow-lg shrink-0"
+                                            />
+                                        )}
+                                        <h1 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">{profile.name}</h1>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-white/70 flex-wrap">
                                         <div className="flex items-center gap-1">
                                             <MapPin size={16} className="text-primary" />
                                             <span className="text-sm">{addressLabel}</span>
@@ -190,7 +201,17 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                         ) : (
                                             <span className="text-xs text-white/50">{t("business_page.info_cards.no_reviews_yet", "No reviews yet")}</span>
                                         )}
+                                        {profile.priceLevel > 0 && (
+                                            <span className="text-sm font-bold text-white/70" title={t("business_page.hero.price_level_label", "Price level")}>
+                                                {"$".repeat(profile.priceLevel)}
+                                            </span>
+                                        )}
                                     </div>
+                                    {profile.description && (
+                                        <p className="text-sm text-white/70 leading-relaxed line-clamp-2 pt-1 max-w-xl">
+                                            {profile.description}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                             {profile.allowReservations && (
@@ -215,7 +236,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                     transition={{ delay: 0.3 }}
                     className="hidden md:flex justify-between items-end px-2"
                 >
-                    <div className="space-y-3">
+                    <div className="space-y-3 max-w-2xl">
                         <div className="flex gap-2 flex-wrap">
                             {profile.type && (
                                 <Badge variant="secondary" className="capitalize">
@@ -226,8 +247,17 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                 <Badge key={tag.id} variant="secondary">{tag.name}</Badge>
                             ))}
                         </div>
-                        <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">{profile.name}</h1>
-                        <div className="flex items-center gap-4 text-muted-foreground">
+                        <div className="flex items-center gap-3">
+                            {profile.logo && (
+                                <img
+                                    src={profile.logo}
+                                    alt=""
+                                    className="w-12 h-12 rounded-2xl object-cover border border-border/50 shadow-sm shrink-0"
+                                />
+                            )}
+                            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">{profile.name}</h1>
+                        </div>
+                        <div className="flex items-center gap-4 text-muted-foreground flex-wrap">
                             <div className="flex items-center gap-1">
                                 <MapPin size={16} className="text-primary" />
                                 <span className="text-sm">{addressLabel}</span>
@@ -243,7 +273,17 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                             ) : (
                                 <span className="text-xs text-muted-foreground">{t("business_page.info_cards.no_reviews_yet", "No reviews yet")}</span>
                             )}
+                            {profile.priceLevel > 0 && (
+                                <span className="text-sm font-bold text-muted-foreground" title={t("business_page.hero.price_level_label", "Price level")}>
+                                    {"$".repeat(profile.priceLevel)}
+                                </span>
+                            )}
                         </div>
+                        {profile.description && (
+                            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 pt-1">
+                                {profile.description}
+                            </p>
+                        )}
                     </div>
                     {profile.allowReservations && (
                         <Button
@@ -260,12 +300,32 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
             {/* Content for Mobile */}
             <div className="md:hidden space-y-6 px-2">
                 <div className="space-y-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        {profile.logo && (
+                            <img
+                                src={profile.logo}
+                                alt=""
+                                className="w-10 h-10 rounded-xl object-cover border border-border/50 shadow-sm shrink-0"
+                            />
+                        )}
                         <h1 className="text-3xl font-bold tracking-tight">{profile.name}</h1>
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                        <MapPin size={14} />
-                        <span>{addressLabel}</span>
+                    <div className="flex items-center gap-3 text-muted-foreground text-sm flex-wrap">
+                        <div className="flex items-center gap-1">
+                            <MapPin size={14} />
+                            <span>{addressLabel}</span>
+                        </div>
+                        {profile.rating !== null && (
+                            <div className="flex items-center gap-1">
+                                <Star size={14} className="text-yellow-400 fill-yellow-400" />
+                                <span className="font-bold text-foreground">{profile.rating}</span>
+                            </div>
+                        )}
+                        {profile.priceLevel > 0 && (
+                            <span className="font-bold" title={t("business_page.hero.price_level_label", "Price level")}>
+                                {"$".repeat(profile.priceLevel)}
+                            </span>
+                        )}
                     </div>
                 </div>
 

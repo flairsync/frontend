@@ -76,7 +76,8 @@
         "instagram": "Instagram",
         "facebook": "Facebook",
         "website": "Sitio web"
-      }
+      },
+      "message_subject": "Consulta sobre {{name}}"
     },
     "error": {
       "title": "Error",
@@ -88,7 +89,11 @@
       "share_text": "Descubre {{name}}",
       "share_failed": "No se pudo abrir el menú para compartir.",
       "link_copied": "¡Enlace copiado al portapapeles!",
-      "copy_failed": "No se pudo copiar el enlace."
+      "copy_failed": "No se pudo copiar el enlace.",
+      "share_button": "Compartir este negocio",
+      "favorite_button": "Añadir a favoritos",
+      "unfavorite_button": "Quitar de favoritos",
+      "price_level_label": "Nivel de precio"
     },
     "order_modal": {
       "geolocation_unsupported": "Tu navegador no admite la geolocalización",
@@ -251,6 +256,13 @@
       "guests_count": "{{count}} comensales",
       "table_prefix": "Mesa {{number}}",
       "terminal_status": "Esta reserva está {{status}}."
+    },
+    "nav": {
+      "overview": "Resumen",
+      "menu": "Menú",
+      "reserve": "Reservar",
+      "reviews": "Opiniones",
+      "contact": "Contacto"
     }
   }
 }

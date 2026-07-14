@@ -76,7 +76,8 @@
         "instagram": "Instagram",
         "facebook": "Facebook",
         "website": "Website"
-      }
+      },
+      "message_subject": "Inquiry about {{name}}"
     },
     "error": {
       "title": "Error",
@@ -88,7 +89,11 @@
       "share_text": "Check out {{name}}",
       "share_failed": "Couldn't open share sheet.",
       "link_copied": "Link copied to clipboard!",
-      "copy_failed": "Couldn't copy link."
+      "copy_failed": "Couldn't copy link.",
+      "share_button": "Share this business",
+      "favorite_button": "Add to favorites",
+      "unfavorite_button": "Remove from favorites",
+      "price_level_label": "Price level"
     },
     "order_modal": {
       "geolocation_unsupported": "Geolocation is not supported by your browser",
@@ -251,6 +256,13 @@
       "guests_count": "{{count}} guests",
       "table_prefix": "Table {{number}}",
       "terminal_status": "This reservation is {{status}}."
+    },
+    "nav": {
+      "overview": "Overview",
+      "menu": "Menu",
+      "reserve": "Reserve",
+      "reviews": "Reviews",
+      "contact": "Contact"
     }
   }
 }

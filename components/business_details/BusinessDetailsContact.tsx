@@ -87,10 +87,14 @@ const BusinessDetailsContact: React.FC<BusinessDetailsContactProps> = ({ profile
                             </CardContent>
                         </Card>
 
-                        <Button className="w-full h-14 rounded-2xl bg-foreground text-background hover:bg-foreground/90 text-md font-bold tracking-tight shadow-lg">
-                            <MessageSquare className="mr-2" size={18} />
-                            {t("business_page.contact.send_message_button", "Send us a Message")}
-                        </Button>
+                        {profile.email && (
+                            <Button asChild className="w-full h-14 rounded-2xl bg-foreground text-background hover:bg-foreground/90 text-md font-bold tracking-tight shadow-lg">
+                                <a href={`mailto:${profile.email}?subject=${encodeURIComponent(t("business_page.contact.message_subject", { name: profile.name, defaultValue: `Inquiry about ${profile.name}` }))}`}>
+                                    <MessageSquare className="mr-2" size={18} />
+                                    {t("business_page.contact.send_message_button", "Send us a Message")}
+                                </a>
+                            </Button>
+                        )}
                     </div>
                 )}
 

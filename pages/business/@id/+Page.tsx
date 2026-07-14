@@ -12,6 +12,7 @@ import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import WebsiteFooter from '@/components/shared/WebsiteFooter';
 
 import BusinessDetailsHero from '@/components/business_details/BusinessDetailsHero';
+import BusinessDetailsSectionNav from '@/components/business_details/BusinessDetailsSectionNav';
 import { BusinessDetailsOrderModal } from "@/components/business_details/BusinessDetailsOrderModal";
 import BusinessDetailsUserHistory from "@/components/business_details/BusinessDetailsUserHistory";
 import BusinessDetailsContact from '@/components/business_details/BusinessDetailsContact';
@@ -63,58 +64,61 @@ const BusinessContent = withFallback(
         const { profile, menu } = data;
 
         return (
-            <main className="pt-24 pb-20">
-                <motion.div
-                    variants={container}
-                    initial="hidden"
-                    animate="show"
-                    className="max-w-6xl mx-auto px-6 space-y-24"
-                >
-                    <motion.div variants={item}>
-                        <BusinessDetailsHero profile={profile} />
-                    </motion.div>
-
-                    <motion.div variants={item}>
-                        <BusinessDetailsInfoCards profile={profile} />
-                    </motion.div>
-
-                    {user && (
-                        <BusinessDetailsUserHistory businessId={id} />
-                    )}
-
-                    {menu && (
-                        <motion.div variants={item}>
-                            <BusinessDetailsMenu menu={menu} business={profile} />
+            <>
+                <BusinessDetailsSectionNav hasMenu={!!menu} hasReservations={profile.allowReservations} />
+                <main className="pt-10 pb-20">
+                    <motion.div
+                        variants={container}
+                        initial="hidden"
+                        animate="show"
+                        className="max-w-6xl mx-auto px-6 space-y-24"
+                    >
+                        <motion.div variants={item} id="overview-section" className="scroll-mt-40">
+                            <BusinessDetailsHero profile={profile} />
                         </motion.div>
-                    )}
 
-                    {profile.allowReservations && (
                         <motion.div variants={item}>
-                            <BusinessDetailsTableReservation businessId={id} />
+                            <BusinessDetailsInfoCards profile={profile} />
                         </motion.div>
-                    )}
 
-                    <motion.div variants={item}>
-                        <BusinessDetailsTiming openingHours={profile.openingHours} />
-                    </motion.div>
+                        {user && (
+                            <BusinessDetailsUserHistory businessId={id} />
+                        )}
 
-                    <motion.div variants={item}>
-                        <BusinessDetailsReviews
-                            businessId={id}
-                            businessName={profile.name}
-                            initialStats={profile.rating !== null || profile.reviewCount > 0 ? {
-                                average: profile.rating,
-                                total: profile.reviewCount,
-                                distribution: profile.reviewDistribution,
-                            } : undefined}
-                        />
-                    </motion.div>
+                        {menu && (
+                            <motion.div variants={item} id="menu-section" className="scroll-mt-40">
+                                <BusinessDetailsMenu menu={menu} business={profile} />
+                            </motion.div>
+                        )}
 
-                    <motion.div variants={item}>
-                        <BusinessDetailsContact profile={profile} />
+                        {profile.allowReservations && (
+                            <motion.div variants={item} className="scroll-mt-40">
+                                <BusinessDetailsTableReservation businessId={id} />
+                            </motion.div>
+                        )}
+
+                        <motion.div variants={item}>
+                            <BusinessDetailsTiming openingHours={profile.openingHours} />
+                        </motion.div>
+
+                        <motion.div variants={item} id="reviews-section" className="scroll-mt-40">
+                            <BusinessDetailsReviews
+                                businessId={id}
+                                businessName={profile.name}
+                                initialStats={profile.rating !== null || profile.reviewCount > 0 ? {
+                                    average: profile.rating,
+                                    total: profile.reviewCount,
+                                    distribution: profile.reviewDistribution,
+                                } : undefined}
+                            />
+                        </motion.div>
+
+                        <motion.div variants={item} id="contact-section" className="scroll-mt-40">
+                            <BusinessDetailsContact profile={profile} />
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-            </main>
+                </main>
+            </>
         );
     },
     // Loading fallback — skeleton layout
