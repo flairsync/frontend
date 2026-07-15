@@ -90,6 +90,9 @@ export function OrderCart({
 
     return (
         <div className="flex flex-col h-full bg-card border-l border-border overflow-hidden shadow-2xl">
+            {/* Scrollable content: header, items, notes — everything except the pinned footer below.
+                On short screens this scrolls so the totals/order button footer never gets clipped. */}
+            <ScrollArea className="flex-1 min-h-0">
             {/* Header */}
             <div className="p-6 border-b border-border space-y-5 bg-card/50">
                 <div className="flex justify-between items-center">
@@ -182,7 +185,7 @@ export function OrderCart({
             </div>
 
             {/* Cart items */}
-            <ScrollArea className="flex-1 p-6">
+            <div className="p-6">
                 {isCartEmpty ? (
                     <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
                         <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4 border border-border">
@@ -251,7 +254,7 @@ export function OrderCart({
                         ))}
                     </div>
                 )}
-            </ScrollArea>
+            </div>
 
             {/* Kitchen notes + tax-exempt */}
             {!isCartEmpty && (
@@ -294,9 +297,10 @@ export function OrderCart({
                     isVisible={!isCartEmpty}
                 />
             </div>
+            </ScrollArea>
 
-            {/* Totals + payment */}
-            <div className="p-6 bg-background space-y-5 border-t border-border">
+            {/* Totals + payment — pinned outside the scroll area so it's always reachable, even on short screens */}
+            <div className="flex-shrink-0 p-6 bg-background space-y-5 border-t border-border">
                 <div className="space-y-1.5">
                     <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                         <span>{t("order_cart.totals.subtotal")}</span>

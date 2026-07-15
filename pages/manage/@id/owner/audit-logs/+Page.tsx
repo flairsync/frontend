@@ -21,9 +21,10 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import { ChevronLeft, ChevronRight, ScrollText, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ScrollText, X, Eye } from "lucide-react";
 import { useAuditLogs } from "@/features/audit/useAuditLogs";
-import { AuditAction } from "@/features/audit/service";
+import { AuditAction, AuditLog } from "@/features/audit/service";
+import { AuditLogDetailsModal } from "@/components/audit/AuditLogDetailsModal";
 
 const ACTION_STYLES: Record<AuditAction, string> = {
     [AuditAction.CREATE]: "bg-green-100 text-green-700 hover:bg-green-100",
@@ -52,6 +53,7 @@ const AuditLogsPage: React.FC = () => {
     const [action, setAction] = useState("");
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
 
     const { data, isLoading } = useAuditLogs({
         businessId,
@@ -154,13 +156,14 @@ const AuditLogsPage: React.FC = () => {
                                 <TableHead>Entity</TableHead>
                                 <TableHead>Changed By</TableHead>
                                 <TableHead>Changes</TableHead>
+                                <TableHead className="sticky right-0 bg-background text-right pr-4">Details</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
                                 Array.from({ length: 8 }).map((_, i) => (
                                     <TableRow key={i}>
-                                        {Array.from({ length: 5 }).map((_, j) => (
+                                        {Array.from({ length: 6 }).map((_, j) => (
                                             <TableCell key={j}>
                                                 <div className="h-4 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse" />
                                             </TableCell>
@@ -169,12 +172,16 @@ const AuditLogsPage: React.FC = () => {
                                 ))
                             ) : logs.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center text-muted-foreground py-16">
+                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-16">
                                         No audit logs found{hasFilters ? " for the selected filters" : ""}.
                                     </TableCell>
                                 </TableRow>
                             ) : logs.map((log) => (
-                                <TableRow key={log.id}>
+                                <TableRow
+                                    key={log.id}
+                                    className="cursor-pointer"
+                                    onClick={() => setSelectedLog(log)}
+                                >
                                     <TableCell className="pl-4 text-sm text-muted-foreground whitespace-nowrap">
                                         {format(new Date(log.createdAt), "MMM d, yyyy HH:mm")}
                                     </TableCell>
@@ -223,6 +230,18 @@ const AuditLogsPage: React.FC = () => {
                                             <p className="text-xs text-muted-foreground italic mt-1">"{log.reason}"</p>
                                         )}
                                     </TableCell>
+                                    <TableCell className="sticky right-0 bg-background text-right pr-4">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            title="View details"
+                                            aria-label="View details"
+                                            onClick={(e) => { e.stopPropagation(); setSelectedLog(log); }}
+                                        >
+                                            <Eye className="h-3.5 w-3.5" />
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -255,6 +274,12 @@ const AuditLogsPage: React.FC = () => {
                     )}
                 </CardContent>
             </Card>
+
+            <AuditLogDetailsModal
+                log={selectedLog}
+                open={!!selectedLog}
+                onOpenChange={(v) => { if (!v) setSelectedLog(null); }}
+            />
         </div>
     );
 };

@@ -105,12 +105,12 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                     <h1 className="text-2xl font-bold">Reservations</h1>
                     <p className="text-sm text-muted-foreground">Live dashboard — refreshes every 60s</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                     <Button variant="outline" size="sm" onClick={() => refetchDashboard()}>
                         <RefreshCw className="w-4 h-4 mr-1" /> Refresh
                     </Button>
@@ -208,8 +208,8 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                             {dashboard!.upcoming.map((res: ReservationSummary) => {
                                 const actions = getAvailableActions(res.status);
                                 return (
-                                    <div key={res.id} className="flex items-center justify-between gap-3 bg-background border rounded-lg px-3 py-2">
-                                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                                    <div key={res.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 bg-background border rounded-lg px-3 py-2">
+                                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 flex-1 min-w-0">
                                             <span className="text-sm font-medium whitespace-nowrap">
                                                 {formatInTimezone(res.reservationTime, "h:mm A", timezone)}
                                             </span>
@@ -223,7 +223,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                                 </span>
                                             )}
                                         </div>
-                                        <div className="flex items-center gap-1.5 flex-shrink-0">
+                                        <div className="flex flex-wrap items-center gap-1.5 flex-shrink-0">
                                             {getStatusBadge(res.status)}
                                             <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => onViewReservation(res)}>
                                                 <Eye className="w-3.5 h-3.5" />
@@ -290,10 +290,10 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                             <TableRow>
                                 <TableHead>Date & Time</TableHead>
                                 <TableHead>Customer</TableHead>
-                                <TableHead>Guests</TableHead>
-                                <TableHead>Table</TableHead>
+                                <TableHead className="hidden md:table-cell">Guests</TableHead>
+                                <TableHead className="hidden md:table-cell">Table</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead className="sticky right-0 bg-background text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -318,17 +318,22 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                                 <div className="flex flex-col">
                                                     <span className="text-sm font-medium">{res.customerName}</span>
                                                     {res.customerPhone && <span className="text-xs text-muted-foreground">{res.customerPhone}</span>}
+                                                    <span className="text-xs text-muted-foreground md:hidden">
+                                                        <Users className="w-3 h-3 inline mr-0.5" />{res.guestCount}
+                                                        {" · "}
+                                                        {res.table ? (res.table.name || `Table ${res.table.number}`) : "Unassigned"}
+                                                    </span>
                                                 </div>
                                             </TableCell>
-                                            <TableCell>{res.guestCount}</TableCell>
-                                            <TableCell className="text-sm">
+                                            <TableCell className="hidden md:table-cell">{res.guestCount}</TableCell>
+                                            <TableCell className="hidden md:table-cell text-sm">
                                                 {res.table ? (res.table.name || `Table ${res.table.number}`) : (
                                                     <span className="text-muted-foreground italic text-xs">Unassigned</span>
                                                 )}
                                             </TableCell>
                                             <TableCell>{getStatusBadge(res.status)}</TableCell>
-                                            <TableCell>
-                                                <div className="flex justify-end items-center gap-1">
+                                            <TableCell className="sticky right-0 bg-background">
+                                                <div className="flex flex-wrap justify-end items-center gap-1">
                                                     <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => onViewReservation(res)}>
                                                         <Eye className="w-3.5 h-3.5" />
                                                     </Button>
@@ -375,8 +380,8 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                     <CardContent>
                         <div className="space-y-2">
                             {dashboard!.noShowsToday.map((res: ReservationSummary) => (
-                                <div key={res.id} className="flex items-center justify-between bg-background border rounded-lg px-3 py-2">
-                                    <div className="flex items-center gap-4">
+                                <div key={res.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-background border rounded-lg px-3 py-2">
+                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                                         <span className="text-sm font-medium">{res.customerName}</span>
                                         <span className="text-xs text-muted-foreground">
                                             <Users className="w-3 h-3 inline mr-0.5" />{res.guestCount}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Lock, Unlock } from "lucide-react";
+import { Lock, Unlock, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -174,10 +174,10 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                             <TableHead>Date</TableHead>
                             <TableHead>Employee</TableHead>
                             <TableHead>Type</TableHead>
-                            <TableHead>Linked Shift</TableHead>
-                            <TableHead>Notes</TableHead>
-                            <TableHead>Document</TableHead>
-                            <TableHead>Actions</TableHead>
+                            <TableHead className="hidden lg:table-cell">Linked Shift</TableHead>
+                            <TableHead className="hidden md:table-cell">Notes</TableHead>
+                            <TableHead className="hidden lg:table-cell">Document</TableHead>
+                            <TableHead className="sticky right-0 bg-background text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -190,7 +190,7 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                                         : record.employmentId}
                                 </TableCell>
                                 <TableCell>
-                                    <div className="flex items-center gap-1">
+                                    <div className="flex flex-wrap items-center gap-1">
                                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${ABSENCE_TYPE_BADGE_COLORS[record.type]}`}>
                                             {ABSENCE_TYPE_LABELS[record.type]}
                                         </span>
@@ -204,30 +204,51 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                                         )}
                                     </div>
                                 </TableCell>
-                                <TableCell className="text-xs text-muted-foreground">
+                                <TableCell className="hidden lg:table-cell text-xs text-muted-foreground">
                                     {record.shift
                                         ? `${dayjs(record.shift.startTime).format('HH:mm')} – ${dayjs(record.shift.endTime).format('HH:mm')}`
                                         : '—'}
                                 </TableCell>
-                                <TableCell className="max-w-xs truncate text-sm">{record.notes ?? '—'}</TableCell>
-                                <TableCell>
+                                <TableCell className="hidden md:table-cell max-w-[200px] truncate text-sm">{record.notes ?? '—'}</TableCell>
+                                <TableCell className="hidden lg:table-cell">
                                     {record.documentUrl
                                         ? <a href={record.documentUrl} target="_blank" rel="noreferrer" className="text-xs text-blue-600 underline">View</a>
                                         : '—'}
                                 </TableCell>
-                                <TableCell>
-                                    <div className="flex gap-1">
-                                        <Button variant="ghost" size="sm" onClick={() => openEdit(record)} disabled={record.locked}>Edit</Button>
-                                        <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setDeleteTarget(record)} disabled={record.locked}>Delete</Button>
+                                <TableCell className="sticky right-0 bg-background">
+                                    <div className="flex justify-end gap-1">
                                         <Button
                                             variant="ghost"
-                                            size="sm"
-                                            className="gap-1"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            title="Edit"
+                                            aria-label="Edit"
+                                            onClick={() => openEdit(record)}
+                                            disabled={record.locked}
+                                        >
+                                            <Pencil className="h-3.5 w-3.5" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8 text-destructive hover:text-destructive"
+                                            title="Delete"
+                                            aria-label="Delete"
+                                            onClick={() => setDeleteTarget(record)}
+                                            disabled={record.locked}
+                                        >
+                                            <Trash2 className="h-3.5 w-3.5" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            title={record.locked ? 'Unlock' : 'Lock'}
+                                            aria-label={record.locked ? 'Unlock' : 'Lock'}
                                             disabled={isLocking || isUnlocking}
                                             onClick={() => handleToggleLock(record)}
                                         >
                                             {record.locked ? <Unlock className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
-                                            {record.locked ? 'Unlock' : 'Lock'}
                                         </Button>
                                     </div>
                                 </TableCell>

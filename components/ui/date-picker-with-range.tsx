@@ -11,6 +11,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export function DatePickerWithRange({
     className,
@@ -20,6 +21,7 @@ export function DatePickerWithRange({
     date: DateRange | undefined
     setDate: (date: DateRange | undefined) => void
 }) {
+    const isMobile = useIsMobile()
     return (
         <div className={cn("grid gap-2", className)}>
             <Popover>
@@ -47,14 +49,14 @@ export function DatePickerWithRange({
                         )}
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="w-auto max-w-[calc(100vw-2rem)] overflow-x-auto p-0" align="start">
                     <Calendar
                         initialFocus
                         mode="range"
                         defaultMonth={date?.from}
                         selected={date}
                         onSelect={setDate}
-                        numberOfMonths={2}
+                        numberOfMonths={isMobile ? 1 : 2}
                     />
                 </PopoverContent>
             </Popover>

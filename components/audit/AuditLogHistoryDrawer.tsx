@@ -6,6 +6,7 @@ import { History, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { useAuditLogs } from "@/features/audit/useAuditLogs";
 import { usePublicProfile } from "@/features/profile/usePublicProfile";
 import { AuditAction, AuditLog } from "@/features/audit/service";
+import { formatFieldName, renderAuditValue } from "@/features/audit/formatters";
 import { format, formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -33,25 +34,6 @@ const UserName: React.FC<{ userId: string }> = ({ userId }) => {
   );
 };
 
-const formatFieldName = (field: string): string =>
-  field.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()).trim();
-
-const renderValue = (val: unknown): string => {
-  if (val === null || val === undefined) return "—";
-  if (typeof val === "boolean") return val ? "Yes" : "No";
-  if (typeof val === "number") return String(val);
-  if (typeof val === "string") return val === "" ? '""' : val;
-  if (typeof val === "object") {
-    const obj = val as Record<string, unknown>;
-    if (obj.type === "Point" && Array.isArray(obj.coordinates)) {
-      const [lng, lat] = obj.coordinates as number[];
-      return `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-    }
-    return JSON.stringify(val);
-  }
-  return String(val);
-};
-
 const ChangeDetails: React.FC<{ changes: AuditLog["changes"] }> = ({ changes }) => {
   if (!changes) return null;
   const entries = Object.entries(changes);
@@ -66,11 +48,11 @@ const ChangeDetails: React.FC<{ changes: AuditLog["changes"] }> = ({ changes }) 
           </span>
           <div className="flex items-start gap-1.5 mt-0.5 flex-wrap">
             <span className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono text-[11px] max-w-[45%] break-all">
-              {renderValue(oldVal)}
+              {renderAuditValue(oldVal)}
             </span>
             <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0 mt-0.5" />
             <span className="bg-green-50 text-green-700 px-1.5 py-0.5 rounded font-mono text-[11px] max-w-[45%] break-all">
-              {renderValue(newVal)}
+              {renderAuditValue(newVal)}
             </span>
           </div>
         </div>
