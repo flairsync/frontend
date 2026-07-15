@@ -12,9 +12,12 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, Building, Building2, Calendar, CreditCard, Heart, HelpCircle, LayoutDashboard, LucideNewspaper, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils, Briefcase } from "lucide-react"
+import { BarChart3, Building, Building2, Calendar, ChevronRight, CreditCard, Heart, HelpCircle, Inbox, LayoutDashboard, LucideNewspaper, MapPinned, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils, Briefcase } from "lucide-react"
 import WebsiteLogo from "@/components/shared/WebsiteLogo"
 
 // This is sample data.
@@ -41,6 +44,29 @@ const ownerNavData = {
                     title: "My businesses",
                     url: "/manage/owned",
                     icon: Building,
+                },
+                {
+                    key: "organizations",
+                    title: "Organization",
+                    url: "/manage/organizations",
+                    icon: Building2,
+                    subItems: [
+                        {
+                            key: "organizations",
+                            title: "Organizations",
+                            url: "/manage/organizations",
+                        },
+                        {
+                            key: "regions",
+                            title: "Regions",
+                            url: "/manage/regions",
+                        },
+                        {
+                            key: "requests",
+                            title: "Requests",
+                            url: "/manage/requests",
+                        },
+                    ],
                 },
                 {
                     key: "billing",
@@ -79,6 +105,12 @@ export function isActiveLink(key: string): boolean {
 
 
 export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
+
+    const isExpanded = (key: string, defaultOpen: boolean) => expanded[key] ?? defaultOpen;
+    const toggleExpanded = (key: string, defaultOpen: boolean) =>
+        setExpanded((prev) => ({ ...prev, [key]: !isExpanded(key, defaultOpen) }));
+
     return (
         <Sidebar {...props}
         >
@@ -96,15 +128,47 @@ export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<type
                         <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                {item.items.map((item) => (
-                                    <SidebarMenuItem key={item.title} >
-                                        <SidebarMenuButton asChild isActive={isActiveLink(item.key)} >
-                                            <a href={item.url}>
-                                                <item.icon />
-                                                {item.title}</a>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
+                                {item.items.map((item) => {
+                                    const hasSubItems = "subItems" in item && !!item.subItems;
+                                    const subActive = hasSubItems && item.subItems!.some((sub) => isActiveLink(sub.key));
+                                    const parentActive = isActiveLink(item.key) || subActive;
+                                    const open = hasSubItems && isExpanded(item.key, subActive);
+
+                                    return (
+                                        <SidebarMenuItem key={item.title} >
+                                            {hasSubItems ? (
+                                                <SidebarMenuButton
+                                                    isActive={parentActive}
+                                                    onClick={() => toggleExpanded(item.key, subActive)}
+                                                    aria-expanded={open}
+                                                >
+                                                    <item.icon />
+                                                    {item.title}
+                                                    <ChevronRight
+                                                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
+                                                    />
+                                                </SidebarMenuButton>
+                                            ) : (
+                                                <SidebarMenuButton asChild isActive={parentActive} >
+                                                    <a href={item.url}>
+                                                        <item.icon />
+                                                        {item.title}</a>
+                                                </SidebarMenuButton>
+                                            )}
+                                            {hasSubItems && open && (
+                                                <SidebarMenuSub>
+                                                    {item.subItems!.map((subItem) => (
+                                                        <SidebarMenuSubItem key={subItem.title}>
+                                                            <SidebarMenuSubButton asChild isActive={isActiveLink(subItem.key)}>
+                                                                <a href={subItem.url}>{subItem.title}</a>
+                                                            </SidebarMenuSubButton>
+                                                        </SidebarMenuSubItem>
+                                                    ))}
+                                                </SidebarMenuSub>
+                                            )}
+                                        </SidebarMenuItem>
+                                    );
+                                })}
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>

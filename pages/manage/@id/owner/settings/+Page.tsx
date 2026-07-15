@@ -10,8 +10,10 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
 import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
+import { useJoinRequests } from "@/features/join-requests/useJoinRequests"
 import BusinessSettingsGeneralDetails from "@/components/management/settings/BusinessSettingsGeneralDetails"
 import BusinessSettingsOpenPeriods from "@/components/management/settings/BusinessSettingsOpenPeriods"
 import BusinessSettingsLocation from "@/components/management/settings/BusinessSettingsLocation"
@@ -75,6 +77,12 @@ const BusinessSettingsPage = () => {
         updateMyBusinessOpenHours,
         updatingMyBusinessOpenHours
     } = useMyBusiness(routeParams.id);
+
+    const { requestLeave, isRequestingLeave, outgoing } = useJoinRequests();
+    const businessId = routeParams.id as string;
+    const pendingLeaveRequest = outgoing.find(
+        (r) => r.childType === "BUSINESS" && r.childId === businessId && r.action === "UNLINK" && r.status === "PENDING",
+    );
 
     // Reservations & Orders local state
     const [resSettings, setResSettings] = useState({
@@ -447,6 +455,51 @@ const BusinessSettingsPage = () => {
                             />
                         </div>
                     </div>
+                </AccordionContent>
+            </AccordionItem>
+
+            {/* Organization & Region */}
+            <AccordionItem value="organization" className="border rounded-lg px-3">
+                <AccordionTrigger>Organization &amp; Region</AccordionTrigger>
+                <AccordionContent className="py-2">
+                    {myBusinessFullDetails?.organizationId || myBusinessFullDetails?.regionId ? (
+                        <div className="flex items-center justify-between border border-border rounded-lg p-3">
+                            <div className="flex items-center gap-2">
+                                <Badge>Linked</Badge>
+                                <span className="text-sm text-muted-foreground">
+                                    {myBusinessFullDetails.regionName ?? myBusinessFullDetails.organizationName ?? "—"}
+                                </span>
+                            </div>
+                            {pendingLeaveRequest ? (
+                                <Badge variant="outline" className="text-muted-foreground">
+                                    Leave request pending
+                                </Badge>
+                            ) : (
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-muted-foreground hover:text-destructive"
+                                    disabled={isRequestingLeave}
+                                    onClick={() =>
+                                        requestLeave({
+                                            childType: "BUSINESS",
+                                            childId: businessId,
+                                        })
+                                    }
+                                >
+                                    Request to leave
+                                </Button>
+                            )}
+                        </div>
+                    ) : (
+                        <p className="text-sm text-muted-foreground py-2">
+                            Not linked to any organization or region.
+                        </p>
+                    )}
+                    <p className="text-xs text-muted-foreground mt-3">
+                        Leaving requires the organization or region owner's approval — it never happens
+                        immediately, even if you're the one who asked.
+                    </p>
                 </AccordionContent>
             </AccordionItem>
 

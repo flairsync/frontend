@@ -102,6 +102,9 @@ const MobileProfileSheet = () => {
                                         </span>
                                     </AccordionTrigger>
                                     <AccordionContent className="pl-4">
+                                        <a href="/manage/overview" className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm font-medium">
+                                            {t("shared.user_menu.view_all_businesses", "View All")}
+                                        </a>
                                         {hasOwnedBusinesses && hasJoinedBusinesses ? (
                                             <div className="space-y-3">
                                                 <div>

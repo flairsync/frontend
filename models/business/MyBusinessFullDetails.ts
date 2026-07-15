@@ -168,6 +168,10 @@ export class MyBusinessFullDetails {
   taxRate: number;
   taxName: string;
   taxIncluded: boolean;
+  organizationId?: string | null;
+  organizationName?: string | null;
+  regionId?: string | null;
+  regionName?: string | null;
 
   constructor(
     id: string,
@@ -380,6 +384,10 @@ export class MyBusinessFullDetails {
         !!data.requireQrForAttendance,
       );
       instance.slug = data.slug ?? undefined;
+      instance.organizationId = data.organizationId ?? null;
+      instance.organizationName = data.organizationName ?? null;
+      instance.regionId = data.regionId ?? null;
+      instance.regionName = data.regionName ?? null;
       return instance;
     } catch {
       return null;

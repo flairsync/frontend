@@ -207,6 +207,12 @@ const HeaderProfileAvatar = () => {
                                 </DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
                                     <DropdownMenuSubContent>
+                                        <a href='/manage/overview'>
+                                            <DropdownMenuItem className='hover:cursor-pointer'>
+                                                {i18n.t("shared.user_menu.view_all_businesses", "View All")}
+                                            </DropdownMenuItem>
+                                        </a>
+                                        <DropdownMenuSeparator />
                                         {hasOwnedBusinesses && hasJoinedBusinesses ? (
                                             <>
                                                 <DropdownMenuSub>
