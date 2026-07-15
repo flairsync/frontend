@@ -15,6 +15,7 @@ import { usePlatformCountries } from "@/features/shared/usePlatformCountries";
 import { CountryStatus, PlatformCountry } from "@/models/shared/PlatformCountry";
 import andorraCities from '@/data/andorra.cities.json';
 import Radar from 'radar-sdk-js';
+import 'radar-sdk-js/dist/radar.css';
 
 
 

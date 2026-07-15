@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Command, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import Radar from 'radar-sdk-js';
+import 'radar-sdk-js/dist/radar.css';
 import { PlatformCountry } from '@/models/shared/PlatformCountry';
 
 interface AddressDetails {

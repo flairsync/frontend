@@ -47,6 +47,7 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
                                     <img
                                         src={img}
                                         alt={`${item.name} - Image ${idx + 1}`}
+                                        loading="lazy"
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105"
                                     />
                                 </CarouselItem>
@@ -57,6 +58,7 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
                     <img
                         src={item.images[0]}
                         alt={item.name}
+                        loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                 ) : (

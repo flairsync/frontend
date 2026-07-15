@@ -46,6 +46,7 @@ const StaffManagementFeature = () => {
                             <img
                                 src="./images/landing/staff.webp"
                                 alt="Staff management"
+                                loading="lazy"
                                 className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                             />
                         </div>

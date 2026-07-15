@@ -9,11 +9,14 @@ export default function ClockedInBanner() {
     const { t } = useTranslation('management');
     const pageContext = usePageContext();
     const isLoggedIn = !!pageContext.user;
-    const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+    const currentPath = pageContext.urlPathname;
+    // Clock-in status is only relevant inside the staff/owner dashboard — never
+    // fetch or show it on diner-facing pages.
+    const isManagePage = currentPath.startsWith('/manage/');
 
-    const { data: activeShift } = useMyActiveShift(isLoggedIn);
+    const { data: activeShift } = useMyActiveShift(isLoggedIn && isManagePage);
 
-    if (!isLoggedIn || !activeShift) return null;
+    if (!isManagePage || !isLoggedIn || !activeShift) return null;
     // Don't show it on the page where they'd already see their clock status
     if (currentPath.startsWith(`/manage/${activeShift.businessId}/staff/`)) return null;
 

@@ -24,6 +24,7 @@ const GalleryMasonry: React.FC<GalleryMasonryProps> = ({ title = "Gallery", colu
                             <img
                                 src={m.url}
                                 alt={`${title} ${i + 1}`}
+                                loading="lazy"
                                 className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                             />
                         </div>

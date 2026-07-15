@@ -46,11 +46,11 @@ export default function BusinessBrandingLogoUpload({ currentLogoUrl, loading = f
                     <div className="w-32 h-32 border rounded flex items-center justify-center overflow-hidden">
                         {previewUrl ? (
                             <PhotoView key={"logo"} src={previewUrl}>
-                                <img src={previewUrl} alt="Logo Preview" className="object-contain w-full h-full" />
+                                <img src={previewUrl} alt="Logo Preview" loading="lazy" className="object-contain w-full h-full" />
                             </PhotoView>
                         ) : currentLogoUrl ? (
                             <PhotoView key={"logo"} src={currentLogoUrl}>
-                                <img src={currentLogoUrl} alt="Current Logo" className="object-contain w-full h-full" />
+                                <img src={currentLogoUrl} alt="Current Logo" loading="lazy" className="object-contain w-full h-full" />
                             </PhotoView>
                         ) : (
                             <ImageIcon className="w-12 h-12 text-gray-400" />

@@ -75,7 +75,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                         onClick={() => handleSelect(lang.code)}
                         className="flex items-center gap-2"
                     >
-                        <img src={lang.flag} alt={lang.label} className="w-5 h-5" />
+                        <img src={lang.flag} alt={lang.label} loading="lazy" className="w-5 h-5" />
                         {lang.label}
                     </DropdownMenuItem>
                 ))}

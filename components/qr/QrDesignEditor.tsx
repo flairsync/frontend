@@ -206,7 +206,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                     <Card>
                         <CardContent className="flex items-center gap-4 pt-6">
                             {effectiveLogo ? (
-                                <img src={effectiveLogo} alt="QR logo" className="h-16 w-16 rounded border object-contain" />
+                                <img src={effectiveLogo} alt="QR logo" loading="lazy" className="h-16 w-16 rounded border object-contain" />
                             ) : (
                                 <div className="flex h-16 w-16 items-center justify-center rounded border text-xs text-muted-foreground">
                                     No logo

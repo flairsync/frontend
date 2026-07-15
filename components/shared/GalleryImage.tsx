@@ -28,6 +28,7 @@ export function GalleryImage({ url, blurHash }: MediaItem) {
                 <img
                     src={url}
                     alt="Gallery"
+                    loading="lazy"
                     onLoad={() => setTimeout(() => {
                         setLoaded(true)
                     }, 1000)}

@@ -117,7 +117,7 @@ export function Page() {
                                         onClick={() => setSelectedImage(idx)}
                                         className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === idx ? 'border-primary' : 'border-white/10 opacity-60 hover:opacity-100'}`}
                                     >
-                                        <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                                        <img src={img} alt={`Thumbnail ${idx + 1}`} loading="lazy" className="w-full h-full object-cover" />
                                     </button>
                                 ))}
                             </div>

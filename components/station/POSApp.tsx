@@ -362,7 +362,7 @@ function POSMain({
     const [taxExempt, setTaxExempt] = useState(false);
 
     // ── Cart helpers ──
-    const addToCart = (item: MenuItem) => {
+    const addToCart = useCallback((item: MenuItem) => {
         const cartId = item.id;
         setCart((prev) => {
             const existing = prev.find((c) => c.id === cartId);
@@ -384,7 +384,17 @@ function POSMain({
                 },
             ];
         });
-    };
+    }, []);
+
+    // Mirrors the old cart.find(...)?.quantity semantics (first match wins),
+    // just precomputed once per cart change instead of once per rendered card.
+    const cartQuantityByMenuItemId = useMemo(() => {
+        const map = new Map<string, number>();
+        for (const c of cart) {
+            if (!map.has(c.menuItemId)) map.set(c.menuItemId, c.quantity);
+        }
+        return map;
+    }, [cart]);
 
     const resetActiveOrder = () => {
         setCart([]);
@@ -857,10 +867,7 @@ function POSMain({
                                                 key={item.id}
                                                 product={item}
                                                 onClick={addToCart}
-                                                quantity={
-                                                    cart.find((c) => c.menuItemId === item.id)
-                                                        ?.quantity
-                                                }
+                                                quantity={cartQuantityByMenuItemId.get(item.id)}
                                                 currency={station.business.currency}
                                             />
                                         ))}

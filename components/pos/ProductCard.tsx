@@ -11,7 +11,7 @@ interface ProductCardProps {
     currency?: string;
 }
 
-export function ProductCard({ product, onClick, quantity, currency = "USD" }: ProductCardProps) {
+export const ProductCard = React.memo(function ProductCard({ product, onClick, quantity, currency = "USD" }: ProductCardProps) {
     const { t } = useTranslation("pos");
     const hasVariants = product.variants.length > 0;
     const displayPrice = hasVariants
@@ -37,6 +37,7 @@ export function ProductCard({ product, onClick, quantity, currency = "USD" }: Pr
                     <img
                         src={thumbnail}
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                     />
                 ) : (
@@ -103,4 +104,4 @@ export function ProductCard({ product, onClick, quantity, currency = "USD" }: Pr
             </div>
         </button>
     );
-}
+});

@@ -156,6 +156,7 @@ function MenuItemCard({ item, canOrder, onAdd }: MenuItemCardProps) {
                 <img
                     src={image}
                     alt={item.name}
+                    loading="lazy"
                     className="w-20 h-20 rounded-xl object-cover shrink-0"
                 />
             )}

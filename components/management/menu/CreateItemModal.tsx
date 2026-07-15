@@ -618,6 +618,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                             <PhotoView src={url}>
                                                 <img
                                                     src={url}
+                                                    loading="lazy"
                                                     className="h-24 w-24 object-cover rounded-lg cursor-pointer border"
                                                 />
                                             </PhotoView>

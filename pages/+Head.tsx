@@ -14,7 +14,9 @@ export default function HeadDefault() {
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="FlairSync" />
     <meta property="og:url" content={canonicalUrl} />
-    <script src="https://app.lemonsqueezy.com/js/lemon.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+    <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   </>

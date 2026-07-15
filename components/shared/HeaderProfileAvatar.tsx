@@ -155,7 +155,7 @@ const HeaderProfileAvatar = () => {
 
                                         >
                                             {i18n.language == lang.code && <CheckCircle />}
-                                            <img src={lang.flag} alt={lang.label} className="w-5 h-5" />
+                                            <img src={lang.flag} alt={lang.label} loading="lazy" className="w-5 h-5" />
                                             {lang.label}
                                         </DropdownMenuItem>
                                     ))}

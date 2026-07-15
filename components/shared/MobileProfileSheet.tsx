@@ -168,7 +168,7 @@ const MobileProfileSheet = () => {
                                                 : "border-border hover:bg-muted"
                                         }`}
                                     >
-                                        <img src={lang.flag} className="w-4 h-4" alt={lang.label} />
+                                        <img src={lang.flag} loading="lazy" className="w-4 h-4" alt={lang.label} />
                                         {lang.label}
                                     </button>
                                 ))}

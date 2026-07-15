@@ -30,6 +30,7 @@ const BusinessLogoInput: React.FC<LogoUploadProps> = ({ initialImage }) => {
                         <img
                             src={preview}
                             alt="Logo Preview"
+                            loading="lazy"
                             className="h-32 w-32 object-contain rounded-md border"
                         />
                     </div>

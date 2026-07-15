@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { Button } from "@/components/ui/button";
@@ -155,9 +155,53 @@ function KdsSettingsPopover({
   );
 }
 
+// ─── Shared ticking clock ─────────────────────────────────────────────────────
+// Every ticket card and the header clock need to re-render once a second to
+// keep elapsed-time text current. Rather than each one running its own
+// setInterval (N timers for N tickets), they all subscribe to a single
+// shared interval that only exists while at least one consumer is mounted.
+
+const kdsTickListeners = new Set<() => void>();
+let kdsTickTimer: ReturnType<typeof setInterval> | null = null;
+
+function subscribeKdsTick(listener: () => void) {
+  kdsTickListeners.add(listener);
+  if (!kdsTickTimer) {
+    kdsTickTimer = setInterval(() => {
+      kdsTickListeners.forEach((l) => l());
+    }, 1000);
+  }
+  return () => {
+    kdsTickListeners.delete(listener);
+    if (kdsTickListeners.size === 0 && kdsTickTimer) {
+      clearInterval(kdsTickTimer);
+      kdsTickTimer = null;
+    }
+  };
+}
+
+function useKdsTick() {
+  const [, forceRender] = useState(0);
+  useEffect(() => subscribeKdsTick(() => forceRender((n) => n + 1)), []);
+}
+
+function KdsClock() {
+  useKdsTick();
+  return (
+    <p className="text-xl font-black font-mono text-white tracking-widest">
+      {new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      })}
+    </p>
+  );
+}
+
 // ─── Ticket Card ─────────────────────────────────────────────────────────────
 
-function KdsTicketCard({
+const KdsTicketCard = memo(function KdsTicketCard({
   order,
   onBumpItem,
   onBumpAll,
@@ -181,11 +225,7 @@ function KdsTicketCard({
   awaitingExpoConfirm: boolean;
 }) {
   const { t } = useTranslation("station");
-  const [, tick] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => tick((n) => n + 1), 1000);
-    return () => clearInterval(t);
-  }, []);
+  useKdsTick();
 
   const isAccepted = order.status === "accepted";
   const isPreparing = order.status === "preparing";
@@ -449,7 +489,7 @@ function KdsTicketCard({
       </div>
     </Card>
   );
-}
+});
 
 // ─── KDS Main (authenticated) ─────────────────────────────────────────────────
 
@@ -462,17 +502,11 @@ function KDSMain({ station }: { station: StationInfo }) {
   const [awaitingExpoOrders, setAwaitingExpoOrders] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [stationUnassigned, setStationUnassigned] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [readyMaxAge, setReadyMaxAge] = useState(
     () => localStorage.getItem("kds_ready_max_age") ?? ""
   );
   const knownIdsRef = useRef<Set<string>>(new Set());
   const firstPollRef = useRef(true);
-
-  useEffect(() => {
-    const t = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
 
   useEffect(() => {
     stationApi.patch("/station/kds-station/status", { status: "ready" }).catch(() => {});
@@ -718,14 +752,7 @@ function KDSMain({ station }: { station: StationInfo }) {
             </div>
           )}
           <div className="flex flex-col items-end leading-none">
-            <p className="text-xl font-black font-mono text-white tracking-widest">
-              {currentTime.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false,
-              })}
-            </p>
+            <KdsClock />
           </div>
           <Separator orientation="vertical" className="h-8 bg-slate-800" />
           <KdsSettingsPopover readyMaxAge={readyMaxAge} onReadyMaxAgeChange={setReadyMaxAge} />

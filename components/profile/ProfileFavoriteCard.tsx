@@ -34,6 +34,7 @@ const ProfileFavoriteCard: React.FC<ProfileFavoriteCardProps> = ({
                 <img
                     src={image}
                     alt={name}
+                    loading="lazy"
                     className="w-16 h-16 rounded-lg object-cover"
                 />
                 <CardContent className="p-0">

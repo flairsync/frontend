@@ -85,6 +85,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                         <img
                                             src={src}
                                             alt={profile.name}
+                                            loading={i === 0 ? "eager" : "lazy"}
                                             className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -180,6 +181,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                             <img
                                                 src={profile.logo}
                                                 alt=""
+                                                loading="lazy"
                                                 className="w-12 h-12 rounded-2xl object-cover border-2 border-white/30 shadow-lg shrink-0"
                                             />
                                         )}
@@ -252,6 +254,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                 <img
                                     src={profile.logo}
                                     alt=""
+                                    loading="lazy"
                                     className="w-12 h-12 rounded-2xl object-cover border border-border/50 shadow-sm shrink-0"
                                 />
                             )}
@@ -305,6 +308,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                             <img
                                 src={profile.logo}
                                 alt=""
+                                loading="lazy"
                                 className="w-10 h-10 rounded-xl object-cover border border-border/50 shadow-sm shrink-0"
                             />
                         )}

@@ -40,11 +40,13 @@ const FeaturesSection = () => {
                             <img
                                 src="./images/landing/left.webp"
                                 alt="Restaurant ambiance"
+                                loading="lazy"
                                 className="w-[45%] aspect-[3/4] object-cover rounded-2xl shadow-xl mt-12"
                             />
                             <img
                                 src="./images/landing/right.webp"
                                 alt="Customer dining"
+                                loading="lazy"
                                 className="w-[55%] aspect-[3/4] object-cover rounded-2xl shadow-2xl"
                             />
                         </div>

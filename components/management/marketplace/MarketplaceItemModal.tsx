@@ -195,7 +195,7 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                             <div className="flex flex-wrap gap-2">
                                 {existingImages.map((url) => (
                                     <div key={url} className="relative w-20 h-20 rounded-lg overflow-hidden border border-white/10 group">
-                                        <img src={url} alt="item" className="w-full h-full object-cover" />
+                                        <img src={url} alt="item" loading="lazy" className="w-full h-full object-cover" />
                                         <button
                                             type="button"
                                             disabled={removingUrl === url}

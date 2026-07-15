@@ -132,6 +132,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                             <img
                                                 src={item.images[0]}
                                                 alt={item.name}
+                                                loading="lazy"
                                                 className="w-10 h-10 rounded-lg object-cover"
                                             />
                                         ) : (

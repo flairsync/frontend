@@ -182,7 +182,7 @@ function SortableSlot({
                         />
                     )}
 
-                    <img src={slot.url} className="w-full h-full object-cover pointer-events-none" />
+                    <img src={slot.url} loading="lazy" className="w-full h-full object-cover pointer-events-none" />
 
                     {/* 🟦 DRAG HANDLE */}
                     <div

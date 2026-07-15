@@ -22,4 +22,8 @@ export const guard = (pageContext: PageContext) => {
   if (!user.ppVerified && urlParsed.pathname !== "/manage/professional-profile") {
     throw redirect(`/manage/professional-profile?origin=${encodeURIComponent(urlParsed.pathname + (urlParsed.searchOriginal ?? ""))}`);
   }
+
+  if (urlParsed.pathname === "/manage") {
+    throw redirect("/manage/overview");
+  }
 };

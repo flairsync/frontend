@@ -5,7 +5,6 @@ import "./tailwind.css";
 import 'react-photo-view/dist/react-photo-view.css';
 import "@/translations/i18n"
 import { clientOnly } from "vike-react/clientOnly";
-import 'radar-sdk-js/dist/radar.css';
 const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provider"));
 const TextSizeProvider = clientOnly(() => import("@/components/shared/text-size-provider"));
 import { Toaster } from "@/components/ui/sonner"

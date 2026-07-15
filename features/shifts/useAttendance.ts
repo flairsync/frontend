@@ -190,23 +190,34 @@ export const useMyActiveShift = (enabled: boolean = true) => {
         (e) => e.status === "ACTIVE"
       );
 
-      for (const employment of employments) {
-        try {
-          const dashboard = (await fetchTodayAttendanceDashboardApiCall(employment.business.id)) as
-            | { attendance?: AttendanceLog }
-            | undefined;
-          const attendance = dashboard?.attendance;
-          if (attendance?.checkInTime && !attendance.checkOutTime) {
-            return {
-              businessId: employment.business.id,
-              businessName: employment.business.name,
-              employmentId: employment.id,
-              attendance,
-              onBreak: !!attendance.breaks?.some((b) => !b.end),
-            };
+      // Fetch every business's attendance dashboard in parallel instead of
+      // one-by-one — with many employments the sequential version could add
+      // a full extra round-trip per business.
+      const results = await Promise.all(
+        employments.map(async (employment) => {
+          try {
+            const dashboard = (await fetchTodayAttendanceDashboardApiCall(employment.business.id)) as
+              | { attendance?: AttendanceLog }
+              | undefined;
+            return { employment, attendance: dashboard?.attendance };
+          } catch {
+            // Skip businesses we fail to fetch attendance for
+            return null;
           }
-        } catch {
-          // Skip businesses we fail to fetch attendance for
+        })
+      );
+
+      for (const result of results) {
+        if (!result) continue;
+        const { employment, attendance } = result;
+        if (attendance?.checkInTime && !attendance.checkOutTime) {
+          return {
+            businessId: employment.business.id,
+            businessName: employment.business.name,
+            employmentId: employment.id,
+            attendance,
+            onBreak: !!attendance.breaks?.some((b) => !b.end),
+          };
         }
       }
       return null;
