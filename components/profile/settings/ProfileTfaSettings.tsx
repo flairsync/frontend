@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { CardDescription } from "@/components/ui/card"
@@ -12,7 +12,7 @@ import { useTfaSettings } from "@/features/profileSettings/useTfaSettings"
 import { QRCodeSVG } from 'qrcode.react';
 import TfaCodeModal from "@/components/inputs/TfaCodeModal"
 import { DisableTfaNotice } from "./DisableTfaNotice"
-import { AlertTriangle, Download, RefreshCw } from "lucide-react"
+import { AlertTriangle, Check, Copy, Download, RefreshCw } from "lucide-react"
 import { toast } from "sonner"
 
 const ProfileTfaSettings = () => {
@@ -34,6 +34,18 @@ const ProfileTfaSettings = () => {
     const [verificationCode, setVerificationCode] = useState("")
     const [qrCodeLink, setQrcodeLink] = useState('');
     const [updatingTfaStatus, setUpdatingTfaStatus] = useState(0); // 0 = none, 1 = enabling, 2 = disabling
+    const [copiedField, setCopiedField] = useState<"secret" | "link" | null>(null);
+
+    // The QR value is a full otpauth:// URI with the raw base32 secret embedded
+    // as a query param — pull it out for a manual-entry fallback.
+    const tfaSecret = useMemo(() => {
+        if (!qrCodeLink) return "";
+        try {
+            return new URL(qrCodeLink).searchParams.get("secret") ?? "";
+        } catch {
+            return "";
+        }
+    }, [qrCodeLink]);
 
     // Recovery codes dialog state
     const [recoveryCodes, setRecoveryCodes] = useState("");
@@ -70,6 +82,17 @@ const ProfileTfaSettings = () => {
 
     const handleVerify = () => {
         validateTfaCode(verificationCode)
+    }
+
+    const handleCopy = async (text: string, field: "secret" | "link") => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedField(field);
+            toast.success(field === "secret" ? "Secret key copied" : "Setup link copied");
+            setTimeout(() => setCopiedField(null), 2000);
+        } catch {
+            toast.error("Couldn't copy to clipboard");
+        }
     }
 
     const handleDownloadBackupCodes = () => {
@@ -251,6 +274,52 @@ const ProfileTfaSettings = () => {
                             <QRCodeSVG value={qrCodeLink} />
                         </div>
                     </div>
+
+                    {tfaSecret && (
+                        <div className="space-y-3">
+                            <div className="space-y-1.5">
+                                <Label className="text-xs text-muted-foreground">
+                                    Can't scan? Enter this code manually
+                                </Label>
+                                <div className="flex items-center gap-2">
+                                    <code className="flex-1 min-w-0 rounded-md border bg-muted px-3 py-2 text-sm font-mono tracking-wider break-all">
+                                        {tfaSecret}
+                                    </code>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="icon"
+                                        className="shrink-0"
+                                        onClick={() => handleCopy(tfaSecret, "secret")}
+                                    >
+                                        {copiedField === "secret" ? (
+                                            <Check className="h-4 w-4 text-emerald-500" />
+                                        ) : (
+                                            <Copy className="h-4 w-4" />
+                                        )}
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                                <span>On the same phone as your authenticator app?</span>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-auto gap-1.5 px-2 py-1 text-xs"
+                                    onClick={() => handleCopy(qrCodeLink, "link")}
+                                >
+                                    {copiedField === "link" ? (
+                                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                                    ) : (
+                                        <Copy className="h-3.5 w-3.5" />
+                                    )}
+                                    Copy setup link
+                                </Button>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="space-y-2">
                         <Label htmlFor="tfa-code">Enter 6-digit code</Label>
