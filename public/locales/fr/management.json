@@ -452,7 +452,8 @@
       "analytics": "Analyses et rapports",
       "reviews": "Avis",
       "audit_logs": "Journaux d'audit",
-      "danger": "Zone de danger"
+      "danger": "Zone de danger",
+      "integrations": "Intégrations"
     }
   },
   "permissions": {
@@ -1457,5 +1458,29 @@
       "no_data": "Aucune donnée de fréquentation disponible.",
       "tooltip_visitors": "Clients installés"
     }
+  },
+  "integrations": {
+    "title": "Intégrations",
+    "badge": "Bientôt disponible",
+    "subtitle": "Connectez FlairSync aux outils que vous utilisez déjà : plateformes de livraison, processeurs de paiement, logiciels de comptabilité, et plus encore, le tout au même endroit.",
+    "categories": {
+      "delivery": "Livraison et commandes",
+      "payments": "Paiements",
+      "accounting": "Comptabilité et finances",
+      "marketing": "Marketing et avis"
+    },
+    "items": {
+      "uber_eats": { "name": "Uber Eats", "description": "Synchronisez votre menu et recevez les commandes de livraison directement dans votre caisse et votre écran de cuisine." },
+      "doordash": { "name": "DoorDash", "description": "Acceptez les commandes DoorDash sans deuxième tablette : elles arrivent directement dans votre file de cuisine." },
+      "grubhub": { "name": "Grubhub", "description": "Centralisez les commandes Grubhub avec vos commandes sur place et à emporter." },
+      "deliveroo": { "name": "Deliveroo", "description": "Affichez les commandes Deliveroo sur le même écran de cuisine que le reste." },
+      "stripe": { "name": "Stripe", "description": "Acceptez les paiements par carte directement à l'encaissement, sans terminal séparé." },
+      "square": { "name": "Square", "description": "Traitez les paiements avec le matériel Square que vous possédez peut-être déjà." },
+      "quickbooks": { "name": "QuickBooks", "description": "Exportez ventes, pourboires et paie directement vers votre comptabilité, sans import CSV manuel." },
+      "xero": { "name": "Xero", "description": "Synchronisez automatiquement votre comptable avec des exports de revenus quotidiens." },
+      "google_business": { "name": "Fiche d'établissement Google", "description": "Gardez vos horaires, votre menu et vos avis synchronisés avec Google." },
+      "mailchimp": { "name": "Mailchimp", "description": "Transformez vos clients fidèles en liste de diffusion pour vos promotions et actualités." }
+    },
+    "footer_note": "Une intégration que vous aimeriez voir ? Dites-le-nous depuis le Centre d'aide et nous en tiendrons compte dans notre feuille de route."
   }
 }

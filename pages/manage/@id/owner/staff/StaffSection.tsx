@@ -35,6 +35,7 @@ import { useBusinessRoles } from "@/features/business/roles/useBusinessRoles";
 import { IndividualScheduleModal } from '@/components/management/schedule/IndividualScheduleModal';
 import { EditStaffSettingsModal } from "@/components/management/staff/EditStaffSettingsModal";
 import SetPinModal from "@/components/management/staff/SetPinModal";
+import { ConfirmationPopup } from "@/components/shared/ConfirmationPopup";
 
 interface EditableHourlyRateProps {
   employeeId: string;
@@ -149,6 +150,8 @@ const StaffSection = () => {
     updateHourlyRate,
     updatingHourlyRate,
     updateEmployeeSettings,
+    terminateEmployee,
+    terminatingEmployee,
   } = useBusinessEmployeeOps(routeParams.id);
 
   const { myBusinessFullDetails } = useMyBusiness(routeParams.id);
@@ -157,6 +160,7 @@ const StaffSection = () => {
   const [selectedStaff, setSelectedStaff] = useState<BusinessEmployee | null>(null);
   const [editingSettingsStaff, setEditingSettingsStaff] = useState<BusinessEmployee | null>(null);
   const [pinStaff, setPinStaff] = useState<BusinessEmployee | null>(null);
+  const [removingStaff, setRemovingStaff] = useState<BusinessEmployee | null>(null);
 
   // Individual Schedule State
   const [scheduleStaffId, setScheduleStaffId] = useState<string | null>(null);
@@ -213,6 +217,19 @@ const StaffSection = () => {
           onClose={() => setPinStaff(null)}
         />
       )}
+
+      <ConfirmationPopup
+        isOpen={Boolean(removingStaff)}
+        onCancel={() => setRemovingStaff(null)}
+        onConfirm={() => {
+          if (removingStaff) terminateEmployee(removingStaff.id);
+          setRemovingStaff(null);
+        }}
+        variant="danger"
+        title="Remove staff member?"
+        description={`This will remove ${removingStaff?.professionalProfile?.displayName ?? "this staff member"} from your business and revoke their access. Their attendance and payroll history will be kept.`}
+        confirmLabel="Remove"
+      />
 
       <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
@@ -305,6 +322,9 @@ const StaffSection = () => {
                         <Button
                           size="sm"
                           variant="destructive"
+                          title="Remove Staff"
+                          disabled={terminatingEmployee}
+                          onClick={() => setRemovingStaff(member)}
                         >
                           <Trash className="h-4 w-4" />
                         </Button>

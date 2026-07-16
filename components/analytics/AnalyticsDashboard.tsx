@@ -98,7 +98,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     <AnalyticsKpiCards sales={data.sales} currency={currency} />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <AnalyticsRevenueChart sales={data.sales} fallback={chartSkeleton} />
+                        <AnalyticsRevenueChart sales={data.sales} currency={currency} fallback={chartSkeleton} />
                         <AnalyticsOrderTypesChart sales={data.sales} fallback={chartSkeleton} />
                     </div>
 
@@ -107,7 +107,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
-                        <AnalyticsTopProductsTable topProducts={data.topProducts} />
+                        <AnalyticsTopProductsTable topProducts={data.topProducts} currency={currency} />
                     </div>
                 </>
             )}

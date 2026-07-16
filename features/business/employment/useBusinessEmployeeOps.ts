@@ -4,6 +4,7 @@ import {
   inviteEmployeeApiCall,
   resendInvitationToEmployeeApiCall,
   resyncInvitationsApiCall,
+  terminateBusinessEmployeeApiCall,
   updateBusinessEmployeeHourlyRateApiCall,
   updateBusinessEmployeeSettingsApiCall,
 } from "../service";
@@ -148,6 +149,23 @@ export const useBusinessEmployeeOps = (businessId: string) => {
       },
     });
 
+  const { mutate: terminateEmployee, isPending: terminatingEmployee } =
+    useMutation({
+      mutationKey: ["terminate_emp", businessId],
+      mutationFn: (employeeId: string) => {
+        return terminateBusinessEmployeeApiCall(businessId, employeeId);
+      },
+      onSuccess: () => {
+        toast.success("Staff member removed");
+        queryClient.invalidateQueries({
+          queryKey: ["business_emps", businessId],
+        });
+      },
+      onError: () => {
+        toast.error("Error removing staff member");
+      },
+    });
+
   //#endregion
 
   return {
@@ -162,5 +180,7 @@ export const useBusinessEmployeeOps = (businessId: string) => {
     updatingHourlyRate,
     updateEmployeeSettings,
     updatingEmployeeSettings,
+    terminateEmployee,
+    terminatingEmployee,
   };
 };

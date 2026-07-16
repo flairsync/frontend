@@ -452,7 +452,8 @@
       "analytics": "Análisis e informes",
       "reviews": "Reseñas",
       "audit_logs": "Registros de auditoría",
-      "danger": "Zona de peligro"
+      "danger": "Zona de peligro",
+      "integrations": "Integraciones"
     }
   },
   "permissions": {
@@ -1457,5 +1458,29 @@
       "no_data": "No hay datos de afluencia disponibles.",
       "tooltip_visitors": "Clientes sentados"
     }
+  },
+  "integrations": {
+    "title": "Integraciones",
+    "badge": "Próximamente",
+    "subtitle": "Conecta FlairSync con las herramientas que ya usas: plataformas de reparto, procesadores de pago, software de contabilidad y más, todo en un solo lugar.",
+    "categories": {
+      "delivery": "Reparto y pedidos",
+      "payments": "Pagos",
+      "accounting": "Contabilidad y finanzas",
+      "marketing": "Marketing y reseñas"
+    },
+    "items": {
+      "uber_eats": { "name": "Uber Eats", "description": "Sincroniza tu menú y recibe pedidos de reparto directamente en tu TPV y KDS." },
+      "doordash": { "name": "DoorDash", "description": "Acepta pedidos de DoorDash sin una segunda tablet: los pedidos llegan directo a tu cola de cocina." },
+      "grubhub": { "name": "Grubhub", "description": "Centraliza los pedidos de Grubhub junto con tus comandas de sala y para llevar." },
+      "deliveroo": { "name": "Deliveroo", "description": "Lleva los pedidos de Deliveroo a la misma pantalla de cocina que el resto." },
+      "stripe": { "name": "Stripe", "description": "Acepta pagos con tarjeta directamente en el cobro, sin depender de un datáfono aparte." },
+      "square": { "name": "Square", "description": "Procesa pagos con el hardware de Square que ya puedas tener." },
+      "quickbooks": { "name": "QuickBooks", "description": "Exporta ventas, propinas y nóminas directamente a tu contabilidad, sin importaciones manuales de CSV." },
+      "xero": { "name": "Xero", "description": "Mantén a tu gestor sincronizado automáticamente con exportaciones diarias de ingresos." },
+      "google_business": { "name": "Perfil de empresa de Google", "description": "Mantén tu horario, menú y reseñas sincronizados con Google." },
+      "mailchimp": { "name": "Mailchimp", "description": "Convierte a los clientes habituales en una lista de correo para promociones y novedades." }
+    },
+    "footer_note": "¿Hay una integración que te gustaría ver? Dínoslo desde el Centro de ayuda y la tendremos en cuenta en nuestra hoja de ruta."
   }
 }

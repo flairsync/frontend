@@ -452,7 +452,8 @@
       "analytics": "Analytics & Reports",
       "reviews": "Reviews",
       "audit_logs": "Audit Logs",
-      "danger": "Danger Zone"
+      "danger": "Danger Zone",
+      "integrations": "Integrations"
     }
   },
   "permissions": {
@@ -1457,5 +1458,29 @@
       "no_data": "No visitor data available.",
       "tooltip_visitors": "Guests seated"
     }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "badge": "Coming Soon",
+    "subtitle": "Connect FlairSync to the tools you already use — delivery platforms, payment processors, accounting software, and more, all in one place.",
+    "categories": {
+      "delivery": "Delivery & Ordering",
+      "payments": "Payments",
+      "accounting": "Accounting & Finance",
+      "marketing": "Marketing & Reviews"
+    },
+    "items": {
+      "uber_eats": { "name": "Uber Eats", "description": "Sync your menu and receive delivery orders directly into your POS and KDS." },
+      "doordash": { "name": "DoorDash", "description": "Accept DoorDash orders without a second tablet — orders land straight in your kitchen queue." },
+      "grubhub": { "name": "Grubhub", "description": "Centralize Grubhub orders alongside your dine-in and takeaway tickets." },
+      "deliveroo": { "name": "Deliveroo", "description": "Bring Deliveroo orders into the same kitchen display as everything else." },
+      "stripe": { "name": "Stripe", "description": "Take card payments directly at checkout instead of relying on a separate terminal." },
+      "square": { "name": "Square", "description": "Process payments through Square hardware you may already own." },
+      "quickbooks": { "name": "QuickBooks", "description": "Export sales, tips, and payroll straight to your books — no more manual CSV imports." },
+      "xero": { "name": "Xero", "description": "Keep your accountant in sync automatically with daily revenue exports." },
+      "google_business": { "name": "Google Business Profile", "description": "Keep your hours, menu, and reviews in sync with Google." },
+      "mailchimp": { "name": "Mailchimp", "description": "Turn repeat guests into a mailing list for promotions and updates." }
+    },
+    "footer_note": "Have an integration you'd love to see? Let us know from the Help Center and we'll factor it into our roadmap."
   }
 }

@@ -452,7 +452,8 @@
       "analytics": "Anàlisi i informes",
       "reviews": "Ressenyes",
       "audit_logs": "Registres d'auditoria",
-      "danger": "Zona de perill"
+      "danger": "Zona de perill",
+      "integrations": "Integracions"
     }
   },
   "permissions": {
@@ -1457,5 +1458,29 @@
       "no_data": "No hi ha dades d'afluència disponibles.",
       "tooltip_visitors": "Clients asseguts"
     }
+  },
+  "integrations": {
+    "title": "Integracions",
+    "badge": "Properament",
+    "subtitle": "Connecta FlairSync amb les eines que ja fas servir: plataformes de repartiment, processadors de pagament, programari de comptabilitat i molt més, tot en un sol lloc.",
+    "categories": {
+      "delivery": "Repartiment i comandes",
+      "payments": "Pagaments",
+      "accounting": "Comptabilitat i finances",
+      "marketing": "Màrqueting i ressenyes"
+    },
+    "items": {
+      "uber_eats": { "name": "Uber Eats", "description": "Sincronitza el teu menú i rep les comandes de repartiment directament al teu TPV i KDS." },
+      "doordash": { "name": "DoorDash", "description": "Accepta comandes de DoorDash sense una segona tauleta: arriben directament a la cua de cuina." },
+      "grubhub": { "name": "Grubhub", "description": "Centralitza les comandes de Grubhub juntament amb les de sala i per emportar." },
+      "deliveroo": { "name": "Deliveroo", "description": "Porta les comandes de Deliveroo a la mateixa pantalla de cuina que la resta." },
+      "stripe": { "name": "Stripe", "description": "Accepta pagaments amb targeta directament al cobrament, sense dependre d'un terminal separat." },
+      "square": { "name": "Square", "description": "Processa pagaments amb el maquinari de Square que potser ja tens." },
+      "quickbooks": { "name": "QuickBooks", "description": "Exporta vendes, propines i nòmines directament a la teva comptabilitat, sense importacions manuals de CSV." },
+      "xero": { "name": "Xero", "description": "Mantén el teu gestor sincronitzat automàticament amb exportacions diàries d'ingressos." },
+      "google_business": { "name": "Perfil d'empresa de Google", "description": "Mantén l'horari, el menú i les ressenyes sincronitzats amb Google." },
+      "mailchimp": { "name": "Mailchimp", "description": "Converteix els clients habituals en una llista de correu per a promocions i novetats." }
+    },
+    "footer_note": "Hi ha alguna integració que t'agradaria veure? Digues-nos-ho des del Centre d'ajuda i la tindrem en compte al nostre full de ruta."
   }
 }

@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import IntegrationsPage from "@/components/management/integrations/IntegrationsPage";
 
-const OwnerDashboardPage = () => {
-    return (
-        <div>OwnerDashboardPage</div>
-    )
-}
+const Page = () => {
+    return <IntegrationsPage />;
+};
 
-export default OwnerDashboardPage
+export default Page;

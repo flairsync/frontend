@@ -57,7 +57,7 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()
-    const [filterStatus, setFilterStatus] = useState<string>('ALL'); // Example filter
+    const [filterStatus, setFilterStatus] = useState<string>('ALL');
 
     const {
         invitations,
@@ -66,7 +66,7 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
         isPending,
         setPage,
         totalPages
-    } = useBusinessEmpInvitations(routeParams.id);
+    } = useBusinessEmpInvitations(routeParams.id, filterStatus);
 
     const {
         inviteNewEmployee,
@@ -86,8 +86,6 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
 
     const handleFilterChange = (status: string) => {
         setFilterStatus(status);
-        // TODO: Send request to backend to fetch filtered data
-        // fetchInvitations({ status, page: currentPage });
     }
 
     return (
@@ -177,7 +175,6 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                             </Dialog>}
 
                         </div>
-                        {/* Example filter dropdown */}
                         <Select value={filterStatus} onValueChange={(value) => handleFilterChange(value)}>
                             <SelectTrigger className="w-[200px]">
                                 <SelectValue placeholder="Select status" />

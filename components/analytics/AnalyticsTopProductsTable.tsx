@@ -4,9 +4,10 @@ import { TopProductMetric } from "@/models/analytics";
 
 interface AnalyticsTopProductsTableProps {
     topProducts: TopProductMetric[];
+    currency: string;
 }
 
-export const AnalyticsTopProductsTable: React.FC<AnalyticsTopProductsTableProps> = ({ topProducts }) => {
+export const AnalyticsTopProductsTable: React.FC<AnalyticsTopProductsTableProps> = ({ topProducts, currency }) => {
     return (
         <Card className="shadow-sm">
             <CardHeader>
@@ -41,7 +42,7 @@ export const AnalyticsTopProductsTable: React.FC<AnalyticsTopProductsTableProps>
                                             {Number(product.totalQuantity)}
                                         </td>
                                         <td className="px-6 py-4 text-right font-medium text-primary">
-                                            ${Number(product.totalRevenue).toFixed(2)}
+                                            {currency}{Number(product.totalRevenue).toFixed(2)}
                                         </td>
                                     </tr>
                                 ))}

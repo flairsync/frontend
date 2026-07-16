@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   fetchBusinessEmployeeInvitationsApiCall,
   fetchBusinessEmployeesApiCall,
@@ -15,7 +15,7 @@ type PaginatedEmployeesType = {
 // ✅ Extract the page param key
 const EMPLOYEE_PAGE_PARAM = "eitbl";
 
-export const useBusinessEmpInvitations = (businessId: string) => {
+export const useBusinessEmpInvitations = (businessId: string, status: string = "ALL") => {
   const { urlParsed } = usePageContext();
 
   // Read epage from urlParsed.search or default to 1
@@ -35,12 +35,25 @@ export const useBusinessEmpInvitations = (businessId: string) => {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
+  // Jump back to page 1 whenever the status filter changes (but not on initial
+  // mount), since the previously-selected page may not exist in the filtered
+  // result set.
+  const isFirstStatusRender = useRef(true);
+  useEffect(() => {
+    if (isFirstStatusRender.current) {
+      isFirstStatusRender.current = false;
+      return;
+    }
+    setPage(1);
+  }, [status]);
+
   const { data, isPending, isFetching } = useQuery<PaginatedEmployeesType>({
-    queryKey: ["business_emps_invits", businessId, currentPage],
+    queryKey: ["business_emps_invits", businessId, currentPage, status],
     queryFn: async () => {
       const resp = await fetchBusinessEmployeeInvitationsApiCall(
         businessId,
         currentPage,
+        status,
       );
 
       return {

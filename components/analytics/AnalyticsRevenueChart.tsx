@@ -15,9 +15,10 @@ import { format, parseISO } from "date-fns";
 
 interface AnalyticsRevenueChartProps {
     sales: DailySalesMetric[];
+    currency: string;
 }
 
-export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sales }) => {
+export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sales, currency }) => {
     const { t } = useTranslation("management");
 
     // Format the data for the chart, enforcing number types
@@ -49,10 +50,10 @@ export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sa
                             tickLine={false}
                             axisLine={false}
                             tick={{ fontSize: 12, fill: '#888' }}
-                            tickFormatter={(value) => `$${value}`}
+                            tickFormatter={(value) => `${currency}${value}`}
                         />
                         <Tooltip
-                            formatter={(value: number) => [`$${value.toFixed(2)}`, t("analytics.revenue_chart.tooltip_label")]}
+                            formatter={(value: number) => [`${currency}${value.toFixed(2)}`, t("analytics.revenue_chart.tooltip_label")]}
                             labelFormatter={(label) => t("analytics.revenue_chart.date_label", { date: label })}
                         />
                         <Line

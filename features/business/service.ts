@@ -233,6 +233,15 @@ export const updateBusinessEmployeeSettingsApiCall = (
   );
 };
 
+export const terminateBusinessEmployeeApiCall = (
+  businessId: string,
+  employeeId: string,
+) => {
+  return flairapi.patch(
+    `${businessEmploymentsBaseUrl}/${businessId}/${employeesSuffix}/${employeeId}/terminate`,
+  );
+};
+
 // Employments
 
 export const fetchBusinessEmployeesApiCall = async (
@@ -277,10 +286,14 @@ export const cancelInvitationToEmployeeApiCall = (
   );
 };
 
-export const fetchBusinessEmployeeInvitationsApiCall = async (businessId: string, page: number = 1) =>
+export const fetchBusinessEmployeeInvitationsApiCall = async (
+  businessId: string,
+  page: number = 1,
+  status?: string,
+) =>
   unwrapPaginated(await flairapi.get(
     `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}`,
-    { params: { page } },
+    { params: { page, status: status && status !== "ALL" ? status : undefined } },
   ));
 
 export const resyncInvitationsApiCall = (businessId: string) => {

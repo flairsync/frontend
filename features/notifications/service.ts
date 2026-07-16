@@ -27,7 +27,8 @@ export const getPreferencesApiCall = () =>
 export const updatePreferencesApiCall = (data: {
     type: 'ALERT' | 'SECURITY' | 'RESERVATION' | 'PROMO' | 'ORDER' |
           'SHIFT_PUBLISHED' | 'SHIFT_CREATED' | 'SHIFT_UPDATED' | 'SHIFT_SWAP_REQUEST' | 'SHIFT_SWAP_APPROVED' | 'TIME_OFF_REQUEST' | 'TIME_OFF_APPROVED' | 'SHIFT_NO_SHOW' |
-          'INVENTORY_LOW_STOCK' | 'TASK_ASSIGNED' | 'TASK_STATUS_CHANGED';
+          'INVENTORY_LOW_STOCK' | 'TASK_ASSIGNED' | 'TASK_STATUS_CHANGED' |
+          'ATTENDANCE_OVERDUE' | 'ATTENDANCE_AUTO_CLOSED' | 'ANNOUNCEMENT' | 'MESSAGE' | 'ORGANIZATION_JOIN_REQUEST' | 'ORGANIZATION_JOIN_RESOLVED';
     updates: {
         emailEnabled?: boolean;
         inAppEnabled?: boolean;

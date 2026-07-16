@@ -26,8 +26,14 @@ import {
     CommandInput,
     CommandItem,
 } from "@/components/ui/command";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { usePlatformPermissions } from "@/features/shared/usePlatformPermissions";
-import { Loader, Check, Plus, Trash } from "lucide-react";
+import { Loader, Check, Plus, Trash, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Role } from "@/models/business/roles/Role";
 import { RoleSchema } from "@/misc/FormValidators";
@@ -50,6 +56,22 @@ type Props = {
     onDeletePermission?: (permissionKey: string) => void;
     editRole?: Role;
 };
+
+function PermissionLabel({ label, description }: { label: string; description?: string }) {
+    if (!description) return <>{label}</>;
+
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <span className="inline-flex items-center gap-1 cursor-help">
+                    {label}
+                    <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                </span>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs">{description}</TooltipContent>
+        </Tooltip>
+    );
+}
 
 export function AddRoleModal(props: Props) {
     const { t } = useTranslation("management");
@@ -137,6 +159,7 @@ export function AddRoleModal(props: Props) {
     };
 
     return (
+        <TooltipProvider>
         <Dialog
             open={props.open}
             onOpenChange={open => {
@@ -215,7 +238,10 @@ export function AddRoleModal(props: Props) {
                                                         key={perm.id}
                                                         onSelect={() => addPermission(perm)}
                                                     >
-                                                        {t(`permissions.${perm.key}.label`)}
+                                                        <PermissionLabel
+                                                            label={t(`permissions.${perm.key}.label`)}
+                                                            description={t(`permissions.${perm.key}.description`, { defaultValue: "" })}
+                                                        />
                                                         {formik.values.permissions.some(
                                                             p => p.permissionId === perm.id
                                                         ) && (
@@ -246,7 +272,10 @@ export function AddRoleModal(props: Props) {
                                                 className="flex justify-between items-center p-3"
                                             >
                                                 <span className="font-medium">
-                                                    {t(`permissions.${p.key}.label`)}
+                                                    <PermissionLabel
+                                                        label={t(`permissions.${p.key}.label`)}
+                                                        description={t(`permissions.${p.key}.description`, { defaultValue: "" })}
+                                                    />
                                                 </span>
                                                 <div className="flex items-center gap-4">
                                                     <div className="flex gap-4">
@@ -374,5 +403,6 @@ export function AddRoleModal(props: Props) {
                 )}
             </DialogContent>
         </Dialog>
+        </TooltipProvider>
     );
 }

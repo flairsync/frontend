@@ -52,6 +52,7 @@ import {
     Globe,
     HandCoins,
     Tag,
+    Plug,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -142,6 +143,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
             { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
             { key: "stations", titleKey: "sidebar.items.stations", url: "/manage/:id/owner/stations", icon: Tablet },
+            { key: "integrations", titleKey: "sidebar.items.integrations", url: "/manage/:id/owner/integrations", icon: Plug },
         ],
     },
     {
