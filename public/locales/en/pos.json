@@ -311,12 +311,14 @@
         "created": "CREATED",
         "accepted": "ACCEPTED",
         "preparing": "PREPARING",
-        "ready": "READY"
+        "ready": "READY",
+        "served": "SERVED"
       },
       "transition": {
         "accept": "ACCEPT",
         "preparing": "PREPARING",
-        "mark_ready": "MARK READY"
+        "mark_ready": "MARK READY",
+        "mark_served": "MARK SERVED"
       }
     },
     "confirm_modals": {

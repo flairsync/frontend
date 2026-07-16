@@ -41,6 +41,7 @@
       "other_items_count_one": "{{count}} article més d'altres estacions",
       "other_items_count_other": "{{count}} articles més d'altres estacions",
       "ready_for_pickup": "Llest per recollir",
+      "mark_served": "Marca com a servit",
       "awaiting_expo_confirmation": "Esperant confirmació de l'expo",
       "station_done_waiting": "Estació acabada — esperant altres estacions",
       "start_preparing": "Comença a preparar",
@@ -53,6 +54,7 @@
       "item_not_assigned": "Aquest article no està assignat a la teva estació",
       "recall_failed": "No s'ha pogut recuperar l'article — torna-ho a provar.",
       "start_preparing_failed": "No s'ha pogut iniciar la preparació — torna-ho a provar.",
+      "mark_served_failed": "No s'ha pogut marcar com a servit — torna-ho a provar.",
       "priority_update_failed": "No s'ha pogut actualitzar la prioritat."
     }
   },
@@ -76,13 +78,15 @@
       "ready_awaiting_pickup": "Llest — Esperant recollida",
       "confirm_and_send": "Confirma i envia",
       "all_stations_done": "Totes les estacions acabades",
-      "in_progress": "En curs"
+      "in_progress": "En curs",
+      "mark_served": "Marca com a servit"
     },
     "toasts": {
       "confirm_success": "Comanda confirmada — llesta per recollir!",
       "items_not_ready": "Alguns articles encara s'estan preparant.",
       "invalid_status": "La comanda no està en un estat confirmable.",
-      "confirm_failed": "No s'ha pogut confirmar la comanda."
+      "confirm_failed": "No s'ha pogut confirmar la comanda.",
+      "mark_served_failed": "No s'ha pogut marcar com a servit — torna-ho a provar."
     }
   },
   "station_bootstrap": {
@@ -122,6 +126,13 @@
     "mode_switcher": {
       "pos_label": "Terminal POS",
       "kds_label": "Pantalla de Cuina (KDS)"
+    },
+    "attendance_qr": {
+      "trigger": "Fitxar amb codi QR",
+      "title": "Codi QR de fitxatge",
+      "description": "El personal escaneja això des de l'app mòbil per fitxar entrada, sortida o iniciar un descans. Es renova automàticament cada pocs segons perquè una foto no es pugui reutilitzar.",
+      "refreshing_in": "Es renova en {{secs}}s",
+      "generate_error": "No s'ha pogut generar el codi QR. Torna-ho a provar."
     }
   }
 }

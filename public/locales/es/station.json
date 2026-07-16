@@ -41,6 +41,7 @@
       "other_items_count_one": "{{count}} artículo más de otras estaciones",
       "other_items_count_other": "{{count}} artículos más de otras estaciones",
       "ready_for_pickup": "Listo para recoger",
+      "mark_served": "Marcar como servido",
       "awaiting_expo_confirmation": "Esperando confirmación del expo",
       "station_done_waiting": "Estación terminada — esperando a otras estaciones",
       "start_preparing": "Empezar a preparar",
@@ -53,6 +54,7 @@
       "item_not_assigned": "Este artículo no está asignado a tu estación",
       "recall_failed": "No se pudo recuperar el artículo — inténtalo de nuevo.",
       "start_preparing_failed": "No se pudo iniciar la preparación — inténtalo de nuevo.",
+      "mark_served_failed": "No se pudo marcar como servido — inténtalo de nuevo.",
       "priority_update_failed": "No se pudo actualizar la prioridad."
     }
   },
@@ -76,13 +78,15 @@
       "ready_awaiting_pickup": "Listo — Esperando recogida",
       "confirm_and_send": "Confirmar y enviar",
       "all_stations_done": "Todas las estaciones terminadas",
-      "in_progress": "En curso"
+      "in_progress": "En curso",
+      "mark_served": "Marcar como servido"
     },
     "toasts": {
       "confirm_success": "Pedido confirmado — ¡listo para recoger!",
       "items_not_ready": "Algunos artículos todavía se están preparando.",
       "invalid_status": "El pedido no está en un estado confirmable.",
-      "confirm_failed": "No se pudo confirmar el pedido."
+      "confirm_failed": "No se pudo confirmar el pedido.",
+      "mark_served_failed": "No se pudo marcar como servido — inténtalo de nuevo."
     }
   },
   "station_bootstrap": {
@@ -122,6 +126,13 @@
     "mode_switcher": {
       "pos_label": "Terminal POS",
       "kds_label": "Pantalla de Cocina (KDS)"
+    },
+    "attendance_qr": {
+      "trigger": "Fichar por código QR",
+      "title": "Código QR de fichaje",
+      "description": "El personal escanea esto desde la app móvil para fichar entrada, salida o iniciar un descanso. Se renueva automáticamente cada pocos segundos para que una foto no pueda reutilizarse.",
+      "refreshing_in": "Se renueva en {{secs}}s",
+      "generate_error": "No se pudo generar el código QR. Inténtalo de nuevo."
     }
   }
 }

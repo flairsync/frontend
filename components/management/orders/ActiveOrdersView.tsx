@@ -27,6 +27,8 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
         isPreparingOrder,
         readyOrder,
         isMarkingReady,
+        serveOrder,
+        isMarkingServed,
     } = useOrders(businessId);
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
@@ -92,6 +94,11 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                             {order.status === "preparing" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-amber-50 text-amber-600 border-amber-200" onClick={() => readyOrder(order.id)} disabled={isMarkingReady}>
                                                     <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.mark_ready")}
+                                                </Button>
+                                            )}
+                                            {order.status === "ready" && (
+                                                <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-green-50 text-green-600 border-green-200" onClick={() => serveOrder(order.id)} disabled={isMarkingServed}>
+                                                    <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.mark_served")}
                                                 </Button>
                                             )}
                                             <Button size="sm" variant="secondary" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleAddItems(order.id, order.status)}>

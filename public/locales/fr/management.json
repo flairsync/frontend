@@ -45,6 +45,7 @@
       "accepted": "Acceptée",
       "preparing": "En préparation",
       "ready": "Prête",
+      "served": "Servie",
       "completed": "Terminée",
       "rejected": "Refusée",
       "canceled": "Annulée"
@@ -56,6 +57,7 @@
       "accept": "Accepter",
       "prepare": "Préparer",
       "mark_ready": "Marquer comme prête",
+      "mark_served": "Marquer comme servie",
       "add_items": "Ajouter des articles",
       "details": "Détails",
       "available": "Disponible"

@@ -30,12 +30,13 @@ export type OrderStatus =
     | 'accepted'
     | 'preparing'
     | 'ready'
+    | 'served'
     | 'completed'
     | 'rejected'
     | 'canceled';
 
 export const TERMINAL_STATUSES: OrderStatus[] = ['completed', 'rejected', 'canceled'];
-export const ACTIVE_STATUSES: OrderStatus[] = ['created', 'accepted', 'preparing', 'ready'];
+export const ACTIVE_STATUSES: OrderStatus[] = ['created', 'accepted', 'preparing', 'ready', 'served'];
 
 export interface UpdateOrderDto {
     status?: OrderStatus;
@@ -156,6 +157,10 @@ export const prepareOrderApiCall = (businessId: string, orderId: string) => {
 
 export const readyOrderApiCall = (businessId: string, orderId: string) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/ready`, {});
+};
+
+export const serveOrderApiCall = (businessId: string, orderId: string) => {
+    return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/served`, {});
 };
 
 export const completeOrderApiCall = (businessId: string, orderId: string, data?: { force?: boolean; notes?: string }) => {

@@ -45,6 +45,7 @@
       "accepted": "Acceptada",
       "preparing": "Preparant",
       "ready": "Llesta",
+      "served": "Servida",
       "completed": "Completada",
       "rejected": "Rebutjada",
       "canceled": "Cancel·lada"
@@ -56,6 +57,7 @@
       "accept": "Acceptar",
       "prepare": "Preparar",
       "mark_ready": "Marcar com a llest",
+      "mark_served": "Marcar com a servida",
       "add_items": "Afegir articles",
       "details": "Detalls",
       "available": "Disponible"

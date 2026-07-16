@@ -311,12 +311,14 @@
         "created": "CREADO",
         "accepted": "ACEPTADO",
         "preparing": "EN PREPARACIÓN",
-        "ready": "LISTO"
+        "ready": "LISTO",
+        "served": "SERVIDO"
       },
       "transition": {
         "accept": "ACEPTAR",
         "preparing": "EN PREPARACIÓN",
-        "mark_ready": "MARCAR LISTO"
+        "mark_ready": "MARCAR LISTO",
+        "mark_served": "MARCAR SERVIDO"
       }
     },
     "confirm_modals": {

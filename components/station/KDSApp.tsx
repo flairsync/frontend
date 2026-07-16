@@ -67,9 +67,9 @@ interface Props {
 
 function ageColor(createdAt: string): string {
   const mins = (Date.now() - new Date(createdAt).getTime()) / 60_000;
-  if (mins < 5) return "text-green-400";
-  if (mins < 10) return "text-amber-400";
-  return "text-red-400 animate-pulse";
+  if (mins < 5) return "text-green-600";
+  if (mins < 10) return "text-amber-600";
+  return "text-red-600 animate-pulse";
 }
 
 function formatAge(ts: string): string {
@@ -82,9 +82,9 @@ function formatAge(ts: string): string {
 function itemAgeColor(sentAt: string | null): string {
   if (!sentAt) return "text-slate-500";
   const mins = (Date.now() - new Date(sentAt).getTime()) / 60_000;
-  if (mins < 5) return "text-green-400";
-  if (mins < 10) return "text-amber-400";
-  return "text-red-400";
+  if (mins < 5) return "text-green-600";
+  if (mins < 10) return "text-amber-600";
+  return "text-red-600";
 }
 
 function formatItemAge(sentAt: string | null): string {
@@ -107,7 +107,7 @@ function formatPrepTime(sentAt: string | null, readyAt: string | null): string {
 
 function PriorityBadge({ value, t }: { value: number; t: TFunction }) {
   return (
-    <span className="flex items-center gap-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-widest">
+    <span className="flex items-center gap-1 bg-red-500/20 text-red-600 border border-red-500/30 rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-widest">
       <Flame className="w-3 h-3" />
       {value > 1 ? t("kds_app.ticket.priority_value", { value }) : t("kds_app.ticket.rush")}
     </span>
@@ -127,15 +127,15 @@ function KdsSettingsPopover({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-900">
           <Settings className="w-4 h-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64 bg-slate-900 border-slate-700 text-slate-100" align="end">
+      <PopoverContent className="w-64 bg-white border-slate-300 text-slate-900" align="end">
         <div className="space-y-3">
-          <p className="text-xs font-black uppercase tracking-widest text-slate-400">{t("kds_app.settings_popover.title")}</p>
+          <p className="text-xs font-black uppercase tracking-widest text-slate-500">{t("kds_app.settings_popover.title")}</p>
           <div className="space-y-1.5">
-            <Label htmlFor="ready-max-age" className="text-[11px] font-bold text-slate-300">
+            <Label htmlFor="ready-max-age" className="text-[11px] font-bold text-slate-700">
               {t("kds_app.settings_popover.hide_after_label")}
             </Label>
             <Input
@@ -145,7 +145,7 @@ function KdsSettingsPopover({
               placeholder={t("kds_app.settings_popover.never_placeholder")}
               value={readyMaxAge}
               onChange={(e) => onReadyMaxAgeChange(e.target.value)}
-              className="h-8 bg-slate-800 border-slate-700 text-sm"
+              className="h-8 bg-slate-100 border-slate-300 text-sm"
             />
             <p className="text-[10px] text-slate-500">{t("kds_app.settings_popover.hint")}</p>
           </div>
@@ -188,7 +188,7 @@ function useKdsTick() {
 function KdsClock() {
   useKdsTick();
   return (
-    <p className="text-xl font-black font-mono text-white tracking-widest">
+    <p className="text-xl font-black font-mono text-slate-900 tracking-widest">
       {new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -208,9 +208,11 @@ const KdsTicketCard = memo(function KdsTicketCard({
   onStartPreparing,
   onRecallItem,
   onSetPriority,
+  onMarkServed,
   bumpingItems,
   startingPreparing,
   recallingItems,
+  markingServed,
   awaitingExpoConfirm,
 }: {
   order: KdsOrder;
@@ -219,9 +221,11 @@ const KdsTicketCard = memo(function KdsTicketCard({
   onStartPreparing: (orderId: string) => void;
   onRecallItem: (orderId: string, itemId: string) => void;
   onSetPriority: (orderId: string, priority: number) => void;
+  onMarkServed: (orderId: string) => void;
   bumpingItems: Set<string>;
   startingPreparing: Set<string>;
   recallingItems: Set<string>;
+  markingServed: Set<string>;
   awaitingExpoConfirm: boolean;
 }) {
   const { t } = useTranslation("station");
@@ -235,14 +239,14 @@ const KdsTicketCard = memo(function KdsTicketCard({
 
   return (
     <Card
-      className={`flex flex-col border-2 bg-slate-900 shadow-2xl transition-all ${
+      className={`flex flex-col border-2 bg-white shadow-2xl transition-all ${
         isReady
           ? "border-green-500 shadow-green-500/20"
           : awaitingExpoConfirm || allStationItemsBumped
           ? "border-green-500/30"
           : isAccepted
           ? "border-amber-500/40 opacity-75"
-          : "border-slate-700"
+          : "border-slate-300"
       }`}
     >
       {/* Header */}
@@ -254,7 +258,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
             ? "bg-green-500/5"
             : isAccepted
             ? "bg-amber-500/5"
-            : "bg-slate-950/30"
+            : "bg-slate-100/70"
         }`}
       >
         <div className="flex justify-between items-start">
@@ -272,7 +276,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                 <Package className="w-3.5 h-3.5" />
               )}
             </div>
-            <span className="text-2xl font-black text-white">
+            <span className="text-2xl font-black text-slate-900">
               {order.tableName ?? (order.type === "dine_in" ? t("kds_app.ticket.order_type_dine_in") : t("kds_app.ticket.order_type_takeaway"))}
             </span>
             {order.priority > 0 && <PriorityBadge value={order.priority} t={t} />}
@@ -290,14 +294,14 @@ const KdsTicketCard = memo(function KdsTicketCard({
               <div className="flex items-center gap-1 mt-0.5">
                 <button
                   onClick={() => onSetPriority(order.id, Math.max(0, order.priority - 1))}
-                  className="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                  className="w-5 h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
                 >
                   <ChevronDown className="w-3 h-3" />
                 </button>
                 <span className="text-[10px] font-mono text-slate-500 w-4 text-center">{order.priority}</span>
                 <button
                   onClick={() => onSetPriority(order.id, order.priority + 1)}
-                  className="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                  className="w-5 h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
                 >
                   <ChevronUp className="w-3 h-3" />
                 </button>
@@ -310,14 +314,14 @@ const KdsTicketCard = memo(function KdsTicketCard({
         </p>
         {order.kitchenNotes && (
           <div className="mt-1.5 flex items-start gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-            <p className="text-[11px] font-bold text-amber-300 leading-tight">{order.kitchenNotes}</p>
+            <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-[11px] font-bold text-amber-800 leading-tight">{order.kitchenNotes}</p>
           </div>
         )}
         {awaitingExpoConfirm && (
           <div className="mt-1 flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
-            <Timer className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-            <p className="text-[11px] font-bold text-amber-300 uppercase tracking-wide">{t("kds_app.ticket.waiting_for_expo")}</p>
+            <Timer className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+            <p className="text-[11px] font-bold text-amber-800 uppercase tracking-wide">{t("kds_app.ticket.waiting_for_expo")}</p>
           </div>
         )}
       </div>
@@ -337,12 +341,12 @@ const KdsTicketCard = memo(function KdsTicketCard({
                 onClick={() => !isItemReady && !isNotSent && !bumping && !recalling && onBumpItem(order.id, item.id)}
                 className={`p-3 rounded-2xl transition-all border ${
                   isNotSent
-                    ? "bg-slate-950/50 border-slate-900 opacity-30 cursor-default"
+                    ? "bg-slate-100 border-slate-200 opacity-30 cursor-default"
                     : isItemReady
-                    ? "bg-slate-950/50 border-slate-800 opacity-50 cursor-default"
+                    ? "bg-slate-100 border-slate-200 opacity-50 cursor-default"
                     : bumping || recalling
-                    ? "bg-slate-800/50 border-slate-700 cursor-wait"
-                    : "bg-slate-800 hover:bg-slate-700 border-transparent cursor-pointer shadow-lg shadow-black/20 active:scale-95"
+                    ? "bg-slate-100 border-slate-300 cursor-wait"
+                    : "bg-slate-100 hover:bg-slate-200 border-transparent cursor-pointer shadow-lg shadow-black/20 active:scale-95"
                 }`}
               >
                 <div className="flex justify-between items-start gap-2">
@@ -351,13 +355,13 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       {item.quantity}×
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h4 className={`text-sm font-black uppercase tracking-tight ${isItemReady || isNotSent ? "text-slate-500 line-through" : "text-white"}`}>
+                      <h4 className={`text-sm font-black uppercase tracking-tight ${isItemReady || isNotSent ? "text-slate-500 line-through" : "text-slate-900"}`}>
                         {item.nameSnapshot}
                       </h4>
                       {item.selectedModifiers && item.selectedModifiers.length > 0 && (
                         <div className="mt-0.5 space-y-0.5">
                           {item.selectedModifiers.map((m) => (
-                            <p key={m.modifierItemId} className="text-[10px] text-slate-400 font-bold">
+                            <p key={m.modifierItemId} className="text-[10px] text-slate-500 font-bold">
                               + {m.name}
                             </p>
                           ))}
@@ -366,14 +370,14 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       {item.bundleComponentsSnapshot && item.bundleComponentsSnapshot.length > 0 && (
                         <div className="mt-0.5 space-y-0.5">
                           {item.bundleComponentsSnapshot.map((c, idx) => (
-                            <p key={idx} className="text-[10px] text-slate-400 font-bold">
+                            <p key={idx} className="text-[10px] text-slate-500 font-bold">
                               • {c.name} ×{c.quantity}
                             </p>
                           ))}
                         </div>
                       )}
                       {item.allergensSnapshot && item.allergensSnapshot.length > 0 && (
-                        <div className="mt-1 flex items-start gap-1.5 text-red-400">
+                        <div className="mt-1 flex items-start gap-1.5 text-red-600">
                           <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5" />
                           <p className="text-[10px] font-black uppercase tracking-tight leading-tight">
                             {item.allergensSnapshot.map((a) => a.name).join(", ")}
@@ -381,7 +385,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                         </div>
                       )}
                       {item.notes && (
-                        <div className="mt-1 flex items-start gap-1.5 text-amber-400/80">
+                        <div className="mt-1 flex items-start gap-1.5 text-amber-600/80">
                           <AlertCircle className="w-3 h-3 flex-shrink-0 mt-0.5" />
                           <p className="text-[10px] font-bold italic leading-tight">"{item.notes}"</p>
                         </div>
@@ -395,7 +399,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       )}
                       {/* Prep time for finished items */}
                       {item.status === "ready" && item.sentAt && item.readyAt && (
-                        <div className="mt-1 flex items-center gap-1 text-green-500/60">
+                        <div className="mt-1 flex items-center gap-1 text-green-700/70">
                           <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
                           <span className="text-[10px] font-mono font-bold">
                             {t("kds_app.ticket.done_in", { time: formatPrepTime(item.sentAt, item.readyAt) })}
@@ -417,7 +421,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                           }}
                           disabled={recalling}
                           title={t("kds_app.ticket.unbump_title")}
-                          className="flex items-center gap-0.5 text-[9px] font-bold text-slate-500 hover:text-amber-400 border border-slate-700 hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
+                          className="flex items-center gap-0.5 text-[9px] font-bold text-slate-500 hover:text-amber-600 border border-slate-300 hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
                         >
                           <Undo2 className="w-2.5 h-2.5" />
                           {t("kds_app.ticket.recall")}
@@ -433,24 +437,32 @@ const KdsTicketCard = memo(function KdsTicketCard({
       </ScrollArea>
 
       {/* Footer */}
-      <div className="p-4 bg-slate-950/40 border-t border-slate-800 rounded-b-lg mt-auto">
+      <div className="p-4 bg-slate-100/70 border-t border-slate-200 rounded-b-lg mt-auto">
         {order.otherItemsCount > 0 && (
           <p className="text-[10px] text-slate-500 font-bold text-center mb-2">
             {t("kds_app.ticket.other_items_count", { count: order.otherItemsCount })}
           </p>
         )}
         {isReady ? (
-          <div className="flex items-center justify-center gap-2 py-2 text-green-400">
-            <CheckCircle2 className="w-5 h-5" />
-            <span className="text-xs font-black uppercase tracking-widest">{t("kds_app.ticket.ready_for_pickup")}</span>
-          </div>
+          <Button
+            className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
+            onClick={() => onMarkServed(order.id)}
+            disabled={markingServed.has(order.id)}
+          >
+            {markingServed.has(order.id) ? (
+              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+            )}
+            {t("kds_app.ticket.mark_served")}
+          </Button>
         ) : awaitingExpoConfirm ? (
-          <div className="flex items-center justify-center gap-2 py-2 text-amber-400">
+          <div className="flex items-center justify-center gap-2 py-2 text-amber-600">
             <Timer className="w-4 h-4" />
             <span className="text-[10px] font-black uppercase tracking-widest">{t("kds_app.ticket.awaiting_expo_confirmation")}</span>
           </div>
         ) : allStationItemsBumped ? (
-          <div className="flex items-center justify-center gap-2 py-2 text-green-400/70">
+          <div className="flex items-center justify-center gap-2 py-2 text-green-600/70">
             <CheckCircle2 className="w-4 h-4" />
             <span className="text-[10px] font-black uppercase tracking-widest">
               {t("kds_app.ticket.station_done_waiting")}
@@ -470,7 +482,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
             {order.priority === 0 && (
               <Button
                 variant="outline"
-                className="h-12 px-3 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                className="h-12 px-3 border-red-500/30 text-red-600 hover:bg-red-500/10 hover:text-red-700 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
                 onClick={() => onSetPriority(order.id, 1)}
               >
                 <Flame className="w-3.5 h-3.5 mr-1" />
@@ -499,6 +511,7 @@ function KDSMain({ station }: { station: StationInfo }) {
   const [bumpingItems, setBumpingItems] = useState<Set<string>>(new Set());
   const [recallingItems, setRecallingItems] = useState<Set<string>>(new Set());
   const [startingPreparing, setStartingPreparing] = useState<Set<string>>(new Set());
+  const [markingServed, setMarkingServed] = useState<Set<string>>(new Set());
   const [awaitingExpoOrders, setAwaitingExpoOrders] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [stationUnassigned, setStationUnassigned] = useState(false);
@@ -709,6 +722,25 @@ function KDSMain({ station }: { station: StationInfo }) {
     }
   }, []);
 
+  const markServed = useCallback(async (orderId: string) => {
+    setMarkingServed((prev) => new Set([...prev, orderId]));
+    try {
+      await staffApi.patch(`/station/orders/${orderId}/served`, {}, {
+        headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+      });
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+      knownIdsRef.current.delete(orderId);
+    } catch {
+      toast.error(t("kds_app.toasts.mark_served_failed"));
+    } finally {
+      setMarkingServed((prev) => {
+        const next = new Set(prev);
+        next.delete(orderId);
+        return next;
+      });
+    }
+  }, [t]);
+
   const setPriority = useCallback(async (orderId: string, priority: number) => {
     // Optimistic update
     setOrders((prev) =>
@@ -729,9 +761,9 @@ function KDSMain({ station }: { station: StationInfo }) {
   });
 
   return (
-    <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans antialiased">
+    <div className="h-screen flex flex-col bg-slate-50 text-slate-900 overflow-hidden font-sans antialiased">
       {/* Header */}
-      <header className="h-16 flex items-center px-6 bg-slate-900 border-b border-slate-800 flex-shrink-0 z-20">
+      <header className="h-16 flex items-center px-6 bg-white border-b border-slate-200 flex-shrink-0 z-20">
         <div className="flex items-center gap-3">
           <ChefHat className="w-6 h-6 text-primary" />
           <div className="leading-none">
@@ -754,7 +786,7 @@ function KDSMain({ station }: { station: StationInfo }) {
           <div className="flex flex-col items-end leading-none">
             <KdsClock />
           </div>
-          <Separator orientation="vertical" className="h-8 bg-slate-800" />
+          <Separator orientation="vertical" className="h-8 bg-slate-200" />
           <KdsSettingsPopover readyMaxAge={readyMaxAge} onReadyMaxAgeChange={setReadyMaxAge} />
           <StationQuickSettings station={station} />
         </div>
@@ -762,10 +794,10 @@ function KDSMain({ station }: { station: StationInfo }) {
 
       {/* Tickets */}
       {stationUnassigned ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-slate-400 gap-4">
+        <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-4">
           <ChefHat className="w-16 h-16 opacity-20" />
           <div className="text-center px-8">
-            <p className="font-black uppercase tracking-widest text-sm text-white mb-2">
+            <p className="font-black uppercase tracking-widest text-sm text-slate-900 mb-2">
               {t("kds_app.station_unassigned.title")}
             </p>
             <p className="text-xs max-w-xs leading-relaxed">
@@ -781,7 +813,7 @@ function KDSMain({ station }: { station: StationInfo }) {
           </div>
         </div>
       ) : (
-        <ScrollArea className="flex-1 bg-slate-950">
+        <ScrollArea className="flex-1 bg-slate-50">
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {sorted.map((order) => (
               <KdsTicketCard
@@ -792,9 +824,11 @@ function KDSMain({ station }: { station: StationInfo }) {
                 onStartPreparing={startPreparing}
                 onRecallItem={recallItem}
                 onSetPriority={setPriority}
+                onMarkServed={markServed}
                 bumpingItems={bumpingItems}
                 startingPreparing={startingPreparing}
                 recallingItems={recallingItems}
+                markingServed={markingServed}
                 awaitingExpoConfirm={awaitingExpoOrders.has(order.id)}
               />
             ))}
@@ -831,10 +865,10 @@ export default function KDSApp({ station }: Props) {
 
   if (!station.kitchenStationId) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center bg-slate-950 text-slate-400 gap-4">
+      <div className="h-screen flex flex-col items-center justify-center bg-slate-50 text-slate-500 gap-4">
         <ChefHat className="w-16 h-16 opacity-20" />
         <div className="text-center px-8">
-          <p className="font-black uppercase tracking-widest text-sm text-white mb-2">
+          <p className="font-black uppercase tracking-widest text-sm text-slate-900 mb-2">
             {t("kds_app.no_kitchen_station.title")}
           </p>
           <p className="text-xs max-w-xs">

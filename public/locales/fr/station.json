@@ -41,6 +41,7 @@
       "other_items_count_one": "{{count}} article supplémentaire d'autres postes",
       "other_items_count_other": "{{count}} articles supplémentaires d'autres postes",
       "ready_for_pickup": "Prêt à servir",
+      "mark_served": "Marquer comme servie",
       "awaiting_expo_confirmation": "En attente de confirmation de l'expo",
       "station_done_waiting": "Poste terminé — en attente des autres postes",
       "start_preparing": "Commencer la préparation",
@@ -53,6 +54,7 @@
       "item_not_assigned": "Cet article n'est pas assigné à votre poste",
       "recall_failed": "Échec du rappel de l'article — veuillez réessayer.",
       "start_preparing_failed": "Échec du démarrage de la préparation — veuillez réessayer.",
+      "mark_served_failed": "Échec du marquage comme servie — veuillez réessayer.",
       "priority_update_failed": "Échec de la mise à jour de la priorité."
     }
   },
@@ -76,13 +78,15 @@
       "ready_awaiting_pickup": "Prêt — En attente de retrait",
       "confirm_and_send": "Confirmer et envoyer",
       "all_stations_done": "Tous les postes terminés",
-      "in_progress": "En cours"
+      "in_progress": "En cours",
+      "mark_served": "Marquer comme servie"
     },
     "toasts": {
       "confirm_success": "Commande confirmée — prête à servir !",
       "items_not_ready": "Certains articles sont encore en préparation.",
       "invalid_status": "La commande n'est pas dans un état confirmable.",
-      "confirm_failed": "Échec de la confirmation de la commande."
+      "confirm_failed": "Échec de la confirmation de la commande.",
+      "mark_served_failed": "Échec du marquage comme servie — veuillez réessayer."
     }
   },
   "station_bootstrap": {
@@ -122,6 +126,13 @@
     "mode_switcher": {
       "pos_label": "Terminal POS",
       "kds_label": "Écran Cuisine (KDS)"
+    },
+    "attendance_qr": {
+      "trigger": "Pointer via QR",
+      "title": "Code QR de pointage",
+      "description": "Le personnel scanne ce code depuis l'application mobile pour pointer l'arrivée, le départ ou une pause. Il se renouvelle automatiquement toutes les quelques secondes pour qu'une photo ne puisse pas être réutilisée.",
+      "refreshing_in": "Renouvellement dans {{secs}}s",
+      "generate_error": "Échec de la génération du code QR. Veuillez réessayer."
     }
   }
 }

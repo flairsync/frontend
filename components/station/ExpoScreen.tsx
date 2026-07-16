@@ -49,9 +49,9 @@ interface Props {
 
 function ageColor(createdAt: string): string {
   const mins = (Date.now() - new Date(createdAt).getTime()) / 60_000;
-  if (mins < 5) return "text-green-400";
-  if (mins < 10) return "text-amber-400";
-  return "text-red-400 animate-pulse";
+  if (mins < 5) return "text-green-600";
+  if (mins < 10) return "text-amber-600";
+  return "text-red-600 animate-pulse";
 }
 
 function formatAge(ts: string): string {
@@ -67,10 +67,14 @@ function ExpoTicket({
   order,
   onConfirm,
   confirmingIds,
+  onMarkServed,
+  markingServedIds,
 }: {
   order: ExpoOrder;
   onConfirm: (orderId: string) => void;
   confirmingIds: Set<string>;
+  onMarkServed: (orderId: string) => void;
+  markingServedIds: Set<string>;
 }) {
   const { t } = useTranslation("station");
   const [, tick] = useState(0);
@@ -85,12 +89,12 @@ function ExpoTicket({
 
   return (
     <Card
-      className={`flex flex-col border-2 bg-slate-900 shadow-2xl transition-all ${
+      className={`flex flex-col border-2 bg-white shadow-2xl transition-all ${
         isReady
           ? "border-green-500 shadow-green-500/30"
           : order.allStationsDone
           ? "border-amber-500 shadow-amber-500/20"
-          : "border-slate-700"
+          : "border-slate-300"
       }`}
     >
       {/* Header */}
@@ -100,16 +104,16 @@ function ExpoTicket({
             ? "bg-green-500/15"
             : order.allStationsDone
             ? "bg-amber-500/10"
-            : "bg-slate-950/30"
+            : "bg-slate-100/70"
         }`}
       >
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-2xl font-black text-white">
+            <span className="text-2xl font-black text-slate-900">
               {order.tableName ?? t("expo_screen.ticket.takeaway")}
             </span>
             {order.priority > 0 && (
-              <span className="flex items-center gap-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-widest">
+              <span className="flex items-center gap-1 bg-red-500/20 text-red-600 border border-red-500/30 rounded-lg px-2 py-0.5 text-[10px] font-black uppercase tracking-widest">
                 <Flame className="w-3 h-3" />
                 {t("expo_screen.ticket.rush")}
               </span>
@@ -125,13 +129,13 @@ function ExpoTicket({
         </p>
         {order.kitchenNotes && (
           <div className="flex items-start gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-            <p className="text-[11px] font-bold text-amber-300 leading-tight">{order.kitchenNotes}</p>
+            <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-[11px] font-bold text-amber-800 leading-tight">{order.kitchenNotes}</p>
           </div>
         )}
         {/* Ready wait time — how long since the order became READY */}
         {isReady && order.readyAt && (
-          <div className="flex items-center gap-1.5 text-green-400/70">
+          <div className="flex items-center gap-1.5 text-green-600/70">
             <Timer className="w-3 h-3" />
             <span className="text-[10px] font-mono font-bold">
               {t("expo_screen.ticket.ready_ago", { time: formatAge(order.readyAt) })}
@@ -147,8 +151,8 @@ function ExpoTicket({
             key={s.kitchenStationId ?? idx}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide border ${
               s.done
-                ? "bg-green-500/15 border-green-500/30 text-green-400"
-                : "bg-amber-500/10 border-amber-500/20 text-amber-400"
+                ? "bg-green-500/15 border-green-500/30 text-green-600"
+                : "bg-amber-500/10 border-amber-500/20 text-amber-600"
             }`}
           >
             {s.done ? (
@@ -163,12 +167,20 @@ function ExpoTicket({
       </div>
 
       {/* Footer */}
-      <div className="p-4 bg-slate-950/40 border-t border-slate-800 rounded-b-lg mt-auto">
+      <div className="p-4 bg-slate-100/70 border-t border-slate-200 rounded-b-lg mt-auto">
         {isReady ? (
-          <div className="flex items-center justify-center gap-2 py-2 text-green-400">
-            <CheckCheck className="w-5 h-5" />
-            <span className="text-xs font-black uppercase tracking-widest">{t("expo_screen.ticket.ready_awaiting_pickup")}</span>
-          </div>
+          <Button
+            className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
+            onClick={() => onMarkServed(order.id)}
+            disabled={markingServedIds.has(order.id)}
+          >
+            {markingServedIds.has(order.id) ? (
+              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+            )}
+            {t("expo_screen.ticket.mark_served")}
+          </Button>
         ) : needsConfirm ? (
           <Button
             className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
@@ -183,7 +195,7 @@ function ExpoTicket({
             {t("expo_screen.ticket.confirm_and_send")}
           </Button>
         ) : order.allStationsDone ? (
-          <div className="flex items-center justify-center gap-2 py-2 text-green-400/70">
+          <div className="flex items-center justify-center gap-2 py-2 text-green-600/70">
             <CheckCircle2 className="w-4 h-4" />
             <span className="text-[10px] font-black uppercase tracking-widest">{t("expo_screen.ticket.all_stations_done")}</span>
           </div>
@@ -205,6 +217,7 @@ export default function ExpoScreen({ station }: Props) {
   const [orders, setOrders] = useState<ExpoOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirmingIds, setConfirmingIds] = useState<Set<string>>(new Set());
+  const [markingServedIds, setMarkingServedIds] = useState<Set<string>>(new Set());
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -271,12 +284,30 @@ export default function ExpoScreen({ station }: Props) {
     }
   }, [fetchOrders]);
 
+  const markServed = useCallback(async (orderId: string) => {
+    setMarkingServedIds((prev) => new Set([...prev, orderId]));
+    try {
+      await staffApi.patch(`/station/orders/${orderId}/served`, {}, {
+        headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+      });
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+    } catch {
+      toast.error(t("expo_screen.toasts.mark_served_failed"));
+    } finally {
+      setMarkingServedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(orderId);
+        return next;
+      });
+    }
+  }, [t]);
+
   return (
-    <div className="h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans antialiased">
+    <div className="h-screen flex flex-col bg-slate-50 text-slate-900 overflow-hidden font-sans antialiased">
       {/* Header */}
-      <header className="h-16 flex items-center px-6 bg-slate-900 border-b border-slate-800 flex-shrink-0 z-20">
+      <header className="h-16 flex items-center px-6 bg-white border-b border-slate-200 flex-shrink-0 z-20">
         <div className="flex items-center gap-3">
-          <CheckCheck className="w-6 h-6 text-green-400" />
+          <CheckCheck className="w-6 h-6 text-green-600" />
           <div className="leading-none">
             <h1 className="font-black tracking-tight text-lg uppercase">{t("expo_screen.header.title")}</h1>
             <p className="text-[9px] text-slate-500 font-bold flex items-center gap-1 mt-0.5">
@@ -289,13 +320,13 @@ export default function ExpoScreen({ station }: Props) {
         <div className="ml-auto flex items-center gap-4">
           {orders.length > 0 && (
             <div className="flex items-center gap-2 bg-green-500/15 px-3 py-1.5 rounded-xl">
-              <span className="text-xs font-black text-green-400 uppercase tracking-widest">
+              <span className="text-xs font-black text-green-600 uppercase tracking-widest">
                 {t("expo_screen.header.active_orders_count", { count: orders.length })}
               </span>
             </div>
           )}
           <div className="flex flex-col items-end leading-none">
-            <p className="text-xl font-black font-mono text-white tracking-widest">
+            <p className="text-xl font-black font-mono text-slate-900 tracking-widest">
               {currentTime.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -317,7 +348,7 @@ export default function ExpoScreen({ station }: Props) {
           </div>
         </div>
       ) : (
-        <ScrollArea className="flex-1 bg-slate-950">
+        <ScrollArea className="flex-1 bg-slate-50">
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {orders.map((order) => (
               <ExpoTicket
@@ -325,6 +356,8 @@ export default function ExpoScreen({ station }: Props) {
                 order={order}
                 onConfirm={confirmExpo}
                 confirmingIds={confirmingIds}
+                onMarkServed={markServed}
+                markingServedIds={markingServedIds}
               />
             ))}
             {orders.length === 0 && (

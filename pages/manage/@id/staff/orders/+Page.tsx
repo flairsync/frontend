@@ -148,6 +148,8 @@ export default function StaffOrdersPage() {
         isPreparingOrder,
         readyOrder,
         isMarkingReady,
+        serveOrder,
+        isMarkingServed,
         completeOrder,
         isCompletingOrder,
         quickCompleteOrder,
@@ -178,6 +180,7 @@ export default function StaffOrdersPage() {
             case "accepted": return "outline";
             case "preparing": return "secondary";
             case "ready": return "default";
+            case "served": return "default";
             case "completed": return "default";
             case "rejected": return "destructive";
             case "canceled": return "destructive";
@@ -191,6 +194,7 @@ export default function StaffOrdersPage() {
             case "accepted": return "Accepted";
             case "preparing": return "Preparing";
             case "ready": return "Ready";
+            case "served": return "Served";
             case "completed": return "Completed";
             case "rejected": return "Rejected";
             case "canceled": return "Canceled";
@@ -393,7 +397,7 @@ export default function StaffOrdersPage() {
                                                                     <DropdownMenuItem
                                                                         onClick={() => quickCompleteOrder(o.id, {
                                                                             onSuccess: (updated: Order) => {
-                                                                                if (updated.status === "ready") handleOpenPayment(o);
+                                                                                if (updated.status === "served") handleOpenPayment(o);
                                                                             },
                                                                         })}
                                                                         disabled={isQuickCompletingOrder}
@@ -433,13 +437,19 @@ export default function StaffOrdersPage() {
                                                                         <span>Mark Ready</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "ready" && o.paymentStatus === "paid" && (
+                                                                {o.status === "ready" && (
+                                                                    <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isMarkingServed} className="text-green-600 focus:text-green-700">
+                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <span>Mark Served</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {o.status === "served" && o.paymentStatus === "paid" && (
                                                                     <DropdownMenuItem onClick={() => completeOrder({ orderId: o.id })} disabled={isCompletingOrder} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
                                                                         <span>Complete</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "ready" && o.paymentStatus !== "paid" && (
+                                                                {o.status === "served" && o.paymentStatus !== "paid" && (
                                                                     <DropdownMenuItem onClick={() => handleOpenForceClose(o)} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
                                                                         <span>Force Complete</span>
@@ -457,7 +467,7 @@ export default function StaffOrdersPage() {
                                                                         <span>Transfer Table</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {["created", "accepted", "preparing", "ready"].includes(o.status) && (
+                                                                {["created", "accepted", "preparing", "ready", "served"].includes(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenCancel(o)} className="text-red-600 focus:text-red-700">
                                                                         <XCircle className="mr-2 h-4 w-4" />
                                                                         <span>Cancel</span>

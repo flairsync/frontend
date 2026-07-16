@@ -10,6 +10,7 @@ import {
     rejectOrderApiCall,
     prepareOrderApiCall,
     readyOrderApiCall,
+    serveOrderApiCall,
     completeOrderApiCall,
     quickCompleteOrderApiCall,
     cancelOrderApiCall,
@@ -166,6 +167,18 @@ export const useOrders = (
         }
     });
 
+    const serveOrderMutation = useMutation({
+        mutationFn: (orderId: string) => serveOrderApiCall(businessId, orderId),
+        onSuccess: () => {
+            toast.success("Order marked as served");
+            queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
+        },
+        onError: (error: any) => {
+            handleInvalidTransition(error, () => queryClient.invalidateQueries({ queryKey: ["orders", businessId] }));
+            if (error.response?.data?.code !== "order.invalid_transition") toast.error("Failed to mark order as served");
+        }
+    });
+
     const completeOrderMutation = useMutation({
         mutationFn: ({ orderId, data }: { orderId: string; data?: { force?: boolean; notes?: string } }) =>
             completeOrderApiCall(businessId, orderId, data),
@@ -187,7 +200,7 @@ export const useOrders = (
     const quickCompleteOrderMutation = useMutation({
         mutationFn: (orderId: string) => quickCompleteOrderApiCall(businessId, orderId),
         onSuccess: (order) => {
-            toast.success(order.status === "completed" ? "Order completed" : "Order is ready — payment required to complete");
+            toast.success(order.status === "completed" ? "Order completed" : "Order served — payment required to complete");
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
             queryClient.invalidateQueries({ queryKey: ["inventory_items", businessId] });
             queryClient.invalidateQueries({ queryKey: ["inventory_dashboard", businessId] });
@@ -470,6 +483,8 @@ export const useOrders = (
         isPreparingOrder: prepareOrderMutation.isPending,
         readyOrder: readyOrderMutation.mutate,
         isMarkingReady: readyOrderMutation.isPending,
+        serveOrder: serveOrderMutation.mutate,
+        isMarkingServed: serveOrderMutation.isPending,
         completeOrder: completeOrderMutation.mutate,
         isCompletingOrder: completeOrderMutation.isPending,
         quickCompleteOrder: quickCompleteOrderMutation.mutate,

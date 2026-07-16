@@ -75,13 +75,14 @@ import { calcTotal } from "@/features/pos/types";
 import type { Order } from "@/features/orders/service";
 import { formatTime } from "@/lib/dateUtils";
 
-const ACTIVE_ORDER_STATUSES = "CREATED,ACCEPTED,PREPARING,READY";
+const ACTIVE_ORDER_STATUSES = "CREATED,ACCEPTED,PREPARING,READY,SERVED";
 
 // Action → offline queue operation type
 const TRANSITION_OP_TYPE: Record<string, StationOpType> = {
     accept: "accept_order",
     prepare: "start_preparing",
     ready: "mark_ready",
+    served: "mark_served",
     complete: "complete_order",
     cancel: "cancel_order",
 };
@@ -1112,6 +1113,7 @@ function getStatusTransition(t: (key: string) => string): Record<string, { label
         CREATED: { label: t("pos_app.order_card.transition.accept"), action: "accept" },
         ACCEPTED: { label: t("pos_app.order_card.transition.preparing"), action: "prepare" },
         PREPARING: { label: t("pos_app.order_card.transition.mark_ready"), action: "ready" },
+        READY: { label: t("pos_app.order_card.transition.mark_served"), action: "served" },
     };
 }
 
@@ -1121,6 +1123,7 @@ function getOrderStatusLabels(t: (key: string) => string): Record<string, string
         ACCEPTED: t("pos_app.order_card.status.accepted"),
         PREPARING: t("pos_app.order_card.status.preparing"),
         READY: t("pos_app.order_card.status.ready"),
+        SERVED: t("pos_app.order_card.status.served"),
     };
 }
 
@@ -1129,6 +1132,7 @@ const STATUS_COLOR: Record<string, string> = {
     ACCEPTED: "bg-blue-500/10 text-blue-600",
     PREPARING: "bg-orange-500/10 text-orange-600",
     READY: "bg-emerald-500/10 text-emerald-600",
+    SERVED: "bg-teal-500/10 text-teal-600",
 };
 
 function ActiveOrderCard({
@@ -1150,7 +1154,7 @@ function ActiveOrderCard({
     const time = formatTime(order.createdAt);
     const statusUpper = order.status.toUpperCase();
     const transition = getStatusTransition(t)[statusUpper];
-    const canPay = ["ACCEPTED", "PREPARING", "READY"].includes(statusUpper);
+    const canPay = ["ACCEPTED", "PREPARING", "READY", "SERVED"].includes(statusUpper);
 
     return (
         <Card className="bg-card border-border overflow-hidden hover:border-primary/30 transition-all">

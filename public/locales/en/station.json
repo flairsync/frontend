@@ -41,6 +41,7 @@
       "other_items_count_one": "{{count}} more item from other stations",
       "other_items_count_other": "{{count}} more items from other stations",
       "ready_for_pickup": "Ready for Pickup",
+      "mark_served": "Mark Served",
       "awaiting_expo_confirmation": "Awaiting Expo Confirmation",
       "station_done_waiting": "Station done — waiting for other stations",
       "start_preparing": "Start Preparing",
@@ -53,6 +54,7 @@
       "item_not_assigned": "This item is not assigned to your station",
       "recall_failed": "Failed to recall item — please try again.",
       "start_preparing_failed": "Failed to start preparing — please try again.",
+      "mark_served_failed": "Failed to mark as served — please try again.",
       "priority_update_failed": "Failed to update priority."
     }
   },
@@ -76,13 +78,15 @@
       "ready_awaiting_pickup": "Ready — Awaiting Pickup",
       "confirm_and_send": "Confirm & Send",
       "all_stations_done": "All Stations Done",
-      "in_progress": "In Progress"
+      "in_progress": "In Progress",
+      "mark_served": "Mark Served"
     },
     "toasts": {
       "confirm_success": "Order confirmed — ready for pickup!",
       "items_not_ready": "Some items are still being prepared.",
       "invalid_status": "Order is not in a confirmable state.",
-      "confirm_failed": "Failed to confirm order."
+      "confirm_failed": "Failed to confirm order.",
+      "mark_served_failed": "Failed to mark as served — please try again."
     }
   },
   "station_bootstrap": {
@@ -122,6 +126,13 @@
     "mode_switcher": {
       "pos_label": "POS Terminal",
       "kds_label": "Kitchen Display (KDS)"
+    },
+    "attendance_qr": {
+      "trigger": "Clock In/Out via QR",
+      "title": "Clock-In QR Code",
+      "description": "Staff scan this from the mobile app to clock in, clock out, or take a break. It refreshes automatically every few seconds so a photo of it can't be reused.",
+      "refreshing_in": "Refreshing in {{secs}}s",
+      "generate_error": "Failed to generate QR code. Please try again."
     }
   }
 }

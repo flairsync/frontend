@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export type StationOpType =
   | 'create_order' | 'accept_order' | 'reject_order' | 'start_preparing'
-  | 'mark_ready' | 'complete_order' | 'cancel_order' | 'add_items'
+  | 'mark_ready' | 'mark_served' | 'complete_order' | 'cancel_order' | 'add_items'
   | 'add_payment' | 'void_item';
 
 export interface QueuedOperation {
