@@ -165,7 +165,7 @@ export default function StaffOrdersPage() {
         page,
     );
 
-    const { floors } = useFloors(businessId);
+    const { floors } = useFloors(businessId, true);
     const allTables = floors?.flatMap((f: any) => (f.tables || []).map((t: any) => ({ ...t, floorName: f.name }))) || [];
 
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);

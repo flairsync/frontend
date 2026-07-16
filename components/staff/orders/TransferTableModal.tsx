@@ -16,7 +16,7 @@ interface TransferTableModalProps {
 
 export const TransferTableModal: React.FC<TransferTableModalProps> = ({ open, onClose, businessId, order }) => {
     const { transferOrder, isTransferringOrder } = useOrders(businessId);
-    const { floors } = useFloors(businessId);
+    const { floors } = useFloors(businessId, true);
     const [selectedTableId, setSelectedTableId] = useState<string>("");
 
     const handleTransfer = () => {

@@ -205,7 +205,7 @@ const OwnerOrdersPage: React.FC = () => {
     );
 
     // Fetch floors to get table mappings
-    const { floors } = useFloors(businessId);
+    const { floors } = useFloors(businessId, true);
     const allTables = floors?.flatMap((f: any) => (f.tables || []).map((t: any) => ({ ...t, floorName: f.name }))) || [];
 
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);

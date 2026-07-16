@@ -17,7 +17,7 @@ interface ActiveOrdersViewProps {
 
 export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }) => {
     const { t } = useTranslation("management");
-    const { floors, fetchingFloors } = useFloors(businessId);
+    const { floors, fetchingFloors } = useFloors(businessId, true);
     const {
         orders,
         fetchingOrders,

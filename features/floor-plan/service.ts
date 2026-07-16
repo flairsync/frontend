@@ -66,8 +66,8 @@ export const deleteFloorApiCall = (businessId: string, floorId: string) => {
 };
 
 // Tables
-export const fetchTablesApiCall = async (businessId: string) =>
-    unwrap(await flairapi.get(`${getFloorPlanUrl(businessId)}/tables`));
+export const fetchTablesApiCall = async (businessId: string, publishedOnly?: boolean) =>
+    unwrap(await flairapi.get(`${getFloorPlanUrl(businessId)}/tables${publishedOnly ? "?published=true" : ""}`));
 
 export const createTableApiCall = (businessId: string, data: CreateTableDto) => {
     return flairapi.post(`${getFloorPlanUrl(businessId)}/tables`, data);

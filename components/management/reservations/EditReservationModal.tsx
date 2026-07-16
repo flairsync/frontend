@@ -32,7 +32,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
     onOpenChange
 }) => {
     const { updateReservation, isUpdatingReservation, cancelReservation, isCancellingReservation, markNoShow, isMarkingNoShow } = useReservations(businessId);
-    const { tables, fetchingTables } = useTables(businessId);
+    const { tables, fetchingTables } = useTables(businessId, true);
     const { myBusinessFullDetails } = useMyBusiness(businessId);
 
     const [cancelReason, setCancelReason] = useState("");

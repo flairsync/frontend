@@ -44,7 +44,7 @@ export const useFloors = (businessId: string, publishedOnly?: boolean) => {
     const queryClient = useQueryClient();
 
     const { data: floors, isFetching: fetchingFloors, refetch } = useQuery({
-        queryKey: ["floors", businessId],
+        queryKey: ["floors", businessId, publishedOnly],
         queryFn: async () => {
             try {
                 const data = await fetchFloorsApiCall(businessId, publishedOnly);
@@ -98,14 +98,14 @@ export const useFloors = (businessId: string, publishedOnly?: boolean) => {
     };
 };
 
-export const useTables = (businessId: string) => {
+export const useTables = (businessId: string, publishedOnly?: boolean) => {
     const queryClient = useQueryClient();
 
     const { data: tables, isFetching: fetchingTables, refetch } = useQuery({
-        queryKey: ["tables", businessId],
+        queryKey: ["tables", businessId, publishedOnly],
         queryFn: async () => {
             try {
-                const data = await fetchTablesApiCall(businessId);
+                const data = await fetchTablesApiCall(businessId, publishedOnly);
                 return Array.isArray(data) ? data : [];
             } catch (error) {
                 console.warn("Failed to fetch tables:", error);
