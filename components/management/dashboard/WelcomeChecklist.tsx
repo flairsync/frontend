@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -75,7 +76,10 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
     const completedCount = steps.filter((s) => s.done).length;
     const allDone = completedCount === steps.length;
 
-    if (dismissed || stillLoading || allDone) return null;
+    // Still loading data has no visible state to animate away from, so skip
+    // straight to nothing — only a previously-visible card (dismissed or
+    // just-completed) animates out.
+    if (stillLoading) return null;
 
     const handleDismiss = () => {
         localStorage.setItem(`${DISMISS_KEY_PREFIX}${businessId}`, "1");
@@ -83,44 +87,57 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
     };
 
     return (
-        <Card className="shadow-sm border-primary/20 bg-primary/[0.02]">
-            <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-                <div>
-                    <CardTitle>Welcome! Let's get you set up</CardTitle>
-                    <CardDescription>
-                        {completedCount} of {steps.length} steps complete — finish these to get your business ready for guests.
-                    </CardDescription>
-                </div>
-                <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleDismiss} title="Dismiss">
-                    <X className="h-4 w-4" />
-                </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <Progress value={(completedCount / steps.length) * 100} />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {steps.map((step) => (
-                        <button
-                            key={step.key}
-                            type="button"
-                            onClick={() => navigate(step.href)}
-                            className={`flex items-start gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5 ${step.done ? "opacity-60" : ""}`}
-                        >
-                            {step.done ? (
-                                <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
-                            ) : (
-                                <Circle className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
-                            )}
+        <AnimatePresence>
+            {!dismissed && !allDone && (
+                <motion.div
+                    key="welcome-checklist"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    style={{ overflow: "hidden" }}
+                >
+                    <Card className="shadow-sm border-primary/20 bg-primary/[0.02]">
+                        <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
                             <div>
-                                <p className={`text-sm font-medium ${step.done ? "line-through text-muted-foreground" : "text-zinc-800 dark:text-zinc-100"}`}>
-                                    {step.label}
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                                <CardTitle>Welcome! Let's get you set up</CardTitle>
+                                <CardDescription>
+                                    {completedCount} of {steps.length} steps complete — finish these to get your business ready for guests.
+                                </CardDescription>
                             </div>
-                        </button>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleDismiss} title="Dismiss">
+                                <X className="h-4 w-4" />
+                            </Button>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <Progress value={(completedCount / steps.length) * 100} />
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {steps.map((step) => (
+                                    <button
+                                        key={step.key}
+                                        type="button"
+                                        onClick={() => navigate(step.href)}
+                                        className={`flex items-start gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5 ${step.done ? "opacity-60" : ""}`}
+                                    >
+                                        {step.done ? (
+                                            <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
+                                        ) : (
+                                            <Circle className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                                        )}
+                                        <div>
+                                            <p className={`text-sm font-medium ${step.done ? "line-through text-muted-foreground" : "text-zinc-800 dark:text-zinc-100"}`}>
+                                                {step.label}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 };
