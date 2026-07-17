@@ -1469,16 +1469,23 @@
       "accounting": "Contabilidad y finanzas",
       "marketing": "Marketing y reseñas"
     },
+    "countries": {
+      "AD": "Andorra",
+      "ES": "España",
+      "FR": "Francia"
+    },
     "items": {
       "uber_eats": { "name": "Uber Eats", "description": "Sincroniza tu menú y recibe pedidos de reparto directamente en tu TPV y KDS." },
-      "doordash": { "name": "DoorDash", "description": "Acepta pedidos de DoorDash sin una segunda tablet: los pedidos llegan directo a tu cola de cocina." },
-      "grubhub": { "name": "Grubhub", "description": "Centraliza los pedidos de Grubhub junto con tus comandas de sala y para llevar." },
+      "glovo": { "name": "Glovo", "description": "Acepta pedidos de Glovo sin una segunda tablet: los pedidos llegan directo a tu cola de cocina." },
+      "just_eat": { "name": "Just Eat", "description": "Centraliza los pedidos de Just Eat junto con tus comandas de sala y para llevar." },
       "deliveroo": { "name": "Deliveroo", "description": "Lleva los pedidos de Deliveroo a la misma pantalla de cocina que el resto." },
       "stripe": { "name": "Stripe", "description": "Acepta pagos con tarjeta directamente en el cobro, sin depender de un datáfono aparte." },
-      "square": { "name": "Square", "description": "Procesa pagos con el hardware de Square que ya puedas tener." },
-      "quickbooks": { "name": "QuickBooks", "description": "Exporta ventas, propinas y nóminas directamente a tu contabilidad, sin importaciones manuales de CSV." },
-      "xero": { "name": "Xero", "description": "Mantén a tu gestor sincronizado automáticamente con exportaciones diarias de ingresos." },
+      "sumup": { "name": "SumUp", "description": "Procesa pagos con el lector de tarjetas SumUp que ya puedas tener en el mostrador." },
+      "sage": { "name": "Sage", "description": "Exporta ventas, propinas y nóminas directamente a tu contabilidad, sin importaciones manuales de CSV." },
+      "holded": { "name": "Holded", "description": "Mantén a tu gestoría sincronizada automáticamente con exportaciones diarias de ingresos y facturas." },
+      "pennylane": { "name": "Pennylane", "description": "Envía ventas y gastos directamente a tu asesoría, listos para IVA y nóminas." },
       "google_business": { "name": "Perfil de empresa de Google", "description": "Mantén tu horario, menú y reseñas sincronizados con Google." },
+      "thefork": { "name": "TheFork", "description": "Sincroniza la disponibilidad de mesas y recopila reseñas desde la principal plataforma de reservas de la región." },
       "mailchimp": { "name": "Mailchimp", "description": "Convierte a los clientes habituales en una lista de correo para promociones y novedades." }
     },
     "footer_note": "¿Hay una integración que te gustaría ver? Dínoslo desde el Centro de ayuda y la tendremos en cuenta en nuestra hoja de ruta."

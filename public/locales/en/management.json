@@ -1469,16 +1469,23 @@
       "accounting": "Accounting & Finance",
       "marketing": "Marketing & Reviews"
     },
+    "countries": {
+      "AD": "Andorra",
+      "ES": "Spain",
+      "FR": "France"
+    },
     "items": {
       "uber_eats": { "name": "Uber Eats", "description": "Sync your menu and receive delivery orders directly into your POS and KDS." },
-      "doordash": { "name": "DoorDash", "description": "Accept DoorDash orders without a second tablet — orders land straight in your kitchen queue." },
-      "grubhub": { "name": "Grubhub", "description": "Centralize Grubhub orders alongside your dine-in and takeaway tickets." },
+      "glovo": { "name": "Glovo", "description": "Accept Glovo orders without a second tablet — orders land straight in your kitchen queue." },
+      "just_eat": { "name": "Just Eat", "description": "Centralize Just Eat orders alongside your dine-in and takeaway tickets." },
       "deliveroo": { "name": "Deliveroo", "description": "Bring Deliveroo orders into the same kitchen display as everything else." },
       "stripe": { "name": "Stripe", "description": "Take card payments directly at checkout instead of relying on a separate terminal." },
-      "square": { "name": "Square", "description": "Process payments through Square hardware you may already own." },
-      "quickbooks": { "name": "QuickBooks", "description": "Export sales, tips, and payroll straight to your books — no more manual CSV imports." },
-      "xero": { "name": "Xero", "description": "Keep your accountant in sync automatically with daily revenue exports." },
+      "sumup": { "name": "SumUp", "description": "Process payments through the SumUp card reader you may already use at the counter." },
+      "sage": { "name": "Sage", "description": "Export sales, tips, and payroll straight to your books — no more manual CSV imports." },
+      "holded": { "name": "Holded", "description": "Keep your gestoría in sync automatically with daily revenue and invoice exports." },
+      "pennylane": { "name": "Pennylane", "description": "Send sales and expenses straight to your comptable, ready for VAT and payroll." },
       "google_business": { "name": "Google Business Profile", "description": "Keep your hours, menu, and reviews in sync with Google." },
+      "thefork": { "name": "TheFork", "description": "Sync your table availability and pull reviews from the region's top reservation platform." },
       "mailchimp": { "name": "Mailchimp", "description": "Turn repeat guests into a mailing list for promotions and updates." }
     },
     "footer_note": "Have an integration you'd love to see? Let us know from the Help Center and we'll factor it into our roadmap."

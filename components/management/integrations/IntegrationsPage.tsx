@@ -5,9 +5,18 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+type CountryCode = "AD" | "ES" | "FR";
+
+const COUNTRY_FLAG: Record<CountryCode, string> = {
+    AD: "🇦🇩",
+    ES: "🇪🇸",
+    FR: "🇫🇷",
+};
+
 interface IntegrationItem {
     key: string;
     icon: LucideIcon;
+    countries: CountryCode[];
 }
 
 interface IntegrationCategory {
@@ -16,39 +25,44 @@ interface IntegrationCategory {
     items: IntegrationItem[];
 }
 
+// Every entry below is a real service confirmed to operate in at least one of
+// FlairSync's active markets (Andorra, Spain, France). Availability varies by
+// country, so each item is tagged with the countries it actually covers.
 const CATEGORIES: IntegrationCategory[] = [
     {
         key: "delivery",
         icon: Bike,
         items: [
-            { key: "uber_eats", icon: Bike },
-            { key: "doordash", icon: Bike },
-            { key: "grubhub", icon: Bike },
-            { key: "deliveroo", icon: Bike },
+            { key: "uber_eats", icon: Bike, countries: ["ES", "FR"] },
+            { key: "glovo", icon: Bike, countries: ["ES", "AD"] },
+            { key: "just_eat", icon: Bike, countries: ["ES", "FR"] },
+            { key: "deliveroo", icon: Bike, countries: ["FR"] },
         ],
     },
     {
         key: "payments",
         icon: CreditCard,
         items: [
-            { key: "stripe", icon: CreditCard },
-            { key: "square", icon: CreditCard },
+            { key: "stripe", icon: CreditCard, countries: ["ES", "FR"] },
+            { key: "sumup", icon: CreditCard, countries: ["ES", "FR", "AD"] },
         ],
     },
     {
         key: "accounting",
         icon: Calculator,
         items: [
-            { key: "quickbooks", icon: Calculator },
-            { key: "xero", icon: Calculator },
+            { key: "sage", icon: Calculator, countries: ["ES", "FR", "AD"] },
+            { key: "holded", icon: Calculator, countries: ["ES"] },
+            { key: "pennylane", icon: Calculator, countries: ["FR"] },
         ],
     },
     {
         key: "marketing",
         icon: Megaphone,
         items: [
-            { key: "google_business", icon: Megaphone },
-            { key: "mailchimp", icon: Megaphone },
+            { key: "google_business", icon: Megaphone, countries: ["ES", "FR", "AD"] },
+            { key: "thefork", icon: Megaphone, countries: ["ES", "FR"] },
+            { key: "mailchimp", icon: Megaphone, countries: ["ES", "FR", "AD"] },
         ],
     },
 ];
@@ -96,10 +110,22 @@ const IntegrationsPage: React.FC = () => {
                                             {t("integrations.badge")}
                                         </Badge>
                                     </CardHeader>
-                                    <CardContent>
+                                    <CardContent className="space-y-3">
                                         <CardDescription>
                                             {t(`integrations.items.${item.key}.description`)}
                                         </CardDescription>
+                                        <div className="flex items-center gap-1.5">
+                                            {item.countries.map((country) => (
+                                                <Badge
+                                                    key={country}
+                                                    variant="secondary"
+                                                    className="gap-1 text-xs font-normal"
+                                                >
+                                                    <span aria-hidden="true">{COUNTRY_FLAG[country]}</span>
+                                                    {t(`integrations.countries.${country}`)}
+                                                </Badge>
+                                            ))}
+                                        </div>
                                     </CardContent>
                                 </Card>
                             ))}
