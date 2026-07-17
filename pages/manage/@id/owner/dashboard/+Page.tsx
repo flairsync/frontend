@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { usePageContext } from "vike-react/usePageContext";
 import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
+import { WelcomeChecklist } from "@/components/management/dashboard/WelcomeChecklist";
 
 const OwnerDashboardPage: React.FC = () => {
     const { routeParams } = usePageContext();
@@ -15,7 +16,10 @@ const OwnerDashboardPage: React.FC = () => {
             <Separator />
 
             {businessId ? (
-                <AnalyticsDashboard businessId={businessId} showTimeFilter={false} />
+                <div className="space-y-6">
+                    <WelcomeChecklist businessId={businessId} />
+                    <AnalyticsDashboard businessId={businessId} showTimeFilter={false} />
+                </div>
             ) : (
                 <div>Loading dashboard...</div>
             )}

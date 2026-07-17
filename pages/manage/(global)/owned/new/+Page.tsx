@@ -131,7 +131,7 @@ export default function CreateNewBusiness() {
             lat: 0,
             lng: 0
         },
-        autoSetup: false,
+        autoSetup: true,
     };
 
     const handleSubmit = (values: BusinessFormValues) => {
@@ -368,8 +368,11 @@ export default function CreateNewBusiness() {
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-sm text-zinc-800">Auto-create setup</p>
-                                                    <p className="text-xs text-zinc-500 mt-0.5">Auto-create categories, roles, floor plan and more based on your business type</p>
+                                                    <p className="font-medium text-sm text-zinc-800 flex items-center gap-2">
+                                                        Auto-create setup
+                                                        <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 rounded-full px-2 py-0.5">Recommended</span>
+                                                    </p>
+                                                    <p className="text-xs text-zinc-500 mt-0.5">Automatically create menu categories, staff roles, a floor plan, kitchen stations and more based on your business type — so you're not starting from a blank slate. Uncheck to set everything up yourself.</p>
                                                 </div>
                                             </button>
                                         </div>
