@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck } from "lucide-react";
-import { SubscriptionPack, PricingType } from "@/models/SubscriptionPack";
+import { SubscriptionPack, PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
 import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
@@ -28,14 +28,15 @@ const PlansPage: React.FC = () => {
   }, [subscriptionPacks, billingType]);
 
   const getPlanAction = (pack: SubscriptionPack): "current" | "upgrade" | "downgrade" | "select" => {
-    const currentPackId = currentUserSubscription?.pack?.id;
-    if (!currentPackId) return "select";
-    if (currentPackId === pack.id) return "current";
+    const currentPack = currentUserSubscription?.pack;
+    if (!currentPack) return "select";
+    // Same tier, whether it's the exact billing interval or the same plan on a different cycle (e.g. Starter Monthly vs Starter Yearly).
+    if (currentPack.id === pack.id || isSamePlanFamily(currentPack, pack)) return "current";
 
-    const currentPrice = currentUserSubscription?.pack?.price;
-    if (currentPrice == null) return "select";
-    if (pack.price > currentPrice) return "upgrade";
-    if (pack.price < currentPrice) return "downgrade";
+    const currentMonthlyPrice = getMonthlyEquivalentPrice(currentPack);
+    const packMonthlyPrice = getMonthlyEquivalentPrice(pack);
+    if (packMonthlyPrice > currentMonthlyPrice) return "upgrade";
+    if (packMonthlyPrice < currentMonthlyPrice) return "downgrade";
     return "select";
   };
 

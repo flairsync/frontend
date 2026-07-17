@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Loader2 } from "lucide-react";
 import { Subscription } from "@/models/Subscription";
-import { SubscriptionPack } from "@/models/SubscriptionPack";
+import { SubscriptionPack, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import { cn } from "@/lib/utils";
 
@@ -46,10 +46,14 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
     };
 
     const getButtonLabel = (pack: SubscriptionPack) => {
-        const currentPrice = subscription?.pack?.price ?? null;
-        if (currentPrice === null) return "Select";
-        if (pack.price > currentPrice) return "Upgrade";
-        if (pack.price < currentPrice) return "Downgrade";
+        const currentPack = subscription?.pack ?? null;
+        if (currentPack == null) return "Select";
+        if (isSamePlanFamily(currentPack, pack)) return "Current plan";
+
+        const currentMonthlyPrice = getMonthlyEquivalentPrice(currentPack);
+        const packMonthlyPrice = getMonthlyEquivalentPrice(pack);
+        if (packMonthlyPrice > currentMonthlyPrice) return "Upgrade";
+        if (packMonthlyPrice < currentMonthlyPrice) return "Downgrade";
         return "Select";
     };
 
@@ -75,7 +79,8 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-4">
                             {availablePacks.map((pack) => {
-                                const isCurrent = subscription?.pack?.id === pack.id;
+                                const isCurrent = subscription?.pack != null &&
+                                    (subscription.pack.id === pack.id || isSamePlanFamily(subscription.pack, pack));
                                 const label = getButtonLabel(pack);
                                 return (
                                     <div

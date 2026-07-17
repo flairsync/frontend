@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Crown, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
-import { PricingType } from "@/models/SubscriptionPack";
+import { PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { cn } from "@/lib/utils";
 
 const UpgradeModal: React.FC = () => {
@@ -28,11 +28,14 @@ const UpgradeModal: React.FC = () => {
         (p) => p.pricingType === (isMonthly ? PricingType.MONTHLY : PricingType.YEARLY)
     ) || [];
 
-    // Filter out the free pack if user is already on a paid plan or if they are looking to upgrade
+    // Only show plans that are a genuine tier upgrade, comparing on a normalized
+    // per-month basis so a Yearly subscriber isn't compared against Monthly prices raw.
+    const currentPack = currentUserSubscription?.pack;
     const upgradePacks = displayedPacks.filter(p => {
-        const price = parseFloat(p.price.toString());
-        const currentPrice = currentUserSubscription?.price || 0;
-        return price > currentPrice || (currentPrice === 0 && price === 0 && p.id !== currentUserSubscription?.pack?.id);
+        if (currentPack && isSamePlanFamily(currentPack, p)) return false;
+        const packMonthlyPrice = getMonthlyEquivalentPrice(p);
+        const currentMonthlyPrice = currentPack ? getMonthlyEquivalentPrice(currentPack) : 0;
+        return packMonthlyPrice > currentMonthlyPrice;
     });
 
     return (

@@ -6,6 +6,35 @@ export enum PricingType {
   YEARLY = "yearly",
 }
 
+const MONTHS_BY_PRICING_TYPE: Record<PricingType, number> = {
+  [PricingType.MONTHLY]: 1,
+  [PricingType.QUARTERLY]: 3,
+  [PricingType.YEARLY]: 12,
+};
+
+/**
+ * Normalizes a pack's price to a per-month cost so plans on different billing
+ * intervals (monthly/quarterly/yearly) can be compared on a like-for-like basis.
+ * Accepts plain pack-shaped objects since `Subscription.pack` from the API is
+ * not always a `SubscriptionPack` class instance.
+ */
+export function getMonthlyEquivalentPrice(pack: { price: number; pricingType: PricingType }): number {
+  return pack.price / (MONTHS_BY_PRICING_TYPE[pack.pricingType] ?? 1);
+}
+
+/**
+ * Two packs are the "same plan family" (e.g. Starter Monthly vs Starter Yearly)
+ * if they share the same Lemon Squeezy product id, or the same name as a fallback
+ * when the product id isn't set (e.g. the Free pack).
+ */
+export function isSamePlanFamily(
+  a: { lemonProductId?: string | null; name: string },
+  b: { lemonProductId?: string | null; name: string }
+): boolean {
+  if (a.lemonProductId && b.lemonProductId) return a.lemonProductId === b.lemonProductId;
+  return a.name === b.name;
+}
+
 export class SubscriptionPack {
   id: string;
   name: string;
