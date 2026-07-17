@@ -18,3 +18,13 @@ export const getDashboardAnalytics = async (
     );
     return data;
 };
+
+export const getAnalyticsExportUrl = (
+    businessId: string,
+    startDate: string,
+    endDate: string,
+    format: 'pdf' | 'csv' = 'pdf',
+) => {
+    const params = new URLSearchParams({ businessId, startDate, endDate, format });
+    return `${baseUrl}/analytics/export?${params.toString()}`;
+};

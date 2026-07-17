@@ -1437,6 +1437,11 @@
   },
   "analytics": {
     "error_message": "Failed to load analytics data.",
+    "export": {
+      "button": "Export",
+      "pdf": "Export as PDF",
+      "csv": "Export as CSV"
+    },
     "revenue_chart": {
       "title": "Revenue Over Time",
       "description": "Daily revenue trends for the selected period",

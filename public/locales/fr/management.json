@@ -1437,6 +1437,11 @@
   },
   "analytics": {
     "error_message": "Échec du chargement des données analytiques.",
+    "export": {
+      "button": "Exporter",
+      "pdf": "Exporter en PDF",
+      "csv": "Exporter en CSV"
+    },
     "revenue_chart": {
       "title": "Évolution du chiffre d'affaires",
       "description": "Tendances quotidiennes des revenus pour la période sélectionnée",

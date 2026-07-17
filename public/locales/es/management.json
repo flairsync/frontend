@@ -1437,6 +1437,11 @@
   },
   "analytics": {
     "error_message": "Error al cargar los datos analíticos.",
+    "export": {
+      "button": "Exportar",
+      "pdf": "Exportar como PDF",
+      "csv": "Exportar como CSV"
+    },
     "revenue_chart": {
       "title": "Ingresos a lo largo del tiempo",
       "description": "Tendencias diarias de ingresos para el período seleccionado",

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getDashboardAnalytics } from "./analytics.api";
+import { getDashboardAnalytics, getAnalyticsExportUrl } from "./analytics.api";
 import { DashboardAnalyticsData } from "@/models/analytics";
 
 interface UseDashboardAnalyticsProps {
@@ -30,4 +30,15 @@ export const useDashboardAnalytics = ({
         },
         enabled: enabled && !!businessId,
     });
+};
+
+export const useAnalyticsExport = (businessId: string) => {
+    const exportReport = (startDate: string, endDate: string, format: 'pdf' | 'csv' = 'pdf') => {
+        const url = getAnalyticsExportUrl(businessId, startDate, endDate, format);
+        const a = document.createElement('a');
+        a.href = url;
+        a.click();
+    };
+
+    return { exportReport };
 };

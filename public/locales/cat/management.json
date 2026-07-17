@@ -1437,6 +1437,11 @@
   },
   "analytics": {
     "error_message": "No s'han pogut carregar les dades analítiques.",
+    "export": {
+      "button": "Exportar",
+      "pdf": "Exportar com a PDF",
+      "csv": "Exportar com a CSV"
+    },
     "revenue_chart": {
       "title": "Ingressos al llarg del temps",
       "description": "Tendències diàries d'ingressos per al període seleccionat",

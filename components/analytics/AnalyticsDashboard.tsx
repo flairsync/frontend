@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2 } from "lucide-react";
-import { useDashboardAnalytics } from "@/features/analytics/useDashboardAnalytics";
+import { Loader2, Download, FileText, Sheet } from "lucide-react";
+import { useDashboardAnalytics, useAnalyticsExport } from "@/features/analytics/useDashboardAnalytics";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { getCurrencySymbol } from "@/utils/currency";
 import { AnalyticsTimeFilter, TimeRangePreset } from "./AnalyticsTimeFilter";
 import { subDays, startOfDay, endOfDay, formatISO } from "date-fns";
 import { clientOnly } from "vike-react/clientOnly";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // We will implement these next:
 import { AnalyticsKpiCards } from "./AnalyticsKpiCards";
@@ -58,8 +65,29 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
         enabled: !!businessId,
     });
 
+    // Equal-length period immediately preceding the current range, used to
+    // compute "+X% vs previous period" deltas on the KPI cards.
+    const { previousStartDate, previousEndDate } = useMemo(() => {
+        const startMs = new Date(startDate).getTime();
+        const endMs = new Date(endDate).getTime();
+        const durationMs = Math.max(endMs - startMs, 0);
+        return {
+            previousStartDate: new Date(startMs - durationMs).toISOString(),
+            previousEndDate: new Date(startMs - 1).toISOString(),
+        };
+    }, [startDate, endDate]);
+
+    const { data: previousAnalyticsData } = useDashboardAnalytics({
+        businessId,
+        startDate: previousStartDate,
+        endDate: previousEndDate,
+        enabled: !!businessId,
+    });
+
     const { myBusinessFullDetails } = useMyBusiness(businessId);
     const currency = getCurrencySymbol(myBusinessFullDetails?.currency);
+
+    const { exportReport } = useAnalyticsExport(businessId);
 
     const handleTimeRangeChange = (preset: TimeRangePreset, start: string, end: string) => {
         setTimeRange(preset);
@@ -88,14 +116,33 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
     return (
         <div className="space-y-8">
             {showTimeFilter && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between gap-2">
                     <AnalyticsTimeFilter value={timeRange} onChange={handleTimeRangeChange} />
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="gap-2">
+                                <Download className="h-4 w-4" />
+                                {t("analytics.export.button")}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => exportReport(startDate, endDate, "pdf")}>
+                                <FileText className="h-4 w-4 mr-2" />
+                                {t("analytics.export.pdf")}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => exportReport(startDate, endDate, "csv")}>
+                                <Sheet className="h-4 w-4 mr-2" />
+                                {t("analytics.export.csv")}
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             )}
 
             {data && (
                 <>
-                    <AnalyticsKpiCards sales={data.sales} currency={currency} />
+                    <AnalyticsKpiCards sales={data.sales} currency={currency} previousSales={previousAnalyticsData?.sales} />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <AnalyticsRevenueChart sales={data.sales} currency={currency} fallback={chartSkeleton} />
