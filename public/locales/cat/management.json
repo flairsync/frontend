@@ -1454,9 +1454,9 @@
     },
     "busiest_hours_chart": {
       "title": "Hores de més afluència",
-      "description": "Clients asseguts per hora del dia en el període seleccionat",
-      "no_data": "No hi ha dades d'afluència disponibles.",
-      "tooltip_visitors": "Clients asseguts"
+      "description": "Comandes fetes per hora del dia en el període seleccionat, incloent sala, per emportar i repartiment",
+      "no_data": "No hi ha dades de comandes disponibles.",
+      "tooltip_orders": "Comandes"
     }
   },
   "integrations": {

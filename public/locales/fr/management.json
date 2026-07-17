@@ -1454,9 +1454,9 @@
     },
     "busiest_hours_chart": {
       "title": "Heures d'affluence",
-      "description": "Clients installés par heure sur la période sélectionnée",
-      "no_data": "Aucune donnée de fréquentation disponible.",
-      "tooltip_visitors": "Clients installés"
+      "description": "Commandes passées par heure sur la période sélectionnée, tous types confondus (sur place, à emporter, livraison)",
+      "no_data": "Aucune donnée de commandes disponible.",
+      "tooltip_orders": "Commandes"
     }
   },
   "integrations": {

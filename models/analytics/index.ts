@@ -22,6 +22,7 @@ export interface HourlyVisitorMetric {
     hour: number; // 0-23
     visitorCount: string | number;
     reservationCount: string | number;
+    orderCount: string | number;
 }
 
 export interface DashboardAnalyticsData {

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DailySalesMetric } from "@/models/analytics";
-import { DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
+import { DollarSign, ShoppingBag, TrendingUp, HandCoins } from "lucide-react";
 
 interface AnalyticsKpiCardsProps {
     sales: DailySalesMetric[];
@@ -9,13 +9,15 @@ interface AnalyticsKpiCardsProps {
 }
 
 export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, currency = "$" }) => {
-    const { totalRevenue, totalOrders, aov } = useMemo(() => {
+    const { totalRevenue, totalOrders, aov, totalTips } = useMemo(() => {
         let rev = 0;
         let orders = 0;
+        let tips = 0;
 
         sales.forEach((day) => {
             rev += Number(day.totalRevenue || 0);
             orders += Number(day.orderCount || 0);
+            tips += Number(day.totalTips || 0);
         });
 
         const avg = orders > 0 ? rev / orders : 0;
@@ -24,6 +26,7 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, cur
             totalRevenue: rev,
             totalOrders: orders,
             aov: avg,
+            totalTips: tips,
         };
     }, [sales]);
 
@@ -48,10 +51,16 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, cur
             value: formatCurrency(aov),
             icon: TrendingUp,
         },
+        {
+            key: "tips",
+            label: "Total Tips",
+            value: formatCurrency(totalTips),
+            icon: HandCoins,
+        },
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat) => {
                 const Icon = stat.icon;
                 return (

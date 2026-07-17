@@ -33,13 +33,14 @@ export const AnalyticsBusiestHoursChart: React.FC<AnalyticsBusiestHoursChartProp
             return {
                 hour,
                 hourLabel: formatHour(hour),
+                orderCount: Number(entry?.orderCount || 0),
                 visitorCount: Number(entry?.visitorCount || 0),
                 reservationCount: Number(entry?.reservationCount || 0),
             };
         });
     }, [hourlyVisitors]);
 
-    const hasData = chartData.some((d) => d.visitorCount > 0);
+    const hasData = chartData.some((d) => d.orderCount > 0);
 
     return (
         <Card className="shadow-sm">
@@ -71,12 +72,12 @@ export const AnalyticsBusiestHoursChart: React.FC<AnalyticsBusiestHoursChartProp
                             />
                             <Tooltip
                                 formatter={(value: number, name: string) => {
-                                    if (name === "visitorCount") return [value, t("analytics.busiest_hours_chart.tooltip_visitors")];
+                                    if (name === "orderCount") return [value, t("analytics.busiest_hours_chart.tooltip_orders")];
                                     return [value, name];
                                 }}
                                 labelFormatter={(label) => label}
                             />
-                            <Bar dataKey="visitorCount" fill="#4F46E5" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="orderCount" fill="#4F46E5" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 )}

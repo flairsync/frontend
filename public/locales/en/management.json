@@ -1454,9 +1454,9 @@
     },
     "busiest_hours_chart": {
       "title": "Busiest Hours",
-      "description": "Guests seated by hour of day for the selected period",
-      "no_data": "No visitor data available.",
-      "tooltip_visitors": "Guests seated"
+      "description": "Orders placed by hour of day for the selected period, across dine-in, takeaway, and delivery",
+      "no_data": "No order data available.",
+      "tooltip_orders": "Orders"
     }
   },
   "integrations": {
