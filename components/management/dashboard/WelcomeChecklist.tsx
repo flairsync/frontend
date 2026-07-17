@@ -22,10 +22,20 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
         setDismissed(localStorage.getItem(`${DISMISS_KEY_PREFIX}${businessId}`) === "1");
     }, [businessId]);
 
-    const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const { myBusinessFullDetails, fetchingMyBusinessFullDetails } = useMyBusiness(businessId);
     const { businessAllItems } = useBusinessMenus(businessId);
     const { tables } = useTables(businessId);
-    const { employees } = useBusinessEmployees(businessId);
+    const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
+
+    // Each of these starts out empty/undefined before its first fetch resolves.
+    // Wait for all of them so we compute real completion once, instead of
+    // showing a false "nothing done" state that then jumps to "all done" (or
+    // vice versa) a moment later as each query finishes.
+    const stillLoading =
+        fetchingMyBusinessFullDetails ||
+        fetchingEmployees ||
+        businessAllItems === undefined ||
+        tables === undefined;
 
     const steps = [
         {
@@ -65,7 +75,7 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
     const completedCount = steps.filter((s) => s.done).length;
     const allDone = completedCount === steps.length;
 
-    if (dismissed || allDone) return null;
+    if (dismissed || stillLoading || allDone) return null;
 
     const handleDismiss = () => {
         localStorage.setItem(`${DISMISS_KEY_PREFIX}${businessId}`, "1");
