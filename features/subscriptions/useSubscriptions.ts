@@ -50,6 +50,14 @@ export const useSubscriptions = () => {
       const resp = await handleUserCheckoutApiCall(data);
       return (resp.data as any)?.url as string ?? null;
     },
+    onError: (error: any) => {
+      const code = error?.response?.data?.code;
+      if (code === "sub.use_change_plan") {
+        toast.error("You already have an active subscription. Please use the plan switcher in your billing settings instead.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    },
   });
 
   const { data: userSubscriptionsList, isPending: fetchingUserSubscriptions } =

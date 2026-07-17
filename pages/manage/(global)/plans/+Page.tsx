@@ -13,7 +13,7 @@ import { usePageContext } from "vike-react/usePageContext";
 
 const PlansPage: React.FC = () => {
   const { urlParsed } = usePageContext();
-  const { subscriptionPacks, currentUserSubscription, createCheckout, creatingCheckout } = useSubscriptions();
+  const { subscriptionPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
 
 
   const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
@@ -48,6 +48,17 @@ const PlansPage: React.FC = () => {
   };
 
   const onChoosePlan = (packId: string) => {
+    const pack = subscriptionPacks?.find((p) => p.id === packId);
+    const hasRealSubscription = currentUserSubscription?.id && !currentUserSubscription.isDefault;
+
+    // Existing subscribers must go through the change-plan flow (in-place PATCH on Lemon
+    // Squeezy) rather than a brand-new checkout, which would start a fresh free trial and
+    // create a second subscription on Lemon Squeezy's side.
+    if (hasRealSubscription && pack && getPlanAction(pack) !== "select") {
+      changePlan({ subId: currentUserSubscription!.id, packId });
+      return;
+    }
+
     createCheckout({ packId }, {
       onSuccess: (url) => {
         if (url) setCheckoutLink(url);
@@ -115,7 +126,7 @@ const PlansPage: React.FC = () => {
           </Button>
         </div>
       </div>
-      {creatingCheckout && (
+      {(creatingCheckout || changingPlan) && (
         <div className="flex flex-col items-center justify-center py-6">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mb-2" />
           <p className="text-sm text-muted-foreground">Loading, please wait...</p>
@@ -191,7 +202,7 @@ const PlansPage: React.FC = () => {
                   onClick={() => {
                     onChoosePlan(pack.id)
                   }}
-                  disabled={isCurrentPlan || creatingCheckout}
+                  disabled={isCurrentPlan || creatingCheckout || changingPlan}
                   variant={isCurrentPlan ? "outline" : planAction === "downgrade" ? "secondary" : "default"}
                   className="w-full mt-auto">{planActionLabel[planAction]}</Button>
               </CardContent>

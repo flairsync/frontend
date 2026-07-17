@@ -11,10 +11,22 @@ import { cn } from "@/lib/utils";
 const UpgradeModal: React.FC = () => {
     const { t } = useTranslation("management");
     const { isUpgradeModalOpen, closeUpgradeModal, limitMessage } = useSubscriptionStore();
-    const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout } = useSubscriptions();
+    const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
     const [isMonthly, setIsMonthly] = useState(true);
 
     const handleSubscribe = (packId: string) => {
+        const hasRealSubscription = currentUserSubscription?.id && !currentUserSubscription.isDefault;
+
+        // Existing subscribers must go through change-plan (in-place PATCH on Lemon Squeezy)
+        // rather than a brand-new checkout, which would start a fresh free trial and create
+        // a second subscription on Lemon Squeezy's side.
+        if (hasRealSubscription) {
+            changePlan({ subId: currentUserSubscription!.id, packId }).then(() => {
+                closeUpgradeModal();
+            }).catch(() => { });
+            return;
+        }
+
         createCheckout({ packId }, {
             onSuccess: (url) => {
                 if (url) {
@@ -142,10 +154,10 @@ const UpgradeModal: React.FC = () => {
 
                                         <Button
                                             className="w-full py-7 rounded-2xl font-bold text-lg shadow-lg hover:shadow-indigo-500/20 transition-all"
-                                            disabled={creatingCheckout}
+                                            disabled={creatingCheckout || changingPlan}
                                             onClick={() => handleSubscribe(pack.id)}
                                         >
-                                            {creatingCheckout ? (
+                                            {creatingCheckout || changingPlan ? (
                                                 <Loader2 className="h-6 w-6 animate-spin" />
                                             ) : (
                                                 "Get Started"
