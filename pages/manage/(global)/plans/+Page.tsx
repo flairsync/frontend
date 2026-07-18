@@ -5,11 +5,23 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck } from "lucide-react";
 import { SubscriptionPack, PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
+import { SubscriptionStatus } from "@/models/Subscription";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
 import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
 import { toast } from "sonner";
 import { usePageContext } from "vike-react/usePageContext";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import dayjs from "dayjs";
 
 const PlansPage: React.FC = () => {
   const { urlParsed } = usePageContext();
@@ -19,6 +31,7 @@ const PlansPage: React.FC = () => {
   const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
   const [displayedPacks, setDisplayedPacks] = useState<SubscriptionPack[]>([]);
   const [checkoutLink, setCheckoutLink] = useState<string>();
+  const [confirmPack, setConfirmPack] = useState<SubscriptionPack | null>(null);
   const autoCheckoutHandled = useRef(false);
 
   useEffect(() => {
@@ -53,9 +66,10 @@ const PlansPage: React.FC = () => {
 
     // Existing subscribers must go through the change-plan flow (in-place PATCH on Lemon
     // Squeezy) rather than a brand-new checkout, which would start a fresh free trial and
-    // create a second subscription on Lemon Squeezy's side.
+    // create a second subscription on Lemon Squeezy's side. Since this swaps billing
+    // immediately with no Lemon Squeezy checkout page to confirm on, ask first.
     if (hasRealSubscription && pack && getPlanAction(pack) !== "select") {
-      changePlan({ subId: currentUserSubscription!.id, packId });
+      setConfirmPack(pack);
       return;
     }
 
@@ -63,6 +77,17 @@ const PlansPage: React.FC = () => {
       onSuccess: (url) => {
         if (url) setCheckoutLink(url);
       }
+    });
+  }
+
+  const isOnTrial = currentUserSubscription?.status === SubscriptionStatus.TRIALING
+    || currentUserSubscription?.status === SubscriptionStatus.ON_TRIAL;
+  const trialEndsAt = currentUserSubscription?.trialEndsAt;
+
+  const handleConfirmChangePlan = () => {
+    if (!currentUserSubscription?.id || !confirmPack) return;
+    changePlan({ subId: currentUserSubscription.id, packId: confirmPack.id }, {
+      onSettled: () => setConfirmPack(null),
     });
   }
 
@@ -98,6 +123,42 @@ const PlansPage: React.FC = () => {
           toast("Payment success !");
         }}
       />
+
+      <AlertDialog open={!!confirmPack} onOpenChange={(open) => !open && setConfirmPack(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirmPack && getPlanAction(confirmPack) === "downgrade" ? "Downgrade" : "Upgrade"} to {confirmPack?.name}?
+            </AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <span>
+                {isOnTrial ? (
+                  <>
+                    Your plan will switch to <strong>{confirmPack?.name}</strong> immediately, but you
+                    won&apos;t be charged while your free trial is active
+                    {trialEndsAt ? ` (ends ${dayjs(trialEndsAt).format("DD/MM/YYYY")})` : ""}.
+                    {" "}Once the trial ends, you&apos;ll be billed{" "}
+                    <strong>{confirmPack?.getFormattedPrice()} {confirmPack?.getPlanDuration()}</strong>.
+                  </>
+                ) : (
+                  <>
+                    Your plan will switch to <strong>{confirmPack?.name}</strong> immediately and billing
+                    will be adjusted by Lemon Squeezy. Going forward you&apos;ll be billed{" "}
+                    <strong>{confirmPack?.getFormattedPrice()} {confirmPack?.getPlanDuration()}</strong>.
+                  </>
+                )}
+              </span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={changingPlan}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmChangePlan} disabled={changingPlan}>
+              {changingPlan ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="text-center mb-12">
         {/* Go Back Button */}
