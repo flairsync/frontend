@@ -3,6 +3,7 @@
     "title": "Inicio de sesión del personal",
     "subtitle": "Introduce tu PIN de 4 dígitos",
     "verifying": "Verificando...",
+    "clock_via_qr_button": "Fichar con código QR",
     "errors": {
       "incorrect_pin": "PIN incorrecto",
       "no_access": "No tienes acceso a este terminal",

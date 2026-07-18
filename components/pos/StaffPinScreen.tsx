@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { stationApi } from "@/features/station/station-api";
 import { useStaffSession } from "@/features/pos/useStaffSession";
-import { Lock } from "lucide-react";
+import { Lock, QrCode } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import AttendanceQrDialog from "@/components/pos/AttendanceQrDialog";
 
 interface Props {
     businessId: string;
@@ -17,6 +19,7 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [shake, setShake] = useState(false);
+    const [qrOpen, setQrOpen] = useState(false);
     const { setSession } = useStaffSession();
 
     useEffect(() => {
@@ -133,7 +136,18 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
                 {loading && (
                     <p className="text-muted-foreground text-sm animate-pulse">{t("staff_pin_screen.verifying")}</p>
                 )}
+
+                <Button
+                    variant="outline"
+                    className="w-full gap-2 font-bold text-xs h-10"
+                    onClick={() => setQrOpen(true)}
+                >
+                    <QrCode className="w-4 h-4" />
+                    {t("staff_pin_screen.clock_via_qr_button")}
+                </Button>
             </div>
+
+            <AttendanceQrDialog open={qrOpen} onOpenChange={setQrOpen} businessId={businessId} />
         </div>
     );
 }

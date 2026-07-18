@@ -3,6 +3,7 @@
     "title": "Inici de sessió del personal",
     "subtitle": "Introdueix el teu PIN de 4 xifres",
     "verifying": "Verificant...",
+    "clock_via_qr_button": "Fitxa amb codi QR",
     "errors": {
       "incorrect_pin": "PIN incorrecte",
       "no_access": "No tens accés a aquest terminal",

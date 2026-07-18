@@ -3,6 +3,7 @@
     "title": "Staff Login",
     "subtitle": "Enter your 4-digit PIN",
     "verifying": "Verifying...",
+    "clock_via_qr_button": "Clock In/Out with QR",
     "errors": {
       "incorrect_pin": "Incorrect PIN",
       "no_access": "You don't have access to this terminal",

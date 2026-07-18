@@ -3,6 +3,7 @@
     "title": "Connexion du personnel",
     "subtitle": "Saisissez votre code PIN à 4 chiffres",
     "verifying": "Vérification...",
+    "clock_via_qr_button": "Pointer avec le QR code",
     "errors": {
       "incorrect_pin": "Code PIN incorrect",
       "no_access": "Vous n'avez pas accès à ce terminal",
