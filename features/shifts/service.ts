@@ -81,6 +81,20 @@ export interface CheckOutDto {
   qrToken?: string;
 }
 
+// Payload encoded into the rotating attendance QR (AttendanceQrDialog, ClockInQrDialog).
+// Deliberately a JSON blob, not a URL — unlike table QRs, a bare camera app should get
+// nothing actionable from this; only the staff app is meant to parse and act on it.
+// `type` lets the staff app's scanner dispatch this alongside other future QR actions.
+// Shape is owned by the backend (attendance.service.ts generateQrToken) — dialogs
+// serialize the API response as-is rather than reconstructing it, so this interface
+// exists here only to type that response, not to be built by hand.
+export interface ClockQrPayload {
+  type: 'CLOCK';
+  businessId: string;
+  token: string;
+  expiresAt: string;
+}
+
 export interface ValidateAttendanceDto {
   businessId: string;
   adminId: string;
@@ -325,7 +339,7 @@ export const endBreakApiCall = (data: CheckOutDto) => {
 // re-invoke this on a ~15s interval and re-render the code each time (see ATTENDANCE_QR
 // constants below) — an old, photographed code becomes worthless quickly.
 export const generateAttendanceQrApiCall = (businessId: string) => {
-  return flairapi.post<{ data: { token: string; expiresAt: string } }>(
+  return flairapi.post<{ data: ClockQrPayload }>(
     `${'https://api.flairsync.com/api/v1'}/attendance/qr/generate`,
     { businessId }
   );

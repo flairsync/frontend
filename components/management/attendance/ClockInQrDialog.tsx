@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { generateAttendanceQrApiCall, ATTENDANCE_QR_ROTATION_SECONDS } from "@/features/shifts/service";
+import { generateAttendanceQrApiCall, ATTENDANCE_QR_ROTATION_SECONDS, ClockQrPayload } from "@/features/shifts/service";
 
 interface ClockInQrDialogProps {
   open: boolean;
@@ -20,7 +20,7 @@ interface ClockInQrDialogProps {
 
 export default function ClockInQrDialog({ open, onOpenChange, businessId }: ClockInQrDialogProps) {
   const { t } = useTranslation("management");
-  const [token, setToken] = useState<string | null>(null);
+  const [payload, setPayload] = useState<ClockQrPayload | null>(null);
   const [secsLeft, setSecsLeft] = useState(ATTENDANCE_QR_ROTATION_SECONDS);
   const rotationRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -28,7 +28,7 @@ export default function ClockInQrDialog({ open, onOpenChange, businessId }: Cloc
   const generate = useCallback(async () => {
     try {
       const res = await generateAttendanceQrApiCall(businessId);
-      setToken(res.data.data.token);
+      setPayload(res.data.data);
       setSecsLeft(ATTENDANCE_QR_ROTATION_SECONDS);
     } catch {
       toast.error(t("attendance_live.qr_generate_error"));
@@ -40,7 +40,7 @@ export default function ClockInQrDialog({ open, onOpenChange, businessId }: Cloc
   // taking any action (unlike the one-shot station pairing code).
   useEffect(() => {
     if (!open) {
-      setToken(null);
+      setPayload(null);
       if (rotationRef.current) clearInterval(rotationRef.current);
       if (tickRef.current) clearInterval(tickRef.current);
       return;
@@ -57,7 +57,9 @@ export default function ClockInQrDialog({ open, onOpenChange, businessId }: Cloc
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, businessId]);
 
-  const qrValue = token ? JSON.stringify({ businessId, token }) : null;
+  // Serialize the API response as-is — the envelope shape (type/businessId/token) is
+  // owned by the backend, not reconstructed here.
+  const qrValue = payload ? JSON.stringify(payload) : null;
   const progress = (secsLeft / ATTENDANCE_QR_ROTATION_SECONDS) * 100;
 
   return (
@@ -84,7 +86,7 @@ export default function ClockInQrDialog({ open, onOpenChange, businessId }: Cloc
             )}
           </div>
 
-          {token && (
+          {payload && (
             <div className="flex flex-col gap-1.5">
               <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                 <div

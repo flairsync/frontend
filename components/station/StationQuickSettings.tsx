@@ -138,7 +138,7 @@ export default function StationQuickSettings({ station }: Props) {
                     </div>
                 </SheetContent>
             </Sheet>
-            <AttendanceQrDialog open={qrOpen} onOpenChange={setQrOpen} businessId={station.businessId} />
+            <AttendanceQrDialog open={qrOpen} onOpenChange={setQrOpen} />
         </>
     );
 }

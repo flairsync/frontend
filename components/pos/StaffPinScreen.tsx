@@ -147,7 +147,7 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
                 </Button>
             </div>
 
-            <AttendanceQrDialog open={qrOpen} onOpenChange={setQrOpen} businessId={businessId} />
+            <AttendanceQrDialog open={qrOpen} onOpenChange={setQrOpen} />
         </div>
     );
 }

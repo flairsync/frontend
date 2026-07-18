@@ -11,6 +11,7 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import { stationApi } from "@/features/station/station-api";
+import { ClockQrPayload } from "@/features/shifts/service";
 
 // Matches the backend's QR_ROTATION_SECONDS (attendance.service.ts) — how often the
 // display should fetch a new token so it's always showing a live, unused code.
@@ -19,20 +20,19 @@ const QR_ROTATION_SECONDS = 15;
 interface AttendanceQrDialogProps {
     open: boolean;
     onOpenChange: (v: boolean) => void;
-    businessId: string;
 }
 
-export default function AttendanceQrDialog({ open, onOpenChange, businessId }: AttendanceQrDialogProps) {
+export default function AttendanceQrDialog({ open, onOpenChange }: AttendanceQrDialogProps) {
     const { t } = useTranslation("station");
-    const [token, setToken] = useState<string | null>(null);
+    const [payload, setPayload] = useState<ClockQrPayload | null>(null);
     const [secsLeft, setSecsLeft] = useState(QR_ROTATION_SECONDS);
     const rotationRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const tickRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const generate = useCallback(async () => {
         try {
-            const res = await stationApi.post("/station/staff/attendance/qr/generate");
-            setToken(res.data.data.token);
+            const res = await stationApi.post<{ data: ClockQrPayload }>("/station/staff/attendance/qr/generate");
+            setPayload(res.data.data);
             setSecsLeft(QR_ROTATION_SECONDS);
         } catch {
             toast.error(t("quick_settings.attendance_qr.generate_error"));
@@ -43,7 +43,7 @@ export default function AttendanceQrDialog({ open, onOpenChange, businessId }: A
     // this is the core anti-photo-sharing defense, so it must not depend on user action.
     useEffect(() => {
         if (!open) {
-            setToken(null);
+            setPayload(null);
             if (rotationRef.current) clearInterval(rotationRef.current);
             if (tickRef.current) clearInterval(tickRef.current);
             return;
@@ -60,7 +60,9 @@ export default function AttendanceQrDialog({ open, onOpenChange, businessId }: A
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
 
-    const qrValue = token ? JSON.stringify({ businessId, token }) : null;
+    // Serialize the API response as-is — the envelope shape (type/businessId/token) is
+    // owned by the backend, not reconstructed here.
+    const qrValue = payload ? JSON.stringify(payload) : null;
     const progress = (secsLeft / QR_ROTATION_SECONDS) * 100;
 
     return (
@@ -87,7 +89,7 @@ export default function AttendanceQrDialog({ open, onOpenChange, businessId }: A
                         )}
                     </div>
 
-                    {token && (
+                    {payload && (
                         <div className="flex flex-col gap-1.5">
                             <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                                 <div
