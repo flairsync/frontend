@@ -814,6 +814,10 @@
   },
   "attendance_page": {
     "heading": "Présence",
+    "refresh_button": "Actualiser",
+    "last_updated_just_now": "Mis à jour à l'instant",
+    "last_updated_minutes_ago_one": "Mis à jour il y a {{count}} minute",
+    "last_updated_minutes_ago_other": "Mis à jour il y a {{count}} minutes",
     "tabs": {
       "overview": "Vue d'ensemble",
       "live": "Vue en direct",

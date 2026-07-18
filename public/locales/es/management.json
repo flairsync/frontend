@@ -814,6 +814,10 @@
   },
   "attendance_page": {
     "heading": "Asistencia",
+    "refresh_button": "Actualizar",
+    "last_updated_just_now": "Actualizado justo ahora",
+    "last_updated_minutes_ago_one": "Actualizado hace {{count}} minuto",
+    "last_updated_minutes_ago_other": "Actualizado hace {{count}} minutos",
     "tabs": {
       "overview": "Resumen",
       "live": "Vista en vivo",

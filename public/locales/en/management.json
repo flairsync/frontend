@@ -814,6 +814,10 @@
   },
   "attendance_page": {
     "heading": "Attendance",
+    "refresh_button": "Refresh",
+    "last_updated_just_now": "Updated just now",
+    "last_updated_minutes_ago_one": "Updated {{count}} minute ago",
+    "last_updated_minutes_ago_other": "Updated {{count}} minutes ago",
     "tabs": {
       "overview": "Overview",
       "live": "Live View",

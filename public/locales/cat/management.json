@@ -814,6 +814,10 @@
   },
   "attendance_page": {
     "heading": "Assistència",
+    "refresh_button": "Actualitzar",
+    "last_updated_just_now": "Actualitzat ara mateix",
+    "last_updated_minutes_ago_one": "Actualitzat fa {{count}} minut",
+    "last_updated_minutes_ago_other": "Actualitzat fa {{count}} minuts",
     "tabs": {
       "overview": "Resum",
       "live": "Vista en directe",

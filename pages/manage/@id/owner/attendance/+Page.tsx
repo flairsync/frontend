@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { DateRange } from "react-day-picker";
-import { startOfWeek, endOfWeek, format } from "date-fns";
+import { startOfWeek, endOfWeek, format, differenceInSeconds, differenceInMinutes } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import OverviewTab from "@/components/management/attendance/OverviewTab";
 import LiveTab from "@/components/management/attendance/LiveTab";
 import ReportsTab from "@/components/management/attendance/ReportsTab";
@@ -11,7 +12,7 @@ import AbsenceManagementTab from "@/components/management/attendance/AbsenceMana
 import { usePageContext } from "vike-react/usePageContext";
 import { useAttendance } from "@/features/shifts/useAttendance";
 import { BusinessAttendanceFilters, AttendanceLifecycleStatus, AttendanceStatus } from "@/models/business/shift/Attendance";
-import { Users, Activity, BarChart2, CalendarOff } from "lucide-react";
+import { Users, Activity, BarChart2, CalendarOff, RefreshCw } from "lucide-react";
 import { usePageTour } from "@/features/tour/usePageTour";
 import type { TourStep } from "@/features/tour/types";
 
@@ -68,7 +69,23 @@ export default function AttendancePage() {
     limit: 200,
   };
 
-  const { logs, isLoadingLogs, logsPage } = useAttendance(businessId, filters);
+  const { logs, isLoadingLogs, logsPage, isFetchingLogs, logsUpdatedAt, refetchLogs } = useAttendance(businessId, filters);
+
+  // Drives the "updated X ago" label — the query data itself only changes on refetch,
+  // so without this tick the label would freeze at whatever it said on the last render.
+  const [, setClockTick] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => setClockTick((t) => t + 1), 30_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const lastUpdatedLabel = (() => {
+    if (!logsUpdatedAt) return null;
+    const seconds = differenceInSeconds(new Date(), logsUpdatedAt);
+    if (seconds < 60) return t("attendance_page.last_updated_just_now");
+    const minutes = differenceInMinutes(new Date(), logsUpdatedAt);
+    return t("attendance_page.last_updated_minutes_ago", { count: minutes });
+  })();
 
   const filteredLogs = employeeFilter
     ? logs.filter((r) => {
@@ -99,7 +116,22 @@ export default function AttendancePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">{t("attendance_page.heading")}</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-3xl font-bold tracking-tight">{t("attendance_page.heading")}</h1>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            {lastUpdatedLabel && <span className="select-none">{lastUpdatedLabel}</span>}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 shrink-0"
+              onClick={() => refetchLogs()}
+              disabled={isFetchingLogs}
+              title={t("attendance_page.refresh_button")}
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isFetchingLogs ? "animate-spin" : ""}`} />
+            </Button>
+          </div>
+        </div>
       </div>
 
       <Separator />

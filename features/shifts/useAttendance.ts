@@ -32,7 +32,13 @@ import { MyEmployment } from "@/models/business/MyEmployment";
 export const useAttendance = (businessId?: string, filters?: BusinessAttendanceFilters) => {
   const queryClient = useQueryClient();
 
-  const { data: logsPage, isLoading: isLoadingLogs } = useQuery<AttendancePage>({
+  const {
+    data: logsPage,
+    isLoading: isLoadingLogs,
+    isFetching: isFetchingLogs,
+    dataUpdatedAt: logsUpdatedAt,
+    refetch: refetchLogs,
+  } = useQuery<AttendancePage>({
     queryKey: ["attendance-logs", businessId, filters],
     queryFn: async () => {
       const data = await fetchAttendanceLogsApiCall(businessId!, filters);
@@ -127,6 +133,9 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
     logsPage,
     logs: logsPage?.data ?? [],
     isLoadingLogs,
+    isFetchingLogs,
+    logsUpdatedAt,
+    refetchLogs,
     checkIn: checkInMutation.mutateAsync,
     checkOut: checkOutMutation.mutateAsync,
     startBreak: startBreakMutation.mutateAsync,
