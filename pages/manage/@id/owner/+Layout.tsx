@@ -49,7 +49,7 @@ const PAGE_LABELS: Record<string, string> = {
     reviews: "Reviews",
     "audit-logs": "Audit Logs",
     danger: "Danger Zone",
-    integrations: "Integrations",
+    "company-guide": "Company Guide",
     marketplace: "Marketplace",
 }
 

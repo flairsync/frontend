@@ -453,7 +453,7 @@
       "reviews": "Reseñas",
       "audit_logs": "Registros de auditoría",
       "danger": "Zona de peligro",
-      "integrations": "Integraciones"
+      "company_guide": "Guía de la empresa"
     }
   },
   "permissions": {
@@ -1464,35 +1464,38 @@
       "tooltip_orders": "Pedidos"
     }
   },
-  "integrations": {
-    "title": "Integraciones",
-    "badge": "Próximamente",
-    "subtitle": "Conecta FlairSync con las herramientas que ya usas: plataformas de reparto, procesadores de pago, software de contabilidad y más, todo en un solo lugar.",
-    "categories": {
-      "delivery": "Reparto y pedidos",
-      "payments": "Pagos",
-      "accounting": "Contabilidad y finanzas",
-      "marketing": "Marketing y reseñas"
+  "company_guide": {
+    "title": "Guía de la empresa",
+    "subtitle": "Cómo estructurar tu negocio, ya sea un solo local o varios, gestionados totalmente por ti, o compartidos con familia, socios o franquiciados.",
+    "sections": {
+      "single_business": {
+        "title": "Cada negocio funciona de forma independiente",
+        "body": "Un negocio en FlairSync es un local físico: su propio menú, su propio plano de sala, su propio personal, su propia configuración. Quien lo crea es su propietario, con control total sobre todo lo que hay dentro."
+      },
+      "multi_business": {
+        "title": "Gestionar más de un local tú mismo",
+        "body": "Si tú gestionas personalmente más de un local, no necesitas una segunda cuenta: crea cada local con tu propio inicio de sesión y usa el selector de negocios en la barra lateral para cambiar entre ellos cuando quieras. Solo asegúrate de que tu plan de suscripción esté dimensionado para el número total de locales y la plantilla combinada, no solo para uno — los límites se cuentan en conjunto entre todos los negocios que posees."
+      },
+      "staff_roles": {
+        "title": "Incorporar encargados y personal",
+        "body": "Cada negocio tiene su propio equipo, configurado de forma independiente del resto de locales que poseas. Añade a un miembro del personal y luego crea un Rol para él o ella (Encargado, Jefe de cocina, Camarero, lo que corresponda) y elige exactamente qué puede ver y hacer: menú, pedidos, personal, informes, acciones de TPV y más. \"Encargado\" no es un concepto especial del sistema; es un Rol que tú mismo defines, y solo se aplica a ese negocio. Gestionar varios locales implica configurarlo por separado en cada uno."
+      },
+      "org_region": {
+        "title": "Cuando los locales pertenecen a propietarios distintos",
+        "body": "A veces un local no lo gestionas tú personalmente: un familiar, un socio o un franquiciado independiente lo posee y lo gestiona con su propia cuenta. Aun así puedes verlo junto a tus propios locales creando una Organización o una Región e invitando a ese negocio a vincularse.",
+        "body_consent": "La vinculación es siempre un acuerdo mutuo — nadie puede añadir otro negocio a su organización sin que el propietario de ese negocio lo apruebe, y nunca cede ningún control. El propietario de una Organización o Región ve las ventas combinadas, el número de pedidos, las alertas de stock bajo y el coste laboral de todos los locales vinculados, pero nunca el menú, el personal ni la configuración de otro. Cualquiera de las dos partes puede solicitar salir en cualquier momento.",
+        "example_label": "Ejemplo",
+        "example": "Unos padres que levantaron tres restaurantes familiares, cada uno gestionado ahora día a día por uno de sus hijos adultos. Cada hijo tiene su propia cuenta y es propietario absoluto de su local. Los padres crean una Región, y cada hijo vincula su negocio a ella: los padres obtienen una vista combinada de cómo van los restaurantes de la familia, sin tocar nunca las decisiones diarias de ninguno de sus hijos."
+      }
     },
-    "countries": {
-      "AD": "Andorra",
-      "ES": "España",
-      "FR": "Francia"
-    },
-    "items": {
-      "uber_eats": { "name": "Uber Eats", "description": "Sincroniza tu menú y recibe pedidos de reparto directamente en tu TPV y KDS." },
-      "glovo": { "name": "Glovo", "description": "Acepta pedidos de Glovo sin una segunda tablet: los pedidos llegan directo a tu cola de cocina." },
-      "just_eat": { "name": "Just Eat", "description": "Centraliza los pedidos de Just Eat junto con tus comandas de sala y para llevar." },
-      "deliveroo": { "name": "Deliveroo", "description": "Lleva los pedidos de Deliveroo a la misma pantalla de cocina que el resto." },
-      "stripe": { "name": "Stripe", "description": "Acepta pagos con tarjeta directamente en el cobro, sin depender de un datáfono aparte." },
-      "sumup": { "name": "SumUp", "description": "Procesa pagos con el lector de tarjetas SumUp que ya puedas tener en el mostrador." },
-      "sage": { "name": "Sage", "description": "Exporta ventas, propinas y nóminas directamente a tu contabilidad, sin importaciones manuales de CSV." },
-      "holded": { "name": "Holded", "description": "Mantén a tu gestoría sincronizada automáticamente con exportaciones diarias de ingresos y facturas." },
-      "pennylane": { "name": "Pennylane", "description": "Envía ventas y gastos directamente a tu asesoría, listos para IVA y nóminas." },
-      "google_business": { "name": "Perfil de empresa de Google", "description": "Mantén tu horario, menú y reseñas sincronizados con Google." },
-      "thefork": { "name": "TheFork", "description": "Sincroniza la disponibilidad de mesas y recopila reseñas desde la principal plataforma de reservas de la región." },
-      "mailchimp": { "name": "Mailchimp", "description": "Convierte a los clientes habituales en una lista de correo para promociones y novedades." }
-    },
-    "footer_note": "¿Hay una integración que te gustaría ver? Dínoslo desde el Centro de ayuda y la tendremos en cuenta en nuestra hoja de ruta."
+    "decision": {
+      "title": "¿Cuál necesito?",
+      "items": [
+        { "if": "Yo gestiono todos los locales personalmente", "then": "Simplemente crea cada uno con tu cuenta — no hace falta ninguna Organización." },
+        { "if": "Contrato encargados para que gestionen los locales por mí", "then": "Mantén todos los locales en tu cuenta y asigna a cada encargado un Rol limitado a su local." },
+        { "if": "Otra persona posee y gestiona un local, pero quiero tener visibilidad sobre él", "then": "Crea una Organización o Región y envía una solicitud de vinculación a ese negocio." },
+        { "if": "Quiero informes combinados de locales que pertenecen a personas distintas", "then": "Lo mismo que el caso anterior — una Organización o Región, una vez que ambas partes lo aprueben." }
+      ]
+    }
   }
 }

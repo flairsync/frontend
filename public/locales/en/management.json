@@ -453,7 +453,7 @@
       "reviews": "Reviews",
       "audit_logs": "Audit Logs",
       "danger": "Danger Zone",
-      "integrations": "Integrations"
+      "company_guide": "Company Guide"
     }
   },
   "permissions": {
@@ -1464,35 +1464,38 @@
       "tooltip_orders": "Orders"
     }
   },
-  "integrations": {
-    "title": "Integrations",
-    "badge": "Coming Soon",
-    "subtitle": "Connect FlairSync to the tools you already use — delivery platforms, payment processors, accounting software, and more, all in one place.",
-    "categories": {
-      "delivery": "Delivery & Ordering",
-      "payments": "Payments",
-      "accounting": "Accounting & Finance",
-      "marketing": "Marketing & Reviews"
+  "company_guide": {
+    "title": "Company Guide",
+    "subtitle": "How to structure your business — whether it's one location or several, run entirely by you, or shared with family, partners, or franchisees.",
+    "sections": {
+      "single_business": {
+        "title": "Every business stands on its own",
+        "body": "A business in FlairSync is one physical location — its own menu, its own floor plan, its own staff, its own settings. Whoever creates it owns it, with full control over everything inside."
+      },
+      "multi_business": {
+        "title": "Running more than one location yourself",
+        "body": "If you personally run more than one location, you don't need a second account — create every location under your own login, and use the business switcher in the sidebar to jump between them any time. Just make sure your subscription plan is sized for your total number of locations and combined staff count, not just one — limits are counted across every business you own, together."
+      },
+      "staff_roles": {
+        "title": "Bringing on managers and staff",
+        "body": "Every business has its own team, set up independently of any other location you own. Add a staff member, then build a Role for them — Manager, Head Chef, Waiter, whatever fits — and choose exactly what they can see and do: menu, orders, staff, reports, POS actions, and more. \"Manager\" isn't a special system concept; it's a Role you define yourself, and it only applies to that one business. Running several locations means setting this up separately for each one."
+      },
+      "org_region": {
+        "title": "When locations belong to different owners",
+        "body": "Sometimes a location isn't run by you personally — a family member, a business partner, or an independent franchisee owns and runs it under their own account. You can still see it alongside your own locations by creating an Organization or a Region and inviting that business to link in.",
+        "body_consent": "Linking is always a two-way agreement — nobody can pull another business into their organization without that business's owner approving it, and it never hands over any control. An Organization or Region owner sees combined sales, order counts, low-stock alerts, and labor cost across every linked location — never anyone else's menu, staff, or settings. Either side can request to leave at any time.",
+        "example_label": "Example",
+        "example": "A parent who built up three family restaurants, now each run day-to-day by a different adult child. Each child has their own account and owns their own location outright. The parent creates a Region, and each child links their business into it — the parent gets one combined view of how the family's restaurants are doing, without ever touching a sibling's day-to-day decisions."
+      }
     },
-    "countries": {
-      "AD": "Andorra",
-      "ES": "Spain",
-      "FR": "France"
-    },
-    "items": {
-      "uber_eats": { "name": "Uber Eats", "description": "Sync your menu and receive delivery orders directly into your POS and KDS." },
-      "glovo": { "name": "Glovo", "description": "Accept Glovo orders without a second tablet — orders land straight in your kitchen queue." },
-      "just_eat": { "name": "Just Eat", "description": "Centralize Just Eat orders alongside your dine-in and takeaway tickets." },
-      "deliveroo": { "name": "Deliveroo", "description": "Bring Deliveroo orders into the same kitchen display as everything else." },
-      "stripe": { "name": "Stripe", "description": "Take card payments directly at checkout instead of relying on a separate terminal." },
-      "sumup": { "name": "SumUp", "description": "Process payments through the SumUp card reader you may already use at the counter." },
-      "sage": { "name": "Sage", "description": "Export sales, tips, and payroll straight to your books — no more manual CSV imports." },
-      "holded": { "name": "Holded", "description": "Keep your gestoría in sync automatically with daily revenue and invoice exports." },
-      "pennylane": { "name": "Pennylane", "description": "Send sales and expenses straight to your comptable, ready for VAT and payroll." },
-      "google_business": { "name": "Google Business Profile", "description": "Keep your hours, menu, and reviews in sync with Google." },
-      "thefork": { "name": "TheFork", "description": "Sync your table availability and pull reviews from the region's top reservation platform." },
-      "mailchimp": { "name": "Mailchimp", "description": "Turn repeat guests into a mailing list for promotions and updates." }
-    },
-    "footer_note": "Have an integration you'd love to see? Let us know from the Help Center and we'll factor it into our roadmap."
+    "decision": {
+      "title": "Which one do I need?",
+      "items": [
+        { "if": "I run every location myself", "then": "Just create each one under your account — no Organization needed." },
+        { "if": "I'm hiring managers to run locations for me", "then": "Keep every location under your account, and give each manager a Role scoped to their site." },
+        { "if": "Someone else owns and runs a location, but I want visibility into it", "then": "Create an Organization or Region and send that business a link request." },
+        { "if": "I want combined reporting across locations owned by different people", "then": "Same as above — an Organization or Region, once every side approves." }
+      ]
+    }
   }
 }

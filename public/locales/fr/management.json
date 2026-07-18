@@ -453,7 +453,7 @@
       "reviews": "Avis",
       "audit_logs": "Journaux d'audit",
       "danger": "Zone de danger",
-      "integrations": "Intégrations"
+      "company_guide": "Guide de l'entreprise"
     }
   },
   "permissions": {
@@ -1464,35 +1464,38 @@
       "tooltip_orders": "Commandes"
     }
   },
-  "integrations": {
-    "title": "Intégrations",
-    "badge": "Bientôt disponible",
-    "subtitle": "Connectez FlairSync aux outils que vous utilisez déjà : plateformes de livraison, processeurs de paiement, logiciels de comptabilité, et plus encore, le tout au même endroit.",
-    "categories": {
-      "delivery": "Livraison et commandes",
-      "payments": "Paiements",
-      "accounting": "Comptabilité et finances",
-      "marketing": "Marketing et avis"
+  "company_guide": {
+    "title": "Guide de l'entreprise",
+    "subtitle": "Comment structurer votre établissement — qu'il s'agisse d'un seul emplacement ou de plusieurs, géré entièrement par vous, ou partagé avec de la famille, des associés ou des franchisés.",
+    "sections": {
+      "single_business": {
+        "title": "Chaque établissement fonctionne de façon indépendante",
+        "body": "Un établissement dans FlairSync correspond à un lieu physique — son propre menu, son propre plan de salle, son propre personnel, ses propres paramètres. Celui qui le crée en est le propriétaire, avec un contrôle total sur tout ce qu'il contient."
+      },
+      "multi_business": {
+        "title": "Gérer plusieurs emplacements vous-même",
+        "body": "Si vous gérez personnellement plusieurs emplacements, inutile d'avoir un second compte : créez chaque emplacement avec votre propre identifiant, et utilisez le sélecteur d'établissement dans la barre latérale pour passer de l'un à l'autre à tout moment. Assurez-vous simplement que votre abonnement est dimensionné pour le nombre total d'emplacements et l'effectif combiné, pas pour un seul — les limites sont comptées sur l'ensemble des établissements que vous possédez."
+      },
+      "staff_roles": {
+        "title": "Intégrer des managers et du personnel",
+        "body": "Chaque établissement a sa propre équipe, configurée indépendamment des autres emplacements que vous possédez. Ajoutez un membre du personnel, puis créez-lui un Rôle — Manager, Chef de cuisine, Serveur, selon le cas — et choisissez précisément ce qu'il peut voir et faire : menu, commandes, personnel, rapports, actions de caisse, et plus. « Manager » n'est pas un concept spécial du système ; c'est un Rôle que vous définissez vous-même, et il ne s'applique qu'à cet établissement. Gérer plusieurs emplacements implique de le configurer séparément pour chacun."
+      },
+      "org_region": {
+        "title": "Quand les emplacements appartiennent à des propriétaires différents",
+        "body": "Parfois, un emplacement n'est pas géré par vous personnellement — un membre de la famille, un associé, ou un franchisé indépendant le possède et le gère avec son propre compte. Vous pouvez tout de même le voir aux côtés de vos propres emplacements en créant une Organisation ou une Région et en invitant cet établissement à s'y rattacher.",
+        "body_consent": "Le rattachement est toujours un accord mutuel — personne ne peut rattacher un autre établissement à son organisation sans l'approbation du propriétaire de cet établissement, et cela ne cède jamais aucun contrôle. Le propriétaire d'une Organisation ou d'une Région voit les ventes combinées, le nombre de commandes, les alertes de stock bas et le coût de la main-d'œuvre de tous les emplacements rattachés — jamais le menu, le personnel ou les paramètres de quelqu'un d'autre. Chaque partie peut demander à quitter le lien à tout moment.",
+        "example_label": "Exemple",
+        "example": "Des parents ayant monté trois restaurants familiaux, chacun désormais géré au quotidien par un enfant adulte différent. Chaque enfant a son propre compte et est pleinement propriétaire de son emplacement. Les parents créent une Région, et chaque enfant y rattache son établissement — les parents obtiennent une vue combinée de la performance des restaurants familiaux, sans jamais toucher aux décisions quotidiennes d'un frère ou d'une sœur."
+      }
     },
-    "countries": {
-      "AD": "Andorre",
-      "ES": "Espagne",
-      "FR": "France"
-    },
-    "items": {
-      "uber_eats": { "name": "Uber Eats", "description": "Synchronisez votre menu et recevez les commandes de livraison directement dans votre caisse et votre écran de cuisine." },
-      "glovo": { "name": "Glovo", "description": "Acceptez les commandes Glovo sans deuxième tablette : elles arrivent directement dans votre file de cuisine." },
-      "just_eat": { "name": "Just Eat", "description": "Centralisez les commandes Just Eat avec vos commandes sur place et à emporter." },
-      "deliveroo": { "name": "Deliveroo", "description": "Affichez les commandes Deliveroo sur le même écran de cuisine que le reste." },
-      "stripe": { "name": "Stripe", "description": "Acceptez les paiements par carte directement à l'encaissement, sans terminal séparé." },
-      "sumup": { "name": "SumUp", "description": "Traitez les paiements avec le lecteur de carte SumUp que vous utilisez peut-être déjà au comptoir." },
-      "sage": { "name": "Sage", "description": "Exportez ventes, pourboires et paie directement vers votre comptabilité, sans import CSV manuel." },
-      "holded": { "name": "Holded", "description": "Synchronisez automatiquement votre gestoría avec des exports quotidiens de revenus et de factures." },
-      "pennylane": { "name": "Pennylane", "description": "Envoyez ventes et dépenses directement à votre comptable, prêtes pour la TVA et la paie." },
-      "google_business": { "name": "Fiche d'établissement Google", "description": "Gardez vos horaires, votre menu et vos avis synchronisés avec Google." },
-      "thefork": { "name": "TheFork", "description": "Synchronisez la disponibilité de vos tables et récupérez les avis depuis la principale plateforme de réservation de la région." },
-      "mailchimp": { "name": "Mailchimp", "description": "Transformez vos clients fidèles en liste de diffusion pour vos promotions et actualités." }
-    },
-    "footer_note": "Une intégration que vous aimeriez voir ? Dites-le-nous depuis le Centre d'aide et nous en tiendrons compte dans notre feuille de route."
+    "decision": {
+      "title": "De quoi ai-je besoin ?",
+      "items": [
+        { "if": "Je gère tous les emplacements moi-même", "then": "Créez simplement chacun sous votre compte — aucune Organisation n'est nécessaire." },
+        { "if": "J'engage des managers pour gérer mes emplacements à ma place", "then": "Gardez tous les emplacements sous votre compte, et attribuez à chaque manager un Rôle limité à son site." },
+        { "if": "Quelqu'un d'autre possède et gère un emplacement, mais je veux avoir de la visibilité dessus", "then": "Créez une Organisation ou une Région et envoyez une demande de rattachement à cet établissement." },
+        { "if": "Je veux des rapports combinés sur des emplacements appartenant à des personnes différentes", "then": "Comme ci-dessus — une Organisation ou une Région, une fois que chaque partie approuve." }
+      ]
+    }
   }
 }

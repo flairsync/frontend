@@ -453,7 +453,7 @@
       "reviews": "Ressenyes",
       "audit_logs": "Registres d'auditoria",
       "danger": "Zona de perill",
-      "integrations": "Integracions"
+      "company_guide": "Guia de l'empresa"
     }
   },
   "permissions": {
@@ -1464,35 +1464,38 @@
       "tooltip_orders": "Comandes"
     }
   },
-  "integrations": {
-    "title": "Integracions",
-    "badge": "Properament",
-    "subtitle": "Connecta FlairSync amb les eines que ja fas servir: plataformes de repartiment, processadors de pagament, programari de comptabilitat i molt més, tot en un sol lloc.",
-    "categories": {
-      "delivery": "Repartiment i comandes",
-      "payments": "Pagaments",
-      "accounting": "Comptabilitat i finances",
-      "marketing": "Màrqueting i ressenyes"
+  "company_guide": {
+    "title": "Guia de l'empresa",
+    "subtitle": "Com estructurar el teu negoci — ja sigui un sol local o diversos, gestionats totalment per tu, o compartits amb família, socis o franquiciats.",
+    "sections": {
+      "single_business": {
+        "title": "Cada negoci funciona de manera independent",
+        "body": "Un negoci a FlairSync és un local físic: el seu propi menú, el seu propi pla de sala, el seu propi personal, la seva pròpia configuració. Qui el crea n'és el propietari, amb control total sobre tot el que hi ha dins."
+      },
+      "multi_business": {
+        "title": "Gestionar més d'un local tu mateix",
+        "body": "Si tu gestiones personalment més d'un local, no necessites un segon compte: crea cada local amb el teu propi inici de sessió i fes servir el selector de negocis a la barra lateral per canviar entre ells quan vulguis. Només assegura't que el teu pla de subscripció estigui dimensionat per al nombre total de locals i la plantilla combinada, no només per a un — els límits es compten en conjunt entre tots els negocis que posseeixes."
+      },
+      "staff_roles": {
+        "title": "Incorporar encarregats i personal",
+        "body": "Cada negoci té el seu propi equip, configurat de manera independent de la resta de locals que posseeixis. Afegeix un membre del personal i després crea-li un Rol (Encarregat, Cap de cuina, Cambrer, el que correspongui) i tria exactament què pot veure i fer: menú, comandes, personal, informes, accions de TPV i més. \"Encarregat\" no és un concepte especial del sistema; és un Rol que tu mateix defineixes, i només s'aplica a aquell negoci. Gestionar diversos locals implica configurar-ho per separat a cadascun."
+      },
+      "org_region": {
+        "title": "Quan els locals pertanyen a propietaris diferents",
+        "body": "De vegades un local no el gestiones tu personalment: un familiar, un soci o un franquiciat independent el posseeix i el gestiona amb el seu propi compte. Tot i així el pots veure junt amb els teus propis locals creant una Organització o una Regió i convidant aquell negoci a vincular-s'hi.",
+        "body_consent": "La vinculació és sempre un acord mutu — ningú pot afegir un altre negoci a la seva organització sense que el propietari d'aquell negoci ho aprovi, i mai cedeix cap control. El propietari d'una Organització o Regió veu les vendes combinades, el nombre de comandes, les alertes d'estoc baix i el cost laboral de tots els locals vinculats, però mai el menú, el personal ni la configuració d'un altre. Qualsevol de les dues parts pot sol·licitar sortir-ne en qualsevol moment.",
+        "example_label": "Exemple",
+        "example": "Uns pares que van aixecar tres restaurants familiars, cadascun gestionat ara dia a dia per un fill adult diferent. Cada fill té el seu propi compte i és propietari absolut del seu local. Els pares creen una Regió, i cada fill hi vincula el seu negoci — els pares obtenen una vista combinada de com van els restaurants de la família, sense tocar mai les decisions diàries de cap dels seus fills."
+      }
     },
-    "countries": {
-      "AD": "Andorra",
-      "ES": "Espanya",
-      "FR": "França"
-    },
-    "items": {
-      "uber_eats": { "name": "Uber Eats", "description": "Sincronitza el teu menú i rep les comandes de repartiment directament al teu TPV i KDS." },
-      "glovo": { "name": "Glovo", "description": "Accepta comandes de Glovo sense una segona tauleta: arriben directament a la cua de cuina." },
-      "just_eat": { "name": "Just Eat", "description": "Centralitza les comandes de Just Eat juntament amb les de sala i per emportar." },
-      "deliveroo": { "name": "Deliveroo", "description": "Porta les comandes de Deliveroo a la mateixa pantalla de cuina que la resta." },
-      "stripe": { "name": "Stripe", "description": "Accepta pagaments amb targeta directament al cobrament, sense dependre d'un terminal separat." },
-      "sumup": { "name": "SumUp", "description": "Processa pagaments amb el lector de targetes SumUp que potser ja fas servir al taulell." },
-      "sage": { "name": "Sage", "description": "Exporta vendes, propines i nòmines directament a la teva comptabilitat, sense importacions manuals de CSV." },
-      "holded": { "name": "Holded", "description": "Mantén la teva gestoria sincronitzada automàticament amb exportacions diàries d'ingressos i factures." },
-      "pennylane": { "name": "Pennylane", "description": "Envia vendes i despeses directament al teu assessor, a punt per a l'IVA i les nòmines." },
-      "google_business": { "name": "Perfil d'empresa de Google", "description": "Mantén l'horari, el menú i les ressenyes sincronitzats amb Google." },
-      "thefork": { "name": "TheFork", "description": "Sincronitza la disponibilitat de taules i recull ressenyes des de la principal plataforma de reserves de la regió." },
-      "mailchimp": { "name": "Mailchimp", "description": "Converteix els clients habituals en una llista de correu per a promocions i novetats." }
-    },
-    "footer_note": "Hi ha alguna integració que t'agradaria veure? Digues-nos-ho des del Centre d'ajuda i la tindrem en compte al nostre full de ruta."
+    "decision": {
+      "title": "Quin necessito?",
+      "items": [
+        { "if": "Jo gestiono tots els locals personalment", "then": "Simplement crea'ls tots amb el teu compte — no cal cap Organització." },
+        { "if": "Contracto encarregats perquè gestionin els locals per mi", "then": "Mantén tots els locals al teu compte i assigna a cada encarregat un Rol limitat al seu local." },
+        { "if": "Una altra persona posseeix i gestiona un local, però vull tenir-hi visibilitat", "then": "Crea una Organització o Regió i envia una sol·licitud de vinculació a aquell negoci." },
+        { "if": "Vull informes combinats de locals que pertanyen a persones diferents", "then": "El mateix que el cas anterior — una Organització o Regió, un cop totes dues parts ho aprovin." }
+      ]
+    }
   }
 }
