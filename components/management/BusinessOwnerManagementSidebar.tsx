@@ -193,24 +193,31 @@ function CollapsibleNavGroup({
     const [open, setOpen] = useState(defaultOpen)
     const { t } = useTranslation("management")
 
+    const groupLabel = t(group.titleKey)
+
     return (
         <SidebarGroup className="py-0">
             {/* Trigger */}
-            <button
-                onClick={() => setOpen((v) => !v)}
-                className="flex w-full items-center justify-between px-2 py-2 rounded-md text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
-            >
-                <span className="flex items-center gap-2">
-                    <group.icon className="h-3.5 w-3.5" />
-                    {t(group.titleKey)}
-                </span>
-                <ChevronDown
-                    className={cn(
-                        "h-3.5 w-3.5 transition-transform duration-200",
-                        open ? "rotate-0" : "-rotate-90"
-                    )}
-                />
-            </button>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <button
+                        onClick={() => setOpen((v) => !v)}
+                        className="flex w-full items-center justify-between px-2 py-2 rounded-md text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+                    >
+                        <span className="flex items-center gap-2 min-w-0">
+                            <group.icon className="h-3.5 w-3.5 shrink-0" />
+                            <span className="truncate">{groupLabel}</span>
+                        </span>
+                        <ChevronDown
+                            className={cn(
+                                "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+                                open ? "rotate-0" : "-rotate-90"
+                            )}
+                        />
+                    </button>
+                </TooltipTrigger>
+                <TooltipContent side="right">{groupLabel}</TooltipContent>
+            </Tooltip>
 
             {/* Animated content */}
             <div
@@ -224,18 +231,24 @@ function CollapsibleNavGroup({
                         <SidebarMenu>
                             {group.items.map((item) => {
                                 const path = `owner/${item.key}`
+                                const itemLabel = t(item.titleKey)
                                 return (
                                     <SidebarMenuItem key={item.key}>
-                                        <SidebarMenuButton
-                                            asChild
-                                            isActive={isActiveLink(item.key)}
-                                            className="pl-7"
-                                        >
-                                            <a href={item.url.replace(":id", businessId)}>
-                                                <item.icon />
-                                                {t(item.titleKey)}
-                                            </a>
-                                        </SidebarMenuButton>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <SidebarMenuButton
+                                                    asChild
+                                                    isActive={isActiveLink(item.key)}
+                                                    className="pl-7"
+                                                >
+                                                    <a href={item.url.replace(":id", businessId)}>
+                                                        <item.icon />
+                                                        <span className="min-w-0 flex-1 truncate text-left">{itemLabel}</span>
+                                                    </a>
+                                                </SidebarMenuButton>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="right">{itemLabel}</TooltipContent>
+                                        </Tooltip>
                                         <SidebarPinToggle
                                             pinned={pinnedPaths.has(path)}
                                             atMax={atMax}
@@ -274,95 +287,111 @@ export function BusinessOwnerManagementSidebar({
         else addPinnedLink(path)
     }
 
+    const overviewLabel = t(OVERVIEW_ITEM.titleKey)
+    const launchStationLabel = t("sidebar.launch_station")
+
     return (
-        <Sidebar {...props}>
-            <SidebarHeader>
-                <BusinessSwitcher businesses={businesses} selectedBusiness={businessId} />
-            </SidebarHeader>
+        <TooltipProvider delayDuration={300}>
+            <Sidebar {...props}>
+                <SidebarHeader>
+                    <BusinessSwitcher businesses={businesses} selectedBusiness={businessId} />
+                </SidebarHeader>
 
-            <SidebarContent className="gap-0">
-                {/* Launch Station — dropdown for POS / KDS */}
-                <SidebarGroup className="pb-2 border-b border-sidebar-border mb-1">
-                    <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
-                        {t("sidebar.pos_section_label")}
-                    </SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <SidebarMenuButton className="font-semibold text-primary">
-                                            <MonitorSmartphone />
-                                            {t("sidebar.launch_station")}
-                                            <ChevronDown className="ml-auto h-3.5 w-3.5" />
-                                        </SidebarMenuButton>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent side="right" align="start" className="w-44">
-                                        <TooltipProvider>
-                                            {STATION_OPTIONS.map((opt) => (
-                                                <Tooltip key={opt.key}>
-                                                    <TooltipTrigger asChild>
-                                                        <DropdownMenuItem asChild>
-                                                            <a
-                                                                href={opt.url}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="flex items-center gap-2"
-                                                            >
-                                                                <opt.icon className="h-4 w-4" />
-                                                                {t(opt.labelKey)}
-                                                            </a>
-                                                        </DropdownMenuItem>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent side="right">
-                                                        {t(opt.tooltipKey)}
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            ))}
-                                        </TooltipProvider>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                <SidebarContent className="gap-0">
+                    {/* Launch Station — dropdown for POS / KDS */}
+                    <SidebarGroup className="pb-2 border-b border-sidebar-border mb-1">
+                        <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50 truncate">
+                            {t("sidebar.pos_section_label")}
+                        </SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                <SidebarMenuItem>
+                                    <DropdownMenu>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <DropdownMenuTrigger asChild>
+                                                    <SidebarMenuButton className="font-semibold text-primary">
+                                                        <MonitorSmartphone />
+                                                        <span className="min-w-0 flex-1 truncate text-left">{launchStationLabel}</span>
+                                                        <ChevronDown className="ml-auto h-3.5 w-3.5 shrink-0" />
+                                                    </SidebarMenuButton>
+                                                </DropdownMenuTrigger>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="right">{launchStationLabel}</TooltipContent>
+                                        </Tooltip>
+                                        <DropdownMenuContent side="right" align="start" className="w-44">
+                                            {STATION_OPTIONS.map((opt) => {
+                                                const optLabel = t(opt.labelKey)
+                                                return (
+                                                    <Tooltip key={opt.key}>
+                                                        <TooltipTrigger asChild>
+                                                            <DropdownMenuItem asChild>
+                                                                <a
+                                                                    href={opt.url}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="flex items-center gap-2"
+                                                                >
+                                                                    <opt.icon className="h-4 w-4 shrink-0" />
+                                                                    <span className="min-w-0 flex-1 truncate text-left">{optLabel}</span>
+                                                                </a>
+                                                            </DropdownMenuItem>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="right">
+                                                            {t(opt.tooltipKey)}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                )
+                                            })}
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </SidebarMenuItem>
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
 
-                {/* Dashboard — always visible, no toggle */}
-                <SidebarGroup className="py-1">
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={isActiveLink(OVERVIEW_ITEM.key)}>
-                                    <a href={OVERVIEW_ITEM.url.replace(":id", businessId)}>
-                                        <OVERVIEW_ITEM.icon />
-                                        {t(OVERVIEW_ITEM.titleKey)}
-                                    </a>
-                                </SidebarMenuButton>
-                                <SidebarPinToggle
-                                    pinned={pinnedByPath.has(`owner/${OVERVIEW_ITEM.key}`)}
-                                    atMax={atMax}
-                                    onToggle={() => togglePin(`owner/${OVERVIEW_ITEM.key}`)}
-                                />
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                    {/* Dashboard — always visible, no toggle */}
+                    <SidebarGroup className="py-1">
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                <SidebarMenuItem>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <SidebarMenuButton asChild isActive={isActiveLink(OVERVIEW_ITEM.key)}>
+                                                <a href={OVERVIEW_ITEM.url.replace(":id", businessId)}>
+                                                    <OVERVIEW_ITEM.icon />
+                                                    <span className="min-w-0 flex-1 truncate text-left">{overviewLabel}</span>
+                                                </a>
+                                            </SidebarMenuButton>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="right">{overviewLabel}</TooltipContent>
+                                    </Tooltip>
+                                    <SidebarPinToggle
+                                        pinned={pinnedByPath.has(`owner/${OVERVIEW_ITEM.key}`)}
+                                        atMax={atMax}
+                                        onToggle={() => togglePin(`owner/${OVERVIEW_ITEM.key}`)}
+                                    />
+                                </SidebarMenuItem>
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
 
-                {/* Collapsible groups */}
-                {NAV_GROUPS.map((group) => (
-                    <CollapsibleNavGroup
-                        key={group.titleKey}
-                        group={group}
-                        businessId={businessId}
-                        defaultOpen={groupHasActiveItem(group)}
-                        pinnedPaths={new Set(pinnedByPath.keys())}
-                        atMax={atMax}
-                        onTogglePin={togglePin}
-                    />
-                ))}
-            </SidebarContent>
+                    {/* Collapsible groups */}
+                    {NAV_GROUPS.map((group) => (
+                        <CollapsibleNavGroup
+                            key={group.titleKey}
+                            group={group}
+                            businessId={businessId}
+                            defaultOpen={groupHasActiveItem(group)}
+                            pinnedPaths={new Set(pinnedByPath.keys())}
+                            atMax={atMax}
+                            onTogglePin={togglePin}
+                        />
+                    ))}
+                </SidebarContent>
 
-            <SidebarRail />
-        </Sidebar>
+                <SidebarRail />
+            </Sidebar>
+        </TooltipProvider>
     )
 }
