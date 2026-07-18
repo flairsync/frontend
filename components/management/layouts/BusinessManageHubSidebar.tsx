@@ -1,7 +1,6 @@
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
 import {
     Sidebar,
     SidebarContent,
@@ -17,78 +16,89 @@ import {
     SidebarMenuSubItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { BarChart3, Building, Building2, Calendar, ChevronRight, CreditCard, Heart, HelpCircle, Inbox, LayoutDashboard, LucideNewspaper, MapPinned, Plug, Settings, ShieldAlert, ShoppingBag, SlidersHorizontal, Star, User, Users, Utensils, Briefcase } from "lucide-react"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Building, Building2, ChevronRight, CreditCard, Heart, HelpCircle, LucideNewspaper, Briefcase } from "lucide-react"
 import WebsiteLogo from "@/components/shared/WebsiteLogo"
 
 // This is sample data.
 const ownerNavData = {
     navMain: [
         {
-            title: "Manage your businesses",
+            titleKey: "hub_sidebar.groups.manage_businesses",
             url: "#",
             items: [
                 {
                     key: "overview",
-                    title: "Overview",
+                    titleKey: "hub_sidebar.items.overview",
                     url: "/manage/overview",
                     icon: Building2,
                 },
                 {
                     key: "joined",
-                    title: "Joined",
+                    titleKey: "hub_sidebar.items.joined",
                     url: "/manage/joined",
                     icon: Heart,
                 },
                 {
                     key: "owned",
-                    title: "My businesses",
+                    titleKey: "hub_sidebar.items.owned",
                     url: "/manage/owned",
                     icon: Building,
                 },
                 {
                     key: "organizations",
-                    title: "Organization",
+                    titleKey: "hub_sidebar.items.organization",
                     url: "/manage/organizations",
                     icon: Building2,
                     subItems: [
                         {
                             key: "organizations",
-                            title: "Organizations",
+                            titleKey: "hub_sidebar.items.organizations",
                             url: "/manage/organizations",
                         },
                         {
                             key: "regions",
-                            title: "Regions",
+                            titleKey: "hub_sidebar.items.regions",
                             url: "/manage/regions",
                         },
                         {
                             key: "requests",
-                            title: "Requests",
+                            titleKey: "hub_sidebar.items.requests",
                             url: "/manage/requests",
+                        },
+                        {
+                            key: "company-guide",
+                            titleKey: "hub_sidebar.items.company_guide",
+                            url: "/manage/company-guide",
                         },
                     ],
                 },
                 {
                     key: "billing",
-                    title: "Billing",
+                    titleKey: "hub_sidebar.items.billing",
                     url: "/manage/billing",
                     icon: LucideNewspaper,
                 },
                 {
                     key: "plans",
-                    title: "Plans",
+                    titleKey: "hub_sidebar.items.plans",
                     url: "/manage/plans",
                     icon: CreditCard,
                 },
                 {
                     key: "professional-profile",
-                    title: "Professional Profile",
+                    titleKey: "hub_sidebar.items.professional_profile",
                     url: "/manage/professional-profile",
                     icon: Briefcase,
                 },
                 {
                     key: "help",
-                    title: "Help",
+                    titleKey: "hub_sidebar.items.help",
                     url: "/manage/help",
                     icon: HelpCircle,
                 },
@@ -105,6 +115,7 @@ export function isActiveLink(key: string): boolean {
 
 
 export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { t } = useTranslation("management");
     const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
 
     const isExpanded = (key: string, defaultOpen: boolean) => expanded[key] ?? defaultOpen;
@@ -112,69 +123,93 @@ export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<type
         setExpanded((prev) => ({ ...prev, [key]: !isExpanded(key, defaultOpen) }));
 
     return (
-        <Sidebar {...props}
-        >
-            <SidebarHeader>
-                <a
-                    href="/feed"
-                >
-                    <WebsiteLogo />
-                </a>
-            </SidebarHeader>
-            <SidebarContent>
-                {/* We create a SidebarGroup for each parent. */}
-                {ownerNavData.navMain.map((item) => (
-                    <SidebarGroup key={item.title}>
-                        <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                {item.items.map((item) => {
-                                    const hasSubItems = "subItems" in item && !!item.subItems;
-                                    const subActive = hasSubItems && item.subItems!.some((sub) => isActiveLink(sub.key));
-                                    const parentActive = isActiveLink(item.key) || subActive;
-                                    const open = hasSubItems && isExpanded(item.key, subActive);
+        <TooltipProvider delayDuration={300}>
+            <Sidebar {...props}
+            >
+                <SidebarHeader>
+                    <a
+                        href="/feed"
+                    >
+                        <WebsiteLogo />
+                    </a>
+                </SidebarHeader>
+                <SidebarContent>
+                    {/* We create a SidebarGroup for each parent. */}
+                    {ownerNavData.navMain.map((group) => (
+                        <SidebarGroup key={group.titleKey}>
+                            <SidebarGroupLabel className="truncate">{t(group.titleKey)}</SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {group.items.map((item) => {
+                                        const hasSubItems = "subItems" in item && !!item.subItems;
+                                        const subActive = hasSubItems && item.subItems!.some((sub) => isActiveLink(sub.key));
+                                        const parentActive = isActiveLink(item.key) || subActive;
+                                        const open = hasSubItems && isExpanded(item.key, subActive);
+                                        const label = t(item.titleKey);
 
-                                    return (
-                                        <SidebarMenuItem key={item.title} >
-                                            {hasSubItems ? (
-                                                <SidebarMenuButton
-                                                    isActive={parentActive}
-                                                    onClick={() => toggleExpanded(item.key, subActive)}
-                                                    aria-expanded={open}
-                                                >
-                                                    <item.icon />
-                                                    {item.title}
-                                                    <ChevronRight
-                                                        className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
-                                                    />
-                                                </SidebarMenuButton>
-                                            ) : (
-                                                <SidebarMenuButton asChild isActive={parentActive} >
-                                                    <a href={item.url}>
-                                                        <item.icon />
-                                                        {item.title}</a>
-                                                </SidebarMenuButton>
-                                            )}
-                                            {hasSubItems && open && (
-                                                <SidebarMenuSub>
-                                                    {item.subItems!.map((subItem) => (
-                                                        <SidebarMenuSubItem key={subItem.title}>
-                                                            <SidebarMenuSubButton asChild isActive={isActiveLink(subItem.key)}>
-                                                                <a href={subItem.url}>{subItem.title}</a>
-                                                            </SidebarMenuSubButton>
-                                                        </SidebarMenuSubItem>
-                                                    ))}
-                                                </SidebarMenuSub>
-                                            )}
-                                        </SidebarMenuItem>
-                                    );
-                                })}
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </SidebarGroup>
-                ))}
-            </SidebarContent>
-            <SidebarRail />
-        </Sidebar>
+                                        return (
+                                            <SidebarMenuItem key={item.key} >
+                                                {hasSubItems ? (
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <SidebarMenuButton
+                                                                isActive={parentActive}
+                                                                onClick={() => toggleExpanded(item.key, subActive)}
+                                                                aria-expanded={open}
+                                                            >
+                                                                <item.icon />
+                                                                <span className="min-w-0 flex-1 truncate text-left">{label}</span>
+                                                                <ChevronRight
+                                                                    className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
+                                                                />
+                                                            </SidebarMenuButton>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="right">{label}</TooltipContent>
+                                                    </Tooltip>
+                                                ) : (
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <SidebarMenuButton asChild isActive={parentActive} >
+                                                                <a href={item.url}>
+                                                                    <item.icon />
+                                                                    <span className="min-w-0 flex-1 truncate text-left">{label}</span>
+                                                                </a>
+                                                            </SidebarMenuButton>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="right">{label}</TooltipContent>
+                                                    </Tooltip>
+                                                )}
+                                                {hasSubItems && open && (
+                                                    <SidebarMenuSub>
+                                                        {item.subItems!.map((subItem) => {
+                                                            const subLabel = t(subItem.titleKey);
+                                                            return (
+                                                                <SidebarMenuSubItem key={subItem.key}>
+                                                                    <Tooltip>
+                                                                        <TooltipTrigger asChild>
+                                                                            <SidebarMenuSubButton asChild isActive={isActiveLink(subItem.key)}>
+                                                                                <a href={subItem.url}>
+                                                                                    <span className="min-w-0 flex-1 truncate text-left">{subLabel}</span>
+                                                                                </a>
+                                                                            </SidebarMenuSubButton>
+                                                                        </TooltipTrigger>
+                                                                        <TooltipContent side="right">{subLabel}</TooltipContent>
+                                                                    </Tooltip>
+                                                                </SidebarMenuSubItem>
+                                                            );
+                                                        })}
+                                                    </SidebarMenuSub>
+                                                )}
+                                            </SidebarMenuItem>
+                                        );
+                                    })}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+                    ))}
+                </SidebarContent>
+                <SidebarRail />
+            </Sidebar>
+        </TooltipProvider>
     )
 }

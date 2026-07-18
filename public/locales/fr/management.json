@@ -452,8 +452,7 @@
       "analytics": "Analyses et rapports",
       "reviews": "Avis",
       "audit_logs": "Journaux d'audit",
-      "danger": "Zone de danger",
-      "company_guide": "Guide de l'entreprise"
+      "danger": "Zone de danger"
     }
   },
   "permissions": {
@@ -1496,6 +1495,25 @@
         { "if": "Quelqu'un d'autre possède et gère un emplacement, mais je veux avoir de la visibilité dessus", "then": "Créez une Organisation ou une Région et envoyez une demande de rattachement à cet établissement." },
         { "if": "Je veux des rapports combinés sur des emplacements appartenant à des personnes différentes", "then": "Comme ci-dessus — une Organisation ou une Région, une fois que chaque partie approuve." }
       ]
+    }
+  },
+  "hub_sidebar": {
+    "groups": {
+      "manage_businesses": "Gérez vos établissements"
+    },
+    "items": {
+      "overview": "Aperçu",
+      "joined": "Rejoints",
+      "owned": "Mes établissements",
+      "organization": "Organisation",
+      "organizations": "Organisations",
+      "regions": "Régions",
+      "requests": "Demandes",
+      "company_guide": "Guide",
+      "billing": "Facturation",
+      "plans": "Formules",
+      "professional_profile": "Profil professionnel",
+      "help": "Aide"
     }
   }
 }

@@ -49,7 +49,6 @@ const PAGE_LABELS: Record<string, string> = {
     reviews: "Reviews",
     "audit-logs": "Audit Logs",
     danger: "Danger Zone",
-    "company-guide": "Company Guide",
     marketplace: "Marketplace",
 }
 

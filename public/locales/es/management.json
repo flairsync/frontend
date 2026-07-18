@@ -452,8 +452,7 @@
       "analytics": "Análisis e informes",
       "reviews": "Reseñas",
       "audit_logs": "Registros de auditoría",
-      "danger": "Zona de peligro",
-      "company_guide": "Guía de la empresa"
+      "danger": "Zona de peligro"
     }
   },
   "permissions": {
@@ -1496,6 +1495,25 @@
         { "if": "Otra persona posee y gestiona un local, pero quiero tener visibilidad sobre él", "then": "Crea una Organización o Región y envía una solicitud de vinculación a ese negocio." },
         { "if": "Quiero informes combinados de locales que pertenecen a personas distintas", "then": "Lo mismo que el caso anterior — una Organización o Región, una vez que ambas partes lo aprueben." }
       ]
+    }
+  },
+  "hub_sidebar": {
+    "groups": {
+      "manage_businesses": "Gestiona tus negocios"
+    },
+    "items": {
+      "overview": "Resumen",
+      "joined": "Unidos",
+      "owned": "Mis negocios",
+      "organization": "Organización",
+      "organizations": "Organizaciones",
+      "regions": "Regiones",
+      "requests": "Solicitudes",
+      "company_guide": "Guía",
+      "billing": "Facturación",
+      "plans": "Planes",
+      "professional_profile": "Perfil profesional",
+      "help": "Ayuda"
     }
   }
 }

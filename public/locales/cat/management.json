@@ -452,8 +452,7 @@
       "analytics": "Anàlisi i informes",
       "reviews": "Ressenyes",
       "audit_logs": "Registres d'auditoria",
-      "danger": "Zona de perill",
-      "company_guide": "Guia de l'empresa"
+      "danger": "Zona de perill"
     }
   },
   "permissions": {
@@ -1496,6 +1495,25 @@
         { "if": "Una altra persona posseeix i gestiona un local, però vull tenir-hi visibilitat", "then": "Crea una Organització o Regió i envia una sol·licitud de vinculació a aquell negoci." },
         { "if": "Vull informes combinats de locals que pertanyen a persones diferents", "then": "El mateix que el cas anterior — una Organització o Regió, un cop totes dues parts ho aprovin." }
       ]
+    }
+  },
+  "hub_sidebar": {
+    "groups": {
+      "manage_businesses": "Gestiona els teus negocis"
+    },
+    "items": {
+      "overview": "Resum",
+      "joined": "Units",
+      "owned": "Els meus negocis",
+      "organization": "Organització",
+      "organizations": "Organitzacions",
+      "regions": "Regions",
+      "requests": "Sol·licituds",
+      "company_guide": "Guia",
+      "billing": "Facturació",
+      "plans": "Plans",
+      "professional_profile": "Perfil professional",
+      "help": "Ajuda"
     }
   }
 }

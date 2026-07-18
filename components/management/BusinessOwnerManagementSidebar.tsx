@@ -52,7 +52,6 @@ import {
     Globe,
     HandCoins,
     Tag,
-    Network,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -114,7 +113,6 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "branding", titleKey: "sidebar.items.branding", url: "/manage/:id/owner/branding", icon: Images },
             { key: "settings", titleKey: "sidebar.items.settings", url: "/manage/:id/owner/settings", icon: Settings },
-            { key: "company-guide", titleKey: "sidebar.items.company_guide", url: "/manage/:id/owner/company-guide", icon: Network },
         ],
     },
     {

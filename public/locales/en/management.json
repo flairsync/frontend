@@ -452,8 +452,7 @@
       "analytics": "Analytics & Reports",
       "reviews": "Reviews",
       "audit_logs": "Audit Logs",
-      "danger": "Danger Zone",
-      "company_guide": "Company Guide"
+      "danger": "Danger Zone"
     }
   },
   "permissions": {
@@ -1496,6 +1495,25 @@
         { "if": "Someone else owns and runs a location, but I want visibility into it", "then": "Create an Organization or Region and send that business a link request." },
         { "if": "I want combined reporting across locations owned by different people", "then": "Same as above — an Organization or Region, once every side approves." }
       ]
+    }
+  },
+  "hub_sidebar": {
+    "groups": {
+      "manage_businesses": "Manage your businesses"
+    },
+    "items": {
+      "overview": "Overview",
+      "joined": "Joined",
+      "owned": "My businesses",
+      "organization": "Organization",
+      "organizations": "Organizations",
+      "regions": "Regions",
+      "requests": "Requests",
+      "company_guide": "Guide",
+      "billing": "Billing",
+      "plans": "Plans",
+      "professional_profile": "Professional Profile",
+      "help": "Help"
     }
   }
 }

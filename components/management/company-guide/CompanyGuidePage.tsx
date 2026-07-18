@@ -20,10 +20,10 @@ const CompanyGuidePage: React.FC = () => {
     }[];
 
     return (
-        <div className="space-y-8 max-w-4xl">
-            <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tight">{t("company_guide.title")}</h1>
-                <p className="text-muted-foreground max-w-2xl">{t("company_guide.subtitle")}</p>
+        <div className="p-6 w-full max-w-4xl space-y-8">
+            <div>
+                <h1 className="text-2xl font-bold">{t("company_guide.title")}</h1>
+                <p className="text-muted-foreground mt-1 max-w-2xl">{t("company_guide.subtitle")}</p>
             </div>
 
             <Separator />
