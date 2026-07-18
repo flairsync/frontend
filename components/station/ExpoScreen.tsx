@@ -89,12 +89,12 @@ function ExpoTicket({
 
   return (
     <Card
-      className={`flex flex-col border-2 bg-white shadow-2xl transition-all ${
+      className={`flex flex-col border-2 bg-card shadow-2xl transition-all ${
         isReady
           ? "border-green-500 shadow-green-500/30"
           : order.allStationsDone
           ? "border-amber-500 shadow-amber-500/20"
-          : "border-slate-300"
+          : "border-border"
       }`}
     >
       {/* Header */}
@@ -104,12 +104,12 @@ function ExpoTicket({
             ? "bg-green-500/15"
             : order.allStationsDone
             ? "bg-amber-500/10"
-            : "bg-slate-100/70"
+            : "bg-muted/70"
         }`}
       >
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-2xl font-black text-slate-900">
+            <span className="text-2xl font-black text-foreground">
               {order.tableName ?? t("expo_screen.ticket.takeaway")}
             </span>
             {order.priority > 0 && (
@@ -124,7 +124,7 @@ function ExpoTicket({
             {formatAge(order.createdAt)}
           </div>
         </div>
-        <p className="text-[9px] text-slate-600 font-mono uppercase tracking-widest">
+        <p className="text-[9px] text-muted-foreground font-mono uppercase tracking-widest">
           #{order.id.slice(0, 8)}
         </p>
         {order.kitchenNotes && (
@@ -167,7 +167,7 @@ function ExpoTicket({
       </div>
 
       {/* Footer */}
-      <div className="p-4 bg-slate-100/70 border-t border-slate-200 rounded-b-lg mt-auto">
+      <div className="p-4 bg-muted/70 border-t border-border rounded-b-lg mt-auto">
         {isReady ? (
           <Button
             className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
@@ -200,7 +200,7 @@ function ExpoTicket({
             <span className="text-[10px] font-black uppercase tracking-widest">{t("expo_screen.ticket.all_stations_done")}</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center gap-2 py-2 text-slate-500">
+          <div className="flex items-center justify-center gap-2 py-2 text-muted-foreground">
             <Loader2 className="w-4 h-4 animate-spin" />
             <span className="text-[10px] font-black uppercase tracking-widest">{t("expo_screen.ticket.in_progress")}</span>
           </div>
@@ -303,14 +303,14 @@ export default function ExpoScreen({ station }: Props) {
   }, [t]);
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 text-slate-900 overflow-hidden font-sans antialiased">
+    <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans antialiased">
       {/* Header */}
-      <header className="h-16 flex items-center px-6 bg-white border-b border-slate-200 flex-shrink-0 z-20">
+      <header className="h-16 flex items-center px-6 bg-card border-b border-border flex-shrink-0 z-20">
         <div className="flex items-center gap-3">
           <CheckCheck className="w-6 h-6 text-green-600" />
           <div className="leading-none">
             <h1 className="font-black tracking-tight text-lg uppercase">{t("expo_screen.header.title")}</h1>
-            <p className="text-[9px] text-slate-500 font-bold flex items-center gap-1 mt-0.5">
+            <p className="text-[9px] text-muted-foreground font-bold flex items-center gap-1 mt-0.5">
               <Building2 className="w-2.5 h-2.5" />
               {t("expo_screen.header.business_all_stations", { businessName: station.business.name })}
             </p>
@@ -326,7 +326,7 @@ export default function ExpoScreen({ station }: Props) {
             </div>
           )}
           <div className="flex flex-col items-end leading-none">
-            <p className="text-xl font-black font-mono text-slate-900 tracking-widest">
+            <p className="text-xl font-black font-mono text-foreground tracking-widest">
               {currentTime.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -342,13 +342,13 @@ export default function ExpoScreen({ station }: Props) {
       {/* Tickets */}
       {loading ? (
         <div className="flex-1 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-3 text-slate-600">
+          <div className="flex flex-col items-center gap-3 text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin" />
             <p className="text-xs font-black uppercase tracking-widest">{t("expo_screen.loading")}</p>
           </div>
         </div>
       ) : (
-        <ScrollArea className="flex-1 bg-slate-50">
+        <ScrollArea className="flex-1 bg-background">
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {orders.map((order) => (
               <ExpoTicket
@@ -361,7 +361,7 @@ export default function ExpoScreen({ station }: Props) {
               />
             ))}
             {orders.length === 0 && (
-              <div className="col-span-full h-[60vh] flex flex-col items-center justify-center text-slate-700">
+              <div className="col-span-full h-[60vh] flex flex-col items-center justify-center text-muted-foreground">
                 <CheckCheck className="w-20 h-20 mb-4 opacity-10" />
                 <p className="font-black uppercase tracking-[0.3em] text-sm">{t("expo_screen.empty_state.title")}</p>
                 <p className="text-[10px] mt-2 italic font-bold">

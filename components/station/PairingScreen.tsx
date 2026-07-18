@@ -56,28 +56,28 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
   const label = stationType === "kds" ? t("pairing_screen.station_type_kds") : t("pairing_screen.station_type_pos");
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 bg-slate-50 min-h-screen">
+    <div className="flex-1 flex flex-col items-center justify-center p-6 bg-background min-h-screen">
       <div className="w-full max-w-sm flex flex-col gap-8">
         {/* Header */}
         <div className="text-center">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-5 border border-primary/20">
             <Icon className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">{t("pairing_screen.title")}</h1>
-          <p className="text-slate-500 text-sm mt-2">
+          <h1 className="text-2xl font-black text-foreground tracking-tight">{t("pairing_screen.title")}</h1>
+          <p className="text-muted-foreground text-sm mt-2">
             {t("pairing_screen.subtitle")}
           </p>
-          <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 bg-white border border-slate-200 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
+          <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 bg-card border border-border rounded-full text-[10px] font-black text-muted-foreground uppercase tracking-widest">
             <div className={`w-1.5 h-1.5 rounded-full ${stationType === 'kds' ? 'bg-amber-500' : 'bg-primary'}`} />
             {label}
           </span>
         </div>
 
         {/* Form */}
-        <Card className="bg-white border-slate-200">
+        <Card className="bg-card border-border">
           <CardContent className="p-6 flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-              <Label className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+              <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                 {t("pairing_screen.form.station_name_label")}
               </Label>
               <Input
@@ -85,12 +85,12 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoFocus={code.length === 8}
-                className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus-visible:ring-primary/50"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary/50"
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+              <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                 {t("pairing_screen.form.pairing_code_label")}
               </Label>
               <Input
@@ -98,14 +98,14 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
                 value={code}
                 onChange={(e) => handleCodeChange(e.target.value)}
                 maxLength={8}
-                className="bg-slate-50 border-slate-200 text-center text-2xl tracking-[0.4em] font-mono uppercase text-slate-900 placeholder:text-slate-400 placeholder:tracking-normal placeholder:text-base placeholder:font-sans focus-visible:ring-primary/50 h-14"
+                className="bg-background border-border text-center text-2xl tracking-[0.4em] font-mono uppercase text-foreground placeholder:text-muted-foreground placeholder:tracking-normal placeholder:text-base placeholder:font-sans focus-visible:ring-primary/50 h-14"
               />
               <div className="flex justify-center gap-1.5 mt-1">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <div
                     key={i}
                     className={`h-0.5 flex-1 rounded-full transition-colors ${
-                      i < code.length ? "bg-primary" : "bg-slate-200"
+                      i < code.length ? "bg-primary" : "bg-border"
                     }`}
                   />
                 ))}
@@ -113,7 +113,7 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
             </div>
 
             {error && (
-              <p className="text-red-600 text-xs text-center font-bold bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+              <p className="text-destructive text-xs text-center font-bold bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
                 {error}
               </p>
             )}
@@ -139,7 +139,7 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
         </Card>
 
         {/* Device ID footer */}
-        <p className="text-center text-slate-400 text-[10px] font-mono">
+        <p className="text-center text-muted-foreground text-[10px] font-mono">
           {t("pairing_screen.device_id_footer", { deviceId: getOrCreateDeviceUuid().slice(0, 8) })}
         </p>
       </div>

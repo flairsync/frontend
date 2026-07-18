@@ -54,13 +54,13 @@ export const MenuCategoryCard = ({
             dragControls={controls}
 
         >
-            <Card className=" border border-zinc-200 dark:border-zinc-700 rounded-xl hover:shadow-lg transition-all">
+            <Card className=" border border-border rounded-xl hover:shadow-lg transition-all">
                 <div
                     className="flex flex-row "
                 >
                     <div
 
-                        className=" flex flex-1 hover:cursor-grab  bg-zinc-200  rounded-l-xl"
+                        className=" flex flex-1 hover:cursor-grab  bg-muted  rounded-l-xl"
                         onPointerDown={(e) => {
                             controls.start(e);
                         }}
@@ -71,7 +71,7 @@ export const MenuCategoryCard = ({
                     <CardHeader
                         onClick={onToggle}
                         className="flex flex-8 justify-between items-center cursor-pointer p-4
-                   bg-zinc-100 dark:bg-zinc-800 rounded-r-xl"
+                   bg-muted rounded-r-xl"
                     >
 
                         {/* Left */}
@@ -85,7 +85,7 @@ export const MenuCategoryCard = ({
                                 {category.name}
                             </CardTitle>
 
-                            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                            <span className="text-sm text-muted-foreground">
                                 ({items.length} items)
                             </span>
                         </div>
@@ -100,7 +100,7 @@ export const MenuCategoryCard = ({
                                 size="icon"
                                 variant="ghost"
                                 onClick={() => onEditCategory(category)}
-                                className="hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                                className="hover:bg-muted"
                             >
                                 <Pencil className="h-4 w-4" />
                             </Button>
@@ -116,7 +116,7 @@ export const MenuCategoryCard = ({
                                 <Button
                                     size="icon"
                                     variant="ghost"
-                                    className="hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600"
+                                    className="hover:bg-destructive/10 text-destructive"
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </Button>
@@ -126,7 +126,7 @@ export const MenuCategoryCard = ({
                             <Button
                                 size="sm"
                                 onClick={onAddItem}
-                                className="bg-indigo-500 text-white hover:bg-indigo-600 transition"
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 transition"
                             >
                                 <Plus className="h-4 w-4 mr-1" />
                                 Add Item
@@ -134,7 +134,7 @@ export const MenuCategoryCard = ({
                             <Button
                                 size="sm"
                                 onClick={onDuplicateItems}
-                                className="bg-indigo-500 text-white hover:bg-indigo-600 transition"
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 transition"
                             >
                                 <Plus className="h-4 w-4 mr-1" />
                                 Duplicate items
@@ -156,12 +156,12 @@ export const MenuCategoryCard = ({
                             transition={{ duration: 0.25 }}
                         >
                             <CardContent
-                                className="space-y-3 p-4 bg-white dark:bg-zinc-900
-                            rounded-b-xl border-t border-zinc-200 dark:border-zinc-700"
+                                className="space-y-3 p-4 bg-card
+                            rounded-b-xl border-t border-border"
                             >
 
                                 {items.length === 0 ? (
-                                    <p className="text-zinc-500 dark:text-zinc-400 italic text-sm">
+                                    <p className="text-muted-foreground italic text-sm">
                                         No items yet. Click “Add Item” to start.
                                     </p>
                                 ) : (

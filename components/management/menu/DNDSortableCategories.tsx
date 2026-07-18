@@ -212,11 +212,11 @@ export const MenuCategoriesSortable = ({
             <DragOverlay>
                 {activeDrag ? (
                     activeDrag.type === "category" ? (
-                        <div className="shadow-lg p-4 bg-white rounded-xl">
+                        <div className="shadow-lg p-4 bg-card rounded-xl">
                             {activeDrag.name}
                         </div>
                     ) : (
-                        <div className="shadow-lg p-3 bg-zinc-100 rounded-lg">
+                        <div className="shadow-lg p-3 bg-muted rounded-lg">
                             {activeDrag.name}
                         </div>
                     )

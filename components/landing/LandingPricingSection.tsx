@@ -11,6 +11,11 @@ import { PricingType } from '@/models/SubscriptionPack';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 
+// Sanctioned exception (see DESIGN_SYSTEM.md): the featured pricing card uses this
+// specific gradient/ring hex pair instead of design tokens. Kept as a single constant
+// so the two usages (gradient background + ring) can't drift independently.
+const FEATURED_GRADIENT_CLASS = "bg-gradient-to-b from-[#8A89F9] to-[#6366F1] ring-[#8A89F9]/50";
+
 const LandingPricingSection = () => {
     const { t } = useTranslation("landing");
     const { user } = usePageContext();
@@ -92,7 +97,7 @@ const LandingPricingSection = () => {
                 className={cn(
                     "relative rounded-xl p-6 shadow-lg transform transition-all duration-300 hover:scale-[1.02] border-none flex flex-col h-full",
                     isHighlighted
-                        ? 'bg-gradient-to-b from-[#8A89F9] to-[#6366F1] text-white ring-4 ring-[#8A89F9]/50 shadow-2xl z-10'
+                        ? `${FEATURED_GRADIENT_CLASS} text-white ring-4 shadow-2xl z-10`
                         : 'bg-muted',
                     isCurrentPlan && 'ring-4 ring-emerald-500'
                 )}

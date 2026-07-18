@@ -113,7 +113,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                           <MapPin className="h-3.5 w-3.5 text-amber-500" aria-label={t("attendance_table.aria_out_of_geofence")} />
                         )}
                         {record.isEarlyDeparture && (
-                          <LogOut className="h-3.5 w-3.5 text-red-500" aria-label={t("attendance_table.aria_early_departure")} />
+                          <LogOut className="h-3.5 w-3.5 text-destructive" aria-label={t("attendance_table.aria_early_departure")} />
                         )}
                         {record.hasLongPaidBreak && (
                           <Coffee className="h-3.5 w-3.5 text-amber-500" aria-label={t("attendance_table.aria_long_paid_break")} />
@@ -177,7 +177,7 @@ const AttendanceTable = ({ records, isLoading, businessId }: AttendanceTableProp
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-8 text-xs text-red-600 hover:bg-red-50 gap-1"
+                            className="h-8 text-xs text-destructive hover:bg-destructive/10 gap-1"
                             onClick={() => setAbsenceRecord(record)}
                           >
                             <CalendarOff className="h-3.5 w-3.5" />

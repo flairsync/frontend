@@ -61,7 +61,7 @@ const AttendanceNotesModal = ({ record, open, onOpenChange, onSave }: Attendance
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>{t("attendance_modals.notes.cancel")}</Button>
-          <Button type="submit" onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">{t("attendance_modals.notes.save_note")}</Button>
+          <Button type="submit" onClick={handleSave}>{t("attendance_modals.notes.save_note")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

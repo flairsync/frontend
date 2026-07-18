@@ -135,7 +135,7 @@ export function EditStaffRolesModal({
                                 <div className="flex items-center justify-between">
                                     <h4 className="font-semibold">{role.name}</h4>
                                     <Button size="icon" variant="ghost" onClick={() => removeRole(role.id)}>
-                                        <Trash className="h-4 w-4 text-red-500" />
+                                        <Trash className="h-4 w-4 text-destructive" />
                                     </Button>
                                 </div>
 

@@ -85,7 +85,7 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
             <CardHeader className="p-4 pb-0 items-start gap-1">
                 <div className="flex items-center gap-2 w-full">
                     <span className="text-[10px] font-semibold text-primary uppercase tracking-widest">{item.category || 'Item'}</span>
-                    <span className={`ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${inStock ? 'bg-green-500/15 text-green-500' : 'bg-muted text-muted-foreground'}`}>
+                    <span className={`ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${inStock ? 'bg-green-500/15 text-green-600 dark:text-green-400' : 'bg-muted text-muted-foreground'}`}>
                         {inStock ? 'In stock' : 'Out of stock'}
                     </span>
                 </div>

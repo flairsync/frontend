@@ -138,7 +138,7 @@ const ItemVariantsSection: React.FC<{
                             <div className="text-sm font-medium">{v.name}</div>
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                 {v.price}€
-                                <button type="button" onClick={() => deleteVariant({ categoryId, itemId, variantId: v.id })} className="text-red-500 hover:text-red-700">
+                                <button type="button" onClick={() => deleteVariant({ categoryId, itemId, variantId: v.id })} className="text-destructive hover:text-destructive/80">
                                     <X className="h-4 w-4" />
                                 </button>
                             </div>
@@ -234,7 +234,7 @@ const ItemModifiersSection: React.FC<{
                                         ({group.selectionMode} • min: {group.minSelections} • max: {group.maxSelections})
                                     </span>
                                 </div>
-                                <button type="button" onClick={() => deleteModifierGroup({ categoryId, itemId, groupId: group.id })} className="text-red-500 hover:text-red-700">
+                                <button type="button" onClick={() => deleteModifierGroup({ categoryId, itemId, groupId: group.id })} className="text-destructive hover:text-destructive/80">
                                     <X className="h-4 w-4" />
                                 </button>
                             </div>
@@ -246,7 +246,7 @@ const ItemModifiersSection: React.FC<{
                                         <span>{modItem.name}</span>
                                         <div className="flex items-center gap-3 text-muted-foreground">
                                             +{modItem.price}€
-                                            <button type="button" onClick={() => deleteModifierItem({ categoryId, itemId, groupId: group.id, modItemId: modItem.id })} className="text-red-500 hover:text-red-700">
+                                            <button type="button" onClick={() => deleteModifierItem({ categoryId, itemId, groupId: group.id, modItemId: modItem.id })} className="text-destructive hover:text-destructive/80">
                                                 <X className="h-3 w-3" />
                                             </button>
                                         </div>
@@ -555,7 +555,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                                         }}
                                                     >
                                                         {allergyName}
-                                                        <X size={12} className="ml-1 cursor-pointer hover:text-red-500 transition-colors" />
+                                                        <X size={12} className="ml-1 cursor-pointer hover:text-destructive transition-colors" />
                                                     </div>
                                                 ) : null;
                                             })}

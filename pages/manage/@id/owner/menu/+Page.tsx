@@ -35,7 +35,7 @@ const getBadgeStyles = (level: number) => {
     if (level >= 3)
         return "bg-yellow-500 text-black hover:bg-yellow-500";
 
-    return "bg-zinc-700 text-white hover:bg-zinc-700";
+    return "bg-foreground text-background hover:bg-foreground";
 };
 
 const MenusPage: React.FC = () => {
@@ -59,7 +59,7 @@ const MenusPage: React.FC = () => {
     const canCreateMenu = plan ? plan.canCreateMenu : true;
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
+        <div className="min-h-screen bg-background p-8">
             <MenuModal
                 isOpen={createModal}
                 onClose={() => {
@@ -81,15 +81,15 @@ const MenusPage: React.FC = () => {
                 }}
             />
             <div className="max-w-6xl mx-auto space-y-8">
-                <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-100">
+                <h1 className="text-4xl font-bold text-foreground">
                     {t('menu_management.list.title')}
                 </h1>
-                <p className="text-zinc-500 dark:text-zinc-400">
+                <p className="text-muted-foreground">
                     {t('menu_management.list.description')}
                 </p>
 
                 {/* Subscription counter */}
-                <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300 mb-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                     {plan ? (
                         <>
                             <span>
@@ -109,14 +109,14 @@ const MenusPage: React.FC = () => {
                             )}
                         </>
                     ) : (
-                        <div className="h-5 w-32 bg-zinc-100 animate-pulse rounded" />
+                        <div className="h-5 w-32 bg-muted animate-pulse rounded" />
                     )}
                 </div>
 
                 {businessBasicMenus?.length === 0 ? (
-                    <Card className="text-center p-12 border-dashed border-2 border-zinc-300 dark:border-zinc-700">
+                    <Card className="text-center p-12 border-dashed border-2 border-border">
                         <CardTitle className="text-2xl">{t('menu_management.list.no_menus_title')}</CardTitle>
-                        <p className="text-zinc-500 my-4">
+                        <p className="text-muted-foreground my-4">
                             {t('menu_management.list.no_menus_desc')}
                         </p>
                         <Button className="mt-4"
@@ -141,7 +141,7 @@ const MenusPage: React.FC = () => {
                                 whileTap={{ scale: 0.97 }}
                                 className="block"
                             >
-                                <Card className="cursor-pointer p-4 hover:shadow-xl transition-shadow border border-zinc-200 dark:border-zinc-700 rounded-xl">
+                                <Card className="cursor-pointer p-4 hover:shadow-xl transition-shadow border border-border rounded-xl">
                                     <CardContent className="space-y-3">
                                         <div className="flex items-center gap-3">
                                             <div className="text-2xl text-indigo-500 dark:text-indigo-400">
@@ -157,7 +157,7 @@ const MenusPage: React.FC = () => {
                                             />
                                         </div>
 
-                                        <div className="flex items-center gap-4 text-zinc-500 dark:text-zinc-400 text-sm">
+                                        <div className="flex items-center gap-4 text-muted-foreground text-sm">
                                             <span>{t('menu_management.list.categories_count', { count: menu.categoriesCount })}</span>
                                             <span>•</span>
                                             <span>{t('menu_management.list.items_count', { count: menu.itemsCount })}</span>
@@ -180,7 +180,7 @@ const MenusPage: React.FC = () => {
                                                         </TooltipTrigger>
 
                                                         <TooltipContent
-                                                            className="bg-white text-zinc-900 border shadow-md"
+                                                            className="bg-card text-foreground border shadow-md"
                                                             side="top"
                                                         >
                                                             <div className="space-y-1">
@@ -193,14 +193,14 @@ const MenusPage: React.FC = () => {
                                                                             className="flex justify-between gap-3 text-xs"
                                                                         >
                                                                             <span className="truncate">{hintKey}</span>
-                                                                            <span className="font-medium text-zinc-600">
+                                                                            <span className="font-medium text-muted-foreground">
                                                                                 {importance}/5
                                                                             </span>
                                                                         </div>
                                                                     ))}
 
                                                                 {Object.keys(menu.hints).length > MAX_HINTS_PREVIEW && (
-                                                                    <div className="pt-1 text-xs text-zinc-500">
+                                                                    <div className="pt-1 text-xs text-muted-foreground">
                                                                         {t('menu_management.list.more_hints', { count: Object.keys(menu.hints).length - MAX_HINTS_PREVIEW })}
                                                                     </div>
                                                                 )}
@@ -210,7 +210,7 @@ const MenusPage: React.FC = () => {
                                                 </TooltipProvider>
                                             )}
                                         </div>
-                                        <p className="text-zinc-400 text-sm italic">
+                                        <p className="text-muted-foreground text-sm italic">
                                             {t('menu_management.list.manage_menu_hint')}
                                         </p>
                                     </CardContent>
@@ -224,8 +224,8 @@ const MenusPage: React.FC = () => {
                                 className={cn(
                                     "flex flex-col items-center justify-center cursor-pointer p-6 border-dashed border-2 transition rounded-xl",
                                     canCreateMenu
-                                        ? "border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                                        : "border-zinc-200 opacity-60 bg-zinc-50 cursor-not-allowed"
+                                        ? "border-border hover:bg-muted"
+                                        : "border-border opacity-60 bg-muted cursor-not-allowed"
                                 )}
                                 onClick={() => {
                                     if (canCreateMenu) {
@@ -235,8 +235,8 @@ const MenusPage: React.FC = () => {
                                     }
                                 }}
                             >
-                                <Plus className={cn("h-6 w-6 mb-2", canCreateMenu ? "text-indigo-500" : "text-zinc-400")} />
-                                <p className={cn("font-semibold", canCreateMenu ? "text-zinc-700 dark:text-zinc-200" : "text-zinc-400")}>
+                                <Plus className={cn("h-6 w-6 mb-2", canCreateMenu ? "text-indigo-500" : "text-muted-foreground")} />
+                                <p className={cn("font-semibold", canCreateMenu ? "text-foreground" : "text-muted-foreground")}>
                                     {t('menu_management.list.create_new_menu_card')}
                                 </p>
                                 {!canCreateMenu && (

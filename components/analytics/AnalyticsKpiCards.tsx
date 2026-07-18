@@ -95,13 +95,13 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, pre
                 return (
                     <Card key={stat.key} className="p-4 shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                            <CardTitle className="text-sm font-medium text-muted-foreground">
                                 {stat.label}
                             </CardTitle>
                             <Icon className="h-4 w-4 text-primary" />
                         </CardHeader>
                         <CardContent className="flex items-end justify-between gap-2">
-                            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                            <div className="text-2xl font-bold text-foreground">
                                 {stat.value}
                             </div>
                             {stat.delta !== undefined && (

@@ -14,7 +14,7 @@ export function LocationPlaceholderCard({
         <Card className="h-80 w-full flex items-center justify-center text-center border-dashed">
             <CardHeader>
                 <div className="flex flex-col items-center gap-3">
-                    <MapPinOff className="h-10 w-10 text-gray-500" />
+                    <MapPinOff className="h-10 w-10 text-muted-foreground" />
                     <h2 className="text-lg font-semibold">{title}</h2>
                 </div>
             </CardHeader>

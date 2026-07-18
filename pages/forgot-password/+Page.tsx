@@ -18,7 +18,7 @@ const ForgotPasswordPage = () => {
 
     if (sent) {
         return (
-            <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
+            <div className="flex relative min-h-screen bg-background font-sans text-foreground">
                 <a href="/" className="absolute top-10 left-10">
                     <WebsiteLogo />
                 </a>
@@ -26,21 +26,21 @@ const ForgotPasswordPage = () => {
                     <div className="w-full max-w-md text-center">
                         <div className="flex justify-center mb-6">
                             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50">
-                                <Mail className="h-8 w-8 text-[#6366F1]" />
+                                <Mail className="h-8 w-8 text-primary" />
                             </div>
                         </div>
                         <h1 className="text-3xl font-extrabold mb-3">
                             {t('auth_page.forgot_password.success_title')}
                         </h1>
-                        <p className="text-zinc-600 mb-2">
+                        <p className="text-muted-foreground mb-2">
                             {t('auth_page.forgot_password.success_message')}
                         </p>
-                        <p className="text-zinc-500 text-sm mb-8">
+                        <p className="text-muted-foreground text-sm mb-8">
                             {t('auth_page.forgot_password.success_expiry')}
                         </p>
                         <Button
                             asChild
-                            className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                            className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                         >
                             <a href="/login">{t('auth_page.forgot_password.back_to_login_button')}</a>
                         </Button>
@@ -54,7 +54,7 @@ const ForgotPasswordPage = () => {
     }
 
     return (
-        <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
+        <div className="flex relative min-h-screen bg-background font-sans text-foreground">
             <a href="/" className="absolute top-10 left-10">
                 <WebsiteLogo />
             </a>
@@ -64,7 +64,7 @@ const ForgotPasswordPage = () => {
                     <h1 className="text-4xl font-extrabold mb-2">
                         {t('auth_page.forgot_password.title')}
                     </h1>
-                    <p className="text-zinc-600 mb-8">
+                    <p className="text-muted-foreground mb-8">
                         {t('auth_page.forgot_password.subtitle')}
                     </p>
 
@@ -98,7 +98,7 @@ const ForgotPasswordPage = () => {
                                         onChange={handleChange}
                                         placeholder="you@example.com"
                                         disabled={isSubmitting}
-                                        className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
+                                        className="h-12 border-border focus:border-primary focus-visible:ring-0"
                                     />
                                     {errors.email && touched.email && <InputError message={errors.email} />}
                                 </div>
@@ -108,7 +108,7 @@ const ForgotPasswordPage = () => {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                                    className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                                 >
                                     {isSubmitting ? '…' : t('auth_page.forgot_password.submit_button')}
                                 </Button>
@@ -116,8 +116,8 @@ const ForgotPasswordPage = () => {
                         )}
                     </Formik>
 
-                    <p className="mt-6 text-center text-sm text-zinc-600">
-                        <a href="/login" className="font-semibold text-[#6366F1] hover:underline">
+                    <p className="mt-6 text-center text-sm text-muted-foreground">
+                        <a href="/login" className="font-semibold text-primary hover:underline">
                             {t('auth_page.forgot_password.back_to_login')}
                         </a>
                     </p>

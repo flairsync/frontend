@@ -54,18 +54,18 @@ export const SimpleMenuCategoryCard = ({
 
     return (
         <div className="mb-2">
-            <Card className="border border-zinc-200 dark:border-zinc-700 rounded-xl hover:shadow-lg transition-all">
+            <Card className="border border-border rounded-xl hover:shadow-lg transition-all">
                 {/* Header */}
                 <div
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-t-xl transition gap-4 sm:gap-0"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-t-xl transition gap-4 sm:gap-0"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
-                        <div className="flex flex-col gap-1 mr-2 border-r border-zinc-200 dark:border-zinc-700 pr-2">
+                        <div className="flex flex-col gap-1 mr-2 border-r border-border pr-2">
                             <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-6 w-6 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-full"
+                                className="h-6 w-6 p-0 hover:bg-muted rounded-full"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onMoveCategoryUp?.();
@@ -77,7 +77,7 @@ export const SimpleMenuCategoryCard = ({
                             <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-6 w-6 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-full"
+                                className="h-6 w-6 p-0 hover:bg-muted rounded-full"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onMoveCategoryDown?.();
@@ -88,12 +88,12 @@ export const SimpleMenuCategoryCard = ({
                             </Button>
                         </div>
 
-                        <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <div className="bg-primary/10 p-2 rounded-lg text-primary">
                             <UtensilsCrossed className="h-5 w-5" />
                         </div>
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1">
-                                <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100 truncate">
+                                <h3 className="font-semibold text-lg text-foreground truncate">
                                     {category.name}
                                 </h3>
                                 <AuditLogHint
@@ -102,11 +102,11 @@ export const SimpleMenuCategoryCard = ({
                                     businessId={businessId}
                                 />
                             </div>
-                            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                            <p className="text-sm text-muted-foreground">
                                 {t('menu_management.labels.items_count', { count: category.items?.length || 0 })}
                             </p>
                         </div>
-                        <div className="sm:hidden text-zinc-400">
+                        <div className="sm:hidden text-muted-foreground">
                             {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                         </div>
                     </div>
@@ -137,8 +137,8 @@ export const SimpleMenuCategoryCard = ({
                             className={cn(
                                 "transition",
                                 canCreateProduct
-                                    ? "bg-indigo-500 text-white hover:bg-indigo-600"
-                                    : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                    : "bg-muted text-muted-foreground cursor-not-allowed border-border"
                             )}
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -151,7 +151,7 @@ export const SimpleMenuCategoryCard = ({
                         >
                             <Plus className="h-4 w-4 mr-1" /> <span className="hidden sm:inline">{t('menu_management.actions.add_item')}</span>
                             <span className="sm:hidden">{t('shared.actions.add')}</span>
-                            {!canCreateProduct && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
+                            {!canCreateProduct && <span className="text-[10px] font-bold text-primary uppercase ml-1">Upgrade</span>}
                         </Button>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ export const SimpleMenuCategoryCard = ({
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden"
                         >
-                            <CardContent className="p-4 pt-0 border-t border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-b-xl">
+                            <CardContent className="p-4 pt-0 border-t border-border bg-card rounded-b-xl">
                                 <div className="space-y-3 pt-4">
                                     {category.items && category.items.length > 0 ? (
                                         category.items.map((item, index) => (
@@ -183,13 +183,13 @@ export const SimpleMenuCategoryCard = ({
                                             />
                                         ))
                                     ) : (
-                                        <div className="text-center py-8 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-700">
-                                            <p className="text-zinc-500 dark:text-zinc-400 italic text-sm">
+                                        <div className="text-center py-8 bg-muted rounded-lg border border-dashed border-border">
+                                            <p className="text-muted-foreground italic text-sm">
                                                 {t('menu_management.labels.no_items_category')}
                                             </p>
                                             <Button
                                                 variant="link"
-                                                className="text-indigo-500 mt-2 h-auto p-0"
+                                                className="text-primary mt-2 h-auto p-0"
                                                 onClick={onAddItem}
                                             >
                                                 {t('menu_management.labels.add_first_item')}

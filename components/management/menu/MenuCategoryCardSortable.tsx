@@ -56,15 +56,15 @@ export const MenuCategoryCardSortable = ({
 
     return (
         <div ref={setNodeRef} style={style} className="mb-2">
-            <Card className="border border-zinc-200 dark:border-zinc-700 rounded-xl hover:shadow-lg transition-all">
+            <Card className="border border-border rounded-xl hover:shadow-lg transition-all">
                 <div className="flex items-center">
                     {/* DRAG HANDLE */}
                     <div
                         {...listeners}
                         {...attributes}
-                        className="w-6 h-12 bg-zinc-200 dark:bg-zinc-700 cursor-grab rounded-l-xl flex items-center justify-center"
+                        className="w-6 h-12 bg-muted cursor-grab rounded-l-xl flex items-center justify-center"
                     >
-                        <svg className="w-3 h-3 text-zinc-500" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-3 h-3 text-muted-foreground" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M7 4h2v2H7V4zm4 0h2v2h-2V4zM7 8h2v2H7V8zm4 0h2v2h-2V8z" />
                         </svg>
                     </div>
@@ -72,7 +72,7 @@ export const MenuCategoryCardSortable = ({
                     {/* HEADER */}
                     <CardHeader
                         onClick={() => setIsOpen(!isOpen)}
-                        className="flex flex-1 justify-between items-center cursor-pointer p-4 bg-zinc-100 dark:bg-zinc-800 rounded-r-xl"
+                        className="flex flex-1 justify-between items-center cursor-pointer p-4 bg-muted rounded-r-xl"
                     >
                         <div className="flex items-center gap-3">
                             {isOpen ? <ChevronDown /> : <ChevronRight />}
@@ -82,7 +82,7 @@ export const MenuCategoryCardSortable = ({
                                 entityId={category.id}
                                 businessId={businessId}
                             />
-                            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                            <span className="text-sm text-muted-foreground">
                                 ({category.items?.length || 0} items)
                             </span>
                         </div>
@@ -113,8 +113,8 @@ export const MenuCategoryCardSortable = ({
                                 className={cn(
                                     "transition",
                                     canCreateProduct
-                                        ? "bg-indigo-500 text-white hover:bg-indigo-600"
-                                        : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                        : "bg-muted text-muted-foreground cursor-not-allowed border-border"
                                 )}
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -126,7 +126,7 @@ export const MenuCategoryCardSortable = ({
                                 }}
                             >
                                 <Plus className="h-4 w-4 mr-1" /> Add Item
-                                {!canCreateProduct && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
+                                {!canCreateProduct && <span className="text-[10px] font-bold text-primary uppercase ml-1">Upgrade</span>}
                             </Button>
                         </div>
                     </CardHeader>
@@ -141,7 +141,7 @@ export const MenuCategoryCardSortable = ({
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.25 }}
                         >
-                            <CardContent className="space-y-3 p-4 bg-white dark:bg-zinc-900 rounded-b-xl border-t border-zinc-200 dark:border-zinc-700">
+                            <CardContent className="space-y-3 p-4 bg-card rounded-b-xl border-t border-border">
                                 {category.items && category.items.length > 0 ? (
                                     <SortableContext
                                         items={category.items.map(i => i.id)}
@@ -162,7 +162,7 @@ export const MenuCategoryCardSortable = ({
                                         ))}
                                     </SortableContext>
                                 ) : (
-                                    <p className="text-zinc-500 dark:text-zinc-400 italic text-sm">
+                                    <p className="text-muted-foreground italic text-sm">
                                         No items yet. Click “Add Item” to start.
                                     </p>
                                 )}

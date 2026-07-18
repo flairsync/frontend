@@ -89,7 +89,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                     <div className="space-y-2">
                         <Button
                             variant="outline"
-                            className="w-full justify-start border-amber-300 text-amber-700 hover:bg-amber-50"
+                            className="w-full justify-start border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
                             onClick={() => setExpanded(expanded === 'running_late' ? null : 'running_late')}
                         >
                             <Clock className="w-4 h-4 mr-2" />
@@ -181,7 +181,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                     <div className="space-y-2">
                         <Button
                             variant="outline"
-                            className="w-full justify-start border-red-300 text-red-700 hover:bg-red-50"
+                            className="w-full justify-start text-destructive border-destructive/30 hover:bg-destructive/10"
                             onClick={() => setExpanded(expanded === 'request_cancellation' ? null : 'request_cancellation')}
                         >
                             <X className="w-4 h-4 mr-2" />

@@ -93,10 +93,10 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                         as={Input}
                                         id="name"
                                         name="name"
-                                        className={cn(errors.name && touched.name && "border-red-500")}
+                                        className={cn(errors.name && touched.name && "border-destructive")}
                                     />
                                     <ErrorMessage name="name">
-                                        {msg => <div className="text-red-500 text-xs">{t(msg)}</div>}
+                                        {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
                                     </ErrorMessage>
                                 </div>
 
@@ -139,7 +139,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                         </Button>
                                     </div>
                                     <ErrorMessage name="barcode">
-                                        {msg => <div className="text-red-500 text-xs">{t(msg)}</div>}
+                                        {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
                                     </ErrorMessage>
                                 </div>
 
@@ -158,10 +158,10 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                             type="number"
                                             id="qty"
                                             name="quantity"
-                                            className={cn(errors.quantity && touched.quantity && "border-red-500")}
+                                            className={cn(errors.quantity && touched.quantity && "border-destructive")}
                                         />
                                         <ErrorMessage name="quantity">
-                                            {msg => <div className="text-red-500 text-xs">{t(msg)}</div>}
+                                            {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
                                         </ErrorMessage>
                                     </div>
                                 )}
@@ -175,7 +175,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                                 <Button
                                                     variant="outline"
                                                     role="combobox"
-                                                    className={cn("w-full justify-between font-normal", errors.unitId && touched.unitId && "border-red-500")}
+                                                    className={cn("w-full justify-between font-normal", errors.unitId && touched.unitId && "border-destructive")}
                                                 >
                                                     {values.unitId
                                                         ? inventoryUnits?.find(u => u.id === values.unitId)?.name
@@ -205,7 +205,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                             </PopoverContent>
                                         </Popover>
                                         <ErrorMessage name="unitId">
-                                            {msg => <div className="text-red-500 text-xs">{t(msg)}</div>}
+                                            {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
                                         </ErrorMessage>
                                     </div>
 
@@ -216,10 +216,10 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                             type="number"
                                             id="threshold"
                                             name="lowStockThreshold"
-                                            className={cn(errors.lowStockThreshold && touched.lowStockThreshold && "border-red-500")}
+                                            className={cn(errors.lowStockThreshold && touched.lowStockThreshold && "border-destructive")}
                                         />
                                         <ErrorMessage name="lowStockThreshold">
-                                            {msg => <div className="text-red-500 text-xs">{t(msg)}</div>}
+                                            {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
                                         </ErrorMessage>
                                     </div>
                                 </div>

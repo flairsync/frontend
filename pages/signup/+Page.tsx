@@ -56,9 +56,9 @@ const RegisterPage = () => {
     }, [signupError]);
 
     return (
-        <div className="flex min-h-screen bg-white font-sans text-zinc-900 relative overflow-hidden">
+        <div className="flex min-h-screen bg-background font-sans text-foreground relative overflow-hidden">
             {/* ✅ LEFT SIDE (Form + Scroll + Navbar) */}
-            <div className="relative flex flex-col w-full lg:w-1/2 bg-white">
+            <div className="relative flex flex-col w-full lg:w-1/2 bg-background">
                 {/* Navbar (fixed only to left panel) */}
                 <div className="sticky top-0 left-0 z-20  h-16 flex items-center px-8 ">
                     <a href="/" className="flex flex-row items-center gap-3">
@@ -69,10 +69,10 @@ const RegisterPage = () => {
                 {/* Scrollable Form Area */}
                 <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-10">
                     <div className="w-full max-w-sm md:max-w-md mx-auto">
-                        <h1 className="text-3xl md:text-3xl font-extrabold mb-2 text-center text-zinc-900 tracking-tight">
+                        <h1 className="text-3xl md:text-3xl font-extrabold mb-2 text-center text-foreground tracking-tight">
                             {t("auth_page.register.signup_page_title")}
                         </h1>
-                        <p className="text-center text-zinc-500 mb-8 text-sm md:text-base">
+                        <p className="text-center text-muted-foreground mb-8 text-sm md:text-base">
                             {t("auth_page.register.signup_page_subtitle")}
                         </p>
 
@@ -112,7 +112,7 @@ const RegisterPage = () => {
                                             type="text"
                                             onChange={handleChange}
                                             placeholder="firstName"
-                                            className="h-11 md:h-12 bg-zinc-50 border-zinc-200 focus:bg-white focus:border-[#6366F1] focus:ring-4 focus:ring-[#6366F1]/10 focus-visible:ring-0 transition-all rounded-lg"
+                                            className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.firstName && touched.firstName && <InputError message={errors.firstName} />}
                                     </div>
@@ -126,7 +126,7 @@ const RegisterPage = () => {
                                             type="text"
                                             onChange={handleChange}
                                             placeholder="lastName"
-                                            className="h-11 md:h-12 bg-zinc-50 border-zinc-200 focus:bg-white focus:border-[#6366F1] focus:ring-4 focus:ring-[#6366F1]/10 focus-visible:ring-0 transition-all rounded-lg"
+                                            className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.lastName && touched.lastName && <InputError message={errors.lastName} />}
                                     </div>
@@ -142,7 +142,7 @@ const RegisterPage = () => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             placeholder="email@gmail.com"
-                                            className="h-11 md:h-12 bg-zinc-50 border-zinc-200 focus:bg-white focus:border-[#6366F1] focus:ring-4 focus:ring-[#6366F1]/10 focus-visible:ring-0 transition-all rounded-lg"
+                                            className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.email && touched.email && <InputError message={errors.email} />}
                                         {!errors.email && touched.email && emailSuggestion && (
@@ -163,12 +163,12 @@ const RegisterPage = () => {
                                                 type={showPassword ? 'text' : 'password'}
                                                 onChange={handleChange}
                                                 placeholder={t("auth_page.register.password_label")}
-                                                className="h-11 md:h-12 bg-zinc-50 border-zinc-200 focus:bg-white focus:border-[#6366F1] focus:ring-4 focus:ring-[#6366F1]/10 focus-visible:ring-0 transition-all rounded-lg"
+                                                className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                                             >
                                                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                             </button>
@@ -186,12 +186,12 @@ const RegisterPage = () => {
                                                 type={showRepeatPassword ? 'text' : 'password'}
                                                 onChange={handleChange}
                                                 placeholder={t("auth_page.register.repeat_password_label")}
-                                                className="h-11 md:h-12 bg-zinc-50 border-zinc-200 focus:bg-white focus:border-[#6366F1] focus:ring-4 focus:ring-[#6366F1]/10 focus-visible:ring-0 transition-all rounded-lg"
+                                                className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                                             >
                                                 {showRepeatPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                             </button>
@@ -230,7 +230,7 @@ const RegisterPage = () => {
                                                 }}
                                             >
                                                 {t("auth_page.register.i_agree_to")}{" "}
-                                                <span className="text-[#6366F1] hover:underline" onClick={(e) => {
+                                                <span className="text-primary hover:underline" onClick={(e) => {
                                                     e.stopPropagation();
                                                     setIsTermsModalOpen(true);
                                                     setHasScrolledToBottom(false);
@@ -253,31 +253,31 @@ const RegisterPage = () => {
                                             </DialogHeader>
 
                                             <div
-                                                className="mt-4 h-64 overflow-y-auto pr-4 space-y-4 text-sm text-zinc-600 rounded-md border p-4 bg-zinc-50"
+                                                className="mt-4 h-64 overflow-y-auto pr-4 space-y-4 text-sm text-muted-foreground rounded-md border p-4 bg-muted"
                                                 onScroll={handleScroll}
                                             >
-                                                <h3 className="font-semibold text-zinc-900">1. Introduction</h3>
+                                                <h3 className="font-semibold text-foreground">1. Introduction</h3>
                                                 <p>Welcome to our platform. These Terms and Conditions govern your use of our service and provide information about our service, outlined below. By creating an account or using our platform, you agree to these terms.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">2. Account Registration</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">2. Account Registration</h3>
                                                 <p>You must register for an account to access certain features. You agree to provide accurate, current, and complete information during the registration process and keep your account up-to-date. You are solely responsible for safeguarding your password.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">3. Privacy Policy</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">3. Privacy Policy</h3>
                                                 <p>Your privacy is important to us. Our Privacy Policy explains how we collect, use, and share your personal information. By using our services, you agree to the collection and use of information in accordance with our Privacy Policy.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">4. Acceptable Use</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">4. Acceptable Use</h3>
                                                 <p>You agree not to misuse our services or help anyone else do so. For example, you must not: do anything illegal, deceptive, misleading, or fraudulent; impersonate any person or entity; violate the rights of others; or introduce malicious software code.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">5. Subscription & Billing</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">5. Subscription & Billing</h3>
                                                 <p>Fees are non-refundable except as required by law. We may change our fees from time to time by posting the changes on our site with 30 days prior notice, but no advance notice is required for temporary promotions.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">6. Intellectual Property</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">6. Intellectual Property</h3>
                                                 <p>The platform and its original content, features, and functionality are owned by us and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">7. Termination</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">7. Termination</h3>
                                                 <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason, including without limitation if you breach the Terms. Upon termination, your right to use the Service will immediately cease.</p>
 
-                                                <h3 className="font-semibold text-zinc-900 mt-4">8. Dispute Resolution</h3>
+                                                <h3 className="font-semibold text-foreground mt-4">8. Dispute Resolution</h3>
                                                 <p>Any disputes arising from these Terms will be governed by local laws without regard to conflict of law provisions. We aim to resolve disputes informally first, but formal proceedings should be brought in competent courts.</p>
                                             </div>
 
@@ -294,7 +294,7 @@ const RegisterPage = () => {
                                                         setFieldValue('termsAccepted', true);
                                                         setIsTermsModalOpen(false);
                                                     }}
-                                                    className="bg-[#6366F1] hover:bg-[#5859E9] text-white"
+                                                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
                                                 >
                                                     {t("auth_page.register.confirm")}
                                                 </Button>
@@ -308,7 +308,7 @@ const RegisterPage = () => {
                                     <Button
                                         disabled={signingUp}
                                         type="submit"
-                                        className="w-full h-11 md:h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg text-sm md:text-base font-semibold shadow-lg shadow-[#6366F1]/20 hover:shadow-[#6366F1]/40 transition-all flex items-center justify-center gap-2"
+                                        className="w-full h-11 md:h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm md:text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2"
                                     >
                                         {signingUp ? (
                                             <>
@@ -322,18 +322,18 @@ const RegisterPage = () => {
 
                                     {/* Divider */}
                                     <div className="flex items-center my-6">
-                                        <div className="flex-1 border-t border-zinc-300"></div>
-                                        <span className="px-3 text-zinc-500 text-sm">{t("auth_page.register.or_label")}</span>
-                                        <div className="flex-1 border-t border-zinc-300"></div>
+                                        <div className="flex-1 border-t border-border"></div>
+                                        <span className="px-3 text-muted-foreground text-sm">{t("auth_page.register.or_label")}</span>
+                                        <div className="flex-1 border-t border-border"></div>
                                     </div>
 
                                     {/* Google Button */}
                                     <GoogleLoginButton />
 
                                     {/* Already have account */}
-                                    <p className="mt-6 text-center text-xs md:text-sm text-zinc-600">
+                                    <p className="mt-6 text-center text-xs md:text-sm text-muted-foreground">
                                         {t("auth_page.register.already_have_account_label")}{' '}
-                                        <a href={`/login?origin=${encodeURIComponent(origin)}`} className="font-semibold text-[#6366F1] hover:underline">
+                                        <a href={`/login?origin=${encodeURIComponent(origin)}`} className="font-semibold text-primary hover:underline">
                                             {t("auth_page.register.signin_instead_label")}
                                         </a>
                                     </p>
@@ -347,7 +347,7 @@ const RegisterPage = () => {
 
             {/* ✅ RIGHT SIDE (Fixed Image) */}
             <div className="hidden lg:block lg:w-1/2 fixed right-0 top-0 h-full">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/20 to-transparent mix-blend-multiply z-10 rounded-l-[2rem]" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-multiply z-10 rounded-l-[2rem]" />
                 <div className="absolute inset-0 bg-black/5 z-10 rounded-l-[2rem]" />
                 <img
                     src={AbstractBG}

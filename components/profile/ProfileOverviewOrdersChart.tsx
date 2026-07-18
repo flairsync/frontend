@@ -63,7 +63,7 @@ const ProfileOverviewOrdersChart = () => {
                             <XAxis dataKey="day" tick={{ fontSize: 12 }} />
                             <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                             <Tooltip />
-                            <Line type="monotone" dataKey="orders" stroke="#2563eb" strokeWidth={2} />
+                            <Line type="monotone" dataKey="orders" stroke="var(--chart-1)" strokeWidth={2} />
                         </LineChart>
                     </ResponsiveContainer>
                 </CardContent>

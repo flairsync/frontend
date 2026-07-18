@@ -488,7 +488,7 @@ const FloorPlanPublicView: React.FC<FloorPlanPublicViewProps> = ({
             </div>
 
             {/* SVG canvas */}
-            <div className="relative rounded-[1.5rem] overflow-hidden border border-border/60 bg-slate-50 shadow-inner select-none">
+            <div className="relative rounded-[1.5rem] overflow-hidden border border-border/60 bg-muted shadow-inner select-none">
                 <svg
                     ref={svgRef}
                     viewBox={`${pan.x} ${pan.y} ${viewW} ${viewH}`}

@@ -53,7 +53,7 @@ export default function BusinessBrandingLogoUpload({ currentLogoUrl, loading = f
                                 <img src={currentLogoUrl} alt="Current Logo" loading="lazy" className="object-contain w-full h-full" />
                             </PhotoView>
                         ) : (
-                            <ImageIcon className="w-12 h-12 text-gray-400" />
+                            <ImageIcon className="w-12 h-12 text-muted-foreground" />
                         )}
                     </div>
                 </PhotoProvider>

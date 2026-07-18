@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Coffee, Moon, Sun, ForkKnife, IceCream, Beer, Pizza } from "lucide-react";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
 const allIcons = { Coffee, Moon, Sun, ForkKnife, IceCream, Beer, Pizza };
 
@@ -142,7 +143,7 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
                             {t('menu_management.modal.icon')}
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
+                                    <span className="ml-1 text-muted-foreground cursor-pointer">ℹ️</span>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>{t('menu_management.modal.tooltips.icon')}</p>
@@ -155,12 +156,14 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
                                     key={key}
                                     type="button"
                                     onClick={() => setIcon(key)}
-                                    className={`p-2 rounded-md border cursor-pointer hover:bg-indigo-50 dark:hover:bg-zinc-800 ${icon === key
-                                        ? "border-indigo-500 bg-indigo-50 dark:bg-zinc-800"
-                                        : "border-zinc-300 dark:border-zinc-700"
-                                        }`}
+                                    className={cn(
+                                        "p-2 rounded-md border cursor-pointer hover:bg-primary/10",
+                                        icon === key
+                                            ? "border-primary bg-primary/10"
+                                            : "border-border"
+                                    )}
                                 >
-                                    <IconComponent className="h-5 w-5 text-indigo-500" />
+                                    <IconComponent className="h-5 w-5 text-primary" />
                                 </button>
                             ))}
                         </div>
@@ -173,7 +176,7 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
                                 {t('menu_management.modal.start_date')}
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
+                                        <span className="ml-1 text-muted-foreground cursor-pointer">ℹ️</span>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>{t('menu_management.modal.tooltips.date_empty')}</p>
@@ -188,7 +191,7 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
                                 {t('menu_management.modal.end_date')}
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
+                                        <span className="ml-1 text-muted-foreground cursor-pointer">ℹ️</span>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>{t('menu_management.modal.tooltips.date_empty')}</p>
@@ -206,7 +209,7 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
                                 {t('menu_management.modal.start_time')}
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
+                                        <span className="ml-1 text-muted-foreground cursor-pointer">ℹ️</span>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>{t('menu_management.modal.tooltips.time_empty')}</p>
@@ -221,7 +224,7 @@ export const MenuModal: React.FC<CreateMenuModalProps> = ({ onSubmit, isOpen, on
                                 {t('menu_management.modal.end_time')}
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <span className="ml-1 text-zinc-400 cursor-pointer">ℹ️</span>
+                                        <span className="ml-1 text-muted-foreground cursor-pointer">ℹ️</span>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>{t('menu_management.modal.tooltips.time_empty')}</p>

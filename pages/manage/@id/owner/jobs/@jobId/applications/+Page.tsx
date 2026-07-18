@@ -44,7 +44,7 @@ const JobApplicationsPage = () => {
       <div className="mb-6">
         <a
           href={`/manage/${businessId}/owner/jobs`}
-          className="text-sm text-zinc-500 hover:text-zinc-800 flex items-center gap-1 mb-3"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-3"
         >
           <ArrowLeft className="h-4 w-4" />
           {loadingJob ? "Job Postings" : (job?.title ?? "Job Postings")}
@@ -54,13 +54,13 @@ const JobApplicationsPage = () => {
           <div>
             <h1 className="text-2xl font-bold">{job?.title ?? "Applicants"}</h1>
             {job && (
-              <p className="text-sm text-zinc-500 mt-0.5">
+              <p className="text-sm text-muted-foreground mt-0.5">
                 {JOB_TYPE_LABELS[job.type]} · {JOB_CATEGORY_LABELS[job.category]}
               </p>
             )}
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <span className="flex items-center gap-1.5 text-sm text-zinc-600 bg-zinc-100 rounded-lg px-3 py-1.5">
+            <span className="flex items-center gap-1.5 text-sm text-muted-foreground bg-muted rounded-lg px-3 py-1.5">
               <Users className="h-4 w-4" />
               {job?.applicationCount ?? 0} total
             </span>
@@ -71,7 +71,7 @@ const JobApplicationsPage = () => {
                   job.status === "open"
                     ? "bg-green-100 text-green-700"
                     : job.status === "draft"
-                    ? "bg-zinc-100 text-zinc-600"
+                    ? "bg-muted text-muted-foreground"
                     : "bg-red-100 text-red-700"
                 )}
               >
@@ -83,7 +83,7 @@ const JobApplicationsPage = () => {
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 bg-zinc-100 rounded-lg p-1 mb-6 w-fit overflow-x-auto">
+      <div className="flex gap-1 bg-muted rounded-lg p-1 mb-6 w-fit overflow-x-auto">
         {ALL_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -91,8 +91,8 @@ const JobApplicationsPage = () => {
             className={cn(
               "px-3 py-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors",
               statusFilter === tab.value
-                ? "bg-white text-zinc-900 shadow-sm"
-                : "text-zinc-500 hover:text-zinc-700"
+                ? "bg-card text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -104,13 +104,13 @@ const JobApplicationsPage = () => {
       {loadingApplications ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-          <p className="text-sm text-zinc-500">Loading applicants...</p>
+          <p className="text-sm text-muted-foreground">Loading applicants...</p>
         </div>
       ) : applications.length === 0 ? (
-        <div className="text-center border-2 border-dashed border-zinc-200 rounded-2xl p-16 bg-zinc-50/30">
-          <Users className="h-8 w-8 text-zinc-300 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-zinc-700 mb-1">No applicants yet</p>
-          <p className="text-sm text-zinc-400">
+        <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
+          <Users className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+          <p className="text-lg font-semibold text-foreground mb-1">No applicants yet</p>
+          <p className="text-sm text-muted-foreground">
             {statusFilter !== "all"
               ? "Try switching to a different filter tab."
               : "Share the job link to start receiving applications."}
@@ -137,7 +137,7 @@ const JobApplicationsPage = () => {
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
                 Previous
               </Button>
-              <span className="text-sm text-zinc-500">Page {page} of {totalPages}</span>
+              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
                 Next
               </Button>

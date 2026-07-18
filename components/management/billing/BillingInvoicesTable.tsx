@@ -318,7 +318,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                                         <DropdownMenuSeparator />
                                                                         <DropdownMenuItem
                                                                             disabled={cancelingThis}
-                                                                            className="text-red-600 focus:text-red-700 focus:bg-red-50"
+                                                                            className="text-destructive focus:text-destructive focus:bg-destructive/10"
                                                                             onClick={() => setCancelConfirmSub(sub)}
                                                                         >
                                                                             <XCircle className="mr-2 h-4 w-4" />
@@ -374,7 +374,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                     <AlertDialogFooter>
                         <AlertDialogCancel>Keep subscription</AlertDialogCancel>
                         <AlertDialogAction
-                            className="bg-red-600 hover:bg-red-700 text-white"
+                            className="bg-destructive hover:bg-destructive/90 text-white"
                             onClick={handleCancelConfirm}
                         >
                             Yes, cancel

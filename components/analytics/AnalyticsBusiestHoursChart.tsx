@@ -50,7 +50,7 @@ export const AnalyticsBusiestHoursChart: React.FC<AnalyticsBusiestHoursChartProp
             </CardHeader>
             <CardContent className="h-72">
                 {!hasData ? (
-                    <div className="flex items-center justify-center h-full text-zinc-500">
+                    <div className="flex items-center justify-center h-full text-muted-foreground">
                         {t("analytics.busiest_hours_chart.no_data")}
                     </div>
                 ) : (
@@ -77,7 +77,7 @@ export const AnalyticsBusiestHoursChart: React.FC<AnalyticsBusiestHoursChartProp
                                 }}
                                 labelFormatter={(label) => label}
                             />
-                            <Bar dataKey="orderCount" fill="#4F46E5" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="orderCount" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 )}

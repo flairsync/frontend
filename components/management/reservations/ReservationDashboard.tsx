@@ -94,12 +94,12 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
     };
 
     const statTiles = [
-        { key: "all",       label: "Total Today",  value: stats.totalToday, icon: CalendarCheck, color: "bg-gray-100 text-gray-600" },
-        { key: "confirmed", label: "Confirmed",    value: stats.confirmed,  icon: CheckCircle,   color: "bg-blue-100 text-blue-600" },
-        { key: "seated",    label: "Seated",       value: stats.seated,     icon: Armchair,      color: "bg-green-100 text-green-600" },
-        { key: "completed", label: "Completed",    value: stats.completed,  icon: Flag,          color: "bg-gray-100 text-gray-500" },
-        { key: "no_show",   label: "No-Shows",     value: stats.noShow,     icon: UserX,         color: "bg-orange-100 text-orange-600" },
-        { key: "cancelled", label: "Cancelled",    value: stats.cancelled,  icon: XCircle,       color: "bg-red-100 text-red-600" },
+        { key: "all",       label: "Total Today",  value: stats.totalToday, icon: CalendarCheck, color: "bg-muted text-muted-foreground" },
+        { key: "confirmed", label: "Confirmed",    value: stats.confirmed,  icon: CheckCircle,   color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
+        { key: "seated",    label: "Seated",       value: stats.seated,     icon: Armchair,      color: "bg-green-500/10 text-green-600 dark:text-green-400" },
+        { key: "completed", label: "Completed",    value: stats.completed,  icon: Flag,          color: "bg-muted text-muted-foreground" },
+        { key: "no_show",   label: "No-Shows",     value: stats.noShow,     icon: UserX,         color: "bg-orange-500/10 text-orange-600 dark:text-orange-400" },
+        { key: "cancelled", label: "Cancelled",    value: stats.cancelled,  icon: XCircle,       color: "bg-destructive/10 text-destructive" },
     ];
 
     return (

@@ -47,15 +47,15 @@ function getOwnerSourceLabel(event: JobApplicationEvent): string {
 }
 
 const EVENT_ICON_CLASS: Partial<Record<ApplicationEventType, string>> = {
-  submitted: 'bg-blue-100 text-blue-600',
-  reviewed: 'bg-purple-100 text-purple-600',
-  shortlisted: 'bg-yellow-100 text-yellow-600',
-  accepted: 'bg-green-100 text-green-600',
-  rejected: 'bg-red-100 text-red-600',
-  resume_added: 'bg-zinc-100 text-zinc-600',
-  note_updated: 'bg-zinc-100 text-zinc-600',
-  invited: 'bg-indigo-100 text-indigo-600',
-  hired: 'bg-emerald-100 text-emerald-600',
+  submitted: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+  reviewed: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+  shortlisted: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400',
+  accepted: 'bg-green-500/10 text-green-600 dark:text-green-400',
+  rejected: 'bg-destructive/10 text-destructive',
+  resume_added: 'bg-muted text-muted-foreground',
+  note_updated: 'bg-muted text-muted-foreground',
+  invited: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400',
+  hired: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
 };
 
 const TERMINAL_STATUSES: ApplicationStatus[] = ['accepted', 'rejected', 'hired'];
@@ -78,7 +78,7 @@ export function ProApplicationTimeline({ events, currentStatus }: ProTimelinePro
     <div className="flex flex-col">
       {visibleEvents.map((event, i) => {
         const isLast = i === visibleEvents.length - 1;
-        const iconClass = EVENT_ICON_CLASS[event.type] ?? 'bg-zinc-100 text-zinc-600';
+        const iconClass = EVENT_ICON_CLASS[event.type] ?? 'bg-muted text-muted-foreground';
 
         return (
           <div key={event.id} className="flex gap-3">
@@ -121,15 +121,15 @@ export function ProApplicationTimeline({ events, currentStatus }: ProTimelinePro
           </div>
         </div>
       ) : currentStatus === 'accepted' ? (
-        <div className="mt-3 rounded-lg bg-green-50 border border-green-200 px-3 py-2.5 text-sm text-green-800 font-medium">
+        <div className="mt-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 px-3 py-2.5 text-sm text-emerald-600 dark:text-emerald-400 font-medium">
           🎉 Congratulations! You've been accepted for this position.
         </div>
       ) : currentStatus === 'hired' ? (
-        <div className="mt-3 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2.5 text-sm text-emerald-800 font-medium">
+        <div className="mt-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 px-3 py-2.5 text-sm text-emerald-600 dark:text-emerald-400 font-medium">
           🎉 Welcome to the team! You're officially hired.
         </div>
       ) : (
-        <div className="mt-3 rounded-lg bg-zinc-50 border border-border px-3 py-2.5 text-sm text-muted-foreground">
+        <div className="mt-3 rounded-lg bg-muted border border-border px-3 py-2.5 text-sm text-muted-foreground">
           This application has been closed.
         </div>
       )}
@@ -148,7 +148,7 @@ export function OwnerApplicationTimeline({ events }: OwnerTimelineProps) {
     <div className="flex flex-col">
       {events.map((event, i) => {
         const isLast = i === events.length - 1;
-        const iconClass = EVENT_ICON_CLASS[event.type] ?? 'bg-zinc-100 text-zinc-600';
+        const iconClass = EVENT_ICON_CLASS[event.type] ?? 'bg-muted text-muted-foreground';
         const sourceLabel = getOwnerSourceLabel(event);
 
         return (

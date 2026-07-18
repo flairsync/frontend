@@ -44,13 +44,13 @@ const BusinessSocialLinksInput: React.FC<SocialLinksInputProps> = ({
             key: "website" as const,
             label: "Website",
             placeholder: "https://yourwebsite.com",
-            icon: <Globe className="h-4 w-4 text-gray-500" />,
+            icon: <Globe className="h-4 w-4 text-muted-foreground" />,
         },
     ];
 
     return (
         <div className={cn("space-y-4", className)}>
-            <Label className="font-medium text-sm text-gray-700">
+            <Label className="font-medium text-sm text-foreground">
                 Social Links
             </Label>
             <div className="grid gap-3">

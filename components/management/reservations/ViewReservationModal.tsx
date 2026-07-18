@@ -226,8 +226,8 @@ export const ViewReservationModal: React.FC<ViewReservationModalProps> = ({
                                                     )}
                                                     {res.cancelReason && (
                                                         <div>
-                                                            <p className="text-xs text-red-500 mb-1">Cancellation Reason</p>
-                                                            <p className="text-sm text-red-600">{res.cancelReason}</p>
+                                                            <p className="text-xs text-destructive mb-1">Cancellation Reason</p>
+                                                            <p className="text-sm text-destructive">{res.cancelReason}</p>
                                                         </div>
                                                     )}
                                                     {res.cancelledAt && (

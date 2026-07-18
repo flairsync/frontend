@@ -105,7 +105,7 @@ export function JobForm({
       {/* Title */}
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-foreground">
-          Job Title <span className="text-red-500">*</span>
+          Job Title <span className="text-destructive">*</span>
         </label>
         <Input
           value={form.title}
@@ -113,14 +113,14 @@ export function JobForm({
           placeholder="e.g. Head Server"
           disabled={isSubmitting}
         />
-        {errors.title && <p className="text-xs text-red-600">{errors.title}</p>}
+        {errors.title && <p className="text-xs text-destructive">{errors.title}</p>}
       </div>
 
       {/* Type + Category */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-foreground">
-            Employment Type <span className="text-red-500">*</span>
+            Employment Type <span className="text-destructive">*</span>
           </label>
           <Select value={form.type} onValueChange={(v) => set("type", v)} disabled={isSubmitting}>
             <SelectTrigger>
@@ -134,12 +134,12 @@ export function JobForm({
               ))}
             </SelectContent>
           </Select>
-          {errors.type && <p className="text-xs text-red-600">{errors.type}</p>}
+          {errors.type && <p className="text-xs text-destructive">{errors.type}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-foreground">
-            Category / Role <span className="text-red-500">*</span>
+            Category / Role <span className="text-destructive">*</span>
           </label>
           <Select value={form.category} onValueChange={(v) => set("category", v)} disabled={isSubmitting}>
             <SelectTrigger>
@@ -153,14 +153,14 @@ export function JobForm({
               ))}
             </SelectContent>
           </Select>
-          {errors.category && <p className="text-xs text-red-600">{errors.category}</p>}
+          {errors.category && <p className="text-xs text-destructive">{errors.category}</p>}
         </div>
       </div>
 
       {/* Description */}
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-foreground">
-          Description <span className="text-red-500">*</span>
+          Description <span className="text-destructive">*</span>
         </label>
         <textarea
           className="w-full rounded-lg border border-border bg-muted/50 text-foreground px-3 py-2.5 text-sm resize-y min-h-[140px] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition"
@@ -169,7 +169,7 @@ export function JobForm({
           onChange={(e) => set("description", e.target.value)}
           disabled={isSubmitting}
         />
-        {errors.description && <p className="text-xs text-red-600">{errors.description}</p>}
+        {errors.description && <p className="text-xs text-destructive">{errors.description}</p>}
       </div>
 
       {/* Location + Salary */}
@@ -204,7 +204,7 @@ export function JobForm({
           disabled={isSubmitting}
           className="max-w-xs bg-background text-foreground"
         />
-        {errors.closesAt && <p className="text-xs text-red-600">{errors.closesAt}</p>}
+        {errors.closesAt && <p className="text-xs text-destructive">{errors.closesAt}</p>}
       </div>
 
       {/* Actions */}

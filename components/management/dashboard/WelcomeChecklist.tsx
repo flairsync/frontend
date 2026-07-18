@@ -9,6 +9,7 @@ import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { useTables } from "@/features/floor-plan/useFloorPlan";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { navigate } from "vike/client/router";
+import { cn } from "@/lib/utils";
 
 interface WelcomeChecklistProps {
     businessId: string;
@@ -118,7 +119,10 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
                                         key={step.key}
                                         type="button"
                                         onClick={() => navigate(step.href)}
-                                        className={`flex items-start gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5 ${step.done ? "opacity-60" : ""}`}
+                                        className={cn(
+                                            "flex items-start gap-3 rounded-xl border p-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5",
+                                            step.done && "opacity-60"
+                                        )}
                                     >
                                         {step.done ? (
                                             <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
@@ -126,7 +130,7 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
                                             <Circle className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
                                         )}
                                         <div>
-                                            <p className={`text-sm font-medium ${step.done ? "line-through text-muted-foreground" : "text-zinc-800 dark:text-zinc-100"}`}>
+                                            <p className={cn("text-sm font-medium", step.done ? "line-through text-muted-foreground" : "text-foreground")}>
                                                 {step.label}
                                             </p>
                                             <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>

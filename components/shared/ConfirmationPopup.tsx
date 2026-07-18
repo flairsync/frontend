@@ -29,9 +29,6 @@ export function ConfirmationPopup({
     cancelLabel = "Cancel",
     variant = "default",
 }: ConfirmationModalProps) {
-    const confirmButtonClass =
-        variant === "danger" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"
-
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
             <DialogContent className="sm:max-w-md">
@@ -44,7 +41,7 @@ export function ConfirmationPopup({
                     <Button variant="outline" onClick={onCancel}>
                         {cancelLabel}
                     </Button>
-                    <Button className={confirmButtonClass} onClick={onConfirm}>
+                    <Button variant={variant === "danger" ? "destructive" : "default"} onClick={onConfirm}>
                         {confirmLabel}
                     </Button>
                 </div>

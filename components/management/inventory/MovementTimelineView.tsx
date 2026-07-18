@@ -108,7 +108,7 @@ export const MovementTimelineView: React.FC<MovementTimelineViewProps> = ({ busi
                                             <span className="text-sm font-medium">{m.item.name}</span>
                                         )}
                                     </div>
-                                    <span className={cn("text-sm font-bold tabular-nums", isNegative ? "text-red-600" : "text-green-600")}>
+                                    <span className={cn("text-sm font-bold tabular-nums", isNegative ? "text-destructive" : "text-green-600 dark:text-green-400")}>
                                         {isNegative ? "-" : "+"}{m.quantity} → {m.quantityAfter}
                                     </span>
                                 </div>

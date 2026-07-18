@@ -208,7 +208,7 @@ export function AddRoleModal(props: Props) {
                                     placeholder="e.g. Manager"
                                 />
                                 {formik.touched.name && formik.errors.name && (
-                                    <p className="text-sm text-red-500 mt-1">
+                                    <p className="text-sm text-destructive mt-1">
                                         {formik.errors.name}
                                     </p>
                                 )}
@@ -255,7 +255,7 @@ export function AddRoleModal(props: Props) {
                                 </Popover>
 
                                 {formik.errors.permissions && (
-                                    <p className="text-sm text-red-500 mt-1">
+                                    <p className="text-sm text-destructive mt-1">
                                         {formik.errors.permissions as string}
                                     </p>
                                 )}

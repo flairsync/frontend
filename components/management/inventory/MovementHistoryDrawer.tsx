@@ -73,7 +73,7 @@ export const MovementHistoryDrawer: React.FC<MovementHistoryDrawerProps> = ({
                                         <Badge variant="outline" className={cn("text-[11px] font-medium border", style.color)}>
                                             {style.label}
                                         </Badge>
-                                        <span className={cn("text-sm font-bold tabular-nums", isNegative ? "text-red-600" : "text-green-600")}>
+                                        <span className={cn("text-sm font-bold tabular-nums", isNegative ? "text-destructive" : "text-green-600 dark:text-green-400")}>
                                             {getQtySign(m.type, m.quantity)} → {m.quantityAfter}
                                         </span>
                                     </div>

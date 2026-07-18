@@ -68,7 +68,7 @@ export const TeamRosterModal: React.FC<TeamRosterModalProps> = ({
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="text-red-500 hover:text-red-700 hover:bg-red-100"
+                                                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
                                                     onClick={() => onRemoveStaff(member.employment.id)}
                                                     disabled={isRemoving}
                                                 >

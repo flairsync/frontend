@@ -114,7 +114,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
             />
 
             {showDropdown && (
-                <Command className="absolute z-50 mt-1 w-full bg-white shadow-lg rounded-md  overflow-y-auto">
+                <Command className="absolute z-50 mt-1 w-full bg-popover shadow-lg rounded-md  overflow-y-auto">
                     {loading && <CommandEmpty>Loading...</CommandEmpty>}
                     {!loading && suggestions.length === 0 && query && <CommandEmpty>No addresses found</CommandEmpty>}
                     <CommandGroup>

@@ -80,7 +80,7 @@ function formatAge(ts: string): string {
 }
 
 function itemAgeColor(sentAt: string | null): string {
-  if (!sentAt) return "text-slate-500";
+  if (!sentAt) return "text-muted-foreground";
   const mins = (Date.now() - new Date(sentAt).getTime()) / 60_000;
   if (mins < 5) return "text-green-600";
   if (mins < 10) return "text-amber-600";
@@ -127,15 +127,15 @@ function KdsSettingsPopover({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-900">
+        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
           <Settings className="w-4 h-4" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64 bg-white border-slate-300 text-slate-900" align="end">
+      <PopoverContent className="w-64 bg-popover border-border text-popover-foreground" align="end">
         <div className="space-y-3">
-          <p className="text-xs font-black uppercase tracking-widest text-slate-500">{t("kds_app.settings_popover.title")}</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t("kds_app.settings_popover.title")}</p>
           <div className="space-y-1.5">
-            <Label htmlFor="ready-max-age" className="text-[11px] font-bold text-slate-700">
+            <Label htmlFor="ready-max-age" className="text-[11px] font-bold text-muted-foreground">
               {t("kds_app.settings_popover.hide_after_label")}
             </Label>
             <Input
@@ -145,9 +145,9 @@ function KdsSettingsPopover({
               placeholder={t("kds_app.settings_popover.never_placeholder")}
               value={readyMaxAge}
               onChange={(e) => onReadyMaxAgeChange(e.target.value)}
-              className="h-8 bg-slate-100 border-slate-300 text-sm"
+              className="h-8 bg-muted border-border text-sm"
             />
-            <p className="text-[10px] text-slate-500">{t("kds_app.settings_popover.hint")}</p>
+            <p className="text-[10px] text-muted-foreground">{t("kds_app.settings_popover.hint")}</p>
           </div>
         </div>
       </PopoverContent>
@@ -188,7 +188,7 @@ function useKdsTick() {
 function KdsClock() {
   useKdsTick();
   return (
-    <p className="text-xl font-black font-mono text-slate-900 tracking-widest">
+    <p className="text-xl font-black font-mono text-foreground tracking-widest">
       {new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -239,14 +239,14 @@ const KdsTicketCard = memo(function KdsTicketCard({
 
   return (
     <Card
-      className={`flex flex-col border-2 bg-white shadow-2xl transition-all ${
+      className={`flex flex-col border-2 bg-card shadow-2xl transition-all ${
         isReady
           ? "border-green-500 shadow-green-500/20"
           : awaitingExpoConfirm || allStationItemsBumped
           ? "border-green-500/30"
           : isAccepted
           ? "border-amber-500/40 opacity-75"
-          : "border-slate-300"
+          : "border-border"
       }`}
     >
       {/* Header */}
@@ -258,7 +258,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
             ? "bg-green-500/5"
             : isAccepted
             ? "bg-amber-500/5"
-            : "bg-slate-100/70"
+            : "bg-muted/70"
         }`}
       >
         <div className="flex justify-between items-start">
@@ -276,7 +276,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                 <Package className="w-3.5 h-3.5" />
               )}
             </div>
-            <span className="text-2xl font-black text-slate-900">
+            <span className="text-2xl font-black text-foreground">
               {order.tableName ?? (order.type === "dine_in" ? t("kds_app.ticket.order_type_dine_in") : t("kds_app.ticket.order_type_takeaway"))}
             </span>
             {order.priority > 0 && <PriorityBadge value={order.priority} t={t} />}
@@ -286,7 +286,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
               <Clock className="w-4 h-4" />
               {formatAge(order.createdAt)}
             </div>
-            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">
+            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
               {t(`kds_app.ticket.order_type_labels.${order.type}`)}
             </span>
             {/* Priority stepper — only on in-progress tickets */}
@@ -294,14 +294,14 @@ const KdsTicketCard = memo(function KdsTicketCard({
               <div className="flex items-center gap-1 mt-0.5">
                 <button
                   onClick={() => onSetPriority(order.id, Math.max(0, order.priority - 1))}
-                  className="w-5 h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                  className="w-5 h-5 rounded bg-muted hover:bg-accent flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <ChevronDown className="w-3 h-3" />
                 </button>
-                <span className="text-[10px] font-mono text-slate-500 w-4 text-center">{order.priority}</span>
+                <span className="text-[10px] font-mono text-muted-foreground w-4 text-center">{order.priority}</span>
                 <button
                   onClick={() => onSetPriority(order.id, order.priority + 1)}
-                  className="w-5 h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                  className="w-5 h-5 rounded bg-muted hover:bg-accent flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <ChevronUp className="w-3 h-3" />
                 </button>
@@ -309,7 +309,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
             )}
           </div>
         </div>
-        <p className="text-[9px] text-slate-600 font-mono uppercase tracking-widest">
+        <p className="text-[9px] text-muted-foreground font-mono uppercase tracking-widest">
           #{order.id.slice(0, 8)}
         </p>
         {order.kitchenNotes && (
@@ -341,27 +341,27 @@ const KdsTicketCard = memo(function KdsTicketCard({
                 onClick={() => !isItemReady && !isNotSent && !bumping && !recalling && onBumpItem(order.id, item.id)}
                 className={`p-3 rounded-2xl transition-all border ${
                   isNotSent
-                    ? "bg-slate-100 border-slate-200 opacity-30 cursor-default"
+                    ? "bg-muted border-border opacity-30 cursor-default"
                     : isItemReady
-                    ? "bg-slate-100 border-slate-200 opacity-50 cursor-default"
+                    ? "bg-muted border-border opacity-50 cursor-default"
                     : bumping || recalling
-                    ? "bg-slate-100 border-slate-300 cursor-wait"
-                    : "bg-slate-100 hover:bg-slate-200 border-transparent cursor-pointer shadow-lg shadow-black/20 active:scale-95"
+                    ? "bg-muted border-border cursor-wait"
+                    : "bg-muted hover:bg-accent border-transparent cursor-pointer shadow-lg shadow-black/20 active:scale-95"
                 }`}
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex gap-3 flex-1 min-w-0">
-                    <span className={`text-xl font-black flex-shrink-0 ${isItemReady || isNotSent ? "text-slate-600" : "text-primary"}`}>
+                    <span className={`text-xl font-black flex-shrink-0 ${isItemReady || isNotSent ? "text-muted-foreground" : "text-primary"}`}>
                       {item.quantity}×
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h4 className={`text-sm font-black uppercase tracking-tight ${isItemReady || isNotSent ? "text-slate-500 line-through" : "text-slate-900"}`}>
+                      <h4 className={`text-sm font-black uppercase tracking-tight ${isItemReady || isNotSent ? "text-muted-foreground line-through" : "text-foreground"}`}>
                         {item.nameSnapshot}
                       </h4>
                       {item.selectedModifiers && item.selectedModifiers.length > 0 && (
                         <div className="mt-0.5 space-y-0.5">
                           {item.selectedModifiers.map((m) => (
-                            <p key={m.modifierItemId} className="text-[10px] text-slate-500 font-bold">
+                            <p key={m.modifierItemId} className="text-[10px] text-muted-foreground font-bold">
                               + {m.name}
                             </p>
                           ))}
@@ -370,7 +370,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       {item.bundleComponentsSnapshot && item.bundleComponentsSnapshot.length > 0 && (
                         <div className="mt-0.5 space-y-0.5">
                           {item.bundleComponentsSnapshot.map((c, idx) => (
-                            <p key={idx} className="text-[10px] text-slate-500 font-bold">
+                            <p key={idx} className="text-[10px] text-muted-foreground font-bold">
                               • {c.name} ×{c.quantity}
                             </p>
                           ))}
@@ -421,7 +421,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                           }}
                           disabled={recalling}
                           title={t("kds_app.ticket.unbump_title")}
-                          className="flex items-center gap-0.5 text-[9px] font-bold text-slate-500 hover:text-amber-600 border border-slate-300 hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
+                          className="flex items-center gap-0.5 text-[9px] font-bold text-muted-foreground hover:text-amber-600 border border-border hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
                         >
                           <Undo2 className="w-2.5 h-2.5" />
                           {t("kds_app.ticket.recall")}
@@ -437,9 +437,9 @@ const KdsTicketCard = memo(function KdsTicketCard({
       </ScrollArea>
 
       {/* Footer */}
-      <div className="p-4 bg-slate-100/70 border-t border-slate-200 rounded-b-lg mt-auto">
+      <div className="p-4 bg-muted/70 border-t border-border rounded-b-lg mt-auto">
         {order.otherItemsCount > 0 && (
-          <p className="text-[10px] text-slate-500 font-bold text-center mb-2">
+          <p className="text-[10px] text-muted-foreground font-bold text-center mb-2">
             {t("kds_app.ticket.other_items_count", { count: order.otherItemsCount })}
           </p>
         )}
@@ -761,14 +761,14 @@ function KDSMain({ station }: { station: StationInfo }) {
   });
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 text-slate-900 overflow-hidden font-sans antialiased">
+    <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans antialiased">
       {/* Header */}
-      <header className="h-16 flex items-center px-6 bg-white border-b border-slate-200 flex-shrink-0 z-20">
+      <header className="h-16 flex items-center px-6 bg-card border-b border-border flex-shrink-0 z-20">
         <div className="flex items-center gap-3">
           <ChefHat className="w-6 h-6 text-primary" />
           <div className="leading-none">
             <h1 className="font-black tracking-tight text-lg uppercase">{t("kds_app.header.title")}</h1>
-            <p className="text-[9px] text-slate-500 font-bold flex items-center gap-1 mt-0.5">
+            <p className="text-[9px] text-muted-foreground font-bold flex items-center gap-1 mt-0.5">
               <Building2 className="w-2.5 h-2.5" />
               {station.business.name} · {station.name}
             </p>
@@ -786,7 +786,7 @@ function KDSMain({ station }: { station: StationInfo }) {
           <div className="flex flex-col items-end leading-none">
             <KdsClock />
           </div>
-          <Separator orientation="vertical" className="h-8 bg-slate-200" />
+          <Separator orientation="vertical" className="h-8 bg-border" />
           <KdsSettingsPopover readyMaxAge={readyMaxAge} onReadyMaxAgeChange={setReadyMaxAge} />
           <StationQuickSettings station={station} />
         </div>
@@ -794,10 +794,10 @@ function KDSMain({ station }: { station: StationInfo }) {
 
       {/* Tickets */}
       {stationUnassigned ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-4">
+        <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground gap-4">
           <ChefHat className="w-16 h-16 opacity-20" />
           <div className="text-center px-8">
-            <p className="font-black uppercase tracking-widest text-sm text-slate-900 mb-2">
+            <p className="font-black uppercase tracking-widest text-sm text-foreground mb-2">
               {t("kds_app.station_unassigned.title")}
             </p>
             <p className="text-xs max-w-xs leading-relaxed">
@@ -807,13 +807,13 @@ function KDSMain({ station }: { station: StationInfo }) {
         </div>
       ) : loading ? (
         <div className="flex-1 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-3 text-slate-600">
+          <div className="flex flex-col items-center gap-3 text-muted-foreground">
             <Loader2 className="w-8 h-8 animate-spin" />
             <p className="text-xs font-black uppercase tracking-widest">{t("kds_app.loading")}</p>
           </div>
         </div>
       ) : (
-        <ScrollArea className="flex-1 bg-slate-50">
+        <ScrollArea className="flex-1 bg-background">
           <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {sorted.map((order) => (
               <KdsTicketCard
@@ -833,7 +833,7 @@ function KDSMain({ station }: { station: StationInfo }) {
               />
             ))}
             {sorted.length === 0 && (
-              <div className="col-span-full h-[60vh] flex flex-col items-center justify-center text-slate-700">
+              <div className="col-span-full h-[60vh] flex flex-col items-center justify-center text-muted-foreground">
                 <ChefHat className="w-20 h-20 mb-4 opacity-10" />
                 <p className="font-black uppercase tracking-[0.3em] text-sm">{t("kds_app.empty_state.title")}</p>
                 <p className="text-[10px] mt-2 italic font-bold">
@@ -865,10 +865,10 @@ export default function KDSApp({ station }: Props) {
 
   if (!station.kitchenStationId) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center bg-slate-50 text-slate-500 gap-4">
+      <div className="h-screen flex flex-col items-center justify-center bg-background text-muted-foreground gap-4">
         <ChefHat className="w-16 h-16 opacity-20" />
         <div className="text-center px-8">
-          <p className="font-black uppercase tracking-widest text-sm text-slate-900 mb-2">
+          <p className="font-black uppercase tracking-widest text-sm text-foreground mb-2">
             {t("kds_app.no_kitchen_station.title")}
           </p>
           <p className="text-xs max-w-xs">

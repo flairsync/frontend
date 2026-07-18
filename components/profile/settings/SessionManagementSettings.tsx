@@ -80,7 +80,7 @@ const SessionManagementSettings = () => {
                         {sortedSessions.map((sess: any) => (
                             <div
                                 key={sess.id}
-                                className={`flex justify-between items-center p-3 border rounded-lg ${isCurrentSession(sess.id) ? "bg-green-50 border-green-200" : "bg-white border-gray-200"
+                                className={`flex justify-between items-center p-3 border rounded-lg ${isCurrentSession(sess.id) ? "bg-emerald-500/10 border-emerald-500/30" : "bg-card border-border"
                                     }`}
                             >
                                 <div>
@@ -92,10 +92,10 @@ const SessionManagementSettings = () => {
                                             : "Unknown"}
                                     </p>
                                     {isCurrentSession(sess.id) && (
-                                        <p className="text-xs text-green-600 font-semibold">Current Session</p>
+                                        <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Current Session</p>
                                     )}
                                     {sess.trustedDevice && (
-                                        <p className="text-xs text-blue-600 font-semibold">Trusted Device</p>
+                                        <p className="text-xs text-primary font-semibold">Trusted Device</p>
                                     )}
                                 </div>
                                 {!isCurrentSession(sess.id) && (

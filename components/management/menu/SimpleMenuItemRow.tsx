@@ -45,14 +45,14 @@ export const SimpleMenuItemRow = ({
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     return (
-        <div className="flex p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:shadow-sm transition">
+        <div className="flex p-3 bg-muted rounded-lg border border-border hover:shadow-sm transition">
             <div className="flex-1 flex justify-between items-center gap-2 overflow-hidden">
                 {/* Reorder Buttons */}
-                <div className="flex flex-col gap-1 pr-2 border-r border-zinc-200 dark:border-zinc-700 mr-2">
+                <div className="flex flex-col gap-1 pr-2 border-r border-border mr-2">
                     <Button
                         size="sm"
                         variant="ghost"
-                        className="h-6 w-6 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-full"
+                        className="h-6 w-6 p-0 hover:bg-muted rounded-full"
                         onClick={(e) => {
                             e.stopPropagation();
                             onMoveUp?.();
@@ -64,7 +64,7 @@ export const SimpleMenuItemRow = ({
                     <Button
                         size="sm"
                         variant="ghost"
-                        className="h-6 w-6 p-0 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-full"
+                        className="h-6 w-6 p-0 hover:bg-muted rounded-full"
                         onClick={(e) => {
                             e.stopPropagation();
                             onMoveDown?.();
@@ -77,18 +77,18 @@ export const SimpleMenuItemRow = ({
 
                 <div className="flex-1 min-w-0 pr-2">
                     <div className="flex items-center gap-1">
-                        <p className="font-medium text-zinc-800 dark:text-zinc-100 truncate">{item.name}</p>
+                        <p className="font-medium text-foreground truncate">{item.name}</p>
                         <AuditLogHint
                             entityType="menu_item"
                             entityId={item.id}
                             businessId={businessId}
                         />
                     </div>
-                    {item.description && <p className="text-sm text-zinc-500 dark:text-zinc-400 truncate">{item.description}</p>}
+                    {item.description && <p className="text-sm text-muted-foreground truncate">{item.description}</p>}
                 </div>
                 {/* Desktop Actions */}
                 <div className="hidden sm:flex items-center gap-2">
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400 mr-2 text-base">{currencySymbol}{item.price}</span>
+                    <span className="font-semibold text-primary mr-2 text-base">{currencySymbol}{item.price}</span>
 
                     {onMoveToCategory && (
                         <Button
@@ -150,7 +150,7 @@ export const SimpleMenuItemRow = ({
 
                 {/* Mobile Actions (Dropdown) */}
                 <div className="flex sm:hidden items-center gap-2">
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400 text-sm">{currencySymbol}{item.price}</span>
+                    <span className="font-semibold text-primary text-sm">{currencySymbol}{item.price}</span>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -171,7 +171,7 @@ export const SimpleMenuItemRow = ({
                             )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                className="text-red-600 focus:text-red-600"
+                                className="text-destructive focus:text-destructive"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     if (window.confirm(t('menu_management.messages.delete_item_confirm_desc', { name: item.name }))) {

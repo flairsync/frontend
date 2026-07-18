@@ -71,7 +71,7 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
 
                 <div className="space-y-4 py-2">
                     <div className="space-y-1">
-                        <Label className="text-xs">Customer Name <span className="text-red-500">*</span></Label>
+                        <Label className="text-xs">Customer Name <span className="text-destructive">*</span></Label>
                         <Input value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="John Smith" />
                     </div>
 
@@ -87,7 +87,7 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
                     </div>
 
                     <div className="space-y-1">
-                        <Label className="text-xs">Party Size <span className="text-red-500">*</span></Label>
+                        <Label className="text-xs">Party Size <span className="text-destructive">*</span></Label>
                         <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-muted-foreground" />
                             <Input type="number" min={1} max={50} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="w-24" />
@@ -95,7 +95,7 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
                     </div>
 
                     <div className="space-y-1">
-                        <Label className="text-xs">Table <span className="text-red-500">*</span></Label>
+                        <Label className="text-xs">Table <span className="text-destructive">*</span></Label>
                         {checkingAvailability ? (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Loader2 className="w-4 h-4 animate-spin" /> Checking availability…

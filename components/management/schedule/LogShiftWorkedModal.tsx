@@ -176,7 +176,7 @@ export const LogShiftWorkedModal: React.FC<LogShiftWorkedModalProps> = ({
                 required
               />
               {checkOut && checkIn && !checkoutAfterCheckin() && (
-                <p className="text-xs text-red-500">{t('schedule_modals.log_shift_worked.checkout_after_checkin_error')}</p>
+                <p className="text-xs text-destructive">{t('schedule_modals.log_shift_worked.checkout_after_checkin_error')}</p>
               )}
             </div>
             <div className="space-y-2">

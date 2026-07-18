@@ -70,7 +70,7 @@ export const ConfirmAction: React.FC<ConfirmActionProps> = ({
       >
         <div>
           <p className="font-medium text-sm">{title}</p>
-          <p className="text-xs text-zinc-500">{description}</p>
+          <p className="text-xs text-muted-foreground">{description}</p>
         </div>
 
         {storageKey && (
@@ -82,7 +82,7 @@ export const ConfirmAction: React.FC<ConfirmActionProps> = ({
             />
             <label
               htmlFor="never-confirm"
-              className="text-xs text-zinc-600 cursor-pointer"
+              className="text-xs text-muted-foreground cursor-pointer"
             >
               Never show again
             </label>

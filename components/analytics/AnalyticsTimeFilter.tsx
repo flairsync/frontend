@@ -50,7 +50,7 @@ export const AnalyticsTimeFilter: React.FC<AnalyticsTimeFilterProps> = ({ value,
 
     return (
         <Select value={value} onValueChange={handleValueChange}>
-            <SelectTrigger className="w-48 bg-white dark:bg-zinc-950">
+            <SelectTrigger className="w-48">
                 <SelectValue placeholder="Select Time Range" />
             </SelectTrigger>
             <SelectContent>

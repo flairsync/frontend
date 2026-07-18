@@ -61,7 +61,7 @@ const LoginPage = () => {
     }, [loginError]);
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen bg-white font-sans text-zinc-900">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-background font-sans text-foreground">
             {/* Left side - Login Form */}
             <div className="flex-1 flex flex-col">
                 <a href='/' className='px-6 pt-8 lg:px-12 lg:pt-10'>
@@ -71,7 +71,7 @@ const LoginPage = () => {
                 <div className="flex-1 flex flex-col items-center justify-start lg:justify-center p-8 lg:p-12">
                     <div className="w-full max-w-md ">
                         <h1 className="text-4xl font-extrabold mb-2">{t("auth_page.signin_page_title")}</h1>
-                        <p className="text-zinc-600 mb-8">{t("auth_page.please_login_label")}</p>
+                        <p className="text-muted-foreground mb-8">{t("auth_page.please_login_label")}</p>
                         <Formik
                             initialValues={{ email: '', password: '', stayConnected: false }}
                             validationSchema={LoginFormSchema}
@@ -100,7 +100,7 @@ const LoginPage = () => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             placeholder="jonas_kahnwald@gmail.com"
-                                            className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
+                                            className="h-12 border-border focus:border-primary focus-visible:ring-0"
                                         />
                                     </div>
                                     {errors.email && touched.email && <InputError message={errors.email} />}
@@ -120,12 +120,12 @@ const LoginPage = () => {
                                                 type={showPassword ? 'text' : 'password'}
                                                 onChange={handleChange}
                                                 placeholder={t("auth_page.password_label")}
-                                                className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
+                                                className="h-12 border-border focus:border-primary focus-visible:ring-0"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                                             >
                                                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                             </button>
@@ -137,7 +137,7 @@ const LoginPage = () => {
                                         <div className="flex items-center space-x-2">
                                             <Checkbox
                                                 id="keep-logged-in"
-                                                className="rounded-md border-zinc-300"
+                                                className="rounded-md border-border"
                                                 checked={values.stayConnected}
                                                 onCheckedChange={(checked) => setFieldValue('stayConnected', checked === true)}
                                             />
@@ -145,7 +145,7 @@ const LoginPage = () => {
                                                 {t("auth_page.stay_signedin_label")}
                                             </Label>
                                         </div>
-                                        <a href="/forgot-password" className="text-sm font-semibold text-[#6366F1] hover:underline">
+                                        <a href="/forgot-password" className="text-sm font-semibold text-primary hover:underline">
                                             {t("auth_page.forgot_password_link")}
                                         </a>
                                     </div>
@@ -159,7 +159,7 @@ const LoginPage = () => {
                                     <Button
                                         disabled={loggingIn}
                                         type='submit'
-                                        className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                                        className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                                     >
                                         {t("auth_page.signin_button_label")}
                                     </Button>
@@ -169,9 +169,9 @@ const LoginPage = () => {
                         </Formik>
 
                         <div className="flex items-center my-6">
-                            <div className="flex-1 border-t border-zinc-300"></div>
-                            <span className="px-4 text-zinc-500">{t("auth_page.or_label")}</span>
-                            <div className="flex-1 border-t border-zinc-300"></div>
+                            <div className="flex-1 border-t border-border"></div>
+                            <span className="px-4 text-muted-foreground">{t("auth_page.or_label")}</span>
+                            <div className="flex-1 border-t border-border"></div>
                         </div>
 
                         {/*  <Button variant="outline" className="w-full h-12 rounded-lg border-zinc-300 hover:bg-zinc-100 text-zinc-800">
@@ -189,9 +189,9 @@ const LoginPage = () => {
                         <GoogleLoginButton />
 
 
-                        <p className="mt-8 text-center text-sm text-zinc-600">
+                        <p className="mt-8 text-center text-sm text-muted-foreground">
                             {t("auth_page.need_account_label")}{' '}
-                            <a href={`/signup?origin=${encodeURIComponent(origin)}${packId ? `&packId=${packId}` : ''}`} className="font-semibold text-[#6366F1] hover:underline">
+                            <a href={`/signup?origin=${encodeURIComponent(origin)}${packId ? `&packId=${packId}` : ''}`} className="font-semibold text-primary hover:underline">
                                 {t("auth_page.create_account_label")}
                             </a>
                         </p>

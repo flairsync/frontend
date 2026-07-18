@@ -22,7 +22,7 @@ const TYPES: { value: AdjustStockType; label: string; icon: React.ReactNode; col
     { value: "add", label: "Add", icon: <ArrowUpCircle className="w-4 h-4" />, color: "text-green-600" },
     { value: "subtract", label: "Subtract", icon: <ArrowDownCircle className="w-4 h-4" />, color: "text-orange-600" },
     { value: "set", label: "Set", icon: <RefreshCw className="w-4 h-4" />, color: "text-blue-600" },
-    { value: "waste", label: "Waste", icon: <Trash2 className="w-4 h-4" />, color: "text-red-600" },
+    { value: "waste", label: "Waste", icon: <Trash2 className="w-4 h-4" />, color: "text-destructive" },
 ];
 
 export const AdjustStockModal: React.FC<AdjustStockModalProps> = ({

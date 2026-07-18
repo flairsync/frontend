@@ -93,7 +93,7 @@ const EditAttendanceModal = ({ record, open, onOpenChange, onSave }: EditAttenda
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>{t("attendance_modals.edit_attendance.cancel")}</Button>
-          <Button type="submit" onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700">{t("attendance_modals.edit_attendance.save_changes")}</Button>
+          <Button type="submit" onClick={handleSave}>{t("attendance_modals.edit_attendance.save_changes")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

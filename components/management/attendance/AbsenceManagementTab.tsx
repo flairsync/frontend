@@ -50,7 +50,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
           <p className="text-muted-foreground text-sm">{t("attendance_absences.subtitle")}</p>
         </div>
         <Button
-          className="bg-indigo-600 hover:bg-indigo-700 gap-2"
+          className="gap-2"
           onClick={() => setCreateOpen(true)}
         >
           <Plus className="h-4 w-4" />
@@ -151,7 +151,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50"
+                          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                           onClick={() => setDeletingId(absence.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -209,7 +209,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
           <AlertDialogFooter>
             <AlertDialogCancel>{t("attendance_absences.delete_dialog.cancel")}</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-destructive hover:bg-destructive/90 text-white"
               onClick={() => {
                 if (deletingId) {
                   deleteAbsence(deletingId, { onSuccess: () => setDeletingId(null) });

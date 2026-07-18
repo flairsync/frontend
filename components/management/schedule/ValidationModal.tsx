@@ -155,7 +155,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                 <DialogContent className="sm:max-w-[460px] max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                            <ShieldCheck className="h-5 w-5 text-indigo-600" />
+                            <ShieldCheck className="h-5 w-5 text-primary" />
                             {isCorrection ? t('schedule_modals.validation.correction_title') : t('schedule_modals.validation.title')}
                         </DialogTitle>
                         <DialogDescription>
@@ -203,7 +203,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                                 required={!!initialCheckOut}
                             />
                             {checkOut && checkIn && !checkoutAfterCheckin() && (
-                                <p className="text-xs text-red-500">{t('schedule_modals.validation.checkout_after_checkin_error')}</p>
+                                <p className="text-xs text-destructive">{t('schedule_modals.validation.checkout_after_checkin_error')}</p>
                             )}
                         </div>
 
@@ -250,7 +250,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                                         </div>
                                     ))}
                                     {breaks.some((b) => b.start && b.end && !(new Date(b.end) > new Date(b.start))) && (
-                                        <p className="text-xs text-red-500">{t('schedule_modals.validation.break_order_error')}</p>
+                                        <p className="text-xs text-destructive">{t('schedule_modals.validation.break_order_error')}</p>
                                     )}
                                 </div>
                             )}
@@ -272,7 +272,6 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                             <Button
                                 type="submit"
                                 disabled={isValidatingAttendance || !checkoutAfterCheckin() || !breaksAreValid()}
-                                className="bg-indigo-600 hover:bg-indigo-700"
                             >
                                 {isCorrection ? t('schedule_modals.validation.save_correction') : t('schedule_modals.validation.validate_record')}
                             </Button>
@@ -293,7 +292,6 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
                         <AlertDialogCancel>{t('schedule_modals.validation.go_back')}</AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handleConfirmedSubmit}
-                            className="bg-indigo-600 hover:bg-indigo-700"
                         >
                             {isValidatingAttendance ? t('schedule_modals.validation.validating') : t('schedule_modals.validation.confirm_and_lock')}
                         </AlertDialogAction>

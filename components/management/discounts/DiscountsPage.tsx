@@ -157,7 +157,7 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                     </DialogHeader>
                     <div className="space-y-4 py-2">
                         <div className="space-y-1">
-                            <Label className="text-xs">Name <span className="text-red-500">*</span></Label>
+                            <Label className="text-xs">Name <span className="text-destructive">*</span></Label>
                             <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Summer Sale" />
                         </div>
                         <div className="space-y-1">
@@ -183,7 +183,7 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                                 </Select>
                             </div>
                             <div className="space-y-1">
-                                <Label className="text-xs">Value <span className="text-red-500">*</span></Label>
+                                <Label className="text-xs">Value <span className="text-destructive">*</span></Label>
                                 <Input
                                     type="number"
                                     min={0}

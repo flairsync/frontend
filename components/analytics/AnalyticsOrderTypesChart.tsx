@@ -15,7 +15,7 @@ interface AnalyticsOrderTypesChartProps {
     sales: DailySalesMetric[];
 }
 
-const COLORS = ['#4F46E5', '#10B981', '#F59E0B'];
+const COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)'];
 
 export const AnalyticsOrderTypesChart: React.FC<AnalyticsOrderTypesChartProps> = ({ sales }) => {
     const { t } = useTranslation("management");
@@ -46,7 +46,7 @@ export const AnalyticsOrderTypesChart: React.FC<AnalyticsOrderTypesChartProps> =
             </CardHeader>
             <CardContent className="h-72">
                 {chartData.length === 0 ? (
-                    <div className="flex items-center justify-center h-full text-zinc-500">
+                    <div className="flex items-center justify-center h-full text-muted-foreground">
                         {t("analytics.order_types_chart.no_data")}
                     </div>
                 ) : (

@@ -200,13 +200,13 @@ function SortableSlot({
                             e.stopPropagation();
                             onRemove(slot.id);
                         }}
-                        className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1 hover:bg-red-600"
+                        className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1 hover:bg-destructive"
                     >
                         {slot.markedForDelete ? "↩️" : "🗑"}
                     </button>
                 </>
             ) : (
-                <label className="flex flex-col items-center justify-center cursor-pointer text-gray-400">
+                <label className="flex flex-col items-center justify-center cursor-pointer text-muted-foreground">
                     <span className="text-2xl">+</span>
                     <input
                         type="file"

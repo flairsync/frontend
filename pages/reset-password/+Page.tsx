@@ -32,7 +32,7 @@ const ResetPasswordPage = () => {
 
     if (tokenInvalid) {
         return (
-            <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
+            <div className="flex relative min-h-screen bg-background font-sans text-foreground">
                 <a href="/" className="absolute top-10 left-10">
                     <WebsiteLogo />
                 </a>
@@ -46,12 +46,12 @@ const ResetPasswordPage = () => {
                         <h1 className="text-3xl font-extrabold mb-3">
                             {t('auth_page.reset_password.invalid_title')}
                         </h1>
-                        <p className="text-zinc-600 mb-8">
+                        <p className="text-muted-foreground mb-8">
                             {t('auth_page.reset_password.invalid_message')}
                         </p>
                         <Button
                             asChild
-                            className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                            className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                         >
                             <a href="/forgot-password">{t('auth_page.reset_password.request_new_link')}</a>
                         </Button>
@@ -66,7 +66,7 @@ const ResetPasswordPage = () => {
 
     if (success) {
         return (
-            <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
+            <div className="flex relative min-h-screen bg-background font-sans text-foreground">
                 <a href="/" className="absolute top-10 left-10">
                     <WebsiteLogo />
                 </a>
@@ -80,12 +80,12 @@ const ResetPasswordPage = () => {
                         <h1 className="text-3xl font-extrabold mb-3">
                             {t('auth_page.reset_password.success_title')}
                         </h1>
-                        <p className="text-zinc-600 mb-8">
+                        <p className="text-muted-foreground mb-8">
                             {t('auth_page.reset_password.success_message')}
                         </p>
                         <Button
                             onClick={() => navigate('/login')}
-                            className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                            className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                         >
                             {t('auth_page.reset_password.go_to_login')}
                         </Button>
@@ -99,7 +99,7 @@ const ResetPasswordPage = () => {
     }
 
     return (
-        <div className="flex relative min-h-screen bg-white font-sans text-zinc-900">
+        <div className="flex relative min-h-screen bg-background font-sans text-foreground">
             <a href="/" className="absolute top-10 left-10">
                 <WebsiteLogo />
             </a>
@@ -153,12 +153,12 @@ const ResetPasswordPage = () => {
                                             type={showPassword ? 'text' : 'password'}
                                             onChange={handleChange}
                                             disabled={isSubmitting}
-                                            className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
+                                            className="h-12 border-border focus:border-primary focus-visible:ring-0"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                         </button>
@@ -179,12 +179,12 @@ const ResetPasswordPage = () => {
                                             type={showConfirm ? 'text' : 'password'}
                                             onChange={handleChange}
                                             disabled={isSubmitting}
-                                            className="h-12 border-zinc-300 focus:border-[#6366F1] focus-visible:ring-0"
+                                            className="h-12 border-border focus:border-primary focus-visible:ring-0"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowConfirm(!showConfirm)}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {showConfirm ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                         </button>
@@ -194,8 +194,8 @@ const ResetPasswordPage = () => {
                                     )}
                                 </div>
 
-                                <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-4">
-                                    <p className="text-sm font-medium text-zinc-700 mb-2">
+                                <div className="rounded-lg bg-muted border border-border p-4">
+                                    <p className="text-sm font-medium text-foreground mb-2">
                                         {t('auth_page.reset_password.requirements_title')}
                                     </p>
                                     <PasswordRequirement met={values.newPassword.length >= 8} label={t('auth_page.reset_password.req_length')} />
@@ -209,7 +209,7 @@ const ResetPasswordPage = () => {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-12 bg-[#6366F1] hover:bg-[#5859E9] text-white rounded-lg"
+                                    className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg"
                                 >
                                     {isSubmitting ? '…' : t('auth_page.reset_password.submit_button')}
                                 </Button>
@@ -228,7 +228,7 @@ const ResetPasswordPage = () => {
 
 function PasswordRequirement({ met, label }: { met: boolean; label: string }) {
     return (
-        <div className={`flex items-center gap-2 text-sm ${met ? 'text-green-600' : 'text-zinc-500'}`}>
+        <div className={`flex items-center gap-2 text-sm ${met ? 'text-green-600' : 'text-muted-foreground'}`}>
             <span>{met ? '✓' : '•'}</span>
             <span>{label}</span>
         </div>

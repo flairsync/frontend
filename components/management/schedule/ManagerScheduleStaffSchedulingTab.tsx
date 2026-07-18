@@ -302,7 +302,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                 );
             case ShiftStatus.NO_SHOW:
                 return (
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-red-500 bg-red-50 text-red-700 flex items-center gap-1">
+                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400 flex items-center gap-1">
                         <UserX className="w-2 h-2" />
                         {t("schedule_staff_scheduling_tab.status_no_show")}
                     </Badge>
@@ -624,7 +624,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 key={shift.id}
                                                                 onClick={() => handleEditShift(shift)}
                                                                 className={`mb-1 p-1.5 transition-all border rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 ${
-                                                                    shift.status === ShiftStatus.NO_SHOW ? "border-red-500 ring-red-500/20 bg-red-50" :
+                                                                    shift.status === ShiftStatus.NO_SHOW ? "border-red-500/40 ring-red-500/20 bg-red-500/10" :
                                                                     hasConflict ? "border-destructive ring-destructive/20 bg-destructive/5" :
                                                                     shift.status === ShiftStatus.VALIDATED
                                                                         ? "bg-green-500/10 border-green-500/20 ring-green-500/20" :
@@ -635,11 +635,11 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 title={shift.status === ShiftStatus.NO_SHOW ? t("schedule_staff_scheduling_tab.tooltip_no_show") : hasConflict ? t("schedule_staff_scheduling_tab.tooltip_conflict") : shift.notes || (shift.isPublished ? t("schedule_staff_scheduling_tab.tooltip_published") : t("schedule_staff_scheduling_tab.tooltip_draft"))}
                                                             >
                                                                 <div className="flex items-center justify-between gap-1 min-w-0">
-                                                                    <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
+                                                                    <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700 dark:text-red-400' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
                                                                     {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2 h-2 text-green-600 shrink-0" />}
-                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600 shrink-0" />}
+                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600 dark:text-red-400 shrink-0" />}
                                                                 </div>
                                                             </div>
                                                         );
@@ -663,7 +663,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                                     </ContextMenuItem>
                                                                                 )}
                                                                                 {s.status === ShiftStatus.NO_SHOW && canLogNoShow && (
-                                                                                    <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 focus:text-red-700">
+                                                                                    <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 dark:text-red-400 focus:text-red-700">
                                                                                         <ClipboardCheck className="w-4 h-4 mr-2" />
                                                                                         {t("schedule_staff_scheduling_tab.context_log_as_worked")}
                                                                                     </ContextMenuItem>
@@ -786,7 +786,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 key={shift.id}
                                                                 onClick={() => handleEditShift(shift)}
                                                                 className={`mb-1 p-1.5 transition-all border rounded text-[10px] sm:text-xs cursor-pointer flex flex-col gap-0.5 min-w-0 ${
-                                                                    shift.status === ShiftStatus.NO_SHOW ? "border-red-500 ring-red-500/20 bg-red-50" :
+                                                                    shift.status === ShiftStatus.NO_SHOW ? "border-red-500/40 ring-red-500/20 bg-red-500/10" :
                                                                     hasConflict ? "border-destructive ring-destructive/20 bg-destructive/5" :
                                                                     shift.isPublished
                                                                         ? "bg-primary/10 hover:bg-primary/20 ring-primary/20 border-primary/20"
@@ -795,12 +795,12 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 title={shift.status === ShiftStatus.NO_SHOW ? t("schedule_staff_scheduling_tab.tooltip_no_show") : hasConflict ? t("schedule_staff_scheduling_tab.tooltip_conflict") : shift.notes || (shift.isPublished ? t("schedule_staff_scheduling_tab.tooltip_published") : t("schedule_staff_scheduling_tab.tooltip_draft"))}
                                                             >
                                                                 <div className="flex items-center justify-between gap-1 min-w-0">
-                                                                    <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
+                                                                    <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700 dark:text-red-400' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
                                                                     <div className="flex items-center gap-1 shrink-0">
                                                                         {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2.5 h-2.5 text-green-600" />}
-                                                                        {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2.5 h-2.5 text-red-600" />}
+                                                                        {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2.5 h-2.5 text-red-600 dark:text-red-400" />}
                                                                         {hasConflict && <Badge variant="destructive" className="h-3 w-3 p-0 flex items-center justify-center text-[8px] rounded-full">!</Badge>}
                                                                     </div>
                                                                 </div>
@@ -835,7 +835,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     </ContextMenuItem>
                                                                 )}
                                                                 {s.status === ShiftStatus.NO_SHOW && canLogNoShow && (
-                                                                    <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 focus:text-red-700">
+                                                                    <ContextMenuItem onClick={() => handleLogAsWorked(s)} className="pl-4 text-red-600 dark:text-red-400 focus:text-red-700">
                                                                         <ClipboardCheck className="w-4 h-4 mr-2" />
                                                                         {t("schedule_staff_scheduling_tab.context_log_as_worked")}
                                                                     </ContextMenuItem>

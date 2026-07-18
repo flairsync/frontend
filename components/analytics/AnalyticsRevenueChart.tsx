@@ -31,7 +31,7 @@ export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sa
     }, [sales]);
 
     return (
-        <Card className="shadow-sm">
+        <Card className="shadow-lg">
             <CardHeader>
                 <CardTitle>{t("analytics.revenue_chart.title")}</CardTitle>
                 <CardDescription>{t("analytics.revenue_chart.description")}</CardDescription>
@@ -59,9 +59,9 @@ export const AnalyticsRevenueChart: React.FC<AnalyticsRevenueChartProps> = ({ sa
                         <Line
                             type="monotone"
                             dataKey="revenue"
-                            stroke="#4F46E5"
+                            stroke="var(--chart-1)"
                             strokeWidth={3}
-                            dot={{ r: 4, fill: '#4F46E5', strokeWidth: 0 }}
+                            dot={{ r: 4, fill: 'var(--chart-1)', strokeWidth: 0 }}
                             activeDot={{ r: 6 }}
                         />
                     </LineChart>

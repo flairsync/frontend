@@ -68,8 +68,8 @@ const AttendanceStats = ({ records, absences }: AttendanceStatsProps) => {
       value: `${noShows} / ${lates}`,
       description: t("attendance_stats.absences_late.description"),
       icon: AlertCircle,
-      color: "text-red-600",
-      bgColor: "bg-red-50",
+      color: "text-red-600 dark:text-red-400",
+      bgColor: "bg-red-500/10",
     },
   ];
 

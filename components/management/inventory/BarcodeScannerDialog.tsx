@@ -257,8 +257,8 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
         if (permission === "denied") {
             return (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 gap-4 p-6 text-center">
-                    <div className="rounded-full bg-red-500/20 p-4">
-                        <ShieldAlert className="w-8 h-8 text-red-400" />
+                    <div className="rounded-full bg-destructive/10 p-4">
+                        <ShieldAlert className="w-8 h-8 text-destructive" />
                     </div>
                     <div className="space-y-1">
                         <p className="text-white font-semibold text-sm">Camera access blocked</p>
@@ -406,8 +406,8 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                         left: 10%;
                         right: 10%;
                         height: 2px;
-                        background: linear-gradient(90deg, transparent, #4ade80, transparent);
-                        box-shadow: 0 0 6px 1px #4ade80;
+                        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+                        box-shadow: 0 0 6px 1px var(--primary);
                         animation: scan 2.4s ease-in-out infinite;
                     }
                 `}</style>

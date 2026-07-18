@@ -26,23 +26,23 @@ export const MenuItemRow = ({
 }: MenuItemRowProps) => {
     return (
         <div
-            className="flex justify-between items-center p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg
-                 border border-zinc-200 dark:border-zinc-700 hover:shadow-sm transition"
+            className="flex justify-between items-center p-3 bg-muted rounded-lg
+                 border border-border hover:shadow-sm transition"
         >
 
             <div className="flex flex-col">
-                <p className="font-medium text-zinc-800 dark:text-zinc-100">
+                <p className="font-medium text-foreground">
                     {item.name}
                 </p>
                 {item.description && (
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    <p className="text-sm text-muted-foreground">
                         {item.description}
                     </p>
                 )}
             </div>
 
             <div className="flex items-center gap-2">
-                <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                <span className="font-semibold text-primary">
                     {item.price}
                 </span>
 
@@ -55,7 +55,6 @@ export const MenuItemRow = ({
                     <Button
                         variant="destructive"
                         size="sm"
-                        className="bg-red-600 hover:bg-red-700 text-white"
                     >
                         <Trash className="h-4 w-4" />
                     </Button>

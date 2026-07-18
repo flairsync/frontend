@@ -20,19 +20,19 @@ export function JobCard({ job }: JobCardProps) {
 
   return (
     <a href={`/jobs/${job.slug}`} className="block group">
-      <Card className="hover:shadow-md transition-all border border-zinc-200 group-hover:border-blue-200 h-full">
+      <Card className="hover:shadow-md transition-all border border-border group-hover:border-primary/30 h-full">
         <CardContent className="p-5 flex flex-col gap-3 h-full">
           {/* Header */}
           <div className="flex items-start gap-3">
-            <Avatar className="h-11 w-11 border border-zinc-100 shadow-sm shrink-0">
+            <Avatar className="h-11 w-11 border border-border shadow-sm shrink-0">
               <AvatarImage src={job.business?.logo} alt={job.business?.name} />
-              <AvatarFallback className="bg-blue-50 text-blue-600 font-bold text-sm">
+              <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">
                 {job.business?.name?.charAt(0)?.toUpperCase() ?? "?"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0">
-              <p className="text-xs text-zinc-500 truncate">{job.business?.name}</p>
-              <h3 className="font-semibold text-zinc-900 group-hover:text-blue-600 transition-colors leading-tight">
+              <p className="text-xs text-muted-foreground truncate">{job.business?.name}</p>
+              <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors leading-tight">
                 {job.title}
               </h3>
             </div>
@@ -49,7 +49,7 @@ export function JobCard({ job }: JobCardProps) {
           </div>
 
           {/* Meta */}
-          <div className="flex flex-col gap-1 text-xs text-zinc-500">
+          <div className="flex flex-col gap-1 text-xs text-muted-foreground">
             {locationLabel && (
               <span className="flex items-center gap-1.5">
                 <MapPin className="h-3.5 w-3.5 shrink-0" />
@@ -65,7 +65,7 @@ export function JobCard({ job }: JobCardProps) {
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-center justify-between text-xs text-zinc-400 pt-2 border-t border-zinc-50">
+          <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/50">
             <span className="flex items-center gap-1">
               <Users className="h-3.5 w-3.5" />
               {job.applicationCount} applicant{job.applicationCount !== 1 ? "s" : ""}

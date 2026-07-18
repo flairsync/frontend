@@ -57,28 +57,28 @@ const UpgradeModal: React.FC = () => {
                 if (!open && !creatingCheckout) closeUpgradeModal();
             }}
         >
-            <DialogContent className="sm:max-w-4xl w-full max-h-[95vh] overflow-y-auto p-0 rounded-2xl border-none bg-zinc-50">
+            <DialogContent className="sm:max-w-4xl w-full max-h-[95vh] overflow-y-auto p-0 rounded-xl border-none bg-muted">
                 <div className="p-6 sm:p-10">
                     <DialogHeader className="mb-8">
                         <div className="flex items-center justify-center gap-3 mb-4">
-                            <div className="bg-indigo-100 p-3 rounded-2xl">
-                                <Crown className="h-8 w-8 text-indigo-600" />
+                            <div className="bg-primary/10 p-3 rounded-xl">
+                                <Crown className="h-8 w-8 text-primary" />
                             </div>
                         </div>
                         <DialogTitle className="text-3xl font-bold text-center">Upgrade Your Plan</DialogTitle>
-                        <DialogDescription className="text-center text-zinc-600 text-lg mt-2 max-w-md mx-auto">
+                        <DialogDescription className="text-center text-muted-foreground text-lg mt-2 max-w-md mx-auto">
                             {limitMessage || t("subscriptions.upgrade_message", "Choose a plan that fits your business needs and unlock more power.")}
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="flex justify-center mb-10">
-                        <div className="flex bg-zinc-200 p-1 rounded-full gap-1 shadow-inner border border-zinc-300/50">
+                        <div className="flex bg-muted p-1 rounded-full gap-1 shadow-inner border border-border/50">
                             <Button
                                 size="sm"
                                 variant={isMonthly ? "default" : "ghost"}
                                 className={cn(
                                     "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
-                                    isMonthly ? "shadow-sm" : "text-zinc-600 hover:bg-zinc-300"
+                                    isMonthly ? "shadow-sm" : "text-muted-foreground hover:bg-background"
                                 )}
                                 onClick={() => setIsMonthly(true)}
                             >
@@ -89,7 +89,7 @@ const UpgradeModal: React.FC = () => {
                                 variant={!isMonthly ? "default" : "ghost"}
                                 className={cn(
                                     "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
-                                    !isMonthly ? "shadow-sm" : "text-zinc-600 hover:bg-zinc-300"
+                                    !isMonthly ? "shadow-sm" : "text-muted-foreground hover:bg-background"
                                 )}
                                 onClick={() => setIsMonthly(false)}
                             >
@@ -100,7 +100,7 @@ const UpgradeModal: React.FC = () => {
 
                     {fetchingPacks ? (
                         <div className="flex justify-center items-center py-20">
-                            <Loader2 className="h-10 w-10 animate-spin text-indigo-600" />
+                            <Loader2 className="h-10 w-10 animate-spin text-primary" />
                         </div>
                     ) : (
                         <div className={cn(
@@ -115,45 +115,45 @@ const UpgradeModal: React.FC = () => {
                                 return (
                                     <div
                                         key={pack.id}
-                                        className="relative flex flex-col p-8 rounded-3xl border border-zinc-200 bg-white shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                                        className="relative flex flex-col p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                                     >
                                         <div className="mb-6">
-                                            <h3 className="text-2xl font-bold text-zinc-900">{pack.name}</h3>
-                                            <p className="text-sm text-zinc-500 mt-2 leading-relaxed min-h-[3rem]">
+                                            <h3 className="text-2xl font-bold text-foreground">{pack.name}</h3>
+                                            <p className="text-sm text-muted-foreground mt-2 leading-relaxed min-h-[3rem]">
                                                 {pack.description || pack.getShortDescription()}
                                             </p>
                                         </div>
 
                                         <div className="mb-8">
                                             <div className="flex items-baseline gap-1">
-                                                <span className="text-4xl font-black text-zinc-900">
+                                                <span className="text-4xl font-black text-foreground">
                                                     {isFree ? "Free" : pack.getFormattedPrice()}
                                                 </span>
-                                                {!isFree && <span className="text-zinc-500 font-bold text-lg">/{isMonthly ? "mo" : "yr"}</span>}
+                                                {!isFree && <span className="text-muted-foreground font-bold text-lg">/{isMonthly ? "mo" : "yr"}</span>}
                                             </div>
                                         </div>
 
-                                        <ul className="mb-10 space-y-4 flex-1 text-sm font-medium text-zinc-700">
+                                        <ul className="mb-10 space-y-4 flex-1 text-sm font-medium text-muted-foreground">
                                             <li className="flex items-start">
-                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <Check className="h-5 w-5 text-primary mr-3 shrink-0 mt-0.5" />
                                                 <span>{t("subscriptions.limits.businesses", { count: pack.maxBusinesses })}</span>
                                             </li>
                                             <li className="flex items-start">
-                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <Check className="h-5 w-5 text-primary mr-3 shrink-0 mt-0.5" />
                                                 <span>{t("subscriptions.limits.employees", { count: pack.maxEmployees })}</span>
                                             </li>
                                             <li className="flex items-start">
-                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <Check className="h-5 w-5 text-primary mr-3 shrink-0 mt-0.5" />
                                                 <span>{t("subscriptions.limits.menus", { count: pack.maxMenus })}</span>
                                             </li>
                                             <li className="flex items-start">
-                                                <Check className="h-5 w-5 text-indigo-500 mr-3 shrink-0 mt-0.5" />
+                                                <Check className="h-5 w-5 text-primary mr-3 shrink-0 mt-0.5" />
                                                 <span>{t("subscriptions.limits.products", { count: pack.maxProducts })}</span>
                                             </li>
                                         </ul>
 
                                         <Button
-                                            className="w-full py-7 rounded-2xl font-bold text-lg shadow-lg hover:shadow-indigo-500/20 transition-all"
+                                            className="w-full py-7 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all"
                                             disabled={creatingCheckout || changingPlan}
                                             onClick={() => handleSubscribe(pack.id)}
                                         >
