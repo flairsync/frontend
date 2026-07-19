@@ -175,7 +175,7 @@ const LocationSelectionModal = (props: Props) => {
             open={props.isOpen}
             onOpenChange={props.onOpenChange}
         >
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Search location settings</DialogTitle>
                     <DialogDescription>

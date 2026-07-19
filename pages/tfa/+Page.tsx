@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
-import { checkTfaApiCall } from "@/features/profileSettings/service"
+import { useTfaChallenge } from "@/features/auth/useTfaChallenge"
 import { usePageContext } from "vike-react/usePageContext"
 import { navigate } from "vike/client/router"
 import { useAuth } from "@/features/auth/useAuth"
@@ -18,9 +18,9 @@ export default function TwoFactorAuthPage() {
     const { urlParsed } = usePageContext()
     const origin = urlParsed.search.origin || "/"
     const { logoutUser, loggingOut } = useAuth()
+    const { mutateAsync: verifyTfaCode, isPending: isVerifying } = useTfaChallenge()
 
     const [otp, setOtp] = React.useState("")
-    const [isVerifying, setIsVerifying] = React.useState(false)
     const [message, setMessage] = React.useState<{
         type: "info" | "error" | "success"
         text: string
@@ -35,11 +35,10 @@ export default function TwoFactorAuthPage() {
             setMessage({ type: "error", text: "Please enter the 6-digit code from your authenticator app." })
             return
         }
-        setIsVerifying(true)
         setMessage({ type: "info", text: "Verifying 2FA code..." })
         try {
-            const res = await checkTfaApiCall(otp)
-            if (res.data.success) {
+            const result = await verifyTfaCode(otp)
+            if (result.success) {
                 setMessage({ type: "success", text: "✅ Two-factor authentication successful!" })
                 // The access cookie was just reissued with tfaVerified=true — re-fetch
                 // SSR data on the way so the rest of the app reflects the new state.
@@ -51,8 +50,6 @@ export default function TwoFactorAuthPage() {
         } catch (err) {
             setOtp("")
             setMessage({ type: "error", text: "Invalid or expired code. Please try again." })
-        } finally {
-            setIsVerifying(false)
         }
     }
 

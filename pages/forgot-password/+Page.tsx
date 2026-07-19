@@ -8,11 +8,12 @@ import { InputError } from '@/components/inputs/InputError';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import AbstractBG from '@/assets/svg/vecteezy_abstract-blue-color-background-dynamic-wave-fluid-shape_23455702.svg';
 import { ForgotPasswordSchema } from '@/misc/FormValidators';
-import { forgotPasswordApiCall } from '@/features/auth/service';
+import { useForgotPassword } from '@/features/auth/useForgotPassword';
 import { Mail } from 'lucide-react';
 
 const ForgotPasswordPage = () => {
     const { t } = useTranslation("auth");
+    const { mutateAsync: forgotPassword } = useForgotPassword();
     const [sent, setSent] = useState(false);
     const [apiError, setApiError] = useState<string>();
 
@@ -74,11 +75,11 @@ const ForgotPasswordPage = () => {
                         onSubmit={async (values, { setSubmitting }) => {
                             setApiError(undefined);
                             try {
-                                const res = await forgotPasswordApiCall(values.email);
-                                if (res.data?.success) {
+                                const result = await forgotPassword(values.email);
+                                if (result.status === 'sent') {
                                     setSent(true);
                                 } else {
-                                    setApiError(res.data?.message ?? t('auth_page.forgot_password.network_error'));
+                                    setApiError(result.message ?? t('auth_page.forgot_password.network_error'));
                                 }
                             } catch {
                                 setApiError(t('auth_page.forgot_password.network_error'));

@@ -57,8 +57,8 @@ import {
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { PosModeSwitcher } from "@/components/pos/PosModeSwitcher";
-import { stationApi, staffApi, pinLogout } from "@/features/station/station-api";
-import { normalizePosMenus } from "@/components/station/StationBootstrap";
+import { stationApi, staffApi, pinLogout, reorderStationOrderApiCall } from "@/features/station/station-api";
+import { normalizePosMenus } from "@/features/station/bootstrap.service";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import { useStationSocket } from "@/features/station/useStationSocket";
@@ -891,7 +891,7 @@ function POSMain({
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7 ml-1 mb-0.5"
+                                    className="h-10 w-10 ml-1 mb-0.5"
                                     onClick={() => refreshOrders(1)}
                                     title={t("pos_app.titles.refresh_orders")}
                                 >
@@ -923,7 +923,6 @@ function POSMain({
                                         onCancel={() => handleCancelOrder(order.id)}
                                         onReorder={async () => {
                                             try {
-                                                const { reorderStationOrderApiCall } = await import("@/features/orders/service");
                                                 const res = await reorderStationOrderApiCall(order.id);
                                                 toast.success(t("pos_app.toasts.reorder_created"));
                                                 await refreshOrders(1);
@@ -963,7 +962,7 @@ function POSMain({
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7"
+                                    className="h-10 w-10"
                                     onClick={refreshTables}
                                     title={t("pos_app.titles.refresh_tables")}
                                 >

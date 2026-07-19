@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import { staffApi } from "@/features/station/station-api";
 import { useStaffSession } from "@/features/pos/useStaffSession";
+import { useAttendanceStatus, useAttendanceAction } from "@/features/pos/useAttendanceStatus";
+import type { AttendanceRecord } from "@/features/pos/attendance.service";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -11,15 +11,6 @@ import { useTranslation } from "react-i18next";
 import { formatTime } from "@/lib/dateUtils";
 
 type ClockState = "not_clocked_in" | "clocked_in" | "on_break";
-
-interface AttendanceRecord {
-    id: string;
-    checkInTime: string | null;
-    checkOutTime: string | null;
-    status: "PRESENT" | "LATE" | "ON_BREAK" | "NO_SHOW";
-    lifecycleStatus: "ONGOING" | "FINISHED" | "VALIDATED";
-    breaks: { start: string; end: string | null; type: "PAID" | "UNPAID" }[];
-}
 
 function deriveClockState(attendance: AttendanceRecord | null): ClockState {
     if (!attendance || attendance.lifecycleStatus === "FINISHED") return "not_clocked_in";
@@ -38,37 +29,17 @@ function elapsed(from: string) {
 export default function AttendancePanel() {
     const { t } = useTranslation("pos");
     const { session } = useStaffSession();
-    const [attendance, setAttendance] = useState<AttendanceRecord | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [acting, setActing] = useState(false);
+    const { data: attendance, isPending: loading } = useAttendanceStatus();
+    const { mutate: act, isPending: acting } = useAttendanceAction();
 
-    const fetchStatus = useCallback(async () => {
-        try {
-            const res = await staffApi.get("/station/staff/attendance/status");
-            setAttendance(res.data?.data?.attendance ?? null);
-        } catch {
-            setAttendance(null);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (session) fetchStatus();
-        else setLoading(false);
-    }, [session, fetchStatus]);
-
-    async function act(endpoint: string, label: string, failureLabel: string, body?: object) {
-        setActing(true);
-        try {
-            await staffApi.post(`/station/staff/attendance/${endpoint}`, body ?? {});
-            await fetchStatus();
-            toast.success(label);
-        } catch (e: any) {
-            toast.error(e?.response?.data?.message ?? failureLabel);
-        } finally {
-            setActing(false);
-        }
+    function runAction(endpoint: string, label: string, failureLabel: string, body?: object) {
+        act(
+            { endpoint, body },
+            {
+                onSuccess: () => toast.success(label),
+                onError: (e: any) => toast.error(e?.response?.data?.message ?? failureLabel),
+            }
+        );
     }
 
     if (!session) {
@@ -89,7 +60,7 @@ export default function AttendancePanel() {
         );
     }
 
-    const clockState = deriveClockState(attendance);
+    const clockState = deriveClockState(attendance ?? null);
     const activeBreak = attendance?.breaks.find((b) => !b.end);
 
     return (
@@ -131,7 +102,7 @@ export default function AttendancePanel() {
                 <Button
                     className="w-full gap-2 font-black text-xs h-10"
                     disabled={acting}
-                    onClick={() => act("clock-in", t("attendance_panel.toasts.clocked_in"), t("attendance_panel.toasts.clock_in_failed"))}
+                    onClick={() => runAction("clock-in", t("attendance_panel.toasts.clocked_in"), t("attendance_panel.toasts.clock_in_failed"))}
                 >
                     <LogIn className="w-4 h-4" />
                     {t("attendance_panel.actions.clock_in")}
@@ -144,7 +115,7 @@ export default function AttendancePanel() {
                         variant="outline"
                         className="flex-1 gap-2 font-black text-xs h-10"
                         disabled={acting}
-                        onClick={() => act("break/start", t("attendance_panel.toasts.break_started"), t("attendance_panel.toasts.break_start_failed"), { type: "UNPAID" })}
+                        onClick={() => runAction("break/start", t("attendance_panel.toasts.break_started"), t("attendance_panel.toasts.break_start_failed"), { type: "UNPAID" })}
                     >
                         <Coffee className="w-4 h-4" />
                         {t("attendance_panel.actions.break")}
@@ -153,7 +124,7 @@ export default function AttendancePanel() {
                         variant="outline"
                         className="flex-1 gap-2 font-black text-xs h-10 text-destructive border-destructive/30 hover:bg-destructive/10"
                         disabled={acting}
-                        onClick={() => act("clock-out", t("attendance_panel.toasts.clocked_out"), t("attendance_panel.toasts.clock_out_failed"))}
+                        onClick={() => runAction("clock-out", t("attendance_panel.toasts.clocked_out"), t("attendance_panel.toasts.clock_out_failed"))}
                     >
                         <LogOut className="w-4 h-4" />
                         {t("attendance_panel.actions.clock_out")}
@@ -165,7 +136,7 @@ export default function AttendancePanel() {
                 <Button
                     className="w-full gap-2 font-black text-xs h-10 bg-amber-500 hover:bg-amber-600 text-amber-950"
                     disabled={acting}
-                    onClick={() => act("break/end", t("attendance_panel.toasts.break_ended"), t("attendance_panel.toasts.break_end_failed"))}
+                    onClick={() => runAction("break/end", t("attendance_panel.toasts.break_ended"), t("attendance_panel.toasts.break_end_failed"))}
                 >
                     <Play className="w-4 h-4" />
                     {t("attendance_panel.actions.end_break")}

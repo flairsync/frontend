@@ -67,9 +67,13 @@ const PublicFeedSearchHero = ({
                             </div>
                             <button
                                 onClick={onSearch}
-                                className="hidden md:flex px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold transition-all hover:opacity-90 active:scale-95 shadow-lg shadow-primary/20"
+                                aria-label={t("public_feed.searchHero.searchButton", "Search")}
+                                className="flex items-center justify-center p-3 md:px-8 md:py-3 bg-primary text-primary-foreground rounded-full font-semibold transition-all hover:opacity-90 active:scale-95 shadow-lg shadow-primary/20"
                             >
-                                {t("public_feed.searchHero.searchButton", "Search")}
+                                <Search className="w-5 h-5 md:hidden" />
+                                <span className="hidden md:inline">
+                                    {t("public_feed.searchHero.searchButton", "Search")}
+                                </span>
                             </button>
                         </div>
                     </motion.div>

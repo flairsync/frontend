@@ -1,6 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Job, JobApplication, PaginatedResponse } from "@/models/Job";
+import { PaginatedData } from "@/features/shared/api-response";
 import {
   CreateJobDto,
   ListJobsParams,
@@ -13,10 +14,23 @@ import {
   fetchBusinessJobByIdApiCall,
   fetchBusinessJobsApiCall,
   fetchJobApplicationsApiCall,
+  fetchPublicJobsApiCall,
   updateApplicationStatusApiCall,
   updateJobApiCall,
   sendStaffInviteApiCall,
 } from "./service";
+
+// Suspense variant of the public job-board listing, for the /jobs page's SSR-rendered
+// first paint (used with vike-react-query's withFallback).
+export const useSuspensePublicJobs = (params: ListJobsParams) => {
+  return useSuspenseQuery<PaginatedData<Job>>({
+    queryKey: ["public_jobs", params],
+    queryFn: async (): Promise<PaginatedData<Job>> => {
+      const result = await fetchPublicJobsApiCall(params);
+      return result as unknown as PaginatedData<Job>;
+    },
+  });
+};
 
 export const useBusinessJobs = (businessId: string, params: ListJobsParams = {}) => {
   const { data, isPending: loadingJobs, refetch } = useQuery<PaginatedResponse<Job>>({

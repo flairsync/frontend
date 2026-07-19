@@ -34,10 +34,10 @@ const AttendanceFilters = ({
 
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center gap-3 bg-card p-4 rounded-xl border-none shadow-sm flex-wrap">
-      <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-[280px]" />
+      <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-full sm:w-[280px]" />
 
       <Select value={lifecycleFilter} onValueChange={(v) => setLifecycleFilter(v as any)}>
-        <SelectTrigger className="w-[180px] bg-muted border-none h-10">
+        <SelectTrigger className="w-full sm:w-[180px] bg-muted border-none h-10">
           <SelectValue placeholder={t("attendance_filters.all_lifecycles")} />
         </SelectTrigger>
         <SelectContent>
@@ -49,7 +49,7 @@ const AttendanceFilters = ({
       </Select>
 
       <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
-        <SelectTrigger className="w-[160px] bg-muted border-none h-10">
+        <SelectTrigger className="w-full sm:w-[160px] bg-muted border-none h-10">
           <SelectValue placeholder={t("attendance_filters.all_statuses")} />
         </SelectTrigger>
         <SelectContent>
@@ -61,7 +61,7 @@ const AttendanceFilters = ({
         </SelectContent>
       </Select>
 
-      <div className="relative w-[200px]">
+      <div className="relative w-full sm:w-[200px]">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
         <Input
           placeholder={t("attendance_filters.search_employee_placeholder")}

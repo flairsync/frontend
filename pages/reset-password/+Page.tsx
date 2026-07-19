@@ -8,12 +8,13 @@ import { InputError } from '@/components/inputs/InputError';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import AbstractBG from '@/assets/svg/vecteezy_abstract-blue-color-background-dynamic-wave-fluid-shape_23455702.svg';
 import { ResetPasswordSchema } from '@/misc/FormValidators';
-import { resetPasswordApiCall } from '@/features/auth/service';
+import { useResetPassword } from '@/features/auth/useResetPassword';
 import { Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 import { navigate } from 'vike/client/router';
 
 const ResetPasswordPage = () => {
     const { t } = useTranslation("auth");
+    const { mutateAsync: resetPassword } = useResetPassword();
     const [token, setToken] = useState<string | null>(null);
     const [tokenInvalid, setTokenInvalid] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -115,29 +116,19 @@ const ResetPasswordPage = () => {
                         validationSchema={ResetPasswordSchema}
                         onSubmit={async (values, { setSubmitting }) => {
                             setApiError(undefined);
-                            try {
-                                const res = await resetPasswordApiCall({
-                                    token: token!,
-                                    newPassword: values.newPassword,
-                                });
-                                if (res.data?.success) {
-                                    setSuccess(true);
-                                    setTimeout(() => navigate('/login'), 3000);
-                                } else if (res.data?.code === 'auth.password.token_invalid') {
-                                    setTokenInvalid(true);
-                                } else {
-                                    setApiError(res.data?.message ?? t('auth_page.reset_password.network_error'));
-                                }
-                            } catch (err: any) {
-                                const code = err?.response?.data?.code;
-                                if (code === 'auth.password.token_invalid') {
-                                    setTokenInvalid(true);
-                                } else {
-                                    setApiError(t('auth_page.reset_password.network_error'));
-                                }
-                            } finally {
-                                setSubmitting(false);
+                            const result = await resetPassword({
+                                token: token!,
+                                newPassword: values.newPassword,
+                            });
+                            if (result.status === 'success') {
+                                setSuccess(true);
+                                setTimeout(() => navigate('/login'), 3000);
+                            } else if (result.status === 'token_invalid') {
+                                setTokenInvalid(true);
+                            } else {
+                                setApiError(result.message ?? t('auth_page.reset_password.network_error'));
                             }
+                            setSubmitting(false);
                         }}
                     >
                         {({ errors, touched, handleChange, values, isSubmitting }) => (

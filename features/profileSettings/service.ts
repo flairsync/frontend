@@ -50,13 +50,12 @@ export const checkTfaApiCall = (code: string) => {
 const regenerateBackupCodesUrl = `${tfaBaseUrl}/backup-codes/regenerate`;
 
 export const regenerateBackupCodesApiCall = async (): Promise<Blob> => {
-  const res = await fetch(regenerateBackupCodesUrl, {
-    method: 'POST',
-    credentials: 'include',
+  // responseType: 'blob' means an error response body also arrives unparsed as a
+  // Blob (not JSON), so there's no structured backend message to extract here —
+  // matches the fetchQrPreviewBlob/fetchQrTablesPdfBlob pattern in features/qr/service.ts,
+  // which likewise lets the axios error propagate as-is for the caller to handle.
+  const res = await flairapi.post(regenerateBackupCodesUrl, undefined, {
+    responseType: 'blob',
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ message: 'Failed to regenerate backup codes' }));
-    throw new Error(err.message || 'Failed to regenerate backup codes');
-  }
-  return res.blob();
+  return res.data as Blob;
 };

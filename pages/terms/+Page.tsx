@@ -38,7 +38,13 @@ const termsSections = [
     },
     {
         title: "Intellectual Property",
-        content: `All content, designs, logos, and trademarks on FlairSync are the property of FlairSync or its licensors. You may not copy, distribute, or create derivative works without permission.`
+        content: `All content, designs, logos, and trademarks on FlairSync are the property of FlairSync or its licensors. You may not copy, distribute, or create derivative works without permission. You may not reverse-engineer, decompile, disassemble, or otherwise attempt to derive the source code, underlying architecture, or business logic of the platform, nor use the service, or access obtained through a demonstration or trial, to build, develop, or assist a competing product or service.`
+    },
+
+    // --- CONFIDENTIALITY CLAUSE ---
+    {
+        title: "Confidentiality",
+        content: `In the course of using FlairSync, including through sales calls, product demonstrations, trials, or your account, you may be exposed to non-public information about FlairSync, including but not limited to pricing, product roadmap, features not yet publicly released, and business or technical processes ("Confidential Information"). You agree to keep such Confidential Information confidential, not to disclose it to any third party, and not to use it for any purpose other than evaluating or using our services. This obligation survives termination of your account or any demonstration or trial period.`
     },
 
     // --- NEW CRITICAL SECTION FOR UPTIME/DATA ---

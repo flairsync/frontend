@@ -10,11 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { JobCard } from "@/components/jobs/JobCard";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { withFallback } from "vike-react-query";
-import { fetchPublicJobsApiCall } from "@/features/jobs/service";
+import { useSuspensePublicJobs } from "@/features/jobs/useJobs";
 import { Job, JobCategory, JobType, JOB_CATEGORY_LABELS, JOB_TYPE_LABELS } from "@/models/Job";
-import { PaginatedData } from "@/features/shared/api-response";
 import PublicFeedHeader from "@/components/feed/PublicFeedHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
 import { usePageContext } from "vike-react/usePageContext";
@@ -55,18 +53,12 @@ type JobFilters = ReturnType<typeof getFiltersFromUrl>;
 // Inner component — server-rendered via useSuspenseQuery
 const JobsResults = withFallback(
   ({ filters, setPage }: { filters: JobFilters; setPage: (p: number) => void }) => {
-    const { data } = useSuspenseQuery<PaginatedData<Job>>({
-      queryKey: ["public_jobs", filters],
-      queryFn: async (): Promise<PaginatedData<Job>> => {
-        const result = await fetchPublicJobsApiCall({
-          page: filters.page,
-          limit: 12,
-          type: filters.type as JobType || undefined,
-          category: filters.category as JobCategory || undefined,
-          location: filters.location || undefined,
-        });
-        return result as unknown as PaginatedData<Job>;
-      },
+    const { data } = useSuspensePublicJobs({
+      page: filters.page,
+      limit: 12,
+      type: filters.type as JobType || undefined,
+      category: filters.category as JobCategory || undefined,
+      location: filters.location || undefined,
     });
 
     const jobs = data?.data ?? [];

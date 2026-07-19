@@ -81,3 +81,12 @@ attachNetworkErrorToast(publicApi);
 export async function pinLogout(): Promise<void> {
   await staffApi.post('/station/staff/pin-logout');
 }
+
+// Lives here (not features/orders/service.ts) so callers can import it statically without
+// pulling this station-only endpoint into the general orders module's dependency graph —
+// that module is imported by the plain web admin dashboard too, which never needs a
+// station device token.
+export const reorderStationOrderApiCall = (
+  orderId: string,
+  data?: { type?: "dine_in" | "takeaway"; tableId?: string },
+) => staffApi.patch(`/station/orders/${orderId}/reorder`, data ?? {});

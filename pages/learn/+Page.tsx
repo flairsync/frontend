@@ -500,10 +500,10 @@ const LearnPage: React.FC = () => {
       <LandingHeader />
 
       {/* Layout: sidebar + main */}
-      <div className="flex flex-1 mt-16" style={{ height: "calc(100vh - 64px)" }}>
+      <div className="flex flex-1 mt-20" style={{ height: "calc(100vh - 80px)" }}>
 
         {/* Desktop sidebar */}
-        <aside className="hidden lg:flex flex-col w-72 shrink-0 border-r border-border overflow-hidden sticky top-16 h-[calc(100vh-64px)]">
+        <aside className="hidden lg:flex flex-col w-72 shrink-0 border-r border-border overflow-hidden sticky top-20 h-[calc(100vh-80px)]">
           <TutorialSidebar
             activeSectionId={activeSectionId}
             openParts={openParts}

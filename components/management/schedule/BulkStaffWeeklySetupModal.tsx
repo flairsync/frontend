@@ -98,7 +98,7 @@ export const BulkStaffWeeklySetupModal: React.FC<BulkStaffWeeklySetupModalProps>
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{t("schedule_modals.bulk_weekly_setup.title")}</DialogTitle>
                     <DialogDescription>{t("schedule_modals.bulk_weekly_setup.description")}</DialogDescription>

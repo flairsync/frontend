@@ -2,13 +2,13 @@ import { redirect } from "vike/abort";
 import { PageContext } from "vike/types";
 
 export const guard = (pageContext: PageContext) => {
-  const { user } = pageContext;
+  const { user, urlParsed } = pageContext;
 
   if (!user) {
-    throw redirect("/login?returnTo=/jobs/my-applications");
+    throw redirect(`/login?origin=${encodeURIComponent(urlParsed.pathname + (urlParsed.searchOriginal ?? ""))}`);
   }
 
   if (!user.verified) {
-    throw redirect("/verify");
+    throw redirect(`/verify?origin=${encodeURIComponent(urlParsed.pathname + (urlParsed.searchOriginal ?? ""))}`);
   }
 };

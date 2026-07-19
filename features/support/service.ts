@@ -1,3 +1,6 @@
+import flairapi from "@/lib/flairapi";
+import { extractErrorMessage } from "@/utils/error-utils";
+
 const BASE = 'https://api.flairsync.com/api/v1';
 
 export interface SupportCategory {
@@ -14,20 +17,16 @@ export interface SupportTicketPayload {
 }
 
 export async function getSupportCategories(): Promise<SupportCategory[]> {
-  const res = await fetch(`${BASE}/support/categories`);
-  if (!res.ok) throw new Error('Failed to load categories');
-  return res.json();
+  // Backend returns a raw array here (not the ApiResponse envelope), so this
+  // intentionally reads res.data directly instead of using the unwrap() helper.
+  const res = await flairapi.get(`${BASE}/support/categories`);
+  return res.data;
 }
 
 export async function submitSupportTicket(payload: SupportTicketPayload): Promise<void> {
-  const res = await fetch(`${BASE}/support/contact`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    const msg = Array.isArray(err.message) ? err.message.join(', ') : (err.message ?? 'Failed to submit ticket');
-    throw new Error(msg);
+  try {
+    await flairapi.post(`${BASE}/support/contact`, payload);
+  } catch (err) {
+    throw new Error(extractErrorMessage(err, 'Failed to submit ticket'));
   }
 }

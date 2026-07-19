@@ -63,7 +63,7 @@ export function StaffAddOrderMobileView({
             <div className="flex items-center gap-2 px-4 py-3 pr-12 border-b shrink-0 min-h-[52px]">
                 {step === "review" && (
                     <button
-                        className="flex items-center justify-center -ml-1 h-7 w-7 text-muted-foreground"
+                        className="flex items-center justify-center -ml-1 h-9 w-9 text-muted-foreground"
                         onClick={() => setStep("menu")}
                         aria-label="Back to menu"
                     >

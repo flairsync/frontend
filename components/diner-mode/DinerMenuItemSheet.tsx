@@ -106,7 +106,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
 
     return (
         <Sheet open={!!item} onOpenChange={(open) => { if (!open) onClose(); }}>
-            <SheetContent side="bottom" className="rounded-t-2xl max-h-[90dvh] overflow-y-auto pb-safe">
+            <SheetContent side="bottom" className="rounded-t-2xl max-h-[90dvh] overflow-y-auto pb-[max(1rem,env(safe-area-inset-bottom))]">
                 {item && (
                     <>
                         <SheetHeader className="text-left pb-2">

@@ -355,10 +355,6 @@ export const updateOrderDiscountApiCall = (
 ) =>
     flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}/discount`, { discountAmount });
 
-export const reorderStationOrderApiCall = (
-    orderId: string,
-    data?: { type?: "dine_in" | "takeaway"; tableId?: string },
-) =>
-    import("@/features/station/station-api").then(({ staffApi }) =>
-        staffApi.patch(`/station/orders/${orderId}/reorder`, data ?? {}),
-    );
+// Moved to features/station/station-api.ts — it needs the station device token that
+// only staffApi attaches, and keeping it there stops this general (flairapi-based)
+// orders module from pulling station-only auth code into the main web bundle.
