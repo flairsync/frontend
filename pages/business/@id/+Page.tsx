@@ -1,11 +1,8 @@
 import { motion } from 'framer-motion'
 import { usePageContext } from 'vike-react/usePageContext';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { withFallback } from 'vike-react-query';
 import { useTranslation } from 'react-i18next';
-import { fetchDiscoveryProfileApiCall, fetchDiscoveryMenuApiCall } from '@/features/discovery/discovery.api';
-import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
-import { BusinessMenu } from '@/models/business/menu/BusinessMenu';
+import { useSuspenseBusinessPageData } from '@/features/discovery/useDiscovery';
 import DinerModeBanner from '@/components/diner-mode/DinerModeBanner';
 
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
@@ -44,22 +41,7 @@ const item = {
 // Inner component — fetches profile + menu in parallel, server-rendered via useSuspenseQuery
 const BusinessContent = withFallback(
     ({ id, user }: { id: string; user: ReturnType<typeof usePageContext>['user'] }) => {
-        const { data } = useSuspenseQuery({
-            queryKey: ["business_page", id],
-            queryFn: async () => {
-                const [profileData, menuRaw] = await Promise.all([
-                    fetchDiscoveryProfileApiCall(id),
-                    fetchDiscoveryMenuApiCall(id),
-                ]);
-                const menuData = Array.isArray(menuRaw) ? menuRaw[0] : menuRaw;
-                const profile = DiscoveryBusinessProfile.parseApiResponse(profileData);
-                if (!profile) throw new Error("Business not found");
-                return {
-                    profile,
-                    menu: BusinessMenu.parseApiResponse(menuData),
-                };
-            },
-        });
+        const { data } = useSuspenseBusinessPageData(id);
 
         const { profile, menu } = data;
 

@@ -1,4 +1,4 @@
-import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     fetchDiscoveryBusinessesApiCall,
     fetchDiscoveryProfileApiCall,
@@ -49,6 +49,48 @@ export const useDiscoverySearch = (params: FetchDiscoveryBusinessesParams) => {
             };
         },
         refetchOnWindowFocus: false,
+    });
+};
+
+// Suspense variant of useDiscoverySearch, for the public feed page's SSR-rendered
+// first paint (used with vike-react-query's withFallback). Same queryKey/queryFn
+// shape as useDiscoverySearch so both hit the same cache entry.
+export const useSuspenseDiscoverySearch = (params: FetchDiscoveryBusinessesParams) => {
+    return useSuspenseQuery({
+        queryKey: ["discovery_search", params],
+        queryFn: async () => {
+            const res = await fetchDiscoveryBusinessesApiCall(params);
+            return {
+                businesses: DiscoveryBusiness.parseApiArrayResponse(res.data),
+                total: res.total ?? res.data.length,
+                page: res.current ?? 1,
+                limit: res.limit ?? 10,
+            };
+        },
+        refetchOnWindowFocus: false,
+    });
+};
+
+// Suspense variant that fetches a business's public profile + menu together in one
+// query, for the business detail page's SSR-rendered first paint (used with
+// vike-react-query's withFallback) — a single suspense boundary for both rather than
+// two separate ones.
+export const useSuspenseBusinessPageData = (businessId: string) => {
+    return useSuspenseQuery({
+        queryKey: ["business_page", businessId],
+        queryFn: async () => {
+            const [profileData, menuRaw] = await Promise.all([
+                fetchDiscoveryProfileApiCall(businessId),
+                fetchDiscoveryMenuApiCall(businessId),
+            ]);
+            const menuData = Array.isArray(menuRaw) ? menuRaw[0] : menuRaw;
+            const profile = DiscoveryBusinessProfile.parseApiResponse(profileData);
+            if (!profile) throw new Error("Business not found");
+            return {
+                profile,
+                menu: BusinessMenu.parseApiResponse(menuData),
+            };
+        },
     });
 };
 

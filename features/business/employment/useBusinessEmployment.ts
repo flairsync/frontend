@@ -10,6 +10,7 @@ export const useBusinessEmployment = (businessId: string) => {
         const resp = await fetchBusinessEmployeesApiCall(businessId);
         return BusinessEmployee.parseApiArrayResponse(resp.data);
       },
+      enabled: !!businessId,
     });
 
   return {

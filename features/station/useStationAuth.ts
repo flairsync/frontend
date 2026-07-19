@@ -1,3 +1,5 @@
+import { getSecureItem, saveSecureItem, removeSecureItem } from "@/misc/SecureStorage";
+
 const DEVICE_UUID_KEY = "flairsync_device_uuid";
 const TOKEN_KEYS = {
   pos: "flairsync_station_token_pos",
@@ -22,13 +24,27 @@ export function getOrCreateDeviceUuid(): string {
 }
 
 export function getStationToken(): string | null {
-  return localStorage.getItem(TOKEN_KEYS[_activeType]);
+  const key = TOKEN_KEYS[_activeType];
+  const secureToken = getSecureItem(key);
+  if (secureToken) return secureToken;
+
+  // One-time migration: devices paired before tokens moved to SecureStorage
+  // still have their token in plain localStorage under the same key. Move it
+  // over so already-paired stations don't get bounced back to the pairing screen.
+  const legacyToken = localStorage.getItem(key);
+  if (legacyToken) {
+    saveSecureItem(key, legacyToken);
+    localStorage.removeItem(key);
+    return legacyToken;
+  }
+
+  return null;
 }
 
 export function saveStationToken(token: string): void {
-  localStorage.setItem(TOKEN_KEYS[_activeType], token);
+  saveSecureItem(TOKEN_KEYS[_activeType], token);
 }
 
 export function clearStationToken(): void {
-  localStorage.removeItem(TOKEN_KEYS[_activeType]);
+  removeSecureItem(TOKEN_KEYS[_activeType]);
 }

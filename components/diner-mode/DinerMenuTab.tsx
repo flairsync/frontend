@@ -196,10 +196,10 @@ function MenuItemCard({ item, canOrder, onAdd }: MenuItemCardProps) {
                     {canOrder && !isUnavailable && (
                         <Button
                             size="icon"
-                            className="h-7 w-7 rounded-full shrink-0"
+                            className="h-9 w-9 rounded-full shrink-0"
                             onClick={onAdd}
                         >
-                            <Plus className="w-3.5 h-3.5" />
+                            <Plus className="w-4 h-4" />
                         </Button>
                     )}
                 </div>

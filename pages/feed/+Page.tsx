@@ -15,8 +15,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { BusinessCardDetails } from '@/models/BusinessCardDetails'
-import { DiscoveryBusiness } from '@/models/discovery/DiscoveryBusiness'
-import { fetchDiscoveryBusinessesApiCall, FetchDiscoveryBusinessesParams } from '@/features/discovery/discovery.api'
+import { FetchDiscoveryBusinessesParams } from '@/features/discovery/discovery.api'
+import { useSuspenseDiscoverySearch } from '@/features/discovery/useDiscovery'
 
 // ✅ i18n
 import { useTranslation, Trans } from 'react-i18next'
@@ -26,7 +26,6 @@ import { clientOnly } from 'vike-react/clientOnly'
 import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries';
 import { useProfile } from '@/features/profile/useProfile';
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { withFallback } from 'vike-react-query'
 
 const FILTER_STORAGE_KEY = 'public_feed_filters';
@@ -58,19 +57,7 @@ const BusinessGrid = withFallback(
         onPageChange: (p: number) => void;
         t: ReturnType<typeof useTranslation<'feed'>>['t'];
     }) => {
-        const { data: searchData } = useSuspenseQuery({
-            queryKey: ["discovery_search", params],
-            queryFn: async () => {
-                const res = await fetchDiscoveryBusinessesApiCall(params);
-                return {
-                    businesses: DiscoveryBusiness.parseApiArrayResponse(res.data),
-                    total: res.total ?? res.data.length,
-                    page: res.current ?? 1,
-                    limit: res.limit ?? 10,
-                };
-            },
-            refetchOnWindowFocus: false,
-        });
+        const { data: searchData } = useSuspenseDiscoverySearch(params);
 
         const businesses = useMemo(() => {
             if (!searchData?.businesses) return [];

@@ -1,4 +1,4 @@
-import axios, { type InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 import { toast } from "sonner";
 import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
@@ -26,9 +26,6 @@ const flairapi = axios.create({
   },
 });
 
-// Deduplicate identical in-flight GET/HEAD requests so concurrent callers share one network call.
-const inflightRequests = new Map<string, Promise<any>>();
-
 const getDedupeKey = (config: InternalAxiosRequestConfig): string | null => {
   const method = (config.method ?? "get").toLowerCase();
   if (!["get", "head"].includes(method)) return null;
@@ -36,23 +33,62 @@ const getDedupeKey = (config: InternalAxiosRequestConfig): string | null => {
   return `${method}:${config.url ?? ""}:${params}`;
 };
 
-const capturedAdapter = flairapi.defaults.adapter;
-flairapi.defaults.adapter = (config) => {
-  const base: Function =
-    typeof capturedAdapter === "function"
-      ? capturedAdapter
-      : (axios as any).getAdapter(capturedAdapter ?? ["fetch", "xhr", "http"]);
+// Deduplicate identical in-flight GET/HEAD requests so concurrent callers share one
+// network call. Exported so other axios instances that can't share this instance
+// (e.g. features/station/station-api.ts, which uses Bearer-token device auth instead
+// of flairapi's cookie session) get the same behavior without duplicating the logic.
+export function attachRequestDedupe(instance: AxiosInstance): void {
+  const inflightRequests = new Map<string, Promise<any>>();
+  const capturedAdapter = instance.defaults.adapter;
+  instance.defaults.adapter = (config) => {
+    const base: Function =
+      typeof capturedAdapter === "function"
+        ? capturedAdapter
+        : (axios as any).getAdapter(capturedAdapter ?? ["fetch", "xhr", "http"]);
 
-  const key = getDedupeKey(config);
-  if (!key) return base(config);
+    const key = getDedupeKey(config);
+    if (!key) return base(config);
 
-  const existing = inflightRequests.get(key);
-  if (existing) return existing;
+    const existing = inflightRequests.get(key);
+    if (existing) return existing;
 
-  const promise = base(config).finally(() => inflightRequests.delete(key));
-  inflightRequests.set(key, promise);
-  return promise;
-};
+    const promise = base(config).finally(() => inflightRequests.delete(key));
+    inflightRequests.set(key, promise);
+    return promise;
+  };
+}
+
+attachRequestDedupe(flairapi);
+
+// Surfaces network/CORS/timeout and 5xx failures with a toast (and locks the system-error
+// overlay where one is mounted) so a failed request is never silently swallowed. Exported
+// so other axios instances get the same baseline error UX — see attachRequestDedupe above
+// for why they can't just use this `flairapi` instance directly.
+export function attachNetworkErrorToast(instance: AxiosInstance): void {
+  instance.interceptors.response.use(
+    (r) => r,
+    (error) => {
+      if (typeof window !== "undefined") {
+        console.error("API ERROR DETECTED:", error);
+
+        if (!error.response) {
+          console.warn("NETWORK/CORS/TIMEOUT ERROR DETECTED - LOCKING APP");
+          useSystemErrorStore.getState().lock('network');
+          if (error.code === 'ECONNABORTED') {
+            toast.error(i18n.t("errors.technical.timeout_error", "Request timed out. Please try again."));
+          } else {
+            toast.error(i18n.t("errors.technical.network_error"));
+          }
+        } else if (error.response.status >= 500) {
+          console.warn("SERVER ERROR DETECTED - LOCKING APP");
+          useSystemErrorStore.getState().lock('server');
+          toast.error(i18n.t("errors.technical.server_error"));
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
+}
 
 // To avoid multiple refreshes in parallel
 let isRefreshing = false;
@@ -202,32 +238,16 @@ flairapi.interceptors.response.use(
       }
     }
 
-    // Global Error Handling for UI Feedback
-    if (typeof window !== "undefined") {
-      console.error("API ERROR DETECTED:", error);
-
-      if (!error.response) {
-        // Network error (CORS, offline, timeout, etc.)
-        // Ensure strictly 'timeout' or 'network error' logic if needed, but !response covers both usually
-        console.warn("NETWORK/CORS/TIMEOUT ERROR DETECTED - LOCKING APP");
-        useSystemErrorStore.getState().lock('network');
-
-        // Use more specific message if it's a timeout
-        if (error.code === 'ECONNABORTED') {
-          toast.error(i18n.t("errors.technical.timeout_error", "Request timed out. Please try again."));
-        } else {
-          toast.error(i18n.t("errors.technical.network_error"));
-        }
-      } else if (error.response.status >= 500) {
-        // Server error
-        console.warn("SERVER ERROR DETECTED - LOCKING APP");
-        useSystemErrorStore.getState().lock('server');
-        toast.error(i18n.t("errors.technical.server_error"));
-      }
-    }
-
+    // Network/CORS/timeout and 5xx handling for this error now lives in
+    // attachNetworkErrorToast (registered below as its own interceptor), so it
+    // still runs for every error that falls through the branches above.
     return Promise.reject(error);
   }
 );
+
+// Registered after the interceptor above so it still sees every error that isn't
+// handled by the token-refresh/2FA/subscription-limit branches (axios chains
+// response interceptors in registration order for the rejection path too).
+attachNetworkErrorToast(flairapi);
 
 export default flairapi;

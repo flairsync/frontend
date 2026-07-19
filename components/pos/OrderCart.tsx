@@ -225,10 +225,10 @@ export function OrderCart({
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-8 w-8 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
+                                        className="h-10 w-10 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
                                         onClick={() => onUpdateQuantity(item.id, -1)}
                                     >
-                                        <Minus className="h-3 w-3" />
+                                        <Minus className="h-3.5 w-3.5" />
                                     </Button>
                                     <span className="w-5 text-center font-black text-xs text-primary">
                                         {item.quantity}
@@ -236,15 +236,15 @@ export function OrderCart({
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-8 w-8 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
+                                        className="h-10 w-10 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
                                         onClick={() => onUpdateQuantity(item.id, 1)}
                                     >
-                                        <Plus className="h-3 w-3" />
+                                        <Plus className="h-3.5 w-3.5" />
                                     </Button>
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-8 w-8 text-destructive/40 hover:text-destructive hover:bg-destructive/10 ml-1"
+                                        className="h-10 w-10 text-destructive/40 hover:text-destructive hover:bg-destructive/10 ml-1"
                                         onClick={() => onRemoveItem(item.id)}
                                     >
                                         <Trash2 className="h-3.5 w-3.5" />
