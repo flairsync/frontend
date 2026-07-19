@@ -220,7 +220,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="rounded-full h-8 w-8"
+                                    className="rounded-full h-9 w-9"
                                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                                 >
                                     <Minus className="w-3 h-3" />
@@ -229,7 +229,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="rounded-full h-8 w-8"
+                                    className="rounded-full h-9 w-9"
                                     onClick={() => setQuantity((q) => q + 1)}
                                 >
                                     <Plus className="w-3 h-3" />

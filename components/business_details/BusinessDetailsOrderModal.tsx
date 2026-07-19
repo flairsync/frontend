@@ -138,7 +138,7 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
 
     return (
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{t("business_page.order_modal.place_order_title", { itemName: item?.name, defaultValue: `Place Order: ${item?.name}` })}</DialogTitle>
                 </DialogHeader>

@@ -42,6 +42,11 @@ async function trySetupFcm(onNotification: (n: NotificationPayload) => void): Pr
         const token = await getToken(messaging, { vapidKey: VAPID_KEY });
         if (!token) return false;
 
+        // Not wrapped in useMutation: this call (and the matching unregister call in
+        // disconnectNotificationChannel below) needs to run from plain async functions
+        // callable outside any component's render lifecycle — disconnectNotificationChannel
+        // in particular is invoked from the logout flow in features/auth/useAuth.ts, not
+        // from a mounted component, so there's no valid hook context to call useMutation in.
         const deviceId = getOrCreateDeviceId();
         await registerDeviceTokenApiCall({ token, deviceType: 'WEB', deviceId });
 
@@ -80,6 +85,11 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
 
     // Auth is via the httpOnly `access` cookie (domain .flairsync.com, SameSite=None) —
     // EventSource doesn't send cookies cross-subdomain unless withCredentials is set.
+    // This intentionally does NOT go through flairapi: EventSource is a native browser
+    // streaming API with its own connection/reconnect lifecycle (see onopen/onerror below),
+    // not a request/response call axios can make — there's nothing here for flairapi's
+    // interceptors (auth-refresh, error toasts, request dedupe) to attach to. Accepted
+    // exception to the "always call through flairapi" rule.
     const apiBase = 'https://api.flairsync.com/api/v1' as string;
     sseSource = new EventSource(`${apiBase}/notifications/stream`, { withCredentials: true });
 

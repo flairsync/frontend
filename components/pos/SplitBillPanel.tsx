@@ -189,7 +189,7 @@ export default function SplitBillPanel({
                                                 return next;
                                             });
                                         }}
-                                        className={`w-8 h-8 rounded-full text-xs font-bold transition-all ${
+                                        className={`h-10 w-10 rounded-full text-xs font-bold transition-all ${
                                             checkCount === n
                                                 ? "bg-primary text-primary-foreground"
                                                 : "bg-muted text-muted-foreground hover:bg-muted/80"

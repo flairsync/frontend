@@ -30,18 +30,18 @@ const ProfileFavoriteCard: React.FC<ProfileFavoriteCardProps> = ({
       "
         >
             {/* Clickable area for restaurant */}
-            <a href={href} className="flex items-center gap-4 flex-1">
+            <a href={href} className="flex items-center gap-4 flex-1 min-w-0">
                 <img
                     src={image}
                     alt={name}
                     loading="lazy"
                     className="w-16 h-16 rounded-lg object-cover"
                 />
-                <CardContent className="p-0">
-                    <h3 className="font-medium group-hover:text-primary transition-colors">
+                <CardContent className="p-0 min-w-0">
+                    <h3 className="font-medium group-hover:text-primary transition-colors truncate">
                         {name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">{description}</p>
+                    <p className="text-sm text-muted-foreground truncate">{description}</p>
                 </CardContent>
             </a>
 

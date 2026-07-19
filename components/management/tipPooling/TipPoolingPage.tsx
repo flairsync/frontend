@@ -117,7 +117,7 @@ const TipPoolingPage = ({ businessId }: Props) => {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold">Tip Pooling</h1>
+                <h1 className="text-xl sm:text-2xl font-bold">Tip Pooling</h1>
                 <p className="text-muted-foreground text-sm mt-1">Preview, generate, and finalize tip distributions for any period.</p>
             </div>
             <Separator />

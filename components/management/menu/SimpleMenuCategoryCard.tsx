@@ -65,7 +65,7 @@ export const SimpleMenuCategoryCard = ({
                             <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-6 w-6 p-0 hover:bg-muted rounded-full"
+                                className="h-9 w-9 p-0 hover:bg-muted rounded-full"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onMoveCategoryUp?.();
@@ -77,7 +77,7 @@ export const SimpleMenuCategoryCard = ({
                             <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-6 w-6 p-0 hover:bg-muted rounded-full"
+                                className="h-9 w-9 p-0 hover:bg-muted rounded-full"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onMoveCategoryDown?.();

@@ -133,7 +133,7 @@ const BusinessReviewsDashboard: React.FC<BusinessReviewsDashboardProps> = ({ bus
             ) : (
                 <div className="space-y-3">
                     {reviews.map((review: any) => (
-                        <Card key={review.id} className="rounded-2xl border-border/50">
+                        <Card key={review.id} className="rounded-xl border-border/50">
                             <CardContent className="p-5 flex items-start justify-between gap-4">
                                 <div className="flex items-start gap-4 flex-1 min-w-0">
                                     <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0">

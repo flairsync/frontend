@@ -227,8 +227,8 @@ const ProblemSolutionSection = () => {
     }, []);
 
     return (
-        <div className="font-sans bg-background text-foreground py-16 px-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6" id="landing_prob_sol_section">
+        <div className="font-sans bg-background text-foreground py-16 md:py-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="landing_prob_sol_section">
                 {/* Top Section */}
                 <div className="mb-10 md:mb-16">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-[1.3]" id="prob_solution_title">

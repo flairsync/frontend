@@ -53,7 +53,7 @@ const ReportsTab = ({ businessId, dateRange, setDateRange }: ReportsTabProps) =>
           <h2 className="text-xl font-bold text-foreground">{t("attendance_reports.heading")}</h2>
           <p className="text-muted-foreground text-sm">{t("attendance_reports.subtitle")}</p>
         </div>
-        <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-[280px]" />
+        <DatePickerWithRange date={dateRange} setDate={setDateRange} className="w-full sm:w-[280px]" />
       </div>
 
       {!startDate || !endDate ? (

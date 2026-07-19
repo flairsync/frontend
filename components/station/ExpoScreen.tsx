@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,36 +11,10 @@ import {
 import { toast } from "sonner";
 import { staffApi } from "@/features/station/station-api";
 import { generateIdempotencyKey } from "@/features/station/offlineQueue";
+import { useExpoOrders, EXPO_ORDERS_QUERY_KEY } from "@/features/station/useExpoOrders";
+import type { ExpoOrder } from "@/features/station/expo.service";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import type { StationInfo } from "@/models/Station";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface ExpoItem {
-  id: string;
-  nameSnapshot: string;
-  quantity: number;
-  status: string;
-}
-
-interface ExpoStation {
-  kitchenStationId: string | null;
-  done: boolean;
-  items: ExpoItem[];
-}
-
-interface ExpoOrder {
-  id: string;
-  status: string;
-  tableName: string | null;
-  kitchenNotes: string | null;
-  priority: number;
-  readyAt: string | null;
-  createdAt: string;
-  allStationsDone: boolean;
-  requiresExpoConfirm: boolean;
-  stations: ExpoStation[];
-}
 
 interface Props {
   station: StationInfo;
@@ -214,8 +189,8 @@ function ExpoTicket({
 
 export default function ExpoScreen({ station }: Props) {
   const { t } = useTranslation("station");
-  const [orders, setOrders] = useState<ExpoOrder[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const { data: orders = [], isLoading: loading, refetch } = useExpoOrders();
   const [confirmingIds, setConfirmingIds] = useState<Set<string>>(new Set());
   const [markingServedIds, setMarkingServedIds] = useState<Set<string>>(new Set());
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -225,34 +200,6 @@ export default function ExpoScreen({ station }: Props) {
     return () => clearInterval(t);
   }, []);
 
-  const fetchOrders = useCallback(async () => {
-    try {
-      const params: Record<string, string> = { expo: "true" };
-      const maxAge = localStorage.getItem("kds_ready_max_age");
-      if (maxAge) params.readyMaxAgeMinutes = maxAge;
-
-      const res = await staffApi.get<{ data: ExpoOrder[] }>("/station/kds-orders", { params });
-      const incoming: ExpoOrder[] = res.data.data ?? [];
-
-      setOrders(
-        [...incoming].sort((a, b) => {
-          if (b.priority !== a.priority) return b.priority - a.priority;
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        })
-      );
-      setLoading(false);
-    } catch {
-      setLoading(false);
-    }
-  }, []);
-
-  // Poll every 12 seconds — expo is read-heavy
-  useEffect(() => {
-    fetchOrders();
-    const interval = setInterval(fetchOrders, 12_000);
-    return () => clearInterval(interval);
-  }, [fetchOrders]);
-
   const confirmExpo = useCallback(async (orderId: string) => {
     setConfirmingIds((prev) => new Set([...prev, orderId]));
     try {
@@ -261,8 +208,8 @@ export default function ExpoScreen({ station }: Props) {
         {},
         { headers: { "X-Idempotency-Key": generateIdempotencyKey() } }
       );
-      setOrders((prev) =>
-        prev.map((o) => o.id === orderId ? { ...o, status: "ready" } : o)
+      queryClient.setQueryData<ExpoOrder[]>(EXPO_ORDERS_QUERY_KEY, (prev) =>
+        prev?.map((o) => o.id === orderId ? { ...o, status: "ready" } : o)
       );
       toast.success(t("expo_screen.toasts.confirm_success"), { duration: 4000 });
     } catch (err: any) {
@@ -274,7 +221,7 @@ export default function ExpoScreen({ station }: Props) {
       } else {
         toast.error(t("expo_screen.toasts.confirm_failed"));
       }
-      fetchOrders();
+      refetch();
     } finally {
       setConfirmingIds((prev) => {
         const next = new Set(prev);
@@ -282,7 +229,7 @@ export default function ExpoScreen({ station }: Props) {
         return next;
       });
     }
-  }, [fetchOrders]);
+  }, [queryClient, refetch, t]);
 
   const markServed = useCallback(async (orderId: string) => {
     setMarkingServedIds((prev) => new Set([...prev, orderId]));
@@ -290,7 +237,9 @@ export default function ExpoScreen({ station }: Props) {
       await staffApi.patch(`/station/orders/${orderId}/served`, {}, {
         headers: { "X-Idempotency-Key": generateIdempotencyKey() },
       });
-      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+      queryClient.setQueryData<ExpoOrder[]>(EXPO_ORDERS_QUERY_KEY, (prev) =>
+        prev?.filter((o) => o.id !== orderId)
+      );
     } catch {
       toast.error(t("expo_screen.toasts.mark_served_failed"));
     } finally {
@@ -300,7 +249,7 @@ export default function ExpoScreen({ station }: Props) {
         return next;
       });
     }
-  }, [t]);
+  }, [queryClient, t]);
 
   return (
     <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans antialiased">

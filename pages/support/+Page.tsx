@@ -82,7 +82,7 @@ const SupportPage: React.FC = () => {
           </div>
         </section>
 
-        <div className="container mx-auto max-w-5xl px-6 py-16 space-y-16">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
           {/* Contact cards */}
           <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -131,7 +131,7 @@ const SiteBuilderManager: React.FC = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">Website</h1>
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Website</h1>
                 <Button disabled={!canUpdate} onClick={() => setCreateModalOpen(true)} className="gap-2">
                     <Plus className="w-4 h-4" /> New Page
                 </Button>
@@ -142,13 +142,13 @@ const SiteBuilderManager: React.FC = () => {
             {fetchingPages ? (
                 <div className="text-muted-foreground">Loading pages...</div>
             ) : !pages || pages.length === 0 ? (
-                <div className="py-16 text-center text-muted-foreground border border-dashed border-border rounded-2xl">
+                <div className="py-16 text-center text-muted-foreground border border-dashed border-border rounded-xl">
                     No pages yet. Create your first page to start building your website.
                 </div>
             ) : (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {pages.map((p) => (
-                        <Card key={p.id} className="rounded-2xl">
+                        <Card key={p.id} className="rounded-xl">
                             <CardHeader>
                                 <div className="flex items-start justify-between gap-2">
                                     <CardTitle className="text-base">{p.title}</CardTitle>

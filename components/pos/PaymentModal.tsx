@@ -231,7 +231,7 @@ export function PaymentModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-sm p-0 overflow-hidden">
+            <DialogContent className="sm:max-w-sm p-0 max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="p-6 pb-4 border-b border-border">
                     <div className="flex items-center gap-3 mb-1">

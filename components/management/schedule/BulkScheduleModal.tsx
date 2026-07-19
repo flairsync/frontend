@@ -97,7 +97,7 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{t("schedule_modals.bulk_schedule.title")}</DialogTitle>
                     <DialogDescription>{t("schedule_modals.bulk_schedule.description")}</DialogDescription>

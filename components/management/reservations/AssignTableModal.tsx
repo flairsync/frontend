@@ -94,7 +94,7 @@ export const AssignTableModal: React.FC<AssignTableModalProps> = ({
                     )}
                 </DialogHeader>
 
-                <div className="py-2 space-y-3">
+                <div className="py-2 space-y-3 max-h-[50vh] overflow-y-auto">
                     {checkingAvailability ? (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Loader2 className="w-4 h-4 animate-spin" /> Loading available tables…

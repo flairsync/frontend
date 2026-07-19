@@ -63,9 +63,7 @@ export const signupUserApiCall = (data: {
 };
 
 export const logoutUserApiCall = () => {
-  return flairapi.delete(logoutUrl, {
-    withCredentials: true,
-  });
+  return flairapi.delete(logoutUrl);
 };
 
 // sessions

@@ -18,6 +18,7 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useAuth } from '@/features/auth/useAuth';
 import GoogleLoginButton from '@/components/inputs/GoogleLoginButton';
 import { toast } from 'sonner';
+import { getSecureItem, removeSecureItem } from '@/misc/SecureStorage';
 
 const LoginPage = () => {
     const { t } = useTranslation("auth");
@@ -43,16 +44,14 @@ const LoginPage = () => {
     };
 
     useEffect(() => {
-        const reason = localStorage.getItem('auth_logout_reason');
+        const reason = getSecureItem('auth_logout_reason');
         if (reason === 'inactivity') {
-            localStorage.removeItem('auth_logout_reason');
+            removeSecureItem('auth_logout_reason');
             toast.error(t("auth_page.logged_out_inactivity_toast"));
         }
     }, []);
 
     useEffect(() => {
-        console.log("------ client ", user);
-
         if (loginError && loginError.response?.data) {
             // @ts-ignore
             setApiError(loginError.response?.data.message);

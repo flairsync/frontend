@@ -96,7 +96,7 @@ const TermsPage: React.FC = () => {
     return (
         <div>
             <LandingHeader />
-            <main className="container mx-auto max-w-5xl px-6 pt-32 pb-20 space-y-12">
+            <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-20 space-y-12">
                 {/* Hero Section */}
                 <section className="text-center space-y-4">
                     <h1 className="text-4xl font-extrabold">Terms and Conditions</h1>

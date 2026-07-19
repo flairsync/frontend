@@ -315,7 +315,7 @@ function TaxFormDialog({
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{isEdit ? "Edit Tax" : "Add Tax"}</DialogTitle>
                 </DialogHeader>
@@ -501,7 +501,7 @@ function TaxGroupsSection({
 
             {/* Delete confirmation */}
             <Dialog open={!!confirmDeleteId} onOpenChange={(open) => { if (!open) setConfirmDeleteId(null) }}>
-                <DialogContent>
+                <DialogContent className="max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Delete tax group?</DialogTitle>
                     </DialogHeader>
@@ -588,7 +588,7 @@ function TaxGroupFormDialog({
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{isEdit ? "Edit Tax Group" : "Add Tax Group"}</DialogTitle>
                 </DialogHeader>

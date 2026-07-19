@@ -141,7 +141,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{rule ? t("schedule_modals.recurring_rule.edit_title") : t("schedule_modals.recurring_rule.create_title")}</DialogTitle>
                     <DialogDescription>

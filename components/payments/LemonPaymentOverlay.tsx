@@ -12,7 +12,7 @@ const LemonPaymentOverlay = (props: Props) => {
             window.LemonSqueezy.Url.Open(props.url);
 
         }
-    }, [props]);
+    }, [props.url]);
 
     useEffect(() => {
         window.LemonSqueezy.Setup({

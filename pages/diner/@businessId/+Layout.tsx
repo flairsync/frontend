@@ -217,7 +217,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                 {children}
             </main>
 
-            <nav className="shrink-0 border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+            <nav className="shrink-0 border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 pb-[env(safe-area-inset-bottom)]">
                 <div className="flex items-center h-16">
                     <a
                         href={`/diner/${businessId}/menu`}

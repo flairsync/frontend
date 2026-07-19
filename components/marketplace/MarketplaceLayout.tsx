@@ -34,7 +34,7 @@ export const MarketplaceLayout: React.FC<MarketplaceLayoutProps> = ({
 
                 <main className="flex-1 flex flex-col min-w-0 bg-secondary/5">
                     <div className="flex-1">
-                        <div className="max-w-[1400px] mx-auto px-6 py-8 relative">
+                        <div className="max-w-7xl mx-auto px-6 py-8 relative">
                             <div className="mb-10 flex items-center gap-4">
                                 <SidebarTrigger className="-ml-2 bg-background/50 hover:bg-background/80 shadow-sm border border-white/10" />
                                 <div>

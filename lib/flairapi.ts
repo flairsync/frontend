@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
+import { saveSecureItem } from "@/misc/SecureStorage";
 const baseUrl = `${'https://api.flairsync.com/api/v1'}/auth/refresh`;
 
 import NProgress from "nprogress";
@@ -203,7 +204,7 @@ flairapi.interceptors.response.use(
         processQueue(refreshError, null);
         if (typeof window !== "undefined") {
           if (refreshError?.response?.data?.code === "auth.session.expired") {
-            localStorage.setItem('auth_logout_reason', 'inactivity');
+            saveSecureItem('auth_logout_reason', 'inactivity');
             window.location.href = '/login';
           } else {
             window.location.reload();

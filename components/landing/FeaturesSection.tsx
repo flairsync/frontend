@@ -36,18 +36,18 @@ const FeaturesSection = () => {
                 >
                     {/* Image Section */}
                     <div className="flex-1 w-full gap-4 flex lg:flex-row flex-col items-center justify-center">
-                        <div className="relative w-full max-w-md lg:max-w-none flex gap-4 items-center justify-center">
+                        <div className="relative w-full max-w-md lg:max-w-none flex flex-col sm:flex-row gap-4 items-center justify-center">
                             <img
                                 src="./images/landing/left.webp"
                                 alt="Restaurant ambiance"
                                 loading="lazy"
-                                className="w-[45%] aspect-[3/4] object-cover rounded-2xl shadow-xl mt-12"
+                                className="w-full sm:w-[45%] aspect-[3/4] object-cover rounded-2xl shadow-xl sm:mt-12"
                             />
                             <img
                                 src="./images/landing/right.webp"
                                 alt="Customer dining"
                                 loading="lazy"
-                                className="w-[55%] aspect-[3/4] object-cover rounded-2xl shadow-2xl"
+                                className="w-full sm:w-[55%] aspect-[3/4] object-cover rounded-2xl shadow-2xl"
                             />
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Input } from '@/components/ui/input';
 import { Command, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import Radar from 'radar-sdk-js';
@@ -23,67 +24,56 @@ interface AddressAutocompleteProps {
     country?: PlatformCountry
 }
 
+function useDebouncedValue<T>(value: T, delayMs: number): T {
+    const [debounced, setDebounced] = useState(value);
+    useEffect(() => {
+        const t = setTimeout(() => setDebounced(value), delayMs);
+        return () => clearTimeout(t);
+    }, [value, delayMs]);
+    return debounced;
+}
+
 export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     onSelect,
     placeholder = 'Search address...',
     country
 }) => {
     const [query, setQuery] = useState('');
-    const [suggestions, setSuggestions] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
-    const debounceRef = useRef<any>(null);
+    // Closed right after a selection so the dropdown doesn't flash back open
+    // once `query` is set to the selected address text; cleared on the next keystroke.
+    const [suppressDropdown, setSuppressDropdown] = useState(false);
+    const debouncedQuery = useDebouncedValue(query, 300);
+    const searchReady = !!country && debouncedQuery.length >= 3 && !suppressDropdown;
 
-    // Fetch suggestions after 300ms of idle typing
+    const { data: suggestions = [], isFetching: loading, error } = useQuery({
+        queryKey: ['address_autocomplete', debouncedQuery, country?.code],
+        queryFn: async () => {
+            const res = await Radar.autocomplete({
+                query: debouncedQuery,
+                limit: 5,
+                layers: ['address', 'place'],
+                countryCode: country?.code,
+            });
+            if (!res.addresses) return [];
+            return res.addresses.map((a: any) => ({
+                formattedAddress: a.formattedAddress || a.label || a.address, // fallback fields
+                latitude: a.latitude,
+                longitude: a.longitude,
+                country: a.country,
+                region: a.region,
+                city: a.city,
+                postalCode: a.postalCode,
+            }));
+        },
+        enabled: searchReady,
+        staleTime: 30_000,
+    });
+
     useEffect(() => {
-        if (debounceRef.current) clearTimeout(debounceRef.current);
+        if (error) console.error('Radar autocomplete error:', error);
+    }, [error]);
 
-        if (!query || query.length < 3) {
-            setSuggestions([]);
-            setShowDropdown(false);
-            return;
-        }
-
-        debounceRef.current = setTimeout(async () => {
-            setLoading(true);
-            try {
-                const res = await Radar.autocomplete({
-                    query,
-                    limit: 5,
-                    layers: ['address', 'place'],
-                    countryCode: country?.code,
-                });
-
-                if (res.addresses) {
-                    const addresses = res.addresses.map((a: any) => {
-                        return {
-                            formattedAddress: a.formattedAddress || a.label || a.address, // fallback fields
-                            latitude: a.latitude,
-                            longitude: a.longitude,
-                            country: a.country,
-                            region: a.region,
-                            city: a.city,
-                            postalCode: a.postalCode,
-                        };
-                    });
-                    setSuggestions(addresses);
-                    setShowDropdown(true);
-                } else {
-                    setSuggestions([]);
-                    setShowDropdown(false);
-                }
-            } catch (error) {
-                console.error('Radar autocomplete error:', error);
-            } finally {
-                setLoading(false);
-            }
-        }, 300);
-
-
-        return () => {
-            if (debounceRef.current) clearTimeout(debounceRef.current);
-        };
-    }, [query]);
+    const showDropdown = !!country && query.length >= 3 && !suppressDropdown;
 
     const handleSelect = (addr: any) => {
         const details: AddressDetails = {
@@ -97,8 +87,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
         };
         onSelect(details);
         setQuery(addr.formattedAddress);
-        setSuggestions([]);
-        setShowDropdown(false);
+        setSuppressDropdown(true);
     };
 
     if (!country) return <>
@@ -109,7 +98,10 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
             <Input
                 placeholder={placeholder}
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                    setQuery(e.target.value);
+                    setSuppressDropdown(false);
+                }}
                 className="w-full"
             />
 

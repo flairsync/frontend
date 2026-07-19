@@ -86,7 +86,7 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                                     <div
                                         key={pack.id}
                                         className={cn(
-                                            "relative flex flex-col p-6 rounded-2xl border transition-all",
+                                            "relative flex flex-col p-6 rounded-xl border transition-all",
                                             isCurrent
                                                 ? "border-primary bg-primary/5"
                                                 : "border-border bg-card hover:border-primary/50 hover:shadow-md"

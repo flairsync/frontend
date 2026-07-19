@@ -78,7 +78,7 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-base leading-snug">
             Apply for: <span className="text-primary">{job.title}</span>

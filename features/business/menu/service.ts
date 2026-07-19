@@ -1,5 +1,5 @@
 import flairapi from "@/lib/flairapi";
-import { unwrap } from "../../shared/api-response";
+import { unwrap } from "@/features/shared/api-response";
 const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
 
 const getMenusUrl = (businessId: string) => {

@@ -23,7 +23,7 @@ export default function DinerModeBanner({ businessId }: DinerModeBannerProps) {
     };
 
     return (
-        <div className="fixed bottom-6 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
+        <div className="fixed bottom-[max(1.5rem,calc(1.5rem+env(safe-area-inset-bottom)))] inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
             <div className="pointer-events-auto bg-primary text-primary-foreground rounded-2xl shadow-2xl px-5 py-4 flex items-center gap-4 max-w-sm w-full">
                 <div className="w-10 h-10 bg-primary-foreground/15 rounded-xl flex items-center justify-center shrink-0">
                     <UtensilsCrossed className="w-5 h-5" />
