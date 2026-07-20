@@ -80,7 +80,14 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                     `${headerRef.current.offsetHeight}px`
                 );
             }
-            setIsOpen(false);
+            // Only auto-close the mobile drawer when the viewport actually crosses
+            // into the desktop layout (matches the `md:` breakpoint that swaps the
+            // hamburger for the desktop nav) — not on every `resize` event. Mobile
+            // browsers fire `resize` for reasons unrelated to a width change (e.g.
+            // the address bar collapsing/expanding on scroll), which was closing
+            // the drawer out from under the user before they could tap anything
+            // inside it, including the Login button.
+            if (window.innerWidth >= 768) setIsOpen(false);
         };
         onResize();
         window.addEventListener("resize", onResize);
