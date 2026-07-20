@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Card,
     CardContent,
@@ -51,13 +51,22 @@ const OwnerDashboardPage = () => {
     const [confirmText, setConfirmText] = useState("");
 
     const [newOwnerEmail, setNewOwnerEmail] = useState("");
+    const [newOwnerEmailTouched, setNewOwnerEmailTouched] = useState(false);
     const [transferPassword, setTransferPassword] = useState("");
     const [transferTfaCode, setTransferTfaCode] = useState("");
+    // `pageContext.tfa.tfaEnabled` reflects this session's login/challenge state,
+    // not reliably whether the account has 2FA configured — so in addition to
+    // using it as an upfront hint, we also reveal the field reactively if the
+    // backend ever comes back asking for a code (the actual source of truth).
+    const [needsTfaCode, setNeedsTfaCode] = useState(false);
+    const showTfaField = tfaEnabled || needsTfaCode;
 
     const resetTransferForm = () => {
         setNewOwnerEmail("");
+        setNewOwnerEmailTouched(false);
         setTransferPassword("");
         setTransferTfaCode("");
+        setNeedsTfaCode(false);
         resetInitiateOwnershipTransferError();
     };
 
@@ -66,17 +75,32 @@ const OwnerDashboardPage = () => {
             ? initiateOwnershipTransferError.response?.data?.message
             : undefined;
 
+    useEffect(() => {
+        if (transferErrorMessage && /two-factor/i.test(transferErrorMessage)) {
+            setNeedsTfaCode(true);
+        }
+    }, [transferErrorMessage]);
+
+    const emailValid = /^\S+@\S+\.\S+$/.test(newOwnerEmail.trim());
+    const newOwnerEmailError = !newOwnerEmailTouched
+        ? undefined
+        : newOwnerEmail.trim().length === 0
+        ? "Email is required"
+        : !emailValid
+        ? "Enter a valid email address"
+        : undefined;
+
     const canSubmitTransfer =
-        /\S+@\S+\.\S+/.test(newOwnerEmail) &&
+        emailValid &&
         transferPassword.length > 0 &&
-        (!tfaEnabled || transferTfaCode.length === 6);
+        (!showTfaField || transferTfaCode.length === 6);
 
     function handleInitiateTransfer() {
         initiateOwnershipTransfer(
             {
                 newOwnerEmail,
                 password: transferPassword,
-                twoFactorCode: tfaEnabled ? transferTfaCode : undefined,
+                twoFactorCode: showTfaField ? transferTfaCode : undefined,
             },
             {
                 onSuccess: () => {
@@ -282,7 +306,11 @@ const OwnerDashboardPage = () => {
                                     placeholder="Enter recipient email"
                                     value={newOwnerEmail}
                                     onChange={(e) => setNewOwnerEmail(e.target.value)}
+                                    onBlur={() => setNewOwnerEmailTouched(true)}
                                 />
+                                {newOwnerEmailError && (
+                                    <InputError message={newOwnerEmailError} />
+                                )}
                             </div>
 
                             <PasswordInput
@@ -293,7 +321,7 @@ const OwnerDashboardPage = () => {
                                 placeholder="Enter your password"
                             />
 
-                            {tfaEnabled && (
+                            {showTfaField && (
                                 <div className="space-y-1">
                                     <Label>Two-factor authentication code</Label>
                                     <InputOTP
