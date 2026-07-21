@@ -173,9 +173,13 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                         )}
                     </div>
 
-                    {authResolved && !user && <LanguageSwitcher compact />}
-                    {authResolved && !user && <ThemeToggle />}
-                    {authResolved && !user && <TextSizeToggle />}
+                    {authResolved && !user && (
+                        <div className="hidden md:flex items-center gap-2">
+                            <LanguageSwitcher compact />
+                            <ThemeToggle />
+                            <TextSizeToggle />
+                        </div>
+                    )}
 
                     {/* Desktop auth */}
                     <div className="hidden md:flex items-center pl-2 border-l border-border/50">
