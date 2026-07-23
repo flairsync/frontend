@@ -25,10 +25,31 @@ export interface HourlyVisitorMetric {
     orderCount: string | number;
 }
 
+export interface DailyFeedbackMetric {
+    id: string;
+    businessId: string;
+    date: string; // YYYY-MM-DD
+    responseCount: number;
+    overallRatingSum: number;
+    foodRatingSum: number;
+    foodRatingCount: number;
+    serviceRatingSum: number;
+    serviceRatingCount: number;
+    ambianceRatingSum: number;
+    ambianceRatingCount: number;
+    valueRatingSum: number;
+    valueRatingCount: number;
+    npsResponseCount: number;
+    npsPromoters: number;
+    npsPassives: number;
+    npsDetractors: number;
+}
+
 export interface DashboardAnalyticsData {
     sales: DailySalesMetric[];
     topProducts: TopProductMetric[];
     hourlyVisitors: HourlyVisitorMetric[];
+    feedback: DailyFeedbackMetric[];
 }
 
 export interface ApiResponse<T = any> {

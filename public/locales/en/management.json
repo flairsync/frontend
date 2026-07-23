@@ -451,6 +451,7 @@
       "stations": "Stations",
       "analytics": "Analytics & Reports",
       "reviews": "Reviews",
+      "feedback": "Feedback",
       "audit_logs": "Audit Logs",
       "danger": "Danger Zone"
     }

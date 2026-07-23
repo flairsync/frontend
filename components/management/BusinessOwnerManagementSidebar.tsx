@@ -52,6 +52,7 @@ import {
     Globe,
     HandCoins,
     Tag,
+    MessageSquareHeart,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -150,6 +151,7 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "analytics", titleKey: "sidebar.items.analytics", url: "/manage/:id/owner/analytics", icon: BarChart3 },
             { key: "reviews", titleKey: "sidebar.items.reviews", url: "/manage/:id/owner/reviews", icon: Star },
+            { key: "feedback", titleKey: "sidebar.items.feedback", url: "/manage/:id/owner/feedback", icon: MessageSquareHeart },
         ],
     },
     {

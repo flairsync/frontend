@@ -1,12 +1,36 @@
 import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DailySalesMetric } from "@/models/analytics";
-import { DollarSign, ShoppingBag, TrendingUp, HandCoins, ArrowUp, ArrowDown } from "lucide-react";
+import { DailySalesMetric, DailyFeedbackMetric } from "@/models/analytics";
+import { DollarSign, ShoppingBag, TrendingUp, HandCoins, ArrowUp, ArrowDown, Star, Smile } from "lucide-react";
 
 interface AnalyticsKpiCardsProps {
     sales: DailySalesMetric[];
     previousSales?: DailySalesMetric[];
+    feedback?: DailyFeedbackMetric[];
     currency?: string;
+}
+
+function summarizeFeedback(feedback: DailyFeedbackMetric[]) {
+    let responseCount = 0;
+    let overallRatingSum = 0;
+    let npsResponseCount = 0;
+    let npsPromoters = 0;
+    let npsDetractors = 0;
+
+    feedback.forEach((day) => {
+        responseCount += Number(day.responseCount || 0);
+        overallRatingSum += Number(day.overallRatingSum || 0);
+        npsResponseCount += Number(day.npsResponseCount || 0);
+        npsPromoters += Number(day.npsPromoters || 0);
+        npsDetractors += Number(day.npsDetractors || 0);
+    });
+
+    const avgRating = responseCount > 0 ? overallRatingSum / responseCount : null;
+    const nps = npsResponseCount > 0
+        ? Math.round(((npsPromoters - npsDetractors) / npsResponseCount) * 100)
+        : null;
+
+    return { responseCount, avgRating, nps };
 }
 
 function sumTotals(sales: DailySalesMetric[]) {
@@ -51,9 +75,10 @@ const DeltaBadge: React.FC<{ delta: number | null }> = ({ delta }) => {
     );
 };
 
-export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, previousSales, currency = "$" }) => {
+export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, previousSales, feedback, currency = "$" }) => {
     const current = useMemo(() => sumTotals(sales), [sales]);
     const previous = useMemo(() => (previousSales ? sumTotals(previousSales) : null), [previousSales]);
+    const feedbackSummary = useMemo(() => (feedback ? summarizeFeedback(feedback) : null), [feedback]);
 
     const formatCurrency = (val: number) => `${currency}${val.toFixed(2)}`;
 
@@ -86,6 +111,24 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, pre
             delta: previous ? percentChange(current.totalTips, previous.totalTips) : undefined,
             icon: HandCoins,
         },
+        ...(feedbackSummary
+            ? [
+                {
+                    key: "avgRating",
+                    label: "Avg Rating",
+                    value: feedbackSummary.avgRating !== null ? `${feedbackSummary.avgRating.toFixed(1)} / 5` : "—",
+                    delta: undefined,
+                    icon: Star,
+                },
+                {
+                    key: "nps",
+                    label: "NPS Score",
+                    value: feedbackSummary.nps !== null ? String(feedbackSummary.nps) : "—",
+                    delta: undefined,
+                    icon: Smile,
+                },
+            ]
+            : []),
     ];
 
     return (

@@ -108,6 +108,20 @@ export const fetchSingleOrderApiCall = async (businessId: string, orderId: strin
 export const reorderApiCall = (businessId: string, orderId: string, payload?: { type?: string; tableId?: string }) =>
     flairapi.post(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}/reorder`, payload || {});
 
+export interface SubmitOrderFeedbackPayload {
+    overallRating: number;
+    foodRating?: number;
+    serviceRating?: number;
+    ambianceRating?: number;
+    valueRating?: number;
+    npsScore?: number;
+    improvementTags?: string[];
+    comment?: string;
+}
+
+export const submitOrderFeedbackApiCall = (businessId: string, orderId: string, payload: SubmitOrderFeedbackPayload) =>
+    flairapi.post(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}/feedback`, payload);
+
 // ─── Reviews ─────────────────────────────────────────────────────────────────
 
 export interface FetchReviewsParams {

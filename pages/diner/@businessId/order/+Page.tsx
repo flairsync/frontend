@@ -12,7 +12,13 @@ import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import { PlaceDineInOrderPayload, AddItemsToOrderPayload } from '@/features/diner-mode/diner-mode.api';
 import DinerMyOrderTab from '@/components/diner-mode/DinerMyOrderTab';
 import GuestEmailPrompt from '@/components/diner-mode/GuestEmailPrompt';
-import { getEmailPromptSeenOrderId, setEmailPromptSeenOrderId } from '@/utils/cookies';
+import FeedbackPrompt from '@/components/diner-mode/FeedbackPrompt';
+import {
+    getEmailPromptSeenOrderId,
+    setEmailPromptSeenOrderId,
+    getFeedbackPromptSeenOrderId,
+    setFeedbackPromptSeenOrderId,
+} from '@/utils/cookies';
 
 export default function DinerOrderPage() {
     const pageContext = usePageContext();
@@ -54,6 +60,26 @@ export default function DinerOrderPage() {
         if (activeOrderId) {
             setEmailPromptSeenOrderId(activeOrderId);
             setEmailPromptSeenId(activeOrderId);
+        }
+    }, [activeOrderId]);
+
+    // Shown to anyone (guest or logged-in) the moment their order completes,
+    // as long as they're still on this page — the delayed feedback-request
+    // email (see FeedbackService) covers guests who've already left.
+    const [feedbackPromptSeenId, setFeedbackPromptSeenId] = useState<string | null>(
+        () => getFeedbackPromptSeenOrderId()
+    );
+    const showFeedbackPrompt =
+        !!activeOrder &&
+        activeOrder.status === 'completed' &&
+        !activeOrder.feedbackSubmitted &&
+        activeOrderId !== undefined &&
+        activeOrderId !== feedbackPromptSeenId;
+
+    const dismissFeedbackPrompt = useCallback(() => {
+        if (activeOrderId) {
+            setFeedbackPromptSeenOrderId(activeOrderId);
+            setFeedbackPromptSeenId(activeOrderId);
         }
     }, [activeOrderId]);
 
@@ -106,6 +132,14 @@ export default function DinerOrderPage() {
                     orderId={activeOrderId}
                     open={showEmailPrompt}
                     onClose={dismissEmailPrompt}
+                />
+            )}
+            {activeOrderId && (
+                <FeedbackPrompt
+                    businessId={businessId}
+                    orderId={activeOrderId}
+                    open={showFeedbackPrompt}
+                    onClose={dismissFeedbackPrompt}
                 />
             )}
         </>

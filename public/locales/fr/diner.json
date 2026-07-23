@@ -27,6 +27,41 @@
     "success": "Merci ! Nous utiliserons cet email pour vous informer de votre commande.",
     "invalid": "Veuillez saisir une adresse email valide."
   },
+  "feedback": {
+    "prompt_title": "Comment s'est passée votre visite ?",
+    "prompt_description": "Nous aimerions connaître votre expérience — cela ne prend qu'une minute.",
+    "page_title": "Comment s'est passée votre visite chez {{businessName}} ?",
+    "page_description": "Votre avis nous aide à nous améliorer. Cela ne prend qu'une minute.",
+    "questions": {
+      "overall": "Globalement, comment s'est passée votre expérience ?",
+      "food": "Qualité des plats",
+      "service": "Service",
+      "ambiance": "Ambiance et propreté",
+      "value": "Rapport qualité-prix",
+      "nps": "Quelle est la probabilité que vous nous recommandiez à un ami ?",
+      "improve": "Que pourrions-nous améliorer ?",
+      "comment": "Autre chose à nous dire ?"
+    },
+    "nps_not_likely": "Peu probable",
+    "nps_very_likely": "Très probable",
+    "tags": {
+      "FOOD_TEMPERATURE": "Température des plats",
+      "ORDER_ACCURACY": "Exactitude de la commande",
+      "WAIT_TIME": "Temps d'attente",
+      "STAFF_FRIENDLINESS": "Amabilité du personnel",
+      "CLEANLINESS": "Propreté",
+      "NOISE_LEVEL": "Niveau sonore",
+      "PRICE": "Prix",
+      "PORTION_SIZE": "Taille des portions"
+    },
+    "comment_placeholder": "Dites-nous en plus (facultatif)",
+    "submit": "Envoyer l'avis",
+    "skip": "Pas maintenant",
+    "success": "Merci pour votre avis !",
+    "required_rating": "Veuillez évaluer votre expérience globale.",
+    "not_found_title": "Impossible de trouver cette commande",
+    "not_found_description": "Ce lien d'avis a peut-être expiré ou déjà été utilisé."
+  },
   "layout": {
     "tab_menu": "Menu",
     "tab_my_order": "Ma commande"

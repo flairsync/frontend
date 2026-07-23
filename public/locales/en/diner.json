@@ -27,6 +27,41 @@
     "success": "Thanks! We'll use this email for updates on your order.",
     "invalid": "Please enter a valid email address."
   },
+  "feedback": {
+    "prompt_title": "How was your visit?",
+    "prompt_description": "We'd love to hear about your experience — it only takes a minute.",
+    "page_title": "How was your visit to {{businessName}}?",
+    "page_description": "Your feedback helps us improve. It only takes a minute.",
+    "questions": {
+      "overall": "Overall, how was your experience?",
+      "food": "Food quality",
+      "service": "Service",
+      "ambiance": "Ambiance & cleanliness",
+      "value": "Value for money",
+      "nps": "How likely are you to recommend us to a friend?",
+      "improve": "What could we improve?",
+      "comment": "Anything else you'd like to tell us?"
+    },
+    "nps_not_likely": "Not likely",
+    "nps_very_likely": "Very likely",
+    "tags": {
+      "FOOD_TEMPERATURE": "Food temperature",
+      "ORDER_ACCURACY": "Order accuracy",
+      "WAIT_TIME": "Wait time",
+      "STAFF_FRIENDLINESS": "Staff friendliness",
+      "CLEANLINESS": "Cleanliness",
+      "NOISE_LEVEL": "Noise level",
+      "PRICE": "Price",
+      "PORTION_SIZE": "Portion size"
+    },
+    "comment_placeholder": "Tell us more (optional)",
+    "submit": "Submit feedback",
+    "skip": "Not now",
+    "success": "Thanks for your feedback!",
+    "required_rating": "Please rate your overall experience.",
+    "not_found_title": "We couldn't find that order",
+    "not_found_description": "This feedback link may have expired or already been used."
+  },
   "layout": {
     "tab_menu": "Menu",
     "tab_my_order": "My Order"

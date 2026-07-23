@@ -27,6 +27,41 @@
     "success": "Gràcies! Usarem aquest email per informar-te de la teva comanda.",
     "invalid": "Introdueix una adreça de correu vàlida."
   },
+  "feedback": {
+    "prompt_title": "Què tal la teva visita?",
+    "prompt_description": "Ens agradaria conèixer la teva experiència — només trigarà un minut.",
+    "page_title": "Què tal la teva visita a {{businessName}}?",
+    "page_description": "La teva opinió ens ajuda a millorar. Només trigarà un minut.",
+    "questions": {
+      "overall": "En general, com va ser la teva experiència?",
+      "food": "Qualitat del menjar",
+      "service": "Servei",
+      "ambiance": "Ambient i netedat",
+      "value": "Relació qualitat-preu",
+      "nps": "Quina probabilitat hi ha que ens recomanis a un amic?",
+      "improve": "Què podríem millorar?",
+      "comment": "Vols dir-nos alguna cosa més?"
+    },
+    "nps_not_likely": "Poc probable",
+    "nps_very_likely": "Molt probable",
+    "tags": {
+      "FOOD_TEMPERATURE": "Temperatura del menjar",
+      "ORDER_ACCURACY": "Precisió de la comanda",
+      "WAIT_TIME": "Temps d'espera",
+      "STAFF_FRIENDLINESS": "Amabilitat del personal",
+      "CLEANLINESS": "Netedat",
+      "NOISE_LEVEL": "Nivell de soroll",
+      "PRICE": "Preu",
+      "PORTION_SIZE": "Mida de les racions"
+    },
+    "comment_placeholder": "Explica'ns més (opcional)",
+    "submit": "Enviar comentaris",
+    "skip": "Ara no",
+    "success": "Gràcies per la teva opinió!",
+    "required_rating": "Si us plau, valora la teva experiència general.",
+    "not_found_title": "No hem pogut trobar aquesta comanda",
+    "not_found_description": "Aquest enllaç de comentaris pot haver caducat o ja s'ha utilitzat."
+  },
   "layout": {
     "tab_menu": "Menú",
     "tab_my_order": "La meva comanda"

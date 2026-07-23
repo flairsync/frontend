@@ -27,6 +27,41 @@
     "success": "¡Gracias! Usaremos este email para darte novedades sobre tu pedido.",
     "invalid": "Introduce una dirección de correo válida."
   },
+  "feedback": {
+    "prompt_title": "¿Qué tal tu visita?",
+    "prompt_description": "Nos encantaría conocer tu experiencia — solo toma un minuto.",
+    "page_title": "¿Qué tal tu visita a {{businessName}}?",
+    "page_description": "Tu opinión nos ayuda a mejorar. Solo toma un minuto.",
+    "questions": {
+      "overall": "En general, ¿cómo fue tu experiencia?",
+      "food": "Calidad de la comida",
+      "service": "Servicio",
+      "ambiance": "Ambiente y limpieza",
+      "value": "Relación calidad-precio",
+      "nps": "¿Qué probabilidad hay de que nos recomiendes a un amigo?",
+      "improve": "¿Qué podríamos mejorar?",
+      "comment": "¿Algo más que quieras contarnos?"
+    },
+    "nps_not_likely": "Poco probable",
+    "nps_very_likely": "Muy probable",
+    "tags": {
+      "FOOD_TEMPERATURE": "Temperatura de la comida",
+      "ORDER_ACCURACY": "Precisión del pedido",
+      "WAIT_TIME": "Tiempo de espera",
+      "STAFF_FRIENDLINESS": "Amabilidad del personal",
+      "CLEANLINESS": "Limpieza",
+      "NOISE_LEVEL": "Nivel de ruido",
+      "PRICE": "Precio",
+      "PORTION_SIZE": "Tamaño de las porciones"
+    },
+    "comment_placeholder": "Cuéntanos más (opcional)",
+    "submit": "Enviar comentarios",
+    "skip": "Ahora no",
+    "success": "¡Gracias por tu opinión!",
+    "required_rating": "Por favor califica tu experiencia general.",
+    "not_found_title": "No pudimos encontrar ese pedido",
+    "not_found_description": "Este enlace de comentarios puede haber caducado o ya haberse usado."
+  },
   "layout": {
     "tab_menu": "Menú",
     "tab_my_order": "Mi pedido"

@@ -6,6 +6,8 @@ import {
     submitOrderApiCall,
     addItemsToOrderApiCall,
     setGuestOrderEmailApiCall,
+    submitOrderFeedbackApiCall,
+    SubmitOrderFeedbackPayload,
 } from "@/features/discovery/discovery.api";
 import { AddItemsToOrderPayload, PlaceDineInOrderPayload } from "./diner-mode.api";
 import { toast } from "sonner";
@@ -35,6 +37,7 @@ export interface DinerOrder {
     totalAmount: number;
     paymentStatus: string;
     guestEmail?: string | null;
+    feedbackSubmitted?: boolean;
 }
 
 export interface DinerOrderItem {
@@ -173,6 +176,24 @@ export const useSetGuestOrderEmail = (businessId: string) => {
         onError: (error: any) => {
             const msg =
                 error.response?.data?.message ?? "Failed to save your email. Please try again.";
+            toast.error(msg);
+        },
+    });
+};
+
+export const useSubmitFeedback = (businessId: string, orderId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (payload: SubmitOrderFeedbackPayload) => {
+            const res = await submitOrderFeedbackApiCall(businessId, orderId, payload);
+            return res.data.data ?? res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["diner_order_detail", businessId, orderId] });
+        },
+        onError: (error: any) => {
+            const msg =
+                error.response?.data?.message ?? "Failed to submit feedback. Please try again.";
             toast.error(msg);
         },
     });

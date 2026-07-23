@@ -5,6 +5,7 @@ const LANG_KEY = "fs_lang";
 const TABLE_KEY = "fs_table";
 const ORDER_KEY = "fs_order";
 const EMAIL_PROMPT_SEEN_KEY = "fs_email_prompt_seen";
+const FEEDBACK_PROMPT_SEEN_KEY = "fs_feedback_prompt_seen";
 const MAX_AGE = 60 * 60 * 24 * 365;
 // A scanned table represents one dining visit, not a lasting preference — expire it
 // well before it could realistically bleed into a future, unrelated visit.
@@ -121,6 +122,23 @@ export function getEmailPromptSeenOrderId(): string | null {
 export function setEmailPromptSeenOrderId(orderId: string): void {
   if (typeof document === "undefined") return;
   document.cookie = serialize(EMAIL_PROMPT_SEEN_KEY, orderId, {
+    maxAge: ORDER_MAX_AGE,
+    path: "/",
+    sameSite: "lax",
+  });
+}
+
+// Tracks which order the feedback prompt has already been shown/dismissed
+// for, so a refresh doesn't re-annoy the guest for the same order.
+export function getFeedbackPromptSeenOrderId(): string | null {
+  if (typeof document === "undefined") return null;
+  const cookies = parse(document.cookie);
+  return cookies[FEEDBACK_PROMPT_SEEN_KEY] ?? null;
+}
+
+export function setFeedbackPromptSeenOrderId(orderId: string): void {
+  if (typeof document === "undefined") return;
+  document.cookie = serialize(FEEDBACK_PROMPT_SEEN_KEY, orderId, {
     maxAge: ORDER_MAX_AGE,
     path: "/",
     sameSite: "lax",
