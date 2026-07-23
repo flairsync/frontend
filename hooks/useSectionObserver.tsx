@@ -27,7 +27,14 @@ export function useSectionObserver(ids: string[]) {
             },
             {
                 root: null,
-                threshold: 0.5, // tweak if needed
+                // A fixed 0.5 ratio threshold requires half of the *section's own*
+                // height to be visible — sections taller than 2x the viewport
+                // (e.g. the pricing section, with its cards grid) can never reach
+                // that ratio and so never register as active. Using a thin
+                // activation band near the top of the viewport instead makes
+                // "active" depend on scroll position, not section height.
+                rootMargin: "-20% 0px -70% 0px",
+                threshold: 0,
             }
         );
 
