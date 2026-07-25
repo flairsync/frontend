@@ -262,7 +262,9 @@
       "drag_to_resize": "Drag to resize",
       "refresh_orders": "Refresh orders",
       "refresh_tables": "Refresh tables",
-      "expand_cart": "Show cart panel"
+      "expand_cart": "Show cart panel",
+      "collapse_filters": "Hide filters panel",
+      "expand_filters": "Show filters panel"
     },
     "sidebar": {
       "category": "Category",

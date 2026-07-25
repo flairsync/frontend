@@ -262,7 +262,9 @@
       "drag_to_resize": "Arrossega per redimensionar",
       "refresh_orders": "Actualitzar comandes",
       "refresh_tables": "Actualitzar taules",
-      "expand_cart": "Mostrar el panell del carret"
+      "expand_cart": "Mostrar el panell del carret",
+      "collapse_filters": "Amagar el panell de filtres",
+      "expand_filters": "Mostrar el panell de filtres"
     },
     "sidebar": {
       "category": "Categoria",

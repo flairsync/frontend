@@ -53,6 +53,7 @@ import {
     Search, ClipboardList, Package, LayoutGrid,
     User, MapPin, Utensils, CreditCard, Building2,
     Settings, Lock, RefreshCw, PanelRightOpen,
+    PanelLeftClose, PanelLeftOpen,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -178,6 +179,7 @@ function POSMain({
     const leftPanel = useResizablePanel(192, 140, 300);
     const rightPanel = useResizablePanel(340, 260, 500, true);
     const [isCartCollapsed, setIsCartCollapsed] = useState(false);
+    const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
 
     // ── Data state ──
     const [menus, setMenus] = useState<PosMenu[]>(bootstrapData.menus);
@@ -715,16 +717,37 @@ function POSMain({
             <div className="flex-1 flex overflow-hidden">
                 {/* LEFT SIDEBAR */}
                 <aside
-                    style={{ width: leftPanel.width }}
-                    className="bg-card flex flex-col py-4 flex-shrink-0 overflow-hidden"
+                    style={{ width: isLeftCollapsed ? 56 : leftPanel.width }}
+                    className="bg-card flex flex-col py-4 flex-shrink-0 overflow-hidden transition-[width] duration-150"
                 >
-                    <p className="text-[9px] font-black text-muted-foreground tracking-widest uppercase px-4 mb-3">
-                        {activeMainSection === "menu"
-                            ? t("pos_app.sidebar.category")
-                            : activeMainSection === "tables"
-                            ? t("pos_app.sidebar.floor")
-                            : t("pos_app.sidebar.filter")}
-                    </p>
+                    {isLeftCollapsed ? (
+                        <button
+                            onClick={() => setIsLeftCollapsed(false)}
+                            title={t("pos_app.titles.expand_filters")}
+                            className="flex-1 flex flex-col items-center justify-start pt-1 hover:bg-muted/40 transition-colors"
+                        >
+                            <PanelLeftOpen className="w-5 h-5 text-muted-foreground" />
+                        </button>
+                    ) : (
+                    <>
+                    <div className="flex items-center justify-between px-4 mb-3">
+                        <p className="text-[9px] font-black text-muted-foreground tracking-widest uppercase">
+                            {activeMainSection === "menu"
+                                ? t("pos_app.sidebar.category")
+                                : activeMainSection === "tables"
+                                ? t("pos_app.sidebar.floor")
+                                : t("pos_app.sidebar.filter")}
+                        </p>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setIsLeftCollapsed(true)}
+                            className="h-6 w-6 text-muted-foreground hover:text-foreground flex-shrink-0 -mr-1"
+                            title={t("pos_app.titles.collapse_filters")}
+                        >
+                            <PanelLeftClose className="w-3.5 h-3.5" />
+                        </Button>
+                    </div>
                     <ScrollArea className="flex-1">
                         <div className="flex flex-col gap-1 px-2">
                             {/* Menu section: multi-menu switcher + categories */}
@@ -827,16 +850,20 @@ function POSMain({
                             )}
                         </div>
                     </ScrollArea>
+                    </>
+                    )}
                 </aside>
 
-                {/* Left resize handle */}
-                <div
-                    onMouseDown={leftPanel.startResize}
-                    onTouchStart={leftPanel.startResize}
-                    style={{ touchAction: "none" }}
-                    className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
-                    title={t("pos_app.titles.drag_to_resize")}
-                />
+                {/* Left resize handle — hidden while the filter sidebar is collapsed to a rail */}
+                {!isLeftCollapsed && (
+                    <div
+                        onMouseDown={leftPanel.startResize}
+                        onTouchStart={leftPanel.startResize}
+                        style={{ touchAction: "none" }}
+                        className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
+                        title={t("pos_app.titles.drag_to_resize")}
+                    />
+                )}
 
                 {/* MAIN CONTENT */}
                 <main className="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
@@ -899,7 +926,7 @@ function POSMain({
                                     <RefreshCw className="w-3.5 h-3.5" />
                                 </Button>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-[repeat(auto-fill,minmax(20rem,20rem))] gap-6">
                                 {activeOrders.length === 0 && (
                                     <div className="col-span-full py-20 flex flex-col items-center justify-center text-muted-foreground bg-card/30 rounded-3xl border border-dashed border-border">
                                         <ClipboardList className="w-12 h-12 mb-4 opacity-10" />

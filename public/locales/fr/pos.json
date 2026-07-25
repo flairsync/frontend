@@ -262,7 +262,9 @@
       "drag_to_resize": "Faites glisser pour redimensionner",
       "refresh_orders": "Actualiser les commandes",
       "refresh_tables": "Actualiser les tables",
-      "expand_cart": "Afficher le panneau du panier"
+      "expand_cart": "Afficher le panneau du panier",
+      "collapse_filters": "Masquer le panneau des filtres",
+      "expand_filters": "Afficher le panneau des filtres"
     },
     "sidebar": {
       "category": "Catégorie",

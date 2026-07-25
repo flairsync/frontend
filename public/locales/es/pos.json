@@ -262,7 +262,9 @@
       "drag_to_resize": "Arrastra para redimensionar",
       "refresh_orders": "Actualizar pedidos",
       "refresh_tables": "Actualizar mesas",
-      "expand_cart": "Mostrar panel del carrito"
+      "expand_cart": "Mostrar panel del carrito",
+      "collapse_filters": "Ocultar panel de filtros",
+      "expand_filters": "Mostrar panel de filtros"
     },
     "sidebar": {
       "category": "Categoría",
