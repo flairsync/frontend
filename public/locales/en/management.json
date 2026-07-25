@@ -410,7 +410,8 @@
       "reservations": "Reservations",
       "inventory": "Inventory",
       "menu": "Menu Lookup",
-      "messages": "Messages & Announcements"
+      "messages": "Messages & Announcements",
+      "themes": "Theme"
     }
   },
   "sidebar": {
@@ -443,6 +444,7 @@
       "menu": "Menu",
       "discounts": "Discounts",
       "floor_plan": "Floor Plan",
+      "themes": "Theme",
       "orders": "Orders",
       "reservations": "Reservations",
       "tasks": "Tasks",

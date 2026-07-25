@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, PackageOpen, ShoppingBag, Users, Utensils } from "lucide-react"
+import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, PackageOpen, Palette, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { SidebarPinToggle } from "../management/SidebarPinToggle"
 import { usePermissions } from "@/features/auth/usePermissions"
@@ -106,6 +106,14 @@ export const staffNavData = {
                     url: "/manage/:id/staff/messages",
                     icon: MessageSquare,
                     requiredPermission: "BUSINESS_SETTINGS",
+                    requiredAction: "read",
+                },
+                {
+                    key: "themes",
+                    titleKey: "staff_sidebar.items.themes",
+                    url: "/manage/:id/staff/themes",
+                    icon: Palette,
+                    requiredPermission: "THEMES",
                     requiredAction: "read",
                 },
             ],

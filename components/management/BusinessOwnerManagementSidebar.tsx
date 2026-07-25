@@ -13,6 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarRail,
+    useSidebar,
 } from "@/components/ui/sidebar"
 import {
     DropdownMenu,
@@ -52,6 +53,7 @@ import {
     HandCoins,
     Tag,
     MessageSquareHeart,
+    Palette,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -137,6 +139,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
             { key: "discounts", titleKey: "sidebar.items.discounts", url: "/manage/:id/owner/discounts", icon: Tag },
             { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
+            { key: "themes", titleKey: "sidebar.items.themes", url: "/manage/:id/owner/themes", icon: Palette },
             { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
             { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
             { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
@@ -192,6 +195,7 @@ function CollapsibleNavGroup({
 }) {
     const [open, setOpen] = useState(defaultOpen)
     const { t } = useTranslation("management")
+    const { isMobile } = useSidebar()
 
     const groupLabel = t(group.titleKey)
 
@@ -216,7 +220,7 @@ function CollapsibleNavGroup({
                         />
                     </button>
                 </TooltipTrigger>
-                <TooltipContent side="right">{groupLabel}</TooltipContent>
+                <TooltipContent side="right" hidden={isMobile}>{groupLabel}</TooltipContent>
             </Tooltip>
 
             {/* Animated content */}
@@ -247,7 +251,7 @@ function CollapsibleNavGroup({
                                                     </a>
                                                 </SidebarMenuButton>
                                             </TooltipTrigger>
-                                            <TooltipContent side="right">{itemLabel}</TooltipContent>
+                                            <TooltipContent side="right" hidden={isMobile}>{itemLabel}</TooltipContent>
                                         </Tooltip>
                                         <SidebarPinToggle
                                             pinned={pinnedPaths.has(path)}
@@ -273,6 +277,7 @@ export function BusinessOwnerManagementSidebar({
 }: React.ComponentProps<typeof Sidebar> & { businessId: string }) {
     const { myBusinesses } = useMyBusinesses()
     const { t } = useTranslation("management")
+    const { isMobile } = useSidebar()
 
     const businesses = myBusinesses?.map((b) => ({ id: b.id, name: b.name })) ?? []
 
@@ -317,7 +322,7 @@ export function BusinessOwnerManagementSidebar({
                                                     </SidebarMenuButton>
                                                 </DropdownMenuTrigger>
                                             </TooltipTrigger>
-                                            <TooltipContent side="right">{launchStationLabel}</TooltipContent>
+                                            <TooltipContent side="right" hidden={isMobile}>{launchStationLabel}</TooltipContent>
                                         </Tooltip>
                                         <DropdownMenuContent side="right" align="start" className="w-44">
                                             {STATION_OPTIONS.map((opt) => {
@@ -337,7 +342,7 @@ export function BusinessOwnerManagementSidebar({
                                                                 </a>
                                                             </DropdownMenuItem>
                                                         </TooltipTrigger>
-                                                        <TooltipContent side="right">
+                                                        <TooltipContent side="right" hidden={isMobile}>
                                                             {t(opt.tooltipKey)}
                                                         </TooltipContent>
                                                     </Tooltip>
@@ -364,7 +369,7 @@ export function BusinessOwnerManagementSidebar({
                                                 </a>
                                             </SidebarMenuButton>
                                         </TooltipTrigger>
-                                        <TooltipContent side="right">{overviewLabel}</TooltipContent>
+                                        <TooltipContent side="right" hidden={isMobile}>{overviewLabel}</TooltipContent>
                                     </Tooltip>
                                     <SidebarPinToggle
                                         pinned={pinnedByPath.has(`owner/${OVERVIEW_ITEM.key}`)}

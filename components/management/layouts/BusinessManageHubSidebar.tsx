@@ -15,6 +15,7 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
     SidebarRail,
+    useSidebar,
 } from "@/components/ui/sidebar"
 import {
     Tooltip,
@@ -116,6 +117,7 @@ export function isActiveLink(key: string): boolean {
 
 export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { t } = useTranslation("management");
+    const { isMobile } = useSidebar();
     const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
 
     const isExpanded = (key: string, defaultOpen: boolean) => expanded[key] ?? defaultOpen;
@@ -164,7 +166,7 @@ export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<type
                                                                 />
                                                             </SidebarMenuButton>
                                                         </TooltipTrigger>
-                                                        <TooltipContent side="right">{label}</TooltipContent>
+                                                        <TooltipContent side="right" hidden={isMobile}>{label}</TooltipContent>
                                                     </Tooltip>
                                                 ) : (
                                                     <Tooltip>
@@ -176,7 +178,7 @@ export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<type
                                                                 </a>
                                                             </SidebarMenuButton>
                                                         </TooltipTrigger>
-                                                        <TooltipContent side="right">{label}</TooltipContent>
+                                                        <TooltipContent side="right" hidden={isMobile}>{label}</TooltipContent>
                                                     </Tooltip>
                                                 )}
                                                 {hasSubItems && open && (
@@ -193,7 +195,7 @@ export function BusinessManageHubSidebar({ ...props }: React.ComponentProps<type
                                                                                 </a>
                                                                             </SidebarMenuSubButton>
                                                                         </TooltipTrigger>
-                                                                        <TooltipContent side="right">{subLabel}</TooltipContent>
+                                                                        <TooltipContent side="right" hidden={isMobile}>{subLabel}</TooltipContent>
                                                                     </Tooltip>
                                                                 </SidebarMenuSubItem>
                                                             );

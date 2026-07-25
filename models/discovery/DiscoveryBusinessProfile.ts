@@ -53,6 +53,10 @@ export class DiscoveryBusinessProfile {
     phone?: string;
     website?: string;
 
+    // Registry lookup key for the business's currently applied premade theme
+    // (features/themes/registry.ts) — null until one has been applied.
+    activeThemeKey: string | null;
+
     constructor(
         id: string,
         name: string,
@@ -92,7 +96,8 @@ export class DiscoveryBusinessProfile {
         defaultReservationDurationMinutes: number,
         maxOrderDistanceMeters: number,
         reservationBookingWindowDays: number,
-        maxPartySize: number
+        maxPartySize: number,
+        activeThemeKey: string | null
     ) {
         this.id = id;
         this.name = name;
@@ -133,6 +138,7 @@ export class DiscoveryBusinessProfile {
         this.maxOrderDistanceMeters = maxOrderDistanceMeters;
         this.reservationBookingWindowDays = reservationBookingWindowDays;
         this.maxPartySize = maxPartySize;
+        this.activeThemeKey = activeThemeKey;
     }
 
     static parseApiArrayResponse(data: any[]): DiscoveryBusinessProfile[] {
@@ -187,7 +193,8 @@ export class DiscoveryBusinessProfile {
                 data.defaultReservationDurationMinutes !== undefined ? Number(data.defaultReservationDurationMinutes) : 120,
                 data.maxOrderDistanceMeters !== undefined && data.maxOrderDistanceMeters !== null ? Number(data.maxOrderDistanceMeters) : 500,
                 data.reservationBookingWindowDays !== undefined ? Number(data.reservationBookingWindowDays) : 60,
-                data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20
+                data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
+                data.activeTheme?.key ?? null
             );
         } catch {
             return null;
