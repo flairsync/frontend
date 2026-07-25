@@ -979,7 +979,7 @@ function POSMain({
                                     </p>
                                 </div>
                             ) : (
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                                <div className="grid grid-cols-[repeat(auto-fill,minmax(9rem,9rem))] gap-6">
                                     {filteredTables.map((table) => {
                                         const isActive = selectedTableId === table.id;
                                         const statusStyle =
@@ -990,7 +990,7 @@ function POSMain({
                                             <div
                                                 key={table.id}
                                                 onClick={() => handleTableSelect(table)}
-                                                className={`relative aspect-square rounded-3xl flex flex-col items-center justify-center gap-3 border-2 transition-all cursor-pointer ${
+                                                className={`relative w-36 aspect-square rounded-3xl flex flex-col items-center justify-center gap-3 border-2 transition-all cursor-pointer ${
                                                     isActive
                                                         ? "bg-primary border-primary text-primary-foreground shadow-2xl scale-110 z-10"
                                                         : statusStyle
