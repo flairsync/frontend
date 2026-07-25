@@ -67,7 +67,8 @@
       "active_order": "Pedido activo",
       "operator": "Operador: {{name}}",
       "no_staff_logged_in": "Ningún miembro del personal ha iniciado sesión",
-      "discard": "Descartar"
+      "discard": "Descartar",
+      "collapse": "Ocultar panel del carrito"
     },
     "mode": {
       "dine_in": "Para comer aquí",
@@ -256,7 +257,8 @@
       "lock_terminal": "Bloquear terminal",
       "drag_to_resize": "Arrastra para redimensionar",
       "refresh_orders": "Actualizar pedidos",
-      "refresh_tables": "Actualizar mesas"
+      "refresh_tables": "Actualizar mesas",
+      "expand_cart": "Mostrar panel del carrito"
     },
     "sidebar": {
       "category": "Categoría",

@@ -67,7 +67,8 @@
       "active_order": "Active Order",
       "operator": "Operator: {{name}}",
       "no_staff_logged_in": "No staff logged in",
-      "discard": "Discard"
+      "discard": "Discard",
+      "collapse": "Hide cart panel"
     },
     "mode": {
       "dine_in": "Dine-In",
@@ -256,7 +257,8 @@
       "lock_terminal": "Lock terminal",
       "drag_to_resize": "Drag to resize",
       "refresh_orders": "Refresh orders",
-      "refresh_tables": "Refresh tables"
+      "refresh_tables": "Refresh tables",
+      "expand_cart": "Show cart panel"
     },
     "sidebar": {
       "category": "Category",

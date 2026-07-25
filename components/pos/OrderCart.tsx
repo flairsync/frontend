@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
     Minus, Plus, Trash2, CreditCard, Banknote,
-    Utensils, Package, MapPin, Send, AlertCircle, ChefHat,
+    Utensils, Package, MapPin, Send, AlertCircle, ChefHat, PanelRightClose,
 } from "lucide-react";
 import { ValidationAlert } from "./ValidationAlert";
 import { type CartItem, calcSubtotal, calcTax, getTaxRate } from "@/features/pos/types";
@@ -34,6 +34,7 @@ interface OrderCartProps {
     onChangeTable: () => void;
     onKitchenNotesChange?: (notes: string) => void;
     onTaxExemptChange?: (exempt: boolean) => void;
+    onCollapse?: () => void;
 }
 
 export function OrderCart({
@@ -55,6 +56,7 @@ export function OrderCart({
     onChangeTable,
     onKitchenNotesChange,
     onTaxExemptChange,
+    onCollapse,
 }: OrderCartProps) {
     const { t } = useTranslation("pos");
     const subtotal = calcSubtotal(items);
@@ -89,29 +91,42 @@ export function OrderCart({
     const action = getMainAction();
 
     return (
-        <div className="flex flex-col h-full bg-card border-l border-border overflow-hidden shadow-2xl">
+        <div className="@container flex flex-col h-full bg-card border-l border-border overflow-hidden shadow-2xl">
             {/* Scrollable content: header, items, notes — everything except the pinned footer below.
                 On short screens this scrolls so the totals/order button footer never gets clipped. */}
             <ScrollArea className="flex-1 min-h-0">
             {/* Header */}
-            <div className="p-6 border-b border-border space-y-5 bg-card/50">
-                <div className="flex justify-between items-center">
-                    <div className="space-y-0.5">
-                        <h2 className="text-xl font-black tracking-tight">{t("order_cart.header.active_order")}</h2>
-                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+            <div className="p-4 @sm:p-6 border-b border-border space-y-4 @sm:space-y-5 bg-card/50">
+                <div className="flex justify-between items-center gap-2">
+                    <div className="space-y-0.5 min-w-0">
+                        <h2 className="text-base @sm:text-lg @lg:text-xl font-black tracking-tight truncate">{t("order_cart.header.active_order")}</h2>
+                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest truncate">
                             {staffName ? t("order_cart.header.operator", { name: staffName }) : t("order_cart.header.no_staff_logged_in")}
                         </p>
                     </div>
-                    {!isCartEmpty && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={onClear}
-                            className="text-destructive hover:bg-destructive/10 h-8 font-black text-[10px] uppercase tracking-widest"
-                        >
-                            {t("order_cart.header.discard")}
-                        </Button>
-                    )}
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                        {!isCartEmpty && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={onClear}
+                                className="text-destructive hover:bg-destructive/10 h-8 font-black text-[10px] uppercase tracking-widest"
+                            >
+                                {t("order_cart.header.discard")}
+                            </Button>
+                        )}
+                        {onCollapse && (
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={onCollapse}
+                                className="h-8 w-8 text-muted-foreground hover:text-foreground flex-shrink-0"
+                                title={t("order_cart.header.collapse")}
+                            >
+                                <PanelRightClose className="w-4 h-4" />
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 {/* Mode selector */}
@@ -317,21 +332,21 @@ export function OrderCart({
                         <span>{formatCurrency(tax, currency)}</span>
                     </div>
                     <div className="flex justify-between items-baseline pt-2">
-                        <span className="text-sm font-black uppercase tracking-tighter">
+                        <span className="text-xs @sm:text-sm font-black uppercase tracking-tighter">
                             {t("order_cart.totals.total_amount")}
                         </span>
-                        <span className="text-3xl font-black text-primary">
+                        <span className="text-xl @sm:text-2xl @lg:text-3xl font-black text-primary">
                             {formatCurrency(total, currency)}
                         </span>
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-3 pt-2">
+                <div className="flex flex-col gap-2 @sm:gap-3 pt-2">
                     {canCreateOrder && (
                         <Button
                             onClick={action.highlight ? onChangeTable : onConfirm}
                             disabled={action.disabled}
-                            className={`w-full h-16 font-black text-sm gap-3 rounded-2xl shadow-xl transition-all active:scale-[0.98] ${
+                            className={`w-full h-12 @sm:h-14 @lg:h-16 font-black text-xs @sm:text-sm gap-2 @sm:gap-3 rounded-2xl shadow-xl transition-all active:scale-[0.98] ${
                                 action.highlight
                                     ? "bg-amber-500 hover:bg-amber-600 text-amber-950 animate-pulse"
                                     : ""
@@ -343,23 +358,23 @@ export function OrderCart({
                     )}
 
                     {canCreateOrder && (
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 @xs:grid-cols-2 gap-2 @sm:gap-3">
                             <Button
                                 variant="outline"
-                                className="h-14 flex flex-col items-center justify-center gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
+                                className="h-11 @sm:h-14 flex flex-row @xs:flex-col items-center justify-center gap-2 @xs:gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
                                 disabled={isCartEmpty || isDineInMissingTable}
                                 onClick={() => onPayment("cash")}
                             >
-                                <Banknote className="h-4 w-4 text-muted-foreground" />
+                                <Banknote className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                                 {t("order_cart.payment.cash_settle")}
                             </Button>
                             <Button
                                 variant="outline"
-                                className="h-14 flex flex-col items-center justify-center gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
+                                className="h-11 @sm:h-14 flex flex-row @xs:flex-col items-center justify-center gap-2 @xs:gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
                                 disabled={isCartEmpty || isDineInMissingTable}
                                 onClick={() => onPayment("card")}
                             >
-                                <CreditCard className="h-4 w-4 text-muted-foreground" />
+                                <CreditCard className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                                 {t("order_cart.payment.card_settle")}
                             </Button>
                         </div>

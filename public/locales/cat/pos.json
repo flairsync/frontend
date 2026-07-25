@@ -67,7 +67,8 @@
       "active_order": "Comanda activa",
       "operator": "Operador: {{name}}",
       "no_staff_logged_in": "Cap membre del personal ha iniciat sessió",
-      "discard": "Descartar"
+      "discard": "Descartar",
+      "collapse": "Amagar el panell del carret"
     },
     "mode": {
       "dine_in": "Per menjar aquí",
@@ -256,7 +257,8 @@
       "lock_terminal": "Bloquejar terminal",
       "drag_to_resize": "Arrossega per redimensionar",
       "refresh_orders": "Actualitzar comandes",
-      "refresh_tables": "Actualitzar taules"
+      "refresh_tables": "Actualitzar taules",
+      "expand_cart": "Mostrar el panell del carret"
     },
     "sidebar": {
       "category": "Categoria",

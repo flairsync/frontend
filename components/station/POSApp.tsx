@@ -52,7 +52,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
     Search, ClipboardList, Package, LayoutGrid,
     User, MapPin, Utensils, CreditCard, Building2,
-    Settings, Lock, RefreshCw,
+    Settings, Lock, RefreshCw, PanelRightOpen,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -177,6 +177,7 @@ function POSMain({
     // ── Resizable panels ──
     const leftPanel = useResizablePanel(192, 140, 300);
     const rightPanel = useResizablePanel(340, 260, 500, true);
+    const [isCartCollapsed, setIsCartCollapsed] = useState(false);
 
     // ── Data state ──
     const [menus, setMenus] = useState<PosMenu[]>(bootstrapData.menus);
@@ -1038,48 +1039,66 @@ function POSMain({
                     )}
                 </main>
 
-                {/* Right resize handle */}
-                <div
-                    onMouseDown={rightPanel.startResize}
-                    onTouchStart={rightPanel.startResize}
-                    style={{ touchAction: "none" }}
-                    className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
-                    title={t("pos_app.titles.drag_to_resize")}
-                />
+                {/* Right resize handle — hidden while the cart is collapsed to a rail */}
+                {!isCartCollapsed && (
+                    <div
+                        onMouseDown={rightPanel.startResize}
+                        onTouchStart={rightPanel.startResize}
+                        style={{ touchAction: "none" }}
+                        className="w-1 flex-shrink-0 cursor-col-resize bg-border hover:bg-primary/50 active:bg-primary transition-colors select-none"
+                        title={t("pos_app.titles.drag_to_resize")}
+                    />
+                )}
 
                 {/* RIGHT CART SIDEBAR */}
                 <aside
-                    style={{ width: rightPanel.width }}
-                    className="flex flex-col h-full flex-shrink-0 bg-card/20 overflow-hidden"
+                    style={{ width: isCartCollapsed ? 56 : rightPanel.width }}
+                    className="flex flex-col h-full flex-shrink-0 bg-card/20 overflow-hidden transition-[width] duration-150"
                 >
-                    <OrderCart
-                        items={cart}
-                        orderMode={orderMode}
-                        selectedTable={selectedTable?.name}
-                        staffName={session?.name}
-                        currency={station.business.currency}
-                        kitchenNotes={kitchenNotes}
-                        taxExempt={taxExempt}
-                        canCreateOrder={perms?.posCreateOrder ?? false}
-                        canApplyDiscount={perms?.posApplyDiscount ?? false}
-                        onUpdateQuantity={(id, delta) =>
-                            setCart((prev) =>
-                                prev.map((item) =>
-                                    item.id === id
-                                        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-                                        : item,
-                                ),
-                            )
-                        }
-                        onRemoveItem={(id) => setCart((prev) => prev.filter((item) => item.id !== id))}
-                        onClear={handleClearCart}
-                        onPayment={(method) => handlePayment(method)}
-                        onConfirm={handleConfirmOrder}
-                        onChangeMode={setOrderMode}
-                        onChangeTable={() => setActiveMainSection("tables")}
-                        onKitchenNotesChange={setKitchenNotes}
-                        onTaxExemptChange={setTaxExempt}
-                    />
+                    {isCartCollapsed ? (
+                        <button
+                            onClick={() => setIsCartCollapsed(false)}
+                            title={t("pos_app.titles.expand_cart")}
+                            className="flex-1 flex flex-col items-center justify-start pt-4 gap-3 hover:bg-muted/40 transition-colors border-l border-border"
+                        >
+                            <PanelRightOpen className="w-5 h-5 text-muted-foreground" />
+                            {cart.length > 0 && (
+                                <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground text-[10px] font-black flex items-center justify-center">
+                                    {cart.length}
+                                </span>
+                            )}
+                        </button>
+                    ) : (
+                        <OrderCart
+                            items={cart}
+                            orderMode={orderMode}
+                            selectedTable={selectedTable?.name}
+                            staffName={session?.name}
+                            currency={station.business.currency}
+                            kitchenNotes={kitchenNotes}
+                            taxExempt={taxExempt}
+                            canCreateOrder={perms?.posCreateOrder ?? false}
+                            canApplyDiscount={perms?.posApplyDiscount ?? false}
+                            onUpdateQuantity={(id, delta) =>
+                                setCart((prev) =>
+                                    prev.map((item) =>
+                                        item.id === id
+                                            ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+                                            : item,
+                                    ),
+                                )
+                            }
+                            onRemoveItem={(id) => setCart((prev) => prev.filter((item) => item.id !== id))}
+                            onClear={handleClearCart}
+                            onPayment={(method) => handlePayment(method)}
+                            onConfirm={handleConfirmOrder}
+                            onChangeMode={setOrderMode}
+                            onChangeTable={() => setActiveMainSection("tables")}
+                            onKitchenNotesChange={setKitchenNotes}
+                            onTaxExemptChange={setTaxExempt}
+                            onCollapse={() => setIsCartCollapsed(true)}
+                        />
+                    )}
                 </aside>
             </div>
 
@@ -1156,7 +1175,7 @@ function ActiveOrderCard({
     const canPay = ["ACCEPTED", "PREPARING", "READY", "SERVED"].includes(statusUpper);
 
     return (
-        <Card className="bg-card border-border overflow-hidden hover:border-primary/30 transition-all">
+        <Card className="@container bg-card border-border overflow-hidden hover:border-primary/30 transition-all">
             <CardContent className="p-0">
                 <div className="p-5">
                     <div className="flex justify-between items-start mb-4">
@@ -1216,21 +1235,21 @@ function ActiveOrderCard({
                         )}
 
                         {canPay && posPermissions?.posRefund && (
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 @xs:grid-cols-2 gap-2">
                                 <Button
-                                    className="font-black text-[10px] h-10 gap-2"
+                                    className="font-black text-[10px] h-10 gap-2 min-w-0"
                                     onClick={() => onPay("card")}
                                 >
-                                    <CreditCard className="w-3 h-3" />
-                                    {t("pos_app.order_card.pay_card")}
+                                    <CreditCard className="w-3 h-3 flex-shrink-0" />
+                                    <span className="truncate">{t("pos_app.order_card.pay_card")}</span>
                                 </Button>
                                 <Button
                                     variant="outline"
-                                    className="font-black text-[10px] h-10 gap-2"
+                                    className="font-black text-[10px] h-10 gap-2 min-w-0"
                                     onClick={() => onPay("cash")}
                                 >
-                                    <Settings className="w-3 h-3" />
-                                    {t("pos_app.order_card.pay_cash")}
+                                    <Settings className="w-3 h-3 flex-shrink-0" />
+                                    <span className="truncate">{t("pos_app.order_card.pay_cash")}</span>
                                 </Button>
                             </div>
                         )}
