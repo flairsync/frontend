@@ -70,6 +70,10 @@
       "discard": "Annuler",
       "collapse": "Masquer le panneau du panier"
     },
+    "sections": {
+      "items": "Articles de la commande ({{count}})",
+      "totals": "Total et paiement"
+    },
     "mode": {
       "dine_in": "Sur place",
       "takeaway": "À emporter"

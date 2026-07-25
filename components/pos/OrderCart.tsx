@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import {
     Minus, Plus, Trash2, CreditCard, Banknote,
     Utensils, Package, MapPin, Send, AlertCircle, ChefHat, PanelRightClose,
+    ChevronDown, ChevronUp,
 } from "lucide-react";
 import { ValidationAlert } from "./ValidationAlert";
 import { type CartItem, calcSubtotal, calcTax, getTaxRate } from "@/features/pos/types";
@@ -59,6 +60,8 @@ export function OrderCart({
     onCollapse,
 }: OrderCartProps) {
     const { t } = useTranslation("pos");
+    const [itemsOpen, setItemsOpen] = useState(true);
+    const [totalsOpen, setTotalsOpen] = useState(true);
     const subtotal = calcSubtotal(items);
     const taxRate = getTaxRate();
     const tax = taxExempt ? 0 : calcTax(subtotal);
@@ -92,11 +95,8 @@ export function OrderCart({
 
     return (
         <div className="@container flex flex-col h-full bg-card border-l border-border overflow-hidden shadow-2xl">
-            {/* Scrollable content: header, items, notes — everything except the pinned footer below.
-                On short screens this scrolls so the totals/order button footer never gets clipped. */}
-            <ScrollArea className="flex-1 min-h-0">
-            {/* Header */}
-            <div className="p-4 @sm:p-6 border-b border-border space-y-4 @sm:space-y-5 bg-card/50">
+            {/* Top header — always visible, not part of either collapsible section */}
+            <div className="p-4 @sm:p-6 border-b border-border bg-card/50 flex-shrink-0">
                 <div className="flex justify-between items-center gap-2">
                     <div className="space-y-0.5 min-w-0">
                         <h2 className="text-base @sm:text-lg @lg:text-xl font-black tracking-tight truncate">{t("order_cart.header.active_order")}</h2>
@@ -128,258 +128,294 @@ export function OrderCart({
                         )}
                     </div>
                 </div>
+            </div>
 
-                {/* Mode selector */}
-                <div className="grid grid-cols-2 bg-background p-1.5 rounded-2xl border border-border">
-                    <button
-                        onClick={() => onChangeMode("dine-in")}
-                        className={`flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                            orderMode === "dine-in"
-                                ? "bg-primary text-primary-foreground shadow-lg"
-                                : "text-muted-foreground hover:text-foreground"
-                        }`}
-                    >
-                        <Utensils className="w-3.5 h-3.5" />
-                        {t("order_cart.mode.dine_in")}
-                    </button>
-                    <button
-                        onClick={() => onChangeMode("takeaway")}
-                        className={`flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                            orderMode === "takeaway"
-                                ? "bg-primary text-primary-foreground shadow-lg"
-                                : "text-muted-foreground hover:text-foreground"
-                        }`}
-                    >
+            {/* SECTION A — order details (mode/table/items/notes). Collapsible so it can yield
+                space to the totals/payment section below, or vice versa, on short tablet screens. */}
+            <div className={`flex flex-col border-b border-border min-h-0 ${itemsOpen ? "flex-1" : "flex-shrink-0"}`}>
+                <button
+                    onClick={() => setItemsOpen((o) => !o)}
+                    className="flex items-center justify-between px-4 @sm:px-6 py-3 flex-shrink-0 hover:bg-muted/40 transition-colors"
+                >
+                    <span className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                         <Package className="w-3.5 h-3.5" />
-                        {t("order_cart.mode.takeaway")}
-                    </button>
-                </div>
+                        {t("order_cart.sections.items", { count: items.length })}
+                    </span>
+                    {itemsOpen ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
+                </button>
 
-                {/* Table selector */}
-                {orderMode === "dine-in" && (
-                    <div
-                        onClick={onChangeTable}
-                        className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${
-                            selectedTable
-                                ? "bg-primary/5 border-primary/20 hover:bg-primary/10"
-                                : "bg-destructive/5 border-destructive/20 hover:bg-destructive/10 border-dashed animate-pulse"
-                        }`}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div
-                                className={`p-2 rounded-xl ${
-                                    selectedTable
-                                        ? "bg-primary/15 text-primary"
-                                        : "bg-destructive/15 text-destructive"
+                {itemsOpen && (
+                <ScrollArea className="flex-1 min-h-0">
+                    <div className="px-4 @sm:px-6 pb-4 @sm:pb-6 space-y-4 @sm:space-y-5">
+                        {/* Mode selector */}
+                        <div className="grid grid-cols-2 bg-background p-1.5 rounded-2xl border border-border">
+                            <button
+                                onClick={() => onChangeMode("dine-in")}
+                                className={`flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                                    orderMode === "dine-in"
+                                        ? "bg-primary text-primary-foreground shadow-lg"
+                                        : "text-muted-foreground hover:text-foreground"
                                 }`}
                             >
-                                <MapPin className="w-4 h-4" />
-                            </div>
-                            <div>
-                                <p className="text-[9px] uppercase font-black text-muted-foreground tracking-tighter">
-                                    {t("order_cart.table.location")}
-                                </p>
-                                <p
-                                    className={`text-sm font-black ${
-                                        selectedTable
-                                            ? "text-primary"
-                                            : "text-destructive italic underline decoration-wavy underline-offset-4"
-                                    }`}
-                                >
-                                    {selectedTable || t("order_cart.table.assign_a_table")}
-                                </p>
-                            </div>
-                        </div>
-                        {selectedTable && (
-                            <span className="text-[10px] font-black text-primary/60 uppercase">
-                                {t("order_cart.table.change")}
-                            </span>
-                        )}
-                    </div>
-                )}
-            </div>
-
-            {/* Cart items */}
-            <div className="p-6">
-                {isCartEmpty ? (
-                    <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-                        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4 border border-border">
-                            <Package className="w-8 h-8 opacity-20" />
-                        </div>
-                        <p className="text-xs font-black uppercase tracking-widest">
-                            {t("order_cart.empty.title")}
-                        </p>
-                        <p className="text-[10px] mt-1 italic">{t("order_cart.empty.description")}</p>
-                    </div>
-                ) : (
-                    <div className="space-y-5">
-                        {items.map((item) => (
-                            <div
-                                key={item.id}
-                                className="flex justify-between items-start gap-4 p-3 rounded-2xl bg-background/50 border border-border hover:border-primary/20 transition-colors"
+                                <Utensils className="w-3.5 h-3.5" />
+                                {t("order_cart.mode.dine_in")}
+                            </button>
+                            <button
+                                onClick={() => onChangeMode("takeaway")}
+                                className={`flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                                    orderMode === "takeaway"
+                                        ? "bg-primary text-primary-foreground shadow-lg"
+                                        : "text-muted-foreground hover:text-foreground"
+                                }`}
                             >
-                                <div className="flex-1 min-w-0">
-                                    <h4 className="font-black text-xs uppercase tracking-tight truncate">
-                                        {item.name}
-                                        {item.variantName && (
-                                            <span className="font-normal normal-case text-muted-foreground ml-1">
-                                                ({item.variantName})
-                                            </span>
-                                        )}
-                                    </h4>
-                                    {item.modifierNames.length > 0 && (
-                                        <p className="text-[10px] text-muted-foreground truncate">
-                                            + {item.modifierNames.join(", ")}
+                                <Package className="w-3.5 h-3.5" />
+                                {t("order_cart.mode.takeaway")}
+                            </button>
+                        </div>
+
+                        {/* Table selector */}
+                        {orderMode === "dine-in" && (
+                            <div
+                                onClick={onChangeTable}
+                                className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                                    selectedTable
+                                        ? "bg-primary/5 border-primary/20 hover:bg-primary/10"
+                                        : "bg-destructive/5 border-destructive/20 hover:bg-destructive/10 border-dashed animate-pulse"
+                                }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div
+                                        className={`p-2 rounded-xl ${
+                                            selectedTable
+                                                ? "bg-primary/15 text-primary"
+                                                : "bg-destructive/15 text-destructive"
+                                        }`}
+                                    >
+                                        <MapPin className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[9px] uppercase font-black text-muted-foreground tracking-tighter">
+                                            {t("order_cart.table.location")}
                                         </p>
-                                    )}
-                                    <p className="text-[10px] text-muted-foreground font-bold mt-0.5">
-                                        {t("order_cart.item.price_per_unit", { price: formatCurrency(item.price, currency) })}
-                                    </p>
+                                        <p
+                                            className={`text-sm font-black ${
+                                                selectedTable
+                                                    ? "text-primary"
+                                                    : "text-destructive italic underline decoration-wavy underline-offset-4"
+                                            }`}
+                                        >
+                                            {selectedTable || t("order_cart.table.assign_a_table")}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-1.5 flex-shrink-0">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-10 w-10 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
-                                        onClick={() => onUpdateQuantity(item.id, -1)}
-                                    >
-                                        <Minus className="h-3.5 w-3.5" />
-                                    </Button>
-                                    <span className="w-5 text-center font-black text-xs text-primary">
-                                        {item.quantity}
+                                {selectedTable && (
+                                    <span className="text-[10px] font-black text-primary/60 uppercase">
+                                        {t("order_cart.table.change")}
                                     </span>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-10 w-10 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
-                                        onClick={() => onUpdateQuantity(item.id, 1)}
+                                )}
+                            </div>
+                        )}
+
+                        {/* Cart items */}
+                        {isCartEmpty ? (
+                            <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
+                                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4 border border-border">
+                                    <Package className="w-8 h-8 opacity-20" />
+                                </div>
+                                <p className="text-xs font-black uppercase tracking-widest">
+                                    {t("order_cart.empty.title")}
+                                </p>
+                                <p className="text-[10px] mt-1 italic">{t("order_cart.empty.description")}</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-5">
+                                {items.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="flex justify-between items-start gap-4 p-3 rounded-2xl bg-background/50 border border-border hover:border-primary/20 transition-colors"
                                     >
-                                        <Plus className="h-3.5 w-3.5" />
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-10 w-10 text-destructive/40 hover:text-destructive hover:bg-destructive/10 ml-1"
-                                        onClick={() => onRemoveItem(item.id)}
-                                    >
-                                        <Trash2 className="h-3.5 w-3.5" />
-                                    </Button>
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="font-black text-xs uppercase tracking-tight truncate">
+                                                {item.name}
+                                                {item.variantName && (
+                                                    <span className="font-normal normal-case text-muted-foreground ml-1">
+                                                        ({item.variantName})
+                                                    </span>
+                                                )}
+                                            </h4>
+                                            {item.modifierNames.length > 0 && (
+                                                <p className="text-[10px] text-muted-foreground truncate">
+                                                    + {item.modifierNames.join(", ")}
+                                                </p>
+                                            )}
+                                            <p className="text-[10px] text-muted-foreground font-bold mt-0.5">
+                                                {t("order_cart.item.price_per_unit", { price: formatCurrency(item.price, currency) })}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-1.5 flex-shrink-0">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-10 w-10 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
+                                                onClick={() => onUpdateQuantity(item.id, -1)}
+                                            >
+                                                <Minus className="h-3.5 w-3.5" />
+                                            </Button>
+                                            <span className="w-5 text-center font-black text-xs text-primary">
+                                                {item.quantity}
+                                            </span>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-10 w-10 bg-muted rounded-lg hover:bg-muted/80 active:scale-90"
+                                                onClick={() => onUpdateQuantity(item.id, 1)}
+                                            >
+                                                <Plus className="h-3.5 w-3.5" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-10 w-10 text-destructive/40 hover:text-destructive hover:bg-destructive/10 ml-1"
+                                                onClick={() => onRemoveItem(item.id)}
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Kitchen notes + tax-exempt */}
+                        {!isCartEmpty && (
+                            <div className="space-y-3">
+                                <div className="space-y-1.5">
+                                    <Label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                                        <ChefHat className="w-3 h-3" />
+                                        {t("order_cart.kitchen_note.label")}
+                                    </Label>
+                                    <Textarea
+                                        placeholder={t("order_cart.kitchen_note.placeholder")}
+                                        value={kitchenNotes}
+                                        onChange={(e) => onKitchenNotesChange?.(e.target.value)}
+                                        rows={2}
+                                        className="text-xs resize-none bg-background/50"
+                                    />
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <Label htmlFor="tax-exempt-toggle" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+                                        {t("order_cart.tax_exempt")}
+                                    </Label>
+                                    <Switch
+                                        id="tax-exempt-toggle"
+                                        checked={taxExempt}
+                                        onCheckedChange={onTaxExemptChange}
+                                    />
                                 </div>
                             </div>
-                        ))}
+                        )}
+
+                        {/* Validation hint */}
+                        <ValidationAlert
+                            type={isDineInMissingTable ? "error" : "info"}
+                            message={
+                                isDineInMissingTable
+                                    ? t("order_cart.validation.table_required")
+                                    : t("order_cart.validation.ready_for_kitchen")
+                            }
+                            isVisible={!isCartEmpty}
+                        />
                     </div>
+                </ScrollArea>
                 )}
             </div>
 
-            {/* Kitchen notes + tax-exempt */}
-            {!isCartEmpty && (
-                <div className="px-6 pb-3 space-y-3">
-                    <div className="space-y-1.5">
-                        <Label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
-                            <ChefHat className="w-3 h-3" />
-                            {t("order_cart.kitchen_note.label")}
-                        </Label>
-                        <Textarea
-                            placeholder={t("order_cart.kitchen_note.placeholder")}
-                            value={kitchenNotes}
-                            onChange={(e) => onKitchenNotesChange?.(e.target.value)}
-                            rows={2}
-                            className="text-xs resize-none bg-background/50"
-                        />
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="tax-exempt-toggle" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
-                            {t("order_cart.tax_exempt")}
-                        </Label>
-                        <Switch
-                            id="tax-exempt-toggle"
-                            checked={taxExempt}
-                            onCheckedChange={onTaxExemptChange}
-                        />
-                    </div>
-                </div>
-            )}
-
-            {/* Validation hint */}
-            <div className="px-6 py-2">
-                <ValidationAlert
-                    type={isDineInMissingTable ? "error" : "info"}
-                    message={
-                        isDineInMissingTable
-                            ? t("order_cart.validation.table_required")
-                            : t("order_cart.validation.ready_for_kitchen")
-                    }
-                    isVisible={!isCartEmpty}
-                />
-            </div>
-            </ScrollArea>
-
-            {/* Totals + payment — pinned outside the scroll area so it's always reachable, even on short screens */}
-            <div className="flex-shrink-0 p-6 bg-background space-y-5 border-t border-border">
-                <div className="space-y-1.5">
-                    <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                        <span>{t("order_cart.totals.subtotal")}</span>
-                        <span>{formatCurrency(subtotal, currency)}</span>
-                    </div>
-                    <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                        <span>
-                            {taxExempt
-                                ? t("order_cart.totals.tax_exempt")
-                                : taxRate > 0
-                                ? t("order_cart.totals.tax_with_rate", { rate: (taxRate * 100).toFixed(0) })
-                                : t("order_cart.totals.tax")}
-                        </span>
-                        <span>{formatCurrency(tax, currency)}</span>
-                    </div>
-                    <div className="flex justify-between items-baseline pt-2">
-                        <span className="text-xs @sm:text-sm font-black uppercase tracking-tighter">
-                            {t("order_cart.totals.total_amount")}
-                        </span>
-                        <span className="text-xl @sm:text-2xl @lg:text-3xl font-black text-primary">
+            {/* SECTION B — totals, confirm, and pay-cash/pay-card. Collapsible so the order-items
+                section above can take the full height when settling isn't needed yet. */}
+            <div className="flex-shrink-0 bg-background">
+                <button
+                    onClick={() => setTotalsOpen((o) => !o)}
+                    className="w-full flex items-center justify-between px-4 @sm:px-6 py-3 hover:bg-muted/40 transition-colors"
+                >
+                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                        {t("order_cart.sections.totals")}
+                    </span>
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm @sm:text-base font-black text-primary">
                             {formatCurrency(total, currency)}
                         </span>
+                        {totalsOpen ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronUp className="w-4 h-4 text-muted-foreground" />}
+                    </div>
+                </button>
+
+                {totalsOpen && (
+                <div className="p-4 @sm:p-6 pt-0 space-y-5">
+                    <div className="space-y-1.5">
+                        <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                            <span>{t("order_cart.totals.subtotal")}</span>
+                            <span>{formatCurrency(subtotal, currency)}</span>
+                        </div>
+                        <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                            <span>
+                                {taxExempt
+                                    ? t("order_cart.totals.tax_exempt")
+                                    : taxRate > 0
+                                    ? t("order_cart.totals.tax_with_rate", { rate: (taxRate * 100).toFixed(0) })
+                                    : t("order_cart.totals.tax")}
+                            </span>
+                            <span>{formatCurrency(tax, currency)}</span>
+                        </div>
+                        <div className="flex justify-between items-baseline pt-2">
+                            <span className="text-xs @sm:text-sm font-black uppercase tracking-tighter">
+                                {t("order_cart.totals.total_amount")}
+                            </span>
+                            <span className="text-xl @sm:text-2xl @lg:text-3xl font-black text-primary">
+                                {formatCurrency(total, currency)}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2 @sm:gap-3 pt-2">
+                        {canCreateOrder && (
+                            <Button
+                                onClick={action.highlight ? onChangeTable : onConfirm}
+                                disabled={action.disabled}
+                                className={`w-full h-12 @sm:h-14 @lg:h-16 font-black text-xs @sm:text-sm gap-2 @sm:gap-3 rounded-2xl shadow-xl transition-all active:scale-[0.98] ${
+                                    action.highlight
+                                        ? "bg-amber-500 hover:bg-amber-600 text-amber-950 animate-pulse"
+                                        : ""
+                                }`}
+                            >
+                                {action.icon}
+                                {action.label.toUpperCase()}
+                            </Button>
+                        )}
+
+                        {canCreateOrder && (
+                            <div className="grid grid-cols-1 @xs:grid-cols-2 gap-2 @sm:gap-3">
+                                <Button
+                                    variant="outline"
+                                    className="h-11 @sm:h-14 flex flex-row @xs:flex-col items-center justify-center gap-2 @xs:gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
+                                    disabled={isCartEmpty || isDineInMissingTable}
+                                    onClick={() => onPayment("cash")}
+                                >
+                                    <Banknote className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                                    {t("order_cart.payment.cash_settle")}
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="h-11 @sm:h-14 flex flex-row @xs:flex-col items-center justify-center gap-2 @xs:gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
+                                    disabled={isCartEmpty || isDineInMissingTable}
+                                    onClick={() => onPayment("card")}
+                                >
+                                    <CreditCard className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                                    {t("order_cart.payment.card_settle")}
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
-
-                <div className="flex flex-col gap-2 @sm:gap-3 pt-2">
-                    {canCreateOrder && (
-                        <Button
-                            onClick={action.highlight ? onChangeTable : onConfirm}
-                            disabled={action.disabled}
-                            className={`w-full h-12 @sm:h-14 @lg:h-16 font-black text-xs @sm:text-sm gap-2 @sm:gap-3 rounded-2xl shadow-xl transition-all active:scale-[0.98] ${
-                                action.highlight
-                                    ? "bg-amber-500 hover:bg-amber-600 text-amber-950 animate-pulse"
-                                    : ""
-                            }`}
-                        >
-                            {action.icon}
-                            {action.label.toUpperCase()}
-                        </Button>
-                    )}
-
-                    {canCreateOrder && (
-                        <div className="grid grid-cols-1 @xs:grid-cols-2 gap-2 @sm:gap-3">
-                            <Button
-                                variant="outline"
-                                className="h-11 @sm:h-14 flex flex-row @xs:flex-col items-center justify-center gap-2 @xs:gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
-                                disabled={isCartEmpty || isDineInMissingTable}
-                                onClick={() => onPayment("cash")}
-                            >
-                                <Banknote className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                                {t("order_cart.payment.cash_settle")}
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="h-11 @sm:h-14 flex flex-row @xs:flex-col items-center justify-center gap-2 @xs:gap-1 font-black hover:bg-muted rounded-2xl active:scale-95 transition-all text-[9px] tracking-widest"
-                                disabled={isCartEmpty || isDineInMissingTable}
-                                onClick={() => onPayment("card")}
-                            >
-                                <CreditCard className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                                {t("order_cart.payment.card_settle")}
-                            </Button>
-                        </div>
-                    )}
-                </div>
+                )}
             </div>
         </div>
     );

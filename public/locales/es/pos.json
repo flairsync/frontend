@@ -70,6 +70,10 @@
       "discard": "Descartar",
       "collapse": "Ocultar panel del carrito"
     },
+    "sections": {
+      "items": "Artículos del pedido ({{count}})",
+      "totals": "Total y pago"
+    },
     "mode": {
       "dine_in": "Para comer aquí",
       "takeaway": "Para llevar"

@@ -70,6 +70,10 @@
       "discard": "Discard",
       "collapse": "Hide cart panel"
     },
+    "sections": {
+      "items": "Order Items ({{count}})",
+      "totals": "Total & Payment"
+    },
     "mode": {
       "dine_in": "Dine-In",
       "takeaway": "Takeaway"

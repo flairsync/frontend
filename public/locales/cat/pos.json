@@ -70,6 +70,10 @@
       "discard": "Descartar",
       "collapse": "Amagar el panell del carret"
     },
+    "sections": {
+      "items": "Articles de la comanda ({{count}})",
+      "totals": "Total i pagament"
+    },
     "mode": {
       "dine_in": "Per menjar aquí",
       "takeaway": "Per emportar"
