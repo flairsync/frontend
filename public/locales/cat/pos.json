@@ -133,7 +133,13 @@
       "change_due": "Canvi a retornar",
       "view_receipt": "Veure el rebut",
       "print_pdf": "Imprimir PDF",
-      "new_order": "Nova comanda"
+      "new_order": "Nova comanda",
+      "email_receipt_label": "Vols enviar un rebut per correu al client?",
+      "email_receipt_placeholder": "client@correu.com",
+      "email_receipt_button": "Envia",
+      "email_receipt_sent": "Rebut enviat!",
+      "email_receipt_invalid": "Introdueix una adreça de correu vàlida",
+      "email_receipt_failed": "No s'ha pogut enviar el rebut per correu"
     },
     "confirm": {
       "cash_payment": "Pagament en efectiu",

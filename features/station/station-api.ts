@@ -109,3 +109,10 @@ export const reorderStationOrderApiCall = (
   orderId: string,
   data?: { type?: "dine_in" | "takeaway"; tableId?: string },
 ) => staffApi.patch(`/station/orders/${orderId}/reorder`, data ?? {});
+
+export const setStationOrderEmailApiCall = (orderId: string, email: string) =>
+  staffApi.post(
+    `/station/orders/${orderId}/email`,
+    { email },
+    { headers: { "Idempotency-Key": crypto.randomUUID() } },
+  );

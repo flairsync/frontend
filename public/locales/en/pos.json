@@ -133,7 +133,13 @@
       "change_due": "Change Due",
       "view_receipt": "View Receipt",
       "print_pdf": "Print PDF",
-      "new_order": "New Order"
+      "new_order": "New Order",
+      "email_receipt_label": "Email a receipt to the customer?",
+      "email_receipt_placeholder": "customer@email.com",
+      "email_receipt_button": "Send",
+      "email_receipt_sent": "Receipt sent!",
+      "email_receipt_invalid": "Please enter a valid email address",
+      "email_receipt_failed": "Couldn't send the receipt email"
     },
     "confirm": {
       "cash_payment": "Cash Payment",

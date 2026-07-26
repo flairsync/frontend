@@ -29,7 +29,11 @@
   },
   "business_page": {
     "header": {
-      "reserve_table_button": "Reservar una mesa"
+      "reserve_table_button": "Reservar una mesa",
+      "order_online_button": "Pedir en línea"
+    },
+    "gallery": {
+      "section_title": "Galería"
     },
     "info_cards": {
       "rating_title": "Calificación",

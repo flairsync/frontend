@@ -29,7 +29,11 @@
   },
   "business_page": {
     "header": {
-      "reserve_table_button": "Reserva una taula"
+      "reserve_table_button": "Reserva una taula",
+      "order_online_button": "Comanda en línia"
+    },
+    "gallery": {
+      "section_title": "Galeria"
     },
     "info_cards": {
       "rating_title": "Valoració",

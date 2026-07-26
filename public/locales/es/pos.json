@@ -133,7 +133,13 @@
       "change_due": "Cambio a entregar",
       "view_receipt": "Ver recibo",
       "print_pdf": "Imprimir PDF",
-      "new_order": "Nuevo pedido"
+      "new_order": "Nuevo pedido",
+      "email_receipt_label": "¿Enviar un recibo por correo al cliente?",
+      "email_receipt_placeholder": "cliente@correo.com",
+      "email_receipt_button": "Enviar",
+      "email_receipt_sent": "¡Recibo enviado!",
+      "email_receipt_invalid": "Introduce una dirección de correo válida",
+      "email_receipt_failed": "No se pudo enviar el recibo por correo"
     },
     "confirm": {
       "cash_payment": "Pago en efectivo",

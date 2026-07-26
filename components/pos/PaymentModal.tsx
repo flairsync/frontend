@@ -6,16 +6,19 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2, Download } from "lucide-react";
+import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2, Download, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { staffApi } from "@/features/station/station-api";
+import { staffApi, setStationOrderEmailApiCall } from "@/features/station/station-api";
 import { printReceiptApiCall } from "@/features/orders/service";
 import { getCurrencySymbol } from "@/utils/currency";
 import DiscountPanel from "./DiscountPanel";
 import SplitBillPanel from "./SplitBillPanel";
 import ReceiptView from "./ReceiptView";
 import StationReceiptView from "./StationReceiptView";
+import { Input } from "@/components/ui/input";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface PaymentModalProps {
     isOpen: boolean;
@@ -58,6 +61,8 @@ export function PaymentModal({
     const [showReceipt, setShowReceipt] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [isPrintingPdf, setIsPrintingPdf] = useState(false);
+    const [guestEmail, setGuestEmail] = useState("");
+    const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent">("idle");
 
     const effectiveTotal = total - discountAmount;
 
@@ -70,6 +75,8 @@ export function PaymentModal({
             setShowReceipt(false);
             setProcessing(false);
             setIsPrintingPdf(false);
+            setGuestEmail("");
+            setEmailStatus("idle");
         }
     }, [isOpen]);
 
@@ -123,6 +130,23 @@ export function PaymentModal({
         }
         // Non-station mode: no API call (legacy / placeholder)
         setStep("success");
+    }
+
+    async function handleSendReceiptEmail() {
+        if (!orderId) return;
+        if (!EMAIL_REGEX.test(guestEmail)) {
+            toast.error(t("payment_modal.success.email_receipt_invalid"));
+            return;
+        }
+        setEmailStatus("sending");
+        try {
+            await setStationOrderEmailApiCall(orderId, guestEmail);
+            setEmailStatus("sent");
+            toast.success(t("payment_modal.success.email_receipt_sent"));
+        } catch (e: any) {
+            setEmailStatus("idle");
+            toast.error(e?.response?.data?.message ?? t("payment_modal.success.email_receipt_failed"));
+        }
     }
 
     // ── Receipt view ──────────────────────────────────────────────────────────
@@ -191,6 +215,48 @@ export function PaymentModal({
                             </>
                         )}
                     </div>
+
+                    {orderId && stationMode && (
+                        <div className="mx-2 mb-2 p-4 rounded-2xl border border-border space-y-2">
+                            {emailStatus === "sent" ? (
+                                <p className="text-sm text-primary font-bold flex items-center gap-2">
+                                    <Mail className="h-4 w-4" />
+                                    {t("payment_modal.success.email_receipt_sent")}
+                                </p>
+                            ) : (
+                                <>
+                                    <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                                        {t("payment_modal.success.email_receipt_label")}
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <Input
+                                            type="email"
+                                            inputMode="email"
+                                            autoComplete="email"
+                                            placeholder={t("payment_modal.success.email_receipt_placeholder")}
+                                            value={guestEmail}
+                                            onChange={(e) => setGuestEmail(e.target.value)}
+                                            onKeyDown={(e) => e.key === "Enter" && handleSendReceiptEmail()}
+                                            disabled={emailStatus === "sending"}
+                                        />
+                                        <Button
+                                            variant="outline"
+                                            className="shrink-0 gap-2"
+                                            disabled={emailStatus === "sending" || !guestEmail}
+                                            onClick={handleSendReceiptEmail}
+                                        >
+                                            {emailStatus === "sending" ? (
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                            ) : (
+                                                <Mail className="h-4 w-4" />
+                                            )}
+                                            {t("payment_modal.success.email_receipt_button")}
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
 
                     <div className="flex gap-3 p-2">
                         {orderId && (

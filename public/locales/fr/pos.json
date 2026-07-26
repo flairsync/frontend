@@ -133,7 +133,13 @@
       "change_due": "Monnaie à rendre",
       "view_receipt": "Voir le reçu",
       "print_pdf": "Imprimer le PDF",
-      "new_order": "Nouvelle commande"
+      "new_order": "Nouvelle commande",
+      "email_receipt_label": "Envoyer un reçu par e-mail au client ?",
+      "email_receipt_placeholder": "client@email.com",
+      "email_receipt_button": "Envoyer",
+      "email_receipt_sent": "Reçu envoyé !",
+      "email_receipt_invalid": "Veuillez saisir une adresse e-mail valide",
+      "email_receipt_failed": "Impossible d'envoyer le reçu par e-mail"
     },
     "confirm": {
       "cash_payment": "Paiement en espèces",
