@@ -147,18 +147,20 @@ export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
             {/* Gallery */}
             {media.length > 1 && (
                 <section className="px-6 md:px-16 py-16">
-                    <h2 className="text-2xl font-bold mb-8">{t("business_page.gallery.section_title", "Gallery")}</h2>
-                    <PhotoProvider>
-                        <div className="columns-2 md:columns-3 gap-3 max-w-5xl">
-                            {media.slice(1).map((m, i) => (
-                                <PhotoView key={m.id} src={m.url}>
-                                    <div className={`mb-3 rounded-2xl overflow-hidden cursor-pointer ${TILE_ASPECT[i % TILE_ASPECT.length]}`}>
-                                        <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                                    </div>
-                                </PhotoView>
-                            ))}
-                        </div>
-                    </PhotoProvider>
+                    <div className="max-w-5xl mx-auto">
+                        <h2 className="text-2xl font-bold mb-8">{t("business_page.gallery.section_title", "Gallery")}</h2>
+                        <PhotoProvider>
+                            <div className="columns-2 md:columns-3 gap-3">
+                                {media.slice(1).map((m, i) => (
+                                    <PhotoView key={m.id} src={m.url}>
+                                        <div className={`mb-3 rounded-2xl overflow-hidden cursor-pointer ${TILE_ASPECT[i % TILE_ASPECT.length]}`}>
+                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                                        </div>
+                                    </PhotoView>
+                                ))}
+                            </div>
+                        </PhotoProvider>
+                    </div>
                 </section>
             )}
 

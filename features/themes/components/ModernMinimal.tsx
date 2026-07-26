@@ -112,7 +112,7 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
             {media.length > 0 && (
                 <section className="pb-14">
                     <PhotoProvider>
-                        <div className="flex gap-px overflow-x-auto px-6 md:px-16">
+                        <div className="flex flex-wrap gap-px justify-center px-6 md:px-16">
                             {media.map((m) => (
                                 <GalleryImage key={m.id} url={m.url} blurHash={m.blurHash} />
                             ))}
