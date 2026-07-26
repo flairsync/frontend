@@ -1,7 +1,9 @@
 import { ComponentType } from "react";
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
+import { ClassicTheme } from "./components/ClassicTheme";
 import { ModernMinimalTheme } from "./components/ModernMinimal";
+import { WarmBistroTheme } from "./components/WarmBistro";
 import { DefaultTheme } from "./components/DefaultTheme";
 
 export interface ThemeComponentProps {
@@ -14,12 +16,13 @@ export interface ThemeComponentProps {
 // registry-by-string-key convention the old site-builder used for its
 // component tree — just one level instead of nested sections/components.
 //
-// Only "modern-minimal" has a real component below; the other seeded catalog
-// keys ("classic", "warm-bistro") intentionally fall back to DefaultTheme
-// until their visual designs are built — that's separate follow-up design
-// work, not part of this backend/scaffold pass.
+// DefaultTheme is reserved purely as the fallback for a null/unregistered
+// key (e.g. a business with no theme applied yet) — it is never one of the
+// selectable catalog themes itself.
 export const THEME_REGISTRY: Record<string, ComponentType<ThemeComponentProps>> = {
+  "classic": ClassicTheme,
   "modern-minimal": ModernMinimalTheme,
+  "warm-bistro": WarmBistroTheme,
 };
 
 export const resolveThemeComponent = (

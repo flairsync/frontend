@@ -1,9 +1,13 @@
+import { useState } from "react";
+import { Eye } from "lucide-react";
 import { useThemeCatalog } from "@/features/themes/useThemes";
 import { ThemeCatalogItem } from "@/features/themes/types";
+import { THEME_REGISTRY } from "@/features/themes/registry";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import ThemePreviewModal from "./ThemePreviewModal";
 
 interface ThemesManagerProps {
     businessId: string;
@@ -13,15 +17,22 @@ const ThemeCard = ({
     theme,
     onApply,
     onPurchase,
+    onPreview,
     applying,
     purchasing,
 }: {
     theme: ThemeCatalogItem;
     onApply: (themeId: string) => void;
     onPurchase: (themeId: string) => void;
+    onPreview: (theme: ThemeCatalogItem) => void;
     applying: boolean;
     purchasing: boolean;
 }) => {
+    // Only themes with a real coded design get a preview — otherwise the
+    // iframe would silently render DefaultTheme's bare fallback and mislead
+    // the owner into thinking that's the actual theme.
+    const hasRealDesign = theme.key in THEME_REGISTRY;
+
     return (
         <Card className="overflow-hidden">
             <div className="aspect-video bg-muted flex items-center justify-center">
@@ -43,16 +54,21 @@ const ThemeCard = ({
                     <p className="text-sm text-muted-foreground">{theme.description}</p>
                 )}
             </CardContent>
-            <CardFooter>
+            <CardFooter className="gap-2">
+                {hasRealDesign && (
+                    <Button variant="outline" size="icon" onClick={() => onPreview(theme)} aria-label="Preview theme">
+                        <Eye />
+                    </Button>
+                )}
                 {theme.applied ? (
-                    <Button disabled className="w-full" variant="outline">Currently applied</Button>
+                    <Button disabled className="flex-1" variant="outline">Currently applied</Button>
                 ) : theme.owned ? (
-                    <Button className="w-full" disabled={applying} onClick={() => onApply(theme.id)}>
+                    <Button className="flex-1" disabled={applying} onClick={() => onApply(theme.id)}>
                         Apply
                     </Button>
                 ) : (
                     <Button
-                        className="w-full"
+                        className="flex-1"
                         variant="secondary"
                         disabled={purchasing}
                         onClick={() => onPurchase(theme.id)}
@@ -75,6 +91,7 @@ export default function ThemesManager({ businessId }: ThemesManagerProps) {
         purchaseTheme,
         purchasingTheme,
     } = useThemeCatalog(businessId);
+    const [previewTheme, setPreviewTheme] = useState<ThemeCatalogItem | null>(null);
 
     if (fetchingThemes) {
         return (
@@ -105,11 +122,22 @@ export default function ThemesManager({ businessId }: ThemesManagerProps) {
                         theme={theme}
                         onApply={applyTheme}
                         onPurchase={purchaseTheme}
+                        onPreview={setPreviewTheme}
                         applying={applyingTheme}
                         purchasing={purchasingTheme}
                     />
                 ))}
             </div>
+
+            <ThemePreviewModal
+                theme={previewTheme}
+                businessId={businessId}
+                onOpenChange={(open) => !open && setPreviewTheme(null)}
+                onApply={applyTheme}
+                applying={applyingTheme}
+                onPurchase={purchaseTheme}
+                purchasing={purchasingTheme}
+            />
         </div>
     );
 }
