@@ -1136,6 +1136,7 @@ function POSMain({
                 total={payingOrderTotal || cartTotal}
                 method={paymentMethod}
                 orderId={payingOrderId ?? undefined}
+                currency={station.business.currency}
                 stationMode
             />
 

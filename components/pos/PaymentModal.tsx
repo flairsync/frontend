@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { staffApi } from "@/features/station/station-api";
 import { printReceiptApiCall } from "@/features/orders/service";
+import { getCurrencySymbol } from "@/utils/currency";
 import DiscountPanel from "./DiscountPanel";
 import SplitBillPanel from "./SplitBillPanel";
 import ReceiptView from "./ReceiptView";
@@ -28,6 +29,8 @@ interface PaymentModalProps {
     /** Required in management mode for discount/split panels and ReceiptView */
     businessId?: string;
     orderItems?: Array<{ id: string; nameSnapshot: string; totalPrice: number }>;
+    /** ISO currency code for the business (e.g. "EUR"); defaults to USD symbol if not provided */
+    currency?: string;
 }
 
 const QUICK_AMOUNTS = [5, 10, 20, 50, 100];
@@ -44,8 +47,10 @@ export function PaymentModal({
     orderId,
     businessId,
     orderItems = [],
+    currency,
 }: PaymentModalProps) {
     const { t } = useTranslation("pos");
+    const currencySymbol = getCurrencySymbol(currency);
     const [step, setStep] = useState<Step>("confirm");
     const [cashInput, setCashInput] = useState("");
     const [activePanel, setActivePanel] = useState<Panel>("none");
@@ -124,7 +129,7 @@ export function PaymentModal({
 
     if (showReceipt && orderId) {
         const receiptContent = stationMode ? (
-            <StationReceiptView orderId={orderId} onClose={onClose} onNewOrder={onClose} />
+            <StationReceiptView orderId={orderId} currency={currency} onClose={onClose} onNewOrder={onClose} />
         ) : businessId ? (
             <ReceiptView businessId={businessId} orderId={orderId} onClose={onClose} onNewOrder={onClose} />
         ) : null;
@@ -161,26 +166,26 @@ export function PaymentModal({
                     <div className="bg-muted/30 p-5 rounded-2xl border border-border space-y-3 mx-2 my-2">
                         <div className="flex justify-between items-center">
                             <span className="text-muted-foreground text-sm">{t("payment_modal.success.total_charged")}</span>
-                            <span className="text-xl font-black">${effectiveTotal.toFixed(2)}</span>
+                            <span className="text-xl font-black">{currencySymbol}{effectiveTotal.toFixed(2)}</span>
                         </div>
                         {discountAmount > 0 && (
                             <div className="flex justify-between items-center">
                                 <span className="text-muted-foreground text-sm">{t("payment_modal.success.discount")}</span>
-                                <span className="font-bold text-primary">−${discountAmount.toFixed(2)}</span>
+                                <span className="font-bold text-primary">−{currencySymbol}{discountAmount.toFixed(2)}</span>
                             </div>
                         )}
                         {method === "cash" && cashGiven > 0 && (
                             <>
                                 <div className="flex justify-between items-center">
                                     <span className="text-muted-foreground text-sm">{t("payment_modal.success.cash_received")}</span>
-                                    <span className="font-bold">${cashGiven.toFixed(2)}</span>
+                                    <span className="font-bold">{currencySymbol}{cashGiven.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center border-t border-border pt-3">
                                     <span className="text-muted-foreground text-sm font-black uppercase tracking-wider">
                                         {t("payment_modal.success.change_due")}
                                     </span>
                                     <span className="text-2xl font-black text-primary">
-                                        ${Math.max(0, change).toFixed(2)}
+                                        {currencySymbol}{Math.max(0, change).toFixed(2)}
                                     </span>
                                 </div>
                             </>
@@ -266,11 +271,11 @@ export function PaymentModal({
                     </span>
                     <div className="text-right">
                         <span className="text-4xl font-black text-primary">
-                            ${effectiveTotal.toFixed(2)}
+                            {currencySymbol}{effectiveTotal.toFixed(2)}
                         </span>
                         {discountAmount > 0 && (
                             <p className="text-xs text-muted-foreground line-through">
-                                ${total.toFixed(2)}
+                                {currencySymbol}{total.toFixed(2)}
                             </p>
                         )}
                     </div>
@@ -344,7 +349,7 @@ export function PaymentModal({
                                 {t("payment_modal.confirm.cash_tendered")}
                             </p>
                             <p className="text-3xl font-black font-mono">
-                                ${cashInput || "0.00"}
+                                {currencySymbol}{cashInput || "0.00"}
                             </p>
                             {cashInput && (
                                 <p
@@ -366,7 +371,7 @@ export function PaymentModal({
                                     onClick={() => setCashInput(amt.toFixed(2))}
                                     className="py-2 rounded-xl bg-muted hover:bg-muted/80 text-xs font-black transition-colors active:scale-95"
                                 >
-                                    ${amt}
+                                    {currencySymbol}{amt}
                                 </button>
                             ))}
                         </div>

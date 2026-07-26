@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Printer, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatCurrency } from "@/lib/formatCurrency";
+import { toIsoCurrencyCode } from "@/utils/currency";
 
 interface StationReceiptItem {
     id: string;
@@ -51,8 +53,8 @@ interface StationReceipt {
     taxExempt?: boolean;
 }
 
-function fmt(n: number) {
-    return `$${Number(n).toFixed(2)}`;
+function fmt(n: number, currency: string) {
+    return formatCurrency(Number(n), currency);
 }
 
 function fmtTime(iso: string | null | undefined) {
@@ -64,14 +66,16 @@ function fmtTime(iso: string | null | undefined) {
 
 interface Props {
     orderId: string;
+    currency?: string;
     onClose: () => void;
     onNewOrder?: () => void;
 }
 
-export default function StationReceiptView({ orderId, onClose, onNewOrder }: Props) {
+export default function StationReceiptView({ orderId, currency, onClose, onNewOrder }: Props) {
     const { t } = useTranslation("pos");
     const [receipt, setReceipt] = useState<StationReceipt | null>(null);
     const [loading, setLoading] = useState(true);
+    const isoCurrency = toIsoCurrencyCode(currency);
 
     useEffect(() => {
         stationApi
@@ -146,12 +150,12 @@ export default function StationReceiptView({ orderId, onClose, onNewOrder }: Pro
                                     <span className="flex-1 pr-2">
                                         {item.quantity}× {item.name}
                                     </span>
-                                    <span>{fmt(item.totalPrice)}</span>
+                                    <span>{fmt(item.totalPrice, isoCurrency)}</span>
                                 </div>
                                 {item.modifiers.map((mod, j) => (
                                     <div key={j} className="flex justify-between text-muted-foreground text-[10px] pl-4">
                                         <span>+ {mod.name}</span>
-                                        {mod.price > 0 && <span>{fmt(mod.price)}</span>}
+                                        {mod.price > 0 && <span>{fmt(mod.price, isoCurrency)}</span>}
                                     </div>
                                 ))}
                                 {item.notes && (
@@ -165,18 +169,18 @@ export default function StationReceiptView({ orderId, onClose, onNewOrder }: Pro
                     <div className="px-4 py-3 border-b border-border space-y-1 text-xs">
                         <div className="flex justify-between text-muted-foreground">
                             <span>{t("station_receipt.fields.subtotal")}</span>
-                            <span>{fmt(receipt.subtotal)}</span>
+                            <span>{fmt(receipt.subtotal, isoCurrency)}</span>
                         </div>
                         {receipt.discountAmount > 0 && (
                             <div className="flex justify-between text-primary">
                                 <span>{t("station_receipt.fields.discount")}</span>
-                                <span>−{fmt(receipt.discountAmount)}</span>
+                                <span>−{fmt(receipt.discountAmount, isoCurrency)}</span>
                             </div>
                         )}
                         {receipt.taxExempt ? (
                             <div className="flex justify-between text-muted-foreground">
                                 <span>{t("station_receipt.fields.tax_exempt")}</span>
-                                <span>{fmt(0)}</span>
+                                <span>{fmt(0, isoCurrency)}</span>
                             </div>
                         ) : receipt.tax.rate > 0 && (
                             <div className="flex justify-between text-muted-foreground">
@@ -184,12 +188,12 @@ export default function StationReceiptView({ orderId, onClose, onNewOrder }: Pro
                                     {receipt.tax.name} {receipt.tax.rate}%
                                     {receipt.tax.included && ` ${t("station_receipt.fields.tax_included_suffix")}`}
                                 </span>
-                                <span>{fmt(receipt.tax.amount)}</span>
+                                <span>{fmt(receipt.tax.amount, isoCurrency)}</span>
                             </div>
                         )}
                         <div className="flex justify-between font-bold text-sm border-t border-border pt-2 mt-1">
                             <span>{t("station_receipt.fields.total")}</span>
-                            <span>{fmt(receipt.totalAmount)}</span>
+                            <span>{fmt(receipt.totalAmount, isoCurrency)}</span>
                         </div>
                     </div>
 
@@ -199,17 +203,17 @@ export default function StationReceiptView({ orderId, onClose, onNewOrder }: Pro
                             <div key={p.id} className="space-y-0.5">
                                 <div className="flex justify-between text-muted-foreground">
                                     <span className="capitalize">{p.method}</span>
-                                    <span>{fmt(p.amount)}</span>
+                                    <span>{fmt(p.amount, isoCurrency)}</span>
                                 </div>
                                 {p.method === "cash" && p.cashTendered !== null && (
                                     <>
                                         <div className="flex justify-between text-muted-foreground pl-3">
                                             <span>{t("station_receipt.fields.tendered")}</span>
-                                            <span>{fmt(p.cashTendered)}</span>
+                                            <span>{fmt(p.cashTendered, isoCurrency)}</span>
                                         </div>
                                         <div className="flex justify-between font-semibold text-primary pl-3">
                                             <span>{t("station_receipt.fields.change")}</span>
-                                            <span>{fmt(p.changeGiven ?? 0)}</span>
+                                            <span>{fmt(p.changeGiven ?? 0, isoCurrency)}</span>
                                         </div>
                                     </>
                                 )}
@@ -218,7 +222,7 @@ export default function StationReceiptView({ orderId, onClose, onNewOrder }: Pro
                         {receipt.totalTip > 0 && (
                             <div className="flex justify-between text-muted-foreground">
                                 <span>{t("station_receipt.fields.tip")}</span>
-                                <span>{fmt(receipt.totalTip)}</span>
+                                <span>{fmt(receipt.totalTip, isoCurrency)}</span>
                             </div>
                         )}
                     </div>
