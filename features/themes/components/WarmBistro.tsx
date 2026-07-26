@@ -6,7 +6,12 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star } from "lucide-react";
 import { ThemeComponentProps } from "../registry";
-import { sortOpeningHours, formatOpeningPeriod, formatMenuPrice, getOrderedMedia } from "../utils";
+import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMenu";
+import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
+import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
+import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, SECTION_CONTAINER } from "../utils";
+import { useBodyThemeScope } from "../useBodyThemeScope";
 
 // Terracotta/amber, rounded organic shapes, cozy asymmetric layout — the
 // "cafe/bistro" identity. Distinct from Modern Minimal (flat/monochrome) and
@@ -20,22 +25,49 @@ const TOKENS = {
     "--t-accent-fg": "#fff8f0",
 } as CSSProperties;
 
+// Scopes the shared marketplace components (BusinessDetailsMenu,
+// BusinessDetailsTableReservation, BusinessDetailsReviews, ...) to this
+// theme's terracotta/rounded identity instead of FlairSync's own fixed
+// blue/rounded chrome — see features/themes/useBodyThemeScope.ts.
+const SHADCN_VARS: Record<string, string> = {
+    "--background": "#fdf6ee",
+    "--foreground": "#3b2a1e",
+    "--card": "#fdf6ee",
+    "--card-foreground": "#3b2a1e",
+    "--popover": "#fdf6ee",
+    "--popover-foreground": "#3b2a1e",
+    "--primary": "#c1633b",
+    "--primary-foreground": "#fff8f0",
+    "--secondary": "#f4e3ce",
+    "--secondary-foreground": "#3b2a1e",
+    "--muted": "#f4e3ce",
+    "--muted-foreground": "#8a6f56",
+    "--accent": "#f4e3ce",
+    "--accent-foreground": "#3b2a1e",
+    "--border": "#e8d4b8",
+    "--input": "#e8d4b8",
+    "--ring": "#c1633b",
+    "--radius": "1.25rem",
+};
+
 // Varying aspect ratios for the masonry-ish grid, cycled by index.
 const TILE_ASPECT = ["aspect-square", "aspect-[4/5]", "aspect-[4/5]", "aspect-square"];
 
+const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
 export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
     const { t } = useTranslation("feed");
+    useBodyThemeScope(SHADCN_VARS);
 
     const media = getOrderedMedia(profile.media);
     const hours = sortOpeningHours(profile.openingHours);
-    const categories = menu?.getOrderedCategories().filter((c) => (c.items?.length ?? 0) > 0) ?? [];
-    const hasMenu = categories.length > 0;
+    const hasMenu = !!menu && menu.categories.length > 0;
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
     const heroImage = media[0];
     const today = dayjs().format("dddd").toLowerCase();
 
     return (
-        <main style={TOKENS} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
+        <main style={{ ...TOKENS, ...SHADCN_VARS }} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
             {/* Hero */}
             <header className="px-6 md:px-16 py-16 md:py-24 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <motion.div
@@ -72,20 +104,20 @@ export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
                     {(profile.allowReservations || profile.allowOrders) && (
                         <div className="mt-8 flex flex-col sm:flex-row gap-3">
                             {profile.allowReservations && (
-                                <a
-                                    href={`/business/${profile.id}`}
+                                <button
+                                    onClick={() => scrollTo("reservation-section")}
                                     className="px-8 py-3.5 rounded-full bg-[var(--t-accent)] text-[var(--t-accent-fg)] font-medium text-center shadow-md hover:opacity-90 transition-opacity"
                                 >
                                     {t("business_page.header.reserve_table_button", "Reserve a Table")}
-                                </a>
+                                </button>
                             )}
-                            {profile.allowOrders && (
-                                <a
-                                    href={`/diner/${profile.id}`}
+                            {profile.allowOrders && hasMenu && (
+                                <button
+                                    onClick={() => scrollTo("menu-section")}
                                     className="px-8 py-3.5 rounded-full border-2 border-[var(--t-accent)] text-[var(--t-accent)] font-medium text-center hover:bg-[var(--t-muted)] transition-colors"
                                 >
                                     {t("business_page.header.order_online_button", "Order Online")}
-                                </a>
+                                </button>
                             )}
                         </div>
                     )}
@@ -107,6 +139,11 @@ export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
                 </motion.div>
             </header>
 
+            {/* Live status / rating / map */}
+            <section className={`${SECTION_CONTAINER} pb-16`}>
+                <BusinessDetailsInfoCards profile={profile} />
+            </section>
+
             {/* Gallery */}
             {media.length > 1 && (
                 <section className="px-6 md:px-16 py-16">
@@ -125,47 +162,17 @@ export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
                 </section>
             )}
 
-            {/* Menu */}
+            {/* Menu + ordering */}
             {hasMenu && (
-                <section className="px-6 md:px-16 py-16 max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-8">{t("business_page.menu.section_title", "Menu")}</h2>
-                    <div className="space-y-6">
-                        {categories.map((category, i) => (
-                            <motion.div
-                                key={category.id}
-                                initial={{ opacity: 0, y: 16 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.05 }}
-                                className="rounded-3xl bg-[var(--t-muted)] p-8"
-                            >
-                                <h3 className="text-lg font-bold mb-5">{category.name}</h3>
-                                <ul className="space-y-5">
-                                    {(category.items ?? []).map((item) => {
-                                        const thumb = item.media?.[0]?.url;
-                                        return (
-                                            <li key={item.id} className="flex gap-4 items-start">
-                                                {thumb && (
-                                                    <img src={thumb} alt="" className="w-14 h-14 rounded-xl object-cover shrink-0" />
-                                                )}
-                                                <div className="flex-1 flex justify-between gap-4">
-                                                    <div>
-                                                        <p className="font-medium">{item.name}</p>
-                                                        {item.description && (
-                                                            <p className="text-sm text-[var(--t-muted-fg)] mt-0.5">{item.description}</p>
-                                                        )}
-                                                    </div>
-                                                    <span className="whitespace-nowrap font-medium">
-                                                        {formatMenuPrice(item.price, profile.currency)}
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </motion.div>
-                        ))}
-                    </div>
+                <section id="menu-section" className={`${SECTION_CONTAINER} py-16`}>
+                    <BusinessDetailsMenu menu={menu!} business={profile} />
+                </section>
+            )}
+
+            {/* Reservations */}
+            {profile.allowReservations && (
+                <section className={`${SECTION_CONTAINER} py-16`}>
+                    <BusinessDetailsTableReservation businessId={profile.id} />
                 </section>
             )}
 
@@ -197,6 +204,11 @@ export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
                     </div>
                 </section>
             )}
+
+            {/* Reviews */}
+            <section className={`${SECTION_CONTAINER} py-16`}>
+                <BusinessDetailsReviews businessId={profile.id} businessName={profile.name} />
+            </section>
 
             {/* Contact / footer */}
             <footer className="px-6 md:px-16 py-16">

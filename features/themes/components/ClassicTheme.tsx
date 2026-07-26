@@ -10,9 +10,13 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import { ThemeComponentProps } from "../registry";
-import { sortOpeningHours, formatOpeningPeriod, formatMenuPrice, getOrderedMedia } from "../utils";
+import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMenu";
+import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
+import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
+import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, SECTION_CONTAINER } from "../utils";
+import { useBodyThemeScope } from "../useBodyThemeScope";
 
 // Cream + burgundy, serif display type, symmetric/centered, decorative
 // card-and-border chrome — the "traditional restaurant" identity. Distinct
@@ -27,6 +31,31 @@ const TOKENS = {
     "--t-accent": "#7a2331",
 } as CSSProperties;
 
+// Scopes the shared marketplace components (BusinessDetailsMenu,
+// BusinessDetailsTableReservation, BusinessDetailsReviews, ...) to this
+// theme's cream/burgundy identity instead of FlairSync's own fixed
+// blue/rounded chrome — see features/themes/useBodyThemeScope.ts.
+const SHADCN_VARS: Record<string, string> = {
+    "--background": "#faf6ee",
+    "--foreground": "#2a2422",
+    "--card": "#faf6ee",
+    "--card-foreground": "#2a2422",
+    "--popover": "#faf6ee",
+    "--popover-foreground": "#2a2422",
+    "--primary": "#7a2331",
+    "--primary-foreground": "#faf6ee",
+    "--secondary": "#f0e9db",
+    "--secondary-foreground": "#2a2422",
+    "--muted": "#f0e9db",
+    "--muted-foreground": "#7a6f63",
+    "--accent": "#f0e9db",
+    "--accent-foreground": "#2a2422",
+    "--border": "#ddd0b8",
+    "--input": "#ddd0b8",
+    "--ring": "#7a2331",
+    "--radius": "0rem",
+};
+
 const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
@@ -34,17 +63,19 @@ const fadeUp = (delay: number) => ({
     transition: { delay, duration: 0.6, ease: "easeOut" as const },
 });
 
+const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
 export function ClassicTheme({ profile, menu }: ThemeComponentProps) {
     const { t } = useTranslation("feed");
+    useBodyThemeScope(SHADCN_VARS);
 
     const media = getOrderedMedia(profile.media);
     const hours = sortOpeningHours(profile.openingHours);
-    const categories = menu?.getOrderedCategories().filter((c) => (c.items?.length ?? 0) > 0) ?? [];
-    const hasMenu = categories.length > 0;
+    const hasMenu = !!menu && menu.categories.length > 0;
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
 
     return (
-        <main style={TOKENS} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)] font-serif">
+        <main style={{ ...TOKENS, ...SHADCN_VARS }} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)] font-serif">
             {/* Hero */}
             <header className="px-6 py-24 text-center bg-[var(--t-muted)] border-b border-[var(--t-border)]">
                 <div className="max-w-2xl mx-auto flex flex-col items-center">
@@ -87,29 +118,34 @@ export function ClassicTheme({ profile, menu }: ThemeComponentProps) {
                     {(profile.allowReservations || profile.allowOrders) && (
                         <motion.div {...fadeUp(0.4)} className="mt-10 flex flex-wrap items-center justify-center gap-4">
                             {profile.allowReservations && (
-                                <a
-                                    href={`/business/${profile.id}`}
+                                <button
+                                    onClick={() => scrollTo("reservation-section")}
                                     className="px-8 py-3 rounded-none border-2 border-[var(--t-accent)] bg-[var(--t-accent)] text-[var(--t-bg)] text-sm tracking-wide hover:opacity-90 transition-opacity"
                                 >
                                     {t("business_page.header.reserve_table_button", "Reserve a Table")}
-                                </a>
+                                </button>
                             )}
-                            {profile.allowOrders && (
-                                <a
-                                    href={`/diner/${profile.id}`}
+                            {profile.allowOrders && hasMenu && (
+                                <button
+                                    onClick={() => scrollTo("menu-section")}
                                     className="px-8 py-3 rounded-none border-2 border-[var(--t-accent)] text-[var(--t-accent)] text-sm tracking-wide hover:bg-[var(--t-accent)] hover:text-[var(--t-bg)] transition-colors"
                                 >
                                     {t("business_page.header.order_online_button", "Order Online")}
-                                </a>
+                                </button>
                             )}
                         </motion.div>
                     )}
                 </div>
             </header>
 
+            {/* Live status / rating / map */}
+            <section className={`${SECTION_CONTAINER} py-16`}>
+                <BusinessDetailsInfoCards profile={profile} />
+            </section>
+
             {/* Gallery */}
             {media.length > 0 && (
-                <section className="px-6 py-20 max-w-3xl mx-auto">
+                <section className="px-6 pb-20 max-w-3xl mx-auto">
                     <div className="border-8 border-[var(--t-muted)] shadow-lg">
                         <Carousel plugins={[Autoplay({ delay: 5000 })]}>
                             <CarouselContent>
@@ -132,72 +168,49 @@ export function ClassicTheme({ profile, menu }: ThemeComponentProps) {
                 </section>
             )}
 
-            {/* Menu */}
+            {/* Menu + ordering */}
             {hasMenu && (
-                <section className="px-6 py-20 max-w-3xl mx-auto">
-                    <h2 className="text-3xl text-center font-bold mb-14">
-                        {t("business_page.menu.section_title", "Menu")}
-                    </h2>
-                    <div className="space-y-10">
-                        {categories.map((category, i) => (
-                            <motion.div key={category.id} {...fadeUp(i * 0.05)}>
-                                <Card className="border-[var(--t-border)] bg-[var(--t-bg)] text-[var(--t-fg)] rounded-none shadow-none">
-                                    <CardContent className="p-8">
-                                        <h3 className="text-center text-xl font-bold mb-6 flex items-center gap-4 justify-center">
-                                            <span className="h-px flex-1 max-w-16 bg-[var(--t-border)]" />
-                                            {category.name}
-                                            <span className="h-px flex-1 max-w-16 bg-[var(--t-border)]" />
-                                        </h3>
-                                        <ul className="space-y-4">
-                                            {(category.items ?? []).map((item) => (
-                                                <li key={item.id}>
-                                                    <div className="flex items-baseline gap-2">
-                                                        <span className="font-medium">{item.name}</span>
-                                                        <span className="flex-1 border-b border-dotted border-[var(--t-muted-fg)] mx-1 translate-y-[-3px]" />
-                                                        <span className="font-medium whitespace-nowrap">
-                                                            {formatMenuPrice(item.price, profile.currency)}
-                                                        </span>
-                                                    </div>
-                                                    {item.description && (
-                                                        <p className="text-sm text-[var(--t-muted-fg)] mt-1">{item.description}</p>
-                                                    )}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </div>
+                <section id="menu-section" className={`${SECTION_CONTAINER} py-20 border-t border-[var(--t-border)]`}>
+                    <BusinessDetailsMenu menu={menu!} business={profile} />
+                </section>
+            )}
+
+            {/* Reservations */}
+            {profile.allowReservations && (
+                <section className={`${SECTION_CONTAINER} py-20 border-t border-[var(--t-border)]`}>
+                    <BusinessDetailsTableReservation businessId={profile.id} />
                 </section>
             )}
 
             {/* Opening hours */}
             {hours.length > 0 && (
-                <section className="px-6 py-20 max-w-2xl mx-auto">
+                <section className="px-6 py-20 max-w-2xl mx-auto border-t border-[var(--t-border)]">
                     <h2 className="text-3xl text-center font-bold mb-14">
                         {t("business_page.timing.section_title", "Opening Hours")}
                     </h2>
-                    <Card className="border-[var(--t-border)] bg-[var(--t-muted)] rounded-none shadow-none">
-                        <CardContent className="p-8 divide-y divide-[var(--t-border)]">
-                            {hours.map((day) => (
-                                <div key={day.id} className="flex justify-between items-center py-3">
-                                    <span className="capitalize font-medium">{t(`shared.days.${day.day.toLowerCase()}`, day.day)}</span>
-                                    {day.isClosed ? (
-                                        <span className="italic text-[var(--t-muted-fg)]">{t("business_page.timing.closed", "Closed")}</span>
-                                    ) : (
-                                        <span className="text-right text-sm">
-                                            {day.periods.map((p) => (
-                                                <span key={p.id} className="block">{formatOpeningPeriod(p)}</span>
-                                            ))}
-                                        </span>
-                                    )}
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
+                    <div className="border border-[var(--t-border)] bg-[var(--t-muted)] p-8 divide-y divide-[var(--t-border)]">
+                        {hours.map((day) => (
+                            <div key={day.id} className="flex justify-between items-center py-3">
+                                <span className="capitalize font-medium">{t(`shared.days.${day.day.toLowerCase()}`, day.day)}</span>
+                                {day.isClosed ? (
+                                    <span className="italic text-[var(--t-muted-fg)]">{t("business_page.timing.closed", "Closed")}</span>
+                                ) : (
+                                    <span className="text-right text-sm">
+                                        {day.periods.map((p) => (
+                                            <span key={p.id} className="block">{formatOpeningPeriod(p)}</span>
+                                        ))}
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </section>
             )}
+
+            {/* Reviews */}
+            <section className={`${SECTION_CONTAINER} py-20 border-t border-[var(--t-border)]`}>
+                <BusinessDetailsReviews businessId={profile.id} businessName={profile.name} />
+            </section>
 
             {/* Contact / footer */}
             <footer className="px-6 py-16 border-t border-[var(--t-border)] bg-[var(--t-muted)]">

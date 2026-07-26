@@ -1,7 +1,11 @@
 import { OpeningHours, OpeningPeriod } from "@/models/business/MyBusinessFullDetails";
 import { BusinessMedia } from "@/models/business/BusinessMedia";
-import { formatCurrency } from "@/lib/formatCurrency";
-import { toIsoCurrencyCode } from "@/utils/currency";
+
+// Shared width/padding for the sections every theme reuses as-is (Menu,
+// Reservation, InfoCards, Reviews) so those line up consistently across all
+// three themes, even though each theme's own hero/gallery/footer keeps its
+// own distinct layout.
+export const SECTION_CONTAINER = "max-w-5xl mx-auto px-6 md:px-10";
 
 const DAY_ORDER: Record<string, number> = {
   monday: 1,
@@ -33,12 +37,6 @@ export function formatOpeningPeriod(period: OpeningPeriod): string {
       minute: "2-digit",
     });
   return `${format(period.open)} – ${format(period.close)}`;
-}
-
-// profile.currency can be a legacy symbol string, not just an ISO code —
-// Intl.NumberFormat throws on non-ISO codes, so always normalize first.
-export function formatMenuPrice(amount: number, currency: string | undefined | null): string {
-  return formatCurrency(amount, toIsoCurrencyCode(currency));
 }
 
 // BusinessMedia.parseApiArrayResponse doesn't sort by .order itself.

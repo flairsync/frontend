@@ -6,7 +6,12 @@ import "react-photo-view/dist/react-photo-view.css";
 import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star } from "lucide-react";
 import { ThemeComponentProps } from "../registry";
 import { GalleryImage } from "@/components/shared/GalleryImage";
-import { sortOpeningHours, formatOpeningPeriod, formatMenuPrice, getOrderedMedia } from "../utils";
+import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMenu";
+import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
+import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
+import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, SECTION_CONTAINER } from "../utils";
+import { useBodyThemeScope } from "../useBodyThemeScope";
 
 // Monochrome, high-contrast, sharp edges — no rounded pills, no color
 // accents beyond foreground/background. Distinct from Classic (warm/serif/
@@ -20,18 +25,45 @@ const TOKENS = {
     "--t-border": "#e4e4e7",
 } as CSSProperties;
 
+// Scopes the shared marketplace components (BusinessDetailsMenu,
+// BusinessDetailsTableReservation, BusinessDetailsReviews, ...) to this
+// theme's monochrome/sharp-edge identity instead of FlairSync's own fixed
+// blue/rounded chrome — see features/themes/useBodyThemeScope.ts.
+const SHADCN_VARS: Record<string, string> = {
+    "--background": "#ffffff",
+    "--foreground": "#0a0a0a",
+    "--card": "#ffffff",
+    "--card-foreground": "#0a0a0a",
+    "--popover": "#ffffff",
+    "--popover-foreground": "#0a0a0a",
+    "--primary": "#0a0a0a",
+    "--primary-foreground": "#ffffff",
+    "--secondary": "#f4f4f5",
+    "--secondary-foreground": "#0a0a0a",
+    "--muted": "#f4f4f5",
+    "--muted-foreground": "#71717a",
+    "--accent": "#f4f4f5",
+    "--accent-foreground": "#0a0a0a",
+    "--border": "#e4e4e7",
+    "--input": "#e4e4e7",
+    "--ring": "#0a0a0a",
+    "--radius": "0rem",
+};
+
+const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
 export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
     const { t } = useTranslation("feed");
+    useBodyThemeScope(SHADCN_VARS);
 
     const media = getOrderedMedia(profile.media);
     const hours = sortOpeningHours(profile.openingHours);
-    const categories = menu?.getOrderedCategories().filter((c) => (c.items?.length ?? 0) > 0) ?? [];
-    const hasMenu = categories.length > 0;
+    const hasMenu = !!menu && menu.categories.length > 0;
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
     const showCtaBar = profile.allowReservations || profile.allowOrders;
 
     return (
-        <main style={TOKENS} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
+        <main style={{ ...TOKENS, ...SHADCN_VARS }} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
             {/* Hero */}
             <motion.header
                 initial={{ opacity: 0, y: 24 }}
@@ -71,6 +103,11 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
                 </div>
             </motion.header>
 
+            {/* Live status / rating / map */}
+            <section className={`${SECTION_CONTAINER} pb-14`}>
+                <BusinessDetailsInfoCards profile={profile} />
+            </section>
+
             {/* Gallery */}
             {media.length > 0 && (
                 <section className="pb-14">
@@ -84,42 +121,17 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
                 </section>
             )}
 
-            {/* Menu */}
+            {/* Menu + ordering */}
             {hasMenu && (
-                <section className="px-6 md:px-16 py-14 border-t border-[var(--t-border)]">
-                    <h2 className="text-xs uppercase tracking-[0.2em] text-[var(--t-muted-fg)] mb-10">
-                        {t("business_page.menu.section_title", "Menu")}
-                    </h2>
-                    <div className="space-y-12 max-w-3xl">
-                        {categories.map((category, i) => (
-                            <motion.div
-                                key={category.id}
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.05 }}
-                            >
-                                <h3 className="text-xs uppercase tracking-[0.2em] text-[var(--t-muted-fg)] mb-4">
-                                    {category.name}
-                                </h3>
-                                <ul className="space-y-4">
-                                    {(category.items ?? []).map((item) => (
-                                        <li key={item.id} className="flex justify-between gap-6">
-                                            <div>
-                                                <p className="font-medium">{item.name}</p>
-                                                {item.description && (
-                                                    <p className="text-sm text-[var(--t-muted-fg)] mt-0.5">{item.description}</p>
-                                                )}
-                                            </div>
-                                            <span className="whitespace-nowrap font-medium">
-                                                {formatMenuPrice(item.price, profile.currency)}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </motion.div>
-                        ))}
-                    </div>
+                <section id="menu-section" className={`${SECTION_CONTAINER} py-14 border-t border-[var(--t-border)]`}>
+                    <BusinessDetailsMenu menu={menu!} business={profile} />
+                </section>
+            )}
+
+            {/* Reservations */}
+            {profile.allowReservations && (
+                <section className={`${SECTION_CONTAINER} py-14 border-t border-[var(--t-border)]`}>
+                    <BusinessDetailsTableReservation businessId={profile.id} />
                 </section>
             )}
 
@@ -137,7 +149,7 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
                                     <span className="text-[var(--t-muted-fg)]">{t("business_page.timing.closed", "Closed")}</span>
                                 ) : (
                                     <span className="text-right">
-                                        {day.periods.map((p, i) => (
+                                        {day.periods.map((p) => (
                                             <span key={p.id} className="block">{formatOpeningPeriod(p)}</span>
                                         ))}
                                     </span>
@@ -147,6 +159,11 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
                     </div>
                 </section>
             )}
+
+            {/* Reviews */}
+            <section className={`${SECTION_CONTAINER} py-14 border-t border-[var(--t-border)]`}>
+                <BusinessDetailsReviews businessId={profile.id} businessName={profile.name} />
+            </section>
 
             {/* Contact / footer */}
             <footer className="px-6 md:px-16 py-14 border-t border-[var(--t-border)] grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
@@ -168,24 +185,24 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
 
             {showCtaBar && <div className="h-20" />}
 
-            {/* Sticky CTA bar */}
+            {/* Sticky CTA bar — jumps to the in-page reservation/menu sections above */}
             {showCtaBar && (
                 <div className="fixed bottom-0 inset-x-0 border-t border-[var(--t-border)] bg-[var(--t-bg)] px-6 md:px-16 py-4 flex gap-3 justify-center md:justify-end">
                     {profile.allowReservations && (
-                        <a
-                            href={`/business/${profile.id}`}
+                        <button
+                            onClick={() => scrollTo("reservation-section")}
                             className="px-6 py-3 text-sm font-medium bg-[var(--t-fg)] text-[var(--t-bg)] hover:opacity-90 transition-opacity"
                         >
                             {t("business_page.header.reserve_table_button", "Reserve a Table")}
-                        </a>
+                        </button>
                     )}
-                    {profile.allowOrders && (
-                        <a
-                            href={`/diner/${profile.id}`}
+                    {profile.allowOrders && hasMenu && (
+                        <button
+                            onClick={() => scrollTo("menu-section")}
                             className="px-6 py-3 text-sm font-medium border border-[var(--t-fg)] hover:bg-[var(--t-muted)] transition-colors"
                         >
                             {t("business_page.header.order_online_button", "Order Online")}
-                        </a>
+                        </button>
                     )}
                 </div>
             )}
