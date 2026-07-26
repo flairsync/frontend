@@ -128,10 +128,10 @@ export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCod
             )}
           </div>
 
-          <div className="relative bg-muted rounded-2xl p-6 text-center border">
+          <div className="relative bg-muted rounded-2xl p-6 pr-10 text-center border">
             {code ? (
               <>
-                <p className="text-5xl font-mono font-black tracking-[0.25em] text-foreground">
+                <p className="text-4xl font-mono font-black tracking-[0.15em] text-foreground">
                   {code}
                 </p>
                 <button

@@ -589,7 +589,7 @@ function POSMain({
 
     const handleMarkTableClean = useCallback(async (table: PosTable) => {
         try {
-            await stationApi.patch(`/station/tables/${table.id}/status`, { status: "available" });
+            await staffApi.patch(`/station/tables/${table.id}/status`, { status: "available" });
             toast.success(t("pos_app.toasts.table_marked_clean", { name: table.name }));
             refreshTables();
         } catch {

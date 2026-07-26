@@ -27,10 +27,21 @@ stationApi.interceptors.request.use((config) => {
   return config;
 });
 
+// Only these codes mean the *device* pairing itself is invalid (see
+// StationAuthGuard in the API) — any other 401 (e.g. a missing/expired staff
+// short token from StaffPosGuard) must NOT unpair the station.
+const STATION_TOKEN_ERROR_CODES = new Set([
+  "station.token.missing",
+  "station.token.invalid",
+  "station.inactive",
+  "station.token.revoked",
+]);
+
 stationApi.interceptors.response.use(
   (r) => r,
   (err) => {
-    if (err.response?.status === 401) {
+    const code = err.response?.data?.code;
+    if (err.response?.status === 401 && STATION_TOKEN_ERROR_CODES.has(code)) {
       clearStationToken();
       window.location.reload(); // triggers PairingScreen on next load
     }
@@ -58,9 +69,17 @@ staffApi.interceptors.request.use((config) => {
 staffApi.interceptors.response.use(
   (r) => r,
   (err) => {
+    const code = err.response?.data?.code;
     if (err.response?.status === 401) {
-      // Staff short token expired — clear session to trigger PIN pad
-      useStaffSession.getState().clearSession();
+      if (STATION_TOKEN_ERROR_CODES.has(code)) {
+        // The device token itself is invalid (StationAuthGuard runs before
+        // StaffPosGuard) — this is a real unpair, not a staff/PIN issue.
+        clearStationToken();
+        window.location.reload();
+      } else if (typeof code === "string" && code.startsWith("staff.")) {
+        // Staff short token expired/invalid/logged out — clear session to trigger PIN pad
+        useStaffSession.getState().clearSession();
+      }
     }
     return Promise.reject(err);
   }
