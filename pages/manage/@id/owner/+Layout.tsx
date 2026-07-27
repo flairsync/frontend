@@ -26,6 +26,7 @@ import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useMyBusiness } from '@/features/business/useMyBusiness';
+import BusinessStatusPill from '@/components/management/BusinessStatusPill';
 
 import { Loader } from 'lucide-react';
 
@@ -75,6 +76,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         myBusinessFullDetails,
         fetchingMyBusinessFullDetails,
         businessLoadError,
+        updateMyBusinessStatus,
+        updatingMyBusinessStatus,
     } = useMyBusiness(routeParams.id);
 
     useEffect(() => {
@@ -139,6 +142,15 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                                 Draft
                                             </button>
                                         )
+                                    )}
+                                    {!fetchingMyBusinessFullDetails && myBusinessFullDetails && (
+                                        <BusinessStatusPill
+                                            status={myBusinessFullDetails.status as any}
+                                            isOpen={myBusinessFullDetails.isOpen}
+                                            canEdit
+                                            saving={updatingMyBusinessStatus}
+                                            onChange={(status) => updateMyBusinessStatus(status)}
+                                        />
                                     )}
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />

@@ -41,70 +41,6 @@ const formatTimeString = (timeStr: string) => {
 const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) => {
     const { t } = useTranslation("feed");
 
-    const getStatus = () => {
-        const now = new Date();
-        const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-        const dayIndex = now.getDay();
-        const currentDay = days[dayIndex];
-        const yesterdayDay = days[(dayIndex + 6) % 7];
-
-        const currentTime = now.getHours().toString().padStart(2, '0') + ":" +
-            now.getMinutes().toString().padStart(2, '0') + ":" +
-            now.getSeconds().toString().padStart(2, '0');
-
-        const isBetween = (time: string, open: string, close: string) => {
-            if (close > open) return time >= open && time < close;
-            return time >= open || time < close; // Midnight crossing
-        };
-
-        // 1. Check current day
-        const today = profile.openingHours.find(h => h.day.toLowerCase() === currentDay);
-        if (today && !today.isClosed) {
-            for (const period of today.periods) {
-                if (isBetween(currentTime, period.open, period.close)) {
-                    return { isOpen: true, time: period.close, type: 'closes' };
-                }
-            }
-        }
-
-        // 2. Check midnight crossing from yesterday
-        const yesterday = profile.openingHours.find(h => h.day.toLowerCase() === yesterdayDay);
-        if (yesterday && !yesterday.isClosed) {
-            for (const period of yesterday.periods) {
-                if (period.close < period.open && currentTime < period.close) {
-                    return { isOpen: true, time: period.close, type: 'closes' };
-                }
-            }
-        }
-
-        // 3. Find next opening time today
-        if (today && !today.isClosed) {
-            const nextPeriod = today.periods
-                .filter(p => p.open > currentTime)
-                .sort((a, b) => a.open.localeCompare(b.open))[0];
-
-            if (nextPeriod) {
-                return { isOpen: false, time: nextPeriod.open, type: 'opens' };
-            }
-        }
-
-        // 4. Find next opening time in future days
-        for (let i = 1; i <= 7; i++) {
-            const nextDayIndex = (dayIndex + i) % 7;
-            const nextDayName = days[nextDayIndex];
-            const nextDay = profile.openingHours.find(h => h.day.toLowerCase() === nextDayName);
-
-            if (nextDay && !nextDay.isClosed && nextDay.periods.length > 0) {
-                const firstPeriod = nextDay.periods.sort((a, b) => a.open.localeCompare(b.open))[0];
-                return { isOpen: false, time: firstPeriod.open, type: 'opens' };
-            }
-        }
-
-        return { isOpen: false, time: null, type: 'none' };
-    };
-
-    const status = getStatus();
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <InfoCard
@@ -117,12 +53,12 @@ const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) =>
             <InfoCard
                 icon={Clock}
                 title={t("business_page.info_cards.status_title")}
-                content={status.isOpen ? t("business_page.info_cards.status_open_now") : t("business_page.info_cards.status_closed")}
-                contentClassName={status.isOpen ? "text-emerald-500" : "text-rose-500"}
-                subContent={status.type === 'closes'
-                    ? t("business_page.info_cards.status_closes_at", { time: formatTimeString(status.time!) })
-                    : status.type === 'opens'
-                        ? t("business_page.info_cards.status_opens_at", { time: formatTimeString(status.time!) })
+                content={profile.isOpen ? t("business_page.info_cards.status_open_now") : t("business_page.info_cards.status_closed")}
+                contentClassName={profile.isOpen ? "text-emerald-500" : "text-rose-500"}
+                subContent={profile.changeType === 'closes'
+                    ? t("business_page.info_cards.status_closes_at", { time: formatTimeString(profile.changesAt!) })
+                    : profile.changeType === 'opens'
+                        ? t("business_page.info_cards.status_opens_at", { time: formatTimeString(profile.changesAt!) })
                         : t("business_page.info_cards.status_check_hours")}
             />
 

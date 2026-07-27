@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import {
@@ -43,32 +42,46 @@ type BusinessGeneralInfo = {
     sunday: { isClosed: true, shifts: [] },
 }; */
 
+type BusinessStatusValue = "auto" | "open" | "closed";
+
+const STATUS_OPTIONS: { value: BusinessStatusValue; label: string; description: string }[] = [
+    { value: "auto", label: "Auto", description: "Open/closed follows your opening hours below" },
+    { value: "open", label: "Force open", description: "Always shows as open, regardless of hours" },
+    { value: "closed", label: "Force closed", description: "Always shows as closed, regardless of hours" },
+]
+
 type Props = {
     businessDetails?: MyBusinessFullDetails,
     onSaveDetails?: (data: {
         openHours: OpeningHours[],
-        autoOpen: boolean
     }) => void,
-    disabled?: boolean
+    onSaveStatus?: (status: BusinessStatusValue) => void,
+    disabled?: boolean,
+    savingStatus?: boolean,
 }
 const BusinessSettingsOpenPeriods = (props: Props) => {
 
-    const [autoOpen, setAutoOpen] = useState(false);
+    const [status, setStatus] = useState<BusinessStatusValue>("auto");
     const [openHours, setOpenHours] = useState<OpeningHours[]>();
     useEffect(() => {
         setOpenHours(props.businessDetails?.openingHours)
-
+        if (props.businessDetails?.status) {
+            setStatus(props.businessDetails.status as BusinessStatusValue);
+        }
     }, [props.businessDetails]);
 
     const onSaveDetails = () => {
-        console.log(openHours);
         if (props.onSaveDetails && openHours) {
             props.onSaveDetails({
                 openHours,
-                autoOpen
             })
         }
 
+    }
+
+    const onStatusChange = (value: BusinessStatusValue) => {
+        setStatus(value);
+        props.onSaveStatus?.(value);
     }
 
     return (
@@ -76,28 +89,33 @@ const BusinessSettingsOpenPeriods = (props: Props) => {
             <AccordionTrigger>Open periods</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
 
-                <div className="flex items-center justify-between mb-3">
-
+                <div className="space-y-2 mb-3">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <div className="flex items-center gap-2">
-                                <Switch
-                                    checked={autoOpen}
-                                    onCheckedChange={(checked) => {
-                                        setAutoOpen(checked);
-                                    }}
-                                />
-                                <span className="text-sm text-muted-foreground">
-                                    Auto open business
-                                </span>
-                            </div>
+                            <span className="text-sm font-medium text-muted-foreground">Business status</span>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>When enabled, the business will be marked as open automatically on start time</p>
+                            <p>Auto marks the business open/closed based on the opening hours below. Force open/closed overrides that until changed again.</p>
                         </TooltipContent>
                     </Tooltip>
-
-
+                    <div className="inline-flex rounded-lg border p-1 gap-1">
+                        {STATUS_OPTIONS.map((opt) => (
+                            <Button
+                                key={opt.value}
+                                type="button"
+                                size="sm"
+                                variant={status === opt.value ? "default" : "ghost"}
+                                disabled={props.savingStatus}
+                                onClick={() => onStatusChange(opt.value)}
+                                className="rounded-md"
+                            >
+                                {opt.label}
+                            </Button>
+                        ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                        {STATUS_OPTIONS.find((opt) => opt.value === status)?.description}
+                    </p>
                 </div>
                 <WorkHoursSelector
                     hideTitle

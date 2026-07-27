@@ -75,7 +75,9 @@ const BusinessSettingsPage = () => {
         updatingMyBusiness,
         updateMyBusinessDetails,
         updateMyBusinessOpenHours,
-        updatingMyBusinessOpenHours
+        updatingMyBusinessOpenHours,
+        updateMyBusinessStatus,
+        updatingMyBusinessStatus,
     } = useMyBusiness(routeParams.id);
 
     const { requestLeave, isRequestingLeave, outgoing } = useJoinRequests();
@@ -191,8 +193,12 @@ const BusinessSettingsPage = () => {
                 <BusinessSettingsOpenPeriods
                     businessDetails={myBusinessFullDetails}
                     disabled={updatingMyBusinessOpenHours}
+                    savingStatus={updatingMyBusinessStatus}
                     onSaveDetails={(data) => {
                         updateMyBusinessOpenHours(data);
+                    }}
+                    onSaveStatus={(status) => {
+                        updateMyBusinessStatus(status);
                     }}
                 />
             </div>

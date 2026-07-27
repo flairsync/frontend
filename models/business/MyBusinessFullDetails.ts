@@ -172,6 +172,9 @@ export class MyBusinessFullDetails {
   organizationName?: string | null;
   regionId?: string | null;
   regionName?: string | null;
+  isOpen: boolean = false;
+  changeType: 'opens' | 'closes' | null = null;
+  changesAt: string | null = null;
 
   constructor(
     id: string,
@@ -388,6 +391,9 @@ export class MyBusinessFullDetails {
       instance.organizationName = data.organizationName ?? null;
       instance.regionId = data.regionId ?? null;
       instance.regionName = data.regionName ?? null;
+      instance.isOpen = !!data.isOpen;
+      instance.changeType = data.changeType ?? null;
+      instance.changesAt = data.changesAt ?? null;
       return instance;
     } catch {
       return null;

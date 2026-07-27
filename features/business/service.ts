@@ -14,6 +14,7 @@ const updateMyBusinessLogoSuffix = "media/logo";
 const updateMyBusinessGallerySuffix = "media/gallery";
 
 const businessOpenHoursSuffix = "open-hours";
+const businessStatusSuffix = "status";
 // roles
 
 const businessRolesSuffix = "roles";
@@ -116,6 +117,26 @@ export const updateMyBusinessOpenHoursApiCall = (
   return flairapi.patch(
     `${MyBusinessUrl}/${businessId}/${businessOpenHoursSuffix}`,
     payload,
+  );
+};
+
+export type BusinessStatusResponse = {
+  status: "auto" | "open" | "closed";
+  isOpen: boolean;
+  changeType: "opens" | "closes" | null;
+  changesAt: string | null;
+};
+
+export const fetchMyBusinessStatusApiCall = async (businessId: string) =>
+  unwrap<BusinessStatusResponse>(await flairapi.get(`${MyBusinessUrl}/${businessId}/${businessStatusSuffix}`));
+
+export const updateMyBusinessStatusApiCall = (
+  businessId: string,
+  status: string,
+) => {
+  return flairapi.patch(
+    `${MyBusinessUrl}/${businessId}/${businessStatusSuffix}`,
+    { status },
   );
 };
 

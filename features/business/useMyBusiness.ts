@@ -12,6 +12,7 @@ import {
   updateMyBusinessDetailsApiCall,
   updateMyBusinessLogoApiCall,
   updateMyBusinessOpenHoursApiCall,
+  updateMyBusinessStatusApiCall,
 } from "./service";
 import {
   MyBusinessFullDetails,
@@ -141,7 +142,6 @@ export const useMyBusiness = (businessId: string | null = null) => {
     mutationKey: ["update_my_business_oh", businessId],
     mutationFn: async (data: {
       openHours: OpeningHours[];
-      autoOpen: boolean;
     }) => {
       if (!businessId) return;
       const payload = OpeningHours.toUpdateDtoArray(data.openHours);
@@ -165,6 +165,41 @@ export const useMyBusiness = (businessId: string | null = null) => {
       toast.dismiss("oh_update_toast");
       toast.error("Error updating", {
         description: "An error occured while updating your opening hours",
+      });
+    },
+  });
+
+  const {
+    mutate: updateMyBusinessStatus,
+    isPending: updatingMyBusinessStatus,
+  } = useMutation({
+    mutationKey: ["update_my_business_status", businessId],
+    mutationFn: async (status: string) => {
+      if (!businessId) return;
+      toast.loading("Updating business status", {
+        id: "status_update_toast",
+        toasterId: "status_update_toast",
+      });
+      return updateMyBusinessStatusApiCall(businessId, status);
+    },
+    onSuccess(data, variables, context) {
+      queryClient.refetchQueries({
+        queryKey: ["my_business", businessId],
+        stale: true,
+      });
+      queryClient.refetchQueries({
+        queryKey: ["business_status", businessId],
+        stale: true,
+      });
+      toast.dismiss("status_update_toast");
+      toast.success("Updated", {
+        description: "Business status updated ...",
+      });
+    },
+    onError(error, variables, context) {
+      toast.dismiss("status_update_toast");
+      toast.error("Error updating", {
+        description: "An error occured while updating your business status",
       });
     },
   });
@@ -202,6 +237,8 @@ export const useMyBusiness = (businessId: string | null = null) => {
     updatingMyBusinessGallery,
     updateMyBusinessOpenHours,
     updatingMyBusinessOpenHours,
+    updateMyBusinessStatus,
+    updatingMyBusinessStatus,
     deleteBusiness,
     deletingBusiness,
   };

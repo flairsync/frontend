@@ -57,6 +57,11 @@ export class DiscoveryBusinessProfile {
     // (features/themes/registry.ts) — null until one has been applied.
     activeThemeKey: string | null;
 
+    // Server-computed live open/closed state (honors manual AUTO/OPEN/CLOSED override)
+    isOpen: boolean;
+    changeType: 'opens' | 'closes' | null;
+    changesAt: string | null;
+
     constructor(
         id: string,
         name: string,
@@ -139,6 +144,9 @@ export class DiscoveryBusinessProfile {
         this.reservationBookingWindowDays = reservationBookingWindowDays;
         this.maxPartySize = maxPartySize;
         this.activeThemeKey = activeThemeKey;
+        this.isOpen = false;
+        this.changeType = null;
+        this.changesAt = null;
     }
 
     static parseApiArrayResponse(data: any[]): DiscoveryBusinessProfile[] {
@@ -154,7 +162,7 @@ export class DiscoveryBusinessProfile {
     static parseApiResponse(data: any): DiscoveryBusinessProfile | null {
         if (!data) return null;
         try {
-            return new DiscoveryBusinessProfile(
+            const instance = new DiscoveryBusinessProfile(
                 data.id,
                 data.name,
                 data.description,
@@ -196,6 +204,10 @@ export class DiscoveryBusinessProfile {
                 data.maxPartySize !== undefined ? Number(data.maxPartySize) : 20,
                 data.activeTheme?.key ?? null
             );
+            instance.isOpen = !!data.isOpen;
+            instance.changeType = data.changeType ?? null;
+            instance.changesAt = data.changesAt ?? null;
+            return instance;
         } catch {
             return null;
         }

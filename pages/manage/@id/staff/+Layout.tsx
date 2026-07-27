@@ -38,6 +38,8 @@ import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
 import { usePermissions } from '@/features/auth/usePermissions';
+import { useBusinessStatus } from '@/features/business/useBusinessStatus';
+import BusinessStatusPill from '@/components/management/BusinessStatusPill';
 import { Loader, ShieldAlert, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
@@ -52,7 +54,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
         urlPathname,
     } = usePageContext();
 
-    const { isLoading: loadingPermissions, permissions } = usePermissions(routeParams.id);
+    const { isLoading: loadingPermissions, permissions, hasPermission } = usePermissions(routeParams.id);
+    const { businessStatus, updateBusinessStatus, updatingBusinessStatus } = useBusinessStatus(routeParams.id);
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
 
@@ -105,10 +108,19 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         />
                         <Breadcrumb>
                             <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
+                                <BreadcrumbItem className="hidden md:flex items-center gap-2">
                                     <BreadcrumbLink href="/manage">
                                         {t("staff_layout.business_name_breadcrumb")}
                                     </BreadcrumbLink>
+                                    {businessStatus && (
+                                        <BusinessStatusPill
+                                            status={businessStatus.status}
+                                            isOpen={businessStatus.isOpen}
+                                            canEdit={hasPermission("OPENING_HOURS", "update")}
+                                            saving={updatingBusinessStatus}
+                                            onChange={(status) => updateBusinessStatus(status)}
+                                        />
+                                    )}
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
                                 <BreadcrumbItem>
