@@ -77,6 +77,12 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
     const [parseError, setParseError] = useState<string | null>(null);
     const [categories, setCategories] = useState<DraftCategory[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    // Guards against double/triple-clicking before React re-renders the
+    // `disabled` prop — `isParsing`/`isImporting` from the mutation lag one
+    // paint behind the click, so a fast impatient click can otherwise fire
+    // a second real request (and a second Gemini API call) before the button
+    // visually disables.
+    const inFlightRef = useRef(false);
 
     const reset = () => {
         setStep("upload");
@@ -114,7 +120,8 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
     };
 
     const handleParse = async () => {
-        if (!file) return;
+        if (!file || inFlightRef.current) return;
+        inFlightRef.current = true;
         setParseError(null);
         try {
             const parsed = await onParse(file);
@@ -134,6 +141,8 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
             } else {
                 setParseError(t("menu_management.ai_import.parse_error"));
             }
+        } finally {
+            inFlightRef.current = false;
         }
     };
 
@@ -188,6 +197,8 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
     };
 
     const handleImport = async () => {
+        if (inFlightRef.current) return;
+        inFlightRef.current = true;
         const payload: BulkImportMenuDto = {
             categories: categories
                 .filter((c) => c.name.trim() && c.items.length > 0)
@@ -206,6 +217,7 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
 
         if (!payload.categories.length) {
             toast.error(t("menu_management.ai_import.no_items_parsed"));
+            inFlightRef.current = false;
             return;
         }
 
@@ -221,6 +233,8 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
             onClose();
         } catch (err: any) {
             toast.error(t("menu_management.ai_import.import_error"));
+        } finally {
+            inFlightRef.current = false;
         }
     };
 
