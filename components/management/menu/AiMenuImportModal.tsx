@@ -75,7 +75,6 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [dragActive, setDragActive] = useState(false);
     const [parseError, setParseError] = useState<string | null>(null);
-    const [unavailable, setUnavailable] = useState(false);
     const [categories, setCategories] = useState<DraftCategory[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,7 +84,6 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
         setPreviewUrl(null);
         setDragActive(false);
         setParseError(null);
-        setUnavailable(false);
         setCategories([]);
     };
 
@@ -112,14 +110,12 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
             return;
         }
         setParseError(null);
-        setUnavailable(false);
         setFile(f);
     };
 
     const handleParse = async () => {
         if (!file) return;
         setParseError(null);
-        setUnavailable(false);
         try {
             const parsed = await onParse(file);
             const draft = toDraft(parsed);
@@ -132,7 +128,9 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
         } catch (err: any) {
             const code = err?.response?.data?.code;
             if (code === "menu.ai.unavailable") {
-                setUnavailable(true);
+                toast.error(t("menu_management.ai_import.unavailable_desc"), {
+                    duration: 6000,
+                });
             } else {
                 setParseError(t("menu_management.ai_import.parse_error"));
             }
@@ -248,88 +246,75 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
 
                 {step === "upload" && (
                     <div className="space-y-4 mt-2">
-                        {unavailable ? (
-                            <div className="rounded-lg border border-amber-300 bg-amber-50 dark:bg-amber-950 dark:border-amber-800 p-4 text-sm text-amber-800 dark:text-amber-200">
-                                <p className="font-medium">
-                                    {t("menu_management.ai_import.unavailable_title")}
-                                </p>
-                                <p className="mt-1">
-                                    {t("menu_management.ai_import.unavailable_desc")}
-                                </p>
-                            </div>
-                        ) : (
-                            <>
-                                <div
-                                    onDragOver={(e) => {
-                                        e.preventDefault();
-                                        setDragActive(true);
-                                    }}
-                                    onDragLeave={(e) => {
-                                        e.preventDefault();
-                                        setDragActive(false);
-                                    }}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        setDragActive(false);
-                                        const f = e.dataTransfer.files?.[0];
-                                        if (f) handleFile(f);
-                                    }}
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className={cn(
-                                        "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 min-h-[220px]",
-                                        dragActive
-                                            ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950"
-                                            : "border-zinc-300 dark:border-zinc-700 hover:border-indigo-400",
-                                    )}
-                                >
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        accept={ACCEPTED_MIME_TYPES.join(",")}
-                                        className="hidden"
-                                        onChange={(e) => {
-                                            const f = e.target.files?.[0];
-                                            if (f) handleFile(f);
-                                        }}
-                                    />
-                                    {previewUrl ? (
-                                        <img
-                                            src={previewUrl}
-                                            alt={file?.name}
-                                            className="max-h-48 rounded-md object-contain"
-                                        />
-                                    ) : (
-                                        <>
-                                            <Upload className="h-8 w-8 text-zinc-400" />
-                                            <p className="text-sm font-medium">
-                                                {t("menu_management.ai_import.drop_hint")}
-                                            </p>
-                                        </>
-                                    )}
-                                    <p className="text-xs text-zinc-500">
-                                        {file ? file.name : t("menu_management.ai_import.file_hint")}
+                        <div
+                            onDragOver={(e) => {
+                                e.preventDefault();
+                                setDragActive(true);
+                            }}
+                            onDragLeave={(e) => {
+                                e.preventDefault();
+                                setDragActive(false);
+                            }}
+                            onDrop={(e) => {
+                                e.preventDefault();
+                                setDragActive(false);
+                                const f = e.dataTransfer.files?.[0];
+                                if (f) handleFile(f);
+                            }}
+                            onClick={() => fileInputRef.current?.click()}
+                            className={cn(
+                                "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition flex flex-col items-center justify-center gap-3 min-h-[220px]",
+                                dragActive
+                                    ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950"
+                                    : "border-zinc-300 dark:border-zinc-700 hover:border-indigo-400",
+                            )}
+                        >
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept={ACCEPTED_MIME_TYPES.join(",")}
+                                className="hidden"
+                                onChange={(e) => {
+                                    const f = e.target.files?.[0];
+                                    if (f) handleFile(f);
+                                }}
+                            />
+                            {previewUrl ? (
+                                <img
+                                    src={previewUrl}
+                                    alt={file?.name}
+                                    className="max-h-48 rounded-md object-contain"
+                                />
+                            ) : (
+                                <>
+                                    <Upload className="h-8 w-8 text-zinc-400" />
+                                    <p className="text-sm font-medium">
+                                        {t("menu_management.ai_import.drop_hint")}
                                     </p>
-                                </div>
+                                </>
+                            )}
+                            <p className="text-xs text-zinc-500">
+                                {file ? file.name : t("menu_management.ai_import.file_hint")}
+                            </p>
+                        </div>
 
-                                {file && (
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="text-zinc-500"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setFile(null);
-                                        }}
-                                    >
-                                        <X className="h-4 w-4 mr-1" />
-                                        {t("menu_management.ai_import.clear_file")}
-                                    </Button>
-                                )}
+                        {file && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-zinc-500"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setFile(null);
+                                }}
+                            >
+                                <X className="h-4 w-4 mr-1" />
+                                {t("menu_management.ai_import.clear_file")}
+                            </Button>
+                        )}
 
-                                {parseError && (
-                                    <p className="text-sm text-red-600">{parseError}</p>
-                                )}
-                            </>
+                        {parseError && (
+                            <p className="text-sm text-red-600">{parseError}</p>
                         )}
                     </div>
                 )}
@@ -461,7 +446,7 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
                         {t("shared.actions.cancel")}
                     </Button>
                     {step === "upload" ? (
-                        <Button onClick={handleParse} disabled={!file || isParsing || unavailable}>
+                        <Button onClick={handleParse} disabled={!file || isParsing}>
                             {isParsing && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
                             {isParsing
                                 ? t("menu_management.ai_import.parsing")
