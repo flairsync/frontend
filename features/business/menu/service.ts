@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { Timeouts } from "@/lib/flairapi";
 import { unwrap } from "@/features/shared/api-response";
 const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
 
@@ -326,6 +326,76 @@ export const updateMenuItemApiCall = (
   );
 };
 
+
+//#endregion
+
+//#region AI Menu Import
+
+export type ParsedMenuItem = {
+  name: string;
+  description?: string | null;
+  price?: number | null;
+  category?: string;
+  allergens?: string[];
+};
+
+export type ParsedMenuCategory = {
+  name: string;
+  items: ParsedMenuItem[];
+};
+
+export type ParsedMenu = {
+  categories: ParsedMenuCategory[];
+};
+
+export const parseMenuImageWithAiApiCall = async (
+  businessId: string,
+  file: File,
+): Promise<ParsedMenu> => {
+  const payload = new FormData();
+  payload.append("file", file);
+
+  return unwrap<ParsedMenu>(
+    await flairapi.post(`${getMenusUrl(businessId)}/ai-parse/image`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+      timeout: Timeouts.UPLOAD,
+    }),
+  );
+};
+
+export type BulkImportMenuItemDto = {
+  name: string;
+  description?: string;
+  price?: number;
+  allergens?: string[];
+};
+
+export type BulkImportMenuCategoryDto = {
+  name: string;
+  items: BulkImportMenuItemDto[];
+};
+
+export type BulkImportMenuDto = {
+  categories: BulkImportMenuCategoryDto[];
+};
+
+export type BulkImportMenuResult = {
+  categories: number;
+  items: number;
+  skipped: number;
+};
+
+export const bulkImportParsedMenuApiCall = async (
+  businessId: string,
+  menuId: string,
+  data: BulkImportMenuDto,
+): Promise<BulkImportMenuResult> => {
+  return unwrap<BulkImportMenuResult>(
+    await flairapi.post(`${getMenusUrl(businessId)}/${menuId}/ai-import`, data, {
+      timeout: Timeouts.UPLOAD,
+    }),
+  );
+};
 
 //#endregion
 

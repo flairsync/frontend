@@ -30,6 +30,9 @@ import {
   CreateVariantDto,
   CreateModifierGroupDto,
   CreateModifierItemDto,
+  parseMenuImageWithAiApiCall,
+  bulkImportParsedMenuApiCall,
+  BulkImportMenuDto,
 } from "./service";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 import { toast } from "sonner";
@@ -166,6 +169,25 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     },
     onSuccess(data, variables, context) {
       toast.success("Items added !");
+      refreshBusinessMenu();
+      invalidateBusinessMenuAggregates();
+    },
+  });
+
+  //#endregion
+
+  //#region AI Menu Import
+
+  const { mutateAsync: parseMenuImageWithAi, isPending: isParsingMenuImage } = useMutation({
+    mutationKey: ["menu_ai_parse_image", businessId],
+    mutationFn: async (file: File) => parseMenuImageWithAiApiCall(businessId, file),
+  });
+
+  const { mutateAsync: bulkImportParsedMenu, isPending: isImportingParsedMenu } = useMutation({
+    mutationKey: ["menu_ai_import", businessId, menuId],
+    mutationFn: async (data: BulkImportMenuDto) =>
+      bulkImportParsedMenuApiCall(businessId, menuId, data),
+    onSuccess(data, variables, context) {
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
     },
@@ -347,6 +369,11 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     updateCategory,
     removeCategory,
     duplicateItemsIntoCategory,
+    // AI Import
+    parseMenuImageWithAi,
+    isParsingMenuImage,
+    bulkImportParsedMenu,
+    isImportingParsedMenu,
     // Items
     createNewItem,
     removeItem,

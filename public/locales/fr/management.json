@@ -474,6 +474,7 @@
     "actions": {
       "add_category": "Ajouter une catégorie",
       "add_item": "Ajouter un article",
+      "ai_import": "Importer avec l'IA",
       "save_changes": "Enregistrer",
       "move_to_category": "Déplacer vers une catégorie",
       "delete_category": "Supprimer la catégorie"
@@ -538,6 +539,33 @@
       "more_hints": "+{{count}} de plus",
       "manage_menu_hint": "Cliquez pour ouvrir et gérer ce menu.",
       "create_new_menu_card": "Créer un nouveau menu"
+    },
+    "ai_import": {
+      "title": "Importer un menu avec l'IA",
+      "description": "Téléchargez une photo de votre menu et l'IA extraira automatiquement les catégories, articles, prix et allergènes pour que vous les vérifiiez.",
+      "drop_hint": "Glissez-déposez une image ici, ou cliquez pour parcourir",
+      "file_hint": "JPEG, PNG, WEBP ou GIF",
+      "clear_file": "Retirer l'image",
+      "invalid_file_type": "Veuillez sélectionner une image JPEG, PNG, WEBP ou GIF.",
+      "parse_button": "Analyser le menu",
+      "parsing": "Analyse du menu...",
+      "back": "Retour",
+      "review_title": "Vérifier le menu analysé",
+      "review_desc": "Vérifiez les catégories et articles extraits ci-dessous. Vous pouvez tout modifier ou supprimer avant l'import.",
+      "category_name": "Nom de la catégorie",
+      "item_name": "Nom de l'article",
+      "remove_category": "Supprimer la catégorie",
+      "remove_item": "Supprimer l'article",
+      "no_items_parsed": "Aucun article trouvé. Essayez une photo plus nette, ou ajoutez des articles manuellement.",
+      "import_button": "Importer dans le menu",
+      "importing": "Importation...",
+      "unavailable_title": "Analyse de menu par IA indisponible",
+      "unavailable_desc": "Cette fonctionnalité n'est pas configurée actuellement. Veuillez contacter le support.",
+      "parse_error": "Impossible d'analyser cette image. Essayez une autre photo.",
+      "import_error": "Impossible d'importer les articles du menu. Veuillez réessayer.",
+      "import_success": "Articles du menu importés avec succès !",
+      "import_partial": "Articles importés, mais {{skipped}} article(s) ont été ignorés car la limite de produits de votre plan a été atteinte.",
+      "limit_warning": "Votre plan n'autorise plus que {{remaining}} article(s). {{skipped}} article(s) ne seront pas importés sauf mise à niveau."
     }
   },
   "item_modal": {

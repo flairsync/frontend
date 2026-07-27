@@ -474,6 +474,7 @@
     "actions": {
       "add_category": "Añadir categoría",
       "add_item": "Añadir artículo",
+      "ai_import": "Importar con IA",
       "save_changes": "Guardar cambios",
       "move_to_category": "Mover a categoría",
       "delete_category": "Eliminar categoría"
@@ -538,6 +539,33 @@
       "more_hints": "+{{count}} más",
       "manage_menu_hint": "Haz clic para abrir y gestionar este menú.",
       "create_new_menu_card": "Crear nuevo menú"
+    },
+    "ai_import": {
+      "title": "Importar menú con IA",
+      "description": "Sube una foto de tu menú y la IA extraerá automáticamente categorías, artículos, precios y alérgenos para que los revises.",
+      "drop_hint": "Arrastra y suelta una imagen aquí, o haz clic para explorar",
+      "file_hint": "JPEG, PNG, WEBP o GIF",
+      "clear_file": "Quitar imagen",
+      "invalid_file_type": "Selecciona una imagen JPEG, PNG, WEBP o GIF.",
+      "parse_button": "Analizar menú",
+      "parsing": "Analizando menú...",
+      "back": "Atrás",
+      "review_title": "Revisar menú analizado",
+      "review_desc": "Revisa las categorías y artículos extraídos. Puedes editar o eliminar cualquier cosa antes de importar.",
+      "category_name": "Nombre de categoría",
+      "item_name": "Nombre del artículo",
+      "remove_category": "Eliminar categoría",
+      "remove_item": "Eliminar artículo",
+      "no_items_parsed": "No se encontraron artículos. Prueba con una foto más clara o añade artículos manualmente.",
+      "import_button": "Importar al menú",
+      "importing": "Importando...",
+      "unavailable_title": "Análisis de menú con IA no disponible",
+      "unavailable_desc": "Esta función no está configurada actualmente. Contacta con soporte.",
+      "parse_error": "No se pudo analizar esta imagen. Prueba con otra foto.",
+      "import_error": "No se pudieron importar los artículos del menú. Inténtalo de nuevo.",
+      "import_success": "¡Artículos del menú importados correctamente!",
+      "import_partial": "Artículos importados, pero se omitieron {{skipped}} artículo(s) porque se alcanzó el límite de productos de tu plan.",
+      "limit_warning": "Tu plan solo permite {{remaining}} artículo(s) más. {{skipped}} artículo(s) no se importarán a menos que actualices tu plan."
     }
   },
   "item_modal": {

@@ -474,6 +474,7 @@
     "actions": {
       "add_category": "Add Category",
       "add_item": "Add Item",
+      "ai_import": "AI Import",
       "save_changes": "Save changes",
       "move_to_category": "Move to Category",
       "delete_category": "Delete Category"
@@ -538,6 +539,33 @@
       "more_hints": "+{{count}} more",
       "manage_menu_hint": "Click to open and manage this menu.",
       "create_new_menu_card": "Create New Menu"
+    },
+    "ai_import": {
+      "title": "Import Menu with AI",
+      "description": "Upload a photo of your menu and AI will automatically extract categories, items, prices, and allergens for you to review.",
+      "drop_hint": "Drag and drop an image here, or click to browse",
+      "file_hint": "JPEG, PNG, WEBP or GIF",
+      "clear_file": "Remove image",
+      "invalid_file_type": "Please select a JPEG, PNG, WEBP or GIF image.",
+      "parse_button": "Parse Menu",
+      "parsing": "Parsing menu...",
+      "back": "Back",
+      "review_title": "Review Parsed Menu",
+      "review_desc": "Check the extracted categories and items below. You can edit or remove anything before importing.",
+      "category_name": "Category name",
+      "item_name": "Item name",
+      "remove_category": "Remove category",
+      "remove_item": "Remove item",
+      "no_items_parsed": "No items were found. Try a clearer photo, or add items manually.",
+      "import_button": "Import to Menu",
+      "importing": "Importing...",
+      "unavailable_title": "AI menu parsing unavailable",
+      "unavailable_desc": "This feature isn't currently configured. Please contact support.",
+      "parse_error": "Couldn't parse this image. Please try a different photo.",
+      "import_error": "Couldn't import the menu items. Please try again.",
+      "import_success": "Menu items imported successfully!",
+      "import_partial": "Menu items imported, but {{skipped}} item(s) were skipped because your plan's product limit was reached.",
+      "limit_warning": "Your plan only allows {{remaining}} more item(s). {{skipped}} item(s) won't be imported unless you upgrade."
     }
   },
   "item_modal": {

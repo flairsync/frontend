@@ -474,6 +474,7 @@
     "actions": {
       "add_category": "Afegir categoria",
       "add_item": "Afegir article",
+      "ai_import": "Importar amb IA",
       "save_changes": "Guardar canvis",
       "move_to_category": "Moure a categoria",
       "delete_category": "Eliminar categoria"
@@ -538,6 +539,33 @@
       "more_hints": "+{{count}} més",
       "manage_menu_hint": "Fes clic per obrir i gestionar aquest menú.",
       "create_new_menu_card": "Crear nou menú"
+    },
+    "ai_import": {
+      "title": "Importar menú amb IA",
+      "description": "Puja una foto del teu menú i la IA extraurà automàticament categories, articles, preus i al·lèrgens perquè els revisis.",
+      "drop_hint": "Arrossega i deixa anar una imatge aquí, o fes clic per explorar",
+      "file_hint": "JPEG, PNG, WEBP o GIF",
+      "clear_file": "Treure imatge",
+      "invalid_file_type": "Selecciona una imatge JPEG, PNG, WEBP o GIF.",
+      "parse_button": "Analitzar menú",
+      "parsing": "Analitzant menú...",
+      "back": "Enrere",
+      "review_title": "Revisar menú analitzat",
+      "review_desc": "Revisa les categories i articles extrets. Pots editar o eliminar qualsevol cosa abans d'importar.",
+      "category_name": "Nom de la categoria",
+      "item_name": "Nom de l'article",
+      "remove_category": "Eliminar categoria",
+      "remove_item": "Eliminar article",
+      "no_items_parsed": "No s'ha trobat cap article. Prova amb una foto més clara, o afegeix articles manualment.",
+      "import_button": "Importar al menú",
+      "importing": "Important...",
+      "unavailable_title": "Anàlisi de menú amb IA no disponible",
+      "unavailable_desc": "Aquesta funció no està configurada actualment. Contacta amb suport.",
+      "parse_error": "No s'ha pogut analitzar aquesta imatge. Prova amb una altra foto.",
+      "import_error": "No s'han pogut importar els articles del menú. Torna-ho a provar.",
+      "import_success": "Articles del menú importats correctament!",
+      "import_partial": "Articles importats, però s'han omès {{skipped}} article(s) perquè s'ha assolit el límit de productes del teu pla.",
+      "limit_warning": "El teu pla només permet {{remaining}} article(s) més. {{skipped}} article(s) no s'importaran llevat que actualitzis el pla."
     }
   },
   "item_modal": {

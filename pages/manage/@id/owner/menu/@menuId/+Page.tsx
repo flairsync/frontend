@@ -18,7 +18,8 @@ import {
     AlertTriangle,
     Save,
     LayoutList,
-    GripVertical
+    GripVertical,
+    Sparkles
 } from "lucide-react";
 // #endregion
 
@@ -40,6 +41,7 @@ import { CategoryModal } from "@/components/management/menu/CreateCategoryModal"
 import { ItemModal } from "@/components/management/menu/CreateItemModal";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
 import { ItemsDuplicationModal } from "@/components/management/menu/ItemsDuplicationModal";
+import { AiMenuImportModal } from "@/components/management/menu/AiMenuImportModal";
 import { useBusinessPlan } from "@/features/business/useBusinessPlan";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
@@ -104,6 +106,11 @@ const MenuDetailPage: React.FC = () => {
         updateCategory,
         removeCategory,
         duplicateItemsIntoCategory,
+        // AI Import
+        parseMenuImageWithAi,
+        isParsingMenuImage,
+        bulkImportParsedMenu,
+        isImportingParsedMenu,
         // Items
         updateItem,
         createNewItem,
@@ -135,6 +142,7 @@ const MenuDetailPage: React.FC = () => {
     const [toDuplicateCategory, setToDuplicateCategory] = useState<string | undefined>();
     const [deleteCategoryConfirm, setDeleteCategoryConfirm] = useState<string | null>(null);
     const [movingItem, setMovingItem] = useState<{ itemId: string, currentCatId: string } | null>(null);
+    const [aiImportOpen, setAiImportOpen] = useState(false);
 
     const { plan } = useBusinessPlan(id);
     const { openUpgradeModal } = useSubscriptionStore();
@@ -432,6 +440,17 @@ const MenuDetailPage: React.FC = () => {
                 }}
             />
 
+            <AiMenuImportModal
+                open={aiImportOpen}
+                onClose={() => setAiImportOpen(false)}
+                allergies={allergies || []}
+                remainingProductSlots={plan ? Math.max(plan.allowed.products - plan.current.products, 0) : undefined}
+                isParsing={isParsingMenuImage}
+                isImporting={isImportingParsedMenu}
+                onParse={parseMenuImageWithAi}
+                onImport={bulkImportParsedMenu}
+            />
+
             {businessAllItems && (
                 <ItemsDuplicationModal
                     items={businessAllItems}
@@ -603,6 +622,25 @@ const MenuDetailPage: React.FC = () => {
                         <Plus className="h-4 w-4 sm:mr-1" />
                         <span className="hidden sm:inline">{t('menu_management.actions.add_category')}</span>
                         {!canCreateMenu && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            if (canCreateProduct) {
+                                setAiImportOpen(true);
+                            } else {
+                                openUpgradeModal(`The business plan allows up to ${plan?.allowed.products ?? 0} menu items. The owner needs to upgrade to add more.`);
+                            }
+                        }}
+                        className={cn(
+                            "flex items-center gap-2 transition px-3 sm:px-4",
+                            canCreateProduct
+                                ? "bg-fuchsia-500 text-white hover:bg-fuchsia-600 dark:bg-fuchsia-600 dark:hover:bg-fuchsia-500"
+                                : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
+                        )}
+                    >
+                        <Sparkles className="h-4 w-4 sm:mr-1" />
+                        <span className="hidden sm:inline">{t('menu_management.actions.ai_import')}</span>
+                        {!canCreateProduct && <span className="text-[10px] font-bold text-fuchsia-600 uppercase ml-1">Upgrade</span>}
                     </Button>
                     <Button
                         disabled={!hasChanges()}
