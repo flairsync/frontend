@@ -8,17 +8,20 @@ export interface UsageData {
         menus: number;
         products: number;
         employees: number;
+        menuBoards: number;
     };
     current: {
         businesses: number;
         menus: number;
         products: number;
         employees: number;
+        menuBoards: number;
     };
     canCreateBusiness: boolean;
     canCreateMenu: boolean;
     canCreateProduct: boolean;
     canAddEmployee: boolean;
+    canCreateMenuBoard: boolean;
 }
 
 export const useUsage = () => {

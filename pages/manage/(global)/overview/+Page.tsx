@@ -109,26 +109,11 @@ const ManagePage: React.FC = () => {
                         </CardHeader>
                         <CardContent className="pt-8 px-8">
                             {usage ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                                <div className="grid grid-cols-1 gap-x-12 gap-y-8">
                                     <UsageItem
                                         label={t("manage_overview.usage_labels.businesses")}
                                         current={usage.current.businesses}
                                         allowed={usage.allowed.businesses}
-                                    />
-                                    <UsageItem
-                                        label={t("manage_overview.usage_labels.menus_active")}
-                                        current={usage.current.menus}
-                                        allowed={usage.allowed.menus}
-                                    />
-                                    <UsageItem
-                                        label={t("manage_overview.usage_labels.products")}
-                                        current={usage.current.products}
-                                        allowed={usage.allowed.products}
-                                    />
-                                    <UsageItem
-                                        label={t("manage_overview.usage_labels.employees")}
-                                        current={usage.current.employees}
-                                        allowed={usage.allowed.employees}
                                     />
                                 </div>
                             ) : (
@@ -211,6 +196,16 @@ const ManagePage: React.FC = () => {
                                                             label={t("manage_overview.usage_labels.menus")}
                                                             current={biz.counts.menus}
                                                             allowed={usage.allowed.menus}
+                                                        />
+                                                        <UsageItem
+                                                            label={t("manage_overview.usage_labels.products")}
+                                                            current={biz.counts.products}
+                                                            allowed={usage.allowed.products}
+                                                        />
+                                                        <UsageItem
+                                                            label={t("manage_overview.usage_labels.menu_boards")}
+                                                            current={biz.counts.menuBoards}
+                                                            allowed={usage.allowed.menuBoards}
                                                         />
                                                     </div>
                                                 )}

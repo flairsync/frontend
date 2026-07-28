@@ -672,7 +672,8 @@
       "menus_active": "Menus (Active)",
       "products": "Products",
       "employees": "Employees",
-      "menus": "Menus"
+      "menus": "Menus",
+      "menu_boards": "Menu Boards"
     },
     "loading_usage": "Loading usage data...",
     "usage_unavailable": "Usage data unavailable",

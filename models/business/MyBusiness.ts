@@ -19,6 +19,8 @@ export class MyBusiness {
   counts?: {
     employees: number;
     menus: number;
+    products: number;
+    menuBoards: number;
   };
 
   constructor(
@@ -34,6 +36,8 @@ export class MyBusiness {
     counts?: {
       employees: number;
       menus: number;
+      products: number;
+      menuBoards: number;
     }
   ) {
     this.id = id;

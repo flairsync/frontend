@@ -7,17 +7,20 @@ export interface BusinessPlanData {
     menus: number;
     products: number;
     employees: number;
+    menuBoards: number;
   };
   current: {
     businesses: number;
     menus: number;
     products: number;
     employees: number;
+    menuBoards: number;
   };
   canCreateBusiness: boolean;
   canCreateMenu: boolean;
   canCreateProduct: boolean;
   canAddEmployee: boolean;
+  canCreateMenuBoard: boolean;
 }
 
 export const useBusinessPlan = (businessId: string | null | undefined) => {

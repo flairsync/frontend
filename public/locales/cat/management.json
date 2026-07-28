@@ -672,7 +672,8 @@
       "menus_active": "Menús (actius)",
       "products": "Productes",
       "employees": "Empleats",
-      "menus": "Menús"
+      "menus": "Menús",
+      "menu_boards": "Pantalles de menú"
     },
     "loading_usage": "Carregant dades d'ús...",
     "usage_unavailable": "Dades d'ús no disponibles",
