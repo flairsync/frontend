@@ -54,6 +54,7 @@ import {
     Tag,
     MessageSquareHeart,
     Palette,
+    MonitorPlay,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -140,6 +141,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "discounts", titleKey: "sidebar.items.discounts", url: "/manage/:id/owner/discounts", icon: Tag },
             { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
             { key: "themes", titleKey: "sidebar.items.themes", url: "/manage/:id/owner/themes", icon: Palette },
+            { key: "menu-boards", titleKey: "sidebar.items.menu_boards", url: "/manage/:id/owner/menu-boards", icon: MonitorPlay },
             { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
             { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
             { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },

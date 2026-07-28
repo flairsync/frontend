@@ -4,7 +4,10 @@
     "page": {
       "title": "Commandes",
       "add_new_order": "Ajouter une commande",
-      "tabs": { "list": "Commandes", "live": "Tables en direct" },
+      "tabs": {
+        "list": "Commandes",
+        "live": "Tables en direct"
+      },
       "filter_type_placeholder": "Filtrer par type",
       "type_all": "Toutes",
       "type_dine_in": "Sur place",
@@ -411,7 +414,8 @@
       "inventory": "Inventaire",
       "menu": "Consulter le menu",
       "messages": "Messages et annonces",
-      "themes": "Thème"
+      "themes": "Thème",
+      "menu_boards": "Écrans de Menu"
     }
   },
   "sidebar": {
@@ -453,22 +457,59 @@
       "reviews": "Avis",
       "feedback": "Retours",
       "audit_logs": "Journaux d'audit",
-      "danger": "Zone de danger"
+      "danger": "Zone de danger",
+      "menu_boards": "Écrans de Menu"
     }
   },
   "permissions": {
-    "MENU": { "label": "Gestion des menus", "description": "Créer, mettre à jour et gérer les plats, catégories et tarifs du menu." },
-    "RESERVATIONS": { "label": "Gestion des réservations", "description": "Consulter, créer, mettre à jour et gérer les réservations et les tables." },
-    "STAFF": { "label": "Gestion du personnel", "description": "Gérer les membres du personnel, les rôles, les permissions et les affectations." },
-    "OPENING_HOURS": { "label": "Gestion des horaires d'ouverture", "description": "Configurer les horaires d'ouverture, les horaires spéciaux et les fermetures." },
-    "BUSINESS_SETTINGS": { "label": "Paramètres de l'établissement", "description": "Gérer les informations, préférences et paramètres opérationnels de l'établissement." },
-    "ORDERS": { "label": "Gestion des commandes", "description": "Consulter, créer et gérer les commandes clients sur place, à emporter et en livraison." },
-    "INVENTORY": { "label": "Gestion des stocks", "description": "Suivre les niveaux de stock, gérer les articles d'inventaire et les unités." },
-    "REVIEWS": { "label": "Gestion des avis", "description": "Consulter et répondre aux avis laissés par les clients." },
-    "JOBS": { "label": "Gestion des offres d'emploi", "description": "Créer et gérer les offres d'emploi et les candidatures." },
-    "TASKS": { "label": "Gestion des tâches", "description": "Créer, assigner et suivre les tâches du personnel." },
-    "COMMUNICATIONS": { "label": "Annonces et messages", "description": "Envoyer des annonces et des messages au personnel." },
-    "WEBSITE": { "label": "Constructeur de site web", "description": "Créer, modifier et publier les pages du site web de l'établissement." }
+    "MENU": {
+      "label": "Gestion des menus",
+      "description": "Créer, mettre à jour et gérer les plats, catégories et tarifs du menu."
+    },
+    "RESERVATIONS": {
+      "label": "Gestion des réservations",
+      "description": "Consulter, créer, mettre à jour et gérer les réservations et les tables."
+    },
+    "STAFF": {
+      "label": "Gestion du personnel",
+      "description": "Gérer les membres du personnel, les rôles, les permissions et les affectations."
+    },
+    "OPENING_HOURS": {
+      "label": "Gestion des horaires d'ouverture",
+      "description": "Configurer les horaires d'ouverture, les horaires spéciaux et les fermetures."
+    },
+    "BUSINESS_SETTINGS": {
+      "label": "Paramètres de l'établissement",
+      "description": "Gérer les informations, préférences et paramètres opérationnels de l'établissement."
+    },
+    "ORDERS": {
+      "label": "Gestion des commandes",
+      "description": "Consulter, créer et gérer les commandes clients sur place, à emporter et en livraison."
+    },
+    "INVENTORY": {
+      "label": "Gestion des stocks",
+      "description": "Suivre les niveaux de stock, gérer les articles d'inventaire et les unités."
+    },
+    "REVIEWS": {
+      "label": "Gestion des avis",
+      "description": "Consulter et répondre aux avis laissés par les clients."
+    },
+    "JOBS": {
+      "label": "Gestion des offres d'emploi",
+      "description": "Créer et gérer les offres d'emploi et les candidatures."
+    },
+    "TASKS": {
+      "label": "Gestion des tâches",
+      "description": "Créer, assigner et suivre les tâches du personnel."
+    },
+    "COMMUNICATIONS": {
+      "label": "Annonces et messages",
+      "description": "Envoyer des annonces et des messages au personnel."
+    },
+    "WEBSITE": {
+      "label": "Constructeur de site web",
+      "description": "Créer, modifier et publier les pages du site web de l'établissement."
+    }
   },
   "menu_management": {
     "actions": {
@@ -980,11 +1021,26 @@
     "clear": "Effacer"
   },
   "attendance_stats": {
-    "active_now": { "title": "Actifs maintenant", "description": "Actuellement pointés" },
-    "worked_hours": { "title": "Heures travaillées", "description": "Tous enregistrements confondus" },
-    "pending_validation": { "title": "En attente de validation", "description": "En attente de l'examen du responsable" },
-    "validated": { "title": "Validés", "description": "Enregistrements verrouillés" },
-    "absences_late": { "title": "Absences / Retards", "description": "Absences · Arrivées en retard" }
+    "active_now": {
+      "title": "Actifs maintenant",
+      "description": "Actuellement pointés"
+    },
+    "worked_hours": {
+      "title": "Heures travaillées",
+      "description": "Tous enregistrements confondus"
+    },
+    "pending_validation": {
+      "title": "En attente de validation",
+      "description": "En attente de l'examen du responsable"
+    },
+    "validated": {
+      "title": "Validés",
+      "description": "Enregistrements verrouillés"
+    },
+    "absences_late": {
+      "title": "Absences / Retards",
+      "description": "Absences · Arrivées en retard"
+    }
   },
   "pinned_links": {
     "title": "Accès rapides",
@@ -1524,10 +1580,22 @@
     "decision": {
       "title": "De quoi ai-je besoin ?",
       "items": [
-        { "if": "Je gère tous les emplacements moi-même", "then": "Créez simplement chacun sous votre compte — aucune Organisation n'est nécessaire." },
-        { "if": "J'engage des managers pour gérer mes emplacements à ma place", "then": "Gardez tous les emplacements sous votre compte, et attribuez à chaque manager un Rôle limité à son site." },
-        { "if": "Quelqu'un d'autre possède et gère un emplacement, mais je veux avoir de la visibilité dessus", "then": "Créez une Organisation ou une Région et envoyez une demande de rattachement à cet établissement." },
-        { "if": "Je veux des rapports combinés sur des emplacements appartenant à des personnes différentes", "then": "Comme ci-dessus — une Organisation ou une Région, une fois que chaque partie approuve." }
+        {
+          "if": "Je gère tous les emplacements moi-même",
+          "then": "Créez simplement chacun sous votre compte — aucune Organisation n'est nécessaire."
+        },
+        {
+          "if": "J'engage des managers pour gérer mes emplacements à ma place",
+          "then": "Gardez tous les emplacements sous votre compte, et attribuez à chaque manager un Rôle limité à son site."
+        },
+        {
+          "if": "Quelqu'un d'autre possède et gère un emplacement, mais je veux avoir de la visibilité dessus",
+          "then": "Créez une Organisation ou une Région et envoyez une demande de rattachement à cet établissement."
+        },
+        {
+          "if": "Je veux des rapports combinés sur des emplacements appartenant à des personnes différentes",
+          "then": "Comme ci-dessus — une Organisation ou une Région, une fois que chaque partie approuve."
+        }
       ]
     }
   },
@@ -1548,6 +1616,58 @@
       "plans": "Formules",
       "professional_profile": "Profil professionnel",
       "help": "Aide"
+    }
+  },
+  "menu_board_management": {
+    "list": {
+      "title": "Écrans de Menu",
+      "description": "Créez des écrans de menu numériques pour téléviseurs et bornes. Chaque écran dispose de son propre lien public à ouvrir sur n'importe quel écran.",
+      "remaining_boards_one": "Vous pouvez créer {{count}} écran supplémentaire avec votre abonnement.",
+      "remaining_boards_other": "Vous pouvez créer {{count}} écrans supplémentaires avec votre abonnement.",
+      "limit_reached": "Vous avez atteint la limite d'écrans de menu de votre abonnement.",
+      "upgrade": "Améliorer",
+      "no_boards_title": "Aucun écran pour le moment",
+      "no_boards_desc": "Créez votre premier écran pour afficher votre menu sur un téléviseur ou une borne.",
+      "create_board": "Créer un Écran",
+      "create_board_card": "Créer un Nouvel Écran",
+      "no_permission": "Vous n'avez pas la permission de voir les écrans de menu.",
+      "link_copied": "Lien copié dans le presse-papiers",
+      "qr_title": "Scannez pour ouvrir cet écran",
+      "regenerate_confirm_title": "Régénérer le lien public ?",
+      "regenerate_confirm_desc": "L'ancien lien cessera de fonctionner immédiatement. Tout écran ou QR code imprimé l'utilisant devra être mis à jour.",
+      "cancel": "Annuler",
+      "regenerate": "Régénérer",
+      "delete_confirm_title": "Supprimer cet écran ?",
+      "delete_confirm_desc": "\"{{name}}\" et son lien public seront définitivement supprimés. Cette action est irréversible.",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "copy_link": "Copier le lien",
+      "show_qr": "Afficher le QR code",
+      "regenerate_link": "Régénérer le lien",
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "mode_grid": "Grille",
+      "mode_carousel": "Carrousel",
+      "categories_count_one": "{{count}} catégorie",
+      "categories_count_other": "{{count}} catégories",
+      "active": "Actif"
+    },
+    "modal": {
+      "create_title": "Créer un Écran de Menu",
+      "edit_title": "Modifier l'Écran de Menu",
+      "name": "Nom",
+      "display_mode": "Mode d'affichage",
+      "display_mode_grid": "Grille",
+      "display_mode_carousel": "Carrousel",
+      "theme": "Thème",
+      "theme_light": "Clair",
+      "theme_dark": "Sombre",
+      "interval_seconds": "Secondes par diapositive",
+      "categories": "Catégories",
+      "categories_hint": "Choisissez les catégories à afficher sur cet écran et faites glisser pour les ordonner.",
+      "no_categories": "Aucune catégorie disponible pour le moment. Ajoutez d'abord des catégories à un menu.",
+      "update_button": "Mettre à Jour l'Écran",
+      "create_button": "Créer l'Écran"
     }
   }
 }

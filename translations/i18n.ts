@@ -28,6 +28,7 @@ i18n
       "jobs",
       "marketplace",
       "business",
+      "menu_board",
     ],
     defaultNS: "common",
     fallbackNS: "common",

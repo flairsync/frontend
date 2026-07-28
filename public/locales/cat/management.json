@@ -4,7 +4,10 @@
     "page": {
       "title": "Comandes",
       "add_new_order": "Afegir nova comanda",
-      "tabs": { "list": "Comandes", "live": "Taules en directe" },
+      "tabs": {
+        "list": "Comandes",
+        "live": "Taules en directe"
+      },
       "filter_type_placeholder": "Filtrar per tipus",
       "type_all": "Totes",
       "type_dine_in": "Al local",
@@ -411,7 +414,8 @@
       "inventory": "Inventari",
       "menu": "Consultar el menú",
       "messages": "Missatges i anuncis",
-      "themes": "Tema"
+      "themes": "Tema",
+      "menu_boards": "Pantalles de Menú"
     }
   },
   "sidebar": {
@@ -453,22 +457,59 @@
       "reviews": "Ressenyes",
       "feedback": "Comentaris",
       "audit_logs": "Registres d'auditoria",
-      "danger": "Zona de perill"
+      "danger": "Zona de perill",
+      "menu_boards": "Pantalles de Menú"
     }
   },
   "permissions": {
-    "MENU": { "label": "Gestió del menú", "description": "Crear, actualitzar i gestionar plats, categories i preus del menú." },
-    "RESERVATIONS": { "label": "Gestió de reserves", "description": "Veure, crear, actualitzar i gestionar les reserves i els clients." },
-    "STAFF": { "label": "Gestió del personal", "description": "Gestionar membres de l'equip, rols, permisos i assignacions de feina." },
-    "OPENING_HOURS": { "label": "Gestió de l'horari d'obertura", "description": "Configurar l'horari d'obertura, horaris especials i tancaments." },
-    "BUSINESS_SETTINGS": { "label": "Configuració del negoci", "description": "Gestionar informació, preferències i configuració operativa del negoci." },
-    "ORDERS": { "label": "Gestió de comandes", "description": "Veure, crear i gestionar comandes de clients per a consumició, per emportar i a domicili." },
-    "INVENTORY": { "label": "Gestió d'inventari", "description": "Controlar el nivell d'existències, gestionar articles d'inventari i unitats." },
-    "REVIEWS": { "label": "Gestió de ressenyes", "description": "Veure i respondre a les ressenyes deixades pels clients." },
-    "JOBS": { "label": "Gestió d'ofertes de feina", "description": "Crear i gestionar ofertes de feina i candidatures." },
-    "TASKS": { "label": "Gestió de tasques", "description": "Crear, assignar i fer seguiment de les tasques del personal." },
-    "COMMUNICATIONS": { "label": "Anuncis i missatges", "description": "Enviar anuncis i missatges al personal." },
-    "WEBSITE": { "label": "Constructor de lloc web", "description": "Crear, editar i publicar les pàgines del lloc web del negoci." }
+    "MENU": {
+      "label": "Gestió del menú",
+      "description": "Crear, actualitzar i gestionar plats, categories i preus del menú."
+    },
+    "RESERVATIONS": {
+      "label": "Gestió de reserves",
+      "description": "Veure, crear, actualitzar i gestionar les reserves i els clients."
+    },
+    "STAFF": {
+      "label": "Gestió del personal",
+      "description": "Gestionar membres de l'equip, rols, permisos i assignacions de feina."
+    },
+    "OPENING_HOURS": {
+      "label": "Gestió de l'horari d'obertura",
+      "description": "Configurar l'horari d'obertura, horaris especials i tancaments."
+    },
+    "BUSINESS_SETTINGS": {
+      "label": "Configuració del negoci",
+      "description": "Gestionar informació, preferències i configuració operativa del negoci."
+    },
+    "ORDERS": {
+      "label": "Gestió de comandes",
+      "description": "Veure, crear i gestionar comandes de clients per a consumició, per emportar i a domicili."
+    },
+    "INVENTORY": {
+      "label": "Gestió d'inventari",
+      "description": "Controlar el nivell d'existències, gestionar articles d'inventari i unitats."
+    },
+    "REVIEWS": {
+      "label": "Gestió de ressenyes",
+      "description": "Veure i respondre a les ressenyes deixades pels clients."
+    },
+    "JOBS": {
+      "label": "Gestió d'ofertes de feina",
+      "description": "Crear i gestionar ofertes de feina i candidatures."
+    },
+    "TASKS": {
+      "label": "Gestió de tasques",
+      "description": "Crear, assignar i fer seguiment de les tasques del personal."
+    },
+    "COMMUNICATIONS": {
+      "label": "Anuncis i missatges",
+      "description": "Enviar anuncis i missatges al personal."
+    },
+    "WEBSITE": {
+      "label": "Constructor de lloc web",
+      "description": "Crear, editar i publicar les pàgines del lloc web del negoci."
+    }
   },
   "menu_management": {
     "actions": {
@@ -980,11 +1021,26 @@
     "clear": "Netejar"
   },
   "attendance_stats": {
-    "active_now": { "title": "Actius ara", "description": "Actualment fitxats" },
-    "worked_hours": { "title": "Hores treballades", "description": "En tots els registres" },
-    "pending_validation": { "title": "Pendent de validació", "description": "Esperant la revisió del responsable" },
-    "validated": { "title": "Validats", "description": "Registres bloquejats" },
-    "absences_late": { "title": "Absències / Retards", "description": "Absències · Arribades tardanes" }
+    "active_now": {
+      "title": "Actius ara",
+      "description": "Actualment fitxats"
+    },
+    "worked_hours": {
+      "title": "Hores treballades",
+      "description": "En tots els registres"
+    },
+    "pending_validation": {
+      "title": "Pendent de validació",
+      "description": "Esperant la revisió del responsable"
+    },
+    "validated": {
+      "title": "Validats",
+      "description": "Registres bloquejats"
+    },
+    "absences_late": {
+      "title": "Absències / Retards",
+      "description": "Absències · Arribades tardanes"
+    }
   },
   "pinned_links": {
     "title": "Accessos ràpids",
@@ -1524,10 +1580,22 @@
     "decision": {
       "title": "Quin necessito?",
       "items": [
-        { "if": "Jo gestiono tots els locals personalment", "then": "Simplement crea'ls tots amb el teu compte — no cal cap Organització." },
-        { "if": "Contracto encarregats perquè gestionin els locals per mi", "then": "Mantén tots els locals al teu compte i assigna a cada encarregat un Rol limitat al seu local." },
-        { "if": "Una altra persona posseeix i gestiona un local, però vull tenir-hi visibilitat", "then": "Crea una Organització o Regió i envia una sol·licitud de vinculació a aquell negoci." },
-        { "if": "Vull informes combinats de locals que pertanyen a persones diferents", "then": "El mateix que el cas anterior — una Organització o Regió, un cop totes dues parts ho aprovin." }
+        {
+          "if": "Jo gestiono tots els locals personalment",
+          "then": "Simplement crea'ls tots amb el teu compte — no cal cap Organització."
+        },
+        {
+          "if": "Contracto encarregats perquè gestionin els locals per mi",
+          "then": "Mantén tots els locals al teu compte i assigna a cada encarregat un Rol limitat al seu local."
+        },
+        {
+          "if": "Una altra persona posseeix i gestiona un local, però vull tenir-hi visibilitat",
+          "then": "Crea una Organització o Regió i envia una sol·licitud de vinculació a aquell negoci."
+        },
+        {
+          "if": "Vull informes combinats de locals que pertanyen a persones diferents",
+          "then": "El mateix que el cas anterior — una Organització o Regió, un cop totes dues parts ho aprovin."
+        }
       ]
     }
   },
@@ -1548,6 +1616,58 @@
       "plans": "Plans",
       "professional_profile": "Perfil professional",
       "help": "Ajuda"
+    }
+  },
+  "menu_board_management": {
+    "list": {
+      "title": "Pantalles de Menú",
+      "description": "Crea pantalles de menú digitals per a televisors i quioscos. Cada pantalla té el seu propi enllaç públic que pots obrir a qualsevol pantalla.",
+      "remaining_boards_one": "Pots crear {{count}} pantalla més amb la teva subscripció.",
+      "remaining_boards_other": "Pots crear {{count}} pantalles més amb la teva subscripció.",
+      "limit_reached": "Has arribat al límit de pantalles de menú de la teva subscripció.",
+      "upgrade": "Millorar",
+      "no_boards_title": "Encara no hi ha pantalles",
+      "no_boards_desc": "Crea la teva primera pantalla per mostrar el teu menú en un televisor o quiosc.",
+      "create_board": "Crear Pantalla",
+      "create_board_card": "Crear Nova Pantalla",
+      "no_permission": "No tens permís per veure les pantalles de menú.",
+      "link_copied": "Enllaç copiat al porta-retalls",
+      "qr_title": "Escaneja per obrir aquesta pantalla",
+      "regenerate_confirm_title": "Regenerar l'enllaç públic?",
+      "regenerate_confirm_desc": "L'enllaç anterior deixarà de funcionar immediatament. Qualsevol pantalla o codi QR imprès que l'utilitzi s'haurà d'actualitzar.",
+      "cancel": "Cancel·lar",
+      "regenerate": "Regenerar",
+      "delete_confirm_title": "Eliminar aquesta pantalla?",
+      "delete_confirm_desc": "\"{{name}}\" i el seu enllaç públic s'eliminaran permanentment. Això no es pot desfer.",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "copy_link": "Copiar enllaç",
+      "show_qr": "Mostrar codi QR",
+      "regenerate_link": "Regenerar enllaç",
+      "online": "En línia",
+      "offline": "Fora de línia",
+      "mode_grid": "Graella",
+      "mode_carousel": "Carrusel",
+      "categories_count_one": "{{count}} categoria",
+      "categories_count_other": "{{count}} categories",
+      "active": "Activa"
+    },
+    "modal": {
+      "create_title": "Crear Pantalla de Menú",
+      "edit_title": "Editar Pantalla de Menú",
+      "name": "Nom",
+      "display_mode": "Mode de visualització",
+      "display_mode_grid": "Graella",
+      "display_mode_carousel": "Carrusel",
+      "theme": "Tema",
+      "theme_light": "Clar",
+      "theme_dark": "Fosc",
+      "interval_seconds": "Segons per diapositiva",
+      "categories": "Categories",
+      "categories_hint": "Tria quines categories mostrar en aquesta pantalla i arrossega-les per ordenar-les.",
+      "no_categories": "Encara no hi ha categories disponibles. Afegeix categories a un menú primer.",
+      "update_button": "Actualitzar Pantalla",
+      "create_button": "Crear Pantalla"
     }
   }
 }

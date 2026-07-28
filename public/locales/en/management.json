@@ -4,7 +4,10 @@
     "page": {
       "title": "Orders",
       "add_new_order": "Add New Order",
-      "tabs": { "list": "Orders", "live": "Live Tables" },
+      "tabs": {
+        "list": "Orders",
+        "live": "Live Tables"
+      },
       "filter_type_placeholder": "Filter by type",
       "type_all": "All",
       "type_dine_in": "Dine In",
@@ -411,7 +414,8 @@
       "inventory": "Inventory",
       "menu": "Menu Lookup",
       "messages": "Messages & Announcements",
-      "themes": "Theme"
+      "themes": "Theme",
+      "menu_boards": "Menu Boards"
     }
   },
   "sidebar": {
@@ -453,22 +457,59 @@
       "reviews": "Reviews",
       "feedback": "Feedback",
       "audit_logs": "Audit Logs",
-      "danger": "Danger Zone"
+      "danger": "Danger Zone",
+      "menu_boards": "Menu Boards"
     }
   },
   "permissions": {
-    "MENU": { "label": "Menu management", "description": "Create, update, and manage menu items, categories, and pricing." },
-    "RESERVATIONS": { "label": "Reservation management", "description": "View, create, update, and manage customer reservations and bookings." },
-    "STAFF": { "label": "Staff management", "description": "Manage staff members, roles, permissions, and work assignments." },
-    "OPENING_HOURS": { "label": "Opening hours management", "description": "Configure business opening hours, special schedules, and closures." },
-    "BUSINESS_SETTINGS": { "label": "Business settings", "description": "Manage business information, preferences, and operational settings." },
-    "ORDERS": { "label": "Orders management", "description": "View, create, and manage customer orders for dine-in, takeaway, and delivery." },
-    "INVENTORY": { "label": "Inventory management", "description": "Track ingredients and stock levels, manage inventory items and units." },
-    "REVIEWS": { "label": "Review management", "description": "View and respond to reviews left by customers." },
-    "JOBS": { "label": "Jobs management", "description": "Create and manage job postings and applications." },
-    "TASKS": { "label": "Tasks management", "description": "Create, assign, and track staff tasks." },
-    "COMMUNICATIONS": { "label": "Announcements & messages", "description": "Send announcements and messages to staff." },
-    "WEBSITE": { "label": "Website builder", "description": "Create, edit, and publish the business's public website pages." }
+    "MENU": {
+      "label": "Menu management",
+      "description": "Create, update, and manage menu items, categories, and pricing."
+    },
+    "RESERVATIONS": {
+      "label": "Reservation management",
+      "description": "View, create, update, and manage customer reservations and bookings."
+    },
+    "STAFF": {
+      "label": "Staff management",
+      "description": "Manage staff members, roles, permissions, and work assignments."
+    },
+    "OPENING_HOURS": {
+      "label": "Opening hours management",
+      "description": "Configure business opening hours, special schedules, and closures."
+    },
+    "BUSINESS_SETTINGS": {
+      "label": "Business settings",
+      "description": "Manage business information, preferences, and operational settings."
+    },
+    "ORDERS": {
+      "label": "Orders management",
+      "description": "View, create, and manage customer orders for dine-in, takeaway, and delivery."
+    },
+    "INVENTORY": {
+      "label": "Inventory management",
+      "description": "Track ingredients and stock levels, manage inventory items and units."
+    },
+    "REVIEWS": {
+      "label": "Review management",
+      "description": "View and respond to reviews left by customers."
+    },
+    "JOBS": {
+      "label": "Jobs management",
+      "description": "Create and manage job postings and applications."
+    },
+    "TASKS": {
+      "label": "Tasks management",
+      "description": "Create, assign, and track staff tasks."
+    },
+    "COMMUNICATIONS": {
+      "label": "Announcements & messages",
+      "description": "Send announcements and messages to staff."
+    },
+    "WEBSITE": {
+      "label": "Website builder",
+      "description": "Create, edit, and publish the business's public website pages."
+    }
   },
   "menu_management": {
     "actions": {
@@ -980,11 +1021,26 @@
     "clear": "Clear"
   },
   "attendance_stats": {
-    "active_now": { "title": "Active Now", "description": "Currently clocked in" },
-    "worked_hours": { "title": "Worked Hours", "description": "Across all records" },
-    "pending_validation": { "title": "Pending Validation", "description": "Awaiting manager review" },
-    "validated": { "title": "Validated", "description": "Locked records" },
-    "absences_late": { "title": "Absences / Late", "description": "Absences · Late arrivals" }
+    "active_now": {
+      "title": "Active Now",
+      "description": "Currently clocked in"
+    },
+    "worked_hours": {
+      "title": "Worked Hours",
+      "description": "Across all records"
+    },
+    "pending_validation": {
+      "title": "Pending Validation",
+      "description": "Awaiting manager review"
+    },
+    "validated": {
+      "title": "Validated",
+      "description": "Locked records"
+    },
+    "absences_late": {
+      "title": "Absences / Late",
+      "description": "Absences · Late arrivals"
+    }
   },
   "pinned_links": {
     "title": "Quick Links",
@@ -1524,10 +1580,22 @@
     "decision": {
       "title": "Which one do I need?",
       "items": [
-        { "if": "I run every location myself", "then": "Just create each one under your account — no Organization needed." },
-        { "if": "I'm hiring managers to run locations for me", "then": "Keep every location under your account, and give each manager a Role scoped to their site." },
-        { "if": "Someone else owns and runs a location, but I want visibility into it", "then": "Create an Organization or Region and send that business a link request." },
-        { "if": "I want combined reporting across locations owned by different people", "then": "Same as above — an Organization or Region, once every side approves." }
+        {
+          "if": "I run every location myself",
+          "then": "Just create each one under your account — no Organization needed."
+        },
+        {
+          "if": "I'm hiring managers to run locations for me",
+          "then": "Keep every location under your account, and give each manager a Role scoped to their site."
+        },
+        {
+          "if": "Someone else owns and runs a location, but I want visibility into it",
+          "then": "Create an Organization or Region and send that business a link request."
+        },
+        {
+          "if": "I want combined reporting across locations owned by different people",
+          "then": "Same as above — an Organization or Region, once every side approves."
+        }
       ]
     }
   },
@@ -1548,6 +1616,58 @@
       "plans": "Plans",
       "professional_profile": "Professional Profile",
       "help": "Help"
+    }
+  },
+  "menu_board_management": {
+    "list": {
+      "title": "Menu Display Boards",
+      "description": "Create digital menu boards for TVs and kiosks. Each board gets its own public link you can open on any screen.",
+      "remaining_boards_one": "You can create {{count}} more menu board with your subscription.",
+      "remaining_boards_other": "You can create {{count}} more menu boards with your subscription.",
+      "limit_reached": "You have reached your menu board limit for your subscription.",
+      "upgrade": "Upgrade",
+      "no_boards_title": "No menu boards yet",
+      "no_boards_desc": "Create your first board to display your menu on a TV or kiosk.",
+      "create_board": "Create Board",
+      "create_board_card": "Create New Board",
+      "no_permission": "You don't have permission to view menu boards.",
+      "link_copied": "Link copied to clipboard",
+      "qr_title": "Scan to open this board",
+      "regenerate_confirm_title": "Regenerate public link?",
+      "regenerate_confirm_desc": "The old link will stop working immediately. Any screen or printed QR code using it will need to be updated.",
+      "cancel": "Cancel",
+      "regenerate": "Regenerate",
+      "delete_confirm_title": "Delete this board?",
+      "delete_confirm_desc": "\"{{name}}\" and its public link will be permanently deleted. This cannot be undone.",
+      "delete": "Delete",
+      "edit": "Edit",
+      "copy_link": "Copy link",
+      "show_qr": "Show QR code",
+      "regenerate_link": "Regenerate link",
+      "online": "Online",
+      "offline": "Offline",
+      "mode_grid": "Grid",
+      "mode_carousel": "Carousel",
+      "categories_count_one": "{{count}} category",
+      "categories_count_other": "{{count}} categories",
+      "active": "Active"
+    },
+    "modal": {
+      "create_title": "Create Menu Board",
+      "edit_title": "Edit Menu Board",
+      "name": "Name",
+      "display_mode": "Display mode",
+      "display_mode_grid": "Grid",
+      "display_mode_carousel": "Carousel",
+      "theme": "Theme",
+      "theme_light": "Light",
+      "theme_dark": "Dark",
+      "interval_seconds": "Seconds per slide",
+      "categories": "Categories",
+      "categories_hint": "Pick which categories to show on this board, and drag to set their order.",
+      "no_categories": "No categories available yet. Add categories to a menu first.",
+      "update_button": "Update Board",
+      "create_button": "Create Board"
     }
   }
 }

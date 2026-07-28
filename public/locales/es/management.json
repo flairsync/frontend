@@ -4,7 +4,10 @@
     "page": {
       "title": "Pedidos",
       "add_new_order": "Añadir nuevo pedido",
-      "tabs": { "list": "Pedidos", "live": "Mesas en vivo" },
+      "tabs": {
+        "list": "Pedidos",
+        "live": "Mesas en vivo"
+      },
       "filter_type_placeholder": "Filtrar por tipo",
       "type_all": "Todos",
       "type_dine_in": "En el local",
@@ -411,7 +414,8 @@
       "inventory": "Inventario",
       "menu": "Consultar menú",
       "messages": "Mensajes y anuncios",
-      "themes": "Tema"
+      "themes": "Tema",
+      "menu_boards": "Pantallas de Menú"
     }
   },
   "sidebar": {
@@ -453,22 +457,59 @@
       "reviews": "Reseñas",
       "feedback": "Comentarios",
       "audit_logs": "Registros de auditoría",
-      "danger": "Zona de peligro"
+      "danger": "Zona de peligro",
+      "menu_boards": "Pantallas de Menú"
     }
   },
   "permissions": {
-    "MENU": { "label": "Gestión del menú", "description": "Crear, actualizar y gestionar platos, categorías y precios del menú." },
-    "RESERVATIONS": { "label": "Gestión de reservas", "description": "Ver, crear, actualizar y gestionar las reservas y los clientes." },
-    "STAFF": { "label": "Gestión del personal", "description": "Gestionar miembros del equipo, roles, permisos y asignaciones de trabajo." },
-    "OPENING_HOURS": { "label": "Gestión del horario de apertura", "description": "Configurar el horario de apertura, horarios especiales y cierres." },
-    "BUSINESS_SETTINGS": { "label": "Configuración del negocio", "description": "Gestionar información, preferencias y configuración operativa del negocio." },
-    "ORDERS": { "label": "Gestión de pedidos", "description": "Ver, crear y gestionar pedidos de clientes para consumo en local, para llevar y a domicilio." },
-    "INVENTORY": { "label": "Gestión de inventario", "description": "Controlar el nivel de existencias, gestionar artículos de inventario y unidades." },
-    "REVIEWS": { "label": "Gestión de reseñas", "description": "Ver y responder a las reseñas dejadas por los clientes." },
-    "JOBS": { "label": "Gestión de ofertas de empleo", "description": "Crear y gestionar ofertas de empleo y candidaturas." },
-    "TASKS": { "label": "Gestión de tareas", "description": "Crear, asignar y seguir las tareas del personal." },
-    "COMMUNICATIONS": { "label": "Anuncios y mensajes", "description": "Enviar anuncios y mensajes al personal." },
-    "WEBSITE": { "label": "Constructor de sitio web", "description": "Crear, editar y publicar las páginas del sitio web del negocio." }
+    "MENU": {
+      "label": "Gestión del menú",
+      "description": "Crear, actualizar y gestionar platos, categorías y precios del menú."
+    },
+    "RESERVATIONS": {
+      "label": "Gestión de reservas",
+      "description": "Ver, crear, actualizar y gestionar las reservas y los clientes."
+    },
+    "STAFF": {
+      "label": "Gestión del personal",
+      "description": "Gestionar miembros del equipo, roles, permisos y asignaciones de trabajo."
+    },
+    "OPENING_HOURS": {
+      "label": "Gestión del horario de apertura",
+      "description": "Configurar el horario de apertura, horarios especiales y cierres."
+    },
+    "BUSINESS_SETTINGS": {
+      "label": "Configuración del negocio",
+      "description": "Gestionar información, preferencias y configuración operativa del negocio."
+    },
+    "ORDERS": {
+      "label": "Gestión de pedidos",
+      "description": "Ver, crear y gestionar pedidos de clientes para consumo en local, para llevar y a domicilio."
+    },
+    "INVENTORY": {
+      "label": "Gestión de inventario",
+      "description": "Controlar el nivel de existencias, gestionar artículos de inventario y unidades."
+    },
+    "REVIEWS": {
+      "label": "Gestión de reseñas",
+      "description": "Ver y responder a las reseñas dejadas por los clientes."
+    },
+    "JOBS": {
+      "label": "Gestión de ofertas de empleo",
+      "description": "Crear y gestionar ofertas de empleo y candidaturas."
+    },
+    "TASKS": {
+      "label": "Gestión de tareas",
+      "description": "Crear, asignar y seguir las tareas del personal."
+    },
+    "COMMUNICATIONS": {
+      "label": "Anuncios y mensajes",
+      "description": "Enviar anuncios y mensajes al personal."
+    },
+    "WEBSITE": {
+      "label": "Constructor de sitio web",
+      "description": "Crear, editar y publicar las páginas del sitio web del negocio."
+    }
   },
   "menu_management": {
     "actions": {
@@ -980,11 +1021,26 @@
     "clear": "Limpiar"
   },
   "attendance_stats": {
-    "active_now": { "title": "Activos ahora", "description": "Actualmente con fichaje activo" },
-    "worked_hours": { "title": "Horas trabajadas", "description": "En todos los registros" },
-    "pending_validation": { "title": "Pendiente de validación", "description": "Esperando revisión del encargado" },
-    "validated": { "title": "Validados", "description": "Registros bloqueados" },
-    "absences_late": { "title": "Ausencias / Tardanzas", "description": "Ausencias · Llegadas tarde" }
+    "active_now": {
+      "title": "Activos ahora",
+      "description": "Actualmente con fichaje activo"
+    },
+    "worked_hours": {
+      "title": "Horas trabajadas",
+      "description": "En todos los registros"
+    },
+    "pending_validation": {
+      "title": "Pendiente de validación",
+      "description": "Esperando revisión del encargado"
+    },
+    "validated": {
+      "title": "Validados",
+      "description": "Registros bloqueados"
+    },
+    "absences_late": {
+      "title": "Ausencias / Tardanzas",
+      "description": "Ausencias · Llegadas tarde"
+    }
   },
   "pinned_links": {
     "title": "Accesos rápidos",
@@ -1524,10 +1580,22 @@
     "decision": {
       "title": "¿Cuál necesito?",
       "items": [
-        { "if": "Yo gestiono todos los locales personalmente", "then": "Simplemente crea cada uno con tu cuenta — no hace falta ninguna Organización." },
-        { "if": "Contrato encargados para que gestionen los locales por mí", "then": "Mantén todos los locales en tu cuenta y asigna a cada encargado un Rol limitado a su local." },
-        { "if": "Otra persona posee y gestiona un local, pero quiero tener visibilidad sobre él", "then": "Crea una Organización o Región y envía una solicitud de vinculación a ese negocio." },
-        { "if": "Quiero informes combinados de locales que pertenecen a personas distintas", "then": "Lo mismo que el caso anterior — una Organización o Región, una vez que ambas partes lo aprueben." }
+        {
+          "if": "Yo gestiono todos los locales personalmente",
+          "then": "Simplemente crea cada uno con tu cuenta — no hace falta ninguna Organización."
+        },
+        {
+          "if": "Contrato encargados para que gestionen los locales por mí",
+          "then": "Mantén todos los locales en tu cuenta y asigna a cada encargado un Rol limitado a su local."
+        },
+        {
+          "if": "Otra persona posee y gestiona un local, pero quiero tener visibilidad sobre él",
+          "then": "Crea una Organización o Región y envía una solicitud de vinculación a ese negocio."
+        },
+        {
+          "if": "Quiero informes combinados de locales que pertenecen a personas distintas",
+          "then": "Lo mismo que el caso anterior — una Organización o Región, una vez que ambas partes lo aprueben."
+        }
       ]
     }
   },
@@ -1548,6 +1616,58 @@
       "plans": "Planes",
       "professional_profile": "Perfil profesional",
       "help": "Ayuda"
+    }
+  },
+  "menu_board_management": {
+    "list": {
+      "title": "Pantallas de Menú",
+      "description": "Crea pantallas de menú digitales para TVs y quioscos. Cada pantalla tiene su propio enlace público que puedes abrir en cualquier pantalla.",
+      "remaining_boards_one": "Puedes crear {{count}} pantalla más con tu suscripción.",
+      "remaining_boards_other": "Puedes crear {{count}} pantallas más con tu suscripción.",
+      "limit_reached": "Has alcanzado el límite de pantallas de menú de tu suscripción.",
+      "upgrade": "Mejorar plan",
+      "no_boards_title": "Aún no hay pantallas",
+      "no_boards_desc": "Crea tu primera pantalla para mostrar tu menú en una TV o quiosco.",
+      "create_board": "Crear Pantalla",
+      "create_board_card": "Crear Nueva Pantalla",
+      "no_permission": "No tienes permiso para ver las pantallas de menú.",
+      "link_copied": "Enlace copiado al portapapeles",
+      "qr_title": "Escanea para abrir esta pantalla",
+      "regenerate_confirm_title": "¿Regenerar el enlace público?",
+      "regenerate_confirm_desc": "El enlace anterior dejará de funcionar inmediatamente. Cualquier pantalla o código QR impreso que lo use deberá actualizarse.",
+      "cancel": "Cancelar",
+      "regenerate": "Regenerar",
+      "delete_confirm_title": "¿Eliminar esta pantalla?",
+      "delete_confirm_desc": "\"{{name}}\" y su enlace público se eliminarán permanentemente. Esto no se puede deshacer.",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "copy_link": "Copiar enlace",
+      "show_qr": "Mostrar código QR",
+      "regenerate_link": "Regenerar enlace",
+      "online": "En línea",
+      "offline": "Desconectado",
+      "mode_grid": "Cuadrícula",
+      "mode_carousel": "Carrusel",
+      "categories_count_one": "{{count}} categoría",
+      "categories_count_other": "{{count}} categorías",
+      "active": "Activa"
+    },
+    "modal": {
+      "create_title": "Crear Pantalla de Menú",
+      "edit_title": "Editar Pantalla de Menú",
+      "name": "Nombre",
+      "display_mode": "Modo de visualización",
+      "display_mode_grid": "Cuadrícula",
+      "display_mode_carousel": "Carrusel",
+      "theme": "Tema",
+      "theme_light": "Claro",
+      "theme_dark": "Oscuro",
+      "interval_seconds": "Segundos por diapositiva",
+      "categories": "Categorías",
+      "categories_hint": "Elige qué categorías mostrar en esta pantalla y arrástralas para ordenarlas.",
+      "no_categories": "Aún no hay categorías disponibles. Añade categorías a un menú primero.",
+      "update_button": "Actualizar Pantalla",
+      "create_button": "Crear Pantalla"
     }
   }
 }
