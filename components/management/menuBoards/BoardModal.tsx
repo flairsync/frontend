@@ -120,8 +120,7 @@ export const BoardModal: React.FC<Props> = ({
       categoryIds: selectedIds,
       displayMode,
       theme,
-      presentationConfig:
-        displayMode === "CAROUSEL" ? { intervalSeconds } : null,
+      presentationConfig: { intervalSeconds },
     });
   };
 
@@ -185,20 +184,21 @@ export const BoardModal: React.FC<Props> = ({
             </div>
           </div>
 
-          {displayMode === "CAROUSEL" && (
-            <div>
-              <Label>{t("menu_board_management.modal.interval_seconds")}</Label>
-              <Input
-                type="number"
-                min={2}
-                value={intervalSeconds}
-                onChange={(e) =>
-                  setIntervalSeconds(Math.max(2, Number(e.target.value) || DEFAULT_INTERVAL_SECONDS))
-                }
-                className="mt-1"
-              />
-            </div>
-          )}
+          <div>
+            <Label>{t("menu_board_management.modal.interval_seconds")}</Label>
+            <p className="text-xs text-muted-foreground mb-1">
+              {t("menu_board_management.modal.interval_seconds_hint")}
+            </p>
+            <Input
+              type="number"
+              min={2}
+              value={intervalSeconds}
+              onChange={(e) =>
+                setIntervalSeconds(Math.max(2, Number(e.target.value) || DEFAULT_INTERVAL_SECONDS))
+              }
+              className="mt-1"
+            />
+          </div>
 
           <div>
             <Label>{t("menu_board_management.modal.categories")}</Label>

@@ -1662,12 +1662,13 @@
       "theme": "Tema",
       "theme_light": "Clar",
       "theme_dark": "Fosc",
-      "interval_seconds": "Segons per diapositiva",
+      "interval_seconds": "Segons per pantalla",
       "categories": "Categories",
       "categories_hint": "Tria quines categories mostrar en aquesta pantalla i arrossega-les per ordenar-les.",
       "no_categories": "Encara no hi ha categories disponibles. Afegeix categories a un menú primer.",
       "update_button": "Actualitzar Pantalla",
-      "create_button": "Crear Pantalla"
+      "create_button": "Crear Pantalla",
+      "interval_seconds_hint": "Quant de temps es mostra cada pantalla abans de passar a la següent."
     }
   }
 }

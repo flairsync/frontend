@@ -1662,12 +1662,13 @@
       "theme": "Tema",
       "theme_light": "Claro",
       "theme_dark": "Oscuro",
-      "interval_seconds": "Segundos por diapositiva",
+      "interval_seconds": "Segundos por pantalla",
       "categories": "Categorías",
       "categories_hint": "Elige qué categorías mostrar en esta pantalla y arrástralas para ordenarlas.",
       "no_categories": "Aún no hay categorías disponibles. Añade categorías a un menú primero.",
       "update_button": "Actualizar Pantalla",
-      "create_button": "Crear Pantalla"
+      "create_button": "Crear Pantalla",
+      "interval_seconds_hint": "Cuánto tiempo se muestra cada pantalla antes de pasar a la siguiente."
     }
   }
 }

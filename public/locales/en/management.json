@@ -1662,12 +1662,13 @@
       "theme": "Theme",
       "theme_light": "Light",
       "theme_dark": "Dark",
-      "interval_seconds": "Seconds per slide",
+      "interval_seconds": "Seconds per screen",
       "categories": "Categories",
       "categories_hint": "Pick which categories to show on this board, and drag to set their order.",
       "no_categories": "No categories available yet. Add categories to a menu first.",
       "update_button": "Update Board",
-      "create_button": "Create Board"
+      "create_button": "Create Board",
+      "interval_seconds_hint": "How long each screen stays up before advancing to the next one."
     }
   }
 }
