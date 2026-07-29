@@ -55,6 +55,7 @@ import {
     MessageSquareHeart,
     Palette,
     MonitorPlay,
+    Nfc,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -146,6 +147,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
             { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
             { key: "stations", titleKey: "sidebar.items.stations", url: "/manage/:id/owner/stations", icon: Tablet },
+            { key: "nfc-tags", titleKey: "sidebar.items.nfc_tags", url: "/manage/:id/owner/nfc-tags", icon: Nfc },
         ],
     },
     {

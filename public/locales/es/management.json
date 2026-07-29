@@ -415,7 +415,8 @@
       "menu": "Consultar menú",
       "messages": "Mensajes y anuncios",
       "themes": "Tema",
-      "menu_boards": "Pantallas de Menú"
+      "menu_boards": "Pantallas de Menú",
+      "nfc_tags": "Tarjetas NFC"
     }
   },
   "sidebar": {
@@ -453,6 +454,7 @@
       "reservations": "Reservas",
       "tasks": "Tareas",
       "stations": "Estaciones",
+      "nfc_tags": "Tarjetas NFC",
       "analytics": "Análisis e informes",
       "reviews": "Reseñas",
       "feedback": "Comentarios",

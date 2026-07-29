@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, PackageOpen, Palette, ShoppingBag, Users, Utensils } from "lucide-react"
+import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { SidebarPinToggle } from "../management/SidebarPinToggle"
 import { usePermissions } from "@/features/auth/usePermissions"
@@ -90,6 +90,14 @@ export const staffNavData = {
                     url: "/manage/:id/staff/inventory",
                     icon: PackageOpen,
                     requiredPermission: "INVENTORY",
+                    requiredAction: "read",
+                },
+                {
+                    key: "nfc-tags",
+                    titleKey: "staff_sidebar.items.nfc_tags",
+                    url: "/manage/:id/staff/nfc-tags",
+                    icon: Nfc,
+                    requiredPermission: "NFC",
                     requiredAction: "read",
                 },
                 {

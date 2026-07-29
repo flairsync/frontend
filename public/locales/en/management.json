@@ -415,7 +415,8 @@
       "menu": "Menu Lookup",
       "messages": "Messages & Announcements",
       "themes": "Theme",
-      "menu_boards": "Menu Boards"
+      "menu_boards": "Menu Boards",
+      "nfc_tags": "NFC Cards"
     }
   },
   "sidebar": {
@@ -453,6 +454,7 @@
       "reservations": "Reservations",
       "tasks": "Tasks",
       "stations": "Stations",
+      "nfc_tags": "NFC Cards",
       "analytics": "Analytics & Reports",
       "reviews": "Reviews",
       "feedback": "Feedback",
