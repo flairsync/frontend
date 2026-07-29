@@ -134,5 +134,23 @@
       "refreshing_in": "Se renueva en {{secs}}s",
       "generate_error": "No se pudo generar el código QR. Inténtalo de nuevo."
     }
+  },
+  "nfc_scan": {
+    "trigger": "NFC",
+    "panel_title": "Fichaje con Tarjeta NFC",
+    "panel_description": "Acerca la tarjeta del personal al lector para fichar entrada o salida.",
+    "status": {
+      "ready": "Listo — acerca una tarjeta",
+      "processing": "Leyendo tarjeta…"
+    },
+    "recent_scans": "Fichajes Recientes",
+    "empty_state": "Aún no hay fichajes",
+    "toasts": {
+      "clocked_in": "Entrada fichada",
+      "clocked_out": "Salida fichada"
+    },
+    "errors": {
+      "generic": "No se pudo procesar la tarjeta. Inténtalo de nuevo."
+    }
   }
 }

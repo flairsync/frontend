@@ -44,6 +44,7 @@ import { OrderCart } from "@/components/pos/OrderCart";
 import { PaymentModal } from "@/components/pos/PaymentModal";
 import { ConfirmationModal } from "@/components/pos/ConfirmationModal";
 import StaffPinScreen from "@/components/pos/StaffPinScreen";
+import NfcScanOverlay from "@/components/pos/NfcScanOverlay";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -154,10 +155,20 @@ export default function POSApp({ station, bootstrapData }: Props) {
     }, []);
 
     if (!session) {
-        return <StaffPinScreen businessId={station.businessId} onLogin={() => {}} />;
+        return (
+            <>
+                <StaffPinScreen businessId={station.businessId} onLogin={() => {}} />
+                <NfcScanOverlay />
+            </>
+        );
     }
 
-    return <POSMain station={station} bootstrapData={bootstrapData} onLock={handleLock} />;
+    return (
+        <>
+            <POSMain station={station} bootstrapData={bootstrapData} onLock={handleLock} />
+            <NfcScanOverlay />
+        </>
+    );
 }
 
 // ─── POSMain ──────────────────────────────────────────────────────────────────

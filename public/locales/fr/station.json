@@ -134,5 +134,23 @@
       "refreshing_in": "Renouvellement dans {{secs}}s",
       "generate_error": "Échec de la génération du code QR. Veuillez réessayer."
     }
+  },
+  "nfc_scan": {
+    "trigger": "NFC",
+    "panel_title": "Pointage par Badge NFC",
+    "panel_description": "Approchez le badge du personnel du lecteur pour pointer l'arrivée ou le départ.",
+    "status": {
+      "ready": "Prêt — approchez un badge",
+      "processing": "Lecture du badge…"
+    },
+    "recent_scans": "Pointages Récents",
+    "empty_state": "Aucun pointage pour l'instant",
+    "toasts": {
+      "clocked_in": "Arrivée pointée",
+      "clocked_out": "Départ pointé"
+    },
+    "errors": {
+      "generic": "Impossible de traiter ce badge. Veuillez réessayer."
+    }
   }
 }

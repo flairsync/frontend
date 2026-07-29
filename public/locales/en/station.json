@@ -134,5 +134,23 @@
       "refreshing_in": "Refreshing in {{secs}}s",
       "generate_error": "Failed to generate QR code. Please try again."
     }
+  },
+  "nfc_scan": {
+    "trigger": "NFC",
+    "panel_title": "Badge Scan",
+    "panel_description": "Hold a staff badge near the reader to clock in or out.",
+    "status": {
+      "ready": "Ready — tap a badge",
+      "processing": "Reading badge…"
+    },
+    "recent_scans": "Recent Taps",
+    "empty_state": "No taps yet",
+    "toasts": {
+      "clocked_in": "Clocked in",
+      "clocked_out": "Clocked out"
+    },
+    "errors": {
+      "generic": "Couldn't process this badge. Please try again."
+    }
   }
 }

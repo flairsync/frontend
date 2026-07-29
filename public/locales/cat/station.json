@@ -134,5 +134,23 @@
       "refreshing_in": "Es renova en {{secs}}s",
       "generate_error": "No s'ha pogut generar el codi QR. Torna-ho a provar."
     }
+  },
+  "nfc_scan": {
+    "trigger": "NFC",
+    "panel_title": "Fitxatge amb Targeta NFC",
+    "panel_description": "Acosta la targeta del personal al lector per fitxar entrada o sortida.",
+    "status": {
+      "ready": "Preparat — acosta una targeta",
+      "processing": "Llegint targeta…"
+    },
+    "recent_scans": "Fitxatges Recents",
+    "empty_state": "Encara no hi ha fitxatges",
+    "toasts": {
+      "clocked_in": "Entrada fitxada",
+      "clocked_out": "Sortida fitxada"
+    },
+    "errors": {
+      "generic": "No s'ha pogut processar la targeta. Torna-ho a provar."
+    }
   }
 }
