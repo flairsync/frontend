@@ -3,5 +3,6 @@ import { scanNfcTagApiCall } from "./nfc-scan.service";
 
 export const useNfcScan = () =>
     useMutation({
-        mutationFn: (tagId: string) => scanNfcTagApiCall(tagId),
+        mutationFn: ({ tagId, stationId }: { tagId: string; stationId?: string }) =>
+            scanNfcTagApiCall(tagId, stationId),
     });

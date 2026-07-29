@@ -147,7 +147,8 @@
     "empty_state": "No taps yet",
     "toasts": {
       "clocked_in": "Clocked in",
-      "clocked_out": "Clocked out"
+      "clocked_out": "Clocked out",
+      "pos_login": "Logged in as {{name}}"
     },
     "errors": {
       "generic": "Couldn't process this badge. Please try again."

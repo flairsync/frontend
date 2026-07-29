@@ -53,7 +53,12 @@ import {
 } from "@/features/nfc/useNfc";
 import { useBusinessEmployment } from "@/features/business/employment/useBusinessEmployment";
 import { NfcTag } from "@/models/nfc/NfcTag";
-import { NfcTagActionType, NfcTagSelfRevokeReason, NfcCardRequestReason } from "@/features/nfc/service";
+import {
+    NfcTagActionType,
+    NfcTagPosAccessMode,
+    NfcTagSelfRevokeReason,
+    NfcCardRequestReason,
+} from "@/features/nfc/service";
 
 type NfcTagsManagementProps = {
     businessId: string;
@@ -63,7 +68,21 @@ type NfcTagsManagementProps = {
 
 const ACTION_LABELS: Record<NfcTagActionType, string> = {
     attendance_clock_in_out: "Attendance Clock In/Out",
+    pos_login: "POS Login",
 };
+
+const POS_ACCESS_MODE_LABELS: Record<NfcTagPosAccessMode, string> = {
+    basic: "Basic",
+    full: "Full",
+};
+
+function getActionDisplay(tag: NfcTag): string {
+    if (!tag.actionType) return "None";
+    if (tag.actionType === "pos_login" && tag.posAccessMode) {
+        return `${ACTION_LABELS.pos_login} (${POS_ACCESS_MODE_LABELS[tag.posAccessMode]})`;
+    }
+    return ACTION_LABELS[tag.actionType];
+}
 
 const REQUEST_REASON_LABELS: Record<NfcCardRequestReason, string> = {
     new_staff_card: "New Staff Card",
@@ -95,11 +114,13 @@ function AssignCardModal({ open, onOpenChange, businessId, tag }: AssignCardModa
 
     const [assignedEmploymentId, setAssignedEmploymentId] = useState<string>("none");
     const [actionType, setActionType] = useState<string>("none");
+    const [posAccessMode, setPosAccessMode] = useState<NfcTagPosAccessMode>("basic");
 
     React.useEffect(() => {
         if (tag) {
             setAssignedEmploymentId(tag.assignedEmploymentId ?? "none");
             setActionType(tag.actionType ?? "none");
+            setPosAccessMode(tag.posAccessMode ?? "basic");
         }
     }, [tag]);
 
@@ -110,8 +131,11 @@ function AssignCardModal({ open, onOpenChange, businessId, tag }: AssignCardModa
 
         const currentAssigned = tag.assignedEmploymentId ?? null;
         const currentAction = tag.actionType ?? null;
+        const currentPosAccessMode = tag.posAccessMode ?? null;
         const nextAssigned = assignedEmploymentId === "none" ? null : assignedEmploymentId;
         const nextAction = actionType === "none" ? null : (actionType as NfcTagActionType);
+        const nextPosAccessMode = nextAction === "pos_login" ? posAccessMode : null;
+        const actionChanged = nextAction !== currentAction || nextPosAccessMode !== currentPosAccessMode;
 
         try {
             if (nextAssigned !== null) {
@@ -119,13 +143,13 @@ function AssignCardModal({ open, onOpenChange, businessId, tag }: AssignCardModa
                 if (nextAssigned !== currentAssigned) {
                     await assignNfcTagEmployment({ id: tag.id, assignedEmploymentId: nextAssigned });
                 }
-                if (nextAction !== currentAction) {
-                    await assignNfcTagAction({ id: tag.id, actionType: nextAction });
+                if (actionChanged) {
+                    await assignNfcTagAction({ id: tag.id, actionType: nextAction, posAccessMode: nextPosAccessMode });
                 }
             } else {
                 // Clearing the staff member: any action must be cleared first.
-                if (nextAction !== currentAction) {
-                    await assignNfcTagAction({ id: tag.id, actionType: nextAction });
+                if (actionChanged) {
+                    await assignNfcTagAction({ id: tag.id, actionType: nextAction, posAccessMode: nextPosAccessMode });
                 }
                 if (nextAssigned !== currentAssigned) {
                     await assignNfcTagEmployment({ id: tag.id, assignedEmploymentId: nextAssigned });
@@ -175,9 +199,28 @@ function AssignCardModal({ open, onOpenChange, businessId, tag }: AssignCardModa
                             <SelectContent>
                                 <SelectItem value="none">None</SelectItem>
                                 <SelectItem value="attendance_clock_in_out">Attendance Clock In/Out</SelectItem>
+                                <SelectItem value="pos_login">POS Login</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {actionType === "pos_login" && (
+                        <div className="space-y-2">
+                            <Label>POS Access Mode</Label>
+                            <Select
+                                value={posAccessMode}
+                                onValueChange={(v) => setPosAccessMode(v as NfcTagPosAccessMode)}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="basic">Basic — order-taking only, no voids/refunds/discounts</SelectItem>
+                                    <SelectItem value="full">Full — same access as PIN login</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
                 </div>
 
                 <DialogFooter>
@@ -336,7 +379,7 @@ function CardsTab({ businessId, canUpdate }: CardsTabProps) {
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell>{getAssignedStaffName(tag)}</TableCell>
-                                                <TableCell>{tag.actionType ? ACTION_LABELS[tag.actionType] : "None"}</TableCell>
+                                                <TableCell>{getActionDisplay(tag)}</TableCell>
                                                 <TableCell className="text-muted-foreground">
                                                     {tag.linkedAt ? tag.linkedAt.toLocaleDateString() : "—"}
                                                 </TableCell>

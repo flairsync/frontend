@@ -147,7 +147,8 @@
     "empty_state": "Aún no hay fichajes",
     "toasts": {
       "clocked_in": "Entrada fichada",
-      "clocked_out": "Salida fichada"
+      "clocked_out": "Salida fichada",
+      "pos_login": "Sesión iniciada como {{name}}"
     },
     "errors": {
       "generic": "No se pudo procesar la tarjeta. Inténtalo de nuevo."

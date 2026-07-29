@@ -158,7 +158,7 @@ export default function POSApp({ station, bootstrapData }: Props) {
         return (
             <>
                 <StaffPinScreen businessId={station.businessId} onLogin={() => {}} />
-                <NfcScanOverlay />
+                <NfcScanOverlay stationId={station.id} />
             </>
         );
     }
@@ -166,7 +166,7 @@ export default function POSApp({ station, bootstrapData }: Props) {
     return (
         <>
             <POSMain station={station} bootstrapData={bootstrapData} onLock={handleLock} />
-            <NfcScanOverlay />
+            <NfcScanOverlay stationId={station.id} />
         </>
     );
 }

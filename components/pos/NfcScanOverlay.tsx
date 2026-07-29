@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Nfc, X, LogIn, LogOut, AlertCircle } from "lucide-react";
+import { Nfc, X, LogIn, LogOut, AlertCircle, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNfcScan } from "@/features/pos/useNfcScan";
+import { useStaffSession } from "@/features/pos/useStaffSession";
 import { formatTime } from "@/lib/dateUtils";
 
 // Keyboard-wedge NFC readers "type" the tag id like a keyboard, terminated by Enter
@@ -18,15 +19,20 @@ const MAX_RECENT = 5;
 interface RecentTap {
     id: string;
     at: Date;
-    status: "check_in" | "check_out" | "error";
+    status: "check_in" | "check_out" | "pos_login" | "error";
     message: string;
 }
 
-export default function NfcScanOverlay() {
+interface Props {
+    stationId?: string;
+}
+
+export default function NfcScanOverlay({ stationId }: Props) {
     const { t } = useTranslation("station");
     const [open, setOpen] = useState(false);
     const [recentTaps, setRecentTaps] = useState<RecentTap[]>([]);
     const { mutate: scan, isPending } = useNfcScan();
+    const { setSession } = useStaffSession();
 
     const bufferRef = useRef("");
     const lastKeyTimeRef = useRef(0);
@@ -41,8 +47,23 @@ export default function NfcScanOverlay() {
     }, []);
 
     const submitTag = useCallback((tagId: string) => {
-        scan(tagId, {
+        scan({ tagId, stationId }, {
             onSuccess: (result) => {
+                if (result.action === "pos_login") {
+                    setSession({
+                        employmentId: result.session.employmentId,
+                        name: result.session.name,
+                        roles: result.session.roles,
+                        shortToken: result.session.shortToken,
+                        loggedInAt: new Date(),
+                        posPermissions: result.session.posPermissions,
+                    });
+                    const label = t("nfc_scan.toasts.pos_login", { name: result.session.name });
+                    toast.success(label);
+                    pushRecent({ status: "pos_login", message: label });
+                    return;
+                }
+
                 const label = result.action === "check_in"
                     ? t("nfc_scan.toasts.clocked_in")
                     : t("nfc_scan.toasts.clocked_out");
@@ -55,7 +76,7 @@ export default function NfcScanOverlay() {
                 pushRecent({ status: "error", message });
             },
         });
-    }, [scan, pushRecent, t]);
+    }, [scan, pushRecent, t, stationId, setSession]);
 
     const finalizeBuffer = useCallback(() => {
         if (idleTimerRef.current) {
@@ -160,6 +181,7 @@ export default function NfcScanOverlay() {
                             <div key={tap.id} className="flex items-center gap-2 text-xs px-2 py-1.5 rounded-lg bg-muted/30">
                                 {tap.status === "check_in" && <LogIn className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />}
                                 {tap.status === "check_out" && <LogOut className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />}
+                                {tap.status === "pos_login" && <KeyRound className="w-3.5 h-3.5 text-primary flex-shrink-0" />}
                                 {tap.status === "error" && <AlertCircle className="w-3.5 h-3.5 text-destructive flex-shrink-0" />}
                                 <span className="flex-1 truncate">{tap.message}</span>
                                 <span className="text-[10px] text-muted-foreground flex-shrink-0">{formatTime(tap.at)}</span>

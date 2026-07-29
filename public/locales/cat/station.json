@@ -147,7 +147,8 @@
     "empty_state": "Encara no hi ha fitxatges",
     "toasts": {
       "clocked_in": "Entrada fitxada",
-      "clocked_out": "Sortida fitxada"
+      "clocked_out": "Sortida fitxada",
+      "pos_login": "Sessió iniciada com a {{name}}"
     },
     "errors": {
       "generic": "No s'ha pogut processar la targeta. Torna-ho a provar."

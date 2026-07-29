@@ -1,6 +1,7 @@
 export type NfcTagStatus = "unissued" | "linked" | "revoked";
 export type NfcTagRevokedReason = "lost" | "stolen" | "decommissioned" | "other";
-export type NfcTagActionType = "attendance_clock_in_out";
+export type NfcTagActionType = "attendance_clock_in_out" | "pos_login";
+export type NfcTagPosAccessMode = "basic" | "full";
 
 export interface NfcTagAssignedEmploymentProfile {
     firstName?: string;
@@ -47,6 +48,7 @@ export class NfcTag {
     revokedNote: string | null;
     batchLabel: string | null;
     actionType: NfcTagActionType | null;
+    posAccessMode: NfcTagPosAccessMode | null;
     assignedEmploymentId: string | null;
     assignedEmployment: NfcTagAssignedEmployment | null;
     lastScannedAt: Date | null;
@@ -68,6 +70,7 @@ export class NfcTag {
         assignedEmploymentId?: string | null,
         assignedEmployment?: NfcTagAssignedEmployment | null,
         lastScannedAt?: Date | null,
+        posAccessMode?: NfcTagPosAccessMode | null,
     ) {
         this.id = id;
         this.status = status;
@@ -83,6 +86,7 @@ export class NfcTag {
         this.assignedEmploymentId = assignedEmploymentId ?? null;
         this.assignedEmployment = assignedEmployment ?? null;
         this.lastScannedAt = lastScannedAt ?? null;
+        this.posAccessMode = posAccessMode ?? null;
     }
 
     static parseApiResponse(data: any): NfcTag | null {
@@ -105,6 +109,7 @@ export class NfcTag {
                     ? NfcTagAssignedEmployment.parseApiResponse(data.assignedEmployment)
                     : null,
                 data.lastScannedAt ? new Date(data.lastScannedAt) : null,
+                data.posAccessMode ?? null,
             );
         } catch (error) {
             console.error("ERROR PARSING NFC TAG", error, data);

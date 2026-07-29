@@ -9,6 +9,7 @@ import {
     fetchNfcCardRequestsApiCall,
     NfcTagFilters,
     NfcTagActionType,
+    NfcTagPosAccessMode,
     SelfRevokeNfcTagDto,
     CreateNfcCardRequestDto,
     NfcCardRequestFilters,
@@ -91,8 +92,15 @@ export const useAssignNfcTagAction = (businessId: string) => {
     const queryClient = useQueryClient();
 
     const assignActionMutation = useMutation({
-        mutationFn: ({ id, actionType }: { id: string; actionType: NfcTagActionType | null }) =>
-            assignNfcTagActionApiCall(businessId, id, actionType),
+        mutationFn: ({
+            id,
+            actionType,
+            posAccessMode,
+        }: {
+            id: string;
+            actionType: NfcTagActionType | null;
+            posAccessMode?: NfcTagPosAccessMode | null;
+        }) => assignNfcTagActionApiCall(businessId, id, actionType, posAccessMode),
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({ queryKey: ["nfc_tags", businessId] });
             queryClient.invalidateQueries({ queryKey: ["nfc_tag", businessId, variables.id] });

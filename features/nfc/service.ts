@@ -16,7 +16,8 @@ export interface NfcTagFilters {
     limit?: number;
 }
 
-export type NfcTagActionType = "attendance_clock_in_out";
+export type NfcTagActionType = "attendance_clock_in_out" | "pos_login";
+export type NfcTagPosAccessMode = "basic" | "full";
 
 export type NfcTagSelfRevokeReason = "lost" | "stolen";
 
@@ -52,8 +53,13 @@ export const assignNfcTagEmploymentApiCall = (businessId: string, id: string, as
     return flairapi.patch(`${getNfcTagsUrl(businessId)}/${id}/assignment`, { assignedEmploymentId });
 };
 
-export const assignNfcTagActionApiCall = (businessId: string, id: string, actionType: NfcTagActionType | null) => {
-    return flairapi.patch(`${getNfcTagsUrl(businessId)}/${id}/action`, { actionType });
+export const assignNfcTagActionApiCall = (
+    businessId: string,
+    id: string,
+    actionType: NfcTagActionType | null,
+    posAccessMode?: NfcTagPosAccessMode | null,
+) => {
+    return flairapi.patch(`${getNfcTagsUrl(businessId)}/${id}/action`, { actionType, posAccessMode });
 };
 
 export const selfRevokeNfcTagApiCall = (businessId: string, id: string, data: SelfRevokeNfcTagDto) => {

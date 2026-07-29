@@ -147,7 +147,8 @@
     "empty_state": "Aucun pointage pour l'instant",
     "toasts": {
       "clocked_in": "Arrivée pointée",
-      "clocked_out": "Départ pointé"
+      "clocked_out": "Départ pointé",
+      "pos_login": "Connecté en tant que {{name}}"
     },
     "errors": {
       "generic": "Impossible de traiter ce badge. Veuillez réessayer."
