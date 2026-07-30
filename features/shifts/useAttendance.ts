@@ -151,11 +151,11 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
   };
 };
 
-export const useAttendanceById = (id?: string) => {
+export const useAttendanceById = (id?: string, businessId?: string) => {
   return useQuery<AttendanceLog>({
-    queryKey: ["attendance-by-id", id],
-    queryFn: () => fetchAttendanceByIdApiCall(id!),
-    enabled: !!id,
+    queryKey: ["attendance-by-id", id, businessId],
+    queryFn: () => fetchAttendanceByIdApiCall(id!, businessId!),
+    enabled: !!id && !!businessId,
   });
 };
 

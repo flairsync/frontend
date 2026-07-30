@@ -365,8 +365,8 @@ export const fetchAttendanceLogsApiCall = async (
   return unwrapPaginated(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
 };
 
-export const fetchAttendanceByIdApiCall = async (id: string) =>
-  unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/${id}`));
+export const fetchAttendanceByIdApiCall = async (id: string, businessId: string) =>
+  unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/${id}?businessId=${businessId}`));
 
 export const fetchMyAttendanceApiCall = async (
   businessId: string,

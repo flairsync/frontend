@@ -49,10 +49,10 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
 }) => {
     const { t } = useTranslation('management');
     const { validateAttendance, isValidatingAttendance } = useAttendance();
-    const { data: fullRecord } = useAttendanceById(open ? attendanceId : undefined);
-    const { userProfile } = useProfile();
     const { routeParams } = usePageContext();
     const businessId = routeParams.id as string;
+    const { data: fullRecord } = useAttendanceById(open ? attendanceId : undefined, businessId);
+    const { userProfile } = useProfile();
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const businessTz = businessBasicDetails?.timezone || 'UTC';
 
