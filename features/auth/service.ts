@@ -81,7 +81,7 @@ export const disconnectUserSessionsApiCall = (data: DisconnectSessionData) => {
 // verification
 
 export const resendVerificationOtpApiCall = () => {
-  return flairapi.get(resendVerificationEmailUrl);
+  return flairapi.post(resendVerificationEmailUrl);
 };
 export const verifyEmailOtpApiCall = (otp: string) => {
   return flairapi.post(verifyEmailUrl, {

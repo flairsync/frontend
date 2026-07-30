@@ -27,6 +27,17 @@ const flairapi = axios.create({
   },
 });
 
+// Reads the (non-httpOnly, JS-readable) csrf_token cookie set by the API on
+// login, and echoes it back as a header on every mutating request — see the
+// backend's CsrfGuard for why: SameSite=None auth cookies ride along with
+// cross-site requests, so a header only same-origin JS can read is what
+// actually proves the request came from our own frontend.
+const getCsrfToken = (): string | null => {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(/(?:^|; )csrf_token=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+};
+
 const getDedupeKey = (config: InternalAxiosRequestConfig): string | null => {
   const method = (config.method ?? "get").toLowerCase();
   if (!["get", "head"].includes(method)) return null;
@@ -157,6 +168,10 @@ flairapi.interceptors.request.use(
   (config) => {
     startRequest();
     config.headers["x-custom-lang"] = i18n.language;
+    const csrfToken = getCsrfToken();
+    if (csrfToken) {
+      config.headers["x-csrf-token"] = csrfToken;
+    }
     return config;
   },
   (error) => {
