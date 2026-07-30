@@ -511,6 +511,26 @@
     "WEBSITE": {
       "label": "Constructeur de site web",
       "description": "Créer, modifier et publier les pages du site web de l'établissement."
+    },
+    "MENU_DISPLAY": {
+      "label": "Écrans de menu",
+      "description": "Créer et gérer les tableaux de menu numérique affichés sur les écrans en salle."
+    },
+    "THEMES": {
+      "label": "Gestion des thèmes",
+      "description": "Parcourir, acheter et appliquer des thèmes visuels pour le menu et le site web de l'établissement."
+    },
+    "NFC": {
+      "label": "Gestion des étiquettes NFC",
+      "description": "Attribuer, associer et gérer les étiquettes NFC utilisées pour l'accès aux tables et les actions du personnel."
+    },
+    "MARKETPLACE": {
+      "label": "Articles et stock du marketplace",
+      "description": "Gérer les articles, le stock et les commandes du marketplace."
+    },
+    "PAYROLL": {
+      "label": "Gestion de la paie",
+      "description": "Prévisualiser, générer, finaliser et exporter la paie du personnel."
     }
   },
   "menu_management": {

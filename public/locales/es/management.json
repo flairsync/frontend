@@ -511,6 +511,26 @@
     "WEBSITE": {
       "label": "Constructor de sitio web",
       "description": "Crear, editar y publicar las páginas del sitio web del negocio."
+    },
+    "MENU_DISPLAY": {
+      "label": "Pantallas de menú",
+      "description": "Crear y gestionar tableros de menú digital mostrados en pantallas del local."
+    },
+    "THEMES": {
+      "label": "Gestión de temas",
+      "description": "Explorar, comprar y aplicar temas visuales para el menú y el sitio web del negocio."
+    },
+    "NFC": {
+      "label": "Gestión de etiquetas NFC",
+      "description": "Asignar, vincular y gestionar etiquetas NFC usadas para el acceso a mesas y acciones del personal."
+    },
+    "MARKETPLACE": {
+      "label": "Artículos y stock del marketplace",
+      "description": "Gestionar los artículos, el stock y los pedidos del marketplace."
+    },
+    "PAYROLL": {
+      "label": "Gestión de nóminas",
+      "description": "Previsualizar, generar, finalizar y exportar la nómina del personal."
     }
   },
   "menu_management": {

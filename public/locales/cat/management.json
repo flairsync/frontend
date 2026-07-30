@@ -509,6 +509,26 @@
     "WEBSITE": {
       "label": "Constructor de lloc web",
       "description": "Crear, editar i publicar les pàgines del lloc web del negoci."
+    },
+    "MENU_DISPLAY": {
+      "label": "Pantalles de menú",
+      "description": "Crear i gestionar taulers de menú digital mostrats a les pantalles del local."
+    },
+    "THEMES": {
+      "label": "Gestió de temes",
+      "description": "Explorar, comprar i aplicar temes visuals per al menú i el lloc web del negoci."
+    },
+    "NFC": {
+      "label": "Gestió d'etiquetes NFC",
+      "description": "Assignar, vincular i gestionar etiquetes NFC utilitzades per a l'accés a les taules i accions del personal."
+    },
+    "MARKETPLACE": {
+      "label": "Articles i estoc del marketplace",
+      "description": "Gestionar els articles, l'estoc i les comandes del marketplace."
+    },
+    "PAYROLL": {
+      "label": "Gestió de nòmines",
+      "description": "Previsualitzar, generar, finalitzar i exportar la nòmina del personal."
     }
   },
   "menu_management": {

@@ -511,6 +511,26 @@
     "WEBSITE": {
       "label": "Website builder",
       "description": "Create, edit, and publish the business's public website pages."
+    },
+    "MENU_DISPLAY": {
+      "label": "Menu display boards",
+      "description": "Create and manage digital menu boards shown on in-store screens."
+    },
+    "THEMES": {
+      "label": "Theme management",
+      "description": "Browse, purchase, and apply visual themes for the business's menu and website."
+    },
+    "NFC": {
+      "label": "NFC tag management",
+      "description": "Assign, link, and manage NFC tags used for table access and staff actions."
+    },
+    "MARKETPLACE": {
+      "label": "Marketplace items & stock",
+      "description": "Manage marketplace listings, stock levels, and marketplace orders."
+    },
+    "PAYROLL": {
+      "label": "Payroll management",
+      "description": "Preview, generate, finalize, and export staff payroll."
     }
   },
   "menu_management": {
