@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MarketplaceItem } from '@/models/MarketplaceItem';
+import { MarketplaceItem, routeSegmentForType } from '@/models/MarketplaceItem';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
@@ -19,7 +19,7 @@ function formatPrice(price: number, currency: string) {
 }
 
 export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
-    const detailUrl = `/marketplace/${item.type || 'saas'}/${item.id}`;
+    const detailUrl = `/marketplace/${routeSegmentForType(item.type)}/${item.id}`;
 
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
@@ -80,6 +80,12 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
                         Unavailable
                     </div>
                 )}
+
+                {item.isActive && item.discountActive && (
+                    <div className="absolute top-2 right-2 bg-primary/90 backdrop-blur-md rounded-sm px-2 py-0.5 text-[10px] text-primary-foreground font-bold uppercase pointer-events-none">
+                        Sale
+                    </div>
+                )}
             </div>
 
             <CardHeader className="p-4 pb-0 items-start gap-1">
@@ -101,19 +107,27 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ item }) => {
             <div className="flex items-center justify-between px-4 pb-4 pt-2 mt-auto shrink-0 relative z-10 bg-background/5">
                 <div className="flex flex-col">
                     <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Price</span>
-                    <span className="font-semibold text-sm text-foreground/90">
-                        {formatPrice(item.price, item.currency || 'USD')}
-                    </span>
+                    {item.discountActive ? (
+                        <div className="flex items-baseline gap-1.5">
+                            <span className="font-semibold text-sm text-foreground/90">
+                                {formatPrice(item.effectivePrice, item.currency || 'USD')}
+                            </span>
+                            <span className="text-[11px] text-muted-foreground line-through">
+                                {formatPrice(item.price, item.currency || 'USD')}
+                            </span>
+                        </div>
+                    ) : (
+                        <span className="font-semibold text-sm text-foreground/90">
+                            {formatPrice(item.price, item.currency || 'USD')}
+                        </span>
+                    )}
                 </div>
+                {/* Request-to-buy flow — the button just takes you to the item's
+                    order form (see the detail page), there's no separate cart. */}
                 <Button
                     size="icon"
                     disabled={!inStock}
                     className="rounded-full w-9 h-9 shadow-sm transition-transform hover:scale-105 relative z-20 disabled:opacity-40"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        // TODO: cart flow TBD
-                    }}
                 >
                     <ShoppingCart className="w-4 h-4 cursor-pointer" />
                 </Button>

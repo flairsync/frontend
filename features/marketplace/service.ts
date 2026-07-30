@@ -14,6 +14,24 @@ export interface UpdateMarketplaceItemDto {
     currency?: string;
     isActive?: boolean;
     stock?: number;
+    discountType?: 'PERCENTAGE' | 'FIXED' | null;
+    discountValue?: number | null;
+    discountExpiresAt?: string | null;
+}
+
+export interface CreateMarketplaceOrderDto {
+    itemId: string;
+    quantity: number;
+    shippingFullName: string;
+    shippingAddress: string;
+    shippingCityStateZip: string;
+    shippingPhone: string;
+    customizationInstructions?: string;
+}
+
+export interface UpdateMarketplaceOrderStatusDto {
+    status: 'CONFIRMED' | 'FULFILLED' | 'CANCELLED';
+    resolutionNote?: string;
 }
 
 // ─── Public / customer endpoints ─────────────────────────────────────────────
@@ -24,8 +42,37 @@ export const getBusinessShopItemsApiCall = async (
 ) =>
     unwrapPaginated(await flairapi.get(`${publicBase}/items/business/${businessId}`, { params }));
 
+export const getPlatformItemsApiCall = async (
+    type: 'PLATFORM_SAAS' | 'PLATFORM_B2B',
+    params?: { page?: number; limit?: number }
+) =>
+    unwrapPaginated(await flairapi.get(`${publicBase}/items/platform`, { params: { ...params, type } }));
+
 export const getItemDetailsApiCall = async (id: string) =>
     unwrap(await flairapi.get(`${publicBase}/items/${id}`));
+
+// ─── Orders — buyer (this business placing/managing orders) ─────────────────
+
+export const createOrderApiCall = (businessId: string, dto: CreateMarketplaceOrderDto) =>
+    flairapi.post(`${mgmtBase(businessId)}/orders`, dto);
+
+export const getMyOrdersApiCall = async (businessId: string, params?: { status?: string; page?: number; limit?: number }) =>
+    unwrapPaginated(await flairapi.get(`${mgmtBase(businessId)}/orders`, { params }));
+
+export const cancelOrderApiCall = (businessId: string, id: string) =>
+    flairapi.delete(`${mgmtBase(businessId)}/orders/${id}`);
+
+// ─── Orders — seller (orders placed on this business's own items) ───────────
+
+export const getIncomingOrdersApiCall = async (businessId: string, params?: { status?: string; page?: number; limit?: number }) =>
+    unwrapPaginated(await flairapi.get(`${mgmtBase(businessId)}/sales`, { params }));
+
+export const resolveIncomingOrderApiCall = (
+    businessId: string,
+    id: string,
+    dto: UpdateMarketplaceOrderStatusDto
+) =>
+    flairapi.patch(`${mgmtBase(businessId)}/sales/${id}/status`, dto);
 
 // ─── Business dashboard / management endpoints ───────────────────────────────
 

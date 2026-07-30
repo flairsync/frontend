@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     getBusinessShopItemsApiCall,
+    getPlatformItemsApiCall,
     getItemDetailsApiCall,
     getMgmtItemsApiCall,
     createMgmtItemApiCall,
@@ -9,7 +10,14 @@ import {
     uploadMgmtItemImagesApiCall,
     removeMgmtItemImageApiCall,
     deleteMgmtItemApiCall,
+    createOrderApiCall,
+    getMyOrdersApiCall,
+    cancelOrderApiCall,
+    getIncomingOrdersApiCall,
+    resolveIncomingOrderApiCall,
     UpdateMarketplaceItemDto,
+    CreateMarketplaceOrderDto,
+    UpdateMarketplaceOrderStatusDto,
 } from "./service";
 import { MarketplaceItem } from "@/models/MarketplaceItem";
 import { toast } from "sonner";
@@ -32,6 +40,23 @@ export const useBusinessMarketplaceItems = (
             };
         },
         enabled: !!businessId,
+    });
+};
+
+export const usePlatformMarketplaceItems = (
+    type: 'PLATFORM_SAAS' | 'PLATFORM_B2B',
+    params?: { page?: number; limit?: number }
+) => {
+    return useQuery({
+        queryKey: ["marketplace_items", "platform", type, params],
+        queryFn: async () => {
+            const res = await getPlatformItemsApiCall(type, params);
+            return {
+                data: (res.data || []).map((item: any) => MarketplaceItem.parseApiResponse(item)),
+                current: res.current || 1,
+                pages: res.pages || 1,
+            };
+        },
     });
 };
 
@@ -148,4 +173,71 @@ export const useMarketplaceMutations = (businessId: string) => {
     });
 
     return { createItem, updateItem, updateStock, uploadImages, removeImage, deleteItem };
+};
+
+// ─── Orders — buyer (this business placing/managing orders) ─────────────────
+
+export const useCreateMarketplaceOrder = (businessId: string) => {
+    return useMutation({
+        mutationFn: (dto: CreateMarketplaceOrderDto) => createOrderApiCall(businessId, dto),
+        onSuccess: () => {
+            toast.success("Order placed successfully");
+        },
+        onError: (err: any) => {
+            toast.error(err?.response?.data?.message || "Failed to place order");
+        },
+    });
+};
+
+export const useMyMarketplaceOrders = (businessId?: string, params?: { status?: string; page?: number; limit?: number }) => {
+    return useQuery({
+        queryKey: ["marketplace_orders", "mine", businessId, params],
+        queryFn: async () => {
+            if (!businessId) return { data: [], current: 1, pages: 1 };
+            return getMyOrdersApiCall(businessId, params);
+        },
+        enabled: !!businessId,
+    });
+};
+
+export const useCancelMarketplaceOrder = (businessId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (id: string) => cancelOrderApiCall(businessId, id),
+        onSuccess: () => {
+            toast.success("Order cancelled");
+            queryClient.invalidateQueries({ queryKey: ["marketplace_orders", "mine", businessId] });
+        },
+        onError: (err: any) => {
+            toast.error(err?.response?.data?.message || "Failed to cancel order");
+        },
+    });
+};
+
+// ─── Orders — seller (orders placed on this business's own items) ───────────
+
+export const useIncomingMarketplaceOrders = (businessId?: string, params?: { status?: string; page?: number; limit?: number }) => {
+    return useQuery({
+        queryKey: ["marketplace_orders", "incoming", businessId, params],
+        queryFn: async () => {
+            if (!businessId) return { data: [], current: 1, pages: 1 };
+            return getIncomingOrdersApiCall(businessId, params);
+        },
+        enabled: !!businessId,
+    });
+};
+
+export const useResolveIncomingMarketplaceOrder = (businessId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, dto }: { id: string; dto: UpdateMarketplaceOrderStatusDto }) =>
+            resolveIncomingOrderApiCall(businessId, id, dto),
+        onSuccess: () => {
+            toast.success("Order updated");
+            queryClient.invalidateQueries({ queryKey: ["marketplace_orders", "incoming", businessId] });
+        },
+        onError: (err: any) => {
+            toast.error(err?.response?.data?.message || "Failed to update order");
+        },
+    });
 };

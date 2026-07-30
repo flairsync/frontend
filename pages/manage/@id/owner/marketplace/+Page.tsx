@@ -16,6 +16,9 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { ConfirmAction } from '@/components/shared/ConfirmAction';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { IncomingOrdersTable } from '@/components/management/marketplace/IncomingOrdersTable';
+import { MyOrdersTable } from '@/components/management/marketplace/MyOrdersTable';
 import { Plus, Pencil, Trash2, Loader2, PackageOpen } from 'lucide-react';
 
 function formatPrice(price: number, currency: string) {
@@ -99,6 +102,23 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                 </Button>
             </div>
 
+            <Tabs defaultValue="items">
+                <TabsList>
+                    <TabsTrigger value="items">Items</TabsTrigger>
+                    <TabsTrigger value="incoming">Incoming Orders</TabsTrigger>
+                    <TabsTrigger value="mine">My Orders</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="incoming">
+                    <IncomingOrdersTable businessId={businessId} />
+                </TabsContent>
+
+                <TabsContent value="mine">
+                    <MyOrdersTable businessId={businessId} />
+                </TabsContent>
+
+                <TabsContent value="items" className="space-y-6">
+
             {isLoading ? (
                 <div className="flex items-center justify-center py-20">
                     <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -150,7 +170,16 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                     </TableCell>
 
                                     <TableCell className="text-sm font-medium">
-                                        {formatPrice(item.price, item.currency || 'USD')}
+                                        {item.discountActive ? (
+                                            <div className="flex items-center gap-1.5">
+                                                <span>{formatPrice(item.effectivePrice, item.currency || 'USD')}</span>
+                                                <span className="text-[11px] text-muted-foreground line-through font-normal">
+                                                    {formatPrice(item.price, item.currency || 'USD')}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            formatPrice(item.price, item.currency || 'USD')
+                                        )}
                                     </TableCell>
 
                                     <TableCell>
@@ -208,6 +237,9 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                     </Table>
                 </div>
             )}
+
+                </TabsContent>
+            </Tabs>
 
             <MarketplaceItemModal
                 businessId={businessId}

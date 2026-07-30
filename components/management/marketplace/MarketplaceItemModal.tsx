@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X, Upload, Loader2 } from 'lucide-react';
 import { MarketplaceItem } from '@/models/MarketplaceItem';
 import { useMarketplaceMutations } from '@/features/marketplace/useMarketplace';
@@ -28,6 +29,10 @@ interface FormState {
     price: string;
     stock: string;
     isActive: boolean;
+    discountEnabled: boolean;
+    discountType: 'PERCENTAGE' | 'FIXED';
+    discountValue: string;
+    discountExpiresAt: string;
 }
 
 export function MarketplaceItemModal({ businessId, item, open, onClose }: Props) {
@@ -40,6 +45,10 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
         price: '',
         stock: '0',
         isActive: true,
+        discountEnabled: false,
+        discountType: 'PERCENTAGE',
+        discountValue: '',
+        discountExpiresAt: '',
     });
     const [pendingFiles, setPendingFiles] = useState<File[]>([]);
     const [removingUrl, setRemovingUrl] = useState<string | null>(null);
@@ -54,9 +63,16 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                     price: String(item.price),
                     stock: String(item.stock),
                     isActive: item.isActive,
+                    discountEnabled: !!item.discountType,
+                    discountType: item.discountType ?? 'PERCENTAGE',
+                    discountValue: item.discountValue != null ? String(item.discountValue) : '',
+                    discountExpiresAt: item.discountExpiresAt ? item.discountExpiresAt.slice(0, 10) : '',
                 });
             } else {
-                setForm({ name: '', description: '', price: '', stock: '0', isActive: true });
+                setForm({
+                    name: '', description: '', price: '', stock: '0', isActive: true,
+                    discountEnabled: false, discountType: 'PERCENTAGE', discountValue: '', discountExpiresAt: '',
+                });
             }
             setPendingFiles([]);
         }
@@ -90,6 +106,9 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
         const stock = parseInt(form.stock) || 0;
         if (!form.name.trim() || isNaN(price) || price < 0) return;
 
+        const discountValue = form.discountEnabled ? parseFloat(form.discountValue) : NaN;
+        if (form.discountEnabled && (isNaN(discountValue) || discountValue < 0)) return;
+
         if (isEdit && item) {
             await updateItem.mutateAsync({
                 id: item.id,
@@ -99,6 +118,9 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                     price,
                     stock,
                     isActive: form.isActive,
+                    discountType: form.discountEnabled ? form.discountType : null,
+                    discountValue: form.discountEnabled ? discountValue : null,
+                    discountExpiresAt: form.discountEnabled && form.discountExpiresAt ? form.discountExpiresAt : null,
                 },
             });
             if (pendingFiles.length > 0) {
@@ -113,6 +135,11 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
             fd.append('price', String(price));
             fd.append('stock', String(stock));
             fd.append('isActive', String(form.isActive));
+            if (form.discountEnabled) {
+                fd.append('discountType', form.discountType);
+                fd.append('discountValue', String(discountValue));
+                if (form.discountExpiresAt) fd.append('discountExpiresAt', form.discountExpiresAt);
+            }
             pendingFiles.forEach((f) => fd.append('images', f));
             await createItem.mutateAsync(fd);
         }
@@ -184,6 +211,57 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                             />
                             <Label className="cursor-pointer">{form.isActive ? 'Active' : 'Inactive'}</Label>
                         </div>
+                    </div>
+
+                    {/* Discount */}
+                    <div className="space-y-3 rounded-lg border border-white/10 p-3">
+                        <div className="flex items-center gap-2">
+                            <Switch
+                                checked={form.discountEnabled}
+                                onCheckedChange={(v) => setForm({ ...form, discountEnabled: v })}
+                            />
+                            <Label className="cursor-pointer">Discount this item</Label>
+                        </div>
+
+                        {form.discountEnabled && (
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1.5">
+                                    <Label>Discount type</Label>
+                                    <Select
+                                        value={form.discountType}
+                                        onValueChange={(v) => setForm({ ...form, discountType: v as 'PERCENTAGE' | 'FIXED' })}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="PERCENTAGE">% off</SelectItem>
+                                            <SelectItem value="FIXED">Amount off</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-1.5">
+                                    <Label>{form.discountType === 'PERCENTAGE' ? 'Percent off' : 'Amount off'}</Label>
+                                    <Input
+                                        type="number"
+                                        min="0"
+                                        max={form.discountType === 'PERCENTAGE' ? 100 : undefined}
+                                        step="0.01"
+                                        value={form.discountValue}
+                                        onChange={(e) => setForm({ ...form, discountValue: e.target.value })}
+                                        placeholder={form.discountType === 'PERCENTAGE' ? '10' : '5.00'}
+                                    />
+                                </div>
+                                <div className="col-span-2 space-y-1.5">
+                                    <Label>Expires (optional)</Label>
+                                    <Input
+                                        type="date"
+                                        value={form.discountExpiresAt}
+                                        onChange={(e) => setForm({ ...form, discountExpiresAt: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Images */}

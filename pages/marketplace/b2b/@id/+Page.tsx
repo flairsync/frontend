@@ -4,9 +4,9 @@ import { MarketplaceItemDetail } from '@/components/marketplace/MarketplaceItemD
 export function Page() {
     return (
         <MarketplaceItemDetail
-            activeType="saas"
-            galleryTitle="SaaS Shop"
-            backHref="/marketplace/saas"
+            activeType="b2b"
+            galleryTitle="B2B Marketplace"
+            backHref="/marketplace/b2b"
         />
     );
 }
