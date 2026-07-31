@@ -190,5 +190,8 @@
         "description": "Used to deliver relevant content and measure campaign effectiveness. We do not sell your data."
       }
     }
+  },
+  "beta_mode": {
+    "banner_text": "FlairSync Beta"
   }
 }

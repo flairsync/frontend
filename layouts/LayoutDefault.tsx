@@ -14,6 +14,7 @@ const DinerModeWatcher = clientOnly(() => import("@/components/diner-mode/DinerM
 const ClockedInBanner = clientOnly(() => import("@/components/shift-tracking/ClockedInBanner"));
 const TourProvider = clientOnly(() => import("@/features/tour/components/TourProvider").then(m => ({ default: m.TourProvider })));
 const CookieConsentBanner = clientOnly(() => import("@/components/shared/CookieConsentBanner"));
+const BetaModeBanner = clientOnly(() => import("@/components/shared/BetaModeBanner"));
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
@@ -32,6 +33,7 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
           <SystemErrorOverlay />
           <TourProvider />
           <CookieConsentBanner />
+          <BetaModeBanner />
         </TextSizeProvider>
       </ThemeProvider>
     </>
