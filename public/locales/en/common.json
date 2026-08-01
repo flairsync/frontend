@@ -192,6 +192,16 @@
     }
   },
   "beta_mode": {
-    "banner_text": "FlairSync Beta"
+    "banner_text": "FlairSync Beta",
+    "banner_aria_label": "FlairSync is in Beta — click for details",
+    "modal_title": "You're using FlairSync Beta",
+    "modal_description": "FlairSync is currently in a limited beta. New accounts need admin approval before they can start managing a restaurant, and some features are still evolving.",
+    "modal_point_approval_title": "Approval required",
+    "modal_point_approval_text": "New signups don't pick a plan yet — an admin reviews and approves your account first.",
+    "modal_point_free_title": "Free Pro access",
+    "modal_point_free_text": "Approved beta testers get full Pro-tier access at no cost while the beta lasts.",
+    "modal_point_changing_title": "Things may change",
+    "modal_point_changing_text": "Features, pricing, and workflows can still change before general availability.",
+    "modal_close": "Got it"
   }
 }
