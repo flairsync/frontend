@@ -190,5 +190,18 @@
         "description": "Utilisés pour diffuser du contenu pertinent et mesurer l'efficacité des campagnes. Nous ne vendons pas vos données."
       }
     }
+  },
+  "beta_mode": {
+    "banner_text": "FlairSync Bêta",
+    "banner_aria_label": "FlairSync est en version bêta — cliquez pour en savoir plus",
+    "modal_title": "Vous utilisez FlairSync Bêta",
+    "modal_description": "FlairSync est actuellement en bêta limitée. Les nouveaux comptes doivent être approuvés par un administrateur avant de pouvoir gérer un restaurant, et certaines fonctionnalités sont encore en évolution.",
+    "modal_point_approval_title": "Approbation requise",
+    "modal_point_approval_text": "Les nouvelles inscriptions ne choisissent pas encore de formule — un administrateur examine et approuve d'abord votre compte.",
+    "modal_point_free_title": "Accès Pro gratuit",
+    "modal_point_free_text": "Les testeurs bêta approuvés bénéficient d'un accès complet à l'offre Pro, gratuitement, pendant toute la durée de la bêta.",
+    "modal_point_changing_title": "Des changements sont possibles",
+    "modal_point_changing_text": "Les fonctionnalités, les tarifs et les processus peuvent encore évoluer avant la disponibilité générale.",
+    "modal_close": "Compris"
   }
 }

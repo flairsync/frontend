@@ -190,5 +190,18 @@
         "description": "Utilitzades per oferir contingut rellevant i mesurar l'efectivitat de les campanyes. No venem les seves dades."
       }
     }
+  },
+  "beta_mode": {
+    "banner_text": "FlairSync Beta",
+    "banner_aria_label": "FlairSync està en fase beta — feu clic per a més informació",
+    "modal_title": "Esteu utilitzant FlairSync Beta",
+    "modal_description": "FlairSync es troba actualment en una beta limitada. Els comptes nous necessiten l'aprovació d'un administrador abans de poder gestionar un restaurant, i algunes funcions encara estan evolucionant.",
+    "modal_point_approval_title": "Cal aprovació",
+    "modal_point_approval_text": "Els nous registres encara no trien un pla — un administrador revisa i aprova el vostre compte primer.",
+    "modal_point_free_title": "Accés Pro gratuït",
+    "modal_point_free_text": "Els provadors beta aprovats obtenen accés complet al pla Pro sense cost mentre duri la beta.",
+    "modal_point_changing_title": "Hi pot haver canvis",
+    "modal_point_changing_text": "Les funcions, els preus i els fluxos de treball encara poden canviar abans del llançament general.",
+    "modal_close": "Entesos"
   }
 }

@@ -190,5 +190,18 @@
         "description": "Utilizadas para ofrecer contenido relevante y medir la efectividad de las campañas. No vendemos sus datos."
       }
     }
+  },
+  "beta_mode": {
+    "banner_text": "FlairSync Beta",
+    "banner_aria_label": "FlairSync está en fase beta — haga clic para más información",
+    "modal_title": "Estás usando FlairSync Beta",
+    "modal_description": "FlairSync se encuentra actualmente en una beta limitada. Las nuevas cuentas necesitan la aprobación de un administrador antes de poder gestionar un restaurante, y algunas funciones todavía están evolucionando.",
+    "modal_point_approval_title": "Aprobación requerida",
+    "modal_point_approval_text": "Los nuevos registros aún no eligen un plan — un administrador revisa y aprueba tu cuenta primero.",
+    "modal_point_free_title": "Acceso Pro gratuito",
+    "modal_point_free_text": "Los probadores beta aprobados obtienen acceso completo al plan Pro sin coste mientras dure la beta.",
+    "modal_point_changing_title": "Puede haber cambios",
+    "modal_point_changing_text": "Las funciones, los precios y los flujos de trabajo aún pueden cambiar antes del lanzamiento general.",
+    "modal_close": "Entendido"
   }
 }
