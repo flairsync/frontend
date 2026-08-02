@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlaskConical, UserCheck, Gift, Wrench } from "lucide-react";
+import { FlaskConical, UserCheck, Gift, Wrench, Mail } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -33,6 +33,7 @@ export default function BetaModeBanner() {
     { icon: UserCheck, title: t("beta_mode.modal_point_approval_title"), text: t("beta_mode.modal_point_approval_text") },
     { icon: Gift, title: t("beta_mode.modal_point_free_title"), text: t("beta_mode.modal_point_free_text") },
     { icon: Wrench, title: t("beta_mode.modal_point_changing_title"), text: t("beta_mode.modal_point_changing_text") },
+    { icon: Mail, title: t("beta_mode.modal_point_transition_title"), text: t("beta_mode.modal_point_transition_text") },
   ];
 
   return (

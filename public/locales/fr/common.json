@@ -202,6 +202,8 @@
     "modal_point_free_text": "Les testeurs bêta approuvés bénéficient d'un accès complet à l'offre Pro, gratuitement, pendant toute la durée de la bêta.",
     "modal_point_changing_title": "Des changements sont possibles",
     "modal_point_changing_text": "Les fonctionnalités, les tarifs et les processus peuvent encore évoluer avant la disponibilité générale.",
+    "modal_point_transition_title": "À savoir avant la fin de la bêta",
+    "modal_point_transition_text": "À la fin de la période bêta, vous recevrez un e-mail concernant le passage à une formule payante, avec le tarif et la date d'entrée en vigueur — envoyé au moins 14 jours avant que le paiement ne devienne nécessaire pour continuer à utiliser le service.",
     "modal_close": "Compris"
   }
 }

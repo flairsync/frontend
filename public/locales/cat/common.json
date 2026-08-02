@@ -202,6 +202,8 @@
     "modal_point_free_text": "Els provadors beta aprovats obtenen accés complet al pla Pro sense cost mentre duri la beta.",
     "modal_point_changing_title": "Hi pot haver canvis",
     "modal_point_changing_text": "Les funcions, els preus i els fluxos de treball encara poden canviar abans del llançament general.",
+    "modal_point_transition_title": "Avís abans que acabi la beta",
+    "modal_point_transition_text": "Quan acabi el període beta, rebreu un correu sobre el pas a un pla de pagament, amb el preu i la data en què entra en vigor — enviat com a mínim 14 dies abans que calgui començar a pagar per continuar utilitzant el servei.",
     "modal_close": "Entesos"
   }
 }

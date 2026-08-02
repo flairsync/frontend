@@ -202,6 +202,8 @@
     "modal_point_free_text": "Approved beta testers get full Pro-tier access at no cost while the beta lasts.",
     "modal_point_changing_title": "Things may change",
     "modal_point_changing_text": "Features, pricing, and workflows can still change before general availability.",
+    "modal_point_transition_title": "Heads-up before the beta ends",
+    "modal_point_transition_text": "When the beta period ends, you'll get an email about moving to a paid plan, including pricing and the date it takes effect — sent at least 14 days before you'd need to start paying to keep using the service.",
     "modal_close": "Got it"
   }
 }

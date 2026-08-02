@@ -202,6 +202,8 @@
     "modal_point_free_text": "Los probadores beta aprobados obtienen acceso completo al plan Pro sin coste mientras dure la beta.",
     "modal_point_changing_title": "Puede haber cambios",
     "modal_point_changing_text": "Las funciones, los precios y los flujos de trabajo aún pueden cambiar antes del lanzamiento general.",
+    "modal_point_transition_title": "Aviso antes de que termine la beta",
+    "modal_point_transition_text": "Cuando termine el período beta, recibirás un correo sobre el paso a un plan de pago, con el precio y la fecha en que entra en vigor — enviado al menos 14 días antes de que debas empezar a pagar para seguir usando el servicio.",
     "modal_close": "Entendido"
   }
 }
