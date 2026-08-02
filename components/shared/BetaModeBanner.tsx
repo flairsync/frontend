@@ -54,7 +54,7 @@ export default function BetaModeBanner() {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="mx-auto sm:mx-0 mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/10">
               <FlaskConical className="h-5 w-5 text-amber-500" />
