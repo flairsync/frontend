@@ -12,11 +12,12 @@ const sessionsUrl = `${baseUrl}/sessions`;
 const resendVerificationEmailUrl = `${baseUrl}/resend-email-otp`;
 const verifyEmailUrl = `${baseUrl}/verify-email`;
 
-export const loginUserWithGoogleApiCall = (tokenId: string) => {
+export const loginUserWithGoogleApiCall = (tokenId: string, termsAccepted?: boolean) => {
   return flairapi.post(
     googleAuthUrl,
     {
       tokenId,
+      termsAccepted,
     },
     {
       headers: {
@@ -53,12 +54,14 @@ export const signupUserApiCall = (data: {
   password: string;
   firstName: string;
   lastName: string;
+  termsAccepted: boolean;
 }) => {
   return flairapi.post(registerUrl, {
     email: data.email,
     password: data.password,
     firstName: data.firstName,
     lastName: data.lastName,
+    termsAccepted: data.termsAccepted,
   });
 };
 

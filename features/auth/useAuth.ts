@@ -45,8 +45,8 @@ export const useAuth = () => {
     error: loginErrorWithGoogle,
   } = useApiMutation({
     mutationKey: ["login_user_google"],
-    mutationFn: (data: { tokenId: string }) => {
-      return loginUserWithGoogleApiCall(data.tokenId);
+    mutationFn: (data: { tokenId: string; termsAccepted?: boolean }) => {
+      return loginUserWithGoogleApiCall(data.tokenId, data.termsAccepted);
     },
     onError(error, variables, context) {
       console.log("ERROR LOGGING WITH GOOGLE ", error);

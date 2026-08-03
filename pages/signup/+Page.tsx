@@ -94,12 +94,13 @@ const RegisterPage = () => {
                                     firstName: values.firstName,
                                     lastName: values.lastName,
                                     password: values.password,
+                                    termsAccepted: values.termsAccepted,
                                 }, {
                                     onSuccess: handlePostSignup
                                 });
                             }}
                         >
-                            {({ errors, touched, handleChange, handleBlur, setFieldValue, values }) => {
+                            {({ errors, touched, handleChange, handleBlur, setFieldValue, setFieldTouched, values }) => {
                                 const emailSuggestion = suggestEmailCorrection(values.email);
                                 return (
                                 <Form className="space-y-5 md:space-y-6 pb-10">
@@ -328,7 +329,10 @@ const RegisterPage = () => {
                                     </div>
 
                                     {/* Google Button */}
-                                    <GoogleLoginButton />
+                                    <GoogleLoginButton
+                                        termsAccepted={values.termsAccepted}
+                                        onBlockedByTerms={() => setFieldTouched('termsAccepted', true, true)}
+                                    />
 
                                     {/* Already have account */}
                                     <p className="mt-6 text-center text-xs md:text-sm text-muted-foreground">
