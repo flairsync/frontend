@@ -6,6 +6,7 @@ import { Printer, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { toIsoCurrencyCode } from "@/utils/currency";
+import QRCode from "react-qr-code";
 
 interface StationReceiptItem {
     id: string;
@@ -51,6 +52,10 @@ interface StationReceipt {
     createdAt: string;
     closedAt: string | null;
     taxExempt?: boolean;
+    /** Spain (ES-04/ES-06) only — AEAT-mandated QR content for the printed ticket. */
+    fiscalQrContent?: string;
+    fiscalQrLabelAbove?: string;
+    fiscalInvoiceNumber?: string;
 }
 
 function fmt(n: number, currency: string) {
@@ -226,6 +231,24 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
                             </div>
                         )}
                     </div>
+
+                    {/* Fiscal QR (Spain only, ES-04/ES-06) */}
+                    {receipt.fiscalQrContent && (
+                        <div className="px-4 py-3 border-b border-border flex flex-col items-center gap-2">
+                            {receipt.fiscalInvoiceNumber && (
+                                <span className="text-[10px] text-muted-foreground">{receipt.fiscalInvoiceNumber}</span>
+                            )}
+                            {receipt.fiscalQrLabelAbove && (
+                                <span className="text-[10px]">{receipt.fiscalQrLabelAbove}</span>
+                            )}
+                            <QRCode
+                                size={120}
+                                style={{ height: "auto", width: "120px" }}
+                                value={receipt.fiscalQrContent}
+                                viewBox="0 0 120 120"
+                            />
+                        </div>
+                    )}
 
                     <div className="text-center py-3 text-[10px] text-muted-foreground">
                         {t("station_receipt.thank_you")}

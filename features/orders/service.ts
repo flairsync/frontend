@@ -262,6 +262,10 @@ export interface ReceiptData {
     payments: ReceiptPayment[];
     totalPaid: number;
     totalTip: number;
+    /** Spain (ES-04/ES-06) only — AEAT-mandated QR content for the printed ticket. */
+    fiscalQrContent?: string;
+    fiscalQrLabelAbove?: string;
+    fiscalInvoiceNumber?: string;
 }
 
 export const getReceiptApiCall = async (businessId: string, orderId: string) =>

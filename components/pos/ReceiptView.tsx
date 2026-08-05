@@ -7,6 +7,7 @@ import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDet
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import QRCode from "react-qr-code";
 
 interface Props {
     businessId: string;
@@ -210,6 +211,24 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                             </div>
                         )}
                     </div>
+
+                    {/* Fiscal QR (Spain only, ES-04/ES-06) */}
+                    {receipt.fiscalQrContent && (
+                        <div className="px-4 py-3 border-b border-border flex flex-col items-center gap-2">
+                            {receipt.fiscalInvoiceNumber && (
+                                <span className="text-xs text-muted-foreground">{receipt.fiscalInvoiceNumber}</span>
+                            )}
+                            {receipt.fiscalQrLabelAbove && (
+                                <span className="text-xs">{receipt.fiscalQrLabelAbove}</span>
+                            )}
+                            <QRCode
+                                size={120}
+                                style={{ height: "auto", width: "120px" }}
+                                value={receipt.fiscalQrContent}
+                                viewBox="0 0 120 120"
+                            />
+                        </div>
+                    )}
 
                     <div className="text-center py-3 text-xs text-muted-foreground">
                         {t("receipt.thank_you")}
