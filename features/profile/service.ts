@@ -12,6 +12,7 @@ export type UpdateUserProfileDTO = {
   lastName?: string;
   language?: string;
   marketingEmail?: boolean;
+  showFullNameOnReviews?: boolean;
   phoneNumber?: string | null;
   dateOfBirth?: string | null;
   gender?: string | null;

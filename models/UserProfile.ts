@@ -17,6 +17,7 @@ export class UserProfile {
   lastName: string;
   language: string;
   marketingEmails: boolean;
+  showFullNameOnReviews: boolean;
   createdAt: Date;
   currentSubscription?: Subscription;
   phoneNumber?: string;
@@ -35,6 +36,7 @@ export class UserProfile {
     lastName: string,
     language: string,
     marketingEmails: boolean,
+    showFullNameOnReviews: boolean,
     createdAt: Date,
     currentSubscription?: Subscription,
     phoneNumber?: string,
@@ -52,6 +54,7 @@ export class UserProfile {
     this.lastName = lastName;
     this.language = language;
     this.marketingEmails = marketingEmails;
+    this.showFullNameOnReviews = showFullNameOnReviews;
     this.createdAt = createdAt;
     this.currentSubscription = currentSubscription;
     this.phoneNumber = phoneNumber;
@@ -74,6 +77,7 @@ export class UserProfile {
       data.lastName,
       data.language,
       data.marketingEmails,
+      data.showFullNameOnReviews,
       data.createdAt,
       sub ? sub : undefined,
       data.phoneNumber,

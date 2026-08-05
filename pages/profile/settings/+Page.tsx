@@ -17,6 +17,7 @@ import PasswordSettings from "@/components/profile/settings/PasswordSettings"
 import SessionManagementSettings from "@/components/profile/settings/SessionManagementSettings"
 import AccountVerification from "@/components/profile/settings/AccountVerification"
 import MarketingSettings from "@/components/profile/settings/MarketingSettings"
+import PrivacySettings from "@/components/profile/settings/PrivacySettings"
 import NotificationPreferencesSettings from "@/components/profile/settings/NotificationPreferencesSettings"
 
 const ProfileSettingsPage = () => {
@@ -31,6 +32,8 @@ const ProfileSettingsPage = () => {
             <NotificationPreferencesSettings />
 
             <MarketingSettings />
+
+            <PrivacySettings />
 
             <PasswordSettings />
 
