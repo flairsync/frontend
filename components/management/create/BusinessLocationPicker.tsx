@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useCallback } from "react";
-import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Circle, Polygon } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Circle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Input } from "@/components/ui/input";
@@ -42,17 +42,6 @@ interface CityData {
 }
 
 const defaultCenter = { lat: 42.5063, lng: 1.5218 }; // Andorra center
-
-// Precise bounding boxes per country code — fallback uses ±2° from country center
-const COUNTRY_BOUNDS: Record<string, [[number, number], [number, number]]> = {
-    ad: [[42.4285, 1.4135], [42.6559, 1.7865]],
-};
-
-const getCountryBounds = (c: PlatformCountry): [[number, number], [number, number]] =>
-    COUNTRY_BOUNDS[c.code.toLowerCase()] ?? [
-        [c.centerLat - 2, c.centerLng - 2],
-        [c.centerLat + 2, c.centerLng + 2],
-    ];
 
 const getMinZoom = (c: PlatformCountry) =>
     c.code.toLowerCase() === 'ad' ? 11 : 6;
@@ -127,17 +116,6 @@ const LocationMarker = ({
     });
     return position && checkPositionValue(position) ? <Marker icon={customMarkerIcon} position={[(position as any).lat, (position as any).lng]} /> : null;
 };
-
-// Grays out the world outside the given bounding box
-const CountryMaskOverlay = ({ bounds }: { bounds: [[number, number], [number, number]] }) => (
-    <Polygon
-        positions={[
-            [[-90, -180], [-90, 180], [90, 180], [90, -180]],
-            [bounds[0], [bounds[0][0], bounds[1][1]], bounds[1], [bounds[1][0], bounds[0][1]]],
-        ]}
-        pathOptions={{ fillColor: '#000', fillOpacity: 0.3, stroke: false }}
-    />
-);
 
 // Component to smoothly pan the map to a location
 const MapPanTo: React.FC<{ position: LocationValue; zoom?: number }> = ({ position, zoom }) => {
@@ -519,8 +497,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             ]}
                             zoom={mapZoom ?? 13}
                             scrollWheelZoom
-                            maxBounds={getCountryBounds(country)}
-                            maxBoundsViscosity={1.0}
                             minZoom={getMinZoom(country)}
                             style={{ height: "100%", width: "100%", zIndex: 0 }}
                         >
@@ -528,7 +504,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                                 attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <CountryMaskOverlay bounds={getCountryBounds(country)} />
                             <LocationMarker
                                 position={position as any}
                                 onSelect={handleSelectLocation}
