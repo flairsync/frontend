@@ -24,7 +24,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Loader2, Plus, Pencil, Trash2, Star } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, Star, Wand2 } from "lucide-react"
 import { toast } from "sonner"
 import { MyBusinessFullDetails } from "@/models/business/MyBusinessFullDetails"
 import { businessTaxApi, BusinessTax, BusinessTaxGroup } from "@/features/business/taxes/service"
@@ -211,6 +211,23 @@ function TaxLibrary({
         onError: () => toast.error("Failed to update default tax"),
     })
 
+    const autofillMutation = useMutation({
+        mutationFn: () => businessTaxApi.autofillTaxes(businessId),
+        onSuccess: (result) => {
+            if (result.unsupportedCountry) {
+                toast.info("No starter tax preset is available yet for this business's country. Add taxes manually below.")
+                return
+            }
+            invalidate()
+            if (result.created.length > 0) {
+                toast.success(`Added ${result.created.map((t) => `${t.name} (${t.rate}%)`).join(", ")}`)
+            } else {
+                toast.info("Tax library is already up to date — nothing to add.")
+            }
+        },
+        onError: () => toast.error("Failed to auto-fill taxes"),
+    })
+
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -218,10 +235,37 @@ function TaxLibrary({
                     <p className="text-sm font-medium">Tax Library</p>
                     <p className="text-xs text-muted-foreground">Individual tax rates applied to orders</p>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => setShowAdd(true)} className="gap-1.5">
-                    <Plus className="w-3.5 h-3.5" />
-                    Add Tax
-                </Button>
+                <div className="flex items-center gap-2">
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <span>
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => autofillMutation.mutate()}
+                                        disabled={autofillMutation.isPending}
+                                        className="gap-1.5"
+                                    >
+                                        {autofillMutation.isPending ? (
+                                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                        ) : (
+                                            <Wand2 className="w-3.5 h-3.5" />
+                                        )}
+                                        Auto-fill
+                                    </Button>
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                Fills in the standard starter tax for this business's country (e.g. Spain IVA 10%, Andorra IGI 4.5%) — verify with your accountant before relying on it.
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                    <Button size="sm" variant="outline" onClick={() => setShowAdd(true)} className="gap-1.5">
+                        <Plus className="w-3.5 h-3.5" />
+                        Add Tax
+                    </Button>
+                </div>
             </div>
 
             {taxes.length === 0 ? (

@@ -35,6 +35,12 @@ export const businessTaxApi = {
     createTax: (businessId: string, payload: { name: string; rate: number; isDefault?: boolean }) =>
         flairapi.post(taxUrl(businessId), payload).then((r) => parseTax(r.data.data)),
 
+    autofillTaxes: (businessId: string) =>
+        flairapi.post(`${taxUrl(businessId)}/autofill`).then((r) => {
+            const data = r.data.data as { created: any[]; skippedExisting: string[]; unsupportedCountry: boolean }
+            return { ...data, created: data.created.map(parseTax) }
+        }),
+
     updateTax: (businessId: string, taxId: string, payload: { name?: string; rate?: number; isDefault?: boolean }) =>
         flairapi.patch(`${taxUrl(businessId)}/${taxId}`, payload).then((r) => parseTax(r.data.data)),
 
