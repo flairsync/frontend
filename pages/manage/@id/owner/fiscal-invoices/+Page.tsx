@@ -21,9 +21,10 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import { ChevronLeft, ChevronRight, Download, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, X, Eye } from "lucide-react";
 import { useFiscalInvoices } from "@/features/fiscal-invoices/useFiscalInvoices";
-import { FiscalInvoiceType, getFiscalInvoicesExportUrl } from "@/features/fiscal-invoices/service";
+import { FiscalInvoice, FiscalInvoiceType, getFiscalInvoicesExportUrl } from "@/features/fiscal-invoices/service";
+import { FiscalInvoiceDetailsModal } from "@/components/fiscal/FiscalInvoiceDetailsModal";
 
 const TYPE_STYLES: Record<FiscalInvoiceType, string> = {
     [FiscalInvoiceType.STANDARD]: "bg-blue-100 text-blue-700 hover:bg-blue-100",
@@ -43,6 +44,7 @@ const FiscalInvoicesPage: React.FC = () => {
     const [type, setType] = useState("");
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [selectedInvoice, setSelectedInvoice] = useState<FiscalInvoice | null>(null);
 
     const { data, isLoading } = useFiscalInvoices({
         businessId,
@@ -143,14 +145,15 @@ const FiscalInvoicesPage: React.FC = () => {
                                 <TableHead>Status</TableHead>
                                 <TableHead>Order</TableHead>
                                 <TableHead>Issued At</TableHead>
-                                <TableHead className="pr-4">Hash</TableHead>
+                                <TableHead>Hash</TableHead>
+                                <TableHead className="sticky right-0 bg-background text-right pr-4">Details</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
                                 Array.from({ length: 8 }).map((_, i) => (
                                     <TableRow key={i}>
-                                        {Array.from({ length: 6 }).map((_, j) => (
+                                        {Array.from({ length: 7 }).map((_, j) => (
                                             <TableCell key={j}>
                                                 <div className="h-4 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse" />
                                             </TableCell>
@@ -159,12 +162,16 @@ const FiscalInvoicesPage: React.FC = () => {
                                 ))
                             ) : invoices.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-16">
+                                    <TableCell colSpan={7} className="text-center text-muted-foreground py-16">
                                         No fiscal invoices found{hasFilters ? " for the selected filters" : ""}.
                                     </TableCell>
                                 </TableRow>
                             ) : invoices.map((inv) => (
-                                <TableRow key={inv.id}>
+                                <TableRow
+                                    key={inv.id}
+                                    className="cursor-pointer"
+                                    onClick={() => setSelectedInvoice(inv)}
+                                >
                                     <TableCell className="pl-4 font-mono text-sm font-medium">
                                         {inv.invoiceNumber}
                                     </TableCell>
@@ -185,8 +192,20 @@ const FiscalInvoicesPage: React.FC = () => {
                                     <TableCell className="text-sm text-muted-foreground whitespace-nowrap">
                                         {inv.issuedAt ? format(new Date(inv.issuedAt), "MMM d, yyyy HH:mm") : "—"}
                                     </TableCell>
-                                    <TableCell className="pr-4 text-xs text-muted-foreground font-mono" title={inv.hash}>
+                                    <TableCell className="text-xs text-muted-foreground font-mono" title={inv.hash}>
                                         {truncate(inv.hash, 12)}
+                                    </TableCell>
+                                    <TableCell className="sticky right-0 bg-background text-right pr-4">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            title="View details"
+                                            aria-label="View details"
+                                            onClick={(e) => { e.stopPropagation(); setSelectedInvoice(inv); }}
+                                        >
+                                            <Eye className="h-3.5 w-3.5" />
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -220,6 +239,12 @@ const FiscalInvoicesPage: React.FC = () => {
                     )}
                 </CardContent>
             </Card>
+
+            <FiscalInvoiceDetailsModal
+                invoice={selectedInvoice}
+                open={!!selectedInvoice}
+                onOpenChange={(v) => { if (!v) setSelectedInvoice(null); }}
+            />
         </div>
     );
 };

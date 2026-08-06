@@ -14,5 +14,7 @@ export interface StationInfo {
     timezone: string;
     allowTableOrdering: boolean;
     allowTakeawayOrdering: boolean;
+    taxIncluded: boolean;
+    taxes: { id: string; name: string; rate: number; isDefault: boolean }[];
   };
 }

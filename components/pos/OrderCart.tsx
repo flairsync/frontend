@@ -10,7 +10,7 @@ import {
     ChevronDown, ChevronUp,
 } from "lucide-react";
 import { ValidationAlert } from "./ValidationAlert";
-import { type CartItem, calcSubtotal, calcTax, getTaxRate } from "@/features/pos/types";
+import { type CartItem, calcSubtotal, calcTax } from "@/features/pos/types";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { useTranslation } from "react-i18next";
 
@@ -24,6 +24,8 @@ interface OrderCartProps {
     currency?: string;
     kitchenNotes?: string;
     taxExempt?: boolean;
+    taxRate?: number;
+    taxIncluded?: boolean;
     canCreateOrder?: boolean;
     canApplyDiscount?: boolean;
     onUpdateQuantity: (id: string, delta: number) => void;
@@ -46,6 +48,8 @@ export function OrderCart({
     currency = "USD",
     kitchenNotes = "",
     taxExempt = false,
+    taxRate = 0,
+    taxIncluded = false,
     canCreateOrder = true,
     canApplyDiscount = true,
     onUpdateQuantity,
@@ -62,10 +66,13 @@ export function OrderCart({
     const { t } = useTranslation("pos");
     const [itemsOpen, setItemsOpen] = useState(true);
     const [totalsOpen, setTotalsOpen] = useState(true);
-    const subtotal = calcSubtotal(items);
-    const taxRate = getTaxRate();
-    const tax = taxExempt ? 0 : calcTax(subtotal);
-    const total = subtotal + tax;
+    const grossItemsTotal = calcSubtotal(items);
+    const tax = taxExempt ? 0 : calcTax(grossItemsTotal, taxRate, taxIncluded);
+    // When tax is included in item prices, grossItemsTotal already has it baked in — net it
+    // back out for display so Subtotal + Tax = Total, same reasoning as the backend receipt
+    // (GenericFiscalAdapter.buildSnapshot / OrderService.recomputeOrderTotal).
+    const subtotal = taxIncluded ? grossItemsTotal - tax : grossItemsTotal;
+    const total = taxIncluded ? grossItemsTotal : grossItemsTotal + tax;
 
     const isDineInMissingTable = orderMode === "dine-in" && !selectedTable;
     const isCartEmpty = items.length === 0;
@@ -360,7 +367,7 @@ export function OrderCart({
                                 {taxExempt
                                     ? t("order_cart.totals.tax_exempt")
                                     : taxRate > 0
-                                    ? t("order_cart.totals.tax_with_rate", { rate: (taxRate * 100).toFixed(0) })
+                                    ? t("order_cart.totals.tax_with_rate", { rate: taxRate.toFixed(0) })
                                     : t("order_cart.totals.tax")}
                             </span>
                             <span>{formatCurrency(tax, currency)}</span>

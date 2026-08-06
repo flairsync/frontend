@@ -44,6 +44,10 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
     const displayOrder = fullOrder || order;
+    // Completed/rejected/canceled orders are archived and (for completed ones) may already be
+    // fiscally invoiced — the backend rejects voidItem on them, so hide the action here too
+    // rather than let staff hit a confirm-then-error round trip.
+    const isOrderTerminal = ["completed", "rejected", "canceled"].includes(displayOrder.status);
 
     const resolveEmployeeName = (employmentId: string): string => {
         const emp = businessEmployees?.find(e => e.id === employmentId);
@@ -249,7 +253,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                     <div className="font-bold text-right">
                                                         {isTerminalItemStatus ? <span className="line-through text-muted-foreground">{currencySymbol}{totalItemPrice.toFixed(2)}</span> : `${currencySymbol}${totalItemPrice.toFixed(2)}`}
                                                     </div>
-                                                    {!isTerminalItemStatus && (
+                                                    {!isTerminalItemStatus && !isOrderTerminal && (
                                                         <div className="flex items-center gap-1 mt-auto">
                                                             {advanceLabel && (
                                                                 <Button
@@ -434,7 +438,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                     </div>
 
                     {/* Edit Discount — hidden for terminal statuses */}
-                    {!["completed", "rejected", "canceled"].includes(displayOrder.status) && (
+                    {!isOrderTerminal && (
                         <>
                             {editingDiscount ? (
                                 <div className="flex items-center gap-2">

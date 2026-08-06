@@ -271,7 +271,11 @@ function POSMain({
         [tables, selectedTableId],
     );
 
-    const cartTotal = useMemo(() => calcTotal(cart), [cart]);
+    const defaultTaxRate = station.business.taxes?.find((t) => t.isDefault)?.rate ?? 0;
+    const cartTotal = useMemo(
+        () => calcTotal(cart, defaultTaxRate, station.business.taxIncluded),
+        [cart, defaultTaxRate, station.business.taxIncluded],
+    );
 
     // ── Data fetching ──
     const [orderPage, setOrderPage] = useState(1);
@@ -1115,6 +1119,8 @@ function POSMain({
                             currency={station.business.currency}
                             kitchenNotes={kitchenNotes}
                             taxExempt={taxExempt}
+                            taxRate={defaultTaxRate}
+                            taxIncluded={station.business.taxIncluded}
                             canCreateOrder={perms?.posCreateOrder ?? false}
                             canApplyDiscount={perms?.posApplyDiscount ?? false}
                             onUpdateQuantity={(id, delta) =>

@@ -93,26 +93,23 @@ export interface CartItem {
   modifiers: { modifierItemId: string }[];
 }
 
-const TAX_RATE_KEY = "pos_tax_rate";
-
-export function getTaxRate(): number {
-  return parseFloat(localStorage.getItem(TAX_RATE_KEY) ?? "0");
-}
-
-export function setTaxRate(rate: number): void {
-  localStorage.setItem(TAX_RATE_KEY, rate.toString());
-}
-
 export function calcSubtotal(items: CartItem[]): number {
   return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 
-export function calcTax(subtotal: number, discountAmount = 0): number {
-  const taxable = subtotal - discountAmount;
-  return parseFloat((Math.max(0, taxable) * getTaxRate()).toFixed(2));
+// Mirrors OrderService.calcTaxAmount's formula exactly (backend: src/order/order.service.ts)
+// — rate is a percentage (e.g. 10 for 10%), matching BusinessTax.rate's scale, not a 0-1
+// fraction. This is a pre-checkout preview only; the backend recomputes authoritatively once
+// the order actually exists.
+export function calcTax(subtotal: number, rate: number, included: boolean): number {
+  if (rate <= 0) return 0;
+  return included
+    ? parseFloat((subtotal * rate / (100 + rate)).toFixed(2))
+    : parseFloat((subtotal * rate / 100).toFixed(2));
 }
 
-export function calcTotal(items: CartItem[], discountAmount = 0): number {
-  const subtotal = calcSubtotal(items);
-  return subtotal - discountAmount + calcTax(subtotal, discountAmount);
+export function calcTotal(items: CartItem[], rate: number, included: boolean): number {
+  const grossItemsTotal = calcSubtotal(items);
+  const tax = calcTax(grossItemsTotal, rate, included);
+  return included ? grossItemsTotal : grossItemsTotal + tax;
 }
