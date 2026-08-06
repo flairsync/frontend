@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -20,11 +20,15 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { format } from "date-fns";
-import { ChevronLeft, ChevronRight, Download, X, Eye } from "lucide-react";
-import { useFiscalInvoices } from "@/features/fiscal-invoices/useFiscalInvoices";
+import { ChevronLeft, ChevronRight, Download, X, Eye, Loader2 } from "lucide-react";
+import { useFiscalInvoices, useFiscalInvoice } from "@/features/fiscal-invoices/useFiscalInvoices";
 import { FiscalInvoice, FiscalInvoiceType, getFiscalInvoicesExportUrl } from "@/features/fiscal-invoices/service";
 import { FiscalInvoiceDetailsModal } from "@/components/fiscal/FiscalInvoiceDetailsModal";
+import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
+import { useOrderDetails } from "@/features/orders/useOrders";
+import { Order } from "@/features/orders/service";
 
 const TYPE_STYLES: Record<FiscalInvoiceType, string> = {
     [FiscalInvoiceType.STANDARD]: "bg-blue-100 text-blue-700 hover:bg-blue-100",
@@ -45,6 +49,21 @@ const FiscalInvoicesPage: React.FC = () => {
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [selectedInvoice, setSelectedInvoice] = useState<FiscalInvoice | null>(null);
+    const [viewOrderId, setViewOrderId] = useState<string | null>(null);
+    const [viewInvoiceId, setViewInvoiceId] = useState<string | null>(null);
+
+    const { data: linkedOrder } = useOrderDetails(businessId, viewOrderId || "");
+    const { data: linkedInvoice } = useFiscalInvoice(businessId, viewInvoiceId);
+
+    // Corrections link back to the original STANDARD invoice, which may not be on the
+    // currently loaded page — once it's fetched, swap the open modal to show it in place
+    // rather than stacking a second dialog on top.
+    useEffect(() => {
+        if (linkedInvoice) {
+            setSelectedInvoice(linkedInvoice);
+            setViewInvoiceId(null);
+        }
+    }, [linkedInvoice]);
 
     const { data, isLoading } = useFiscalInvoices({
         businessId,
@@ -244,7 +263,27 @@ const FiscalInvoicesPage: React.FC = () => {
                 invoice={selectedInvoice}
                 open={!!selectedInvoice}
                 onOpenChange={(v) => { if (!v) setSelectedInvoice(null); }}
+                onViewOrder={(orderId) => { setSelectedInvoice(null); setViewOrderId(orderId); }}
+                onViewInvoice={(invoiceId) => setViewInvoiceId(invoiceId)}
             />
+
+            {viewOrderId && (
+                linkedOrder ? (
+                    <OrderDetailsModal
+                        businessId={businessId}
+                        order={linkedOrder as unknown as Order}
+                        open={true}
+                        onClose={() => setViewOrderId(null)}
+                    />
+                ) : (
+                    <Dialog open onOpenChange={(v) => { if (!v) setViewOrderId(null); }}>
+                        <DialogContent className="max-w-sm flex items-center justify-center py-10">
+                            <DialogTitle className="sr-only">Loading order</DialogTitle>
+                            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                        </DialogContent>
+                    </Dialog>
+                )
+            )}
         </div>
     );
 };

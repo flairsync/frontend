@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Hash, Receipt, ShoppingBag, Clock, Link2, Copy, Check } from "lucide-react";
+import { Hash, Receipt, ShoppingBag, Clock, Link2, Copy, Check, ExternalLink } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { FiscalInvoice, FiscalInvoiceType } from "@/features/fiscal-invoices/service";
 
@@ -21,9 +21,12 @@ interface FiscalInvoiceDetailsModalProps {
     invoice: FiscalInvoice | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    /** Present only when the id is navigable — renders the id as a link instead of plain text. */
+    onViewOrder?: (orderId: string) => void;
+    onViewInvoice?: (invoiceId: string) => void;
 }
 
-const CopyableId: React.FC<{ value: string }> = ({ value }) => {
+const CopyableId: React.FC<{ value: string; onView?: () => void; viewLabel?: string }> = ({ value, onView, viewLabel }) => {
     const [copied, setCopied] = useState(false);
     const handleCopy = () => {
         navigator.clipboard.writeText(value);
@@ -32,7 +35,19 @@ const CopyableId: React.FC<{ value: string }> = ({ value }) => {
     };
     return (
         <div className="flex items-center gap-1.5">
-            <p className="font-mono text-xs break-all">{value}</p>
+            {onView ? (
+                <button
+                    type="button"
+                    onClick={onView}
+                    title={viewLabel ?? "View"}
+                    className="font-mono text-xs break-all text-primary hover:underline text-left flex items-center gap-1"
+                >
+                    {value}
+                    <ExternalLink className="h-3 w-3 shrink-0" />
+                </button>
+            ) : (
+                <p className="font-mono text-xs break-all">{value}</p>
+            )}
             <button
                 type="button"
                 onClick={handleCopy}
@@ -46,7 +61,7 @@ const CopyableId: React.FC<{ value: string }> = ({ value }) => {
     );
 };
 
-export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps> = ({ invoice, open, onOpenChange }) => {
+export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps> = ({ invoice, open, onOpenChange, onViewOrder, onViewInvoice }) => {
     if (!invoice) return null;
 
     return (
@@ -93,7 +108,11 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                             <ShoppingBag className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div className="min-w-0 flex-1">
                                 <p className="text-xs text-muted-foreground">Order</p>
-                                <CopyableId value={invoice.orderId} />
+                                <CopyableId
+                                    value={invoice.orderId}
+                                    onView={onViewOrder ? () => onViewOrder(invoice.orderId) : undefined}
+                                    viewLabel="View order"
+                                />
                             </div>
                         </div>
                         {invoice.type === FiscalInvoiceType.CORRECTION && invoice.correctsInvoiceId && (
@@ -101,7 +120,11 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                                 <Link2 className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                                 <div className="min-w-0 flex-1">
                                     <p className="text-xs text-muted-foreground">Corrects invoice</p>
-                                    <CopyableId value={invoice.correctsInvoiceId} />
+                                    <CopyableId
+                                        value={invoice.correctsInvoiceId}
+                                        onView={onViewInvoice ? () => onViewInvoice(invoice.correctsInvoiceId as string) : undefined}
+                                        viewLabel="View original invoice"
+                                    />
                                 </div>
                             </div>
                         )}

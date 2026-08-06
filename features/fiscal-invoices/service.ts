@@ -1,5 +1,5 @@
 import flairapi from "@/lib/flairapi";
-import { unwrapPaginated } from "../shared/api-response";
+import { unwrapPaginated, unwrap } from "../shared/api-response";
 
 const baseUrl = `${'https://api.flairsync.com/api/v1'}`;
 const fiscalInvoicesUrl = `${baseUrl}/fiscal-invoices`;
@@ -35,6 +35,9 @@ export interface FetchFiscalInvoicesParams {
 
 export const fetchFiscalInvoicesApiCall = async (params: FetchFiscalInvoicesParams) =>
   unwrapPaginated<FiscalInvoice>(await flairapi.get(fiscalInvoicesUrl, { params }));
+
+export const fetchFiscalInvoiceApiCall = async (businessId: string, id: string) =>
+  unwrap<FiscalInvoice>(await flairapi.get(`${fiscalInvoicesUrl}/${id}`, { params: { businessId } }));
 
 export const getFiscalInvoicesExportUrl = (
   businessId: string,
