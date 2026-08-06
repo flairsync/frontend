@@ -31,7 +31,7 @@ import { businessTaxApi, BusinessTax, BusinessTaxGroup } from "@/features/busine
 
 type Props = {
     businessDetails?: MyBusinessFullDetails
-    onSaveDetails?: (data: { taxIncluded: boolean }) => void
+    onSaveDetails?: (data: { taxIncluded?: boolean; taxIdNumber?: string }) => void
     disabled?: boolean
 }
 
@@ -64,6 +64,14 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
                     </div>
                 ) : (
                     <>
+                        {businessDetails?.country?.code === "ES" && (
+                            <FiscalIdField
+                                taxIdNumber={businessDetails?.taxIdNumber ?? null}
+                                onSave={(val) => onSaveDetails?.({ taxIdNumber: val })}
+                                disabled={disabled}
+                            />
+                        )}
+
                         <PricingModelToggle
                             taxIncluded={businessDetails?.taxIncluded ?? true}
                             onSave={(val) => onSaveDetails?.({ taxIncluded: val })}
@@ -77,6 +85,53 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
                 )}
             </AccordionContent>
         </AccordionItem>
+    )
+}
+
+// ─── Fiscal ID (Spain: NIF/CIF) ────────────────────────────────────────────────
+// Required by SpainFiscalAdapter (ES-01/ES-03) before any order can be completed —
+// without it, completing an order for this business throws a 400 server-side.
+
+function FiscalIdField({
+    taxIdNumber,
+    onSave,
+    disabled,
+}: {
+    taxIdNumber: string | null
+    onSave: (val: string) => void
+    disabled?: boolean
+}) {
+    const [value, setValue] = useState(taxIdNumber ?? "")
+    const isDirty = value.trim() !== (taxIdNumber ?? "")
+
+    return (
+        <div className="space-y-2 pb-4 border-b">
+            <Label htmlFor="fiscal-tax-id" className="text-sm font-medium">Tax ID (NIF/CIF)</Label>
+            <p className="text-xs text-muted-foreground">
+                Required for Spanish fiscal invoicing — printed on receipts and used in the AEAT QR code.
+                Orders can't be completed until this is set.
+            </p>
+            <div className="flex items-center gap-2 max-w-sm">
+                <Input
+                    id="fiscal-tax-id"
+                    placeholder="e.g. B12345678"
+                    value={value}
+                    maxLength={20}
+                    onChange={(e) => setValue(e.target.value)}
+                    disabled={disabled}
+                />
+                <Button
+                    size="sm"
+                    disabled={disabled || !isDirty || !value.trim()}
+                    onClick={() => onSave(value.trim())}
+                >
+                    Save
+                </Button>
+            </div>
+            {!taxIdNumber && (
+                <p className="text-xs text-amber-600 font-medium">Not set — required before completing any order.</p>
+            )}
+        </div>
     )
 }
 

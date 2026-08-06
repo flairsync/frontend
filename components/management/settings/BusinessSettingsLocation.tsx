@@ -10,17 +10,32 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { MyBusinessFullDetails, UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
 import { PlatformCountry } from "@/models/shared/PlatformCountry";
 import { ClientOnly } from "../../ClientOnly";
 
 const LocationPicker = React.lazy(() => import("@/components/management/create/BusinessLocationPicker"));
+
+// Primary IANA timezone per country — covers the platform's active/coming-soon countries only
+const COUNTRY_TIMEZONES: Record<string, string> = {
+    ad: "Europe/Andorra",
+    es: "Europe/Madrid",
+    fr: "Europe/Paris",
+};
 
 type Props = {
     businessDetails?: MyBusinessFullDetails;
@@ -31,6 +46,7 @@ type Props = {
 export default function BusinessSettingsLocation({ businessDetails, onSaveDetails, disabled }: Props) {
     // Current timezone
     const [timezone, setTimezone] = useState(businessDetails?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
+    const [timezonePopoverOpen, setTimezonePopoverOpen] = useState(false);
     const timezones = Intl.supportedValuesOf('timeZone');
 
     // Location state
@@ -68,6 +84,12 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
         if (val.country?.id) {
             setCountryId(val.country.id);
         }
+        if (val.country?.code && val.country.id !== locationValue.country?.id) {
+            const mappedTimezone = COUNTRY_TIMEZONES[val.country.code.toLowerCase()];
+            if (mappedTimezone) {
+                setTimezone(mappedTimezone);
+            }
+        }
     };
 
     const handleSave = () => {
@@ -103,18 +125,43 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 {/* Timezone */}
                 <div className="space-y-1.5 flex flex-col">
                     <Label className="text-sm font-medium">Business Timezone</Label>
-                    <Select disabled={disabled} value={timezone} onValueChange={setTimezone}>
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a timezone" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {timezones.map(tz => (
-                                <SelectItem key={tz} value={tz}>
-                                    {tz}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <Popover open={timezonePopoverOpen} onOpenChange={setTimezonePopoverOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={timezonePopoverOpen}
+                                disabled={disabled}
+                                className="w-full justify-between font-normal"
+                            >
+                                {timezone || "Select a timezone"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                            <Command>
+                                <CommandInput placeholder="Search timezone..." />
+                                <CommandEmpty>No timezone found.</CommandEmpty>
+                                <CommandList>
+                                    <CommandGroup>
+                                        {timezones.map(tz => (
+                                            <CommandItem
+                                                key={tz}
+                                                value={tz}
+                                                onSelect={() => {
+                                                    setTimezone(tz);
+                                                    setTimezonePopoverOpen(false);
+                                                }}
+                                            >
+                                                <Check className={cn("mr-2 h-4 w-4", timezone === tz ? "opacity-100" : "opacity-0")} />
+                                                {tz}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
                 </div>
 
                 <Separator />

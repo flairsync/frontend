@@ -168,6 +168,8 @@ export class MyBusinessFullDetails {
   taxRate: number;
   taxName: string;
   taxIncluded: boolean;
+  /** Spain fiscal invoicing (ES-01/ES-03) requires this be set — null for non-Spain businesses. */
+  taxIdNumber: string | null;
   organizationId?: string | null;
   organizationName?: string | null;
   regionId?: string | null;
@@ -246,6 +248,7 @@ export class MyBusinessFullDetails {
     taxIncluded?: boolean,
     enableFloorPlanView?: boolean,
     requireQrForAttendance?: boolean,
+    taxIdNumber?: string | null,
   ) {
     this.id = id;
     this.name = name;
@@ -313,6 +316,7 @@ export class MyBusinessFullDetails {
     this.taxName = taxName ?? "";
     this.taxIncluded = taxIncluded ?? true;
     this.requireQrForAttendance = requireQrForAttendance ?? false;
+    this.taxIdNumber = taxIdNumber ?? null;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -385,6 +389,7 @@ export class MyBusinessFullDetails {
         data.taxIncluded !== undefined ? !!data.taxIncluded : true,
         data.enableFloorPlanView !== undefined ? !!data.enableFloorPlanView : false,
         !!data.requireQrForAttendance,
+        data.taxIdNumber ?? null,
       );
       instance.slug = data.slug ?? undefined;
       instance.organizationId = data.organizationId ?? null;
@@ -468,4 +473,5 @@ export type UpdateBusinessDetailsDto = {
   taxName?: string;
   taxIncluded?: boolean;
   enableFloorPlanView?: boolean;
+  taxIdNumber?: string;
 };
