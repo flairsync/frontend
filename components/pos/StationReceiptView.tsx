@@ -138,6 +138,11 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
                     {/* Header */}
                     <div className="text-center py-4 border-b border-border">
                         <p className="text-base font-bold uppercase tracking-widest">{t("station_receipt.fields.receipt")}</p>
+                        {/* Legally-significant sequential number (Spain, ES-04/ES-06) — shown here,
+                            prominently, rather than only embedded in the QR's numserie param. */}
+                        {receipt.fiscalInvoiceNumber && (
+                            <p className="text-xs font-semibold mt-1">{t("station_receipt.fields.invoice_number")}: {receipt.fiscalInvoiceNumber}</p>
+                        )}
                         <p className="text-xs text-muted-foreground mt-1">{fmtTime(receipt.createdAt)}</p>
                         {receipt.tableName && (
                             <p className="text-xs font-bold mt-1">{receipt.tableName}</p>
@@ -232,12 +237,9 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
                         )}
                     </div>
 
-                    {/* Fiscal QR (Spain only, ES-04/ES-06) */}
+                    {/* Fiscal QR (Spain only, ES-04/ES-06) — invoice number already shown in the header */}
                     {receipt.fiscalQrContent && (
                         <div className="px-4 py-3 border-b border-border flex flex-col items-center gap-2">
-                            {receipt.fiscalInvoiceNumber && (
-                                <span className="text-[10px] text-muted-foreground">{receipt.fiscalInvoiceNumber}</span>
-                            )}
                             {receipt.fiscalQrLabelAbove && (
                                 <span className="text-[10px]">{receipt.fiscalQrLabelAbove}</span>
                             )}

@@ -170,6 +170,8 @@ export class MyBusinessFullDetails {
   taxIncluded: boolean;
   /** Spain fiscal invoicing (ES-01/ES-03) requires this be set — null for non-Spain businesses. */
   taxIdNumber: string | null;
+  /** Overrides the printed receipt's language, independent of any staff member's own app-language session. Null falls back to 'en'. */
+  receiptLanguage: string | null;
   organizationId?: string | null;
   organizationName?: string | null;
   regionId?: string | null;
@@ -249,6 +251,7 @@ export class MyBusinessFullDetails {
     enableFloorPlanView?: boolean,
     requireQrForAttendance?: boolean,
     taxIdNumber?: string | null,
+    receiptLanguage?: string | null,
   ) {
     this.id = id;
     this.name = name;
@@ -317,6 +320,7 @@ export class MyBusinessFullDetails {
     this.taxIncluded = taxIncluded ?? true;
     this.requireQrForAttendance = requireQrForAttendance ?? false;
     this.taxIdNumber = taxIdNumber ?? null;
+    this.receiptLanguage = receiptLanguage ?? null;
   }
 
   static parseApiResponse(data: any): MyBusinessFullDetails | null {
@@ -390,6 +394,7 @@ export class MyBusinessFullDetails {
         data.enableFloorPlanView !== undefined ? !!data.enableFloorPlanView : false,
         !!data.requireQrForAttendance,
         data.taxIdNumber ?? null,
+        data.receiptLanguage ?? null,
       );
       instance.slug = data.slug ?? undefined;
       instance.organizationId = data.organizationId ?? null;
@@ -474,4 +479,5 @@ export type UpdateBusinessDetailsDto = {
   taxIncluded?: boolean;
   enableFloorPlanView?: boolean;
   taxIdNumber?: string;
+  receiptLanguage?: string;
 };

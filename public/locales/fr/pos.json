@@ -39,6 +39,7 @@
     "thank_you": "Merci de votre visite !",
     "fields": {
       "receipt": "Reçu",
+      "invoice_number": "Facture n°",
       "date": "Date",
       "type": "Type",
       "table": "Table",
@@ -197,6 +198,7 @@
     "thank_you": "Merci !",
     "fields": {
       "receipt": "Reçu",
+      "invoice_number": "Facture n°",
       "subtotal": "Sous-total",
       "discount": "Remise",
       "tax_exempt": "Taxe (Exonérée)",

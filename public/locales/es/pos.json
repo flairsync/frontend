@@ -39,6 +39,7 @@
     "thank_you": "¡Gracias por su visita!",
     "fields": {
       "receipt": "Recibo",
+      "invoice_number": "Factura n.º",
       "date": "Fecha",
       "type": "Tipo",
       "table": "Mesa",
@@ -197,6 +198,7 @@
     "thank_you": "¡Gracias!",
     "fields": {
       "receipt": "Recibo",
+      "invoice_number": "Factura n.º",
       "subtotal": "Subtotal",
       "discount": "Descuento",
       "tax_exempt": "Impuesto (Exento)",

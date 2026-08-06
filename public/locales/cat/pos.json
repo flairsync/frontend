@@ -39,6 +39,7 @@
     "thank_you": "Gràcies per la vostra visita!",
     "fields": {
       "receipt": "Rebut",
+      "invoice_number": "Factura núm.",
       "date": "Data",
       "type": "Tipus",
       "table": "Taula",
@@ -197,6 +198,7 @@
     "thank_you": "Gràcies!",
     "fields": {
       "receipt": "Rebut",
+      "invoice_number": "Factura núm.",
       "subtotal": "Subtotal",
       "discount": "Descompte",
       "tax_exempt": "Impost (Exempt)",

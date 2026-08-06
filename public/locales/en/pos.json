@@ -39,6 +39,7 @@
     "thank_you": "Thank you for dining with us!",
     "fields": {
       "receipt": "Receipt",
+      "invoice_number": "Invoice #",
       "date": "Date",
       "type": "Type",
       "table": "Table",
@@ -197,6 +198,7 @@
     "thank_you": "Thank you!",
     "fields": {
       "receipt": "Receipt",
+      "invoice_number": "Invoice #",
       "subtotal": "Subtotal",
       "discount": "Discount",
       "tax_exempt": "Tax (Exempt)",

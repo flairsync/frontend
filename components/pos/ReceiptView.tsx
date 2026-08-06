@@ -103,9 +103,14 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                 >
                     {/* Order info */}
                     <div className="px-4 py-3 border-b border-border space-y-1 text-xs text-muted-foreground">
+                        {/* When a fiscal invoice number exists (Spain, ES-04/ES-06), it replaces the
+                            operational receipt number as the ticket's one visible identifier — showing
+                            both risked a customer/auditor mistaking the informal RCP-... code for the
+                            legally-significant invoice number. Non-Spain businesses only ever have
+                            receiptNumber, so they see that instead. */}
                         <div className="flex justify-between">
-                            <span>{t("receipt.fields.receipt")}</span>
-                            <span className="font-semibold text-foreground">{receipt.receiptNumber}</span>
+                            <span>{receipt.fiscalInvoiceNumber ? t("receipt.fields.invoice_number") : t("receipt.fields.receipt")}</span>
+                            <span className="font-semibold text-foreground">{receipt.fiscalInvoiceNumber ?? receipt.receiptNumber}</span>
                         </div>
                         <div className="flex justify-between">
                             <span>{t("receipt.fields.date")}</span>
@@ -212,12 +217,9 @@ export default function ReceiptView({ businessId, orderId, onClose, onNewOrder }
                         )}
                     </div>
 
-                    {/* Fiscal QR (Spain only, ES-04/ES-06) */}
+                    {/* Fiscal QR (Spain only, ES-04/ES-06) — invoice number already shown above */}
                     {receipt.fiscalQrContent && (
                         <div className="px-4 py-3 border-b border-border flex flex-col items-center gap-2">
-                            {receipt.fiscalInvoiceNumber && (
-                                <span className="text-xs text-muted-foreground">{receipt.fiscalInvoiceNumber}</span>
-                            )}
                             {receipt.fiscalQrLabelAbove && (
                                 <span className="text-xs">{receipt.fiscalQrLabelAbove}</span>
                             )}

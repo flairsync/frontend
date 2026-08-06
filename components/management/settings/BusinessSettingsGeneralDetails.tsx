@@ -34,6 +34,7 @@ type BusinessGeneralInfo = {
     phone?: string,
     currency?: string,
     slug?: string,
+    receiptLanguage?: string,
 }
 
 type SlugStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid'
@@ -54,6 +55,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [contactEmail, setContactEmail] = useState(props.businessDetails?.email)
     const [phone, setPhone] = useState(props.businessDetails?.phone);
     const [currency, setCurrency] = useState(toIsoCurrencyCode(props.businessDetails?.currency || "USD"));
+    const [receiptLanguage, setReceiptLanguage] = useState(props.businessDetails?.receiptLanguage || "en");
     const [slug, setSlug] = useState(props.businessDetails?.slug ?? '')
     const [slugStatus, setSlugStatus] = useState<SlugStatus>('idle')
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -99,6 +101,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 phone: phone,
                 currency: currency,
                 slug: slug || undefined,
+                receiptLanguage: receiptLanguage,
             })
         }
     }
@@ -202,6 +205,22 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                         </SelectContent>
                     </Select>
                     <p className="text-xs text-muted-foreground">This currency will be shown next to prices across your business.</p>
+                </div>
+
+                <div className="space-y-1.5 pt-2 border-t mt-4">
+                    <Label>Receipt Language</Label>
+                    <Select disabled={props.disabled} value={receiptLanguage} onValueChange={setReceiptLanguage}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="en">English</SelectItem>
+                            <SelectItem value="es">Español</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                        Language printed receipts use, independent of the language staff use in the app. Defaults to English.
+                    </p>
                 </div>
 
                 <div className="divide-y divide-border border-t mt-4">
