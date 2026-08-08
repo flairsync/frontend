@@ -27,8 +27,23 @@ import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useMyBusiness } from '@/features/business/useMyBusiness';
 import BusinessStatusPill from '@/components/management/BusinessStatusPill';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
-import { Loader } from 'lucide-react';
+import { Loader, TriangleAlert } from 'lucide-react';
+
+// Countries whose fiscal adapter is actually LIVE (FiscalAdapterFactory routes to the
+// real per-country adapter, not the generic one) and therefore actually requires
+// business.taxIdNumber before an order can be completed. Andorra only, as of 2026-08-08
+// (AD-01/04/05/06/07) — Spain's SpainFiscalAdapter is fully built but still deliberately
+// unrouted (ES-07/08 open), so a Spain business missing its tax ID does NOT currently fail
+// to complete orders; warning them here would be a false alarm. Add "ES" the same day
+// FiscalAdapterFactory's 'ES' case is flipped on, not before.
+const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
 
 const PAGE_LABELS: Record<string, string> = {
     dashboard: "Dashboard",
@@ -125,6 +140,30 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                     <BreadcrumbLink>
                                         {myBusinessFullDetails?.name}
                                     </BreadcrumbLink>
+                                    {!fetchingMyBusinessFullDetails
+                                        && myBusinessFullDetails
+                                        && myBusinessFullDetails.country?.code
+                                        && FISCAL_ID_REQUIRED_COUNTRIES.has(myBusinessFullDetails.country.code)
+                                        && !myBusinessFullDetails.taxIdNumber && (
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigate(`/manage/${routeParams.id}/owner/settings?section=tax`)}
+                                                        className="inline-flex items-center justify-center rounded-full p-1 text-amber-600 hover:bg-amber-500/10 transition-colors cursor-pointer"
+                                                    >
+                                                        <TriangleAlert className="w-4 h-4" />
+                                                    </button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    Tax ID not set — orders can't be completed until this business's{" "}
+                                                    {myBusinessFullDetails.country.code === "AD" ? "NRT" : "NIF/CIF"}{" "}
+                                                    is set. Click to fix it now.
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    )}
                                     {!fetchingMyBusinessFullDetails && myBusinessFullDetails && (
                                         myBusinessFullDetails.isPublished ? (
                                             <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 font-medium">

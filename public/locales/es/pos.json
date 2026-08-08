@@ -123,7 +123,8 @@
       "card": "Tarjeta"
     },
     "errors": {
-      "payment_failed": "El pago ha fallado. Inténtalo de nuevo."
+      "payment_failed": "El pago ha fallado. Inténtalo de nuevo.",
+      "complete_failed": "El pago se ha guardado, pero no se pudo completar el pedido."
     },
     "success": {
       "title": "Pago completado",

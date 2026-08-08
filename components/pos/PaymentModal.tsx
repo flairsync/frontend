@@ -116,10 +116,21 @@ export function PaymentModal({
                     paymentBody,
                     { headers: { "Idempotency-Key": crypto.randomUUID() } },
                 );
-                // Attempt to complete the order; silently ignore if not yet in READY state
+                // Attempt to complete the order. Only "not in a completable state yet"
+                // (order.invalid_transition — kitchen hasn't marked items ready, staff
+                // completes manually later from the order list) is expected/ignorable.
+                // Anything else — e.g. a business missing its tax ID/NRT, which now blocks
+                // fiscal invoice generation for AD/ES — is a real failure the cashier needs
+                // to see now: payment succeeded, but the order is stuck open.
                 try {
                     await staffApi.patch(`/station/orders/${orderId}/complete`);
-                } catch { /* kitchen may not have marked it ready — staff completes manually */ }
+                } catch (completeError: any) {
+                    if (completeError?.response?.data?.code !== "order.invalid_transition") {
+                        toast.error(
+                            completeError?.response?.data?.message ?? t("payment_modal.errors.complete_failed"),
+                        );
+                    }
+                }
                 setStep("success");
             } catch (e: any) {
                 toast.error(e?.response?.data?.message ?? t("payment_modal.errors.payment_failed"));

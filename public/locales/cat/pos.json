@@ -123,7 +123,8 @@
       "card": "Targeta"
     },
     "errors": {
-      "payment_failed": "El pagament ha fallat. Torna-ho a provar."
+      "payment_failed": "El pagament ha fallat. Torna-ho a provar.",
+      "complete_failed": "El pagament s'ha desat, però no s'ha pogut completar la comanda."
     },
     "success": {
       "title": "Pagament completat",

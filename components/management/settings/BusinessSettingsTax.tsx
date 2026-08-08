@@ -64,8 +64,9 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
                     </div>
                 ) : (
                     <>
-                        {businessDetails?.country?.code === "ES" && (
+                        {(businessDetails?.country?.code === "ES" || businessDetails?.country?.code === "AD") && (
                             <FiscalIdField
+                                countryCode={businessDetails.country!.code as "ES" | "AD"}
                                 taxIdNumber={businessDetails?.taxIdNumber ?? null}
                                 onSave={(val) => onSaveDetails?.({ taxIdNumber: val })}
                                 disabled={disabled}
@@ -88,33 +89,53 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
     )
 }
 
-// ─── Fiscal ID (Spain: NIF/CIF) ────────────────────────────────────────────────
-// Required by SpainFiscalAdapter (ES-01/ES-03) before any order can be completed —
-// without it, completing an order for this business throws a 400 server-side.
+// ─── Fiscal ID (Spain: NIF/CIF, Andorra: NRT) ──────────────────────────────────
+// Required by SpainFiscalAdapter / AndorraFiscalAdapter before any order can be
+// completed — without it, completing an order for this business throws a 400
+// server-side (AndorraFiscalAdapter live as of AD-01/04/05/06/07, 2026-08-08).
+
+const FISCAL_ID_COPY = {
+    // Spain's fiscal adapter is fully built but not yet routed live (FiscalAdapterFactory
+    // still sends every ES business to the generic adapter) — so unlike Andorra below,
+    // this does NOT currently block completing an order. Don't claim otherwise until that
+    // changes.
+    ES: {
+        label: "Tax ID (NIF/CIF)",
+        placeholder: "e.g. B12345678",
+        helper: "Required for Spanish fiscal invoicing — printed on receipts and used in the AEAT QR code. Set this before Spain's fiscal invoicing goes live for your account.",
+        notSetWarning: "Not set — required before Spain's fiscal invoicing goes live for your account.",
+    },
+    AD: {
+        label: "Tax ID (NRT)",
+        placeholder: "e.g. A-123456-Z",
+        helper: "Required for Andorran fiscal invoicing — printed on receipts. Orders can't be completed until this is set.",
+        notSetWarning: "Not set — required before completing any order.",
+    },
+} as const
 
 function FiscalIdField({
+    countryCode,
     taxIdNumber,
     onSave,
     disabled,
 }: {
+    countryCode: "ES" | "AD"
     taxIdNumber: string | null
     onSave: (val: string) => void
     disabled?: boolean
 }) {
     const [value, setValue] = useState(taxIdNumber ?? "")
     const isDirty = value.trim() !== (taxIdNumber ?? "")
+    const copy = FISCAL_ID_COPY[countryCode]
 
     return (
         <div className="space-y-2 pb-4 border-b">
-            <Label htmlFor="fiscal-tax-id" className="text-sm font-medium">Tax ID (NIF/CIF)</Label>
-            <p className="text-xs text-muted-foreground">
-                Required for Spanish fiscal invoicing — printed on receipts and used in the AEAT QR code.
-                Orders can't be completed until this is set.
-            </p>
+            <Label htmlFor="fiscal-tax-id" className="text-sm font-medium">{copy.label}</Label>
+            <p className="text-xs text-muted-foreground">{copy.helper}</p>
             <div className="flex items-center gap-2 max-w-sm">
                 <Input
                     id="fiscal-tax-id"
-                    placeholder="e.g. B12345678"
+                    placeholder={copy.placeholder}
                     value={value}
                     maxLength={20}
                     onChange={(e) => setValue(e.target.value)}
@@ -129,7 +150,7 @@ function FiscalIdField({
                 </Button>
             </div>
             {!taxIdNumber && (
-                <p className="text-xs text-amber-600 font-medium">Not set — required before completing any order.</p>
+                <p className="text-xs text-amber-600 font-medium">{copy.notSetWarning}</p>
             )}
         </div>
     )

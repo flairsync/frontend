@@ -123,7 +123,8 @@
       "card": "Carte"
     },
     "errors": {
-      "payment_failed": "Le paiement a échoué. Veuillez réessayer."
+      "payment_failed": "Le paiement a échoué. Veuillez réessayer.",
+      "complete_failed": "Le paiement a été enregistré, mais la commande n'a pas pu être finalisée."
     },
     "success": {
       "title": "Paiement effectué",
