@@ -196,6 +196,7 @@
     "print_title": "Receipt",
     "unavailable": "Receipt unavailable",
     "thank_you": "Thank you!",
+    "print_station_error": "Could not reach the station printer.",
     "fields": {
       "receipt": "Receipt",
       "invoice_number": "Invoice #",
@@ -210,6 +211,7 @@
     },
     "actions": {
       "print": "Print",
+      "print_station": "Print to Printer",
       "new_order": "New Order",
       "close": "Close"
     }

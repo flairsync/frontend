@@ -15,7 +15,17 @@ export const stationService = {
   updateStation: (
     businessId: string,
     stationId: string,
-    payload: { name?: string; type?: "pos" | "kds"; kitchenStationId?: string | null }
+    payload: {
+      name?: string;
+      type?: "pos" | "kds";
+      kitchenStationId?: string | null;
+      kdsRequiresStaffAuth?: boolean;
+      printerType?: PrinterType;
+      printerHost?: string | null;
+      printerPort?: number | null;
+      hasCashDrawer?: boolean;
+      printerConfig?: Record<string, any> | null;
+    }
   ) =>
     flairapi.patch<{ data: StationRecord }>(
       `${base(businessId)}/stations/${stationId}`,
@@ -24,6 +34,11 @@ export const stationService = {
 
   revokeStation: (businessId: string, stationId: string) =>
     flairapi.delete(`${base(businessId)}/stations/${stationId}`),
+
+  testPrinter: (businessId: string, stationId: string) =>
+    flairapi.post<{ data: { success: boolean; message: string } }>(
+      `${base(businessId)}/stations/${stationId}/test-printer`
+    ),
 };
 
 const ksBase = (businessId: string) =>
@@ -83,6 +98,8 @@ export const categoryRuleService = {
     flairapi.delete(`${catRuleBase(businessId)}/${ruleId}`),
 };
 
+export type PrinterType = "none" | "escpos_network";
+
 export interface StationRecord {
   id: string;
   name: string;
@@ -91,4 +108,10 @@ export interface StationRecord {
   lastSeenAt: string | null;
   deviceUuid: string;
   kitchenStationId?: string | null;
+  kdsRequiresStaffAuth?: boolean;
+  printerType: PrinterType;
+  printerHost: string | null;
+  printerPort: number | null;
+  hasCashDrawer: boolean;
+  printerConfig?: Record<string, any> | null;
 }

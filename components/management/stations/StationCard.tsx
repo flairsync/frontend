@@ -4,12 +4,14 @@ import {
   stationService,
   type StationRecord,
   type KitchenStation,
+  type PrinterType,
 } from "@/features/station/service";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
@@ -19,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Monitor, ChefHat, Unplug, Wifi, WifiOff, Clock, Loader2,
+  Monitor, ChefHat, Unplug, Wifi, WifiOff, Clock, Loader2, Printer, PlugZap,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatTime } from "@/lib/dateUtils";
@@ -57,6 +59,39 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
       toast.success("Kitchen station assigned.");
     },
     onError: () => toast.error("Failed to assign kitchen station."),
+  });
+
+  const [editingPrinter, setEditingPrinter] = useState(false);
+  const [printerType, setPrinterType] = useState<PrinterType>(station.printerType);
+  const [printerHost, setPrinterHost] = useState(station.printerHost ?? "");
+  const [printerPort, setPrinterPort] = useState(String(station.printerPort ?? 9100));
+  const [hasCashDrawer, setHasCashDrawer] = useState(station.hasCashDrawer);
+
+  const { mutate: savePrinter, isPending: isSavingPrinter } = useMutation({
+    mutationFn: () =>
+      stationService.updateStation(businessId, station.id, {
+        printerType,
+        printerHost: printerType === "escpos_network" ? printerHost || null : null,
+        printerPort: printerType === "escpos_network" ? parseInt(printerPort, 10) || 9100 : null,
+        hasCashDrawer,
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["stations", businessId] });
+      setEditingPrinter(false);
+      toast.success("Printer settings saved.");
+    },
+    onError: (err: any) =>
+      toast.error(err?.response?.data?.message || "Failed to save printer settings."),
+  });
+
+  const { mutate: testPrinter, isPending: isTestingPrinter } = useMutation({
+    mutationFn: () => stationService.testPrinter(businessId, station.id),
+    onSuccess: (res) => {
+      const result = res.data.data;
+      if (result.success) toast.success(result.message);
+      else toast.error(result.message);
+    },
+    onError: () => toast.error("Failed to reach printer."),
   });
 
   const online = isOnline(station.lastSeenAt);
@@ -148,6 +183,109 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                 ))}
               </SelectContent>
             </Select>
+          </div>
+        )}
+
+        {/* POS — physical receipt printer / cash drawer (GAP-08) */}
+        {station.type === "pos" && (
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-1.5">
+              <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+                <Printer className="w-3 h-3" /> Printer
+              </Label>
+              {!editingPrinter && (
+                <button
+                  onClick={() => setEditingPrinter(true)}
+                  className="text-[10px] font-bold text-primary hover:underline"
+                >
+                  {station.printerType === "none" ? "Configure" : "Edit"}
+                </button>
+              )}
+            </div>
+
+            {editingPrinter ? (
+              <div className="space-y-2 rounded-lg border border-border p-3 bg-muted/30">
+                <a
+                  href="/learn#14-3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-primary hover:underline"
+                >
+                  How do I connect a printer or cash drawer?
+                </a>
+                <Select value={printerType} onValueChange={(v) => setPrinterType(v as PrinterType)}>
+                  <SelectTrigger className="h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No printer</SelectItem>
+                    <SelectItem value="escpos_network">Network printer (ESC/POS)</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {printerType === "escpos_network" && (
+                  <div className="flex gap-2">
+                    <Input
+                      value={printerHost}
+                      onChange={(e) => setPrinterHost(e.target.value)}
+                      placeholder="192.168.1.50"
+                      className="h-8 text-xs flex-1"
+                    />
+                    <Input
+                      value={printerPort}
+                      onChange={(e) => setPrinterPort(e.target.value.replace(/\D/g, ""))}
+                      placeholder="9100"
+                      className="h-8 text-xs w-20"
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-medium">Has cash drawer</Label>
+                  <Switch checked={hasCashDrawer} onCheckedChange={setHasCashDrawer} />
+                </div>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <Button size="sm" className="h-7 px-2 text-xs" onClick={() => savePrinter()} disabled={isSavingPrinter}>
+                    {isSavingPrinter ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 px-2 text-xs"
+                    onClick={() => {
+                      setEditingPrinter(false);
+                      setPrinterType(station.printerType);
+                      setPrinterHost(station.printerHost ?? "");
+                      setPrinterPort(String(station.printerPort ?? 9100));
+                      setHasCashDrawer(station.hasCashDrawer);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">
+                  {station.printerType === "none"
+                    ? "Not configured"
+                    : `${station.printerHost}:${station.printerPort}${station.hasCashDrawer ? " · Cash drawer" : ""}`}
+                </p>
+                {station.printerType !== "none" && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 gap-1.5 text-xs"
+                    onClick={() => testPrinter()}
+                    disabled={isTestingPrinter}
+                  >
+                    {isTestingPrinter ? <Loader2 className="w-3 h-3 animate-spin" /> : <PlugZap className="w-3 h-3" />}
+                    Test
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         )}
 

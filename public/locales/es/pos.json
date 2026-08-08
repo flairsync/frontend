@@ -196,6 +196,7 @@
     "print_title": "Recibo",
     "unavailable": "Recibo no disponible",
     "thank_you": "¡Gracias!",
+    "print_station_error": "No se pudo conectar con la impresora del terminal.",
     "fields": {
       "receipt": "Recibo",
       "invoice_number": "Factura n.º",
@@ -210,6 +211,7 @@
     },
     "actions": {
       "print": "Imprimir",
+      "print_station": "Imprimir en impresora",
       "new_order": "Nuevo pedido",
       "close": "Cerrar"
     }

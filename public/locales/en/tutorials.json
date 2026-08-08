@@ -414,6 +414,20 @@
       "tips": ["If you don't have a PIN yet, ask your manager to set one from Staff → Employees → Set PIN."],
       "appRouteLabel": "Launch POS Station"
     },
+    "14-3": {
+      "title": "Connecting a Receipt Printer & Cash Drawer",
+      "whatItIs": "Attach a physical thermal receipt printer (and an optional cash drawer) to a POS station so orders print automatically and the drawer pops open at checkout.",
+      "whoUsesIt": "Managers setting up hardware.",
+      "stepGroups": [
+        { "label": "Get the right printer", "steps": ["FlairSync connects to your printer over your local network (WiFi or Ethernet), not directly by USB. Make sure your printer is a \"network\" or \"LAN\" ESC/POS thermal printer — this is standard on most receipt printers sold today (Epson TM-T20III, Star TSP143, and most generic clones all support it).", "If your printer only has a USB port and no network option, you'll need a USB-to-Ethernet print-server adapter between the printer and your router — the printer itself doesn't change, you're just giving it a network connection it doesn't have built in."] },
+        { "label": "Connect the printer to your network", "steps": ["Plug the printer into your router the same way you would a laptop — via an Ethernet cable — or connect it to WiFi through the printer's own setup menu or button (check the printer's manual, this step varies by brand).", "Make sure the printer ends up on the same WiFi network as the tablet or laptop running FlairSync POS — a printer on a separate guest network won't be reachable."] },
+        { "label": "Find the printer's IP address", "steps": ["Most printers can print a \"network configuration\" or \"self-test\" page — hold the feed button while powering on, or check the printer's manual for the exact button combination.", "That page shows the printer's IP address (e.g., 192.168.1.50). You can also check your router's admin page for a list of connected devices and find the printer there."] },
+        { "label": "Wire up the cash drawer (if you have one)", "steps": ["A cash drawer never plugs into the tablet or laptop directly — it connects to the dedicated cash-drawer port on the back of the printer (usually labeled RJ11 or RJ12), using the cable that came with the drawer.", "The printer is what actually pops the drawer open — FlairSync just tells the printer to do it as part of the print job, so nothing extra needs wiring to your device."] },
+        { "label": "Add the printer to your POS station", "steps": ["In the owner dashboard, go to Settings → POS Stations and find the station (tablet or laptop) the printer sits next to.", "Under Printer, choose Network Printer (ESC/POS) and enter the printer's IP address and port (9100 works for almost every printer).", "Turn on Has Cash Drawer if one is wired to the printer.", "Click Save, then click Test — it checks the connection without printing anything, so you'll know right away if the IP is wrong.", "From now on, staff can print a real ticket from that station's receipt screen instead of only the browser print dialog."] }
+      ],
+      "tips": ["One printer setup covers one station. If you have two counters, each with its own printer, configure each station separately with its own printer's IP.", "Printer IP addresses can change if your router reassigns them. If printing suddenly stops working, re-check the printer's IP in Settings → POS Stations.", "Most routers let you reserve a fixed IP for a device (sometimes called a \"DHCP reservation\" or \"static lease\") — ask whoever manages your WiFi to set one up so the printer's address never changes."],
+      "appRouteLabel": "Go to POS Settings"
+    },
     "15-1": {
       "title": "Finding a Restaurant",
       "whatItIs": "Browse restaurants on the FlairSync platform, filter by type, location, and preferences, and find somewhere to eat.",

@@ -116,3 +116,16 @@ export const setStationOrderEmailApiCall = (orderId: string, email: string) =>
     { email },
     { headers: { "Idempotency-Key": crypto.randomUUID() } },
   );
+
+// Triggers a real physical print (+ cash-drawer kick, if the station has one) on the
+// calling station's configured printer — distinct from the browser print-dialog fallback
+// in StationReceiptView.tsx. Never rejects on "printer offline"/"not configured" (the
+// backend reports that as { success: false, message } instead), only on a genuine
+// network/auth failure — an Idempotency-Key matches setStationOrderEmailApiCall's pattern
+// since a retried tap shouldn't fire the cash drawer twice.
+export const printStationOrderApiCall = (orderId: string) =>
+  staffApi.post<{ data: { success: boolean; message: string } }>(
+    `/station/orders/${orderId}/print`,
+    {},
+    { headers: { "Idempotency-Key": crypto.randomUUID() } },
+  );

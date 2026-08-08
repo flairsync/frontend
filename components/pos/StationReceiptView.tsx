@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { stationApi } from "@/features/station/station-api";
+import { stationApi, printStationOrderApiCall } from "@/features/station/station-api";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Printer, X } from "lucide-react";
+import { Printer, PlugZap, X, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { toIsoCurrencyCode } from "@/utils/currency";
 import QRCode from "react-qr-code";
@@ -80,6 +81,7 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
     const { t } = useTranslation("pos");
     const [receipt, setReceipt] = useState<StationReceipt | null>(null);
     const [loading, setLoading] = useState(true);
+    const [printingToStation, setPrintingToStation] = useState(false);
     const isoCurrency = toIsoCurrencyCode(currency);
 
     useEffect(() => {
@@ -106,6 +108,24 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
         win.focus();
         win.print();
         win.close();
+    }
+
+    // Physical print via the station's configured printer (GAP-08) — separate from
+    // handlePrint()'s browser dialog above. Never throws for "no printer configured"/
+    // "printer offline" (the backend reports that as a friendly message instead), so a
+    // failure here always has something useful to show staff rather than a generic error.
+    async function handlePrintToStation() {
+        setPrintingToStation(true);
+        try {
+            const res = await printStationOrderApiCall(orderId);
+            const result = res.data.data;
+            if (result.success) toast.success(result.message);
+            else toast.error(result.message);
+        } catch {
+            toast.error(t("station_receipt.print_station_error"));
+        } finally {
+            setPrintingToStation(false);
+        }
     }
 
     if (loading) {
@@ -258,15 +278,26 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
                 </div>
             </div>
 
-            <div className="flex gap-2 p-4 border-t border-border bg-card">
-                <Button variant="outline" className="flex-1 gap-2" onClick={handlePrint}>
-                    <Printer className="w-4 h-4" />
-                    {t("station_receipt.actions.print")}
-                </Button>
+            <div className="flex flex-col gap-2 p-4 border-t border-border bg-card">
+                <div className="flex gap-2">
+                    <Button variant="outline" className="flex-1 gap-2" onClick={handlePrint}>
+                        <Printer className="w-4 h-4" />
+                        {t("station_receipt.actions.print")}
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="flex-1 gap-2"
+                        onClick={handlePrintToStation}
+                        disabled={printingToStation}
+                    >
+                        {printingToStation ? <Loader2 className="w-4 h-4 animate-spin" /> : <PlugZap className="w-4 h-4" />}
+                        {t("station_receipt.actions.print_station")}
+                    </Button>
+                </div>
                 {onNewOrder ? (
-                    <Button className="flex-1" onClick={onNewOrder}>{t("station_receipt.actions.new_order")}</Button>
+                    <Button className="w-full" onClick={onNewOrder}>{t("station_receipt.actions.new_order")}</Button>
                 ) : (
-                    <Button className="flex-1 gap-2" onClick={onClose}>
+                    <Button className="w-full gap-2" onClick={onClose}>
                         <X className="w-4 h-4" />
                         {t("station_receipt.actions.close")}
                     </Button>

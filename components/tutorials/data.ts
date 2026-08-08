@@ -85,6 +85,7 @@ export const TUTORIAL_PARTS: TutorialPart[] = [
   { number: 14, sections: [
     { id: "14.1", slug: "14-1" },
     { id: "14.2", slug: "14-2" },
+    { id: "14.3", slug: "14-3" },
   ]},
   { number: 15, sections: [
     { id: "15.1", slug: "15-1" },

@@ -414,6 +414,14 @@
       "tips": ["Si aún no tienes PIN, pide a tu gerente que lo establezca en Personal → Empleados."],
       "appRouteLabel": "Abrir estación POS"
     },
+    "14-3": {
+      "title": "Conectar una impresora de tickets y un cajón portamonedas",
+      "whatItIs": "Conecta una impresora térmica física (y opcionalmente un cajón portamonedas) a una estación POS para imprimir tickets y abrir el cajón automáticamente al cobrar.",
+      "whoUsesIt": "Gerentes configurando hardware.",
+      "stepGroups": [{ "steps": ["Usa una impresora térmica ESC/POS de red (WiFi o Ethernet) — FlairSync se conecta por tu red local, no por USB. Si tu impresora solo tiene USB, necesitarás un adaptador USB a Ethernet.", "Conecta la impresora a la misma red WiFi que la tableta u ordenador que usa FlairSync POS.", "Busca la dirección IP de la impresora (imprime su página de configuración de red o revisa la lista de dispositivos de tu router).", "Si tienes cajón portamonedas, conéctalo al puerto RJ11/RJ12 de la impresora — nunca directamente a la tableta u ordenador.", "En Configuración → Estaciones POS, elige Impresora de red, introduce la IP y el puerto (9100 en la mayoría de los casos), y activa Tiene cajón portamonedas si corresponde.", "Haz clic en Guardar y luego en Probar para confirmar la conexión."] }],
+      "tips": ["Si tienes varios mostradores, configura cada estación con la IP de su propia impresora.", "Si la impresión deja de funcionar, es posible que la IP haya cambiado — pide que le asignen una IP fija."],
+      "appRouteLabel": "Ir a configuración POS"
+    },
     "15-1": {
       "title": "Encontrar un restaurante",
       "whatItIs": "Explora restaurantes en la plataforma FlairSync, filtra por tipo, ubicación y preferencias.",

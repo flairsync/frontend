@@ -101,6 +101,9 @@ const HelpPage = () => {
                             <a href="/learn#3-1" className="text-blue-600 hover:underline text-sm">
                                 Inviting Team Members
                             </a>
+                            <a href="/learn#14-3" className="text-blue-600 hover:underline text-sm">
+                                Connecting a Receipt Printer & Cash Drawer
+                            </a>
                         </div>
                     </CardContent>
                 </Card>

@@ -414,6 +414,14 @@
       "tips": ["Si encara no tens PIN, demana al teu gerent que l'estableixi a Personal → Empleats."],
       "appRouteLabel": "Obre l'estació POS"
     },
+    "14-3": {
+      "title": "Connectar una impressora de tiquets i un calaix portamonedes",
+      "whatItIs": "Connecta una impressora tèrmica física (i opcionalment un calaix portamonedes) a una estació POS perquè els tiquets s'imprimeixin i el calaix s'obri automàticament en cobrar.",
+      "whoUsesIt": "Gerents configurant maquinari.",
+      "stepGroups": [{ "steps": ["Utilitza una impressora tèrmica ESC/POS de xarxa (WiFi o Ethernet) — FlairSync es connecta per la teva xarxa local, no per USB. Si la impressora només té USB, necessitaràs un adaptador USB a Ethernet.", "Connecta la impressora a la mateixa xarxa WiFi que la tauleta o l'ordinador que fa servir FlairSync POS.", "Troba l'adreça IP de la impressora (imprimeix la seva pàgina de configuració de xarxa o revisa la llista de dispositius del teu router).", "Si tens calaix portamonedes, connecta'l al port RJ11/RJ12 de la impressora — mai directament a la tauleta o l'ordinador.", "A Configuració → Estacions POS, tria Impressora de xarxa, introdueix la IP i el port (9100 en la majoria de casos), i activa Té calaix portamonedes si correspon.", "Fes clic a Desa i després a Prova per confirmar la connexió."] }],
+      "tips": ["Si tens diversos taulells, configura cada estació amb la IP de la seva pròpia impressora.", "Si la impressió deixa de funcionar, potser la IP ha canviat — demana que se li assigni una IP fixa."],
+      "appRouteLabel": "Ves a configuració POS"
+    },
     "15-1": {
       "title": "Trobar un restaurant",
       "whatItIs": "Explora restaurants a la plataforma FlairSync, filtra per tipus, ubicació i preferències.",

@@ -196,6 +196,7 @@
     "print_title": "Rebut",
     "unavailable": "Rebut no disponible",
     "thank_you": "Gràcies!",
+    "print_station_error": "No s'ha pogut connectar amb la impressora del terminal.",
     "fields": {
       "receipt": "Rebut",
       "invoice_number": "Factura núm.",
@@ -210,6 +211,7 @@
     },
     "actions": {
       "print": "Imprimir",
+      "print_station": "Imprimir a la impressora",
       "new_order": "Nova comanda",
       "close": "Tancar"
     }

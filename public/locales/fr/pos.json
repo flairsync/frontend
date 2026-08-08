@@ -196,6 +196,7 @@
     "print_title": "Reçu",
     "unavailable": "Reçu indisponible",
     "thank_you": "Merci !",
+    "print_station_error": "Impossible de contacter l'imprimante du poste.",
     "fields": {
       "receipt": "Reçu",
       "invoice_number": "Facture n°",
@@ -210,6 +211,7 @@
     },
     "actions": {
       "print": "Imprimer",
+      "print_station": "Imprimer sur l'imprimante",
       "new_order": "Nouvelle commande",
       "close": "Fermer"
     }
