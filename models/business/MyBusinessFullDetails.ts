@@ -170,8 +170,10 @@ export class MyBusinessFullDetails {
   taxIncluded: boolean;
   /** Spain fiscal invoicing (ES-01/ES-03) requires this be set — null for non-Spain businesses. */
   taxIdNumber: string | null;
-  /** Overrides the printed receipt's language, independent of any staff member's own app-language session. Null falls back to 'en'. */
+  /** Overrides the printed receipt's language, independent of any staff member's own app-language session. Null falls back to 'en'. IGNORED server-side for a country with a legally mandated primary language (Andorra -> Catalan) — see receiptSecondaryLanguage instead. */
   receiptLanguage: string | null;
+  /** Optional second language shown alongside a legally mandated primary language (Andorra -> Catalan only, today). Meaningless for any other country. Assigned post-construction like slug/organizationId below, not a constructor param. */
+  receiptSecondaryLanguage?: string | null;
   organizationId?: string | null;
   organizationName?: string | null;
   regionId?: string | null;
@@ -397,6 +399,7 @@ export class MyBusinessFullDetails {
         data.receiptLanguage ?? null,
       );
       instance.slug = data.slug ?? undefined;
+      instance.receiptSecondaryLanguage = data.receiptSecondaryLanguage ?? null;
       instance.organizationId = data.organizationId ?? null;
       instance.organizationName = data.organizationName ?? null;
       instance.regionId = data.regionId ?? null;
@@ -480,4 +483,7 @@ export type UpdateBusinessDetailsDto = {
   enableFloorPlanView?: boolean;
   taxIdNumber?: string;
   receiptLanguage?: string;
+  // Nullable (unlike receiptLanguage above): explicit null clears a previously-set
+  // secondary language back to "primary-only", not merely "leave unset".
+  receiptSecondaryLanguage?: string | null;
 };

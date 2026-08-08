@@ -27,6 +27,15 @@ import { toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
 import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
 
+// AD-04 gap fix: countries whose legally mandated primary receipt language can't be
+// overridden away (Catalan for Andorra, per Llei 6/2024 — see
+// countryReceiptLanguageDefault in the backend's src/business/receipt-language.ts, which
+// this mirrors). For these, receiptLanguage is not shown as a free-choice selector at all —
+// only an optional secondary language alongside the fixed primary.
+const MANDATED_RECEIPT_LANGUAGE: Record<string, { code: string; name: string }> = {
+    AD: { code: "ca", name: "Catalan" },
+}
+
 type BusinessGeneralInfo = {
     name?: string,
     description?: string,
@@ -35,6 +44,7 @@ type BusinessGeneralInfo = {
     currency?: string,
     slug?: string,
     receiptLanguage?: string,
+    receiptSecondaryLanguage?: string | null,
 }
 
 type SlugStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid'
@@ -56,6 +66,12 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [phone, setPhone] = useState(props.businessDetails?.phone);
     const [currency, setCurrency] = useState(toIsoCurrencyCode(props.businessDetails?.currency || "USD"));
     const [receiptLanguage, setReceiptLanguage] = useState(props.businessDetails?.receiptLanguage || "en");
+    const [receiptSecondaryLanguage, setReceiptSecondaryLanguage] = useState<string | null>(
+        props.businessDetails?.receiptSecondaryLanguage ?? null,
+    )
+    const mandatedReceiptLanguage = props.businessDetails?.country?.code
+        ? MANDATED_RECEIPT_LANGUAGE[props.businessDetails.country.code]
+        : undefined
     const [slug, setSlug] = useState(props.businessDetails?.slug ?? '')
     const [slugStatus, setSlugStatus] = useState<SlugStatus>('idle')
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -102,6 +118,10 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 currency: currency,
                 slug: slug || undefined,
                 receiptLanguage: receiptLanguage,
+                // AD-04 gap fix: for a mandated-language country, receiptLanguage above is
+                // ignored server-side entirely — this is the field that actually matters,
+                // and null explicitly clears a previously-set secondary language.
+                receiptSecondaryLanguage: mandatedReceiptLanguage ? receiptSecondaryLanguage : undefined,
             })
         }
     }
@@ -207,21 +227,54 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     <p className="text-xs text-muted-foreground">This currency will be shown next to prices across your business.</p>
                 </div>
 
-                <div className="space-y-1.5 pt-2 border-t mt-4">
-                    <Label>Receipt Language</Label>
-                    <Select disabled={props.disabled} value={receiptLanguage} onValueChange={setReceiptLanguage}>
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="en">English</SelectItem>
-                            <SelectItem value="es">Español</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground">
-                        Language printed receipts use, independent of the language staff use in the app. Defaults to English.
-                    </p>
-                </div>
+                {mandatedReceiptLanguage ? (
+                    <div className="space-y-1.5 pt-2 border-t mt-4">
+                        <Label>Receipt Language</Label>
+                        <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2 text-sm">
+                            <span className="font-medium">{mandatedReceiptLanguage.name}</span>
+                            <span className="text-xs text-muted-foreground">— required by law, always primary</span>
+                        </div>
+                        <div className="space-y-1.5 pt-1">
+                            <Label className="text-xs text-muted-foreground">Secondary language (optional)</Label>
+                            <Select
+                                disabled={props.disabled}
+                                value={receiptSecondaryLanguage ?? "none"}
+                                onValueChange={(v) => setReceiptSecondaryLanguage(v === "none" ? null : v)}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="None" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="none">None ({mandatedReceiptLanguage.name} only)</SelectItem>
+                                    <SelectItem value="en">English</SelectItem>
+                                    <SelectItem value="es">Español</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                            {mandatedReceiptLanguage.name} must appear on every receipt and can't be turned off. You can
+                            optionally add a second language alongside it for tourists/guests — it will never replace{" "}
+                            {mandatedReceiptLanguage.name}, only appear next to it.
+                        </p>
+                    </div>
+                ) : (
+                    <div className="space-y-1.5 pt-2 border-t mt-4">
+                        <Label>Receipt Language</Label>
+                        <Select disabled={props.disabled} value={receiptLanguage} onValueChange={setReceiptLanguage}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select a language" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="en">English</SelectItem>
+                                <SelectItem value="es">Español</SelectItem>
+                                <SelectItem value="ca">Català</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                            Language printed receipts use, independent of the language staff use in the app. Defaults to English.
+                        </p>
+                    </div>
+                )}
 
                 <div className="divide-y divide-border border-t mt-4">
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
