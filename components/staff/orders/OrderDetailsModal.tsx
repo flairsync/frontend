@@ -42,8 +42,23 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
     const { voidOrderItem, isVoidingOrderItem, advanceOrderItem, isAdvancingOrderItem, firePending, isFiringPending, updateOrderDiscountAsync, isUpdatingDiscount } = useOrders(businessId);
     const { businessEmployees } = useBusinessEmployment(businessId);
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+
+    // All hooks (including these) must run unconditionally on every render, so they're kept
+    // together above the `!displayOrder` guard below — the modal is mounted even with no
+    // order selected yet (order prop null, fullOrder query disabled), so displayOrder can
+    // legitimately be null on the very first render.
+    const [refundPaymentId, setRefundPaymentId] = useState<string | null>(null);
+    const [manageItemId, setManageItemId] = useState<string | null>(null);
+    const [voidingItem, setVoidingItem] = useState<{ id: string; name: string } | null>(null);
+    const [voidReason, setVoidReason] = useState("");
+    const [editingDiscount, setEditingDiscount] = useState(false);
+    const [discountInput, setDiscountInput] = useState("");
+
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
     const displayOrder = fullOrder || order;
+
+    if (!displayOrder) return null;
+
     // Completed/rejected/canceled orders are archived and (for completed ones) may already be
     // fiscally invoiced — the backend rejects voidItem on them, so hide the action here too
     // rather than let staff hit a confirm-then-error round trip.
@@ -55,15 +70,6 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
         const p = emp.professionalProfile;
         return p.displayName || [p.firstName, p.lastName].filter(Boolean).join(' ') || `#${employmentId.slice(0, 8)}`;
     };
-
-    const [refundPaymentId, setRefundPaymentId] = useState<string | null>(null);
-    const [manageItemId, setManageItemId] = useState<string | null>(null);
-    const [voidingItem, setVoidingItem] = useState<{ id: string; name: string } | null>(null);
-    const [voidReason, setVoidReason] = useState("");
-    const [editingDiscount, setEditingDiscount] = useState(false);
-    const [discountInput, setDiscountInput] = useState("");
-
-    if (!displayOrder) return null;
 
     const getItemStatusBadgeClass = (status: string) => {
         switch (status) {
