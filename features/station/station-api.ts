@@ -129,3 +129,12 @@ export const printStationOrderApiCall = (orderId: string) =>
     {},
     { headers: { "Idempotency-Key": crypto.randomUUID() } },
   );
+
+// WebUSB path: read-only, no side effect on the backend (unlike printStationOrderApiCall
+// above) — the browser itself does the actual print via navigator.usb once it has these
+// bytes, using features/station/webusb-printer.ts. No Idempotency-Key needed since fetching
+// bytes twice is harmless; the physical print action only happens client-side.
+export const getStationOrderPrintBytesApiCall = (orderId: string) =>
+  staffApi.get<{ data: { success: boolean; message?: string; bytesBase64?: string } }>(
+    `/station/orders/${orderId}/print-bytes`,
+  );

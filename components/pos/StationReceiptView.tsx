@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { stationApi, printStationOrderApiCall } from "@/features/station/station-api";
+import { printOrderViaWebUsb } from "@/features/station/webusb-printer";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Printer, PlugZap, X, Loader2 } from "lucide-react";
@@ -73,11 +74,15 @@ function fmtTime(iso: string | null | undefined) {
 interface Props {
     orderId: string;
     currency?: string;
+    /** Required for the WebUSB print path — pairing/hints are stored per-station */
+    stationId?: string;
+    /** Which "Print to Printer" path to use — network (server-side) or WebUSB (client-side). Undefined behaves like the pre-WebUSB network-only path. */
+    printerType?: "none" | "escpos_network" | "webusb";
     onClose: () => void;
     onNewOrder?: () => void;
 }
 
-export default function StationReceiptView({ orderId, currency, onClose, onNewOrder }: Props) {
+export default function StationReceiptView({ orderId, currency, stationId, printerType, onClose, onNewOrder }: Props) {
     const { t } = useTranslation("pos");
     const [receipt, setReceipt] = useState<StationReceipt | null>(null);
     const [loading, setLoading] = useState(true);
@@ -112,11 +117,24 @@ export default function StationReceiptView({ orderId, currency, onClose, onNewOr
 
     // Physical print via the station's configured printer (GAP-08) — separate from
     // handlePrint()'s browser dialog above. Never throws for "no printer configured"/
-    // "printer offline" (the backend reports that as a friendly message instead), so a
-    // failure here always has something useful to show staff rather than a generic error.
+    // "printer offline" (both paths report that as a friendly {success:false, message}
+    // instead), so a failure here always has something useful to show staff rather than a
+    // generic error. WebUSB prints entirely client-side (no server round-trip for the
+    // actual print, just fetching the pre-built bytes) — everything else still goes
+    // through the server-side PrinterAdapter over the network path.
     async function handlePrintToStation() {
         setPrintingToStation(true);
         try {
+            if (printerType === "webusb") {
+                if (!stationId) {
+                    toast.error(t("station_receipt.print_station_error"));
+                    return;
+                }
+                const result = await printOrderViaWebUsb(stationId, orderId);
+                if (result.success) toast.success(result.message);
+                else toast.error(result.message);
+                return;
+            }
             const res = await printStationOrderApiCall(orderId);
             const result = res.data.data;
             if (result.success) toast.success(result.message);

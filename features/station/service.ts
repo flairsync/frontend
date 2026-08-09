@@ -98,7 +98,10 @@ export const categoryRuleService = {
     flairapi.delete(`${catRuleBase(businessId)}/${ruleId}`),
 };
 
-export type PrinterType = "none" | "escpos_network";
+// "webusb" prints entirely client-side via the WebUSB API (features/station/webusb-printer.ts)
+// — no printerHost/printerPort, the backend only ever hands back pre-built ESC/POS bytes for
+// the browser to send itself. See PrinterType's backend header comment for why.
+export type PrinterType = "none" | "escpos_network" | "webusb";
 
 export interface StationRecord {
   id: string;

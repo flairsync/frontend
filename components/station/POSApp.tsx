@@ -1153,6 +1153,8 @@ function POSMain({
                 total={payingOrderTotal || cartTotal}
                 method={paymentMethod}
                 orderId={payingOrderId ?? undefined}
+                stationId={station.id}
+                printerType={station.printerType}
                 currency={station.business.currency}
                 stationMode
             />

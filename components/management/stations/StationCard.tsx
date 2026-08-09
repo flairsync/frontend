@@ -21,11 +21,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Monitor, ChefHat, Unplug, Wifi, WifiOff, Clock, Loader2, Printer, PlugZap,
+  Monitor, ChefHat, Unplug, Wifi, WifiOff, Clock, Loader2, Printer, PlugZap, Usb,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatTime } from "@/lib/dateUtils";
 import { isOnline } from "@/components/management/stations/utils";
+import {
+  isWebUsbSupported,
+  pairPrinter,
+  getPairedPrinterHint,
+  clearPairedPrinterHint,
+  testWebUsbPrint,
+  type PairedPrinterInfo,
+} from "@/features/station/webusb-printer";
 
 // ─── Station Card ─────────────────────────────────────────────────────────────
 
@@ -92,6 +100,33 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
       else toast.error(result.message);
     },
     onError: () => toast.error("Failed to reach printer."),
+  });
+
+  // WebUSB: entirely client-side, no host/port, no backend call for pairing or testing —
+  // navigator.usb handles both directly. pairedInfo mirrors the browser's own per-origin
+  // WebUSB grant (see webusb-printer.ts) purely so this UI can show "Paired: <name>" without
+  // re-prompting on every load.
+  const [pairedInfo, setPairedInfo] = useState<PairedPrinterInfo | null>(() =>
+    getPairedPrinterHint(station.id),
+  );
+  const { mutate: pairUsbPrinter, isPending: isPairing } = useMutation({
+    mutationFn: () => pairPrinter(station.id),
+    onSuccess: (info) => {
+      setPairedInfo(info);
+      toast.success(`Paired with ${info.productName}.`);
+    },
+    onError: (err: any) => {
+      if (err?.name === "NotFoundError") return; // user closed the device picker — not an error
+      toast.error(err?.message || "Failed to pair the USB printer.");
+    },
+  });
+  const { mutate: testUsbPrinter, isPending: isTestingUsb } = useMutation({
+    mutationFn: () => testWebUsbPrint(station.id),
+    onSuccess: (result) => {
+      if (result.success) toast.success(result.message);
+      else toast.error(result.message);
+    },
+    onError: () => toast.error("Failed to reach the USB printer."),
   });
 
   const online = isOnline(station.lastSeenAt);
@@ -220,6 +255,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                   <SelectContent>
                     <SelectItem value="none">No printer</SelectItem>
                     <SelectItem value="escpos_network">Network printer (ESC/POS)</SelectItem>
+                    <SelectItem value="webusb">USB printer (browser-direct)</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -238,6 +274,51 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                       className="h-8 text-xs w-20"
                     />
                   </div>
+                )}
+
+                {printerType === "webusb" && (
+                  !isWebUsbSupported() ? (
+                    <p className="text-[10px] text-destructive">
+                      This browser doesn't support WebUSB — use Chrome or Edge on this station's device.
+                    </p>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-[10px] text-muted-foreground truncate">
+                          {pairedInfo ? `Paired: ${pairedInfo.productName}` : "No printer paired yet"}
+                        </p>
+                        <div className="flex items-center gap-1 shrink-0">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-xs gap-1"
+                            onClick={() => pairUsbPrinter()}
+                            disabled={isPairing}
+                          >
+                            {isPairing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Usb className="w-3 h-3" />}
+                            {pairedInfo ? "Re-pair" : "Pair"}
+                          </Button>
+                          {pairedInfo && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 px-2 text-xs"
+                              onClick={() => {
+                                clearPairedPrinterHint(station.id);
+                                setPairedInfo(null);
+                              }}
+                            >
+                              Unpair
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground">
+                        The printer must be connected via USB to this exact device/browser — pairing doesn't
+                        transfer to other stations.
+                      </p>
+                    </div>
+                  )
                 )}
 
                 <div className="flex items-center justify-between">
@@ -270,9 +351,11 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                 <p className="text-xs text-muted-foreground">
                   {station.printerType === "none"
                     ? "Not configured"
-                    : `${station.printerHost}:${station.printerPort}${station.hasCashDrawer ? " · Cash drawer" : ""}`}
+                    : station.printerType === "webusb"
+                      ? `${pairedInfo ? `Paired: ${pairedInfo.productName}` : "Not paired yet"}${station.hasCashDrawer ? " · Cash drawer" : ""}`
+                      : `${station.printerHost}:${station.printerPort}${station.hasCashDrawer ? " · Cash drawer" : ""}`}
                 </p>
-                {station.printerType !== "none" && (
+                {station.printerType === "escpos_network" && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -281,6 +364,18 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                     disabled={isTestingPrinter}
                   >
                     {isTestingPrinter ? <Loader2 className="w-3 h-3 animate-spin" /> : <PlugZap className="w-3 h-3" />}
+                    Test
+                  </Button>
+                )}
+                {station.printerType === "webusb" && pairedInfo && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 gap-1.5 text-xs"
+                    onClick={() => testUsbPrinter()}
+                    disabled={isTestingUsb}
+                  >
+                    {isTestingUsb ? <Loader2 className="w-3 h-3 animate-spin" /> : <PlugZap className="w-3 h-3" />}
                     Test
                   </Button>
                 )}

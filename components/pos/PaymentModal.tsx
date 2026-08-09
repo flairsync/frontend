@@ -29,6 +29,10 @@ interface PaymentModalProps {
     stationMode?: boolean;
     /** Required in station mode for the payment API call */
     orderId?: string;
+    /** Required in station mode for WebUSB printing — pairing/hints are stored per-station */
+    stationId?: string;
+    /** Required in station mode to know whether "Print to Printer" should go over WebUSB (client-side) or the network path (server-side) */
+    printerType?: "none" | "escpos_network" | "webusb";
     /** Required in management mode for discount/split panels and ReceiptView */
     businessId?: string;
     orderItems?: Array<{ id: string; nameSnapshot: string; totalPrice: number }>;
@@ -48,6 +52,8 @@ export function PaymentModal({
     method,
     stationMode = false,
     orderId,
+    stationId,
+    printerType,
     businessId,
     orderItems = [],
     currency,
@@ -164,7 +170,14 @@ export function PaymentModal({
 
     if (showReceipt && orderId) {
         const receiptContent = stationMode ? (
-            <StationReceiptView orderId={orderId} currency={currency} onClose={onClose} onNewOrder={onClose} />
+            <StationReceiptView
+                orderId={orderId}
+                currency={currency}
+                stationId={stationId}
+                printerType={printerType}
+                onClose={onClose}
+                onNewOrder={onClose}
+            />
         ) : businessId ? (
             <ReceiptView businessId={businessId} orderId={orderId} onClose={onClose} onNewOrder={onClose} />
         ) : null;
