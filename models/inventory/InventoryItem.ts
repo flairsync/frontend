@@ -8,6 +8,7 @@ export class InventoryItem {
     unitId: number;
     quantity: number;
     lowStockThreshold: number;
+    unitCost?: number;
     barcode?: string;
     group?: InventoryGroup;
     createdAt: Date;
@@ -25,6 +26,7 @@ export class InventoryItem {
         description?: string,
         barcode?: string,
         group?: InventoryGroup,
+        unitCost?: number,
     ) {
         this.id = id;
         this.businessId = businessId;
@@ -37,6 +39,7 @@ export class InventoryItem {
         this.description = description;
         this.barcode = barcode;
         this.group = group;
+        this.unitCost = unitCost != null ? Number(unitCost) : undefined;
     }
 
     static parseApiResponse(data: any): InventoryItem | null {
@@ -54,6 +57,7 @@ export class InventoryItem {
                 data.description,
                 data.barcode,
                 data.group && typeof data.group === 'object' ? (InventoryGroup.parseApiResponse(data.group) ?? undefined) : undefined,
+                data.unitCost,
             );
         } catch (error) {
             console.error("ERROR PARSING INVENTORY ITEM", error, data);

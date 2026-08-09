@@ -116,6 +116,9 @@ export const InventoryItemSchema = Yup.object().shape({
   lowStockThreshold: Yup.number()
     .min(0, "inventory_management.form.errors.threshold_min")
     .required("inventory_management.form.errors.threshold_required"),
+  unitCost: Yup.number()
+    .min(0, "inventory_management.form.errors.unit_cost_min")
+    .optional(),
   barcode: Yup.string().optional(),
   description: Yup.string().optional(),
   groupId: Yup.string().optional(),

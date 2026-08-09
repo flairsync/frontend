@@ -687,6 +687,7 @@
       "quantity": "Quantité",
       "unit": "Unité",
       "threshold": "Seuil d'alerte",
+      "unit_cost": "Coût unitaire",
       "group": "Groupe",
       "no_group": "Aucun groupe",
       "errors": {
@@ -695,7 +696,8 @@
         "quantity_min": "La quantité ne peut pas être négative",
         "unit_required": "L'unité est requise",
         "threshold_required": "Le seuil est requis",
-        "threshold_min": "Le seuil ne peut pas être négatif"
+        "threshold_min": "Le seuil ne peut pas être négatif",
+        "unit_cost_min": "Le coût unitaire ne peut pas être négatif"
       }
     },
     "search_barcode": "Rechercher par code-barres",

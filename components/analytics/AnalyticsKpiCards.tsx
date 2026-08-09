@@ -1,13 +1,24 @@
 import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DailySalesMetric, DailyFeedbackMetric } from "@/models/analytics";
-import { DollarSign, ShoppingBag, TrendingUp, HandCoins, ArrowUp, ArrowDown, Star, Smile } from "lucide-react";
+import { DailySalesMetric, DailyFeedbackMetric, ProductTotalsMetric } from "@/models/analytics";
+import { DollarSign, ShoppingBag, TrendingUp, HandCoins, ArrowUp, ArrowDown, Star, Smile, PiggyBank } from "lucide-react";
 
 interface AnalyticsKpiCardsProps {
     sales: DailySalesMetric[];
     previousSales?: DailySalesMetric[];
     feedback?: DailyFeedbackMetric[];
+    productTotals?: ProductTotalsMetric;
+    previousProductTotals?: ProductTotalsMetric;
     currency?: string;
+}
+
+// Item-level revenue/cost (not order-level totalRevenue, which includes tax/tips and
+// isn't comparable to ingredient cost) — mirrors AnalyticsService.computeKpis on the backend.
+function computeMargin(productTotals?: ProductTotalsMetric) {
+    const revenue = Number(productTotals?.totalRevenue || 0);
+    const cost = Number(productTotals?.totalCost || 0);
+    const margin = revenue - cost;
+    return { margin, marginPercent: revenue > 0 ? (margin / revenue) * 100 : 0 };
 }
 
 function summarizeFeedback(feedback: DailyFeedbackMetric[]) {
@@ -75,10 +86,15 @@ const DeltaBadge: React.FC<{ delta: number | null }> = ({ delta }) => {
     );
 };
 
-export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, previousSales, feedback, currency = "$" }) => {
+export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, previousSales, feedback, productTotals, previousProductTotals, currency = "$" }) => {
     const current = useMemo(() => sumTotals(sales), [sales]);
     const previous = useMemo(() => (previousSales ? sumTotals(previousSales) : null), [previousSales]);
     const feedbackSummary = useMemo(() => (feedback ? summarizeFeedback(feedback) : null), [feedback]);
+    const margin = useMemo(() => computeMargin(productTotals), [productTotals]);
+    const previousMargin = useMemo(
+        () => (previousProductTotals ? computeMargin(previousProductTotals) : null),
+        [previousProductTotals],
+    );
 
     const formatCurrency = (val: number) => `${currency}${val.toFixed(2)}`;
 
@@ -111,6 +127,17 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, pre
             delta: previous ? percentChange(current.totalTips, previous.totalTips) : undefined,
             icon: HandCoins,
         },
+        ...(productTotals
+            ? [
+                {
+                    key: "grossMargin",
+                    label: "Gross Margin",
+                    value: `${formatCurrency(margin.margin)} (${margin.marginPercent.toFixed(1)}%)`,
+                    delta: previousMargin ? percentChange(margin.margin, previousMargin.margin) : undefined,
+                    icon: PiggyBank,
+                },
+            ]
+            : []),
         ...(feedbackSummary
             ? [
                 {

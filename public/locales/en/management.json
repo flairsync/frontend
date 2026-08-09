@@ -687,6 +687,7 @@
       "quantity": "Quantity",
       "unit": "Unit",
       "threshold": "Low Stock Threshold",
+      "unit_cost": "Unit Cost",
       "group": "Group",
       "no_group": "No Group",
       "errors": {
@@ -695,7 +696,8 @@
         "quantity_min": "Quantity cannot be negative",
         "unit_required": "Unit is required",
         "threshold_required": "Threshold is required",
-        "threshold_min": "Threshold cannot be negative"
+        "threshold_min": "Threshold cannot be negative",
+        "unit_cost_min": "Unit cost cannot be negative"
       }
     },
     "search_barcode": "Search Barcode",

@@ -142,7 +142,14 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
 
             {data && (
                 <>
-                    <AnalyticsKpiCards sales={data.sales} currency={currency} previousSales={previousAnalyticsData?.sales} feedback={data.feedback} />
+                    <AnalyticsKpiCards
+                        sales={data.sales}
+                        currency={currency}
+                        previousSales={previousAnalyticsData?.sales}
+                        feedback={data.feedback}
+                        productTotals={data.productTotals}
+                        previousProductTotals={previousAnalyticsData?.productTotals}
+                    />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <AnalyticsRevenueChart sales={data.sales} currency={currency} fallback={chartSkeleton} />

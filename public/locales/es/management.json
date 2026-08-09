@@ -687,6 +687,7 @@
       "quantity": "Cantidad",
       "unit": "Unidad",
       "threshold": "Umbral de Alerta",
+      "unit_cost": "Coste Unitario",
       "group": "Grupo",
       "no_group": "Sin Grupo",
       "errors": {
@@ -695,7 +696,8 @@
         "quantity_min": "La cantidad no puede ser negativa",
         "unit_required": "La unidad es obligatoria",
         "threshold_required": "El umbral es obligatorio",
-        "threshold_min": "El umbral no puede ser negativo"
+        "threshold_min": "El umbral no puede ser negativo",
+        "unit_cost_min": "El coste unitario no puede ser negativo"
       }
     },
     "search_barcode": "Buscar por Código de Barras",

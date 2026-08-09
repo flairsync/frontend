@@ -78,6 +78,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                             quantity: editingItem?.quantity || 0,
                             unitId: editingItem?.unitId || 11,
                             lowStockThreshold: editingItem?.lowStockThreshold ?? 10,
+                            unitCost: editingItem?.unitCost ?? 0,
                             groupId: editingItem?.group?.id || editingItem?.groupId || "",
                         }}
                         validationSchema={InventoryItemSchema}
@@ -222,6 +223,22 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                             {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
                                         </ErrorMessage>
                                     </div>
+                                </div>
+
+                                {/* Unit Cost — feeds menu-item margin analytics */}
+                                <div className="grid gap-2">
+                                    <Label htmlFor="unitCost">{t("inventory_management.form.unit_cost")}</Label>
+                                    <Field
+                                        as={Input}
+                                        type="number"
+                                        step="0.01"
+                                        id="unitCost"
+                                        name="unitCost"
+                                        className={cn(errors.unitCost && touched.unitCost && "border-destructive")}
+                                    />
+                                    <ErrorMessage name="unitCost">
+                                        {msg => <div className="text-destructive text-xs">{t(msg)}</div>}
+                                    </ErrorMessage>
                                 </div>
 
                                 {/* Group */}

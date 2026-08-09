@@ -16,6 +16,12 @@ export interface TopProductMetric {
     name: string;
     totalQuantity: string | number;
     totalRevenue: string | number;
+    totalCost: string | number;
+}
+
+export interface ProductTotalsMetric {
+    totalRevenue: string | number;
+    totalCost: string | number;
 }
 
 export interface HourlyVisitorMetric {
@@ -48,6 +54,7 @@ export interface DailyFeedbackMetric {
 export interface DashboardAnalyticsData {
     sales: DailySalesMetric[];
     topProducts: TopProductMetric[];
+    productTotals: ProductTotalsMetric;
     hourlyVisitors: HourlyVisitorMetric[];
     feedback: DailyFeedbackMetric[];
 }

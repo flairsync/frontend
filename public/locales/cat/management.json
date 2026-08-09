@@ -685,6 +685,7 @@
       "quantity": "Quantitat",
       "unit": "Unitat",
       "threshold": "Llindar d'Alerta",
+      "unit_cost": "Cost Unitari",
       "group": "Grup",
       "no_group": "Sense Grup",
       "errors": {
@@ -693,7 +694,8 @@
         "quantity_min": "La quantitat no pot ser negativa",
         "unit_required": "La unitat és obligatòria",
         "threshold_required": "El llindar és obligatori",
-        "threshold_min": "El llindar no pot ser negatiu"
+        "threshold_min": "El llindar no pot ser negatiu",
+        "unit_cost_min": "El cost unitari no pot ser negatiu"
       }
     },
     "search_barcode": "Cercar per Codi de Barres",
