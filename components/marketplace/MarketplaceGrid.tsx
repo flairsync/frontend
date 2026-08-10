@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { EmptyState } from '@/components/shared/EmptyState';
 
 interface MarketplaceGridProps {
     items: MarketplaceItem[];
@@ -50,15 +51,16 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
             )}
 
             {items.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-20 text-center space-y-4">
-                    <div className="text-6xl text-muted-foreground opacity-20">🔎</div>
-                    <h3 className="text-2xl font-bold">No items found</h3>
-                    <p className="text-muted-foreground max-w-md">
-                        {search
+                <EmptyState
+                    size={120}
+                    title="No items found"
+                    description={
+                        search
                             ? `No results for "${search}". Try a different search term.`
-                            : "This shop has no active items yet."}
-                    </p>
-                </div>
+                            : "This shop has no active items yet."
+                    }
+                    className="py-20"
+                />
             ) : (
                 <motion.div
                     variants={container}

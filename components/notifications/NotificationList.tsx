@@ -4,6 +4,7 @@ import { NotificationPayload, NotificationRecipient } from '@/features/notificat
 import { navigate } from 'vike/client/router';
 import { formatDistanceToNow } from 'date-fns';
 import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, Package, UserX } from 'lucide-react';
+import { EmptyState } from '@/components/shared/EmptyState';
 
 const getIconForType = (type: NotificationPayload['type']) => {
     switch (type) {
@@ -51,9 +52,8 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
 
     if (!filteredNotifications || filteredNotifications.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground bg-background rounded-lg border shadow-sm">
-                <Bell className="w-12 h-12 mb-4 opacity-20" />
-                <p>No notifications to display.</p>
+            <div className="bg-background rounded-lg border shadow-sm">
+                <EmptyState title="No notifications to display." />
             </div>
         );
     }

@@ -3,19 +3,22 @@ import {
     Loader2,
     CheckCircle2,
     ChefHat,
-    PartyPopper,
     XCircle,
     ShoppingCart,
     Plus,
     RefreshCw,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { clientOnly } from 'vike-react/clientOnly';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { DinerOrder } from '@/features/diner-mode/useDinerMode';
 import { CartItem } from '@/features/diner-mode/DinerModeStore';
+import celebratePopAnimation from '@/components/tutorials/animations/celebrate-pop.json';
+
+const LottiePlayer = clientOnly(() => import('@/components/shared/LottiePlayer'));
 
 interface DinerMyOrderTabProps {
     businessId: string;
@@ -71,7 +74,11 @@ function getStatusConfig(
         },
         ready: {
             label: t('my_order_tab.status.ready'),
-            icon: <PartyPopper className="w-5 h-5" />,
+            icon: (
+                <span className="w-6 h-6 -m-0.5 inline-block">
+                    <LottiePlayer animationData={celebratePopAnimation} className="w-full h-full" />
+                </span>
+            ),
             color: 'text-emerald-500',
             pulse: true,
         },

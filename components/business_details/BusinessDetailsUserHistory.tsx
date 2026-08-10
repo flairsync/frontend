@@ -13,6 +13,7 @@ import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { toast } from "sonner";
 import { BusinessDetailsReservationConversation } from "@/components/business_details/BusinessDetailsReservationConversation";
 import { useTranslation } from "react-i18next";
+import { EmptyState } from "@/components/shared/EmptyState";
 
 interface BusinessDetailsUserHistoryProps {
     businessId: string;
@@ -287,7 +288,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                             ))}
                         </div>
                     ) : activeOrders.length === 0 ? (
-                        <div className="text-center py-10 text-muted-foreground text-sm">{t("business_page.user_history.no_orders_yet", "No orders yet at this business.")}</div>
+                        <EmptyState size={80} title={t("business_page.user_history.no_orders_yet", "No orders yet at this business.")} />
                     ) : null}
                 </TabsContent>
 
@@ -379,7 +380,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                     )}
 
                     {upcomingReservations.length === 0 && pastReservations.length === 0 && (
-                        <div className="text-center py-10 text-muted-foreground text-sm">{t("business_page.user_history.no_reservations_yet", "No reservations yet at this business.")}</div>
+                        <EmptyState size={80} title={t("business_page.user_history.no_reservations_yet", "No reservations yet at this business.")} />
                     )}
                 </TabsContent>
             </Tabs>

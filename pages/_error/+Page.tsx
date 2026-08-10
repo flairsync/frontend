@@ -1,7 +1,11 @@
 import { usePageContext } from "vike-react/usePageContext";
 import { useTranslation } from "react-i18next";
+import { clientOnly } from "vike-react/clientOnly";
 import { Button } from "@/components/ui/button";
-import { Home, Rss, LayoutDashboard, AlertCircle } from "lucide-react";
+import { Home, Rss, LayoutDashboard } from "lucide-react";
+import lost404Animation from "@/components/tutorials/animations/lost-404.json";
+
+const LottiePlayer = clientOnly(() => import("@/components/shared/LottiePlayer"));
 
 export default function Page() {
   const { is404 } = usePageContext();
@@ -11,8 +15,8 @@ export default function Page() {
     return (
       <main className="min-h-screen flex items-center justify-center bg-slate-50 px-6 py-16">
         <div className="flex flex-col items-center text-center gap-8 max-w-md w-full">
-          <div className="inline-flex items-center justify-center bg-gradient-to-tr from-indigo-600 to-violet-500 text-white rounded-2xl p-6 shadow-lg">
-            <AlertCircle className="w-12 h-12" />
+          <div className="inline-flex items-center justify-center bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-2xl p-6 shadow-lg w-24 h-24">
+            <LottiePlayer animationData={lost404Animation} className="w-full h-full" />
           </div>
 
           <div>
