@@ -1,8 +1,12 @@
 import { motion } from 'framer-motion';
+import { clientOnly } from 'vike-react/clientOnly';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTourStore } from '../tourStore';
 import type { TourStepPosition } from '../types';
+import successPopAnimation from '@/components/tutorials/animations/success-pop.json';
+
+const LottiePlayer = clientOnly(() => import('@/components/shared/LottiePlayer'));
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT_EST = 260;
@@ -123,7 +127,13 @@ export function TourTooltip() {
           )}
           <Button size="sm" onClick={next} className="ml-auto gap-1 h-8">
             {isLast ? 'Finish' : 'Next'}
-            {!isLast && <ChevronRight size={13} />}
+            {isLast ? (
+              <span className="w-4 h-4 -mr-1">
+                <LottiePlayer animationData={successPopAnimation} loop={false} className="w-full h-full" />
+              </span>
+            ) : (
+              <ChevronRight size={13} />
+            )}
           </Button>
         </div>
       </div>

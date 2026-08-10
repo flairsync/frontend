@@ -23,9 +23,11 @@ import {
 import { TutorialSidebar } from "@/components/learn/TutorialSidebar";
 import { TutorialContent } from "@/components/learn/TutorialContent";
 import { PART_ICONS, type TFn } from "@/components/learn/constants";
+import heroSparkleAnimation from "@/components/tutorials/animations/hero-sparkle.json";
 
 const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
 const WebsiteFooter = clientOnly(() => import("@/components/shared/WebsiteFooter"));
+const LottiePlayer = clientOnly(() => import("@/components/shared/LottiePlayer"));
 
 // ─── Overview landing card grid ───────────────────────────────────────────────
 
@@ -38,12 +40,17 @@ function OverviewGrid({
 }) {
   return (
     <div className="max-w-3xl mx-auto px-6 py-12 space-y-10">
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-primary" />
-          <h1 className="text-3xl font-extrabold tracking-tight">{t("page.title")}</h1>
+      <div className="flex items-center gap-4">
+        <div className="w-24 h-24 shrink-0 -my-2">
+          <LottiePlayer animationData={heroSparkleAnimation} className="w-full h-full" />
         </div>
-        <p className="text-muted-foreground text-base max-w-xl">{t("page.subtitle")}</p>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-6 h-6 text-primary" />
+            <h1 className="text-3xl font-extrabold tracking-tight">{t("page.title")}</h1>
+          </div>
+          <p className="text-muted-foreground text-base max-w-xl">{t("page.subtitle")}</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
