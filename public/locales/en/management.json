@@ -460,6 +460,7 @@
       "feedback": "Feedback",
       "audit_logs": "Audit Logs",
       "fiscal_invoices": "Fiscal Invoices",
+      "fiscal_services": "Fiscal Services",
       "danger": "Danger Zone",
       "menu_boards": "Menu Boards"
     }

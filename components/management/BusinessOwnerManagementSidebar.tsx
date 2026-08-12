@@ -57,6 +57,7 @@ import {
     MonitorPlay,
     Nfc,
     Receipt,
+    FileSpreadsheet,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -166,6 +167,7 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "audit-logs", titleKey: "sidebar.items.audit_logs", url: "/manage/:id/owner/audit-logs", icon: ScrollText },
             { key: "fiscal-invoices", titleKey: "sidebar.items.fiscal_invoices", url: "/manage/:id/owner/fiscal-invoices", icon: Receipt },
+            { key: "fiscal-services", titleKey: "sidebar.items.fiscal_services", url: "/manage/:id/owner/fiscal-services", icon: FileSpreadsheet },
             { key: "danger", titleKey: "sidebar.items.danger", url: "/manage/:id/owner/danger", icon: ShieldAlert },
         ],
     },
