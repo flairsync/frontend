@@ -1,0 +1,139 @@
+{
+  "diner": {
+    "watcher": {
+      "seated_single": "You're seated — Open Diner Mode",
+      "seated_multiple": "You're seated ({{count}})",
+      "open_diner_for": "Open diner — {{businessId}}"
+    },
+    "call_waiter": {
+      "success_title": "Your waiter has been notified",
+      "success_description": "Someone will be with you shortly.",
+      "error_title": "Could not reach staff",
+      "error_description": "Please try again or ask for assistance directly.",
+      "unavailable_title": "No waiters available right now",
+      "unavailable_description": "Please ask for assistance directly.",
+      "calling": "Calling…",
+      "notified_cooldown": "Waiter notified ({{seconds}}s)",
+      "button_label": "Call Waiter"
+    },
+    "cart_fab": {
+      "view_order": "View Order"
+    },
+    "guest_email_prompt": {
+      "title": "Want updates on your order?",
+      "description": "Leave your email and we'll use it to reach you about this order. Totally optional.",
+      "placeholder": "you@example.com",
+      "submit": "Save email",
+      "skip": "No thanks",
+      "success": "Thanks! We'll use this email for updates on your order.",
+      "invalid": "Please enter a valid email address."
+    },
+    "feedback": {
+      "prompt_title": "How was your visit?",
+      "prompt_description": "We'd love to hear about your experience — it only takes a minute.",
+      "page_title": "How was your visit to {{businessName}}?",
+      "page_description": "Your feedback helps us improve. It only takes a minute.",
+      "questions": {
+        "overall": "Overall, how was your experience?",
+        "food": "Food quality",
+        "service": "Service",
+        "ambiance": "Ambiance & cleanliness",
+        "value": "Value for money",
+        "nps": "How likely are you to recommend us to a friend?",
+        "improve": "What could we improve?",
+        "comment": "Anything else you'd like to tell us?"
+      },
+      "nps_not_likely": "Not likely",
+      "nps_very_likely": "Very likely",
+      "tags": {
+        "FOOD_TEMPERATURE": "Food temperature",
+        "ORDER_ACCURACY": "Order accuracy",
+        "WAIT_TIME": "Wait time",
+        "STAFF_FRIENDLINESS": "Staff friendliness",
+        "CLEANLINESS": "Cleanliness",
+        "NOISE_LEVEL": "Noise level",
+        "PRICE": "Price",
+        "PORTION_SIZE": "Portion size"
+      },
+      "comment_placeholder": "Tell us more (optional)",
+      "submit": "Submit feedback",
+      "skip": "Not now",
+      "success": "Thanks for your feedback!",
+      "required_rating": "Please rate your overall experience.",
+      "not_found_title": "We couldn't find that order",
+      "not_found_description": "This feedback link may have expired or already been used."
+    },
+    "layout": {
+      "tab_menu": "Menu",
+      "tab_my_order": "My Order"
+    },
+    "banner": {
+      "seated_title": "You're seated here",
+      "active_order_title": "You have an active order",
+      "seated_subtitle": "Switch to diner mode to order",
+      "active_order_subtitle": "Track your order in diner mode",
+      "enter_button": "Enter"
+    },
+    "my_order_tab": {
+      "status": {
+        "created": "Order received",
+        "accepted": "Order confirmed",
+        "preparing": "Being prepared",
+        "ready": "Ready to serve!",
+        "completed": "Enjoy your meal!",
+        "canceled": "Order cancelled",
+        "rejected": "Order cancelled"
+      },
+      "status_description": {
+        "created": "Waiting for the restaurant to confirm your order",
+        "accepted": "Confirmed — the kitchen will start preparing it shortly",
+        "preparing": "The kitchen is preparing your order"
+      },
+      "empty_title": "Your order is empty",
+      "empty_description": "Browse the menu and add items to get started.",
+      "browse_menu": "Browse Menu",
+      "payment_pending": "Payment pending",
+      "your_order_heading": "Your order",
+      "add_more": "Add more",
+      "unnamed_item": "Item",
+      "items_to_add_heading": "Items to add",
+      "new_order_heading": "New order",
+      "items_count_one": "{{count}} item",
+      "items_count_other": "{{count}} items",
+      "subtotal": "Subtotal",
+      "placing_order": "Placing order…",
+      "add_to_existing_order": "Add to existing order",
+      "place_order": "Place order",
+      "refresh": "Refresh",
+      "updated_just_now": "Updated just now",
+      "updated_seconds_ago_one": "Updated {{count}} second ago",
+      "updated_seconds_ago_other": "Updated {{count}} seconds ago",
+      "updated_minutes_ago_one": "Updated {{count}} minute ago",
+      "updated_minutes_ago_other": "Updated {{count}} minutes ago"
+    },
+    "menu_item_sheet": {
+      "choose_variant": "Choose a variant",
+      "choose_one": "Choose one",
+      "choose_up_to": "Up to {{count}}",
+      "special_instructions": "Special instructions",
+      "special_instructions_placeholder": "E.g. No onions, extra sauce…",
+      "add_to_order": "Add to order · ${{price}}"
+    },
+    "header": {
+      "table_label": "Table {{table}}",
+      "leave_diner_mode": "Leave diner mode"
+    },
+    "menu_tab": {
+      "unavailable": "Unavailable",
+      "ordering_unavailable_title": "Online ordering unavailable",
+      "ordering_unavailable_description": "This restaurant doesn't accept online orders right now — please order with your waiter.",
+      "contains_allergens": "Contains",
+      "includes_label": "Includes"
+    },
+    "menu_page": {
+      "unavailable_title": "Menu unavailable",
+      "unavailable_description": "The menu could not be loaded right now.",
+      "retry": "Retry"
+    }
+  }
+}

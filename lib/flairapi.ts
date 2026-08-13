@@ -172,7 +172,10 @@ const processQueue = (error: any, token: string | null = null) => {
 flairapi.interceptors.request.use(
   (config) => {
     startRequest();
-    config.headers["x-custom-lang"] = i18n.language;
+    // flairsync-api's own i18n locales are base subtags (ca/en/es, no region, no fr yet) with
+    // no fallback mapping configured — send just the base subtag so this keeps matching them,
+    // independent of the frontend/Tolgee side using full BCP-47 tags (e.g. es-ES, fr-FR).
+    config.headers["x-custom-lang"] = i18n.language?.split("-")[0];
     const csrfToken = getCsrfToken();
     if (csrfToken) {
       config.headers["x-csrf-token"] = csrfToken;

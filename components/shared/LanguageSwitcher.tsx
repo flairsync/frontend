@@ -20,9 +20,9 @@ import { setLangCookie } from "@/utils/cookies";
 
 const languages = [
     { code: "en", label: "English", flag: EnFlag },
-    { code: "fr", label: "Français", flag: FrFlag },
-    { code: "es", label: "Español", flag: EsFlag },
-    { code: "cat", label: "Catalan", flag: CatFlag },
+    { code: "fr-FR", label: "Français", flag: FrFlag },
+    { code: "es-ES", label: "Español", flag: EsFlag },
+    { code: "ca", label: "Catalan", flag: CatFlag },
 ];
 
 

@@ -1,0 +1,7 @@
+{
+  "menu_board": {
+    "loading": "Chargement du menu...",
+    "unavailable_title": "Écran de menu indisponible",
+    "unavailable_desc": "Cet écran n'est pas actif pour le moment. Merci de revenir plus tard."
+  }
+}

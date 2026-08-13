@@ -37,9 +37,9 @@ import { useMyEmployments } from '@/features/business/employment/useMyEmployment
 
 const languages = [
     { code: "en", label: "English", flag: EnFlag },
-    { code: "fr", label: "Français", flag: FrFlag },
-    { code: "es", label: "Español", flag: EsFlag },
-    { code: "cat", label: "Català", flag: CatFlag },
+    { code: "fr-FR", label: "Français", flag: FrFlag },
+    { code: "es-ES", label: "Español", flag: EsFlag },
+    { code: "ca", label: "Català", flag: CatFlag },
 ];
 const HeaderProfileAvatar = () => {
 

@@ -1,0 +1,7 @@
+{
+  "menu_board": {
+    "loading": "Carregant el menú...",
+    "unavailable_title": "Pantalla de menú no disponible",
+    "unavailable_desc": "Aquesta pantalla no està activa ara mateix. Torna-ho a comprovar més tard."
+  }
+}

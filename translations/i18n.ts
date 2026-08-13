@@ -3,11 +3,31 @@ import { initReactI18next } from "react-i18next";
 import { DevBackend, FormatSimple, I18nextPlugin, Tolgee, tolgeeBackend } from "@tolgee/i18next";
 import { getLangCookie } from "@/utils/cookies";
 
+export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca"] as const;
+
+// Maps a base subtag (from a browser Accept-Language value, or a cookie set before this
+// project switched to full BCP-47 tags matching Tolgee's project languages) to the supported
+// tag it corresponds to.
+const BASE_LANG_MAP: Record<string, (typeof SUPPORTED_LANGUAGES)[number]> = {
+  en: "en",
+  fr: "fr-FR",
+  es: "es-ES",
+  ca: "ca",
+  cat: "ca",
+};
+
+function normalizeLang(lang: string): (typeof SUPPORTED_LANGUAGES)[number] {
+  if ((SUPPORTED_LANGUAGES as readonly string[]).includes(lang)) {
+    return lang as (typeof SUPPORTED_LANGUAGES)[number];
+  }
+  const base = lang.split("-")[0].toLowerCase();
+  return BASE_LANG_MAP[base] ?? "en";
+}
+
 function detectLang(): string {
   const cookie = getLangCookie();
-  if (cookie) return cookie;
-  const browser = navigator.language?.split("-")[0] ?? "en";
-  return ["en", "fr", "es", "cat"].includes(browser) ? browser : "en";
+  if (cookie) return normalizeLang(cookie);
+  return normalizeLang(navigator.language ?? "en");
 }
 
 // DevBackend is registered explicitly (instead of via Tolgee's DevTools() helper) so live

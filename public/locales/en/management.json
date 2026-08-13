@@ -769,7 +769,8 @@
       "reservation_system": "Reservation System",
       "priority_support": "Priority Support",
       "ded_acc_manager": "Dedicated Account Manager",
-      "custom_branding": "Custom Branding"
+      "custom_branding": "Custom Branding",
+      "premium_themes": "Premium Themes"
     },
     "limits": {
       "businesses_one": "Up to {{count}} Business",

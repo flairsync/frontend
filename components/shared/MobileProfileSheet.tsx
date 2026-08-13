@@ -22,9 +22,9 @@ import CatFlag from "@/assets/flags/ad.svg";
 
 const languages = [
     { code: "en", label: "EN", flag: EnFlag },
-    { code: "fr", label: "FR", flag: FrFlag },
-    { code: "es", label: "ES", flag: EsFlag },
-    { code: "cat", label: "CAT", flag: CatFlag },
+    { code: "fr-FR", label: "FR", flag: FrFlag },
+    { code: "es-ES", label: "ES", flag: EsFlag },
+    { code: "ca", label: "CAT", flag: CatFlag },
 ];
 
 const MobileProfileSheet = () => {

@@ -1,0 +1,139 @@
+{
+  "diner": {
+    "watcher": {
+      "seated_single": "Estás sentado — Abrir modo cliente",
+      "seated_multiple": "Estás sentado ({{count}})",
+      "open_diner_for": "Abrir modo cliente — {{businessId}}"
+    },
+    "call_waiter": {
+      "success_title": "Se ha avisado a tu camarero",
+      "success_description": "Alguien vendrá a atenderte enseguida.",
+      "error_title": "No se pudo contactar con el personal",
+      "error_description": "Inténtalo de nuevo o pide ayuda directamente.",
+      "unavailable_title": "No hay camareros disponibles ahora mismo",
+      "unavailable_description": "Pide ayuda directamente, por favor.",
+      "calling": "Llamando…",
+      "notified_cooldown": "Camarero avisado ({{seconds}}s)",
+      "button_label": "Llamar al camarero"
+    },
+    "cart_fab": {
+      "view_order": "Ver pedido"
+    },
+    "guest_email_prompt": {
+      "title": "¿Quieres novedades sobre tu pedido?",
+      "description": "Déjanos tu email y lo usaremos para contactarte sobre este pedido. Totalmente opcional.",
+      "placeholder": "tu@ejemplo.com",
+      "submit": "Guardar email",
+      "skip": "No, gracias",
+      "success": "¡Gracias! Usaremos este email para darte novedades sobre tu pedido.",
+      "invalid": "Introduce una dirección de correo válida."
+    },
+    "feedback": {
+      "prompt_title": "¿Qué tal tu visita?",
+      "prompt_description": "Nos encantaría conocer tu experiencia — solo toma un minuto.",
+      "page_title": "¿Qué tal tu visita a {{businessName}}?",
+      "page_description": "Tu opinión nos ayuda a mejorar. Solo toma un minuto.",
+      "questions": {
+        "overall": "En general, ¿cómo fue tu experiencia?",
+        "food": "Calidad de la comida",
+        "service": "Servicio",
+        "ambiance": "Ambiente y limpieza",
+        "value": "Relación calidad-precio",
+        "nps": "¿Qué probabilidad hay de que nos recomiendes a un amigo?",
+        "improve": "¿Qué podríamos mejorar?",
+        "comment": "¿Algo más que quieras contarnos?"
+      },
+      "nps_not_likely": "Poco probable",
+      "nps_very_likely": "Muy probable",
+      "tags": {
+        "FOOD_TEMPERATURE": "Temperatura de la comida",
+        "ORDER_ACCURACY": "Precisión del pedido",
+        "WAIT_TIME": "Tiempo de espera",
+        "STAFF_FRIENDLINESS": "Amabilidad del personal",
+        "CLEANLINESS": "Limpieza",
+        "NOISE_LEVEL": "Nivel de ruido",
+        "PRICE": "Precio",
+        "PORTION_SIZE": "Tamaño de las porciones"
+      },
+      "comment_placeholder": "Cuéntanos más (opcional)",
+      "submit": "Enviar comentarios",
+      "skip": "Ahora no",
+      "success": "¡Gracias por tu opinión!",
+      "required_rating": "Por favor califica tu experiencia general.",
+      "not_found_title": "No pudimos encontrar ese pedido",
+      "not_found_description": "Este enlace de comentarios puede haber caducado o ya haberse usado."
+    },
+    "layout": {
+      "tab_menu": "Menú",
+      "tab_my_order": "Mi pedido"
+    },
+    "banner": {
+      "seated_title": "Estás sentado aquí",
+      "active_order_title": "Tienes un pedido activo",
+      "seated_subtitle": "Pasa al modo cliente para pedir",
+      "active_order_subtitle": "Sigue tu pedido en el modo cliente",
+      "enter_button": "Entrar"
+    },
+    "my_order_tab": {
+      "status": {
+        "created": "Pedido recibido",
+        "accepted": "Pedido confirmado",
+        "preparing": "En preparación",
+        "ready": "¡Listo para servir!",
+        "completed": "¡Buen provecho!",
+        "canceled": "Pedido cancelado",
+        "rejected": "Pedido cancelado"
+      },
+      "status_description": {
+        "created": "Esperando a que el restaurante confirme tu pedido",
+        "accepted": "Confirmado — la cocina empezará a prepararlo en breve",
+        "preparing": "La cocina está preparando tu pedido"
+      },
+      "empty_title": "Tu pedido está vacío",
+      "empty_description": "Explora el menú y añade platos para empezar.",
+      "browse_menu": "Ver menú",
+      "payment_pending": "Pago pendiente",
+      "your_order_heading": "Tu pedido",
+      "add_more": "Añadir más",
+      "unnamed_item": "Artículo",
+      "items_to_add_heading": "Artículos para añadir",
+      "new_order_heading": "Nuevo pedido",
+      "items_count_one": "{{count}} artículo",
+      "items_count_other": "{{count}} artículos",
+      "subtotal": "Subtotal",
+      "placing_order": "Enviando pedido…",
+      "add_to_existing_order": "Añadir al pedido en curso",
+      "place_order": "Hacer pedido",
+      "refresh": "Actualizar",
+      "updated_just_now": "Actualizado justo ahora",
+      "updated_seconds_ago_one": "Actualizado hace {{count}} segundo",
+      "updated_seconds_ago_other": "Actualizado hace {{count}} segundos",
+      "updated_minutes_ago_one": "Actualizado hace {{count}} minuto",
+      "updated_minutes_ago_other": "Actualizado hace {{count}} minutos"
+    },
+    "menu_item_sheet": {
+      "choose_variant": "Elige una variante",
+      "choose_one": "Elige una opción",
+      "choose_up_to": "Hasta {{count}}",
+      "special_instructions": "Instrucciones especiales",
+      "special_instructions_placeholder": "Ej. Sin cebolla, más salsa…",
+      "add_to_order": "Añadir al pedido · {{price}} $"
+    },
+    "header": {
+      "table_label": "Mesa {{table}}",
+      "leave_diner_mode": "Salir del modo cliente"
+    },
+    "menu_tab": {
+      "unavailable": "No disponible",
+      "ordering_unavailable_title": "Pedidos en línea no disponibles",
+      "ordering_unavailable_description": "Este restaurante no acepta pedidos en línea en este momento — por favor pide a tu camarero.",
+      "contains_allergens": "Contiene",
+      "includes_label": "Incluye"
+    },
+    "menu_page": {
+      "unavailable_title": "Menú no disponible",
+      "unavailable_description": "No se ha podido cargar el menú en este momento.",
+      "retry": "Reintentar"
+    }
+  }
+}
