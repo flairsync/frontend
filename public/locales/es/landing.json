@@ -129,7 +129,10 @@
       "monthly_label": "Facturación mensual",
       "yearly_label": "Facturación anual (41% de descuento)",
       "billed_note": "*Facturado anualmente, impuestos de la aplicación no incluidos",
-      "choose_plan_button": "Elegir plan"
+      "choose_plan_button": "Elegir plan",
+      "per_business_price": "{{price}} / negocio / mes",
+      "min_businesses_one": "mínimo {{count}} negocio",
+      "min_businesses_other": "mínimo {{count}} negocios"
     },
     "faq": {
       "title": "Preguntas frecuentes",

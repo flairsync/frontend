@@ -129,7 +129,10 @@
       "monthly_label": "Facturation mensuelle",
       "yearly_label": "Facturation annuelle (41% de réduction)",
       "billed_note": "*Facturé annuellement, taxes de l'application en sus",
-      "choose_plan_button": "Choisir le plan"
+      "choose_plan_button": "Choisir le plan",
+      "per_business_price": "{{price}} / commerce / mois",
+      "min_businesses_one": "minimum {{count}} commerce",
+      "min_businesses_other": "minimum {{count}} commerces"
     },
     "faq": {
       "title": "Questions fréquemment posées",

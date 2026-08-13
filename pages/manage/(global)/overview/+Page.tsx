@@ -183,32 +183,6 @@ const ManagePage: React.FC = () => {
                                                     </div>
                                                     <ChevronRight className="h-5 w-5 text-muted-foreground/50 group-hover:text-primary transition-colors" />
                                                 </div>
-
-                                                {/* PER-BUSINESS USAGE */}
-                                                {biz.counts && usage && (
-                                                    <div className="pt-4 mt-2 border-t border-border/80 grid grid-cols-2 gap-4">
-                                                        <UsageItem
-                                                            label={t("manage_overview.usage_labels.employees")}
-                                                            current={biz.counts.employees}
-                                                            allowed={usage.allowed.employees}
-                                                        />
-                                                        <UsageItem
-                                                            label={t("manage_overview.usage_labels.menus")}
-                                                            current={biz.counts.menus}
-                                                            allowed={usage.allowed.menus}
-                                                        />
-                                                        <UsageItem
-                                                            label={t("manage_overview.usage_labels.products")}
-                                                            current={biz.counts.products}
-                                                            allowed={usage.allowed.products}
-                                                        />
-                                                        <UsageItem
-                                                            label={t("manage_overview.usage_labels.menu_boards")}
-                                                            current={biz.counts.menuBoards}
-                                                            allowed={usage.allowed.menuBoards}
-                                                        />
-                                                    </div>
-                                                )}
                                             </CardContent>
                                         </Card>
                                     </motion.div>

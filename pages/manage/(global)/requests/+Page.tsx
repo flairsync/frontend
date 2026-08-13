@@ -2,9 +2,10 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Inbox, Send, Check, X, Ban } from "lucide-react";
+import { Inbox, Send, X, Ban } from "lucide-react";
 import { useJoinRequests } from "@/features/join-requests/useJoinRequests";
 import { JoinRequest } from "@/features/join-requests/join-requests";
+import { ApproveJoinRequestButton } from "@/components/management/organizations/ApproveJoinRequestButton";
 
 const describeNode = (type: "BUSINESS" | "REGION" | "ORGANIZATION") =>
     type === "BUSINESS" ? "Business" : type === "REGION" ? "Region" : "Organization";
@@ -80,14 +81,11 @@ const RequestsPage = () => {
                                 >
                                     <X className="h-3.5 w-3.5 mr-1" /> Decline
                                 </Button>
-                                <Button
-                                    size="sm"
-                                    className="h-8"
+                                <ApproveJoinRequestButton
+                                    request={r}
                                     disabled={isApprovingJoinRequest}
-                                    onClick={() => approveJoinRequest(r.id)}
-                                >
-                                    <Check className="h-3.5 w-3.5 mr-1" /> Approve
-                                </Button>
+                                    onApprove={() => approveJoinRequest(r.id)}
+                                />
                             </RequestRow>
                         ))
                     ) : (

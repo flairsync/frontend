@@ -779,7 +779,10 @@
       "products_one": "Fins a {{count}} producte",
       "products_other": "Fins a {{count}} productes"
     },
-    "upgrade_message": "Tria un pla adaptat a les necessitats del teu negoci i desbloqueja més potència."
+    "upgrade_message": "Tria un pla adaptat a les necessitats del teu negoci i desbloqueja més potència.",
+    "per_business_price": "{{price}} / negoci",
+    "min_businesses_one": "mínim {{count}} negoci",
+    "min_businesses_other": "mínim {{count}} negocis"
   },
   "floor_plan": {
     "title": "Plànol de planta",

@@ -781,7 +781,10 @@
       "products_one": "Hasta {{count}} producto",
       "products_other": "Hasta {{count}} productos"
     },
-    "upgrade_message": "Elige un plan adaptado a las necesidades de tu negocio y desbloquea más potencia."
+    "upgrade_message": "Elige un plan adaptado a las necesidades de tu negocio y desbloquea más potencia.",
+    "per_business_price": "{{price}} / negocio",
+    "min_businesses_one": "mínimo {{count}} negocio",
+    "min_businesses_other": "mínimo {{count}} negocios"
   },
   "floor_plan": {
     "title": "Plano de planta",

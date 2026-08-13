@@ -42,6 +42,7 @@ export class SubscriptionPack {
   price: number;
   currency: string;
   maxBusinesses: number;
+  minBusinesses: number;
   maxEmployees: number;
   maxMenus: number;
   maxProducts: number;
@@ -59,6 +60,7 @@ export class SubscriptionPack {
     price: number,
     currency: string,
     maxBusinesses: number,
+    minBusinesses: number,
     maxEmployees: number,
     maxMenus: number,
     maxProducts: number,
@@ -75,6 +77,7 @@ export class SubscriptionPack {
     this.price = price;
     this.currency = currency;
     this.maxBusinesses = maxBusinesses;
+    this.minBusinesses = minBusinesses;
     this.maxEmployees = maxEmployees;
     this.maxMenus = maxMenus;
     this.maxProducts = maxProducts;
@@ -97,6 +100,7 @@ export class SubscriptionPack {
         parseFloat(data.price),
         data.currency,
         data.maxBusinesses,
+        data.minBusinesses ?? 1,
         data.maxEmployees,
         data.maxMenus,
         data.maxProducts,
@@ -129,6 +133,17 @@ export class SubscriptionPack {
 
   getFormattedPrice(): string {
     return `${this.price.toFixed(2)} ${this.currency}`;
+  }
+
+  /** This pack's own per-business price times however many businesses are
+   * selected, clamped to this pack's own minimum — a pack with a 3-business
+   * minimum always prices at least 3, even if fewer are selected. */
+  getTotalPrice(businessCount: number): number {
+    return this.price * Math.max(businessCount, this.minBusinesses);
+  }
+
+  getFormattedTotalPrice(businessCount: number): string {
+    return `${this.getTotalPrice(businessCount).toFixed(2)} ${this.currency}`;
   }
 
   getPlanDuration(): string {

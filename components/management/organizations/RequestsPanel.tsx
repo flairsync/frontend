@@ -1,9 +1,10 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Inbox, Check, X, Ban } from "lucide-react";
+import { Inbox, X, Ban } from "lucide-react";
 import { useJoinRequests } from "@/features/join-requests/useJoinRequests";
 import { JoinRequest } from "@/features/join-requests/join-requests";
+import { ApproveJoinRequestButton } from "./ApproveJoinRequestButton";
 
 interface RequestsPanelProps {
     entityType: "ORGANIZATION" | "REGION";
@@ -83,14 +84,11 @@ export const RequestsPanel: React.FC<RequestsPanelProps> = ({ entityType, entity
                                         >
                                             <X className="h-3.5 w-3.5 mr-1" /> Decline
                                         </Button>
-                                        <Button
-                                            size="sm"
-                                            className="h-8"
+                                        <ApproveJoinRequestButton
+                                            request={r}
                                             disabled={isApprovingJoinRequest}
-                                            onClick={() => approveJoinRequest(r.id)}
-                                        >
-                                            <Check className="h-3.5 w-3.5 mr-1" /> Approve
-                                        </Button>
+                                            onApprove={() => approveJoinRequest(r.id)}
+                                        />
                                     </>
                                 ) : (
                                     <Button

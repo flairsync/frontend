@@ -2,26 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserUsageApiCall } from "./service";
 import { usePageContext } from "vike-react/usePageContext";
 
+// `businesses` is the only genuinely account-wide number — menus/products/
+// employees/menu-boards are enforced per business now, so they're no longer
+// part of this account-level response. See a business's own plan page
+// (useBusinessPlan) for its per-business allowed/used numbers.
 export interface UsageData {
     allowed: {
         businesses: number;
-        menus: number;
-        products: number;
-        employees: number;
-        menuBoards: number;
     };
     current: {
         businesses: number;
-        menus: number;
-        products: number;
-        employees: number;
-        menuBoards: number;
     };
     canCreateBusiness: boolean;
-    canCreateMenu: boolean;
-    canCreateProduct: boolean;
-    canAddEmployee: boolean;
-    canCreateMenuBoard: boolean;
 }
 
 export const useUsage = () => {

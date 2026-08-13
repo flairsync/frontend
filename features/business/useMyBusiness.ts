@@ -34,13 +34,13 @@ export const useMyBusiness = (businessId: string | null = null) => {
       if (!businessId) return;
       const res = await fetchMyBuysinessFullDetailsApiCall(businessId) as any;
 
-      if (res.usage) {
-        queryClient.setQueryData(["user_usage"], res.usage);
-      }
-
+      // res.usage here is this one business's own per-business usage (see
+      // UsageService.getBusinessUsage) — a different shape than the
+      // account-wide ["user_usage"] cache (useUsage), so it must not be
+      // written there. Per-business usage/plan data has its own hook and
+      // cache key: useBusinessPlan, ["business_plan", businessId].
       return {
         business: MyBusinessFullDetails.parseApiResponse(res.business) || undefined,
-        usage: res.usage
       };
     },
     enabled: businessId != null,
@@ -226,7 +226,6 @@ export const useMyBusiness = (businessId: string | null = null) => {
 
   return {
     myBusinessFullDetails: myBusinessFullDetails?.business,
-    usage: myBusinessFullDetails?.usage,
     fetchingMyBusinessFullDetails,
     businessLoadError,
     updatingMyBusiness,

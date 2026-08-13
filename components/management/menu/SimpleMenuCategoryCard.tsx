@@ -10,7 +10,7 @@ import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategor
 import { SimpleMenuItemRow } from "./SimpleMenuItemRow";
 import { useTranslation } from "react-i18next";
 
-import { useUsage } from "@/features/subscriptions/useUsage";
+import { useBusinessPlan } from "@/features/business/useBusinessPlan";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
@@ -48,9 +48,10 @@ export const SimpleMenuCategoryCard = ({
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation("management");
-    const { usage } = useUsage();
+    const { plan } = useBusinessPlan(businessId);
     const { openUpgradeModal } = useSubscriptionStore();
-    const canCreateProduct = usage?.canCreateProduct ?? true;
+    // Product limits are enforced per business, not account-wide.
+    const canCreateProduct = plan?.canCreateProduct ?? true;
 
     return (
         <div className="mb-2">

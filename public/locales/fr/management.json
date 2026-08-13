@@ -781,7 +781,10 @@
       "products_one": "Jusqu'à {{count}} produit",
       "products_other": "Jusqu'à {{count}} produits"
     },
-    "upgrade_message": "Choisissez un forfait adapté aux besoins de votre établissement et débloquez plus de puissance."
+    "upgrade_message": "Choisissez un forfait adapté aux besoins de votre établissement et débloquez plus de puissance.",
+    "per_business_price": "{{price}} / commerce",
+    "min_businesses_one": "minimum {{count}} commerce",
+    "min_businesses_other": "minimum {{count}} commerces"
   },
   "floor_plan": {
     "title": "Plan de salle",

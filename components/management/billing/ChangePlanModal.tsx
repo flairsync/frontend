@@ -101,12 +101,15 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                                         <p className="text-sm text-muted-foreground mb-4 min-h-[2.5rem]">
                                             {pack.getShortDescription()}
                                         </p>
-                                        <div className="flex items-baseline gap-1 mb-4">
+                                        <div className="flex items-baseline gap-1 mb-1">
                                             <span className="text-2xl font-black">{pack.getFormattedPrice()}</span>
                                             <span className="text-muted-foreground text-sm">
-                                                /{pack.pricingType === "monthly" ? "mo" : pack.pricingType === "yearly" ? "yr" : "qtr"}
+                                                /business/{pack.pricingType === "monthly" ? "mo" : pack.pricingType === "yearly" ? "yr" : "qtr"}
                                             </span>
                                         </div>
+                                        <p className="text-xs text-muted-foreground mb-4">
+                                            {pack.minBusinesses}-business minimum
+                                        </p>
                                         <ul className="text-sm space-y-1.5 mb-6 flex-1 text-muted-foreground">
                                             <li className="flex items-center gap-2">
                                                 <Check className="h-4 w-4 text-primary shrink-0" />

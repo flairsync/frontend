@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck, Minus, Plus } from "lucide-react";
 import { SubscriptionPack, PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { SubscriptionStatus } from "@/models/Subscription";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
@@ -29,6 +29,7 @@ const PlansPage: React.FC = () => {
 
 
   const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
+  const [businessCount, setBusinessCount] = useState(1);
   const [displayedPacks, setDisplayedPacks] = useState<SubscriptionPack[]>([]);
   const [checkoutLink, setCheckoutLink] = useState<string>();
   const [confirmPack, setConfirmPack] = useState<SubscriptionPack | null>(null);
@@ -186,6 +187,31 @@ const PlansPage: React.FC = () => {
             Yearly
           </Button>
         </div>
+
+        {/* Business count selector — shared across every plan card below */}
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <span className="text-sm text-muted-foreground">How many businesses?</span>
+          <div className="inline-flex items-center gap-3 bg-card rounded-full px-2 py-1 shadow-md">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 bg-muted rounded-full"
+              onClick={() => setBusinessCount((c) => Math.max(1, c - 1))}
+              disabled={businessCount <= 1}
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <span className="w-8 text-center font-bold text-lg">{businessCount}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 bg-muted rounded-full"
+              onClick={() => setBusinessCount((c) => c + 1)}
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       </div>
       {(creatingCheckout || changingPlan) && (
         <div className="flex flex-col items-center justify-center py-6">
@@ -225,10 +251,16 @@ const PlansPage: React.FC = () => {
               <CardContent className="flex flex-col justify-between flex-grow">
                 <div className="mt-2 text-center mb-6">
                   <p className="text-4xl font-bold mb-1">
-                    {pack.price}{" "}
+                    {pack.getTotalPrice(businessCount).toFixed(2)}{" "}
                     <span className="text-lg font-normal">{pack.currency}</span>
                   </p>
                   <p className="text-muted-foreground text-sm">{pack.getPlanDuration()}</p>
+                  {businessCount < pack.minBusinesses && (
+                    <p className="text-xs text-primary mt-1 font-medium">
+                      Minimum {pack.minBusinesses} businesses on this plan
+                    </p>
+                  )}
+                  <p className="text-[11px] text-muted-foreground mt-1">Estimated — confirmed at checkout</p>
                 </div>
 
                 <div className="mb-6 grid grid-cols-2 gap-4 text-xs bg-muted/50 p-3 rounded-lg border border-border">

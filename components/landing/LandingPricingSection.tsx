@@ -113,15 +113,15 @@ const LandingPricingSection = () => {
                         {pack.name}
                     </CardTitle>
                     <div className="flex items-baseline gap-1">
-                        <h2 className={cn("text-5xl font-extrabold", isHighlighted ? 'text-white' : 'text-foreground')}>
-                            {isFree ? "Free" : pack.getFormattedPrice()}
+                        <h2 className={cn("text-4xl font-extrabold", isHighlighted ? 'text-white' : 'text-foreground')}>
+                            {isFree ? "Free" : t('landing_page.pricing.per_business_price', { price: pack.getFormattedPrice() })}
                         </h2>
-                        {!isFree && (
-                            <p className={cn("text-sm font-medium", isHighlighted ? "text-white/80" : "text-muted-foreground")}>
-                                /mo
-                            </p>
-                        )}
                     </div>
+                    {!isFree && (
+                        <p className={cn("text-xs font-medium mt-1", isHighlighted ? "text-white/80" : "text-muted-foreground")}>
+                            {t('landing_page.pricing.min_businesses', { count: pack.minBusinesses })}
+                        </p>
+                    )}
                     <CardDescription className={cn("text-sm mt-4 min-h-[40px]", isHighlighted ? 'text-white/90' : 'text-muted-foreground')}>
                         {pack.description || pack.getShortDescription()}
                     </CardDescription>

@@ -129,7 +129,10 @@
       "monthly_label": "Bill monthly",
       "yearly_label": "Bill yearly (41% off)",
       "billed_note": "*Billed annually, plus application taxes",
-      "choose_plan_button": "Choose Plan"
+      "choose_plan_button": "Choose Plan",
+      "per_business_price": "{{price}} / business / mo",
+      "min_businesses_one": "{{count}}-business minimum",
+      "min_businesses_other": "{{count}}-business minimum"
     },
     "faq": {
       "title": "Frequently Asked Questions",

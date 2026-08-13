@@ -129,7 +129,10 @@
       "monthly_label": "Facturació mensual",
       "yearly_label": "Facturació anual (41% de descompte)",
       "billed_note": "*Facturat anualment, impostos de l'aplicació no inclosos",
-      "choose_plan_button": "Tria pla"
+      "choose_plan_button": "Tria pla",
+      "per_business_price": "{{price}} / negoci / mes",
+      "min_businesses_one": "mínim {{count}} negoci",
+      "min_businesses_other": "mínim {{count}} negocis"
     },
     "faq": {
       "title": "Preguntes freqüents",

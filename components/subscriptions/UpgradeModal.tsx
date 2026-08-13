@@ -127,10 +127,15 @@ const UpgradeModal: React.FC = () => {
                                         <div className="mb-8">
                                             <div className="flex items-baseline gap-1">
                                                 <span className="text-4xl font-black text-foreground">
-                                                    {isFree ? "Free" : pack.getFormattedPrice()}
+                                                    {isFree ? "Free" : t("subscriptions.per_business_price", { price: pack.getFormattedPrice() })}
                                                 </span>
                                                 {!isFree && <span className="text-muted-foreground font-bold text-lg">/{isMonthly ? "mo" : "yr"}</span>}
                                             </div>
+                                            {!isFree && (
+                                                <p className="text-xs text-muted-foreground mt-1">
+                                                    {t("subscriptions.min_businesses", { count: pack.minBusinesses })}
+                                                </p>
+                                            )}
                                         </div>
 
                                         <ul className="mb-10 space-y-4 flex-1 text-sm font-medium text-muted-foreground">

@@ -9,7 +9,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { useUsage } from "@/features/subscriptions/useUsage";
+import { useBusinessPlan } from "@/features/business/useBusinessPlan";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { cn } from "@/lib/utils";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
@@ -40,9 +40,10 @@ export const MenuCategoryCardSortable = ({
     onDuplicateItem
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { usage } = useUsage();
+    const { plan } = useBusinessPlan(businessId);
     const { openUpgradeModal } = useSubscriptionStore();
-    const canCreateProduct = usage?.canCreateProduct ?? true;
+    // Product limits are enforced per business, not account-wide.
+    const canCreateProduct = plan?.canCreateProduct ?? true;
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: category.id,
