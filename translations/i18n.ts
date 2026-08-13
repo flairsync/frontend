@@ -1,6 +1,8 @@
 import i18n from "i18next";
+import ChainedBackend from "i18next-chained-backend";
 import HttpBackend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
+import { DevBackend, FormatSimple, I18nextPlugin, Tolgee, tolgeeBackend } from "@tolgee/i18next";
 import { getLangCookie } from "@/utils/cookies";
 
 function detectLang(): string {
@@ -10,8 +12,20 @@ function detectLang(): string {
   return ["en", "fr", "es", "cat"].includes(browser) ? browser : "en";
 }
 
+// DevBackend is registered explicitly (instead of via Tolgee's DevTools() helper) so live
+// fetching from the Tolgee API works the same in dev and prod builds — DevTools() only wires
+// up fetching in dev builds by default, since it's meant to gate the in-context editing overlay.
+const tolgee = Tolgee()
+  .use(DevBackend())
+  .use(I18nextPlugin())
+  .use(FormatSimple())
+  .init({
+    apiUrl: import.meta.env.VITE_TOLGEE_API_URL,
+    apiKey: import.meta.env.VITE_TOLGEE_API_KEY,
+  });
+
 i18n
-  .use(HttpBackend)
+  .use(ChainedBackend)
   .use(initReactI18next)
   .init({
     ns: [
@@ -35,7 +49,8 @@ i18n
     lng: typeof window !== "undefined" ? detectLang() : "en",
     fallbackLng: "en",
     backend: {
-      loadPath: "/locales/{{lng}}/{{ns}}.json",
+      backends: [tolgeeBackend(tolgee), HttpBackend],
+      backendOptions: [{}, { loadPath: "/locales/{{lng}}/{{ns}}.json" }],
     },
     interpolation: {
       escapeValue: false,
