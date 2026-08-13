@@ -1,6 +1,6 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/auth`;
+const baseUrl = `${API_URL}/auth`;
 
 const loginUrl = `${baseUrl}/login`;
 const googleAuthUrl = `${baseUrl}/google`;

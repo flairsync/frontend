@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { extractErrorMessage } from "@/utils/error-utils";
 
-const BASE = 'https://api.flairsync.com/api/v1';
+const BASE = API_URL;
 
 export interface SupportCategory {
   value: string;

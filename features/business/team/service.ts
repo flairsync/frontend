@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "@/features/shared/api-response";
 
-const BASE_URL = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const BASE_URL = `${API_URL}/businesses`;
 
 export interface CreateTeamPayload {
     name: string;

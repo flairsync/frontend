@@ -6,6 +6,7 @@ import { NotificationPayload } from './types';
 import { registerDeviceTokenApiCall, removeDeviceTokenByDeviceIdApiCall } from './service';
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import dayjs from '@/utils/date-utils';
+import { API_URL } from "@/lib/flairapi";
 
 const fmtNotifDates = (msg: string, tz?: string) =>
     msg.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z/g, (iso) =>
@@ -90,7 +91,7 @@ function setupSse(onNotification: (n: NotificationPayload) => void) {
     // not a request/response call axios can make — there's nothing here for flairapi's
     // interceptors (auth-refresh, error toasts, request dedupe) to attach to. Accepted
     // exception to the "always call through flairapi" rule.
-    const apiBase = 'https://api.flairsync.com/api/v1' as string;
+    const apiBase = API_URL;
     sseSource = new EventSource(`${apiBase}/notifications/stream`, { withCredentials: true });
 
     sseSource.onopen = () => {

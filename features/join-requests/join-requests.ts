@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 
 export type JoinRequestChildType = "BUSINESS" | "REGION";
 export type JoinRequestParentType = "REGION" | "ORGANIZATION";
@@ -79,7 +79,7 @@ export interface OrganizationSearchResponse {
     limit: number;
 }
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/join-requests`;
+const baseUrl = `${API_URL}/join-requests`;
 
 export const joinRequestsApi = {
     create: (payload: CreateJoinRequestPayload) =>

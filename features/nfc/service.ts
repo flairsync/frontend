@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
-const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const baseBusinessUrl = `${API_URL}/businesses`;
 
 const getNfcTagsUrl = (businessId: string) => {
     return `${baseBusinessUrl}/${businessId}/nfc-tags`;

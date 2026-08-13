@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { ApplicationStatus, JobCategory, JobStatus, JobType } from "@/models/Job";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
@@ -49,8 +49,8 @@ export interface ApplyToJobDto {
   resumeUrl?: string;
 }
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/jobs`;
-const businessesBaseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const baseUrl = `${API_URL}/jobs`;
+const businessesBaseUrl = `${API_URL}/businesses`;
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 

@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "../shared/api-response";
 import { CustomerActionPayload } from "./types";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/discovery`;
+const baseUrl = `${API_URL}/discovery`;
 
 export interface FetchDiscoveryBusinessesParams {
     lat?: number;

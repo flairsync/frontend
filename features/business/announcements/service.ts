@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "@/features/shared/api-response";
 import { AnnouncementInboxItem, AnnouncementKind, AnnouncementAudienceType, SentAnnouncement, GlobalInboxBusiness } from "@/models/business/Announcement";
 
-const apiRoot = 'https://api.flairsync.com/api/v1';
+const apiRoot = API_URL;
 
 const baseUrl = (businessId: string) =>
     `${apiRoot}/businesses/${businessId}/announcements`;

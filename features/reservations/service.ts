@@ -1,9 +1,9 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { WalkInReservationDto, AssignTableDto, CustomerLateDto, JoinWaitlistDto, WaitlistEntry } from "./types";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const getReservationsUrl = (businessId: string) => {
-    return `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/reservations`;
+    return `${API_URL}/businesses/${businessId}/reservations`;
 };
 
 export interface PreOrderItem {
@@ -76,7 +76,7 @@ export const findAvailabilityApiCall = async (businessId: string, date: string, 
     unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
 
 export const lookupUserApiCall = async (email?: string, phone?: string) =>
-    unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/users/lookup`, { params: { email, phone } }));
+    unwrap(await flairapi.get(`${API_URL}/users/lookup`, { params: { email, phone } }));
 
 // V2 endpoints
 export const fetchReservationDashboardApiCall = async (businessId: string) =>

@@ -1,6 +1,6 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/effective-employee-permissions`;
+const baseUrl = `${API_URL}/effective-employee-permissions`;
 
 export const fetchMyPermissionsApiCall = (businessId: string) => {
     return flairapi.get(`${baseUrl}/${businessId}`);

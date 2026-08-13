@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}`;
+const baseUrl = `${API_URL}`;
 const fiscalInvoicesUrl = `${baseUrl}/fiscal-invoices`;
 const getOrdersUrl = (businessId: string) => `${baseUrl}/businesses/${businessId}/orders`;
 

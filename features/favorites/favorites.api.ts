@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrapPaginated, PaginatedData } from "../shared/api-response";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/user-favorites`;
+const baseUrl = `${API_URL}/user-favorites`;
 
 export const addFavoriteApiCall = (businessId: string) => {
     return flairapi.post(`${baseUrl}/${businessId}`);

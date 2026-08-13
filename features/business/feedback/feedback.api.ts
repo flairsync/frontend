@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrapPaginated, PaginatedData } from "@/features/shared/api-response";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/feedback`;
+const baseUrl = `${API_URL}/feedback`;
 
 export interface FetchBusinessFeedbackParams {
     page?: number;

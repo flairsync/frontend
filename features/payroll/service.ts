@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 import { GeneratePayrollDto, FinalizePayrollDto } from "@/models/business/shift/PayrollEntry";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/payroll`;
+const baseUrl = `${API_URL}/payroll`;
 
 export const fetchPayrollPreviewApiCall = async (
   businessId: string,

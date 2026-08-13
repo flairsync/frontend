@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi"
+import flairapi, { API_URL } from "@/lib/flairapi"
 
 export interface BusinessTax {
     id: string
@@ -20,10 +20,10 @@ export interface BusinessTaxGroup {
 }
 
 const taxUrl = (businessId: string) =>
-    `${'https://api.flairsync.com/api/v1'}/business/my/${businessId}/taxes`
+    `${API_URL}/business/my/${businessId}/taxes`
 
 const groupUrl = (businessId: string) =>
-    `${'https://api.flairsync.com/api/v1'}/business/my/${businessId}/taxes/groups`
+    `${API_URL}/business/my/${businessId}/taxes/groups`
 
 const parseTax = (t: any): BusinessTax => ({ ...t, rate: Number(t.rate) })
 const parseGroup = (g: any): BusinessTaxGroup => ({ ...g, taxes: (g.taxes ?? []).map(parseTax) })

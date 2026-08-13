@@ -1,6 +1,6 @@
-import flairapi, { Timeouts } from "@/lib/flairapi";
+import flairapi, { Timeouts, API_URL } from "@/lib/flairapi";
 import { unwrap } from "@/features/shared/api-response";
-const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const baseBusinessUrl = `${API_URL}/businesses`;
 
 const getMenusUrl = (businessId: string) => {
   return `${baseBusinessUrl}/${businessId}/menus`;

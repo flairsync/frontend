@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 
 export interface Region {
     id: string;
@@ -46,7 +46,7 @@ export interface RegionDashboard {
     };
 }
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/regions`;
+const baseUrl = `${API_URL}/regions`;
 
 export const regionsApi = {
     listMine: () =>

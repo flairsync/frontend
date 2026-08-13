@@ -4,7 +4,12 @@ import i18n from "@/translations/i18n";
 import { useSystemErrorStore } from "@/features/system-errors/SystemErrorStore";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { saveSecureItem } from "@/misc/SecureStorage";
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/auth/refresh`;
+
+// VITE_ vars are inlined at build time — see Dockerfile.prod, which passes this
+// through as a build ARG. Every features/*/service.ts imports this rather than
+// hardcoding the API host, so a single env var controls every environment.
+export const API_URL = import.meta.env.VITE_API_URL;
+const baseUrl = `${API_URL}/auth/refresh`;
 
 import NProgress from "nprogress";
 

@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 
 export interface TaxRate {
     id: string;
@@ -19,7 +19,7 @@ export interface CreateTaxRatePayload {
 }
 
 const getUrl = (businessId: string) =>
-    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/taxes`;
+    `${API_URL}/businesses/${businessId}/taxes`;
 
 export const taxesApi = {
     list: (businessId: string) =>

@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-const tfaBaseUrl = `${'https://api.flairsync.com/api/v1'}/auth/tfa`;
-const passwordBaseUrl = `${'https://api.flairsync.com/api/v1'}/auth/password`;
+const tfaBaseUrl = `${API_URL}/auth/tfa`;
+const passwordBaseUrl = `${API_URL}/auth/password`;
 
 const myTfaStatus = `${tfaBaseUrl}/status`;
 

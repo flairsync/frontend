@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 
 const base = (businessId: string) =>
-  `${'https://api.flairsync.com/api/v1'}/station/businesses/${businessId}`;
+  `${API_URL}/station/businesses/${businessId}`;
 
 export const stationService = {
   generatePairingCode: (businessId: string) =>
@@ -42,7 +42,7 @@ export const stationService = {
 };
 
 const ksBase = (businessId: string) =>
-  `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/kitchen-stations`;
+  `${API_URL}/businesses/${businessId}/kitchen-stations`;
 
 export const kitchenStationService = {
   list: (businessId: string) =>

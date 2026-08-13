@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 import { ThemeCatalogItem } from "./types";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const baseUrl = `${API_URL}/businesses`;
 
 export const fetchThemeCatalogApiCall = async (businessId: string) =>
   unwrap<ThemeCatalogItem[]>(await flairapi.get(`${baseUrl}/${businessId}/themes`));

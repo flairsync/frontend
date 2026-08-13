@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 import { GenerateTipDistributionDto, FinalizeTipDistributionDto, TipPoolStatus } from "@/models/business/tipPooling/TipDistribution";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/tip-pooling`;
+const baseUrl = `${API_URL}/tip-pooling`;
 
 export const fetchTipPoolPreviewApiCall = async (
   businessId: string,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +23,7 @@ interface Props {
 
 async function setStaffPin(businessId: string, empId: string, pin: string) {
     await flairapi.patch(
-        `${'https://api.flairsync.com/api/v1'}/employments/bus/${businessId}/employees/${empId}/pin`,
+        `${API_URL}/employments/bus/${businessId}/employees/${empId}/pin`,
         { pin },
     );
 }

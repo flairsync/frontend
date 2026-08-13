@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "@/features/shared/api-response";
 
 const baseUrl = (businessId: string) =>
-    `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/reviews`;
+    `${API_URL}/businesses/${businessId}/reviews`;
 
 export interface FetchStaffReviewsParams {
     page?: number;

@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "@/features/shared/api-response";
 
-const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const baseBusinessUrl = `${API_URL}/businesses`;
 
 const getMenuBoardsUrl = (businessId: string) => {
   return `${baseBusinessUrl}/${businessId}/menu-boards`;
@@ -82,6 +82,6 @@ export const fetchPublicMenuBoardApiCall = async (
 ): Promise<PublicBoardResponse> =>
   unwrap(
     await flairapi.get(
-      `${'https://api.flairsync.com/api/v1'}/public/menu-boards/${token}`,
+      `${API_URL}/public/menu-boards/${token}`,
     ),
   );

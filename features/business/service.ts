@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
-const baseUrl = `${'https://api.flairsync.com/api/v1'}`;
-const baseBusinessUrl = `${'https://api.flairsync.com/api/v1'}/business`;
+const baseUrl = `${API_URL}`;
+const baseBusinessUrl = `${API_URL}/business`;
 
 const getBusinessTagsUrl = `${baseUrl}/business-tags`;
 const getBusinessTypesUrl = `${baseUrl}/business-types`;

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { io, type Socket } from 'socket.io-client';
 import { getStationToken } from './useStationAuth';
+import { API_URL } from "@/lib/flairapi";
 
 export interface OrderUpdatePayload {
   id: string;
@@ -19,7 +20,7 @@ export function useStationSocket(onOrderUpdate: (payload: OrderUpdatePayload) =>
     if (!token) return;
 
     // Derive the API server origin from the configured base URL
-    const apiOrigin = new URL('https://api.flairsync.com/api/v1' as string).origin;
+    const apiOrigin = new URL(API_URL).origin;
     const socket: Socket = io(`${apiOrigin}/station`, {
       auth: { token },
       transports: ['websocket', 'polling'],

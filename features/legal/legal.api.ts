@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 import { LegalDocument, LegalDocumentType } from "@/models/LegalDocument";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/legal`;
+const baseUrl = `${API_URL}/legal`;
 
 export const fetchCurrentLegalDocumentApiCall = async (
     type: LegalDocumentType

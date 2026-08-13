@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "@/features/shared/api-response";
 import { PinnedLink } from "@/models/PinnedLink";
 
-const businessesBaseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const businessesBaseUrl = `${API_URL}/businesses`;
 
 export const fetchPinnedLinksApiCall = async (businessId: string) =>
   unwrap<PinnedLink[]>(await flairapi.get(`${businessesBaseUrl}/${businessId}/pinned-links`));

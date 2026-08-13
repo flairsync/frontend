@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
@@ -130,7 +130,7 @@ export interface UnvalidatedShiftSummary {
   }[];
 }
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/shifts`;
+const baseUrl = `${API_URL}/shifts`;
 
 // Templates API
 export const fetchShiftTemplatesApiCall = async (businessId: string) => {
@@ -320,19 +320,19 @@ export const fetchUnvalidatedShiftSummaryApiCall = async (businessId: string, we
 
 // Attendance API
 export const checkInApiCall = (data: CheckInDto) => {
-  return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/check-in`, data);
+  return flairapi.post(`${API_URL}/attendance/check-in`, data);
 };
 
 export const checkOutApiCall = (data: CheckOutDto) => {
-  return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/check-out`, data);
+  return flairapi.post(`${API_URL}/attendance/check-out`, data);
 };
 
 export const startBreakApiCall = (data: CheckOutDto) => {
-  return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/break/start`, data);
+  return flairapi.post(`${API_URL}/attendance/break/start`, data);
 };
 
 export const endBreakApiCall = (data: CheckOutDto) => {
-  return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/break/end`, data);
+  return flairapi.post(`${API_URL}/attendance/break/end`, data);
 };
 
 // Mints a fresh single-use QR token for the business's clock-in display. Callers should
@@ -340,7 +340,7 @@ export const endBreakApiCall = (data: CheckOutDto) => {
 // constants below) — an old, photographed code becomes worthless quickly.
 export const generateAttendanceQrApiCall = (businessId: string) => {
   return flairapi.post<{ data: ClockQrPayload }>(
-    `${'https://api.flairsync.com/api/v1'}/attendance/qr/generate`,
+    `${API_URL}/attendance/qr/generate`,
     { businessId }
   );
 };
@@ -362,11 +362,11 @@ export const fetchAttendanceLogsApiCall = async (
   if (filters?.page) params.append('page', String(filters.page));
   if (filters?.limit) params.append('limit', String(filters.limit));
   const qs = params.toString();
-  return unwrapPaginated(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
+  return unwrapPaginated(await flairapi.get(`${API_URL}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
 };
 
 export const fetchAttendanceByIdApiCall = async (id: string, businessId: string) =>
-  unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/${id}?businessId=${businessId}`));
+  unwrap(await flairapi.get(`${API_URL}/attendance/${id}?businessId=${businessId}`));
 
 export const fetchMyAttendanceApiCall = async (
   businessId: string,
@@ -378,32 +378,32 @@ export const fetchMyAttendanceApiCall = async (
   if (filters?.lifecycleStatus) params.append('lifecycleStatus', filters.lifecycleStatus);
   if (filters?.page) params.append('page', String(filters.page));
   if (filters?.limit) params.append('limit', String(filters.limit));
-  return unwrapPaginated(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/me?${params.toString()}`));
+  return unwrapPaginated(await flairapi.get(`${API_URL}/attendance/me?${params.toString()}`));
 };
 
 export const fetchTodayAttendanceDashboardApiCall = async (businessId: string, date?: string) => {
-  const url = `${'https://api.flairsync.com/api/v1'}/attendance/today?businessId=${businessId}`;
+  const url = `${API_URL}/attendance/today?businessId=${businessId}`;
   return unwrap(await flairapi.get(date ? `${url}&date=${date}` : url));
 };
 
 export const validateAttendanceApiCall = (attendanceId: string, data: ValidateAttendanceDto) => {
-  return flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/${attendanceId}/validate`, data);
+  return flairapi.post(`${API_URL}/attendance/${attendanceId}/validate`, data);
 };
 
 export const logShiftWorkedApiCall = async (shiftId: string, data: LogShiftWorkedDto) =>
   unwrap<import('@/models/business/shift/Attendance').AttendanceLog>(
-    await flairapi.post(`${'https://api.flairsync.com/api/v1'}/attendance/${shiftId}/log-worked`, data)
+    await flairapi.post(`${API_URL}/attendance/${shiftId}/log-worked`, data)
   );
 
 // Attendance Summary API
 export const fetchAttendanceSummaryApiCall = async (businessId: string, startDate: string, endDate: string, employmentId?: string) => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append('employmentId', employmentId);
-  return unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/attendance/summary?${params.toString()}`));
+  return unwrap(await flairapi.get(`${API_URL}/attendance/summary?${params.toString()}`));
 };
 
 // Absence Records API
-const absenceBaseUrl = `${'https://api.flairsync.com/api/v1'}/attendance/absences`;
+const absenceBaseUrl = `${API_URL}/attendance/absences`;
 
 export const createAbsenceRecordApiCall = (data: import('@/models/business/shift/AbsenceRecord').CreateAbsenceRecordDto) => {
   return flairapi.post(absenceBaseUrl, data);

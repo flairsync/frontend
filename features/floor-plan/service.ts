@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
 
 const getFloorPlanUrl = (businessId: string) => {
-    return `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/floor-plan`;
+    return `${API_URL}/businesses/${businessId}/floor-plan`;
 };
 
 // DTOs

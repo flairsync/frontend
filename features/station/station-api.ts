@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getStationToken, clearStationToken } from "./useStationAuth";
 import { useStaffSession } from "@/features/pos/useStaffSession";
-import { attachRequestDedupe, attachNetworkErrorToast } from "@/lib/flairapi";
+import { attachRequestDedupe, attachNetworkErrorToast, API_URL } from "@/lib/flairapi";
 
 // These three clients intentionally do NOT share the app-wide `flairapi` instance.
 // Station/POS/KDS devices authenticate with a Bearer device token (+ a staff short
@@ -16,7 +16,7 @@ const STATION_TIMEOUT_MS = 30_000; // shorter than flairapi's 60s default: fail 
 
 // Station-authenticated requests (uses device token via Bearer header)
 export const stationApi = axios.create({
-  baseURL: 'https://api.flairsync.com/api/v1',
+  baseURL: API_URL,
   timeout: STATION_TIMEOUT_MS,
 });
 attachRequestDedupe(stationApi);
@@ -53,7 +53,7 @@ attachNetworkErrorToast(stationApi);
 // Staff-authenticated requests: device token in Authorization + staff short token in X-Staff-Token
 // Both headers are required for all write operations per the station API spec
 export const staffApi = axios.create({
-  baseURL: 'https://api.flairsync.com/api/v1',
+  baseURL: API_URL,
   timeout: STATION_TIMEOUT_MS,
 });
 attachRequestDedupe(staffApi);
@@ -88,7 +88,7 @@ attachNetworkErrorToast(staffApi);
 
 // Public endpoint for the pairing link call (no auth)
 export const publicApi = axios.create({
-  baseURL: 'https://api.flairsync.com/api/v1',
+  baseURL: API_URL,
   timeout: STATION_TIMEOUT_MS,
 });
 attachRequestDedupe(publicApi);

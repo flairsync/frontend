@@ -1,8 +1,8 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap, unwrapPaginated, PaginatedData } from "../shared/api-response";
 
 const getOrdersUrl = (businessId: string) => {
-    return `${'https://api.flairsync.com/api/v1'}/businesses/${businessId}/orders`;
+    return `${API_URL}/businesses/${businessId}/orders`;
 };
 
 // DTOs

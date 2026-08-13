@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 
 export interface Organization {
     id: string;
@@ -51,7 +51,7 @@ export interface OrganizationDashboard {
     };
 }
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/organizations`;
+const baseUrl = `${API_URL}/organizations`;
 
 export const organizationsApi = {
     listMine: () =>

@@ -1,4 +1,4 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { Task, TaskStatus } from "@/models/Task";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
@@ -28,7 +28,7 @@ export interface ListTasksParams {
   status?: TaskStatus;
 }
 
-const businessesBaseUrl = `${'https://api.flairsync.com/api/v1'}/businesses`;
+const businessesBaseUrl = `${API_URL}/businesses`;
 
 export const fetchBusinessTasksApiCall = async (businessId: string, params: ListTasksParams = {}) => {
   const qs = new URLSearchParams();

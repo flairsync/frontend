@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "@/features/shared/api-response";
 
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/platform-settings`;
+const baseUrl = `${API_URL}/platform-settings`;
 
 export type PublicPlatformSettings = {
   betaModeEnabled: boolean;

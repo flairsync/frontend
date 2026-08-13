@@ -1,7 +1,7 @@
-import flairapi from "@/lib/flairapi";
+import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "./api-response";
-const baseUrl = `${'https://api.flairsync.com/api/v1'}/countries`;
-const permissionsUrl = `${'https://api.flairsync.com/api/v1'}/permissions`;
+const baseUrl = `${API_URL}/countries`;
+const permissionsUrl = `${API_URL}/permissions`;
 
 const countriesListUrl = `${baseUrl}/list`;
 
@@ -14,4 +14,4 @@ export const getPermissionsListApiCall = async () =>
   unwrap(await flairapi.get(permissionsUrl));
 
 export const fetchAllergiesApiCall = async () =>
-  unwrap(await flairapi.get(`${'https://api.flairsync.com/api/v1'}/allergy`));
+  unwrap(await flairapi.get(`${API_URL}/allergy`));
