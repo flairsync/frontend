@@ -1,4 +1,6 @@
 import i18n from "i18next";
+import ChainedBackend from "i18next-chained-backend";
+import HttpBackend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 import { DevBackend, FormatSimple, I18nextPlugin, Tolgee, tolgeeBackend } from "@tolgee/i18next";
 import { getLangCookie } from "@/utils/cookies";
@@ -43,7 +45,7 @@ const tolgee = Tolgee()
   });
 
 i18n
-  .use(tolgeeBackend(tolgee))
+  .use(ChainedBackend)
   .use(initReactI18next)
   .init({
     ns: [
@@ -66,6 +68,10 @@ i18n
     fallbackNS: "common",
     lng: typeof window !== "undefined" ? detectLang() : "en",
     fallbackLng: "en",
+    backend: {
+      backends: [tolgeeBackend(tolgee), HttpBackend],
+      backendOptions: [{}, { loadPath: "/locales/{{lng}}/{{ns}}.json" }],
+    },
     interpolation: {
       escapeValue: false,
     },
