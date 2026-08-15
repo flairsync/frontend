@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, CopyPlus } from "lucide-react";
 import { OpeningHours, OpeningPeriod } from "@/models/business/MyBusinessFullDetails";
 
 interface WorkHoursSelectorProps {
@@ -97,6 +97,25 @@ export default function WorkHoursSelector({
         );
     };
 
+    const duplicateToAllDays = (day: string) => {
+        const source = hoursByDay.find((oh) => oh.day === day);
+        if (!source) return;
+
+        const updated = hoursByDay.map((oh) =>
+            oh.day === day
+                ? oh
+                : new OpeningHours(
+                      oh.id,
+                      oh.day,
+                      source.isClosed,
+                      source.periods.map(
+                          (p) => new OpeningPeriod(undefined as any, p.open, p.close)
+                      )
+                  )
+        );
+        onChange(updated);
+    };
+
     return (
         <Card className="mt-6 w-full">
             <CardContent className="p-4 space-y-6">
@@ -127,6 +146,16 @@ export default function WorkHoursSelector({
                                     <span className="text-sm text-muted-foreground">
                                         {dayHours.isClosed ? "Closed" : "Open"}
                                     </span>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        title="Copy to all days"
+                                        className="text-muted-foreground hover:text-primary"
+                                        onClick={() => duplicateToAllDays(dayHours.day)}
+                                    >
+                                        <CopyPlus className="h-4 w-4" />
+                                    </Button>
                                 </div>
                             </div>
 

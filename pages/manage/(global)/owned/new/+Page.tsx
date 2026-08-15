@@ -56,15 +56,18 @@ interface BusinessFormValues {
 
 const NO_KITCHEN_TYPES = ['coffee_shop', 'bakery', 'coffee_drinks'];
 
+const DEFAULT_OPEN = '09:00';
+const DEFAULT_CLOSE = '22:00';
+
 const initialHours: OpeningHours[] = [
-    new OpeningHours('', 'monday', false, [new OpeningPeriod('', '08:00', '15:00'), new OpeningPeriod('', '21:00', '04:00')]),
-    new OpeningHours('', 'tuesday', false, [new OpeningPeriod('', '08:00', '15:00')]),
-    new OpeningHours('', 'wednesday', false, [new OpeningPeriod('', '08:00', '15:00')]),
-    new OpeningHours('', 'thursday', false, [new OpeningPeriod('', '08:00', '15:00')]),
-    new OpeningHours('', 'friday', false, [new OpeningPeriod('', '08:00', '15:00'), new OpeningPeriod('', '21:00', '04:00')]),
-    new OpeningHours('', 'saturday', true, []),
-    new OpeningHours('', 'sunday', true, []),
-];
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+].map((day) => new OpeningHours('', day, false, [new OpeningPeriod('', DEFAULT_OPEN, DEFAULT_CLOSE)]));
 
 
 // Validation schema with Yup
