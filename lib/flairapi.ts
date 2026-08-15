@@ -107,43 +107,6 @@ export function attachNetworkErrorToast(instance: AxiosInstance): void {
   );
 }
 
-// Bounds the "reload the page and hope the refresh works next time" recovery path below.
-// Without this cap, a refresh failure that isn't auth.session.expired (a revoked token, a
-// backend hiccup, anything) reloads unconditionally, which re-runs into the same failure and
-// reloads again — an infinite refresh loop with no backoff. At most a couple of reload attempts
-// within a short window, then fall back to sending the user to /login instead of looping forever.
-const RELOAD_GUARD_KEY = "fs_refresh_reload_attempts";
-const MAX_RELOAD_ATTEMPTS = 2;
-const RELOAD_WINDOW_MS = 30_000;
-
-function shouldReloadForRefreshFailure(): boolean {
-  try {
-    const now = Date.now();
-    const raw = sessionStorage.getItem(RELOAD_GUARD_KEY);
-    const state = raw ? JSON.parse(raw) : null;
-
-    if (state && now - state.firstAttemptAt < RELOAD_WINDOW_MS) {
-      if (state.count >= MAX_RELOAD_ATTEMPTS) return false;
-      sessionStorage.setItem(RELOAD_GUARD_KEY, JSON.stringify({ count: state.count + 1, firstAttemptAt: state.firstAttemptAt }));
-      return true;
-    }
-
-    sessionStorage.setItem(RELOAD_GUARD_KEY, JSON.stringify({ count: 1, firstAttemptAt: now }));
-    return true;
-  } catch {
-    // sessionStorage unavailable (private mode, quota, etc.) — fail safe, don't loop.
-    return false;
-  }
-}
-
-function clearReloadGuard() {
-  try {
-    sessionStorage.removeItem(RELOAD_GUARD_KEY);
-  } catch {
-    // ignore
-  }
-}
-
 // To avoid multiple refreshes in parallel
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -258,23 +221,17 @@ flairapi.interceptors.response.use(
       try {
         await flairapi.post(baseUrl);
 
-        if (typeof window !== "undefined") clearReloadGuard();
         processQueue(null, null);
         return flairapi(originalRequest);
       } catch (refreshError: any) {
         processQueue(refreshError, null);
+        // Never reload on a refresh failure, for any reason — a reload just re-runs the same
+        // request into the same failure, which reloads again, with no backoff: an infinite
+        // loop hammering the API. Always send the user to /login instead — a one-way
+        // navigation, not a retry loop.
         if (typeof window !== "undefined") {
-          if (refreshError?.response?.data?.code === "auth.session.expired") {
-            saveSecureItem('auth_logout_reason', 'inactivity');
-            window.location.href = '/login';
-          } else if (shouldReloadForRefreshFailure()) {
-            window.location.reload();
-          } else {
-            // Already tried reloading recently and it didn't help — stop looping and send
-            // the user somewhere they can actually recover from instead of retrying forever.
-            saveSecureItem('auth_logout_reason', 'inactivity');
-            window.location.href = '/login';
-          }
+          saveSecureItem('auth_logout_reason', 'inactivity');
+          window.location.href = '/login';
         }
         return Promise.reject(refreshError);
       } finally {
