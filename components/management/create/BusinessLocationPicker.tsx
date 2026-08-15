@@ -174,7 +174,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
         }).then(res => {
             if (res.addresses && res.addresses.length > 0) {
                 const addr = res.addresses[0];
-                const newAddress = addr.formattedAddress || address;
+                const newAddress = addr.formattedAddress || addr.addressLabel || addr.placeLabel || address;
                 const newCity = addr.city ? addr.city.toLowerCase() : city;
                 setAddress(newAddress);
                 setCity(newCity);
@@ -291,7 +291,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
 
                     if (res.addresses && res.addresses.length > 0) {
                         const addr = res.addresses[0];
-                        const newAddress = addr.formattedAddress || "";
+                        const newAddress = addr.formattedAddress || addr.addressLabel || addr.placeLabel || "";
                         const newCity = addr.city ? addr.city.toLowerCase() : "";
                         setAddress(newAddress);
                         if (newCity) setCity(newCity);
