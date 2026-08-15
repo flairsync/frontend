@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Sparkles, Upload, X, Trash2, ArrowLeft, ImageOff } from "lucide-react";
+import { Loader2, Sparkles, Upload, X, Trash2, ArrowLeft, ImageOff, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Allergy } from "@/models/shared/Allergy";
@@ -20,12 +20,19 @@ import { ParsedMenu, BulkImportMenuDto, BulkImportMenuResult } from "@/features/
 
 const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
+type DraftVariant = {
+    key: string;
+    name: string;
+    price: number;
+};
+
 type DraftItem = {
     key: string;
     name: string;
     description: string;
     price: number;
     allergens: string[];
+    variants: DraftVariant[];
 };
 
 type DraftCategory = {
@@ -44,6 +51,11 @@ const toDraft = (parsed: ParsedMenu): DraftCategory[] =>
             description: item.description || "",
             price: typeof item.price === "number" ? item.price : 0,
             allergens: item.allergens || [],
+            variants: (item.variants || []).map((v) => ({
+                key: crypto.randomUUID(),
+                name: v.name || "",
+                price: typeof v.price === "number" ? v.price : 0,
+            })),
         })),
     }));
 
@@ -179,6 +191,68 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
         );
     };
 
+    const addVariant = (catKey: string, itemKey: string) => {
+        setCategories((prev) =>
+            prev.map((c) =>
+                c.key !== catKey
+                    ? c
+                    : {
+                        ...c,
+                        items: c.items.map((i) =>
+                            i.key !== itemKey
+                                ? i
+                                : {
+                                    ...i,
+                                    variants: [
+                                        ...i.variants,
+                                        { key: crypto.randomUUID(), name: "", price: i.variants.length === 0 ? i.price : 0 },
+                                    ],
+                                },
+                        ),
+                    },
+            ),
+        );
+    };
+
+    const updateVariant = (catKey: string, itemKey: string, variantKey: string, patch: Partial<DraftVariant>) => {
+        setCategories((prev) =>
+            prev.map((c) =>
+                c.key !== catKey
+                    ? c
+                    : {
+                        ...c,
+                        items: c.items.map((i) =>
+                            i.key !== itemKey
+                                ? i
+                                : {
+                                    ...i,
+                                    variants: i.variants.map((v) =>
+                                        v.key === variantKey ? { ...v, ...patch } : v,
+                                    ),
+                                },
+                        ),
+                    },
+            ),
+        );
+    };
+
+    const removeVariant = (catKey: string, itemKey: string, variantKey: string) => {
+        setCategories((prev) =>
+            prev.map((c) =>
+                c.key !== catKey
+                    ? c
+                    : {
+                        ...c,
+                        items: c.items.map((i) =>
+                            i.key !== itemKey
+                                ? i
+                                : { ...i, variants: i.variants.filter((v) => v.key !== variantKey) },
+                        ),
+                    },
+            ),
+        );
+    };
+
     const removeAllergen = (catKey: string, itemKey: string, code: string) => {
         setCategories((prev) =>
             prev.map((c) =>
@@ -206,12 +280,18 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
                     name: c.name.trim(),
                     items: c.items
                         .filter((i) => i.name.trim())
-                        .map((i) => ({
-                            name: i.name.trim(),
-                            description: i.description.trim() || undefined,
-                            price: i.price,
-                            allergens: i.allergens,
-                        })),
+                        .map((i) => {
+                            const variants = i.variants
+                                .filter((v) => v.name.trim())
+                                .map((v) => ({ name: v.name.trim(), price: v.price }));
+                            return {
+                                name: i.name.trim(),
+                                description: i.description.trim() || undefined,
+                                price: variants.length > 0 ? undefined : i.price,
+                                allergens: i.allergens,
+                                variants: variants.length > 0 ? variants : undefined,
+                            };
+                        }),
                 })),
         };
 
@@ -396,19 +476,96 @@ export const AiMenuImportModal: React.FC<AiMenuImportModalProps> = ({
                                                         placeholder={t("item_modal.description")}
                                                         rows={2}
                                                     />
-                                                    <Input
-                                                        type="number"
-                                                        step="0.01"
-                                                        min={0}
-                                                        value={item.price}
-                                                        onChange={(e) =>
-                                                            updateItem(cat.key, item.key, {
-                                                                price: parseFloat(e.target.value) || 0,
-                                                            })
-                                                        }
-                                                        placeholder={t("item_modal.price")}
-                                                        className="max-w-[140px]"
-                                                    />
+                                                    {item.variants.length === 0 ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <Input
+                                                                type="number"
+                                                                step="0.01"
+                                                                min={0}
+                                                                value={item.price}
+                                                                onChange={(e) =>
+                                                                    updateItem(cat.key, item.key, {
+                                                                        price: parseFloat(e.target.value) || 0,
+                                                                    })
+                                                                }
+                                                                placeholder={t("item_modal.price")}
+                                                                className="max-w-[140px]"
+                                                            />
+                                                            <Button
+                                                                type="button"
+                                                                variant="link"
+                                                                size="sm"
+                                                                className="h-auto p-0 text-xs"
+                                                                onClick={() => addVariant(cat.key, item.key)}
+                                                            >
+                                                                <Plus className="h-3 w-3 mr-1" />
+                                                                {t("menu_management.ai_import.multiple_prices")}
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="space-y-2">
+                                                            {item.variants.map((variant) => (
+                                                                <div key={variant.key} className="flex items-center gap-2">
+                                                                    <Input
+                                                                        value={variant.name}
+                                                                        onChange={(e) =>
+                                                                            updateVariant(cat.key, item.key, variant.key, {
+                                                                                name: e.target.value,
+                                                                            })
+                                                                        }
+                                                                        placeholder={t("menu_management.ai_import.variant_name")}
+                                                                        className="flex-1"
+                                                                    />
+                                                                    <Input
+                                                                        type="number"
+                                                                        step="0.01"
+                                                                        min={0}
+                                                                        value={variant.price}
+                                                                        onChange={(e) =>
+                                                                            updateVariant(cat.key, item.key, variant.key, {
+                                                                                price: parseFloat(e.target.value) || 0,
+                                                                            })
+                                                                        }
+                                                                        placeholder={t("item_modal.price")}
+                                                                        className="max-w-[110px]"
+                                                                    />
+                                                                    <Button
+                                                                        type="button"
+                                                                        variant="ghost"
+                                                                        size="icon"
+                                                                        className="text-red-500 shrink-0"
+                                                                        onClick={() => removeVariant(cat.key, item.key, variant.key)}
+                                                                        title={t("menu_management.ai_import.remove_variant")}
+                                                                    >
+                                                                        <X className="h-4 w-4" />
+                                                                    </Button>
+                                                                </div>
+                                                            ))}
+                                                            <div className="flex items-center gap-3">
+                                                                <Button
+                                                                    type="button"
+                                                                    variant="link"
+                                                                    size="sm"
+                                                                    className="h-auto p-0 text-xs"
+                                                                    onClick={() => addVariant(cat.key, item.key)}
+                                                                >
+                                                                    <Plus className="h-3 w-3 mr-1" />
+                                                                    {t("menu_management.ai_import.add_variant")}
+                                                                </Button>
+                                                                <Button
+                                                                    type="button"
+                                                                    variant="link"
+                                                                    size="sm"
+                                                                    className="h-auto p-0 text-xs text-zinc-500"
+                                                                    onClick={() =>
+                                                                        updateItem(cat.key, item.key, { variants: [] })
+                                                                    }
+                                                                >
+                                                                    {t("menu_management.ai_import.single_price")}
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     {item.allergens.length > 0 && (
                                                         <div className="flex flex-wrap gap-1">
                                                             {item.allergens.map((code) => (

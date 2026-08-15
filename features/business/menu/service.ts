@@ -331,12 +331,18 @@ export const updateMenuItemApiCall = (
 
 //#region AI Menu Import
 
+export type ParsedMenuItemVariant = {
+  name: string;
+  price: number;
+};
+
 export type ParsedMenuItem = {
   name: string;
   description?: string | null;
   price?: number | null;
   category?: string;
   allergens?: string[];
+  variants?: ParsedMenuItemVariant[] | null;
 };
 
 export type ParsedMenuCategory = {
@@ -363,11 +369,17 @@ export const parseMenuImageWithAiApiCall = async (
   );
 };
 
+export type BulkImportMenuVariantDto = {
+  name: string;
+  price: number;
+};
+
 export type BulkImportMenuItemDto = {
   name: string;
   description?: string;
   price?: number;
   allergens?: string[];
+  variants?: BulkImportMenuVariantDto[];
 };
 
 export type BulkImportMenuCategoryDto = {
