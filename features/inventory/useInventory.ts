@@ -11,12 +11,15 @@ import {
     updateInventoryItemApiCall,
     deleteInventoryItemApiCall,
     adjustInventoryStockApiCall,
+    parseInventoryImageWithAiApiCall,
+    bulkImportParsedInventoryApiCall,
     CreateInventoryItemDto,
     UpdateInventoryItemDto,
     AdjustStockDto,
     InventoryFilters,
     TopConsumedFilters,
     TimelineFilters,
+    BulkImportInventoryDto,
 } from "./service";
 import { InventoryItem } from "@/models/inventory/InventoryItem";
 import { toast } from "sonner";
@@ -105,6 +108,19 @@ export const useInventory = (businessId: string, filters: InventoryFilters = {})
         },
     });
 
+    const parseImageMutation = useMutation({
+        mutationFn: (file: File) => parseInventoryImageWithAiApiCall(businessId, file),
+    });
+
+    const bulkImportMutation = useMutation({
+        mutationFn: (data: BulkImportInventoryDto) => bulkImportParsedInventoryApiCall(businessId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["inventory_items", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["inventory_groups", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["inventory_dashboard", businessId] });
+        },
+    });
+
     return {
         inventoryItems: inventoryItems?.items,
         pagination: inventoryItems?.pagination,
@@ -118,6 +134,10 @@ export const useInventory = (businessId: string, filters: InventoryFilters = {})
         isDeletingItem: deleteItemMutation.isPending,
         adjustStock: adjustStockMutation.mutateAsync,
         isAdjustingStock: adjustStockMutation.isPending,
+        parseInventoryImage: parseImageMutation.mutateAsync,
+        isParsingInventoryImage: parseImageMutation.isPending,
+        bulkImportInventory: bulkImportMutation.mutateAsync,
+        isBulkImportingInventory: bulkImportMutation.isPending,
     };
 };
 

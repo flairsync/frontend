@@ -1,4 +1,4 @@
-import flairapi, { API_URL } from "@/lib/flairapi";
+import flairapi, { API_URL, Timeouts } from "@/lib/flairapi";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const baseBusinessUrl = `${API_URL}/businesses`;
@@ -149,4 +149,67 @@ export const getMenuItemRecipeApiCall = async (businessId: string, menuItemId: s
 
 export const deleteRecipeIngredientApiCall = (businessId: string, recipeId: string) => {
     return flairapi.delete(`${getInventoryUrl(businessId)}/recipes/${recipeId}`);
+};
+
+// AI Inventory Scanning
+
+export type ParsedInventoryItem = {
+    name: string;
+    quantity: number | null;
+    unit: string | null;
+};
+
+export type ParsedInventoryGroup = {
+    name: string;
+    items: ParsedInventoryItem[];
+};
+
+export type ParsedInventory = {
+    groups: ParsedInventoryGroup[];
+};
+
+export const parseInventoryImageWithAiApiCall = async (
+    businessId: string,
+    file: File,
+): Promise<ParsedInventory> => {
+    const payload = new FormData();
+    payload.append("file", file);
+
+    return unwrap<ParsedInventory>(
+        await flairapi.post(`${getInventoryUrl(businessId)}/ai-parse/image`, payload, {
+            headers: { "Content-Type": "multipart/form-data" },
+            timeout: Timeouts.UPLOAD,
+        }),
+    );
+};
+
+export type BulkImportInventoryItemDto = {
+    name: string;
+    quantity?: number;
+    unit?: string;
+};
+
+export type BulkImportInventoryGroupDto = {
+    name: string;
+    items: BulkImportInventoryItemDto[];
+};
+
+export type BulkImportInventoryDto = {
+    groups: BulkImportInventoryGroupDto[];
+};
+
+export type BulkImportInventoryResult = {
+    groups: number;
+    items: number;
+};
+
+export const bulkImportParsedInventoryApiCall = async (
+    businessId: string,
+    data: BulkImportInventoryDto,
+): Promise<BulkImportInventoryResult> => {
+    return unwrap<BulkImportInventoryResult>(
+        await flairapi.post(`${getInventoryUrl(businessId)}/ai-import`, data, {
+            timeout: Timeouts.UPLOAD,
+        }),
+    );
 };
