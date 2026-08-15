@@ -8,6 +8,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { navigate } from 'vike/client/router';
 
 const LandingFaqSection = () => {
     const { t } = useTranslation("landing");
@@ -49,7 +50,10 @@ const LandingFaqSection = () => {
                     <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8 leading-relaxed">
                         {t('landing_page.faq.subtitle')}
                     </p>
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 sm:py-6 px-6 sm:px-8 text-base sm:text-lg transition-transform duration-200 hover:scale-105 active:scale-95 rounded-xl shadow-lg w-full sm:w-auto">
+                    <Button
+                        onClick={() => navigate('/support')}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 sm:py-6 px-6 sm:px-8 text-base sm:text-lg transition-transform duration-200 hover:scale-105 active:scale-95 rounded-xl shadow-lg w-full sm:w-auto"
+                    >
                         {t('landing_page.faq.cta_button')}
                         <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
