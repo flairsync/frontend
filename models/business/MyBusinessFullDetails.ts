@@ -439,7 +439,8 @@ export type UpdateBusinessDetailsDto = {
   priceLevel?: number;
   status?: string;
   timezone?: string;
-  currency?: string;
+  // No `currency` here on purpose — it's derived server-side from countryId,
+  // never client-settable. See CreateBusinessDto/UpdateBusinessDto on the API.
   allowReservations?: boolean;
   allowOrders?: boolean;
   requireReservationConfirmation?: boolean;

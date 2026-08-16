@@ -23,7 +23,7 @@ import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
-import { toIsoCurrencyCode } from '@/utils/currency'
+import { getCurrencySymbol, toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
 import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
 
@@ -64,7 +64,6 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const [description, setDescription] = useState(props.businessDetails?.description)
     const [contactEmail, setContactEmail] = useState(props.businessDetails?.email)
     const [phone, setPhone] = useState(props.businessDetails?.phone);
-    const [currency, setCurrency] = useState(toIsoCurrencyCode(props.businessDetails?.currency || "USD"));
     const [receiptLanguage, setReceiptLanguage] = useState(props.businessDetails?.receiptLanguage || "en");
     const [receiptSecondaryLanguage, setReceiptSecondaryLanguage] = useState<string | null>(
         props.businessDetails?.receiptSecondaryLanguage ?? null,
@@ -115,7 +114,6 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 email: contactEmail,
                 name: businessName,
                 phone: phone,
-                currency: currency,
                 slug: slug || undefined,
                 receiptLanguage: receiptLanguage,
                 // AD-04 gap fix: for a mandated-language country, receiptLanguage above is
@@ -205,26 +203,18 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
 
                 <div className="space-y-1.5 pt-2 border-t mt-4">
                     <Label>Currency</Label>
-                    <Select disabled={props.disabled} value={currency} onValueChange={setCurrency}>
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a currency" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[300px]">
-                            <SelectItem value="USD">US Dollar (USD $)</SelectItem>
-                            <SelectItem value="EUR">Euro (EUR €)</SelectItem>
-                            <SelectItem value="GBP">British Pound (GBP £)</SelectItem>
-                            <SelectItem value="TND">Tunisian Dinar (TND)</SelectItem>
-                            <SelectItem value="AED">Emirati Dirham (AED)</SelectItem>
-                            <SelectItem value="BRL">Brazilian Real (BRL R$)</SelectItem>
-                            <SelectItem value="CAD">Canadian Dollar (CAD CA$)</SelectItem>
-                            <SelectItem value="AUD">Australian Dollar (AUD AU$)</SelectItem>
-                            <SelectItem value="JPY">Japanese Yen (JPY ¥)</SelectItem>
-                            <SelectItem value="INR">Indian Rupee (INR ₹)</SelectItem>
-                            <SelectItem value="CHF">Swiss Franc (CHF)</SelectItem>
-                            <SelectItem value="SGD">Singapore Dollar (SGD SG$)</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground">This currency will be shown next to prices across your business.</p>
+                    <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2 text-sm">
+                        <span className="font-medium">
+                            {toIsoCurrencyCode(props.businessDetails?.currency)} ({getCurrencySymbol(props.businessDetails?.currency)})
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                            — set by {props.businessDetails?.country?.name || "your business's country"}
+                        </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                        Currency follows your business's registered country and can't be changed independently. To operate in a
+                        different currency, update the country under Location.
+                    </p>
                 </div>
 
                 {mandatedReceiptLanguage ? (
