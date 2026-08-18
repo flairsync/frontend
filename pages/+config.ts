@@ -43,6 +43,7 @@ declare global {
         verified: boolean;
         hasPP: boolean;
         ppVerified: boolean;
+        passwordBreached: boolean;
       };
       tfa?: {
         tfaEnabled: boolean;

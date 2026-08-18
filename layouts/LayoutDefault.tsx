@@ -15,6 +15,7 @@ const ClockedInBanner = clientOnly(() => import("@/components/shift-tracking/Clo
 const TourProvider = clientOnly(() => import("@/features/tour/components/TourProvider").then(m => ({ default: m.TourProvider })));
 const CookieConsentBanner = clientOnly(() => import("@/components/shared/CookieConsentBanner"));
 const BetaModeBanner = clientOnly(() => import("@/components/shared/BetaModeBanner"));
+const PasswordBreachBanner = clientOnly(() => import("@/components/shared/PasswordBreachBanner"));
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
@@ -34,6 +35,7 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
           <TourProvider />
           <CookieConsentBanner />
           <BetaModeBanner />
+          <PasswordBreachBanner />
         </TextSizeProvider>
       </ThemeProvider>
     </>

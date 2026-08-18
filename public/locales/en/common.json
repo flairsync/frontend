@@ -205,5 +205,10 @@
     "modal_point_transition_title": "Heads-up before the beta ends",
     "modal_point_transition_text": "When the beta period ends, you'll get an email about moving to a paid plan, including pricing and the date it takes effect — sent at least 14 days before you'd need to start paying to keep using the service.",
     "modal_close": "Got it"
+  },
+  "password_breach_banner": {
+    "text": "Your password was found in a data breach — please change it",
+    "aria_label": "Your password was found in a data breach — click to change it",
+    "dismiss_aria_label": "Dismiss"
   }
 }
