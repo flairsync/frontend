@@ -28,6 +28,8 @@ export class UserProfile {
   countryId?: number;
   country?: PlatformCountry;
   deletionRequestedAt?: string | null;
+  // Null = not breached (or not checked yet) — see PasswordBreachService on the API.
+  passwordBreachedAt?: string | null;
 
   constructor(
     id: string,
@@ -46,7 +48,8 @@ export class UserProfile {
     gender?: string,
     countryId?: number,
     country?: PlatformCountry,
-    deletionRequestedAt?: string | null
+    deletionRequestedAt?: string | null,
+    passwordBreachedAt?: string | null
   ) {
     this.id = id;
     this.email = email;
@@ -65,6 +68,7 @@ export class UserProfile {
     this.countryId = countryId;
     this.country = country;
     this.deletionRequestedAt = deletionRequestedAt;
+    this.passwordBreachedAt = passwordBreachedAt;
   }
 
   static parseApiResponse(data: any): UserProfile {
@@ -87,7 +91,8 @@ export class UserProfile {
       data.gender,
       data.countryId,
       countryObj ? countryObj : undefined,
-      data.deletionRequestedAt ?? null
+      data.deletionRequestedAt ?? null,
+      data.passwordBreachedAt ?? null
     );
   }
 

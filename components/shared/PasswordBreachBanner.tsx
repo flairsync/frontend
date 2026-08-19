@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ShieldAlert, X } from "lucide-react";
-import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from "vike/client/router";
+import { useProfile } from "@/features/profile/useProfile";
+import { getCsrfToken } from "@/lib/flairapi";
 
 // Bottom-center is deliberately a third position, distinct from
 // ClockedInBanner (bottom-right) and BetaModeBanner (bottom-left) — see
@@ -15,12 +16,22 @@ import { navigate } from "vike/client/router";
 // underlying risk doesn't go away until the password is actually changed,
 // so it reappears on the next login/page load rather than being permanently
 // silenced.
+//
+// Reads live via useProfile rather than pageContext.user.passwordBreached:
+// this component is mounted globally (LayoutDefault), including on
+// prerendered pages like the landing page, where pageContext.user is frozen
+// at build time and never reflects the visitor's actual cookie state (see
+// useProfile's own comment on `enabled`). The live check is gated on the
+// (non-httpOnly) csrf_token cookie rather than being unconditional, so
+// anonymous visitors on the landing page don't fire a doomed authenticated
+// request on every pageview — that cookie is set/cleared in lockstep with
+// the real (httpOnly) session cookies on login/logout.
 export default function PasswordBreachBanner() {
   const { t } = useTranslation("common");
-  const pageContext = usePageContext();
   const [dismissed, setDismissed] = useState(false);
+  const { userProfile } = useProfile({ enabled: getCsrfToken() != null });
 
-  if (!pageContext.user?.passwordBreached || dismissed) return null;
+  if (!userProfile?.passwordBreachedAt || dismissed) return null;
 
   const label = t(
     "password_breach_banner.aria_label",
