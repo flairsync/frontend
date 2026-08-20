@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import ChainedBackend from "i18next-chained-backend";
 import HttpBackend from "i18next-http-backend";
+import LocalStorageBackend from "i18next-localstorage-backend";
 import { initReactI18next } from "react-i18next";
 import { DevBackend, FormatSimple, I18nextPlugin, Tolgee, tolgeeBackend } from "@tolgee/i18next";
 import { getLangCookie } from "@/utils/cookies";
@@ -69,8 +70,19 @@ i18n
     lng: typeof window !== "undefined" ? detectLang() : "en",
     fallbackLng: "en",
     backend: {
-      backends: [tolgeeBackend(tolgee), HttpBackend],
-      backendOptions: [{}, { loadPath: "/locales/{{lng}}/{{ns}}.json" }],
+      // LocalStorageBackend goes first: ChainedBackend tries each backend in
+      // order and stops at the first hit, and writes back into any backend
+      // before the one that actually served the data — so a cache hit here
+      // skips the Tolgee/HTTP round trip entirely, and a miss falls through
+      // to Tolgee (or the static JSON fallback) and gets cached for next
+      // time. 24h expiry caps how long a translation edit made in Tolgee
+      // can take to reach an already-loaded browser.
+      backends: [LocalStorageBackend, tolgeeBackend(tolgee), HttpBackend],
+      backendOptions: [
+        { expirationTime: 24 * 60 * 60 * 1000 },
+        {},
+        { loadPath: "/locales/{{lng}}/{{ns}}.json" },
+      ],
     },
     interpolation: {
       escapeValue: false,
