@@ -1,4 +1,4 @@
-import flairapi, { API_URL } from "@/lib/flairapi";
+import flairapi, { API_URL, Timeouts } from "@/lib/flairapi";
 import { UpdateBusinessDetailsDto } from "@/models/business/MyBusinessFullDetails";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 const baseUrl = `${API_URL}`;
@@ -320,6 +320,73 @@ export const fetchBusinessEmployeeInvitationsApiCall = async (
 export const resyncInvitationsApiCall = (businessId: string) => {
   return flairapi.post(
     `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}/resync`,
+  );
+};
+
+// Staff CSV import
+
+export type StaffCsvHeaderMapping = {
+  email: string | null;
+  name: string | null;
+  role: string | null;
+};
+
+export type ParseStaffCsvResult = {
+  headers: string[];
+  rows: string[][];
+  suggestedMapping: StaffCsvHeaderMapping;
+  aiSuggested: boolean;
+  rowCount: number;
+};
+
+export const parseStaffCsvApiCall = async (
+  businessId: string,
+  file: File,
+): Promise<ParseStaffCsvResult> => {
+  const payload = new FormData();
+  payload.append("file", file);
+
+  return unwrap<ParseStaffCsvResult>(
+    await flairapi.post(
+      `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}/csv-parse`,
+      payload,
+      { headers: { "Content-Type": "multipart/form-data" }, timeout: Timeouts.UPLOAD },
+    ),
+  );
+};
+
+export type StaffCsvColumnMappingDto = {
+  email: string;
+  name?: string;
+  role?: string;
+};
+
+export type ImportStaffCsvDto = {
+  headers: string[];
+  rows: string[][];
+  mapping: StaffCsvColumnMappingDto;
+};
+
+export type ImportStaffCsvResult = {
+  invited: number;
+  skippedInvalidEmail: number;
+  skippedDuplicateInFile: number;
+  skippedAlreadyStaff: number;
+  skippedLimitReached: number;
+  skippedOther: number;
+  unmatchedRoles: string[];
+};
+
+export const importStaffCsvApiCall = async (
+  businessId: string,
+  data: ImportStaffCsvDto,
+): Promise<ImportStaffCsvResult> => {
+  return unwrap<ImportStaffCsvResult>(
+    await flairapi.post(
+      `${businessInvitationsBaseUrl}/${businessId}/${invitationsSuffix}/csv-import`,
+      data,
+      { timeout: Timeouts.UPLOAD },
+    ),
   );
 };
 

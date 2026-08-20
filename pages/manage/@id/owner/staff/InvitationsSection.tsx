@@ -19,7 +19,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { Trash, UserPlus, Edit, Plus, MoreHorizontal, Clock, Check, X, Slash, Hourglass } from "lucide-react";
+import { Trash, UserPlus, Edit, Plus, MoreHorizontal, Clock, Check, X, Slash, Hourglass, FileSpreadsheet } from "lucide-react";
+import { StaffCsvImportModal } from "@/components/management/staff/StaffCsvImportModal";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useBusinessEmployeeOps } from '@/features/business/employment/useBusinessEmployeeOps';
 import { QrcodePopup } from '@/components/shared/QrcodePopup';
@@ -48,6 +49,7 @@ type InvitationsSectionProps = {
 
 const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
+    const [csvImportModalOpen, setCsvImportModalOpen] = useState(false);
 
     const { openUpgradeModal } = useSubscriptionStore();
     const { routeParams } = usePageContext();
@@ -77,7 +79,11 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
         resendInvitation,
         resendingInvitation,
         cancelInvitation,
-        cancelingInvitation
+        cancelingInvitation,
+        parseStaffCsv,
+        parsingStaffCsv,
+        importStaffCsv,
+        importingStaffCsv,
     } = useBusinessEmployeeOps(routeParams.id);
 
     const handleGenerateQrValue = (invite: BusinessEmployeeInvitation) => {
@@ -174,6 +180,15 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                 </DialogContent>
                             </Dialog>}
 
+                            {canCreate && (
+                                <Button
+                                    variant="outline"
+                                    className="flex items-center gap-2 ml-2"
+                                    onClick={() => setCsvImportModalOpen(true)}
+                                >
+                                    <FileSpreadsheet className="h-4 w-4" /> Import CSV
+                                </Button>
+                            )}
                         </div>
                         <Select value={filterStatus} onValueChange={(value) => handleFilterChange(value)}>
                             <SelectTrigger className="w-[200px]">
@@ -264,6 +279,16 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                     </div>
                 </CardContent>
             </Card>
+
+            <StaffCsvImportModal
+                businessId={routeParams.id}
+                open={csvImportModalOpen}
+                onClose={() => setCsvImportModalOpen(false)}
+                isParsing={parsingStaffCsv}
+                isImporting={importingStaffCsv}
+                onParse={parseStaffCsv}
+                onImport={importStaffCsv}
+            />
         </div>
     )
 }

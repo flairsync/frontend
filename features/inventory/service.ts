@@ -213,3 +213,64 @@ export const bulkImportParsedInventoryApiCall = async (
         }),
     );
 };
+
+// CSV Inventory Import
+
+export type CsvHeaderMapping = {
+    name: string | null;
+    group: string | null;
+    quantity: string | null;
+    unit: string | null;
+    unitCost: string | null;
+    barcode: string | null;
+};
+
+export type ParseInventoryCsvResult = {
+    headers: string[];
+    rows: string[][];
+    suggestedMapping: CsvHeaderMapping;
+    aiSuggested: boolean;
+    rowCount: number;
+};
+
+export const parseInventoryCsvApiCall = async (
+    businessId: string,
+    file: File,
+): Promise<ParseInventoryCsvResult> => {
+    const payload = new FormData();
+    payload.append("file", file);
+
+    return unwrap<ParseInventoryCsvResult>(
+        await flairapi.post(`${getInventoryUrl(businessId)}/csv-parse`, payload, {
+            headers: { "Content-Type": "multipart/form-data" },
+            timeout: Timeouts.UPLOAD,
+        }),
+    );
+};
+
+export type CsvColumnMappingDto = {
+    name: string;
+    group?: string;
+    quantity?: string;
+    unit?: string;
+    unitCost?: string;
+    barcode?: string;
+};
+
+export type ImportCsvInventoryDto = {
+    headers: string[];
+    rows: string[][];
+    mapping: CsvColumnMappingDto;
+    defaultGroupName?: string;
+};
+
+export const importCsvInventoryApiCall = async (
+    businessId: string,
+    data: ImportCsvInventoryDto,
+): Promise<BulkImportInventoryResult> => {
+    return unwrap<BulkImportInventoryResult>(
+        await flairapi.post(`${getInventoryUrl(businessId)}/csv-import`, data, {
+            timeout: Timeouts.UPLOAD,
+        }),
+    );
+};

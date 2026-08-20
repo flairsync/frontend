@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-    Plus, Pencil, Trash2, Search, History, AlertTriangle, Layers, Sparkles,
+    Plus, Pencil, Trash2, Search, History, AlertTriangle, Layers, Sparkles, FileSpreadsheet,
     ChevronLeft, ChevronRight, ChevronsUpDown, Check, X, ChevronUp, ChevronDown
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -28,6 +28,7 @@ import { useInventoryUnits } from "@/features/inventory/useInventoryUnits";
 
 import { InventoryItemModal } from "@/components/management/inventory/InventoryItemModal";
 import { AiInventoryImportModal } from "@/components/management/inventory/AiInventoryImportModal";
+import { CsvInventoryImportModal } from "@/components/management/inventory/CsvInventoryImportModal";
 import { AdjustStockModal } from "@/components/management/inventory/AdjustStockModal";
 import { ManageGroupsModal } from "@/components/management/inventory/ManageGroupsModal";
 import { MovementHistoryDrawer } from "@/components/management/inventory/MovementHistoryDrawer";
@@ -69,6 +70,10 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
         isParsingInventoryImage,
         bulkImportInventory,
         isBulkImportingInventory,
+        parseInventoryCsv,
+        isParsingInventoryCsv,
+        importCsvInventory,
+        isImportingCsvInventory,
     } = useInventory(businessId, {
         page: currentPage,
         search: filters.search || undefined,
@@ -96,6 +101,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
     const [adjustModalOpen, setAdjustModalOpen] = useState(false);
     const [groupModalOpen, setGroupModalOpen] = useState(false);
     const [aiImportModalOpen, setAiImportModalOpen] = useState(false);
+    const [csvImportModalOpen, setCsvImportModalOpen] = useState(false);
     const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<any>(null);
     const [adjustingItem, setAdjustingItem] = useState<any>(null);
@@ -195,6 +201,11 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                         <Sparkles className="w-4 h-4" />
                         <span className="hidden sm:inline">{t("inventory_management.scan_inventory")}</span>
                         <span className="sm:hidden text-xs">Scan</span>
+                    </Button>
+                    <Button variant="outline" onClick={() => setCsvImportModalOpen(true)} className="flex-1 sm:flex-none gap-2 px-3 h-9">
+                        <FileSpreadsheet className="w-4 h-4" />
+                        <span className="hidden sm:inline">{t("inventory_management.import_csv")}</span>
+                        <span className="sm:hidden text-xs">CSV</span>
                     </Button>
                     <Button onClick={handleOpenCreateModal} className="flex-1 sm:flex-none gap-2 px-3 h-9">
                         <Plus className="w-4 h-4" />
@@ -523,6 +534,15 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                 isImporting={isBulkImportingInventory}
                 onParse={parseInventoryImage}
                 onImport={bulkImportInventory}
+            />
+
+            <CsvInventoryImportModal
+                open={csvImportModalOpen}
+                onClose={() => setCsvImportModalOpen(false)}
+                isParsing={isParsingInventoryCsv}
+                isImporting={isImportingCsvInventory}
+                onParse={parseInventoryCsv}
+                onImport={importCsvInventory}
             />
         </div>
     );

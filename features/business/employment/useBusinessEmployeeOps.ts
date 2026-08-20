@@ -7,6 +7,9 @@ import {
   terminateBusinessEmployeeApiCall,
   updateBusinessEmployeeHourlyRateApiCall,
   updateBusinessEmployeeSettingsApiCall,
+  parseStaffCsvApiCall,
+  importStaffCsvApiCall,
+  ImportStaffCsvDto,
 } from "../service";
 import { toast } from "sonner";
 
@@ -166,6 +169,21 @@ export const useBusinessEmployeeOps = (businessId: string) => {
       },
     });
 
+  const { mutateAsync: parseStaffCsv, isPending: parsingStaffCsv } =
+    useMutation({
+      mutationFn: (file: File) => parseStaffCsvApiCall(businessId, file),
+    });
+
+  const { mutateAsync: importStaffCsv, isPending: importingStaffCsv } =
+    useMutation({
+      mutationFn: (data: ImportStaffCsvDto) => importStaffCsvApiCall(businessId, data),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["business_emps_invits", businessId],
+        });
+      },
+    });
+
   //#endregion
 
   return {
@@ -182,5 +200,9 @@ export const useBusinessEmployeeOps = (businessId: string) => {
     updatingEmployeeSettings,
     terminateEmployee,
     terminatingEmployee,
+    parseStaffCsv,
+    parsingStaffCsv,
+    importStaffCsv,
+    importingStaffCsv,
   };
 };
