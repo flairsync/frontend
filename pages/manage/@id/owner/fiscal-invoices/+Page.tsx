@@ -114,7 +114,7 @@ const FiscalInvoicesPage: React.FC = () => {
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Fiscal Invoices</h1>
                     <p className="text-sm text-muted-foreground mt-1">
-                        The legal invoice register for Spain-compliant businesses — sequential numbers, hash chain, and corrections.
+                        The legal invoice register for your business — sequential numbers and corrections.
                     </p>
                 </div>
                 <Button variant="outline" className="gap-2" onClick={handleExport}>
@@ -170,6 +170,7 @@ const FiscalInvoicesPage: React.FC = () => {
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="pl-4">Invoice Number</TableHead>
+                                <TableHead>Country</TableHead>
                                 <TableHead>Type</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Order</TableHead>
@@ -182,7 +183,7 @@ const FiscalInvoicesPage: React.FC = () => {
                             {isLoading ? (
                                 Array.from({ length: 8 }).map((_, i) => (
                                     <TableRow key={i}>
-                                        {Array.from({ length: 7 }).map((_, j) => (
+                                        {Array.from({ length: 8 }).map((_, j) => (
                                             <TableCell key={j}>
                                                 <div className="h-4 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse" />
                                             </TableCell>
@@ -191,7 +192,7 @@ const FiscalInvoicesPage: React.FC = () => {
                                 ))
                             ) : invoices.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={7} className="text-center text-muted-foreground py-16">
+                                    <TableCell colSpan={8} className="text-center text-muted-foreground py-16">
                                         No fiscal invoices found{hasFilters ? " for the selected filters" : ""}.
                                     </TableCell>
                                 </TableRow>
@@ -203,6 +204,9 @@ const FiscalInvoicesPage: React.FC = () => {
                                 >
                                     <TableCell className="pl-4 font-mono text-sm font-medium">
                                         {inv.invoiceNumber}
+                                    </TableCell>
+                                    <TableCell className="text-xs uppercase text-muted-foreground font-mono">
+                                        {inv.countryCode || "—"}
                                     </TableCell>
                                     <TableCell>
                                         <Badge className={TYPE_STYLES[inv.type]}>

@@ -66,10 +66,10 @@ export const useMyBusiness = (businessId: string | null = null) => {
           description: "Business details updated ...",
         });
       },
-      onError(error, variables, context) {
+      onError(error: any, variables, context) {
         toast.dismiss("update_business_toast");
         toast.error("Error updating", {
-          description: "An error occured while updating your business",
+          description: error?.response?.data?.message || "An error occured while updating your business",
         });
       },
     });

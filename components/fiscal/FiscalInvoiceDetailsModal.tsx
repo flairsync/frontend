@@ -101,6 +101,13 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                             </div>
                         </div>
                         <div className="flex items-start gap-2">
+                            <Receipt className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+                            <div>
+                                <p className="text-xs text-muted-foreground">Country</p>
+                                <p className="font-medium uppercase">{invoice.countryCode || "— (predates country tracking)"}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-2">
                             <Clock className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
                                 <p className="text-xs text-muted-foreground">Issued</p>

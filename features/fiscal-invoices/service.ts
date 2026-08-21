@@ -19,6 +19,8 @@ export interface FiscalInvoice {
   receiptId: string | null;
   correctsInvoiceId: string | null;
   invoiceNumber: string;
+  /** Country the invoice was generated under, snapshotted at creation time — null for invoices predating this field, and NOT the same as the business's current country (which can change). */
+  countryCode: string | null;
   status: string;
   issuedAt: string | null;
   previousHash: string | null;
