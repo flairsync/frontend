@@ -24,7 +24,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { ChevronLeft, ChevronRight, Download, X, Eye, Loader2 } from "lucide-react";
 import { useFiscalInvoices, useFiscalInvoice } from "@/features/fiscal-invoices/useFiscalInvoices";
-import { FiscalInvoice, FiscalInvoiceType, getFiscalInvoicesExportUrl } from "@/features/fiscal-invoices/service";
+import { FiscalInvoice, FiscalInvoiceType, getFiscalInvoicesExportUrl, downloadFiscalInvoicePdf } from "@/features/fiscal-invoices/service";
 import { FiscalInvoiceDetailsModal } from "@/components/fiscal/FiscalInvoiceDetailsModal";
 import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
 import { useOrderDetails } from "@/features/orders/useOrders";
@@ -51,6 +51,7 @@ const FiscalInvoicesPage: React.FC = () => {
     const [selectedInvoice, setSelectedInvoice] = useState<FiscalInvoice | null>(null);
     const [viewOrderId, setViewOrderId] = useState<string | null>(null);
     const [viewInvoiceId, setViewInvoiceId] = useState<string | null>(null);
+    const [downloadingId, setDownloadingId] = useState<string | null>(null);
 
     const { data: linkedOrder } = useOrderDetails(businessId, viewOrderId || "");
     const { data: linkedInvoice } = useFiscalInvoice(businessId, viewInvoiceId);
@@ -96,6 +97,15 @@ const FiscalInvoicesPage: React.FC = () => {
         const a = document.createElement("a");
         a.href = url;
         a.click();
+    };
+
+    const handleDownloadPdf = async (inv: FiscalInvoice) => {
+        setDownloadingId(inv.id);
+        try {
+            await downloadFiscalInvoicePdf(businessId, inv);
+        } finally {
+            setDownloadingId(null);
+        }
     };
 
     return (
@@ -215,6 +225,23 @@ const FiscalInvoicesPage: React.FC = () => {
                                         {truncate(inv.hash, 12)}
                                     </TableCell>
                                     <TableCell className="sticky right-0 bg-background text-right pr-4">
+                                        {inv.type === FiscalInvoiceType.STANDARD && (
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8"
+                                                title="Download PDF"
+                                                aria-label="Download PDF"
+                                                disabled={downloadingId === inv.id}
+                                                onClick={(e) => { e.stopPropagation(); handleDownloadPdf(inv); }}
+                                            >
+                                                {downloadingId === inv.id ? (
+                                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                                ) : (
+                                                    <Download className="h-3.5 w-3.5" />
+                                                )}
+                                            </Button>
+                                        )}
                                         <Button
                                             variant="ghost"
                                             size="icon"

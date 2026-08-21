@@ -1,5 +1,7 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrapPaginated, unwrap } from "../shared/api-response";
+import { printReceiptApiCall } from "../orders/service";
+import { downloadBlob } from "@/lib/downloadBlob";
 
 const baseUrl = `${API_URL}`;
 const fiscalInvoicesUrl = `${baseUrl}/fiscal-invoices`;
@@ -38,6 +40,11 @@ export const fetchFiscalInvoicesApiCall = async (params: FetchFiscalInvoicesPara
 
 export const fetchFiscalInvoiceApiCall = async (businessId: string, id: string) =>
   unwrap<FiscalInvoice>(await flairapi.get(`${fiscalInvoicesUrl}/${id}`, { params: { businessId } }));
+
+export const downloadFiscalInvoicePdf = async (businessId: string, invoice: FiscalInvoice) => {
+  const blob = await printReceiptApiCall(businessId, invoice.orderId);
+  downloadBlob(blob, `receipt-${invoice.invoiceNumber || invoice.id}.pdf`);
+};
 
 export const getFiscalInvoicesExportUrl = (
   businessId: string,

@@ -3,14 +3,15 @@ import {
     Dialog,
     DialogContent,
     DialogHeader,
+    DialogFooter,
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Hash, Receipt, ShoppingBag, Clock, Link2, Copy, Check, ExternalLink } from "lucide-react";
+import { Hash, Receipt, ShoppingBag, Clock, Link2, Copy, Check, ExternalLink, Download, Loader2 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
-import { FiscalInvoice, FiscalInvoiceType } from "@/features/fiscal-invoices/service";
+import { FiscalInvoice, FiscalInvoiceType, downloadFiscalInvoicePdf } from "@/features/fiscal-invoices/service";
 
 const TYPE_STYLES: Record<FiscalInvoiceType, string> = {
     [FiscalInvoiceType.STANDARD]: "bg-blue-100 text-blue-700 hover:bg-blue-100",
@@ -62,7 +63,18 @@ const CopyableId: React.FC<{ value: string; onView?: () => void; viewLabel?: str
 };
 
 export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps> = ({ invoice, open, onOpenChange, onViewOrder, onViewInvoice }) => {
+    const [downloading, setDownloading] = useState(false);
+
     if (!invoice) return null;
+
+    const handleDownloadPdf = async () => {
+        setDownloading(true);
+        try {
+            await downloadFiscalInvoicePdf(invoice.businessId, invoice);
+        } finally {
+            setDownloading(false);
+        }
+    };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -169,6 +181,15 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                         <span className="font-mono">{invoice.id.slice(0, 8)}…</span>
                     </div>
                 </div>
+
+                {invoice.type === FiscalInvoiceType.STANDARD && (
+                    <DialogFooter>
+                        <Button variant="outline" size="sm" onClick={handleDownloadPdf} disabled={downloading}>
+                            {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                            Download PDF
+                        </Button>
+                    </DialogFooter>
+                )}
             </DialogContent>
         </Dialog>
     );
