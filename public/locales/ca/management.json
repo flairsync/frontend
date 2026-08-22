@@ -669,6 +669,7 @@
     "adjust_stock": "Ajustar Estoc",
     "scan_inventory": "Escanejar Inventari",
     "import_csv": "Importar CSV",
+    "import_inventory": "Importar Inventari",
     "groups": "Grups",
     "manage_groups": "Gestionar Grups",
     "add_group": "Afegir Grup",
@@ -782,6 +783,16 @@
       "importing": "Important...",
       "import_success": "S'han importat {{count}} articles en {{groups}} grups.",
       "import_error": "No s'ha pogut importar el CSV. Torna-ho a provar."
+    },
+    "import_modal": {
+      "title": "Importar Inventari",
+      "description": "Puja una foto d'un full de recompte d'inventari, o una exportació CSV — totes dues funcionen, la IA detectarà quina has pujat.",
+      "drop_hint": "Arrossega i deixa anar una foto o fitxer CSV aquí, o fes clic per explorar",
+      "file_hint": "JPEG, PNG, WEBP, GIF o CSV",
+      "clear_file": "Treure fitxer",
+      "invalid_file_type": "Selecciona una imatge (JPEG, PNG, WEBP, GIF) o un fitxer CSV.",
+      "analyze_button": "Analitzar Fitxer",
+      "analyzing": "Analitzant..."
     }
   },
   "manage_overview": {

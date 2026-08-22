@@ -671,6 +671,7 @@
     "adjust_stock": "Ajuster le stock",
     "scan_inventory": "Scanner l'inventaire",
     "import_csv": "Importer un CSV",
+    "import_inventory": "Importer l'inventaire",
     "groups": "Groupes",
     "manage_groups": "Gérer les groupes",
     "add_group": "Ajouter un groupe",
@@ -784,6 +785,16 @@
       "importing": "Importation...",
       "import_success": "{{count}} articles importés dans {{groups}} groupes.",
       "import_error": "Impossible d'importer le CSV. Veuillez réessayer."
+    },
+    "import_modal": {
+      "title": "Importer l'inventaire",
+      "description": "Téléchargez une photo d'une feuille de comptage d'inventaire, ou un export CSV — les deux fonctionnent, l'IA détectera lequel vous avez fourni.",
+      "drop_hint": "Glissez-déposez une photo ou un fichier CSV ici, ou cliquez pour parcourir",
+      "file_hint": "JPEG, PNG, WEBP, GIF ou CSV",
+      "clear_file": "Retirer le fichier",
+      "invalid_file_type": "Veuillez sélectionner une image (JPEG, PNG, WEBP, GIF) ou un fichier CSV.",
+      "analyze_button": "Analyser le fichier",
+      "analyzing": "Analyse en cours..."
     }
   },
   "manage_overview": {

@@ -671,6 +671,7 @@
     "adjust_stock": "Adjust Stock",
     "scan_inventory": "Scan Inventory",
     "import_csv": "Import CSV",
+    "import_inventory": "Import Inventory",
     "groups": "Groups",
     "manage_groups": "Manage Groups",
     "add_group": "Add Group",
@@ -784,6 +785,16 @@
       "importing": "Importing...",
       "import_success": "Imported {{count}} items across {{groups}} groups.",
       "import_error": "Couldn't import the CSV. Please try again."
+    },
+    "import_modal": {
+      "title": "Import Inventory",
+      "description": "Upload a photo of an inventory count sheet, or a CSV export — either works, AI will detect which one you gave it.",
+      "drop_hint": "Drag and drop a photo or CSV file here, or click to browse",
+      "file_hint": "JPEG, PNG, WEBP, GIF, or CSV",
+      "clear_file": "Remove file",
+      "invalid_file_type": "Please select an image (JPEG, PNG, WEBP, GIF) or a CSV file.",
+      "analyze_button": "Analyze File",
+      "analyzing": "Analyzing..."
     }
   },
   "manage_overview": {
