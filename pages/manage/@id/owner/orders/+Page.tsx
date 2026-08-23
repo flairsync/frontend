@@ -187,6 +187,8 @@ const OwnerOrdersPage: React.FC = () => {
         isPreparingOrder,
         readyOrder,
         isMarkingReady,
+        serveOrder,
+        isMarkingServed,
         completeOrder,
         isCompletingOrder,
         quickCompleteOrder,
@@ -526,13 +528,19 @@ const OwnerOrdersPage: React.FC = () => {
                                                                         <span>{t("orders.actions.mark_ready")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "ready" && o.paymentStatus === "paid" && (
+                                                                {o.status === "ready" && (
+                                                                    <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isMarkingServed} className="text-green-600 focus:text-green-700">
+                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <span>{t("orders.actions.mark_served")}</span>
+                                                                    </DropdownMenuItem>
+                                                                )}
+                                                                {o.status === "served" && o.paymentStatus === "paid" && (
                                                                     <DropdownMenuItem onClick={() => completeOrder({ orderId: o.id })} disabled={isCompletingOrder} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
                                                                         <span>{t("orders.actions.complete")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
-                                                                {o.status === "ready" && o.paymentStatus !== "paid" && (
+                                                                {o.status === "served" && o.paymentStatus !== "paid" && (
                                                                     <DropdownMenuItem onClick={() => handleOpenForceClose(o)} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
                                                                         <span>{t("orders.actions.force_complete")}</span>
