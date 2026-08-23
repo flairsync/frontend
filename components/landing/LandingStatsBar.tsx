@@ -3,40 +3,43 @@ import { animate, onScroll, utils, Scope, createScope } from "animejs";
 import { TrendingUp, Clock, Leaf, CalendarCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+// Key segments use "items[N]" (not "items.N") to match how Tolgee structures array-shaped
+// content on export — it flattens each array entry to a literal "items[N]" property name
+// rather than a real nested array, so the dotted i18next key has to spell it that way too.
 const stats = [
     {
         icon: TrendingUp,
-        prefixKey: "landing_page.stats.items.0.prefix",
-        valueKey: "landing_page.stats.items.0.value",
-        labelKey: "landing_page.stats.items.0.label",
-        subKey: "landing_page.stats.items.0.sub",
+        prefixKey: "landing_page.stats.items[0].prefix",
+        valueKey: "landing_page.stats.items[0].value",
+        labelKey: "landing_page.stats.items[0].label",
+        subKey: "landing_page.stats.items[0].sub",
         color: "text-emerald-500",
         bg: "bg-emerald-500/10",
     },
     {
         icon: Clock,
-        prefixKey: "landing_page.stats.items.1.prefix",
-        valueKey: "landing_page.stats.items.1.value",
-        labelKey: "landing_page.stats.items.1.label",
-        subKey: "landing_page.stats.items.1.sub",
+        prefixKey: "landing_page.stats.items[1].prefix",
+        valueKey: "landing_page.stats.items[1].value",
+        labelKey: "landing_page.stats.items[1].label",
+        subKey: "landing_page.stats.items[1].sub",
         color: "text-blue-500",
         bg: "bg-blue-500/10",
     },
     {
         icon: Leaf,
-        prefixKey: "landing_page.stats.items.2.prefix",
-        valueKey: "landing_page.stats.items.2.value",
-        labelKey: "landing_page.stats.items.2.label",
-        subKey: "landing_page.stats.items.2.sub",
+        prefixKey: "landing_page.stats.items[2].prefix",
+        valueKey: "landing_page.stats.items[2].value",
+        labelKey: "landing_page.stats.items[2].label",
+        subKey: "landing_page.stats.items[2].sub",
         color: "text-amber-500",
         bg: "bg-amber-500/10",
     },
     {
         icon: CalendarCheck,
-        prefixKey: "landing_page.stats.items.3.prefix",
-        valueKey: "landing_page.stats.items.3.value",
-        labelKey: "landing_page.stats.items.3.label",
-        subKey: "landing_page.stats.items.3.sub",
+        prefixKey: "landing_page.stats.items[3].prefix",
+        valueKey: "landing_page.stats.items[3].value",
+        labelKey: "landing_page.stats.items[3].label",
+        subKey: "landing_page.stats.items[3].sub",
         color: "text-violet-500",
         bg: "bg-violet-500/10",
     },

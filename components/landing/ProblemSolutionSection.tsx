@@ -272,14 +272,14 @@ const ProblemSolutionSection = () => {
                                             {solution.id}
                                         </div>
                                         <h3 className="text-lg font-semibold">
-                                            {t(`landing_page.problemSolution.solutions.${solution.id - 1}.title`)}
+                                            {t(`landing_page.problemSolution.solutions[${solution.id - 1}].title`)}
                                         </h3>
                                     </div>
                                     <p className={cn(
                                         "text-sm",
                                         activeSolution.id === solution.id ? "text-primary-foreground/80" : "text-muted-foreground"
                                     )}>
-                                        {t(`landing_page.problemSolution.solutions.${solution.id - 1}.description`)}
+                                        {t(`landing_page.problemSolution.solutions[${solution.id - 1}].description`)}
                                     </p>
                                 </div>
                             ))}
@@ -301,10 +301,10 @@ const ProblemSolutionSection = () => {
                         <Card className="relative z-10 rounded-2xl bg-muted border-none h-full flex flex-col">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-2xl font-bold">
-                                    {t(`landing_page.problemSolution.solutions.${activeSolution.id - 1}.cardTitle`)}
+                                    {t(`landing_page.problemSolution.solutions[${activeSolution.id - 1}].cardTitle`)}
                                 </CardTitle>
                                 <CardDescription className="text-base text-muted-foreground">
-                                    {t(`landing_page.problemSolution.solutions.${activeSolution.id - 1}.cardDescription`)}
+                                    {t(`landing_page.problemSolution.solutions[${activeSolution.id - 1}].cardDescription`)}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="pt-4 flex-1 flex flex-col justify-center">

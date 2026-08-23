@@ -10,14 +10,15 @@ import {
     Lightbulb,
     ArrowRight,
 } from "lucide-react";
+import { resolveTolgeeArrays } from "@/utils/i18n-arrays";
 
 const CompanyGuidePage: React.FC = () => {
     const { t } = useTranslation("management");
 
-    const decisionItems = t("company_guide.decision.items", { returnObjects: true }) as {
-        if: string;
-        then: string;
-    }[];
+    const decision = resolveTolgeeArrays<{ items?: { if: string; then: string }[] }>(
+        t("company_guide.decision", { returnObjects: true })
+    );
+    const decisionItems = decision.items ?? [];
 
     return (
         <div className="p-6 w-full max-w-4xl space-y-8">

@@ -72,64 +72,60 @@
       "title": "We Know the Struggles of Running a Restaurant",
       "subtitle": "Managing staff, tracking stock, updating menus, and keeping customers coming back can feel overwhelming. That's why we built a simple, all-in-one tool designed for cafés and restaurants.",
       "leftPanelTitle": "How we can help you grow your business",
-      "solutions": [
-        {
-          "id": 1,
-          "title": "Track inventory easily",
-          "description": "Keep your stock up-to-date, get low-stock alerts, and reorder ingredients effortlessly.",
-          "cardTitle": "Inventory Management",
-          "cardDescription": "Monitor ingredients in real time, get low-stock alerts, and simplify supplier orders to keep your kitchen running smoothly."
-        },
-        {
-          "id": 2,
-          "title": "Manage staff schedules",
-          "description": "Create and share shifts, track attendance, and communicate easily with your team.",
-          "cardTitle": "Staff Management",
-          "cardDescription": "Create and share staff schedules in minutes, manage shifts, and track attendance — all from one place."
-        },
-        {
-          "id": 3,
-          "title": "Update menus quickly",
-          "description": "Add new items, remove old ones, and update prices without hassle.",
-          "cardTitle": "Menu Management",
-          "cardDescription": "Easily manage your menu and keep your offerings up-to-date for your customers."
-        },
-        {
-          "id": 4,
-          "title": "Boost customer loyalty",
-          "description": "Engage your customers and keep them coming back with personalized offers.",
-          "cardTitle": "Customer Engagement",
-          "cardDescription": "Build loyalty programs, track customer preferences, and improve retention."
-        }
-      ]
+      "solutions[0]": {
+        "id": "1",
+        "title": "Track inventory easily",
+        "description": "Keep your stock up-to-date, get low-stock alerts, and reorder ingredients effortlessly.",
+        "cardTitle": "Inventory Management",
+        "cardDescription": "Monitor ingredients in real time, get low-stock alerts, and simplify supplier orders to keep your kitchen running smoothly."
+      },
+      "solutions[1]": {
+        "id": "2",
+        "title": "Manage staff schedules",
+        "description": "Create and share shifts, track attendance, and communicate easily with your team.",
+        "cardTitle": "Staff Management",
+        "cardDescription": "Create and share staff schedules in minutes, manage shifts, and track attendance — all from one place."
+      },
+      "solutions[2]": {
+        "id": "3",
+        "title": "Update menus quickly",
+        "description": "Add new items, remove old ones, and update prices without hassle.",
+        "cardTitle": "Menu Management",
+        "cardDescription": "Easily manage your menu and keep your offerings up-to-date for your customers."
+      },
+      "solutions[3]": {
+        "id": "4",
+        "title": "Boost customer loyalty",
+        "description": "Engage your customers and keep them coming back with personalized offers.",
+        "cardTitle": "Customer Engagement",
+        "cardDescription": "Build loyalty programs, track customer preferences, and improve retention."
+      }
     },
     "stats": {
-      "items": [
-        {
-          "prefix": "UP TO",
-          "value": "35%",
-          "label": "More revenue",
-          "sub": "through optimized orders & upselling"
-        },
-        {
-          "prefix": "UP TO",
-          "value": "4 hrs",
-          "label": "Saved every day",
-          "sub": "on scheduling, inventory & reporting"
-        },
-        {
-          "prefix": "UP TO",
-          "value": "40%",
-          "label": "Less food waste",
-          "sub": "with real-time inventory alerts"
-        },
-        {
-          "prefix": "UP TO",
-          "value": "3×",
-          "label": "Faster table turns",
-          "sub": "with smart reservations & floor plans"
-        }
-      ]
+      "items[0]": {
+        "prefix": "UP TO",
+        "value": "35%",
+        "label": "More revenue",
+        "sub": "through optimized orders & upselling"
+      },
+      "items[1]": {
+        "prefix": "UP TO",
+        "value": "4 hrs",
+        "label": "Saved every day",
+        "sub": "on scheduling, inventory & reporting"
+      },
+      "items[2]": {
+        "prefix": "UP TO",
+        "value": "40%",
+        "label": "Less food waste",
+        "sub": "with real-time inventory alerts"
+      },
+      "items[3]": {
+        "prefix": "UP TO",
+        "value": "3×",
+        "label": "Faster table turns",
+        "sub": "with smart reservations & floor plans"
+      }
     },
     "integration": {
       "title": "Seamless Setup, Zero Hassle",

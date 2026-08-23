@@ -72,64 +72,60 @@
       "title": "Nous connaissons les défis de la gestion d'un restaurant",
       "subtitle": "Gérer le personnel, suivre les stocks, mettre à jour les menus et fidéliser les clients peut être accablant. C'est pourquoi nous avons créé un outil simple tout-en-un pour les cafés et restaurants.",
       "leftPanelTitle": "Comment nous pouvons vous aider à développer votre entreprise",
-      "solutions": [
-        {
-          "id": 1,
-          "title": "Suivre facilement les stocks",
-          "description": "Gardez vos stocks à jour, recevez des alertes de faible stock et réapprovisionnez les ingrédients sans effort.",
-          "cardTitle": "Gestion des stocks",
-          "cardDescription": "Surveillez les ingrédients en temps réel, recevez des alertes de faible stock et simplifiez les commandes aux fournisseurs pour maintenir votre cuisine efficace."
-        },
-        {
-          "id": 2,
-          "title": "Gérer les horaires du personnel",
-          "description": "Créez et partagez les shifts, suivez la présence et communiquez facilement avec votre équipe.",
-          "cardTitle": "Gestion du personnel",
-          "cardDescription": "Créez et partagez les horaires du personnel en quelques minutes, gérez les shifts et suivez la présence — tout depuis un seul endroit."
-        },
-        {
-          "id": 3,
-          "title": "Mettre à jour les menus rapidement",
-          "description": "Ajoutez de nouveaux plats, supprimez les anciens et modifiez les prix sans tracas.",
-          "cardTitle": "Gestion des menus",
-          "cardDescription": "Gérez facilement votre menu et maintenez vos offres à jour pour vos clients."
-        },
-        {
-          "id": 4,
-          "title": "Fidéliser les clients",
-          "description": "Engagez vos clients et faites-les revenir grâce à des offres personnalisées.",
-          "cardTitle": "Engagement client",
-          "cardDescription": "Créez des programmes de fidélité, suivez les préférences clients et améliorez la rétention."
-        }
-      ]
+      "solutions[0]": {
+        "id": "1",
+        "title": "Suivre facilement les stocks",
+        "description": "Gardez vos stocks à jour, recevez des alertes de faible stock et réapprovisionnez les ingrédients sans effort.",
+        "cardTitle": "Gestion des stocks",
+        "cardDescription": "Surveillez les ingrédients en temps réel, recevez des alertes de faible stock et simplifiez les commandes aux fournisseurs pour maintenir votre cuisine efficace."
+      },
+      "solutions[1]": {
+        "id": "2",
+        "title": "Gérer les horaires du personnel",
+        "description": "Créez et partagez les shifts, suivez la présence et communiquez facilement avec votre équipe.",
+        "cardTitle": "Gestion du personnel",
+        "cardDescription": "Créez et partagez les horaires du personnel en quelques minutes, gérez les shifts et suivez la présence — tout depuis un seul endroit."
+      },
+      "solutions[2]": {
+        "id": "3",
+        "title": "Mettre à jour les menus rapidement",
+        "description": "Ajoutez de nouveaux plats, supprimez les anciens et modifiez les prix sans tracas.",
+        "cardTitle": "Gestion des menus",
+        "cardDescription": "Gérez facilement votre menu et maintenez vos offres à jour pour vos clients."
+      },
+      "solutions[3]": {
+        "id": "4",
+        "title": "Fidéliser les clients",
+        "description": "Engagez vos clients et faites-les revenir grâce à des offres personnalisées.",
+        "cardTitle": "Engagement client",
+        "cardDescription": "Créez des programmes de fidélité, suivez les préférences clients et améliorez la rétention."
+      }
     },
     "stats": {
-      "items": [
-        {
-          "prefix": "JUSQU'À",
-          "value": "35%",
-          "label": "Plus de revenus",
-          "sub": "grâce aux commandes optimisées & à la vente additionnelle"
-        },
-        {
-          "prefix": "JUSQU'À",
-          "value": "4h",
-          "label": "Économisées par jour",
-          "sub": "sur la planification, l'inventaire & les rapports"
-        },
-        {
-          "prefix": "JUSQU'À",
-          "value": "40%",
-          "label": "Moins de gaspillage",
-          "sub": "grâce aux alertes d'inventaire en temps réel"
-        },
-        {
-          "prefix": "JUSQU'À",
-          "value": "3×",
-          "label": "Plus de rotations",
-          "sub": "avec les réservations & plans de salle intelligents"
-        }
-      ]
+      "items[0]": {
+        "prefix": "JUSQU'À",
+        "value": "35%",
+        "label": "Plus de revenus",
+        "sub": "grâce aux commandes optimisées & à la vente additionnelle"
+      },
+      "items[1]": {
+        "prefix": "JUSQU'À",
+        "value": "4h",
+        "label": "Économisées par jour",
+        "sub": "sur la planification, l'inventaire & les rapports"
+      },
+      "items[2]": {
+        "prefix": "JUSQU'À",
+        "value": "40%",
+        "label": "Moins de gaspillage",
+        "sub": "grâce aux alertes d'inventaire en temps réel"
+      },
+      "items[3]": {
+        "prefix": "JUSQU'À",
+        "value": "3×",
+        "label": "Plus de rotations",
+        "sub": "avec les réservations & plans de salle intelligents"
+      }
     },
     "integration": {
       "title": "Installation simple, zéro tracas",

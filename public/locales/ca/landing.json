@@ -72,64 +72,60 @@
       "title": "Coneixem els reptes de gestionar un restaurant",
       "subtitle": "Gestionar personal, controlar l'inventari, actualitzar menús i fidelitzar clients pot ser aclaparador. Per això vam crear una eina simple tot-en-un dissenyada per a cafès i restaurants.",
       "leftPanelTitle": "Com podem ajudar-te a fer créixer el teu negoci",
-      "solutions": [
-        {
-          "id": 1,
-          "title": "Controla fàcilment l'inventari",
-          "description": "Mantingues el teu estoc actualitzat, rep alertes de baix inventari i torna a demanar ingredients sense esforç.",
-          "cardTitle": "Gestió d'inventari",
-          "cardDescription": "Supervisa els ingredients en temps real, rep alertes de baix estoc i simplifica les comandes als proveïdors per mantenir la cuina funcionant sense problemes."
-        },
-        {
-          "id": 2,
-          "title": "Gestiona els horaris del personal",
-          "description": "Crea i comparteix torns, controla l'assistència i comunica't fàcilment amb el teu equip.",
-          "cardTitle": "Gestió del personal",
-          "cardDescription": "Crea i comparteix horaris del personal en minuts, gestiona torns i controla l'assistència, tot des d'un sol lloc."
-        },
-        {
-          "id": 3,
-          "title": "Actualitza els menús ràpidament",
-          "description": "Afegeix nous plats, elimina els antics i actualitza preus sense complicacions.",
-          "cardTitle": "Gestió de menús",
-          "cardDescription": "Gestiona fàcilment el teu menú i mantingues les ofertes actualitzades per als teus clients."
-        },
-        {
-          "id": 4,
-          "title": "Fidelitza els clients",
-          "description": "Involucra els teus clients i fes que tornin amb ofertes personalitzades.",
-          "cardTitle": "Compromís amb el client",
-          "cardDescription": "Crea programes de fidelització, controla les preferències dels clients i millora la retenció."
-        }
-      ]
+      "solutions[0]": {
+        "id": "1",
+        "title": "Controla fàcilment l'inventari",
+        "description": "Mantingues el teu estoc actualitzat, rep alertes de baix inventari i torna a demanar ingredients sense esforç.",
+        "cardTitle": "Gestió d'inventari",
+        "cardDescription": "Supervisa els ingredients en temps real, rep alertes de baix estoc i simplifica les comandes als proveïdors per mantenir la cuina funcionant sense problemes."
+      },
+      "solutions[1]": {
+        "id": "2",
+        "title": "Gestiona els horaris del personal",
+        "description": "Crea i comparteix torns, controla l'assistència i comunica't fàcilment amb el teu equip.",
+        "cardTitle": "Gestió del personal",
+        "cardDescription": "Crea i comparteix horaris del personal en minuts, gestiona torns i controla l'assistència, tot des d'un sol lloc."
+      },
+      "solutions[2]": {
+        "id": "3",
+        "title": "Actualitza els menús ràpidament",
+        "description": "Afegeix nous plats, elimina els antics i actualitza preus sense complicacions.",
+        "cardTitle": "Gestió de menús",
+        "cardDescription": "Gestiona fàcilment el teu menú i mantingues les ofertes actualitzades per als teus clients."
+      },
+      "solutions[3]": {
+        "id": "4",
+        "title": "Fidelitza els clients",
+        "description": "Involucra els teus clients i fes que tornin amb ofertes personalitzades.",
+        "cardTitle": "Compromís amb el client",
+        "cardDescription": "Crea programes de fidelització, controla les preferències dels clients i millora la retenció."
+      }
     },
     "stats": {
-      "items": [
-        {
-          "prefix": "FINS A",
-          "value": "35%",
-          "label": "Més ingressos",
-          "sub": "amb comandes optimitzades i vendes addicionals"
-        },
-        {
-          "prefix": "FINS A",
-          "value": "4 h",
-          "label": "Estalviades al dia",
-          "sub": "en planificació, inventari i informes"
-        },
-        {
-          "prefix": "FINS A",
-          "value": "40%",
-          "label": "Menys malbaratament",
-          "sub": "amb alertes d'inventari en temps real"
-        },
-        {
-          "prefix": "FINS A",
-          "value": "3×",
-          "label": "Més rotació de taules",
-          "sub": "amb reserves i plànols intel·ligents"
-        }
-      ]
+      "items[0]": {
+        "prefix": "FINS A",
+        "value": "35%",
+        "label": "Més ingressos",
+        "sub": "amb comandes optimitzades i vendes addicionals"
+      },
+      "items[1]": {
+        "prefix": "FINS A",
+        "value": "4 h",
+        "label": "Estalviades al dia",
+        "sub": "en planificació, inventari i informes"
+      },
+      "items[2]": {
+        "prefix": "FINS A",
+        "value": "40%",
+        "label": "Menys malbaratament",
+        "sub": "amb alertes d'inventari en temps real"
+      },
+      "items[3]": {
+        "prefix": "FINS A",
+        "value": "3×",
+        "label": "Més rotació de taules",
+        "sub": "amb reserves i plànols intel·ligents"
+      }
     },
     "integration": {
       "title": "Configuració senzilla, sense complicacions",

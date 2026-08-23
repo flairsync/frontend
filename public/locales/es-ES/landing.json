@@ -72,64 +72,60 @@
       "title": "Conocemos los retos de manejar un restaurante",
       "subtitle": "Gestionar personal, controlar el inventario, actualizar menús y fidelizar clientes puede ser abrumador. Por eso creamos una herramienta simple todo-en-uno diseñada para cafés y restaurantes.",
       "leftPanelTitle": "Cómo podemos ayudarte a hacer crecer tu negocio",
-      "solutions": [
-        {
-          "id": 1,
-          "title": "Controla fácilmente el inventario",
-          "description": "Mantén tu stock actualizado, recibe alertas de bajo inventario y reordena ingredientes sin esfuerzo.",
-          "cardTitle": "Gestión de inventario",
-          "cardDescription": "Monitorea los ingredientes en tiempo real, recibe alertas de bajo stock y simplifica los pedidos a proveedores para mantener tu cocina funcionando sin problemas."
-        },
-        {
-          "id": 2,
-          "title": "Gestiona los horarios del personal",
-          "description": "Crea y comparte turnos, controla la asistencia y comunícate fácilmente con tu equipo.",
-          "cardTitle": "Gestión de personal",
-          "cardDescription": "Crea y comparte horarios del personal en minutos, gestiona turnos y sigue la asistencia, todo desde un solo lugar."
-        },
-        {
-          "id": 3,
-          "title": "Actualiza menús rápidamente",
-          "description": "Agrega nuevos artículos, elimina los antiguos y actualiza precios sin complicaciones.",
-          "cardTitle": "Gestión de menús",
-          "cardDescription": "Gestiona fácilmente tu menú y mantén tus ofertas actualizadas para tus clientes."
-        },
-        {
-          "id": 4,
-          "title": "Fomenta la lealtad de los clientes",
-          "description": "Involucra a tus clientes y haz que regresen con ofertas personalizadas.",
-          "cardTitle": "Compromiso con el cliente",
-          "cardDescription": "Crea programas de lealtad, sigue las preferencias de los clientes y mejora la retención."
-        }
-      ]
+      "solutions[0]": {
+        "id": "1",
+        "title": "Controla fácilmente el inventario",
+        "description": "Mantén tu stock actualizado, recibe alertas de bajo inventario y reordena ingredientes sin esfuerzo.",
+        "cardTitle": "Gestión de inventario",
+        "cardDescription": "Monitorea los ingredientes en tiempo real, recibe alertas de bajo stock y simplifica los pedidos a proveedores para mantener tu cocina funcionando sin problemas."
+      },
+      "solutions[1]": {
+        "id": "2",
+        "title": "Gestiona los horarios del personal",
+        "description": "Crea y comparte turnos, controla la asistencia y comunícate fácilmente con tu equipo.",
+        "cardTitle": "Gestión de personal",
+        "cardDescription": "Crea y comparte horarios del personal en minutos, gestiona turnos y sigue la asistencia, todo desde un solo lugar."
+      },
+      "solutions[2]": {
+        "id": "3",
+        "title": "Actualiza menús rápidamente",
+        "description": "Agrega nuevos artículos, elimina los antiguos y actualiza precios sin complicaciones.",
+        "cardTitle": "Gestión de menús",
+        "cardDescription": "Gestiona fácilmente tu menú y mantén tus ofertas actualizadas para tus clientes."
+      },
+      "solutions[3]": {
+        "id": "4",
+        "title": "Fomenta la lealtad de los clientes",
+        "description": "Involucra a tus clientes y haz que regresen con ofertas personalizadas.",
+        "cardTitle": "Compromiso con el cliente",
+        "cardDescription": "Crea programas de lealtad, sigue las preferencias de los clientes y mejora la retención."
+      }
     },
     "stats": {
-      "items": [
-        {
-          "prefix": "HASTA UN",
-          "value": "35%",
-          "label": "Más ingresos",
-          "sub": "con pedidos optimizados y ventas adicionales"
-        },
-        {
-          "prefix": "HASTA",
-          "value": "4 hrs",
-          "label": "Ahorradas al día",
-          "sub": "en planificación, inventario e informes"
-        },
-        {
-          "prefix": "HASTA UN",
-          "value": "40%",
-          "label": "Menos desperdicio",
-          "sub": "con alertas de inventario en tiempo real"
-        },
-        {
-          "prefix": "HASTA",
-          "value": "3×",
-          "label": "Más rotación de mesas",
-          "sub": "con reservas y planos inteligentes"
-        }
-      ]
+      "items[0]": {
+        "prefix": "HASTA UN",
+        "value": "35%",
+        "label": "Más ingresos",
+        "sub": "con pedidos optimizados y ventas adicionales"
+      },
+      "items[1]": {
+        "prefix": "HASTA",
+        "value": "4 hrs",
+        "label": "Ahorradas al día",
+        "sub": "en planificación, inventario e informes"
+      },
+      "items[2]": {
+        "prefix": "HASTA UN",
+        "value": "40%",
+        "label": "Menos desperdicio",
+        "sub": "con alertas de inventario en tiempo real"
+      },
+      "items[3]": {
+        "prefix": "HASTA",
+        "value": "3×",
+        "label": "Más rotación de mesas",
+        "sub": "con reservas y planos inteligentes"
+      }
     },
     "integration": {
       "title": "Configuración sencilla, sin complicaciones",

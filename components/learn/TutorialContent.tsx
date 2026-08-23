@@ -12,6 +12,7 @@ import {
   type TutorialPart,
 } from "@/components/tutorials/data";
 import type { TFn } from "@/components/learn/constants";
+import { resolveTolgeeArrays } from "@/utils/i18n-arrays";
 
 interface StepGroup {
   label?: string;
@@ -41,9 +42,11 @@ export function TutorialContent({
   const nextPart = next ? findPartForSection(next.id) : null;
 
   const slug = section.slug;
-  const stepGroups = t(`sections.${slug}.stepGroups`, { returnObjects: true }) as StepGroup[];
-  const tips = t(`sections.${slug}.tips`, { returnObjects: true });
-  const tipsArray = Array.isArray(tips) ? (tips as string[]) : [];
+  const sectionContent = resolveTolgeeArrays<{ stepGroups?: StepGroup[]; tips?: string[] }>(
+    t(`sections.${slug}`, { returnObjects: true })
+  );
+  const stepGroups = sectionContent.stepGroups ?? [];
+  const tipsArray = sectionContent.tips ?? [];
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
