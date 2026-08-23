@@ -920,9 +920,11 @@
       "canceled": "Cancelado"
     },
     "payment_status_labels": {
+      "unpaid": "No pagado",
       "pending": "Pendiente",
       "paid": "Pagado",
-      "partially_paid": "Parcialmente pagado"
+      "partially_paid": "Parcialmente pagado",
+      "refunded": "Reembolsado"
     },
     "actions": {
       "quick_complete": "Completar rápido",

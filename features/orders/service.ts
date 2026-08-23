@@ -17,7 +17,7 @@ export interface CreateOrderDto {
         modifiers?: { modifierItemId: string }[];
     }[];
     reservationId?: string;
-    paymentStatus?: "pending" | "paid" | "refunded" | "failed";
+    paymentStatus?: "unpaid" | "partially_paid" | "paid" | "refunded";
     paymentMethod?: "cash" | "card" | "online" | "other";
     lat?: number;
     lng?: number;
@@ -45,7 +45,7 @@ export interface UpdateOrderDto {
         quantity: number;
         notes?: string;
     }[];
-    paymentStatus?: "pending" | "paid" | "refunded" | "failed";
+    paymentStatus?: "unpaid" | "partially_paid" | "paid" | "refunded";
     paymentMethod?: "cash" | "card" | "online" | "other";
 }
 
@@ -87,7 +87,7 @@ export interface Order {
         refundedBy?: string | null;
         createdAt: string;
     }[];
-    paymentStatus: "pending" | "partially_paid" | "paid" | "refunded" | "failed";
+    paymentStatus: "unpaid" | "partially_paid" | "paid" | "refunded";
     paymentMethod?: "cash" | "card" | "online" | "other";
     cancellationReason?: string;
     rejectionReason?: string | null;

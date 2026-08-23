@@ -921,9 +921,11 @@
       "canceled": "Canceled"
     },
     "payment_status_labels": {
+      "unpaid": "Unpaid",
       "pending": "Pending",
       "paid": "Paid",
-      "partially_paid": "Partially Paid"
+      "partially_paid": "Partially Paid",
+      "refunded": "Refunded"
     },
     "actions": {
       "quick_complete": "Quick Complete",

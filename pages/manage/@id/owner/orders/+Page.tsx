@@ -468,7 +468,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                             {getStatusLabel(o.status)}
                                                         </Badge>
                                                         <Badge variant={o.paymentStatus === 'paid' ? 'default' : o.paymentStatus === 'partially_paid' ? 'outline' : 'secondary'} className="capitalize text-[10px] h-4">
-                                                            {t(`orders.payment_status_labels.${o.paymentStatus || 'pending'}`)}
+                                                            {t(`orders.payment_status_labels.${o.paymentStatus || 'unpaid'}`)}
                                                         </Badge>
                                                     </div>
                                                 </TableCell>

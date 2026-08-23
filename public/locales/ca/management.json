@@ -918,9 +918,11 @@
       "canceled": "Cancel·lada"
     },
     "payment_status_labels": {
+      "unpaid": "No pagat",
       "pending": "Pendent",
       "paid": "Pagada",
-      "partially_paid": "Parcialment pagada"
+      "partially_paid": "Parcialment pagada",
+      "refunded": "Reemborsat"
     },
     "actions": {
       "quick_complete": "Completar ràpid",
