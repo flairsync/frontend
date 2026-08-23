@@ -4,9 +4,27 @@
   },
   "footer": {
     "follow_us": "Suivez-nous",
-    "quick_links": { "title": "Liens rapides" },
-    "support": { "title": "Support" },
-    "contact": { "title": "Contact" },
+    "quick_links": {
+      "title": "Liens rapides",
+      "home": "Accueil",
+      "about_us": "À propos",
+      "integrations": "Intégrations",
+      "features": "Fonctionnalités",
+      "pricing": "Tarifs",
+      "contact_us": "Nous contacter"
+    },
+    "support": {
+      "title": "Support",
+      "faq_s": "FAQ",
+      "support_center": "Centre d'assistance",
+      "user_guide": "Guide d'utilisation",
+      "privacy_policy": "Politique de confidentialité",
+      "terms_of_use": "Conditions d'utilisation",
+      "gdpr_&_cookies": "RGPD et cookies"
+    },
+    "contact": {
+      "title": "Contact"
+    },
     "newsletter": {
       "title": "Abonnez-vous à notre newsletter",
       "placeholder": "Entrez votre email"
@@ -191,6 +209,70 @@
       "priority_support": "Support prioritaire",
       "ded_acc_manager": "Gestionnaire de compte dédié",
       "custom_branding": "Image de marque personnalisée"
+    }
+  },
+  "support_page": {
+    "hero_title": "Centre d'assistance",
+    "hero_subtitle": "Une question ou besoin d'aide ? Remplissez le formulaire et notre équipe vous répondra rapidement.",
+    "contact": {
+      "email_label": "E-mail",
+      "phone_label": "Téléphone",
+      "address_label": "Adresse"
+    },
+    "send_message_title": "Envoyez-nous un message",
+    "send_message_description": "Décrivez votre problème et nous l'acheminerons vers la bonne équipe. La plupart des demandes reçoivent une réponse en un jour ouvré.",
+    "bullets": {
+      "billing": "Problèmes de facturation et d'abonnement",
+      "technical": "Problèmes techniques",
+      "account_security": "Préoccupations de compte et de sécurité",
+      "general": "Questions générales"
+    },
+    "success": {
+      "title": "Message reçu !",
+      "body_prefix": "Nous répondrons à",
+      "body_suffix": "sous peu.",
+      "submit_another": "Soumettre une autre demande"
+    },
+    "contact_support_title": "Contacter le support",
+    "form": {
+      "name": "Nom",
+      "name_placeholder": "Jeanne Dupont",
+      "email": "E-mail",
+      "email_placeholder": "jeanne@exemple.com",
+      "category": "Catégorie",
+      "loading_categories": "Chargement des catégories…",
+      "select_category": "Sélectionner une catégorie",
+      "subject": "Sujet",
+      "subject_placeholder": "Brève description de votre problème",
+      "message": "Message",
+      "message_placeholder": "Décrivez votre problème en détail…",
+      "sending": "Envoi en cours…",
+      "send_message": "Envoyer le message"
+    },
+    "categories": {
+      "billing_and_payments": "Facturation et paiements",
+      "subscription": "Abonnement",
+      "getting_started": "Prise en main",
+      "menu_management": "Gestion du menu",
+      "staff_and_permissions": "Personnel et permissions",
+      "reservations_and_orders": "Réservations et commandes",
+      "technical_issue": "Problème technique",
+      "account_and_security": "Compte et sécurité",
+      "integrations": "Intégrations",
+      "other": "Autre"
+    },
+    "errors": {
+      "name_max": "Le nom doit comporter au maximum 100 caractères",
+      "name_required": "Le nom est requis",
+      "email_invalid": "L'e-mail doit être valide",
+      "email_required": "L'e-mail est requis",
+      "category_required": "Veuillez sélectionner une catégorie",
+      "subject_max": "Le sujet doit comporter au maximum 150 caractères",
+      "subject_required": "Le sujet est requis",
+      "message_min": "Le message doit comporter au moins 10 caractères",
+      "message_max": "Le message doit comporter au maximum 2000 caractères",
+      "message_required": "Le message est requis",
+      "generic": "Une erreur est survenue. Veuillez réessayer."
     }
   }
 }

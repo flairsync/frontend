@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -24,6 +25,7 @@ export const JoinOrganizationDialog: React.FC<JoinOrganizationDialogProps> = ({
     regionId,
     onLinked,
 }) => {
+    const { t } = useTranslation("management");
     const { sendJoinRequest, isSendingJoinRequest } = useJoinRequests();
 
     const [name, setName] = useState("");
@@ -57,24 +59,24 @@ export const JoinOrganizationDialog: React.FC<JoinOrganizationDialogProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>Find an organization to join</DialogTitle>
+                    <DialogTitle>{t("join_organization_dialog.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Search by organization name..." />
+                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("join_organization_dialog.search_placeholder")} />
                         <Button onClick={handleSearch} disabled={searching} className="shrink-0">
-                            <Search className="h-4 w-4 mr-1.5" /> Search
+                            <Search className="h-4 w-4 mr-1.5" /> {t("invite_business_dialog.search")}
                         </Button>
                     </div>
 
                     <div className="max-h-96 overflow-y-auto space-y-2 pt-1">
                         {searching ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">Searching...</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("invite_business_dialog.searching")}</p>
                         ) : results === null ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">Search to see matching organizations.</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("join_organization_dialog.search_hint")}</p>
                         ) : results.length === 0 ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">No organizations match that name.</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("join_organization_dialog.no_matches")}</p>
                         ) : (
                             results.map((o) => {
                                 const alreadyRequested = requestedIds.has(o.id);
@@ -87,7 +89,7 @@ export const JoinOrganizationDialog: React.FC<JoinOrganizationDialogProps> = ({
                                             <div className="min-w-0">
                                                 <p className="text-sm font-medium truncate">{o.name}</p>
                                                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                                                    <Store className="h-3 w-3" /> {o.businessCount} {o.businessCount === 1 ? "branch" : "branches"}
+                                                    <Store className="h-3 w-3" /> {t("invite_region_dialog.branch_count", { count: o.businessCount })}
                                                 </p>
                                             </div>
                                         </div>
@@ -97,7 +99,7 @@ export const JoinOrganizationDialog: React.FC<JoinOrganizationDialogProps> = ({
                                             disabled={isSendingJoinRequest || alreadyRequested}
                                             onClick={() => handleRequest(o.id)}
                                         >
-                                            {alreadyRequested ? "Sent" : "Send request"}
+                                            {alreadyRequested ? t("invite_business_dialog.sent") : t("invite_business_dialog.send_request")}
                                         </Button>
                                     </div>
                                 );

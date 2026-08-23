@@ -238,16 +238,8 @@ const OwnerOrdersPage: React.FC = () => {
     };
 
     const getStatusLabel = (status: string) => {
-        switch (status) {
-            case "created": return "Pending";
-            case "accepted": return "Accepted";
-            case "preparing": return "Preparing";
-            case "ready": return "Ready";
-            case "completed": return "Completed";
-            case "rejected": return "Rejected";
-            case "canceled": return "Canceled";
-            default: return status;
-        }
+        const known = ["created", "accepted", "preparing", "ready", "completed", "rejected", "canceled"];
+        return known.includes(status) ? t(`orders.status_labels.${status}`) : status;
     };
 
     const isTerminal = (status: string) => ["completed", "rejected", "canceled"].includes(status);
@@ -288,7 +280,7 @@ const OwnerOrdersPage: React.FC = () => {
             <Tabs defaultValue="list" className="w-full">
                 <TabsList className="mb-4">
                     <TabsTrigger value="list">{t("orders.title")}</TabsTrigger>
-                    <TabsTrigger value="live">Live Tables</TabsTrigger>
+                    <TabsTrigger value="live">{t("orders.live_tables")}</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="list">
@@ -296,7 +288,7 @@ const OwnerOrdersPage: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-2 mb-4">
                         <Select value={filterType} onValueChange={setFilterType}>
                             <SelectTrigger className="w-36">
-                                <SelectValue placeholder="Filter by type" />
+                                <SelectValue placeholder={t("orders.filter_by_type")} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="All">{t("shared.actions.all")}</SelectItem>
@@ -309,10 +301,10 @@ const OwnerOrdersPage: React.FC = () => {
                         <Select value={tableFilter} onValueChange={setTableFilter}>
                             <SelectTrigger className="w-44">
                                 <MapPin className="w-3.5 h-3.5 mr-1 text-muted-foreground" />
-                                <SelectValue placeholder="All Tables" />
+                                <SelectValue placeholder={t("orders.all_tables")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">All Tables</SelectItem>
+                                <SelectItem value="all">{t("orders.all_tables")}</SelectItem>
                                 {allTables.map((tbl: any) => (
                                     <SelectItem key={tbl.id} value={tbl.id}>
                                         {tbl.floorName} – {tbl.name}
@@ -325,7 +317,7 @@ const OwnerOrdersPage: React.FC = () => {
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
                             <Input
                                 className="pl-8 w-44 h-9"
-                                placeholder="Customer name"
+                                placeholder={t("orders.customer_name_placeholder")}
                                 value={customerNameInput}
                                 onChange={e => setCustomerNameInput(e.target.value)}
                             />
@@ -343,11 +335,11 @@ const OwnerOrdersPage: React.FC = () => {
                             <DatePickerWithRange date={dateRange} setDate={setDateRange} />
                             <Select value={statusFilter} onValueChange={(val: any) => setStatusFilter(val)}>
                                 <SelectTrigger className="w-40">
-                                    <SelectValue placeholder="Status" />
+                                    <SelectValue placeholder={t("orders.status")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="ongoing">Ongoing Orders</SelectItem>
-                                    <SelectItem value="all">Order History</SelectItem>
+                                    <SelectItem value="ongoing">{t("orders.ongoing_orders")}</SelectItem>
+                                    <SelectItem value="all">{t("orders.order_history")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -357,7 +349,7 @@ const OwnerOrdersPage: React.FC = () => {
                     {someSelected && (
                         <div className="flex items-center gap-3 rounded-lg border bg-muted/60 px-4 py-2.5 mb-3">
                             <span className="text-sm font-medium text-muted-foreground">
-                                {selectedOrderIds.size} selected
+                                {t("orders.selected_count", { count: selectedOrderIds.size })}
                             </span>
                             <Separator orientation="vertical" className="h-5" />
                             <Button
@@ -368,7 +360,7 @@ const OwnerOrdersPage: React.FC = () => {
                                 onClick={() => handleBatchAction('accept')}
                             >
                                 <CheckCircle className="w-3.5 h-3.5" />
-                                Accept All
+                                {t("orders.accept_all")}
                             </Button>
                             <Button
                                 size="sm"
@@ -378,7 +370,7 @@ const OwnerOrdersPage: React.FC = () => {
                                 onClick={() => handleBatchAction('cancel')}
                             >
                                 <XCircle className="w-3.5 h-3.5" />
-                                Cancel All
+                                {t("orders.cancel_all")}
                             </Button>
                             <Button
                                 size="sm"
@@ -388,7 +380,7 @@ const OwnerOrdersPage: React.FC = () => {
                                 onClick={() => handleBatchAction('reject')}
                             >
                                 <ThumbsDown className="w-3.5 h-3.5" />
-                                Reject All
+                                {t("orders.reject_all")}
                             </Button>
                             <Button
                                 size="sm"
@@ -414,22 +406,22 @@ const OwnerOrdersPage: React.FC = () => {
                                             <Checkbox
                                                 checked={allSelected}
                                                 onCheckedChange={toggleAll}
-                                                aria-label="Select all"
+                                                aria-label={t("orders.select_all")}
                                             />
                                         </TableHead>
-                                        <TableHead>Order</TableHead>
-                                        <TableHead>Details</TableHead>
-                                        <TableHead>Items</TableHead>
+                                        <TableHead>{t("orders.col_order")}</TableHead>
+                                        <TableHead>{t("orders.col_details")}</TableHead>
+                                        <TableHead>{t("orders.items")}</TableHead>
                                         <TableHead>{t("orders.total")}</TableHead>
                                         <TableHead>{t("orders.status")}</TableHead>
-                                        <TableHead className="text-center">{t("shared.actions.all")}</TableHead>
+                                        <TableHead className="text-center">{t("orders.col_actions")}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {fetchingOrders ? (
-                                        <TableRow><TableCell colSpan={7} className="text-center">Loading...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={7} className="text-center">{t("orders.loading")}</TableCell></TableRow>
                                     ) : filteredOrders?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={7} className="text-center">No orders found.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={7} className="text-center">{t("orders.empty")}</TableCell></TableRow>
                                     ) : (
                                         filteredOrders?.map((o: any) => (
                                             <TableRow key={o.id} data-state={selectedOrderIds.has(o.id) ? "selected" : undefined}>
@@ -438,7 +430,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                         <Checkbox
                                                             checked={selectedOrderIds.has(o.id)}
                                                             onCheckedChange={() => toggleOrder(o.id)}
-                                                            aria-label={`Select order ${o.id.substring(0, 8)}`}
+                                                            aria-label={t("orders.select_order", { id: o.id.substring(0, 8) })}
                                                         />
                                                     )}
                                                 </TableCell>
@@ -455,7 +447,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                         {o.type === 'dine_in' && o.table ? (
                                                             <span className="font-medium text-gray-800 text-sm">{o.table.name}</span>
                                                         ) : (
-                                                            <span className="text-gray-600 italic text-sm">Walk-in</span>
+                                                            <span className="text-gray-600 italic text-sm">{t("orders.walk_in")}</span>
                                                         )}
                                                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                             <Clock className="w-3 h-3" />
@@ -476,7 +468,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                             {getStatusLabel(o.status)}
                                                         </Badge>
                                                         <Badge variant={o.paymentStatus === 'paid' ? 'default' : o.paymentStatus === 'partially_paid' ? 'outline' : 'secondary'} className="capitalize text-[10px] h-4">
-                                                            {(o.paymentStatus || 'pending').replace(/_/g, " ")}
+                                                            {t(`orders.payment_status_labels.${o.paymentStatus || 'pending'}`)}
                                                         </Badge>
                                                     </div>
                                                 </TableCell>
@@ -485,7 +477,7 @@ const OwnerOrdersPage: React.FC = () => {
                                                         <DropdownMenu>
                                                             <DropdownMenuTrigger asChild>
                                                                 <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                    <span className="sr-only">Open menu</span>
+                                                                    <span className="sr-only">{t("orders.open_menu")}</span>
                                                                     <MoreHorizontal className="h-4 w-4" />
                                                                 </Button>
                                                             </DropdownMenuTrigger>
@@ -501,77 +493,77 @@ const OwnerOrdersPage: React.FC = () => {
                                                                         className="text-purple-600 focus:text-purple-700"
                                                                     >
                                                                         <Zap className="mr-2 h-4 w-4" />
-                                                                        <span>Quick Complete</span>
+                                                                        <span>{t("orders.actions.quick_complete")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.paymentStatus !== "paid" && !isTerminal(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
                                                                         <CreditCard className="mr-2 h-4 w-4" />
-                                                                        <span>Add Payment</span>
+                                                                        <span>{t("orders.actions.add_payment")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "created" && (
                                                                     <DropdownMenuItem onClick={() => acceptOrder(o.id)} disabled={isAcceptingOrder} className="text-blue-600 focus:text-blue-700">
                                                                         <CheckCircle className="mr-2 h-4 w-4" />
-                                                                        <span>Accept</span>
+                                                                        <span>{t("orders.actions.accept")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "created" && (
                                                                     <DropdownMenuItem onClick={() => rejectOrder({ orderId: o.id })} disabled={isRejectingOrder} className="text-red-600 focus:text-red-700">
                                                                         <ThumbsDown className="mr-2 h-4 w-4" />
-                                                                        <span>Reject</span>
+                                                                        <span>{t("orders.actions.reject")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "accepted" && (
                                                                     <DropdownMenuItem onClick={() => prepareOrder(o.id)} disabled={isPreparingOrder} className="text-orange-600 focus:text-orange-700">
                                                                         <ChefHat className="mr-2 h-4 w-4" />
-                                                                        <span>Start Preparing</span>
+                                                                        <span>{t("orders.actions.start_preparing")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "preparing" && (
                                                                     <DropdownMenuItem onClick={() => readyOrder(o.id)} disabled={isMarkingReady} className="text-green-600 focus:text-green-700">
                                                                         <CheckCircle className="mr-2 h-4 w-4" />
-                                                                        <span>Mark Ready</span>
+                                                                        <span>{t("orders.actions.mark_ready")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "ready" && o.paymentStatus === "paid" && (
                                                                     <DropdownMenuItem onClick={() => completeOrder({ orderId: o.id })} disabled={isCompletingOrder} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
-                                                                        <span>Complete</span>
+                                                                        <span>{t("orders.actions.complete")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "ready" && o.paymentStatus !== "paid" && (
                                                                     <DropdownMenuItem onClick={() => handleOpenForceClose(o)} className="text-green-600 focus:text-green-700">
                                                                         <CheckSquare className="mr-2 h-4 w-4" />
-                                                                        <span>Force Complete</span>
+                                                                        <span>{t("orders.actions.force_complete")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {["created", "accepted", "preparing"].includes(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenAddItems(o.id)}>
                                                                         <PlusCircle className="mr-2 h-4 w-4" />
-                                                                        <span>Add Items</span>
+                                                                        <span>{t("orders.actions.add_items")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.type === "dine_in" && !isTerminal(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenTransfer(o)}>
                                                                         <ArrowRightLeft className="mr-2 h-4 w-4" />
-                                                                        <span>Transfer Table</span>
+                                                                        <span>{t("orders.actions.transfer_table")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {["created", "accepted", "preparing", "ready"].includes(o.status) && (
                                                                     <DropdownMenuItem onClick={() => handleOpenCancel(o)} className="text-red-600 focus:text-red-700">
                                                                         <XCircle className="mr-2 h-4 w-4" />
-                                                                        <span>Cancel</span>
+                                                                        <span>{t("orders.actions.cancel")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 <DropdownMenuItem onClick={() => handleViewDetails(o)}>
                                                                     <Eye className="mr-2 h-4 w-4" />
-                                                                    <span>View Details</span>
+                                                                    <span>{t("orders.actions.view_details")}</span>
                                                                 </DropdownMenuItem>
                                                                 {(o.status === "completed" || o.paymentStatus === "paid" || o.paymentStatus === "partially_paid") && (
                                                                     <DropdownMenuItem onClick={() => handleViewReceipt(o)}>
                                                                         <Receipt className="mr-2 h-4 w-4" />
-                                                                        <span>View Receipt</span>
+                                                                        <span>{t("orders.actions.view_receipt")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                             </DropdownMenuContent>
@@ -592,10 +584,10 @@ const OwnerOrdersPage: React.FC = () => {
                                         disabled={currentPage <= 1 || fetchingOrders}
                                         onClick={() => setPage(p => p - 1)}
                                     >
-                                        Previous
+                                        {t("orders.pagination.previous")}
                                     </Button>
                                     <span className="text-sm text-muted-foreground">
-                                        Page {currentPage} of {totalPages}
+                                        {t("orders.pagination.page_of", { page: currentPage, totalPages })}
                                     </span>
                                     <Button
                                         variant="outline"
@@ -603,7 +595,7 @@ const OwnerOrdersPage: React.FC = () => {
                                         disabled={currentPage >= totalPages || fetchingOrders}
                                         onClick={() => setPage(p => p + 1)}
                                     >
-                                        Next
+                                        {t("orders.pagination.next")}
                                     </Button>
                                 </div>
                             )}
@@ -667,7 +659,7 @@ const OwnerOrdersPage: React.FC = () => {
             <Dialog open={receiptModalOpen} onOpenChange={setReceiptModalOpen}>
                 <DialogContent className="max-w-sm p-0">
                     <DialogHeader className="px-4 pt-4">
-                        <DialogTitle>Receipt</DialogTitle>
+                        <DialogTitle>{t("orders.receipt_title")}</DialogTitle>
                     </DialogHeader>
                     {selectedOrderForReceipt && (
                         <ReceiptView

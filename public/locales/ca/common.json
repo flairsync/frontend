@@ -205,5 +205,17 @@
     "modal_point_transition_title": "Avís abans que acabi la beta",
     "modal_point_transition_text": "Quan acabi el període beta, rebreu un correu sobre el pas a un pla de pagament, amb el preu i la data en què entra en vigor — enviat com a mínim 14 dies abans que calgui començar a pagar per continuar utilitzant el servei.",
     "modal_close": "Entesos"
+  },
+  "notifications_page": {
+    "title": "Centre de notificacions",
+    "subtitle": "Mantén-te al dia amb les últimes alertes, reserves i missatges de seguretat del sistema.",
+    "tabs": {
+      "all": "Totes",
+      "alerts": "Alertes",
+      "reservations": "Reserves",
+      "orders": "Comandes",
+      "promos": "Promocions",
+      "security": "Seguretat"
+    }
   }
 }

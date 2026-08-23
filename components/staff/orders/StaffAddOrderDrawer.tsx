@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -26,6 +27,7 @@ interface AddOrderDrawerProps {
 }
 
 export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrderDrawerProps) {
+    const { t } = useTranslation("management")
     const isMobile = useIsMobile()
     const { businessAllCategories } = useBusinessMenus(businessId)
     const { floors } = useFloors(businessId, true)
@@ -119,12 +121,12 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
 
     const handleSubmit = () => {
         if (selectedItems.length === 0) {
-            toast.error("Please add at least one item to the order")
+            toast.error(t("staff_add_order.errors.no_items"))
             return
         }
 
         if (orderType === "dine_in" && (!selectedTable || selectedTable === "none")) {
-            toast.error("Please select a table for Dine-in orders")
+            toast.error(t("staff_add_order.errors.no_table"))
             return
         }
 
@@ -142,7 +144,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
             taxExempt: taxExempt || undefined,
         }, {
             onSuccess: () => {
-                toast.success("Order created successfully")
+                toast.success(t("staff_add_order.toasts.created"))
                 resetForm()
                 onOpenChange(false)
             }
@@ -160,8 +162,8 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
         }}>
             {isMobile ? (
                 <DialogContent className="max-w-none w-screen h-[100dvh] rounded-none top-0 left-0 translate-x-0 translate-y-0 p-0 gap-0 overflow-hidden flex flex-col">
-                    <DialogTitle className="sr-only">Create New Order</DialogTitle>
-                    <DialogDescription className="sr-only">Browse the menu and select items for this order.</DialogDescription>
+                    <DialogTitle className="sr-only">{t("staff_add_order.title")}</DialogTitle>
+                    <DialogDescription className="sr-only">{t("staff_add_order.description")}</DialogDescription>
                     <StaffAddOrderMobileView
                         categories={businessAllCategories || []}
                         onSelectItem={handleSelectItem}
@@ -190,10 +192,10 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                         <DialogHeader className="p-6 pb-2 text-left">
                             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
                                 <UtensilsCrossed className="w-5 h-5 text-primary" />
-                                Create New Order
+                                {t("staff_add_order.title")}
                             </DialogTitle>
                             <DialogDescription>
-                                Browse the menu and select items for this order.
+                                {t("staff_add_order.description")}
                             </DialogDescription>
                         </DialogHeader>
 
@@ -211,7 +213,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                         <div className="p-6 border-b flex items-center justify-between bg-muted/5">
                             <h3 className="text-lg font-semibold flex items-center gap-2">
                                 <ShoppingBag className="w-4 h-4" />
-                                Order Details
+                                {t("staff_add_order.order_details_heading")}
                             </h3>
                         </div>
 
@@ -219,31 +221,31 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                             {/* Order Configuration */}
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="type" className="text-xs font-semibold uppercase text-muted-foreground">Order Type</Label>
+                                    <Label htmlFor="type" className="text-xs font-semibold uppercase text-muted-foreground">{t("staff_add_order.order_type_label")}</Label>
                                     <Select value={orderType} onValueChange={(val: any) => setOrderType(val)}>
                                         <SelectTrigger id="type" className="h-10">
-                                            <SelectValue placeholder="Select type" />
+                                            <SelectValue placeholder={t("staff_add_order.order_type_placeholder")} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="dine_in">Dine-in</SelectItem>
-                                            <SelectItem value="takeaway">Takeaway</SelectItem>
-                                            <SelectItem value="delivery">Delivery</SelectItem>
+                                            <SelectItem value="dine_in">{t("staff_add_order.dine_in")}</SelectItem>
+                                            <SelectItem value="takeaway">{t("staff_add_order.takeaway")}</SelectItem>
+                                            <SelectItem value="delivery">{t("staff_add_order.delivery")}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
 
                                 {orderType === "dine_in" && (
                                     <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                                        <Label htmlFor="table" className="text-xs font-semibold uppercase text-muted-foreground">Select Table <span className="text-red-500">*</span></Label>
+                                        <Label htmlFor="table" className="text-xs font-semibold uppercase text-muted-foreground">{t("staff_add_order.select_table_label")} <span className="text-red-500">*</span></Label>
                                         <Select value={selectedTable} onValueChange={setSelectedTable}>
                                             <SelectTrigger id="table" className="h-10">
-                                                <SelectValue placeholder="Choose a table" />
+                                                <SelectValue placeholder={t("staff_add_order.choose_table_placeholder")} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="none">-- Provide a table --</SelectItem>
+                                                <SelectItem value="none">{t("staff_add_order.provide_table_option")}</SelectItem>
                                                 {tables.map((table: any) => (
                                                     <SelectItem key={table.id} value={table.id}>
-                                                        {table.name} (Cap: {table.capacity})
+                                                        {t("staff_add_order.table_option", { name: table.name, capacity: table.capacity })}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
@@ -256,10 +258,10 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                             <div className="space-y-2">
                                 <Label className="text-xs font-semibold uppercase text-muted-foreground flex items-center gap-1.5">
                                     <ChefHat className="w-3.5 h-3.5" />
-                                    Kitchen Note / Allergy Info
+                                    {t("staff_add_order.kitchen_note_label")}
                                 </Label>
                                 <Textarea
-                                    placeholder="e.g. Severe nut allergy at table"
+                                    placeholder={t("staff_add_order.kitchen_note_placeholder")}
                                     value={kitchenNotes}
                                     onChange={(e) => setKitchenNotes(e.target.value)}
                                     rows={2}
@@ -270,7 +272,7 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                             {/* Tax Exempt */}
                             <div className="flex items-center justify-between py-1">
                                 <Label htmlFor="staff-tax-exempt" className="text-xs font-semibold uppercase text-muted-foreground">
-                                    Tax Exempt
+                                    {t("staff_add_order.tax_exempt_label")}
                                 </Label>
                                 <Switch
                                     id="staff-tax-exempt"
@@ -282,14 +284,14 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                             {/* Selected Items List */}
                             <div className="space-y-3">
                                 <Label className="text-xs font-semibold uppercase text-muted-foreground flex justify-between">
-                                    <span>Selected Items</span>
-                                    <span>{selectedItems.length > 0 ? `${selectedItems.reduce((a, b) => a + b.quantity, 0)} items` : ""}</span>
+                                    <span>{t("staff_add_order.selected_items_label")}</span>
+                                    <span>{selectedItems.length > 0 ? t("staff_add_order.items_count", { count: selectedItems.reduce((a, b) => a + b.quantity, 0) }) : ""}</span>
                                 </Label>
 
                                 {selectedItems.length === 0 ? (
                                     <div className="rounded-lg border border-dashed p-8 text-center bg-muted/20">
                                         <ShoppingBag className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
-                                        <p className="text-sm text-muted-foreground">No items added yet</p>
+                                        <p className="text-sm text-muted-foreground">{t("staff_add_order.empty_items")}</p>
                                     </div>
                                 ) : (
                                     <div className="space-y-2">
@@ -298,19 +300,19 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                                                 <div className="flex flex-col flex-1 truncate pr-3">
                                                     <div className="flex items-center gap-2">
                                                         <span className="text-sm font-medium truncate">{item.name}</span>
-                                                        {item.variantId && <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">Variant Selected</span>}
+                                                        {item.variantId && <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{t("staff_add_order.variant_selected")}</span>}
                                                     </div>
                                                     {item.modifiers && item.modifiers.length > 0 && (
                                                         <span className="text-[10px] text-muted-foreground line-clamp-1 mt-0.5">
-                                                            Mods: {item.modifiers.map(m => m.name).join(", ")}
+                                                            {t("staff_add_order.mods_prefix", { list: item.modifiers.map(m => m.name).join(", ") })}
                                                         </span>
                                                     )}
                                                     {item.notes && (
                                                         <span className="text-[10px] text-amber-600 line-clamp-1 mt-0.5 italic">
-                                                            Note: {item.notes}
+                                                            {t("staff_add_order.note_prefix", { note: item.notes })}
                                                         </span>
                                                     )}
-                                                    <span className="text-xs text-muted-foreground mt-0.5">{currencySymbol}{item.price.toFixed(2)} each</span>
+                                                    <span className="text-xs text-muted-foreground mt-0.5">{t("staff_add_order.price_each", { price: `${currencySymbol}${item.price.toFixed(2)}` })}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm">
                                                     <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.id, -1)}>
@@ -331,19 +333,19 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                         {/* Footer / Summary */}
                         <div className="p-6 border-t bg-muted/5">
                             <div className="flex justify-between items-center mb-4">
-                                <span className="text-base text-muted-foreground">Subtotal</span>
+                                <span className="text-base text-muted-foreground">{t("staff_add_order.subtotal")}</span>
                                 <span className="text-2xl font-bold tracking-tight">{currencySymbol}{totalAmount.toFixed(2)}</span>
                             </div>
                             <div className="flex gap-3">
                                 <Button variant="outline" className="flex-1" onClick={() => onOpenChange(false)}>
-                                    Cancel
+                                    {t("staff_add_order.cancel")}
                                 </Button>
                                 <Button
                                     className="flex-[2]"
                                     onClick={handleSubmit}
                                     disabled={selectedItems.length === 0 || (orderType === "dine_in" && selectedTable === "none") || isCreatingOrder}
                                 >
-                                    {isCreatingOrder ? "Processing..." : "Place Order"}
+                                    {isCreatingOrder ? t("staff_add_order.processing") : t("staff_add_order.place_order")}
                                 </Button>
                             </div>
                         </div>

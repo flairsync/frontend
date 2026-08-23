@@ -1,1 +1,38 @@
-{}
+{
+  "gallery_titles": {
+    "b2b": "Marketplace B2B",
+    "saas": "Botiga SaaS",
+    "guest": "Marketplace de convidats"
+  },
+  "item_detail": {
+    "back_to_gallery": "Tornar a la galeria",
+    "back_to_shop": "Tornar a la botiga",
+    "loading": "Carregant...",
+    "item_not_found": "Article no trobat",
+    "product_not_found": "Producte no trobat",
+    "in_stock_one": "En estoc ({{count}})",
+    "in_stock_other": "En estoc ({{count}})",
+    "out_of_stock": "Esgotat",
+    "business_label": "Negoci",
+    "select_business_placeholder": "Seleccionar negoci...",
+    "quantity_label": "Quantitat",
+    "shipping_details_title": "Detalls d'enviament",
+    "full_name_label": "Nom complet",
+    "full_name_placeholder": "Nom del destinatari",
+    "contact_number_label": "Número de contacte",
+    "street_address_label": "Adreça",
+    "street_address_placeholder": "123 avinguda del comerç, suite 100",
+    "city_state_zip_label": "Ciutat, província, codi postal",
+    "city_state_zip_placeholder": "New York, NY 10001",
+    "customization_label": "Detalls de personalització (opcional)",
+    "customization_placeholder": "Indica números, lletres o instruccions de marcatge específiques...",
+    "customization_hint": "Inclou qualsevol detall específic per a la teva comanda personalitzada.",
+    "total_estimated_cost": "Cost total estimat",
+    "order_submitted": "Sol·licitud de comanda enviada — el venedor la revisarà aviat.",
+    "submitting": "Enviant...",
+    "initialize_order": "Iniciar comanda",
+    "out_of_stock_hint": "Aquest article està esgotat",
+    "select_business_hint": "Selecciona un negoci",
+    "fill_shipping_hint": "Omple tots els detalls d'enviament"
+  }
+}

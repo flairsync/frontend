@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   stationService,
@@ -45,6 +46,7 @@ interface StationCardProps {
 }
 
 export function StationCard({ station, businessId, kitchenStations, onRevoke }: StationCardProps) {
+  const { t } = useTranslation("management");
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(station.name);
   const qc = useQueryClient();
@@ -54,9 +56,9 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
       setEditing(false);
-      toast.success("Station renamed.");
+      toast.success(t("station_card.renamed_toast"));
     },
-    onError: () => toast.error("Failed to rename station."),
+    onError: () => toast.error(t("station_card.rename_failed_toast")),
   });
 
   const { mutate: assignKs, isPending: isAssigning } = useMutation({
@@ -64,9 +66,9 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
       stationService.updateStation(businessId, station.id, { kitchenStationId }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
-      toast.success("Kitchen station assigned.");
+      toast.success(t("station_card.kitchen_station_assigned_toast"));
     },
-    onError: () => toast.error("Failed to assign kitchen station."),
+    onError: () => toast.error(t("station_card.assign_failed_toast")),
   });
 
   const [editingPrinter, setEditingPrinter] = useState(false);
@@ -86,10 +88,10 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
       setEditingPrinter(false);
-      toast.success("Printer settings saved.");
+      toast.success(t("station_card.printer_settings_saved_toast"));
     },
     onError: (err: any) =>
-      toast.error(err?.response?.data?.message || "Failed to save printer settings."),
+      toast.error(err?.response?.data?.message || t("station_card.save_printer_failed_toast")),
   });
 
   const { mutate: testPrinter, isPending: isTestingPrinter } = useMutation({
@@ -99,7 +101,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
       if (result.success) toast.success(result.message);
       else toast.error(result.message);
     },
-    onError: () => toast.error("Failed to reach printer."),
+    onError: () => toast.error(t("station_card.reach_printer_failed_toast")),
   });
 
   // WebUSB: entirely client-side, no host/port, no backend call for pairing or testing —
@@ -113,11 +115,11 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
     mutationFn: () => pairPrinter(station.id),
     onSuccess: (info) => {
       setPairedInfo(info);
-      toast.success(`Paired with ${info.productName}.`);
+      toast.success(t("station_card.paired_with_toast", { name: info.productName }));
     },
     onError: (err: any) => {
       if (err?.name === "NotFoundError") return; // user closed the device picker — not an error
-      toast.error(err?.message || "Failed to pair the USB printer.");
+      toast.error(err?.message || t("station_card.pair_failed_toast"));
     },
   });
   const { mutate: testUsbPrinter, isPending: isTestingUsb } = useMutation({
@@ -126,7 +128,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
       if (result.success) toast.success(result.message);
       else toast.error(result.message);
     },
-    onError: () => toast.error("Failed to reach the USB printer."),
+    onError: () => toast.error(t("station_card.reach_usb_printer_failed_toast")),
   });
 
   const online = isOnline(station.lastSeenAt);
@@ -158,7 +160,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                     }}
                   />
                   <Button size="sm" className="h-7 px-2 text-xs" onClick={() => save()} disabled={isSaving}>
-                    {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+                    {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : t("station_card.save")}
                   </Button>
                 </div>
               ) : (
@@ -177,7 +179,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                     : "bg-primary/10 text-primary border-primary/20"
                 }`}
               >
-                {station.type === "kds" ? "Kitchen Display" : "POS Terminal"}
+                {station.type === "kds" ? t("station_card.kitchen_display") : t("station_card.pos_terminal")}
               </Badge>
             </div>
           </div>
@@ -186,7 +188,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
             online ? "bg-green-500/10 text-green-600" : "bg-muted text-muted-foreground"
           }`}>
             {online ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
-            {online ? "Online" : "Offline"}
+            {online ? t("station_card.online") : t("station_card.offline")}
           </div>
         </div>
 
@@ -194,7 +196,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
         {station.type === "kds" && (
           <div className="mb-4">
             <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5 block">
-              Kitchen Station
+              {t("station_card.kitchen_station")}
             </Label>
             <Select
               value={station.kitchenStationId ?? "none"}
@@ -202,17 +204,17 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
               disabled={isAssigning}
             >
               <SelectTrigger className="h-8 text-xs">
-                <SelectValue placeholder="Not assigned" />
+                <SelectValue placeholder={t("station_card.not_assigned")} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">
-                  <span className="text-muted-foreground">Not assigned</span>
+                  <span className="text-muted-foreground">{t("station_card.not_assigned")}</span>
                 </SelectItem>
                 {kitchenStations.map((ks) => (
                   <SelectItem key={ks.id} value={ks.id}>
                     {ks.name}
                     {!ks.active && (
-                      <span className="ml-1 text-muted-foreground">(inactive)</span>
+                      <span className="ml-1 text-muted-foreground">{t("station_card.inactive_suffix")}</span>
                     )}
                   </SelectItem>
                 ))}
@@ -226,14 +228,14 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1.5">
               <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
-                <Printer className="w-3 h-3" /> Printer
+                <Printer className="w-3 h-3" /> {t("station_card.printer")}
               </Label>
               {!editingPrinter && (
                 <button
                   onClick={() => setEditingPrinter(true)}
                   className="text-[10px] font-bold text-primary hover:underline"
                 >
-                  {station.printerType === "none" ? "Configure" : "Edit"}
+                  {station.printerType === "none" ? t("station_card.configure") : t("station_card.edit")}
                 </button>
               )}
             </div>
@@ -246,16 +248,16 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                   rel="noopener noreferrer"
                   className="text-[10px] text-primary hover:underline"
                 >
-                  How do I connect a printer or cash drawer?
+                  {t("station_card.how_to_connect_printer")}
                 </a>
                 <Select value={printerType} onValueChange={(v) => setPrinterType(v as PrinterType)}>
                   <SelectTrigger className="h-8 text-xs">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">No printer</SelectItem>
-                    <SelectItem value="escpos_network">Network printer (ESC/POS)</SelectItem>
-                    <SelectItem value="webusb">USB printer (browser-direct)</SelectItem>
+                    <SelectItem value="none">{t("station_card.no_printer")}</SelectItem>
+                    <SelectItem value="escpos_network">{t("station_card.network_printer")}</SelectItem>
+                    <SelectItem value="webusb">{t("station_card.usb_printer")}</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -279,13 +281,13 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                 {printerType === "webusb" && (
                   !isWebUsbSupported() ? (
                     <p className="text-[10px] text-destructive">
-                      This browser doesn't support WebUSB — use Chrome or Edge on this station's device.
+                      {t("station_card.webusb_unsupported")}
                     </p>
                   ) : (
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
                         <p className="text-[10px] text-muted-foreground truncate">
-                          {pairedInfo ? `Paired: ${pairedInfo.productName}` : "No printer paired yet"}
+                          {pairedInfo ? t("station_card.paired_with", { name: pairedInfo.productName }) : t("station_card.no_printer_paired")}
                         </p>
                         <div className="flex items-center gap-1 shrink-0">
                           <Button
@@ -296,7 +298,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                             disabled={isPairing}
                           >
                             {isPairing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Usb className="w-3 h-3" />}
-                            {pairedInfo ? "Re-pair" : "Pair"}
+                            {pairedInfo ? t("station_card.re_pair") : t("station_card.pair")}
                           </Button>
                           {pairedInfo && (
                             <Button
@@ -308,27 +310,26 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                                 setPairedInfo(null);
                               }}
                             >
-                              Unpair
+                              {t("station_card.unpair")}
                             </Button>
                           )}
                         </div>
                       </div>
                       <p className="text-[10px] text-muted-foreground">
-                        The printer must be connected via USB to this exact device/browser — pairing doesn't
-                        transfer to other stations.
+                        {t("station_card.usb_pairing_hint")}
                       </p>
                     </div>
                   )
                 )}
 
                 <div className="flex items-center justify-between">
-                  <Label className="text-xs font-medium">Has cash drawer</Label>
+                  <Label className="text-xs font-medium">{t("station_card.has_cash_drawer")}</Label>
                   <Switch checked={hasCashDrawer} onCheckedChange={setHasCashDrawer} />
                 </div>
 
                 <div className="flex items-center gap-2 pt-1">
                   <Button size="sm" className="h-7 px-2 text-xs" onClick={() => savePrinter()} disabled={isSavingPrinter}>
-                    {isSavingPrinter ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+                    {isSavingPrinter ? <Loader2 className="w-3 h-3 animate-spin" /> : t("station_card.save")}
                   </Button>
                   <Button
                     size="sm"
@@ -342,7 +343,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                       setHasCashDrawer(station.hasCashDrawer);
                     }}
                   >
-                    Cancel
+                    {t("station_card.cancel")}
                   </Button>
                 </div>
               </div>
@@ -350,10 +351,10 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
               <div className="flex items-center justify-between">
                 <p className="text-xs text-muted-foreground">
                   {station.printerType === "none"
-                    ? "Not configured"
+                    ? t("station_card.not_configured")
                     : station.printerType === "webusb"
-                      ? `${pairedInfo ? `Paired: ${pairedInfo.productName}` : "Not paired yet"}${station.hasCashDrawer ? " · Cash drawer" : ""}`
-                      : `${station.printerHost}:${station.printerPort}${station.hasCashDrawer ? " · Cash drawer" : ""}`}
+                      ? `${pairedInfo ? t("station_card.paired_with", { name: pairedInfo.productName }) : t("station_card.not_paired_yet")}${station.hasCashDrawer ? t("station_card.cash_drawer_suffix") : ""}`
+                      : `${station.printerHost}:${station.printerPort}${station.hasCashDrawer ? t("station_card.cash_drawer_suffix") : ""}`}
                 </p>
                 {station.printerType === "escpos_network" && (
                   <Button
@@ -364,7 +365,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                     disabled={isTestingPrinter}
                   >
                     {isTestingPrinter ? <Loader2 className="w-3 h-3 animate-spin" /> : <PlugZap className="w-3 h-3" />}
-                    Test
+                    {t("station_card.test")}
                   </Button>
                 )}
                 {station.printerType === "webusb" && pairedInfo && (
@@ -376,7 +377,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
                     disabled={isTestingUsb}
                   >
                     {isTestingUsb ? <Loader2 className="w-3 h-3 animate-spin" /> : <PlugZap className="w-3 h-3" />}
-                    Test
+                    {t("station_card.test")}
                   </Button>
                 )}
               </div>
@@ -390,8 +391,8 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
           <div className="flex items-center gap-1.5 text-muted-foreground text-xs">
             <Clock className="w-3.5 h-3.5" />
             {station.lastSeenAt
-              ? `Last seen ${formatTime(station.lastSeenAt)}`
-              : "Never connected"}
+              ? t("station_card.last_seen", { time: formatTime(station.lastSeenAt) })
+              : t("station_card.never_connected")}
           </div>
           <Button
             variant="ghost"
@@ -400,7 +401,7 @@ export function StationCard({ station, businessId, kitchenStations, onRevoke }: 
             onClick={() => onRevoke(station.id, station.name)}
           >
             <Unplug className="w-3.5 h-3.5" />
-            Revoke
+            {t("station_card.revoke")}
           </Button>
         </div>
       </CardContent>

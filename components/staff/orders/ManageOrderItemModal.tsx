@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Order } from "@/features/orders/service";
 import { useOrders } from "@/features/orders/useOrders";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
@@ -14,6 +15,7 @@ interface ManageOrderItemModalProps {
 }
 
 export const ManageOrderItemModal: React.FC<ManageOrderItemModalProps> = ({ open, onClose, businessId, orderId, item }) => {
+    const { t } = useTranslation("management");
     const { updateOrderItem } = useOrders(businessId);
     const { businessAllCategories } = useBusinessMenus(businessId);
 
@@ -32,7 +34,7 @@ export const ManageOrderItemModal: React.FC<ManageOrderItemModalProps> = ({ open
         return (
             <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
                 <DialogContent className="sm:max-w-[425px]">
-                    <div className="p-4 text-center text-muted-foreground">Loading item details...</div>
+                    <div className="p-4 text-center text-muted-foreground">{t("manage_order_item_modal.loading")}</div>
                 </DialogContent>
             </Dialog>
         );

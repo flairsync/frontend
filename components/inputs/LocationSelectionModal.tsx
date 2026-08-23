@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useTranslation, Trans } from 'react-i18next'
 import {
     Dialog,
     DialogContent,
@@ -47,6 +48,7 @@ type Props = {
 }
 
 const LocationSelectionModal = (props: Props) => {
+    const { t } = useTranslation("feed");
     const [locationEnabled, setLocationEnabled] = useState(false);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
 
@@ -177,7 +179,7 @@ const LocationSelectionModal = (props: Props) => {
         >
             <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Search location settings</DialogTitle>
+                    <DialogTitle>{t("location_selection_modal.title")}</DialogTitle>
                     <DialogDescription>
                     </DialogDescription>
                 </DialogHeader>
@@ -186,9 +188,9 @@ const LocationSelectionModal = (props: Props) => {
                 {
                     props.reason === 'denied' && (
                         <Alert variant="destructive" className="bg-destructive/10 border-destructive/20">
-                            <AlertTitle className="text-destructive font-bold">Location Access Denied</AlertTitle>
+                            <AlertTitle className="text-destructive font-bold">{t("location_selection_modal.access_denied_title")}</AlertTitle>
                             <AlertDescription className="text-destructive/80">
-                                Geolocation is disabled or blocked. Please select a <b>Country</b> or click the map to set a <b>Custom Location</b> to see nearby results.
+                                <Trans i18nKey="location_selection_modal.access_denied_desc" ns="feed" components={{ b: <b /> }} />
                             </AlertDescription>
                         </Alert>
                     )
@@ -197,9 +199,9 @@ const LocationSelectionModal = (props: Props) => {
                 {
                     (props.reason === 'error' || props.reason === 'unsupported') && (
                         <Alert variant="default" className="bg-yellow-500/10 border-yellow-500/20">
-                            <AlertTitle className="text-yellow-600 dark:text-yellow-400 font-bold">Location Unavailable</AlertTitle>
+                            <AlertTitle className="text-yellow-600 dark:text-yellow-400 font-bold">{t("location_selection_modal.unavailable_title")}</AlertTitle>
                             <AlertDescription className="text-yellow-600/80 dark:text-yellow-400/80">
-                                We couldn't detect your location automatically. Please choose a country or a spot on the map to continue.
+                                {t("location_selection_modal.unavailable_desc")}
                             </AlertDescription>
                         </Alert>
                     )
@@ -207,9 +209,9 @@ const LocationSelectionModal = (props: Props) => {
 
                 {
                     !locationEnabled && !props.reason && <Alert variant="destructive">
-                        <AlertTitle>Location error</AlertTitle>
+                        <AlertTitle>{t("location_selection_modal.error_title")}</AlertTitle>
                         <AlertDescription>
-                            Location is not enabled, please check your permission settings.
+                            {t("location_selection_modal.error_desc")}
                         </AlertDescription>
                     </Alert>
                 }
@@ -219,21 +221,21 @@ const LocationSelectionModal = (props: Props) => {
                     <div className="flex items-center space-x-2 bg-muted/30 p-3 rounded-lg border border-border/50">
                         <Switch id="use_country_filter" checked={useCountryFilter} onCheckedChange={setUseCountryFilter} />
                         <div className="space-y-0.5">
-                            <Label htmlFor="use_country_filter" className="font-semibold text-sm">Filter by Entire Country</Label>
-                            <p className="text-xs text-muted-foreground">This ignores standard precise coordinates.</p>
+                            <Label htmlFor="use_country_filter" className="font-semibold text-sm">{t("location_selection_modal.filter_by_country_label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("location_selection_modal.filter_by_country_hint")}</p>
                         </div>
                     </div>
 
                     {useCountryFilter && (
                         <div className="w-full">
-                            <Label className="text-sm font-medium mb-1 block">Select Country (Optional)</Label>
+                            <Label className="text-sm font-medium mb-1 block">{t("location_selection_modal.select_country_label")}</Label>
                             <Select
                                 value={selectedCountryId ? selectedCountryId.toString() : undefined}
                                 onValueChange={(val) => setSelectedCountryId(parseInt(val))}
                                 disabled={isCountriesLoading}
                             >
                                 <SelectTrigger className="w-full h-10 rounded-xl border-border/50 shadow-sm">
-                                    <SelectValue placeholder={isCountriesLoading ? "Loading countries..." : "Any Country"} />
+                                    <SelectValue placeholder={isCountriesLoading ? t("location_selection_modal.loading_countries") : t("location_selection_modal.any_country")} />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-xl max-h-60">
                                     {countries?.map((c) => (
@@ -251,13 +253,13 @@ const LocationSelectionModal = (props: Props) => {
                             <div className="flex items-center space-x-2 bg-muted/30 p-3 rounded-lg border border-border/50 mt-2">
                                 <Switch id="use_custom_location" checked={useCustomLocation} onCheckedChange={setUseCustomLocation} />
                                 <div className="space-y-0.5">
-                                    <Label htmlFor="use_custom_location" className="font-semibold text-sm">Use custom coordinate location?</Label>
-                                    <p className="text-xs text-muted-foreground">Click the map to change the origin point.</p>
+                                    <Label htmlFor="use_custom_location" className="font-semibold text-sm">{t("location_selection_modal.use_custom_location_label")}</Label>
+                                    <p className="text-xs text-muted-foreground">{t("location_selection_modal.use_custom_location_hint")}</p>
                                 </div>
                             </div>
 
                             <div className="px-1 mt-4">
-                                <Label className="text-sm font-medium">Search area radius: <span className="text-primary font-bold">{searchRadius} km</span></Label>
+                                <Label className="text-sm font-medium">{t("location_selection_modal.search_radius_label")} <span className="text-primary font-bold">{t("location_selection_modal.radius_km", { radius: searchRadius })}</span></Label>
                                 <Slider
                                     className="mt-2"
                                     value={[searchRadius]}
@@ -284,13 +286,13 @@ const LocationSelectionModal = (props: Props) => {
                             />
                             {currentLocation && !useCustomLocation && (
                                 <Marker icon={customMarkerIcon} position={getCurrentLocationInLeafletFormat()}>
-                                    <Popup>Your device location</Popup>
+                                    <Popup>{t("location_selection_modal.your_device_location")}</Popup>
                                 </Marker>
                             )}
                             {useCustomLocation && customLocation && (
                                 <>
                                     <Marker icon={customMarkerIcon} position={customLocation}>
-                                        <Popup>Custom override location</Popup>
+                                        <Popup>{t("location_selection_modal.custom_override_location")}</Popup>
                                     </Marker>
                                     <Circle
                                         center={customLocation}
@@ -307,9 +309,9 @@ const LocationSelectionModal = (props: Props) => {
                 )}
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline">{t("location_selection_modal.cancel")}</Button>
                     </DialogClose>
-                    <Button type="button" onClick={handleSave} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-md">Apply Filters</Button>
+                    <Button type="button" onClick={handleSave} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-md">{t("location_selection_modal.apply_filters")}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

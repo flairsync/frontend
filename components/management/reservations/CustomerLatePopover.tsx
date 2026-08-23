@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,7 @@ interface CustomerLatePopoverProps {
 }
 
 export const CustomerLatePopover: React.FC<CustomerLatePopoverProps> = ({ businessId, reservationId }) => {
+    const { t } = useTranslation("management");
     const [open, setOpen] = useState(false);
     const [delay, setDelay] = useState<string>("");
     const [notes, setNotes] = useState("");
@@ -36,23 +38,23 @@ export const CustomerLatePopover: React.FC<CustomerLatePopoverProps> = ({ busine
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button size="sm" variant="outline" className="border-amber-300 text-amber-700 hover:bg-amber-50">
-                    <Clock className="w-3.5 h-3.5 mr-1" /> Running Late
+                    <Clock className="w-3.5 h-3.5 mr-1" /> {t("customer_late_popover.trigger")}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-72 space-y-3">
-                <p className="text-sm font-semibold">Customer Running Late</p>
+                <p className="text-sm font-semibold">{t("customer_late_popover.heading")}</p>
                 <div className="space-y-1">
-                    <Label className="text-xs">Estimated delay (minutes)</Label>
+                    <Label className="text-xs">{t("customer_late_popover.delay_label")}</Label>
                     <Input type="number" min={1} max={120} value={delay} onChange={(e) => setDelay(e.target.value)} placeholder="e.g. 15" />
                 </div>
                 <div className="space-y-1">
-                    <Label className="text-xs">Notes (optional)</Label>
-                    <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Called ahead, traffic…" rows={2} />
+                    <Label className="text-xs">{t("customer_late_popover.notes_label")}</Label>
+                    <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("customer_late_popover.notes_placeholder")} rows={2} />
                 </div>
                 <div className="flex justify-end gap-2">
-                    <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>{t("customer_late_popover.cancel")}</Button>
                     <Button size="sm" disabled={isPending} onClick={handleSubmit}>
-                        {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Record"}
+                        {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : t("customer_late_popover.record")}
                     </Button>
                 </div>
             </PopoverContent>

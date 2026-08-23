@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import ManagerScheduleShiftsTab from "@/components/management/schedule/ManagerScheduleShiftsTab";
@@ -50,6 +51,7 @@ const SCHEDULE_TOUR_STEPS: TourStep[] = [
 ]
 
 export default function OwnerManageSchedulesPage() {
+    const { t } = useTranslation("management");
     usePageTour(SCHEDULE_TOUR_STEPS);
 
     const [activeTab, setActiveTab] = useState("manage");
@@ -90,7 +92,7 @@ export default function OwnerManageSchedulesPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold tracking-tight">Schedule Management</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t("schedule_page.title")}</h1>
             </div>
 
             <Separator />
@@ -98,12 +100,12 @@ export default function OwnerManageSchedulesPage() {
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                     <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
-                        <TabsTrigger data-tour="schedule-tab-manage" value="manage" className="flex-1">Staff Scheduling</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-bids" value="bids" className="flex-1">Open Shift Bids</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-rules" value="rules" className="flex-1">Recurring Rules</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-shifts" value="shifts" className="flex-1">Shift Templates</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-time-off" value="time-off" className="flex-1">Time Off</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-swaps" value="swaps" className="flex-1">Swaps</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-manage" value="manage" className="flex-1">{t("schedule_page.tabs.staff_scheduling")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-bids" value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-rules" value="rules" className="flex-1">{t("schedule_page.tabs.recurring_rules")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-shifts" value="shifts" className="flex-1">{t("schedule_page.tabs.shift_templates")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-time-off" value="time-off" className="flex-1">{t("schedule_page.tabs.time_off")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-swaps" value="swaps" className="flex-1">{t("schedule_page.tabs.swaps")}</TabsTrigger>
                     </TabsList>
 
                     {/* Manage Staff Scheduling */}

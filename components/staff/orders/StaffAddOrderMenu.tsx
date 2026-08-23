@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -21,6 +22,7 @@ interface MenuSelectorProps {
 }
 
 const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectItem, currencySymbol = "$" }) => {
+    const { t } = useTranslation("management");
     const [search, setSearch] = useState("");
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>("all");
 
@@ -60,7 +62,7 @@ const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectIt
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Search for an item..."
+                        placeholder={t("staff_add_order_menu.search_placeholder")}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="pl-9 border-border focus-visible:ring-ring"
@@ -69,10 +71,10 @@ const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectIt
                 {categories.length > 0 && (
                     <Select value={selectedCategoryId} onValueChange={setSelectedCategoryId}>
                         <SelectTrigger className="w-[160px] border-border focus:ring-ring text-sm">
-                            <SelectValue placeholder="All Categories" />
+                            <SelectValue placeholder={t("staff_add_order_menu.all_categories")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Categories</SelectItem>
+                            <SelectItem value="all">{t("staff_add_order_menu.all_categories")}</SelectItem>
                             {categories.map(cat => (
                                 <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                             ))}
@@ -89,7 +91,7 @@ const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectIt
                             <div key={category.id} id={`ordermenu-category-${category.id}`} className="bg-card rounded-lg border border-border shadow-sm overflow-hidden">
                                 <div className="bg-muted/30 px-4 py-2 border-b border-border flex items-center justify-between sticky top-0 backdrop-blur-md z-10">
                                     <h3 className="font-semibold text-sm text-muted-foreground">{category.name}</h3>
-                                    <span className="text-xs text-muted-foreground bg-card px-2 py-0.5 rounded-full border border-border shadow-sm">{category.items.length} items</span>
+                                    <span className="text-xs text-muted-foreground bg-card px-2 py-0.5 rounded-full border border-border shadow-sm">{t("staff_add_order_menu.items_count", { count: category.items.length })}</span>
                                 </div>
                                 <div className="divide-y divide-border">
                                     {category.items.map((item) => (
@@ -116,8 +118,8 @@ const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectIt
                         <Card className="flex-1 flex flex-col border border-dashed border-border shadow-none h-full bg-muted/50 items-center justify-center">
                             <CardContent className="flex flex-col items-center p-6 text-center">
                                 <Search className="w-8 h-8 text-muted-foreground/50 mb-3" />
-                                <p className="text-muted-foreground font-medium">No items found</p>
-                                <p className="text-sm text-muted-foreground/70 mt-1">Try adjusting your search</p>
+                                <p className="text-muted-foreground font-medium">{t("staff_add_order_menu.no_items_found")}</p>
+                                <p className="text-sm text-muted-foreground/70 mt-1">{t("staff_add_order_menu.try_adjusting_search")}</p>
                             </CardContent>
                         </Card>
                     )}

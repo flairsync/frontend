@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { useTranslation } from "react-i18next"
 import {
     AccordionItem,
     AccordionTrigger,
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils"
 import { Trash2 } from "lucide-react"
 
 const DangerZoneSettings = () => {
+    const { t } = useTranslation('profile')
     const { requestDeletion, requestingDeletion } = useAccountDeletion()
 
     return (
@@ -30,51 +32,50 @@ const DangerZoneSettings = () => {
             <AccordionTrigger className="text-destructive hover:text-destructive hover:no-underline">
                 <div className="flex items-center gap-2">
                     <Trash2 className="h-4 w-4" />
-                    Danger Zone
+                    {t('danger_zone_settings.title')}
                 </div>
             </AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 <div className="space-y-1">
-                    <p className="font-medium text-sm">Delete account</p>
+                    <p className="font-medium text-sm">{t('danger_zone_settings.delete_account')}</p>
                     <p className="text-sm text-muted-foreground">
-                        Permanently delete your account. You have a 30-day window to cancel after
-                        requesting deletion.
+                        {t('danger_zone_settings.delete_account_description')}
                     </p>
                 </div>
 
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button variant="destructive" size="sm">
-                            Delete my account
+                            {t('danger_zone_settings.delete_my_account')}
                         </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
-                            <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+                            <AlertDialogTitle>{t('danger_zone_settings.confirm_title')}</AlertDialogTitle>
                             <AlertDialogDescription asChild>
                                 <div className="space-y-3 text-sm text-muted-foreground">
                                     <p>
-                                        Your account will be permanently deleted after{" "}
-                                        <span className="font-semibold text-foreground">30 days</span>. You
-                                        can cancel this within the 30-day window by logging back in.
+                                        {t('danger_zone_settings.confirm_intro_prefix')}{" "}
+                                        <span className="font-semibold text-foreground">{t('danger_zone_settings.thirty_days')}</span>
+                                        {" "}{t('danger_zone_settings.confirm_intro_suffix')}
                                     </p>
                                     <p className="text-destructive font-medium">
-                                        Your subscription will not be refunded.
+                                        {t('danger_zone_settings.no_refund')}
                                     </p>
                                     <div className="rounded-md border p-3 space-y-2 text-xs">
                                         <div>
-                                            <p className="font-semibold text-foreground mb-1">What gets deleted:</p>
+                                            <p className="font-semibold text-foreground mb-1">{t('danger_zone_settings.what_gets_deleted')}</p>
                                             <ul className="list-disc list-inside space-y-0.5">
-                                                <li>Name, email, phone number, date of birth</li>
-                                                <li>Avatar and profile photo</li>
-                                                <li>Password and 2FA settings</li>
+                                                <li>{t('danger_zone_settings.deleted_items.identity')}</li>
+                                                <li>{t('danger_zone_settings.deleted_items.avatar')}</li>
+                                                <li>{t('danger_zone_settings.deleted_items.security')}</li>
                                             </ul>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-foreground mb-1">What is kept (anonymised):</p>
+                                            <p className="font-semibold text-foreground mb-1">{t('danger_zone_settings.what_is_kept')}</p>
                                             <ul className="list-disc list-inside space-y-0.5">
-                                                <li>Subscription history (legal/financial records)</li>
-                                                <li>Order and reservation history</li>
+                                                <li>{t('danger_zone_settings.kept_items.subscription_history')}</li>
+                                                <li>{t('danger_zone_settings.kept_items.order_reservation_history')}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -82,13 +83,13 @@ const DangerZoneSettings = () => {
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t('danger_zone_settings.cancel')}</AlertDialogCancel>
                             <AlertDialogAction
                                 className={cn(buttonVariants({ variant: "destructive" }))}
                                 onClick={() => requestDeletion()}
                                 disabled={requestingDeletion}
                             >
-                                {requestingDeletion ? "Processing…" : "Yes, delete my account"}
+                                {requestingDeletion ? t('danger_zone_settings.processing') : t('danger_zone_settings.confirm_delete')}
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>

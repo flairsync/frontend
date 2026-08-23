@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -41,6 +42,7 @@ function truncate(value: string | null, length = 8) {
 }
 
 const FiscalInvoicesPage: React.FC = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -112,14 +114,14 @@ const FiscalInvoicesPage: React.FC = () => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Fiscal Invoices</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">{t("fiscal_invoices_page.title")}</h1>
                     <p className="text-sm text-muted-foreground mt-1">
-                        The legal invoice register for your business — sequential numbers and corrections.
+                        {t("fiscal_invoices_page.subtitle")}
                     </p>
                 </div>
                 <Button variant="outline" className="gap-2" onClick={handleExport}>
                     <Download className="h-4 w-4" />
-                    Export CSV
+                    {t("fiscal_invoices_page.export_csv")}
                 </Button>
             </div>
 
@@ -130,12 +132,12 @@ const FiscalInvoicesPage: React.FC = () => {
                 <CardContent className="pt-4 flex flex-wrap gap-3 items-center">
                     <Select value={type || "_all"} onValueChange={handleFilterChange(setType)}>
                         <SelectTrigger className="w-44">
-                            <SelectValue placeholder="All types" />
+                            <SelectValue placeholder={t("fiscal_invoices_page.all_types")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="_all">All types</SelectItem>
-                            <SelectItem value={FiscalInvoiceType.STANDARD}>Standard</SelectItem>
-                            <SelectItem value={FiscalInvoiceType.CORRECTION}>Correction</SelectItem>
+                            <SelectItem value="_all">{t("fiscal_invoices_page.all_types")}</SelectItem>
+                            <SelectItem value={FiscalInvoiceType.STANDARD}>{t("fiscal_invoices_page.type_standard")}</SelectItem>
+                            <SelectItem value={FiscalInvoiceType.CORRECTION}>{t("fiscal_invoices_page.type_correction")}</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -146,7 +148,7 @@ const FiscalInvoicesPage: React.FC = () => {
                             onChange={(e) => { setFrom(e.target.value); setPage(1); }}
                             className="w-40"
                         />
-                        <span className="text-zinc-400 text-sm">to</span>
+                        <span className="text-zinc-400 text-sm">{t("fiscal_invoices_page.to")}</span>
                         <Input
                             type="date"
                             value={to}
@@ -157,7 +159,7 @@ const FiscalInvoicesPage: React.FC = () => {
 
                     {hasFilters && (
                         <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-zinc-500">
-                            <X className="h-3.5 w-3.5" /> Clear
+                            <X className="h-3.5 w-3.5" /> {t("fiscal_invoices_page.clear")}
                         </Button>
                     )}
                 </CardContent>
@@ -169,14 +171,14 @@ const FiscalInvoicesPage: React.FC = () => {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="pl-4">Invoice Number</TableHead>
-                                <TableHead>Country</TableHead>
-                                <TableHead>Type</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Order</TableHead>
-                                <TableHead>Issued At</TableHead>
-                                <TableHead>Hash</TableHead>
-                                <TableHead className="sticky right-0 bg-background text-right pr-4">Details</TableHead>
+                                <TableHead className="pl-4">{t("fiscal_invoices_page.col_invoice_number")}</TableHead>
+                                <TableHead>{t("fiscal_invoices_page.col_country")}</TableHead>
+                                <TableHead>{t("fiscal_invoices_page.col_type")}</TableHead>
+                                <TableHead>{t("fiscal_invoices_page.col_status")}</TableHead>
+                                <TableHead>{t("fiscal_invoices_page.col_order")}</TableHead>
+                                <TableHead>{t("fiscal_invoices_page.col_issued_at")}</TableHead>
+                                <TableHead>{t("fiscal_invoices_page.col_hash")}</TableHead>
+                                <TableHead className="sticky right-0 bg-background text-right pr-4">{t("fiscal_invoices_page.col_details")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -193,7 +195,7 @@ const FiscalInvoicesPage: React.FC = () => {
                             ) : invoices.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={8} className="text-center text-muted-foreground py-16">
-                                        No fiscal invoices found{hasFilters ? " for the selected filters" : ""}.
+                                        {hasFilters ? t("fiscal_invoices_page.empty_filtered") : t("fiscal_invoices_page.empty")}
                                     </TableCell>
                                 </TableRow>
                             ) : invoices.map((inv) => (
@@ -210,11 +212,11 @@ const FiscalInvoicesPage: React.FC = () => {
                                     </TableCell>
                                     <TableCell>
                                         <Badge className={TYPE_STYLES[inv.type]}>
-                                            {inv.type}
+                                            {inv.type === FiscalInvoiceType.STANDARD ? t("fiscal_invoices_page.type_standard") : t("fiscal_invoices_page.type_correction")}
                                         </Badge>
                                         {inv.type === FiscalInvoiceType.CORRECTION && (
                                             <div className="text-xs text-muted-foreground font-mono mt-1">
-                                                corrects {truncate(inv.correctsInvoiceId)}
+                                                {t("fiscal_invoices_page.corrects", { id: truncate(inv.correctsInvoiceId) })}
                                             </div>
                                         )}
                                     </TableCell>
@@ -234,8 +236,8 @@ const FiscalInvoicesPage: React.FC = () => {
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8"
-                                                title="Download PDF"
-                                                aria-label="Download PDF"
+                                                title={t("fiscal_invoices_page.download_pdf")}
+                                                aria-label={t("fiscal_invoices_page.download_pdf")}
                                                 disabled={downloadingId === inv.id}
                                                 onClick={(e) => { e.stopPropagation(); handleDownloadPdf(inv); }}
                                             >
@@ -250,8 +252,8 @@ const FiscalInvoicesPage: React.FC = () => {
                                             variant="ghost"
                                             size="icon"
                                             className="h-8 w-8"
-                                            title="View details"
-                                            aria-label="View details"
+                                            title={t("fiscal_invoices_page.view_details")}
+                                            aria-label={t("fiscal_invoices_page.view_details")}
                                             onClick={(e) => { e.stopPropagation(); setSelectedInvoice(inv); }}
                                         >
                                             <Eye className="h-3.5 w-3.5" />
@@ -265,7 +267,7 @@ const FiscalInvoicesPage: React.FC = () => {
                     {totalPages > 1 && (
                         <div className="flex items-center justify-between px-4 py-3 border-t">
                             <span className="text-sm text-muted-foreground">
-                                Page {page} of {totalPages}
+                                {t("fiscal_invoices_page.page_of", { page, totalPages })}
                             </span>
                             <div className="flex gap-2">
                                 <Button
@@ -309,7 +311,7 @@ const FiscalInvoicesPage: React.FC = () => {
                 ) : (
                     <Dialog open onOpenChange={(v) => { if (!v) setViewOrderId(null); }}>
                         <DialogContent className="max-w-sm flex items-center justify-center py-10">
-                            <DialogTitle className="sr-only">Loading order</DialogTitle>
+                            <DialogTitle className="sr-only">{t("fiscal_invoices_page.loading_order")}</DialogTitle>
                             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                         </DialogContent>
                     </Dialog>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -31,6 +32,7 @@ interface ChangePlanModalProps {
 }
 
 export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlanModalProps) {
+    const { t } = useTranslation("management");
     const { subscriptionPacks, fetchingPacks, changePlan, changingPlan } = useSubscriptions();
     const [confirmPack, setConfirmPack] = useState<SubscriptionPack | null>(null);
 
@@ -47,14 +49,14 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
 
     const getButtonLabel = (pack: SubscriptionPack) => {
         const currentPack = subscription?.pack ?? null;
-        if (currentPack == null) return "Select";
-        if (isSamePlanFamily(currentPack, pack)) return "Current plan";
+        if (currentPack == null) return t("change_plan_modal.select");
+        if (isSamePlanFamily(currentPack, pack)) return t("change_plan_modal.current_plan");
 
         const currentMonthlyPrice = getMonthlyEquivalentPrice(currentPack);
         const packMonthlyPrice = getMonthlyEquivalentPrice(pack);
-        if (packMonthlyPrice > currentMonthlyPrice) return "Upgrade";
-        if (packMonthlyPrice < currentMonthlyPrice) return "Downgrade";
-        return "Select";
+        if (packMonthlyPrice > currentMonthlyPrice) return t("change_plan_modal.upgrade");
+        if (packMonthlyPrice < currentMonthlyPrice) return t("change_plan_modal.downgrade");
+        return t("change_plan_modal.select");
     };
 
     const availablePacks = subscriptionPacks?.filter((p) => !p.isDefault) ?? [];
@@ -64,9 +66,9 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent className="sm:max-w-3xl w-full max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>Change Plan</DialogTitle>
+                        <DialogTitle>{t("change_plan_modal.title")}</DialogTitle>
                         <DialogDescription>
-                            Select a new plan. Billing will be adjusted automatically by Lemon Squeezy.
+                            {t("change_plan_modal.description")}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -75,13 +77,14 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
                         </div>
                     ) : availablePacks.length === 0 ? (
-                        <p className="text-muted-foreground text-sm py-6 text-center">No plans available.</p>
+                        <p className="text-muted-foreground text-sm py-6 text-center">{t("change_plan_modal.no_plans")}</p>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-4">
                             {availablePacks.map((pack) => {
                                 const isCurrent = subscription?.pack != null &&
                                     (subscription.pack.id === pack.id || isSamePlanFamily(subscription.pack, pack));
                                 const label = getButtonLabel(pack);
+                                const isUpgrade = label === t("change_plan_modal.upgrade");
                                 return (
                                     <div
                                         key={pack.id}
@@ -94,7 +97,7 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                                     >
                                         {isCurrent && (
                                             <Badge className="absolute top-3 right-3 text-xs">
-                                                Current plan
+                                                {t("change_plan_modal.current_plan")}
                                             </Badge>
                                         )}
                                         <h3 className="font-bold text-lg mb-1 pr-24">{pack.name}</h3>
@@ -108,32 +111,32 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                                             </span>
                                         </div>
                                         <p className="text-xs text-muted-foreground mb-4">
-                                            {pack.minBusinesses}-business minimum
+                                            {t("subscriptions.min_businesses", { count: pack.minBusinesses })}
                                         </p>
                                         <ul className="text-sm space-y-1.5 mb-6 flex-1 text-muted-foreground">
                                             <li className="flex items-center gap-2">
                                                 <Check className="h-4 w-4 text-primary shrink-0" />
-                                                {pack.maxBusinesses} business{pack.maxBusinesses !== 1 ? "es" : ""}
+                                                {t("change_plan_modal.businesses_count", { count: pack.maxBusinesses })}
                                             </li>
                                             <li className="flex items-center gap-2">
                                                 <Check className="h-4 w-4 text-primary shrink-0" />
-                                                {pack.maxEmployees} employees
+                                                {t("subscriptions.limits.employees", { count: pack.maxEmployees })}
                                             </li>
                                             <li className="flex items-center gap-2">
                                                 <Check className="h-4 w-4 text-primary shrink-0" />
-                                                {pack.maxMenus} menus
+                                                {t("subscriptions.limits.menus", { count: pack.maxMenus })}
                                             </li>
                                             <li className="flex items-center gap-2">
                                                 <Check className="h-4 w-4 text-primary shrink-0" />
-                                                {pack.maxProducts} products
+                                                {t("subscriptions.limits.products", { count: pack.maxProducts })}
                                             </li>
                                         </ul>
                                         <Button
-                                            variant={isCurrent ? "outline" : label === "Upgrade" ? "default" : "secondary"}
+                                            variant={isCurrent ? "outline" : isUpgrade ? "default" : "secondary"}
                                             disabled={isCurrent || changingPlan}
                                             onClick={() => !isCurrent && setConfirmPack(pack)}
                                         >
-                                            {isCurrent ? "Current plan" : label}
+                                            {isCurrent ? t("change_plan_modal.current_plan") : label}
                                         </Button>
                                     </div>
                                 );
@@ -146,16 +149,16 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
             <AlertDialog open={!!confirmPack} onOpenChange={(open) => !open && setConfirmPack(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Switch to {confirmPack?.name}?</AlertDialogTitle>
+                        <AlertDialogTitle>{t("change_plan_modal.switch_to", { name: confirmPack?.name })}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Billing will be adjusted automatically by Lemon Squeezy.
+                            {t("change_plan_modal.description")}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel disabled={changingPlan}>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel disabled={changingPlan}>{t("change_plan_modal.cancel")}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleConfirmChange} disabled={changingPlan}>
                             {changingPlan ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                            Confirm switch
+                            {t("change_plan_modal.confirm_switch")}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

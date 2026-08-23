@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -30,6 +31,7 @@ interface OrderItemConfigModalProps {
 }
 
 export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open, onClose, item, initialConfig, onSave, currencySymbol = "$" }) => {
+    const { t } = useTranslation("management");
     const [quantity, setQuantity] = useState(1);
     const [notes, setNotes] = useState("");
     const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(undefined);
@@ -128,9 +130,9 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
             <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col p-0 overflow-hidden">
                 <DialogHeader className="p-6 pb-4 border-b">
-                    <DialogTitle>Configure - {item.name}</DialogTitle>
+                    <DialogTitle>{t("order_item_config_modal.title", { name: item.name })}</DialogTitle>
                     <DialogDescription className="line-clamp-2">
-                        {item.description || "Customize your item"}
+                        {item.description || t("order_item_config_modal.default_description")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -140,12 +142,12 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                         {/* Variants */}
                         {item.variants && item.variants.length > 0 && (
                             <div className="space-y-3">
-                                <Label className="text-base font-semibold">Choose Size/Variant <span className="text-muted-foreground ml-1 font-normal text-sm">(Optional)</span></Label>
+                                <Label className="text-base font-semibold">{t("order_item_config_modal.choose_variant")} <span className="text-muted-foreground ml-1 font-normal text-sm">{t("order_item_config_modal.optional")}</span></Label>
                                 <RadioGroup value={selectedVariantId} onValueChange={setSelectedVariantId} className="space-y-2">
                                     <div className="flex items-center justify-between space-x-2 border p-3 rounded-md hover:bg-muted/50">
                                         <div className="flex items-center space-x-2">
                                             <RadioGroupItem value="none" id={`variant-none`} />
-                                            <Label htmlFor={`variant-none`} className="cursor-pointer">None (Base Item)</Label>
+                                            <Label htmlFor={`variant-none`} className="cursor-pointer">{t("order_item_config_modal.none_base_item")}</Label>
                                         </div>
                                     </div>
                                     {item.variants.map(variant => (
@@ -171,7 +173,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                     <div className="flex items-center justify-between">
                                         <Label className="text-base font-semibold">
                                             {group.name}
-                                            <span className="text-muted-foreground ml-1 font-normal text-sm">(Optional)</span>
+                                            <span className="text-muted-foreground ml-1 font-normal text-sm">{t("order_item_config_modal.optional")}</span>
                                         </Label>
                                     </div>
 
@@ -192,7 +194,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                 <div className="flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors hover:bg-muted/50">
                                                     <div className="flex items-center space-x-3">
                                                         <RadioGroupItem value="none" id={`mod-none-${group.id}`} />
-                                                        <Label htmlFor={`mod-none-${group.id}`} className="cursor-pointer">None</Label>
+                                                        <Label htmlFor={`mod-none-${group.id}`} className="cursor-pointer">{t("order_item_config_modal.none")}</Label>
                                                     </div>
                                                 </div>
                                                 {group.items.map(mod => {
@@ -245,7 +247,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                         {/* Quantity & Notes */}
                         <div className="space-y-4 pt-4 border-t">
                             <div className="space-y-2">
-                                <Label>Quantity</Label>
+                                <Label>{t("order_item_config_modal.quantity")}</Label>
                                 <div className="flex items-center gap-4">
                                     <Button
                                         variant="outline"
@@ -266,15 +268,15 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                 </div>
                                 {quantity > 1 && item.modifierGroups && item.modifierGroups.length > 0 && (
                                     <div className="mt-2 text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200">
-                                        Modifiers will apply to all {quantity} items. You can add items separately if you need different variations.
+                                        {t("order_item_config_modal.modifiers_apply_to_all", { count: quantity })}
                                     </div>
                                 )}
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Special Notes / Requests</Label>
+                                <Label>{t("order_item_config_modal.notes_label")}</Label>
                                 <Textarea
-                                    placeholder="e.g. No onions, extra spicy..."
+                                    placeholder={t("order_item_config_modal.notes_placeholder")}
                                     value={notes}
                                     onChange={(e) => setNotes(e.target.value)}
                                     rows={2}
@@ -287,13 +289,13 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
 
                 <DialogFooter className="p-4 border-t bg-muted/10 flex items-center justify-between sm:justify-between flex-row">
                     <div className="flex flex-col">
-                        <span className="text-sm text-muted-foreground font-medium">Total</span>
+                        <span className="text-sm text-muted-foreground font-medium">{t("order_item_config_modal.total")}</span>
                         <span className="text-xl font-bold">{currencySymbol}{calculateTotal().toFixed(2)}</span>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="outline" onClick={onClose}>Cancel</Button>
+                        <Button variant="outline" onClick={onClose}>{t("order_item_config_modal.cancel")}</Button>
                         <Button onClick={handleSave}>
-                            {initialConfig ? "Save Changes" : "Add to Order"}
+                            {initialConfig ? t("order_item_config_modal.save_changes") : t("order_item_config_modal.add_to_order")}
                         </Button>
                     </div>
                 </DialogFooter>

@@ -13,9 +13,11 @@ import { Formik, FormikProps } from 'formik'
 import { ShieldOff } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 const PasswordSettings = () => {
 
+    const { t } = useTranslation('profile');
     const [needsTfaModal, setNeedsTfaModal] = useState(false);
     const [updateError, setUpdateError] = useState<string>();
 
@@ -64,7 +66,7 @@ const PasswordSettings = () => {
             />
 
             <AccordionItem value="password" className="border rounded-lg px-3">
-                <AccordionTrigger>Change Password</AccordionTrigger>
+                <AccordionTrigger>{t('password_settings.title')}</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <Formik
                         innerRef={formRef}
@@ -88,33 +90,33 @@ const PasswordSettings = () => {
                             <form onSubmit={handleSubmit}>
 
                                 <PasswordInput
-                                    label="Current Password"
+                                    label={t('password_settings.current_password')}
                                     name="currentPassword"
                                     value={values.currentPassword}
                                     onChange={handleChange}
                                     error={errors.currentPassword}
-                                    placeholder="Enter current password"
+                                    placeholder={t('password_settings.current_password_placeholder')}
                                 />
                                 <PasswordInput
-                                    label="New Password"
+                                    label={t('password_settings.new_password')}
                                     name="newPassword"
                                     value={values.newPassword}
                                     onChange={handleChange}
                                     error={errors.newPassword}
-                                    placeholder="New password"
+                                    placeholder={t('password_settings.new_password_placeholder')}
                                 />
                                 <PasswordInput
-                                    label="Confirm New Password"
+                                    label={t('password_settings.confirm_new_password')}
                                     name="repeatNewPassword"
                                     value={values.repeatNewPassword}
                                     onChange={handleChange}
                                     error={errors.repeatNewPassword}
-                                    placeholder="Confirm new password"
+                                    placeholder={t('password_settings.confirm_new_password_placeholder')}
                                 />
                                 <Button type='submit'
                                     className='mt-3 px-10'
                                     disabled={updatingUserPassword}
-                                >Save</Button>
+                                >{t('password_settings.save')}</Button>
 
                             </form>
                         )}
@@ -125,7 +127,7 @@ const PasswordSettings = () => {
                             <div className="flex items-start gap-2">
                                 <ShieldOff className="h-5 w-5 mt-0.5" />
                                 <div>
-                                    <AlertTitle>Error updating password</AlertTitle>
+                                    <AlertTitle>{t('password_settings.error_title')}</AlertTitle>
                                     <AlertDescription>
                                         {updateError}
                                     </AlertDescription>

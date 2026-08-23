@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import {
     Table,
     TableBody,
@@ -27,7 +29,18 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive'> = 
     CANCELLED: 'destructive',
 };
 
+function getStatusLabel(t: TFunction, status: string): string {
+    switch (status) {
+        case 'PENDING': return t('marketplace_management.order_status.pending');
+        case 'CONFIRMED': return t('marketplace_management.order_status.confirmed');
+        case 'FULFILLED': return t('marketplace_management.order_status.fulfilled');
+        case 'CANCELLED': return t('marketplace_management.order_status.cancelled');
+        default: return status;
+    }
+}
+
 export function MyOrdersTable({ businessId }: { businessId: string }) {
+    const { t } = useTranslation('management');
     const { data, isLoading } = useMyMarketplaceOrders(businessId);
     const cancel = useCancelMarketplaceOrder(businessId);
     const orders = data?.data ?? [];
@@ -44,7 +57,7 @@ export function MyOrdersTable({ businessId }: { businessId: string }) {
         return (
             <div className="flex flex-col items-center justify-center py-16 text-center gap-3">
                 <PackageOpen className="w-10 h-10 text-muted-foreground opacity-30" />
-                <p className="text-muted-foreground text-sm">This business hasn't ordered anything from the marketplace yet.</p>
+                <p className="text-muted-foreground text-sm">{t('marketplace_management.my_orders.empty')}</p>
             </div>
         );
     }
@@ -54,11 +67,11 @@ export function MyOrdersTable({ businessId }: { businessId: string }) {
             <Table>
                 <TableHeader>
                     <TableRow className="bg-secondary/10 hover:bg-secondary/10">
-                        <TableHead>Item</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>Total</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead>{t('marketplace_management.incoming_orders.col_item')}</TableHead>
+                        <TableHead>{t('marketplace_management.incoming_orders.col_qty')}</TableHead>
+                        <TableHead>{t('marketplace_management.incoming_orders.col_total')}</TableHead>
+                        <TableHead>{t('marketplace_management.col_status')}</TableHead>
+                        <TableHead className="text-right">{t('marketplace_management.col_actions')}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -69,7 +82,7 @@ export function MyOrdersTable({ businessId }: { businessId: string }) {
                             <TableCell className="text-sm">{formatPrice(order.totalAmount, order.currencySnapshot)}</TableCell>
                             <TableCell>
                                 <Badge variant={STATUS_VARIANT[order.status] ?? 'secondary'} className="text-[10px]">
-                                    {order.status}
+                                    {getStatusLabel(t, order.status)}
                                 </Badge>
                             </TableCell>
                             <TableCell className="text-right">
@@ -81,7 +94,7 @@ export function MyOrdersTable({ businessId }: { businessId: string }) {
                                         disabled={cancel.isPending}
                                         onClick={() => cancel.mutate(order.id)}
                                     >
-                                        Cancel
+                                        {t('marketplace_management.incoming_orders.cancel')}
                                     </Button>
                                 )}
                             </TableCell>

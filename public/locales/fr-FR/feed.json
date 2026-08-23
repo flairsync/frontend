@@ -268,5 +268,27 @@
       "reviews": "Avis",
       "contact": "Contact"
     }
+  },
+  "location_selection_modal": {
+    "title": "Paramètres de localisation de recherche",
+    "access_denied_title": "Accès à la localisation refusé",
+    "access_denied_desc": "La géolocalisation est désactivée ou bloquée. Veuillez sélectionner un <b>pays</b> ou cliquer sur la carte pour définir un <b>emplacement personnalisé</b> afin de voir les résultats à proximité.",
+    "unavailable_title": "Localisation indisponible",
+    "unavailable_desc": "Nous n'avons pas pu détecter votre position automatiquement. Veuillez choisir un pays ou un point sur la carte pour continuer.",
+    "error_title": "Erreur de localisation",
+    "error_desc": "La localisation n'est pas activée, veuillez vérifier vos paramètres d'autorisation.",
+    "filter_by_country_label": "Filtrer par pays entier",
+    "filter_by_country_hint": "Cela ignore les coordonnées précises habituelles.",
+    "select_country_label": "Sélectionner un pays (facultatif)",
+    "loading_countries": "Chargement des pays...",
+    "any_country": "Tous les pays",
+    "use_custom_location_label": "Utiliser un emplacement personnalisé ?",
+    "use_custom_location_hint": "Cliquez sur la carte pour changer le point d'origine.",
+    "search_radius_label": "Rayon de la zone de recherche :",
+    "radius_km": "{{radius}} km",
+    "your_device_location": "Votre position",
+    "custom_override_location": "Emplacement personnalisé",
+    "cancel": "Annuler",
+    "apply_filters": "Appliquer les filtres"
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -16,7 +17,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
-import { PayPeriodType, PAY_PERIOD_TYPE_LABELS } from "@/models/business/shift/PayrollEntry"
+import { PayPeriodType } from "@/models/business/shift/PayrollEntry"
 
 type TipPoolStrategy = 'EQUAL_SPLIT' | 'HOURS_WEIGHTED'
 
@@ -41,6 +42,7 @@ type Props = {
 const PAY_PERIOD_OPTIONS: PayPeriodType[] = ['WEEKLY', 'BIWEEKLY', 'MONTHLY']
 
 const BusinessSettingsLabor = (props: Props) => {
+    const { t } = useTranslation("management")
     const [maxWeeklyHours, setMaxWeeklyHours] = useState<number | undefined>(props.businessDetails?.maxWeeklyHours)
     const [minGapBetweenShiftsHours, setMinGapBetweenShiftsHours] = useState<number | undefined>(props.businessDetails?.minGapBetweenShiftsHours)
     const [splitShiftGapHours, setSplitShiftGapHours] = useState<number | undefined>(props.businessDetails?.splitShiftGapHours)
@@ -69,13 +71,13 @@ const BusinessSettingsLabor = (props: Props) => {
 
     return (
         <AccordionItem value="labor-compliance" className="border rounded-lg px-3">
-            <AccordionTrigger>Labor & Compliance Defaults</AccordionTrigger>
+            <AccordionTrigger>{t("settings_page.labor.trigger")}</AccordionTrigger>
             <AccordionContent className="py-2">
                 <div className="divide-y divide-border">
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Max Weekly Hours</Label>
-                            <p className="text-xs text-muted-foreground">Default max hours per employee before blocking schedule</p>
+                            <Label>{t("settings_page.labor.max_weekly_hours.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.max_weekly_hours.desc")}</p>
                         </div>
                         <Input
                             disabled={props.disabled}
@@ -88,8 +90,8 @@ const BusinessSettingsLabor = (props: Props) => {
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Min Gap Between Shifts (Hours)</Label>
-                            <p className="text-xs text-muted-foreground">The "clopening" gap, e.g. 8 hours</p>
+                            <Label>{t("settings_page.labor.min_gap.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.min_gap.desc")}</p>
                         </div>
                         <Input
                             disabled={props.disabled}
@@ -102,8 +104,8 @@ const BusinessSettingsLabor = (props: Props) => {
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Split Shift Gap (Hours)</Label>
-                            <p className="text-xs text-muted-foreground">Minimum gap allowable on the same day</p>
+                            <Label>{t("settings_page.labor.split_shift_gap.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.split_shift_gap.desc")}</p>
                         </div>
                         <Input
                             disabled={props.disabled}
@@ -115,12 +117,12 @@ const BusinessSettingsLabor = (props: Props) => {
                         />
                     </div>
 
-                    <p className="pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Overtime & Payroll</p>
+                    <p className="pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t("settings_page.labor.overtime_payroll_heading")}</p>
 
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Daily OT Threshold (Hours)</Label>
-                            <p className="text-xs text-muted-foreground">Hours in a day before overtime starts</p>
+                            <Label>{t("settings_page.labor.daily_ot_threshold.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.daily_ot_threshold.desc")}</p>
                         </div>
                         <Input
                             disabled={props.disabled}
@@ -133,8 +135,8 @@ const BusinessSettingsLabor = (props: Props) => {
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Weekly OT Threshold (Hours)</Label>
-                            <p className="text-xs text-muted-foreground">Total weekly hours before overtime starts</p>
+                            <Label>{t("settings_page.labor.weekly_ot_threshold.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.weekly_ot_threshold.desc")}</p>
                         </div>
                         <Input
                             disabled={props.disabled}
@@ -147,8 +149,8 @@ const BusinessSettingsLabor = (props: Props) => {
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Overtime Multiplier</Label>
-                            <p className="text-xs text-muted-foreground">Pay multiplier for overtime hours (e.g. 1.5x)</p>
+                            <Label>{t("settings_page.labor.overtime_multiplier.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.overtime_multiplier.desc")}</p>
                         </div>
                         <Input
                             disabled={props.disabled}
@@ -162,8 +164,8 @@ const BusinessSettingsLabor = (props: Props) => {
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Pay Period Type</Label>
-                            <p className="text-xs text-muted-foreground">How often payroll is processed</p>
+                            <Label>{t("settings_page.labor.pay_period_type.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.pay_period_type.desc")}</p>
                         </div>
                         <Select
                             disabled={props.disabled}
@@ -176,19 +178,19 @@ const BusinessSettingsLabor = (props: Props) => {
                             <SelectContent>
                                 {PAY_PERIOD_OPTIONS.map((opt) => (
                                     <SelectItem key={opt} value={opt}>
-                                        {PAY_PERIOD_TYPE_LABELS[opt]}
+                                        {t(`settings_page.labor.pay_period_options.${opt}`)}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
 
-                    <p className="pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tip Pooling</p>
+                    <p className="pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t("settings_page.labor.tip_pooling_heading")}</p>
 
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Enable Tip Pooling</Label>
-                            <p className="text-xs text-muted-foreground">Split collected tips across staff who worked instead of per-order attribution</p>
+                            <Label>{t("settings_page.labor.enable_tip_pooling.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.labor.enable_tip_pooling.desc")}</p>
                         </div>
                         <Switch
                             disabled={props.disabled}
@@ -199,8 +201,8 @@ const BusinessSettingsLabor = (props: Props) => {
                     {tipPoolEnabled && (
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Split Strategy</Label>
-                                <p className="text-xs text-muted-foreground">How the pooled tips are divided among staff</p>
+                                <Label>{t("settings_page.labor.split_strategy.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.labor.split_strategy.desc")}</p>
                             </div>
                             <Select
                                 disabled={props.disabled}
@@ -211,8 +213,8 @@ const BusinessSettingsLabor = (props: Props) => {
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="EQUAL_SPLIT">Equal Split</SelectItem>
-                                    <SelectItem value="HOURS_WEIGHTED">Hours Worked</SelectItem>
+                                    <SelectItem value="EQUAL_SPLIT">{t("settings_page.labor.split_strategy.equal_split")}</SelectItem>
+                                    <SelectItem value="HOURS_WEIGHTED">{t("settings_page.labor.split_strategy.hours_worked")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -221,7 +223,7 @@ const BusinessSettingsLabor = (props: Props) => {
                 <div className="pt-3">
                     <Button
                         disabled={props.disabled}
-                        onClick={onSaveDetails}>Save</Button>
+                        onClick={onSaveDetails}>{t("settings_page.labor.save")}</Button>
                 </div>
             </AccordionContent>
         </AccordionItem>

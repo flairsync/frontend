@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -31,6 +32,7 @@ export const InviteBusinessDialog: React.FC<InviteBusinessDialogProps> = ({
     parentId,
     onLinked,
 }) => {
+    const { t } = useTranslation("management");
     const { platformCountries, isCountriesLoading } = usePlatformCountries();
     const { sendJoinRequest, isSendingJoinRequest } = useJoinRequests();
 
@@ -68,16 +70,16 @@ export const InviteBusinessDialog: React.FC<InviteBusinessDialogProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-xl">
                 <DialogHeader>
-                    <DialogTitle>Find a business to invite</DialogTitle>
+                    <DialogTitle>{t("invite_business_dialog.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-3">
                     <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1.5">
-                            <Label>Country</Label>
+                            <Label>{t("invite_business_dialog.country")}</Label>
                             <Select value={countryId} onValueChange={setCountryId} disabled={isCountriesLoading}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select a country" />
+                                    <SelectValue placeholder={t("invite_business_dialog.select_a_country")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {(platformCountries || []).map((c) => (
@@ -89,30 +91,30 @@ export const InviteBusinessDialog: React.FC<InviteBusinessDialogProps> = ({
                             </Select>
                         </div>
                         <div className="space-y-1.5">
-                            <Label>City (optional)</Label>
-                            <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="e.g. Austin" />
+                            <Label>{t("invite_business_dialog.city_optional")}</Label>
+                            <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("invite_business_dialog.city_placeholder")} />
                         </div>
                     </div>
 
                     <div className="space-y-1.5">
-                        <Label>Business name (optional)</Label>
+                        <Label>{t("invite_business_dialog.business_name_optional")}</Label>
                         <div className="flex items-center gap-2">
-                            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Search by name..." />
+                            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("invite_business_dialog.search_by_name")} />
                             <Button onClick={handleSearch} disabled={!countryId || searching} className="shrink-0">
-                                <Search className="h-4 w-4 mr-1.5" /> Search
+                                <Search className="h-4 w-4 mr-1.5" /> {t("invite_business_dialog.search")}
                             </Button>
                         </div>
                     </div>
 
                     <div className="max-h-96 overflow-y-auto space-y-2 pt-1">
                         {searching ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">Searching...</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("invite_business_dialog.searching")}</p>
                         ) : results === null ? (
                             <p className="text-sm text-muted-foreground py-6 text-center">
-                                Pick a country and search to see matching businesses.
+                                {t("invite_business_dialog.pick_country_hint")}
                             </p>
                         ) : results.length === 0 ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">No businesses match those filters.</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("invite_business_dialog.no_matches")}</p>
                         ) : (
                             results.map((b) => {
                                 const picture = b.media?.[0]?.url || b.logo || undefined;
@@ -131,12 +133,12 @@ export const InviteBusinessDialog: React.FC<InviteBusinessDialogProps> = ({
                                                     <p className="text-sm font-medium truncate">{b.name}</p>
                                                     {b.alreadyLinked && (
                                                         <Badge variant="outline" className="text-[10px] px-1.5 py-0 shrink-0">
-                                                            Already linked
+                                                            {t("invite_business_dialog.already_linked")}
                                                         </Badge>
                                                     )}
                                                 </div>
                                                 <p className="text-xs text-muted-foreground">
-                                                    {[b.city, b.state].filter(Boolean).join(", ") || "—"} · Added{" "}
+                                                    {[b.city, b.state].filter(Boolean).join(", ") || "—"} · {t("invite_business_dialog.added")}{" "}
                                                     {new Date(b.createdAt).toLocaleDateString()}
                                                 </p>
                                                 {b.description && (
@@ -150,7 +152,7 @@ export const InviteBusinessDialog: React.FC<InviteBusinessDialogProps> = ({
                                             disabled={isSendingJoinRequest || alreadyInvited || b.alreadyLinked}
                                             onClick={() => handleInvite(b.id)}
                                         >
-                                            {alreadyInvited ? "Sent" : "Send request"}
+                                            {alreadyInvited ? t("invite_business_dialog.sent") : t("invite_business_dialog.send_request")}
                                         </Button>
                                     </div>
                                 );

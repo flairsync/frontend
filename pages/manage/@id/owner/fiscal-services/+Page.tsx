@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -22,6 +23,7 @@ function StatTile({ label, value }: { label: string; value: string | number }) {
 }
 
 const FiscalServicesPage: React.FC = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -76,10 +78,9 @@ const FiscalServicesPage: React.FC = () => {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Fiscal Services</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t("fiscal_services_page.title")}</h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Tools for periodic tax declarations and legal invoicing — same fiscal engine
-                    that backs Spain and Andorra compliance, driven by your business's country.
+                    {t("fiscal_services_page.subtitle")}
                 </p>
             </div>
 
@@ -90,36 +91,35 @@ const FiscalServicesPage: React.FC = () => {
                 <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
                         <FileSpreadsheet className="h-5 w-5" />
-                        Period Summary
+                        {t("fiscal_services_page.period_summary")}
                     </CardTitle>
                     <CardDescription>
-                        Aggregate totals for a date range — the figures you need to fill in a periodic
-                        self-filed tax declaration (e.g. Andorra's DTF Formulari 900/910).
+                        {t("fiscal_services_page.period_summary_description")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex flex-wrap items-end gap-3">
                         <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="fs-from">From</Label>
+                            <Label htmlFor="fs-from">{t("fiscal_services_page.from")}</Label>
                             <Input id="fs-from" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" />
                         </div>
                         <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="fs-to">To</Label>
+                            <Label htmlFor="fs-to">{t("fiscal_services_page.to")}</Label>
                             <Input id="fs-to" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" />
                         </div>
                         <Button variant="outline" className="gap-2" disabled={!periodReady} onClick={handleExportSummary}>
                             <Download className="h-4 w-4" />
-                            Export CSV
+                            {t("fiscal_services_page.export_csv")}
                         </Button>
                     </div>
 
                     {!periodReady && (
-                        <p className="text-sm text-muted-foreground">Pick both a start and end date to see the summary.</p>
+                        <p className="text-sm text-muted-foreground">{t("fiscal_services_page.pick_dates_hint")}</p>
                     )}
 
                     {periodReady && (summaryLoading || summaryFetching) && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Loader2 className="h-4 w-4 animate-spin" /> Loading summary…
+                            <Loader2 className="h-4 w-4 animate-spin" /> {t("fiscal_services_page.loading_summary")}
                         </div>
                     )}
 
@@ -129,18 +129,17 @@ const FiscalServicesPage: React.FC = () => {
                                 <Alert variant="destructive">
                                     <AlertTriangle className="h-4 w-4" />
                                     <AlertDescription>
-                                        {summary.unamountedCount} invoice(s) in this period predate amount tracking and are
-                                        excluded from the totals below — treat these totals as incomplete, not final.
+                                        {t("fiscal_services_page.unamounted_warning", { count: summary.unamountedCount })}
                                     </AlertDescription>
                                 </Alert>
                             )}
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                                <StatTile label="Standard invoices" value={summary.invoiceCount} />
-                                <StatTile label="Corrections" value={summary.correctionCount} />
-                                <StatTile label="Unamounted (excluded)" value={summary.unamountedCount} />
-                                <StatTile label="Taxable base" value={summary.totalTaxableBase} />
-                                <StatTile label="Tax collected" value={summary.totalTaxAmount} />
-                                <StatTile label="Total amount" value={summary.totalAmount} />
+                                <StatTile label={t("fiscal_services_page.standard_invoices")} value={summary.invoiceCount} />
+                                <StatTile label={t("fiscal_services_page.corrections")} value={summary.correctionCount} />
+                                <StatTile label={t("fiscal_services_page.unamounted_excluded")} value={summary.unamountedCount} />
+                                <StatTile label={t("fiscal_services_page.taxable_base")} value={summary.totalTaxableBase} />
+                                <StatTile label={t("fiscal_services_page.tax_collected")} value={summary.totalTaxAmount} />
+                                <StatTile label={t("fiscal_services_page.total_amount")} value={summary.totalAmount} />
                             </div>
                         </>
                     )}
@@ -152,19 +151,19 @@ const FiscalServicesPage: React.FC = () => {
                 <CardHeader>
                     <CardTitle className="text-lg flex items-center gap-2">
                         <Receipt className="h-5 w-5" />
-                        Fiscal Invoice Register
+                        {t("fiscal_services_page.fiscal_invoice_register")}
                     </CardTitle>
                     <CardDescription>
-                        The full legal invoice register — sequential numbers, corrections, and full invoices.
+                        {t("fiscal_services_page.fiscal_invoice_register_description")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-3">
                     <Button variant="outline" className="gap-2" onClick={handleExportRegister}>
                         <Download className="h-4 w-4" />
-                        Export Full Register CSV
+                        {t("fiscal_services_page.export_full_register_csv")}
                     </Button>
                     <Button variant="ghost" asChild>
-                        <a href={`/manage/${businessId}/owner/fiscal-invoices`}>View Register</a>
+                        <a href={`/manage/${businessId}/owner/fiscal-invoices`}>{t("fiscal_services_page.view_register")}</a>
                     </Button>
                 </CardContent>
             </Card>
@@ -175,29 +174,28 @@ const FiscalServicesPage: React.FC = () => {
                     <CardHeader>
                         <CardTitle className="text-lg flex items-center gap-2">
                             <FileCheck2 className="h-5 w-5" />
-                            Issue Full Invoice
+                            {t("fiscal_services_page.issue_full_invoice")}
                         </CardTitle>
                         <CardDescription>
-                            On-request full invoice (factura completa) for a B2B customer's own legal identity —
-                            issued alongside the order's original invoice, not a correction of it.
+                            {t("fiscal_services_page.issue_full_invoice_description")}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex flex-col gap-1.5 max-w-md">
-                            <Label htmlFor="fs-order-id">Order ID</Label>
-                            <Input id="fs-order-id" value={orderId} onChange={(e) => setOrderId(e.target.value)} placeholder="UUID of a completed order" />
+                            <Label htmlFor="fs-order-id">{t("fiscal_services_page.order_id")}</Label>
+                            <Input id="fs-order-id" value={orderId} onChange={(e) => setOrderId(e.target.value)} placeholder={t("fiscal_services_page.order_id_placeholder")} />
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2 max-w-2xl">
                             <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="fs-recipient-name">Recipient name</Label>
+                                <Label htmlFor="fs-recipient-name">{t("fiscal_services_page.recipient_name")}</Label>
                                 <Input id="fs-recipient-name" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} maxLength={200} />
                             </div>
                             <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="fs-recipient-tax-id">Recipient tax ID</Label>
+                                <Label htmlFor="fs-recipient-tax-id">{t("fiscal_services_page.recipient_tax_id")}</Label>
                                 <Input id="fs-recipient-tax-id" value={recipientTaxId} onChange={(e) => setRecipientTaxId(e.target.value)} maxLength={20} />
                             </div>
                             <div className="flex flex-col gap-1.5 sm:col-span-2">
-                                <Label htmlFor="fs-recipient-address">Recipient address</Label>
+                                <Label htmlFor="fs-recipient-address">{t("fiscal_services_page.recipient_address")}</Label>
                                 <Input id="fs-recipient-address" value={recipientAddress} onChange={(e) => setRecipientAddress(e.target.value)} maxLength={300} />
                             </div>
                         </div>
@@ -207,7 +205,7 @@ const FiscalServicesPage: React.FC = () => {
                             onClick={handleIssueFullInvoice}
                         >
                             {issueFullInvoice.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                            Issue Full Invoice
+                            {t("fiscal_services_page.issue_full_invoice")}
                         </Button>
                     </CardContent>
                 </Card>

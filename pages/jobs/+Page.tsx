@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Briefcase, Search, UserCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { useProfessionalProfile } from "@/features/professionalProfile/useProfessionalProfile";
 
 const ProProfileBanner = () => {
+  const { t } = useTranslation("jobs");
   const { userProfessionalProfile, loadingProfessionalProfile } = useProfessionalProfile();
   if (loadingProfessionalProfile || userProfessionalProfile) return null;
   return (
@@ -26,12 +28,12 @@ const ProProfileBanner = () => {
       <div className="flex items-center gap-3">
         <UserCircle className="h-5 w-5 text-primary shrink-0" />
         <div>
-          <p className="text-sm font-semibold">You don't have a professional profile yet</p>
-          <p className="text-xs text-muted-foreground">Create one to apply for jobs and be discovered by employers.</p>
+          <p className="text-sm font-semibold">{t("job_board_page.pro_banner.title")}</p>
+          <p className="text-xs text-muted-foreground">{t("job_board_page.pro_banner.desc")}</p>
         </div>
       </div>
       <a href="/profile/jobs">
-        <Button size="sm" className="rounded-full shrink-0">Create Profile</Button>
+        <Button size="sm" className="rounded-full shrink-0">{t("job_board_page.pro_banner.create_profile")}</Button>
       </a>
     </div>
   );
@@ -53,6 +55,7 @@ type JobFilters = ReturnType<typeof getFiltersFromUrl>;
 // Inner component — server-rendered via useSuspenseQuery
 const JobsResults = withFallback(
   ({ filters, setPage }: { filters: JobFilters; setPage: (p: number) => void }) => {
+    const { t } = useTranslation("jobs");
     const { data } = useSuspensePublicJobs({
       page: filters.page,
       limit: 12,
@@ -68,8 +71,8 @@ const JobsResults = withFallback(
       return (
         <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-card">
           <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-lg font-semibold mb-1">No open positions found</p>
-          <p className="text-sm text-muted-foreground">Try adjusting your filters.</p>
+          <p className="text-lg font-semibold mb-1">{t("job_board_page.no_positions_title")}</p>
+          <p className="text-sm text-muted-foreground">{t("job_board_page.no_positions_desc")}</p>
         </div>
       );
     }
@@ -77,7 +80,7 @@ const JobsResults = withFallback(
     return (
       <>
         <p className="text-sm text-muted-foreground mb-4">
-          {jobs.length} position{jobs.length !== 1 ? "s" : ""} found
+          {t("job_board_page.positions_found", { count: jobs.length })}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {jobs.map((job) => (
@@ -88,13 +91,13 @@ const JobsResults = withFallback(
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2">
             <Button variant="outline" size="sm" disabled={filters.page <= 1} onClick={() => setPage(filters.page - 1)}>
-              Previous
+              {t("job_board_page.previous")}
             </Button>
             <span className="text-sm text-muted-foreground">
-              Page {filters.page} of {totalPages}
+              {t("job_board_page.page_of", { page: filters.page, totalPages })}
             </span>
             <Button variant="outline" size="sm" disabled={filters.page >= totalPages} onClick={() => setPage(filters.page + 1)}>
-              Next
+              {t("job_board_page.next")}
             </Button>
           </div>
         )}
@@ -102,15 +105,19 @@ const JobsResults = withFallback(
     );
   },
   // Loading fallback
-  () => (
-    <div className="flex flex-col items-center justify-center py-20 gap-3">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-      <p className="text-sm text-muted-foreground">Loading jobs...</p>
-    </div>
-  )
+  () => {
+    const { t } = useTranslation("jobs");
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <p className="text-sm text-muted-foreground">{t("job_board_page.loading")}</p>
+      </div>
+    );
+  }
 );
 
 const JobBoardPage = () => {
+  const { t } = useTranslation("jobs");
   const { user } = usePageContext();
   const [filters, setFilters] = useState(getFiltersFromUrl);
   const [locationInput, setLocationInput] = useState(filters.location);
@@ -143,10 +150,10 @@ const JobBoardPage = () => {
           <div className="max-w-5xl mx-auto text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <Briefcase className="h-6 w-6 text-primary" />
-              <h1 className="text-3xl font-bold">Job Board</h1>
+              <h1 className="text-3xl font-bold">{t("job_board_page.hero_title")}</h1>
             </div>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Find your next opportunity in the restaurant &amp; hospitality industry.
+              {t("job_board_page.hero_subtitle")}
             </p>
           </div>
         </div>
@@ -156,16 +163,16 @@ const JobBoardPage = () => {
           {/* Filters */}
           <div className="bg-card rounded-xl border border-border p-4 mb-6 flex flex-wrap gap-3 items-end">
             <div className="flex flex-col gap-1 min-w-[160px]">
-              <label className="text-xs font-medium text-muted-foreground">Employment Type</label>
+              <label className="text-xs font-medium text-muted-foreground">{t("job_board_page.employment_type_label")}</label>
               <Select
                 value={filters.type || "all"}
                 onValueChange={(v) => updateFilter("type", v === "all" ? "" : v)}
               >
                 <SelectTrigger className="h-9">
-                  <SelectValue placeholder="All types" />
+                  <SelectValue placeholder={t("job_board_page.all_types")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All types</SelectItem>
+                  <SelectItem value="all">{t("job_board_page.all_types")}</SelectItem>
                   {(Object.entries(JOB_TYPE_LABELS) as [JobType, string][]).map(([v, l]) => (
                     <SelectItem key={v} value={v}>{l}</SelectItem>
                   ))}
@@ -174,16 +181,16 @@ const JobBoardPage = () => {
             </div>
 
             <div className="flex flex-col gap-1 min-w-[160px]">
-              <label className="text-xs font-medium text-muted-foreground">Category</label>
+              <label className="text-xs font-medium text-muted-foreground">{t("job_board_page.category_label")}</label>
               <Select
                 value={filters.category || "all"}
                 onValueChange={(v) => updateFilter("category", v === "all" ? "" : v)}
               >
                 <SelectTrigger className="h-9">
-                  <SelectValue placeholder="All categories" />
+                  <SelectValue placeholder={t("job_board_page.all_categories")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All categories</SelectItem>
+                  <SelectItem value="all">{t("job_board_page.all_categories")}</SelectItem>
                   {(Object.entries(JOB_CATEGORY_LABELS) as [JobCategory, string][]).map(([v, l]) => (
                     <SelectItem key={v} value={v}>{l}</SelectItem>
                   ))}
@@ -192,13 +199,13 @@ const JobBoardPage = () => {
             </div>
 
             <div className="flex flex-col gap-1 flex-1 min-w-[200px]">
-              <label className="text-xs font-medium text-muted-foreground">Location</label>
+              <label className="text-xs font-medium text-muted-foreground">{t("job_board_page.location_label")}</label>
               <div className="flex gap-2">
                 <Input
                   value={locationInput}
                   onChange={(e) => setLocationInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleLocationSearch()}
-                  placeholder="City, state..."
+                  placeholder={t("job_board_page.location_placeholder")}
                   className="h-9"
                 />
                 <Button size="sm" variant="outline" onClick={handleLocationSearch} className="h-9 px-3">
@@ -218,7 +225,7 @@ const JobBoardPage = () => {
                   setFilters({ type: "", category: "", location: "", page: 1 });
                 }}
               >
-                Clear filters
+                {t("job_board_page.clear_filters")}
               </Button>
             )}
           </div>

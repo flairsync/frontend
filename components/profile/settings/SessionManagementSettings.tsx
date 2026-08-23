@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/features/auth/useSession";
@@ -6,6 +7,7 @@ import { UserSession } from "@/models/UserSession"; // your class
 import { usePageContext } from "vike-react/usePageContext";
 
 const SessionManagementSettings = () => {
+    const { t } = useTranslation('profile');
     const { userSessions, disconnectUserSession } = useSession(); // Array<UserSession>
     const {
         session
@@ -71,10 +73,10 @@ const SessionManagementSettings = () => {
 
     return (
         <AccordionItem value="user-sessions" className="border rounded-lg px-3">
-            <AccordionTrigger>User Sessions</AccordionTrigger>
+            <AccordionTrigger>{t('session_management_settings.title')}</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 {sortedSessions.length === 0 ? (
-                    <p className="text-muted-foreground">No active sessions.</p>
+                    <p className="text-muted-foreground">{t('session_management_settings.no_active_sessions')}</p>
                 ) : (
                     <div className="space-y-2">
                         {sortedSessions.map((sess: any) => (
@@ -84,18 +86,18 @@ const SessionManagementSettings = () => {
                                     }`}
                             >
                                 <div>
-                                    <p className="font-medium">{sess.deviceName || "Unknown Device"}</p>
+                                    <p className="font-medium">{sess.deviceName || t('session_management_settings.unknown_device')}</p>
                                     <p className="text-sm text-muted-foreground">
-                                        {sess.location || "Unknown Location"} — Last active:{" "}
+                                        {sess.location || t('session_management_settings.unknown_location')} — {t('session_management_settings.last_active')}:{" "}
                                         {sess.expiresAt
                                             ? new Date(sess.expiresAt).toLocaleString()
-                                            : "Unknown"}
+                                            : t('session_management_settings.unknown')}
                                     </p>
                                     {isCurrentSession(sess.id) && (
-                                        <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Current Session</p>
+                                        <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{t('session_management_settings.current_session')}</p>
                                     )}
                                     {sess.trustedDevice && (
-                                        <p className="text-xs text-primary font-semibold">Trusted Device</p>
+                                        <p className="text-xs text-primary font-semibold">{t('session_management_settings.trusted_device')}</p>
                                     )}
                                 </div>
                                 {!isCurrentSession(sess.id) && (
@@ -104,7 +106,7 @@ const SessionManagementSettings = () => {
                                         variant="destructive"
                                         onClick={() => handleDisconnect(sess.id)}
                                     >
-                                        Disconnect
+                                        {t('session_management_settings.disconnect')}
                                     </Button>
                                 )}
                             </div>

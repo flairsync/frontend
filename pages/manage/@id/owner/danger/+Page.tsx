@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Card,
     CardContent,
@@ -28,6 +29,7 @@ import { useOwnershipTransfer } from "@/features/ownershipTransfer/useOwnershipT
 import { AxiosError } from "axios";
 
 const OwnerDashboardPage = () => {
+    const { t } = useTranslation("management");
     const { routeParams, tfa } = usePageContext();
     const businessId = routeParams.id as string;
     const tfaEnabled = tfa?.tfaEnabled ?? false;
@@ -85,9 +87,9 @@ const OwnerDashboardPage = () => {
     const newOwnerEmailError = !newOwnerEmailTouched
         ? undefined
         : newOwnerEmail.trim().length === 0
-        ? "Email is required"
+        ? t("danger_page.email_required")
         : !emailValid
-        ? "Enter a valid email address"
+        ? t("danger_page.email_invalid")
         : undefined;
 
     const canSubmitTransfer =
@@ -117,9 +119,9 @@ const OwnerDashboardPage = () => {
         (myBusinessFullDetails.counts?.employees ?? 0) === 0;
 
     const deleteHint = myBusinessFullDetails?.isPublished
-        ? "Unpublish the business first"
+        ? t("danger_page.unpublish_first")
         : (myBusinessFullDetails?.counts?.employees ?? 0) > 0
-        ? `Remove all ${myBusinessFullDetails?.counts?.employees} staff member(s) first`
+        ? t("danger_page.remove_staff_first", { count: myBusinessFullDetails?.counts?.employees ?? 0 })
         : null;
 
     const handleDangerAction = (type: string) => {
@@ -143,7 +145,7 @@ const OwnerDashboardPage = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight">Danger Zone</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{t("danger_page.title")}</h1>
 
             <Separator />
 
@@ -153,15 +155,15 @@ const OwnerDashboardPage = () => {
                         <div className="flex-1 text-sm">
                             {activeTransfer.status === "PENDING_CONFIRMATION" ? (
                                 <>
-                                    <span className="font-semibold">Ownership transfer pending</span>{" "}
-                                    confirmation from the invited new owner. The invite expires on{" "}
-                                    <strong>{activeTransfer.tokenExpiresAt.toLocaleDateString()}</strong> if not confirmed.
+                                    <span className="font-semibold">{t("danger_page.transfer_pending_label")}</span>{" "}
+                                    {t("danger_page.transfer_pending_body")}{" "}
+                                    <strong>{activeTransfer.tokenExpiresAt.toLocaleDateString()}</strong> {t("danger_page.transfer_pending_suffix")}
                                 </>
                             ) : (
                                 <>
-                                    <span className="font-semibold">Ownership transfer confirmed</span>{" "}
-                                    and will complete automatically on{" "}
-                                    <strong>{activeTransfer.graceEndsAt?.toLocaleDateString()}</strong> unless cancelled.
+                                    <span className="font-semibold">{t("danger_page.transfer_confirmed_label")}</span>{" "}
+                                    {t("danger_page.transfer_confirmed_body")}{" "}
+                                    <strong>{activeTransfer.graceEndsAt?.toLocaleDateString()}</strong> {t("danger_page.transfer_confirmed_suffix")}
                                 </>
                             )}
                         </div>
@@ -172,7 +174,7 @@ const OwnerDashboardPage = () => {
                             disabled={cancellingOwnershipTransfer}
                             onClick={() => cancelOwnershipTransfer(activeTransfer.token)}
                         >
-                            {cancellingOwnershipTransfer ? "Cancelling…" : "Cancel transfer"}
+                            {cancellingOwnershipTransfer ? t("danger_page.cancelling") : t("danger_page.cancel_transfer")}
                         </Button>
                     </div>
                 )}
@@ -180,12 +182,11 @@ const OwnerDashboardPage = () => {
                 {/* Danger Zone */}
                 <Card className="border-red-500">
                     <CardHeader>
-                        <CardTitle className="text-red-600">Danger Zone</CardTitle>
+                        <CardTitle className="text-red-600">{t("danger_page.title")}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                            These actions are destructive and cannot be undone. Please be
-                            careful.
+                            {t("danger_page.warning")}
                         </p>
 
                         <div className="flex flex-col gap-3">
@@ -194,7 +195,7 @@ const OwnerDashboardPage = () => {
                                 onClick={() => setOpenModal("shifts")}
                             >
                                 <AlertTriangle className="h-4 w-4 mr-2" />
-                                Reset All Staff Shifts
+                                {t("danger_page.reset_shifts")}
                             </Button>
 
                             <Button
@@ -202,7 +203,7 @@ const OwnerDashboardPage = () => {
                                 onClick={() => setOpenModal("menu")}
                             >
                                 <Trash2 className="h-4 w-4 mr-2" />
-                                Delete All Menu Items
+                                {t("danger_page.delete_menu_items")}
                             </Button>
 
                             <div className="flex flex-col gap-1">
@@ -212,11 +213,11 @@ const OwnerDashboardPage = () => {
                                     onClick={() => setOpenModal("ownership")}
                                 >
                                     <ShieldAlert className="h-4 w-4 mr-2" />
-                                    Transfer Ownership
+                                    {t("danger_page.transfer_ownership")}
                                 </Button>
                                 {activeTransfer && (
                                     <p className="text-xs text-red-500">
-                                        A transfer is already in progress
+                                        {t("danger_page.transfer_in_progress")}
                                     </p>
                                 )}
                             </div>
@@ -228,7 +229,7 @@ const OwnerDashboardPage = () => {
                                     onClick={() => setOpenModal("business")}
                                 >
                                     <Trash2 className="h-4 w-4 mr-2" />
-                                    Permanently Delete Business
+                                    {t("danger_page.delete_business")}
                                 </Button>
                                 {deleteHint && (
                                     <p className="text-xs text-red-500">{deleteHint}</p>
@@ -242,18 +243,17 @@ const OwnerDashboardPage = () => {
                 <Dialog open={openModal === "shifts"} onOpenChange={() => setOpenModal(null)}>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Reset All Staff Shifts</DialogTitle>
+                            <DialogTitle>{t("danger_page.reset_shifts")}</DialogTitle>
                             <DialogDescription>
-                                This will remove all current staff schedules. This action cannot
-                                be undone.
+                                {t("danger_page.reset_shifts_description")}
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
                             <Button variant="outline" onClick={() => setOpenModal(null)}>
-                                Cancel
+                                {t("danger_page.cancel")}
                             </Button>
                             <Button variant="destructive" onClick={() => handleDangerAction("reset_shifts")}>
-                                Confirm Reset
+                                {t("danger_page.confirm_reset")}
                             </Button>
                         </DialogFooter>
                     </DialogContent>
@@ -262,17 +262,17 @@ const OwnerDashboardPage = () => {
                 <Dialog open={openModal === "menu"} onOpenChange={() => setOpenModal(null)}>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Delete All Menu Items</DialogTitle>
+                            <DialogTitle>{t("danger_page.delete_menu_items")}</DialogTitle>
                             <DialogDescription>
-                                This will remove every item in your menu permanently.
+                                {t("danger_page.delete_menu_items_description")}
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
                             <Button variant="outline" onClick={() => setOpenModal(null)}>
-                                Cancel
+                                {t("danger_page.cancel")}
                             </Button>
                             <Button variant="destructive" onClick={() => handleDangerAction("delete_menu")}>
-                                Delete All
+                                {t("danger_page.delete_all")}
                             </Button>
                         </DialogFooter>
                     </DialogContent>
@@ -289,21 +289,18 @@ const OwnerDashboardPage = () => {
                 >
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Transfer Ownership</DialogTitle>
+                            <DialogTitle>{t("danger_page.transfer_ownership")}</DialogTitle>
                             <DialogDescription>
-                                The new owner must already have a FlairSync account with a
-                                professional profile. They'll get an email to confirm — after
-                                that there's a 3-day grace period during which either of you can
-                                still cancel before the transfer completes.
+                                {t("danger_page.transfer_ownership_description")}
                             </DialogDescription>
                         </DialogHeader>
                         <div className="py-2 space-y-3">
                             <div className="space-y-1">
-                                <Label htmlFor="newOwnerEmail">New owner's email</Label>
+                                <Label htmlFor="newOwnerEmail">{t("danger_page.new_owner_email")}</Label>
                                 <Input
                                     id="newOwnerEmail"
                                     type="email"
-                                    placeholder="Enter recipient email"
+                                    placeholder={t("danger_page.enter_recipient_email")}
                                     value={newOwnerEmail}
                                     onChange={(e) => setNewOwnerEmail(e.target.value)}
                                     onBlur={() => setNewOwnerEmailTouched(true)}
@@ -314,16 +311,16 @@ const OwnerDashboardPage = () => {
                             </div>
 
                             <PasswordInput
-                                label="Confirm your password"
+                                label={t("danger_page.confirm_your_password")}
                                 name="transferPassword"
                                 value={transferPassword}
                                 onChange={(e) => setTransferPassword(e.target.value)}
-                                placeholder="Enter your password"
+                                placeholder={t("danger_page.enter_your_password")}
                             />
 
                             {showTfaField && (
                                 <div className="space-y-1">
-                                    <Label>Two-factor authentication code</Label>
+                                    <Label>{t("danger_page.tfa_code_label")}</Label>
                                     <InputOTP
                                         maxLength={6}
                                         value={transferTfaCode}
@@ -350,13 +347,13 @@ const OwnerDashboardPage = () => {
                                     resetTransferForm();
                                 }}
                             >
-                                Cancel
+                                {t("danger_page.cancel")}
                             </Button>
                             <Button
                                 disabled={!canSubmitTransfer || initiatingOwnershipTransfer}
                                 onClick={handleInitiateTransfer}
                             >
-                                {initiatingOwnershipTransfer ? "Sending..." : "Transfer"}
+                                {initiatingOwnershipTransfer ? t("danger_page.sending") : t("danger_page.transfer")}
                             </Button>
                         </DialogFooter>
                     </DialogContent>
@@ -371,22 +368,23 @@ const OwnerDashboardPage = () => {
                 >
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Permanently Delete Business</DialogTitle>
+                            <DialogTitle>{t("danger_page.delete_business")}</DialogTitle>
                             <DialogDescription asChild>
                                 <div className="space-y-2 text-sm">
                                     <p className="text-red-600">
-                                        This action is <strong>permanent and cannot be undone</strong>.
-                                        All menus, shifts, schedules, inventory, and media will be deleted.
+                                        {t("danger_page.delete_business_warning_prefix")}{" "}
+                                        <strong>{t("danger_page.delete_business_warning_bold")}</strong>
+                                        . {t("danger_page.delete_business_warning_suffix")}
                                     </p>
                                     <p>
-                                        Type <strong>{myBusinessFullDetails?.name}</strong> to confirm:
+                                        {t("danger_page.type_to_confirm_prefix")} <strong>{myBusinessFullDetails?.name}</strong> {t("danger_page.type_to_confirm_suffix")}
                                     </p>
                                 </div>
                             </DialogDescription>
                         </DialogHeader>
                         <div className="py-2">
                             <Input
-                                placeholder={`Type "${myBusinessFullDetails?.name}" to confirm`}
+                                placeholder={t("danger_page.type_name_placeholder", { name: myBusinessFullDetails?.name })}
                                 value={confirmText}
                                 onChange={(e) => setConfirmText(e.target.value)}
                             />
@@ -399,14 +397,14 @@ const OwnerDashboardPage = () => {
                                     setConfirmText("");
                                 }}
                             >
-                                Cancel
+                                {t("danger_page.cancel")}
                             </Button>
                             <Button
                                 variant="destructive"
                                 disabled={!businessNameConfirmed || deletingBusiness}
                                 onClick={handleDeleteBusiness}
                             >
-                                {deletingBusiness ? "Deleting..." : "Delete permanently"}
+                                {deletingBusiness ? t("danger_page.deleting") : t("danger_page.delete_permanently")}
                             </Button>
                         </DialogFooter>
                     </DialogContent>

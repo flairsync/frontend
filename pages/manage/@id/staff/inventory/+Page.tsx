@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ import { InventoryDashboardCards } from "@/components/management/inventory/Inven
 import { AdjustStockModal } from "@/components/management/inventory/AdjustStockModal";
 
 const StaffInventoryPage: React.FC = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -61,7 +63,7 @@ const StaffInventoryPage: React.FC = () => {
     return (
         <div className="p-6 space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Inventory</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("staff_inventory_page.title")}</h1>
             </div>
 
             <InventoryDashboardCards
@@ -71,10 +73,10 @@ const StaffInventoryPage: React.FC = () => {
 
             <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="mb-4">
-                    <TabsTrigger value="items">All Items</TabsTrigger>
+                    <TabsTrigger value="items">{t("staff_inventory_page.all_items")}</TabsTrigger>
                     <TabsTrigger value="low-stock" className="gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5" />
-                        Low Stock
+                        {t("staff_inventory_page.low_stock")}
                     </TabsTrigger>
                 </TabsList>
 
@@ -85,7 +87,7 @@ const StaffInventoryPage: React.FC = () => {
                                 <div className="relative w-full sm:w-64">
                                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                                     <Input
-                                        placeholder="Search items…"
+                                        placeholder={t("staff_inventory_page.search_placeholder")}
                                         className="pl-8 h-9"
                                         value={search}
                                         onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
@@ -97,7 +99,7 @@ const StaffInventoryPage: React.FC = () => {
                                 >
                                     <Checkbox id="staff-lowStock" checked={lowStockOnly} onCheckedChange={(c) => setLowStockOnly(!!c)} />
                                     <Label htmlFor="staff-lowStock" className="text-xs font-medium cursor-pointer whitespace-nowrap">
-                                        Low Stock Only
+                                        {t("staff_inventory_page.low_stock_only")}
                                     </Label>
                                 </div>
                             </div>
@@ -108,24 +110,24 @@ const StaffInventoryPage: React.FC = () => {
                                     <Table>
                                         <TableHeader className="bg-muted/30">
                                             <TableRow>
-                                                <TableHead className="font-semibold min-w-[160px]">Name</TableHead>
-                                                <TableHead className="font-semibold">Group</TableHead>
-                                                <TableHead className="text-right font-semibold">Stock</TableHead>
-                                                <TableHead className="font-semibold">Unit</TableHead>
-                                                <TableHead className="text-right font-semibold">Actions</TableHead>
+                                                <TableHead className="font-semibold min-w-[160px]">{t("low_stock_items_view.col_item")}</TableHead>
+                                                <TableHead className="font-semibold">{t("low_stock_items_view.col_group")}</TableHead>
+                                                <TableHead className="text-right font-semibold">{t("staff_inventory_page.col_stock")}</TableHead>
+                                                <TableHead className="font-semibold">{t("staff_inventory_page.col_unit")}</TableHead>
+                                                <TableHead className="text-right font-semibold">{t("low_stock_items_view.col_actions")}</TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
                                             {fetchingInventoryItems && !inventoryItems ? (
                                                 <TableRow>
                                                     <TableCell colSpan={5} className="text-center py-10 text-muted-foreground animate-pulse">
-                                                        Loading…
+                                                        {t("staff_inventory_page.loading")}
                                                     </TableCell>
                                                 </TableRow>
                                             ) : !inventoryItems || inventoryItems.length === 0 ? (
                                                 <TableRow>
                                                     <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
-                                                        No items found.
+                                                        {t("staff_inventory_page.no_items_found")}
                                                     </TableCell>
                                                 </TableRow>
                                             ) : (
@@ -136,14 +138,14 @@ const StaffInventoryPage: React.FC = () => {
                                                                 <span>{item.name}</span>
                                                                 {item.quantity <= item.lowStockThreshold && item.lowStockThreshold > 0 && (
                                                                     <Badge variant="destructive" className="mt-0.5 text-[10px] px-1.5 py-0 h-auto leading-none w-fit flex items-center gap-1">
-                                                                        <AlertTriangle className="w-2.5 h-2.5" /> Low Stock
+                                                                        <AlertTriangle className="w-2.5 h-2.5" /> {t("staff_inventory_page.low_stock")}
                                                                     </Badge>
                                                                 )}
                                                             </div>
                                                         </TableCell>
                                                         <TableCell>
                                                             <Badge variant="outline" className="font-normal">
-                                                                {item.group?.name || "Default"}
+                                                                {item.group?.name || t("low_stock_items_view.default_group")}
                                                             </Badge>
                                                         </TableCell>
                                                         <TableCell className="text-right">
@@ -159,11 +161,11 @@ const StaffInventoryPage: React.FC = () => {
                                                         <TableCell className="text-muted-foreground">{getUnitName(item.unitId)}</TableCell>
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title="Movement History">
+                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title={t("staff_inventory_page.movement_history")}>
                                                                     <History className="w-4 h-4 text-muted-foreground" />
                                                                 </Button>
                                                                 <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => handleOpenAdjust(item)}>
-                                                                    Adjust
+                                                                    {t("low_stock_items_view.adjust")}
                                                                 </Button>
                                                             </div>
                                                         </TableCell>
@@ -178,11 +180,11 @@ const StaffInventoryPage: React.FC = () => {
                             {pagination && pagination.pages > 1 && (
                                 <div className="flex items-center justify-end space-x-2 py-4">
                                     <Button variant="outline" size="sm" onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
-                                        <ChevronLeft className="h-4 w-4 mr-2" /> Previous
+                                        <ChevronLeft className="h-4 w-4 mr-2" /> {t("staff_inventory_page.previous")}
                                     </Button>
                                     <span className="text-sm font-medium">{pagination.current} / {pagination.pages}</span>
                                     <Button variant="outline" size="sm" onClick={() => setCurrentPage((p) => Math.min(pagination.pages, p + 1))} disabled={currentPage === pagination.pages}>
-                                        Next <ChevronRight className="h-4 w-4 ml-2" />
+                                        {t("staff_inventory_page.next")} <ChevronRight className="h-4 w-4 ml-2" />
                                     </Button>
                                 </div>
                             )}

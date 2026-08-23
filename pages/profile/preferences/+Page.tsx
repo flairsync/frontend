@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/accordion"
 
 const ProfilePreferencesPage = () => {
+    const { t } = useTranslation("profile")
     const [themeDark, setThemeDark] = useState(false)
     const [restaurantTypes, setRestaurantTypes] = useState({
         halal: true,
@@ -25,33 +27,37 @@ const ProfilePreferencesPage = () => {
         setRestaurantTypes((prev) => ({ ...prev, [type]: !prev[type] }))
     }
 
-    const saveTheme = () => alert(`Theme saved: ${themeDark ? "Dark" : "Light"}`)
+    const restaurantTypeLabel = (type: keyof typeof restaurantTypes) => t(`preferences_page.restaurant_types.${type}`)
+
+    const saveTheme = () => alert(t("preferences_page.theme_saved", { theme: themeDark ? t("preferences_page.dark") : t("preferences_page.light") }))
     const saveRestaurantTypes = () =>
         alert(
-            `Selected types: ${Object.entries(restaurantTypes)
-                .filter(([_, v]) => v)
-                .map(([k]) => k)
-                .join(", ")}`
+            t("preferences_page.selected_types", {
+                types: Object.entries(restaurantTypes)
+                    .filter(([_, v]) => v)
+                    .map(([k]) => restaurantTypeLabel(k as keyof typeof restaurantTypes))
+                    .join(", ")
+            })
         )
-    const saveMaxDistance = () => alert(`Max distance: ${maxDistance} km`)
+    const saveMaxDistance = () => alert(t("preferences_page.max_distance_saved", { distance: maxDistance }))
 
     return (
         <Accordion type="single" collapsible className="w-full space-y-2">
             {/* Theme */}
             <AccordionItem value="theme" className="border rounded-lg px-3">
-                <AccordionTrigger>Theme</AccordionTrigger>
+                <AccordionTrigger>{t("preferences_page.theme")}</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <div className="flex items-center justify-between">
-                        <Label>Dark Mode</Label>
+                        <Label>{t("preferences_page.dark_mode")}</Label>
                         <Switch checked={themeDark} onCheckedChange={setThemeDark} />
                     </div>
-                    <Button onClick={saveTheme}>Save</Button>
+                    <Button onClick={saveTheme}>{t("preferences_page.save")}</Button>
                 </AccordionContent>
             </AccordionItem>
 
             {/* Restaurant Types */}
             <AccordionItem value="restaurant-types" className="border rounded-lg px-3">
-                <AccordionTrigger>Restaurant Types</AccordionTrigger>
+                <AccordionTrigger>{t("preferences_page.restaurant_types_title")}</AccordionTrigger>
                 <AccordionContent className="space-y-3 py-2">
                     {Object.entries(restaurantTypes).map(([type, value]) => (
                         <label key={type} className="flex items-center gap-2 text-sm">
@@ -62,20 +68,19 @@ const ProfilePreferencesPage = () => {
                                     toggleRestaurantType(type as keyof typeof restaurantTypes)
                                 }
                             />
-                            {type.charAt(0).toUpperCase() +
-                                type.slice(1).replace(/([A-Z])/g, " $1")}
+                            {restaurantTypeLabel(type as keyof typeof restaurantTypes)}
                         </label>
                     ))}
-                    <Button onClick={saveRestaurantTypes}>Save</Button>
+                    <Button onClick={saveRestaurantTypes}>{t("preferences_page.save")}</Button>
                 </AccordionContent>
             </AccordionItem>
 
             {/* Max Distance */}
             <AccordionItem value="max-distance" className="border rounded-lg px-3">
-                <AccordionTrigger>Max Distance</AccordionTrigger>
+                <AccordionTrigger>{t("preferences_page.max_distance")}</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <Label className="text-sm">
-                        Maximum Distance: {maxDistance} km
+                        {t("preferences_page.maximum_distance", { distance: maxDistance })}
                     </Label>
                     <Slider
                         value={[maxDistance]}
@@ -83,7 +88,7 @@ const ProfilePreferencesPage = () => {
                         min={1}
                         max={50}
                     />
-                    <Button onClick={saveMaxDistance}>Save</Button>
+                    <Button onClick={saveMaxDistance}>{t("preferences_page.save")}</Button>
                 </AccordionContent>
             </AccordionItem>
         </Accordion>

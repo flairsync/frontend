@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { clientOnly } from "vike-react/clientOnly";
@@ -21,46 +22,51 @@ import {
 
 const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
 
-const SupportSchema = Yup.object().shape({
-  name: Yup.string().trim().max(100, "Name must be at most 100 characters").required("Name is required"),
-  email: Yup.string().email("Must be a valid email").required("Email is required"),
-  category: Yup.string().required("Please select a category"),
-  subject: Yup.string().trim().max(150, "Subject must be at most 150 characters").required("Subject is required"),
-  message: Yup.string()
-    .trim()
-    .min(10, "Message must be at least 10 characters")
-    .max(2000, "Message must be at most 2000 characters")
-    .required("Message is required"),
-});
+function getSupportSchema(t: (key: string) => string) {
+  return Yup.object().shape({
+    name: Yup.string().trim().max(100, t("support_page.errors.name_max")).required(t("support_page.errors.name_required")),
+    email: Yup.string().email(t("support_page.errors.email_invalid")).required(t("support_page.errors.email_required")),
+    category: Yup.string().required(t("support_page.errors.category_required")),
+    subject: Yup.string().trim().max(150, t("support_page.errors.subject_max")).required(t("support_page.errors.subject_required")),
+    message: Yup.string()
+      .trim()
+      .min(10, t("support_page.errors.message_min"))
+      .max(2000, t("support_page.errors.message_max"))
+      .required(t("support_page.errors.message_required")),
+  });
+}
 
-const FALLBACK_CATEGORIES: SupportCategory[] = [
-  { value: "billing_and_payments", label: "Billing & Payments" },
-  { value: "subscription", label: "Subscription" },
-  { value: "getting_started", label: "Getting Started" },
-  { value: "menu_management", label: "Menu Management" },
-  { value: "staff_and_permissions", label: "Staff & Permissions" },
-  { value: "reservations_and_orders", label: "Reservations & Orders" },
-  { value: "technical_issue", label: "Technical Issue" },
-  { value: "account_and_security", label: "Account & Security" },
-  { value: "integrations", label: "Integrations" },
-  { value: "other", label: "Other" },
-];
-
-const contactDetails = [
-  { icon: Mail, label: "Email", value: "info@flairsync.com" },
-  { icon: Phone, label: "Phone", value: "+376 123 456" },
-  { icon: MapPin, label: "Address", value: "Andorra La Vella, AD500, Andorra" },
-];
+function getFallbackCategories(t: (key: string) => string): SupportCategory[] {
+  return [
+    { value: "billing_and_payments", label: t("support_page.categories.billing_and_payments") },
+    { value: "subscription", label: t("support_page.categories.subscription") },
+    { value: "getting_started", label: t("support_page.categories.getting_started") },
+    { value: "menu_management", label: t("support_page.categories.menu_management") },
+    { value: "staff_and_permissions", label: t("support_page.categories.staff_and_permissions") },
+    { value: "reservations_and_orders", label: t("support_page.categories.reservations_and_orders") },
+    { value: "technical_issue", label: t("support_page.categories.technical_issue") },
+    { value: "account_and_security", label: t("support_page.categories.account_and_security") },
+    { value: "integrations", label: t("support_page.categories.integrations") },
+    { value: "other", label: t("support_page.categories.other") },
+  ];
+}
 
 const SupportPage: React.FC = () => {
+  const { t } = useTranslation("landing");
   const [categories, setCategories] = useState<SupportCategory[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [successEmail, setSuccessEmail] = useState<string | null>(null);
 
+  const contactDetails = [
+    { icon: Mail, label: t("support_page.contact.email_label"), value: "info@flairsync.com" },
+    { icon: Phone, label: t("support_page.contact.phone_label"), value: "+376 123 456" },
+    { icon: MapPin, label: t("support_page.contact.address_label"), value: "Andorra La Vella, AD500, Andorra" },
+  ];
+
   useEffect(() => {
     getSupportCategories()
       .then(setCategories)
-      .catch(() => setCategories(FALLBACK_CATEGORIES))
+      .catch(() => setCategories(getFallbackCategories(t)))
       .finally(() => setCategoriesLoading(false));
   }, []);
 
@@ -75,9 +81,9 @@ const SupportPage: React.FC = () => {
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-2">
               <MessageSquare className="w-7 h-7 text-primary" />
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Support Center</h1>
+            <h1 className="text-4xl font-extrabold tracking-tight">{t("support_page.hero_title")}</h1>
             <p className="text-lg text-muted-foreground">
-              Have a question or need help? Fill out the form and our team will get back to you shortly.
+              {t("support_page.hero_subtitle")}
             </p>
           </div>
         </section>
@@ -108,16 +114,16 @@ const SupportPage: React.FC = () => {
           <section className="grid grid-cols-1 lg:grid-cols-5 gap-10">
             {/* Left copy */}
             <div className="lg:col-span-2 space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight">Send us a message</h2>
+              <h2 className="text-2xl font-bold tracking-tight">{t("support_page.send_message_title")}</h2>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                Describe your issue and we'll route it to the right team. Most requests are answered within one business day.
+                {t("support_page.send_message_description")}
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 {[
-                  "Billing & subscription issues",
-                  "Technical problems",
-                  "Account & security concerns",
-                  "General questions",
+                  t("support_page.bullets.billing"),
+                  t("support_page.bullets.technical"),
+                  t("support_page.bullets.account_security"),
+                  t("support_page.bullets.general"),
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
@@ -132,23 +138,23 @@ const SupportPage: React.FC = () => {
               {successEmail ? (
                 <div className="flex flex-col items-center justify-center text-center space-y-4 py-16 px-6 rounded-xl border border-border bg-card">
                   <CheckCircle2 className="w-14 h-14 text-primary" />
-                  <h3 className="text-xl font-bold">Message received!</h3>
+                  <h3 className="text-xl font-bold">{t("support_page.success.title")}</h3>
                   <p className="text-muted-foreground text-sm max-w-xs">
-                    We'll reply to <strong>{successEmail}</strong> shortly.
+                    {t("support_page.success.body_prefix")} <strong>{successEmail}</strong> {t("support_page.success.body_suffix")}
                   </p>
                   <Button variant="outline" size="sm" onClick={() => setSuccessEmail(null)}>
-                    Submit another request
+                    {t("support_page.success.submit_another")}
                   </Button>
                 </div>
               ) : (
                 <Card className="border border-border shadow-none">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Contact Support</CardTitle>
+                    <CardTitle className="text-lg">{t("support_page.contact_support_title")}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Formik
                       initialValues={{ name: "", email: "", category: "", subject: "", message: "" }}
-                      validationSchema={SupportSchema}
+                      validationSchema={getSupportSchema(t)}
                       onSubmit={async (values, { setStatus }) => {
                         setStatus(undefined);
                         try {
@@ -161,7 +167,7 @@ const SupportPage: React.FC = () => {
                           });
                           setSuccessEmail(values.email);
                         } catch (err: any) {
-                          setStatus(err.message ?? "Something went wrong. Please try again.");
+                          setStatus(err.message ?? t("support_page.errors.generic"));
                         }
                       }}
                     >
@@ -170,11 +176,11 @@ const SupportPage: React.FC = () => {
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {/* Name */}
                             <div className="space-y-1.5">
-                              <Label htmlFor="name">Name</Label>
+                              <Label htmlFor="name">{t("support_page.form.name")}</Label>
                               <Input
                                 id="name"
                                 name="name"
-                                placeholder="Jane Smith"
+                                placeholder={t("support_page.form.name_placeholder")}
                                 onChange={handleChange}
                                 value={values.name}
                                 className="h-10"
@@ -184,12 +190,12 @@ const SupportPage: React.FC = () => {
 
                             {/* Email */}
                             <div className="space-y-1.5">
-                              <Label htmlFor="email">Email</Label>
+                              <Label htmlFor="email">{t("support_page.form.email")}</Label>
                               <Input
                                 id="email"
                                 name="email"
                                 type="email"
-                                placeholder="jane@example.com"
+                                placeholder={t("support_page.form.email_placeholder")}
                                 onChange={handleChange}
                                 value={values.email}
                                 className="h-10"
@@ -200,11 +206,11 @@ const SupportPage: React.FC = () => {
 
                           {/* Category */}
                           <div className="space-y-1.5">
-                            <Label htmlFor="category">Category</Label>
+                            <Label htmlFor="category">{t("support_page.form.category")}</Label>
                             {categoriesLoading ? (
                               <div className="h-10 flex items-center gap-2 text-muted-foreground text-sm">
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                Loading categories…
+                                {t("support_page.form.loading_categories")}
                               </div>
                             ) : (
                               <Field
@@ -213,7 +219,7 @@ const SupportPage: React.FC = () => {
                                 name="category"
                                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                               >
-                                <option value="" disabled>Select a category</option>
+                                <option value="" disabled>{t("support_page.form.select_category")}</option>
                                 {categories.map((c) => (
                                   <option key={c.value} value={c.value}>{c.label}</option>
                                 ))}
@@ -224,11 +230,11 @@ const SupportPage: React.FC = () => {
 
                           {/* Subject */}
                           <div className="space-y-1.5">
-                            <Label htmlFor="subject">Subject</Label>
+                            <Label htmlFor="subject">{t("support_page.form.subject")}</Label>
                             <Input
                               id="subject"
                               name="subject"
-                              placeholder="Brief description of your issue"
+                              placeholder={t("support_page.form.subject_placeholder")}
                               onChange={handleChange}
                               value={values.subject}
                               className="h-10"
@@ -239,7 +245,7 @@ const SupportPage: React.FC = () => {
                           {/* Message */}
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between">
-                              <Label htmlFor="message">Message</Label>
+                              <Label htmlFor="message">{t("support_page.form.message")}</Label>
                               <span className="text-xs text-muted-foreground tabular-nums">
                                 {values.message.length} / 2000
                               </span>
@@ -247,7 +253,7 @@ const SupportPage: React.FC = () => {
                             <Textarea
                               id="message"
                               name="message"
-                              placeholder="Describe your issue in detail…"
+                              placeholder={t("support_page.form.message_placeholder")}
                               onChange={handleChange}
                               value={values.message}
                               rows={5}
@@ -265,10 +271,10 @@ const SupportPage: React.FC = () => {
                             {isSubmitting ? (
                               <>
                                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                Sending…
+                                {t("support_page.form.sending")}
                               </>
                             ) : (
-                              "Send Message"
+                              t("support_page.form.send_message")
                             )}
                           </Button>
                         </Form>

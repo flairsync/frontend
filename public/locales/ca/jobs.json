@@ -1,1 +1,26 @@
-{}
+{
+  "job_board_page": {
+    "pro_banner": {
+      "title": "Encara no tens un perfil professional",
+      "desc": "Crea'n un per sol·licitar feines i que els ocupadors et descobreixin.",
+      "create_profile": "Crear perfil"
+    },
+    "no_positions_title": "No s'ha trobat cap vacant oberta",
+    "no_positions_desc": "Prova d'ajustar els teus filtres.",
+    "positions_found_one": "{{count}} vacant trobada",
+    "positions_found_other": "{{count}} vacants trobades",
+    "previous": "Anterior",
+    "next": "Següent",
+    "page_of": "Pàgina {{page}} de {{totalPages}}",
+    "loading": "Carregant feines...",
+    "hero_title": "Borsa de treball",
+    "hero_subtitle": "Troba la teva propera oportunitat al sector de la restauració i l'hostaleria.",
+    "employment_type_label": "Tipus d'ocupació",
+    "all_types": "Tots els tipus",
+    "category_label": "Categoria",
+    "all_categories": "Totes les categories",
+    "location_label": "Ubicació",
+    "location_placeholder": "Ciutat, província...",
+    "clear_filters": "Netejar filtres"
+  }
+}

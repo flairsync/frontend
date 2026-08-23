@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Order } from "@/features/orders/service";
@@ -15,6 +16,7 @@ interface TransferTableModalProps {
 }
 
 export const TransferTableModal: React.FC<TransferTableModalProps> = ({ open, onClose, businessId, order }) => {
+    const { t } = useTranslation("management");
     const { transferOrder, isTransferringOrder } = useOrders(businessId);
     const { floors } = useFloors(businessId, true);
     const [selectedTableId, setSelectedTableId] = useState<string>("");
@@ -43,17 +45,17 @@ export const TransferTableModal: React.FC<TransferTableModalProps> = ({ open, on
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Transfer Table</DialogTitle>
+                    <DialogTitle>{t("transfer_table_modal.title")}</DialogTitle>
                     <DialogDescription>
-                        Select an available table to transfer this order to. This will free up the current table (<strong className="text-foreground">{order?.table?.name || "None"}</strong>) and immediately occupy the newly selected table.
+                        {t("transfer_table_modal.description_prefix")} (<strong className="text-foreground">{order?.table?.name || t("transfer_table_modal.none")}</strong>) {t("transfer_table_modal.description_suffix")}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="py-4 space-y-4">
                     <div className="space-y-2">
-                        <Label>Select Destination Table</Label>
+                        <Label>{t("transfer_table_modal.select_destination_label")}</Label>
                         <Select value={selectedTableId} onValueChange={setSelectedTableId}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Choose an available table" />
+                                <SelectValue placeholder={t("transfer_table_modal.choose_table_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {availableTables.length > 0 ? (
@@ -63,16 +65,16 @@ export const TransferTableModal: React.FC<TransferTableModalProps> = ({ open, on
                                         </SelectItem>
                                     ))
                                 ) : (
-                                    <SelectItem value="none" disabled>No tables available</SelectItem>
+                                    <SelectItem value="none" disabled>{t("transfer_table_modal.no_tables_available")}</SelectItem>
                                 )}
                             </SelectContent>
                         </Select>
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={onClose} disabled={isTransferringOrder}>Cancel</Button>
+                    <Button variant="outline" onClick={onClose} disabled={isTransferringOrder}>{t("transfer_table_modal.cancel")}</Button>
                     <Button onClick={handleTransfer} disabled={isTransferringOrder || !selectedTableId || selectedTableId === "none"}>
-                        {isTransferringOrder ? "Transferring..." : "Transfer Order"}
+                        {isTransferringOrder ? t("transfer_table_modal.transferring") : t("transfer_table_modal.transfer_order")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

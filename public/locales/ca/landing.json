@@ -4,9 +4,27 @@
   },
   "footer": {
     "follow_us": "Segueix-nos",
-    "quick_links": { "title": "Enllaços ràpids" },
-    "support": { "title": "Suport" },
-    "contact": { "title": "Contacte" },
+    "quick_links": {
+      "title": "Enllaços ràpids",
+      "home": "Inici",
+      "about_us": "Sobre nosaltres",
+      "integrations": "Integracions",
+      "features": "Funcionalitats",
+      "pricing": "Preus",
+      "contact_us": "Contacta'ns"
+    },
+    "support": {
+      "title": "Suport",
+      "faq_s": "Preguntes freqüents",
+      "support_center": "Centre de suport",
+      "user_guide": "Guia d'usuari",
+      "privacy_policy": "Política de privacitat",
+      "terms_of_use": "Condicions d'ús",
+      "gdpr_&_cookies": "RGPD i galetes"
+    },
+    "contact": {
+      "title": "Contacte"
+    },
     "newsletter": {
       "title": "Subscriu-te al nostre butlletí",
       "placeholder": "Introdueix el teu correu"
@@ -191,6 +209,70 @@
       "priority_support": "Suport prioritari",
       "ded_acc_manager": "Gestor de compte dedicat",
       "custom_branding": "Marca personalitzada"
+    }
+  },
+  "support_page": {
+    "hero_title": "Centre de suport",
+    "hero_subtitle": "Tens un dubte o necessites ajuda? Omple el formulari i el nostre equip et respondrà aviat.",
+    "contact": {
+      "email_label": "Correu",
+      "phone_label": "Telèfon",
+      "address_label": "Adreça"
+    },
+    "send_message_title": "Envia'ns un missatge",
+    "send_message_description": "Descriu el teu problema i el derivarem a l'equip adequat. La majoria de sol·licituds es responen en un dia laborable.",
+    "bullets": {
+      "billing": "Problemes de facturació i subscripció",
+      "technical": "Problemes tècnics",
+      "account_security": "Dubtes de compte i seguretat",
+      "general": "Preguntes generals"
+    },
+    "success": {
+      "title": "Missatge rebut!",
+      "body_prefix": "Respondrem a",
+      "body_suffix": "aviat.",
+      "submit_another": "Enviar una altra sol·licitud"
+    },
+    "contact_support_title": "Contactar amb suport",
+    "form": {
+      "name": "Nom",
+      "name_placeholder": "Joana Pérez",
+      "email": "Correu electrònic",
+      "email_placeholder": "joana@exemple.com",
+      "category": "Categoria",
+      "loading_categories": "Carregant categories…",
+      "select_category": "Selecciona una categoria",
+      "subject": "Assumpte",
+      "subject_placeholder": "Breu descripció del teu problema",
+      "message": "Missatge",
+      "message_placeholder": "Descriu el teu problema amb detall…",
+      "sending": "Enviant…",
+      "send_message": "Enviar missatge"
+    },
+    "categories": {
+      "billing_and_payments": "Facturació i pagaments",
+      "subscription": "Subscripció",
+      "getting_started": "Primers passos",
+      "menu_management": "Gestió del menú",
+      "staff_and_permissions": "Personal i permisos",
+      "reservations_and_orders": "Reserves i comandes",
+      "technical_issue": "Problema tècnic",
+      "account_and_security": "Compte i seguretat",
+      "integrations": "Integracions",
+      "other": "Altres"
+    },
+    "errors": {
+      "name_max": "El nom ha de tenir com a màxim 100 caràcters",
+      "name_required": "El nom és obligatori",
+      "email_invalid": "Ha de ser un correu vàlid",
+      "email_required": "El correu és obligatori",
+      "category_required": "Selecciona una categoria",
+      "subject_max": "L'assumpte ha de tenir com a màxim 150 caràcters",
+      "subject_required": "L'assumpte és obligatori",
+      "message_min": "El missatge ha de tenir com a mínim 10 caràcters",
+      "message_max": "El missatge ha de tenir com a màxim 2000 caràcters",
+      "message_required": "El missatge és obligatori",
+      "generic": "Alguna cosa ha fallat. Torna-ho a provar."
     }
   }
 }

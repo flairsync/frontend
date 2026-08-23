@@ -1,1 +1,26 @@
-{}
+{
+  "job_board_page": {
+    "pro_banner": {
+      "title": "Todavía no tienes un perfil profesional",
+      "desc": "Crea uno para solicitar empleos y que los empleadores te descubran.",
+      "create_profile": "Crear perfil"
+    },
+    "no_positions_title": "No se encontraron vacantes abiertas",
+    "no_positions_desc": "Prueba a ajustar tus filtros.",
+    "positions_found_one": "{{count}} vacante encontrada",
+    "positions_found_other": "{{count}} vacantes encontradas",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page_of": "Página {{page}} de {{totalPages}}",
+    "loading": "Cargando empleos...",
+    "hero_title": "Bolsa de trabajo",
+    "hero_subtitle": "Encuentra tu próxima oportunidad en el sector de la restauración y la hostelería.",
+    "employment_type_label": "Tipo de empleo",
+    "all_types": "Todos los tipos",
+    "category_label": "Categoría",
+    "all_categories": "Todas las categorías",
+    "location_label": "Ubicación",
+    "location_placeholder": "Ciudad, provincia...",
+    "clear_filters": "Limpiar filtros"
+  }
+}

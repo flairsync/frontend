@@ -3,72 +3,77 @@ import { Switch } from '@/components/ui/switch'
 import { Loader2, Mail, Smartphone, Bell } from 'lucide-react'
 import { useNotificationPreferences } from '@/features/notifications/useNotifications'
 import { NotificationPreference } from '@/features/notifications/types'
+import { useTranslation } from 'react-i18next'
+import { TFunction } from 'i18next'
 
 type NotificationTypeKey = NotificationPreference['notificationType']
 type Channel = 'emailEnabled' | 'inAppEnabled' | 'pushEnabled'
 
-const CHANNELS: { key: Channel; label: string; icon: typeof Mail }[] = [
-    { key: 'emailEnabled', label: 'Email', icon: Mail },
-    { key: 'inAppEnabled', label: 'In-App', icon: Bell },
-    { key: 'pushEnabled', label: 'Push', icon: Smartphone },
+const getChannels = (t: TFunction): { key: Channel; label: string; icon: typeof Mail }[] => [
+    { key: 'emailEnabled', label: t('notification_preferences_settings.channels.email'), icon: Mail },
+    { key: 'inAppEnabled', label: t('notification_preferences_settings.channels.in_app'), icon: Bell },
+    { key: 'pushEnabled', label: t('notification_preferences_settings.channels.push'), icon: Smartphone },
 ]
 
-const GROUPS: { title: string; types: { key: NotificationTypeKey; label: string }[] }[] = [
+const getGroups = (t: TFunction): { title: string; types: { key: NotificationTypeKey; label: string }[] }[] => [
     {
-        title: 'Orders & Reservations',
+        title: t('notification_preferences_settings.groups.orders_reservations.title'),
         types: [
-            { key: 'ORDER', label: 'New orders' },
-            { key: 'RESERVATION', label: 'Reservations' },
+            { key: 'ORDER', label: t('notification_preferences_settings.groups.orders_reservations.order') },
+            { key: 'RESERVATION', label: t('notification_preferences_settings.groups.orders_reservations.reservation') },
         ],
     },
     {
-        title: 'Scheduling & Shifts',
+        title: t('notification_preferences_settings.groups.scheduling_shifts.title'),
         types: [
-            { key: 'SHIFT_PUBLISHED', label: 'Schedule published' },
-            { key: 'SHIFT_CREATED', label: 'New shift assigned' },
-            { key: 'SHIFT_UPDATED', label: 'Shift updated' },
-            { key: 'SHIFT_SWAP_REQUEST', label: 'Shift swap requested' },
-            { key: 'SHIFT_SWAP_APPROVED', label: 'Shift swap approved' },
-            { key: 'SHIFT_NO_SHOW', label: 'Staff no-show' },
-            { key: 'TIME_OFF_REQUEST', label: 'Time-off requested' },
-            { key: 'TIME_OFF_APPROVED', label: 'Time-off approved' },
+            { key: 'SHIFT_PUBLISHED', label: t('notification_preferences_settings.groups.scheduling_shifts.shift_published') },
+            { key: 'SHIFT_CREATED', label: t('notification_preferences_settings.groups.scheduling_shifts.shift_created') },
+            { key: 'SHIFT_UPDATED', label: t('notification_preferences_settings.groups.scheduling_shifts.shift_updated') },
+            { key: 'SHIFT_SWAP_REQUEST', label: t('notification_preferences_settings.groups.scheduling_shifts.shift_swap_request') },
+            { key: 'SHIFT_SWAP_APPROVED', label: t('notification_preferences_settings.groups.scheduling_shifts.shift_swap_approved') },
+            { key: 'SHIFT_NO_SHOW', label: t('notification_preferences_settings.groups.scheduling_shifts.shift_no_show') },
+            { key: 'TIME_OFF_REQUEST', label: t('notification_preferences_settings.groups.scheduling_shifts.time_off_request') },
+            { key: 'TIME_OFF_APPROVED', label: t('notification_preferences_settings.groups.scheduling_shifts.time_off_approved') },
         ],
     },
     {
-        title: 'Attendance',
+        title: t('notification_preferences_settings.groups.attendance.title'),
         types: [
-            { key: 'ATTENDANCE_OVERDUE', label: 'Attendance overdue' },
-            { key: 'ATTENDANCE_AUTO_CLOSED', label: 'Attendance auto-closed' },
+            { key: 'ATTENDANCE_OVERDUE', label: t('notification_preferences_settings.groups.attendance.overdue') },
+            { key: 'ATTENDANCE_AUTO_CLOSED', label: t('notification_preferences_settings.groups.attendance.auto_closed') },
         ],
     },
     {
-        title: 'Inventory & Tasks',
+        title: t('notification_preferences_settings.groups.inventory_tasks.title'),
         types: [
-            { key: 'INVENTORY_LOW_STOCK', label: 'Low stock alerts' },
-            { key: 'TASK_ASSIGNED', label: 'Task assigned' },
-            { key: 'TASK_STATUS_CHANGED', label: 'Task status changed' },
+            { key: 'INVENTORY_LOW_STOCK', label: t('notification_preferences_settings.groups.inventory_tasks.low_stock') },
+            { key: 'TASK_ASSIGNED', label: t('notification_preferences_settings.groups.inventory_tasks.task_assigned') },
+            { key: 'TASK_STATUS_CHANGED', label: t('notification_preferences_settings.groups.inventory_tasks.task_status_changed') },
         ],
     },
     {
-        title: 'Team & Organization',
+        title: t('notification_preferences_settings.groups.team_organization.title'),
         types: [
-            { key: 'ANNOUNCEMENT', label: 'Announcements' },
-            { key: 'MESSAGE', label: 'Messages' },
-            { key: 'ORGANIZATION_JOIN_REQUEST', label: 'Organization join requests' },
-            { key: 'ORGANIZATION_JOIN_RESOLVED', label: 'Organization join resolved' },
+            { key: 'ANNOUNCEMENT', label: t('notification_preferences_settings.groups.team_organization.announcement') },
+            { key: 'MESSAGE', label: t('notification_preferences_settings.groups.team_organization.message') },
+            { key: 'ORGANIZATION_JOIN_REQUEST', label: t('notification_preferences_settings.groups.team_organization.join_request') },
+            { key: 'ORGANIZATION_JOIN_RESOLVED', label: t('notification_preferences_settings.groups.team_organization.join_resolved') },
         ],
     },
     {
-        title: 'General',
+        title: t('notification_preferences_settings.groups.general.title'),
         types: [
-            { key: 'ALERT', label: 'General alerts' },
-            { key: 'SECURITY', label: 'Security alerts' },
-            { key: 'PROMO', label: 'Promotions' },
+            { key: 'ALERT', label: t('notification_preferences_settings.groups.general.alert') },
+            { key: 'SECURITY', label: t('notification_preferences_settings.groups.general.security') },
+            { key: 'PROMO', label: t('notification_preferences_settings.groups.general.promo') },
         ],
     },
 ]
 
 const NotificationPreferencesSettings = () => {
+    const { t } = useTranslation('profile')
+    const CHANNELS = getChannels(t)
+    const GROUPS = getGroups(t)
     const {
         preferences,
         loadingPreferences,
@@ -89,10 +94,10 @@ const NotificationPreferencesSettings = () => {
 
     return (
         <AccordionItem value="notifications" className="border rounded-lg px-3">
-            <AccordionTrigger>Notifications</AccordionTrigger>
+            <AccordionTrigger>{t('notification_preferences_settings.title')}</AccordionTrigger>
             <AccordionContent className="space-y-6 py-2">
                 <p className="text-xs text-muted-foreground">
-                    Choose how you want to be notified for each type of event.
+                    {t('notification_preferences_settings.description')}
                 </p>
 
                 {loadingPreferences ? (

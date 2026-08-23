@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { format, parseISO } from "date-fns";
 import {
     Dialog,
@@ -31,12 +32,14 @@ type Step = "SEARCH" | "TABLE_SELECTION" | "PRE_ORDER" | "CUSTOMER_INFO";
 
 const STEP_ORDER: Step[] = ["SEARCH", "TABLE_SELECTION", "PRE_ORDER", "CUSTOMER_INFO"];
 
-const STEPS = [
-    { key: "SEARCH" as Step,         label: "Date & Time",  description: "When & how many" },
-    { key: "TABLE_SELECTION" as Step, label: "Table",        description: "Pick a table" },
-    { key: "PRE_ORDER" as Step,       label: "Pre-Order",    description: "Optional items" },
-    { key: "CUSTOMER_INFO" as Step,   label: "Customer",     description: "Contact details" },
-];
+function getSteps(t: (key: string) => string) {
+    return [
+        { key: "SEARCH" as Step,          label: t("booking_flow_modal.steps.search.label"),          description: t("booking_flow_modal.steps.search.description") },
+        { key: "TABLE_SELECTION" as Step, label: t("booking_flow_modal.steps.table_selection.label"), description: t("booking_flow_modal.steps.table_selection.description") },
+        { key: "PRE_ORDER" as Step,       label: t("booking_flow_modal.steps.pre_order.label"),       description: t("booking_flow_modal.steps.pre_order.description") },
+        { key: "CUSTOMER_INFO" as Step,   label: t("booking_flow_modal.steps.customer_info.label"),   description: t("booking_flow_modal.steps.customer_info.description") },
+    ];
+}
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -59,6 +62,8 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
     open,
     onOpenChange
 }) => {
+    const { t } = useTranslation("management");
+    const STEPS = getSteps(t);
     const [step, setStep] = useState<Step>("SEARCH");
     const [maxStepReached, setMaxStepReached] = useState(0);
     const [bookingData, setBookingData] = useState(defaultBookingData());
@@ -110,12 +115,12 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
 
     const validateEmail = (email: string) => {
         if (!email) return null;
-        return EMAIL_REGEX.test(email) ? null : "Please enter a valid email address";
+        return EMAIL_REGEX.test(email) ? null : t("booking_flow_modal.errors.invalid_email");
     };
 
     const validatePhone = (phone: string) => {
-        if (!phone) return "Phone number is required";
-        return isValidPhoneNumber(phone) ? null : "Please enter a valid phone number for the selected country";
+        if (!phone) return t("booking_flow_modal.errors.phone_required");
+        return isValidPhoneNumber(phone) ? null : t("booking_flow_modal.errors.invalid_phone");
     };
 
     const currentStepIndex = STEP_ORDER.indexOf(step);
@@ -130,7 +135,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             const timestamp = `${bookingData.date}T${bookingData.time}`;
             const reservationDate = parseInTimezone(timestamp, businessTimezone);
             if (reservationDate <= new Date()) {
-                toast.error("Reservation time must be in the future.");
+                toast.error(t("booking_flow_modal.errors.time_in_past"));
                 return;
             }
             checkAvailability(
@@ -232,7 +237,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
 
                 {/* ── Fixed header ── */}
                 <div className="flex-shrink-0 px-6 pt-6 pb-4 border-b">
-                    <DialogTitle className="text-lg font-semibold mb-4">New Reservation</DialogTitle>
+                    <DialogTitle className="text-lg font-semibold mb-4">{t("booking_flow_modal.title")}</DialogTitle>
 
                     {/* Step indicator */}
                     <div className="flex items-center">
@@ -285,7 +290,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label>Date</Label>
+                                    <Label>{t("booking_flow_modal.search_step.date_label")}</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button
@@ -296,7 +301,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {selectedDate ? format(selectedDate, "MMM d, yyyy") : "Pick a date"}
+                                                {selectedDate ? format(selectedDate, "MMM d, yyyy") : t("booking_flow_modal.search_step.date_placeholder")}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0" align="start">
@@ -313,7 +318,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                     </Popover>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Time</Label>
+                                    <Label>{t("booking_flow_modal.search_step.time_label")}</Label>
                                     <div className="relative">
                                         <Clock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                         <Input
@@ -327,7 +332,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <Label>Guest Count</Label>
+                                <Label>{t("booking_flow_modal.search_step.guest_count_label")}</Label>
                                 <div className="relative">
                                     <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                     <Input
@@ -349,8 +354,8 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                     onClick={() => setBookingData({ ...bookingData, tableId: undefined })}
                                     className={`p-4 border rounded-lg text-left transition-all ${bookingData.tableId === undefined ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'hover:border-primary/50'}`}
                                 >
-                                    <h3 className="font-semibold">Waitlist</h3>
-                                    <p className="text-sm text-muted-foreground">Add to waitlist if no preferred table is available.</p>
+                                    <h3 className="font-semibold">{t("booking_flow_modal.table_step.waitlist_title")}</h3>
+                                    <p className="text-sm text-muted-foreground">{t("booking_flow_modal.table_step.waitlist_desc")}</p>
                                 </button>
                                 {availableTables.map(table => (
                                     <button
@@ -358,13 +363,13 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                         onClick={() => setBookingData({ ...bookingData, tableId: table.id })}
                                         className={`p-4 border rounded-lg text-left transition-all ${bookingData.tableId === table.id ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'hover:border-primary/50'}`}
                                     >
-                                        <h3 className="font-semibold">{table.name || (table.number ? `Table ${table.number}` : `Table ${table.id.substring(0, 8)}`)}</h3>
-                                        <p className="text-sm text-muted-foreground">Capacity: {table.capacity} guests</p>
+                                        <h3 className="font-semibold">{table.name || t("booking_flow_modal.table_step.table_fallback_name", { number: table.number ?? table.id.substring(0, 8) })}</h3>
+                                        <p className="text-sm text-muted-foreground">{t("booking_flow_modal.table_step.capacity", { count: table.capacity })}</p>
                                     </button>
                                 ))}
                             </div>
                             {availableTables.length === 0 && (
-                                <p className="text-center text-muted-foreground py-4">No tables available for this time. You can still join the waitlist.</p>
+                                <p className="text-center text-muted-foreground py-4">{t("booking_flow_modal.table_step.empty")}</p>
                             )}
                         </div>
                     )}
@@ -375,7 +380,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                 {!menuItems ? (
                                     <div className="flex justify-center py-8"><Loader2 className="animate-spin" /></div>
                                 ) : menuItems.length === 0 ? (
-                                    <p className="text-center text-muted-foreground py-8">No menu items found.</p>
+                                    <p className="text-center text-muted-foreground py-8">{t("booking_flow_modal.pre_order_step.no_menu_items")}</p>
                                 ) : (
                                     menuItems.map((item: any) => (
                                         <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -383,7 +388,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                                 <h4 className="font-medium">{item.name}</h4>
                                                 <p className="text-sm text-muted-foreground">${item.price}</p>
                                             </div>
-                                            <Button size="sm" variant="outline" onClick={() => addToOrder(item)}>Add</Button>
+                                            <Button size="sm" variant="outline" onClick={() => addToOrder(item)}>{t("booking_flow_modal.pre_order_step.add")}</Button>
                                         </div>
                                     ))
                                 )}
@@ -391,19 +396,19 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                             <div className="w-56 flex-shrink-0 border-l pl-4 space-y-3">
                                 <div className="flex items-center gap-2 font-semibold text-sm">
                                     <ShoppingCart className="h-4 w-4" />
-                                    Order ({bookingData.orderItems.length})
+                                    {t("booking_flow_modal.pre_order_step.order_heading", { count: bookingData.orderItems.length })}
                                 </div>
                                 <div className="space-y-2">
                                     {bookingData.orderItems.map(item => (
                                         <div key={item.id} className="text-sm flex justify-between items-center group">
                                             <span>{item.quantity}x {item.name}</span>
-                                            <button onClick={() => removeFromOrder(item.id)} className="text-destructive opacity-0 group-hover:opacity-100 transition-opacity text-xs">Remove</button>
+                                            <button onClick={() => removeFromOrder(item.id)} className="text-destructive opacity-0 group-hover:opacity-100 transition-opacity text-xs">{t("booking_flow_modal.pre_order_step.remove")}</button>
                                         </div>
                                     ))}
-                                    {bookingData.orderItems.length === 0 && <p className="text-xs text-muted-foreground">No items added yet.</p>}
+                                    {bookingData.orderItems.length === 0 && <p className="text-xs text-muted-foreground">{t("booking_flow_modal.pre_order_step.empty_order")}</p>}
                                 </div>
                                 <div className="pt-2 border-t text-sm font-bold">
-                                    Total: ${bookingData.orderItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0).toFixed(2)}
+                                    {t("booking_flow_modal.pre_order_step.total", { amount: bookingData.orderItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0).toFixed(2) })}
                                 </div>
                             </div>
                         </div>
@@ -418,34 +423,34 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                             {foundUser.firstName?.[0]}{foundUser.lastName?.[0]}
                                         </div>
                                         <div>
-                                            <p className="font-medium text-sm">Found user: {foundUser.firstName} {foundUser.lastName}</p>
-                                            <p className="text-xs text-muted-foreground">Do you want to link this reservation?</p>
+                                            <p className="font-medium text-sm">{t("booking_flow_modal.customer_step.found_user", { name: `${foundUser.firstName} ${foundUser.lastName}` })}</p>
+                                            <p className="text-xs text-muted-foreground">{t("booking_flow_modal.customer_step.link_prompt")}</p>
                                         </div>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Button size="sm" variant="outline" onClick={() => setDeclinedLink(true)}>No</Button>
-                                        <Button size="sm" onClick={() => setLinkedUserId(foundUser.id)}>Yes, Link</Button>
+                                        <Button size="sm" variant="outline" onClick={() => setDeclinedLink(true)}>{t("booking_flow_modal.customer_step.no")}</Button>
+                                        <Button size="sm" onClick={() => setLinkedUserId(foundUser.id)}>{t("booking_flow_modal.customer_step.yes_link")}</Button>
                                     </div>
                                 </div>
                             )}
                             {linkedUserId && foundUser && (
                                 <div className="p-3 bg-secondary border border-secondary/50 rounded-lg flex items-center gap-2 text-secondary-foreground text-sm">
                                     <Check className="w-4 h-4 text-green-500" />
-                                    Linked to {foundUser.firstName} {foundUser.lastName}'s account
+                                    {t("booking_flow_modal.customer_step.linked_to", { name: `${foundUser.firstName} ${foundUser.lastName}` })}
                                 </div>
                             )}
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label>Customer Name</Label>
+                                    <Label>{t("booking_flow_modal.customer_step.name_label")}</Label>
                                     <Input
-                                        placeholder="John Doe"
+                                        placeholder={t("booking_flow_modal.customer_step.name_placeholder")}
                                         value={bookingData.customerName}
                                         onChange={e => setBookingData({ ...bookingData, customerName: e.target.value })}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Phone Number</Label>
+                                    <Label>{t("booking_flow_modal.customer_step.phone_label")}</Label>
                                     <PhoneInput
                                         value={bookingData.customerPhone}
                                         onChange={(val) => {
@@ -453,7 +458,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                             if (phoneError) setPhoneError(validatePhone(val ?? ""));
                                         }}
                                         onBlur={() => setPhoneError(validatePhone(bookingData.customerPhone))}
-                                        placeholder="Enter phone number"
+                                        placeholder={t("booking_flow_modal.customer_step.phone_placeholder")}
                                     />
                                     {phoneError && (
                                         <p className="text-[10px] text-destructive font-bold uppercase">{phoneError}</p>
@@ -461,10 +466,10 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <Label>Email Address</Label>
+                                <Label>{t("booking_flow_modal.customer_step.email_label")}</Label>
                                 <Input
                                     type="email"
-                                    placeholder="john@example.com"
+                                    placeholder={t("booking_flow_modal.customer_step.email_placeholder")}
                                     value={bookingData.customerEmail}
                                     onChange={e => {
                                         setBookingData({ ...bookingData, customerEmail: e.target.value });
@@ -478,32 +483,32 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                 )}
                             </div>
                             <div className="space-y-2">
-                                <Label>Special Notes</Label>
+                                <Label>{t("booking_flow_modal.customer_step.notes_label")}</Label>
                                 <Input
-                                    placeholder="Birthday celebration, allergy info, etc."
+                                    placeholder={t("booking_flow_modal.customer_step.notes_placeholder")}
                                     value={bookingData.notes}
                                     onChange={e => setBookingData({ ...bookingData, notes: e.target.value })}
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label>Source</Label>
+                                    <Label>{t("booking_flow_modal.customer_step.source_label")}</Label>
                                     <Select value={bookingData.reservationSource} onValueChange={(val) => setBookingData({ ...bookingData, reservationSource: val })}>
                                         <SelectTrigger>
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="APP">App</SelectItem>
-                                            <SelectItem value="WEB">Web</SelectItem>
-                                            <SelectItem value="PHONE">Phone</SelectItem>
-                                            <SelectItem value="WALK_IN">Walk-in</SelectItem>
-                                            <SelectItem value="INSTAGRAM">Instagram</SelectItem>
-                                            <SelectItem value="GOOGLE">Google</SelectItem>
+                                            <SelectItem value="APP">{t("booking_flow_modal.source_options.APP")}</SelectItem>
+                                            <SelectItem value="WEB">{t("booking_flow_modal.source_options.WEB")}</SelectItem>
+                                            <SelectItem value="PHONE">{t("booking_flow_modal.source_options.PHONE")}</SelectItem>
+                                            <SelectItem value="WALK_IN">{t("booking_flow_modal.source_options.WALK_IN")}</SelectItem>
+                                            <SelectItem value="INSTAGRAM">{t("booking_flow_modal.source_options.INSTAGRAM")}</SelectItem>
+                                            <SelectItem value="GOOGLE">{t("booking_flow_modal.source_options.GOOGLE")}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Duration (Minutes)</Label>
+                                    <Label>{t("booking_flow_modal.customer_step.duration_label")}</Label>
                                     <Input
                                         type="number"
                                         min={15}
@@ -523,27 +528,27 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                         {step !== "SEARCH" ? (
                             <Button variant="ghost" onClick={handleBack} className="gap-1.5">
                                 <ChevronLeft className="h-4 w-4" />
-                                Back
+                                {t("booking_flow_modal.footer.back")}
                             </Button>
                         ) : (
                             <Button variant="ghost" onClick={() => onOpenChange(false)} className="text-muted-foreground">
-                                Cancel
+                                {t("booking_flow_modal.footer.cancel")}
                             </Button>
                         )}
                     </div>
                     <div className="flex items-center gap-2">
                         {step !== "SEARCH" && (
-                            <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                            <Button variant="outline" onClick={() => onOpenChange(false)}>{t("booking_flow_modal.footer.cancel")}</Button>
                         )}
                         {step === "CUSTOMER_INFO" ? (
                             <Button onClick={handleBooking} disabled={isCreatingReservation || !bookingData.customerName || !bookingData.customerPhone}>
                                 {isCreatingReservation && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Complete Booking
+                                {t("booking_flow_modal.footer.complete_booking")}
                             </Button>
                         ) : (
                             <Button onClick={handleNext} disabled={checkingAvailability}>
                                 {checkingAvailability && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {step === "SEARCH" ? "Check Availability" : "Continue"}
+                                {step === "SEARCH" ? t("booking_flow_modal.footer.check_availability") : t("booking_flow_modal.footer.continue")}
                                 <ChevronRight className="ml-2 h-4 w-4" />
                             </Button>
                         )}

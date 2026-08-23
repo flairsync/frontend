@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { useTipPooling, useTipPoolPreview, useTipDistributions } from "@/features/tipPooling/useTipPooling";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
-import { TipDistributionEntry, TipPoolPreviewEntry, TIP_POOL_STRATEGY_LABELS } from "@/models/business/tipPooling/TipDistribution";
+import { TipDistributionEntry, TipPoolPreviewEntry, TipPoolStrategy } from "@/models/business/tipPooling/TipDistribution";
 import dayjs from "@/utils/date-utils";
 import { getCurrencySymbol } from "@/utils/currency";
 
@@ -30,13 +31,15 @@ function formatCurrency(amount: number | string, currency = 'USD'): string {
     return `${getCurrencySymbol(currency)}${Number(amount).toFixed(2)}`;
 }
 
-const PreviewTable = ({ entries, currency }: { entries: TipPoolPreviewEntry[]; currency: string }) => (
+const PreviewTable = ({ entries, currency }: { entries: TipPoolPreviewEntry[]; currency: string }) => {
+    const { t } = useTranslation("management");
+    return (
     <Table>
         <TableHeader>
             <TableRow>
-                <TableHead>Employee</TableHead>
-                <TableHead className="text-right">Hours Worked</TableHead>
-                <TableHead className="text-right">Share</TableHead>
+                <TableHead>{t("payroll_page.table.employee")}</TableHead>
+                <TableHead className="text-right">{t("tip_pooling_page.table.hours_worked")}</TableHead>
+                <TableHead className="text-right">{t("tip_pooling_page.table.share")}</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -49,16 +52,19 @@ const PreviewTable = ({ entries, currency }: { entries: TipPoolPreviewEntry[]; c
             ))}
         </TableBody>
     </Table>
-);
+    );
+};
 
-const GeneratedTable = ({ entries }: { entries: TipDistributionEntry[] }) => (
+const GeneratedTable = ({ entries }: { entries: TipDistributionEntry[] }) => {
+    const { t } = useTranslation("management");
+    return (
     <Table>
         <TableHeader>
             <TableRow>
-                <TableHead>Employee</TableHead>
-                <TableHead className="text-right">Hours Worked</TableHead>
-                <TableHead className="text-right">Share</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t("payroll_page.table.employee")}</TableHead>
+                <TableHead className="text-right">{t("tip_pooling_page.table.hours_worked")}</TableHead>
+                <TableHead className="text-right">{t("tip_pooling_page.table.share")}</TableHead>
+                <TableHead>{t("payroll_page.table.status")}</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -73,20 +79,28 @@ const GeneratedTable = ({ entries }: { entries: TipDistributionEntry[] }) => (
                     <TableCell className="text-right font-semibold">{formatCurrency(e.shareAmount, e.currency)}</TableCell>
                     <TableCell>
                         <Badge variant={e.status === 'FINALIZED' ? 'default' : 'secondary'}>
-                            {e.status}
+                            {t(`payroll_page.table.status_labels.${e.status}`)}
                         </Badge>
                     </TableCell>
                 </TableRow>
             ))}
         </TableBody>
     </Table>
-);
+    );
+};
+
+function getTipStrategyLabel(t: (key: string) => string, strategy: TipPoolStrategy): string {
+    return strategy === 'EQUAL_SPLIT'
+        ? t("settings_page.labor.split_strategy.equal_split")
+        : t("settings_page.labor.split_strategy.hours_worked");
+}
 
 interface Props {
     businessId: string;
 }
 
 const TipPoolingPage = ({ businessId }: Props) => {
+    const { t } = useTranslation("management");
     const { myBusinessFullDetails } = useMyBusiness(businessId);
     const today = dayjs().format('YYYY-MM-DD');
 
@@ -117,14 +131,14 @@ const TipPoolingPage = ({ businessId }: Props) => {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-xl sm:text-2xl font-bold">Tip Pooling</h1>
-                <p className="text-muted-foreground text-sm mt-1">Preview, generate, and finalize tip distributions for any period.</p>
+                <h1 className="text-xl sm:text-2xl font-bold">{t("tip_pooling_page.title")}</h1>
+                <p className="text-muted-foreground text-sm mt-1">{t("tip_pooling_page.subtitle")}</p>
             </div>
             <Separator />
 
             {!tipPoolEnabled && (
                 <div className="rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
-                    Tip pooling is currently disabled for this business. Enable it under Settings → Labor &amp; Compliance to start distributing pooled tips.
+                    {t("tip_pooling_page.disabled_notice")}
                 </div>
             )}
 
@@ -132,7 +146,7 @@ const TipPoolingPage = ({ businessId }: Props) => {
                 {/* Period Picker */}
                 <div className="flex flex-wrap items-end gap-4">
                     <div className="space-y-1">
-                        <Label className="text-xs text-muted-foreground">Start Date</Label>
+                        <Label className="text-xs text-muted-foreground">{t("payroll_page.period_picker.start_date")}</Label>
                         <Input
                             type="date"
                             className="w-40"
@@ -141,7 +155,7 @@ const TipPoolingPage = ({ businessId }: Props) => {
                         />
                     </div>
                     <div className="space-y-1">
-                        <Label className="text-xs text-muted-foreground">End Date</Label>
+                        <Label className="text-xs text-muted-foreground">{t("payroll_page.period_picker.end_date")}</Label>
                         <Input
                             type="date"
                             className="w-40"
@@ -154,7 +168,7 @@ const TipPoolingPage = ({ businessId }: Props) => {
                             onClick={handleGenerate}
                             disabled={isGenerating || !startDate || !endDate || startDate > endDate}
                         >
-                            {isGenerating ? "Generating..." : "Generate Distribution"}
+                            {isGenerating ? t("payroll_page.period_picker.generating") : t("tip_pooling_page.generate_distribution")}
                         </Button>
                         {hasDraft && (
                             <Button
@@ -162,7 +176,7 @@ const TipPoolingPage = ({ businessId }: Props) => {
                                 onClick={() => setShowFinalizeDialog(true)}
                                 disabled={isFinalizing}
                             >
-                                Finalize
+                                {t("payroll_page.period_picker.finalize")}
                             </Button>
                         )}
                     </div>
@@ -172,23 +186,23 @@ const TipPoolingPage = ({ businessId }: Props) => {
                 {preview && (
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-lg font-semibold">Preview</h2>
+                            <h2 className="text-lg font-semibold">{t("payroll_page.preview.title")}</h2>
                             <span className="text-xs text-muted-foreground">
-                                {preview.periodStart} → {preview.periodEnd} · {TIP_POOL_STRATEGY_LABELS[preview.strategy]}
+                                {preview.periodStart} → {preview.periodEnd} · {getTipStrategyLabel(t, preview.strategy)}
                             </span>
                         </div>
                         {fetchingPreview ? (
-                            <p className="text-sm text-muted-foreground">Loading preview…</p>
+                            <p className="text-sm text-muted-foreground">{t("payroll_page.preview.loading")}</p>
                         ) : preview.entries.length === 0 ? (
                             <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground text-sm">
-                                No validated attendance or collected tips found for this period.
+                                {t("tip_pooling_page.empty_preview")}
                             </div>
                         ) : (
                             <>
                                 <PreviewTable entries={preview.entries} currency={currency} />
                                 <div className="flex justify-end gap-8 text-sm text-muted-foreground pt-2">
-                                    <span>Total Hours: <strong className="text-foreground">{preview.totalHours.toFixed(2)}</strong></span>
-                                    <span>Total Pool: <strong className="text-foreground text-base">{formatCurrency(preview.totalPoolAmount, currency)}</strong></span>
+                                    <span>{t("tip_pooling_page.total_hours")} <strong className="text-foreground">{preview.totalHours.toFixed(2)}</strong></span>
+                                    <span>{t("tip_pooling_page.total_pool")} <strong className="text-foreground text-base">{formatCurrency(preview.totalPoolAmount, currency)}</strong></span>
                                 </div>
                             </>
                         )}
@@ -198,9 +212,9 @@ const TipPoolingPage = ({ businessId }: Props) => {
                 {/* Draft Entries */}
                 {hasDraft && (
                     <div className="space-y-3">
-                        <h2 className="text-lg font-semibold">Draft Entries</h2>
+                        <h2 className="text-lg font-semibold">{t("payroll_page.draft_entries.title")}</h2>
                         {fetchingEntries ? (
-                            <p className="text-sm text-muted-foreground">Loading…</p>
+                            <p className="text-sm text-muted-foreground">{t("payroll_page.draft_entries.loading")}</p>
                         ) : (
                             <GeneratedTable entries={draftEntries} />
                         )}
@@ -210,9 +224,9 @@ const TipPoolingPage = ({ businessId }: Props) => {
                 {/* Finalized Entries */}
                 {finalizedEntries.length > 0 && (
                     <div className="space-y-3">
-                        <h2 className="text-lg font-semibold">Finalized</h2>
+                        <h2 className="text-lg font-semibold">{t("payroll_page.finalized_entries.title")}</h2>
                         {fetchingFinalized ? (
-                            <p className="text-sm text-muted-foreground">Loading…</p>
+                            <p className="text-sm text-muted-foreground">{t("payroll_page.finalized_entries.loading")}</p>
                         ) : (
                             <GeneratedTable entries={finalizedEntries} />
                         )}
@@ -224,16 +238,15 @@ const TipPoolingPage = ({ businessId }: Props) => {
             <Dialog open={showFinalizeDialog} onOpenChange={setShowFinalizeDialog}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Finalize Tip Distribution</DialogTitle>
+                        <DialogTitle>{t("tip_pooling_page.finalize_dialog.title")}</DialogTitle>
                         <DialogDescription>
-                            This will lock all draft entries for the period <strong>{startDate}</strong> to <strong>{endDate}</strong>.
-                            Finalized entries cannot be overwritten. This action is irreversible.
+                            {t("tip_pooling_page.finalize_dialog.description", { startDate, endDate })}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowFinalizeDialog(false)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setShowFinalizeDialog(false)}>{t("payroll_page.finalize_dialog.cancel")}</Button>
                         <Button onClick={handleFinalize} disabled={isFinalizing}>
-                            {isFinalizing ? "Finalizing…" : "Finalize"}
+                            {isFinalizing ? t("payroll_page.finalize_dialog.finalizing") : t("payroll_page.period_picker.finalize")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

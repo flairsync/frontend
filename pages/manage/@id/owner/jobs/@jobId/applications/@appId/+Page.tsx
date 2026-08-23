@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { format } from "date-fns";
 import {
@@ -46,6 +47,7 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
 };
 
 const OwnerApplicationDetailPage = () => {
+  const { t } = useTranslation("management");
   const { routeParams } = usePageContext() as any;
   const businessId = routeParams.id;
   const jobId = routeParams.jobId;
@@ -95,13 +97,13 @@ const OwnerApplicationDetailPage = () => {
   if (isError || !application) {
     return (
       <div className="p-6 flex flex-col items-center justify-center min-h-[60vh] gap-3 text-center">
-        <p className="text-lg font-semibold">Application not found</p>
+        <p className="text-lg font-semibold">{t("owner_application_detail_page.not_found")}</p>
         <a
           href={`/manage/${businessId}/owner/jobs/${jobId}/applications`}
           className="text-primary hover:underline text-sm flex items-center gap-1"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to applicants
+          {t("owner_application_detail_page.back_to_applicants")}
         </a>
       </div>
     );
@@ -116,7 +118,7 @@ const OwnerApplicationDetailPage = () => {
           className="text-sm text-zinc-500 hover:text-zinc-800 flex items-center gap-1 mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to applicants
+          {t("owner_application_detail_page.back_to_applicants")}
         </a>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -145,7 +147,7 @@ const OwnerApplicationDetailPage = () => {
                       </a>
                     )}
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Applied on {format(new Date(application.createdAt), "MMM d, yyyy")}
+                      {t("owner_application_detail_page.applied_on", { date: format(new Date(application.createdAt), "MMM d, yyyy") })}
                     </p>
                   </div>
                 </div>
@@ -158,7 +160,7 @@ const OwnerApplicationDetailPage = () => {
                   {isInviteFrozen ? (
                     <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
                       <Mail className="h-3 w-3" />
-                      Invite Sent · {format(new Date(application.invitedAt!), "MMM d, yyyy")}
+                      {t("owner_application_detail_page.invite_sent", { date: format(new Date(application.invitedAt!), "MMM d, yyyy") })}
                     </span>
                   ) : canSendInvite ? (
                     <Button
@@ -173,7 +175,7 @@ const OwnerApplicationDetailPage = () => {
                       ) : (
                         <>
                           <Mail className="h-3.5 w-3.5" />
-                          Send Staff Invite
+                          {t("owner_application_detail_page.send_staff_invite")}
                         </>
                       )}
                     </Button>
@@ -185,28 +187,28 @@ const OwnerApplicationDetailPage = () => {
                         {updatingStatus ? (
                           <Loader2 className="h-3.5 w-3.5 animate-spin" />
                         ) : (
-                          "Actions"
+                          t("owner_application_detail_page.actions")
                         )}
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => handleStatusUpdate("reviewed")}>
-                        Mark as Reviewed
+                        {t("owner_application_detail_page.mark_as_reviewed")}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleStatusUpdate("shortlisted")}>
-                        Shortlist
+                        {t("owner_application_detail_page.shortlist")}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => setAcceptConfirmOpen(true)}
                         className="text-green-700"
                       >
-                        Accept
+                        {t("owner_application_detail_page.accept")}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => handleStatusUpdate("rejected")}
                         className="text-destructive"
                       >
-                        Reject
+                        {t("owner_application_detail_page.reject")}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
@@ -215,7 +217,7 @@ const OwnerApplicationDetailPage = () => {
                           setEditingNote(true);
                         }}
                       >
-                        {application.ownerNote ? "Edit Note" : "Add Note"}
+                        {application.ownerNote ? t("owner_application_detail_page.edit_note") : t("owner_application_detail_page.add_note")}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -225,7 +227,7 @@ const OwnerApplicationDetailPage = () => {
 
             {/* Resume */}
             <div className="bg-card rounded-xl border border-border p-5">
-              <h2 className="text-sm font-semibold mb-3">Resume</h2>
+              <h2 className="text-sm font-semibold mb-3">{t("owner_application_detail_page.resume")}</h2>
               {application.resumeUrl ? (
                 <a
                   href={application.resumeUrl}
@@ -238,42 +240,42 @@ const OwnerApplicationDetailPage = () => {
                   ) : (
                     <Link className="h-4 w-4" />
                   )}
-                  View Resume
+                  {t("owner_application_detail_page.view_resume")}
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               ) : (
-                <p className="text-sm text-muted-foreground">No resume provided.</p>
+                <p className="text-sm text-muted-foreground">{t("owner_application_detail_page.no_resume")}</p>
               )}
             </div>
 
             {/* Cover letter */}
             {application.coverLetter && (
               <div className="bg-card rounded-xl border border-border p-5">
-                <h2 className="text-sm font-semibold mb-3">Cover Letter</h2>
+                <h2 className="text-sm font-semibold mb-3">{t("owner_application_detail_page.cover_letter")}</h2>
                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{application.coverLetter}</p>
               </div>
             )}
 
             {/* Owner note */}
             <div className="bg-card rounded-xl border border-border p-5">
-              <h2 className="text-sm font-semibold mb-3">Internal Note</h2>
+              <h2 className="text-sm font-semibold mb-3">{t("owner_application_detail_page.internal_note")}</h2>
 
               {editingNote ? (
                 <div className="flex flex-col gap-2">
                   <textarea
                     className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
                     rows={3}
-                    placeholder="Add an internal note..."
+                    placeholder={t("owner_application_detail_page.add_internal_note_placeholder")}
                     value={noteValue}
                     onChange={(e) => setNoteValue(e.target.value)}
                     disabled={updatingStatus}
                   />
                   <div className="flex gap-2">
                     <Button size="sm" onClick={handleSaveNote} disabled={updatingStatus}>
-                      {updatingStatus ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Save"}
+                      {updatingStatus ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("owner_application_detail_page.save")}
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => setEditingNote(false)}>
-                      Cancel
+                      {t("owner_application_detail_page.cancel")}
                     </Button>
                   </div>
                 </div>
@@ -289,7 +291,7 @@ const OwnerApplicationDetailPage = () => {
                     }}
                     className="text-xs text-primary hover:underline self-start"
                   >
-                    Edit note
+                    {t("owner_application_detail_page.edit_note")}
                   </button>
                 </div>
               ) : (
@@ -300,7 +302,7 @@ const OwnerApplicationDetailPage = () => {
                   }}
                   className="text-sm text-muted-foreground hover:text-foreground"
                 >
-                  + Add a note
+                  {t("owner_application_detail_page.add_a_note")}
                 </button>
               )}
             </div>
@@ -308,11 +310,11 @@ const OwnerApplicationDetailPage = () => {
 
           {/* Right column — timeline */}
           <div className="bg-card rounded-xl border border-border p-5 h-fit">
-            <h2 className="text-sm font-semibold mb-4">Activity Timeline</h2>
+            <h2 className="text-sm font-semibold mb-4">{t("owner_application_detail_page.activity_timeline")}</h2>
             {application.events && application.events.length > 0 ? (
               <OwnerApplicationTimeline events={application.events} />
             ) : (
-              <p className="text-sm text-muted-foreground">No activity yet.</p>
+              <p className="text-sm text-muted-foreground">{t("owner_application_detail_page.no_activity")}</p>
             )}
           </div>
         </div>
@@ -322,14 +324,13 @@ const OwnerApplicationDetailPage = () => {
       <AlertDialog open={acceptConfirmOpen} onOpenChange={setAcceptConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Accept this applicant?</AlertDialogTitle>
+            <AlertDialogTitle>{t("owner_application_detail_page.accept_confirm_title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {profile?.displayName ?? profile?.firstName} will see their status updated to "Accepted".
-              This is a meaningful action — confirm before proceeding.
+              {t("owner_application_detail_page.accept_confirm_description", { name: profile?.displayName ?? profile?.firstName })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("owner_application_detail_page.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-green-600 hover:bg-green-700"
               onClick={() => {
@@ -337,7 +338,7 @@ const OwnerApplicationDetailPage = () => {
                 setAcceptConfirmOpen(false);
               }}
             >
-              Accept Applicant
+              {t("owner_application_detail_page.accept_applicant")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -28,6 +29,7 @@ interface FiscalInvoiceDetailsModalProps {
 }
 
 const CopyableId: React.FC<{ value: string; onView?: () => void; viewLabel?: string }> = ({ value, onView, viewLabel }) => {
+    const { t } = useTranslation("management");
     const [copied, setCopied] = useState(false);
     const handleCopy = () => {
         navigator.clipboard.writeText(value);
@@ -40,7 +42,7 @@ const CopyableId: React.FC<{ value: string; onView?: () => void; viewLabel?: str
                 <button
                     type="button"
                     onClick={onView}
-                    title={viewLabel ?? "View"}
+                    title={viewLabel ?? t("fiscal_invoice_details_modal.view")}
                     className="font-mono text-xs break-all text-primary hover:underline text-left flex items-center gap-1"
                 >
                     {value}
@@ -52,8 +54,8 @@ const CopyableId: React.FC<{ value: string; onView?: () => void; viewLabel?: str
             <button
                 type="button"
                 onClick={handleCopy}
-                title="Copy"
-                aria-label="Copy"
+                title={t("fiscal_invoice_details_modal.copy")}
+                aria-label={t("fiscal_invoice_details_modal.copy")}
                 className="text-muted-foreground hover:text-foreground shrink-0"
             >
                 {copied ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
@@ -63,9 +65,14 @@ const CopyableId: React.FC<{ value: string; onView?: () => void; viewLabel?: str
 };
 
 export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps> = ({ invoice, open, onOpenChange, onViewOrder, onViewInvoice }) => {
+    const { t } = useTranslation("management");
     const [downloading, setDownloading] = useState(false);
 
     if (!invoice) return null;
+
+    const typeLabel = invoice.type === FiscalInvoiceType.STANDARD
+        ? t("fiscal_invoice_details_modal.type_standard")
+        : t("fiscal_invoice_details_modal.type_correction");
 
     const handleDownloadPdf = async () => {
         setDownloading(true);
@@ -81,13 +88,13 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
             <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
-                        <Badge className={TYPE_STYLES[invoice.type]}>{invoice.type}</Badge>
+                        <Badge className={TYPE_STYLES[invoice.type]}>{typeLabel}</Badge>
                         <span className="font-mono font-normal text-muted-foreground text-sm">
                             {invoice.invoiceNumber}
                         </span>
                     </DialogTitle>
                     <DialogDescription className="sr-only">
-                        Full details for this fiscal invoice.
+                        {t("fiscal_invoice_details_modal.full_details")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -96,21 +103,21 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                         <div className="flex items-start gap-2">
                             <Receipt className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-xs text-muted-foreground">Status</p>
+                                <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.status")}</p>
                                 <p className="font-medium">{invoice.status}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-2">
                             <Receipt className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-xs text-muted-foreground">Country</p>
-                                <p className="font-medium uppercase">{invoice.countryCode || "— (predates country tracking)"}</p>
+                                <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.country")}</p>
+                                <p className="font-medium uppercase">{invoice.countryCode || t("fiscal_invoice_details_modal.predates_country_tracking")}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-2">
                             <Clock className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-xs text-muted-foreground">Issued</p>
+                                <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.issued")}</p>
                                 {invoice.issuedAt ? (
                                     <>
                                         <p className="font-medium">{format(new Date(invoice.issuedAt), "PPpp")}</p>
@@ -126,11 +133,11 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                         <div className="flex items-start gap-2 sm:col-span-2">
                             <ShoppingBag className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-muted-foreground">Order</p>
+                                <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.order")}</p>
                                 <CopyableId
                                     value={invoice.orderId}
                                     onView={onViewOrder ? () => onViewOrder(invoice.orderId) : undefined}
-                                    viewLabel="View order"
+                                    viewLabel={t("fiscal_invoice_details_modal.view_order")}
                                 />
                             </div>
                         </div>
@@ -138,11 +145,11 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                             <div className="flex items-start gap-2 sm:col-span-2">
                                 <Link2 className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-xs text-muted-foreground">Corrects invoice</p>
+                                    <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.corrects_invoice")}</p>
                                     <CopyableId
                                         value={invoice.correctsInvoiceId}
                                         onView={onViewInvoice ? () => onViewInvoice(invoice.correctsInvoiceId as string) : undefined}
-                                        viewLabel="View original invoice"
+                                        viewLabel={t("fiscal_invoice_details_modal.view_original_invoice")}
                                     />
                                 </div>
                             </div>
@@ -151,7 +158,7 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                             <div className="flex items-start gap-2 sm:col-span-2">
                                 <Receipt className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-xs text-muted-foreground">Receipt</p>
+                                    <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.receipt")}</p>
                                     <CopyableId value={invoice.receiptId} />
                                 </div>
                             </div>
@@ -161,30 +168,30 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                     {/* Hash chain — the legal tamper-evidence record (AEAT VERI*FACTU huella) */}
                     <div className="border-t pt-3 space-y-2.5">
                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                            Hash chain
+                            {t("fiscal_invoice_details_modal.hash_chain")}
                         </p>
                         <div className="flex items-start gap-2">
                             <Hash className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-muted-foreground">Hash</p>
+                                <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.hash")}</p>
                                 <CopyableId value={invoice.hash} />
                             </div>
                         </div>
                         <div className="flex items-start gap-2">
                             <Hash className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-muted-foreground">Previous hash</p>
+                                <p className="text-xs text-muted-foreground">{t("fiscal_invoice_details_modal.previous_hash")}</p>
                                 {invoice.previousHash ? (
                                     <CopyableId value={invoice.previousHash} />
                                 ) : (
-                                    <p className="text-xs text-muted-foreground italic">— (genesis record for this business)</p>
+                                    <p className="text-xs text-muted-foreground italic">{t("fiscal_invoice_details_modal.genesis_record")}</p>
                                 )}
                             </div>
                         </div>
                     </div>
 
                     <div className="border-t pt-3 flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Recorded {format(new Date(invoice.createdAt), "PPpp")}</span>
+                        <span>{t("fiscal_invoice_details_modal.recorded", { date: format(new Date(invoice.createdAt), "PPpp") })}</span>
                         <span className="font-mono">{invoice.id.slice(0, 8)}…</span>
                     </div>
                 </div>
@@ -193,7 +200,7 @@ export const FiscalInvoiceDetailsModal: React.FC<FiscalInvoiceDetailsModalProps>
                     <DialogFooter>
                         <Button variant="outline" size="sm" onClick={handleDownloadPdf} disabled={downloading}>
                             {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-                            Download PDF
+                            {t("fiscal_invoice_details_modal.download_pdf")}
                         </Button>
                     </DialogFooter>
                 )}

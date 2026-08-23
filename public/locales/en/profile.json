@@ -5,5 +5,252 @@
     "reservations_label": "Reservations",
     "meals_ordered_label": "Meals Ordered",
     "orders_chart_title": "Orders Per Day (Last 30 Days)"
+  },
+  "account_page": {
+    "title": "Account",
+    "subtitle": "Manage your account data and deletion settings.",
+    "export": {
+      "title": "Download your data",
+      "description": "Request a copy of your personal data (GDPR Article 20 — right to data portability). The export includes your profile, linked accounts, and subscription history as a ZIP archive. You'll receive an email with the download link.",
+      "ready": "Your data export is ready.",
+      "download_button": "Download my data",
+      "link_expiry": "Download link expires 7 days after the export was generated.",
+      "preparing": "Your export is being prepared. We'll email you when it's ready.",
+      "requesting": "Requesting…",
+      "request_button": "Request a copy of my data",
+      "included_heading": "What's included in the export:",
+      "included_profile": "account info, email, phone, date of birth, preferences",
+      "included_social": "linked login providers",
+      "included_subscriptions": "subscription history",
+      "rate_limit": "One export request allowed every 30 days."
+    },
+    "delete": {
+      "title": "Delete account",
+      "description": "Permanently delete your account. This begins a <b>30-day grace period</b> — you can log back in and cancel at any time during that window. After 30 days your personal data is anonymised and cannot be recovered.",
+      "what_gets_deleted_heading": "What gets deleted:",
+      "deleted_item_1": "Name, email address, phone number, date of birth",
+      "deleted_item_2": "Avatar and profile photo",
+      "deleted_item_3": "Password and two-factor authentication",
+      "what_is_kept_heading": "What is kept (anonymised):",
+      "kept_item_1": "Subscription history — required for legal and financial records",
+      "kept_item_2": "Order and reservation history",
+      "delete_button": "Delete my account",
+      "confirm_title": "Delete your account?",
+      "confirm_description": "Your account will be permanently deleted after <b>30 days</b>. You can cancel this within the 30-day window by logging back in.",
+      "no_refund_notice": "Your subscription will not be refunded.",
+      "cancel": "Cancel",
+      "processing": "Processing…",
+      "confirm_button": "Yes, delete my account"
+    }
+  },
+  "profile_info_settings": {
+    "title": "Profile Information",
+    "updated_toast": "Updated",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "phone_number": "Phone number",
+    "date_of_birth": "Date of birth",
+    "pick_a_date": "Pick a date",
+    "gender": "Gender",
+    "select_gender": "Select gender",
+    "genders": {
+      "male": "Male",
+      "female": "Female",
+      "non_binary": "Non-binary",
+      "other": "Other",
+      "prefer_not_to_say": "Prefer not to say"
+    },
+    "country": "Country",
+    "select_country": "Select country...",
+    "search_country": "Search country...",
+    "no_country_found": "No country found.",
+    "coming_soon": "Coming Soon",
+    "inactive": "(Inactive)",
+    "update": "Update"
+  },
+  "account_verification": {
+    "title": "Account Verification",
+    "verified": "Verified",
+    "not_verified": "Not verified",
+    "verify": "Verify",
+    "email_address": "Email address",
+    "phone_number": "Phone number",
+    "no_phone_number": "No phone number added",
+    "email_sent_toast": "A verification email has been sent to {{email}}.",
+    "add_phone_first_toast": "Please add a phone number in your profile settings first.",
+    "sms_sent_toast": "A verification SMS has been sent to {{phone}}."
+  },
+  "notification_preferences_settings": {
+    "title": "Notifications",
+    "description": "Choose how you want to be notified for each type of event.",
+    "channels": {
+      "email": "Email",
+      "in_app": "In-App",
+      "push": "Push"
+    },
+    "groups": {
+      "orders_reservations": {
+        "title": "Orders & Reservations",
+        "order": "New orders",
+        "reservation": "Reservations"
+      },
+      "scheduling_shifts": {
+        "title": "Scheduling & Shifts",
+        "shift_published": "Schedule published",
+        "shift_created": "New shift assigned",
+        "shift_updated": "Shift updated",
+        "shift_swap_request": "Shift swap requested",
+        "shift_swap_approved": "Shift swap approved",
+        "shift_no_show": "Staff no-show",
+        "time_off_request": "Time-off requested",
+        "time_off_approved": "Time-off approved"
+      },
+      "attendance": {
+        "title": "Attendance",
+        "overdue": "Attendance overdue",
+        "auto_closed": "Attendance auto-closed"
+      },
+      "inventory_tasks": {
+        "title": "Inventory & Tasks",
+        "low_stock": "Low stock alerts",
+        "task_assigned": "Task assigned",
+        "task_status_changed": "Task status changed"
+      },
+      "team_organization": {
+        "title": "Team & Organization",
+        "announcement": "Announcements",
+        "message": "Messages",
+        "join_request": "Organization join requests",
+        "join_resolved": "Organization join resolved"
+      },
+      "general": {
+        "title": "General",
+        "alert": "General alerts",
+        "security": "Security alerts",
+        "promo": "Promotions"
+      }
+    }
+  },
+  "marketing_settings": {
+    "title": "Marketing",
+    "marketing_emails": "Marketing emails",
+    "marketing_emails_description": "Receive news, promotions, and personalised offers.",
+    "save": "Save",
+    "updated_toast": "Marketing preferences updated.",
+    "error_toast": "Failed to save preferences. Please try again."
+  },
+  "privacy_settings": {
+    "title": "Privacy",
+    "show_full_name": "Show full name on my reviews",
+    "show_full_name_description": "Reviews you post are public. When off, we show your first name and last initial instead of your full last name.",
+    "save": "Save",
+    "updated_toast": "Privacy preferences updated.",
+    "error_toast": "Failed to save preferences. Please try again."
+  },
+  "password_settings": {
+    "title": "Change Password",
+    "current_password": "Current Password",
+    "current_password_placeholder": "Enter current password",
+    "new_password": "New Password",
+    "new_password_placeholder": "New password",
+    "confirm_new_password": "Confirm New Password",
+    "confirm_new_password_placeholder": "Confirm new password",
+    "save": "Save",
+    "error_title": "Error updating password"
+  },
+  "profile_tfa_settings": {
+    "title": "Two-Factor Authentication (2FA)",
+    "description": "Two-Factor Authentication (2FA) adds an extra layer of security to your account. After entering your password, you'll be asked for a one-time code generated by an authenticator app (like Google Authenticator). This ensures that only you can access your account, even if someone else knows your password.",
+    "secret_copied": "Secret key copied",
+    "link_copied": "Setup link copied",
+    "copy_failed": "Couldn't copy to clipboard",
+    "backup_codes_downloaded": "New backup codes downloaded. Old codes are now invalid.",
+    "save_backup_codes_title": "Save Your Backup Codes",
+    "save_backup_codes_description": "These are your 2FA recovery codes. Store them somewhere safe.",
+    "codes_not_shown_again": "These codes won't be shown again. Save them now.",
+    "downloading": "Downloading…",
+    "download_as_pdf": "Download as PDF",
+    "saved_codes_acknowledgement": "I've saved my backup codes",
+    "done": "Done",
+    "regenerate_confirm_title": "Regenerate backup codes?",
+    "regenerate_confirm_description": "This will invalidate your existing backup codes. A new set will be downloaded as a PDF.",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "backup_codes": "Backup codes",
+    "backup_codes_description": "Download a fresh set of recovery codes. Your old codes will be invalidated.",
+    "regen_rate_limit_hint": "You can regenerate backup codes once per hour",
+    "regenerate_backup_codes": "Regenerate backup codes",
+    "setup_2fa": "Setup Two-Factor Auth",
+    "enable_2fa_title": "Enable Two-Factor Authentication",
+    "enable_2fa_description": "Scan the QR code below with your authenticator app (Google Authenticator, Authy, etc.), then enter the 6-digit code it gives you to verify setup.",
+    "cant_scan": "Can't scan? Enter this code manually",
+    "same_phone_hint": "On the same phone as your authenticator app?",
+    "copy_setup_link": "Copy setup link",
+    "enter_code": "Enter 6-digit code",
+    "verify": "Verify"
+  },
+  "disable_tfa_notice": {
+    "title": "Two-Factor Authentication Enabled",
+    "description": "Disabling 2FA will remove the extra layer of security on your account. You’ll only need your password to log in after this action.",
+    "disabling": "Disabling...",
+    "disable": "Disable 2FA"
+  },
+  "session_management_settings": {
+    "title": "User Sessions",
+    "no_active_sessions": "No active sessions.",
+    "unknown_device": "Unknown Device",
+    "unknown_location": "Unknown Location",
+    "last_active": "Last active",
+    "unknown": "Unknown",
+    "current_session": "Current Session",
+    "trusted_device": "Trusted Device",
+    "disconnect": "Disconnect"
+  },
+  "danger_zone_settings": {
+    "title": "Danger Zone",
+    "delete_account": "Delete account",
+    "delete_account_description": "Permanently delete your account. You have a 30-day window to cancel after requesting deletion.",
+    "delete_my_account": "Delete my account",
+    "confirm_title": "Delete your account?",
+    "confirm_intro_prefix": "Your account will be permanently deleted after",
+    "thirty_days": "30 days",
+    "confirm_intro_suffix": "You can cancel this within the 30-day window by logging back in.",
+    "no_refund": "Your subscription will not be refunded.",
+    "what_gets_deleted": "What gets deleted:",
+    "deleted_items": {
+      "identity": "Name, email, phone number, date of birth",
+      "avatar": "Avatar and profile photo",
+      "security": "Password and 2FA settings"
+    },
+    "what_is_kept": "What is kept (anonymised):",
+    "kept_items": {
+      "subscription_history": "Subscription history (legal/financial records)",
+      "order_reservation_history": "Order and reservation history"
+    },
+    "cancel": "Cancel",
+    "processing": "Processing…",
+    "confirm_delete": "Yes, delete my account"
+  },
+  "profile_preferences_settings": {
+    "title": "Marketing Preferences",
+    "receive_marketing_emails": "Receive Marketing Emails"
+  },
+  "preferences_page": {
+    "restaurant_types": {
+      "halal": "Halal",
+      "vegan": "Vegan",
+      "glutenFree": "Gluten Free"
+    },
+    "theme_saved": "Theme saved: {{theme}}",
+    "dark": "Dark",
+    "light": "Light",
+    "selected_types": "Selected types: {{types}}",
+    "max_distance_saved": "Max distance: {{distance}} km",
+    "theme": "Theme",
+    "dark_mode": "Dark Mode",
+    "save": "Save",
+    "restaurant_types_title": "Restaurant Types",
+    "max_distance": "Max Distance",
+    "maximum_distance": "Maximum Distance: {{distance}} km"
   }
 }

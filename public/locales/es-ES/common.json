@@ -205,5 +205,17 @@
     "modal_point_transition_title": "Aviso antes de que termine la beta",
     "modal_point_transition_text": "Cuando termine el período beta, recibirás un correo sobre el paso a un plan de pago, con el precio y la fecha en que entra en vigor — enviado al menos 14 días antes de que debas empezar a pagar para seguir usando el servicio.",
     "modal_close": "Entendido"
+  },
+  "notifications_page": {
+    "title": "Centro de notificaciones",
+    "subtitle": "Mantente al día con las últimas alertas, reservas y mensajes de seguridad del sistema.",
+    "tabs": {
+      "all": "Todas",
+      "alerts": "Alertas",
+      "reservations": "Reservas",
+      "orders": "Pedidos",
+      "promos": "Promociones",
+      "security": "Seguridad"
+    }
   }
 }

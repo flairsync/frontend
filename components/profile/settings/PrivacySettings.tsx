@@ -6,8 +6,10 @@ import { useProfile } from '@/features/profile/useProfile'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const PrivacySettings = () => {
+    const { t } = useTranslation('profile')
     const [showFullName, setShowFullName] = useState(true)
     const {
         userProfile,
@@ -23,28 +25,28 @@ const PrivacySettings = () => {
         updateUserProfile(
             { showFullNameOnReviews: showFullName },
             {
-                onSuccess: () => toast.success("Privacy preferences updated."),
-                onError: () => toast.error("Failed to save preferences. Please try again."),
+                onSuccess: () => toast.success(t('privacy_settings.updated_toast')),
+                onError: () => toast.error(t('privacy_settings.error_toast')),
             }
         )
     }
 
     return (
         <AccordionItem value="privacy" className="border rounded-lg px-3">
-            <AccordionTrigger>Privacy</AccordionTrigger>
+            <AccordionTrigger>{t('privacy_settings.title')}</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 <div className="flex items-center justify-between">
                     <div>
-                        <Label className="text-sm font-medium">Show full name on my reviews</Label>
+                        <Label className="text-sm font-medium">{t('privacy_settings.show_full_name')}</Label>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Reviews you post are public. When off, we show your first name and last initial instead of your full last name.
+                            {t('privacy_settings.show_full_name_description')}
                         </p>
                     </div>
                     <Switch checked={showFullName} onCheckedChange={setShowFullName} />
                 </div>
                 <Button onClick={handleSave} disabled={updatingUserProfile}>
                     {updatingUserProfile && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    Save
+                    {t('privacy_settings.save')}
                 </Button>
             </AccordionContent>
         </AccordionItem>

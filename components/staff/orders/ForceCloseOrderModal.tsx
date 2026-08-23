@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -14,6 +15,7 @@ interface ForceCloseOrderModalProps {
 }
 
 export const ForceCloseOrderModal: React.FC<ForceCloseOrderModalProps> = ({ open, onClose, businessId, order }) => {
+    const { t } = useTranslation("management");
     const { completeOrder, isCompletingOrder } = useOrders(businessId);
     const [notes, setNotes] = useState("");
 
@@ -33,24 +35,24 @@ export const ForceCloseOrderModal: React.FC<ForceCloseOrderModalProps> = ({ open
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Force Complete Order</DialogTitle>
+                    <DialogTitle>{t("force_close_order_modal.title")}</DialogTitle>
                     <DialogDescription>
-                        This order is not fully paid. Force-completing it will mark it as completed, but a reason is required.
+                        {t("force_close_order_modal.description")}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="py-4 space-y-2">
-                    <Label htmlFor="notes">Closing Notes <span className="text-destructive">*</span></Label>
+                    <Label htmlFor="notes">{t("force_close_order_modal.notes_label")} <span className="text-destructive">*</span></Label>
                     <Input
                         id="notes"
-                        placeholder="Explain why this underpaid order is being completed..."
+                        placeholder={t("force_close_order_modal.notes_placeholder")}
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                     />
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={onClose} disabled={isCompletingOrder}>Cancel</Button>
+                    <Button variant="outline" onClick={onClose} disabled={isCompletingOrder}>{t("force_close_order_modal.cancel")}</Button>
                     <Button variant="destructive" onClick={handleComplete} disabled={isCompletingOrder || !notes.trim()}>
-                        Force Complete
+                        {t("force_close_order_modal.force_complete")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

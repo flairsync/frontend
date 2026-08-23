@@ -15,7 +15,7 @@ import { Plus, Pencil, Trash2, ExternalLink, ClipboardCheck } from "lucide-react
 import { format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import { useAbsences } from "@/features/shifts/useAbsences";
-import { AbsenceRecord, ABSENCE_TYPE_LABELS, ABSENCE_TYPE_BADGE_COLORS } from "@/models/business/shift/AbsenceRecord";
+import { AbsenceRecord, ABSENCE_TYPE_BADGE_COLORS } from "@/models/business/shift/AbsenceRecord";
 import AbsenceModal from "./AbsenceModal";
 import { LogShiftWorkedModal } from "../schedule/LogShiftWorkedModal";
 import {
@@ -99,7 +99,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                           variant="secondary"
                           className={`${ABSENCE_TYPE_BADGE_COLORS[absence.type]} border-none font-medium rounded-full`}
                         >
-                          {ABSENCE_TYPE_LABELS[absence.type]}
+                          {t(`absence_types.${absence.type}`)}
                         </Badge>
                         <Badge
                           variant="secondary"

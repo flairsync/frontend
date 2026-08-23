@@ -3,8 +3,10 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { ArrowRight, Facebook, Linkedin, Twitter } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const LandingFooter = () => {
+    const { t } = useTranslation("landing");
     return (
         <footer className="bg-card text-card-foreground font-sans px-4 sm:px-8 pt-12">
             <div className="container mx-auto max-w-7xl">
@@ -12,7 +14,7 @@ const LandingFooter = () => {
                     {/* Logo & Social Links */}
                     <div className="flex flex-col items-center md:items-start">
                         <h2 className="text-3xl font-extrabold mb-4">FlairSync</h2>
-                        <p className="text-lg font-semibold mb-3">Follow us</p>
+                        <p className="text-lg font-semibold mb-3">{t("footer.follow_us", { defaultValue: "Follow us" })}</p>
                         <div className="flex space-x-2">
                             <Button
                                 variant="outline"
@@ -43,7 +45,7 @@ const LandingFooter = () => {
 
                     {/* Quick Links */}
                     <nav className="flex flex-col items-center md:items-start">
-                        <h3 className="text-xl font-bold mb-5">Quick Links</h3>
+                        <h3 className="text-xl font-bold mb-5">{t("footer.quick_links.title", { defaultValue: "Quick Links" })}</h3>
                         <ul className="space-y-3">
                             {[
                                 { label: "Home", href: "/" },
@@ -58,7 +60,7 @@ const LandingFooter = () => {
                                         href={href}
                                         className="text-muted-foreground hover:text-primary transition-colors duration-200"
                                     >
-                                        {label}
+                                        {t(`footer.quick_links.${label.toLowerCase().replace(/ /g, "_")}`, { defaultValue: label })}
                                     </a>
                                 </li>
                             ))}
@@ -67,7 +69,7 @@ const LandingFooter = () => {
 
                     {/* Support */}
                     <nav className="flex flex-col items-center md:items-start">
-                        <h3 className="text-xl font-bold mb-5">Support</h3>
+                        <h3 className="text-xl font-bold mb-5">{t("footer.support.title", { defaultValue: "Support" })}</h3>
                         <ul className="space-y-3">
                             {[
                                 { label: "FAQ's", href: "/#faq" },
@@ -81,7 +83,7 @@ const LandingFooter = () => {
                                         href={href}
                                         className="text-muted-foreground hover:text-primary transition-colors duration-200"
                                     >
-                                        {label}
+                                        {t(`footer.support.${label.toLowerCase().replace(/[' ]/g, "_")}`, { defaultValue: label })}
                                     </a>
                                 </li>
                             ))}
@@ -90,17 +92,17 @@ const LandingFooter = () => {
 
                     {/* Contact & Newsletter */}
                     <div className="flex flex-col items-center md:items-start">
-                        <h3 className="text-xl font-bold mb-5">Contact</h3>
+                        <h3 className="text-xl font-bold mb-5">{t("footer.contact.title", { defaultValue: "Contact" })}</h3>
                         <address className="not-italic text-muted-foreground mb-8 text-center md:text-left">
                             <p>Andorra La Vella, AD500, Andorra</p>
                             <p>+376 123 456</p>
                         </address>
 
-                        <h4 className="text-xl font-bold mb-4">Subscribe to our Newsletter</h4>
+                        <h4 className="text-xl font-bold mb-4">{t("footer.newsletter.title", { defaultValue: "Subscribe to our Newsletter" })}</h4>
                         <form className="flex w-full max-w-sm items-center gap-2">
                             <Input
                                 type="email"
-                                placeholder="Enter your email"
+                                placeholder={t("footer.newsletter.placeholder", { defaultValue: "Enter your email" })}
                                 className="h-12 min-w-0 border-input focus-visible:ring-0 focus-visible:border-primary"
                                 aria-label="Email address"
                                 required
@@ -120,7 +122,7 @@ const LandingFooter = () => {
                 <Separator className="my-12 border-border" />
 
                 <div className="text-center text-muted-foreground text-sm">
-                    © {new Date().getFullYear()} FlairSync. All Rights Reserved.
+                    © {new Date().getFullYear()} FlairSync. {t("footer.rights", { defaultValue: "All Rights Reserved." })}
                 </div>
             </div>
         </footer>

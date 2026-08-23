@@ -885,7 +885,64 @@
     "total": "Total",
     "dine_in": "Per consumir",
     "takeaway": "Per emportar",
-    "delivery": "A domicili"
+    "delivery": "A domicili",
+    "add_new_order": "Afegir nova comanda",
+    "live_tables": "Taules en directe",
+    "filter_by_type": "Filtrar per tipus",
+    "all_tables": "Totes les taules",
+    "customer_name_placeholder": "Nom del client",
+    "ongoing_orders": "Comandes en curs",
+    "order_history": "Historial de comandes",
+    "col_order": "Comanda",
+    "col_details": "Detalls",
+    "col_actions": "Accions",
+    "loading": "Carregant...",
+    "empty": "No s'ha trobat cap comanda.",
+    "walk_in": "Sense reserva",
+    "open_menu": "Obrir el menú",
+    "select_all": "Seleccionar-ho tot",
+    "select_order": "Seleccionar comanda {{id}}",
+    "selected_count": "{{count}} seleccionada(es)",
+    "accept_all": "Acceptar-ho tot",
+    "cancel_all": "Cancel·lar-ho tot",
+    "reject_all": "Rebutjar-ho tot",
+    "receipt_title": "Rebut",
+    "status_labels": {
+      "created": "Pendent",
+      "accepted": "Acceptada",
+      "preparing": "En preparació",
+      "ready": "Llesta",
+      "served": "Servida",
+      "completed": "Completada",
+      "rejected": "Rebutjada",
+      "canceled": "Cancel·lada"
+    },
+    "payment_status_labels": {
+      "pending": "Pendent",
+      "paid": "Pagada",
+      "partially_paid": "Parcialment pagada"
+    },
+    "actions": {
+      "quick_complete": "Completar ràpid",
+      "add_payment": "Afegir pagament",
+      "accept": "Acceptar",
+      "reject": "Rebutjar",
+      "start_preparing": "Començar a preparar",
+      "mark_ready": "Marcar com a llesta",
+      "mark_served": "Marcar com a servida",
+      "complete": "Completar",
+      "force_complete": "Forçar tancament",
+      "add_items": "Afegir articles",
+      "transfer_table": "Transferir taula",
+      "cancel": "Cancel·lar",
+      "view_details": "Veure detalls",
+      "view_receipt": "Veure rebut"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Següent",
+      "page_of": "Pàgina {{page}} de {{totalPages}}"
+    }
   },
   "reservations": {
     "title": "Reserves",
@@ -1656,6 +1713,17 @@
       "description": "Comandes fetes per hora del dia en el període seleccionat, incloent sala, per emportar i repartiment",
       "no_data": "No hi ha dades de comandes disponibles.",
       "tooltip_orders": "Comandes"
+    },
+    "top_products_table": {
+      "title": "Productes més venuts",
+      "description": "Articles del menú amb millor rendiment per ingressos",
+      "no_data": "No hi ha dades de productes disponibles per a aquest període.",
+      "col_item_name": "Nom de l'article",
+      "col_quantity_sold": "Quantitat venuda",
+      "col_revenue": "Ingressos generats",
+      "col_cost": "Cost",
+      "col_margin": "Marge",
+      "col_margin_percent": "Marge %"
     }
   },
   "company_guide": {
@@ -1775,5 +1843,1883 @@
       "create_button": "Crear Pantalla",
       "interval_seconds_hint": "Quant de temps es mostra cada pantalla abans de passar a la següent."
     }
+  },
+  "staff_shifts_page": {
+    "header": {
+      "title": "Els meus torns",
+      "subtitle": "Aquí tens el teu horari proper i els teus torns recents.",
+      "my_availability": "La meva disponibilitat",
+      "request_time_off": "Sol·licitar dia lliure"
+    },
+    "tabs": {
+      "today": "Avui",
+      "schedule": "Horari proper",
+      "requests": "Absències i intercanvis",
+      "bids": "Sol·licituds i historial"
+    },
+    "today_tab": {
+      "title": "Torn d'avui",
+      "subtitle": "Detalls dels teus torns programats per avui.",
+      "accept_shift": "Acceptar torn",
+      "swap_shift": "Intercanviar torn",
+      "finished_worked": "Finalitzat i treballat",
+      "mistake_label": "Algun error?",
+      "mistake_desc": "Contacta amb un responsable per corregir el teu registre.",
+      "empty": "No hi ha cap torn programat per avui."
+    },
+    "open_shifts": {
+      "title": "Torns oberts disponibles",
+      "subtitle": "Aconsegueix hores extra reclamant aquests torns sense assignar.",
+      "empty": "No hi ha torns oberts disponibles ara mateix. Torna més tard!",
+      "short_rest_gap": "Descans curt",
+      "rest_gap_warning": "Menys de 8h respecte a un altre torn",
+      "bid": "Postular",
+      "claim": "Reclamar"
+    },
+    "upcoming": {
+      "title": "Horari proper",
+      "subtitle": "Els teus torns programats per al període seleccionat.",
+      "status_label": "Estat",
+      "all_statuses": "Tots els estats",
+      "from_label": "Des de",
+      "to_label": "Fins a",
+      "col_date": "Data",
+      "col_time": "Horari",
+      "col_estimated_cost": "Cost estimat",
+      "col_response": "Resposta",
+      "col_status": "Estat",
+      "col_actions": "Accions",
+      "loading": "Carregant torns...",
+      "empty": "No s'ha trobat cap torn per a aquests filtres.",
+      "validate": "Validar",
+      "log_as_worked": "Registrar com a treballat",
+      "accept": "Acceptar",
+      "swap": "Intercanviar",
+      "locked": "Bloquejat",
+      "pagination_showing": "Pàgina {{page}} de {{totalPages}}",
+      "previous": "Anterior",
+      "next": "Següent",
+      "cancelled": "Cancel·lat"
+    },
+    "time_off": {
+      "title": "Sol·licituds d'absència",
+      "subtitle": "Gestiona les teves sol·licituds d'absència.",
+      "new_request": "Nova sol·licitud",
+      "col_dates": "Dates",
+      "col_reason": "Motiu",
+      "col_status": "Estat",
+      "loading": "Carregant sol·licituds...",
+      "empty": "No s'ha trobat cap sol·licitud d'absència."
+    },
+    "swaps": {
+      "title": "Intercanvis de torns",
+      "subtitle": "Estat de les teves sol·licituds d'intercanvi de torn.",
+      "col_shift": "Torn",
+      "col_involving": "Amb",
+      "col_status": "Estat",
+      "loading": "Carregant intercanvis...",
+      "empty": "No s'ha trobat cap intercanvi de torn.",
+      "unknown_shift": "Torn desconegut",
+      "with_label": "Amb: {{name}}",
+      "from_label": "De: {{name}}",
+      "colleague": "Company"
+    },
+    "bids_tab": {
+      "title": "Les meves sol·licituds de torn",
+      "subtitle": "Fes seguiment de les teves sol·licituds per a torns oberts.",
+      "col_shift_date": "Data del torn",
+      "col_times": "Horaris",
+      "col_restaurant": "Restaurant",
+      "col_bid_submitted": "Sol·licitud enviada",
+      "col_status": "Estat",
+      "loading": "Carregant les teves sol·licituds...",
+      "empty": "Encara no has enviat cap sol·licitud.",
+      "unknown_date": "Data desconeguda",
+      "not_available": "N/D",
+      "your_restaurant": "El teu restaurant",
+      "pending_review": "En revisió",
+      "approved": "Aprovada",
+      "rejected": "Rebutjada"
+    }
+  },
+  "nfc_tags_management": {
+    "tabs": {
+      "cards": "Targetes",
+      "requests": "Sol·licituds"
+    },
+    "action_labels": {
+      "attendance_clock_in_out": "Fitxatge d'assistència",
+      "pos_login": "Inici de sessió al TPV",
+      "none": "Cap"
+    },
+    "pos_access_mode_labels": {
+      "basic": "Bàsic",
+      "full": "Complet"
+    },
+    "request_reason_labels": {
+      "new_staff_card": "Targeta nova d'empleat",
+      "lost_replacement": "Substitució per pèrdua",
+      "other": "Altre"
+    },
+    "unassigned": "Sense assignar",
+    "unnamed": "Sense nom",
+    "assign_modal": {
+      "title": "Assignar targeta",
+      "staff_member_label": "Membre del personal",
+      "select_staff_placeholder": "Selecciona un membre del personal",
+      "action_label": "Acció",
+      "select_action_placeholder": "Selecciona una acció",
+      "pos_access_mode_label": "Mode d'accés al TPV",
+      "basic_option": "Bàsic — només presa de comandes, sense anul·lacions/reemborsaments/descomptes",
+      "full_option": "Complet — mateix accés que l'inici de sessió amb PIN",
+      "cancel": "Cancel·lar",
+      "save": "Desar"
+    },
+    "report_lost_dialog": {
+      "title": "Informar de targeta perduda o robada",
+      "description": "Això desactiva la targeta immediatament. Es crearà una sol·licitud de substitució automàticament.",
+      "reason_label": "Motiu",
+      "lost": "Perduda",
+      "stolen": "Robada",
+      "note_label": "Nota (opcional)",
+      "note_placeholder": "Detalls addicionals…",
+      "cancel": "Cancel·lar",
+      "deactivate": "Desactivar targeta"
+    },
+    "cards_tab": {
+      "title": "Targetes",
+      "col_card_id": "ID de targeta",
+      "col_status": "Estat",
+      "col_assigned_staff": "Empleat assignat",
+      "col_action": "Acció",
+      "col_linked_at": "Vinculada el",
+      "col_actions": "Accions",
+      "loading": "Carregant targetes…",
+      "empty": "No s'ha trobat cap targeta.",
+      "assign": "Assignar",
+      "report_lost_stolen": "Informar pèrdua/robatori",
+      "previous": "Anterior",
+      "next": "Següent",
+      "status_labels": {
+        "unissued": "No emesa",
+        "linked": "Vinculada",
+        "revoked": "Revocada"
+      }
+    },
+    "request_card_modal": {
+      "title": "Sol·licitar una targeta nova",
+      "reason_label": "Motiu",
+      "note_label": "Nota (opcional)",
+      "note_placeholder": "Detalls addicionals…",
+      "cancel": "Cancel·lar",
+      "submit": "Enviar sol·licitud"
+    },
+    "requests_tab": {
+      "request_new_card": "Sol·licitar una targeta nova",
+      "title": "Sol·licituds de targetes",
+      "col_reason": "Motiu",
+      "col_note": "Nota",
+      "col_status": "Estat",
+      "col_requested_at": "Sol·licitada el",
+      "col_resolution_note": "Nota de resolució",
+      "loading": "Carregant sol·licituds…",
+      "empty": "No s'ha trobat cap sol·licitud.",
+      "previous": "Anterior",
+      "next": "Següent",
+      "status_labels": {
+        "pending": "Pendent",
+        "fulfilled": "Completada",
+        "rejected": "Rebutjada"
+      }
+    }
+  },
+  "payroll_page": {
+    "header": {
+      "title": "Nòmina",
+      "subtitle": "Previsualitza, genera i finalitza la nòmina per a qualsevol període."
+    },
+    "tabs": {
+      "absences": "Absències"
+    },
+    "period_picker": {
+      "start_date": "Data d'inici",
+      "end_date": "Data de fi",
+      "generating": "Generant...",
+      "generate_payroll": "Generar nòmina",
+      "finalize": "Finalitzar",
+      "export_csv": "Exportar CSV",
+      "export_pdf": "Exportar PDF"
+    },
+    "preview": {
+      "title": "Vista prèvia",
+      "loading": "Carregant la vista prèvia…",
+      "empty": "No s'ha trobat cap registre d'assistència validat per a aquest període.",
+      "totals": {
+        "total_hrs": "Total hores:",
+        "ot_hrs": "Hores extra:",
+        "regular_pay": "Pagament normal:",
+        "ot_pay": "Pagament hores extra:",
+        "paid_leave": "Permís pagat:",
+        "total": "Total:"
+      }
+    },
+    "table": {
+      "employee": "Empleat",
+      "regular_hrs": "Hores normals",
+      "ot_hrs": "Hores extra",
+      "total_hrs": "Total hores",
+      "regular_pay": "Pagament normal",
+      "ot_pay": "Pagament hores extra",
+      "paid_leave": "Permís pagat",
+      "total_pay": "Pagament total",
+      "status": "Estat",
+      "set_hourly_rate": "Definir tarifa per hora",
+      "status_labels": {
+        "DRAFT": "Esborrany",
+        "FINALIZED": "Finalitzat"
+      }
+    },
+    "warning_banner": {
+      "message_one": "{{count}} empleat té assistència no validada o encara oberta en aquest període i NO està inclòs en les xifres següents — valida la seva assistència i torna a revisar aquesta vista prèvia.",
+      "message_other": "{{count}} empleats tenen assistència no validada o encara oberta en aquest període i NO estan inclosos en les xifres següents — valida la seva assistència i torna a revisar aquesta vista prèvia.",
+      "record_line_one": "{{name}} — {{count}} registre no validat",
+      "record_line_other": "{{name}} — {{count}} registres no validats",
+      "still_clocked_in": ", {{count}} encara fitxat(s)"
+    },
+    "draft_entries": {
+      "title": "Entrades esborrany",
+      "loading": "Carregant…"
+    },
+    "finalized_entries": {
+      "title": "Finalitzades",
+      "loading": "Carregant…"
+    },
+    "finalize_dialog": {
+      "title": "Finalitzar nòmina",
+      "description": "Això bloquejarà totes les entrades esborrany per al període del {{startDate}} al {{endDate}}. Les entrades finalitzades no es poden sobreescriure. Aquesta acció és irreversible.",
+      "cancel": "Cancel·lar",
+      "finalizing": "Finalitzant…"
+    }
+  },
+  "absence_log_panel": {
+    "title": "Registre d'absències",
+    "record_absence": "Registrar absència",
+    "loading": "Carregant absències…",
+    "empty": "Encara no hi ha cap registre d'absència.",
+    "col_date": "Data",
+    "col_employee": "Empleat",
+    "col_type": "Tipus",
+    "col_linked_shift": "Torn vinculat",
+    "col_notes": "Notes",
+    "col_document": "Document",
+    "col_actions": "Accions",
+    "paid": "Pagada",
+    "unpaid": "No pagada",
+    "locked": "Bloquejada",
+    "view": "Veure",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "unlock": "Desbloquejar",
+    "lock": "Bloquejar",
+    "cancel": "Cancel·lar",
+    "save": "Desar",
+    "saving": "Desant…",
+    "deleting": "Eliminant…",
+    "create_dialog": {
+      "description": "Classifica un torn perdut d'un membre del personal."
+    },
+    "edit_dialog": {
+      "title": "Editar absència",
+      "locked_notice": "Aquesta absència està bloquejada i ja no es pot editar. Desbloqueja-la primer si cal fer una correcció."
+    },
+    "delete_dialog": {
+      "title": "Eliminar el registre d'absència?",
+      "description": "Això eliminarà permanentment el registre d'absència del {{date}}. Aquesta acció no es pot desfer."
+    },
+    "form": {
+      "employment_id_label": "ID d'ocupació",
+      "employment_id_placeholder": "ID d'ocupació de l'empleat",
+      "date_label": "Data",
+      "type_label": "Tipus",
+      "paid_leave_label": "Permís pagat",
+      "notes_label": "Notes",
+      "notes_placeholder": "p. ex. L'empleat ha avisat que estava malalt",
+      "document_url_label": "URL del document (opcional)",
+      "document_url_placeholder": "p. ex. https://storage.com/justificant.pdf",
+      "time_off_request_id_label": "ID de sol·licitud d'absència (opcional)",
+      "time_off_request_id_placeholder": "Vincular a una sol·licitud d'absència aprovada"
+    }
+  },
+  "absence_types": {
+    "SICK_LEAVE": "Baixa per malaltia",
+    "UNAUTHORIZED": "No autoritzada",
+    "PERSONAL_EMERGENCY": "Emergència personal",
+    "APPROVED_LEAVE": "Permís aprovat"
+  },
+  "settings_page": {
+    "title": "Configuració del negoci",
+    "reservations_orders": {
+      "trigger": "Reserves i comandes",
+      "enable_reservations": {
+        "label": "Activar reserves de taula",
+        "desc": "Permet als clients reservar taula en línia"
+      },
+      "require_confirmation": {
+        "label": "Exigir confirmació de reserva",
+        "desc": "Les reserves han de ser aprovades pel personal"
+      },
+      "cancellation_window": {
+        "label": "Termini de cancel·lació (dies)",
+        "desc": "Nombre de dies abans de la reserva en què es permet cancel·lar"
+      },
+      "modification_limit": {
+        "label": "Límit de modificació (minuts)",
+        "desc": "Minuts mínims abans que la reserva es pugui modificar"
+      },
+      "pending_timeout": {
+        "label": "Temps d'espera pendent (minuts)",
+        "desc": "Minuts abans que caduqui una sol·licitud sense confirmar"
+      },
+      "default_duration": {
+        "label": "Durada predeterminada (minuts)",
+        "desc": "Durada predeterminada de les noves reserves"
+      },
+      "max_party_size": {
+        "label": "Mida màxima del grup",
+        "desc": "Nombre màxim de comensals permesos per reserva"
+      },
+      "booking_window": {
+        "label": "Finestra de reserva (dies)",
+        "desc": "Amb quanta antelació poden reservar els clients"
+      },
+      "buffer": {
+        "label": "Marge entre reserves (min)",
+        "desc": "Espai afegit entre torns de taula consecutius"
+      },
+      "auto_no_show": {
+        "label": "No-presentació automàtica",
+        "desc": "Marca automàticament les reserves confirmades com a no-presentació després del període de gràcia"
+      },
+      "grace_period": {
+        "label": "Període de gràcia (min)",
+        "desc": "Minuts després de l'hora de reserva abans que s'activi la no-presentació automàtica"
+      },
+      "enable_ordering": {
+        "label": "Activar comandes en línia",
+        "desc": "Permet als clients fer comandes en línia"
+      },
+      "require_order_confirmation": {
+        "label": "Exigir confirmació de comanda",
+        "desc": "Les comandes han de ser aprovades pel personal"
+      },
+      "allow_table_ordering": {
+        "label": "Permetre comandes a taula",
+        "desc": "Activa l'opció \"Per menjar aquí\" per als clients"
+      },
+      "allow_takeaway_ordering": {
+        "label": "Permetre comandes per emportar",
+        "desc": "Activa l'opció \"Per emportar\" per als clients"
+      },
+      "save": "Desar"
+    },
+    "floor_plan": {
+      "trigger": "Pla de sala",
+      "enable_layout": {
+        "label": "Activar vista del pla de sala",
+        "desc": "Mostra la disposició visual de les taules al personal per gestionar la ubicació, i als clients en reservar una taula"
+      }
+    },
+    "organization_region": {
+      "trigger": "Organització i regió",
+      "linked": "Vinculat",
+      "leave_pending": "Sol·licitud de sortida pendent",
+      "request_to_leave": "Sol·licitar sortida",
+      "not_linked": "No vinculat a cap organització o regió.",
+      "leave_note": "Sortir requereix l'aprovació del propietari de l'organització o regió — mai passa immediatament, encara que siguis tu qui ho hagi sol·licitat."
+    },
+    "general_details": {
+      "trigger": "Informació general",
+      "business_name_placeholder": "Nom del negoci",
+      "description_placeholder": "Descripció",
+      "contact_email_placeholder": "Correu de contacte",
+      "phone_placeholder": "Número de telèfon",
+      "slug": {
+        "label": "Slug de l'URL pública",
+        "placeholder": "el-teu-restaurant",
+        "taken": "Aquest slug ja està agafat",
+        "invalid": "Només es permeten lletres minúscules, números i guions",
+        "available": "L'slug està disponible",
+        "idle_hint": "S'utilitza a l'URL de la teva pàgina pública. Només lletres minúscules, números i guions.",
+        "change_warning": "Canviar l'slug trencarà qualsevol enllaç compartit que utilitzi l'actual"
+      },
+      "currency": {
+        "label": "Moneda",
+        "set_by": "— definida per {{country}}",
+        "set_by_fallback": "el país del teu negoci",
+        "hint": "La moneda segueix el país registrat del teu negoci i no es pot canviar de manera independent. Per operar en una moneda diferent, actualitza el país a Ubicació."
+      },
+      "receipt_language": {
+        "label": "Idioma del rebut",
+        "required_by_law": "— exigit per llei, sempre principal",
+        "secondary_label": "Idioma secundari (opcional)",
+        "none_placeholder": "Cap",
+        "none_option": "Cap (només {{language}})",
+        "mandated_hint": "El {{language}} ha d'aparèixer a cada rebut i no es pot desactivar. Opcionalment pots afegir un segon idioma al costat per a turistes/clients — mai substituirà el {{language}}, només apareixerà al seu costat.",
+        "select_placeholder": "Selecciona un idioma",
+        "hint": "Idioma que fan servir els rebuts impresos, independent de l'idioma que utilitzi el personal a l'aplicació. Anglès per defecte."
+      },
+      "published": {
+        "label": "Publicat",
+        "desc": "Mostrar aquest negoci als clients a la plataforma"
+      },
+      "auto_disable_out_of_stock": {
+        "label": "Desactivar automàticament articles sense estoc",
+        "desc": "Amaga automàticament un article del menú quan el seu estoc registrat arriba a zero, i el torna a mostrar quan es reposi"
+      },
+      "save": "Desar"
+    },
+    "location": {
+      "trigger": "Ubicació i adreça",
+      "timezone": {
+        "label": "Fus horari del negoci",
+        "select_placeholder": "Selecciona un fus horari",
+        "search_placeholder": "Cerca un fus horari...",
+        "no_results": "No s'ha trobat cap fus horari."
+      },
+      "state_province": {
+        "label": "Estat / Província",
+        "placeholder": "Estat o província"
+      },
+      "loading_map": "Carregant el mapa...",
+      "ordering": {
+        "section_label": "Configuració d'ubicació per a comandes",
+        "allow_nearby_only": {
+          "label": "Permetre només comandes properes",
+          "desc": "Els clients han d'estar dins d'un radi permès de la teva ubicació"
+        },
+        "max_distance": {
+          "label": "Distància màxima (metres)",
+          "desc": "Distància màxima permesa per a comandes properes (p. ex. 5000 per a 5 km)"
+        }
+      },
+      "attendance": {
+        "section_label": "Configuració d'assistència i geolocalització",
+        "require_gps": {
+          "label": "Exigir GPS per a l'assistència",
+          "desc": "El personal ha de compartir la seva ubicació per fitxar l'entrada o la sortida"
+        },
+        "grace_period": {
+          "label": "Període de gràcia d'assistència (minuts)",
+          "desc": "Minuts de marge abans que un fitxatge d'entrada es marqui com a tardà o un de sortida com a sortida anticipada"
+        },
+        "max_paid_break": {
+          "label": "Descans pagat màxim (minuts)",
+          "desc": "Els descansos pagats més llargs que això es marquen per a revisió del responsable"
+        },
+        "require_clock_in_pos": {
+          "label": "Exigir fitxatge per utilitzar el TPV",
+          "desc": "El personal ha d'haver fitxat per prendre comandes, acceptar pagaments o gestionar taules en un terminal TPV compartit. Els propietaris sempre n'estan exempts."
+        },
+        "require_qr": {
+          "label": "Exigir codi QR per a l'assistència",
+          "desc": "El personal ha d'escanejar un codi QR rotatiu (que apareix a la pestanya En directe de la pàgina d'Assistència) per fitxar l'entrada o la sortida — una foto del codi deixa de funcionar en segons. Combina-ho amb el GPS anterior per a la màxima protecció."
+        },
+        "geofence_radius": {
+          "label": "Radi de geolocalització d'assistència (metres)",
+          "desc": "Distància màxima des del negoci per permetre el fitxatge (p. ex. 50)"
+        },
+        "strict_block": {
+          "label": "Bloqueig estricte per geolocalització",
+          "desc": "Si està activat, impedeix el fitxatge si el personal és fora del radi. Si està desactivat, permet el fitxatge però el marca per a revisió del responsable."
+        }
+      },
+      "save": "Desar"
+    },
+    "labor": {
+      "trigger": "Valors predeterminats de mà d'obra i compliment",
+      "max_weekly_hours": {
+        "label": "Hores setmanals màximes",
+        "desc": "Màxim d'hores per defecte per empleat abans de bloquejar l'horari"
+      },
+      "min_gap": {
+        "label": "Marge mínim entre torns (hores)",
+        "desc": "El marge de \"tancament-obertura\", p. ex. 8 hores"
+      },
+      "split_shift_gap": {
+        "label": "Marge de torn partit (hores)",
+        "desc": "Marge mínim permès el mateix dia"
+      },
+      "overtime_payroll_heading": "Hores extra i nòmina",
+      "daily_ot_threshold": {
+        "label": "Llindar diari d'hores extra (hores)",
+        "desc": "Hores en un dia abans que comencin les hores extra"
+      },
+      "weekly_ot_threshold": {
+        "label": "Llindar setmanal d'hores extra (hores)",
+        "desc": "Total d'hores setmanals abans que comencin les hores extra"
+      },
+      "overtime_multiplier": {
+        "label": "Multiplicador d'hores extra",
+        "desc": "Multiplicador de pagament per a les hores extra (p. ex. 1,5x)"
+      },
+      "pay_period_type": {
+        "label": "Tipus de període de pagament",
+        "desc": "Amb quina freqüència es processa la nòmina"
+      },
+      "pay_period_options": {
+        "WEEKLY": "Setmanal",
+        "BIWEEKLY": "Quinzenal",
+        "MONTHLY": "Mensual"
+      },
+      "tip_pooling_heading": "Fons comú de propines",
+      "enable_tip_pooling": {
+        "label": "Activar fons comú de propines",
+        "desc": "Reparteix les propines recaptades entre el personal que ha treballat en lloc d'atribuir-les per comanda"
+      },
+      "split_strategy": {
+        "label": "Estratègia de repartiment",
+        "desc": "Com es divideixen les propines agrupades entre el personal",
+        "equal_split": "Repartiment igualitari",
+        "hours_worked": "Hores treballades"
+      },
+      "save": "Desar"
+    },
+    "tax": {
+      "trigger": "Configuració d'impostos",
+      "loading": "Carregant la configuració d'impostos…",
+      "save": "Desar",
+      "fiscal_id": {
+        "ES": {
+          "label": "NIF/CIF",
+          "placeholder": "p. ex. B12345678",
+          "helper": "Necessari per a la facturació fiscal espanyola — s'imprimeix als rebuts i s'utilitza al codi QR de l'AEAT. Configura'l abans que s'activi la facturació fiscal espanyola per al teu compte.",
+          "notSetWarning": "No definit — necessari abans que s'activi la facturació fiscal espanyola per al teu compte."
+        },
+        "AD": {
+          "label": "Número d'identificació fiscal (NRT)",
+          "placeholder": "p. ex. A-123456-Z",
+          "helper": "Necessari per a la facturació fiscal andorrana — s'imprimeix als rebuts. Les comandes no es poden completar fins que això estigui configurat.",
+          "notSetWarning": "No definit — necessari abans de completar qualsevol comanda."
+        }
+      },
+      "pricing_model": {
+        "label": "Model de preus",
+        "included_label": "Impost inclòs al preu",
+        "included_hint": "(estil UE — l'impost està integrat als preus mostrats)",
+        "excluded_label": "Impost afegit a part",
+        "excluded_hint": "(estil EUA — l'impost es mostra com una línia separada en pagar)",
+        "save": "Desar model de preus"
+      },
+      "library": {
+        "title": "Biblioteca d'impostos",
+        "subtitle": "Tipus d'impost individuals aplicats a les comandes",
+        "autofill": "Emplenar automàticament",
+        "autofill_tooltip": "Emplena l'impost inicial estàndard per al país d'aquest negoci (p. ex. IVA Espanya 10%, IGI Andorra 4,5%) — verifica-ho amb el teu assessor fiscal abans de confiar-hi.",
+        "add_tax": "Afegir impost",
+        "empty_title": "Encara no hi ha impostos configurats.",
+        "empty_desc": "Afegeix el teu primer impost per aplicar-lo a totes les comandes per defecte.",
+        "default_badge": "Predeterminat",
+        "set_default": "Establir predeterminat",
+        "delete_default_tooltip": "Estableix un altre impost com a predeterminat abans d'eliminar aquest.",
+        "toasts": {
+          "deleted": "Impost eliminat",
+          "delete_failed": "No s'ha pogut eliminar l'impost",
+          "default_updated": "Impost predeterminat actualitzat",
+          "default_update_failed": "No s'ha pogut actualitzar l'impost predeterminat",
+          "unsupported_country": "Encara no hi ha cap impost inicial disponible per al país d'aquest negoci. Afegeix els impostos manualment a continuació.",
+          "autofill_added": "S'ha afegit {{list}}",
+          "autofill_up_to_date": "La biblioteca d'impostos ja està actualitzada — res a afegir.",
+          "autofill_failed": "No s'han pogut emplenar automàticament els impostos"
+        }
+      },
+      "form_dialog": {
+        "edit_title": "Editar impost",
+        "add_title": "Afegir impost",
+        "name_label": "Nom",
+        "name_placeholder": "p. ex. IVA, Impost estatal",
+        "rate_label": "Tipus (%)",
+        "set_default_checkbox": "Establir com a impost predeterminat",
+        "cancel": "Cancel·lar",
+        "save_changes": "Desar els canvis",
+        "create": "Crear",
+        "errors": {
+          "name_required": "El nom de l'impost és obligatori.",
+          "rate_invalid": "El tipus d'impost no pot superar el 100%.",
+          "save_failed": "No s'ha pogut desar l'impost. Torna-ho a provar."
+        },
+        "toasts": {
+          "updated": "Impost actualitzat",
+          "created": "Impost creat"
+        }
+      },
+      "groups": {
+        "title": "Grups d'impostos",
+        "subtitle": "Agrupa diversos impostos per a articles específics (p. ex. Merchandising, Alcohol)",
+        "add_group": "Afegir grup",
+        "add_taxes_first_tooltip": "Afegeix impostos a la biblioteca de dalt abans de crear grups.",
+        "empty_no_taxes": "Afegeix impostos a la biblioteca de dalt abans de crear grups.",
+        "empty_title": "Encara no hi ha grups d'impostos.",
+        "empty_desc": "Els grups et permeten combinar diversos impostos per a articles específics (p. ex. Merchandising, Alcohol).",
+        "no_taxes_label": "Sense impostos",
+        "total_suffix": "{{rate}}% en total",
+        "delete_confirm_title": "Eliminar aquest grup d'impostos?",
+        "delete_confirm_desc": "Aquesta acció no es pot desfer.",
+        "delete": "Eliminar",
+        "toasts": {
+          "deleted": "Grup d'impostos eliminat",
+          "delete_failed": "No s'ha pogut eliminar el grup d'impostos"
+        }
+      },
+      "group_form_dialog": {
+        "edit_title": "Editar grup d'impostos",
+        "add_title": "Afegir grup d'impostos",
+        "name_label": "Nom del grup",
+        "name_placeholder": "p. ex. Alcohol, Merchandising",
+        "taxes_label": "Impostos",
+        "combined_rate": "Tipus combinat:",
+        "errors": {
+          "name_required": "El nom del grup és obligatori.",
+          "select_at_least_one": "Selecciona almenys un impost per a aquest grup.",
+          "save_failed": "No s'ha pogut desar el grup d'impostos. Torna-ho a provar."
+        },
+        "toasts": {
+          "updated": "Grup d'impostos actualitzat",
+          "created": "Grup d'impostos creat"
+        },
+        "save_changes": "Desar els canvis",
+        "create": "Crear"
+      }
+    }
+  },
+  "discounts_page": {
+    "title": "Descomptes",
+    "subtitle": "Crea codis promocionals i descomptes aplicats pel responsable que el personal pot fer servir en cobrar.",
+    "new_discount": "Nou descompte",
+    "all_discounts": "Tots els descomptes",
+    "col_name": "Nom",
+    "col_code": "Codi",
+    "col_value": "Valor",
+    "col_min_order": "Comanda mín.",
+    "col_expires": "Caduca",
+    "col_status": "Estat",
+    "col_actions": "Accions",
+    "loading": "Carregant...",
+    "empty": "Encara no hi ha cap descompte.",
+    "active": "Actiu",
+    "inactive": "Inactiu",
+    "form": {
+      "edit_title": "Editar descompte",
+      "new_title": "Nou descompte",
+      "name_label": "Nom",
+      "name_placeholder": "Rebaixes d'estiu",
+      "code_label": "Codi promocional (opcional)",
+      "type_label": "Tipus",
+      "percentage_option": "Percentatge (%)",
+      "fixed_option": "Import fix (€)",
+      "value_label": "Valor",
+      "min_order_label": "Import mínim de la comanda",
+      "expires_label": "Caduca el",
+      "cancel": "Cancel·lar",
+      "save": "Desar",
+      "create": "Crear"
+    }
+  },
+  "booking_flow_modal": {
+    "title": "Nova reserva",
+    "steps": {
+      "search": {
+        "label": "Data i hora",
+        "description": "Quan i quants"
+      },
+      "table_selection": {
+        "label": "Taula",
+        "description": "Triar una taula"
+      },
+      "pre_order": {
+        "label": "Comanda anticipada",
+        "description": "Articles opcionals"
+      },
+      "customer_info": {
+        "label": "Client",
+        "description": "Dades de contacte"
+      }
+    },
+    "errors": {
+      "time_in_past": "L'hora de la reserva ha de ser en el futur.",
+      "invalid_email": "Introdueix una adreça de correu vàlida",
+      "phone_required": "El número de telèfon és obligatori",
+      "invalid_phone": "Introdueix un número de telèfon vàlid per al país seleccionat"
+    },
+    "search_step": {
+      "date_label": "Data",
+      "date_placeholder": "Triar una data",
+      "time_label": "Hora",
+      "guest_count_label": "Nombre de comensals"
+    },
+    "table_step": {
+      "waitlist_title": "Llista d'espera",
+      "waitlist_desc": "Afegeix a la llista d'espera si no hi ha cap taula preferida disponible.",
+      "table_fallback_name": "Taula {{number}}",
+      "capacity": "Capacitat: {{count}} comensals",
+      "empty": "No hi ha taules disponibles per a aquesta hora. Encara pots unir-te a la llista d'espera."
+    },
+    "pre_order_step": {
+      "no_menu_items": "No s'ha trobat cap article del menú.",
+      "add": "Afegir",
+      "order_heading": "Comanda ({{count}})",
+      "remove": "Treure",
+      "empty_order": "Encara no s'ha afegit cap article.",
+      "total": "Total: {{amount}} €"
+    },
+    "customer_step": {
+      "found_user": "Usuari trobat: {{name}}",
+      "link_prompt": "Vols vincular aquesta reserva?",
+      "no": "No",
+      "yes_link": "Sí, vincular",
+      "linked_to": "Vinculada al compte de {{name}}",
+      "name_label": "Nom del client",
+      "name_placeholder": "Joan Pérez",
+      "phone_label": "Número de telèfon",
+      "phone_placeholder": "Introdueix el número de telèfon",
+      "email_label": "Adreça de correu",
+      "email_placeholder": "joan@exemple.com",
+      "notes_label": "Notes especials",
+      "notes_placeholder": "Celebració d'aniversari, al·lèrgies, etc.",
+      "source_label": "Origen",
+      "duration_label": "Durada (minuts)"
+    },
+    "source_options": {
+      "APP": "App",
+      "WEB": "Web",
+      "PHONE": "Telèfon",
+      "WALK_IN": "Sense reserva",
+      "INSTAGRAM": "Instagram",
+      "GOOGLE": "Google"
+    },
+    "footer": {
+      "back": "Enrere",
+      "cancel": "Cancel·lar",
+      "complete_booking": "Completar la reserva",
+      "check_availability": "Comprovar disponibilitat",
+      "continue": "Continuar"
+    }
+  },
+  "view_reservation_modal": {
+    "title": "Detalls de la reserva",
+    "load_failed": "No s'han pogut carregar els detalls de la reserva.",
+    "close": "Tancar",
+    "closed_notice": "Aquesta reserva està tancada i no es pot modificar.",
+    "reassign_table": "Reassignar taula",
+    "assign_table": "Assignar taula",
+    "not_available": "N/D",
+    "tabs": {
+      "details": "Detalls",
+      "timeline": "Cronologia"
+    },
+    "customer_info": {
+      "heading": "Informació del client",
+      "name": "Nom",
+      "source": "Origen de la reserva"
+    },
+    "reservation_info": {
+      "heading": "Detalls de la reserva",
+      "date": "Data",
+      "time": "Hora",
+      "duration": "Durada",
+      "duration_value": "{{count}} min",
+      "guests": "Comensals"
+    },
+    "table_info": {
+      "heading": "Informació de la taula",
+      "table_name": "Nom de la taula",
+      "table_number_fallback": "Taula {{number}}",
+      "capacity": "Capacitat",
+      "capacity_value": "{{count}} persones",
+      "status": "Estat de la taula",
+      "no_table": "No hi ha cap taula assignada"
+    },
+    "notes": {
+      "heading": "Notes i motius",
+      "customer_notes": "Notes del client",
+      "cancel_reason": "Motiu de cancel·lació",
+      "cancelled_at": "Cancel·lada el"
+    },
+    "order": {
+      "heading": "Comanda vinculada",
+      "status": "Estat de la comanda",
+      "payment_status": "Estat del pagament",
+      "total_amount": "Import total",
+      "items_heading": "Articles de la comanda",
+      "item_note": "Nota: {{note}}",
+      "no_items": "No hi ha cap article seleccionat."
+    }
+  },
+  "edit_reservation_modal": {
+    "title": "Editar reserva",
+    "restricted_notice": "Les modificacions estan restringides. La reserva està programada dins dels propers {{minutes}} minuts.",
+    "name_label": "Nom del client",
+    "phone_label": "Número de telèfon",
+    "date_label": "Data",
+    "time_label": "Hora",
+    "guest_count_label": "Nombre de comensals",
+    "status_label": "Estat",
+    "status_options": {
+      "PENDING": "Pendent",
+      "CONFIRMED": "Confirmada",
+      "WAITLIST": "Llista d'espera",
+      "SEATED": "Asseguts",
+      "COMPLETED": "Completada",
+      "NO_SHOW": "No presentat",
+      "CANCELLED": "Cancel·lada",
+      "EXPIRED": "Caducada"
+    },
+    "assigned_table_label": "Taula assignada",
+    "select_table_placeholder": "Selecciona una taula",
+    "unassigned_waitlist": "Sense assignar (llista d'espera)",
+    "table_option": "{{name}} (Capacitat: {{capacity}})",
+    "table_fallback_name": "Taula {{number}}",
+    "table_conflict_hint": "Assignar una taula comprovarà els conflictes de disponibilitat.",
+    "cancel_reason_label": "Motiu de cancel·lació (opcional)",
+    "cancel_reason_placeholder": "El client ha sol·licitat un altre dia...",
+    "cancel": "Cancel·lar",
+    "close": "Tancar",
+    "save": "Desar"
+  },
+  "reservation_dashboard": {
+    "title": "Reserves",
+    "subtitle": "Tauler en directe — s'actualitza cada 60 s",
+    "refresh": "Actualitzar",
+    "new_reservation": "Nova reserva",
+    "waitlist": "Llista d'espera",
+    "walk_in": "Sense reserva",
+    "stat_tiles": {
+      "total_today": "Total avui",
+      "confirmed": "Confirmades",
+      "seated": "Assegudes",
+      "completed": "Completades",
+      "no_shows": "No presentats",
+      "cancelled": "Cancel·lades"
+    },
+    "currently_seated": {
+      "heading": "Actualment asseguts ({{count}})",
+      "table_fallback": "Taula {{number}}",
+      "view": "Veure"
+    },
+    "upcoming": {
+      "heading": "Properes — 2 properes hores ({{count}})",
+      "table_fallback": "Taula {{number}}",
+      "reassign": "Reassignar",
+      "assign_table": "Assignar taula"
+    },
+    "all_reservations": {
+      "title_fallback": "Totes les reserves",
+      "date_range_label": "Interval de dates",
+      "status_label": "Estat",
+      "status_all": "Totes",
+      "col_date_time": "Data i hora",
+      "col_customer": "Client",
+      "col_guests": "Comensals",
+      "col_table": "Taula",
+      "col_status": "Estat",
+      "col_actions": "Accions",
+      "empty": "No s'ha trobat cap reserva.",
+      "unassigned": "Sense assignar",
+      "reassign": "Reassignar",
+      "assign": "Assignar",
+      "table_fallback": "Taula {{number}}"
+    },
+    "no_shows_today": {
+      "heading": "No presentats avui ({{count}})",
+      "booked": "Reservat: {{time}}",
+      "marked": "Marcat: {{time}}"
+    }
+  },
+  "walk_in_modal": {
+    "title": "Nou client sense reserva",
+    "name_label": "Nom del client",
+    "name_placeholder": "Joan Pérez",
+    "phone_label": "Telèfon",
+    "email_label": "Correu electrònic",
+    "party_size_label": "Mida del grup",
+    "table_label": "Taula",
+    "checking_availability": "Comprovant disponibilitat…",
+    "no_tables_available": "No hi ha cap taula disponible",
+    "select_table_placeholder": "Selecciona una taula",
+    "table_option": "{{name}} — {{capacity}} places",
+    "table_fallback_name": "Taula {{number}}",
+    "notes_label": "Notes",
+    "notes_placeholder": "Al·lèrgies, preferències…",
+    "cancel": "Cancel·lar",
+    "creating": "Creant…",
+    "create": "Crear client"
+  },
+  "join_waitlist_modal": {
+    "title": "Afegir a la llista d'espera",
+    "adding": "Afegint…",
+    "add_to_waitlist": "Afegir a la llista d'espera"
+  },
+  "reservation_action_buttons": {
+    "action_unavailable": "Aquesta acció ja no està disponible. Actualitza la pàgina.",
+    "confirm": "Confirmar",
+    "seat": "Asseure",
+    "complete": "Completar",
+    "no_show": "No-presentació",
+    "cancel": "Cancel·lar",
+    "back": "Enrere",
+    "cancel_dialog": {
+      "title": "Cancel·lar reserva",
+      "description": "Opcionalment, indica un motiu per a la cancel·lació.",
+      "reason_label": "Motiu de cancel·lació (opcional)",
+      "reason_placeholder": "p. ex. El client ha sol·licitat cancel·lar",
+      "cancelling": "Cancel·lant…",
+      "confirm_cancel": "Confirmar cancel·lació"
+    },
+    "no_show_dialog": {
+      "title": "Marcar com a no-presentació",
+      "description": "Vols marcar aquesta reserva com a no-presentació? Aquesta acció no es pot desfer.",
+      "marking": "Marcant…",
+      "confirm": "Marcar no-presentació"
+    }
+  },
+  "customer_late_popover": {
+    "trigger": "Amb retard",
+    "heading": "Client amb retard",
+    "delay_label": "Retard estimat (minuts)",
+    "notes_label": "Notes (opcional)",
+    "notes_placeholder": "Ha avisat abans, trànsit…",
+    "cancel": "Cancel·lar",
+    "record": "Registrar"
+  },
+  "staff_add_order": {
+    "title": "Crear nova comanda",
+    "description": "Explora el menú i selecciona articles per a aquesta comanda.",
+    "order_details_heading": "Detalls de la comanda",
+    "order_type_label": "Tipus de comanda",
+    "order_type_placeholder": "Selecciona el tipus",
+    "dine_in": "Per consumir",
+    "takeaway": "Per emportar",
+    "delivery": "A domicili",
+    "select_table_label": "Selecciona una taula",
+    "choose_table_placeholder": "Tria una taula",
+    "provide_table_option": "-- Indica una taula --",
+    "table_option": "{{name}} (Cap.: {{capacity}})",
+    "kitchen_note_label": "Nota de cuina / Info d'al·lèrgies",
+    "kitchen_note_placeholder": "p. ex. Al·lèrgia greu als fruits secs en aquesta taula",
+    "tax_exempt_label": "Exempt d'impostos",
+    "selected_items_label": "Articles seleccionats",
+    "items_count": "{{count}} articles",
+    "empty_items": "Encara no s'ha afegit cap article",
+    "variant_selected": "Variant seleccionada",
+    "mods_prefix": "Modif.: {{list}}",
+    "note_prefix": "Nota: {{note}}",
+    "price_each": "{{price}} cada un",
+    "subtotal": "Subtotal",
+    "cancel": "Cancel·lar",
+    "processing": "Processant...",
+    "place_order": "Fer la comanda",
+    "errors": {
+      "no_items": "Afegeix almenys un article a la comanda",
+      "no_table": "Selecciona una taula per a les comandes per consumir"
+    },
+    "toasts": {
+      "created": "Comanda creada correctament"
+    }
+  },
+  "staff_add_order_mobile": {
+    "back_to_menu": "Tornar al menú",
+    "add_items": "Afegir articles",
+    "review_order": "Revisar comanda",
+    "variant": "Variant",
+    "view_order": "Veure comanda",
+    "place_order_with_total": "Fer la comanda · {{total}}"
+  },
+  "order_item_config_modal": {
+    "title": "Configurar - {{name}}",
+    "default_description": "Personalitza el teu article",
+    "choose_variant": "Triar mida/variant",
+    "optional": "(Opcional)",
+    "none_base_item": "Cap (article base)",
+    "none": "Cap",
+    "quantity": "Quantitat",
+    "modifiers_apply_to_all": "Els modificadors s'aplicaran als {{count}} articles. Pots afegir articles per separat si necessites variacions diferents.",
+    "notes_label": "Notes especials / Sol·licituds",
+    "notes_placeholder": "p. ex. Sense ceba, extra picant...",
+    "total": "Total",
+    "cancel": "Cancel·lar",
+    "save_changes": "Desar els canvis",
+    "add_to_order": "Afegir a la comanda"
+  },
+  "payment_modal": {
+    "title": "Afegir pagament - Comanda núm. {{id}}",
+    "description_prefix": "Registra un pagament per a aquesta comanda. Actualment té un saldo pendent de",
+    "order_total": "Total de la comanda",
+    "total_paid": "Total pagat",
+    "payment_amount_label": "Import del pagament ({{symbol}})",
+    "tip_amount_label": "Import de la propina ({{symbol}})",
+    "optional": "(Opcional)",
+    "payment_method_label": "Mètode de pagament",
+    "select_method_placeholder": "Selecciona un mètode",
+    "methods": {
+      "cash": "Efectiu",
+      "card": "Targeta",
+      "online": "En línia",
+      "other": "Altre"
+    },
+    "cancel": "Cancel·lar",
+    "processing": "Processant...",
+    "record_payment": "Registrar pagament"
+  },
+  "cancel_order_modal": {
+    "title": "Cancel·lar comanda",
+    "description": "Estàs segur que vols cancel·lar aquesta comanda? Això restaurarà automàticament l'inventari dels articles ja enviats a cuina.",
+    "reason_required_label": "Motiu de cancel·lació",
+    "reason_placeholder": "Per què es cancel·la aquesta comanda?",
+    "reason_required_hint": "Com que s'han registrat pagaments, cal indicar un motiu.",
+    "reason_optional_label": "Motiu de cancel·lació (opcional)",
+    "reason_optional_placeholder": "Motiu opcional...",
+    "keep_order": "Mantenir comanda",
+    "confirm_cancel": "Confirmar cancel·lació"
+  },
+  "transfer_table_modal": {
+    "title": "Transferir taula",
+    "description_prefix": "Selecciona una taula disponible per transferir-hi aquesta comanda. Això alliberarà la taula actual",
+    "description_suffix": "i ocuparà immediatament la taula acabada de seleccionar.",
+    "none": "Cap",
+    "select_destination_label": "Selecciona la taula de destinació",
+    "choose_table_placeholder": "Tria una taula disponible",
+    "no_tables_available": "No hi ha taules disponibles",
+    "cancel": "Cancel·lar",
+    "transferring": "Transferint...",
+    "transfer_order": "Transferir comanda"
+  },
+  "force_close_order_modal": {
+    "title": "Forçar finalització de la comanda",
+    "description": "Aquesta comanda no està totalment pagada. Forçar-ne la finalització la marcarà com a completada, però cal indicar un motiu.",
+    "notes_label": "Notes de tancament",
+    "notes_placeholder": "Explica per què es completa aquesta comanda amb pagament insuficient...",
+    "cancel": "Cancel·lar",
+    "force_complete": "Forçar finalització"
+  },
+  "refund_payment_modal": {
+    "title": "Reemborsar pagament",
+    "confirm_prefix": "Estàs segur que vols reemborsar aquest pagament",
+    "confirm_suffix": "?",
+    "deduct_prefix": "Aquesta acció deduirà",
+    "deduct_suffix": "de l'import total pagat de la comanda i en recalcularà l'estat.",
+    "reason_label": "Motiu del reemborsament (opcional)",
+    "reason_placeholder": "Per què es reemborsa aquest pagament?",
+    "cancel": "Cancel·lar",
+    "confirm_refund": "Confirmar reemborsament"
+  },
+  "staff_add_order_menu": {
+    "search_placeholder": "Cerca un article...",
+    "all_categories": "Totes les categories",
+    "items_count_one": "{{count}} article",
+    "items_count_other": "{{count}} articles",
+    "no_items_found": "No s'ha trobat cap article",
+    "try_adjusting_search": "Prova d'ajustar la cerca"
+  },
+  "manage_order_item_modal": {
+    "loading": "Carregant detalls de l'article..."
+  },
+  "tip_pooling_page": {
+    "title": "Fons comú de propines",
+    "subtitle": "Previsualitza, genera i finalitza els repartiments de propines per a qualsevol període.",
+    "disabled_notice": "El fons comú de propines està desactivat actualment per a aquest negoci. Activa'l a Configuració → Mà d'obra i compliment per començar a repartir les propines agrupades.",
+    "generate_distribution": "Generar repartiment",
+    "empty_preview": "No s'ha trobat cap registre d'assistència validat ni propina recaptada per a aquest període.",
+    "total_hours": "Total hores:",
+    "total_pool": "Total del fons:",
+    "table": {
+      "hours_worked": "Hores treballades",
+      "share": "Part"
+    },
+    "finalize_dialog": {
+      "title": "Finalitzar repartiment de propines",
+      "description": "Això bloquejarà totes les entrades esborrany per al període del {{startDate}} al {{endDate}}. Les entrades finalitzades no es poden sobreescriure. Aquesta acció és irreversible."
+    }
+  },
+  "invitations_section": {
+    "qr_description": "Escaneja aquest codi QR des de l'aplicació mòbil \"FlairSync Staff\" del personal",
+    "title": "Totes les invitacions del personal",
+    "add_staff": "Afegir personal",
+    "upgrade": "Millorar el pla",
+    "upgrade_prompt_with_limit": "El pla del negoci permet fins a {{allowed}} empleats ({{current}} actius actualment). El propietari ha de millorar el pla per afegir-ne més.",
+    "upgrade_prompt_generic": "S'ha arribat al límit d'empleats del pla del negoci. El propietari ha de millorar el pla per afegir més personal.",
+    "add_new_staff_title": "Afegir nou empleat",
+    "email_placeholder": "Correu electrònic",
+    "add": "Afegir",
+    "import_csv": "Importar CSV",
+    "status_filter_placeholder": "Selecciona l'estat",
+    "status_options": {
+      "ALL": "Tots",
+      "PENDING": "Pendent",
+      "ACCEPTED": "Acceptada",
+      "DECLINED": "Rebutjada",
+      "CANCELLED": "Cancel·lada",
+      "EXPIRED": "Caducada"
+    },
+    "col_email": "Correu electrònic",
+    "col_display_name": "Nom mostrat",
+    "col_created": "Creada",
+    "col_expires": "Caduca",
+    "col_status": "Estat",
+    "col_retries": "Reintents",
+    "col_actions": "Accions",
+    "open_menu": "Obrir el menú",
+    "resend_email": "Reenviar correu",
+    "show_qr": "Mostrar codi QR",
+    "cancel_invitation": "Cancel·lar invitació",
+    "previous": "Anterior",
+    "next": "Següent"
+  },
+  "organization_detail_page": {
+    "loading": "Carregant l'organització...",
+    "subtitle_one": "Últims 30 dies, en {{count}} sucursal",
+    "subtitle_other": "Últims 30 dies, en {{count}} sucursals",
+    "total_sales": "Vendes totals",
+    "orders_count_one": "{{count}} comanda",
+    "orders_count_other": "{{count}} comandes",
+    "labor_cost": "Cost de mà d'obra",
+    "low_stock_alerts": "Alertes d'estoc baix",
+    "per_branch_breakdown": "Desglossament per sucursal",
+    "loading_dashboard": "Carregant el tauler...",
+    "col_branch": "Sucursal",
+    "col_sales": "Vendes",
+    "col_orders": "Comandes",
+    "col_labor_cost": "Cost de mà d'obra",
+    "col_low_stock": "Estoc baix",
+    "empty_breakdown": "Vincula una sucursal o regió a aquesta organització per veure el rendiment combinat.",
+    "map": "Mapa",
+    "regions": "Regions",
+    "find_region_to_invite": "Cercar una regió per convidar",
+    "link_region_hint": "Vincular una regió incorpora en un sol pas totes les sucursals que en depenen. Si no ets el propietari de la regió, el seu responsable haurà d'aprovar-ho des de la safata de sol·licituds.",
+    "no_branches_in_region": "Encara no hi ha cap sucursal en aquesta regió.",
+    "no_regions_linked": "Encara no hi ha cap regió vinculada.",
+    "branches": "Sucursals",
+    "branches_subtitle": "Afegides directament a l'organització, no mitjançant una regió.",
+    "find_business_to_invite": "Cercar un negoci per convidar",
+    "invite_business_hint": "Envia una sol·licitud — res no es vincula fins que s'aprovi des de la safata de sol·licituds, fins i tot per a un negoci que tu mateix posseeixes.",
+    "no_direct_branches": "No hi ha sucursals directes — pot ser que hi hagi sucursals vinculades mitjançant una regió a dalt."
+  },
+  "create_business_page": {
+    "title": "Crear un negoci nou",
+    "loading": "Carregant...",
+    "upgrade_prompt": "Has arribat al límit de negocis. Millora el teu pla per afegir més ubicacions.",
+    "errors": {
+      "name_required": "El nom del negoci és obligatori",
+      "description_required": "La descripció és obligatòria",
+      "type_required": "Especifica el tipus de negoci",
+      "table_count_integer": "Ha de ser un número enter",
+      "table_count_min": "Almenys 1 taula",
+      "table_count_max": "Màxim 200 taules",
+      "table_count_required": "El nombre de taules és obligatori",
+      "work_times_required": "Els horaris de treball són obligatoris",
+      "pricing_required": "La informació de preus és obligatòria",
+      "tags_required": "Cal almenys una etiqueta",
+      "address_required": "L'adreça és obligatòria",
+      "city_required": "La ciutat és obligatòria",
+      "country_required": "El país és obligatori",
+      "location_required": "La ubicació és obligatòria"
+    },
+    "step1": {
+      "name_label": "Nom del negoci",
+      "name_placeholder": "p. ex. Cafè Luna",
+      "description_label": "Descripció",
+      "description_placeholder": "Un cafè acollidor al centre...",
+      "type_label": "Tipus de negoci",
+      "table_count_label": "Nombre de taules",
+      "has_kitchen_label": "Té cuina?"
+    },
+    "step2": {
+      "work_times_label": "Horaris de treball",
+      "pricing_label": "Rang de preus",
+      "tags_label": "Etiquetes del negoci"
+    },
+    "step3": {
+      "location_label": "Detalls de la ubicació"
+    },
+    "step4": {
+      "social_links_label": "Enllaços socials (opcional)",
+      "auto_setup_title": "Configuració automàtica",
+      "recommended_badge": "Recomanat",
+      "auto_setup_desc": "Crea automàticament categories de menú, rols de personal, un pla de sala, estacions de cuina i més segons el tipus del teu negoci — perquè no comencis de zero. Desmarca-ho per configurar-ho tot tu mateix."
+    },
+    "back": "Enrere",
+    "create": "Crear",
+    "next": "Següent"
+  },
+  "region_detail_page": {
+    "loading": "Carregant la regió...",
+    "empty_breakdown": "Vincula una sucursal a aquesta regió per veure el rendiment combinat.",
+    "organization": "Organització",
+    "find_organization_to_join": "Cercar una organització a la qual unir-te",
+    "join_organization_hint": "Envia una sol·licitud — el propietari de l'organització l'ha d'aprovar abans que aquesta regió (i cada sucursal que en depengui) es vinculi."
+  },
+  "fiscal_invoices_page": {
+    "title": "Factures fiscals",
+    "subtitle": "El registre legal de factures del teu negoci — números seqüencials i correccions.",
+    "export_csv": "Exportar CSV",
+    "all_types": "Tots els tipus",
+    "type_standard": "Estàndard",
+    "type_correction": "Correcció",
+    "to": "fins a",
+    "clear": "Netejar",
+    "col_invoice_number": "Número de factura",
+    "col_country": "País",
+    "col_type": "Tipus",
+    "col_status": "Estat",
+    "col_order": "Comanda",
+    "col_issued_at": "Emesa el",
+    "col_hash": "Hash",
+    "col_details": "Detalls",
+    "empty": "No s'ha trobat cap factura fiscal.",
+    "empty_filtered": "No s'ha trobat cap factura fiscal per als filtres seleccionats.",
+    "corrects": "corregeix {{id}}",
+    "download_pdf": "Descarregar PDF",
+    "view_details": "Veure detalls",
+    "page_of": "Pàgina {{page}} de {{totalPages}}",
+    "loading_order": "Carregant la comanda"
+  },
+  "audit_logs_page": {
+    "title": "Registres d'auditoria",
+    "subtitle": "Traçabilitat completa de cada canvi fet al teu negoci.",
+    "all_entity_types": "Tots els tipus d'entitat",
+    "all_actions": "Totes les accions",
+    "action_create": "Creació",
+    "action_update": "Actualització",
+    "action_delete": "Eliminació",
+    "to": "fins a",
+    "clear": "Netejar",
+    "col_time": "Hora",
+    "col_action": "Acció",
+    "col_entity": "Entitat",
+    "col_changed_by": "Modificat per",
+    "col_changes": "Canvis",
+    "col_details": "Detalls",
+    "empty": "No s'ha trobat cap registre d'auditoria.",
+    "empty_filtered": "No s'ha trobat cap registre d'auditoria per als filtres seleccionats.",
+    "more_fields_one": "+{{count}} camp més",
+    "more_fields_other": "+{{count}} camps més",
+    "view_details": "Veure detalls",
+    "page_of": "Pàgina {{page}} de {{totalPages}}",
+    "entity_types": {
+      "business": "Negoci",
+      "menu": "Menú",
+      "menu_item": "Article de menú",
+      "menu_category": "Categoria",
+      "shift": "Torn",
+      "role": "Rol",
+      "reservation": "Reserva",
+      "order": "Comanda",
+      "inventory_item": "Inventari"
+    }
+  },
+  "billing_invoices_table": {
+    "title": "Subscripcions",
+    "not_available": "N/D",
+    "status": {
+      "active": "Activa — es renova el {{date}}",
+      "trial": "Prova — acaba el {{date}}",
+      "canceled_with_access": "Cancel·lada — accés fins al {{date}}",
+      "canceled": "Cancel·lada",
+      "payment_failed": "Pagament fallit",
+      "activating": "Activant…",
+      "expired": "Expirada"
+    },
+    "col_plan": "Pla",
+    "col_started": "Iniciada",
+    "col_price": "Preu",
+    "col_status": "Estat",
+    "col_actions": "Accions",
+    "refresh_status": "Actualitzar estat",
+    "re_subscribe": "Tornar a subscriure's",
+    "resume": "Reprendre",
+    "open_menu": "Obrir menú",
+    "show_invoices": "Veure factures",
+    "change_plan": "Canviar pla",
+    "billing_portal": "Portal de facturació",
+    "syncing": "Sincronitzant…",
+    "contact_support": "Contactar suport",
+    "cancelling": "Cancel·lant…",
+    "cancel_subscription": "Cancel·lar subscripció",
+    "cancelled_banner_prefix": "Aquesta subscripció està cancel·lada i restarà activa fins al",
+    "cancelled_banner_suffix": "Després d'aquesta data, l'accés a aquest negoci se suspendrà.",
+    "empty": "No s'ha trobat cap subscripció.",
+    "cancel_dialog": {
+      "title": "Cancel·lar subscripció?",
+      "description_prefix": "Mantindràs l'accés fins",
+      "end_of_billing_period": "el final del període de facturació",
+      "keep_subscription": "Mantenir subscripció",
+      "confirm": "Sí, cancel·lar"
+    }
+  },
+  "subscription_invoices_sheet": {
+    "title": "Factures",
+    "description_for_plan": "Pla {{name}} (facturació {{type}})",
+    "description_generic": "Consulta i descarrega el teu historial de facturació.",
+    "plan": "Pla",
+    "price": "Preu",
+    "started": "Iniciada",
+    "renews": "Renovació",
+    "loading": "Carregant factures…",
+    "empty": "Encara no hi ha factures",
+    "empty_hint": "Les factures apareixeran aquí un cop es processi el teu primer pagament.",
+    "col_date": "Data",
+    "col_type": "Tipus",
+    "col_amount": "Import",
+    "col_status": "Estat",
+    "col_action": "Acció",
+    "billing_reason_tooltips": {
+      "initial": "Aquest és el primer pagament d'aquesta subscripció.",
+      "renewal": "Pagament de renovació automàtica del període de facturació actual.",
+      "updated": "Ajust de pagament per un canvi de pla o quantitat."
+    },
+    "billing_reason_labels": {
+      "initial": "Inicial",
+      "renewal": "Renovació",
+      "updated": "Canvi de pla"
+    },
+    "status_labels": {
+      "paid": "Pagada",
+      "pending": "Pendent",
+      "void": "Anul·lada",
+      "refunded": "Reemborsada",
+      "partial_refund": "Reemborsada parcialment"
+    },
+    "pdf": "PDF",
+    "paid_with": "Pagat amb {{brand}} acabada en {{last4}}"
+  },
+  "change_plan_modal": {
+    "title": "Canviar pla",
+    "description": "Selecciona un pla nou. La facturació s'ajustarà automàticament mitjançant Lemon Squeezy.",
+    "no_plans": "No hi ha plans disponibles.",
+    "current_plan": "Pla actual",
+    "select": "Seleccionar",
+    "upgrade": "Millorar",
+    "downgrade": "Reduir",
+    "businesses_count_one": "{{count}} negoci",
+    "businesses_count_other": "{{count}} negocis",
+    "switch_to": "Canviar a {{name}}?",
+    "cancel": "Cancel·lar",
+    "confirm_switch": "Confirmar canvi"
+  },
+  "danger_page": {
+    "title": "Zona de perill",
+    "warning": "Aquestes accions són destructives i irreversibles. Vés amb compte.",
+    "reset_shifts": "Restablir tots els torns del personal",
+    "reset_shifts_description": "Això eliminarà tots els horaris actuals del personal. Aquesta acció no es pot desfer.",
+    "delete_menu_items": "Eliminar tots els articles del menú",
+    "delete_menu_items_description": "Això eliminarà permanentment tots els articles del teu menú.",
+    "transfer_ownership": "Transferir la propietat",
+    "transfer_ownership_description": "El nou propietari ja ha de tenir un compte de FlairSync amb un perfil professional. Rebrà un correu per confirmar — després hi haurà un període de gràcia de 3 dies durant el qual qualsevol dels dos pot cancel·lar-ho abans que es completi la transferència.",
+    "transfer_in_progress": "Ja hi ha una transferència en curs",
+    "delete_business": "Eliminar el negoci permanentment",
+    "email_required": "El correu electrònic és obligatori",
+    "email_invalid": "Introdueix una adreça electrònica vàlida",
+    "unpublish_first": "Despublica primer el negoci",
+    "remove_staff_first_one": "Elimina primer el {{count}} membre del personal",
+    "remove_staff_first_other": "Elimina primer els {{count}} membres del personal",
+    "transfer_pending_label": "Transferència de propietat pendent",
+    "transfer_pending_body": "de confirmació del nou propietari convidat. La invitació caduca el",
+    "transfer_pending_suffix": "si no es confirma.",
+    "transfer_confirmed_label": "Transferència de propietat confirmada",
+    "transfer_confirmed_body": "i es completarà automàticament el",
+    "transfer_confirmed_suffix": "llevat que es cancel·li.",
+    "cancelling": "Cancel·lant…",
+    "cancel_transfer": "Cancel·lar transferència",
+    "cancel": "Cancel·lar",
+    "confirm_reset": "Confirmar restabliment",
+    "delete_all": "Eliminar-ho tot",
+    "new_owner_email": "Correu del nou propietari",
+    "enter_recipient_email": "Introdueix el correu del destinatari",
+    "confirm_your_password": "Confirma la teva contrasenya",
+    "enter_your_password": "Introdueix la teva contrasenya",
+    "tfa_code_label": "Codi d'autenticació de dos factors",
+    "sending": "Enviant...",
+    "transfer": "Transferir",
+    "delete_business_warning_prefix": "Aquesta acció és",
+    "delete_business_warning_bold": "permanent i irreversible",
+    "delete_business_warning_suffix": "S'eliminaran tots els menús, torns, horaris, inventari i contingut multimèdia.",
+    "type_to_confirm_prefix": "Escriu",
+    "type_to_confirm_suffix": "per confirmar:",
+    "type_name_placeholder": "Escriu \"{{name}}\" per confirmar",
+    "deleting": "Eliminant...",
+    "delete_permanently": "Eliminar permanentment"
+  },
+  "marketplace_management": {
+    "title": "Marketplace",
+    "subtitle": "Gestiona els articles de la teva botiga — merchandising, productes i més.",
+    "new_item": "Article nou",
+    "tabs": {
+      "items": "Articles",
+      "incoming_orders": "Comandes rebudes",
+      "my_orders": "Les meves comandes"
+    },
+    "empty": "Encara no hi ha articles. Crea el teu primer article per començar a vendre.",
+    "create_item": "Crear article",
+    "col_name": "Nom",
+    "col_price": "Preu",
+    "col_stock": "Estoc",
+    "col_status": "Estat",
+    "col_actions": "Accions",
+    "active": "Actiu",
+    "inactive": "Inactiu",
+    "delete_item": "Eliminar article",
+    "delete_item_description": "\"{{name}}\" s'eliminarà de manera permanent.",
+    "order_status": {
+      "pending": "Pendent",
+      "confirmed": "Confirmada",
+      "fulfilled": "Completada",
+      "cancelled": "Cancel·lada"
+    },
+    "incoming_orders": {
+      "empty": "Ningú ha comprat encara els teus articles.",
+      "col_item": "Article",
+      "col_buyer": "Comprador",
+      "col_qty": "Qtat.",
+      "col_total": "Total",
+      "col_ship_to": "Enviar a",
+      "confirm": "Confirmar",
+      "cancel": "Cancel·lar",
+      "mark_fulfilled": "Marcar com a completada"
+    },
+    "my_orders": {
+      "empty": "Aquest negoci encara no ha comprat res al marketplace."
+    },
+    "item_modal": {
+      "edit_title": "Editar article",
+      "new_title": "Article nou",
+      "name": "Nom",
+      "name_placeholder": "Nom de l'article",
+      "description": "Descripció",
+      "description_placeholder": "Descripció opcional...",
+      "price": "Preu",
+      "stock": "Estoc",
+      "discount_this_item": "Aplicar descompte a aquest article",
+      "discount_type": "Tipus de descompte",
+      "percent_off": "% de descompte",
+      "amount_off": "Import de descompte",
+      "expires_optional": "Caduca (opcional)",
+      "images_count": "Imatges ({{count}}/{{max}})",
+      "add_images": "Afegir imatges",
+      "save_changes": "Desar els canvis"
+    }
+  },
+  "staff_csv_import_modal": {
+    "title_upload": "Importar personal des d'un CSV",
+    "title_map": "Assignar columnes",
+    "title_result": "Importació completada",
+    "description_upload": "Puja una exportació CSV de la teva plantilla. La IA suggerirà quines columnes corresponen a quins camps — qualsevol disposició de capçaleres funciona.",
+    "description_map": "Confirma quina columna correspon a cada camp. Cada fila vàlida rebrà una invitació per correu.",
+    "description_result": "Això és el que ha passat amb cada fila del teu fitxer.",
+    "select_csv_error": "Selecciona un fitxer CSV.",
+    "no_rows_error": "Aquest fitxer no té cap fila per importar.",
+    "parse_error": "No s'ha pogut llegir aquest fitxer CSV. Comprova el format i torna-ho a provar.",
+    "select_email_column_error": "Selecciona quina columna conté l'adreça electrònica.",
+    "import_error": "No s'ha pogut importar el CSV. Torna-ho a provar.",
+    "drag_drop_hint": "Arrossega i deixa anar un fitxer CSV aquí, o fes clic per cercar-ne un",
+    "csv_files_only": "Només fitxers CSV",
+    "remove_file": "Treure el fitxer",
+    "ai_mapping_unavailable": "L'assignació per IA no està disponible ara mateix, per la qual cosa les columnes s'han emparellat pel nom. Revisa l'assignació a continuació.",
+    "rows_detected_one": "{{count}} fila detectada. Cada fila vàlida envia una invitació real per correu.",
+    "rows_detected_other": "{{count}} files detectades. Cada fila vàlida envia una invitació real per correu.",
+    "email": "Correu electrònic",
+    "select_a_column": "Selecciona una columna",
+    "name": "Nom",
+    "none": "Cap",
+    "role": "Rol",
+    "none_default_role": "Cap (usar el rol per defecte)",
+    "matches_existing_roles": "Coincideix amb els teus rols existents:",
+    "preview_first_rows": "Previsualització (primeres files)",
+    "invitations_sent_one": "{{count}} invitació enviada.",
+    "invitations_sent_other": "{{count}} invitacions enviades.",
+    "skipped_already_staff_one": "{{count}} fila omesa — ja és personal d'aquest negoci.",
+    "skipped_already_staff_other": "{{count}} files omeses — ja són personal d'aquest negoci.",
+    "skipped_duplicate_one": "{{count}} fila omesa — correu duplicat dins del fitxer.",
+    "skipped_duplicate_other": "{{count}} files omeses — correu duplicat dins del fitxer.",
+    "skipped_invalid_email_one": "{{count}} fila omesa — correu absent o no vàlid.",
+    "skipped_invalid_email_other": "{{count}} files omeses — correu absent o no vàlid.",
+    "skipped_limit_reached_one": "{{count}} fila omesa — s'ha arribat al límit d'empleats del teu pla.",
+    "skipped_limit_reached_other": "{{count}} files omeses — s'ha arribat al límit d'empleats del teu pla.",
+    "skipped_other_one": "{{count}} fila omesa — ja tenia una invitació pendent o un altre problema.",
+    "skipped_other_other": "{{count}} files omeses — ja tenien una invitació pendent o un altre problema.",
+    "unmatched_roles_prefix": "Aquests noms de rol no coincidien amb cap rol existent, així que aquestes files han rebut el rol per defecte:",
+    "back": "Enrere",
+    "cancel": "Cancel·lar",
+    "analyzing_columns": "Analitzant columnes...",
+    "analyze_file": "Analitzar fitxer",
+    "sending_invitations": "Enviant invitacions...",
+    "send_invitations": "Enviar invitacions",
+    "done": "Fet"
+  },
+  "staff_section": {
+    "no_hourly_rate": "no s'ha afegit cap tarifa per hora",
+    "staff_fallback": "Personal",
+    "remove_staff_title": "Eliminar aquest membre del personal?",
+    "remove_staff_description": "Això eliminarà {{name}} del teu negoci i revocarà el seu accés. El seu historial d'assistència i nòmina es conservarà.",
+    "this_staff_member": "aquest membre del personal",
+    "remove": "Eliminar",
+    "all_staff": "Tot el personal",
+    "resync_invitations": "Resincronitzar invitacions",
+    "col_name": "Nom",
+    "col_email": "Correu electrònic",
+    "col_roles": "Rols",
+    "col_hourly_rate": "Tarifa per hora",
+    "col_status": "Estat",
+    "col_actions": "Accions",
+    "business_owner": "Propietari del negoci",
+    "status_active": "ACTIU",
+    "schedule_shift": "Planificar torn",
+    "set_pos_pin": "Definir PIN del TPV",
+    "remove_staff_title_short": "Eliminar personal",
+    "no_roles_yet": "Encara no hi ha rols"
+  },
+  "fiscal_invoice_details_modal": {
+    "view": "Veure",
+    "copy": "Copiar",
+    "type_standard": "ESTÀNDARD",
+    "type_correction": "CORRECCIÓ",
+    "full_details": "Detalls complets d'aquesta factura fiscal.",
+    "status": "Estat",
+    "country": "País",
+    "predates_country_tracking": "— (anterior al seguiment per país)",
+    "issued": "Emesa",
+    "order": "Comanda",
+    "view_order": "Veure comanda",
+    "corrects_invoice": "Corregeix la factura",
+    "view_original_invoice": "Veure factura original",
+    "receipt": "Rebut",
+    "hash_chain": "Cadena de hash",
+    "hash": "Hash",
+    "previous_hash": "Hash anterior",
+    "genesis_record": "— (registre inicial d'aquest negoci)",
+    "recorded": "Registrada el {{date}}",
+    "download_pdf": "Descarregar PDF"
+  },
+  "plans_page": {
+    "current_plan": "Pla actual",
+    "upgrade": "Millorar",
+    "downgrade": "Reduir",
+    "select_plan": "Seleccionar pla",
+    "payment_success": "Pagament realitzat amb èxit!",
+    "to_plan": "a {{name}}?",
+    "confirm_trial_prefix": "El teu pla canviarà a",
+    "confirm_trial_immediately": "immediatament, però no se't cobrarà mentre la teva prova gratuïta estigui activa",
+    "confirm_trial_ends": "acaba el {{date}}",
+    "confirm_trial_after": "Un cop acabi la prova, se't facturarà",
+    "confirm_prefix": "El teu pla canviarà a",
+    "confirm_immediately": "immediatament i la facturació s'ajustarà mitjançant Lemon Squeezy. A partir d'ara se't facturarà",
+    "cancel": "Cancel·lar",
+    "confirm": "Confirmar",
+    "choose_your_plan": "Tria el teu pla",
+    "subtitle": "Selecciona la subscripció que millor s'adapti al teu negoci.",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "how_many_businesses": "Quants negocis?",
+    "loading": "Carregant, espera un moment...",
+    "your_current_plan": "El teu pla actual",
+    "minimum_businesses_one": "Mínim {{count}} negoci en aquest pla",
+    "minimum_businesses_other": "Mínim {{count}} negocis en aquest pla",
+    "estimated_at_checkout": "Estimat — es confirma en pagar",
+    "businesses": "Negocis",
+    "staff": "Personal",
+    "menus": "Menús",
+    "products": "Productes",
+    "unlimited": "Il·limitat"
+  },
+  "owner_application_detail_page": {
+    "not_found": "Sol·licitud no trobada",
+    "back_to_applicants": "Tornar als candidats",
+    "applied_on": "Sol·licitud enviada el {{date}}",
+    "invite_sent": "Invitació enviada · {{date}}",
+    "send_staff_invite": "Enviar invitació de personal",
+    "actions": "Accions",
+    "mark_as_reviewed": "Marcar com a revisada",
+    "shortlist": "Preseleccionar",
+    "accept": "Acceptar",
+    "reject": "Rebutjar",
+    "edit_note": "Editar nota",
+    "add_note": "Afegir nota",
+    "resume": "Currículum",
+    "view_resume": "Veure currículum",
+    "no_resume": "No s'ha proporcionat cap currículum.",
+    "cover_letter": "Carta de presentació",
+    "internal_note": "Nota interna",
+    "add_internal_note_placeholder": "Afegeix una nota interna...",
+    "save": "Desar",
+    "cancel": "Cancel·lar",
+    "add_a_note": "+ Afegir una nota",
+    "activity_timeline": "Cronologia d'activitat",
+    "no_activity": "Encara no hi ha activitat.",
+    "accept_confirm_title": "Acceptar aquest candidat?",
+    "accept_confirm_description": "{{name}} veurà el seu estat actualitzat a \"Acceptat\". Aquesta és una acció important — confirma-ho abans de continuar.",
+    "accept_applicant": "Acceptar candidat"
+  },
+  "fiscal_services_page": {
+    "title": "Serveis fiscals",
+    "subtitle": "Eines per a declaracions fiscals periòdiques i facturació legal — el mateix motor fiscal que dona suport al compliment a Espanya i Andorra, segons el país del teu negoci.",
+    "period_summary": "Resum del període",
+    "period_summary_description": "Totals agregats per a un rang de dates — les xifres que necessites per emplenar una declaració fiscal periòdica autoliquidada (p. ex. el Formulari 900/910 del DTF d'Andorra).",
+    "from": "Des de",
+    "to": "Fins a",
+    "export_csv": "Exportar CSV",
+    "pick_dates_hint": "Tria una data d'inici i de fi per veure el resum.",
+    "loading_summary": "Carregant resum…",
+    "unamounted_warning_one": "{{count}} factura d'aquest període és anterior al seguiment d'imports i queda exclosa dels totals següents — considera aquests totals com a incomplets, no definitius.",
+    "unamounted_warning_other": "{{count}} factures d'aquest període són anteriors al seguiment d'imports i queden excloses dels totals següents — considera aquests totals com a incomplets, no definitius.",
+    "standard_invoices": "Factures estàndard",
+    "corrections": "Correccions",
+    "unamounted_excluded": "Sense import (excloses)",
+    "taxable_base": "Base imposable",
+    "tax_collected": "Impost recaptat",
+    "total_amount": "Import total",
+    "fiscal_invoice_register": "Registre de factures fiscals",
+    "fiscal_invoice_register_description": "El registre legal complet de factures — números seqüencials, correccions i factures completes.",
+    "export_full_register_csv": "Exportar registre complet en CSV",
+    "view_register": "Veure registre",
+    "issue_full_invoice": "Emetre factura completa",
+    "issue_full_invoice_description": "Factura completa emesa a petició (factura completa) amb la identitat legal pròpia d'un client B2B — emesa juntament amb la factura original de la comanda, no com a correcció d'aquesta.",
+    "order_id": "ID de la comanda",
+    "order_id_placeholder": "UUID d'una comanda completada",
+    "recipient_name": "Nom del destinatari",
+    "recipient_tax_id": "NIF del destinatari",
+    "recipient_address": "Adreça del destinatari"
+  },
+  "owner_jobs_page": {
+    "status": {
+      "all": "Totes",
+      "open": "Oberta",
+      "draft": "Esborrany",
+      "closed": "Tancada"
+    },
+    "link_copied": "Enllaç copiat! Comparteix-lo a les xarxes socials.",
+    "title": "Ofertes de feina",
+    "subtitle": "Gestiona els teus llocs oberts i revisa les candidatures.",
+    "post_a_job": "Publicar oferta",
+    "loading_jobs": "Carregant ofertes...",
+    "no_jobs_yet": "Encara no hi ha ofertes de feina",
+    "no_jobs_hint": "Publica la teva primera oferta per començar a rebre candidatures.",
+    "applicant_count_one": "{{count}} candidat",
+    "applicant_count_other": "{{count}} candidats",
+    "posted_on": "Publicada el {{date}}",
+    "closes_on": "Tanca el {{date}}",
+    "no_deadline": "Sense data límit",
+    "copy_link": "Copiar enllaç",
+    "view_applicants": "Veure candidats",
+    "edit": "Editar",
+    "close_position": "Tancar lloc",
+    "delete": "Eliminar",
+    "previous": "Anterior",
+    "page_of": "Pàgina {{page}} de {{totalPages}}",
+    "next": "Següent",
+    "close_confirm_title": "Tancar aquest lloc?",
+    "close_confirm_description": "\"{{title}}\" deixarà d'acceptar noves candidatures. Això es pot desfer editant l'oferta.",
+    "cancel": "Cancel·lar",
+    "delete_confirm_title": "Eliminar aquesta oferta de feina?",
+    "delete_confirm_description": "Això eliminarà permanentment \"{{title}}\" i totes les seves candidatures. Aquesta acció no es pot desfer."
+  },
+  "low_stock_items_view": {
+    "loading": "Carregant articles amb estoc baix…",
+    "all_good": "Tot correcte — no hi ha articles amb estoc baix.",
+    "col_item": "Article",
+    "col_group": "Grup",
+    "col_current_stock": "Estoc actual",
+    "col_threshold": "Llindar",
+    "col_actions": "Accions",
+    "default_group": "Predeterminat",
+    "adjust": "Ajustar"
+  },
+  "qr_design_editor": {
+    "dots_types": {
+      "square": "Quadrat",
+      "dots": "Punts",
+      "rounded": "Arrodonit",
+      "classy": "Elegant",
+      "classy-rounded": "Elegant arrodonit",
+      "extra-rounded": "Molt arrodonit"
+    },
+    "corners_square_types": {
+      "square": "Quadrat",
+      "dot": "Punt",
+      "extra-rounded": "Molt arrodonit"
+    },
+    "corners_dot_types": {
+      "square": "Quadrat",
+      "dot": "Punt"
+    },
+    "saved_toast": "Disseny del QR desat",
+    "save_error_toast": "No s'ha pogut desar el disseny del QR",
+    "loading": "Carregant disseny del QR...",
+    "dots_color": "Color dels punts",
+    "background_color": "Color de fons",
+    "corners_square_color": "Color de les cantonades quadrades",
+    "corners_dot_color": "Color de les cantonades rodones",
+    "dots_style": "Estil dels punts",
+    "corners_square_style": "Estil de les cantonades quadrades",
+    "corners_dot_style": "Estil de les cantonades rodones",
+    "logo_size": "Mida del logotip ({{percent}}%)",
+    "quiet_zone_margin": "Marge de zona tranquil·la ({{px}}px)",
+    "clear_dots_behind_logo": "Netejar punts darrere del logotip",
+    "clear_dots_behind_logo_hint": "Manté el logotip llegible amagant els punts del QR just darrere seu",
+    "qr_logo_alt": "Logotip del QR",
+    "no_logo": "Sense logotip",
+    "live_preview": "Previsualització en directe",
+    "save": "Desar"
+  },
+  "billing_page": {
+    "title": "Facturació i subscripció",
+    "subtitle": "Gestiona la teva subscripció, mètodes de pagament i consulta factures anteriors.",
+    "cancelled_label": "La teva subscripció està cancel·lada",
+    "cancelled_prefix": "i finalitzarà el",
+    "cancelled_suffix": "Pots reprendre-la en qualsevol moment abans d'aquesta data.",
+    "resuming": "Reprenent…",
+    "resume_subscription": "Reprendre subscripció",
+    "current_plan": "Pla actual",
+    "explore_plans": "Explorar plans",
+    "portal_url_error": "No s'ha pogut generar l'URL del portal de gestió.",
+    "portal_connect_error": "S'ha produït un error en connectar amb el portal de facturació.",
+    "loading": "Carregant...",
+    "manage_subscription": "Gestionar subscripció",
+    "plan_name": "Nom del pla",
+    "free": "Gratuït",
+    "access_ends_on": "L'accés finalitza el",
+    "next_renewal": "Propera renovació",
+    "never": "Mai",
+    "not_available": "N/D",
+    "status": "Estat",
+    "canceling": "Cancel·lant",
+    "payment_failed_past_due": "Pagament fallit / vençut",
+    "free_trial": "Prova gratuïta",
+    "active": "actiu",
+    "free_plan": "Pla gratuït",
+    "free_plan_description": "Gaudeix de les funcions bàsiques per sempre, o millora per obtenir més potència.",
+    "see_pro_plans": "Veure plans Pro"
+  },
+  "schedule_page": {
+    "title": "Gestió d'horaris",
+    "tabs": {
+      "staff_scheduling": "Planificació del personal",
+      "open_shift_bids": "Ofertes de torns oberts",
+      "recurring_rules": "Regles recurrents",
+      "shift_templates": "Plantilles de torns",
+      "time_off": "Temps lliure",
+      "swaps": "Intercanvis"
+    }
+  },
+  "staff_inventory_page": {
+    "title": "Inventari",
+    "all_items": "Tots els articles",
+    "low_stock": "Estoc baix",
+    "search_placeholder": "Cercar articles…",
+    "low_stock_only": "Només estoc baix",
+    "col_stock": "Estoc",
+    "col_unit": "Unitat",
+    "loading": "Carregant…",
+    "no_items_found": "No s'han trobat articles.",
+    "movement_history": "Historial de moviments",
+    "previous": "Anterior",
+    "next": "Següent"
+  },
+  "staff_schedule_page": {
+    "title": "Torns i horaris"
+  },
+  "invite_business_dialog": {
+    "title": "Cercar un negoci per convidar",
+    "country": "País",
+    "select_a_country": "Selecciona un país",
+    "city_optional": "Ciutat (opcional)",
+    "city_placeholder": "p. ex. Barcelona",
+    "business_name_optional": "Nom del negoci (opcional)",
+    "search_by_name": "Cercar per nom...",
+    "search": "Cercar",
+    "searching": "Cercant...",
+    "pick_country_hint": "Tria un país i cerca per veure negocis coincidents.",
+    "no_matches": "Cap negoci coincideix amb aquests filtres.",
+    "already_linked": "Ja vinculat",
+    "added": "Afegit",
+    "sent": "Enviat",
+    "send_request": "Enviar sol·licitud"
+  },
+  "invite_region_dialog": {
+    "title": "Cercar una regió per convidar",
+    "search_placeholder": "Cercar pel nom de la regió...",
+    "search_hint": "Cerca per veure regions coincidents.",
+    "no_matches": "Cap regió coincideix amb aquest nom.",
+    "branch_count_one": "{{count}} sucursal",
+    "branch_count_other": "{{count}} sucursals"
+  },
+  "join_organization_dialog": {
+    "title": "Cercar una organització per unir-te",
+    "search_placeholder": "Cercar pel nom de l'organització...",
+    "search_hint": "Cerca per veure organitzacions coincidents.",
+    "no_matches": "Cap organització coincideix amb aquest nom."
+  },
+  "tax_settings": {
+    "deleted_toast": "Taxa d'impost eliminada",
+    "title": "Taxes d'impost",
+    "subtitle": "Les taxes actives s'apliquen automàticament a totes les comandes noves.",
+    "add_rate": "Afegir taxa",
+    "loading": "Carregant...",
+    "no_rates": "No hi ha taxes d'impost configurades. Les comandes tindran 0 $ d'impost.",
+    "add_tax_rate": "Afegir taxa d'impost",
+    "created_toast": "Taxa d'impost creada",
+    "inclusive": "Inclòs",
+    "exclusive": "Exclòs",
+    "active": "Actiu",
+    "inactive": "Inactiu",
+    "create_failed": "No s'ha pogut crear la taxa d'impost",
+    "name": "Nom",
+    "name_placeholder": "p. ex. IVA, impost de vendes",
+    "rate_percent": "Taxa (%)",
+    "inclusive_checkbox_label": "Inclòs (l'impost ja està inclòs en el preu de l'article)",
+    "inclusive_example": "Inclòs: article de 10,00 $ al 20% → impost = 1,67 $, el client paga 10,00 $",
+    "exclusive_example": "Exclòs: article de 10,00 $ al 20% → impost = 2,00 $, el client paga 12,00 $",
+    "cancel": "Cancel·lar",
+    "creating": "Creant...",
+    "create": "Crear"
+  },
+  "station_card": {
+    "renamed_toast": "Estació reanomenada.",
+    "rename_failed_toast": "No s'ha pogut reanomenar l'estació.",
+    "kitchen_station_assigned_toast": "Lloc de cuina assignat.",
+    "assign_failed_toast": "No s'ha pogut assignar el lloc de cuina.",
+    "printer_settings_saved_toast": "Ajustos de la impressora desats.",
+    "save_printer_failed_toast": "No s'han pogut desar els ajustos de la impressora.",
+    "reach_printer_failed_toast": "No s'ha pogut connectar amb la impressora.",
+    "paired_with_toast": "Aparellat amb {{name}}.",
+    "pair_failed_toast": "No s'ha pogut aparellar la impressora USB.",
+    "reach_usb_printer_failed_toast": "No s'ha pogut connectar amb la impressora USB.",
+    "save": "Desar",
+    "kitchen_display": "Pantalla de cuina",
+    "pos_terminal": "Terminal POS",
+    "online": "En línia",
+    "offline": "Sense connexió",
+    "kitchen_station": "Lloc de cuina",
+    "not_assigned": "Sense assignar",
+    "inactive_suffix": "(inactiu)",
+    "printer": "Impressora",
+    "configure": "Configurar",
+    "edit": "Editar",
+    "how_to_connect_printer": "Com connecto una impressora o un calaix portamonedes?",
+    "no_printer": "Sense impressora",
+    "network_printer": "Impressora de xarxa (ESC/POS)",
+    "usb_printer": "Impressora USB (directa des del navegador)",
+    "webusb_unsupported": "Aquest navegador no admet WebUSB — utilitza Chrome o Edge al dispositiu d'aquesta estació.",
+    "paired_with": "Aparellada: {{name}}",
+    "no_printer_paired": "Encara no hi ha cap impressora aparellada",
+    "re_pair": "Tornar a aparellar",
+    "pair": "Aparellar",
+    "unpair": "Desaparellar",
+    "usb_pairing_hint": "La impressora s'ha de connectar per USB a aquest dispositiu/navegador exacte — l'aparellament no es transfereix a altres estacions.",
+    "has_cash_drawer": "Té calaix portamonedes",
+    "cancel": "Cancel·lar",
+    "not_configured": "Sense configurar",
+    "not_paired_yet": "Encara no aparellada",
+    "cash_drawer_suffix": " · Calaix portamonedes",
+    "test": "Provar",
+    "last_seen": "Vista per última vegada {{time}}",
+    "never_connected": "Mai connectada",
+    "revoke": "Revocar"
   }
 }

@@ -205,5 +205,17 @@
     "modal_point_transition_title": "À savoir avant la fin de la bêta",
     "modal_point_transition_text": "À la fin de la période bêta, vous recevrez un e-mail concernant le passage à une formule payante, avec le tarif et la date d'entrée en vigueur — envoyé au moins 14 jours avant que le paiement ne devienne nécessaire pour continuer à utiliser le service.",
     "modal_close": "Compris"
+  },
+  "notifications_page": {
+    "title": "Centre de notifications",
+    "subtitle": "Restez informé des dernières alertes, réservations et messages de sécurité du système.",
+    "tabs": {
+      "all": "Tout",
+      "alerts": "Alertes",
+      "reservations": "Réservations",
+      "orders": "Commandes",
+      "promos": "Promotions",
+      "security": "Sécurité"
+    }
   }
 }

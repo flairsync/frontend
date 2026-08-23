@@ -268,5 +268,27 @@
       "reviews": "Ressenyes",
       "contact": "Contacte"
     }
+  },
+  "location_selection_modal": {
+    "title": "Configuració d'ubicació de cerca",
+    "access_denied_title": "Accés a la ubicació denegat",
+    "access_denied_desc": "La geolocalització està desactivada o bloquejada. Selecciona un <b>país</b> o fes clic al mapa per establir una <b>ubicació personalitzada</b> i veure resultats propers.",
+    "unavailable_title": "Ubicació no disponible",
+    "unavailable_desc": "No hem pogut detectar la teva ubicació automàticament. Tria un país o un punt al mapa per continuar.",
+    "error_title": "Error d'ubicació",
+    "error_desc": "La ubicació no està activada, comprova la configuració de permisos.",
+    "filter_by_country_label": "Filtrar per tot el país",
+    "filter_by_country_hint": "Això ignora les coordenades precises habituals.",
+    "select_country_label": "Selecciona un país (opcional)",
+    "loading_countries": "Carregant països...",
+    "any_country": "Qualsevol país",
+    "use_custom_location_label": "Utilitzar una ubicació personalitzada?",
+    "use_custom_location_hint": "Fes clic al mapa per canviar el punt d'origen.",
+    "search_radius_label": "Radi de l'àrea de cerca:",
+    "radius_km": "{{radius}} km",
+    "your_device_location": "La teva ubicació",
+    "custom_override_location": "Ubicació personalitzada",
+    "cancel": "Cancel·lar",
+    "apply_filters": "Aplicar filtres"
   }
 }

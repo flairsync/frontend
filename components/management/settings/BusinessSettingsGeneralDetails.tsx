@@ -33,7 +33,7 @@ import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
 // this mirrors). For these, receiptLanguage is not shown as a free-choice selector at all —
 // only an optional secondary language alongside the fixed primary.
 const MANDATED_RECEIPT_LANGUAGE: Record<string, { code: string; name: string }> = {
-    AD: { code: "ca", name: "Catalan" },
+    AD: { code: "ca", name: "Català" },
 }
 
 type BusinessGeneralInfo = {
@@ -59,6 +59,7 @@ type Props = {
     highlighted?: boolean,
 }
 const BusinessSettingsGeneralDetails = (props: Props) => {
+    const { t } = useTranslation("management");
 
     const [businessName, setBusinessName] = useState(props.businessDetails?.name)
     const [description, setDescription] = useState(props.businessDetails?.description)
@@ -132,12 +133,12 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
             ref={props.sectionRef}
             className={`border rounded-lg px-3 transition-all duration-700 ${props.highlighted ? "ring-2 ring-primary ring-offset-2 shadow-md" : ""}`}
         >
-            <AccordionTrigger>General Information</AccordionTrigger>
+            <AccordionTrigger>{t("settings_page.general_details.trigger")}</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
                 <Input
                     disabled={props.disabled}
 
-                    placeholder="Business Name"
+                    placeholder={t("settings_page.general_details.business_name_placeholder")}
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     maxLength={100}
@@ -145,7 +146,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 <Textarea
                     disabled={props.disabled}
 
-                    placeholder="Description"
+                    placeholder={t("settings_page.general_details.description_placeholder")}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
@@ -153,7 +154,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 <Input
                     disabled={props.disabled}
 
-                    placeholder="Contact Email"
+                    placeholder={t("settings_page.general_details.contact_email_placeholder")}
                     type="email"
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
@@ -161,18 +162,18 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 <Input
                     disabled={props.disabled}
 
-                    placeholder="Phone Number"
+                    placeholder={t("settings_page.general_details.phone_placeholder")}
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
 
                 <div className="space-y-1.5 pt-2 border-t mt-4">
-                    <Label>Public URL Slug</Label>
+                    <Label>{t("settings_page.general_details.slug.label")}</Label>
                     <div className="relative">
                         <Input
                             disabled={props.disabled}
-                            placeholder="your-restaurant-name"
+                            placeholder={t("settings_page.general_details.slug.placeholder")}
                             value={slug}
                             onChange={(e) => handleSlugChange(e.target.value)}
                             className={
@@ -189,70 +190,67 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             {(slugStatus === 'taken' || slugStatus === 'invalid') && <XCircle className="h-4 w-4 text-destructive" />}
                         </span>
                     </div>
-                    {slugStatus === 'taken' && <p className="text-xs text-destructive">This slug is already taken</p>}
-                    {slugStatus === 'invalid' && <p className="text-xs text-destructive">Only lowercase letters, numbers, and hyphens allowed</p>}
-                    {slugStatus === 'available' && <p className="text-xs text-green-600">Slug is available</p>}
-                    {slugStatus === 'idle' && <p className="text-xs text-muted-foreground">Used in your public page URL. Lowercase letters, numbers, and hyphens only.</p>}
+                    {slugStatus === 'taken' && <p className="text-xs text-destructive">{t("settings_page.general_details.slug.taken")}</p>}
+                    {slugStatus === 'invalid' && <p className="text-xs text-destructive">{t("settings_page.general_details.slug.invalid")}</p>}
+                    {slugStatus === 'available' && <p className="text-xs text-green-600">{t("settings_page.general_details.slug.available")}</p>}
+                    {slugStatus === 'idle' && <p className="text-xs text-muted-foreground">{t("settings_page.general_details.slug.idle_hint")}</p>}
                     {!!props.businessDetails?.slug && slug !== props.businessDetails.slug && (
                         <p className="text-xs text-amber-600 flex items-center gap-1 font-medium">
                             <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                            Changing the slug will break any shared links using the current one
+                            {t("settings_page.general_details.slug.change_warning")}
                         </p>
                     )}
                 </div>
 
                 <div className="space-y-1.5 pt-2 border-t mt-4">
-                    <Label>Currency</Label>
+                    <Label>{t("settings_page.general_details.currency.label")}</Label>
                     <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2 text-sm">
                         <span className="font-medium">
                             {toIsoCurrencyCode(props.businessDetails?.currency)} ({getCurrencySymbol(props.businessDetails?.currency)})
                         </span>
                         <span className="text-xs text-muted-foreground">
-                            — set by {props.businessDetails?.country?.name || "your business's country"}
+                            {t("settings_page.general_details.currency.set_by", { country: props.businessDetails?.country?.name || t("settings_page.general_details.currency.set_by_fallback") })}
                         </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                        Currency follows your business's registered country and can't be changed independently. To operate in a
-                        different currency, update the country under Location.
+                        {t("settings_page.general_details.currency.hint")}
                     </p>
                 </div>
 
                 {mandatedReceiptLanguage ? (
                     <div className="space-y-1.5 pt-2 border-t mt-4">
-                        <Label>Receipt Language</Label>
+                        <Label>{t("settings_page.general_details.receipt_language.label")}</Label>
                         <div className="flex items-center gap-2 rounded-md border bg-muted/40 px-3 py-2 text-sm">
                             <span className="font-medium">{mandatedReceiptLanguage.name}</span>
-                            <span className="text-xs text-muted-foreground">— required by law, always primary</span>
+                            <span className="text-xs text-muted-foreground">{t("settings_page.general_details.receipt_language.required_by_law")}</span>
                         </div>
                         <div className="space-y-1.5 pt-1">
-                            <Label className="text-xs text-muted-foreground">Secondary language (optional)</Label>
+                            <Label className="text-xs text-muted-foreground">{t("settings_page.general_details.receipt_language.secondary_label")}</Label>
                             <Select
                                 disabled={props.disabled}
                                 value={receiptSecondaryLanguage ?? "none"}
                                 onValueChange={(v) => setReceiptSecondaryLanguage(v === "none" ? null : v)}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="None" />
+                                    <SelectValue placeholder={t("settings_page.general_details.receipt_language.none_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="none">None ({mandatedReceiptLanguage.name} only)</SelectItem>
+                                    <SelectItem value="none">{t("settings_page.general_details.receipt_language.none_option", { language: mandatedReceiptLanguage.name })}</SelectItem>
                                     <SelectItem value="en">English</SelectItem>
                                     <SelectItem value="es">Español</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                            {mandatedReceiptLanguage.name} must appear on every receipt and can't be turned off. You can
-                            optionally add a second language alongside it for tourists/guests — it will never replace{" "}
-                            {mandatedReceiptLanguage.name}, only appear next to it.
+                            {t("settings_page.general_details.receipt_language.mandated_hint", { language: mandatedReceiptLanguage.name })}
                         </p>
                     </div>
                 ) : (
                     <div className="space-y-1.5 pt-2 border-t mt-4">
-                        <Label>Receipt Language</Label>
+                        <Label>{t("settings_page.general_details.receipt_language.label")}</Label>
                         <Select disabled={props.disabled} value={receiptLanguage} onValueChange={setReceiptLanguage}>
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select a language" />
+                                <SelectValue placeholder={t("settings_page.general_details.receipt_language.select_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="en">English</SelectItem>
@@ -261,7 +259,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             </SelectContent>
                         </Select>
                         <p className="text-xs text-muted-foreground">
-                            Language printed receipts use, independent of the language staff use in the app. Defaults to English.
+                            {t("settings_page.general_details.receipt_language.hint")}
                         </p>
                     </div>
                 )}
@@ -269,8 +267,8 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                 <div className="divide-y divide-border border-t mt-4">
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Published</Label>
-                            <p className="text-xs text-muted-foreground">Show this business to customers on the platform</p>
+                            <Label>{t("settings_page.general_details.published.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.general_details.published.desc")}</p>
                         </div>
                         <Switch
                             disabled={props.disabled}
@@ -280,8 +278,8 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                         <div className="space-y-0.5">
-                            <Label>Auto-Disable Out-of-Stock Items</Label>
-                            <p className="text-xs text-muted-foreground">Automatically hide a menu item once its tracked stock hits zero, and bring it back once restocked</p>
+                            <Label>{t("settings_page.general_details.auto_disable_out_of_stock.label")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("settings_page.general_details.auto_disable_out_of_stock.desc")}</p>
                         </div>
                         <Switch
                             disabled={props.disabled}
@@ -293,7 +291,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
 
                 <Button
                     disabled={props.disabled || !canSave}
-                    onClick={onSaveDetails}>Save</Button>
+                    onClick={onSaveDetails}>{t("settings_page.general_details.save")}</Button>
             </AccordionContent>
         </AccordionItem>
     )

@@ -1,5 +1,6 @@
 import { useBusinessEmpInvitations } from '@/features/business/employment/useBusinessEmpInvitations'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { usePageContext } from 'vike-react/usePageContext';
 
 import {
@@ -48,6 +49,7 @@ type InvitationsSectionProps = {
 };
 
 const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
+    const { t } = useTranslation("management");
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
     const [csvImportModalOpen, setCsvImportModalOpen] = useState(false);
 
@@ -110,12 +112,12 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
             <QrcodePopup
                 qrValue={invitationQrValue}
                 onClose={() => setInvitationQrValue(undefined)}
-                description='Please scan this QR code from the staff "FlairSync Staff" mobile app'
+                description={t("invitations_section.qr_description")}
             />
 
             <Card>
                 <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                    <CardTitle>All Staff Invitations</CardTitle>
+                    <CardTitle>{t("invitations_section.title")}</CardTitle>
 
 
                     <div className="flex gap-2">
@@ -134,19 +136,19 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                                 e.preventDefault();
                                                 openUpgradeModal(
                                                     plan
-                                                        ? `The business plan allows up to ${plan.allowed.employees} employees (${plan.current.employees} currently active). The owner needs to upgrade to add more.`
-                                                        : "The business plan employee limit has been reached. The owner needs to upgrade to add more staff."
+                                                        ? t("invitations_section.upgrade_prompt_with_limit", { allowed: plan.allowed.employees, current: plan.current.employees })
+                                                        : t("invitations_section.upgrade_prompt_generic")
                                                 );
                                             }
                                         }}
                                     >
-                                        <UserPlus className="h-4 w-4" /> Add Staff
-                                        {!canAddEmployee && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
+                                        <UserPlus className="h-4 w-4" /> {t("invitations_section.add_staff")}
+                                        {!canAddEmployee && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">{t("invitations_section.upgrade")}</span>}
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent>
                                     <DialogHeader>
-                                        <DialogTitle>Add New Staff</DialogTitle>
+                                        <DialogTitle>{t("invitations_section.add_new_staff_title")}</DialogTitle>
                                     </DialogHeader>
 
                                     <Formik
@@ -164,7 +166,7 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                         {({ errors, touched, handleChange, values }) => (
                                             <Form className="space-y-4 mt-2">
                                                 <Input
-                                                    placeholder="Email"
+                                                    placeholder={t("invitations_section.email_placeholder")}
                                                     value={values.email}
                                                     name="email"
                                                     id="email"
@@ -173,7 +175,7 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                                 <InputError
                                                     message={errors.email}
                                                 />
-                                                <Button type="submit" >Add</Button>
+                                                <Button type="submit" >{t("invitations_section.add")}</Button>
                                             </Form>)}
                                     </Formik>
 
@@ -186,21 +188,21 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                     className="flex items-center gap-2 ml-2"
                                     onClick={() => setCsvImportModalOpen(true)}
                                 >
-                                    <FileSpreadsheet className="h-4 w-4" /> Import CSV
+                                    <FileSpreadsheet className="h-4 w-4" /> {t("invitations_section.import_csv")}
                                 </Button>
                             )}
                         </div>
                         <Select value={filterStatus} onValueChange={(value) => handleFilterChange(value)}>
                             <SelectTrigger className="w-[200px]">
-                                <SelectValue placeholder="Select status" />
+                                <SelectValue placeholder={t("invitations_section.status_filter_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="ALL">All</SelectItem>
-                                <SelectItem value="PENDING">Pending</SelectItem>
-                                <SelectItem value="ACCEPTED">Accepted</SelectItem>
-                                <SelectItem value="DECLINED">Declined</SelectItem>
-                                <SelectItem value="CANCELLED">Cancelled</SelectItem>
-                                <SelectItem value="EXPIRED">Expired</SelectItem>
+                                <SelectItem value="ALL">{t("invitations_section.status_options.ALL")}</SelectItem>
+                                <SelectItem value="PENDING">{t("invitations_section.status_options.PENDING")}</SelectItem>
+                                <SelectItem value="ACCEPTED">{t("invitations_section.status_options.ACCEPTED")}</SelectItem>
+                                <SelectItem value="DECLINED">{t("invitations_section.status_options.DECLINED")}</SelectItem>
+                                <SelectItem value="CANCELLED">{t("invitations_section.status_options.CANCELLED")}</SelectItem>
+                                <SelectItem value="EXPIRED">{t("invitations_section.status_options.EXPIRED")}</SelectItem>
                             </SelectContent>
                         </Select>
 
@@ -211,13 +213,13 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Display name</TableHead>
-                                <TableHead>Created</TableHead>
-                                <TableHead>Expires</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Retries</TableHead>
-                                <TableHead>Actions</TableHead>
+                                <TableHead>{t("invitations_section.col_email")}</TableHead>
+                                <TableHead>{t("invitations_section.col_display_name")}</TableHead>
+                                <TableHead>{t("invitations_section.col_created")}</TableHead>
+                                <TableHead>{t("invitations_section.col_expires")}</TableHead>
+                                <TableHead>{t("invitations_section.col_status")}</TableHead>
+                                <TableHead>{t("invitations_section.col_retries")}</TableHead>
+                                <TableHead>{t("invitations_section.col_actions")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -236,21 +238,21 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <span className="sr-only">Open menu</span>
+                                                        <span className="sr-only">{t("invitations_section.open_menu")}</span>
                                                         <MoreHorizontal />
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                    <DropdownMenuLabel>{t("invitations_section.col_actions")}</DropdownMenuLabel>
                                                     <DropdownMenuSeparator />
                                                     <DropdownMenuItem onClick={() => resendInvitation(invite.id)}>
-                                                        Resend email
+                                                        {t("invitations_section.resend_email")}
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem onClick={() => handleGenerateQrValue(invite)}>
-                                                        Show QR code
+                                                        {t("invitations_section.show_qr")}
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem onClick={() => setCancelInvitationId(invite.id)}>
-                                                        Cancel invitation
+                                                        {t("invitations_section.cancel_invitation")}
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
@@ -267,14 +269,14 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                             disabled={currentPage <= 1}
                             onClick={() => setPage(currentPage - 1)}
                         >
-                            Previous
+                            {t("invitations_section.previous")}
                         </Button>
                         <span className="px-2 py-1 border rounded">{currentPage} / {totalPages}</span>
                         <Button
                             disabled={currentPage >= totalPages}
                             onClick={() => setPage(currentPage + 1)}
                         >
-                            Next
+                            {t("invitations_section.next")}
                         </Button>
                     </div>
                 </CardContent>
@@ -297,32 +299,33 @@ export default InvitationsSection
 
 // Status cell component
 const StatusCell = ({ status }: { status: string }) => {
+    const { t } = useTranslation("management");
     let icon, text, color;
 
     switch (status) {
         case "PENDING":
             icon = <Clock className="w-4 h-4 mr-1" />;
-            text = "Pending";
+            text = t("invitations_section.status_options.PENDING");
             color = "text-yellow-500";
             break;
         case "ACCEPTED":
             icon = <Check className="w-4 h-4 mr-1" />;
-            text = "Accepted";
+            text = t("invitations_section.status_options.ACCEPTED");
             color = "text-green-500";
             break;
         case "DECLINED":
             icon = <X className="w-4 h-4 mr-1" />;
-            text = "Declined";
+            text = t("invitations_section.status_options.DECLINED");
             color = "text-red-500";
             break;
         case "CANCELLED":
             icon = <Slash className="w-4 h-4 mr-1" />;
-            text = "Cancelled";
+            text = t("invitations_section.status_options.CANCELLED");
             color = "text-gray-500";
             break;
         case "EXPIRED":
             icon = <Hourglass className="w-4 h-4 mr-1" />;
-            text = "Expired";
+            text = t("invitations_section.status_options.EXPIRED");
             color = "text-orange-500";
             break;
         default:

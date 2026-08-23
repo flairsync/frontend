@@ -5,5 +5,252 @@
     "reservations_label": "Réservations",
     "meals_ordered_label": "Repas commandés",
     "orders_chart_title": "Commandes par jour (30 derniers jours)"
+  },
+  "account_page": {
+    "title": "Compte",
+    "subtitle": "Gérez les données de votre compte et les paramètres de suppression.",
+    "export": {
+      "title": "Télécharger vos données",
+      "description": "Demandez une copie de vos données personnelles (RGPD article 20 — droit à la portabilité des données). L'export inclut votre profil, vos comptes liés et votre historique d'abonnement sous forme d'archive ZIP. Vous recevrez un e-mail avec le lien de téléchargement.",
+      "ready": "Votre export de données est prêt.",
+      "download_button": "Télécharger mes données",
+      "link_expiry": "Le lien de téléchargement expire 7 jours après la génération de l'export.",
+      "preparing": "Votre export est en cours de préparation. Nous vous enverrons un e-mail quand il sera prêt.",
+      "requesting": "Demande en cours…",
+      "request_button": "Demander une copie de mes données",
+      "included_heading": "Ce qui est inclus dans l'export :",
+      "included_profile": "informations du compte, e-mail, téléphone, date de naissance, préférences",
+      "included_social": "fournisseurs de connexion liés",
+      "included_subscriptions": "historique d'abonnement",
+      "rate_limit": "Une seule demande d'export autorisée tous les 30 jours."
+    },
+    "delete": {
+      "title": "Supprimer le compte",
+      "description": "Supprime définitivement votre compte. Cela déclenche une <b>période de grâce de 30 jours</b> — vous pouvez vous reconnecter et annuler à tout moment pendant cette période. Après 30 jours, vos données personnelles sont anonymisées et ne peuvent plus être récupérées.",
+      "what_gets_deleted_heading": "Ce qui sera supprimé :",
+      "deleted_item_1": "Nom, adresse e-mail, numéro de téléphone, date de naissance",
+      "deleted_item_2": "Avatar et photo de profil",
+      "deleted_item_3": "Mot de passe et authentification à deux facteurs",
+      "what_is_kept_heading": "Ce qui est conservé (anonymisé) :",
+      "kept_item_1": "Historique d'abonnement — requis pour les registres légaux et financiers",
+      "kept_item_2": "Historique des commandes et réservations",
+      "delete_button": "Supprimer mon compte",
+      "confirm_title": "Supprimer votre compte ?",
+      "confirm_description": "Votre compte sera définitivement supprimé après <b>30 jours</b>. Vous pouvez annuler cette action pendant cette période en vous reconnectant.",
+      "no_refund_notice": "Votre abonnement ne sera pas remboursé.",
+      "cancel": "Annuler",
+      "processing": "Traitement…",
+      "confirm_button": "Oui, supprimer mon compte"
+    }
+  },
+  "profile_info_settings": {
+    "title": "Informations du profil",
+    "updated_toast": "Mis à jour",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "phone_number": "Numéro de téléphone",
+    "date_of_birth": "Date de naissance",
+    "pick_a_date": "Choisir une date",
+    "gender": "Genre",
+    "select_gender": "Sélectionner un genre",
+    "genders": {
+      "male": "Homme",
+      "female": "Femme",
+      "non_binary": "Non-binaire",
+      "other": "Autre",
+      "prefer_not_to_say": "Préfère ne pas préciser"
+    },
+    "country": "Pays",
+    "select_country": "Sélectionner un pays...",
+    "search_country": "Rechercher un pays...",
+    "no_country_found": "Aucun pays trouvé.",
+    "coming_soon": "Bientôt disponible",
+    "inactive": "(Inactif)",
+    "update": "Mettre à jour"
+  },
+  "account_verification": {
+    "title": "Vérification du compte",
+    "verified": "Vérifié",
+    "not_verified": "Non vérifié",
+    "verify": "Vérifier",
+    "email_address": "Adresse e-mail",
+    "phone_number": "Numéro de téléphone",
+    "no_phone_number": "Aucun numéro de téléphone ajouté",
+    "email_sent_toast": "Un e-mail de vérification a été envoyé à {{email}}.",
+    "add_phone_first_toast": "Veuillez d'abord ajouter un numéro de téléphone dans vos paramètres de profil.",
+    "sms_sent_toast": "Un SMS de vérification a été envoyé au {{phone}}."
+  },
+  "notification_preferences_settings": {
+    "title": "Notifications",
+    "description": "Choisissez comment vous souhaitez être notifié pour chaque type d'événement.",
+    "channels": {
+      "email": "E-mail",
+      "in_app": "Dans l'appli",
+      "push": "Push"
+    },
+    "groups": {
+      "orders_reservations": {
+        "title": "Commandes & Réservations",
+        "order": "Nouvelles commandes",
+        "reservation": "Réservations"
+      },
+      "scheduling_shifts": {
+        "title": "Planification & Créneaux",
+        "shift_published": "Planning publié",
+        "shift_created": "Nouveau créneau assigné",
+        "shift_updated": "Créneau modifié",
+        "shift_swap_request": "Échange de créneau demandé",
+        "shift_swap_approved": "Échange de créneau approuvé",
+        "shift_no_show": "Absence non signalée d'un employé",
+        "time_off_request": "Demande de congé",
+        "time_off_approved": "Congé approuvé"
+      },
+      "attendance": {
+        "title": "Présence",
+        "overdue": "Présence en retard",
+        "auto_closed": "Présence clôturée automatiquement"
+      },
+      "inventory_tasks": {
+        "title": "Inventaire & Tâches",
+        "low_stock": "Alertes de stock faible",
+        "task_assigned": "Tâche assignée",
+        "task_status_changed": "Statut de tâche modifié"
+      },
+      "team_organization": {
+        "title": "Équipe & Organisation",
+        "announcement": "Annonces",
+        "message": "Messages",
+        "join_request": "Demandes d'adhésion à l'organisation",
+        "join_resolved": "Demande d'adhésion résolue"
+      },
+      "general": {
+        "title": "Général",
+        "alert": "Alertes générales",
+        "security": "Alertes de sécurité",
+        "promo": "Promotions"
+      }
+    }
+  },
+  "marketing_settings": {
+    "title": "Marketing",
+    "marketing_emails": "E-mails marketing",
+    "marketing_emails_description": "Recevez des actualités, des promotions et des offres personnalisées.",
+    "save": "Enregistrer",
+    "updated_toast": "Préférences marketing mises à jour.",
+    "error_toast": "Échec de l'enregistrement des préférences. Veuillez réessayer."
+  },
+  "privacy_settings": {
+    "title": "Confidentialité",
+    "show_full_name": "Afficher mon nom complet sur mes avis",
+    "show_full_name_description": "Les avis que vous publiez sont publics. Lorsque cette option est désactivée, nous affichons votre prénom et l'initiale de votre nom au lieu de votre nom complet.",
+    "save": "Enregistrer",
+    "updated_toast": "Préférences de confidentialité mises à jour.",
+    "error_toast": "Échec de l'enregistrement des préférences. Veuillez réessayer."
+  },
+  "password_settings": {
+    "title": "Changer le mot de passe",
+    "current_password": "Mot de passe actuel",
+    "current_password_placeholder": "Entrez le mot de passe actuel",
+    "new_password": "Nouveau mot de passe",
+    "new_password_placeholder": "Nouveau mot de passe",
+    "confirm_new_password": "Confirmer le nouveau mot de passe",
+    "confirm_new_password_placeholder": "Confirmer le nouveau mot de passe",
+    "save": "Enregistrer",
+    "error_title": "Erreur lors de la mise à jour du mot de passe"
+  },
+  "profile_tfa_settings": {
+    "title": "Authentification à deux facteurs (2FA)",
+    "description": "L'authentification à deux facteurs (2FA) ajoute une couche de sécurité supplémentaire à votre compte. Après avoir saisi votre mot de passe, un code à usage unique généré par une application d'authentification (comme Google Authenticator) vous sera demandé. Cela garantit que vous seul pouvez accéder à votre compte, même si quelqu'un d'autre connaît votre mot de passe.",
+    "secret_copied": "Clé secrète copiée",
+    "link_copied": "Lien de configuration copié",
+    "copy_failed": "Impossible de copier dans le presse-papiers",
+    "backup_codes_downloaded": "Nouveaux codes de secours téléchargés. Les anciens codes sont désormais invalides.",
+    "save_backup_codes_title": "Enregistrez vos codes de secours",
+    "save_backup_codes_description": "Voici vos codes de récupération 2FA. Conservez-les en lieu sûr.",
+    "codes_not_shown_again": "Ces codes ne seront plus jamais affichés. Enregistrez-les maintenant.",
+    "downloading": "Téléchargement…",
+    "download_as_pdf": "Télécharger en PDF",
+    "saved_codes_acknowledgement": "J'ai enregistré mes codes de secours",
+    "done": "Terminé",
+    "regenerate_confirm_title": "Régénérer les codes de secours ?",
+    "regenerate_confirm_description": "Cela invalidera vos codes de secours existants. Un nouveau jeu sera téléchargé en PDF.",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "backup_codes": "Codes de secours",
+    "backup_codes_description": "Téléchargez un nouveau jeu de codes de récupération. Vos anciens codes seront invalidés.",
+    "regen_rate_limit_hint": "Vous pouvez régénérer les codes de secours une fois par heure",
+    "regenerate_backup_codes": "Régénérer les codes de secours",
+    "setup_2fa": "Configurer l'authentification à deux facteurs",
+    "enable_2fa_title": "Activer l'authentification à deux facteurs",
+    "enable_2fa_description": "Scannez le code QR ci-dessous avec votre application d'authentification (Google Authenticator, Authy, etc.), puis saisissez le code à 6 chiffres fourni pour vérifier la configuration.",
+    "cant_scan": "Impossible de scanner ? Saisissez ce code manuellement",
+    "same_phone_hint": "Sur le même téléphone que votre application d'authentification ?",
+    "copy_setup_link": "Copier le lien de configuration",
+    "enter_code": "Saisissez le code à 6 chiffres",
+    "verify": "Vérifier"
+  },
+  "disable_tfa_notice": {
+    "title": "Authentification à deux facteurs activée",
+    "description": "Désactiver la 2FA supprimera la couche de sécurité supplémentaire de votre compte. Vous n'aurez besoin que de votre mot de passe pour vous connecter après cette action.",
+    "disabling": "Désactivation...",
+    "disable": "Désactiver la 2FA"
+  },
+  "session_management_settings": {
+    "title": "Sessions utilisateur",
+    "no_active_sessions": "Aucune session active.",
+    "unknown_device": "Appareil inconnu",
+    "unknown_location": "Localisation inconnue",
+    "last_active": "Dernière activité",
+    "unknown": "Inconnu",
+    "current_session": "Session actuelle",
+    "trusted_device": "Appareil de confiance",
+    "disconnect": "Déconnecter"
+  },
+  "danger_zone_settings": {
+    "title": "Zone de danger",
+    "delete_account": "Supprimer le compte",
+    "delete_account_description": "Supprimez définitivement votre compte. Vous disposez d'un délai de 30 jours pour annuler après la demande de suppression.",
+    "delete_my_account": "Supprimer mon compte",
+    "confirm_title": "Supprimer votre compte ?",
+    "confirm_intro_prefix": "Votre compte sera définitivement supprimé après",
+    "thirty_days": "30 jours",
+    "confirm_intro_suffix": "Vous pouvez annuler cette action dans le délai de 30 jours en vous reconnectant.",
+    "no_refund": "Votre abonnement ne sera pas remboursé.",
+    "what_gets_deleted": "Ce qui sera supprimé :",
+    "deleted_items": {
+      "identity": "Nom, e-mail, numéro de téléphone, date de naissance",
+      "avatar": "Avatar et photo de profil",
+      "security": "Mot de passe et paramètres 2FA"
+    },
+    "what_is_kept": "Ce qui est conservé (anonymisé) :",
+    "kept_items": {
+      "subscription_history": "Historique des abonnements (registres légaux/financiers)",
+      "order_reservation_history": "Historique des commandes et réservations"
+    },
+    "cancel": "Annuler",
+    "processing": "Traitement en cours…",
+    "confirm_delete": "Oui, supprimer mon compte"
+  },
+  "profile_preferences_settings": {
+    "title": "Préférences marketing",
+    "receive_marketing_emails": "Recevoir des e-mails marketing"
+  },
+  "preferences_page": {
+    "restaurant_types": {
+      "halal": "Halal",
+      "vegan": "Végétalien",
+      "glutenFree": "Sans gluten"
+    },
+    "theme_saved": "Thème enregistré : {{theme}}",
+    "dark": "Sombre",
+    "light": "Clair",
+    "selected_types": "Types sélectionnés : {{types}}",
+    "max_distance_saved": "Distance maximale : {{distance}} km",
+    "theme": "Thème",
+    "dark_mode": "Mode sombre",
+    "save": "Enregistrer",
+    "restaurant_types_title": "Types de restaurants",
+    "max_distance": "Distance maximale",
+    "maximum_distance": "Distance maximale : {{distance}} km"
   }
 }

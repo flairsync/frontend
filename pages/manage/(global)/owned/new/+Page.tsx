@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
@@ -71,41 +72,45 @@ const initialHours: OpeningHours[] = [
 
 
 // Validation schema with Yup
-const validationSchema = [
-    // Step 1: Info
-    Yup.object({
-        name: Yup.string().required('Business name is required'),
-        description: Yup.string().required('Description is required'),
-        type: Yup.string().required('Please specify the business type'),
-        tableCount: Yup.number()
-            .integer('Must be a whole number')
-            .min(1, 'At least 1 table')
-            .max(200, 'Maximum 200 tables')
-            .required('Table count is required'),
-    }),
-    // Step 2: Details
-    Yup.object({
-        workTimes: Yup.array().min(1, 'Work times are required').required('Work times are required'),
-        pricing: Yup.string().required('Pricing information is required'),
-        tags: Yup.array().min(1, 'At least one tag is required').required('Tags are required'),
-    }),
-    // Step 3: Location
-    Yup.object({
-        location: Yup.object({
-            address: Yup.string().required('Address is required'),
-            city: Yup.string().required('City is required'),
-            country: Yup.object().nullable().required('Country is required'),
-            lat: Yup.number().optional(),
-            lng: Yup.number().optional(),
-        }).required('Location is required'),
-    }),
-    // Step 4: Social
-    Yup.object({
-        links: Yup.object().nullable(),
-    }),
-];
+function getValidationSchema(t: (key: string) => string) {
+    return [
+        // Step 1: Info
+        Yup.object({
+            name: Yup.string().required(t('create_business_page.errors.name_required')),
+            description: Yup.string().required(t('create_business_page.errors.description_required')),
+            type: Yup.string().required(t('create_business_page.errors.type_required')),
+            tableCount: Yup.number()
+                .integer(t('create_business_page.errors.table_count_integer'))
+                .min(1, t('create_business_page.errors.table_count_min'))
+                .max(200, t('create_business_page.errors.table_count_max'))
+                .required(t('create_business_page.errors.table_count_required')),
+        }),
+        // Step 2: Details
+        Yup.object({
+            workTimes: Yup.array().min(1, t('create_business_page.errors.work_times_required')).required(t('create_business_page.errors.work_times_required')),
+            pricing: Yup.string().required(t('create_business_page.errors.pricing_required')),
+            tags: Yup.array().min(1, t('create_business_page.errors.tags_required')).required(t('create_business_page.errors.tags_required')),
+        }),
+        // Step 3: Location
+        Yup.object({
+            location: Yup.object({
+                address: Yup.string().required(t('create_business_page.errors.address_required')),
+                city: Yup.string().required(t('create_business_page.errors.city_required')),
+                country: Yup.object().nullable().required(t('create_business_page.errors.country_required')),
+                lat: Yup.number().optional(),
+                lng: Yup.number().optional(),
+            }).required(t('create_business_page.errors.location_required')),
+        }),
+        // Step 4: Social
+        Yup.object({
+            links: Yup.object().nullable(),
+        }),
+    ];
+}
 
 export default function CreateNewBusiness() {
+    const { t } = useTranslation("management");
+    const validationSchema = getValidationSchema(t);
     const { businessTypes } = useBusinessTypes();
 
     const {
@@ -144,7 +149,7 @@ export default function CreateNewBusiness() {
             },
             onError: (err: any) => {
                 if (err?.response?.status === 403) {
-                    openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                    openUpgradeModal(t('create_business_page.upgrade_prompt'));
                 }
             }
         });
@@ -156,7 +161,7 @@ export default function CreateNewBusiness() {
     if (!businessTypes) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <p>Loading...</p>
+                <p>{t('create_business_page.loading')}</p>
             </div>
         );
     }
@@ -166,7 +171,7 @@ export default function CreateNewBusiness() {
             <Card className="w-full max-w-2xl shadow-xl rounded-2xl">
                 <CardHeader className="text-center">
                     <CardTitle className="text-2xl font-bold">
-                        Create a New Business
+                        {t('create_business_page.title')}
                     </CardTitle>
                 </CardHeader>
 
@@ -198,11 +203,11 @@ export default function CreateNewBusiness() {
                                     {step === 0 && (
                                         <>
                                             <div>
-                                                <label className="font-medium text-sm text-zinc-600">Business Name</label>
+                                                <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step1.name_label')}</label>
                                                 <Field
                                                     as={Input}
                                                     name="name"
-                                                    placeholder="e.g. Luna Café"
+                                                    placeholder={t('create_business_page.step1.name_placeholder')}
                                                     className="mt-1"
                                                 />
                                                 <ErrorMessage
@@ -213,11 +218,11 @@ export default function CreateNewBusiness() {
                                             </div>
 
                                             <div>
-                                                <label className="font-medium text-sm text-zinc-600">Description</label>
+                                                <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step1.description_label')}</label>
                                                 <Field
                                                     as={Textarea}
                                                     name="description"
-                                                    placeholder="A cozy coffee shop in downtown..."
+                                                    placeholder={t('create_business_page.step1.description_placeholder')}
                                                     className="mt-1"
                                                 />
                                                 <ErrorMessage
@@ -228,7 +233,7 @@ export default function CreateNewBusiness() {
                                             </div>
 
                                             <div>
-                                                <label className="font-medium text-sm text-zinc-600 mb-1 block">Business Type</label>
+                                                <label className="font-medium text-sm text-zinc-600 mb-1 block">{t('create_business_page.step1.type_label')}</label>
                                                 <BusinessTypeSelect
                                                     types={businessTypes}
                                                     onChange={(newValue: string) => {
@@ -249,7 +254,7 @@ export default function CreateNewBusiness() {
 
                                             <div className="flex gap-4">
                                                 <div className="flex-1">
-                                                    <label className="font-medium text-sm text-zinc-600">Number of Tables</label>
+                                                    <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step1.table_count_label')}</label>
                                                     <Field
                                                         as={Input}
                                                         name="tableCount"
@@ -266,7 +271,7 @@ export default function CreateNewBusiness() {
                                                 </div>
 
                                                 <div className="flex flex-col justify-center gap-1 pt-1">
-                                                    <label className="font-medium text-sm text-zinc-600">Has a Kitchen?</label>
+                                                    <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step1.has_kitchen_label')}</label>
                                                     <button
                                                         type="button"
                                                         onClick={() => setFieldValue("hasKitchen", !values.hasKitchen)}
@@ -283,7 +288,7 @@ export default function CreateNewBusiness() {
                                     {step === 1 && (
                                         <>
                                             <div>
-                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">Work Times</label>
+                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">{t('create_business_page.step2.work_times_label')}</label>
                                                 <WorkHoursSelector
                                                     value={values.workTimes}
                                                     onChange={(newValue: OpeningHours[]) => {
@@ -298,7 +303,7 @@ export default function CreateNewBusiness() {
                                             </div>
 
                                             <div className="pt-4">
-                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">Pricing Range</label>
+                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">{t('create_business_page.step2.pricing_label')}</label>
                                                 <BusinessPricingSelector
                                                     onChange={(val: string) => {
                                                         setFieldValue("pricing", val);
@@ -313,7 +318,7 @@ export default function CreateNewBusiness() {
                                             </div>
 
                                             <div className="pt-4">
-                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">Business Tags</label>
+                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">{t('create_business_page.step2.tags_label')}</label>
                                                 <BusinessTagsInput
                                                     onChange={(tags: BusinessTag[]) => {
                                                         setFieldValue("tags", tags);
@@ -332,7 +337,7 @@ export default function CreateNewBusiness() {
                                     {/* === Step 3 === */}
                                     {step === 2 && (
                                         <div className="space-y-4 pt-2">
-                                            <label className="font-medium text-sm text-zinc-600">Location Details</label>
+                                            <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step3.location_label')}</label>
                                             <LocationPicker
                                                 value={values.location}
                                                 onChange={(loc: any) => setFieldValue("location", loc)}
@@ -350,7 +355,7 @@ export default function CreateNewBusiness() {
                                     {/* === Step 4 === */}
                                     {step === 3 && (
                                         <div className="space-y-4 pt-2">
-                                            <label className="font-medium text-sm text-zinc-600">Social Links (Optional)</label>
+                                            <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step4.social_links_label')}</label>
                                             <BusinessSocialLinksInput
                                                 onChange={(links: any) => {
                                                     setFieldValue("links", links)
@@ -372,10 +377,10 @@ export default function CreateNewBusiness() {
                                                 </div>
                                                 <div>
                                                     <p className="font-medium text-sm text-zinc-800 flex items-center gap-2">
-                                                        Auto-create setup
-                                                        <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 rounded-full px-2 py-0.5">Recommended</span>
+                                                        {t('create_business_page.step4.auto_setup_title')}
+                                                        <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 rounded-full px-2 py-0.5">{t('create_business_page.step4.recommended_badge')}</span>
                                                     </p>
-                                                    <p className="text-xs text-zinc-500 mt-0.5">Automatically create menu categories, staff roles, a floor plan, kitchen stations and more based on your business type — so you're not starting from a blank slate. Uncheck to set everything up yourself.</p>
+                                                    <p className="text-xs text-zinc-500 mt-0.5">{t('create_business_page.step4.auto_setup_desc')}</p>
                                                 </div>
                                             </button>
                                         </div>
@@ -391,14 +396,14 @@ export default function CreateNewBusiness() {
                                             onClick={prevStep}
                                             className="w-32"
                                         >
-                                            Back
+                                            {t('create_business_page.back')}
                                         </Button>
                                     ) : (
                                         <div />
                                     )}
 
                                     <Button type="submit" className="w-32">
-                                        {step === totalSteps - 1 ? 'Create' : 'Next'}
+                                        {step === totalSteps - 1 ? t('create_business_page.create') : t('create_business_page.next')}
                                     </Button>
                                 </div>
                             </Form>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,11 +18,12 @@ export const LowStockItemsView: React.FC<LowStockItemsViewProps> = ({
     onAdjust,
     getUnitName,
 }) => {
+    const { t } = useTranslation("management");
     const { data: items, isFetching } = useInventoryLowStock(businessId);
 
     if (isFetching) {
         return (
-            <div className="py-10 text-center text-muted-foreground animate-pulse">Loading low-stock items…</div>
+            <div className="py-10 text-center text-muted-foreground animate-pulse">{t("low_stock_items_view.loading")}</div>
         );
     }
 
@@ -29,7 +31,7 @@ export const LowStockItemsView: React.FC<LowStockItemsViewProps> = ({
         return (
             <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
                 <AlertTriangle className="w-10 h-10 mb-3 opacity-20" />
-                <p className="font-medium">All good — no low-stock items.</p>
+                <p className="font-medium">{t("low_stock_items_view.all_good")}</p>
             </div>
         );
     }
@@ -39,11 +41,11 @@ export const LowStockItemsView: React.FC<LowStockItemsViewProps> = ({
             <Table>
                 <TableHeader className="bg-muted/30">
                     <TableRow>
-                        <TableHead className="font-semibold">Item</TableHead>
-                        <TableHead className="font-semibold">Group</TableHead>
-                        <TableHead className="text-right font-semibold">Current Stock</TableHead>
-                        <TableHead className="text-right font-semibold">Threshold</TableHead>
-                        <TableHead className="text-right font-semibold">Actions</TableHead>
+                        <TableHead className="font-semibold">{t("low_stock_items_view.col_item")}</TableHead>
+                        <TableHead className="font-semibold">{t("low_stock_items_view.col_group")}</TableHead>
+                        <TableHead className="text-right font-semibold">{t("low_stock_items_view.col_current_stock")}</TableHead>
+                        <TableHead className="text-right font-semibold">{t("low_stock_items_view.col_threshold")}</TableHead>
+                        <TableHead className="text-right font-semibold">{t("low_stock_items_view.col_actions")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -57,7 +59,7 @@ export const LowStockItemsView: React.FC<LowStockItemsViewProps> = ({
                             </TableCell>
                             <TableCell>
                                 <Badge variant="outline" className="font-normal">
-                                    {item.group?.name ?? "Default"}
+                                    {item.group?.name ?? t("low_stock_items_view.default_group")}
                                 </Badge>
                             </TableCell>
                             <TableCell className="text-right">
@@ -71,7 +73,7 @@ export const LowStockItemsView: React.FC<LowStockItemsViewProps> = ({
                             <TableCell className="text-right">
                                 <Button size="sm" variant="outline" className="gap-1.5 h-8" onClick={() => onAdjust(item)}>
                                     <SlidersHorizontal className="w-3.5 h-3.5" />
-                                    Adjust
+                                    {t("low_stock_items_view.adjust")}
                                 </Button>
                             </TableCell>
                         </TableRow>

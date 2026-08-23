@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -48,6 +49,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
     onParse,
     onImport,
 }) => {
+    const { t } = useTranslation("management");
     const { businessRoles } = useBusinessRoles(businessId);
 
     const [step, setStep] = useState<"upload" | "map" | "result">("upload");
@@ -82,7 +84,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
     const handleFile = (f: File) => {
         const looksLikeCsv = ACCEPTED_MIME_TYPES.includes(f.type) || /\.csv$/i.test(f.name);
         if (!looksLikeCsv) {
-            toast.error("Please select a CSV file.");
+            toast.error(t("staff_csv_import_modal.select_csv_error"));
             return;
         }
         setParseError(null);
@@ -96,7 +98,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
         try {
             const parsed = await onParse(file);
             if (!parsed.headers.length || !parsed.rows.length) {
-                setParseError("This file has no rows to import.");
+                setParseError(t("staff_csv_import_modal.no_rows_error"));
                 return;
             }
             setParseResult(parsed);
@@ -107,7 +109,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
             });
             setStep("map");
         } catch (err: any) {
-            setParseError("Couldn't read this CSV file. Please check the format and try again.");
+            setParseError(t("staff_csv_import_modal.parse_error"));
         } finally {
             inFlightRef.current = false;
         }
@@ -120,7 +122,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
     const handleImport = async () => {
         if (inFlightRef.current || !parseResult) return;
         if (!emailHeader) {
-            toast.error("Please select which column contains the email address.");
+            toast.error(t("staff_csv_import_modal.select_email_column_error"));
             return;
         }
         inFlightRef.current = true;
@@ -136,7 +138,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
             setResult(res);
             setStep("result");
         } catch (err: any) {
-            toast.error("Couldn't import the CSV. Please try again.");
+            toast.error(t("staff_csv_import_modal.import_error"));
         } finally {
             inFlightRef.current = false;
         }
@@ -148,16 +150,14 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <UserPlus className="h-5 w-5 text-indigo-500" />
-                        {step === "upload" && "Import Staff from CSV"}
-                        {step === "map" && "Map Columns"}
-                        {step === "result" && "Import Complete"}
+                        {step === "upload" && t("staff_csv_import_modal.title_upload")}
+                        {step === "map" && t("staff_csv_import_modal.title_map")}
+                        {step === "result" && t("staff_csv_import_modal.title_result")}
                     </DialogTitle>
                     <DialogDescription>
-                        {step === "upload" &&
-                            "Upload a CSV export of your roster. AI will suggest which columns map to which fields — any header layout works."}
-                        {step === "map" &&
-                            "Confirm which column corresponds to each field. Each valid row will receive an email invitation."}
-                        {step === "result" && "Here's what happened with each row in your file."}
+                        {step === "upload" && t("staff_csv_import_modal.description_upload")}
+                        {step === "map" && t("staff_csv_import_modal.description_map")}
+                        {step === "result" && t("staff_csv_import_modal.description_result")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -197,8 +197,8 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                                 }}
                             />
                             <Upload className="h-8 w-8 text-zinc-400" />
-                            <p className="text-sm font-medium">Drag and drop a CSV file here, or click to browse</p>
-                            <p className="text-xs text-zinc-500">{file ? file.name : "CSV files only"}</p>
+                            <p className="text-sm font-medium">{t("staff_csv_import_modal.drag_drop_hint")}</p>
+                            <p className="text-xs text-zinc-500">{file ? file.name : t("staff_csv_import_modal.csv_files_only")}</p>
                         </div>
 
                         {file && (
@@ -212,7 +212,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                                 }}
                             >
                                 <X className="h-4 w-4 mr-1" />
-                                Remove file
+                                {t("staff_csv_import_modal.remove_file")}
                             </Button>
                         )}
 
@@ -226,21 +226,21 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                             <div className="flex items-start gap-2 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 p-3 text-sm text-amber-800 dark:text-amber-300">
                                 <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
                                 <span>
-                                    AI mapping isn't available right now, so columns were matched by name instead. Please double-check the mapping below.
+                                    {t("staff_csv_import_modal.ai_mapping_unavailable")}
                                 </span>
                             </div>
                         )}
 
-                        <p className="text-sm text-zinc-500">{parseResult.rowCount} rows detected. Each valid row sends a real invitation email.</p>
+                        <p className="text-sm text-zinc-500">{t("staff_csv_import_modal.rows_detected", { count: parseResult.rowCount })}</p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5">
                                 <Label>
-                                    Email <span className="text-red-500 ml-0.5">*</span>
+                                    {t("staff_csv_import_modal.email")} <span className="text-red-500 ml-0.5">*</span>
                                 </Label>
                                 <Select value={emailHeader} onValueChange={setEmailHeader}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select a column" />
+                                        <SelectValue placeholder={t("staff_csv_import_modal.select_a_column")} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {parseResult.headers.map((h) => (
@@ -253,13 +253,13 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label>Name</Label>
+                                <Label>{t("staff_csv_import_modal.name")}</Label>
                                 <Select value={optionalHeaders.name} onValueChange={(v) => updateOptional("name", v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value={NONE_VALUE}>None</SelectItem>
+                                        <SelectItem value={NONE_VALUE}>{t("staff_csv_import_modal.none")}</SelectItem>
                                         {parseResult.headers.map((h) => (
                                             <SelectItem key={h} value={h}>
                                                 {h}
@@ -270,13 +270,13 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                             </div>
 
                             <div className="space-y-1.5 sm:col-span-2">
-                                <Label>Role</Label>
+                                <Label>{t("staff_csv_import_modal.role")}</Label>
                                 <Select value={optionalHeaders.role} onValueChange={(v) => updateOptional("role", v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value={NONE_VALUE}>None (use default role)</SelectItem>
+                                        <SelectItem value={NONE_VALUE}>{t("staff_csv_import_modal.none_default_role")}</SelectItem>
                                         {parseResult.headers.map((h) => (
                                             <SelectItem key={h} value={h}>
                                                 {h}
@@ -286,7 +286,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                                 </Select>
                                 {!!businessRoles?.length && (
                                     <div className="flex flex-wrap gap-1.5 pt-1">
-                                        <span className="text-xs text-zinc-500 mr-1">Matches against your existing roles:</span>
+                                        <span className="text-xs text-zinc-500 mr-1">{t("staff_csv_import_modal.matches_existing_roles")}</span>
                                         {businessRoles.map((r) => (
                                             <Badge key={r.id} variant="secondary" className="text-xs font-normal">
                                                 {r.name}
@@ -298,7 +298,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-xs text-zinc-500">Preview (first rows)</Label>
+                            <Label className="text-xs text-zinc-500">{t("staff_csv_import_modal.preview_first_rows")}</Label>
                             <div className="rounded-md border overflow-x-auto">
                                 <Table>
                                     <TableHeader>
@@ -331,24 +331,24 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                     <div className="space-y-4 mt-2">
                         <div className="flex items-center gap-2 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 p-3 text-sm text-emerald-800 dark:text-emerald-300">
                             <CheckCircle2 className="h-4 w-4 shrink-0" />
-                            <span>{result.invited} invitation{result.invited === 1 ? "" : "s"} sent.</span>
+                            <span>{t("staff_csv_import_modal.invitations_sent", { count: result.invited })}</span>
                         </div>
 
                         <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
                             {result.skippedAlreadyStaff > 0 && (
-                                <li>{result.skippedAlreadyStaff} row(s) skipped — already staff at this business.</li>
+                                <li>{t("staff_csv_import_modal.skipped_already_staff", { count: result.skippedAlreadyStaff })}</li>
                             )}
                             {result.skippedDuplicateInFile > 0 && (
-                                <li>{result.skippedDuplicateInFile} row(s) skipped — duplicate email within the file.</li>
+                                <li>{t("staff_csv_import_modal.skipped_duplicate", { count: result.skippedDuplicateInFile })}</li>
                             )}
                             {result.skippedInvalidEmail > 0 && (
-                                <li>{result.skippedInvalidEmail} row(s) skipped — missing or invalid email.</li>
+                                <li>{t("staff_csv_import_modal.skipped_invalid_email", { count: result.skippedInvalidEmail })}</li>
                             )}
                             {result.skippedLimitReached > 0 && (
-                                <li>{result.skippedLimitReached} row(s) skipped — your plan's employee limit was reached.</li>
+                                <li>{t("staff_csv_import_modal.skipped_limit_reached", { count: result.skippedLimitReached })}</li>
                             )}
                             {result.skippedOther > 0 && (
-                                <li>{result.skippedOther} row(s) skipped — already had a pending invitation or another issue.</li>
+                                <li>{t("staff_csv_import_modal.skipped_other", { count: result.skippedOther })}</li>
                             )}
                         </ul>
 
@@ -356,7 +356,7 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                             <div className="flex items-start gap-2 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 p-3 text-sm text-amber-800 dark:text-amber-300">
                                 <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
                                 <span>
-                                    These role names didn't match any existing role, so those rows got the default role instead:{" "}
+                                    {t("staff_csv_import_modal.unmatched_roles_prefix")}{" "}
                                     {result.unmatchedRoles.join(", ")}
                                 </span>
                             </div>
@@ -368,27 +368,27 @@ export const StaffCsvImportModal: React.FC<StaffCsvImportModalProps> = ({
                     {step === "map" && (
                         <Button variant="outline" onClick={() => setStep("upload")} disabled={isImporting}>
                             <ArrowLeft className="h-4 w-4 mr-1" />
-                            Back
+                            {t("staff_csv_import_modal.back")}
                         </Button>
                     )}
                     {step !== "result" && (
                         <Button variant="outline" onClick={onClose} disabled={isParsing || isImporting}>
-                            Cancel
+                            {t("staff_csv_import_modal.cancel")}
                         </Button>
                     )}
                     {step === "upload" && (
                         <Button onClick={handleParse} disabled={!file || isParsing}>
                             {isParsing && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-                            {isParsing ? "Analyzing columns..." : "Analyze File"}
+                            {isParsing ? t("staff_csv_import_modal.analyzing_columns") : t("staff_csv_import_modal.analyze_file")}
                         </Button>
                     )}
                     {step === "map" && (
                         <Button onClick={handleImport} disabled={isImporting || !emailHeader}>
                             {isImporting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-                            {isImporting ? "Sending invitations..." : "Send Invitations"}
+                            {isImporting ? t("staff_csv_import_modal.sending_invitations") : t("staff_csv_import_modal.send_invitations")}
                         </Button>
                     )}
-                    {step === "result" && <Button onClick={onClose}>Done</Button>}
+                    {step === "result" && <Button onClick={onClose}>{t("staff_csv_import_modal.done")}</Button>}
                 </DialogFooter>
             </DialogContent>
         </Dialog>

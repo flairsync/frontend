@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -52,6 +53,7 @@ const EditableHourlyRate = ({
   isUpdating,
   currency = "€",
 }: EditableHourlyRateProps) => {
+  const { t } = useTranslation("management");
   const [isEditing, setIsEditing] = useState(false);
   const [rate, setRate] = useState(initialRate.toString());
 
@@ -107,7 +109,7 @@ const EditableHourlyRate = ({
               <AlertCircle className="h-4 w-4 text-amber-500 cursor-help" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>no hourly rate added</p>
+              <p>{t("staff_section.no_hourly_rate")}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -125,6 +127,7 @@ const EditableHourlyRate = ({
 };
 
 const StaffSection = () => {
+  const { t } = useTranslation("management");
   // Add Staff Modal State
   const {
     routeParams
@@ -212,7 +215,7 @@ const StaffSection = () => {
           businessId={routeParams.id}
           employee={{
             id: pinStaff.id,
-            name: pinStaff.professionalProfile?.displayName ?? "Staff",
+            name: pinStaff.professionalProfile?.displayName ?? t("staff_section.staff_fallback"),
           }}
           onClose={() => setPinStaff(null)}
         />
@@ -226,14 +229,14 @@ const StaffSection = () => {
           setRemovingStaff(null);
         }}
         variant="danger"
-        title="Remove staff member?"
-        description={`This will remove ${removingStaff?.professionalProfile?.displayName ?? "this staff member"} from your business and revoke their access. Their attendance and payroll history will be kept.`}
-        confirmLabel="Remove"
+        title={t("staff_section.remove_staff_title")}
+        description={t("staff_section.remove_staff_description", { name: removingStaff?.professionalProfile?.displayName ?? t("staff_section.this_staff_member") })}
+        confirmLabel={t("staff_section.remove")}
       />
 
       <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-          <CardTitle>All Staff</CardTitle>
+          <CardTitle>{t("staff_section.all_staff")}</CardTitle>
 
           <div className="flex gap-2">
             <div className="flex justify-end">
@@ -241,7 +244,7 @@ const StaffSection = () => {
                 onClick={() => {
                   resyncInvitations();
                 }}
-              >Re-Sync invitations</Button>
+              >{t("staff_section.resync_invitations")}</Button>
             </div>
           </div>
 
@@ -250,12 +253,12 @@ const StaffSection = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Roles</TableHead>
-                <TableHead>Hourly Rate</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t("staff_section.col_name")}</TableHead>
+                <TableHead>{t("staff_section.col_email")}</TableHead>
+                <TableHead>{t("staff_section.col_roles")}</TableHead>
+                <TableHead>{t("staff_section.col_hourly_rate")}</TableHead>
+                <TableHead>{t("staff_section.col_status")}</TableHead>
+                <TableHead>{t("staff_section.col_actions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -265,7 +268,7 @@ const StaffSection = () => {
                   <TableCell>{member.professionalProfile?.workEmail}</TableCell>
                   <TableCell>
                     {member.type === 'OWNER' ? (
-                      <Badge variant="default" className="bg-indigo-600 hover:bg-indigo-700">Business Owner</Badge>
+                      <Badge variant="default" className="bg-indigo-600 hover:bg-indigo-700">{t("staff_section.business_owner")}</Badge>
                     ) : (
                       <StaffRolesCell
                         roles={member.roles}
@@ -285,7 +288,7 @@ const StaffSection = () => {
                     />
                   </TableCell>
                   <TableCell>
-                    {member.status}
+                    {member.status === 'ACTIVE' ? t("staff_section.status_active") : member.status}
                   </TableCell>
 
                   <TableCell className="flex gap-2">
@@ -294,7 +297,7 @@ const StaffSection = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          title="Schedule Shift"
+                          title={t("staff_section.schedule_shift")}
                           onClick={() => {
                             setScheduleStaffId(member.id);
                             setIsScheduleModalOpen(true);
@@ -313,7 +316,7 @@ const StaffSection = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            title="Set POS PIN"
+                            title={t("staff_section.set_pos_pin")}
                             onClick={() => setPinStaff(member)}
                           >
                             <KeyRound className="h-4 w-4" />
@@ -322,7 +325,7 @@ const StaffSection = () => {
                         <Button
                           size="sm"
                           variant="destructive"
-                          title="Remove Staff"
+                          title={t("staff_section.remove_staff_title_short")}
                           disabled={terminatingEmployee}
                           onClick={() => setRemovingStaff(member)}
                         >
@@ -353,6 +356,7 @@ type Props = {
 };
 
 export function StaffRolesCell({ roles, onEdit }: Props) {
+  const { t } = useTranslation("management");
   const visibleRoles = roles.slice(0, 2);
   const hiddenCount = roles.length - visibleRoles.length;
 
@@ -368,7 +372,7 @@ export function StaffRolesCell({ roles, onEdit }: Props) {
       </Button>
       {
         roles.length == 0 && <Badge key={"no_roles_chip"} variant="secondary">
-          No roles yet
+          {t("staff_section.no_roles_yet")}
         </Badge>
       }
       {visibleRoles.map(r => (

@@ -887,7 +887,64 @@
     "total": "Total",
     "dine_in": "En el local",
     "takeaway": "Para llevar",
-    "delivery": "A domicilio"
+    "delivery": "A domicilio",
+    "add_new_order": "Añadir nuevo pedido",
+    "live_tables": "Mesas en directo",
+    "filter_by_type": "Filtrar por tipo",
+    "all_tables": "Todas las mesas",
+    "customer_name_placeholder": "Nombre del cliente",
+    "ongoing_orders": "Pedidos en curso",
+    "order_history": "Historial de pedidos",
+    "col_order": "Pedido",
+    "col_details": "Detalles",
+    "col_actions": "Acciones",
+    "loading": "Cargando...",
+    "empty": "No se encontraron pedidos.",
+    "walk_in": "Sin reserva",
+    "open_menu": "Abrir menú",
+    "select_all": "Seleccionar todo",
+    "select_order": "Seleccionar pedido {{id}}",
+    "selected_count": "{{count}} seleccionado(s)",
+    "accept_all": "Aceptar todo",
+    "cancel_all": "Cancelar todo",
+    "reject_all": "Rechazar todo",
+    "receipt_title": "Recibo",
+    "status_labels": {
+      "created": "Pendiente",
+      "accepted": "Aceptado",
+      "preparing": "En preparación",
+      "ready": "Listo",
+      "served": "Servido",
+      "completed": "Completado",
+      "rejected": "Rechazado",
+      "canceled": "Cancelado"
+    },
+    "payment_status_labels": {
+      "pending": "Pendiente",
+      "paid": "Pagado",
+      "partially_paid": "Parcialmente pagado"
+    },
+    "actions": {
+      "quick_complete": "Completar rápido",
+      "add_payment": "Añadir pago",
+      "accept": "Aceptar",
+      "reject": "Rechazar",
+      "start_preparing": "Empezar a preparar",
+      "mark_ready": "Marcar como listo",
+      "mark_served": "Marcar como servido",
+      "complete": "Completar",
+      "force_complete": "Forzar cierre",
+      "add_items": "Añadir artículos",
+      "transfer_table": "Transferir mesa",
+      "cancel": "Cancelar",
+      "view_details": "Ver detalles",
+      "view_receipt": "Ver recibo"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "page_of": "Página {{page}} de {{totalPages}}"
+    }
   },
   "reservations": {
     "title": "Reservas",
@@ -1658,6 +1715,17 @@
       "description": "Pedidos realizados por hora del día en el período seleccionado, incluyendo sala, para llevar y reparto",
       "no_data": "No hay datos de pedidos disponibles.",
       "tooltip_orders": "Pedidos"
+    },
+    "top_products_table": {
+      "title": "Productos más vendidos",
+      "description": "Artículos del menú con mejor rendimiento por ingresos",
+      "no_data": "No hay datos de productos disponibles para este período.",
+      "col_item_name": "Nombre del artículo",
+      "col_quantity_sold": "Cantidad vendida",
+      "col_revenue": "Ingresos generados",
+      "col_cost": "Coste",
+      "col_margin": "Margen",
+      "col_margin_percent": "Margen %"
     }
   },
   "company_guide": {
@@ -1777,5 +1845,1883 @@
       "create_button": "Crear Pantalla",
       "interval_seconds_hint": "Cuánto tiempo se muestra cada pantalla antes de pasar a la siguiente."
     }
+  },
+  "staff_shifts_page": {
+    "header": {
+      "title": "Mis turnos",
+      "subtitle": "Aquí tienes tu horario próximo y tus turnos recientes.",
+      "my_availability": "Mi disponibilidad",
+      "request_time_off": "Solicitar día libre"
+    },
+    "tabs": {
+      "today": "Hoy",
+      "schedule": "Próximo horario",
+      "requests": "Ausencias e intercambios",
+      "bids": "Solicitudes e historial"
+    },
+    "today_tab": {
+      "title": "Turno de hoy",
+      "subtitle": "Detalles de tus turnos programados para hoy.",
+      "accept_shift": "Aceptar turno",
+      "swap_shift": "Intercambiar turno",
+      "finished_worked": "Finalizado y trabajado",
+      "mistake_label": "¿Algún error?",
+      "mistake_desc": "Contacta con un responsable para corregir tu registro.",
+      "empty": "No hay ningún turno programado para hoy."
+    },
+    "open_shifts": {
+      "title": "Turnos abiertos disponibles",
+      "subtitle": "Consigue horas extra reclamando estos turnos sin asignar.",
+      "empty": "No hay turnos abiertos disponibles por ahora. ¡Vuelve más tarde!",
+      "short_rest_gap": "Descanso corto",
+      "rest_gap_warning": "Menos de 8h respecto a otro turno",
+      "bid": "Postular",
+      "claim": "Reclamar"
+    },
+    "upcoming": {
+      "title": "Próximo horario",
+      "subtitle": "Tus turnos programados para el periodo seleccionado.",
+      "status_label": "Estado",
+      "all_statuses": "Todos los estados",
+      "from_label": "Desde",
+      "to_label": "Hasta",
+      "col_date": "Fecha",
+      "col_time": "Horario",
+      "col_estimated_cost": "Coste estimado",
+      "col_response": "Respuesta",
+      "col_status": "Estado",
+      "col_actions": "Acciones",
+      "loading": "Cargando turnos...",
+      "empty": "No se encontraron turnos para estos filtros.",
+      "validate": "Validar",
+      "log_as_worked": "Registrar como trabajado",
+      "accept": "Aceptar",
+      "swap": "Intercambiar",
+      "locked": "Bloqueado",
+      "pagination_showing": "Página {{page}} de {{totalPages}}",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "cancelled": "Cancelado"
+    },
+    "time_off": {
+      "title": "Solicitudes de ausencia",
+      "subtitle": "Gestiona tus solicitudes de ausencia.",
+      "new_request": "Nueva solicitud",
+      "col_dates": "Fechas",
+      "col_reason": "Motivo",
+      "col_status": "Estado",
+      "loading": "Cargando solicitudes...",
+      "empty": "No se encontraron solicitudes de ausencia."
+    },
+    "swaps": {
+      "title": "Intercambios de turnos",
+      "subtitle": "Estado de tus solicitudes de intercambio de turno.",
+      "col_shift": "Turno",
+      "col_involving": "Con",
+      "col_status": "Estado",
+      "loading": "Cargando intercambios...",
+      "empty": "No se encontraron intercambios de turno.",
+      "unknown_shift": "Turno desconocido",
+      "with_label": "Con: {{name}}",
+      "from_label": "De: {{name}}",
+      "colleague": "Compañero"
+    },
+    "bids_tab": {
+      "title": "Mis solicitudes de turno",
+      "subtitle": "Sigue el estado de tus solicitudes para turnos abiertos.",
+      "col_shift_date": "Fecha del turno",
+      "col_times": "Horarios",
+      "col_restaurant": "Restaurante",
+      "col_bid_submitted": "Solicitud enviada",
+      "col_status": "Estado",
+      "loading": "Cargando tus solicitudes...",
+      "empty": "Todavía no has enviado ninguna solicitud.",
+      "unknown_date": "Fecha desconocida",
+      "not_available": "N/D",
+      "your_restaurant": "Tu restaurante",
+      "pending_review": "En revisión",
+      "approved": "Aprobada",
+      "rejected": "Rechazada"
+    }
+  },
+  "nfc_tags_management": {
+    "tabs": {
+      "cards": "Tarjetas",
+      "requests": "Solicitudes"
+    },
+    "action_labels": {
+      "attendance_clock_in_out": "Fichaje de asistencia",
+      "pos_login": "Inicio de sesión en TPV",
+      "none": "Ninguna"
+    },
+    "pos_access_mode_labels": {
+      "basic": "Básico",
+      "full": "Completo"
+    },
+    "request_reason_labels": {
+      "new_staff_card": "Tarjeta nueva de empleado",
+      "lost_replacement": "Reemplazo por pérdida",
+      "other": "Otro"
+    },
+    "unassigned": "Sin asignar",
+    "unnamed": "Sin nombre",
+    "assign_modal": {
+      "title": "Asignar tarjeta",
+      "staff_member_label": "Miembro del personal",
+      "select_staff_placeholder": "Selecciona un miembro del personal",
+      "action_label": "Acción",
+      "select_action_placeholder": "Selecciona una acción",
+      "pos_access_mode_label": "Modo de acceso al TPV",
+      "basic_option": "Básico — solo toma de pedidos, sin anulaciones/reembolsos/descuentos",
+      "full_option": "Completo — mismo acceso que el inicio de sesión con PIN",
+      "cancel": "Cancelar",
+      "save": "Guardar"
+    },
+    "report_lost_dialog": {
+      "title": "Reportar tarjeta perdida o robada",
+      "description": "Esto desactiva la tarjeta inmediatamente. Se creará una solicitud de reemplazo automáticamente.",
+      "reason_label": "Motivo",
+      "lost": "Perdida",
+      "stolen": "Robada",
+      "note_label": "Nota (opcional)",
+      "note_placeholder": "Detalles adicionales…",
+      "cancel": "Cancelar",
+      "deactivate": "Desactivar tarjeta"
+    },
+    "cards_tab": {
+      "title": "Tarjetas",
+      "col_card_id": "ID de tarjeta",
+      "col_status": "Estado",
+      "col_assigned_staff": "Empleado asignado",
+      "col_action": "Acción",
+      "col_linked_at": "Vinculada el",
+      "col_actions": "Acciones",
+      "loading": "Cargando tarjetas…",
+      "empty": "No se encontraron tarjetas.",
+      "assign": "Asignar",
+      "report_lost_stolen": "Reportar pérdida/robo",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "status_labels": {
+        "unissued": "No emitida",
+        "linked": "Vinculada",
+        "revoked": "Revocada"
+      }
+    },
+    "request_card_modal": {
+      "title": "Solicitar una nueva tarjeta",
+      "reason_label": "Motivo",
+      "note_label": "Nota (opcional)",
+      "note_placeholder": "Detalles adicionales…",
+      "cancel": "Cancelar",
+      "submit": "Enviar solicitud"
+    },
+    "requests_tab": {
+      "request_new_card": "Solicitar una nueva tarjeta",
+      "title": "Solicitudes de tarjetas",
+      "col_reason": "Motivo",
+      "col_note": "Nota",
+      "col_status": "Estado",
+      "col_requested_at": "Solicitada el",
+      "col_resolution_note": "Nota de resolución",
+      "loading": "Cargando solicitudes…",
+      "empty": "No se encontraron solicitudes.",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "status_labels": {
+        "pending": "Pendiente",
+        "fulfilled": "Completada",
+        "rejected": "Rechazada"
+      }
+    }
+  },
+  "payroll_page": {
+    "header": {
+      "title": "Nómina",
+      "subtitle": "Previsualiza, genera y finaliza la nómina para cualquier período."
+    },
+    "tabs": {
+      "absences": "Ausencias"
+    },
+    "period_picker": {
+      "start_date": "Fecha de inicio",
+      "end_date": "Fecha de fin",
+      "generating": "Generando...",
+      "generate_payroll": "Generar nómina",
+      "finalize": "Finalizar",
+      "export_csv": "Exportar CSV",
+      "export_pdf": "Exportar PDF"
+    },
+    "preview": {
+      "title": "Vista previa",
+      "loading": "Cargando vista previa…",
+      "empty": "No se encontraron registros de asistencia validados para este período.",
+      "totals": {
+        "total_hrs": "Total horas:",
+        "ot_hrs": "Horas extra:",
+        "regular_pay": "Pago normal:",
+        "ot_pay": "Pago horas extra:",
+        "paid_leave": "Permiso pagado:",
+        "total": "Total:"
+      }
+    },
+    "table": {
+      "employee": "Empleado",
+      "regular_hrs": "Horas normales",
+      "ot_hrs": "Horas extra",
+      "total_hrs": "Total horas",
+      "regular_pay": "Pago normal",
+      "ot_pay": "Pago horas extra",
+      "paid_leave": "Permiso pagado",
+      "total_pay": "Pago total",
+      "status": "Estado",
+      "set_hourly_rate": "Definir tarifa por hora",
+      "status_labels": {
+        "DRAFT": "Borrador",
+        "FINALIZED": "Finalizado"
+      }
+    },
+    "warning_banner": {
+      "message_one": "{{count}} empleado tiene asistencia no validada o aún abierta en este período y NO está incluido en las cifras siguientes — valida su asistencia y vuelve a revisar esta vista previa.",
+      "message_other": "{{count}} empleados tienen asistencia no validada o aún abierta en este período y NO están incluidos en las cifras siguientes — valida su asistencia y vuelve a revisar esta vista previa.",
+      "record_line_one": "{{name}} — {{count}} registro no validado",
+      "record_line_other": "{{name}} — {{count}} registros no validados",
+      "still_clocked_in": ", {{count}} todavía fichado(s)"
+    },
+    "draft_entries": {
+      "title": "Entradas borrador",
+      "loading": "Cargando…"
+    },
+    "finalized_entries": {
+      "title": "Finalizadas",
+      "loading": "Cargando…"
+    },
+    "finalize_dialog": {
+      "title": "Finalizar nómina",
+      "description": "Esto bloqueará todas las entradas en borrador para el período del {{startDate}} al {{endDate}}. Las entradas finalizadas no se pueden sobrescribir. Esta acción es irreversible.",
+      "cancel": "Cancelar",
+      "finalizing": "Finalizando…"
+    }
+  },
+  "absence_log_panel": {
+    "title": "Registro de ausencias",
+    "record_absence": "Registrar ausencia",
+    "loading": "Cargando ausencias…",
+    "empty": "Todavía no hay registros de ausencia.",
+    "col_date": "Fecha",
+    "col_employee": "Empleado",
+    "col_type": "Tipo",
+    "col_linked_shift": "Turno vinculado",
+    "col_notes": "Notas",
+    "col_document": "Documento",
+    "col_actions": "Acciones",
+    "paid": "Pagada",
+    "unpaid": "No pagada",
+    "locked": "Bloqueada",
+    "view": "Ver",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "unlock": "Desbloquear",
+    "lock": "Bloquear",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "deleting": "Eliminando…",
+    "create_dialog": {
+      "description": "Clasifica un turno perdido de un miembro del personal."
+    },
+    "edit_dialog": {
+      "title": "Editar ausencia",
+      "locked_notice": "Esta ausencia está bloqueada y ya no se puede editar. Desbloquéala primero si necesitas hacer una corrección."
+    },
+    "delete_dialog": {
+      "title": "¿Eliminar registro de ausencia?",
+      "description": "Esto eliminará permanentemente el registro de ausencia del {{date}}. Esta acción no se puede deshacer."
+    },
+    "form": {
+      "employment_id_label": "ID de empleo",
+      "employment_id_placeholder": "ID de empleo del empleado",
+      "date_label": "Fecha",
+      "type_label": "Tipo",
+      "paid_leave_label": "Permiso pagado",
+      "notes_label": "Notas",
+      "notes_placeholder": "p. ej. El empleado avisó de que estaba enfermo",
+      "document_url_label": "URL del documento (opcional)",
+      "document_url_placeholder": "p. ej. https://storage.com/justificante.pdf",
+      "time_off_request_id_label": "ID de solicitud de ausencia (opcional)",
+      "time_off_request_id_placeholder": "Vincular a una solicitud de ausencia aprobada"
+    }
+  },
+  "absence_types": {
+    "SICK_LEAVE": "Baja por enfermedad",
+    "UNAUTHORIZED": "No autorizada",
+    "PERSONAL_EMERGENCY": "Emergencia personal",
+    "APPROVED_LEAVE": "Permiso aprobado"
+  },
+  "settings_page": {
+    "title": "Configuración del negocio",
+    "reservations_orders": {
+      "trigger": "Reservas y pedidos",
+      "enable_reservations": {
+        "label": "Activar reservas de mesa",
+        "desc": "Permite a los clientes reservar mesa en línea"
+      },
+      "require_confirmation": {
+        "label": "Exigir confirmación de reserva",
+        "desc": "Las reservas deben ser aprobadas por el personal"
+      },
+      "cancellation_window": {
+        "label": "Plazo de cancelación (días)",
+        "desc": "Número de días antes de la reserva en los que se permite cancelar"
+      },
+      "modification_limit": {
+        "label": "Límite de modificación (minutos)",
+        "desc": "Minutos mínimos antes de que la reserva pueda modificarse"
+      },
+      "pending_timeout": {
+        "label": "Tiempo de espera pendiente (minutos)",
+        "desc": "Minutos antes de que expire una solicitud sin confirmar"
+      },
+      "default_duration": {
+        "label": "Duración predeterminada (minutos)",
+        "desc": "Duración predeterminada de las nuevas reservas"
+      },
+      "max_party_size": {
+        "label": "Tamaño máximo del grupo",
+        "desc": "Número máximo de comensales permitidos por reserva"
+      },
+      "booking_window": {
+        "label": "Ventana de reserva (días)",
+        "desc": "Con cuánta antelación pueden reservar los clientes"
+      },
+      "buffer": {
+        "label": "Margen entre reservas (min)",
+        "desc": "Espacio añadido entre turnos de mesa consecutivos"
+      },
+      "auto_no_show": {
+        "label": "No-presentación automática",
+        "desc": "Marcar automáticamente las reservas confirmadas como no-presentación tras el período de gracia"
+      },
+      "grace_period": {
+        "label": "Período de gracia (min)",
+        "desc": "Minutos tras la hora de reserva antes de que se active la no-presentación automática"
+      },
+      "enable_ordering": {
+        "label": "Activar pedidos en línea",
+        "desc": "Permite a los clientes hacer pedidos en línea"
+      },
+      "require_order_confirmation": {
+        "label": "Exigir confirmación de pedido",
+        "desc": "Los pedidos deben ser aprobados por el personal"
+      },
+      "allow_table_ordering": {
+        "label": "Permitir pedidos en mesa",
+        "desc": "Activa la opción \"Para comer aquí\" para los clientes"
+      },
+      "allow_takeaway_ordering": {
+        "label": "Permitir pedidos para llevar",
+        "desc": "Activa la opción \"Para llevar\" para los clientes"
+      },
+      "save": "Guardar"
+    },
+    "floor_plan": {
+      "trigger": "Plano de sala",
+      "enable_layout": {
+        "label": "Activar vista del plano de sala",
+        "desc": "Muestra la distribución visual de las mesas al personal para gestionar la ubicación, y a los clientes al reservar una mesa"
+      }
+    },
+    "organization_region": {
+      "trigger": "Organización y región",
+      "linked": "Vinculado",
+      "leave_pending": "Solicitud de salida pendiente",
+      "request_to_leave": "Solicitar salida",
+      "not_linked": "No vinculado a ninguna organización o región.",
+      "leave_note": "Salir requiere la aprobación del propietario de la organización o región — nunca ocurre de inmediato, aunque seas tú quien lo haya solicitado."
+    },
+    "general_details": {
+      "trigger": "Información general",
+      "business_name_placeholder": "Nombre del negocio",
+      "description_placeholder": "Descripción",
+      "contact_email_placeholder": "Correo de contacto",
+      "phone_placeholder": "Número de teléfono",
+      "slug": {
+        "label": "Slug de la URL pública",
+        "placeholder": "tu-restaurante",
+        "taken": "Este slug ya está en uso",
+        "invalid": "Solo se permiten letras minúsculas, números y guiones",
+        "available": "El slug está disponible",
+        "idle_hint": "Se usa en la URL de tu página pública. Solo letras minúsculas, números y guiones.",
+        "change_warning": "Cambiar el slug romperá cualquier enlace compartido que use el actual"
+      },
+      "currency": {
+        "label": "Moneda",
+        "set_by": "— definida por {{country}}",
+        "set_by_fallback": "el país de tu negocio",
+        "hint": "La moneda sigue el país registrado de tu negocio y no se puede cambiar de forma independiente. Para operar en una moneda distinta, actualiza el país en Ubicación."
+      },
+      "receipt_language": {
+        "label": "Idioma del recibo",
+        "required_by_law": "— exigido por ley, siempre principal",
+        "secondary_label": "Idioma secundario (opcional)",
+        "none_placeholder": "Ninguno",
+        "none_option": "Ninguno (solo {{language}})",
+        "mandated_hint": "El {{language}} debe aparecer en cada recibo y no se puede desactivar. Opcionalmente puedes añadir un segundo idioma junto a él para turistas/clientes — nunca reemplazará al {{language}}, solo aparecerá junto a él.",
+        "select_placeholder": "Selecciona un idioma",
+        "hint": "Idioma que usan los recibos impresos, independiente del idioma que use el personal en la aplicación. Inglés por defecto."
+      },
+      "published": {
+        "label": "Publicado",
+        "desc": "Mostrar este negocio a los clientes en la plataforma"
+      },
+      "auto_disable_out_of_stock": {
+        "label": "Desactivar automáticamente artículos agotados",
+        "desc": "Oculta automáticamente un artículo del menú cuando su stock registrado llega a cero, y lo vuelve a mostrar al reponerse"
+      },
+      "save": "Guardar"
+    },
+    "location": {
+      "trigger": "Ubicación y dirección",
+      "timezone": {
+        "label": "Zona horaria del negocio",
+        "select_placeholder": "Selecciona una zona horaria",
+        "search_placeholder": "Buscar zona horaria...",
+        "no_results": "No se encontró ninguna zona horaria."
+      },
+      "state_province": {
+        "label": "Estado / Provincia",
+        "placeholder": "Estado o provincia"
+      },
+      "loading_map": "Cargando mapa...",
+      "ordering": {
+        "section_label": "Configuración de ubicación para pedidos",
+        "allow_nearby_only": {
+          "label": "Permitir solo pedidos cercanos",
+          "desc": "Los clientes deben estar dentro de un radio permitido de tu ubicación"
+        },
+        "max_distance": {
+          "label": "Distancia máxima (metros)",
+          "desc": "Distancia máxima permitida para pedidos cercanos (p. ej. 5000 para 5 km)"
+        }
+      },
+      "attendance": {
+        "section_label": "Configuración de asistencia y geovalla",
+        "require_gps": {
+          "label": "Exigir GPS para la asistencia",
+          "desc": "El personal debe compartir su ubicación para fichar entrada o salida"
+        },
+        "grace_period": {
+          "label": "Período de gracia de asistencia (minutos)",
+          "desc": "Minutos de margen antes de que un fichaje de entrada se marque como tardío o uno de salida como salida anticipada"
+        },
+        "max_paid_break": {
+          "label": "Descanso pagado máximo (minutos)",
+          "desc": "Los descansos pagados más largos que esto se marcan para revisión del encargado"
+        },
+        "require_clock_in_pos": {
+          "label": "Exigir fichaje para usar el TPV",
+          "desc": "El personal debe haber fichado para tomar pedidos, aceptar pagos o gestionar mesas en un terminal TPV compartido. Los propietarios siempre están exentos."
+        },
+        "require_qr": {
+          "label": "Exigir código QR para la asistencia",
+          "desc": "El personal debe escanear un código QR rotatorio (que aparece en la pestaña En vivo de la página de Asistencia) para fichar entrada o salida — una foto del código deja de funcionar en segundos. Combínalo con el GPS anterior para la máxima protección."
+        },
+        "geofence_radius": {
+          "label": "Radio de geovalla de asistencia (metros)",
+          "desc": "Distancia máxima desde el negocio para permitir el fichaje (p. ej. 50)"
+        },
+        "strict_block": {
+          "label": "Bloqueo estricto de geovalla",
+          "desc": "Si está activado, impide el fichaje si el personal está fuera del radio. Si está desactivado, permite el fichaje pero lo marca para revisión del encargado."
+        }
+      },
+      "save": "Guardar"
+    },
+    "labor": {
+      "trigger": "Valores predeterminados de mano de obra y cumplimiento",
+      "max_weekly_hours": {
+        "label": "Horas semanales máximas",
+        "desc": "Máximo de horas por defecto por empleado antes de bloquear el horario"
+      },
+      "min_gap": {
+        "label": "Espacio mínimo entre turnos (horas)",
+        "desc": "El espacio de \"cierre-apertura\", p. ej. 8 horas"
+      },
+      "split_shift_gap": {
+        "label": "Espacio de turno partido (horas)",
+        "desc": "Espacio mínimo permitido el mismo día"
+      },
+      "overtime_payroll_heading": "Horas extra y nómina",
+      "daily_ot_threshold": {
+        "label": "Umbral diario de horas extra (horas)",
+        "desc": "Horas en un día antes de que empiecen las horas extra"
+      },
+      "weekly_ot_threshold": {
+        "label": "Umbral semanal de horas extra (horas)",
+        "desc": "Total de horas semanales antes de que empiecen las horas extra"
+      },
+      "overtime_multiplier": {
+        "label": "Multiplicador de horas extra",
+        "desc": "Multiplicador de pago para las horas extra (p. ej. 1,5x)"
+      },
+      "pay_period_type": {
+        "label": "Tipo de período de pago",
+        "desc": "Con qué frecuencia se procesa la nómina"
+      },
+      "pay_period_options": {
+        "WEEKLY": "Semanal",
+        "BIWEEKLY": "Quincenal",
+        "MONTHLY": "Mensual"
+      },
+      "tip_pooling_heading": "Fondo común de propinas",
+      "enable_tip_pooling": {
+        "label": "Activar fondo común de propinas",
+        "desc": "Reparte las propinas recaudadas entre el personal que trabajó en lugar de atribuirlas por pedido"
+      },
+      "split_strategy": {
+        "label": "Estrategia de reparto",
+        "desc": "Cómo se dividen las propinas agrupadas entre el personal",
+        "equal_split": "Reparto igualitario",
+        "hours_worked": "Horas trabajadas"
+      },
+      "save": "Guardar"
+    },
+    "tax": {
+      "trigger": "Configuración de impuestos",
+      "loading": "Cargando configuración de impuestos…",
+      "save": "Guardar",
+      "fiscal_id": {
+        "ES": {
+          "label": "NIF/CIF",
+          "placeholder": "p. ej. B12345678",
+          "helper": "Necesario para la facturación fiscal española — se imprime en los recibos y se usa en el código QR de la AEAT. Configúralo antes de que se active la facturación fiscal española para tu cuenta.",
+          "notSetWarning": "No definido — necesario antes de que se active la facturación fiscal española para tu cuenta."
+        },
+        "AD": {
+          "label": "Número de identificación fiscal (NRT)",
+          "placeholder": "p. ej. A-123456-Z",
+          "helper": "Necesario para la facturación fiscal andorrana — se imprime en los recibos. Los pedidos no se pueden completar hasta que esto esté configurado.",
+          "notSetWarning": "No definido — necesario antes de completar cualquier pedido."
+        }
+      },
+      "pricing_model": {
+        "label": "Modelo de precios",
+        "included_label": "Impuesto incluido en el precio",
+        "included_hint": "(estilo UE — el impuesto está integrado en los precios mostrados)",
+        "excluded_label": "Impuesto añadido aparte",
+        "excluded_hint": "(estilo EE. UU. — el impuesto se muestra como una línea separada al pagar)",
+        "save": "Guardar modelo de precios"
+      },
+      "library": {
+        "title": "Biblioteca de impuestos",
+        "subtitle": "Tasas de impuesto individuales aplicadas a los pedidos",
+        "autofill": "Autocompletar",
+        "autofill_tooltip": "Rellena el impuesto inicial estándar para el país de este negocio (p. ej. IVA España 10%, IGI Andorra 4,5%) — verifícalo con tu asesor fiscal antes de confiar en él.",
+        "add_tax": "Añadir impuesto",
+        "empty_title": "Todavía no hay impuestos configurados.",
+        "empty_desc": "Añade tu primer impuesto para aplicarlo a todos los pedidos por defecto.",
+        "default_badge": "Predeterminado",
+        "set_default": "Establecer predeterminado",
+        "delete_default_tooltip": "Establece otro impuesto como predeterminado antes de eliminar este.",
+        "toasts": {
+          "deleted": "Impuesto eliminado",
+          "delete_failed": "Error al eliminar el impuesto",
+          "default_updated": "Impuesto predeterminado actualizado",
+          "default_update_failed": "Error al actualizar el impuesto predeterminado",
+          "unsupported_country": "Todavía no hay un impuesto inicial disponible para el país de este negocio. Añade los impuestos manualmente a continuación.",
+          "autofill_added": "Se añadió {{list}}",
+          "autofill_up_to_date": "La biblioteca de impuestos ya está actualizada — nada que añadir.",
+          "autofill_failed": "Error al autocompletar los impuestos"
+        }
+      },
+      "form_dialog": {
+        "edit_title": "Editar impuesto",
+        "add_title": "Añadir impuesto",
+        "name_label": "Nombre",
+        "name_placeholder": "p. ej. IVA, Impuesto estatal",
+        "rate_label": "Tasa (%)",
+        "set_default_checkbox": "Establecer como impuesto predeterminado",
+        "cancel": "Cancelar",
+        "save_changes": "Guardar cambios",
+        "create": "Crear",
+        "errors": {
+          "name_required": "El nombre del impuesto es obligatorio.",
+          "rate_invalid": "La tasa del impuesto no puede superar el 100%.",
+          "save_failed": "Error al guardar el impuesto. Inténtalo de nuevo."
+        },
+        "toasts": {
+          "updated": "Impuesto actualizado",
+          "created": "Impuesto creado"
+        }
+      },
+      "groups": {
+        "title": "Grupos de impuestos",
+        "subtitle": "Agrupa varios impuestos para artículos específicos (p. ej. Merchandising, Alcohol)",
+        "add_group": "Añadir grupo",
+        "add_taxes_first_tooltip": "Añade impuestos a la biblioteca de arriba antes de crear grupos.",
+        "empty_no_taxes": "Añade impuestos a la biblioteca de arriba antes de crear grupos.",
+        "empty_title": "Todavía no hay grupos de impuestos.",
+        "empty_desc": "Los grupos te permiten combinar varios impuestos para artículos específicos (p. ej. Merchandising, Alcohol).",
+        "no_taxes_label": "Sin impuestos",
+        "total_suffix": "{{rate}}% en total",
+        "delete_confirm_title": "¿Eliminar grupo de impuestos?",
+        "delete_confirm_desc": "Esta acción no se puede deshacer.",
+        "delete": "Eliminar",
+        "toasts": {
+          "deleted": "Grupo de impuestos eliminado",
+          "delete_failed": "Error al eliminar el grupo de impuestos"
+        }
+      },
+      "group_form_dialog": {
+        "edit_title": "Editar grupo de impuestos",
+        "add_title": "Añadir grupo de impuestos",
+        "name_label": "Nombre del grupo",
+        "name_placeholder": "p. ej. Alcohol, Merchandising",
+        "taxes_label": "Impuestos",
+        "combined_rate": "Tasa combinada:",
+        "errors": {
+          "name_required": "El nombre del grupo es obligatorio.",
+          "select_at_least_one": "Selecciona al menos un impuesto para este grupo.",
+          "save_failed": "Error al guardar el grupo de impuestos. Inténtalo de nuevo."
+        },
+        "toasts": {
+          "updated": "Grupo de impuestos actualizado",
+          "created": "Grupo de impuestos creado"
+        },
+        "save_changes": "Guardar cambios",
+        "create": "Crear"
+      }
+    }
+  },
+  "discounts_page": {
+    "title": "Descuentos",
+    "subtitle": "Crea códigos promocionales y descuentos aplicados por el encargado que el personal puede usar al cobrar.",
+    "new_discount": "Nuevo descuento",
+    "all_discounts": "Todos los descuentos",
+    "col_name": "Nombre",
+    "col_code": "Código",
+    "col_value": "Valor",
+    "col_min_order": "Pedido mín.",
+    "col_expires": "Caduca",
+    "col_status": "Estado",
+    "col_actions": "Acciones",
+    "loading": "Cargando...",
+    "empty": "Todavía no hay descuentos.",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "form": {
+      "edit_title": "Editar descuento",
+      "new_title": "Nuevo descuento",
+      "name_label": "Nombre",
+      "name_placeholder": "Rebajas de verano",
+      "code_label": "Código promocional (opcional)",
+      "type_label": "Tipo",
+      "percentage_option": "Porcentaje (%)",
+      "fixed_option": "Importe fijo (€)",
+      "value_label": "Valor",
+      "min_order_label": "Importe mínimo del pedido",
+      "expires_label": "Caduca el",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "create": "Crear"
+    }
+  },
+  "booking_flow_modal": {
+    "title": "Nueva reserva",
+    "steps": {
+      "search": {
+        "label": "Fecha y hora",
+        "description": "Cuándo y cuántos"
+      },
+      "table_selection": {
+        "label": "Mesa",
+        "description": "Elegir una mesa"
+      },
+      "pre_order": {
+        "label": "Pedido anticipado",
+        "description": "Artículos opcionales"
+      },
+      "customer_info": {
+        "label": "Cliente",
+        "description": "Datos de contacto"
+      }
+    },
+    "errors": {
+      "time_in_past": "La hora de la reserva debe ser en el futuro.",
+      "invalid_email": "Introduce una dirección de correo válida",
+      "phone_required": "El número de teléfono es obligatorio",
+      "invalid_phone": "Introduce un número de teléfono válido para el país seleccionado"
+    },
+    "search_step": {
+      "date_label": "Fecha",
+      "date_placeholder": "Elegir una fecha",
+      "time_label": "Hora",
+      "guest_count_label": "Número de comensales"
+    },
+    "table_step": {
+      "waitlist_title": "Lista de espera",
+      "waitlist_desc": "Añadir a la lista de espera si no hay mesa preferida disponible.",
+      "table_fallback_name": "Mesa {{number}}",
+      "capacity": "Capacidad: {{count}} comensales",
+      "empty": "No hay mesas disponibles para esta hora. Aún puedes unirte a la lista de espera."
+    },
+    "pre_order_step": {
+      "no_menu_items": "No se encontraron artículos del menú.",
+      "add": "Añadir",
+      "order_heading": "Pedido ({{count}})",
+      "remove": "Quitar",
+      "empty_order": "Todavía no se han añadido artículos.",
+      "total": "Total: {{amount}} €"
+    },
+    "customer_step": {
+      "found_user": "Usuario encontrado: {{name}}",
+      "link_prompt": "¿Quieres vincular esta reserva?",
+      "no": "No",
+      "yes_link": "Sí, vincular",
+      "linked_to": "Vinculada a la cuenta de {{name}}",
+      "name_label": "Nombre del cliente",
+      "name_placeholder": "Juan Pérez",
+      "phone_label": "Número de teléfono",
+      "phone_placeholder": "Introduce el número de teléfono",
+      "email_label": "Correo electrónico",
+      "email_placeholder": "juan@ejemplo.com",
+      "notes_label": "Notas especiales",
+      "notes_placeholder": "Celebración de cumpleaños, alergias, etc.",
+      "source_label": "Origen",
+      "duration_label": "Duración (minutos)"
+    },
+    "source_options": {
+      "APP": "App",
+      "WEB": "Web",
+      "PHONE": "Teléfono",
+      "WALK_IN": "Sin reserva",
+      "INSTAGRAM": "Instagram",
+      "GOOGLE": "Google"
+    },
+    "footer": {
+      "back": "Atrás",
+      "cancel": "Cancelar",
+      "complete_booking": "Completar reserva",
+      "check_availability": "Comprobar disponibilidad",
+      "continue": "Continuar"
+    }
+  },
+  "view_reservation_modal": {
+    "title": "Detalles de la reserva",
+    "load_failed": "Error al cargar los detalles de la reserva.",
+    "close": "Cerrar",
+    "closed_notice": "Esta reserva está cerrada y no se puede modificar.",
+    "reassign_table": "Reasignar mesa",
+    "assign_table": "Asignar mesa",
+    "not_available": "N/D",
+    "tabs": {
+      "details": "Detalles",
+      "timeline": "Cronología"
+    },
+    "customer_info": {
+      "heading": "Información del cliente",
+      "name": "Nombre",
+      "source": "Origen de la reserva"
+    },
+    "reservation_info": {
+      "heading": "Detalles de la reserva",
+      "date": "Fecha",
+      "time": "Hora",
+      "duration": "Duración",
+      "duration_value": "{{count}} min",
+      "guests": "Comensales"
+    },
+    "table_info": {
+      "heading": "Información de la mesa",
+      "table_name": "Nombre de la mesa",
+      "table_number_fallback": "Mesa {{number}}",
+      "capacity": "Capacidad",
+      "capacity_value": "{{count}} personas",
+      "status": "Estado de la mesa",
+      "no_table": "No hay mesa asignada"
+    },
+    "notes": {
+      "heading": "Notas y motivos",
+      "customer_notes": "Notas del cliente",
+      "cancel_reason": "Motivo de cancelación",
+      "cancelled_at": "Cancelada el"
+    },
+    "order": {
+      "heading": "Pedido vinculado",
+      "status": "Estado del pedido",
+      "payment_status": "Estado del pago",
+      "total_amount": "Importe total",
+      "items_heading": "Artículos del pedido",
+      "item_note": "Nota: {{note}}",
+      "no_items": "No hay artículos seleccionados."
+    }
+  },
+  "edit_reservation_modal": {
+    "title": "Editar reserva",
+    "restricted_notice": "Las modificaciones están restringidas. La reserva está programada dentro de los próximos {{minutes}} minutos.",
+    "name_label": "Nombre del cliente",
+    "phone_label": "Número de teléfono",
+    "date_label": "Fecha",
+    "time_label": "Hora",
+    "guest_count_label": "Número de comensales",
+    "status_label": "Estado",
+    "status_options": {
+      "PENDING": "Pendiente",
+      "CONFIRMED": "Confirmada",
+      "WAITLIST": "Lista de espera",
+      "SEATED": "Sentados",
+      "COMPLETED": "Completada",
+      "NO_SHOW": "No presentado",
+      "CANCELLED": "Cancelada",
+      "EXPIRED": "Caducada"
+    },
+    "assigned_table_label": "Mesa asignada",
+    "select_table_placeholder": "Selecciona una mesa",
+    "unassigned_waitlist": "Sin asignar (lista de espera)",
+    "table_option": "{{name}} (Capacidad: {{capacity}})",
+    "table_fallback_name": "Mesa {{number}}",
+    "table_conflict_hint": "Asignar una mesa comprobará los conflictos de disponibilidad.",
+    "cancel_reason_label": "Motivo de cancelación (opcional)",
+    "cancel_reason_placeholder": "El cliente solicitó otro día...",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "save": "Guardar"
+  },
+  "reservation_dashboard": {
+    "title": "Reservas",
+    "subtitle": "Panel en directo — se actualiza cada 60 s",
+    "refresh": "Actualizar",
+    "new_reservation": "Nueva reserva",
+    "waitlist": "Lista de espera",
+    "walk_in": "Sin reserva",
+    "stat_tiles": {
+      "total_today": "Total hoy",
+      "confirmed": "Confirmadas",
+      "seated": "Sentados",
+      "completed": "Completadas",
+      "no_shows": "No presentados",
+      "cancelled": "Canceladas"
+    },
+    "currently_seated": {
+      "heading": "Sentados actualmente ({{count}})",
+      "table_fallback": "Mesa {{number}}",
+      "view": "Ver"
+    },
+    "upcoming": {
+      "heading": "Próximas — 2 próximas horas ({{count}})",
+      "table_fallback": "Mesa {{number}}",
+      "reassign": "Reasignar",
+      "assign_table": "Asignar mesa"
+    },
+    "all_reservations": {
+      "title_fallback": "Todas las reservas",
+      "date_range_label": "Rango de fechas",
+      "status_label": "Estado",
+      "status_all": "Todos",
+      "col_date_time": "Fecha y hora",
+      "col_customer": "Cliente",
+      "col_guests": "Comensales",
+      "col_table": "Mesa",
+      "col_status": "Estado",
+      "col_actions": "Acciones",
+      "empty": "No se encontraron reservas.",
+      "unassigned": "Sin asignar",
+      "reassign": "Reasignar",
+      "assign": "Asignar",
+      "table_fallback": "Mesa {{number}}"
+    },
+    "no_shows_today": {
+      "heading": "No presentados hoy ({{count}})",
+      "booked": "Reservado: {{time}}",
+      "marked": "Marcado: {{time}}"
+    }
+  },
+  "walk_in_modal": {
+    "title": "Nuevo cliente sin reserva",
+    "name_label": "Nombre del cliente",
+    "name_placeholder": "Juan Pérez",
+    "phone_label": "Teléfono",
+    "email_label": "Correo electrónico",
+    "party_size_label": "Tamaño del grupo",
+    "table_label": "Mesa",
+    "checking_availability": "Comprobando disponibilidad…",
+    "no_tables_available": "No hay mesas disponibles",
+    "select_table_placeholder": "Selecciona una mesa",
+    "table_option": "{{name}} — {{capacity}} plazas",
+    "table_fallback_name": "Mesa {{number}}",
+    "notes_label": "Notas",
+    "notes_placeholder": "Alergias, preferencias…",
+    "cancel": "Cancelar",
+    "creating": "Creando…",
+    "create": "Crear cliente"
+  },
+  "join_waitlist_modal": {
+    "title": "Añadir a la lista de espera",
+    "adding": "Añadiendo…",
+    "add_to_waitlist": "Añadir a la lista de espera"
+  },
+  "reservation_action_buttons": {
+    "action_unavailable": "Esta acción ya no está disponible. Actualiza la página.",
+    "confirm": "Confirmar",
+    "seat": "Sentar",
+    "complete": "Completar",
+    "no_show": "No-presentación",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "cancel_dialog": {
+      "title": "Cancelar reserva",
+      "description": "Opcionalmente, indica un motivo para la cancelación.",
+      "reason_label": "Motivo de cancelación (opcional)",
+      "reason_placeholder": "p. ej. El cliente solicitó cancelar",
+      "cancelling": "Cancelando…",
+      "confirm_cancel": "Confirmar cancelación"
+    },
+    "no_show_dialog": {
+      "title": "Marcar como no-presentación",
+      "description": "¿Marcar esta reserva como no-presentación? Esta acción no se puede deshacer.",
+      "marking": "Marcando…",
+      "confirm": "Marcar no-presentación"
+    }
+  },
+  "customer_late_popover": {
+    "trigger": "Con retraso",
+    "heading": "Cliente con retraso",
+    "delay_label": "Retraso estimado (minutos)",
+    "notes_label": "Notas (opcional)",
+    "notes_placeholder": "Avisó antes, tráfico…",
+    "cancel": "Cancelar",
+    "record": "Registrar"
+  },
+  "staff_add_order": {
+    "title": "Crear nuevo pedido",
+    "description": "Explora el menú y selecciona artículos para este pedido.",
+    "order_details_heading": "Detalles del pedido",
+    "order_type_label": "Tipo de pedido",
+    "order_type_placeholder": "Selecciona el tipo",
+    "dine_in": "En el local",
+    "takeaway": "Para llevar",
+    "delivery": "A domicilio",
+    "select_table_label": "Selecciona una mesa",
+    "choose_table_placeholder": "Elige una mesa",
+    "provide_table_option": "-- Indica una mesa --",
+    "table_option": "{{name}} (Cap.: {{capacity}})",
+    "kitchen_note_label": "Nota de cocina / Info de alergias",
+    "kitchen_note_placeholder": "p. ej. Alergia grave a frutos secos en esta mesa",
+    "tax_exempt_label": "Exento de impuestos",
+    "selected_items_label": "Artículos seleccionados",
+    "items_count": "{{count}} artículos",
+    "empty_items": "Todavía no se han añadido artículos",
+    "variant_selected": "Variante seleccionada",
+    "mods_prefix": "Modif.: {{list}}",
+    "note_prefix": "Nota: {{note}}",
+    "price_each": "{{price}} cada uno",
+    "subtotal": "Subtotal",
+    "cancel": "Cancelar",
+    "processing": "Procesando...",
+    "place_order": "Realizar pedido",
+    "errors": {
+      "no_items": "Añade al menos un artículo al pedido",
+      "no_table": "Selecciona una mesa para los pedidos en el local"
+    },
+    "toasts": {
+      "created": "Pedido creado correctamente"
+    }
+  },
+  "staff_add_order_mobile": {
+    "back_to_menu": "Volver al menú",
+    "add_items": "Añadir artículos",
+    "review_order": "Revisar pedido",
+    "variant": "Variante",
+    "view_order": "Ver pedido",
+    "place_order_with_total": "Realizar pedido · {{total}}"
+  },
+  "order_item_config_modal": {
+    "title": "Configurar - {{name}}",
+    "default_description": "Personaliza tu artículo",
+    "choose_variant": "Elegir tamaño/variante",
+    "optional": "(Opcional)",
+    "none_base_item": "Ninguno (artículo base)",
+    "none": "Ninguno",
+    "quantity": "Cantidad",
+    "modifiers_apply_to_all": "Los modificadores se aplicarán a los {{count}} artículos. Puedes añadir artículos por separado si necesitas variaciones distintas.",
+    "notes_label": "Notas especiales / Solicitudes",
+    "notes_placeholder": "p. ej. Sin cebolla, extra picante...",
+    "total": "Total",
+    "cancel": "Cancelar",
+    "save_changes": "Guardar cambios",
+    "add_to_order": "Añadir al pedido"
+  },
+  "payment_modal": {
+    "title": "Añadir pago - Pedido n.º {{id}}",
+    "description_prefix": "Registra un pago para este pedido. Actualmente tiene un saldo pendiente de",
+    "order_total": "Total del pedido",
+    "total_paid": "Total pagado",
+    "payment_amount_label": "Importe del pago ({{symbol}})",
+    "tip_amount_label": "Importe de la propina ({{symbol}})",
+    "optional": "(Opcional)",
+    "payment_method_label": "Método de pago",
+    "select_method_placeholder": "Selecciona un método",
+    "methods": {
+      "cash": "Efectivo",
+      "card": "Tarjeta",
+      "online": "En línea",
+      "other": "Otro"
+    },
+    "cancel": "Cancelar",
+    "processing": "Procesando...",
+    "record_payment": "Registrar pago"
+  },
+  "cancel_order_modal": {
+    "title": "Cancelar pedido",
+    "description": "¿Seguro que quieres cancelar este pedido? Esto restaurará automáticamente el inventario de los artículos ya enviados a cocina.",
+    "reason_required_label": "Motivo de cancelación",
+    "reason_placeholder": "¿Por qué se cancela este pedido?",
+    "reason_required_hint": "Dado que se han registrado pagos, se requiere un motivo.",
+    "reason_optional_label": "Motivo de cancelación (opcional)",
+    "reason_optional_placeholder": "Motivo opcional...",
+    "keep_order": "Mantener pedido",
+    "confirm_cancel": "Confirmar cancelación"
+  },
+  "transfer_table_modal": {
+    "title": "Transferir mesa",
+    "description_prefix": "Selecciona una mesa disponible a la que transferir este pedido. Esto liberará la mesa actual",
+    "description_suffix": "y ocupará de inmediato la mesa recién seleccionada.",
+    "none": "Ninguna",
+    "select_destination_label": "Selecciona la mesa de destino",
+    "choose_table_placeholder": "Elige una mesa disponible",
+    "no_tables_available": "No hay mesas disponibles",
+    "cancel": "Cancelar",
+    "transferring": "Transfiriendo...",
+    "transfer_order": "Transferir pedido"
+  },
+  "force_close_order_modal": {
+    "title": "Forzar finalización del pedido",
+    "description": "Este pedido no está totalmente pagado. Forzar su finalización lo marcará como completado, pero se requiere un motivo.",
+    "notes_label": "Notas de cierre",
+    "notes_placeholder": "Explica por qué se está completando este pedido con pago insuficiente...",
+    "cancel": "Cancelar",
+    "force_complete": "Forzar finalización"
+  },
+  "refund_payment_modal": {
+    "title": "Reembolsar pago",
+    "confirm_prefix": "¿Seguro que quieres reembolsar este pago",
+    "confirm_suffix": "?",
+    "deduct_prefix": "Esta acción deducirá",
+    "deduct_suffix": "del importe total pagado del pedido y recalculará su estado.",
+    "reason_label": "Motivo del reembolso (opcional)",
+    "reason_placeholder": "¿Por qué se reembolsa este pago?",
+    "cancel": "Cancelar",
+    "confirm_refund": "Confirmar reembolso"
+  },
+  "staff_add_order_menu": {
+    "search_placeholder": "Buscar un artículo...",
+    "all_categories": "Todas las categorías",
+    "items_count_one": "{{count}} artículo",
+    "items_count_other": "{{count}} artículos",
+    "no_items_found": "No se encontraron artículos",
+    "try_adjusting_search": "Prueba a ajustar tu búsqueda"
+  },
+  "manage_order_item_modal": {
+    "loading": "Cargando detalles del artículo..."
+  },
+  "tip_pooling_page": {
+    "title": "Fondo común de propinas",
+    "subtitle": "Previsualiza, genera y finaliza los repartos de propinas para cualquier período.",
+    "disabled_notice": "El fondo común de propinas está actualmente desactivado para este negocio. Actívalo en Configuración → Mano de obra y cumplimiento para empezar a repartir las propinas agrupadas.",
+    "generate_distribution": "Generar reparto",
+    "empty_preview": "No se encontraron registros de asistencia validados ni propinas recaudadas para este período.",
+    "total_hours": "Total horas:",
+    "total_pool": "Total del fondo:",
+    "table": {
+      "hours_worked": "Horas trabajadas",
+      "share": "Parte"
+    },
+    "finalize_dialog": {
+      "title": "Finalizar reparto de propinas",
+      "description": "Esto bloqueará todas las entradas en borrador para el período del {{startDate}} al {{endDate}}. Las entradas finalizadas no se pueden sobrescribir. Esta acción es irreversible."
+    }
+  },
+  "invitations_section": {
+    "qr_description": "Escanea este código QR desde la aplicación móvil \"FlairSync Staff\" del personal",
+    "title": "Todas las invitaciones del personal",
+    "add_staff": "Añadir personal",
+    "upgrade": "Mejorar plan",
+    "upgrade_prompt_with_limit": "El plan del negocio permite hasta {{allowed}} empleados ({{current}} activos actualmente). El propietario debe mejorar el plan para añadir más.",
+    "upgrade_prompt_generic": "Se ha alcanzado el límite de empleados del plan del negocio. El propietario debe mejorar el plan para añadir más personal.",
+    "add_new_staff_title": "Añadir nuevo empleado",
+    "email_placeholder": "Correo electrónico",
+    "add": "Añadir",
+    "import_csv": "Importar CSV",
+    "status_filter_placeholder": "Selecciona el estado",
+    "status_options": {
+      "ALL": "Todos",
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptada",
+      "DECLINED": "Rechazada",
+      "CANCELLED": "Cancelada",
+      "EXPIRED": "Caducada"
+    },
+    "col_email": "Correo electrónico",
+    "col_display_name": "Nombre mostrado",
+    "col_created": "Creada",
+    "col_expires": "Caduca",
+    "col_status": "Estado",
+    "col_retries": "Reintentos",
+    "col_actions": "Acciones",
+    "open_menu": "Abrir menú",
+    "resend_email": "Reenviar correo",
+    "show_qr": "Mostrar código QR",
+    "cancel_invitation": "Cancelar invitación",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "organization_detail_page": {
+    "loading": "Cargando organización...",
+    "subtitle_one": "Últimos 30 días, en {{count}} sucursal",
+    "subtitle_other": "Últimos 30 días, en {{count}} sucursales",
+    "total_sales": "Ventas totales",
+    "orders_count_one": "{{count}} pedido",
+    "orders_count_other": "{{count}} pedidos",
+    "labor_cost": "Costo de mano de obra",
+    "low_stock_alerts": "Alertas de stock bajo",
+    "per_branch_breakdown": "Desglose por sucursal",
+    "loading_dashboard": "Cargando panel...",
+    "col_branch": "Sucursal",
+    "col_sales": "Ventas",
+    "col_orders": "Pedidos",
+    "col_labor_cost": "Costo de mano de obra",
+    "col_low_stock": "Stock bajo",
+    "empty_breakdown": "Vincula una sucursal o región a esta organización para ver el rendimiento combinado.",
+    "map": "Mapa",
+    "regions": "Regiones",
+    "find_region_to_invite": "Buscar una región para invitar",
+    "link_region_hint": "Vincular una región incorpora todas las sucursales que dependen de ella en un solo paso. Si no eres el propietario de la región, su encargado deberá aprobarlo desde la bandeja de solicitudes.",
+    "no_branches_in_region": "Todavía no hay sucursales en esta región.",
+    "no_regions_linked": "Todavía no hay regiones vinculadas.",
+    "branches": "Sucursales",
+    "branches_subtitle": "Añadidas directamente a la organización, no mediante una región.",
+    "find_business_to_invite": "Buscar un negocio para invitar",
+    "invite_business_hint": "Envía una solicitud — nada se vincula hasta que se apruebe desde la bandeja de solicitudes, incluso para un negocio que tú mismo posees.",
+    "no_direct_branches": "No hay sucursales directas — puede que haya sucursales vinculadas a través de una región arriba."
+  },
+  "create_business_page": {
+    "title": "Crear un nuevo negocio",
+    "loading": "Cargando...",
+    "upgrade_prompt": "Has alcanzado el límite de negocios. Mejora tu plan para añadir más ubicaciones.",
+    "errors": {
+      "name_required": "El nombre del negocio es obligatorio",
+      "description_required": "La descripción es obligatoria",
+      "type_required": "Especifica el tipo de negocio",
+      "table_count_integer": "Debe ser un número entero",
+      "table_count_min": "Al menos 1 mesa",
+      "table_count_max": "Máximo 200 mesas",
+      "table_count_required": "El número de mesas es obligatorio",
+      "work_times_required": "Los horarios de trabajo son obligatorios",
+      "pricing_required": "La información de precios es obligatoria",
+      "tags_required": "Se requiere al menos una etiqueta",
+      "address_required": "La dirección es obligatoria",
+      "city_required": "La ciudad es obligatoria",
+      "country_required": "El país es obligatorio",
+      "location_required": "La ubicación es obligatoria"
+    },
+    "step1": {
+      "name_label": "Nombre del negocio",
+      "name_placeholder": "p. ej. Café Luna",
+      "description_label": "Descripción",
+      "description_placeholder": "Una cafetería acogedora en el centro...",
+      "type_label": "Tipo de negocio",
+      "table_count_label": "Número de mesas",
+      "has_kitchen_label": "¿Tiene cocina?"
+    },
+    "step2": {
+      "work_times_label": "Horarios de trabajo",
+      "pricing_label": "Rango de precios",
+      "tags_label": "Etiquetas del negocio"
+    },
+    "step3": {
+      "location_label": "Detalles de la ubicación"
+    },
+    "step4": {
+      "social_links_label": "Enlaces sociales (opcional)",
+      "auto_setup_title": "Configuración automática",
+      "recommended_badge": "Recomendado",
+      "auto_setup_desc": "Crea automáticamente categorías de menú, roles de personal, un plano de sala, estaciones de cocina y más según el tipo de tu negocio — para no empezar de cero. Desmarca para configurarlo todo tú mismo."
+    },
+    "back": "Atrás",
+    "create": "Crear",
+    "next": "Siguiente"
+  },
+  "region_detail_page": {
+    "loading": "Cargando región...",
+    "empty_breakdown": "Vincula una sucursal a esta región para ver el rendimiento combinado.",
+    "organization": "Organización",
+    "find_organization_to_join": "Buscar una organización a la que unirse",
+    "join_organization_hint": "Envía una solicitud — el propietario de la organización debe aprobarla antes de que esta región (y cada sucursal que dependa de ella) se vincule."
+  },
+  "fiscal_invoices_page": {
+    "title": "Facturas fiscales",
+    "subtitle": "El registro legal de facturas de tu negocio — números secuenciales y correcciones.",
+    "export_csv": "Exportar CSV",
+    "all_types": "Todos los tipos",
+    "type_standard": "Estándar",
+    "type_correction": "Corrección",
+    "to": "hasta",
+    "clear": "Limpiar",
+    "col_invoice_number": "Número de factura",
+    "col_country": "País",
+    "col_type": "Tipo",
+    "col_status": "Estado",
+    "col_order": "Pedido",
+    "col_issued_at": "Emitida el",
+    "col_hash": "Hash",
+    "col_details": "Detalles",
+    "empty": "No se encontraron facturas fiscales.",
+    "empty_filtered": "No se encontraron facturas fiscales para los filtros seleccionados.",
+    "corrects": "corrige {{id}}",
+    "download_pdf": "Descargar PDF",
+    "view_details": "Ver detalles",
+    "page_of": "Página {{page}} de {{totalPages}}",
+    "loading_order": "Cargando pedido"
+  },
+  "audit_logs_page": {
+    "title": "Registros de auditoría",
+    "subtitle": "Trazabilidad completa de cada cambio realizado en tu negocio.",
+    "all_entity_types": "Todos los tipos de entidad",
+    "all_actions": "Todas las acciones",
+    "action_create": "Creación",
+    "action_update": "Actualización",
+    "action_delete": "Eliminación",
+    "to": "hasta",
+    "clear": "Limpiar",
+    "col_time": "Hora",
+    "col_action": "Acción",
+    "col_entity": "Entidad",
+    "col_changed_by": "Modificado por",
+    "col_changes": "Cambios",
+    "col_details": "Detalles",
+    "empty": "No se encontraron registros de auditoría.",
+    "empty_filtered": "No se encontraron registros de auditoría para los filtros seleccionados.",
+    "more_fields_one": "+{{count}} campo más",
+    "more_fields_other": "+{{count}} campos más",
+    "view_details": "Ver detalles",
+    "page_of": "Página {{page}} de {{totalPages}}",
+    "entity_types": {
+      "business": "Negocio",
+      "menu": "Menú",
+      "menu_item": "Artículo de menú",
+      "menu_category": "Categoría",
+      "shift": "Turno",
+      "role": "Rol",
+      "reservation": "Reserva",
+      "order": "Pedido",
+      "inventory_item": "Inventario"
+    }
+  },
+  "billing_invoices_table": {
+    "title": "Suscripciones",
+    "not_available": "N/D",
+    "status": {
+      "active": "Activa — se renueva el {{date}}",
+      "trial": "Prueba — termina el {{date}}",
+      "canceled_with_access": "Cancelada — acceso hasta el {{date}}",
+      "canceled": "Cancelada",
+      "payment_failed": "Pago fallido",
+      "activating": "Activando…",
+      "expired": "Expirada"
+    },
+    "col_plan": "Plan",
+    "col_started": "Iniciada",
+    "col_price": "Precio",
+    "col_status": "Estado",
+    "col_actions": "Acciones",
+    "refresh_status": "Actualizar estado",
+    "re_subscribe": "Volver a suscribirse",
+    "resume": "Reanudar",
+    "open_menu": "Abrir menú",
+    "show_invoices": "Ver facturas",
+    "change_plan": "Cambiar plan",
+    "billing_portal": "Portal de facturación",
+    "syncing": "Sincronizando…",
+    "contact_support": "Contactar soporte",
+    "cancelling": "Cancelando…",
+    "cancel_subscription": "Cancelar suscripción",
+    "cancelled_banner_prefix": "Esta suscripción está cancelada y permanecerá activa hasta el",
+    "cancelled_banner_suffix": "Después de esa fecha, el acceso a este negocio se suspenderá.",
+    "empty": "No se encontraron suscripciones.",
+    "cancel_dialog": {
+      "title": "¿Cancelar suscripción?",
+      "description_prefix": "Mantendrás el acceso hasta",
+      "end_of_billing_period": "el final del período de facturación",
+      "keep_subscription": "Mantener suscripción",
+      "confirm": "Sí, cancelar"
+    }
+  },
+  "subscription_invoices_sheet": {
+    "title": "Facturas",
+    "description_for_plan": "Plan {{name}} (facturación {{type}})",
+    "description_generic": "Consulta y descarga tu historial de facturación.",
+    "plan": "Plan",
+    "price": "Precio",
+    "started": "Iniciada",
+    "renews": "Renovación",
+    "loading": "Cargando facturas…",
+    "empty": "Aún no hay facturas",
+    "empty_hint": "Las facturas aparecerán aquí una vez que se procese tu primer pago.",
+    "col_date": "Fecha",
+    "col_type": "Tipo",
+    "col_amount": "Importe",
+    "col_status": "Estado",
+    "col_action": "Acción",
+    "billing_reason_tooltips": {
+      "initial": "Este es el primer pago de esta suscripción.",
+      "renewal": "Pago de renovación automática del período de facturación actual.",
+      "updated": "Ajuste de pago por un cambio de plan o cantidad."
+    },
+    "billing_reason_labels": {
+      "initial": "Inicial",
+      "renewal": "Renovación",
+      "updated": "Cambio de plan"
+    },
+    "status_labels": {
+      "paid": "Pagada",
+      "pending": "Pendiente",
+      "void": "Anulada",
+      "refunded": "Reembolsada",
+      "partial_refund": "Reembolsada parcialmente"
+    },
+    "pdf": "PDF",
+    "paid_with": "Pagado con {{brand}} terminada en {{last4}}"
+  },
+  "change_plan_modal": {
+    "title": "Cambiar plan",
+    "description": "Selecciona un nuevo plan. La facturación se ajustará automáticamente mediante Lemon Squeezy.",
+    "no_plans": "No hay planes disponibles.",
+    "current_plan": "Plan actual",
+    "select": "Seleccionar",
+    "upgrade": "Mejorar",
+    "downgrade": "Reducir",
+    "businesses_count_one": "{{count}} negocio",
+    "businesses_count_other": "{{count}} negocios",
+    "switch_to": "¿Cambiar a {{name}}?",
+    "cancel": "Cancelar",
+    "confirm_switch": "Confirmar cambio"
+  },
+  "danger_page": {
+    "title": "Zona de peligro",
+    "warning": "Estas acciones son destructivas e irreversibles. Ten cuidado.",
+    "reset_shifts": "Restablecer todos los turnos del personal",
+    "reset_shifts_description": "Esto eliminará todos los horarios actuales del personal. Esta acción no se puede deshacer.",
+    "delete_menu_items": "Eliminar todos los artículos del menú",
+    "delete_menu_items_description": "Esto eliminará permanentemente todos los artículos de tu menú.",
+    "transfer_ownership": "Transferir propiedad",
+    "transfer_ownership_description": "El nuevo propietario ya debe tener una cuenta de FlairSync con un perfil profesional. Recibirá un correo para confirmar — después habrá un período de gracia de 3 días durante el cual cualquiera de los dos puede cancelar antes de que se complete la transferencia.",
+    "transfer_in_progress": "Ya hay una transferencia en curso",
+    "delete_business": "Eliminar negocio permanentemente",
+    "email_required": "El correo electrónico es obligatorio",
+    "email_invalid": "Introduce una dirección de correo válida",
+    "unpublish_first": "Despublica primero el negocio",
+    "remove_staff_first_one": "Elimina primero al {{count}} miembro del personal",
+    "remove_staff_first_other": "Elimina primero a los {{count}} miembros del personal",
+    "transfer_pending_label": "Transferencia de propiedad pendiente",
+    "transfer_pending_body": "de confirmación por parte del nuevo propietario invitado. La invitación caduca el",
+    "transfer_pending_suffix": "si no se confirma.",
+    "transfer_confirmed_label": "Transferencia de propiedad confirmada",
+    "transfer_confirmed_body": "y se completará automáticamente el",
+    "transfer_confirmed_suffix": "a menos que se cancele.",
+    "cancelling": "Cancelando…",
+    "cancel_transfer": "Cancelar transferencia",
+    "cancel": "Cancelar",
+    "confirm_reset": "Confirmar restablecimiento",
+    "delete_all": "Eliminar todo",
+    "new_owner_email": "Correo del nuevo propietario",
+    "enter_recipient_email": "Introduce el correo del destinatario",
+    "confirm_your_password": "Confirma tu contraseña",
+    "enter_your_password": "Introduce tu contraseña",
+    "tfa_code_label": "Código de autenticación de dos factores",
+    "sending": "Enviando...",
+    "transfer": "Transferir",
+    "delete_business_warning_prefix": "Esta acción es",
+    "delete_business_warning_bold": "permanente e irreversible",
+    "delete_business_warning_suffix": "Se eliminarán todos los menús, turnos, horarios, inventario y contenido multimedia.",
+    "type_to_confirm_prefix": "Escribe",
+    "type_to_confirm_suffix": "para confirmar:",
+    "type_name_placeholder": "Escribe \"{{name}}\" para confirmar",
+    "deleting": "Eliminando...",
+    "delete_permanently": "Eliminar permanentemente"
+  },
+  "marketplace_management": {
+    "title": "Marketplace",
+    "subtitle": "Gestiona los artículos de tu tienda — merchandising, productos y más.",
+    "new_item": "Nuevo artículo",
+    "tabs": {
+      "items": "Artículos",
+      "incoming_orders": "Pedidos recibidos",
+      "my_orders": "Mis pedidos"
+    },
+    "empty": "Aún no hay artículos. Crea tu primer artículo para empezar a vender.",
+    "create_item": "Crear artículo",
+    "col_name": "Nombre",
+    "col_price": "Precio",
+    "col_stock": "Stock",
+    "col_status": "Estado",
+    "col_actions": "Acciones",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "delete_item": "Eliminar artículo",
+    "delete_item_description": "\"{{name}}\" se eliminará de forma permanente.",
+    "order_status": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "fulfilled": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "incoming_orders": {
+      "empty": "Nadie ha pedido tus artículos todavía.",
+      "col_item": "Artículo",
+      "col_buyer": "Comprador",
+      "col_qty": "Cant.",
+      "col_total": "Total",
+      "col_ship_to": "Enviar a",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "mark_fulfilled": "Marcar como completado"
+    },
+    "my_orders": {
+      "empty": "Este negocio aún no ha pedido nada en el marketplace."
+    },
+    "item_modal": {
+      "edit_title": "Editar artículo",
+      "new_title": "Nuevo artículo",
+      "name": "Nombre",
+      "name_placeholder": "Nombre del artículo",
+      "description": "Descripción",
+      "description_placeholder": "Descripción opcional...",
+      "price": "Precio",
+      "stock": "Stock",
+      "discount_this_item": "Aplicar descuento a este artículo",
+      "discount_type": "Tipo de descuento",
+      "percent_off": "% de descuento",
+      "amount_off": "Importe de descuento",
+      "expires_optional": "Caduca (opcional)",
+      "images_count": "Imágenes ({{count}}/{{max}})",
+      "add_images": "Añadir imágenes",
+      "save_changes": "Guardar cambios"
+    }
+  },
+  "staff_csv_import_modal": {
+    "title_upload": "Importar personal desde CSV",
+    "title_map": "Asignar columnas",
+    "title_result": "Importación completada",
+    "description_upload": "Sube una exportación CSV de tu plantilla. La IA sugerirá qué columnas corresponden a qué campos — cualquier disposición de encabezados funciona.",
+    "description_map": "Confirma qué columna corresponde a cada campo. Cada fila válida recibirá una invitación por correo.",
+    "description_result": "Esto es lo que ocurrió con cada fila de tu archivo.",
+    "select_csv_error": "Selecciona un archivo CSV.",
+    "no_rows_error": "Este archivo no tiene filas para importar.",
+    "parse_error": "No se pudo leer este archivo CSV. Comprueba el formato e inténtalo de nuevo.",
+    "select_email_column_error": "Selecciona qué columna contiene la dirección de correo.",
+    "import_error": "No se pudo importar el CSV. Inténtalo de nuevo.",
+    "drag_drop_hint": "Arrastra y suelta un archivo CSV aquí, o haz clic para buscarlo",
+    "csv_files_only": "Solo archivos CSV",
+    "remove_file": "Quitar archivo",
+    "ai_mapping_unavailable": "La asignación por IA no está disponible ahora, así que las columnas se emparejaron por nombre. Revisa la asignación a continuación.",
+    "rows_detected_one": "{{count}} fila detectada. Cada fila válida envía una invitación real por correo.",
+    "rows_detected_other": "{{count}} filas detectadas. Cada fila válida envía una invitación real por correo.",
+    "email": "Correo electrónico",
+    "select_a_column": "Selecciona una columna",
+    "name": "Nombre",
+    "none": "Ninguno",
+    "role": "Rol",
+    "none_default_role": "Ninguno (usar rol predeterminado)",
+    "matches_existing_roles": "Coincide con tus roles existentes:",
+    "preview_first_rows": "Vista previa (primeras filas)",
+    "invitations_sent_one": "{{count}} invitación enviada.",
+    "invitations_sent_other": "{{count}} invitaciones enviadas.",
+    "skipped_already_staff_one": "{{count}} fila omitida — ya es personal de este negocio.",
+    "skipped_already_staff_other": "{{count}} filas omitidas — ya son personal de este negocio.",
+    "skipped_duplicate_one": "{{count}} fila omitida — correo duplicado dentro del archivo.",
+    "skipped_duplicate_other": "{{count}} filas omitidas — correo duplicado dentro del archivo.",
+    "skipped_invalid_email_one": "{{count}} fila omitida — correo faltante o inválido.",
+    "skipped_invalid_email_other": "{{count}} filas omitidas — correo faltante o inválido.",
+    "skipped_limit_reached_one": "{{count}} fila omitida — se alcanzó el límite de empleados de tu plan.",
+    "skipped_limit_reached_other": "{{count}} filas omitidas — se alcanzó el límite de empleados de tu plan.",
+    "skipped_other_one": "{{count}} fila omitida — ya tenía una invitación pendiente u otro problema.",
+    "skipped_other_other": "{{count}} filas omitidas — ya tenían una invitación pendiente u otro problema.",
+    "unmatched_roles_prefix": "Estos nombres de rol no coincidieron con ningún rol existente, por lo que esas filas recibieron el rol predeterminado:",
+    "back": "Atrás",
+    "cancel": "Cancelar",
+    "analyzing_columns": "Analizando columnas...",
+    "analyze_file": "Analizar archivo",
+    "sending_invitations": "Enviando invitaciones...",
+    "send_invitations": "Enviar invitaciones",
+    "done": "Hecho"
+  },
+  "staff_section": {
+    "no_hourly_rate": "no se ha añadido tarifa por hora",
+    "staff_fallback": "Personal",
+    "remove_staff_title": "¿Eliminar a este miembro del personal?",
+    "remove_staff_description": "Esto eliminará a {{name}} de tu negocio y revocará su acceso. Su historial de asistencia y nómina se conservará.",
+    "this_staff_member": "este miembro del personal",
+    "remove": "Eliminar",
+    "all_staff": "Todo el personal",
+    "resync_invitations": "Resincronizar invitaciones",
+    "col_name": "Nombre",
+    "col_email": "Correo electrónico",
+    "col_roles": "Roles",
+    "col_hourly_rate": "Tarifa por hora",
+    "col_status": "Estado",
+    "col_actions": "Acciones",
+    "business_owner": "Propietario del negocio",
+    "status_active": "ACTIVO",
+    "schedule_shift": "Programar turno",
+    "set_pos_pin": "Definir PIN del TPV",
+    "remove_staff_title_short": "Eliminar personal",
+    "no_roles_yet": "Aún no hay roles"
+  },
+  "fiscal_invoice_details_modal": {
+    "view": "Ver",
+    "copy": "Copiar",
+    "type_standard": "ESTÁNDAR",
+    "type_correction": "CORRECCIÓN",
+    "full_details": "Detalles completos de esta factura fiscal.",
+    "status": "Estado",
+    "country": "País",
+    "predates_country_tracking": "— (anterior al seguimiento por país)",
+    "issued": "Emitida",
+    "order": "Pedido",
+    "view_order": "Ver pedido",
+    "corrects_invoice": "Corrige la factura",
+    "view_original_invoice": "Ver factura original",
+    "receipt": "Recibo",
+    "hash_chain": "Cadena de hash",
+    "hash": "Hash",
+    "previous_hash": "Hash anterior",
+    "genesis_record": "— (registro inicial de este negocio)",
+    "recorded": "Registrada el {{date}}",
+    "download_pdf": "Descargar PDF"
+  },
+  "plans_page": {
+    "current_plan": "Plan actual",
+    "upgrade": "Mejorar",
+    "downgrade": "Reducir",
+    "select_plan": "Seleccionar plan",
+    "payment_success": "¡Pago realizado con éxito!",
+    "to_plan": "a {{name}}?",
+    "confirm_trial_prefix": "Tu plan cambiará a",
+    "confirm_trial_immediately": "inmediatamente, pero no se te cobrará mientras tu prueba gratuita esté activa",
+    "confirm_trial_ends": "termina el {{date}}",
+    "confirm_trial_after": "Una vez que termine la prueba, se te facturará",
+    "confirm_prefix": "Tu plan cambiará a",
+    "confirm_immediately": "inmediatamente y la facturación se ajustará mediante Lemon Squeezy. A partir de ahora se te facturará",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "choose_your_plan": "Elige tu plan",
+    "subtitle": "Selecciona la suscripción que mejor se adapte a tu negocio.",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "how_many_businesses": "¿Cuántos negocios?",
+    "loading": "Cargando, espera un momento...",
+    "your_current_plan": "Tu plan actual",
+    "minimum_businesses_one": "Mínimo {{count}} negocio en este plan",
+    "minimum_businesses_other": "Mínimo {{count}} negocios en este plan",
+    "estimated_at_checkout": "Estimado — se confirma al pagar",
+    "businesses": "Negocios",
+    "staff": "Personal",
+    "menus": "Menús",
+    "products": "Productos",
+    "unlimited": "Ilimitado"
+  },
+  "owner_application_detail_page": {
+    "not_found": "Solicitud no encontrada",
+    "back_to_applicants": "Volver a los candidatos",
+    "applied_on": "Solicitud enviada el {{date}}",
+    "invite_sent": "Invitación enviada · {{date}}",
+    "send_staff_invite": "Enviar invitación de personal",
+    "actions": "Acciones",
+    "mark_as_reviewed": "Marcar como revisada",
+    "shortlist": "Preseleccionar",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "edit_note": "Editar nota",
+    "add_note": "Añadir nota",
+    "resume": "Currículum",
+    "view_resume": "Ver currículum",
+    "no_resume": "No se proporcionó currículum.",
+    "cover_letter": "Carta de presentación",
+    "internal_note": "Nota interna",
+    "add_internal_note_placeholder": "Añadir una nota interna...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "add_a_note": "+ Añadir una nota",
+    "activity_timeline": "Cronología de actividad",
+    "no_activity": "Aún no hay actividad.",
+    "accept_confirm_title": "¿Aceptar a este candidato?",
+    "accept_confirm_description": "{{name}} verá su estado actualizado a \"Aceptado\". Esta es una acción importante — confirma antes de continuar.",
+    "accept_applicant": "Aceptar candidato"
+  },
+  "fiscal_services_page": {
+    "title": "Servicios fiscales",
+    "subtitle": "Herramientas para declaraciones fiscales periódicas y facturación legal — el mismo motor fiscal que da soporte al cumplimiento en España y Andorra, según el país de tu negocio.",
+    "period_summary": "Resumen del período",
+    "period_summary_description": "Totales agregados para un rango de fechas — las cifras que necesitas para completar una declaración fiscal periódica autoliquidada (p. ej. el Formulari 900/910 del DTF de Andorra).",
+    "from": "Desde",
+    "to": "Hasta",
+    "export_csv": "Exportar CSV",
+    "pick_dates_hint": "Elige una fecha de inicio y fin para ver el resumen.",
+    "loading_summary": "Cargando resumen…",
+    "unamounted_warning_one": "{{count}} factura de este período es anterior al seguimiento de importes y se excluye de los totales siguientes — considera estos totales como incompletos, no definitivos.",
+    "unamounted_warning_other": "{{count}} facturas de este período son anteriores al seguimiento de importes y se excluyen de los totales siguientes — considera estos totales como incompletos, no definitivos.",
+    "standard_invoices": "Facturas estándar",
+    "corrections": "Correcciones",
+    "unamounted_excluded": "Sin importe (excluidas)",
+    "taxable_base": "Base imponible",
+    "tax_collected": "Impuesto recaudado",
+    "total_amount": "Importe total",
+    "fiscal_invoice_register": "Registro de facturas fiscales",
+    "fiscal_invoice_register_description": "El registro legal completo de facturas — números secuenciales, correcciones y facturas completas.",
+    "export_full_register_csv": "Exportar registro completo en CSV",
+    "view_register": "Ver registro",
+    "issue_full_invoice": "Emitir factura completa",
+    "issue_full_invoice_description": "Factura completa emitida bajo solicitud (factura completa) con la identidad legal propia de un cliente B2B — emitida junto con la factura original del pedido, no como corrección de esta.",
+    "order_id": "ID del pedido",
+    "order_id_placeholder": "UUID de un pedido completado",
+    "recipient_name": "Nombre del destinatario",
+    "recipient_tax_id": "NIF del destinatario",
+    "recipient_address": "Dirección del destinatario"
+  },
+  "owner_jobs_page": {
+    "status": {
+      "all": "Todos",
+      "open": "Abierta",
+      "draft": "Borrador",
+      "closed": "Cerrada"
+    },
+    "link_copied": "¡Enlace copiado! Compártelo en redes sociales.",
+    "title": "Ofertas de empleo",
+    "subtitle": "Gestiona tus puestos abiertos y revisa las candidaturas.",
+    "post_a_job": "Publicar oferta",
+    "loading_jobs": "Cargando ofertas...",
+    "no_jobs_yet": "Aún no hay ofertas de empleo",
+    "no_jobs_hint": "Publica tu primera oferta para empezar a recibir candidaturas.",
+    "applicant_count_one": "{{count}} candidato",
+    "applicant_count_other": "{{count}} candidatos",
+    "posted_on": "Publicada el {{date}}",
+    "closes_on": "Cierra el {{date}}",
+    "no_deadline": "Sin fecha límite",
+    "copy_link": "Copiar enlace",
+    "view_applicants": "Ver candidatos",
+    "edit": "Editar",
+    "close_position": "Cerrar puesto",
+    "delete": "Eliminar",
+    "previous": "Anterior",
+    "page_of": "Página {{page}} de {{totalPages}}",
+    "next": "Siguiente",
+    "close_confirm_title": "¿Cerrar este puesto?",
+    "close_confirm_description": "\"{{title}}\" dejará de aceptar nuevas candidaturas. Esto se puede deshacer editando la oferta.",
+    "cancel": "Cancelar",
+    "delete_confirm_title": "¿Eliminar esta oferta de empleo?",
+    "delete_confirm_description": "Esto eliminará permanentemente \"{{title}}\" y todas sus candidaturas. Esta acción no se puede deshacer."
+  },
+  "low_stock_items_view": {
+    "loading": "Cargando artículos con stock bajo…",
+    "all_good": "Todo en orden — no hay artículos con stock bajo.",
+    "col_item": "Artículo",
+    "col_group": "Grupo",
+    "col_current_stock": "Stock actual",
+    "col_threshold": "Umbral",
+    "col_actions": "Acciones",
+    "default_group": "Predeterminado",
+    "adjust": "Ajustar"
+  },
+  "qr_design_editor": {
+    "dots_types": {
+      "square": "Cuadrado",
+      "dots": "Puntos",
+      "rounded": "Redondeado",
+      "classy": "Elegante",
+      "classy-rounded": "Elegante redondeado",
+      "extra-rounded": "Muy redondeado"
+    },
+    "corners_square_types": {
+      "square": "Cuadrado",
+      "dot": "Punto",
+      "extra-rounded": "Muy redondeado"
+    },
+    "corners_dot_types": {
+      "square": "Cuadrado",
+      "dot": "Punto"
+    },
+    "saved_toast": "Diseño de QR guardado",
+    "save_error_toast": "No se pudo guardar el diseño de QR",
+    "loading": "Cargando diseño de QR...",
+    "dots_color": "Color de los puntos",
+    "background_color": "Color de fondo",
+    "corners_square_color": "Color de las esquinas cuadradas",
+    "corners_dot_color": "Color de las esquinas redondas",
+    "dots_style": "Estilo de los puntos",
+    "corners_square_style": "Estilo de las esquinas cuadradas",
+    "corners_dot_style": "Estilo de las esquinas redondas",
+    "logo_size": "Tamaño del logo ({{percent}}%)",
+    "quiet_zone_margin": "Margen de zona silenciosa ({{px}}px)",
+    "clear_dots_behind_logo": "Despejar puntos detrás del logo",
+    "clear_dots_behind_logo_hint": "Mantiene el logo legible ocultando los puntos del QR justo detrás de él",
+    "qr_logo_alt": "Logo del QR",
+    "no_logo": "Sin logo",
+    "live_preview": "Vista previa en vivo",
+    "save": "Guardar"
+  },
+  "billing_page": {
+    "title": "Facturación y suscripción",
+    "subtitle": "Gestiona tu suscripción, métodos de pago y consulta facturas anteriores.",
+    "cancelled_label": "Tu suscripción está cancelada",
+    "cancelled_prefix": "y finalizará el",
+    "cancelled_suffix": "Puedes reanudarla en cualquier momento antes de esa fecha.",
+    "resuming": "Reanudando…",
+    "resume_subscription": "Reanudar suscripción",
+    "current_plan": "Plan actual",
+    "explore_plans": "Explorar planes",
+    "portal_url_error": "No se pudo generar la URL del portal de gestión.",
+    "portal_connect_error": "Se produjo un error al conectar con el portal de facturación.",
+    "loading": "Cargando...",
+    "manage_subscription": "Gestionar suscripción",
+    "plan_name": "Nombre del plan",
+    "free": "Gratis",
+    "access_ends_on": "El acceso finaliza el",
+    "next_renewal": "Próxima renovación",
+    "never": "Nunca",
+    "not_available": "N/D",
+    "status": "Estado",
+    "canceling": "Cancelando",
+    "payment_failed_past_due": "Pago fallido / vencido",
+    "free_trial": "Prueba gratuita",
+    "active": "activo",
+    "free_plan": "Plan gratuito",
+    "free_plan_description": "Disfruta de las funciones básicas para siempre, o mejora para obtener más potencia.",
+    "see_pro_plans": "Ver planes Pro"
+  },
+  "schedule_page": {
+    "title": "Gestión de horarios",
+    "tabs": {
+      "staff_scheduling": "Planificación del personal",
+      "open_shift_bids": "Ofertas de turnos abiertos",
+      "recurring_rules": "Reglas recurrentes",
+      "shift_templates": "Plantillas de turnos",
+      "time_off": "Tiempo libre",
+      "swaps": "Intercambios"
+    }
+  },
+  "staff_inventory_page": {
+    "title": "Inventario",
+    "all_items": "Todos los artículos",
+    "low_stock": "Stock bajo",
+    "search_placeholder": "Buscar artículos…",
+    "low_stock_only": "Solo stock bajo",
+    "col_stock": "Stock",
+    "col_unit": "Unidad",
+    "loading": "Cargando…",
+    "no_items_found": "No se encontraron artículos.",
+    "movement_history": "Historial de movimientos",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "staff_schedule_page": {
+    "title": "Turnos y horarios"
+  },
+  "invite_business_dialog": {
+    "title": "Buscar un negocio para invitar",
+    "country": "País",
+    "select_a_country": "Selecciona un país",
+    "city_optional": "Ciudad (opcional)",
+    "city_placeholder": "p. ej. Madrid",
+    "business_name_optional": "Nombre del negocio (opcional)",
+    "search_by_name": "Buscar por nombre...",
+    "search": "Buscar",
+    "searching": "Buscando...",
+    "pick_country_hint": "Elige un país y busca para ver negocios coincidentes.",
+    "no_matches": "Ningún negocio coincide con esos filtros.",
+    "already_linked": "Ya vinculado",
+    "added": "Añadido",
+    "sent": "Enviado",
+    "send_request": "Enviar solicitud"
+  },
+  "invite_region_dialog": {
+    "title": "Buscar una región para invitar",
+    "search_placeholder": "Buscar por nombre de región...",
+    "search_hint": "Busca para ver regiones coincidentes.",
+    "no_matches": "Ninguna región coincide con ese nombre.",
+    "branch_count_one": "{{count}} sucursal",
+    "branch_count_other": "{{count}} sucursales"
+  },
+  "join_organization_dialog": {
+    "title": "Buscar una organización para unirte",
+    "search_placeholder": "Buscar por nombre de organización...",
+    "search_hint": "Busca para ver organizaciones coincidentes.",
+    "no_matches": "Ninguna organización coincide con ese nombre."
+  },
+  "tax_settings": {
+    "deleted_toast": "Tasa de impuesto eliminada",
+    "title": "Tasas de impuesto",
+    "subtitle": "Las tasas activas se aplican automáticamente a todos los pedidos nuevos.",
+    "add_rate": "Añadir tasa",
+    "loading": "Cargando...",
+    "no_rates": "No hay tasas de impuesto configuradas. Los pedidos tendrán 0 $ de impuesto.",
+    "add_tax_rate": "Añadir tasa de impuesto",
+    "created_toast": "Tasa de impuesto creada",
+    "inclusive": "Incluido",
+    "exclusive": "Excluido",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "create_failed": "No se pudo crear la tasa de impuesto",
+    "name": "Nombre",
+    "name_placeholder": "p. ej. IVA, impuesto sobre ventas",
+    "rate_percent": "Tasa (%)",
+    "inclusive_checkbox_label": "Incluido (el impuesto ya está incluido en el precio del artículo)",
+    "inclusive_example": "Incluido: artículo de 10,00 $ al 20% → impuesto = 1,67 $, el cliente paga 10,00 $",
+    "exclusive_example": "Excluido: artículo de 10,00 $ al 20% → impuesto = 2,00 $, el cliente paga 12,00 $",
+    "cancel": "Cancelar",
+    "creating": "Creando...",
+    "create": "Crear"
+  },
+  "station_card": {
+    "renamed_toast": "Estación renombrada.",
+    "rename_failed_toast": "No se pudo renombrar la estación.",
+    "kitchen_station_assigned_toast": "Puesto de cocina asignado.",
+    "assign_failed_toast": "No se pudo asignar el puesto de cocina.",
+    "printer_settings_saved_toast": "Ajustes de la impresora guardados.",
+    "save_printer_failed_toast": "No se pudieron guardar los ajustes de la impresora.",
+    "reach_printer_failed_toast": "No se pudo conectar con la impresora.",
+    "paired_with_toast": "Emparejado con {{name}}.",
+    "pair_failed_toast": "No se pudo emparejar la impresora USB.",
+    "reach_usb_printer_failed_toast": "No se pudo conectar con la impresora USB.",
+    "save": "Guardar",
+    "kitchen_display": "Pantalla de cocina",
+    "pos_terminal": "Terminal POS",
+    "online": "En línea",
+    "offline": "Sin conexión",
+    "kitchen_station": "Puesto de cocina",
+    "not_assigned": "Sin asignar",
+    "inactive_suffix": "(inactivo)",
+    "printer": "Impresora",
+    "configure": "Configurar",
+    "edit": "Editar",
+    "how_to_connect_printer": "¿Cómo conecto una impresora o un cajón portamonedas?",
+    "no_printer": "Sin impresora",
+    "network_printer": "Impresora de red (ESC/POS)",
+    "usb_printer": "Impresora USB (directa desde el navegador)",
+    "webusb_unsupported": "Este navegador no admite WebUSB — usa Chrome o Edge en el dispositivo de esta estación.",
+    "paired_with": "Emparejada: {{name}}",
+    "no_printer_paired": "Aún no hay impresora emparejada",
+    "re_pair": "Volver a emparejar",
+    "pair": "Emparejar",
+    "unpair": "Desemparejar",
+    "usb_pairing_hint": "La impresora debe conectarse por USB a este dispositivo/navegador exacto — el emparejamiento no se transfiere a otras estaciones.",
+    "has_cash_drawer": "Tiene cajón portamonedas",
+    "cancel": "Cancelar",
+    "not_configured": "Sin configurar",
+    "not_paired_yet": "Aún no emparejada",
+    "cash_drawer_suffix": " · Cajón portamonedas",
+    "test": "Probar",
+    "last_seen": "Visto por última vez {{time}}",
+    "never_connected": "Nunca conectada",
+    "revoke": "Revocar"
   }
 }

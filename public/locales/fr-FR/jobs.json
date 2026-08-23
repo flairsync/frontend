@@ -1,1 +1,26 @@
-{}
+{
+  "job_board_page": {
+    "pro_banner": {
+      "title": "Vous n'avez pas encore de profil professionnel",
+      "desc": "Créez-en un pour postuler à des offres et être repéré par des employeurs.",
+      "create_profile": "Créer un profil"
+    },
+    "no_positions_title": "Aucun poste ouvert trouvé",
+    "no_positions_desc": "Essayez d'ajuster vos filtres.",
+    "positions_found_one": "{{count}} poste trouvé",
+    "positions_found_other": "{{count}} postes trouvés",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page_of": "Page {{page}} sur {{totalPages}}",
+    "loading": "Chargement des offres...",
+    "hero_title": "Offres d'emploi",
+    "hero_subtitle": "Trouvez votre prochaine opportunité dans la restauration et l'hôtellerie.",
+    "employment_type_label": "Type d'emploi",
+    "all_types": "Tous les types",
+    "category_label": "Catégorie",
+    "all_categories": "Toutes les catégories",
+    "location_label": "Localisation",
+    "location_placeholder": "Ville, région...",
+    "clear_filters": "Effacer les filtres"
+  }
+}

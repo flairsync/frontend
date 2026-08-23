@@ -1,1 +1,26 @@
-{}
+{
+  "job_board_page": {
+    "pro_banner": {
+      "title": "You don't have a professional profile yet",
+      "desc": "Create one to apply for jobs and be discovered by employers.",
+      "create_profile": "Create Profile"
+    },
+    "no_positions_title": "No open positions found",
+    "no_positions_desc": "Try adjusting your filters.",
+    "positions_found_one": "{{count}} position found",
+    "positions_found_other": "{{count}} positions found",
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{page}} of {{totalPages}}",
+    "loading": "Loading jobs...",
+    "hero_title": "Job Board",
+    "hero_subtitle": "Find your next opportunity in the restaurant & hospitality industry.",
+    "employment_type_label": "Employment Type",
+    "all_types": "All types",
+    "category_label": "Category",
+    "all_categories": "All categories",
+    "location_label": "Location",
+    "location_placeholder": "City, state...",
+    "clear_filters": "Clear filters"
+  }
+}

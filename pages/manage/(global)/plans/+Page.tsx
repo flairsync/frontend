@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ import {
 import dayjs from "dayjs";
 
 const PlansPage: React.FC = () => {
+  const { t } = useTranslation("management");
   const { urlParsed } = usePageContext();
   const { subscriptionPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
 
@@ -55,10 +57,10 @@ const PlansPage: React.FC = () => {
   };
 
   const planActionLabel: Record<ReturnType<typeof getPlanAction>, string> = {
-    current: "Current Plan",
-    upgrade: "Upgrade",
-    downgrade: "Downgrade",
-    select: "Select Plan",
+    current: t("plans_page.current_plan"),
+    upgrade: t("plans_page.upgrade"),
+    downgrade: t("plans_page.downgrade"),
+    select: t("plans_page.select_plan"),
   };
 
   const onChoosePlan = (packId: string) => {
@@ -121,7 +123,7 @@ const PlansPage: React.FC = () => {
 
         onCheckoutSuccess={() => {
           setCheckoutLink(undefined);
-          toast("Payment success !");
+          toast(t("plans_page.payment_success"));
         }}
       />
 
@@ -129,22 +131,20 @@ const PlansPage: React.FC = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {confirmPack && getPlanAction(confirmPack) === "downgrade" ? "Downgrade" : "Upgrade"} to {confirmPack?.name}?
+              {confirmPack && getPlanAction(confirmPack) === "downgrade" ? t("plans_page.downgrade") : t("plans_page.upgrade")} {t("plans_page.to_plan", { name: confirmPack?.name })}
             </AlertDialogTitle>
             <AlertDialogDescription asChild>
               <span>
                 {isOnTrial ? (
                   <>
-                    Your plan will switch to <strong>{confirmPack?.name}</strong> immediately, but you
-                    won&apos;t be charged while your free trial is active
-                    {trialEndsAt ? ` (ends ${dayjs(trialEndsAt).format("DD/MM/YYYY")})` : ""}.
-                    {" "}Once the trial ends, you&apos;ll be billed{" "}
+                    {t("plans_page.confirm_trial_prefix")} <strong>{confirmPack?.name}</strong> {t("plans_page.confirm_trial_immediately")}
+                    {trialEndsAt ? ` (${t("plans_page.confirm_trial_ends", { date: dayjs(trialEndsAt).format("DD/MM/YYYY") })})` : ""}.
+                    {" "}{t("plans_page.confirm_trial_after")}{" "}
                     <strong>{confirmPack?.getFormattedPrice()} {confirmPack?.getPlanDuration()}</strong>.
                   </>
                 ) : (
                   <>
-                    Your plan will switch to <strong>{confirmPack?.name}</strong> immediately and billing
-                    will be adjusted by Lemon Squeezy. Going forward you&apos;ll be billed{" "}
+                    {t("plans_page.confirm_prefix")} <strong>{confirmPack?.name}</strong> {t("plans_page.confirm_immediately")}{" "}
                     <strong>{confirmPack?.getFormattedPrice()} {confirmPack?.getPlanDuration()}</strong>.
                   </>
                 )}
@@ -152,10 +152,10 @@ const PlansPage: React.FC = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={changingPlan}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={changingPlan}>{t("plans_page.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmChangePlan} disabled={changingPlan}>
               {changingPlan ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Confirm
+              {t("plans_page.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -165,9 +165,9 @@ const PlansPage: React.FC = () => {
         {/* Go Back Button */}
 
 
-        <h1 className="text-4xl font-bold mb-3">Choose Your Plan</h1>
+        <h1 className="text-4xl font-bold mb-3">{t("plans_page.choose_your_plan")}</h1>
         <p className="text-muted-foreground">
-          Select the subscription that fits your business best.
+          {t("plans_page.subtitle")}
         </p>
 
         {/* Billing toggle */}
@@ -177,20 +177,20 @@ const PlansPage: React.FC = () => {
             className="rounded-full px-5 py-2"
             onClick={() => setBillingType(PricingType.MONTHLY)}
           >
-            Monthly
+            {t("plans_page.monthly")}
           </Button>
           <Button
             variant={billingType === PricingType.YEARLY ? "default" : "ghost"}
             className="rounded-full px-5 py-2"
             onClick={() => setBillingType(PricingType.YEARLY)}
           >
-            Yearly
+            {t("plans_page.yearly")}
           </Button>
         </div>
 
         {/* Business count selector — shared across every plan card below */}
         <div className="mt-6 flex flex-col items-center gap-2">
-          <span className="text-sm text-muted-foreground">How many businesses?</span>
+          <span className="text-sm text-muted-foreground">{t("plans_page.how_many_businesses")}</span>
           <div className="inline-flex items-center gap-3 bg-card rounded-full px-2 py-1 shadow-md">
             <Button
               variant="ghost"
@@ -216,7 +216,7 @@ const PlansPage: React.FC = () => {
       {(creatingCheckout || changingPlan) && (
         <div className="flex flex-col items-center justify-center py-6">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground mb-2" />
-          <p className="text-sm text-muted-foreground">Loading, please wait...</p>
+          <p className="text-sm text-muted-foreground">{t("plans_page.loading")}</p>
         </div>
       )}
       {/* Plans grid */}
@@ -238,7 +238,7 @@ const PlansPage: React.FC = () => {
               {isCurrentPlan && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-md z-10">
                   <BadgeCheck className="w-3.5 h-3.5" />
-                  Your Current Plan
+                  {t("plans_page.your_current_plan")}
                 </div>
               )}
               <CardHeader>
@@ -257,28 +257,28 @@ const PlansPage: React.FC = () => {
                   <p className="text-muted-foreground text-sm">{pack.getPlanDuration()}</p>
                   {businessCount < pack.minBusinesses && (
                     <p className="text-xs text-primary mt-1 font-medium">
-                      Minimum {pack.minBusinesses} businesses on this plan
+                      {t("plans_page.minimum_businesses", { count: pack.minBusinesses })}
                     </p>
                   )}
-                  <p className="text-[11px] text-muted-foreground mt-1">Estimated — confirmed at checkout</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{t("plans_page.estimated_at_checkout")}</p>
                 </div>
 
                 <div className="mb-6 grid grid-cols-2 gap-4 text-xs bg-muted/50 p-3 rounded-lg border border-border">
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground mb-1">Businesses</span>
-                    <span className="font-semibold text-foreground">{pack.maxBusinesses === -1 ? "Unlimited" : pack.maxBusinesses}</span>
+                    <span className="text-muted-foreground mb-1">{t("plans_page.businesses")}</span>
+                    <span className="font-semibold text-foreground">{pack.maxBusinesses === -1 ? t("plans_page.unlimited") : pack.maxBusinesses}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground mb-1">Staff</span>
-                    <span className="font-semibold text-foreground">{pack.maxEmployees === -1 ? "Unlimited" : pack.maxEmployees}</span>
+                    <span className="text-muted-foreground mb-1">{t("plans_page.staff")}</span>
+                    <span className="font-semibold text-foreground">{pack.maxEmployees === -1 ? t("plans_page.unlimited") : pack.maxEmployees}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground mb-1">Menus</span>
-                    <span className="font-semibold text-foreground">{pack.maxMenus === -1 ? "Unlimited" : pack.maxMenus}</span>
+                    <span className="text-muted-foreground mb-1">{t("plans_page.menus")}</span>
+                    <span className="font-semibold text-foreground">{pack.maxMenus === -1 ? t("plans_page.unlimited") : pack.maxMenus}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground mb-1">Products</span>
-                    <span className="font-semibold text-foreground">{pack.maxProducts === -1 ? "Unlimited" : pack.maxProducts}</span>
+                    <span className="text-muted-foreground mb-1">{t("plans_page.products")}</span>
+                    <span className="font-semibold text-foreground">{pack.maxProducts === -1 ? t("plans_page.unlimited") : pack.maxProducts}</span>
                   </div>
                 </div>
 
@@ -286,7 +286,7 @@ const PlansPage: React.FC = () => {
                   {pack.features.map((f) => (
                     <li key={f} className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-primary" />
-                      <span>{f.replace(/_/g, " ")}</span>
+                      <span>{t(`subscriptions.features.${f}`, f.replace(/_/g, " "))}</span>
                     </li>
                   ))}
                 </ul>

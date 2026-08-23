@@ -1,4 +1,6 @@
 import { useEffect, useState, ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -34,11 +36,22 @@ const toUpdatePayload = (local: UpdateQrDesignDto): UpdateQrDesignDto => ({
     margin: local.margin,
 });
 
+function getDotsTypeLabel(t: TFunction, type: DotsType): string {
+    return t(`qr_design_editor.dots_types.${type}`);
+}
+function getCornersSquareTypeLabel(t: TFunction, type: CornersSquareType): string {
+    return t(`qr_design_editor.corners_square_types.${type}`);
+}
+function getCornersDotTypeLabel(t: TFunction, type: CornersDotType): string {
+    return t(`qr_design_editor.corners_dot_types.${type}`);
+}
+
 interface QrDesignEditorProps {
     businessId: string;
 }
 
 export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
+    const { t } = useTranslation("management");
     const { design, updateDesignAsync, uploadLogoAsync, deleteLogoAsync, isSaving } = useQrDesign(businessId);
 
     // Everything below is edited purely in local state — nothing is sent to the
@@ -93,14 +106,14 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
             setPendingLogoFile(null);
             setPendingLogoDataUrl(null);
             setRemoveLogoPending(false);
-            toast.success("QR design saved");
+            toast.success(t("qr_design_editor.saved_toast"));
         } catch {
-            toast.error("Failed to save QR design");
+            toast.error(t("qr_design_editor.save_error_toast"));
         }
     };
 
     if (!local) {
-        return <p className="text-sm text-muted-foreground">Loading QR design...</p>;
+        return <p className="text-sm text-muted-foreground">{t("qr_design_editor.loading")}</p>;
     }
 
     const previewOrigin = typeof window !== "undefined" ? window.location.origin : "";
@@ -112,22 +125,22 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                 <div className="space-y-6">
                     <div className="grid gap-4 sm:grid-cols-2">
                         <ColorPickerInput
-                            label="Dots color"
+                            label={t("qr_design_editor.dots_color")}
                             value={local.dotsColor ?? "#000000"}
                             onChange={(hex) => updateLocal({ dotsColor: hex })}
                         />
                         <ColorPickerInput
-                            label="Background color"
+                            label={t("qr_design_editor.background_color")}
                             value={local.backgroundColor ?? "#FFFFFF"}
                             onChange={(hex) => updateLocal({ backgroundColor: hex })}
                         />
                         <ColorPickerInput
-                            label="Corners square color"
+                            label={t("qr_design_editor.corners_square_color")}
                             value={local.cornersSquareColor || local.dotsColor || "#000000"}
                             onChange={(hex) => updateLocal({ cornersSquareColor: hex })}
                         />
                         <ColorPickerInput
-                            label="Corners dot color"
+                            label={t("qr_design_editor.corners_dot_color")}
                             value={local.cornersDotColor || local.dotsColor || "#000000"}
                             onChange={(hex) => updateLocal({ cornersDotColor: hex })}
                         />
@@ -135,34 +148,34 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
 
                     <div className="grid gap-4 sm:grid-cols-3">
                         <div className="space-y-2">
-                            <Label>Dots style</Label>
+                            <Label>{t("qr_design_editor.dots_style")}</Label>
                             <Select value={local.dotsType} onValueChange={(val: DotsType) => updateLocal({ dotsType: val })}>
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
                                     {DOTS_TYPES.map((type) => (
-                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                        <SelectItem key={type} value={type}>{getDotsTypeLabel(t, type)}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-2">
-                            <Label>Corners square style</Label>
+                            <Label>{t("qr_design_editor.corners_square_style")}</Label>
                             <Select value={local.cornersSquareType} onValueChange={(val: CornersSquareType) => updateLocal({ cornersSquareType: val })}>
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
                                     {CORNERS_SQUARE_TYPES.map((type) => (
-                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                        <SelectItem key={type} value={type}>{getCornersSquareTypeLabel(t, type)}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-2">
-                            <Label>Corners dot style</Label>
+                            <Label>{t("qr_design_editor.corners_dot_style")}</Label>
                             <Select value={local.cornersDotType} onValueChange={(val: CornersDotType) => updateLocal({ cornersDotType: val })}>
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
                                     {CORNERS_DOT_TYPES.map((type) => (
-                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                        <SelectItem key={type} value={type}>{getCornersDotTypeLabel(t, type)}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
@@ -171,7 +184,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
 
                     <div className="grid gap-6 sm:grid-cols-2">
                         <div className="space-y-2">
-                            <Label>Logo size ({Math.round((local.logoSize ?? 0.4) * 100)}%)</Label>
+                            <Label>{t("qr_design_editor.logo_size", { percent: Math.round((local.logoSize ?? 0.4) * 100) })}</Label>
                             <Slider
                                 min={0.1}
                                 max={0.6}
@@ -181,7 +194,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Quiet zone margin ({local.margin ?? 10}px)</Label>
+                            <Label>{t("qr_design_editor.quiet_zone_margin", { px: local.margin ?? 10 })}</Label>
                             <Slider
                                 min={0}
                                 max={50}
@@ -194,8 +207,8 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
 
                     <div className="flex items-center justify-between rounded-lg border px-4 py-3">
                         <div className="space-y-0.5">
-                            <Label>Clear dots behind logo</Label>
-                            <p className="text-xs text-muted-foreground">Keeps the logo readable by hiding QR dots directly behind it</p>
+                            <Label>{t("qr_design_editor.clear_dots_behind_logo")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("qr_design_editor.clear_dots_behind_logo_hint")}</p>
                         </div>
                         <Switch
                             checked={local.logoMargin ?? true}
@@ -206,10 +219,10 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                     <Card>
                         <CardContent className="flex items-center gap-4 pt-6">
                             {effectiveLogo ? (
-                                <img src={effectiveLogo} alt="QR logo" loading="lazy" className="h-16 w-16 rounded border object-contain" />
+                                <img src={effectiveLogo} alt={t("qr_design_editor.qr_logo_alt")} loading="lazy" className="h-16 w-16 rounded border object-contain" />
                             ) : (
                                 <div className="flex h-16 w-16 items-center justify-center rounded border text-xs text-muted-foreground">
-                                    No logo
+                                    {t("qr_design_editor.no_logo")}
                                 </div>
                             )}
                             <div className="flex flex-1 items-center gap-2">
@@ -225,7 +238,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                 </div>
 
                 <div className="flex flex-col items-center gap-2 justify-self-center md:justify-self-end">
-                    <span className="text-sm font-medium text-muted-foreground">Live preview</span>
+                    <span className="text-sm font-medium text-muted-foreground">{t("qr_design_editor.live_preview")}</span>
                     <div className="rounded-lg border p-4">
                         <QrLivePreview
                             value={`${previewOrigin}/diner/${businessId}`}
@@ -248,7 +261,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
             <div className="flex justify-end">
                 <Button onClick={handleSave} disabled={isSaving} className="gap-2">
                     {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-                    Save
+                    {t("qr_design_editor.save")}
                 </Button>
             </div>
         </div>

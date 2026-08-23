@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { differenceInMinutes } from "date-fns";
 import { formatInTimezone, parseInTimezone } from "@/lib/dateUtils";
 import {
@@ -31,6 +32,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
     open,
     onOpenChange
 }) => {
+    const { t } = useTranslation("management");
     const { updateReservation, isUpdatingReservation, cancelReservation, isCancellingReservation, markNoShow, isMarkingNoShow } = useReservations(businessId);
     const { tables, fetchingTables } = useTables(businessId, true);
     const { myBusinessFullDetails } = useMyBusiness(businessId);
@@ -129,25 +131,25 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Edit Reservation</DialogTitle>
+                    <DialogTitle>{t("edit_reservation_modal.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-4 py-4">
                     {!isModificationAllowed && !isPastReservation && !isCancelledOrNoShow && (
                         <div className="p-3 bg-yellow-500/15 border border-yellow-500/50 text-yellow-700 dark:text-yellow-400 rounded text-sm">
-                            Modifications are restricted. The reservation is scheduled within the next {modificationLimit} minutes.
+                            {t("edit_reservation_modal.restricted_notice", { minutes: modificationLimit })}
                         </div>
                     )}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Customer Name</Label>
+                            <Label>{t("edit_reservation_modal.name_label")}</Label>
                             <Input
                                 value={formData.customerName}
                                 onChange={e => setFormData({ ...formData, customerName: e.target.value })}
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Phone Number</Label>
+                            <Label>{t("edit_reservation_modal.phone_label")}</Label>
                             <Input
                                 value={formData.customerPhone}
                                 onChange={e => setFormData({ ...formData, customerPhone: e.target.value })}
@@ -157,7 +159,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Date</Label>
+                            <Label>{t("edit_reservation_modal.date_label")}</Label>
                             <Input
                                 type="date"
                                 value={formData.date}
@@ -165,7 +167,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Time</Label>
+                            <Label>{t("edit_reservation_modal.time_label")}</Label>
                             <Input
                                 type="time"
                                 value={formData.time}
@@ -176,7 +178,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Guest Count</Label>
+                            <Label>{t("edit_reservation_modal.guest_count_label")}</Label>
                             <Input
                                 type="number"
                                 min={1}
@@ -185,22 +187,22 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label>Status</Label>
+                            <Label>{t("edit_reservation_modal.status_label")}</Label>
                             <Select value={formData.status} onValueChange={(val) => setFormData({ ...formData, status: val })} disabled={!isModificationAllowed || isCancelledOrNoShow}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="PENDING">Pending</SelectItem>
-                                    <SelectItem value="CONFIRMED">Confirmed</SelectItem>
-                                    <SelectItem value="WAITLIST">Waitlist</SelectItem>
-                                    <SelectItem value="SEATED">Seated</SelectItem>
-                                    <SelectItem value="COMPLETED">Completed</SelectItem>
+                                    <SelectItem value="PENDING">{t("edit_reservation_modal.status_options.PENDING")}</SelectItem>
+                                    <SelectItem value="CONFIRMED">{t("edit_reservation_modal.status_options.CONFIRMED")}</SelectItem>
+                                    <SelectItem value="WAITLIST">{t("edit_reservation_modal.status_options.WAITLIST")}</SelectItem>
+                                    <SelectItem value="SEATED">{t("edit_reservation_modal.status_options.SEATED")}</SelectItem>
+                                    <SelectItem value="COMPLETED">{t("edit_reservation_modal.status_options.COMPLETED")}</SelectItem>
                                     {isCancelledOrNoShow && (
                                         <>
-                                            <SelectItem value="NO_SHOW">No Show</SelectItem>
-                                            <SelectItem value="CANCELLED">Cancelled</SelectItem>
-                                            <SelectItem value="EXPIRED">Expired</SelectItem>
+                                            <SelectItem value="NO_SHOW">{t("edit_reservation_modal.status_options.NO_SHOW")}</SelectItem>
+                                            <SelectItem value="CANCELLED">{t("edit_reservation_modal.status_options.CANCELLED")}</SelectItem>
+                                            <SelectItem value="EXPIRED">{t("edit_reservation_modal.status_options.EXPIRED")}</SelectItem>
                                         </>
                                     )}
                                 </SelectContent>
@@ -209,32 +211,32 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Assigned Table</Label>
+                        <Label>{t("edit_reservation_modal.assigned_table_label")}</Label>
                         <Select value={formData.tableId} onValueChange={(val) => setFormData({ ...formData, tableId: val })} disabled={!isModificationAllowed || isCancelledOrNoShow}>
                             <SelectTrigger disabled={fetchingTables || !isModificationAllowed || isCancelledOrNoShow}>
-                                <SelectValue placeholder="Select a Table" />
+                                <SelectValue placeholder={t("edit_reservation_modal.select_table_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="unassigned">Unassigned (Waitlist)</SelectItem>
+                                <SelectItem value="unassigned">{t("edit_reservation_modal.unassigned_waitlist")}</SelectItem>
                                 {tables?.map((table: any) => (
                                     <SelectItem key={table.id} value={table.id}>
-                                        {table.name || `Table ${table.number || table.id.substring(0, 4)}`} (Capacity: {table.capacity})
+                                        {t("edit_reservation_modal.table_option", { name: table.name || t("edit_reservation_modal.table_fallback_name", { number: table.number || table.id.substring(0, 4) }), capacity: table.capacity })}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                         <p className="text-xs text-muted-foreground mt-1">
-                            Assigning a table will check for availability conflicts.
+                            {t("edit_reservation_modal.table_conflict_hint")}
                         </p>
                     </div>
 
                     {showCancelReason && (
                         <div className="space-y-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-                            <Label className="text-destructive">Cancellation Reason (Optional)</Label>
+                            <Label className="text-destructive">{t("edit_reservation_modal.cancel_reason_label")}</Label>
                             <Input
                                 value={cancelReason}
                                 onChange={e => setCancelReason(e.target.value)}
-                                placeholder="Customer requested a different day..."
+                                placeholder={t("edit_reservation_modal.cancel_reason_placeholder")}
                             />
                         </div>
                     )}
@@ -246,20 +248,20 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
                             <>
                                 <Button variant="destructive" size="sm" onClick={handleCancelReservation} disabled={isCancellingReservation}>
                                     {isCancellingReservation && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                    Cancel
+                                    {t("edit_reservation_modal.cancel")}
                                 </Button>
                                 <Button variant="outline" size="sm" onClick={handleMarkNoShow} disabled={isMarkingNoShow || !isPastReservation}>
                                     {isMarkingNoShow && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                    No Show
+                                    {t("edit_reservation_modal.status_options.NO_SHOW")}
                                 </Button>
                             </>
                         )}
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>Close</Button>
+                        <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>{t("edit_reservation_modal.close")}</Button>
                         <Button size="sm" onClick={handleSave} disabled={isUpdatingReservation || !isModificationAllowed || isCancelledOrNoShow}>
                             {isUpdatingReservation && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Save
+                            {t("edit_reservation_modal.save")}
                         </Button>
                     </div>
                 </DialogFooter>

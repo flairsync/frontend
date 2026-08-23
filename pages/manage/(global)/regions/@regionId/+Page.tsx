@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { BranchesMap } from "@/components/management/organizations/BranchesMap";
 const formatMoney = (n: number) => `$${(n ?? 0).toFixed(2)}`;
 
 const RegionDetailPage = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const regionId = routeParams.regionId as string;
 
@@ -46,7 +48,7 @@ const RegionDetailPage = () => {
         return (
             <div className="p-6 w-full flex flex-col items-center justify-center py-20 gap-3">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <p className="text-sm text-muted-foreground font-medium">Loading region...</p>
+                <p className="text-sm text-muted-foreground font-medium">{t("region_detail_page.loading")}</p>
             </div>
         );
     }
@@ -60,7 +62,7 @@ const RegionDetailPage = () => {
                 <div>
                     <h1 className="text-2xl font-bold">{region?.name}</h1>
                     <p className="text-muted-foreground text-sm">
-                        Last 30 days, across {businesses.length} {businesses.length === 1 ? "branch" : "branches"}
+                        {t("organization_detail_page.subtitle", { count: businesses.length })}
                     </p>
                 </div>
             </div>
@@ -70,17 +72,17 @@ const RegionDetailPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Total Sales</CardTitle>
+                        <CardTitle className="text-sm font-medium text-muted-foreground">{t("organization_detail_page.total_sales")}</CardTitle>
                         <TrendingUp className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{formatMoney(dashboard?.totals.sales ?? 0)}</div>
-                        <p className="text-xs text-muted-foreground">{dashboard?.totals.orderCount ?? 0} orders</p>
+                        <p className="text-xs text-muted-foreground">{t("organization_detail_page.orders_count", { count: dashboard?.totals.orderCount ?? 0 })}</p>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Labor Cost</CardTitle>
+                        <CardTitle className="text-sm font-medium text-muted-foreground">{t("organization_detail_page.labor_cost")}</CardTitle>
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
@@ -89,7 +91,7 @@ const RegionDetailPage = () => {
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Low Stock Alerts</CardTitle>
+                        <CardTitle className="text-sm font-medium text-muted-foreground">{t("organization_detail_page.low_stock_alerts")}</CardTitle>
                         <PackageX className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
@@ -100,20 +102,20 @@ const RegionDetailPage = () => {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Per-branch breakdown</CardTitle>
+                    <CardTitle className="text-base">{t("organization_detail_page.per_branch_breakdown")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {loadingDashboard ? (
-                        <p className="text-sm text-muted-foreground py-6 text-center">Loading dashboard...</p>
+                        <p className="text-sm text-muted-foreground py-6 text-center">{t("organization_detail_page.loading_dashboard")}</p>
                     ) : dashboard && dashboard.businesses.length > 0 ? (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Branch</TableHead>
-                                    <TableHead className="text-right">Sales</TableHead>
-                                    <TableHead className="text-right">Orders</TableHead>
-                                    <TableHead className="text-right">Labor Cost</TableHead>
-                                    <TableHead className="text-right">Low Stock</TableHead>
+                                    <TableHead>{t("organization_detail_page.col_branch")}</TableHead>
+                                    <TableHead className="text-right">{t("organization_detail_page.col_sales")}</TableHead>
+                                    <TableHead className="text-right">{t("organization_detail_page.col_orders")}</TableHead>
+                                    <TableHead className="text-right">{t("organization_detail_page.col_labor_cost")}</TableHead>
+                                    <TableHead className="text-right">{t("organization_detail_page.col_low_stock")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -134,7 +136,7 @@ const RegionDetailPage = () => {
                         </Table>
                     ) : (
                         <p className="text-sm text-muted-foreground py-6 text-center">
-                            Link a branch to this region to see combined performance.
+                            {t("region_detail_page.empty_breakdown")}
                         </p>
                     )}
                 </CardContent>
@@ -142,18 +144,17 @@ const RegionDetailPage = () => {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Branches</CardTitle>
+                    <CardTitle className="text-base">{t("organization_detail_page.branches")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <BranchesMap businesses={businesses} />
 
                     <div>
                         <Button variant="outline" onClick={() => setInviteDialogOpen(true)}>
-                            <Search className="h-4 w-4 mr-1.5" /> Find a business to invite
+                            <Search className="h-4 w-4 mr-1.5" /> {t("organization_detail_page.find_business_to_invite")}
                         </Button>
                         <p className="text-xs text-muted-foreground mt-2">
-                            Sends a request — nothing links until it's approved from the Requests inbox,
-                            even for a business you own yourself.
+                            {t("organization_detail_page.invite_business_hint")}
                         </p>
                     </div>
 
@@ -185,7 +186,7 @@ const RegionDetailPage = () => {
                         ))}
                         {businesses.length === 0 && (
                             <p className="text-sm text-muted-foreground flex items-center gap-2 py-2">
-                                <Store className="h-4 w-4" /> No branches in this region yet.
+                                <Store className="h-4 w-4" /> {t("organization_detail_page.no_branches_in_region")}
                             </p>
                         )}
                     </div>
@@ -195,19 +196,19 @@ const RegionDetailPage = () => {
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base flex items-center gap-2">
-                        <Building2 className="h-4 w-4" /> Organization
+                        <Building2 className="h-4 w-4" /> {t("region_detail_page.organization")}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     {region?.organizationId ? (
                         <div className="flex items-center justify-between border border-border rounded-lg p-3">
                             <div className="flex items-center gap-2">
-                                <Badge>Linked</Badge>
-                                <span className="text-sm text-muted-foreground">{organizationName ?? "Organization"}</span>
+                                <Badge>{t("settings_page.organization_region.linked")}</Badge>
+                                <span className="text-sm text-muted-foreground">{organizationName ?? t("region_detail_page.organization")}</span>
                             </div>
                             {pendingLeaveRequest ? (
                                 <Badge variant="outline" className="text-muted-foreground">
-                                    Leave request pending
+                                    {t("settings_page.organization_region.leave_pending")}
                                 </Badge>
                             ) : (
                                 <Button
@@ -219,18 +220,17 @@ const RegionDetailPage = () => {
                                         requestLeave({ childType: "REGION", childId: regionId }, { onSettled: () => refreshRegion() })
                                     }
                                 >
-                                    Request to leave
+                                    {t("settings_page.organization_region.request_to_leave")}
                                 </Button>
                             )}
                         </div>
                     ) : (
                         <div>
                             <Button variant="outline" onClick={() => setJoinOrgDialogOpen(true)}>
-                                <Search className="h-4 w-4 mr-1.5" /> Find an organization to join
+                                <Search className="h-4 w-4 mr-1.5" /> {t("region_detail_page.find_organization_to_join")}
                             </Button>
                             <p className="text-xs text-muted-foreground mt-2">
-                                Sends a request — the organization's owner needs to approve before this
-                                region (and every branch under it) links up.
+                                {t("region_detail_page.join_organization_hint")}
                             </p>
                         </div>
                     )}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Table,
     TableBody,
@@ -59,44 +60,45 @@ const PLAN_CHANGEABLE_STATUSES: SubscriptionStatus[] = [
 ];
 
 function StatusBadge({ subscription }: { subscription: Subscription }) {
+    const { t } = useTranslation("management");
     switch (subscription.status) {
         case SubscriptionStatus.ACTIVE:
             return (
                 <Badge className="bg-green-100 text-green-700 border border-green-200 hover:bg-green-100">
-                    Active · Renews {subscription.getRenewalDate("MMMM D, YYYY") ?? "N/A"}
+                    {t("billing_invoices_table.status.active", { date: subscription.getRenewalDate("MMMM D, YYYY") ?? t("billing_invoices_table.not_available") })}
                 </Badge>
             );
         case SubscriptionStatus.ON_TRIAL:
         case SubscriptionStatus.TRIALING:
             return (
                 <Badge className="bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-100">
-                    Trial · Ends {subscription.getRenewalDate("MMMM D, YYYY") ?? "N/A"}
+                    {t("billing_invoices_table.status.trial", { date: subscription.getRenewalDate("MMMM D, YYYY") ?? t("billing_invoices_table.not_available") })}
                 </Badge>
             );
         case SubscriptionStatus.CANCELED: {
             const endsAt = subscription.getEndDate("MMMM D, YYYY");
             return (
                 <Badge className="bg-amber-100 text-amber-700 border border-amber-200 hover:bg-amber-100">
-                    Canceled{endsAt ? ` · Access until ${endsAt}` : ""}
+                    {endsAt ? t("billing_invoices_table.status.canceled_with_access", { date: endsAt }) : t("billing_invoices_table.status.canceled")}
                 </Badge>
             );
         }
         case SubscriptionStatus.PAST_DUE:
             return (
                 <Badge className="bg-red-100 text-red-700 border border-red-200 hover:bg-red-100">
-                    Payment Failed
+                    {t("billing_invoices_table.status.payment_failed")}
                 </Badge>
             );
         case SubscriptionStatus.PENDING:
             return (
                 <Badge className="bg-zinc-100 text-zinc-600 border border-zinc-200 hover:bg-zinc-100">
-                    Activating…
+                    {t("billing_invoices_table.status.activating")}
                 </Badge>
             );
         case SubscriptionStatus.EXPIRED:
             return (
                 <Badge className="bg-zinc-100 text-zinc-500 border border-zinc-200 hover:bg-zinc-100">
-                    Expired
+                    {t("billing_invoices_table.status.expired")}
                 </Badge>
             );
         default:
@@ -105,6 +107,7 @@ function StatusBadge({ subscription }: { subscription: Subscription }) {
 }
 
 export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscription[] }) {
+    const { t } = useTranslation("management");
     const {
         syncSubscriptionAsync,
         cancelSubscription,
@@ -172,7 +175,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                 <CardHeader className="flex flex-row justify-between items-center">
                     <CardTitle className="flex items-center gap-2">
                         <Receipt className="h-5 w-5 text-zinc-700" />
-                        Subscriptions
+                        {t("billing_invoices_table.title")}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -180,11 +183,11 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Plan</TableHead>
-                                    <TableHead>Started</TableHead>
-                                    <TableHead>Price</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Actions</TableHead>
+                                    <TableHead>{t("billing_invoices_table.col_plan")}</TableHead>
+                                    <TableHead>{t("billing_invoices_table.col_started")}</TableHead>
+                                    <TableHead>{t("billing_invoices_table.col_price")}</TableHead>
+                                    <TableHead>{t("billing_invoices_table.col_status")}</TableHead>
+                                    <TableHead>{t("billing_invoices_table.col_actions")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -222,7 +225,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                             variant="ghost"
                                                             size="icon"
                                                             className="h-6 w-6 shrink-0 text-muted-foreground hover:text-foreground"
-                                                            title="Refresh status"
+                                                            title={t("billing_invoices_table.refresh_status")}
                                                             disabled={syncingThis}
                                                             onClick={() => handleSync(sub)}
                                                         >
@@ -245,13 +248,13 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                                 ) : (
                                                                     <RefreshCw className="h-3.5 w-3.5 mr-1" />
                                                                 )}
-                                                                Refresh status
+                                                                {t("billing_invoices_table.refresh_status")}
                                                             </Button>
                                                         )}
                                                         {isExpired && (
                                                             <a href="/manage/plans">
                                                                 <Button size="sm" variant="default">
-                                                                    Re-subscribe
+                                                                    {t("billing_invoices_table.re_subscribe")}
                                                                 </Button>
                                                             </a>
                                                         )}
@@ -267,7 +270,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                                 ) : (
                                                                     <RotateCcw className="h-3.5 w-3.5 mr-1" />
                                                                 )}
-                                                                Resume
+                                                                {t("billing_invoices_table.resume")}
                                                             </Button>
                                                         )}
 
@@ -275,29 +278,29 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                         <DropdownMenu>
                                                             <DropdownMenuTrigger asChild>
                                                                 <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                    <span className="sr-only">Open menu</span>
+                                                                    <span className="sr-only">{t("billing_invoices_table.open_menu")}</span>
                                                                     <MoreHorizontal className="h-4 w-4" />
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end" className="w-48">
-                                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                <DropdownMenuLabel>{t("billing_invoices_table.col_actions")}</DropdownMenuLabel>
 
                                                                 <DropdownMenuItem onClick={() => handleShowInvoices(sub)}>
                                                                     <FileText className="mr-2 h-4 w-4 text-indigo-600" />
-                                                                    Show Invoices
+                                                                    {t("billing_invoices_table.show_invoices")}
                                                                 </DropdownMenuItem>
 
                                                                 {canChangePlan && (
                                                                     <DropdownMenuItem onClick={() => setChangePlanSub(sub)}>
                                                                         <LayoutGrid className="mr-2 h-4 w-4 text-violet-600" />
-                                                                        Change Plan
+                                                                        {t("billing_invoices_table.change_plan")}
                                                                     </DropdownMenuItem>
                                                                 )}
 
                                                                 {isPastDue && (
                                                                     <DropdownMenuItem onClick={handleOpenPortal}>
                                                                         <ExternalLink className="mr-2 h-4 w-4 text-orange-600" />
-                                                                        Billing Portal
+                                                                        {t("billing_invoices_table.billing_portal")}
                                                                     </DropdownMenuItem>
                                                                 )}
 
@@ -305,12 +308,12 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
 
                                                                 <DropdownMenuItem onClick={() => handleSync(sub)} disabled={syncingThis}>
                                                                     <RefreshCw className={cn("mr-2 h-4 w-4 text-green-600", syncingThis && "animate-spin")} />
-                                                                    {syncingThis ? "Syncing…" : "Refresh status"}
+                                                                    {syncingThis ? t("billing_invoices_table.syncing") : t("billing_invoices_table.refresh_status")}
                                                                 </DropdownMenuItem>
 
                                                                 <DropdownMenuItem>
                                                                     <LifeBuoy className="mr-2 h-4 w-4 text-blue-600" />
-                                                                    Contact Support
+                                                                    {t("billing_invoices_table.contact_support")}
                                                                 </DropdownMenuItem>
 
                                                                 {canCancel && (
@@ -322,7 +325,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                                             onClick={() => setCancelConfirmSub(sub)}
                                                                         >
                                                                             <XCircle className="mr-2 h-4 w-4" />
-                                                                            {cancelingThis ? "Cancelling…" : "Cancel subscription"}
+                                                                            {cancelingThis ? t("billing_invoices_table.cancelling") : t("billing_invoices_table.cancel_subscription")}
                                                                         </DropdownMenuItem>
                                                                     </>
                                                                 )}
@@ -337,9 +340,9 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                                                 <TableRow className="bg-amber-50 hover:bg-amber-50">
                                                     <TableCell colSpan={5} className="py-2 px-4">
                                                         <p className="text-amber-700 text-sm">
-                                                            Your subscription is cancelled and will end on{" "}
+                                                            {t("billing_invoices_table.cancelled_banner_prefix")}{" "}
                                                             <strong>{sub.getEndDate("MMMM D, YYYY")}</strong>.
-                                                            You can resume at any time before that date.
+                                                            {" "}{t("billing_invoices_table.cancelled_banner_suffix")}
                                                         </p>
                                                     </TableCell>
                                                 </TableRow>
@@ -350,7 +353,7 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
                             </TableBody>
                         </Table>
                     ) : (
-                        <p className="text-zinc-500 text-sm">No subscriptions found.</p>
+                        <p className="text-zinc-500 text-sm">{t("billing_invoices_table.empty")}</p>
                     )}
                 </CardContent>
             </Card>
@@ -362,22 +365,22 @@ export function BillingInvoicesTable({ subscriptions }: { subscriptions: Subscri
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Cancel subscription?</AlertDialogTitle>
+                        <AlertDialogTitle>{t("billing_invoices_table.cancel_dialog.title")}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            You'll keep access until{" "}
+                            {t("billing_invoices_table.cancel_dialog.description_prefix")}{" "}
                             <strong>
-                                {cancelConfirmSub?.getRenewalDate("MMMM D, YYYY") ?? "the end of your billing period"}
+                                {cancelConfirmSub?.getRenewalDate("MMMM D, YYYY") ?? t("billing_invoices_table.cancel_dialog.end_of_billing_period")}
                             </strong>
-                            . You can resume at any time before that date.
+                            . {t("billing_invoices_table.cancelled_banner_suffix")}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Keep subscription</AlertDialogCancel>
+                        <AlertDialogCancel>{t("billing_invoices_table.cancel_dialog.keep_subscription")}</AlertDialogCancel>
                         <AlertDialogAction
                             className="bg-destructive hover:bg-destructive/90 text-white"
                             onClick={handleCancelConfirm}
                         >
-                            Yes, cancel
+                            {t("billing_invoices_table.cancel_dialog.confirm")}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,18 +55,20 @@ function formatCurrency(amount: number | string, currency = 'USD'): string {
     return `${getCurrencySymbol(currency)}${Number(amount).toFixed(2)}`;
 }
 
-const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; currency: string }) => (
+const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; currency: string }) => {
+    const { t } = useTranslation("management");
+    return (
     <Table>
         <TableHeader>
             <TableRow>
-                <TableHead>Employee</TableHead>
-                <TableHead className="text-right">Regular Hrs</TableHead>
-                <TableHead className="text-right">OT Hrs</TableHead>
-                <TableHead className="text-right">Total Hrs</TableHead>
-                <TableHead className="text-right">Regular Pay</TableHead>
-                <TableHead className="text-right">OT Pay</TableHead>
-                <TableHead className="text-right">Paid Leave</TableHead>
-                <TableHead className="text-right">Total Pay</TableHead>
+                <TableHead>{t("payroll_page.table.employee")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.regular_hrs")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.ot_hrs")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.total_hrs")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.regular_pay")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.ot_pay")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.paid_leave")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.total_pay")}</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -76,7 +79,7 @@ const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; c
                     <TableCell className="text-right">{e.overtimeHours.toFixed(2)}</TableCell>
                     <TableCell className="text-right">{e.totalHours.toFixed(2)}</TableCell>
                     <TableCell className="text-right">
-                        {e.hourlyRate === 0 ? <span className="text-muted-foreground text-xs">Set hourly rate</span> : formatCurrency(e.regularPay, currency)}
+                        {e.hourlyRate === 0 ? <span className="text-muted-foreground text-xs">{t("payroll_page.table.set_hourly_rate")}</span> : formatCurrency(e.regularPay, currency)}
                     </TableCell>
                     <TableCell className="text-right">
                         {e.hourlyRate === 0 ? '—' : formatCurrency(e.overtimePay, currency)}
@@ -91,38 +94,44 @@ const PreviewTable = ({ entries, currency }: { entries: PayrollSummaryEntry[]; c
             ))}
         </TableBody>
     </Table>
-);
+    );
+};
 
-const UnvalidatedWarningBanner = ({ warnings }: { warnings: UnvalidatedAttendanceWarning[] }) => (
+const UnvalidatedWarningBanner = ({ warnings }: { warnings: UnvalidatedAttendanceWarning[] }) => {
+    const { t } = useTranslation("management");
+    return (
     <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 space-y-2">
         <div className="flex items-center gap-2 font-medium">
             <AlertTriangle className="h-4 w-4 text-amber-600" />
-            {warnings.length} employee{warnings.length === 1 ? '' : 's'} have unvalidated or still-open attendance this period and are NOT included in the numbers below — validate their attendance and re-check this preview.
+            {t("payroll_page.warning_banner.message", { count: warnings.length })}
         </div>
         <ul className="space-y-1 pl-6 list-disc">
             {warnings.map((w) => (
                 <li key={w.employmentId}>
-                    {w.employeeName} — {w.unvalidatedCount} unvalidated record{w.unvalidatedCount === 1 ? '' : 's'}
-                    {w.openCount > 0 ? `, ${w.openCount} still clocked in` : ''}
+                    {t("payroll_page.warning_banner.record_line", { name: w.employeeName, count: w.unvalidatedCount })}
+                    {w.openCount > 0 ? t("payroll_page.warning_banner.still_clocked_in", { count: w.openCount }) : ''}
                 </li>
             ))}
         </ul>
     </div>
-);
+    );
+};
 
-const GeneratedTable = ({ entries }: { entries: PayrollEntry[] }) => (
+const GeneratedTable = ({ entries }: { entries: PayrollEntry[] }) => {
+    const { t } = useTranslation("management");
+    return (
     <Table>
         <TableHeader>
             <TableRow>
-                <TableHead>Employee</TableHead>
-                <TableHead className="text-right">Regular Hrs</TableHead>
-                <TableHead className="text-right">OT Hrs</TableHead>
-                <TableHead className="text-right">Total Hrs</TableHead>
-                <TableHead className="text-right">Regular Pay</TableHead>
-                <TableHead className="text-right">OT Pay</TableHead>
-                <TableHead className="text-right">Paid Leave</TableHead>
-                <TableHead className="text-right">Total Pay</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t("payroll_page.table.employee")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.regular_hrs")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.ot_hrs")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.total_hrs")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.regular_pay")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.ot_pay")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.paid_leave")}</TableHead>
+                <TableHead className="text-right">{t("payroll_page.table.total_pay")}</TableHead>
+                <TableHead>{t("payroll_page.table.status")}</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -142,20 +151,22 @@ const GeneratedTable = ({ entries }: { entries: PayrollEntry[] }) => (
                     <TableCell className="text-right font-semibold">{formatCurrency(e.totalPay, e.currency)}</TableCell>
                     <TableCell>
                         <Badge variant={e.status === 'FINALIZED' ? 'default' : 'secondary'}>
-                            {e.status}
+                            {t(`payroll_page.table.status_labels.${e.status}`)}
                         </Badge>
                     </TableCell>
                 </TableRow>
             ))}
         </TableBody>
     </Table>
-);
+    );
+};
 
 interface Props {
     businessId: string;
 }
 
 const PayrollPage = ({ businessId }: Props) => {
+    const { t } = useTranslation("management");
     const { myBusinessFullDetails } = useMyBusiness(businessId);
     const payPeriodType = myBusinessFullDetails?.payPeriodType ?? 'WEEKLY';
     const defaultPeriod = useMemo(() => getDefaultPeriod(payPeriodType), [payPeriodType]);
@@ -187,22 +198,22 @@ const PayrollPage = ({ businessId }: Props) => {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-xl sm:text-2xl font-bold">Payroll</h1>
-                <p className="text-muted-foreground text-sm mt-1">Preview, generate, and finalize payroll for any period.</p>
+                <h1 className="text-xl sm:text-2xl font-bold">{t("payroll_page.header.title")}</h1>
+                <p className="text-muted-foreground text-sm mt-1">{t("payroll_page.header.subtitle")}</p>
             </div>
             <Separator />
 
             <Tabs defaultValue="payroll">
                 <TabsList>
-                    <TabsTrigger value="payroll">Payroll</TabsTrigger>
-                    <TabsTrigger value="absences">Absences</TabsTrigger>
+                    <TabsTrigger value="payroll">{t("payroll_page.header.title")}</TabsTrigger>
+                    <TabsTrigger value="absences">{t("payroll_page.tabs.absences")}</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="payroll" className="space-y-6 pt-4">
                     {/* Period Picker */}
                     <div className="flex flex-wrap items-end gap-4">
                         <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">Start Date</Label>
+                            <Label className="text-xs text-muted-foreground">{t("payroll_page.period_picker.start_date")}</Label>
                             <Input
                                 type="date"
                                 className="w-40"
@@ -211,7 +222,7 @@ const PayrollPage = ({ businessId }: Props) => {
                             />
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">End Date</Label>
+                            <Label className="text-xs text-muted-foreground">{t("payroll_page.period_picker.end_date")}</Label>
                             <Input
                                 type="date"
                                 className="w-40"
@@ -224,7 +235,7 @@ const PayrollPage = ({ businessId }: Props) => {
                                 onClick={handleGenerate}
                                 disabled={isGenerating || !startDate || !endDate || startDate > endDate}
                             >
-                                {isGenerating ? "Generating..." : "Generate Payroll"}
+                                {isGenerating ? t("payroll_page.period_picker.generating") : t("payroll_page.period_picker.generate_payroll")}
                             </Button>
                             {hasDraft && (
                                 <Button
@@ -232,7 +243,7 @@ const PayrollPage = ({ businessId }: Props) => {
                                     onClick={() => setShowFinalizeDialog(true)}
                                     disabled={isFinalizing}
                                 >
-                                    Finalize
+                                    {t("payroll_page.period_picker.finalize")}
                                 </Button>
                             )}
                             <Button
@@ -240,14 +251,14 @@ const PayrollPage = ({ businessId }: Props) => {
                                 onClick={() => exportPayroll(startDate, endDate, 'csv')}
                                 disabled={!canExport}
                             >
-                                Export CSV
+                                {t("payroll_page.period_picker.export_csv")}
                             </Button>
                             <Button
                                 variant="ghost"
                                 onClick={() => exportPayroll(startDate, endDate, 'pdf')}
                                 disabled={!canExport}
                             >
-                                Export PDF
+                                {t("payroll_page.period_picker.export_pdf")}
                             </Button>
                         </div>
                     </div>
@@ -256,7 +267,7 @@ const PayrollPage = ({ businessId }: Props) => {
                     {preview && (
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-lg font-semibold">Preview</h2>
+                                <h2 className="text-lg font-semibold">{t("payroll_page.preview.title")}</h2>
                                 <span className="text-xs text-muted-foreground">
                                     {preview.periodStart} → {preview.periodEnd} · {preview.payPeriodType}
                                 </span>
@@ -265,21 +276,21 @@ const PayrollPage = ({ businessId }: Props) => {
                                 <UnvalidatedWarningBanner warnings={preview.unvalidatedWarnings} />
                             )}
                             {fetchingPreview ? (
-                                <p className="text-sm text-muted-foreground">Loading preview…</p>
+                                <p className="text-sm text-muted-foreground">{t("payroll_page.preview.loading")}</p>
                             ) : preview.entries.length === 0 ? (
                                 <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground text-sm">
-                                    No validated attendance records found for this period.
+                                    {t("payroll_page.preview.empty")}
                                 </div>
                             ) : (
                                 <>
                                     <PreviewTable entries={preview.entries} currency={currency} />
                                     <div className="flex justify-end gap-8 text-sm text-muted-foreground pt-2">
-                                        <span>Total Hrs: <strong className="text-foreground">{preview.totals.totalWorkedHours.toFixed(2)}</strong></span>
-                                        <span>OT Hrs: <strong className="text-foreground">{preview.totals.totalOvertimeHours.toFixed(2)}</strong></span>
-                                        <span>Regular Pay: <strong className="text-foreground">{formatCurrency(preview.totals.totalRegularPay, currency)}</strong></span>
-                                        <span>OT Pay: <strong className="text-foreground">{formatCurrency(preview.totals.totalOvertimePay, currency)}</strong></span>
-                                        <span>Paid Leave: <strong className="text-foreground">{formatCurrency(preview.totals.totalPaidLeavePay, currency)}</strong></span>
-                                        <span>Total: <strong className="text-foreground text-base">{formatCurrency(preview.totals.totalPay, currency)}</strong></span>
+                                        <span>{t("payroll_page.preview.totals.total_hrs")} <strong className="text-foreground">{preview.totals.totalWorkedHours.toFixed(2)}</strong></span>
+                                        <span>{t("payroll_page.preview.totals.ot_hrs")} <strong className="text-foreground">{preview.totals.totalOvertimeHours.toFixed(2)}</strong></span>
+                                        <span>{t("payroll_page.preview.totals.regular_pay")} <strong className="text-foreground">{formatCurrency(preview.totals.totalRegularPay, currency)}</strong></span>
+                                        <span>{t("payroll_page.preview.totals.ot_pay")} <strong className="text-foreground">{formatCurrency(preview.totals.totalOvertimePay, currency)}</strong></span>
+                                        <span>{t("payroll_page.preview.totals.paid_leave")} <strong className="text-foreground">{formatCurrency(preview.totals.totalPaidLeavePay, currency)}</strong></span>
+                                        <span>{t("payroll_page.preview.totals.total")} <strong className="text-foreground text-base">{formatCurrency(preview.totals.totalPay, currency)}</strong></span>
                                     </div>
                                 </>
                             )}
@@ -289,9 +300,9 @@ const PayrollPage = ({ businessId }: Props) => {
                     {/* Draft Entries */}
                     {hasDraft && (
                         <div className="space-y-3">
-                            <h2 className="text-lg font-semibold">Draft Entries</h2>
+                            <h2 className="text-lg font-semibold">{t("payroll_page.draft_entries.title")}</h2>
                             {fetchingEntries ? (
-                                <p className="text-sm text-muted-foreground">Loading…</p>
+                                <p className="text-sm text-muted-foreground">{t("payroll_page.draft_entries.loading")}</p>
                             ) : (
                                 <GeneratedTable entries={draftEntries} />
                             )}
@@ -301,9 +312,9 @@ const PayrollPage = ({ businessId }: Props) => {
                     {/* Finalized Entries */}
                     {finalizedEntries.length > 0 && (
                         <div className="space-y-3">
-                            <h2 className="text-lg font-semibold">Finalized</h2>
+                            <h2 className="text-lg font-semibold">{t("payroll_page.finalized_entries.title")}</h2>
                             {fetchingFinalized ? (
-                                <p className="text-sm text-muted-foreground">Loading…</p>
+                                <p className="text-sm text-muted-foreground">{t("payroll_page.finalized_entries.loading")}</p>
                             ) : (
                                 <GeneratedTable entries={finalizedEntries} />
                             )}
@@ -320,16 +331,15 @@ const PayrollPage = ({ businessId }: Props) => {
             <Dialog open={showFinalizeDialog} onOpenChange={setShowFinalizeDialog}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Finalize Payroll</DialogTitle>
+                        <DialogTitle>{t("payroll_page.finalize_dialog.title")}</DialogTitle>
                         <DialogDescription>
-                            This will lock all draft entries for the period <strong>{startDate}</strong> to <strong>{endDate}</strong>.
-                            Finalized entries cannot be overwritten. This action is irreversible.
+                            {t("payroll_page.finalize_dialog.description", { startDate, endDate })}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setShowFinalizeDialog(false)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setShowFinalizeDialog(false)}>{t("payroll_page.finalize_dialog.cancel")}</Button>
                         <Button onClick={handleFinalize} disabled={isFinalizing}>
-                            {isFinalizing ? "Finalizing…" : "Finalize"}
+                            {isFinalizing ? t("payroll_page.finalize_dialog.finalizing") : t("payroll_page.period_picker.finalize")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

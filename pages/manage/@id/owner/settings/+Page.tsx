@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -63,6 +64,7 @@ const SETTINGS_TOUR_STEPS: TourStep[] = [
 ]
 
 const BusinessSettingsPage = () => {
+    const { t } = useTranslation("management");
     usePageTour(SETTINGS_TOUR_STEPS)
 
     const {
@@ -152,7 +154,7 @@ const BusinessSettingsPage = () => {
     return (
         <div className="space-y-6">
         <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold">Business Settings</h1>
+            <h1 className="text-3xl font-bold">{t("settings_page.title")}</h1>
             <AuditLogHint
                 entityType="business"
                 entityId={myBusinessFullDetails?.id}
@@ -228,13 +230,13 @@ const BusinessSettingsPage = () => {
 
             {/* Reservations & Orders */}
             <AccordionItem value="reservations" data-tour="settings-reservations" className="border rounded-lg px-3">
-                <AccordionTrigger>Reservations & Orders</AccordionTrigger>
+                <AccordionTrigger>{t("settings_page.reservations_orders.trigger")}</AccordionTrigger>
                 <AccordionContent className="py-2">
                     <div className="divide-y divide-border">
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Enable Table Reservations</Label>
-                                <p className="text-xs text-muted-foreground">Allow guests to book tables online</p>
+                                <Label>{t("settings_page.reservations_orders.enable_reservations.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.enable_reservations.desc")}</p>
                             </div>
                             <Switch
                                 checked={resSettings.allowReservations}
@@ -246,8 +248,8 @@ const BusinessSettingsPage = () => {
                             <div className="divide-y divide-border/60 pl-6 border-l-2 border-muted">
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Require Reservation Confirmation</Label>
-                                        <p className="text-xs text-muted-foreground">Reservations must be approved by staff</p>
+                                        <Label>{t("settings_page.reservations_orders.require_confirmation.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.require_confirmation.desc")}</p>
                                     </div>
                                     <Switch
                                         checked={resSettings.requireReservationConfirmation}
@@ -257,8 +259,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Cancellation Window (Days)</Label>
-                                        <p className="text-xs text-muted-foreground">Number of days before reservation allowed to cancel</p>
+                                        <Label>{t("settings_page.reservations_orders.cancellation_window.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.cancellation_window.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -270,8 +272,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Modification Limit (Minutes)</Label>
-                                        <p className="text-xs text-muted-foreground">Minimum minutes before reservation can be modified</p>
+                                        <Label>{t("settings_page.reservations_orders.modification_limit.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.modification_limit.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -283,8 +285,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Pending Timeout (Minutes)</Label>
-                                        <p className="text-xs text-muted-foreground">Minutes before an unconfirmed request expires</p>
+                                        <Label>{t("settings_page.reservations_orders.pending_timeout.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.pending_timeout.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -296,8 +298,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Default Duration (Minutes)</Label>
-                                        <p className="text-xs text-muted-foreground">Default duration for new reservations</p>
+                                        <Label>{t("settings_page.reservations_orders.default_duration.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.default_duration.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -309,8 +311,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Max Party Size</Label>
-                                        <p className="text-xs text-muted-foreground">Maximum guests allowed per reservation</p>
+                                        <Label>{t("settings_page.reservations_orders.max_party_size.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.max_party_size.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -322,8 +324,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Booking Window (Days)</Label>
-                                        <p className="text-xs text-muted-foreground">How far ahead customers can book</p>
+                                        <Label>{t("settings_page.reservations_orders.booking_window.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.booking_window.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -335,8 +337,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Buffer Between Reservations (min)</Label>
-                                        <p className="text-xs text-muted-foreground">Gap added between back-to-back table slots</p>
+                                        <Label>{t("settings_page.reservations_orders.buffer.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.buffer.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -348,8 +350,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Auto No-Show</Label>
-                                        <p className="text-xs text-muted-foreground">Automatically mark confirmed reservations as no-show after grace period</p>
+                                        <Label>{t("settings_page.reservations_orders.auto_no_show.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.auto_no_show.desc")}</p>
                                     </div>
                                     <Switch
                                         checked={resSettings.autoNoShow}
@@ -360,8 +362,8 @@ const BusinessSettingsPage = () => {
                                 {resSettings.autoNoShow && (
                                     <div className="flex items-center justify-between pl-6 border-l-2 border-muted py-2.5">
                                         <div className="space-y-0.5">
-                                            <Label>Grace Period (min)</Label>
-                                            <p className="text-xs text-muted-foreground">Minutes past reservation time before auto no-show triggers</p>
+                                            <Label>{t("settings_page.reservations_orders.grace_period.label")}</Label>
+                                            <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.grace_period.desc")}</p>
                                         </div>
                                         <Input
                                             type="number"
@@ -381,8 +383,8 @@ const BusinessSettingsPage = () => {
                     <div className="divide-y divide-border">
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Enable Online Ordering</Label>
-                                <p className="text-xs text-muted-foreground">Allow guests to place orders online</p>
+                                <Label>{t("settings_page.reservations_orders.enable_ordering.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.enable_ordering.desc")}</p>
                             </div>
                             <Switch
                                 checked={resSettings.allowOrders}
@@ -394,8 +396,8 @@ const BusinessSettingsPage = () => {
                             <div className="divide-y divide-border/60 pl-6 border-l-2 border-muted">
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Require Order Confirmation</Label>
-                                        <p className="text-xs text-muted-foreground">Orders must be approved by staff</p>
+                                        <Label>{t("settings_page.reservations_orders.require_order_confirmation.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.require_order_confirmation.desc")}</p>
                                     </div>
                                     <Switch
                                         checked={resSettings.requireOrderConfirmation}
@@ -405,8 +407,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Allow Table Ordering</Label>
-                                        <p className="text-xs text-muted-foreground">Enable "Dine-in" option for guests</p>
+                                        <Label>{t("settings_page.reservations_orders.allow_table_ordering.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.allow_table_ordering.desc")}</p>
                                     </div>
                                     <Switch
                                         checked={resSettings.allowTableOrdering}
@@ -416,8 +418,8 @@ const BusinessSettingsPage = () => {
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Allow Takeaway Ordering</Label>
-                                        <p className="text-xs text-muted-foreground">Enable "Takeaway" option for guests</p>
+                                        <Label>{t("settings_page.reservations_orders.allow_takeaway_ordering.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.reservations_orders.allow_takeaway_ordering.desc")}</p>
                                     </div>
                                     <Switch
                                         checked={resSettings.allowTakeawayOrdering}
@@ -434,7 +436,7 @@ const BusinessSettingsPage = () => {
                             disabled={updatingMyBusiness}
                             onClick={() => updateMyBusinessDetails(resSettings)}
                         >
-                            Save
+                            {t("settings_page.reservations_orders.save")}
                         </Button>
                     </div>
                 </AccordionContent>
@@ -446,13 +448,13 @@ const BusinessSettingsPage = () => {
                 ref={(el) => { sectionRefs.current["floor-plan"] = el as HTMLDivElement | null }}
                 className={`border rounded-lg px-3 transition-all duration-700 ${highlightedSection === "floor-plan" ? "ring-2 ring-primary ring-offset-2 shadow-md" : ""}`}
             >
-                <AccordionTrigger>Floor Plan</AccordionTrigger>
+                <AccordionTrigger>{t("settings_page.floor_plan.trigger")}</AccordionTrigger>
                 <AccordionContent className="py-2">
                     <div className="divide-y divide-border">
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Enable Floor Plan Layout View</Label>
-                                <p className="text-xs text-muted-foreground">Show the visual table layout to staff for managing seating and to customers when booking a table</p>
+                                <Label>{t("settings_page.floor_plan.enable_layout.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.floor_plan.enable_layout.desc")}</p>
                             </div>
                             <Switch
                                 checked={myBusinessFullDetails?.enableFloorPlanView ?? false}
@@ -466,19 +468,19 @@ const BusinessSettingsPage = () => {
 
             {/* Organization & Region */}
             <AccordionItem value="organization" className="border rounded-lg px-3">
-                <AccordionTrigger>Organization &amp; Region</AccordionTrigger>
+                <AccordionTrigger>{t("settings_page.organization_region.trigger")}</AccordionTrigger>
                 <AccordionContent className="py-2">
                     {myBusinessFullDetails?.organizationId || myBusinessFullDetails?.regionId ? (
                         <div className="flex items-center justify-between border border-border rounded-lg p-3">
                             <div className="flex items-center gap-2">
-                                <Badge>Linked</Badge>
+                                <Badge>{t("settings_page.organization_region.linked")}</Badge>
                                 <span className="text-sm text-muted-foreground">
                                     {myBusinessFullDetails.regionName ?? myBusinessFullDetails.organizationName ?? "—"}
                                 </span>
                             </div>
                             {pendingLeaveRequest ? (
                                 <Badge variant="outline" className="text-muted-foreground">
-                                    Leave request pending
+                                    {t("settings_page.organization_region.leave_pending")}
                                 </Badge>
                             ) : (
                                 <Button
@@ -493,18 +495,17 @@ const BusinessSettingsPage = () => {
                                         })
                                     }
                                 >
-                                    Request to leave
+                                    {t("settings_page.organization_region.request_to_leave")}
                                 </Button>
                             )}
                         </div>
                     ) : (
                         <p className="text-sm text-muted-foreground py-2">
-                            Not linked to any organization or region.
+                            {t("settings_page.organization_region.not_linked")}
                         </p>
                     )}
                     <p className="text-xs text-muted-foreground mt-3">
-                        Leaving requires the organization or region owner's approval — it never happens
-                        immediately, even if you're the one who asked.
+                        {t("settings_page.organization_region.leave_note")}
                     </p>
                 </AccordionContent>
             </AccordionItem>

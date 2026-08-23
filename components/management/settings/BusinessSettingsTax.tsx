@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -36,6 +37,7 @@ type Props = {
 }
 
 export default function BusinessSettingsTax({ businessDetails, onSaveDetails, disabled }: Props) {
+    const { t } = useTranslation("management")
     const businessId = businessDetails?.id
     const qc = useQueryClient()
 
@@ -55,12 +57,12 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
 
     return (
         <AccordionItem value="tax" className="border rounded-lg px-3">
-            <AccordionTrigger>Tax Configuration</AccordionTrigger>
+            <AccordionTrigger>{t("settings_page.tax.trigger")}</AccordionTrigger>
             <AccordionContent className="space-y-6 py-2">
                 {loading ? (
                     <div className="flex items-center gap-2 text-muted-foreground text-sm py-4">
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Loading tax configuration…
+                        {t("settings_page.tax.loading")}
                     </div>
                 ) : (
                     <>
@@ -94,25 +96,10 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
 // completed — without it, completing an order for this business throws a 400
 // server-side (AndorraFiscalAdapter live as of AD-01/04/05/06/07, 2026-08-08).
 
-const FISCAL_ID_COPY = {
-    // Spain's fiscal adapter is fully built but not yet routed live (FiscalAdapterFactory
-    // still sends every ES business to the generic adapter) — so unlike Andorra below,
-    // this does NOT currently block completing an order. Don't claim otherwise until that
-    // changes.
-    ES: {
-        label: "Tax ID (NIF/CIF)",
-        placeholder: "e.g. B12345678",
-        helper: "Required for Spanish fiscal invoicing — printed on receipts and used in the AEAT QR code. Set this before Spain's fiscal invoicing goes live for your account.",
-        notSetWarning: "Not set — required before Spain's fiscal invoicing goes live for your account.",
-    },
-    AD: {
-        label: "Tax ID (NRT)",
-        placeholder: "e.g. A-123456-Z",
-        helper: "Required for Andorran fiscal invoicing — printed on receipts. Orders can't be completed until this is set.",
-        notSetWarning: "Not set — required before completing any order.",
-    },
-} as const
-
+// Spain's fiscal adapter is fully built but not yet routed live (FiscalAdapterFactory
+// still sends every ES business to the generic adapter) — so unlike Andorra below,
+// this does NOT currently block completing an order. Don't claim otherwise until that
+// changes.
 function FiscalIdField({
     countryCode,
     taxIdNumber,
@@ -124,9 +111,12 @@ function FiscalIdField({
     onSave: (val: string) => void
     disabled?: boolean
 }) {
+    const { t } = useTranslation("management")
     const [value, setValue] = useState(taxIdNumber ?? "")
     const isDirty = value.trim() !== (taxIdNumber ?? "")
-    const copy = FISCAL_ID_COPY[countryCode]
+    const copy = t(`settings_page.tax.fiscal_id.${countryCode}`, { returnObjects: true }) as {
+        label: string; placeholder: string; helper: string; notSetWarning: string
+    }
 
     return (
         <div className="space-y-2 pb-4 border-b">
@@ -146,7 +136,7 @@ function FiscalIdField({
                     disabled={disabled || !isDirty || !value.trim()}
                     onClick={() => onSave(value.trim())}
                 >
-                    Save
+                    {t("settings_page.tax.save")}
                 </Button>
             </div>
             {!taxIdNumber && (
@@ -167,11 +157,12 @@ function PricingModelToggle({
     onSave: (val: boolean) => void
     disabled?: boolean
 }) {
+    const { t } = useTranslation("management")
     const [value, setValue] = useState<"included" | "excluded">(taxIncluded ? "included" : "excluded")
 
     return (
         <div className="space-y-3 pb-4 border-b">
-            <Label className="text-sm font-medium">Pricing Model</Label>
+            <Label className="text-sm font-medium">{t("settings_page.tax.pricing_model.label")}</Label>
             <RadioGroup
                 value={value}
                 onValueChange={(v) => setValue(v as "included" | "excluded")}
@@ -181,15 +172,15 @@ function PricingModelToggle({
                 <div className="flex items-center gap-2">
                     <RadioGroupItem value="included" id="tax-included" />
                     <Label htmlFor="tax-included" className="font-normal cursor-pointer">
-                        Tax included in price
-                        <span className="text-xs text-muted-foreground ml-1">(EU style — tax is baked into displayed prices)</span>
+                        {t("settings_page.tax.pricing_model.included_label")}
+                        <span className="text-xs text-muted-foreground ml-1">{t("settings_page.tax.pricing_model.included_hint")}</span>
                     </Label>
                 </div>
                 <div className="flex items-center gap-2">
                     <RadioGroupItem value="excluded" id="tax-excluded" />
                     <Label htmlFor="tax-excluded" className="font-normal cursor-pointer">
-                        Tax added on top
-                        <span className="text-xs text-muted-foreground ml-1">(US style — tax is shown as a separate line at checkout)</span>
+                        {t("settings_page.tax.pricing_model.excluded_label")}
+                        <span className="text-xs text-muted-foreground ml-1">{t("settings_page.tax.pricing_model.excluded_hint")}</span>
                     </Label>
                 </div>
             </RadioGroup>
@@ -198,7 +189,7 @@ function PricingModelToggle({
                 disabled={disabled}
                 onClick={() => onSave(value === "included")}
             >
-                Save pricing model
+                {t("settings_page.tax.pricing_model.save")}
             </Button>
         </div>
     )
@@ -215,6 +206,7 @@ function TaxLibrary({
     taxes: BusinessTax[]
     qc: ReturnType<typeof useQueryClient>
 }) {
+    const { t } = useTranslation("management")
     const [editTax, setEditTax] = useState<BusinessTax | null>(null)
     const [showAdd, setShowAdd] = useState(false)
 
@@ -222,39 +214,39 @@ function TaxLibrary({
 
     const deleteMutation = useMutation({
         mutationFn: (taxId: string) => businessTaxApi.deleteTax(businessId, taxId),
-        onSuccess: () => { invalidate(); toast.success("Tax deleted") },
-        onError: () => toast.error("Failed to delete tax"),
+        onSuccess: () => { invalidate(); toast.success(t("settings_page.tax.library.toasts.deleted")) },
+        onError: () => toast.error(t("settings_page.tax.library.toasts.delete_failed")),
     })
 
     const setDefaultMutation = useMutation({
         mutationFn: (taxId: string) => businessTaxApi.setDefault(businessId, taxId),
-        onSuccess: () => { invalidate(); toast.success("Default tax updated") },
-        onError: () => toast.error("Failed to update default tax"),
+        onSuccess: () => { invalidate(); toast.success(t("settings_page.tax.library.toasts.default_updated")) },
+        onError: () => toast.error(t("settings_page.tax.library.toasts.default_update_failed")),
     })
 
     const autofillMutation = useMutation({
         mutationFn: () => businessTaxApi.autofillTaxes(businessId),
         onSuccess: (result) => {
             if (result.unsupportedCountry) {
-                toast.info("No starter tax preset is available yet for this business's country. Add taxes manually below.")
+                toast.info(t("settings_page.tax.library.toasts.unsupported_country"))
                 return
             }
             invalidate()
             if (result.created.length > 0) {
-                toast.success(`Added ${result.created.map((t) => `${t.name} (${t.rate}%)`).join(", ")}`)
+                toast.success(t("settings_page.tax.library.toasts.autofill_added", { list: result.created.map((tx) => `${tx.name} (${tx.rate}%)`).join(", ") }))
             } else {
-                toast.info("Tax library is already up to date — nothing to add.")
+                toast.info(t("settings_page.tax.library.toasts.autofill_up_to_date"))
             }
         },
-        onError: () => toast.error("Failed to auto-fill taxes"),
+        onError: () => toast.error(t("settings_page.tax.library.toasts.autofill_failed")),
     })
 
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-sm font-medium">Tax Library</p>
-                    <p className="text-xs text-muted-foreground">Individual tax rates applied to orders</p>
+                    <p className="text-sm font-medium">{t("settings_page.tax.library.title")}</p>
+                    <p className="text-xs text-muted-foreground">{t("settings_page.tax.library.subtitle")}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <TooltipProvider>
@@ -273,29 +265,29 @@ function TaxLibrary({
                                         ) : (
                                             <Wand2 className="w-3.5 h-3.5" />
                                         )}
-                                        Auto-fill
+                                        {t("settings_page.tax.library.autofill")}
                                     </Button>
                                 </span>
                             </TooltipTrigger>
                             <TooltipContent>
-                                Fills in the standard starter tax for this business's country (e.g. Spain IVA 10%, Andorra IGI 4.5%) — verify with your accountant before relying on it.
+                                {t("settings_page.tax.library.autofill_tooltip")}
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                     <Button size="sm" variant="outline" onClick={() => setShowAdd(true)} className="gap-1.5">
                         <Plus className="w-3.5 h-3.5" />
-                        Add Tax
+                        {t("settings_page.tax.library.add_tax")}
                     </Button>
                 </div>
             </div>
 
             {taxes.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-6 text-center space-y-2">
-                    <p className="text-sm text-muted-foreground">No taxes configured yet.</p>
-                    <p className="text-xs text-muted-foreground">Add your first tax to apply it to all orders by default.</p>
+                    <p className="text-sm text-muted-foreground">{t("settings_page.tax.library.empty_title")}</p>
+                    <p className="text-xs text-muted-foreground">{t("settings_page.tax.library.empty_desc")}</p>
                     <Button size="sm" variant="outline" onClick={() => setShowAdd(true)} className="gap-1.5 mt-1">
                         <Plus className="w-3.5 h-3.5" />
-                        Add Tax
+                        {t("settings_page.tax.library.add_tax")}
                     </Button>
                 </div>
             ) : (
@@ -307,7 +299,7 @@ function TaxLibrary({
                                 {tax.isDefault && (
                                     <Badge variant="secondary" className="shrink-0 gap-1">
                                         <Star className="w-3 h-3" />
-                                        Default
+                                        {t("settings_page.tax.library.default_badge")}
                                     </Badge>
                                 )}
                             </div>
@@ -323,7 +315,7 @@ function TaxLibrary({
                                         onClick={() => setDefaultMutation.mutate(tax.id)}
                                         disabled={setDefaultMutation.isPending}
                                     >
-                                        Set default
+                                        {t("settings_page.tax.library.set_default")}
                                     </Button>
                                 )}
                                 <Button
@@ -351,7 +343,7 @@ function TaxLibrary({
                                         </TooltipTrigger>
                                         {tax.isDefault && (
                                             <TooltipContent>
-                                                Set another tax as default before deleting this one.
+                                                {t("settings_page.tax.library.delete_default_tooltip")}
                                             </TooltipContent>
                                         )}
                                     </Tooltip>
@@ -392,6 +384,7 @@ function TaxFormDialog({
     initialValues?: BusinessTax
     onSaved: () => void
 }) {
+    const { t } = useTranslation("management")
     const isEdit = !!initialValues
     const [name, setName] = useState(initialValues?.name ?? "")
     const [rate, setRate] = useState(initialValues?.rate?.toString() ?? "")
@@ -413,21 +406,21 @@ function TaxFormDialog({
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         const rateNum = parseFloat(rate)
-        if (!name.trim()) { setError("Tax name is required."); return }
-        if (isNaN(rateNum) || rateNum < 0 || rateNum > 100) { setError("Tax rate cannot exceed 100%."); return }
+        if (!name.trim()) { setError(t("settings_page.tax.form_dialog.errors.name_required")); return }
+        if (isNaN(rateNum) || rateNum < 0 || rateNum > 100) { setError(t("settings_page.tax.form_dialog.errors.rate_invalid")); return }
         setLoading(true)
         setError("")
         try {
             if (isEdit) {
                 await businessTaxApi.updateTax(businessId, initialValues!.id, { name: name.trim(), rate: rateNum, isDefault })
-                toast.success("Tax updated")
+                toast.success(t("settings_page.tax.form_dialog.toasts.updated"))
             } else {
                 await businessTaxApi.createTax(businessId, { name: name.trim(), rate: rateNum, isDefault })
-                toast.success("Tax created")
+                toast.success(t("settings_page.tax.form_dialog.toasts.created"))
             }
             onSaved()
         } catch {
-            setError("Failed to save tax. Please try again.")
+            setError(t("settings_page.tax.form_dialog.errors.save_failed"))
         } finally {
             setLoading(false)
         }
@@ -437,13 +430,13 @@ function TaxFormDialog({
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent className="max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>{isEdit ? "Edit Tax" : "Add Tax"}</DialogTitle>
+                    <DialogTitle>{isEdit ? t("settings_page.tax.form_dialog.edit_title") : t("settings_page.tax.form_dialog.add_title")}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                        <Label>Name</Label>
+                        <Label>{t("settings_page.tax.form_dialog.name_label")}</Label>
                         <Input
-                            placeholder="e.g. VAT, State Tax"
+                            placeholder={t("settings_page.tax.form_dialog.name_placeholder")}
                             value={name}
                             maxLength={30}
                             onChange={(e) => setName(e.target.value)}
@@ -452,7 +445,7 @@ function TaxFormDialog({
                         <p className="text-xs text-muted-foreground">{name.length}/30</p>
                     </div>
                     <div className="space-y-1.5">
-                        <Label>Rate (%)</Label>
+                        <Label>{t("settings_page.tax.form_dialog.rate_label")}</Label>
                         <div className="flex items-center gap-2">
                             <Input
                                 type="number"
@@ -474,16 +467,16 @@ function TaxFormDialog({
                             onCheckedChange={(checked) => setIsDefault(!!checked)}
                         />
                         <Label htmlFor="tax-is-default" className="font-normal cursor-pointer">
-                            Set as default tax
+                            {t("settings_page.tax.form_dialog.set_default_checkbox")}
                         </Label>
                     </div>
                     {error && <p className="text-destructive text-sm">{error}</p>}
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            Cancel
+                            {t("settings_page.tax.form_dialog.cancel")}
                         </Button>
                         <Button type="submit" disabled={loading}>
-                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? "Save changes" : "Create"}
+                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? t("settings_page.tax.form_dialog.save_changes") : t("settings_page.tax.form_dialog.create")}
                         </Button>
                     </DialogFooter>
                 </form>
@@ -505,6 +498,7 @@ function TaxGroupsSection({
     taxes: BusinessTax[]
     qc: ReturnType<typeof useQueryClient>
 }) {
+    const { t } = useTranslation("management")
     const [editGroup, setEditGroup] = useState<BusinessTaxGroup | null>(null)
     const [showAdd, setShowAdd] = useState(false)
     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
@@ -513,8 +507,8 @@ function TaxGroupsSection({
 
     const deleteMutation = useMutation({
         mutationFn: (groupId: string) => businessTaxApi.deleteGroup(businessId, groupId),
-        onSuccess: () => { invalidate(); setConfirmDeleteId(null); toast.success("Tax group deleted") },
-        onError: () => toast.error("Failed to delete tax group"),
+        onSuccess: () => { invalidate(); setConfirmDeleteId(null); toast.success(t("settings_page.tax.groups.toasts.deleted")) },
+        onError: () => toast.error(t("settings_page.tax.groups.toasts.delete_failed")),
     })
 
     const noTaxes = taxes.length === 0
@@ -523,8 +517,8 @@ function TaxGroupsSection({
         <div className="space-y-3">
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-sm font-medium">Tax Groups</p>
-                    <p className="text-xs text-muted-foreground">Bundle multiple taxes for specific items (e.g. Merch, Alcohol)</p>
+                    <p className="text-sm font-medium">{t("settings_page.tax.groups.title")}</p>
+                    <p className="text-xs text-muted-foreground">{t("settings_page.tax.groups.subtitle")}</p>
                 </div>
                 <TooltipProvider>
                     <Tooltip>
@@ -538,13 +532,13 @@ function TaxGroupsSection({
                                     className="gap-1.5"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
-                                    Add Group
+                                    {t("settings_page.tax.groups.add_group")}
                                 </Button>
                             </span>
                         </TooltipTrigger>
                         {noTaxes && (
                             <TooltipContent>
-                                Add taxes to the library above before creating groups.
+                                {t("settings_page.tax.groups.add_taxes_first_tooltip")}
                             </TooltipContent>
                         )}
                     </Tooltip>
@@ -553,15 +547,15 @@ function TaxGroupsSection({
 
             {noTaxes ? (
                 <div className="rounded-lg border border-dashed p-4 text-center">
-                    <p className="text-sm text-muted-foreground">Add taxes to the library above before creating groups.</p>
+                    <p className="text-sm text-muted-foreground">{t("settings_page.tax.groups.empty_no_taxes")}</p>
                 </div>
             ) : groups.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-6 text-center space-y-2">
-                    <p className="text-sm text-muted-foreground">No tax groups yet.</p>
-                    <p className="text-xs text-muted-foreground">Groups let you stack multiple taxes for specific items (e.g. Merch, Alcohol).</p>
+                    <p className="text-sm text-muted-foreground">{t("settings_page.tax.groups.empty_title")}</p>
+                    <p className="text-xs text-muted-foreground">{t("settings_page.tax.groups.empty_desc")}</p>
                     <Button size="sm" variant="outline" onClick={() => setShowAdd(true)} className="gap-1.5 mt-1">
                         <Plus className="w-3.5 h-3.5" />
-                        Add Group
+                        {t("settings_page.tax.groups.add_group")}
                     </Button>
                 </div>
             ) : (
@@ -573,12 +567,12 @@ function TaxGroupsSection({
                                 <div className="min-w-0">
                                     <p className="text-sm font-medium">{group.name}</p>
                                     <p className="text-xs text-muted-foreground truncate">
-                                        {group.taxes.map((t) => t.name).join(" + ") || "No taxes"}
+                                        {group.taxes.map((gt) => gt.name).join(" + ") || t("settings_page.tax.groups.no_taxes_label")}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2 shrink-0">
                                     <span className="text-sm text-muted-foreground w-20 text-right">
-                                        {total.toFixed(2)}% total
+                                        {t("settings_page.tax.groups.total_suffix", { rate: total.toFixed(2) })}
                                     </span>
                                     <Button
                                         size="icon"
@@ -623,17 +617,17 @@ function TaxGroupsSection({
             <Dialog open={!!confirmDeleteId} onOpenChange={(open) => { if (!open) setConfirmDeleteId(null) }}>
                 <DialogContent className="max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>Delete tax group?</DialogTitle>
+                        <DialogTitle>{t("settings_page.tax.groups.delete_confirm_title")}</DialogTitle>
                     </DialogHeader>
-                    <p className="text-sm text-muted-foreground">This action cannot be undone.</p>
+                    <p className="text-sm text-muted-foreground">{t("settings_page.tax.groups.delete_confirm_desc")}</p>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>{t("settings_page.tax.form_dialog.cancel")}</Button>
                         <Button
                             variant="destructive"
                             onClick={() => confirmDeleteId && deleteMutation.mutate(confirmDeleteId)}
                             disabled={deleteMutation.isPending}
                         >
-                            {deleteMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Delete"}
+                            {deleteMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : t("settings_page.tax.groups.delete")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -657,10 +651,11 @@ function TaxGroupFormDialog({
     initialValues?: BusinessTaxGroup
     onSaved: () => void
 }) {
+    const { t } = useTranslation("management")
     const isEdit = !!initialValues
     const [name, setName] = useState(initialValues?.name ?? "")
     const [selectedIds, setSelectedIds] = useState<string[]>(
-        initialValues?.taxes.map((t) => t.id) ?? []
+        initialValues?.taxes.map((tx) => tx.id) ?? []
     )
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -668,7 +663,7 @@ function TaxGroupFormDialog({
     const handleOpenChange = (val: boolean) => {
         if (val) {
             setName(initialValues?.name ?? "")
-            setSelectedIds(initialValues?.taxes.map((t) => t.id) ?? [])
+            setSelectedIds(initialValues?.taxes.map((tx) => tx.id) ?? [])
             setError("")
         }
         onOpenChange(val)
@@ -682,41 +677,41 @@ function TaxGroupFormDialog({
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
-        if (!name.trim()) { setError("Group name is required."); return }
-        if (selectedIds.length === 0) { setError("Select at least one tax for this group."); return }
+        if (!name.trim()) { setError(t("settings_page.tax.group_form_dialog.errors.name_required")); return }
+        if (selectedIds.length === 0) { setError(t("settings_page.tax.group_form_dialog.errors.select_at_least_one")); return }
         setLoading(true)
         setError("")
         try {
             if (isEdit) {
                 await businessTaxApi.updateGroup(businessId, initialValues!.id, { name: name.trim(), taxIds: selectedIds })
-                toast.success("Tax group updated")
+                toast.success(t("settings_page.tax.group_form_dialog.toasts.updated"))
             } else {
                 await businessTaxApi.createGroup(businessId, { name: name.trim(), taxIds: selectedIds })
-                toast.success("Tax group created")
+                toast.success(t("settings_page.tax.group_form_dialog.toasts.created"))
             }
             onSaved()
         } catch {
-            setError("Failed to save tax group. Please try again.")
+            setError(t("settings_page.tax.group_form_dialog.errors.save_failed"))
         } finally {
             setLoading(false)
         }
     }
 
     const combinedRate = taxes
-        .filter((t) => selectedIds.includes(t.id))
-        .reduce((sum, t) => sum + t.rate, 0)
+        .filter((tx) => selectedIds.includes(tx.id))
+        .reduce((sum, tx) => sum + tx.rate, 0)
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent className="max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>{isEdit ? "Edit Tax Group" : "Add Tax Group"}</DialogTitle>
+                    <DialogTitle>{isEdit ? t("settings_page.tax.group_form_dialog.edit_title") : t("settings_page.tax.group_form_dialog.add_title")}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                        <Label>Group name</Label>
+                        <Label>{t("settings_page.tax.group_form_dialog.name_label")}</Label>
                         <Input
-                            placeholder="e.g. Alcohol, Merch"
+                            placeholder={t("settings_page.tax.group_form_dialog.name_placeholder")}
                             value={name}
                             maxLength={50}
                             onChange={(e) => setName(e.target.value)}
@@ -725,7 +720,7 @@ function TaxGroupFormDialog({
                         <p className="text-xs text-muted-foreground">{name.length}/50</p>
                     </div>
                     <div className="space-y-2">
-                        <Label>Taxes</Label>
+                        <Label>{t("settings_page.tax.group_form_dialog.taxes_label")}</Label>
                         <div className="rounded-lg border divide-y">
                             {taxes.map((tax) => (
                                 <label
@@ -743,17 +738,17 @@ function TaxGroupFormDialog({
                         </div>
                         {selectedIds.length > 0 && (
                             <p className="text-xs text-muted-foreground text-right">
-                                Combined rate: <span className="font-medium text-foreground">{combinedRate.toFixed(2)}%</span>
+                                {t("settings_page.tax.group_form_dialog.combined_rate")} <span className="font-medium text-foreground">{combinedRate.toFixed(2)}%</span>
                             </p>
                         )}
                     </div>
                     {error && <p className="text-destructive text-sm">{error}</p>}
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                            Cancel
+                            {t("settings_page.tax.form_dialog.cancel")}
                         </Button>
                         <Button type="submit" disabled={loading}>
-                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? "Save changes" : "Create"}
+                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? t("settings_page.tax.group_form_dialog.save_changes") : t("settings_page.tax.group_form_dialog.create")}
                         </Button>
                     </DialogFooter>
                 </form>

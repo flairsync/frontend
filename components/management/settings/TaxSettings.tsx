@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { taxesApi, TaxRate, CreateTaxRatePayload } from "@/features/orders/taxes";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function TaxSettings({ businessId }: Props) {
+    const { t } = useTranslation("management");
     const qc = useQueryClient();
     const [showForm, setShowForm] = useState(false);
 
@@ -31,7 +33,7 @@ export default function TaxSettings({ businessId }: Props) {
         mutationFn: (taxId: string) => taxesApi.remove(businessId, taxId),
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: ["taxes", businessId] });
-            toast.success("Tax rate deleted");
+            toast.success(t("tax_settings.deleted_toast"));
         },
     });
 
@@ -39,24 +41,24 @@ export default function TaxSettings({ businessId }: Props) {
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="font-semibold">Tax Rates</h3>
+                    <h3 className="font-semibold">{t("tax_settings.title")}</h3>
                     <p className="text-sm text-muted-foreground">
-                        Active rates are applied automatically to all new orders.
+                        {t("tax_settings.subtitle")}
                     </p>
                 </div>
                 <Button size="sm" onClick={() => setShowForm(true)} className="gap-2">
                     <Plus className="w-4 h-4" />
-                    Add Rate
+                    {t("tax_settings.add_rate")}
                 </Button>
             </div>
 
             <div className="rounded-lg border divide-y">
                 {isLoading ? (
-                    <p className="p-4 text-sm text-muted-foreground">Loading...</p>
+                    <p className="p-4 text-sm text-muted-foreground">{t("tax_settings.loading")}</p>
                 ) : taxes.length === 0 ? (
                     <div className="p-6 text-center text-muted-foreground text-sm">
                         <Percent className="w-8 h-8 mx-auto mb-2 opacity-30" />
-                        No tax rates configured. Orders will have $0 tax.
+                        {t("tax_settings.no_rates")}
                     </div>
                 ) : (
                     taxes.map((tax) => (
@@ -73,14 +75,14 @@ export default function TaxSettings({ businessId }: Props) {
             <Dialog open={showForm} onOpenChange={setShowForm}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Add Tax Rate</DialogTitle>
+                        <DialogTitle>{t("tax_settings.add_tax_rate")}</DialogTitle>
                     </DialogHeader>
                     <TaxRateForm
                         businessId={businessId}
                         onSaved={() => {
                             qc.invalidateQueries({ queryKey: ["taxes", businessId] });
                             setShowForm(false);
-                            toast.success("Tax rate created");
+                            toast.success(t("tax_settings.created_toast"));
                         }}
                         onCancel={() => setShowForm(false)}
                     />
@@ -99,6 +101,7 @@ function TaxRateRow({
     businessId: string;
     onDelete: () => void;
 }) {
+    const { t } = useTranslation("management");
     const qc = useQueryClient();
     const toggleMutation = useMutation({
         mutationFn: () =>
@@ -115,7 +118,7 @@ function TaxRateRow({
                 <div>
                     <p className="font-medium text-sm">{tax.name}</p>
                     <p className="text-xs text-muted-foreground">
-                        {tax.rate}% · {tax.isInclusive ? "Inclusive" : "Exclusive"}
+                        {tax.rate}% · {tax.isInclusive ? t("tax_settings.inclusive") : t("tax_settings.exclusive")}
                     </p>
                 </div>
             </div>
@@ -125,7 +128,7 @@ function TaxRateRow({
                     disabled={toggleMutation.isPending}
                 >
                     <Badge variant={tax.isActive ? "default" : "secondary"}>
-                        {tax.isActive ? "Active" : "Inactive"}
+                        {tax.isActive ? t("tax_settings.active") : t("tax_settings.inactive")}
                     </Badge>
                 </button>
                 <Button
@@ -150,6 +153,7 @@ function TaxRateForm({
     onSaved: () => void;
     onCancel: () => void;
 }) {
+    const { t } = useTranslation("management");
     const [name, setName] = useState("");
     const [rate, setRate] = useState("");
     const [isInclusive, setIsInclusive] = useState(false);
@@ -170,7 +174,7 @@ function TaxRateForm({
             });
             onSaved();
         } catch (e: any) {
-            setError(e.response?.data?.message ?? "Failed to create tax rate");
+            setError(e.response?.data?.message ?? t("tax_settings.create_failed"));
         } finally {
             setLoading(false);
         }
@@ -179,16 +183,16 @@ function TaxRateForm({
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
-                <Label>Name</Label>
+                <Label>{t("tax_settings.name")}</Label>
                 <Input
-                    placeholder="e.g. VAT, Sales Tax"
+                    placeholder={t("tax_settings.name_placeholder")}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
                 />
             </div>
             <div className="space-y-1">
-                <Label>Rate (%)</Label>
+                <Label>{t("tax_settings.rate_percent")}</Label>
                 <div className="flex gap-2 items-center">
                     <Input
                         type="number"
@@ -210,20 +214,20 @@ function TaxRateForm({
                     onChange={(e) => setIsInclusive(e.target.checked)}
                     className="rounded"
                 />
-                <span>Inclusive (tax already included in item price)</span>
+                <span>{t("tax_settings.inclusive_checkbox_label")}</span>
             </label>
             <p className="text-xs text-muted-foreground bg-muted rounded-md p-3">
                 {isInclusive
-                    ? "Inclusive: $10.00 item at 20% → tax = $1.67, customer pays $10.00"
-                    : "Exclusive: $10.00 item at 20% → tax = $2.00, customer pays $12.00"}
+                    ? t("tax_settings.inclusive_example")
+                    : t("tax_settings.exclusive_example")}
             </p>
             {error && <p className="text-destructive text-sm">{error}</p>}
             <div className="flex gap-2 justify-end pt-2">
                 <Button type="button" variant="outline" onClick={onCancel}>
-                    Cancel
+                    {t("tax_settings.cancel")}
                 </Button>
                 <Button type="submit" disabled={loading}>
-                    {loading ? "Creating..." : "Create"}
+                    {loading ? t("tax_settings.creating") : t("tax_settings.create")}
                 </Button>
             </div>
         </form>

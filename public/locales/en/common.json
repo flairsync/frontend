@@ -210,5 +210,17 @@
     "text": "Your password was found in a data breach — please change it",
     "aria_label": "Your password was found in a data breach — click to change it",
     "dismiss_aria_label": "Dismiss"
+  },
+  "notifications_page": {
+    "title": "Notifications Hub",
+    "subtitle": "Stay updated with the latest alerts, bookings, and system security messages.",
+    "tabs": {
+      "all": "All",
+      "alerts": "Alerts",
+      "reservations": "Reservations",
+      "orders": "Orders",
+      "promos": "Promos",
+      "security": "Security"
+    }
   }
 }

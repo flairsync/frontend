@@ -888,7 +888,64 @@
     "total": "Total",
     "dine_in": "Dine-in",
     "takeaway": "Takeaway",
-    "delivery": "Delivery"
+    "delivery": "Delivery",
+    "add_new_order": "Add New Order",
+    "live_tables": "Live Tables",
+    "filter_by_type": "Filter by type",
+    "all_tables": "All Tables",
+    "customer_name_placeholder": "Customer name",
+    "ongoing_orders": "Ongoing Orders",
+    "order_history": "Order History",
+    "col_order": "Order",
+    "col_details": "Details",
+    "col_actions": "Actions",
+    "loading": "Loading...",
+    "empty": "No orders found.",
+    "walk_in": "Walk-in",
+    "open_menu": "Open menu",
+    "select_all": "Select all",
+    "select_order": "Select order {{id}}",
+    "selected_count": "{{count}} selected",
+    "accept_all": "Accept All",
+    "cancel_all": "Cancel All",
+    "reject_all": "Reject All",
+    "receipt_title": "Receipt",
+    "status_labels": {
+      "created": "Pending",
+      "accepted": "Accepted",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "served": "Served",
+      "completed": "Completed",
+      "rejected": "Rejected",
+      "canceled": "Canceled"
+    },
+    "payment_status_labels": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "partially_paid": "Partially Paid"
+    },
+    "actions": {
+      "quick_complete": "Quick Complete",
+      "add_payment": "Add Payment",
+      "accept": "Accept",
+      "reject": "Reject",
+      "start_preparing": "Start Preparing",
+      "mark_ready": "Mark Ready",
+      "mark_served": "Mark Served",
+      "complete": "Complete",
+      "force_complete": "Force Complete",
+      "add_items": "Add Items",
+      "transfer_table": "Transfer Table",
+      "cancel": "Cancel",
+      "view_details": "View Details",
+      "view_receipt": "View Receipt"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page_of": "Page {{page}} of {{totalPages}}"
+    }
   },
   "reservations": {
     "title": "Reservations",
@@ -1659,6 +1716,17 @@
       "description": "Orders placed by hour of day for the selected period, across dine-in, takeaway, and delivery",
       "no_data": "No order data available.",
       "tooltip_orders": "Orders"
+    },
+    "top_products_table": {
+      "title": "Top Selling Products",
+      "description": "Highest performing menu items by revenue",
+      "no_data": "No product data available for this period.",
+      "col_item_name": "Item Name",
+      "col_quantity_sold": "Quantity Sold",
+      "col_revenue": "Revenue Generated",
+      "col_cost": "Cost",
+      "col_margin": "Margin",
+      "col_margin_percent": "Margin %"
     }
   },
   "company_guide": {
@@ -1778,5 +1846,1883 @@
       "create_button": "Create Board",
       "interval_seconds_hint": "How long each screen stays up before advancing to the next one."
     }
+  },
+  "staff_shifts_page": {
+    "header": {
+      "title": "My Shifts",
+      "subtitle": "Here’s your upcoming schedule and recent shifts.",
+      "my_availability": "My Availability",
+      "request_time_off": "Request Time Off"
+    },
+    "tabs": {
+      "today": "Today",
+      "schedule": "Upcoming Schedule",
+      "requests": "Time Off & Swaps",
+      "bids": "Bids & History"
+    },
+    "today_tab": {
+      "title": "Today's Shift",
+      "subtitle": "Details for your scheduled shifts today.",
+      "accept_shift": "Accept Shift",
+      "swap_shift": "Swap Shift",
+      "finished_worked": "Finished & Worked",
+      "mistake_label": "Mistake?",
+      "mistake_desc": "Contact a supervisor to correct your record.",
+      "empty": "No shift scheduled for today."
+    },
+    "open_shifts": {
+      "title": "Open Shifts Available",
+      "subtitle": "Pick up extra hours by claiming these unclaimed shifts.",
+      "empty": "No open shifts currently available for bidding. Check back later!",
+      "short_rest_gap": "Short Rest Gap",
+      "rest_gap_warning": "Less than 8h from another shift",
+      "bid": "Bid",
+      "claim": "Claim"
+    },
+    "upcoming": {
+      "title": "Upcoming Schedule",
+      "subtitle": "Your scheduled shifts for the selected period.",
+      "status_label": "Status",
+      "all_statuses": "All Statuses",
+      "from_label": "From",
+      "to_label": "To",
+      "col_date": "Date",
+      "col_time": "Time",
+      "col_estimated_cost": "Estimated Cost",
+      "col_response": "Response",
+      "col_status": "Status",
+      "col_actions": "Actions",
+      "loading": "Loading shifts...",
+      "empty": "No shifts found for the selected filters.",
+      "validate": "Validate",
+      "log_as_worked": "Log as Worked",
+      "accept": "Accept",
+      "swap": "Swap",
+      "locked": "Locked",
+      "pagination_showing": "Showing page {{page}} of {{totalPages}}",
+      "previous": "Previous",
+      "next": "Next",
+      "cancelled": "Cancelled"
+    },
+    "time_off": {
+      "title": "Time Off Requests",
+      "subtitle": "Manage your requested time off.",
+      "new_request": "New Request",
+      "col_dates": "Dates",
+      "col_reason": "Reason",
+      "col_status": "Status",
+      "loading": "Loading requests...",
+      "empty": "No time off requests found."
+    },
+    "swaps": {
+      "title": "Shift Swaps",
+      "subtitle": "Status of your shift swap requests.",
+      "col_shift": "Shift",
+      "col_involving": "Involving",
+      "col_status": "Status",
+      "loading": "Loading swaps...",
+      "empty": "No shift swaps found.",
+      "unknown_shift": "Unknown Shift",
+      "with_label": "With: {{name}}",
+      "from_label": "From: {{name}}",
+      "colleague": "Colleague"
+    },
+    "bids_tab": {
+      "title": "My Shift Bids",
+      "subtitle": "Track the status of your applications for open shifts.",
+      "col_shift_date": "Shift Date",
+      "col_times": "Times",
+      "col_restaurant": "Restaurant",
+      "col_bid_submitted": "Bid Submitted",
+      "col_status": "Status",
+      "loading": "Loading your bids...",
+      "empty": "You haven't placed any bids yet.",
+      "unknown_date": "Unknown Date",
+      "not_available": "N/A",
+      "your_restaurant": "Your Restaurant",
+      "pending_review": "Pending Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "nfc_tags_management": {
+    "tabs": {
+      "cards": "Cards",
+      "requests": "Requests"
+    },
+    "action_labels": {
+      "attendance_clock_in_out": "Attendance Clock In/Out",
+      "pos_login": "POS Login",
+      "none": "None"
+    },
+    "pos_access_mode_labels": {
+      "basic": "Basic",
+      "full": "Full"
+    },
+    "request_reason_labels": {
+      "new_staff_card": "New Staff Card",
+      "lost_replacement": "Lost Replacement",
+      "other": "Other"
+    },
+    "unassigned": "Unassigned",
+    "unnamed": "Unnamed",
+    "assign_modal": {
+      "title": "Assign Card",
+      "staff_member_label": "Staff Member",
+      "select_staff_placeholder": "Select a staff member",
+      "action_label": "Action",
+      "select_action_placeholder": "Select an action",
+      "pos_access_mode_label": "POS Access Mode",
+      "basic_option": "Basic — order-taking only, no voids/refunds/discounts",
+      "full_option": "Full — same access as PIN login",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "report_lost_dialog": {
+      "title": "Report Card Lost or Stolen",
+      "description": "This immediately deactivates the card. A replacement request will be created automatically.",
+      "reason_label": "Reason",
+      "lost": "Lost",
+      "stolen": "Stolen",
+      "note_label": "Note (optional)",
+      "note_placeholder": "Any additional details…",
+      "cancel": "Cancel",
+      "deactivate": "Deactivate Card"
+    },
+    "cards_tab": {
+      "title": "Cards",
+      "col_card_id": "Card ID",
+      "col_status": "Status",
+      "col_assigned_staff": "Assigned Staff",
+      "col_action": "Action",
+      "col_linked_at": "Linked At",
+      "col_actions": "Actions",
+      "loading": "Loading cards…",
+      "empty": "No cards found.",
+      "assign": "Assign",
+      "report_lost_stolen": "Report Lost/Stolen",
+      "previous": "Previous",
+      "next": "Next",
+      "status_labels": {
+        "unissued": "Unissued",
+        "linked": "Linked",
+        "revoked": "Revoked"
+      }
+    },
+    "request_card_modal": {
+      "title": "Request a New Card",
+      "reason_label": "Reason",
+      "note_label": "Note (optional)",
+      "note_placeholder": "Any additional details…",
+      "cancel": "Cancel",
+      "submit": "Submit Request"
+    },
+    "requests_tab": {
+      "request_new_card": "Request a new card",
+      "title": "Card Requests",
+      "col_reason": "Reason",
+      "col_note": "Note",
+      "col_status": "Status",
+      "col_requested_at": "Requested At",
+      "col_resolution_note": "Resolution Note",
+      "loading": "Loading requests…",
+      "empty": "No requests found.",
+      "previous": "Previous",
+      "next": "Next",
+      "status_labels": {
+        "pending": "Pending",
+        "fulfilled": "Fulfilled",
+        "rejected": "Rejected"
+      }
+    }
+  },
+  "payroll_page": {
+    "header": {
+      "title": "Payroll",
+      "subtitle": "Preview, generate, and finalize payroll for any period."
+    },
+    "tabs": {
+      "absences": "Absences"
+    },
+    "period_picker": {
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "generating": "Generating...",
+      "generate_payroll": "Generate Payroll",
+      "finalize": "Finalize",
+      "export_csv": "Export CSV",
+      "export_pdf": "Export PDF"
+    },
+    "preview": {
+      "title": "Preview",
+      "loading": "Loading preview…",
+      "empty": "No validated attendance records found for this period.",
+      "totals": {
+        "total_hrs": "Total Hrs:",
+        "ot_hrs": "OT Hrs:",
+        "regular_pay": "Regular Pay:",
+        "ot_pay": "OT Pay:",
+        "paid_leave": "Paid Leave:",
+        "total": "Total:"
+      }
+    },
+    "table": {
+      "employee": "Employee",
+      "regular_hrs": "Regular Hrs",
+      "ot_hrs": "OT Hrs",
+      "total_hrs": "Total Hrs",
+      "regular_pay": "Regular Pay",
+      "ot_pay": "OT Pay",
+      "paid_leave": "Paid Leave",
+      "total_pay": "Total Pay",
+      "status": "Status",
+      "set_hourly_rate": "Set hourly rate",
+      "status_labels": {
+        "DRAFT": "Draft",
+        "FINALIZED": "Finalized"
+      }
+    },
+    "warning_banner": {
+      "message_one": "{{count}} employee has unvalidated or still-open attendance this period and is NOT included in the numbers below — validate their attendance and re-check this preview.",
+      "message_other": "{{count}} employees have unvalidated or still-open attendance this period and are NOT included in the numbers below — validate their attendance and re-check this preview.",
+      "record_line_one": "{{name}} — {{count}} unvalidated record",
+      "record_line_other": "{{name}} — {{count}} unvalidated records",
+      "still_clocked_in": ", {{count}} still clocked in"
+    },
+    "draft_entries": {
+      "title": "Draft Entries",
+      "loading": "Loading…"
+    },
+    "finalized_entries": {
+      "title": "Finalized",
+      "loading": "Loading…"
+    },
+    "finalize_dialog": {
+      "title": "Finalize Payroll",
+      "description": "This will lock all draft entries for the period {{startDate}} to {{endDate}}. Finalized entries cannot be overwritten. This action is irreversible.",
+      "cancel": "Cancel",
+      "finalizing": "Finalizing…"
+    }
+  },
+  "absence_log_panel": {
+    "title": "Absence Log",
+    "record_absence": "Record Absence",
+    "loading": "Loading absences…",
+    "empty": "No absence records yet.",
+    "col_date": "Date",
+    "col_employee": "Employee",
+    "col_type": "Type",
+    "col_linked_shift": "Linked Shift",
+    "col_notes": "Notes",
+    "col_document": "Document",
+    "col_actions": "Actions",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "locked": "Locked",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "unlock": "Unlock",
+    "lock": "Lock",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "deleting": "Deleting…",
+    "create_dialog": {
+      "description": "Categorise a missed shift for a staff member."
+    },
+    "edit_dialog": {
+      "title": "Edit Absence",
+      "locked_notice": "This absence is locked and can no longer be edited. Unlock it first if a correction is needed."
+    },
+    "delete_dialog": {
+      "title": "Delete absence record?",
+      "description": "This will permanently remove the absence record for {{date}}. This action cannot be undone."
+    },
+    "form": {
+      "employment_id_label": "Employment ID",
+      "employment_id_placeholder": "Staff employment ID",
+      "date_label": "Date",
+      "type_label": "Type",
+      "paid_leave_label": "Paid Leave",
+      "notes_label": "Notes",
+      "notes_placeholder": "e.g. Staff called in sick",
+      "document_url_label": "Document URL (Optional)",
+      "document_url_placeholder": "e.g. https://storage.com/doctors-note.pdf",
+      "time_off_request_id_label": "Time-Off Request ID (Optional)",
+      "time_off_request_id_placeholder": "Link to approved time-off request"
+    }
+  },
+  "absence_types": {
+    "SICK_LEAVE": "Sick Leave",
+    "UNAUTHORIZED": "Unauthorized",
+    "PERSONAL_EMERGENCY": "Personal Emergency",
+    "APPROVED_LEAVE": "Approved Leave"
+  },
+  "settings_page": {
+    "title": "Business Settings",
+    "reservations_orders": {
+      "trigger": "Reservations & Orders",
+      "enable_reservations": {
+        "label": "Enable Table Reservations",
+        "desc": "Allow guests to book tables online"
+      },
+      "require_confirmation": {
+        "label": "Require Reservation Confirmation",
+        "desc": "Reservations must be approved by staff"
+      },
+      "cancellation_window": {
+        "label": "Cancellation Window (Days)",
+        "desc": "Number of days before reservation allowed to cancel"
+      },
+      "modification_limit": {
+        "label": "Modification Limit (Minutes)",
+        "desc": "Minimum minutes before reservation can be modified"
+      },
+      "pending_timeout": {
+        "label": "Pending Timeout (Minutes)",
+        "desc": "Minutes before an unconfirmed request expires"
+      },
+      "default_duration": {
+        "label": "Default Duration (Minutes)",
+        "desc": "Default duration for new reservations"
+      },
+      "max_party_size": {
+        "label": "Max Party Size",
+        "desc": "Maximum guests allowed per reservation"
+      },
+      "booking_window": {
+        "label": "Booking Window (Days)",
+        "desc": "How far ahead customers can book"
+      },
+      "buffer": {
+        "label": "Buffer Between Reservations (min)",
+        "desc": "Gap added between back-to-back table slots"
+      },
+      "auto_no_show": {
+        "label": "Auto No-Show",
+        "desc": "Automatically mark confirmed reservations as no-show after grace period"
+      },
+      "grace_period": {
+        "label": "Grace Period (min)",
+        "desc": "Minutes past reservation time before auto no-show triggers"
+      },
+      "enable_ordering": {
+        "label": "Enable Online Ordering",
+        "desc": "Allow guests to place orders online"
+      },
+      "require_order_confirmation": {
+        "label": "Require Order Confirmation",
+        "desc": "Orders must be approved by staff"
+      },
+      "allow_table_ordering": {
+        "label": "Allow Table Ordering",
+        "desc": "Enable \"Dine-in\" option for guests"
+      },
+      "allow_takeaway_ordering": {
+        "label": "Allow Takeaway Ordering",
+        "desc": "Enable \"Takeaway\" option for guests"
+      },
+      "save": "Save"
+    },
+    "floor_plan": {
+      "trigger": "Floor Plan",
+      "enable_layout": {
+        "label": "Enable Floor Plan Layout View",
+        "desc": "Show the visual table layout to staff for managing seating and to customers when booking a table"
+      }
+    },
+    "organization_region": {
+      "trigger": "Organization & Region",
+      "linked": "Linked",
+      "leave_pending": "Leave request pending",
+      "request_to_leave": "Request to leave",
+      "not_linked": "Not linked to any organization or region.",
+      "leave_note": "Leaving requires the organization or region owner's approval — it never happens immediately, even if you're the one who asked."
+    },
+    "general_details": {
+      "trigger": "General Information",
+      "business_name_placeholder": "Business Name",
+      "description_placeholder": "Description",
+      "contact_email_placeholder": "Contact Email",
+      "phone_placeholder": "Phone Number",
+      "slug": {
+        "label": "Public URL Slug",
+        "placeholder": "your-restaurant-name",
+        "taken": "This slug is already taken",
+        "invalid": "Only lowercase letters, numbers, and hyphens allowed",
+        "available": "Slug is available",
+        "idle_hint": "Used in your public page URL. Lowercase letters, numbers, and hyphens only.",
+        "change_warning": "Changing the slug will break any shared links using the current one"
+      },
+      "currency": {
+        "label": "Currency",
+        "set_by": "— set by {{country}}",
+        "set_by_fallback": "your business's country",
+        "hint": "Currency follows your business's registered country and can't be changed independently. To operate in a different currency, update the country under Location."
+      },
+      "receipt_language": {
+        "label": "Receipt Language",
+        "required_by_law": "— required by law, always primary",
+        "secondary_label": "Secondary language (optional)",
+        "none_placeholder": "None",
+        "none_option": "None ({{language}} only)",
+        "mandated_hint": "{{language}} must appear on every receipt and can't be turned off. You can optionally add a second language alongside it for tourists/guests — it will never replace {{language}}, only appear next to it.",
+        "select_placeholder": "Select a language",
+        "hint": "Language printed receipts use, independent of the language staff use in the app. Defaults to English."
+      },
+      "published": {
+        "label": "Published",
+        "desc": "Show this business to customers on the platform"
+      },
+      "auto_disable_out_of_stock": {
+        "label": "Auto-Disable Out-of-Stock Items",
+        "desc": "Automatically hide a menu item once its tracked stock hits zero, and bring it back once restocked"
+      },
+      "save": "Save"
+    },
+    "location": {
+      "trigger": "Location & Address",
+      "timezone": {
+        "label": "Business Timezone",
+        "select_placeholder": "Select a timezone",
+        "search_placeholder": "Search timezone...",
+        "no_results": "No timezone found."
+      },
+      "state_province": {
+        "label": "State / Province",
+        "placeholder": "State or Province"
+      },
+      "loading_map": "Loading Map...",
+      "ordering": {
+        "section_label": "Ordering Location Settings",
+        "allow_nearby_only": {
+          "label": "Allow Only Nearby Orders",
+          "desc": "Guests must be within an allowed radius of your location"
+        },
+        "max_distance": {
+          "label": "Maximum Distance (Meters)",
+          "desc": "Maximum allowed distance for nearby orders (e.g. 5000 for 5km)"
+        }
+      },
+      "attendance": {
+        "section_label": "Attendance & Geofencing Settings",
+        "require_gps": {
+          "label": "Require GPS for Attendance",
+          "desc": "Staff must share their location to clock in or out"
+        },
+        "grace_period": {
+          "label": "Attendance Grace Period (Minutes)",
+          "desc": "Minutes of leeway before a clock-in is marked late or a clock-out is marked an early departure"
+        },
+        "max_paid_break": {
+          "label": "Max Paid Break (Minutes)",
+          "desc": "Paid breaks longer than this are flagged for manager review"
+        },
+        "require_clock_in_pos": {
+          "label": "Require Clock-In to Use POS",
+          "desc": "Staff must be clocked in to take orders, accept payments, or manage tables on a shared POS terminal. Owners are always exempt."
+        },
+        "require_qr": {
+          "label": "Require QR Code for Attendance",
+          "desc": "Staff must scan a rotating QR code (shown on the Attendance page's Live tab) to clock in or out — a photo of it stops working within seconds. Combine with GPS above for the strongest protection."
+        },
+        "geofence_radius": {
+          "label": "Attendance Geofence Radius (Meters)",
+          "desc": "Maximum distance from business to allow clock in (e.g. 50)"
+        },
+        "strict_block": {
+          "label": "Strict Geofence Block",
+          "desc": "If enabled, prevents clock-in if staff is outside the radius. If disabled, allows clock-in but flags it for manager review."
+        }
+      },
+      "save": "Save"
+    },
+    "labor": {
+      "trigger": "Labor & Compliance Defaults",
+      "max_weekly_hours": {
+        "label": "Max Weekly Hours",
+        "desc": "Default max hours per employee before blocking schedule"
+      },
+      "min_gap": {
+        "label": "Min Gap Between Shifts (Hours)",
+        "desc": "The \"clopening\" gap, e.g. 8 hours"
+      },
+      "split_shift_gap": {
+        "label": "Split Shift Gap (Hours)",
+        "desc": "Minimum gap allowable on the same day"
+      },
+      "overtime_payroll_heading": "Overtime & Payroll",
+      "daily_ot_threshold": {
+        "label": "Daily OT Threshold (Hours)",
+        "desc": "Hours in a day before overtime starts"
+      },
+      "weekly_ot_threshold": {
+        "label": "Weekly OT Threshold (Hours)",
+        "desc": "Total weekly hours before overtime starts"
+      },
+      "overtime_multiplier": {
+        "label": "Overtime Multiplier",
+        "desc": "Pay multiplier for overtime hours (e.g. 1.5x)"
+      },
+      "pay_period_type": {
+        "label": "Pay Period Type",
+        "desc": "How often payroll is processed"
+      },
+      "pay_period_options": {
+        "WEEKLY": "Weekly",
+        "BIWEEKLY": "Biweekly",
+        "MONTHLY": "Monthly"
+      },
+      "tip_pooling_heading": "Tip Pooling",
+      "enable_tip_pooling": {
+        "label": "Enable Tip Pooling",
+        "desc": "Split collected tips across staff who worked instead of per-order attribution"
+      },
+      "split_strategy": {
+        "label": "Split Strategy",
+        "desc": "How the pooled tips are divided among staff",
+        "equal_split": "Equal Split",
+        "hours_worked": "Hours Worked"
+      },
+      "save": "Save"
+    },
+    "tax": {
+      "trigger": "Tax Configuration",
+      "loading": "Loading tax configuration…",
+      "save": "Save",
+      "fiscal_id": {
+        "ES": {
+          "label": "Tax ID (NIF/CIF)",
+          "placeholder": "e.g. B12345678",
+          "helper": "Required for Spanish fiscal invoicing — printed on receipts and used in the AEAT QR code. Set this before Spain's fiscal invoicing goes live for your account.",
+          "notSetWarning": "Not set — required before Spain's fiscal invoicing goes live for your account."
+        },
+        "AD": {
+          "label": "Tax ID (NRT)",
+          "placeholder": "e.g. A-123456-Z",
+          "helper": "Required for Andorran fiscal invoicing — printed on receipts. Orders can't be completed until this is set.",
+          "notSetWarning": "Not set — required before completing any order."
+        }
+      },
+      "pricing_model": {
+        "label": "Pricing Model",
+        "included_label": "Tax included in price",
+        "included_hint": "(EU style — tax is baked into displayed prices)",
+        "excluded_label": "Tax added on top",
+        "excluded_hint": "(US style — tax is shown as a separate line at checkout)",
+        "save": "Save pricing model"
+      },
+      "library": {
+        "title": "Tax Library",
+        "subtitle": "Individual tax rates applied to orders",
+        "autofill": "Auto-fill",
+        "autofill_tooltip": "Fills in the standard starter tax for this business's country (e.g. Spain IVA 10%, Andorra IGI 4.5%) — verify with your accountant before relying on it.",
+        "add_tax": "Add Tax",
+        "empty_title": "No taxes configured yet.",
+        "empty_desc": "Add your first tax to apply it to all orders by default.",
+        "default_badge": "Default",
+        "set_default": "Set default",
+        "delete_default_tooltip": "Set another tax as default before deleting this one.",
+        "toasts": {
+          "deleted": "Tax deleted",
+          "delete_failed": "Failed to delete tax",
+          "default_updated": "Default tax updated",
+          "default_update_failed": "Failed to update default tax",
+          "unsupported_country": "No starter tax preset is available yet for this business's country. Add taxes manually below.",
+          "autofill_added": "Added {{list}}",
+          "autofill_up_to_date": "Tax library is already up to date — nothing to add.",
+          "autofill_failed": "Failed to auto-fill taxes"
+        }
+      },
+      "form_dialog": {
+        "edit_title": "Edit Tax",
+        "add_title": "Add Tax",
+        "name_label": "Name",
+        "name_placeholder": "e.g. VAT, State Tax",
+        "rate_label": "Rate (%)",
+        "set_default_checkbox": "Set as default tax",
+        "cancel": "Cancel",
+        "save_changes": "Save changes",
+        "create": "Create",
+        "errors": {
+          "name_required": "Tax name is required.",
+          "rate_invalid": "Tax rate cannot exceed 100%.",
+          "save_failed": "Failed to save tax. Please try again."
+        },
+        "toasts": {
+          "updated": "Tax updated",
+          "created": "Tax created"
+        }
+      },
+      "groups": {
+        "title": "Tax Groups",
+        "subtitle": "Bundle multiple taxes for specific items (e.g. Merch, Alcohol)",
+        "add_group": "Add Group",
+        "add_taxes_first_tooltip": "Add taxes to the library above before creating groups.",
+        "empty_no_taxes": "Add taxes to the library above before creating groups.",
+        "empty_title": "No tax groups yet.",
+        "empty_desc": "Groups let you stack multiple taxes for specific items (e.g. Merch, Alcohol).",
+        "no_taxes_label": "No taxes",
+        "total_suffix": "{{rate}}% total",
+        "delete_confirm_title": "Delete tax group?",
+        "delete_confirm_desc": "This action cannot be undone.",
+        "delete": "Delete",
+        "toasts": {
+          "deleted": "Tax group deleted",
+          "delete_failed": "Failed to delete tax group"
+        }
+      },
+      "group_form_dialog": {
+        "edit_title": "Edit Tax Group",
+        "add_title": "Add Tax Group",
+        "name_label": "Group name",
+        "name_placeholder": "e.g. Alcohol, Merch",
+        "taxes_label": "Taxes",
+        "combined_rate": "Combined rate:",
+        "errors": {
+          "name_required": "Group name is required.",
+          "select_at_least_one": "Select at least one tax for this group.",
+          "save_failed": "Failed to save tax group. Please try again."
+        },
+        "toasts": {
+          "updated": "Tax group updated",
+          "created": "Tax group created"
+        },
+        "save_changes": "Save changes",
+        "create": "Create"
+      }
+    }
+  },
+  "discounts_page": {
+    "title": "Discounts",
+    "subtitle": "Create promo codes and manager-applied discounts staff can apply at checkout.",
+    "new_discount": "New Discount",
+    "all_discounts": "All Discounts",
+    "col_name": "Name",
+    "col_code": "Code",
+    "col_value": "Value",
+    "col_min_order": "Min. Order",
+    "col_expires": "Expires",
+    "col_status": "Status",
+    "col_actions": "Actions",
+    "loading": "Loading...",
+    "empty": "No discounts yet.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "form": {
+      "edit_title": "Edit Discount",
+      "new_title": "New Discount",
+      "name_label": "Name",
+      "name_placeholder": "Summer Sale",
+      "code_label": "Promo Code (optional)",
+      "type_label": "Type",
+      "percentage_option": "Percentage (%)",
+      "fixed_option": "Fixed Amount ($)",
+      "value_label": "Value",
+      "min_order_label": "Min. Order Amount",
+      "expires_label": "Expires On",
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create"
+    }
+  },
+  "booking_flow_modal": {
+    "title": "New Reservation",
+    "steps": {
+      "search": {
+        "label": "Date & Time",
+        "description": "When & how many"
+      },
+      "table_selection": {
+        "label": "Table",
+        "description": "Pick a table"
+      },
+      "pre_order": {
+        "label": "Pre-Order",
+        "description": "Optional items"
+      },
+      "customer_info": {
+        "label": "Customer",
+        "description": "Contact details"
+      }
+    },
+    "errors": {
+      "time_in_past": "Reservation time must be in the future.",
+      "invalid_email": "Please enter a valid email address",
+      "phone_required": "Phone number is required",
+      "invalid_phone": "Please enter a valid phone number for the selected country"
+    },
+    "search_step": {
+      "date_label": "Date",
+      "date_placeholder": "Pick a date",
+      "time_label": "Time",
+      "guest_count_label": "Guest Count"
+    },
+    "table_step": {
+      "waitlist_title": "Waitlist",
+      "waitlist_desc": "Add to waitlist if no preferred table is available.",
+      "table_fallback_name": "Table {{number}}",
+      "capacity": "Capacity: {{count}} guests",
+      "empty": "No tables available for this time. You can still join the waitlist."
+    },
+    "pre_order_step": {
+      "no_menu_items": "No menu items found.",
+      "add": "Add",
+      "order_heading": "Order ({{count}})",
+      "remove": "Remove",
+      "empty_order": "No items added yet.",
+      "total": "Total: ${{amount}}"
+    },
+    "customer_step": {
+      "found_user": "Found user: {{name}}",
+      "link_prompt": "Do you want to link this reservation?",
+      "no": "No",
+      "yes_link": "Yes, Link",
+      "linked_to": "Linked to {{name}}'s account",
+      "name_label": "Customer Name",
+      "name_placeholder": "John Doe",
+      "phone_label": "Phone Number",
+      "phone_placeholder": "Enter phone number",
+      "email_label": "Email Address",
+      "email_placeholder": "john@example.com",
+      "notes_label": "Special Notes",
+      "notes_placeholder": "Birthday celebration, allergy info, etc.",
+      "source_label": "Source",
+      "duration_label": "Duration (Minutes)"
+    },
+    "source_options": {
+      "APP": "App",
+      "WEB": "Web",
+      "PHONE": "Phone",
+      "WALK_IN": "Walk-in",
+      "INSTAGRAM": "Instagram",
+      "GOOGLE": "Google"
+    },
+    "footer": {
+      "back": "Back",
+      "cancel": "Cancel",
+      "complete_booking": "Complete Booking",
+      "check_availability": "Check Availability",
+      "continue": "Continue"
+    }
+  },
+  "view_reservation_modal": {
+    "title": "Reservation Details",
+    "load_failed": "Failed to load reservation details.",
+    "close": "Close",
+    "closed_notice": "This reservation is closed and cannot be modified.",
+    "reassign_table": "Reassign Table",
+    "assign_table": "Assign Table",
+    "not_available": "N/A",
+    "tabs": {
+      "details": "Details",
+      "timeline": "Timeline"
+    },
+    "customer_info": {
+      "heading": "Customer Information",
+      "name": "Name",
+      "source": "Reservation Source"
+    },
+    "reservation_info": {
+      "heading": "Reservation Details",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration",
+      "duration_value": "{{count}} min",
+      "guests": "Guests"
+    },
+    "table_info": {
+      "heading": "Table Information",
+      "table_name": "Table Name",
+      "table_number_fallback": "Table {{number}}",
+      "capacity": "Capacity",
+      "capacity_value": "{{count}} persons",
+      "status": "Table Status",
+      "no_table": "No table assigned"
+    },
+    "notes": {
+      "heading": "Notes & Reasons",
+      "customer_notes": "Customer Notes",
+      "cancel_reason": "Cancellation Reason",
+      "cancelled_at": "Cancelled At"
+    },
+    "order": {
+      "heading": "Linked Order",
+      "status": "Order Status",
+      "payment_status": "Payment Status",
+      "total_amount": "Total Amount",
+      "items_heading": "Order Items",
+      "item_note": "Note: {{note}}",
+      "no_items": "No items selected."
+    }
+  },
+  "edit_reservation_modal": {
+    "title": "Edit Reservation",
+    "restricted_notice": "Modifications are restricted. The reservation is scheduled within the next {{minutes}} minutes.",
+    "name_label": "Customer Name",
+    "phone_label": "Phone Number",
+    "date_label": "Date",
+    "time_label": "Time",
+    "guest_count_label": "Guest Count",
+    "status_label": "Status",
+    "status_options": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "WAITLIST": "Waitlist",
+      "SEATED": "Seated",
+      "COMPLETED": "Completed",
+      "NO_SHOW": "No Show",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired"
+    },
+    "assigned_table_label": "Assigned Table",
+    "select_table_placeholder": "Select a Table",
+    "unassigned_waitlist": "Unassigned (Waitlist)",
+    "table_option": "{{name}} (Capacity: {{capacity}})",
+    "table_fallback_name": "Table {{number}}",
+    "table_conflict_hint": "Assigning a table will check for availability conflicts.",
+    "cancel_reason_label": "Cancellation Reason (Optional)",
+    "cancel_reason_placeholder": "Customer requested a different day...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save"
+  },
+  "reservation_dashboard": {
+    "title": "Reservations",
+    "subtitle": "Live dashboard — refreshes every 60s",
+    "refresh": "Refresh",
+    "new_reservation": "New Reservation",
+    "waitlist": "Waitlist",
+    "walk_in": "Walk-In",
+    "stat_tiles": {
+      "total_today": "Total Today",
+      "confirmed": "Confirmed",
+      "seated": "Seated",
+      "completed": "Completed",
+      "no_shows": "No-Shows",
+      "cancelled": "Cancelled"
+    },
+    "currently_seated": {
+      "heading": "Currently Seated ({{count}})",
+      "table_fallback": "Table {{number}}",
+      "view": "View"
+    },
+    "upcoming": {
+      "heading": "Upcoming — Next 2 Hours ({{count}})",
+      "table_fallback": "Table {{number}}",
+      "reassign": "Reassign",
+      "assign_table": "Assign Table"
+    },
+    "all_reservations": {
+      "title_fallback": "All Reservations",
+      "date_range_label": "Date Range",
+      "status_label": "Status",
+      "status_all": "All",
+      "col_date_time": "Date & Time",
+      "col_customer": "Customer",
+      "col_guests": "Guests",
+      "col_table": "Table",
+      "col_status": "Status",
+      "col_actions": "Actions",
+      "empty": "No reservations found.",
+      "unassigned": "Unassigned",
+      "reassign": "Reassign",
+      "assign": "Assign",
+      "table_fallback": "Table {{number}}"
+    },
+    "no_shows_today": {
+      "heading": "No-Shows Today ({{count}})",
+      "booked": "Booked: {{time}}",
+      "marked": "Marked: {{time}}"
+    }
+  },
+  "walk_in_modal": {
+    "title": "New Walk-In",
+    "name_label": "Customer Name",
+    "name_placeholder": "John Smith",
+    "phone_label": "Phone",
+    "email_label": "Email",
+    "party_size_label": "Party Size",
+    "table_label": "Table",
+    "checking_availability": "Checking availability…",
+    "no_tables_available": "No tables available",
+    "select_table_placeholder": "Select a table",
+    "table_option": "{{name}} — seats {{capacity}}",
+    "table_fallback_name": "Table {{number}}",
+    "notes_label": "Notes",
+    "notes_placeholder": "Allergies, preferences…",
+    "cancel": "Cancel",
+    "creating": "Creating…",
+    "create": "Create Walk-In"
+  },
+  "join_waitlist_modal": {
+    "title": "Add to Waitlist",
+    "adding": "Adding…",
+    "add_to_waitlist": "Add to Waitlist"
+  },
+  "reservation_action_buttons": {
+    "action_unavailable": "This action is no longer available. Please refresh.",
+    "confirm": "Confirm",
+    "seat": "Seat",
+    "complete": "Complete",
+    "no_show": "No-Show",
+    "cancel": "Cancel",
+    "back": "Back",
+    "cancel_dialog": {
+      "title": "Cancel Reservation",
+      "description": "Optionally provide a reason for the cancellation.",
+      "reason_label": "Cancel reason (optional)",
+      "reason_placeholder": "e.g. Customer requested cancellation",
+      "cancelling": "Cancelling…",
+      "confirm_cancel": "Confirm Cancel"
+    },
+    "no_show_dialog": {
+      "title": "Mark as No-Show",
+      "description": "Mark this reservation as a no-show? This cannot be undone.",
+      "marking": "Marking…",
+      "confirm": "Mark No-Show"
+    }
+  },
+  "customer_late_popover": {
+    "trigger": "Running Late",
+    "heading": "Customer Running Late",
+    "delay_label": "Estimated delay (minutes)",
+    "notes_label": "Notes (optional)",
+    "notes_placeholder": "Called ahead, traffic…",
+    "cancel": "Cancel",
+    "record": "Record"
+  },
+  "staff_add_order": {
+    "title": "Create New Order",
+    "description": "Browse the menu and select items for this order.",
+    "order_details_heading": "Order Details",
+    "order_type_label": "Order Type",
+    "order_type_placeholder": "Select type",
+    "dine_in": "Dine-in",
+    "takeaway": "Takeaway",
+    "delivery": "Delivery",
+    "select_table_label": "Select Table",
+    "choose_table_placeholder": "Choose a table",
+    "provide_table_option": "-- Provide a table --",
+    "table_option": "{{name}} (Cap: {{capacity}})",
+    "kitchen_note_label": "Kitchen Note / Allergy Info",
+    "kitchen_note_placeholder": "e.g. Severe nut allergy at table",
+    "tax_exempt_label": "Tax Exempt",
+    "selected_items_label": "Selected Items",
+    "items_count": "{{count}} items",
+    "empty_items": "No items added yet",
+    "variant_selected": "Variant Selected",
+    "mods_prefix": "Mods: {{list}}",
+    "note_prefix": "Note: {{note}}",
+    "price_each": "{{price}} each",
+    "subtotal": "Subtotal",
+    "cancel": "Cancel",
+    "processing": "Processing...",
+    "place_order": "Place Order",
+    "errors": {
+      "no_items": "Please add at least one item to the order",
+      "no_table": "Please select a table for Dine-in orders"
+    },
+    "toasts": {
+      "created": "Order created successfully"
+    }
+  },
+  "staff_add_order_mobile": {
+    "back_to_menu": "Back to menu",
+    "add_items": "Add Items",
+    "review_order": "Review Order",
+    "variant": "Variant",
+    "view_order": "View Order",
+    "place_order_with_total": "Place Order · {{total}}"
+  },
+  "order_item_config_modal": {
+    "title": "Configure - {{name}}",
+    "default_description": "Customize your item",
+    "choose_variant": "Choose Size/Variant",
+    "optional": "(Optional)",
+    "none_base_item": "None (Base Item)",
+    "none": "None",
+    "quantity": "Quantity",
+    "modifiers_apply_to_all": "Modifiers will apply to all {{count}} items. You can add items separately if you need different variations.",
+    "notes_label": "Special Notes / Requests",
+    "notes_placeholder": "e.g. No onions, extra spicy...",
+    "total": "Total",
+    "cancel": "Cancel",
+    "save_changes": "Save Changes",
+    "add_to_order": "Add to Order"
+  },
+  "payment_modal": {
+    "title": "Add Payment - Order #{{id}}",
+    "description_prefix": "Record a payment for this order. It currently has a remaining balance of",
+    "order_total": "Order Total",
+    "total_paid": "Total Paid",
+    "payment_amount_label": "Payment Amount ({{symbol}})",
+    "tip_amount_label": "Tip Amount ({{symbol}})",
+    "optional": "(Optional)",
+    "payment_method_label": "Payment Method",
+    "select_method_placeholder": "Select method",
+    "methods": {
+      "cash": "Cash",
+      "card": "Card",
+      "online": "Online",
+      "other": "Other"
+    },
+    "cancel": "Cancel",
+    "processing": "Processing...",
+    "record_payment": "Record Payment"
+  },
+  "cancel_order_modal": {
+    "title": "Cancel Order",
+    "description": "Are you sure you want to cancel this order? This will automatically restore inventory for items already sent to the kitchen.",
+    "reason_required_label": "Cancellation Reason",
+    "reason_placeholder": "Why is this order being cancelled?",
+    "reason_required_hint": "Since payments have been recorded, a reason is required.",
+    "reason_optional_label": "Cancellation Reason (Optional)",
+    "reason_optional_placeholder": "Optional reason...",
+    "keep_order": "Keep Order",
+    "confirm_cancel": "Confirm Cancel"
+  },
+  "transfer_table_modal": {
+    "title": "Transfer Table",
+    "description_prefix": "Select an available table to transfer this order to. This will free up the current table",
+    "description_suffix": "and immediately occupy the newly selected table.",
+    "none": "None",
+    "select_destination_label": "Select Destination Table",
+    "choose_table_placeholder": "Choose an available table",
+    "no_tables_available": "No tables available",
+    "cancel": "Cancel",
+    "transferring": "Transferring...",
+    "transfer_order": "Transfer Order"
+  },
+  "force_close_order_modal": {
+    "title": "Force Complete Order",
+    "description": "This order is not fully paid. Force-completing it will mark it as completed, but a reason is required.",
+    "notes_label": "Closing Notes",
+    "notes_placeholder": "Explain why this underpaid order is being completed...",
+    "cancel": "Cancel",
+    "force_complete": "Force Complete"
+  },
+  "refund_payment_modal": {
+    "title": "Refund Payment",
+    "confirm_prefix": "Are you sure you want to refund this",
+    "confirm_suffix": "payment?",
+    "deduct_prefix": "This action will deduct",
+    "deduct_suffix": "from the order's total paid amount and recalculate its status.",
+    "reason_label": "Refund Reason (Optional)",
+    "reason_placeholder": "Why is this payment being refunded?",
+    "cancel": "Cancel",
+    "confirm_refund": "Confirm Refund"
+  },
+  "staff_add_order_menu": {
+    "search_placeholder": "Search for an item...",
+    "all_categories": "All Categories",
+    "items_count_one": "{{count}} item",
+    "items_count_other": "{{count}} items",
+    "no_items_found": "No items found",
+    "try_adjusting_search": "Try adjusting your search"
+  },
+  "manage_order_item_modal": {
+    "loading": "Loading item details..."
+  },
+  "tip_pooling_page": {
+    "title": "Tip Pooling",
+    "subtitle": "Preview, generate, and finalize tip distributions for any period.",
+    "disabled_notice": "Tip pooling is currently disabled for this business. Enable it under Settings → Labor & Compliance to start distributing pooled tips.",
+    "generate_distribution": "Generate Distribution",
+    "empty_preview": "No validated attendance or collected tips found for this period.",
+    "total_hours": "Total Hours:",
+    "total_pool": "Total Pool:",
+    "table": {
+      "hours_worked": "Hours Worked",
+      "share": "Share"
+    },
+    "finalize_dialog": {
+      "title": "Finalize Tip Distribution",
+      "description": "This will lock all draft entries for the period {{startDate}} to {{endDate}}. Finalized entries cannot be overwritten. This action is irreversible."
+    }
+  },
+  "invitations_section": {
+    "qr_description": "Please scan this QR code from the staff \"FlairSync Staff\" mobile app",
+    "title": "All Staff Invitations",
+    "add_staff": "Add Staff",
+    "upgrade": "Upgrade",
+    "upgrade_prompt_with_limit": "The business plan allows up to {{allowed}} employees ({{current}} currently active). The owner needs to upgrade to add more.",
+    "upgrade_prompt_generic": "The business plan employee limit has been reached. The owner needs to upgrade to add more staff.",
+    "add_new_staff_title": "Add New Staff",
+    "email_placeholder": "Email",
+    "add": "Add",
+    "import_csv": "Import CSV",
+    "status_filter_placeholder": "Select status",
+    "status_options": {
+      "ALL": "All",
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "DECLINED": "Declined",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired"
+    },
+    "col_email": "Email",
+    "col_display_name": "Display name",
+    "col_created": "Created",
+    "col_expires": "Expires",
+    "col_status": "Status",
+    "col_retries": "Retries",
+    "col_actions": "Actions",
+    "open_menu": "Open menu",
+    "resend_email": "Resend email",
+    "show_qr": "Show QR code",
+    "cancel_invitation": "Cancel invitation",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "organization_detail_page": {
+    "loading": "Loading organization...",
+    "subtitle_one": "Last 30 days, across {{count}} branch",
+    "subtitle_other": "Last 30 days, across {{count}} branches",
+    "total_sales": "Total Sales",
+    "orders_count_one": "{{count}} order",
+    "orders_count_other": "{{count}} orders",
+    "labor_cost": "Labor Cost",
+    "low_stock_alerts": "Low Stock Alerts",
+    "per_branch_breakdown": "Per-branch breakdown",
+    "loading_dashboard": "Loading dashboard...",
+    "col_branch": "Branch",
+    "col_sales": "Sales",
+    "col_orders": "Orders",
+    "col_labor_cost": "Labor Cost",
+    "col_low_stock": "Low Stock",
+    "empty_breakdown": "Link a branch or region to this organization to see combined performance.",
+    "map": "Map",
+    "regions": "Regions",
+    "find_region_to_invite": "Find a region to invite",
+    "link_region_hint": "Linking a region pulls in every branch under it, in one step. If you don't own the region, its manager will need to approve from the Requests inbox.",
+    "no_branches_in_region": "No branches in this region yet.",
+    "no_regions_linked": "No regions linked yet.",
+    "branches": "Branches",
+    "branches_subtitle": "Added directly to the organization, not through a region.",
+    "find_business_to_invite": "Find a business to invite",
+    "invite_business_hint": "Sends a request — nothing links until it's approved from the Requests inbox, even for a business you own yourself.",
+    "no_direct_branches": "No direct branches — branches may still be linked through a region above."
+  },
+  "create_business_page": {
+    "title": "Create a New Business",
+    "loading": "Loading...",
+    "upgrade_prompt": "You've reached your business limit. Upgrade to add more locations.",
+    "errors": {
+      "name_required": "Business name is required",
+      "description_required": "Description is required",
+      "type_required": "Please specify the business type",
+      "table_count_integer": "Must be a whole number",
+      "table_count_min": "At least 1 table",
+      "table_count_max": "Maximum 200 tables",
+      "table_count_required": "Table count is required",
+      "work_times_required": "Work times are required",
+      "pricing_required": "Pricing information is required",
+      "tags_required": "At least one tag is required",
+      "address_required": "Address is required",
+      "city_required": "City is required",
+      "country_required": "Country is required",
+      "location_required": "Location is required"
+    },
+    "step1": {
+      "name_label": "Business Name",
+      "name_placeholder": "e.g. Luna Café",
+      "description_label": "Description",
+      "description_placeholder": "A cozy coffee shop in downtown...",
+      "type_label": "Business Type",
+      "table_count_label": "Number of Tables",
+      "has_kitchen_label": "Has a Kitchen?"
+    },
+    "step2": {
+      "work_times_label": "Work Times",
+      "pricing_label": "Pricing Range",
+      "tags_label": "Business Tags"
+    },
+    "step3": {
+      "location_label": "Location Details"
+    },
+    "step4": {
+      "social_links_label": "Social Links (Optional)",
+      "auto_setup_title": "Auto-create setup",
+      "recommended_badge": "Recommended",
+      "auto_setup_desc": "Automatically create menu categories, staff roles, a floor plan, kitchen stations and more based on your business type — so you're not starting from a blank slate. Uncheck to set everything up yourself."
+    },
+    "back": "Back",
+    "create": "Create",
+    "next": "Next"
+  },
+  "region_detail_page": {
+    "loading": "Loading region...",
+    "empty_breakdown": "Link a branch to this region to see combined performance.",
+    "organization": "Organization",
+    "find_organization_to_join": "Find an organization to join",
+    "join_organization_hint": "Sends a request — the organization's owner needs to approve before this region (and every branch under it) links up."
+  },
+  "fiscal_invoices_page": {
+    "title": "Fiscal Invoices",
+    "subtitle": "The legal invoice register for your business — sequential numbers and corrections.",
+    "export_csv": "Export CSV",
+    "all_types": "All types",
+    "type_standard": "Standard",
+    "type_correction": "Correction",
+    "to": "to",
+    "clear": "Clear",
+    "col_invoice_number": "Invoice Number",
+    "col_country": "Country",
+    "col_type": "Type",
+    "col_status": "Status",
+    "col_order": "Order",
+    "col_issued_at": "Issued At",
+    "col_hash": "Hash",
+    "col_details": "Details",
+    "empty": "No fiscal invoices found.",
+    "empty_filtered": "No fiscal invoices found for the selected filters.",
+    "corrects": "corrects {{id}}",
+    "download_pdf": "Download PDF",
+    "view_details": "View details",
+    "page_of": "Page {{page}} of {{totalPages}}",
+    "loading_order": "Loading order"
+  },
+  "audit_logs_page": {
+    "title": "Audit Logs",
+    "subtitle": "Full traceability of every change made across your business.",
+    "all_entity_types": "All entity types",
+    "all_actions": "All actions",
+    "action_create": "Create",
+    "action_update": "Update",
+    "action_delete": "Delete",
+    "to": "to",
+    "clear": "Clear",
+    "col_time": "Time",
+    "col_action": "Action",
+    "col_entity": "Entity",
+    "col_changed_by": "Changed By",
+    "col_changes": "Changes",
+    "col_details": "Details",
+    "empty": "No audit logs found.",
+    "empty_filtered": "No audit logs found for the selected filters.",
+    "more_fields_one": "+{{count}} more field",
+    "more_fields_other": "+{{count}} more fields",
+    "view_details": "View details",
+    "page_of": "Page {{page}} of {{totalPages}}",
+    "entity_types": {
+      "business": "Business",
+      "menu": "Menu",
+      "menu_item": "Menu Item",
+      "menu_category": "Category",
+      "shift": "Shift",
+      "role": "Role",
+      "reservation": "Reservation",
+      "order": "Order",
+      "inventory_item": "Inventory"
+    }
+  },
+  "billing_invoices_table": {
+    "title": "Subscriptions",
+    "not_available": "N/A",
+    "status": {
+      "active": "Active — renews {{date}}",
+      "trial": "Trial — ends {{date}}",
+      "canceled_with_access": "Cancelled — access until {{date}}",
+      "canceled": "Cancelled",
+      "payment_failed": "Payment failed",
+      "activating": "Activating…",
+      "expired": "Expired"
+    },
+    "col_plan": "Plan",
+    "col_started": "Started",
+    "col_price": "Price",
+    "col_status": "Status",
+    "col_actions": "Actions",
+    "refresh_status": "Refresh status",
+    "re_subscribe": "Re-subscribe",
+    "resume": "Resume",
+    "open_menu": "Open menu",
+    "show_invoices": "Show Invoices",
+    "change_plan": "Change Plan",
+    "billing_portal": "Billing Portal",
+    "syncing": "Syncing…",
+    "contact_support": "Contact Support",
+    "cancelling": "Cancelling…",
+    "cancel_subscription": "Cancel subscription",
+    "cancelled_banner_prefix": "This subscription is cancelled and will remain active until",
+    "cancelled_banner_suffix": "After that, access to this business will be suspended.",
+    "empty": "No subscriptions found.",
+    "cancel_dialog": {
+      "title": "Cancel subscription?",
+      "description_prefix": "You'll keep access until",
+      "end_of_billing_period": "the end of the billing period",
+      "keep_subscription": "Keep subscription",
+      "confirm": "Yes, cancel"
+    }
+  },
+  "subscription_invoices_sheet": {
+    "title": "Invoices",
+    "description_for_plan": "{{name}} plan ({{type}} billing)",
+    "description_generic": "View and download your billing history.",
+    "plan": "Plan",
+    "price": "Price",
+    "started": "Started",
+    "renews": "Renews",
+    "loading": "Loading invoices…",
+    "empty": "No invoices yet",
+    "empty_hint": "Invoices will appear here once your first payment is processed.",
+    "col_date": "Date",
+    "col_type": "Type",
+    "col_amount": "Amount",
+    "col_status": "Status",
+    "col_action": "Action",
+    "billing_reason_tooltips": {
+      "initial": "This is the first payment for this subscription.",
+      "renewal": "Automatic renewal payment for the current billing period.",
+      "updated": "Payment adjustment from a plan or quantity change."
+    },
+    "billing_reason_labels": {
+      "initial": "Initial",
+      "renewal": "Renewal",
+      "updated": "Plan change"
+    },
+    "status_labels": {
+      "paid": "Paid",
+      "pending": "Pending",
+      "void": "Void",
+      "refunded": "Refunded",
+      "partial_refund": "Partially refunded"
+    },
+    "pdf": "PDF",
+    "paid_with": "Paid with {{brand}} ending in {{last4}}"
+  },
+  "change_plan_modal": {
+    "title": "Change Plan",
+    "description": "Select a new plan. Billing will be adjusted automatically by Lemon Squeezy.",
+    "no_plans": "No plans available.",
+    "current_plan": "Current plan",
+    "select": "Select",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "businesses_count_one": "{{count}} business",
+    "businesses_count_other": "{{count}} businesses",
+    "switch_to": "Switch to {{name}}?",
+    "cancel": "Cancel",
+    "confirm_switch": "Confirm switch"
+  },
+  "danger_page": {
+    "title": "Danger Zone",
+    "warning": "These actions are destructive and cannot be undone. Please be careful.",
+    "reset_shifts": "Reset All Staff Shifts",
+    "reset_shifts_description": "This will remove all current staff schedules. This action cannot be undone.",
+    "delete_menu_items": "Delete All Menu Items",
+    "delete_menu_items_description": "This will remove every item in your menu permanently.",
+    "transfer_ownership": "Transfer Ownership",
+    "transfer_ownership_description": "The new owner must already have a FlairSync account with a professional profile. They'll get an email to confirm — after that there's a 3-day grace period during which either of you can still cancel before the transfer completes.",
+    "transfer_in_progress": "A transfer is already in progress",
+    "delete_business": "Permanently Delete Business",
+    "email_required": "Email is required",
+    "email_invalid": "Enter a valid email address",
+    "unpublish_first": "Unpublish the business first",
+    "remove_staff_first_one": "Remove all {{count}} staff member first",
+    "remove_staff_first_other": "Remove all {{count}} staff members first",
+    "transfer_pending_label": "Ownership transfer pending",
+    "transfer_pending_body": "confirmation from the invited new owner. The invite expires on",
+    "transfer_pending_suffix": "if not confirmed.",
+    "transfer_confirmed_label": "Ownership transfer confirmed",
+    "transfer_confirmed_body": "and will complete automatically on",
+    "transfer_confirmed_suffix": "unless cancelled.",
+    "cancelling": "Cancelling…",
+    "cancel_transfer": "Cancel transfer",
+    "cancel": "Cancel",
+    "confirm_reset": "Confirm Reset",
+    "delete_all": "Delete All",
+    "new_owner_email": "New owner's email",
+    "enter_recipient_email": "Enter recipient email",
+    "confirm_your_password": "Confirm your password",
+    "enter_your_password": "Enter your password",
+    "tfa_code_label": "Two-factor authentication code",
+    "sending": "Sending...",
+    "transfer": "Transfer",
+    "delete_business_warning_prefix": "This action is",
+    "delete_business_warning_bold": "permanent and cannot be undone",
+    "delete_business_warning_suffix": "All menus, shifts, schedules, inventory, and media will be deleted.",
+    "type_to_confirm_prefix": "Type",
+    "type_to_confirm_suffix": "to confirm:",
+    "type_name_placeholder": "Type \"{{name}}\" to confirm",
+    "deleting": "Deleting...",
+    "delete_permanently": "Delete permanently"
+  },
+  "marketplace_management": {
+    "title": "Marketplace",
+    "subtitle": "Manage your shop items — merch, products, and more.",
+    "new_item": "New item",
+    "tabs": {
+      "items": "Items",
+      "incoming_orders": "Incoming Orders",
+      "my_orders": "My Orders"
+    },
+    "empty": "No items yet. Create your first item to start selling.",
+    "create_item": "Create item",
+    "col_name": "Name",
+    "col_price": "Price",
+    "col_stock": "Stock",
+    "col_status": "Status",
+    "col_actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "delete_item": "Delete item",
+    "delete_item_description": "\"{{name}}\" will be permanently removed.",
+    "order_status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "fulfilled": "Fulfilled",
+      "cancelled": "Cancelled"
+    },
+    "incoming_orders": {
+      "empty": "No one has ordered your items yet.",
+      "col_item": "Item",
+      "col_buyer": "Buyer",
+      "col_qty": "Qty",
+      "col_total": "Total",
+      "col_ship_to": "Ship to",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "mark_fulfilled": "Mark fulfilled"
+    },
+    "my_orders": {
+      "empty": "This business hasn't ordered anything from the marketplace yet."
+    },
+    "item_modal": {
+      "edit_title": "Edit Item",
+      "new_title": "New Item",
+      "name": "Name",
+      "name_placeholder": "Item name",
+      "description": "Description",
+      "description_placeholder": "Optional description...",
+      "price": "Price",
+      "stock": "Stock",
+      "discount_this_item": "Discount this item",
+      "discount_type": "Discount type",
+      "percent_off": "% off",
+      "amount_off": "Amount off",
+      "expires_optional": "Expires (optional)",
+      "images_count": "Images ({{count}}/{{max}})",
+      "add_images": "Add images",
+      "save_changes": "Save changes"
+    }
+  },
+  "staff_csv_import_modal": {
+    "title_upload": "Import Staff from CSV",
+    "title_map": "Map Columns",
+    "title_result": "Import Complete",
+    "description_upload": "Upload a CSV export of your roster. AI will suggest which columns map to which fields — any header layout works.",
+    "description_map": "Confirm which column corresponds to each field. Each valid row will receive an email invitation.",
+    "description_result": "Here's what happened with each row in your file.",
+    "select_csv_error": "Please select a CSV file.",
+    "no_rows_error": "This file has no rows to import.",
+    "parse_error": "Couldn't read this CSV file. Please check the format and try again.",
+    "select_email_column_error": "Please select which column contains the email address.",
+    "import_error": "Couldn't import the CSV. Please try again.",
+    "drag_drop_hint": "Drag and drop a CSV file here, or click to browse",
+    "csv_files_only": "CSV files only",
+    "remove_file": "Remove file",
+    "ai_mapping_unavailable": "AI mapping isn't available right now, so columns were matched by name instead. Please double-check the mapping below.",
+    "rows_detected_one": "{{count}} row detected. Each valid row sends a real invitation email.",
+    "rows_detected_other": "{{count}} rows detected. Each valid row sends a real invitation email.",
+    "email": "Email",
+    "select_a_column": "Select a column",
+    "name": "Name",
+    "none": "None",
+    "role": "Role",
+    "none_default_role": "None (use default role)",
+    "matches_existing_roles": "Matches against your existing roles:",
+    "preview_first_rows": "Preview (first rows)",
+    "invitations_sent_one": "{{count}} invitation sent.",
+    "invitations_sent_other": "{{count}} invitations sent.",
+    "skipped_already_staff_one": "{{count}} row skipped — already staff at this business.",
+    "skipped_already_staff_other": "{{count}} rows skipped — already staff at this business.",
+    "skipped_duplicate_one": "{{count}} row skipped — duplicate email within the file.",
+    "skipped_duplicate_other": "{{count}} rows skipped — duplicate email within the file.",
+    "skipped_invalid_email_one": "{{count}} row skipped — missing or invalid email.",
+    "skipped_invalid_email_other": "{{count}} rows skipped — missing or invalid email.",
+    "skipped_limit_reached_one": "{{count}} row skipped — your plan's employee limit was reached.",
+    "skipped_limit_reached_other": "{{count}} rows skipped — your plan's employee limit was reached.",
+    "skipped_other_one": "{{count}} row skipped — already had a pending invitation or another issue.",
+    "skipped_other_other": "{{count}} rows skipped — already had a pending invitation or another issue.",
+    "unmatched_roles_prefix": "These role names didn't match any existing role, so those rows got the default role instead:",
+    "back": "Back",
+    "cancel": "Cancel",
+    "analyzing_columns": "Analyzing columns...",
+    "analyze_file": "Analyze File",
+    "sending_invitations": "Sending invitations...",
+    "send_invitations": "Send Invitations",
+    "done": "Done"
+  },
+  "staff_section": {
+    "no_hourly_rate": "no hourly rate added",
+    "staff_fallback": "Staff",
+    "remove_staff_title": "Remove staff member?",
+    "remove_staff_description": "This will remove {{name}} from your business and revoke their access. Their attendance and payroll history will be kept.",
+    "this_staff_member": "this staff member",
+    "remove": "Remove",
+    "all_staff": "All Staff",
+    "resync_invitations": "Re-Sync invitations",
+    "col_name": "Name",
+    "col_email": "Email",
+    "col_roles": "Roles",
+    "col_hourly_rate": "Hourly Rate",
+    "col_status": "Status",
+    "col_actions": "Actions",
+    "business_owner": "Business Owner",
+    "status_active": "ACTIVE",
+    "schedule_shift": "Schedule Shift",
+    "set_pos_pin": "Set POS PIN",
+    "remove_staff_title_short": "Remove Staff",
+    "no_roles_yet": "No roles yet"
+  },
+  "fiscal_invoice_details_modal": {
+    "view": "View",
+    "copy": "Copy",
+    "type_standard": "STANDARD",
+    "type_correction": "CORRECTION",
+    "full_details": "Full details for this fiscal invoice.",
+    "status": "Status",
+    "country": "Country",
+    "predates_country_tracking": "— (predates country tracking)",
+    "issued": "Issued",
+    "order": "Order",
+    "view_order": "View order",
+    "corrects_invoice": "Corrects invoice",
+    "view_original_invoice": "View original invoice",
+    "receipt": "Receipt",
+    "hash_chain": "Hash chain",
+    "hash": "Hash",
+    "previous_hash": "Previous hash",
+    "genesis_record": "— (genesis record for this business)",
+    "recorded": "Recorded {{date}}",
+    "download_pdf": "Download PDF"
+  },
+  "plans_page": {
+    "current_plan": "Current Plan",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "select_plan": "Select Plan",
+    "payment_success": "Payment success !",
+    "to_plan": "to {{name}}?",
+    "confirm_trial_prefix": "Your plan will switch to",
+    "confirm_trial_immediately": "immediately, but you won't be charged while your free trial is active",
+    "confirm_trial_ends": "ends {{date}}",
+    "confirm_trial_after": "Once the trial ends, you'll be billed",
+    "confirm_prefix": "Your plan will switch to",
+    "confirm_immediately": "immediately and billing will be adjusted by Lemon Squeezy. Going forward you'll be billed",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "choose_your_plan": "Choose Your Plan",
+    "subtitle": "Select the subscription that fits your business best.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "how_many_businesses": "How many businesses?",
+    "loading": "Loading, please wait...",
+    "your_current_plan": "Your Current Plan",
+    "minimum_businesses_one": "Minimum {{count}} business on this plan",
+    "minimum_businesses_other": "Minimum {{count}} businesses on this plan",
+    "estimated_at_checkout": "Estimated — confirmed at checkout",
+    "businesses": "Businesses",
+    "staff": "Staff",
+    "menus": "Menus",
+    "products": "Products",
+    "unlimited": "Unlimited"
+  },
+  "owner_application_detail_page": {
+    "not_found": "Application not found",
+    "back_to_applicants": "Back to applicants",
+    "applied_on": "Applied on {{date}}",
+    "invite_sent": "Invite Sent · {{date}}",
+    "send_staff_invite": "Send Staff Invite",
+    "actions": "Actions",
+    "mark_as_reviewed": "Mark as Reviewed",
+    "shortlist": "Shortlist",
+    "accept": "Accept",
+    "reject": "Reject",
+    "edit_note": "Edit Note",
+    "add_note": "Add Note",
+    "resume": "Resume",
+    "view_resume": "View Resume",
+    "no_resume": "No resume provided.",
+    "cover_letter": "Cover Letter",
+    "internal_note": "Internal Note",
+    "add_internal_note_placeholder": "Add an internal note...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "add_a_note": "+ Add a note",
+    "activity_timeline": "Activity Timeline",
+    "no_activity": "No activity yet.",
+    "accept_confirm_title": "Accept this applicant?",
+    "accept_confirm_description": "{{name}} will see their status updated to \"Accepted\". This is a meaningful action — confirm before proceeding.",
+    "accept_applicant": "Accept Applicant"
+  },
+  "fiscal_services_page": {
+    "title": "Fiscal Services",
+    "subtitle": "Tools for periodic tax declarations and legal invoicing — same fiscal engine that backs Spain and Andorra compliance, driven by your business's country.",
+    "period_summary": "Period Summary",
+    "period_summary_description": "Aggregate totals for a date range — the figures you need to fill in a periodic self-filed tax declaration (e.g. Andorra's DTF Formulari 900/910).",
+    "from": "From",
+    "to": "To",
+    "export_csv": "Export CSV",
+    "pick_dates_hint": "Pick both a start and end date to see the summary.",
+    "loading_summary": "Loading summary…",
+    "unamounted_warning_one": "{{count}} invoice in this period predates amount tracking and is excluded from the totals below — treat these totals as incomplete, not final.",
+    "unamounted_warning_other": "{{count}} invoices in this period predate amount tracking and are excluded from the totals below — treat these totals as incomplete, not final.",
+    "standard_invoices": "Standard invoices",
+    "corrections": "Corrections",
+    "unamounted_excluded": "Unamounted (excluded)",
+    "taxable_base": "Taxable base",
+    "tax_collected": "Tax collected",
+    "total_amount": "Total amount",
+    "fiscal_invoice_register": "Fiscal Invoice Register",
+    "fiscal_invoice_register_description": "The full legal invoice register — sequential numbers, corrections, and full invoices.",
+    "export_full_register_csv": "Export Full Register CSV",
+    "view_register": "View Register",
+    "issue_full_invoice": "Issue Full Invoice",
+    "issue_full_invoice_description": "On-request full invoice (factura completa) for a B2B customer's own legal identity — issued alongside the order's original invoice, not a correction of it.",
+    "order_id": "Order ID",
+    "order_id_placeholder": "UUID of a completed order",
+    "recipient_name": "Recipient name",
+    "recipient_tax_id": "Recipient tax ID",
+    "recipient_address": "Recipient address"
+  },
+  "owner_jobs_page": {
+    "status": {
+      "all": "All",
+      "open": "Open",
+      "draft": "Draft",
+      "closed": "Closed"
+    },
+    "link_copied": "Link copied! Share it on social media.",
+    "title": "Job Postings",
+    "subtitle": "Manage your open positions and review applicants.",
+    "post_a_job": "Post a Job",
+    "loading_jobs": "Loading jobs...",
+    "no_jobs_yet": "No job postings yet",
+    "no_jobs_hint": "Post your first job to start receiving applications.",
+    "applicant_count_one": "{{count}} applicant",
+    "applicant_count_other": "{{count}} applicants",
+    "posted_on": "Posted {{date}}",
+    "closes_on": "Closes {{date}}",
+    "no_deadline": "No deadline",
+    "copy_link": "Copy Link",
+    "view_applicants": "View Applicants",
+    "edit": "Edit",
+    "close_position": "Close Position",
+    "delete": "Delete",
+    "previous": "Previous",
+    "page_of": "Page {{page}} of {{totalPages}}",
+    "next": "Next",
+    "close_confirm_title": "Close this position?",
+    "close_confirm_description": "\"{{title}}\" will stop accepting new applications. This can be undone by editing the job.",
+    "cancel": "Cancel",
+    "delete_confirm_title": "Delete this job post?",
+    "delete_confirm_description": "This will permanently delete \"{{title}}\" and all its applications. This cannot be undone."
+  },
+  "low_stock_items_view": {
+    "loading": "Loading low-stock items…",
+    "all_good": "All good — no low-stock items.",
+    "col_item": "Item",
+    "col_group": "Group",
+    "col_current_stock": "Current Stock",
+    "col_threshold": "Threshold",
+    "col_actions": "Actions",
+    "default_group": "Default",
+    "adjust": "Adjust"
+  },
+  "qr_design_editor": {
+    "dots_types": {
+      "square": "Square",
+      "dots": "Dots",
+      "rounded": "Rounded",
+      "classy": "Classy",
+      "classy-rounded": "Classy Rounded",
+      "extra-rounded": "Extra Rounded"
+    },
+    "corners_square_types": {
+      "square": "Square",
+      "dot": "Dot",
+      "extra-rounded": "Extra Rounded"
+    },
+    "corners_dot_types": {
+      "square": "Square",
+      "dot": "Dot"
+    },
+    "saved_toast": "QR design saved",
+    "save_error_toast": "Failed to save QR design",
+    "loading": "Loading QR design...",
+    "dots_color": "Dots color",
+    "background_color": "Background color",
+    "corners_square_color": "Corners square color",
+    "corners_dot_color": "Corners dot color",
+    "dots_style": "Dots style",
+    "corners_square_style": "Corners square style",
+    "corners_dot_style": "Corners dot style",
+    "logo_size": "Logo size ({{percent}}%)",
+    "quiet_zone_margin": "Quiet zone margin ({{px}}px)",
+    "clear_dots_behind_logo": "Clear dots behind logo",
+    "clear_dots_behind_logo_hint": "Keeps the logo readable by hiding QR dots directly behind it",
+    "qr_logo_alt": "QR logo",
+    "no_logo": "No logo",
+    "live_preview": "Live preview",
+    "save": "Save"
+  },
+  "billing_page": {
+    "title": "Billing & Subscription",
+    "subtitle": "Manage your subscription, payment methods, and view past invoices.",
+    "cancelled_label": "Your subscription is cancelled",
+    "cancelled_prefix": "and will end on",
+    "cancelled_suffix": "You can resume at any time before that date.",
+    "resuming": "Resuming…",
+    "resume_subscription": "Resume subscription",
+    "current_plan": "Current Plan",
+    "explore_plans": "Explore Plans",
+    "portal_url_error": "Failed to generate management portal URL.",
+    "portal_connect_error": "An error occurred connecting to the billing portal.",
+    "loading": "Loading...",
+    "manage_subscription": "Manage Subscription",
+    "plan_name": "Plan Name",
+    "free": "Free",
+    "access_ends_on": "Access ends on",
+    "next_renewal": "Next Renewal",
+    "never": "Never",
+    "not_available": "N/A",
+    "status": "Status",
+    "canceling": "Canceling",
+    "payment_failed_past_due": "Payment Failed / Past Due",
+    "free_trial": "Free Trial",
+    "active": "active",
+    "free_plan": "Free Plan",
+    "free_plan_description": "Enjoy basic features forever, or upgrade for more power.",
+    "see_pro_plans": "See Pro Plans"
+  },
+  "schedule_page": {
+    "title": "Schedule Management",
+    "tabs": {
+      "staff_scheduling": "Staff Scheduling",
+      "open_shift_bids": "Open Shift Bids",
+      "recurring_rules": "Recurring Rules",
+      "shift_templates": "Shift Templates",
+      "time_off": "Time Off",
+      "swaps": "Swaps"
+    }
+  },
+  "staff_inventory_page": {
+    "title": "Inventory",
+    "all_items": "All Items",
+    "low_stock": "Low Stock",
+    "search_placeholder": "Search items…",
+    "low_stock_only": "Low Stock Only",
+    "col_stock": "Stock",
+    "col_unit": "Unit",
+    "loading": "Loading…",
+    "no_items_found": "No items found.",
+    "movement_history": "Movement History",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "staff_schedule_page": {
+    "title": "Shifts & Schedule"
+  },
+  "invite_business_dialog": {
+    "title": "Find a business to invite",
+    "country": "Country",
+    "select_a_country": "Select a country",
+    "city_optional": "City (optional)",
+    "city_placeholder": "e.g. Austin",
+    "business_name_optional": "Business name (optional)",
+    "search_by_name": "Search by name...",
+    "search": "Search",
+    "searching": "Searching...",
+    "pick_country_hint": "Pick a country and search to see matching businesses.",
+    "no_matches": "No businesses match those filters.",
+    "already_linked": "Already linked",
+    "added": "Added",
+    "sent": "Sent",
+    "send_request": "Send request"
+  },
+  "invite_region_dialog": {
+    "title": "Find a region to invite",
+    "search_placeholder": "Search by region name...",
+    "search_hint": "Search to see matching regions.",
+    "no_matches": "No regions match that name.",
+    "branch_count_one": "{{count}} branch",
+    "branch_count_other": "{{count}} branches"
+  },
+  "join_organization_dialog": {
+    "title": "Find an organization to join",
+    "search_placeholder": "Search by organization name...",
+    "search_hint": "Search to see matching organizations.",
+    "no_matches": "No organizations match that name."
+  },
+  "tax_settings": {
+    "deleted_toast": "Tax rate deleted",
+    "title": "Tax Rates",
+    "subtitle": "Active rates are applied automatically to all new orders.",
+    "add_rate": "Add Rate",
+    "loading": "Loading...",
+    "no_rates": "No tax rates configured. Orders will have $0 tax.",
+    "add_tax_rate": "Add Tax Rate",
+    "created_toast": "Tax rate created",
+    "inclusive": "Inclusive",
+    "exclusive": "Exclusive",
+    "active": "Active",
+    "inactive": "Inactive",
+    "create_failed": "Failed to create tax rate",
+    "name": "Name",
+    "name_placeholder": "e.g. VAT, Sales Tax",
+    "rate_percent": "Rate (%)",
+    "inclusive_checkbox_label": "Inclusive (tax already included in item price)",
+    "inclusive_example": "Inclusive: $10.00 item at 20% → tax = $1.67, customer pays $10.00",
+    "exclusive_example": "Exclusive: $10.00 item at 20% → tax = $2.00, customer pays $12.00",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "create": "Create"
+  },
+  "station_card": {
+    "renamed_toast": "Station renamed.",
+    "rename_failed_toast": "Failed to rename station.",
+    "kitchen_station_assigned_toast": "Kitchen station assigned.",
+    "assign_failed_toast": "Failed to assign kitchen station.",
+    "printer_settings_saved_toast": "Printer settings saved.",
+    "save_printer_failed_toast": "Failed to save printer settings.",
+    "reach_printer_failed_toast": "Failed to reach printer.",
+    "paired_with_toast": "Paired with {{name}}.",
+    "pair_failed_toast": "Failed to pair the USB printer.",
+    "reach_usb_printer_failed_toast": "Failed to reach the USB printer.",
+    "save": "Save",
+    "kitchen_display": "Kitchen Display",
+    "pos_terminal": "POS Terminal",
+    "online": "Online",
+    "offline": "Offline",
+    "kitchen_station": "Kitchen Station",
+    "not_assigned": "Not assigned",
+    "inactive_suffix": "(inactive)",
+    "printer": "Printer",
+    "configure": "Configure",
+    "edit": "Edit",
+    "how_to_connect_printer": "How do I connect a printer or cash drawer?",
+    "no_printer": "No printer",
+    "network_printer": "Network printer (ESC/POS)",
+    "usb_printer": "USB printer (browser-direct)",
+    "webusb_unsupported": "This browser doesn't support WebUSB — use Chrome or Edge on this station's device.",
+    "paired_with": "Paired: {{name}}",
+    "no_printer_paired": "No printer paired yet",
+    "re_pair": "Re-pair",
+    "pair": "Pair",
+    "unpair": "Unpair",
+    "usb_pairing_hint": "The printer must be connected via USB to this exact device/browser — pairing doesn't transfer to other stations.",
+    "has_cash_drawer": "Has cash drawer",
+    "cancel": "Cancel",
+    "not_configured": "Not configured",
+    "not_paired_yet": "Not paired yet",
+    "cash_drawer_suffix": " · Cash drawer",
+    "test": "Test",
+    "last_seen": "Last seen {{time}}",
+    "never_connected": "Never connected",
+    "revoke": "Revoke"
   }
 }

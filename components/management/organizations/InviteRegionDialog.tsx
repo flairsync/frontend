@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -25,6 +26,7 @@ export const InviteRegionDialog: React.FC<InviteRegionDialogProps> = ({
     organizationId,
     onLinked,
 }) => {
+    const { t } = useTranslation("management");
     const { sendJoinRequest, isSendingJoinRequest } = useJoinRequests();
 
     const [name, setName] = useState("");
@@ -58,24 +60,24 @@ export const InviteRegionDialog: React.FC<InviteRegionDialogProps> = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>Find a region to invite</DialogTitle>
+                    <DialogTitle>{t("invite_region_dialog.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Search by region name..." />
+                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("invite_region_dialog.search_placeholder")} />
                         <Button onClick={handleSearch} disabled={searching} className="shrink-0">
-                            <Search className="h-4 w-4 mr-1.5" /> Search
+                            <Search className="h-4 w-4 mr-1.5" /> {t("invite_business_dialog.search")}
                         </Button>
                     </div>
 
                     <div className="max-h-96 overflow-y-auto space-y-2 pt-1">
                         {searching ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">Searching...</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("invite_business_dialog.searching")}</p>
                         ) : results === null ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">Search to see matching regions.</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("invite_region_dialog.search_hint")}</p>
                         ) : results.length === 0 ? (
-                            <p className="text-sm text-muted-foreground py-6 text-center">No regions match that name.</p>
+                            <p className="text-sm text-muted-foreground py-6 text-center">{t("invite_region_dialog.no_matches")}</p>
                         ) : (
                             results.map((r) => {
                                 const alreadyInvited = invitedIds.has(r.id);
@@ -90,12 +92,12 @@ export const InviteRegionDialog: React.FC<InviteRegionDialogProps> = ({
                                                     <p className="text-sm font-medium truncate">{r.name}</p>
                                                     {r.alreadyLinked && (
                                                         <Badge variant="outline" className="text-[10px] px-1.5 py-0 shrink-0">
-                                                            Already linked
+                                                            {t("invite_business_dialog.already_linked")}
                                                         </Badge>
                                                     )}
                                                 </div>
                                                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                                                    <Store className="h-3 w-3" /> {r.businessCount} {r.businessCount === 1 ? "branch" : "branches"}
+                                                    <Store className="h-3 w-3" /> {t("invite_region_dialog.branch_count", { count: r.businessCount })}
                                                 </p>
                                             </div>
                                         </div>
@@ -105,7 +107,7 @@ export const InviteRegionDialog: React.FC<InviteRegionDialogProps> = ({
                                             disabled={isSendingJoinRequest || alreadyInvited || r.alreadyLinked}
                                             onClick={() => handleInvite(r.id)}
                                         >
-                                            {alreadyInvited ? "Sent" : "Send request"}
+                                            {alreadyInvited ? t("invite_business_dialog.sent") : t("invite_business_dialog.send_request")}
                                         </Button>
                                     </div>
                                 );

@@ -1,1 +1,38 @@
-{}
+{
+  "gallery_titles": {
+    "b2b": "Marketplace B2B",
+    "saas": "Boutique SaaS",
+    "guest": "Marketplace Invité"
+  },
+  "item_detail": {
+    "back_to_gallery": "Retour à la galerie",
+    "back_to_shop": "Retour à la boutique",
+    "loading": "Chargement...",
+    "item_not_found": "Article introuvable",
+    "product_not_found": "Produit introuvable",
+    "in_stock_one": "En stock ({{count}})",
+    "in_stock_other": "En stock ({{count}})",
+    "out_of_stock": "Rupture de stock",
+    "business_label": "Établissement",
+    "select_business_placeholder": "Sélectionner un établissement...",
+    "quantity_label": "Quantité",
+    "shipping_details_title": "Détails de livraison",
+    "full_name_label": "Nom complet",
+    "full_name_placeholder": "Nom du destinataire",
+    "contact_number_label": "Numéro de contact",
+    "street_address_label": "Adresse postale",
+    "street_address_placeholder": "123 avenue du commerce, suite 100",
+    "city_state_zip_label": "Ville, région, code postal",
+    "city_state_zip_placeholder": "New York, NY 10001",
+    "customization_label": "Détails de personnalisation (facultatif)",
+    "customization_placeholder": "Indiquez les numéros, lettres ou instructions de marquage spécifiques...",
+    "customization_hint": "Ajoutez tout détail spécifique pour votre commande personnalisée.",
+    "total_estimated_cost": "Coût total estimé",
+    "order_submitted": "Demande de commande envoyée — le vendeur l'examinera sous peu.",
+    "submitting": "Envoi en cours...",
+    "initialize_order": "Lancer la commande",
+    "out_of_stock_hint": "Cet article est en rupture de stock",
+    "select_business_hint": "Veuillez sélectionner un établissement",
+    "fill_shipping_hint": "Veuillez remplir tous les détails de livraison"
+  }
+}

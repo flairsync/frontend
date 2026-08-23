@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { ShieldOff } from "lucide-react"
@@ -8,15 +9,15 @@ interface DisableTfaNoticeProps {
 }
 
 export function DisableTfaNotice({ onDisable, loading }: DisableTfaNoticeProps) {
+    const { t } = useTranslation('profile')
     return (
         <Alert variant="destructive" className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-2">
                 <ShieldOff className="h-5 w-5 mt-0.5" />
                 <div>
-                    <AlertTitle>Two-Factor Authentication Enabled</AlertTitle>
+                    <AlertTitle>{t('disable_tfa_notice.title')}</AlertTitle>
                     <AlertDescription>
-                        Disabling 2FA will remove the extra layer of security on your account.
-                        You’ll only need your password to log in after this action.
+                        {t('disable_tfa_notice.description')}
                     </AlertDescription>
                 </div>
             </div>
@@ -28,7 +29,7 @@ export function DisableTfaNotice({ onDisable, loading }: DisableTfaNoticeProps) 
                 onClick={onDisable}
                 disabled={loading}
             >
-                {loading ? "Disabling..." : "Disable 2FA"}
+                {loading ? t('disable_tfa_notice.disabling') : t('disable_tfa_notice.disable')}
             </Button>
         </Alert>
     )

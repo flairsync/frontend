@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -24,6 +25,7 @@ interface PaymentModalProps {
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, open, onClose }) => {
+    const { t } = useTranslation("management");
     const { data: fullOrder } = useOrderDetails(businessId, order?.id || "");
     const displayOrder = fullOrder || order;
 
@@ -88,26 +90,26 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Add Payment - Order #{displayOrder.id.substring(0, 8)}</DialogTitle>
+                        <DialogTitle>{t("payment_modal.title", { id: displayOrder.id.substring(0, 8) })}</DialogTitle>
                         <DialogDescription>
-                            Record a payment for this order. It currently has a remaining balance of <strong>{currencySymbol}{remainingBalance.toFixed(2)}</strong>.
+                            {t("payment_modal.description_prefix")} <strong>{currencySymbol}{remainingBalance.toFixed(2)}</strong>.
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
-                                <span className="text-sm font-medium text-muted-foreground">Order Total</span>
+                                <span className="text-sm font-medium text-muted-foreground">{t("payment_modal.order_total")}</span>
                                 <p className="text-lg font-semibold">{currencySymbol}{totalAmount.toFixed(2)}</p>
                             </div>
                             <div className="space-y-1">
-                                <span className="text-sm font-medium text-muted-foreground">Total Paid</span>
+                                <span className="text-sm font-medium text-muted-foreground">{t("payment_modal.total_paid")}</span>
                                 <p className="text-lg font-semibold text-green-600">{currencySymbol}{totalPaid.toFixed(2)}</p>
                             </div>
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="amount">Payment Amount ({currencySymbol})</Label>
+                            <Label htmlFor="amount">{t("payment_modal.payment_amount_label", { symbol: currencySymbol })}</Label>
                             <Input
                                 id="amount"
                                 type="number"
@@ -121,7 +123,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="tipAmount">Tip Amount ({currencySymbol}) <span className="text-muted-foreground text-xs font-normal">(Optional)</span></Label>
+                            <Label htmlFor="tipAmount">{t("payment_modal.tip_amount_label", { symbol: currencySymbol })} <span className="text-muted-foreground text-xs font-normal">{t("payment_modal.optional")}</span></Label>
                             <Input
                                 id="tipAmount"
                                 type="number"
@@ -134,16 +136,16 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="method">Payment Method</Label>
+                            <Label htmlFor="method">{t("payment_modal.payment_method_label")}</Label>
                             <Select value={method} onValueChange={(val: any) => setMethod(val)}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select method" />
+                                    <SelectValue placeholder={t("payment_modal.select_method_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="cash">Cash</SelectItem>
-                                    <SelectItem value="card">Card</SelectItem>
-                                    <SelectItem value="online">Online</SelectItem>
-                                    <SelectItem value="other">Other</SelectItem>
+                                    <SelectItem value="cash">{t("payment_modal.methods.cash")}</SelectItem>
+                                    <SelectItem value="card">{t("payment_modal.methods.card")}</SelectItem>
+                                    <SelectItem value="online">{t("payment_modal.methods.online")}</SelectItem>
+                                    <SelectItem value="other">{t("payment_modal.methods.other")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -151,10 +153,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={onClose} disabled={isCreatingPayment}>
-                            Cancel
+                            {t("payment_modal.cancel")}
                         </Button>
                         <Button type="submit" disabled={isCreatingPayment || Number(amount) <= 0}>
-                            {isCreatingPayment ? "Processing..." : "Record Payment"}
+                            {isCreatingPayment ? t("payment_modal.processing") : t("payment_modal.record_payment")}
                         </Button>
                     </DialogFooter>
                 </form>

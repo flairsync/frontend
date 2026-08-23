@@ -1,1 +1,38 @@
-{}
+{
+  "gallery_titles": {
+    "b2b": "B2B Marketplace",
+    "saas": "SaaS Shop",
+    "guest": "Guest Marketplace"
+  },
+  "item_detail": {
+    "back_to_gallery": "Back to Gallery",
+    "back_to_shop": "Back to Shop",
+    "loading": "Loading...",
+    "item_not_found": "Item Not Found",
+    "product_not_found": "Product not found",
+    "in_stock_one": "In stock ({{count}})",
+    "in_stock_other": "In stock ({{count}})",
+    "out_of_stock": "Out of stock",
+    "business_label": "Business",
+    "select_business_placeholder": "Select Business...",
+    "quantity_label": "Quantity",
+    "shipping_details_title": "Shipping Details",
+    "full_name_label": "Full Name",
+    "full_name_placeholder": "Recipient name",
+    "contact_number_label": "Contact Number",
+    "street_address_label": "Street Address",
+    "street_address_placeholder": "123 business avenue, suite 100",
+    "city_state_zip_label": "City, State, Zip Code",
+    "city_state_zip_placeholder": "New York, NY 10001",
+    "customization_label": "Customization Details (optional)",
+    "customization_placeholder": "Enter specific numbers, letters, or branding instructions...",
+    "customization_hint": "Include any specific details for your custom order.",
+    "total_estimated_cost": "Total Estimated Cost",
+    "order_submitted": "Order request submitted — the seller will review it shortly.",
+    "submitting": "Submitting...",
+    "initialize_order": "Initialize Order",
+    "out_of_stock_hint": "This item is out of stock",
+    "select_business_hint": "Please select a business",
+    "fill_shipping_hint": "Please fill in all shipping details"
+  }
+}

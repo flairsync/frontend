@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +34,7 @@ function formatValue(discount: Discount): string {
 }
 
 const DiscountsPage: React.FC<Props> = ({ businessId }) => {
+    const { t } = useTranslation("management");
     const { discounts, fetchingDiscounts, createDiscount, isCreatingDiscount, updateDiscount, removeDiscount } = useDiscounts(businessId);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -79,11 +81,11 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Discounts</h1>
-                    <p className="text-muted-foreground text-sm mt-1">Create promo codes and manager-applied discounts staff can apply at checkout.</p>
+                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight">{t("discounts_page.title")}</h1>
+                    <p className="text-muted-foreground text-sm mt-1">{t("discounts_page.subtitle")}</p>
                 </div>
                 <Button onClick={openCreate} className="gap-2">
-                    <Plus className="w-4 h-4" /> New Discount
+                    <Plus className="w-4 h-4" /> {t("discounts_page.new_discount")}
                 </Button>
             </div>
 
@@ -92,27 +94,27 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base flex items-center gap-2">
-                        <Tag className="w-4 h-4" /> All Discounts
+                        <Tag className="w-4 h-4" /> {t("discounts_page.all_discounts")}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Code</TableHead>
-                                <TableHead>Value</TableHead>
-                                <TableHead>Min. Order</TableHead>
-                                <TableHead>Expires</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead>{t("discounts_page.col_name")}</TableHead>
+                                <TableHead>{t("discounts_page.col_code")}</TableHead>
+                                <TableHead>{t("discounts_page.col_value")}</TableHead>
+                                <TableHead>{t("discounts_page.col_min_order")}</TableHead>
+                                <TableHead>{t("discounts_page.col_expires")}</TableHead>
+                                <TableHead>{t("discounts_page.col_status")}</TableHead>
+                                <TableHead className="text-right">{t("discounts_page.col_actions")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {fetchingDiscounts ? (
-                                <TableRow><TableCell colSpan={7} className="text-center">Loading...</TableCell></TableRow>
+                                <TableRow><TableCell colSpan={7} className="text-center">{t("discounts_page.loading")}</TableCell></TableRow>
                             ) : discounts.length === 0 ? (
-                                <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground">No discounts yet.</TableCell></TableRow>
+                                <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground">{t("discounts_page.empty")}</TableCell></TableRow>
                             ) : (
                                 discounts.map((discount) => (
                                     <TableRow key={discount.id}>
@@ -127,7 +129,7 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                                         <TableCell>{discount.expiresAt ? new Date(discount.expiresAt).toLocaleDateString() : "—"}</TableCell>
                                         <TableCell>
                                             <Badge variant={discount.isActive ? "default" : "secondary"}>
-                                                {discount.isActive ? "Active" : "Inactive"}
+                                                {discount.isActive ? t("discounts_page.active") : t("discounts_page.inactive")}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-right">
@@ -153,15 +155,15 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
             <Dialog open={modalOpen} onOpenChange={setModalOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{editing ? "Edit Discount" : "New Discount"}</DialogTitle>
+                        <DialogTitle>{editing ? t("discounts_page.form.edit_title") : t("discounts_page.form.new_title")}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4 py-2">
                         <div className="space-y-1">
-                            <Label className="text-xs">Name <span className="text-destructive">*</span></Label>
-                            <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Summer Sale" />
+                            <Label className="text-xs">{t("discounts_page.form.name_label")} <span className="text-destructive">*</span></Label>
+                            <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={t("discounts_page.form.name_placeholder")} />
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs">Promo Code (optional)</Label>
+                            <Label className="text-xs">{t("discounts_page.form.code_label")}</Label>
                             <Input
                                 value={form.code ?? ""}
                                 onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
@@ -171,19 +173,19 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1">
-                                <Label className="text-xs">Type</Label>
+                                <Label className="text-xs">{t("discounts_page.form.type_label")}</Label>
                                 <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v as DiscountType })}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="PERCENTAGE">Percentage (%)</SelectItem>
-                                        <SelectItem value="FIXED">Fixed Amount ($)</SelectItem>
+                                        <SelectItem value="PERCENTAGE">{t("discounts_page.form.percentage_option")}</SelectItem>
+                                        <SelectItem value="FIXED">{t("discounts_page.form.fixed_option")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="space-y-1">
-                                <Label className="text-xs">Value <span className="text-destructive">*</span></Label>
+                                <Label className="text-xs">{t("discounts_page.form.value_label")} <span className="text-destructive">*</span></Label>
                                 <Input
                                     type="number"
                                     min={0}
@@ -195,7 +197,7 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1">
-                                <Label className="text-xs">Min. Order Amount</Label>
+                                <Label className="text-xs">{t("discounts_page.form.min_order_label")}</Label>
                                 <Input
                                     type="number"
                                     min={0}
@@ -205,7 +207,7 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                                 />
                             </div>
                             <div className="space-y-1">
-                                <Label className="text-xs">Expires On</Label>
+                                <Label className="text-xs">{t("discounts_page.form.expires_label")}</Label>
                                 <Input
                                     type="date"
                                     value={form.expiresAt ? form.expiresAt.substring(0, 10) : ""}
@@ -214,14 +216,14 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                             </div>
                         </div>
                         <div className="flex items-center justify-between py-2">
-                            <Label className="text-xs">Active</Label>
+                            <Label className="text-xs">{t("discounts_page.active")}</Label>
                             <Switch checked={form.isActive ?? true} onCheckedChange={(v) => setForm({ ...form, isActive: v })} />
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setModalOpen(false)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => setModalOpen(false)}>{t("discounts_page.form.cancel")}</Button>
                         <Button disabled={isCreatingDiscount || !form.name.trim() || form.value <= 0} onClick={handleSave}>
-                            {editing ? "Save" : "Create"}
+                            {editing ? t("discounts_page.form.save") : t("discounts_page.form.create")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

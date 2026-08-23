@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Lock, Unlock } from "lucide-react";
 import { useAbsences } from "@/features/shifts/useAbsences";
-import { AbsenceRecord, AbsenceType, ABSENCE_TYPE_LABELS } from "@/models/business/shift/AbsenceRecord";
+import { AbsenceRecord, AbsenceType } from "@/models/business/shift/AbsenceRecord";
 
 interface AbsenceModalPrefill {
   employmentId: string;
@@ -160,7 +160,7 @@ const AbsenceModal = ({ open, onOpenChange, businessId, prefill, existing }: Abs
               </SelectTrigger>
               <SelectContent>
                 {ABSENCE_TYPES.map((absenceType) => (
-                  <SelectItem key={absenceType} value={absenceType}>{ABSENCE_TYPE_LABELS[absenceType]}</SelectItem>
+                  <SelectItem key={absenceType} value={absenceType}>{t(`absence_types.${absenceType}`)}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

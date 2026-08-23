@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ interface WalkInModalProps {
 }
 
 export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOpenChange }) => {
+    const { t } = useTranslation("management");
     const [customerName, setCustomerName] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
@@ -66,28 +68,28 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
         <Dialog open={open} onOpenChange={(v) => { if (!v) reset(); onOpenChange(v); }}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>New Walk-In</DialogTitle>
+                    <DialogTitle>{t("walk_in_modal.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-4 py-2">
                     <div className="space-y-1">
-                        <Label className="text-xs">Customer Name <span className="text-destructive">*</span></Label>
-                        <Input value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder="John Smith" />
+                        <Label className="text-xs">{t("walk_in_modal.name_label")} <span className="text-destructive">*</span></Label>
+                        <Input value={customerName} onChange={(e) => setCustomerName(e.target.value)} placeholder={t("walk_in_modal.name_placeholder")} />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1">
-                            <Label className="text-xs">Phone</Label>
+                            <Label className="text-xs">{t("walk_in_modal.phone_label")}</Label>
                             <Input value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} placeholder="+1 555 0000" type="tel" />
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs">Email</Label>
+                            <Label className="text-xs">{t("walk_in_modal.email_label")}</Label>
                             <Input value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} placeholder="john@example.com" type="email" />
                         </div>
                     </div>
 
                     <div className="space-y-1">
-                        <Label className="text-xs">Party Size <span className="text-destructive">*</span></Label>
+                        <Label className="text-xs">{t("walk_in_modal.party_size_label")} <span className="text-destructive">*</span></Label>
                         <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-muted-foreground" />
                             <Input type="number" min={1} max={50} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} className="w-24" />
@@ -95,20 +97,20 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
                     </div>
 
                     <div className="space-y-1">
-                        <Label className="text-xs">Table <span className="text-destructive">*</span></Label>
+                        <Label className="text-xs">{t("walk_in_modal.table_label")} <span className="text-destructive">*</span></Label>
                         {checkingAvailability ? (
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Loader2 className="w-4 h-4 animate-spin" /> Checking availability…
+                                <Loader2 className="w-4 h-4 animate-spin" /> {t("walk_in_modal.checking_availability")}
                             </div>
                         ) : (
                             <Select value={tableId} onValueChange={setTableId}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={availableTables.length === 0 ? "No tables available" : "Select a table"} />
+                                    <SelectValue placeholder={availableTables.length === 0 ? t("walk_in_modal.no_tables_available") : t("walk_in_modal.select_table_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {availableTables.map((t: any) => (
-                                        <SelectItem key={t.id} value={t.id}>
-                                            {t.name || `Table ${t.number || t.id.substring(0, 4)}`} — seats {t.capacity}
+                                    {availableTables.map((tbl: any) => (
+                                        <SelectItem key={tbl.id} value={tbl.id}>
+                                            {t("walk_in_modal.table_option", { name: tbl.name || t("walk_in_modal.table_fallback_name", { number: tbl.number || tbl.id.substring(0, 4) }), capacity: tbl.capacity })}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -117,15 +119,15 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
                     </div>
 
                     <div className="space-y-1">
-                        <Label className="text-xs">Notes</Label>
-                        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Allergies, preferences…" rows={2} />
+                        <Label className="text-xs">{t("walk_in_modal.notes_label")}</Label>
+                        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("walk_in_modal.notes_placeholder")} rows={2} />
                     </div>
                 </div>
 
                 <DialogFooter>
-                    <Button variant="ghost" onClick={() => { reset(); onOpenChange(false); }}>Cancel</Button>
+                    <Button variant="ghost" onClick={() => { reset(); onOpenChange(false); }}>{t("walk_in_modal.cancel")}</Button>
                     <Button disabled={isPending || !customerName.trim() || !tableId} onClick={handleSubmit}>
-                        {isPending ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Creating…</> : "Create Walk-In"}
+                        {isPending ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> {t("walk_in_modal.creating")}</> : t("walk_in_modal.create")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

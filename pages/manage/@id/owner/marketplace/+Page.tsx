@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useBusinessManagementItems, useMarketplaceMutations } from '@/features/marketplace/useMarketplace';
 import { MarketplaceItem } from '@/models/MarketplaceItem';
@@ -69,6 +70,7 @@ function InlineStockEditor({ item, businessId }: { item: MarketplaceItem; busine
 }
 
 const BusinessOwnerMarketplaceManagement: React.FC = () => {
+    const { t } = useTranslation('management');
     const { routeParams } = usePageContext();
     const businessId = routeParams.id as string;
 
@@ -93,20 +95,20 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
         <div className="p-6 space-y-6 max-w-6xl">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-bold">Marketplace</h2>
-                    <p className="text-sm text-muted-foreground">Manage your shop items — merch, products, and more.</p>
+                    <h2 className="text-xl font-bold">{t('marketplace_management.title')}</h2>
+                    <p className="text-sm text-muted-foreground">{t('marketplace_management.subtitle')}</p>
                 </div>
                 <Button onClick={openCreate} className="gap-2">
                     <Plus className="w-4 h-4" />
-                    New item
+                    {t('marketplace_management.new_item')}
                 </Button>
             </div>
 
             <Tabs defaultValue="items">
                 <TabsList>
-                    <TabsTrigger value="items">Items</TabsTrigger>
-                    <TabsTrigger value="incoming">Incoming Orders</TabsTrigger>
-                    <TabsTrigger value="mine">My Orders</TabsTrigger>
+                    <TabsTrigger value="items">{t('marketplace_management.tabs.items')}</TabsTrigger>
+                    <TabsTrigger value="incoming">{t('marketplace_management.tabs.incoming_orders')}</TabsTrigger>
+                    <TabsTrigger value="mine">{t('marketplace_management.tabs.my_orders')}</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="incoming">
@@ -126,9 +128,9 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
             ) : items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
                     <PackageOpen className="w-12 h-12 text-muted-foreground opacity-30" />
-                    <p className="text-muted-foreground">No items yet. Create your first item to start selling.</p>
+                    <p className="text-muted-foreground">{t('marketplace_management.empty')}</p>
                     <Button onClick={openCreate} variant="outline" className="gap-2">
-                        <Plus className="w-4 h-4" /> Create item
+                        <Plus className="w-4 h-4" /> {t('marketplace_management.create_item')}
                     </Button>
                 </div>
             ) : (
@@ -137,11 +139,11 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                         <TableHeader>
                             <TableRow className="bg-secondary/10 hover:bg-secondary/10">
                                 <TableHead className="w-14"></TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead>Stock</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead>{t('marketplace_management.col_name')}</TableHead>
+                                <TableHead>{t('marketplace_management.col_price')}</TableHead>
+                                <TableHead>{t('marketplace_management.col_stock')}</TableHead>
+                                <TableHead>{t('marketplace_management.col_status')}</TableHead>
+                                <TableHead className="text-right">{t('marketplace_management.col_actions')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -199,7 +201,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                                 variant={item.isActive ? 'default' : 'secondary'}
                                                 className="text-[10px]"
                                             >
-                                                {item.isActive ? 'Active' : 'Inactive'}
+                                                {item.isActive ? t('marketplace_management.active') : t('marketplace_management.inactive')}
                                             </Badge>
                                         </div>
                                     </TableCell>
@@ -216,8 +218,8 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                                 <Pencil className="w-3.5 h-3.5" />
                                             </Button>
                                             <ConfirmAction
-                                                title="Delete item"
-                                                description={`"${item.name}" will be permanently removed.`}
+                                                title={t('marketplace_management.delete_item')}
+                                                description={t('marketplace_management.delete_item_description', { name: item.name })}
                                                 onConfirm={() => deleteItem.mutate(item.id)}
                                             >
                                                 <Button

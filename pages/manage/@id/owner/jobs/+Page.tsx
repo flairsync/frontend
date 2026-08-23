@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
@@ -38,27 +39,37 @@ import {
 } from "@/models/Job";
 import { cn } from "@/lib/utils";
 
-const STATUS_TABS: Array<{ label: string; value: JobStatus | "all" }> = [
-  { label: "All", value: "all" },
-  { label: "Open", value: "open" },
-  { label: "Draft", value: "draft" },
-  { label: "Closed", value: "closed" },
-];
-
 const STATUS_BADGE: Record<JobStatus, string> = {
   open: "bg-green-100 text-green-700",
   draft: "bg-muted text-muted-foreground",
   closed: "bg-red-100 text-red-700",
 };
 
-function copyJobLink(slug: string) {
-  const url = `${window.location.origin}/jobs/${slug}`;
-  navigator.clipboard.writeText(url);
-  toast.success("Link copied! Share it on social media.");
-}
-
 const OwnerJobsPage = () => {
+  const { t } = useTranslation("management");
   const { routeParams } = usePageContext();
+
+  const STATUS_TABS: Array<{ label: string; value: JobStatus | "all" }> = [
+    { label: t("owner_jobs_page.status.all"), value: "all" },
+    { label: t("owner_jobs_page.status.open"), value: "open" },
+    { label: t("owner_jobs_page.status.draft"), value: "draft" },
+    { label: t("owner_jobs_page.status.closed"), value: "closed" },
+  ];
+
+  const jobStatusLabel = (status: JobStatus) => {
+    switch (status) {
+      case "open": return t("owner_jobs_page.status.open");
+      case "draft": return t("owner_jobs_page.status.draft");
+      case "closed": return t("owner_jobs_page.status.closed");
+      default: return status;
+    }
+  };
+
+  function copyJobLink(slug: string) {
+    const url = `${window.location.origin}/jobs/${slug}`;
+    navigator.clipboard.writeText(url);
+    toast.success(t("owner_jobs_page.link_copied"));
+  }
   const businessId = routeParams.id;
 
   const [statusFilter, setStatusFilter] = useState<JobStatus | "all">("all");
@@ -93,15 +104,15 @@ const OwnerJobsPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Job Postings</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t("owner_jobs_page.title")}</h1>
           <p className="text-muted-foreground text-sm mt-0.5">
-            Manage your open positions and review applicants.
+            {t("owner_jobs_page.subtitle")}
           </p>
         </div>
         <Button
           onClick={() => { window.location.href = `/manage/${businessId}/owner/jobs/new`; }}
         >
-          + Post a Job
+          + {t("owner_jobs_page.post_a_job")}
         </Button>
       </div>
 
@@ -129,20 +140,20 @@ const OwnerJobsPage = () => {
       {loadingJobs ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-          <p className="text-sm text-muted-foreground">Loading jobs...</p>
+          <p className="text-sm text-muted-foreground">{t("owner_jobs_page.loading_jobs")}</p>
         </div>
       ) : jobs.length === 0 ? (
         <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
           <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-foreground mb-1">No job postings yet</p>
+          <p className="text-lg font-semibold text-foreground mb-1">{t("owner_jobs_page.no_jobs_yet")}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            Post your first job to start receiving applications.
+            {t("owner_jobs_page.no_jobs_hint")}
           </p>
           <Button
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
             onClick={() => { window.location.href = `/manage/${businessId}/owner/jobs/new`; }}
           >
-            Post a Job
+            {t("owner_jobs_page.post_a_job")}
           </Button>
         </div>
       ) : (
@@ -156,7 +167,7 @@ const OwnerJobsPage = () => {
                 <div className="flex items-start gap-2 flex-wrap">
                   <h3 className="font-semibold text-foreground">{job.title}</h3>
                   <span className={cn("text-xs font-medium px-2 py-0.5 rounded-full", STATUS_BADGE[job.status])}>
-                    {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                    {jobStatusLabel(job.status)}
                   </span>
                 </div>
 
@@ -168,10 +179,10 @@ const OwnerJobsPage = () => {
                 <div className="flex flex-wrap gap-4 mt-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="h-3.5 w-3.5" />
-                    {job.applicationCount} applicant{job.applicationCount !== 1 ? "s" : ""}
+                    {t("owner_jobs_page.applicant_count", { count: job.applicationCount })}
                   </span>
-                  <span>Posted {format(new Date(job.createdAt), "MMM d, yyyy")}</span>
-                  <span>{job.closesAt ? `Closes ${format(new Date(job.closesAt), "MMM d, yyyy")}` : "No deadline"}</span>
+                  <span>{t("owner_jobs_page.posted_on", { date: format(new Date(job.createdAt), "MMM d, yyyy") })}</span>
+                  <span>{job.closesAt ? t("owner_jobs_page.closes_on", { date: format(new Date(job.closesAt), "MMM d, yyyy") }) : t("owner_jobs_page.no_deadline")}</span>
                 </div>
               </div>
 
@@ -183,7 +194,7 @@ const OwnerJobsPage = () => {
                   onClick={() => copyJobLink(job.slug)}
                 >
                   <Copy className="h-3.5 w-3.5" />
-                  Copy Link
+                  {t("owner_jobs_page.copy_link")}
                 </Button>
 
                 <DropdownMenu>
@@ -197,17 +208,17 @@ const OwnerJobsPage = () => {
                       onClick={() => { window.location.href = `/manage/${businessId}/owner/jobs/${job.id}/applications`; }}
                     >
                       <Users className="h-4 w-4 mr-2" />
-                      View Applicants
+                      {t("owner_jobs_page.view_applicants")}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => { window.location.href = `/manage/${businessId}/owner/jobs/${job.id}/edit`; }}
                     >
                       <Edit className="h-4 w-4 mr-2" />
-                      Edit
+                      {t("owner_jobs_page.edit")}
                     </DropdownMenuItem>
                     {job.status !== "closed" && (
                       <DropdownMenuItem onClick={() => setCloseTarget(job)}>
-                        Close Position
+                        {t("owner_jobs_page.close_position")}
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem
@@ -215,7 +226,7 @@ const OwnerJobsPage = () => {
                       onClick={() => setDeleteTarget(job)}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      {t("owner_jobs_page.delete")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -227,11 +238,11 @@ const OwnerJobsPage = () => {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-4">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                Previous
+                {t("owner_jobs_page.previous")}
               </Button>
-              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+              <span className="text-sm text-muted-foreground">{t("owner_jobs_page.page_of", { page, totalPages })}</span>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                Next
+                {t("owner_jobs_page.next")}
               </Button>
             </div>
           )}
@@ -242,14 +253,14 @@ const OwnerJobsPage = () => {
       <AlertDialog open={!!closeTarget} onOpenChange={(v) => { if (!v) setCloseTarget(null); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Close this position?</AlertDialogTitle>
+            <AlertDialogTitle>{t("owner_jobs_page.close_confirm_title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              "{closeTarget?.title}" will stop accepting new applications. This can be undone by editing the job.
+              {t("owner_jobs_page.close_confirm_description", { title: closeTarget?.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleClose}>Close Position</AlertDialogAction>
+            <AlertDialogCancel>{t("owner_jobs_page.cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleClose}>{t("owner_jobs_page.close_position")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -258,19 +269,19 @@ const OwnerJobsPage = () => {
       <AlertDialog open={!!deleteTarget} onOpenChange={(v) => { if (!v) setDeleteTarget(null); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete this job post?</AlertDialogTitle>
+            <AlertDialogTitle>{t("owner_jobs_page.delete_confirm_title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete "{deleteTarget?.title}" and all its applications. This cannot be undone.
+              {t("owner_jobs_page.delete_confirm_description", { title: deleteTarget?.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("owner_jobs_page.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-red-600 hover:bg-red-700"
               disabled={deletingJob}
             >
-              Delete
+              {t("owner_jobs_page.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

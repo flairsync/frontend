@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { CardDescription } from "@/components/ui/card"
@@ -16,6 +17,7 @@ import { AlertTriangle, Check, Copy, Download, RefreshCw } from "lucide-react"
 import { toast } from "sonner"
 
 const ProfileTfaSettings = () => {
+    const { t } = useTranslation('profile')
     const {
         userTfaStatus,
         initializeTfaSetupApiCall,
@@ -88,10 +90,10 @@ const ProfileTfaSettings = () => {
         try {
             await navigator.clipboard.writeText(text);
             setCopiedField(field);
-            toast.success(field === "secret" ? "Secret key copied" : "Setup link copied");
+            toast.success(field === "secret" ? t('profile_tfa_settings.secret_copied') : t('profile_tfa_settings.link_copied'));
             setTimeout(() => setCopiedField(null), 2000);
         } catch {
-            toast.error("Couldn't copy to clipboard");
+            toast.error(t('profile_tfa_settings.copy_failed'));
         }
     }
 
@@ -99,7 +101,7 @@ const ProfileTfaSettings = () => {
         regenerateBackupCodes(undefined, {
             onSuccess: () => {
                 setCodeDownloaded(true);
-                toast.success("New backup codes downloaded. Old codes are now invalid.");
+                toast.success(t('profile_tfa_settings.backup_codes_downloaded'));
             },
         });
     }
@@ -108,7 +110,7 @@ const ProfileTfaSettings = () => {
         setConfirmRegenOpen(false);
         regenerateBackupCodes(undefined, {
             onSuccess: () => {
-                toast.success("New backup codes downloaded. Old codes are now invalid.");
+                toast.success(t('profile_tfa_settings.backup_codes_downloaded'));
             },
         });
     }
@@ -131,16 +133,16 @@ const ProfileTfaSettings = () => {
                     onEscapeKeyDown={(e) => { if (!canCloseRecoveryCodes) e.preventDefault(); }}
                 >
                     <DialogHeader>
-                        <DialogTitle>Save Your Backup Codes</DialogTitle>
+                        <DialogTitle>{t('profile_tfa_settings.save_backup_codes_title')}</DialogTitle>
                         <DialogDescription>
-                            These are your 2FA recovery codes. Store them somewhere safe.
+                            {t('profile_tfa_settings.save_backup_codes_description')}
                         </DialogDescription>
                     </DialogHeader>
 
                     <Alert className="border-amber-400 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300">
                         <AlertTriangle className="h-4 w-4 text-amber-500" />
                         <AlertDescription className="font-medium ml-2">
-                            These codes won't be shown again. Save them now.
+                            {t('profile_tfa_settings.codes_not_shown_again')}
                         </AlertDescription>
                     </Alert>
 
@@ -155,7 +157,7 @@ const ProfileTfaSettings = () => {
                         disabled={regeneratingBackupCodes || regenDisabled}
                     >
                         <Download className="h-4 w-4" />
-                        {regeneratingBackupCodes ? "Downloading…" : "Download as PDF"}
+                        {regeneratingBackupCodes ? t('profile_tfa_settings.downloading') : t('profile_tfa_settings.download_as_pdf')}
                     </Button>
 
                     <div className="flex items-center gap-2 pt-1">
@@ -165,7 +167,7 @@ const ProfileTfaSettings = () => {
                             onCheckedChange={(checked) => setSavedAcknowledged(checked === true)}
                         />
                         <Label htmlFor="saved-codes" className="text-sm cursor-pointer">
-                            I've saved my backup codes
+                            {t('profile_tfa_settings.saved_codes_acknowledgement')}
                         </Label>
                     </div>
 
@@ -174,7 +176,7 @@ const ProfileTfaSettings = () => {
                             disabled={!canCloseRecoveryCodes}
                             onClick={() => setRecoveryCodes("")}
                         >
-                            Done
+                            {t('profile_tfa_settings.done')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -196,28 +198,26 @@ const ProfileTfaSettings = () => {
             <AlertDialog open={confirmRegenOpen} onOpenChange={setConfirmRegenOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Regenerate backup codes?</AlertDialogTitle>
+                        <AlertDialogTitle>{t('profile_tfa_settings.regenerate_confirm_title')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will invalidate your existing backup codes. A new set will be downloaded as a PDF.
+                            {t('profile_tfa_settings.regenerate_confirm_description')}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t('profile_tfa_settings.cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleConfirmRegenerate}>
-                            Continue
+                            {t('profile_tfa_settings.continue')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
             <AccordionItem value="twofa" className="border rounded-lg px-3">
-                <AccordionTrigger>Two-Factor Authentication (2FA)</AccordionTrigger>
+                <AccordionTrigger>{t('profile_tfa_settings.title')}</AccordionTrigger>
 
                 <AccordionContent className="space-y-4 py-2">
                     <CardDescription>
-                        Two-Factor Authentication (2FA) adds an extra layer of security to your account. After entering your password,
-                        you'll be asked for a one-time code generated by an authenticator app (like Google Authenticator). This ensures
-                        that only you can access your account, even if someone else knows your password.
+                        {t('profile_tfa_settings.description')}
                     </CardDescription>
 
                     {userTfaStatus?.tfaSetup ? (
@@ -227,9 +227,9 @@ const ProfileTfaSettings = () => {
                             />
                             <div className="flex items-center justify-between rounded-lg border px-4 py-3">
                                 <div>
-                                    <p className="text-sm font-medium">Backup codes</p>
+                                    <p className="text-sm font-medium">{t('profile_tfa_settings.backup_codes')}</p>
                                     <p className="text-xs text-muted-foreground">
-                                        Download a fresh set of recovery codes. Your old codes will be invalidated.
+                                        {t('profile_tfa_settings.backup_codes_description')}
                                     </p>
                                 </div>
                                 <Button
@@ -238,10 +238,10 @@ const ProfileTfaSettings = () => {
                                     className="gap-2 shrink-0 ml-4"
                                     onClick={() => setConfirmRegenOpen(true)}
                                     disabled={regeneratingBackupCodes || regenDisabled}
-                                    title={regenDisabled ? "You can regenerate backup codes once per hour" : undefined}
+                                    title={regenDisabled ? t('profile_tfa_settings.regen_rate_limit_hint') : undefined}
                                 >
                                     <RefreshCw className="h-4 w-4" />
-                                    Regenerate backup codes
+                                    {t('profile_tfa_settings.regenerate_backup_codes')}
                                 </Button>
                             </div>
                         </div>
@@ -251,7 +251,7 @@ const ProfileTfaSettings = () => {
                                 generateQrCodeUrl();
                                 setOpen(true);
                             }}>
-                                Setup Two-Factor Auth
+                                {t('profile_tfa_settings.setup_2fa')}
                             </Button>
                         </div>
                     )}
@@ -262,10 +262,9 @@ const ProfileTfaSettings = () => {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle>Enable Two-Factor Authentication</DialogTitle>
+                        <DialogTitle>{t('profile_tfa_settings.enable_2fa_title')}</DialogTitle>
                         <DialogDescription>
-                            Scan the QR code below with your authenticator app (Google Authenticator, Authy, etc.), then enter the
-                            6-digit code it gives you to verify setup.
+                            {t('profile_tfa_settings.enable_2fa_description')}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -279,7 +278,7 @@ const ProfileTfaSettings = () => {
                         <div className="space-y-3">
                             <div className="space-y-1.5">
                                 <Label className="text-xs text-muted-foreground">
-                                    Can't scan? Enter this code manually
+                                    {t('profile_tfa_settings.cant_scan')}
                                 </Label>
                                 <div className="flex items-center gap-2">
                                     <code className="flex-1 min-w-0 rounded-md border bg-muted px-3 py-2 text-sm font-mono tracking-wider break-all">
@@ -302,7 +301,7 @@ const ProfileTfaSettings = () => {
                             </div>
 
                             <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                                <span>On the same phone as your authenticator app?</span>
+                                <span>{t('profile_tfa_settings.same_phone_hint')}</span>
                                 <Button
                                     type="button"
                                     variant="ghost"
@@ -315,14 +314,14 @@ const ProfileTfaSettings = () => {
                                     ) : (
                                         <Copy className="h-3.5 w-3.5" />
                                     )}
-                                    Copy setup link
+                                    {t('profile_tfa_settings.copy_setup_link')}
                                 </Button>
                             </div>
                         </div>
                     )}
 
                     <div className="space-y-2">
-                        <Label htmlFor="tfa-code">Enter 6-digit code</Label>
+                        <Label htmlFor="tfa-code">{t('profile_tfa_settings.enter_code')}</Label>
                         <Input
                             id="tfa-code"
                             type="text"
@@ -336,10 +335,10 @@ const ProfileTfaSettings = () => {
 
                     <DialogFooter className="pt-4">
                         <Button variant="secondary" onClick={() => setOpen(false)}>
-                            Cancel
+                            {t('profile_tfa_settings.cancel')}
                         </Button>
                         <Button onClick={handleVerify} disabled={verificationCode.length !== 6}>
-                            Verify
+                            {t('profile_tfa_settings.verify')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

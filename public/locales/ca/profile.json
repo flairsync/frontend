@@ -5,5 +5,252 @@
     "reservations_label": "Reserves",
     "meals_ordered_label": "Àpats demanats",
     "orders_chart_title": "Comandes per dia (últims 30 dies)"
+  },
+  "account_page": {
+    "title": "Compte",
+    "subtitle": "Gestiona les dades del teu compte i la configuració d'eliminació.",
+    "export": {
+      "title": "Descarregar les teves dades",
+      "description": "Sol·licita una còpia de les teves dades personals (RGPD article 20 — dret a la portabilitat de dades). L'exportació inclou el teu perfil, comptes vinculats i historial de subscripció en un arxiu ZIP. Rebràs un correu amb l'enllaç de descàrrega.",
+      "ready": "La teva exportació de dades està llesta.",
+      "download_button": "Descarregar les meves dades",
+      "link_expiry": "L'enllaç de descàrrega caduca 7 dies després de generar-se l'exportació.",
+      "preparing": "La teva exportació s'està preparant. T'enviarem un correu quan estigui llesta.",
+      "requesting": "Sol·licitant…",
+      "request_button": "Sol·licitar una còpia de les meves dades",
+      "included_heading": "Què inclou l'exportació:",
+      "included_profile": "informació del compte, correu, telèfon, data de naixement, preferències",
+      "included_social": "proveïdors d'inici de sessió vinculats",
+      "included_subscriptions": "historial de subscripció",
+      "rate_limit": "Només es permet una sol·licitud d'exportació cada 30 dies."
+    },
+    "delete": {
+      "title": "Eliminar compte",
+      "description": "Elimina el teu compte de manera permanent. Això inicia un <b>període de gràcia de 30 dies</b> — pots tornar a iniciar sessió i cancel·lar en qualsevol moment durant aquest període. Passats els 30 dies, les teves dades personals s'anonimitzen i no es poden recuperar.",
+      "what_gets_deleted_heading": "Què s'elimina:",
+      "deleted_item_1": "Nom, adreça de correu, número de telèfon, data de naixement",
+      "deleted_item_2": "Avatar i foto de perfil",
+      "deleted_item_3": "Contrasenya i autenticació de dos factors",
+      "what_is_kept_heading": "Què es conserva (anonimitzat):",
+      "kept_item_1": "Historial de subscripció — necessari per a registres legals i financers",
+      "kept_item_2": "Historial de comandes i reserves",
+      "delete_button": "Eliminar el meu compte",
+      "confirm_title": "Eliminar el teu compte?",
+      "confirm_description": "El teu compte s'eliminarà permanentment després de <b>30 dies</b>. Pots cancel·lar-ho dins d'aquest període tornant a iniciar sessió.",
+      "no_refund_notice": "La teva subscripció no serà reemborsada.",
+      "cancel": "Cancel·lar",
+      "processing": "Processant…",
+      "confirm_button": "Sí, eliminar el meu compte"
+    }
+  },
+  "profile_info_settings": {
+    "title": "Informació del perfil",
+    "updated_toast": "Actualitzat",
+    "first_name": "Nom",
+    "last_name": "Cognom",
+    "phone_number": "Número de telèfon",
+    "date_of_birth": "Data de naixement",
+    "pick_a_date": "Tria una data",
+    "gender": "Gènere",
+    "select_gender": "Selecciona el gènere",
+    "genders": {
+      "male": "Home",
+      "female": "Dona",
+      "non_binary": "No binari",
+      "other": "Altre",
+      "prefer_not_to_say": "Prefereixo no dir-ho"
+    },
+    "country": "País",
+    "select_country": "Selecciona el país...",
+    "search_country": "Cerca un país...",
+    "no_country_found": "No s'ha trobat cap país.",
+    "coming_soon": "Properament",
+    "inactive": "(Inactiu)",
+    "update": "Actualitzar"
+  },
+  "account_verification": {
+    "title": "Verificació del compte",
+    "verified": "Verificat",
+    "not_verified": "No verificat",
+    "verify": "Verificar",
+    "email_address": "Adreça electrònica",
+    "phone_number": "Número de telèfon",
+    "no_phone_number": "No s'ha afegit cap número de telèfon",
+    "email_sent_toast": "S'ha enviat un correu de verificació a {{email}}.",
+    "add_phone_first_toast": "Afegeix primer un número de telèfon als teus ajustos de perfil.",
+    "sms_sent_toast": "S'ha enviat un SMS de verificació al {{phone}}."
+  },
+  "notification_preferences_settings": {
+    "title": "Notificacions",
+    "description": "Tria com vols ser notificat per a cada tipus d'esdeveniment.",
+    "channels": {
+      "email": "Correu",
+      "in_app": "A l'app",
+      "push": "Push"
+    },
+    "groups": {
+      "orders_reservations": {
+        "title": "Comandes i Reserves",
+        "order": "Comandes noves",
+        "reservation": "Reserves"
+      },
+      "scheduling_shifts": {
+        "title": "Planificació i Torns",
+        "shift_published": "Horari publicat",
+        "shift_created": "Nou torn assignat",
+        "shift_updated": "Torn actualitzat",
+        "shift_swap_request": "Sol·licitud d'intercanvi de torn",
+        "shift_swap_approved": "Intercanvi de torn aprovat",
+        "shift_no_show": "Absència de personal",
+        "time_off_request": "Sol·licitud de temps lliure",
+        "time_off_approved": "Temps lliure aprovat"
+      },
+      "attendance": {
+        "title": "Assistència",
+        "overdue": "Assistència endarrerida",
+        "auto_closed": "Assistència tancada automàticament"
+      },
+      "inventory_tasks": {
+        "title": "Inventari i Tasques",
+        "low_stock": "Alertes d'estoc baix",
+        "task_assigned": "Tasca assignada",
+        "task_status_changed": "Estat de tasca canviat"
+      },
+      "team_organization": {
+        "title": "Equip i Organització",
+        "announcement": "Anuncis",
+        "message": "Missatges",
+        "join_request": "Sol·licituds d'adhesió a l'organització",
+        "join_resolved": "Sol·licitud d'adhesió resolta"
+      },
+      "general": {
+        "title": "General",
+        "alert": "Alertes generals",
+        "security": "Alertes de seguretat",
+        "promo": "Promocions"
+      }
+    }
+  },
+  "marketing_settings": {
+    "title": "Màrqueting",
+    "marketing_emails": "Correus de màrqueting",
+    "marketing_emails_description": "Rep novetats, promocions i ofertes personalitzades.",
+    "save": "Desar",
+    "updated_toast": "Preferències de màrqueting actualitzades.",
+    "error_toast": "No s'han pogut desar les preferències. Torna-ho a provar."
+  },
+  "privacy_settings": {
+    "title": "Privadesa",
+    "show_full_name": "Mostrar el meu nom complet a les meves ressenyes",
+    "show_full_name_description": "Les ressenyes que publiques són públiques. Quan està desactivat, mostrem el teu nom i la inicial del cognom en lloc del cognom complet.",
+    "save": "Desar",
+    "updated_toast": "Preferències de privadesa actualitzades.",
+    "error_toast": "No s'han pogut desar les preferències. Torna-ho a provar."
+  },
+  "password_settings": {
+    "title": "Canviar contrasenya",
+    "current_password": "Contrasenya actual",
+    "current_password_placeholder": "Introdueix la contrasenya actual",
+    "new_password": "Contrasenya nova",
+    "new_password_placeholder": "Contrasenya nova",
+    "confirm_new_password": "Confirma la contrasenya nova",
+    "confirm_new_password_placeholder": "Confirma la contrasenya nova",
+    "save": "Desar",
+    "error_title": "Error en actualitzar la contrasenya"
+  },
+  "profile_tfa_settings": {
+    "title": "Autenticació de dos factors (2FA)",
+    "description": "L'autenticació de dos factors (2FA) afegeix una capa addicional de seguretat al teu compte. Després d'introduir la teva contrasenya, se't demanarà un codi d'un sol ús generat per una aplicació d'autenticació (com Google Authenticator). Això garanteix que només tu puguis accedir al teu compte, encara que algú altre conegui la teva contrasenya.",
+    "secret_copied": "Clau secreta copiada",
+    "link_copied": "Enllaç de configuració copiat",
+    "copy_failed": "No s'ha pogut copiar al porta-retalls",
+    "backup_codes_downloaded": "S'han descarregat nous codis de seguretat. Els codis antics ja no són vàlids.",
+    "save_backup_codes_title": "Desa els teus codis de seguretat",
+    "save_backup_codes_description": "Aquests són els teus codis de recuperació de 2FA. Desa'ls en un lloc segur.",
+    "codes_not_shown_again": "Aquests codis no es tornaran a mostrar. Desa'ls ara.",
+    "downloading": "Descarregant…",
+    "download_as_pdf": "Descarregar en PDF",
+    "saved_codes_acknowledgement": "He desat els meus codis de seguretat",
+    "done": "Fet",
+    "regenerate_confirm_title": "Regenerar codis de seguretat?",
+    "regenerate_confirm_description": "Això invalidarà els teus codis de seguretat actuals. Es descarregarà un nou joc en PDF.",
+    "cancel": "Cancel·lar",
+    "continue": "Continuar",
+    "backup_codes": "Codis de seguretat",
+    "backup_codes_description": "Descarrega un nou joc de codis de recuperació. Els teus codis antics quedaran invalidats.",
+    "regen_rate_limit_hint": "Pots regenerar els codis de seguretat un cop per hora",
+    "regenerate_backup_codes": "Regenerar codis de seguretat",
+    "setup_2fa": "Configurar autenticació de dos factors",
+    "enable_2fa_title": "Activar autenticació de dos factors",
+    "enable_2fa_description": "Escaneja el codi QR amb la teva app d'autenticació (Google Authenticator, Authy, etc.) i després introdueix el codi de 6 xifres per verificar la configuració.",
+    "cant_scan": "No pots escanejar? Introdueix aquest codi manualment",
+    "same_phone_hint": "Ets al mateix telèfon que la teva app d'autenticació?",
+    "copy_setup_link": "Copiar enllaç de configuració",
+    "enter_code": "Introdueix el codi de 6 xifres",
+    "verify": "Verificar"
+  },
+  "disable_tfa_notice": {
+    "title": "Autenticació de dos factors activada",
+    "description": "Desactivar la 2FA eliminarà la capa addicional de seguretat del teu compte. Només necessitaràs la teva contrasenya per iniciar sessió després d'aquesta acció.",
+    "disabling": "Desactivant...",
+    "disable": "Desactivar 2FA"
+  },
+  "session_management_settings": {
+    "title": "Sessions d'usuari",
+    "no_active_sessions": "No hi ha sessions actives.",
+    "unknown_device": "Dispositiu desconegut",
+    "unknown_location": "Ubicació desconeguda",
+    "last_active": "Darrera activitat",
+    "unknown": "Desconegut",
+    "current_session": "Sessió actual",
+    "trusted_device": "Dispositiu de confiança",
+    "disconnect": "Desconnectar"
+  },
+  "danger_zone_settings": {
+    "title": "Zona de perill",
+    "delete_account": "Eliminar compte",
+    "delete_account_description": "Elimina el teu compte de manera permanent. Tens un marge de 30 dies per cancel·lar-ho després de sol·licitar l'eliminació.",
+    "delete_my_account": "Eliminar el meu compte",
+    "confirm_title": "Eliminar el teu compte?",
+    "confirm_intro_prefix": "El teu compte s'eliminarà permanentment després de",
+    "thirty_days": "30 dies",
+    "confirm_intro_suffix": "Pots cancel·lar aquesta acció dins del termini de 30 dies tornant a iniciar sessió.",
+    "no_refund": "La teva subscripció no serà reemborsada.",
+    "what_gets_deleted": "Què s'elimina:",
+    "deleted_items": {
+      "identity": "Nom, correu electrònic, número de telèfon, data de naixement",
+      "avatar": "Avatar i foto de perfil",
+      "security": "Contrasenya i ajustos de 2FA"
+    },
+    "what_is_kept": "Què es conserva (anonimitzat):",
+    "kept_items": {
+      "subscription_history": "Historial de subscripcions (registres legals/financers)",
+      "order_reservation_history": "Historial de comandes i reserves"
+    },
+    "cancel": "Cancel·lar",
+    "processing": "Processant…",
+    "confirm_delete": "Sí, eliminar el meu compte"
+  },
+  "profile_preferences_settings": {
+    "title": "Preferències de màrqueting",
+    "receive_marketing_emails": "Rebre correus de màrqueting"
+  },
+  "preferences_page": {
+    "restaurant_types": {
+      "halal": "Halal",
+      "vegan": "Vegà",
+      "glutenFree": "Sense gluten"
+    },
+    "theme_saved": "Tema desat: {{theme}}",
+    "dark": "Fosc",
+    "light": "Clar",
+    "selected_types": "Tipus seleccionats: {{types}}",
+    "max_distance_saved": "Distància màxima: {{distance}} km",
+    "theme": "Tema",
+    "dark_mode": "Mode fosc",
+    "save": "Desar",
+    "restaurant_types_title": "Tipus de restaurant",
+    "max_distance": "Distància màxima",
+    "maximum_distance": "Distància màxima: {{distance}} km"
   }
 }

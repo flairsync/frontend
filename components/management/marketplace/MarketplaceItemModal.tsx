@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Dialog,
     DialogContent,
@@ -36,6 +37,7 @@ interface FormState {
 }
 
 export function MarketplaceItemModal({ businessId, item, open, onClose }: Props) {
+    const { t } = useTranslation('management');
     const isEdit = !!item;
     const { createItem, updateItem, uploadImages, removeImage } = useMarketplaceMutations(businessId);
 
@@ -153,35 +155,35 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
         <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
             <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>{isEdit ? 'Edit Item' : 'New Item'}</DialogTitle>
+                    <DialogTitle>{isEdit ? t('marketplace_management.item_modal.edit_title') : t('marketplace_management.item_modal.new_title')}</DialogTitle>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Name */}
                     <div className="space-y-1.5">
-                        <Label>Name *</Label>
+                        <Label>{t('marketplace_management.item_modal.name')} *</Label>
                         <Input
                             value={form.name}
                             onChange={(e) => setForm({ ...form, name: e.target.value })}
-                            placeholder="Item name"
+                            placeholder={t('marketplace_management.item_modal.name_placeholder')}
                             required
                         />
                     </div>
 
                     {/* Description */}
                     <div className="space-y-1.5">
-                        <Label>Description</Label>
+                        <Label>{t('marketplace_management.item_modal.description')}</Label>
                         <Textarea
                             value={form.description}
                             onChange={(e) => setForm({ ...form, description: e.target.value })}
-                            placeholder="Optional description..."
+                            placeholder={t('marketplace_management.item_modal.description_placeholder')}
                             className="resize-none min-h-[80px]"
                         />
                     </div>
 
                     {/* Price */}
                     <div className="space-y-1.5">
-                        <Label>Price *</Label>
+                        <Label>{t('marketplace_management.item_modal.price')} *</Label>
                         <Input
                             type="number"
                             min="0"
@@ -195,7 +197,7 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
 
                     <div className="grid grid-cols-2 gap-3 items-end">
                         <div className="space-y-1.5">
-                            <Label>Stock</Label>
+                            <Label>{t('marketplace_management.item_modal.stock')}</Label>
                             <Input
                                 type="number"
                                 min="0"
@@ -209,7 +211,7 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                                 checked={form.isActive}
                                 onCheckedChange={(v) => setForm({ ...form, isActive: v })}
                             />
-                            <Label className="cursor-pointer">{form.isActive ? 'Active' : 'Inactive'}</Label>
+                            <Label className="cursor-pointer">{form.isActive ? t('marketplace_management.active') : t('marketplace_management.inactive')}</Label>
                         </div>
                     </div>
 
@@ -220,13 +222,13 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                                 checked={form.discountEnabled}
                                 onCheckedChange={(v) => setForm({ ...form, discountEnabled: v })}
                             />
-                            <Label className="cursor-pointer">Discount this item</Label>
+                            <Label className="cursor-pointer">{t('marketplace_management.item_modal.discount_this_item')}</Label>
                         </div>
 
                         {form.discountEnabled && (
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="space-y-1.5">
-                                    <Label>Discount type</Label>
+                                    <Label>{t('marketplace_management.item_modal.discount_type')}</Label>
                                     <Select
                                         value={form.discountType}
                                         onValueChange={(v) => setForm({ ...form, discountType: v as 'PERCENTAGE' | 'FIXED' })}
@@ -235,13 +237,13 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="PERCENTAGE">% off</SelectItem>
-                                            <SelectItem value="FIXED">Amount off</SelectItem>
+                                            <SelectItem value="PERCENTAGE">{t('marketplace_management.item_modal.percent_off')}</SelectItem>
+                                            <SelectItem value="FIXED">{t('marketplace_management.item_modal.amount_off')}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label>{form.discountType === 'PERCENTAGE' ? 'Percent off' : 'Amount off'}</Label>
+                                    <Label>{form.discountType === 'PERCENTAGE' ? t('marketplace_management.item_modal.percent_off') : t('marketplace_management.item_modal.amount_off')}</Label>
                                     <Input
                                         type="number"
                                         min="0"
@@ -253,7 +255,7 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                                     />
                                 </div>
                                 <div className="col-span-2 space-y-1.5">
-                                    <Label>Expires (optional)</Label>
+                                    <Label>{t('marketplace_management.item_modal.expires_optional')}</Label>
                                     <Input
                                         type="date"
                                         value={form.discountExpiresAt}
@@ -266,14 +268,14 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
 
                     {/* Images */}
                     <div className="space-y-2">
-                        <Label>Images ({totalImageCount}/5)</Label>
+                        <Label>{t('marketplace_management.item_modal.images_count', { count: totalImageCount, max: 5 })}</Label>
 
                         {/* Existing images (edit mode) */}
                         {existingImages.length > 0 && (
                             <div className="flex flex-wrap gap-2">
                                 {existingImages.map((url) => (
                                     <div key={url} className="relative w-20 h-20 rounded-lg overflow-hidden border border-white/10 group">
-                                        <img src={url} alt="item" loading="lazy" className="w-full h-full object-cover" />
+                                        <img src={url} alt={t('marketplace_management.item_modal.name')} loading="lazy" className="w-full h-full object-cover" />
                                         <button
                                             type="button"
                                             disabled={removingUrl === url}
@@ -326,7 +328,7 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                                     className="gap-2"
                                 >
                                     <Upload className="w-3.5 h-3.5" />
-                                    Add images
+                                    {t('marketplace_management.item_modal.add_images')}
                                 </Button>
                             </>
                         )}
@@ -334,11 +336,11 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
 
                     <DialogFooter>
                         <Button type="button" variant="ghost" onClick={onClose} disabled={isSaving}>
-                            Cancel
+                            {t('marketplace_management.incoming_orders.cancel')}
                         </Button>
                         <Button type="submit" disabled={isSaving || !form.name.trim() || !form.price}>
                             {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                            {isEdit ? 'Save changes' : 'Create item'}
+                            {isEdit ? t('marketplace_management.item_modal.save_changes') : t('marketplace_management.create_item')}
                         </Button>
                     </DialogFooter>
                 </form>

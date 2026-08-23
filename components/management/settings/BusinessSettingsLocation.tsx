@@ -1,4 +1,5 @@
 import React, { useState, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -44,6 +45,7 @@ type Props = {
 };
 
 export default function BusinessSettingsLocation({ businessDetails, onSaveDetails, disabled }: Props) {
+    const { t } = useTranslation("management");
     // Current timezone
     const [timezone, setTimezone] = useState(businessDetails?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
     const [timezonePopoverOpen, setTimezonePopoverOpen] = useState(false);
@@ -119,12 +121,12 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
 
     return (
         <AccordionItem value="location-address" className="border rounded-lg px-3">
-            <AccordionTrigger>Location & Address</AccordionTrigger>
+            <AccordionTrigger>{t("settings_page.location.trigger")}</AccordionTrigger>
             <AccordionContent className="space-y-6 py-4">
 
                 {/* Timezone */}
                 <div className="space-y-1.5 flex flex-col">
-                    <Label className="text-sm font-medium">Business Timezone</Label>
+                    <Label className="text-sm font-medium">{t("settings_page.location.timezone.label")}</Label>
                     <Popover open={timezonePopoverOpen} onOpenChange={setTimezonePopoverOpen}>
                         <PopoverTrigger asChild>
                             <Button
@@ -134,14 +136,14 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                                 disabled={disabled}
                                 className="w-full justify-between font-normal"
                             >
-                                {timezone || "Select a timezone"}
+                                {timezone || t("settings_page.location.timezone.select_placeholder")}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                             <Command>
-                                <CommandInput placeholder="Search timezone..." />
-                                <CommandEmpty>No timezone found.</CommandEmpty>
+                                <CommandInput placeholder={t("settings_page.location.timezone.search_placeholder")} />
+                                <CommandEmpty>{t("settings_page.location.timezone.no_results")}</CommandEmpty>
                                 <CommandList>
                                     <CommandGroup>
                                         {timezones.map(tz => (
@@ -170,17 +172,17 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                                <Label className="text-sm">State / Province</Label>
+                                <Label className="text-sm">{t("settings_page.location.state_province.label")}</Label>
                                 <Input
                                     disabled={disabled}
-                                    placeholder="State or Province"
+                                    placeholder={t("settings_page.location.state_province.placeholder")}
                                     value={state}
                                     onChange={(e) => setState(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <Suspense fallback={<div className="h-80 w-full rounded-md border border-gray-200 animate-pulse bg-slate-100 flex items-center justify-center">Loading Map...</div>}>
+                        <Suspense fallback={<div className="h-80 w-full rounded-md border border-gray-200 animate-pulse bg-slate-100 flex items-center justify-center">{t("settings_page.location.loading_map")}</div>}>
                             <LocationPicker
                                 value={locationValue}
                                 onChange={handleLocationChange}
@@ -194,12 +196,12 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 <Separator />
 
                 <div>
-                    <Label className="text-base font-medium">Ordering Location Settings</Label>
+                    <Label className="text-base font-medium">{t("settings_page.location.ordering.section_label")}</Label>
                     <div className="divide-y divide-border mt-3">
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Allow Only Nearby Orders</Label>
-                                <p className="text-xs text-muted-foreground">Guests must be within an allowed radius of your location</p>
+                                <Label>{t("settings_page.location.ordering.allow_nearby_only.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.ordering.allow_nearby_only.desc")}</p>
                             </div>
                             <Switch
                                 checked={allowOnlyNearbyOrders}
@@ -210,8 +212,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                         {allowOnlyNearbyOrders && (
                             <div className="flex items-center justify-between pl-6 border-l-2 border-muted py-2.5">
                                 <div className="space-y-0.5">
-                                    <Label>Maximum Distance (Meters)</Label>
-                                    <p className="text-xs text-muted-foreground">Maximum allowed distance for nearby orders (e.g. 5000 for 5km)</p>
+                                    <Label>{t("settings_page.location.ordering.max_distance.label")}</Label>
+                                    <p className="text-xs text-muted-foreground">{t("settings_page.location.ordering.max_distance.desc")}</p>
                                 </div>
                                 <Input
                                     type="number"
@@ -228,12 +230,12 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 <Separator />
 
                 <div>
-                    <Label className="text-base font-medium">Attendance & Geofencing Settings</Label>
+                    <Label className="text-base font-medium">{t("settings_page.location.attendance.section_label")}</Label>
                     <div className="divide-y divide-border mt-3">
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Require GPS for Attendance</Label>
-                                <p className="text-xs text-muted-foreground">Staff must share their location to clock in or out</p>
+                                <Label>{t("settings_page.location.attendance.require_gps.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.require_gps.desc")}</p>
                             </div>
                             <Switch
                                 checked={requireGpsForAttendance}
@@ -243,8 +245,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                         </div>
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Attendance Grace Period (Minutes)</Label>
-                                <p className="text-xs text-muted-foreground">Minutes of leeway before a clock-in is marked late or a clock-out is marked an early departure</p>
+                                <Label>{t("settings_page.location.attendance.grace_period.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.grace_period.desc")}</p>
                             </div>
                             <Input
                                 type="number"
@@ -256,8 +258,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                         </div>
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Max Paid Break (Minutes)</Label>
-                                <p className="text-xs text-muted-foreground">Paid breaks longer than this are flagged for manager review</p>
+                                <Label>{t("settings_page.location.attendance.max_paid_break.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.max_paid_break.desc")}</p>
                             </div>
                             <Input
                                 type="number"
@@ -269,8 +271,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                         </div>
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Require Clock-In to Use POS</Label>
-                                <p className="text-xs text-muted-foreground">Staff must be clocked in to take orders, accept payments, or manage tables on a shared POS terminal. Owners are always exempt.</p>
+                                <Label>{t("settings_page.location.attendance.require_clock_in_pos.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.require_clock_in_pos.desc")}</p>
                             </div>
                             <Switch
                                 checked={requireClockInForPos}
@@ -280,8 +282,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                         </div>
                         <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
                             <div className="space-y-0.5">
-                                <Label>Require QR Code for Attendance</Label>
-                                <p className="text-xs text-muted-foreground">Staff must scan a rotating QR code (shown on the Attendance page's Live tab) to clock in or out — a photo of it stops working within seconds. Combine with GPS above for the strongest protection.</p>
+                                <Label>{t("settings_page.location.attendance.require_qr.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.require_qr.desc")}</p>
                             </div>
                             <Switch
                                 checked={requireQrForAttendance}
@@ -293,8 +295,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                             <div className="divide-y divide-border/60 pl-6 border-l-2 border-muted">
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Attendance Geofence Radius (Meters)</Label>
-                                        <p className="text-xs text-muted-foreground">Maximum distance from business to allow clock in (e.g. 50)</p>
+                                        <Label>{t("settings_page.location.attendance.geofence_radius.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.geofence_radius.desc")}</p>
                                     </div>
                                     <Input
                                         type="number"
@@ -306,8 +308,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                                 </div>
                                 <div className="flex items-center justify-between py-2.5 rounded-sm transition-colors hover:bg-muted/50">
                                     <div className="space-y-0.5">
-                                        <Label>Strict Geofence Block</Label>
-                                        <p className="text-xs text-muted-foreground">If enabled, prevents clock-in if staff is outside the radius. If disabled, allows clock-in but flags it for manager review.</p>
+                                        <Label>{t("settings_page.location.attendance.strict_block.label")}</Label>
+                                        <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.strict_block.desc")}</p>
                                     </div>
                                     <Switch
                                         checked={strictGeofenceBlock}
@@ -321,7 +323,7 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 </div>
 
                 <div className="flex justify-end pt-2">
-                    <Button disabled={disabled} onClick={handleSave}>Save</Button>
+                    <Button disabled={disabled} onClick={handleSave}>{t("settings_page.location.save")}</Button>
                 </div>
             </AccordionContent>
         </AccordionItem>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePageContext } from 'vike-react/usePageContext';
 import { MarketplaceLayout } from '@/components/marketplace/MarketplaceLayout';
 import { useMarketplaceItemDetails, useCreateMarketplaceOrder } from '@/features/marketplace/useMarketplace';
@@ -36,7 +37,9 @@ interface MarketplaceItemDetailProps {
 // Shared by /marketplace/saas/@id, /marketplace/b2b/@id, /marketplace/guest/@id —
 // only the surrounding gallery context (title/back link/active tab) differs
 // between the three storefronts, the order form itself is identical.
-export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, backLabel = 'Back to Gallery' }: MarketplaceItemDetailProps) {
+export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, backLabel }: MarketplaceItemDetailProps) {
+    const { t } = useTranslation('marketplace');
+    const resolvedBackLabel = backLabel ?? t('item_detail.back_to_gallery');
     const { routeParams } = usePageContext();
     const { id } = routeParams;
     const { myBusinesses, loadingMyBussinesses } = useMyBusinesses();
@@ -57,7 +60,7 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
 
     if (isLoading) {
         return (
-            <MarketplaceLayout activeType={activeType} title={galleryTitle} subtitle="Loading...">
+            <MarketplaceLayout activeType={activeType} title={galleryTitle} subtitle={t('item_detail.loading')}>
                 <div className="flex items-center justify-center py-20">
                     <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
@@ -67,10 +70,10 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
 
     if (!item) {
         return (
-            <MarketplaceLayout activeType={activeType} title={galleryTitle} subtitle="Item Not Found">
+            <MarketplaceLayout activeType={activeType} title={galleryTitle} subtitle={t('item_detail.item_not_found')}>
                 <div className="flex flex-col items-center justify-center py-20">
-                    <h2 className="text-xl font-bold">Product not found</h2>
-                    <a href={backHref} className="mt-4 text-primary hover:underline transition-all font-medium">{backLabel}</a>
+                    <h2 className="text-xl font-bold">{t('item_detail.product_not_found')}</h2>
+                    <a href={backHref} className="mt-4 text-primary hover:underline transition-all font-medium">{resolvedBackLabel}</a>
                 </div>
             </MarketplaceLayout>
         );
@@ -112,7 +115,7 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                     className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-10 group text-sm font-medium"
                 >
                     <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-                    {backLabel}
+                    {resolvedBackLabel}
                 </a>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
@@ -157,7 +160,7 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                             <div className="flex items-center gap-3">
                                 <h1 className="text-3xl font-bold tracking-tight text-foreground flex-1">{item.name}</h1>
                                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-full ${inStock ? 'bg-green-500/15 text-green-500' : 'bg-muted text-muted-foreground'}`}>
-                                    {inStock ? `In stock (${item.stock})` : 'Out of stock'}
+                                    {inStock ? t('item_detail.in_stock', { count: item.stock }) : t('item_detail.out_of_stock')}
                                 </span>
                             </div>
                             <div className="flex items-center gap-3">
@@ -191,21 +194,21 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                         <div className="space-y-6">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">Business</Label>
+                                    <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">{t('item_detail.business_label')}</Label>
                                     <Select onValueChange={setSelectedBusiness} value={selectedBusiness}>
                                         <SelectTrigger className="h-10 bg-secondary/10 border-white/5 rounded-lg focus:ring-primary/30 text-xs">
-                                            <SelectValue placeholder="Select Business..." />
+                                            <SelectValue placeholder={t('item_detail.select_business_placeholder')} />
                                         </SelectTrigger>
                                         <SelectContent className="bg-background border-white/10">
                                             {availableBusinesses.map((biz: any) => (
                                                 <SelectItem key={biz.id} value={biz.id}>{biz.name}</SelectItem>
                                             ))}
-                                            {loadingMyBussinesses && <SelectItem value="loading" disabled>Loading...</SelectItem>}
+                                            {loadingMyBussinesses && <SelectItem value="loading" disabled>{t('item_detail.loading')}</SelectItem>}
                                         </SelectContent>
                                     </Select>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">Quantity</Label>
+                                    <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">{t('item_detail.quantity_label')}</Label>
                                     <Input
                                         type="number"
                                         min="1"
@@ -220,20 +223,20 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                             <div className="space-y-4 pt-4 border-t border-white/5">
                                 <div className="flex items-center gap-2 text-primary">
                                     <Truck className="w-4 h-4" />
-                                    <h3 className="text-xs font-bold uppercase tracking-wider">Shipping Details</h3>
+                                    <h3 className="text-xs font-bold uppercase tracking-wider">{t('item_detail.shipping_details_title')}</h3>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <Label className="text-[10px] font-medium text-muted-foreground/60">Full Name</Label>
+                                        <Label className="text-[10px] font-medium text-muted-foreground/60">{t('item_detail.full_name_label')}</Label>
                                         <Input
-                                            placeholder="Recipient name"
+                                            placeholder={t('item_detail.full_name_placeholder')}
                                             className="h-10 bg-secondary/5 border-white/5 text-xs"
                                             value={shippingDetails.fullName}
                                             onChange={(e) => setShippingDetails({ ...shippingDetails, fullName: e.target.value })}
                                         />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <Label className="text-[10px] font-medium text-muted-foreground/60">Contact Number</Label>
+                                        <Label className="text-[10px] font-medium text-muted-foreground/60">{t('item_detail.contact_number_label')}</Label>
                                         <Input
                                             placeholder="+1 (555) 000-0000"
                                             className="h-10 bg-secondary/5 border-white/5 text-xs"
@@ -242,18 +245,18 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                                         />
                                     </div>
                                     <div className="md:col-span-2 space-y-1.5">
-                                        <Label className="text-[10px] font-medium text-muted-foreground/60">Street Address</Label>
+                                        <Label className="text-[10px] font-medium text-muted-foreground/60">{t('item_detail.street_address_label')}</Label>
                                         <Input
-                                            placeholder="123 business avenue, suite 100"
+                                            placeholder={t('item_detail.street_address_placeholder')}
                                             className="h-10 bg-secondary/5 border-white/5 text-xs"
                                             value={shippingDetails.address}
                                             onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
                                         />
                                     </div>
                                     <div className="md:col-span-2 space-y-1.5">
-                                        <Label className="text-[10px] font-medium text-muted-foreground/60">City, State, Zip Code</Label>
+                                        <Label className="text-[10px] font-medium text-muted-foreground/60">{t('item_detail.city_state_zip_label')}</Label>
                                         <Input
-                                            placeholder="New York, NY 10001"
+                                            placeholder={t('item_detail.city_state_zip_placeholder')}
                                             className="h-10 bg-secondary/5 border-white/5 text-xs"
                                             value={shippingDetails.cityStateZip}
                                             onChange={(e) => setShippingDetails({ ...shippingDetails, cityStateZip: e.target.value })}
@@ -263,16 +266,16 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                             </div>
 
                             <div className="space-y-2 pt-4 border-t border-white/5">
-                                <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">Customization Details (optional)</Label>
+                                <Label className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">{t('item_detail.customization_label')}</Label>
                                 <Textarea
-                                    placeholder="Enter specific numbers, letters, or branding instructions..."
+                                    placeholder={t('item_detail.customization_placeholder')}
                                     className="min-h-[80px] bg-secondary/5 border-white/5 rounded-lg p-4 text-xs resize-none focus:ring-primary/30"
                                     value={instructions}
                                     onChange={(e) => setInstructions(e.target.value)}
                                 />
                                 <p className="text-[10px] text-muted-foreground/50 flex items-center gap-2 font-medium">
                                     <Info className="w-3.5 h-3.5" />
-                                    Include any specific details for your custom order.
+                                    {t('item_detail.customization_hint')}
                                 </p>
                             </div>
                         </div>
@@ -280,7 +283,7 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                         <div className="pt-6 border-t border-white/5 space-y-4">
                             <div className="flex justify-between items-end">
                                 <div className="space-y-1">
-                                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Total Estimated Cost</p>
+                                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{t('item_detail.total_estimated_cost')}</p>
                                     <p className="text-3xl font-bold text-primary">
                                         {formatPrice(item.effectivePrice * quantity, item.currency || 'USD')}
                                     </p>
@@ -289,7 +292,7 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
 
                             {orderPlaced ? (
                                 <p className="text-center text-sm font-semibold text-primary py-3">
-                                    Order request submitted — the seller will review it shortly.
+                                    {t('item_detail.order_submitted')}
                                 </p>
                             ) : (
                                 <>
@@ -299,12 +302,12 @@ export function MarketplaceItemDetail({ activeType, galleryTitle, backHref, back
                                         className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-primary/10 transition-all"
                                     >
                                         <ShoppingCart className="w-4 h-4 mr-2" />
-                                        {createOrder.isPending ? "Submitting..." : "Initialize Order"}
+                                        {createOrder.isPending ? t('item_detail.submitting') : t('item_detail.initialize_order')}
                                     </Button>
 
                                     {(!selectedBusiness || !isShippingValid || !inStock) && (
                                         <p className="text-[10px] text-center text-muted-foreground font-medium italic">
-                                            {!inStock ? "This item is out of stock" : !selectedBusiness ? "Please select a business" : "Please fill in all shipping details"}
+                                            {!inStock ? t('item_detail.out_of_stock_hint') : !selectedBusiness ? t('item_detail.select_business_hint') : t('item_detail.fill_shipping_hint')}
                                         </p>
                                     )}
                                 </>

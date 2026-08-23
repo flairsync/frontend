@@ -268,5 +268,27 @@
       "reviews": "Reviews",
       "contact": "Contact"
     }
+  },
+  "location_selection_modal": {
+    "title": "Search location settings",
+    "access_denied_title": "Location Access Denied",
+    "access_denied_desc": "Geolocation is disabled or blocked. Please select a <b>Country</b> or click the map to set a <b>Custom Location</b> to see nearby results.",
+    "unavailable_title": "Location Unavailable",
+    "unavailable_desc": "We couldn't detect your location automatically. Please choose a country or a spot on the map to continue.",
+    "error_title": "Location error",
+    "error_desc": "Location is not enabled, please check your permission settings.",
+    "filter_by_country_label": "Filter by Entire Country",
+    "filter_by_country_hint": "This ignores standard precise coordinates.",
+    "select_country_label": "Select Country (Optional)",
+    "loading_countries": "Loading countries...",
+    "any_country": "Any Country",
+    "use_custom_location_label": "Use custom coordinate location?",
+    "use_custom_location_hint": "Click the map to change the origin point.",
+    "search_radius_label": "Search area radius:",
+    "radius_km": "{{radius}} km",
+    "your_device_location": "Your device location",
+    "custom_override_location": "Custom override location",
+    "cancel": "Cancel",
+    "apply_filters": "Apply Filters"
   }
 }
