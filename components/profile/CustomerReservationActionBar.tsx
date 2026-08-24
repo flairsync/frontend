@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +24,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
     reservationId,
     availableActions,
 }) => {
+    const { t } = useTranslation();
     const [expanded, setExpanded] = useState<ExpandedAction>(null);
 
     // Running late state
@@ -55,7 +57,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
 
     return (
         <div className="border-t bg-background pt-4 pb-2 space-y-3">
-            <p className="text-xs text-muted-foreground font-medium px-1">What would you like to do?</p>
+            <p className="text-xs text-muted-foreground font-medium px-1">{t("reservation_action_bar.prompt")}</p>
 
             <div className="flex flex-col gap-2">
 
@@ -67,7 +69,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                         onClick={() => handleSimple('confirm_attendance')}
                     >
                         {isPending && expanded === null ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle className="w-4 h-4 mr-2" />}
-                        I'll be there ✓
+                        {t("reservation_action_bar.confirm_attendance")}
                     </Button>
                 )}
 
@@ -80,7 +82,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                         onClick={() => handleSimple('acknowledge_delay')}
                     >
                         <HandMetal className="w-4 h-4 mr-2" />
-                        I'll wait
+                        {t("reservation_action_bar.acknowledge_delay")}
                     </Button>
                 )}
 
@@ -93,19 +95,19 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                             onClick={() => setExpanded(expanded === 'running_late' ? null : 'running_late')}
                         >
                             <Clock className="w-4 h-4 mr-2" />
-                            I'm running late
+                            {t("reservation_action_bar.running_late_button")}
                         </Button>
                         {expanded === 'running_late' && (
                             <div className="bg-muted/40 border rounded-xl p-3 space-y-3">
                                 <div className="space-y-1">
-                                    <Label className="text-xs">About how many minutes?</Label>
+                                    <Label className="text-xs">{t("reservation_action_bar.minutes_label")}</Label>
                                     <Select value={delayMinutes} onValueChange={setDelayMinutes}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Choose (optional)" />
+                                            <SelectValue placeholder={t("reservation_action_bar.choose_placeholder")} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {DELAY_OPTIONS.map((m) => (
-                                                <SelectItem key={m} value={String(m)}>{m} minutes</SelectItem>
+                                                <SelectItem key={m} value={String(m)}>{t("reservation_action_bar.minutes_option", { count: m })}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
@@ -117,7 +119,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                                     onClick={() => send({ type: 'running_late', estimatedDelayMinutes: delayMinutes ? Number(delayMinutes) : undefined })}
                                 >
                                     {isPending ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
-                                    Send
+                                    {t("reservation_action_bar.send")}
                                 </Button>
                             </div>
                         )}
@@ -133,13 +135,13 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                             onClick={() => setExpanded(expanded === 'request_modification' ? null : 'request_modification')}
                         >
                             <Edit2 className="w-4 h-4 mr-2" />
-                            Request a change
+                            {t("reservation_action_bar.request_change_button")}
                         </Button>
                         {expanded === 'request_modification' && (
                             <div className="bg-muted/40 border rounded-xl p-3 space-y-3">
                                 <div className="grid grid-cols-2 gap-2">
                                     <div className="space-y-1">
-                                        <Label className="text-xs">New date & time (optional)</Label>
+                                        <Label className="text-xs">{t("reservation_action_bar.new_time_label")}</Label>
                                         <Input
                                             type="datetime-local"
                                             value={modTime}
@@ -147,12 +149,12 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <Label className="text-xs">New party size (optional)</Label>
+                                        <Label className="text-xs">{t("reservation_action_bar.new_guests_label")}</Label>
                                         <Input
                                             type="number"
                                             min={1}
                                             max={50}
-                                            placeholder="e.g. 4"
+                                            placeholder={t("reservation_action_bar.guests_placeholder")}
                                             value={modGuests}
                                             onChange={(e) => setModGuests(e.target.value)}
                                         />
@@ -169,7 +171,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                                     })}
                                 >
                                     {isPending ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
-                                    Send Request
+                                    {t("reservation_action_bar.send_request")}
                                 </Button>
                             </div>
                         )}
@@ -185,19 +187,19 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                             onClick={() => setExpanded(expanded === 'request_cancellation' ? null : 'request_cancellation')}
                         >
                             <X className="w-4 h-4 mr-2" />
-                            Request cancellation
+                            {t("reservation_action_bar.request_cancellation_button")}
                         </Button>
                         {expanded === 'request_cancellation' && (
                             <div className="bg-muted/40 border rounded-xl p-3 space-y-3">
                                 <p className="text-xs text-muted-foreground">
-                                    This sends a cancellation request to the restaurant. They will confirm shortly. Your reservation remains active until then.
+                                    {t("reservation_action_bar.cancellation_notice")}
                                 </p>
                                 <div className="space-y-1">
-                                    <Label className="text-xs">Reason (optional)</Label>
+                                    <Label className="text-xs">{t("reservation_action_bar.reason_label")}</Label>
                                     <Textarea
                                         value={cancelNotes}
                                         onChange={(e) => setCancelNotes(e.target.value)}
-                                        placeholder="e.g. Change of plans"
+                                        placeholder={t("reservation_action_bar.reason_placeholder")}
                                         rows={2}
                                     />
                                 </div>
@@ -209,7 +211,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                                     onClick={() => send({ type: 'request_cancellation', notes: cancelNotes || undefined })}
                                 >
                                     {isPending ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
-                                    Send Request
+                                    {t("reservation_action_bar.send_request")}
                                 </Button>
                             </div>
                         )}

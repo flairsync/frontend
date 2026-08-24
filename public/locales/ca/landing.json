@@ -270,5 +270,42 @@
       "message_required": "El missatge és obligatori",
       "generic": "Alguna cosa ha fallat. Torna-ho a provar."
     }
+  },
+  "gdpr_page": {
+    "title": "RGPD i política de cookies",
+    "last_updated": "Darrera actualització: {{date}}",
+    "intro": "La declaració completa de compliment del RGPD de FlairSync, la política de cookies, la guia de drets dels interessats i informació per a residents de la UE.",
+    "cookie_categories_title": "Categories de cookies",
+    "cookie_categories_intro": "Utilitzem quatre categories de cookies a la nostra plataforma. Les cookies estrictament necessàries sempre estan actives. La resta de cookies requereixen el teu consentiment, que pots gestionar en qualsevol moment.",
+    "examples_label": "Exemples:",
+    "load_error_title": "No s'ha pogut carregar la política de RGPD i cookies",
+    "load_error_description": "Torna a provar d'actualitzar la pàgina d'aquí un moment.",
+    "contact_question": "Tens preguntes sobre el compliment del RGPD o els teus drets?",
+    "categories": {
+      "strictly_necessary": {
+        "name": "Estrictament necessàries",
+        "badge": "Sempre actives",
+        "description": "Aquestes cookies són essencials perquè la plataforma funcioni. Permeten funcions bàsiques com l'autenticació, la gestió de sessions i la seguretat. No es poden desactivar.",
+        "examples": "Testimonis d'autenticació, protecció CSRF, identificadors de sessió"
+      },
+      "functional": {
+        "name": "Funcionals",
+        "badge": "Opcional",
+        "description": "Aquestes cookies recorden les teves preferències i configuracions per oferir una experiència més personalitzada (p. ex., idioma, tema, fus horari). Desactivar-les pot afectar la usabilitat.",
+        "examples": "Preferència d'idioma, tema de la interfície, fus horari"
+      },
+      "analytics": {
+        "name": "Analítiques",
+        "badge": "Cal consentiment",
+        "description": "Aquestes cookies ens ajuden a entendre com els usuaris interactuen amb la nostra plataforma per poder-la millorar. Totes les dades s'anonimitzen i s'agreguen. Només s'activen amb el teu consentiment.",
+        "examples": "Visualitzacions de pàgina, ús de funcions, durada de sessió, taxes d'error"
+      },
+      "marketing": {
+        "name": "Màrqueting",
+        "badge": "Cal consentiment",
+        "description": "Aquestes cookies s'utilitzen per oferir contingut rellevant i mesurar l'eficàcia de les campanyes. No venem les teves dades a anunciants. Només s'activen amb el teu consentiment explícit.",
+        "examples": "Seguiment de l'origen de campanyes, esdeveniments de conversió"
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import { useOrganizations } from "@/features/organizations/useOrganizations";
 import { OrganizationExplainer } from "@/components/management/organizations/OrganizationExplainer";
 
 const OrganizationsPage = () => {
+    const { t } = useTranslation("management");
     const { organizations, loadingOrganizations, createOrganization, isCreatingOrganization } = useOrganizations();
     const [createOpen, setCreateOpen] = useState(false);
     const [name, setName] = useState("");
@@ -32,10 +34,9 @@ const OrganizationsPage = () => {
     return (
         <div className="p-6 w-full space-y-6">
             <div>
-                <h1 className="text-2xl font-bold">Organizations</h1>
+                <h1 className="text-2xl font-bold">{t("organizations_page.title")}</h1>
                 <p className="text-muted-foreground mt-1">
-                    Group your businesses to see combined sales, labor cost, and inventory alerts across
-                    branches.
+                    {t("organizations_page.subtitle")}
                 </p>
             </div>
 
@@ -43,14 +44,14 @@ const OrganizationsPage = () => {
 
             <div className="flex items-center justify-end">
                 <Button onClick={() => setCreateOpen(true)} className="rounded-xl px-4 h-11 shrink-0">
-                    + New Organization
+                    {t("organizations_page.new_organization")}
                 </Button>
             </div>
 
             {loadingOrganizations && organizations.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3 border border-dashed border-border rounded-xl bg-muted/50">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                    <p className="text-sm text-muted-foreground font-medium">Loading your organizations...</p>
+                    <p className="text-sm text-muted-foreground font-medium">{t("organizations_page.loading")}</p>
                 </div>
             ) : organizations.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,7 +69,7 @@ const OrganizationsPage = () => {
                                 <CardContent>
                                     <p className="text-sm text-muted-foreground flex items-center gap-2">
                                         <Store className="h-4 w-4" />
-                                        {org.businessCount ?? 0} {org.businessCount === 1 ? "business" : "businesses"}
+                                        {t("organizations_page.business_count", { count: org.businessCount ?? 0 })}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -80,12 +81,12 @@ const OrganizationsPage = () => {
                     <div className="bg-card p-4 rounded-full shadow-sm w-fit mx-auto mb-4 border border-border">
                         <Building2 className="h-8 w-8 text-muted-foreground/50" />
                     </div>
-                    <p className="text-xl font-bold text-foreground mb-2">No organizations yet</p>
+                    <p className="text-xl font-bold text-foreground mb-2">{t("organizations_page.empty_title")}</p>
                     <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-                        If you own more than one business, group them into an organization to see combined performance.
+                        {t("organizations_page.empty_description")}
                     </p>
                     <Button className="rounded-xl shadow-md px-8 py-6 h-auto font-bold" onClick={() => setCreateOpen(true)}>
-                        Create an Organization
+                        {t("organizations_page.create_organization")}
                     </Button>
                 </div>
             )}
@@ -93,23 +94,23 @@ const OrganizationsPage = () => {
             <Dialog open={createOpen} onOpenChange={setCreateOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>New Organization</DialogTitle>
+                        <DialogTitle>{t("organizations_page.create_dialog.title")}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-2 py-2">
-                        <Label htmlFor="org-name">Name</Label>
+                        <Label htmlFor="org-name">{t("organizations_page.create_dialog.name_label")}</Label>
                         <Input
                             id="org-name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="e.g. Acme Restaurant Group"
+                            placeholder={t("organizations_page.create_dialog.name_placeholder")}
                         />
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setCreateOpen(false)}>
-                            Cancel
+                            {t("organizations_page.create_dialog.cancel")}
                         </Button>
                         <Button onClick={handleCreate} disabled={!name.trim() || isCreatingOrganization}>
-                            Create
+                            {t("organizations_page.create_dialog.create")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

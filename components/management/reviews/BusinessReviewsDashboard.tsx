@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useStaffReviews, useStaffReviewStats, useDeleteStaffReview } from "@/features/business/reviews/useBusinessReviews";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,10 +30,11 @@ interface StatsWidgetProps {
 }
 
 function StatsWidget({ stats }: StatsWidgetProps) {
+    const { t } = useTranslation("management");
     if (stats.average === null) {
         return (
             <Card className="rounded-3xl">
-                <CardContent className="p-6 text-center text-muted-foreground text-sm">No reviews yet</CardContent>
+                <CardContent className="p-6 text-center text-muted-foreground text-sm">{t("business_reviews_dashboard.no_reviews_yet")}</CardContent>
             </Card>
         );
     }
@@ -43,7 +45,7 @@ function StatsWidget({ stats }: StatsWidgetProps) {
                 <div className="text-center shrink-0">
                     <p className="text-5xl font-black">{stats.average.toFixed(1)}</p>
                     <RenderStars rating={Math.round(stats.average)} size={18} />
-                    <p className="text-xs text-muted-foreground mt-1">{stats.total} {stats.total === 1 ? "review" : "reviews"}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{t("business_reviews_dashboard.review_count", { count: stats.total })}</p>
                 </div>
                 <div className="flex-1 w-full space-y-1.5">
                     {[5, 4, 3, 2, 1].map((star) => {
@@ -76,6 +78,7 @@ interface BusinessReviewsDashboardProps {
 }
 
 const BusinessReviewsDashboard: React.FC<BusinessReviewsDashboardProps> = ({ businessId }) => {
+    const { t } = useTranslation("management");
     const [page, setPage] = useState(1);
     const [ratingFilter, setRatingFilter] = useState<string>("all");
 
@@ -96,8 +99,8 @@ const BusinessReviewsDashboard: React.FC<BusinessReviewsDashboardProps> = ({ bus
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Reviews</h1>
-                    <p className="text-sm text-muted-foreground">Monitor and moderate customer reviews</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t("business_reviews_dashboard.title")}</h1>
+                    <p className="text-sm text-muted-foreground">{t("business_reviews_dashboard.subtitle")}</p>
                 </div>
             </div>
 
@@ -112,13 +115,13 @@ const BusinessReviewsDashboard: React.FC<BusinessReviewsDashboardProps> = ({ bus
             <div className="flex items-center gap-3">
                 <Select value={ratingFilter} onValueChange={(v) => { setRatingFilter(v); setPage(1); }}>
                     <SelectTrigger className="w-[160px] rounded-xl">
-                        <SelectValue placeholder="All ratings" />
+                        <SelectValue placeholder={t("business_reviews_dashboard.all_ratings")} />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl">
-                        <SelectItem value="all">All ratings</SelectItem>
+                        <SelectItem value="all">{t("business_reviews_dashboard.all_ratings")}</SelectItem>
                         {[5, 4, 3, 2, 1].map((r) => (
                             <SelectItem key={r} value={String(r)}>
-                                {r} star{r !== 1 ? "s" : ""}
+                                {t("business_reviews_dashboard.star_count", { count: r })}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -129,7 +132,7 @@ const BusinessReviewsDashboard: React.FC<BusinessReviewsDashboardProps> = ({ bus
             {isLoading ? (
                 <div className="flex justify-center py-10"><Loader2 className="animate-spin text-muted-foreground" size={24} /></div>
             ) : reviews.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground text-sm">No reviews found.</div>
+                <div className="text-center py-12 text-muted-foreground text-sm">{t("business_reviews_dashboard.no_reviews_found")}</div>
             ) : (
                 <div className="space-y-3">
                     {reviews.map((review: any) => (
@@ -158,9 +161,9 @@ const BusinessReviewsDashboard: React.FC<BusinessReviewsDashboardProps> = ({ bus
                                 </div>
                                 <ConfirmAction
                                     onConfirm={() => deleteReview.mutate(review.id)}
-                                    title="Remove Review?"
-                                    description="This will permanently remove this review. Use only for abusive or fake content."
-                                    confirmText="Remove"
+                                    title={t("business_reviews_dashboard.remove_dialog.title")}
+                                    description={t("business_reviews_dashboard.remove_dialog.description")}
+                                    confirmText={t("business_reviews_dashboard.remove_dialog.confirm")}
                                 >
                                     <Button
                                         variant="ghost"

@@ -22,5 +22,29 @@
     "location_label": "Localisation",
     "location_placeholder": "Ville, région...",
     "clear_filters": "Effacer les filtres"
+  },
+  "my_application_detail_page": {
+    "not_found_title": "Candidature introuvable",
+    "not_found_description": "Nous n'avons pas trouvé cette candidature. Elle a peut-être été supprimée.",
+    "back_to_applications": "Retour à mes candidatures",
+    "breadcrumb": "Mes candidatures",
+    "job_position_fallback": "Poste",
+    "applied_on": "Candidature envoyée le {{date}}",
+    "view_job": "Voir l'offre",
+    "resume": {
+      "title": "CV",
+      "paste_link": "Coller un lien",
+      "upload_pdf": "Importer un PDF",
+      "view_current": "Voir le CV actuel",
+      "none_yet": "Aucun CV ajouté pour le moment.",
+      "url_placeholder": "https://linkedin.com/in/votre-profil",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "choose_pdf": "Choisir un PDF",
+      "pdf_hint": "PDF uniquement, 5 Mo max",
+      "upload": "Importer"
+    },
+    "cover_letter_title": "Lettre de motivation",
+    "timeline_title": "Suivi de la candidature"
   }
 }

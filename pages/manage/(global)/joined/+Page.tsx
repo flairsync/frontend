@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Building2, Users, ArrowRight, Loader, MessageSquare } from "lucide-react";
@@ -9,6 +10,7 @@ import { useMyEmployments } from "@/features/business/employment/useMyEmployment
 import { useGlobalAnnouncementsInbox } from "@/features/business/announcements/useAnnouncementsInbox";
 
 const JoinedPage = () => {
+    const { t } = useTranslation("management");
     const {
         myEmployments,
         loadingMyEmployments: isLoading
@@ -22,15 +24,15 @@ const JoinedPage = () => {
 
     return (
         <div className="p-6 w-full">
-            <h1 className="text-2xl font-bold mb-2">Joined Businesses</h1>
+            <h1 className="text-2xl font-bold mb-2">{t("joined_page.title")}</h1>
             <p className="text-muted-foreground mb-8">
-                Manage your work within businesses you have joined as a staff member.
+                {t("joined_page.subtitle")}
             </p>
 
             {isLoading && !myEmployments?.length ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3 border border-dashed border-border rounded-xl bg-muted/50">
                     <Loader className="h-8 w-8 animate-spin text-blue-600" />
-                    <p className="text-sm text-muted-foreground font-medium">Loading joined businesses...</p>
+                    <p className="text-sm text-muted-foreground font-medium">{t("joined_page.loading")}</p>
                 </div>
             ) : joinedBusinesses.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -51,7 +53,7 @@ const JoinedPage = () => {
                                             <CardTitle className="text-lg group-hover:text-green-600 transition-colors">
                                                 {emp.business.name}
                                             </CardTitle>
-                                            <p className="text-xs text-muted-foreground font-medium">Staff Member</p>
+                                            <p className="text-xs text-muted-foreground font-medium">{t("joined_page.staff_member")}</p>
                                         </div>
                                         {!!inbox?.unreadCount && (
                                             <Badge variant="destructive">{inbox.unreadCount}</Badge>
@@ -61,14 +63,14 @@ const JoinedPage = () => {
                                 <CardContent>
                                     <div className="space-y-4">
                                         <p className="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
-                                            {emp.business.description || "You are an active member of this business's team."}
+                                            {emp.business.description || t("joined_page.default_description")}
                                         </p>
 
                                         {!!inbox?.latest.length && (
                                             <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
                                                 <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
                                                     <MessageSquare className="h-3.5 w-3.5" />
-                                                    Latest messages
+                                                    {t("joined_page.latest_messages")}
                                                 </div>
                                                 {inbox.latest.map((item) => (
                                                     <div key={item.id} className="text-xs">
@@ -88,7 +90,7 @@ const JoinedPage = () => {
                                                 href={`/manage/${emp.business.id}/staff/dashboard`}
                                                 className="inline-flex items-center text-green-600 text-sm font-semibold hover:text-green-700 transition-colors gap-1 group/link"
                                             >
-                                                Open Business Hub
+                                                {t("joined_page.open_business_hub")}
                                                 <ArrowRight className="h-4 w-4 group-hover/link:translate-x-0.5 transition-transform" />
                                             </a>
                                         </div>
@@ -103,12 +105,12 @@ const JoinedPage = () => {
                     <div className="bg-card p-4 rounded-full shadow-sm w-fit mx-auto mb-4 border border-border">
                         <Users className="h-8 w-8 text-muted-foreground/50" />
                     </div>
-                    <p className="text-xl font-bold text-foreground mb-2">No joined businesses yet</p>
+                    <p className="text-xl font-bold text-foreground mb-2">{t("joined_page.empty_title")}</p>
                     <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-                        When you are invited to join a business as a staff member, it will appear here for you to access.
+                        {t("joined_page.empty_description")}
                     </p>
                     <Button variant="outline" className="rounded-xl px-8" asChild>
-                        <a href="/manage/owned">View My Businesses</a>
+                        <a href="/manage/owned">{t("joined_page.view_my_businesses")}</a>
                     </Button>
                 </div>
             )}

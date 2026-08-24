@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 import {
   Edit,
   Trash2,
@@ -18,7 +19,7 @@ import {
 import {
   Task,
   TASK_STATUS_COLORS,
-  TASK_STATUS_LABELS,
+  getTaskStatusLabel,
   getAssigneeName,
 } from "@/models/Task";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,7 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardProps) {
+  const { t } = useTranslation("management");
   const isGlobal = task.assignedToEmploymentId === null;
 
   return (
@@ -46,7 +48,7 @@ export function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardPro
               TASK_STATUS_COLORS[task.status],
             )}
           >
-            {TASK_STATUS_LABELS[task.status]}
+            {getTaskStatusLabel(task.status, t)}
           </span>
         </div>
 
@@ -63,10 +65,12 @@ export function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardPro
             )}
             {getAssigneeName(task.assignedTo)}
           </span>
-          <span>Created {format(new Date(task.createdAt), "MMM d, yyyy")}</span>
-          {task.dueDate && <span>Due {format(new Date(task.dueDate), "MMM d, yyyy")}</span>}
+          <span>{t("staff_tasks.created_on", { date: format(new Date(task.createdAt), "MMM d, yyyy") })}</span>
+          {task.dueDate && (
+            <span>{t("owner_tasks_page.card.due_on", { date: format(new Date(task.dueDate), "MMM d, yyyy") })}</span>
+          )}
           {task.lastActionBy && (
-            <span>Last updated by {getAssigneeName(task.lastActionBy)}</span>
+            <span>{t("owner_tasks_page.card.last_updated_by", { name: getAssigneeName(task.lastActionBy) })}</span>
           )}
         </div>
 
@@ -86,16 +90,16 @@ export function TaskCard({ task, onEdit, onDelete, onUpdateStatus }: TaskCardPro
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => onUpdateStatus(task)}>
-            Update Status
+            {t("staff_tasks.update_status_button")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => onEdit(task)}>
             <Edit className="h-4 w-4 mr-2" />
-            Edit
+            {t("owner_tasks_page.card.edit")}
           </DropdownMenuItem>
           <DropdownMenuItem className="text-red-600" onClick={() => onDelete(task)}>
             <Trash2 className="h-4 w-4 mr-2" />
-            Delete
+            {t("owner_tasks_page.card.delete")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

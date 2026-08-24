@@ -64,7 +64,20 @@
   },
   "layout": {
     "tab_menu": "Menú",
-    "tab_my_order": "La meva comanda"
+    "tab_my_order": "La meva comanda",
+    "seated_at": "Estàs assegut a {{name}}",
+    "table_fallback": "Taula {{number}}",
+    "exit": {
+      "title": "Gràcies per venir!",
+      "subtitle": "La teva sessió ha acabat. Esperem que hagis gaudit de l'àpat!",
+      "leave_review": "Deixa una ressenya",
+      "redirecting": "Redirigint a l'inici…"
+    },
+    "order_ready": {
+      "title": "La teva comanda està llesta!",
+      "description": "La teva comanda està llesta per servir-se. Bon profit!",
+      "dismiss": "Tancar"
+    }
   },
   "banner": {
     "seated_title": "Estàs assegut aquí",

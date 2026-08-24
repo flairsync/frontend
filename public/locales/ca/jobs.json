@@ -22,5 +22,29 @@
     "location_label": "Ubicació",
     "location_placeholder": "Ciutat, província...",
     "clear_filters": "Netejar filtres"
+  },
+  "my_application_detail_page": {
+    "not_found_title": "Sol·licitud no trobada",
+    "not_found_description": "No hem pogut trobar aquesta sol·licitud. És possible que s'hagi eliminat.",
+    "back_to_applications": "Torna a les meves sol·licituds",
+    "breadcrumb": "Les meves sol·licituds",
+    "job_position_fallback": "Lloc de feina",
+    "applied_on": "Sol·licitat el {{date}}",
+    "view_job": "Veure l'oferta",
+    "resume": {
+      "title": "Currículum",
+      "paste_link": "Enganxar enllaç",
+      "upload_pdf": "Pujar PDF",
+      "view_current": "Veure el currículum actual",
+      "none_yet": "Encara no s'ha afegit cap currículum.",
+      "url_placeholder": "https://linkedin.com/in/el-teu-perfil",
+      "save": "Desar",
+      "cancel": "Cancel·lar",
+      "choose_pdf": "Triar PDF",
+      "pdf_hint": "Només PDF, màx. 5 MB",
+      "upload": "Pujar"
+    },
+    "cover_letter_title": "Carta de presentació",
+    "timeline_title": "Seguiment de la sol·licitud"
   }
 }

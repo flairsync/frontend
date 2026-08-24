@@ -222,5 +222,25 @@
       "promos": "Promos",
       "security": "Security"
     }
+  },
+  "reservation_action_bar": {
+    "prompt": "What would you like to do?",
+    "confirm_attendance": "I'll be there ✓",
+    "acknowledge_delay": "I'll wait",
+    "running_late_button": "I'm running late",
+    "minutes_label": "About how many minutes?",
+    "choose_placeholder": "Choose (optional)",
+    "minutes_option_one": "{{count}} minute",
+    "minutes_option_other": "{{count}} minutes",
+    "send": "Send",
+    "request_change_button": "Request a change",
+    "new_time_label": "New date & time (optional)",
+    "new_guests_label": "New party size (optional)",
+    "guests_placeholder": "e.g. 4",
+    "send_request": "Send Request",
+    "request_cancellation_button": "Request cancellation",
+    "cancellation_notice": "This sends a cancellation request to the restaurant. They will confirm shortly. Your reservation remains active until then.",
+    "reason_label": "Reason (optional)",
+    "reason_placeholder": "e.g. Change of plans"
   }
 }

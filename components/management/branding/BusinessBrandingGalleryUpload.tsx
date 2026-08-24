@@ -1,5 +1,6 @@
 
 import { useState, ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Card,
     CardContent,
@@ -62,6 +63,7 @@ export default function BusinessBrandingGalleryUpload({
     businessMedia,
     onSave,
 }: GalleryUploaderProps) {
+    const { t } = useTranslation("management");
     const MAX_IMAGES = 10;
 
     // Initialize 10 slots
@@ -141,7 +143,7 @@ export default function BusinessBrandingGalleryUpload({
         <Button className="mt-4 btn-primary" onClick={() => {
             buildPayload()
         }}>
-            Save
+            {t("branding_page.gallery_upload.save")}
         </Button>
     </DndContext>
 
@@ -159,6 +161,7 @@ function SortableSlot({
     onRemove: (slotId: string) => void;
     markedForDeleting: boolean
 }) {
+    const { t } = useTranslation("management");
     const { setNodeRef, attributes, listeners, transform, transition } = useSortable({ id: slot.id });
     const style = { transform: CSS.Transform.toString(transform), transition };
 
@@ -190,7 +193,7 @@ function SortableSlot({
                         {...listeners}
                         className="absolute bottom-1 left-1 bg-black/60 text-white text-xs px-2 py-1 rounded cursor-grab"
                     >
-                        Drag
+                        {t("branding_page.gallery_upload.drag")}
                     </div>
 
                     {/* 🗑 DELETE BUTTON */}
@@ -236,7 +239,7 @@ function SortableSlot({
 
                     {/* Label */}
                     <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-sm">
-                        Marked for deletion
+                        {t("branding_page.gallery_upload.marked_for_deletion")}
                     </div>
                 </div>
             )}

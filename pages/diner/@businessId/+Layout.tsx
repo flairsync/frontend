@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { usePageContext } from 'vike-react/usePageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UtensilsCrossed, ClipboardList, Star, X, PartyPopper } from 'lucide-react';
@@ -20,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { getTableCookie, getGuestOrderCookie, clearGuestOrderCookie } from '@/utils/cookies';
 
 const DinerLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation('diner');
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
     const currentPath = pageContext.urlPathname;
@@ -70,7 +72,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
 
     const resolvedTableId = reservation?.tableId ?? activeOrderSummary?.tableId ?? scannedTableId ?? null;
     const resolvedTable = floors?.flatMap((f) => f.tables ?? []).find((t) => t.id === resolvedTableId);
-    const tableLabel = resolvedTable ? (resolvedTable.name || `Table ${resolvedTable.number}`) : resolvedTableId;
+    const tableLabel = resolvedTable ? (resolvedTable.name || t('layout.table_fallback', { number: resolvedTable.number })) : resolvedTableId;
 
     const hasSeatedReservation = !!reservation;
     const hasActiveOrder =
@@ -144,7 +146,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         className="fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none"
                     >
                         <div className="mt-4 bg-primary text-primary-foreground rounded-full px-5 py-2 text-sm font-semibold shadow-xl">
-                            You&apos;re seated at {profile.name}
+                            {t('layout.seated_at', { name: profile.name })}
                         </div>
                     </motion.div>
                 )}
@@ -161,9 +163,9 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                                 <Star className="w-8 h-8 text-primary" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-bold">Thanks for dining with us!</h2>
+                                <h2 className="text-xl font-bold">{t('layout.exit.title')}</h2>
                                 <p className="text-sm text-muted-foreground mt-1">
-                                    Your session has ended. We hope you enjoyed your meal!
+                                    {t('layout.exit.subtitle')}
                                 </p>
                             </div>
                             <Button
@@ -171,9 +173,9 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                                 className="w-full rounded-full"
                                 onClick={() => { window.location.href = `/business/${businessId}#reviews`; }}
                             >
-                                Leave a Review
+                                {t('layout.exit.leave_review')}
                             </Button>
-                            <p className="text-xs text-muted-foreground">Redirecting you home…</p>
+                            <p className="text-xs text-muted-foreground">{t('layout.exit.redirecting')}</p>
                         </div>
                     </motion.div>
                 )}
@@ -192,13 +194,13 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         <div className="pointer-events-auto flex items-center gap-3 bg-emerald-500 text-white rounded-2xl px-5 py-3 shadow-2xl max-w-sm w-full">
                             <PartyPopper className="w-5 h-5 shrink-0" />
                             <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-sm leading-tight">Your order is ready!</p>
-                                <p className="text-xs opacity-90">Your order is ready to be served. Enjoy your meal!</p>
+                                <p className="font-semibold text-sm leading-tight">{t('layout.order_ready.title')}</p>
+                                <p className="text-xs opacity-90">{t('layout.order_ready.description')}</p>
                             </div>
                             <button
                                 onClick={() => setOrderReadyId(null)}
                                 className="shrink-0 opacity-80 hover:opacity-100 transition-opacity p-1"
-                                aria-label="Dismiss"
+                                aria-label={t('layout.order_ready.dismiss')}
                             >
                                 <X className="w-4 h-4" />
                             </button>
@@ -229,7 +231,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         )}
                     >
                         <UtensilsCrossed className="w-5 h-5" />
-                        <span className="text-[10px] font-medium">Menu</span>
+                        <span className="text-[10px] font-medium">{t('layout.tab_menu')}</span>
                     </a>
 
                     <a
@@ -249,7 +251,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                                 </span>
                             )}
                         </div>
-                        <span className="text-[10px] font-medium">My Order</span>
+                        <span className="text-[10px] font-medium">{t('layout.tab_my_order')}</span>
                     </a>
 
                     <div className="flex-1 flex items-center justify-center px-3">

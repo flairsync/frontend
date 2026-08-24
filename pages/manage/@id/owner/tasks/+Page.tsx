@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/ui/separator";
 import { usePageContext } from "vike-react/usePageContext";
 import { ClipboardList } from "lucide-react";
@@ -27,15 +28,16 @@ import { TaskCard } from "@/components/management/tasks/TaskCard";
 
 type FilterTab = "all" | "global" | "assigned";
 
-const FILTER_TABS: Array<{ label: string; value: FilterTab }> = [
-  { label: "All", value: "all" },
-  { label: "Global", value: "global" },
-  { label: "Assigned", value: "assigned" },
+const FILTER_TABS: Array<{ labelKey: string; value: FilterTab }> = [
+  { labelKey: "staff_tasks.filters.all", value: "all" },
+  { labelKey: "owner_tasks_page.filters.global", value: "global" },
+  { labelKey: "owner_tasks_page.filters.assigned", value: "assigned" },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const OwnerTasksPage = () => {
+  const { t } = useTranslation("management");
   const { routeParams } = usePageContext();
   const businessId = routeParams.id;
 
@@ -66,15 +68,15 @@ const OwnerTasksPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Tasks</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t("staff_tasks.title")}</h1>
           <p className="text-muted-foreground text-sm mt-0.5">
-            Create and manage tasks for your team.
+            {t("owner_tasks_page.subtitle")}
           </p>
         </div>
         <Button
           onClick={() => setCreateOpen(true)}
         >
-          + Create Task
+          + {t("owner_tasks_page.create_task")}
         </Button>
       </div>
 
@@ -93,7 +95,7 @@ const OwnerTasksPage = () => {
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>
@@ -102,20 +104,20 @@ const OwnerTasksPage = () => {
       {loadingTasks ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-          <p className="text-sm text-muted-foreground">Loading tasks...</p>
+          <p className="text-sm text-muted-foreground">{t("staff_tasks.loading")}</p>
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-muted/30">
           <ClipboardList className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-lg font-semibold text-foreground mb-1">No tasks yet</p>
+          <p className="text-lg font-semibold text-foreground mb-1">{t("owner_tasks_page.empty.title")}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            Create your first task to get your team organized.
+            {t("owner_tasks_page.empty.description")}
           </p>
           <Button
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
             onClick={() => setCreateOpen(true)}
           >
-            Create Task
+            {t("owner_tasks_page.create_task")}
           </Button>
         </div>
       ) : (
@@ -133,11 +135,11 @@ const OwnerTasksPage = () => {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-4">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                Previous
+                {t("owner_tasks_page.previous")}
               </Button>
-              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+              <span className="text-sm text-muted-foreground">{t("owner_tasks_page.page_of", { page, totalPages })}</span>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                Next
+                {t("owner_tasks_page.next")}
               </Button>
             </div>
           )}
@@ -171,19 +173,19 @@ const OwnerTasksPage = () => {
       <AlertDialog open={!!deleteTarget} onOpenChange={(v) => { if (!v) setDeleteTarget(null); }}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete this task?</AlertDialogTitle>
+            <AlertDialogTitle>{t("owner_tasks_page.delete_dialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              "{deleteTarget?.title}" will be permanently deleted. This cannot be undone.
+              {t("owner_tasks_page.delete_dialog.description", { title: deleteTarget?.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("staff_tasks.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-red-600 hover:bg-red-700"
               disabled={deletingTask}
             >
-              Delete
+              {t("owner_tasks_page.delete_dialog.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

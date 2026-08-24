@@ -185,9 +185,11 @@ function TaskCard({ task, onUpdateStatus }: TaskCardProps) {
             {getAssigneeName(task.assignedTo)}
           </span>
           <span>{t("staff_tasks.created_on", { date: format(new Date(task.createdAt), "MMM d, yyyy") })}</span>
-          {task.dueDate && <span>Due {format(new Date(task.dueDate), "MMM d, yyyy")}</span>}
+          {task.dueDate && (
+            <span>{t("staff_tasks.due_on", { date: format(new Date(task.dueDate), "MMM d, yyyy") })}</span>
+          )}
           {task.lastActionBy && (
-            <span>Last updated by {getAssigneeName(task.lastActionBy)}</span>
+            <span>{t("staff_tasks.last_updated_by", { name: getAssigneeName(task.lastActionBy) })}</span>
           )}
         </div>
 
@@ -296,11 +298,11 @@ const StaffTasksPage = () => {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-4">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                Previous
+                {t("staff_tasks.previous")}
               </Button>
-              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+              <span className="text-sm text-muted-foreground">{t("staff_tasks.page_of", { page, totalPages })}</span>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                Next
+                {t("staff_tasks.next")}
               </Button>
             </div>
           )}

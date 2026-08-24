@@ -22,5 +22,29 @@
     "location_label": "Location",
     "location_placeholder": "City, state...",
     "clear_filters": "Clear filters"
+  },
+  "my_application_detail_page": {
+    "not_found_title": "Application not found",
+    "not_found_description": "We couldn't find this application. It may have been removed.",
+    "back_to_applications": "Back to my applications",
+    "breadcrumb": "My Applications",
+    "job_position_fallback": "Job position",
+    "applied_on": "Applied on {{date}}",
+    "view_job": "View job",
+    "resume": {
+      "title": "Resume",
+      "paste_link": "Paste link",
+      "upload_pdf": "Upload PDF",
+      "view_current": "View current resume",
+      "none_yet": "No resume added yet.",
+      "url_placeholder": "https://linkedin.com/in/your-profile",
+      "save": "Save",
+      "cancel": "Cancel",
+      "choose_pdf": "Choose PDF",
+      "pdf_hint": "PDF only, max 5 MB",
+      "upload": "Upload"
+    },
+    "cover_letter_title": "Cover Letter",
+    "timeline_title": "Application Timeline"
   }
 }

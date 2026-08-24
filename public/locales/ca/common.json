@@ -217,5 +217,25 @@
       "promos": "Promocions",
       "security": "Seguretat"
     }
+  },
+  "reservation_action_bar": {
+    "prompt": "Què t'agradaria fer?",
+    "confirm_attendance": "Hi seré ✓",
+    "acknowledge_delay": "Esperaré",
+    "running_late_button": "Vaig amb retard",
+    "minutes_label": "Quants minuts aproximadament?",
+    "choose_placeholder": "Tria (opcional)",
+    "minutes_option_one": "{{count}} minut",
+    "minutes_option_other": "{{count}} minuts",
+    "send": "Enviar",
+    "request_change_button": "Sol·licitar un canvi",
+    "new_time_label": "Nova data i hora (opcional)",
+    "new_guests_label": "Nou nombre de comensals (opcional)",
+    "guests_placeholder": "p. ex. 4",
+    "send_request": "Enviar sol·licitud",
+    "request_cancellation_button": "Sol·licitar cancel·lació",
+    "cancellation_notice": "Això envia una sol·licitud de cancel·lació al restaurant. Confirmaran d'aquí poc. La teva reserva segueix activa fins llavors.",
+    "reason_label": "Motiu (opcional)",
+    "reason_placeholder": "p. ex. Canvi de plans"
   }
 }

@@ -296,7 +296,12 @@
     "optional_note_placeholder": "Nota opcional...",
     "cancel": "Cancel·lar",
     "saving": "Desant...",
-    "update": "Actualitzar"
+    "update": "Actualitzar",
+    "due_on": "Venç {{date}}",
+    "last_updated_by": "Darrera actualització per {{name}}",
+    "previous": "Anterior",
+    "next": "Següent",
+    "page_of": "Pàgina {{page}} de {{totalPages}}"
   },
   "staff_messages": {
     "title": "Missatges i anuncis",
@@ -1726,6 +1731,14 @@
       "col_cost": "Cost",
       "col_margin": "Marge",
       "col_margin_percent": "Marge %"
+    },
+    "time_filter": {
+      "placeholder": "Selecciona el període",
+      "today": "Avui",
+      "last_7_days": "Darrers 7 dies",
+      "last_30_days": "Darrers 30 dies",
+      "this_month": "Aquest mes",
+      "last_month": "El mes passat"
     }
   },
   "company_guide": {
@@ -3115,6 +3128,21 @@
       "reservation": "Reserva",
       "order": "Comanda",
       "inventory_item": "Inventari"
+    },
+    "details_modal": {
+      "sr_description": "Detalls complets d'aquesta entrada del registre d'auditoria.",
+      "who": "Qui",
+      "when": "Quan",
+      "entity_id": "ID de l'entitat",
+      "reason": "Motiu",
+      "created_with": "Creat amb",
+      "what_changed": "Què ha canviat",
+      "no_changes": "No s'ha registrat cap canvi a nivell de camp.",
+      "action_labels": {
+        "create": "Creat",
+        "update": "Actualitzat",
+        "delete": "Eliminat"
+      }
     }
   },
   "billing_invoices_table": {
@@ -3723,5 +3751,264 @@
     "last_seen": "Vista per última vegada {{time}}",
     "never_connected": "Mai connectada",
     "revoke": "Revocar"
+  },
+  "owner_tasks_page": {
+    "subtitle": "Crea i gestiona les tasques del teu equip.",
+    "create_task": "Crear tasca",
+    "filters": {
+      "global": "Globals",
+      "assigned": "Assignades"
+    },
+    "empty": {
+      "title": "Encara no hi ha tasques",
+      "description": "Crea la teva primera tasca per organitzar el teu equip."
+    },
+    "previous": "Anterior",
+    "next": "Següent",
+    "page_of": "Pàgina {{page}} de {{totalPages}}",
+    "delete_dialog": {
+      "title": "Vols eliminar aquesta tasca?",
+      "description": "\"{{title}}\" s'eliminarà permanentment. Aquesta acció no es pot desfer.",
+      "confirm": "Eliminar"
+    },
+    "card": {
+      "due_on": "Venç {{date}}",
+      "last_updated_by": "Darrera actualització per {{name}}",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "form_dialog": {
+      "edit_title": "Editar tasca",
+      "edit_description": "Actualitza els detalls de la tasca, reassigna-la o força un canvi d'estat.",
+      "create_description": "Afegeix una nova tasca per al teu equip. Deixa l'assignat en blanc per a una tasca global.",
+      "title_label": "Títol *",
+      "title_placeholder": "p. ex. Netejar el magatzem",
+      "description_label": "Descripció",
+      "description_placeholder": "Detalls o instruccions opcionals...",
+      "assignee_label": "Assignar a (opcional)",
+      "assignee_loading": "Carregant personal...",
+      "assignee_global": "Global (visible per a tothom)",
+      "due_date_label": "Data de venciment (opcional)",
+      "due_date_error": "La data de venciment ha de ser avui o posterior.",
+      "save_changes": "Desar els canvis"
+    }
+  },
+  "themes_manager": {
+    "title": "Tema",
+    "subtitle": "Tria el tema predissenyat que s'utilitzarà al teu lloc públic.",
+    "load_error": "No s'ha pogut carregar el catàleg de temes.",
+    "premium_badge": "Premium",
+    "applied_badge": "Aplicat",
+    "no_preview": "Sense vista prèvia",
+    "preview_aria_label": "Vista prèvia del tema",
+    "currently_applied": "Aplicat actualment",
+    "apply": "Aplicar",
+    "buy_for": "Comprar per {{price}} {{currency}}",
+    "preview_modal": {
+      "desktop": "Escriptori",
+      "mobile": "Mòbil",
+      "open_new_tab": "Obrir en una pestanya nova",
+      "apply_this_theme": "Aplicar aquest tema",
+      "preview_title": "Vista prèvia – {{name}}"
+    }
+  },
+  "applicant_card": {
+    "view_full_application": "Veure la sol·licitud completa →",
+    "view_application_link": "Veure la sol·licitud completa →",
+    "ready_to_onboard": "Preparat per incorporar aquest candidat?",
+    "hired_message": "Contractat/da — registre d'ocupació creat.",
+    "no_resume": "Sense currículum",
+    "show_less": "Mostrar menys",
+    "read_more": "Llegir més",
+    "your_note": "La teva nota",
+    "save_note": "Desar la nota"
+  },
+  "business_reviews_dashboard": {
+    "title": "Ressenyes",
+    "subtitle": "Supervisa i modera les ressenyes dels clients",
+    "no_reviews_yet": "Encara no hi ha ressenyes",
+    "review_count_one": "{{count}} ressenya",
+    "review_count_other": "{{count}} ressenyes",
+    "all_ratings": "Totes les valoracions",
+    "star_count_one": "{{count}} estrella",
+    "star_count_other": "{{count}} estrelles",
+    "no_reviews_found": "No s'han trobat ressenyes.",
+    "remove_dialog": {
+      "title": "Vols eliminar la ressenya?",
+      "description": "Això eliminarà permanentment aquesta ressenya. Fes-lo servir només per a contingut abusiu o fals.",
+      "confirm": "Eliminar"
+    }
+  },
+  "joined_page": {
+    "title": "Negocis als quals t'has unit",
+    "subtitle": "Gestiona la teva feina dins dels negocis als quals t'has unit com a membre del personal.",
+    "loading": "Carregant negocis...",
+    "staff_member": "Membre del personal",
+    "default_description": "Ets un membre actiu de l'equip d'aquest negoci.",
+    "latest_messages": "Darrers missatges",
+    "open_business_hub": "Obrir l'espai del negoci",
+    "empty_title": "Encara no t'has unit a cap negoci",
+    "empty_description": "Quan et convidin a unir-te a un negoci com a membre del personal, apareixerà aquí perquè hi accedeixis.",
+    "view_my_businesses": "Veure els meus negocis"
+  },
+  "organizations_page": {
+    "title": "Organitzacions",
+    "subtitle": "Agrupa els teus negocis per veure vendes, cost laboral i alertes d'inventari combinats entre sucursals.",
+    "new_organization": "+ Nova organització",
+    "loading": "Carregant les teves organitzacions...",
+    "business_count_one": "{{count}} negoci",
+    "business_count_other": "{{count}} negocis",
+    "empty_title": "Encara no hi ha organitzacions",
+    "empty_description": "Si tens més d'un negoci, agrupa'ls en una organització per veure'n el rendiment combinat.",
+    "create_organization": "Crear una organització",
+    "create_dialog": {
+      "title": "Nova organització",
+      "name_label": "Nom",
+      "name_placeholder": "p. ex. Grup Restaurant Acme",
+      "cancel": "Cancel·lar",
+      "create": "Crear"
+    },
+    "explainer": {
+      "title": "Què és una organització?",
+      "description": "La part superior de la teva estructura multiubicació. Pot contenir sucursals directament, o contenir Regions senceres — cadascuna agrupant les seves pròpies sucursals. En tu ets el propietari, i cada enllaç funciona en ambdues direccions: convida una sucursal o regió, o aprova'n una que sol·liciti unir-s'hi. Res s'enllaça sense aprovació, i sortir funciona igual a la inversa."
+    }
+  },
+  "regions_page": {
+    "title": "Regions",
+    "subtitle": "Agrupa unes quantes sucursals sota un responsable regional — una regió pot funcionar de manera independent, o vincular-se a una organització més endavant.",
+    "new_region": "+ Nova regió",
+    "loading": "Carregant les teves regions...",
+    "branch_count_one": "{{count}} sucursal",
+    "branch_count_other": "{{count}} sucursals",
+    "empty_title": "Encara no hi ha regions",
+    "empty_description": "Gestiones un grup de sucursals? Crea una regió per agrupar-les, formin part o no d'una organització més gran.",
+    "create_region": "Crear una regió",
+    "create_dialog": {
+      "title": "Nova regió",
+      "name_placeholder": "p. ex. Regió Centre"
+    },
+    "explainer": {
+      "title": "Què és una regió?",
+      "description": "Un grup de sucursals sota un responsable regional. Una regió funciona de manera totalment independent — no necessita una organització per sobre — però es pot vincular a una més endavant si vols integrar-la en un grup més gran. Tant vincular-se com sortir requereixen l'aprovació de l'altra part, igual que a la resta d'aquesta estructura."
+    }
+  },
+  "requests_page": {
+    "title": "Sol·licituds de vinculació",
+    "subtitle": "Aprova o rebutja sol·licituds per vincular-te als teus negocis, regions o organitzacions — o fes seguiment de les que has enviat.",
+    "node_types": {
+      "BUSINESS": "Negoci",
+      "REGION": "Regió",
+      "ORGANIZATION": "Organització"
+    },
+    "leaving_arrow": "→ surt de",
+    "arrow": "→",
+    "leaving": "surt de",
+    "joining": "s'uneix a",
+    "incoming": "Rebudes",
+    "sent_by_you": "Enviades per tu",
+    "loading": "Carregant...",
+    "decline": "Rebutjar",
+    "cancel": "Cancel·lar",
+    "approve": "Aprovar",
+    "nothing_waiting": "No hi ha res pendent per part teva.",
+    "none_sent": "No has enviat cap sol·licitud.",
+    "pending_requests": "Sol·licituds pendents",
+    "wants_to_leave": "vol sortir de",
+    "wants_to_join": "vol unir-se a",
+    "join_confirm": {
+      "title": "Vols unir-te a {{name}}?",
+      "body1": "Seguiràs gestionant {{name}} dia a dia — res del teu accés canvia avui.",
+      "body2": "Però a partir d'ara, {{name}} pot reassignar la propietat d'aquest negoci a algú altre en qualsevol moment, sense necessitar la teva confirmació. Si això passa, passaries a un rol de personal normal — el teu historial d'ocupació sempre es conserva, mai s'elimina.",
+      "joining": "Unint-se…",
+      "confirm": "Sí, unir-me"
+    }
+  },
+  "branding_page": {
+    "title": "Identitat visual",
+    "qr_code": "Codi QR",
+    "logo": "Logotip",
+    "gallery": "Galeria",
+    "logo_upload": {
+      "description": "Afegeix el logotip del teu restaurant, preferiblement sense fons",
+      "saving": "Desant...",
+      "save": "Desar"
+    },
+    "gallery_upload": {
+      "save": "Desar",
+      "drag": "Arrossegar",
+      "marked_for_deletion": "Marcat per eliminar"
+    },
+    "qr_download": {
+      "button": "Descarregar codi QR",
+      "png": "Descarregar PNG",
+      "svg": "Descarregar SVG",
+      "error": "No s'ha pogut descarregar el codi QR"
+    }
+  },
+  "stations_page": {
+    "title": "Estacions",
+    "subtitle": "Gestiona els terminals POS i les pantalles de cuina vinculats a aquest negoci.",
+    "add_station": "Afegir estació",
+    "summary": {
+      "pos_terminals": "Terminals POS",
+      "kds_screens": "Pantalles KDS",
+      "online_now": "En línia"
+    },
+    "kitchen_stations": {
+      "title": "Llocs de cuina",
+      "add": "Afegir",
+      "description": "Zones de cuina lògiques (p. ex., Grill, Fregidora). Assigna cada dispositiu KDS a un d'aquests.",
+      "name_placeholder": "p. ex. Grill, Fregidora, Estació freda…",
+      "create": "Crear",
+      "cancel": "Cancel·lar",
+      "empty": "Encara no hi ha llocs de cuina. Afegeix-ne un per assignar dispositius KDS.",
+      "order_save_failed": "No s'ha pogut desar l'ordre. Torna-ho a provar.",
+      "renamed_toast": "Lloc de cuina reanomenat.",
+      "rename_failed_toast": "No s'ha pogut reanomenar.",
+      "created_toast": "Lloc de cuina creat.",
+      "create_failed_toast": "No s'ha pogut crear el lloc de cuina.",
+      "deleted_toast": "Lloc de cuina eliminat.",
+      "delete_failed_toast": "No s'ha pogut eliminar el lloc de cuina.",
+      "status": {
+        "ready": "Preparat",
+        "getting_ready": "Preparant-se",
+        "broken": "Avariat"
+      }
+    },
+    "category_routing": {
+      "title": "Encaminament de categories",
+      "description": "Envia automàticament els articles de la comanda a un lloc de cuina segons la seva categoria de menú.",
+      "empty": "No s'ha trobat cap categoria de menú. Afegeix categories als teus menús primer.",
+      "not_mapped": "Sense assignar",
+      "assign_failed_toast": "No s'ha pogut assignar la regla de categoria.",
+      "remove_failed_toast": "No s'ha pogut eliminar la regla de categoria."
+    },
+    "devices": {
+      "title": "Dispositius",
+      "empty_title": "Encara no hi ha estacions vinculades",
+      "empty_description": "Fes clic a «Afegir estació» per generar un codi de vinculació i després escaneja el codi QR (o introdueix el codi manualment) en qualsevol dispositiu amb l'aplicació d'estació."
+    },
+    "revoke_dialog": {
+      "title": "Vols revocar «{{name}}»?",
+      "description": "El dispositiu es desconnectarà immediatament. Necessitarà un codi de vinculació nou per tornar-se a connectar.",
+      "confirm": "Revocar estació",
+      "success_toast": "«{{name}}» ha estat revocat.",
+      "failed_toast": "No s'ha pogut revocar l'estació."
+    },
+    "delete_ks_dialog": {
+      "title": "Vols eliminar «{{name}}»?",
+      "description": "Els dispositius KDS assignats a aquest lloc perdran la seva assignació. Aquesta acció no es pot desfer.",
+      "confirm": "Eliminar"
+    },
+    "pairing_dialog": {
+      "title": "Vincular una nova estació",
+      "description": "Escaneja el codi QR al dispositiu, o introdueix el codi manualment, en un termini de 5 minuts.",
+      "station_type_label": "Tipus d'estació",
+      "kds_option": "Pantalla de cuina (KDS)",
+      "expires_in": "Caduca en {{secs}} s",
+      "code_expired": "Codi caducat",
+      "generate_new_code": "Generar un codi nou",
+      "generate_failed_toast": "No s'ha pogut generar el codi. Torna-ho a provar."
+    }
   }
 }

@@ -270,5 +270,42 @@
       "message_required": "El mensaje es obligatorio",
       "generic": "Algo salió mal. Inténtalo de nuevo."
     }
+  },
+  "gdpr_page": {
+    "title": "RGPD y política de cookies",
+    "last_updated": "Última actualización: {{date}}",
+    "intro": "La declaración completa de cumplimiento del RGPD de FlairSync, la política de cookies, la guía de derechos de los interesados e información para residentes de la UE.",
+    "cookie_categories_title": "Categorías de cookies",
+    "cookie_categories_intro": "Usamos cuatro categorías de cookies en nuestra plataforma. Las cookies estrictamente necesarias siempre están activas. El resto de cookies requieren tu consentimiento, que puedes gestionar en cualquier momento.",
+    "examples_label": "Ejemplos:",
+    "load_error_title": "No se pudo cargar la política de RGPD y cookies",
+    "load_error_description": "Intenta actualizar la página en un momento.",
+    "contact_question": "¿Preguntas sobre el cumplimiento del RGPD o tus derechos?",
+    "categories": {
+      "strictly_necessary": {
+        "name": "Estrictamente necesarias",
+        "badge": "Siempre activas",
+        "description": "Estas cookies son esenciales para el funcionamiento de la plataforma. Habilitan funciones básicas como la autenticación, la gestión de sesiones y la seguridad. No se pueden desactivar.",
+        "examples": "Tokens de autenticación, protección CSRF, identificadores de sesión"
+      },
+      "functional": {
+        "name": "Funcionales",
+        "badge": "Opcional",
+        "description": "Estas cookies recuerdan tus preferencias y ajustes para ofrecer una experiencia más personalizada (p. ej., idioma, tema, zona horaria). Desactivarlas puede afectar la usabilidad.",
+        "examples": "Preferencia de idioma, tema de interfaz, zona horaria"
+      },
+      "analytics": {
+        "name": "Analíticas",
+        "badge": "Requiere consentimiento",
+        "description": "Estas cookies nos ayudan a entender cómo los usuarios interactúan con nuestra plataforma para poder mejorarla. Todos los datos se anonimizan y agregan. Solo se activan con tu consentimiento.",
+        "examples": "Páginas vistas, uso de funciones, duración de sesión, tasas de error"
+      },
+      "marketing": {
+        "name": "Marketing",
+        "badge": "Requiere consentimiento",
+        "description": "Estas cookies se usan para ofrecer contenido relevante y medir la eficacia de las campañas. No vendemos tus datos a anunciantes. Solo se activan con tu consentimiento explícito.",
+        "examples": "Seguimiento del origen de campañas, eventos de conversión"
+      }
+    }
   }
 }

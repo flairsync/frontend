@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Monitor, Smartphone, ExternalLink } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,6 +31,7 @@ export default function ThemePreviewModal({
     onPurchase,
     purchasing,
 }: ThemePreviewModalProps) {
+    const { t } = useTranslation("management");
     const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
 
     const iframeSrc = useMemo(
@@ -45,16 +47,16 @@ export default function ThemePreviewModal({
                         <div className="flex items-center justify-between gap-4 border-b px-6 py-3 shrink-0">
                             <div className="flex items-center gap-2 min-w-0">
                                 <h2 className="font-semibold truncate">{theme.name}</h2>
-                                {theme.category === "premium" && <Badge variant="secondary">Premium</Badge>}
+                                {theme.category === "premium" && <Badge variant="secondary">{t("themes_manager.premium_badge")}</Badge>}
                             </div>
 
                             <Tabs value={viewport} onValueChange={(v) => setViewport(v as "desktop" | "mobile")}>
                                 <TabsList>
                                     <TabsTrigger value="desktop" className="gap-1.5">
-                                        <Monitor size={14} /> Desktop
+                                        <Monitor size={14} /> {t("themes_manager.preview_modal.desktop")}
                                     </TabsTrigger>
                                     <TabsTrigger value="mobile" className="gap-1.5">
-                                        <Smartphone size={14} /> Mobile
+                                        <Smartphone size={14} /> {t("themes_manager.preview_modal.mobile")}
                                     </TabsTrigger>
                                 </TabsList>
                             </Tabs>
@@ -65,10 +67,10 @@ export default function ThemePreviewModal({
                                     size="sm"
                                     onClick={() => window.open(iframeSrc, "_blank")}
                                 >
-                                    <ExternalLink size={14} /> Open in new tab
+                                    <ExternalLink size={14} /> {t("themes_manager.preview_modal.open_new_tab")}
                                 </Button>
                                 {theme.applied ? (
-                                    <Button size="sm" disabled variant="outline">Currently applied</Button>
+                                    <Button size="sm" disabled variant="outline">{t("themes_manager.currently_applied")}</Button>
                                 ) : theme.owned ? (
                                     <Button
                                         size="sm"
@@ -78,7 +80,7 @@ export default function ThemePreviewModal({
                                             onOpenChange(false);
                                         }}
                                     >
-                                        Apply this theme
+                                        {t("themes_manager.preview_modal.apply_this_theme")}
                                     </Button>
                                 ) : (
                                     <Button
@@ -87,7 +89,7 @@ export default function ThemePreviewModal({
                                         disabled={purchasing}
                                         onClick={() => onPurchase(theme.id)}
                                     >
-                                        Buy for {theme.price.toFixed(2)} {theme.currency}
+                                        {t("themes_manager.buy_for", { price: theme.price.toFixed(2), currency: theme.currency })}
                                     </Button>
                                 )}
                             </div>
@@ -103,7 +105,7 @@ export default function ThemePreviewModal({
                             >
                                 <iframe
                                     src={iframeSrc}
-                                    title={`Preview – ${theme.name}`}
+                                    title={t("themes_manager.preview_modal.preview_title", { name: theme.name })}
                                     className="w-full h-full border-0"
                                     loading="lazy"
                                 />

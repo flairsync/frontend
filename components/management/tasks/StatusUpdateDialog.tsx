@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +22,7 @@ import {
   Task,
   TaskStatus,
   TASK_ALLOWED_TRANSITIONS,
-  TASK_STATUS_LABELS,
+  getTaskStatusLabel,
 } from "@/models/Task";
 
 // ─── Status Update Dialog (for assignee quick-update with optional comment) ───
@@ -34,6 +35,7 @@ interface StatusUpdateDialogProps {
 }
 
 export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpdateDialogProps) {
+  const { t } = useTranslation("management");
   const [newStatus, setNewStatus] = useState<TaskStatus>("NOT_STARTED");
   const [comment, setComment] = useState("");
   const { updateTaskStatus, updatingStatus } = useUpdateTaskStatus(businessId);
@@ -60,13 +62,13 @@ export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: Sta
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Update Status</DialogTitle>
-          <DialogDescription>Change the task status and optionally add a comment.</DialogDescription>
+          <DialogTitle>{t("staff_tasks.update_status_dialog_title")}</DialogTitle>
+          <DialogDescription>{t("staff_tasks.update_status_dialog_description")}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
           <div className="flex flex-col gap-1.5">
-            <Label>Status</Label>
+            <Label>{t("staff_tasks.status_label")}</Label>
             <Select value={newStatus} onValueChange={(v) => setNewStatus(v as TaskStatus)}>
               <SelectTrigger>
                 <SelectValue />
@@ -74,7 +76,7 @@ export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: Sta
               <SelectContent>
                 {allowedStatuses.map((s) => (
                   <SelectItem key={s} value={s}>
-                    {TASK_STATUS_LABELS[s]}
+                    {getTaskStatusLabel(s, t)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -83,15 +85,15 @@ export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: Sta
 
           <div className="flex flex-col gap-1.5">
             <Label>
-              Comment{newStatus === "ISSUE" && <span className="text-red-500 ml-1">*</span>}
+              {t("staff_tasks.comment_label")}{newStatus === "ISSUE" && <span className="text-red-500 ml-1">*</span>}
             </Label>
             <Textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder={
                 newStatus === "ISSUE"
-                  ? "Describe the issue..."
-                  : "Optional note..."
+                  ? t("staff_tasks.describe_issue_placeholder")
+                  : t("staff_tasks.optional_note_placeholder")
               }
               rows={3}
               required={newStatus === "ISSUE"}
@@ -105,14 +107,14 @@ export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: Sta
               onClick={() => onOpenChange(false)}
               disabled={updatingStatus}
             >
-              Cancel
+              {t("staff_tasks.cancel")}
             </Button>
             <Button
               type="submit"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim())}
             >
-              {updatingStatus ? "Saving..." : "Update"}
+              {updatingStatus ? t("staff_tasks.saving") : t("staff_tasks.update")}
             </Button>
           </div>
         </form>

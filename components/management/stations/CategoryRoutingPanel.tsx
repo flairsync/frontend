@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   categoryRuleService,
@@ -25,6 +26,7 @@ interface CategoryRoutingPanelProps {
 }
 
 export function CategoryRoutingPanel({ businessId, kitchenStations }: CategoryRoutingPanelProps) {
+  const { t } = useTranslation("management");
   const qc = useQueryClient();
   const { businessAllCategories } = useBusinessMenus(businessId);
 
@@ -39,7 +41,7 @@ export function CategoryRoutingPanel({ businessId, kitchenStations }: CategoryRo
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["category-rules", businessId] });
     },
-    onError: () => toast.error("Failed to assign category rule."),
+    onError: () => toast.error(t("stations_page.category_routing.assign_failed_toast")),
   });
 
   const { mutate: removeRule } = useMutation({
@@ -47,7 +49,7 @@ export function CategoryRoutingPanel({ businessId, kitchenStations }: CategoryRo
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["category-rules", businessId] });
     },
-    onError: () => toast.error("Failed to remove category rule."),
+    onError: () => toast.error(t("stations_page.category_routing.remove_failed_toast")),
   });
 
   const ruleMap = useMemo(
@@ -63,10 +65,10 @@ export function CategoryRoutingPanel({ businessId, kitchenStations }: CategoryRo
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center gap-2">
           <ArrowRightLeft className="w-4 h-4 text-primary" />
-          Category Routing
+          {t("stations_page.category_routing.title")}
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          Automatically route order items to a kitchen station based on their menu category.
+          {t("stations_page.category_routing.description")}
         </p>
       </CardHeader>
       <CardContent>
@@ -76,7 +78,7 @@ export function CategoryRoutingPanel({ businessId, kitchenStations }: CategoryRo
           </div>
         ) : categories.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground text-sm border border-dashed rounded-xl">
-            No menu categories found. Add categories to your menus first.
+            {t("stations_page.category_routing.empty")}
           </div>
         ) : (
           <div className="divide-y">
@@ -97,17 +99,17 @@ export function CategoryRoutingPanel({ businessId, kitchenStations }: CategoryRo
                     disabled={isAssigning}
                   >
                     <SelectTrigger className="h-8 w-48 text-xs">
-                      <SelectValue placeholder="Not mapped" />
+                      <SelectValue placeholder={t("stations_page.category_routing.not_mapped")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">
-                        <span className="text-muted-foreground">Not mapped</span>
+                        <span className="text-muted-foreground">{t("stations_page.category_routing.not_mapped")}</span>
                       </SelectItem>
                       {kitchenStations.map((ks) => (
                         <SelectItem key={ks.id} value={ks.id}>
                           {ks.name}
                           {!ks.active && (
-                            <span className="ml-1 text-muted-foreground">(inactive)</span>
+                            <span className="ml-1 text-muted-foreground">{t("station_card.inactive_suffix")}</span>
                           )}
                         </SelectItem>
                       ))}

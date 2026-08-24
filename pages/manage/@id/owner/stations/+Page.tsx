@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -45,6 +46,7 @@ import { isOnline } from "@/components/management/stations/utils";
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function StationsPage() {
+  const { t } = useTranslation("management");
   const { routeParams } = usePageContext();
   const businessId = routeParams.id;
   const qc = useQueryClient();
@@ -80,7 +82,7 @@ export default function StationsPage() {
     },
     onError: () => {
       setOrderedKs(kitchenStations ?? []);
-      toast.error("Failed to save order. Please try again.");
+      toast.error(t("stations_page.kitchen_stations.order_save_failed"));
     },
   });
 
@@ -103,10 +105,10 @@ export default function StationsPage() {
       stationService.revokeStation(businessId, id),
     onSuccess: (_data, { name }) => {
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
-      toast.success(`"${name}" has been revoked.`);
+      toast.success(t("stations_page.revoke_dialog.success_toast", { name }));
       setRevoking(null);
     },
-    onError: () => toast.error("Failed to revoke station."),
+    onError: () => toast.error(t("stations_page.revoke_dialog.failed_toast")),
   });
 
   const { mutate: createKs, isPending: isCreatingKs } = useMutation({
@@ -115,9 +117,9 @@ export default function StationsPage() {
       qc.invalidateQueries({ queryKey: ["kitchen-stations", businessId] });
       setNewKsName("");
       setAddingKs(false);
-      toast.success("Kitchen station created.");
+      toast.success(t("stations_page.kitchen_stations.created_toast"));
     },
-    onError: () => toast.error("Failed to create kitchen station."),
+    onError: () => toast.error(t("stations_page.kitchen_stations.create_failed_toast")),
   });
 
   const { mutate: deleteKs, isPending: isDeletingKs } = useMutation({
@@ -125,10 +127,10 @@ export default function StationsPage() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["kitchen-stations", businessId] });
       qc.invalidateQueries({ queryKey: ["stations", businessId] });
-      toast.success("Kitchen station deleted.");
+      toast.success(t("stations_page.kitchen_stations.deleted_toast"));
       setDeletingKs(null);
     },
-    onError: () => toast.error("Failed to delete kitchen station."),
+    onError: () => toast.error(t("stations_page.kitchen_stations.delete_failed_toast")),
   });
 
   const stations = data ?? [];
@@ -141,14 +143,14 @@ export default function StationsPage() {
       {/* Page header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Stations</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t("stations_page.title")}</h1>
           <p className="text-muted-foreground text-sm mt-1">
-            Manage POS terminals and kitchen displays linked to this business.
+            {t("stations_page.subtitle")}
           </p>
         </div>
         <Button onClick={() => setPairOpen(true)} className="gap-2">
           <Plus className="w-4 h-4" />
-          Add Station
+          {t("stations_page.add_station")}
         </Button>
       </div>
 
@@ -156,9 +158,9 @@ export default function StationsPage() {
       {stations.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { label: "POS Terminals", value: posCount, Icon: Monitor, color: "text-primary" },
-            { label: "KDS Screens", value: kdsCount, Icon: ChefHat, color: "text-amber-600" },
-            { label: "Online Now", value: onlineCount, Icon: Wifi, color: "text-green-600" },
+            { label: t("stations_page.summary.pos_terminals"), value: posCount, Icon: Monitor, color: "text-primary" },
+            { label: t("stations_page.summary.kds_screens"), value: kdsCount, Icon: ChefHat, color: "text-amber-600" },
+            { label: t("stations_page.summary.online_now"), value: onlineCount, Icon: Wifi, color: "text-green-600" },
           ].map(({ label, value, Icon, color }) => (
             <Card key={label}>
               <CardContent className="p-4 flex items-center gap-3">
@@ -181,7 +183,7 @@ export default function StationsPage() {
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
               <UtensilsCrossed className="w-4 h-4 text-amber-600" />
-              Kitchen Stations
+              {t("stations_page.kitchen_stations.title")}
             </CardTitle>
             <Button
               size="sm"
@@ -190,11 +192,11 @@ export default function StationsPage() {
               onClick={() => setAddingKs((v) => !v)}
             >
               <Plus className="w-3.5 h-3.5" />
-              Add
+              {t("stations_page.kitchen_stations.add")}
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Logical cooking areas (e.g. Grill, Fryer). Assign each KDS device to one of these.
+            {t("stations_page.kitchen_stations.description")}
           </p>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
@@ -203,7 +205,7 @@ export default function StationsPage() {
               <Input
                 value={newKsName}
                 onChange={(e) => setNewKsName(e.target.value)}
-                placeholder="e.g. Grill, Fryer, Cold Station…"
+                placeholder={t("stations_page.kitchen_stations.name_placeholder")}
                 className="h-8 text-sm flex-1"
                 autoFocus
                 onKeyDown={(e) => {
@@ -217,7 +219,7 @@ export default function StationsPage() {
                 disabled={!newKsName.trim() || isCreatingKs}
                 onClick={() => createKs()}
               >
-                {isCreatingKs ? <Loader2 className="w-3 h-3 animate-spin" /> : "Create"}
+                {isCreatingKs ? <Loader2 className="w-3 h-3 animate-spin" /> : t("stations_page.kitchen_stations.create")}
               </Button>
               <Button
                 size="sm"
@@ -225,7 +227,7 @@ export default function StationsPage() {
                 className="h-8 px-3 text-xs"
                 onClick={() => { setAddingKs(false); setNewKsName(""); }}
               >
-                Cancel
+                {t("stations_page.kitchen_stations.cancel")}
               </Button>
             </div>
           )}
@@ -236,7 +238,7 @@ export default function StationsPage() {
             </div>
           ) : orderedKs.length === 0 ? (
             <div className="text-center py-6 text-muted-foreground text-sm border border-dashed rounded-xl">
-              No kitchen stations yet. Add one to assign KDS devices.
+              {t("stations_page.kitchen_stations.empty")}
             </div>
           ) : (
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleKsDragEnd}>
@@ -260,7 +262,7 @@ export default function StationsPage() {
 
       {/* Station grid */}
       <div>
-        <h2 className="text-base font-bold mb-3">Devices</h2>
+        <h2 className="text-base font-bold mb-3">{t("stations_page.devices.title")}</h2>
         {isLoading ? (
           <div className="flex items-center justify-center py-20 text-muted-foreground">
             <Loader2 className="w-6 h-6 animate-spin" />
@@ -268,14 +270,13 @@ export default function StationsPage() {
         ) : stations.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground border border-dashed rounded-2xl">
             <Monitor className="w-12 h-12 mb-4 opacity-20" />
-            <p className="font-semibold">No stations linked yet</p>
+            <p className="font-semibold">{t("stations_page.devices.empty_title")}</p>
             <p className="text-sm mt-1 max-w-xs">
-              Click "Add Station" to generate a pairing code, then scan the QR code (or enter the
-              code manually) on any device running the station app.
+              {t("stations_page.devices.empty_description")}
             </p>
             <Button className="mt-6 gap-2" onClick={() => setPairOpen(true)}>
               <Plus className="w-4 h-4" />
-              Add Station
+              {t("stations_page.add_station")}
             </Button>
           </div>
         ) : (
@@ -304,21 +305,20 @@ export default function StationsPage() {
       <AlertDialog open={!!revoking} onOpenChange={(v) => !v && setRevoking(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Revoke "{revoking?.name}"?</AlertDialogTitle>
+            <AlertDialogTitle>{t("stations_page.revoke_dialog.title", { name: revoking?.name })}</AlertDialogTitle>
             <AlertDialogDescription>
-              The device will be immediately disconnected. It will need a new pairing code to
-              reconnect.
+              {t("stations_page.revoke_dialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("stations_page.kitchen_stations.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => revoke(revoking!)}
               disabled={isRevoking}
               className="bg-destructive hover:bg-destructive/90"
             >
               {isRevoking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-              Revoke Station
+              {t("stations_page.revoke_dialog.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -328,21 +328,20 @@ export default function StationsPage() {
       <AlertDialog open={!!deletingKs} onOpenChange={(v) => !v && setDeletingKs(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete "{deletingKs?.name}"?</AlertDialogTitle>
+            <AlertDialogTitle>{t("stations_page.delete_ks_dialog.title", { name: deletingKs?.name })}</AlertDialogTitle>
             <AlertDialogDescription>
-              Any KDS devices assigned to this station will lose their assignment. This cannot be
-              undone.
+              {t("stations_page.delete_ks_dialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("stations_page.kitchen_stations.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteKs(deletingKs!)}
               disabled={isDeletingKs}
               className="bg-destructive hover:bg-destructive/90"
             >
               {isDeletingKs ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-              Delete
+              {t("stations_page.delete_ks_dialog.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

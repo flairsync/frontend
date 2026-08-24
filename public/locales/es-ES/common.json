@@ -217,5 +217,25 @@
       "promos": "Promociones",
       "security": "Seguridad"
     }
+  },
+  "reservation_action_bar": {
+    "prompt": "¿Qué te gustaría hacer?",
+    "confirm_attendance": "Allí estaré ✓",
+    "acknowledge_delay": "Esperaré",
+    "running_late_button": "Voy con retraso",
+    "minutes_label": "¿Cuántos minutos aproximadamente?",
+    "choose_placeholder": "Elegir (opcional)",
+    "minutes_option_one": "{{count}} minuto",
+    "minutes_option_other": "{{count}} minutos",
+    "send": "Enviar",
+    "request_change_button": "Solicitar un cambio",
+    "new_time_label": "Nueva fecha y hora (opcional)",
+    "new_guests_label": "Nuevo número de comensales (opcional)",
+    "guests_placeholder": "p. ej. 4",
+    "send_request": "Enviar solicitud",
+    "request_cancellation_button": "Solicitar cancelación",
+    "cancellation_notice": "Esto envía una solicitud de cancelación al restaurante. Confirmarán en breve. Tu reserva sigue activa hasta entonces.",
+    "reason_label": "Motivo (opcional)",
+    "reason_placeholder": "p. ej. Cambio de planes"
   }
 }

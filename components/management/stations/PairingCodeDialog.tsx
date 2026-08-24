@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { stationService } from "@/features/station/service";
 import { Label } from "@/components/ui/label";
 import {
@@ -44,6 +45,7 @@ interface PairingCodeDialogProps {
 }
 
 export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCodeDialogProps) {
+  const { t } = useTranslation("management");
   const [code, setCode] = useState<string | null>(null);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
   const [copied, setCopied] = useState(false);
@@ -58,7 +60,7 @@ export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCod
       setExpiresAt(new Date(res.data.data.expiresAt));
       setCopied(false);
     } catch {
-      toast.error("Failed to generate code. Please try again.");
+      toast.error(t("stations_page.pairing_dialog.generate_failed_toast"));
     }
   }, [businessId]);
 
@@ -87,17 +89,17 @@ export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCod
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Terminal className="w-4 h-4 text-primary" />
-            Pair a New Station
+            {t("stations_page.pairing_dialog.title")}
           </DialogTitle>
           <DialogDescription>
-            Scan the QR code on the device, or enter the code manually, within 5 minutes.
+            {t("stations_page.pairing_dialog.description")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-5 py-2">
           <div className="flex flex-col gap-1.5">
             <Label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-              Station Type
+              {t("stations_page.pairing_dialog.station_type_label")}
             </Label>
             <Select value={stationType} onValueChange={(v: "pos" | "kds") => setStationType(v)}>
               <SelectTrigger>
@@ -106,12 +108,12 @@ export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCod
               <SelectContent>
                 <SelectItem value="pos">
                   <span className="flex items-center gap-2">
-                    <Monitor className="w-3.5 h-3.5" /> POS Terminal
+                    <Monitor className="w-3.5 h-3.5" /> {t("station_card.pos_terminal")}
                   </span>
                 </SelectItem>
                 <SelectItem value="kds">
                   <span className="flex items-center gap-2">
-                    <ChefHat className="w-3.5 h-3.5" /> Kitchen Display (KDS)
+                    <ChefHat className="w-3.5 h-3.5" /> {t("stations_page.pairing_dialog.kds_option")}
                   </span>
                 </SelectItem>
               </SelectContent>
@@ -159,7 +161,7 @@ export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCod
                 />
               </div>
               <p className={`text-xs text-center font-bold ${expired ? "text-destructive" : "text-muted-foreground"}`}>
-                {expired ? "Code expired" : `Expires in ${secsLeft}s`}
+                {expired ? t("stations_page.pairing_dialog.code_expired") : t("stations_page.pairing_dialog.expires_in", { secs: secsLeft })}
               </p>
             </div>
           )}
@@ -167,7 +169,7 @@ export function PairingCodeDialog({ open, onOpenChange, businessId }: PairingCod
           {expired && (
             <Button onClick={generate} variant="outline" className="gap-2">
               <RefreshCw className="w-4 h-4" />
-              Generate New Code
+              {t("stations_page.pairing_dialog.generate_new_code")}
             </Button>
           )}
         </div>

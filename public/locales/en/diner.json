@@ -64,7 +64,20 @@
   },
   "layout": {
     "tab_menu": "Menu",
-    "tab_my_order": "My Order"
+    "tab_my_order": "My Order",
+    "seated_at": "You're seated at {{name}}",
+    "table_fallback": "Table {{number}}",
+    "exit": {
+      "title": "Thanks for dining with us!",
+      "subtitle": "Your session has ended. We hope you enjoyed your meal!",
+      "leave_review": "Leave a Review",
+      "redirecting": "Redirecting you home…"
+    },
+    "order_ready": {
+      "title": "Your order is ready!",
+      "description": "Your order is ready to be served. Enjoy your meal!",
+      "dismiss": "Dismiss"
+    }
   },
   "banner": {
     "seated_title": "You're seated here",

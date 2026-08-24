@@ -296,7 +296,12 @@
     "optional_note_placeholder": "Optional note...",
     "cancel": "Cancel",
     "saving": "Saving...",
-    "update": "Update"
+    "update": "Update",
+    "due_on": "Due {{date}}",
+    "last_updated_by": "Last updated by {{name}}",
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{page}} of {{totalPages}}"
   },
   "staff_messages": {
     "title": "Messages & Announcements",
@@ -1729,6 +1734,14 @@
       "col_cost": "Cost",
       "col_margin": "Margin",
       "col_margin_percent": "Margin %"
+    },
+    "time_filter": {
+      "placeholder": "Select Time Range",
+      "today": "Today",
+      "last_7_days": "Last 7 Days",
+      "last_30_days": "Last 30 Days",
+      "this_month": "This Month",
+      "last_month": "Last Month"
     }
   },
   "company_guide": {
@@ -3118,6 +3131,21 @@
       "reservation": "Reservation",
       "order": "Order",
       "inventory_item": "Inventory"
+    },
+    "details_modal": {
+      "sr_description": "Full details for this audit log entry.",
+      "who": "Who",
+      "when": "When",
+      "entity_id": "Entity ID",
+      "reason": "Reason",
+      "created_with": "Created with",
+      "what_changed": "What changed",
+      "no_changes": "No field-level changes recorded.",
+      "action_labels": {
+        "create": "Created",
+        "update": "Updated",
+        "delete": "Deleted"
+      }
     }
   },
   "billing_invoices_table": {
@@ -3726,5 +3754,264 @@
     "last_seen": "Last seen {{time}}",
     "never_connected": "Never connected",
     "revoke": "Revoke"
+  },
+  "owner_tasks_page": {
+    "subtitle": "Create and manage tasks for your team.",
+    "create_task": "Create Task",
+    "filters": {
+      "global": "Global",
+      "assigned": "Assigned"
+    },
+    "empty": {
+      "title": "No tasks yet",
+      "description": "Create your first task to get your team organized."
+    },
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{page}} of {{totalPages}}",
+    "delete_dialog": {
+      "title": "Delete this task?",
+      "description": "\"{{title}}\" will be permanently deleted. This cannot be undone.",
+      "confirm": "Delete"
+    },
+    "card": {
+      "due_on": "Due {{date}}",
+      "last_updated_by": "Last updated by {{name}}",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "form_dialog": {
+      "edit_title": "Edit Task",
+      "edit_description": "Update task details, reassign, or force a status change.",
+      "create_description": "Add a new task for your team. Leave assignee blank for a global task.",
+      "title_label": "Title *",
+      "title_placeholder": "e.g. Clean the storage room",
+      "description_label": "Description",
+      "description_placeholder": "Optional details or instructions...",
+      "assignee_label": "Assign to (optional)",
+      "assignee_loading": "Loading staff...",
+      "assignee_global": "Global (visible to all)",
+      "due_date_label": "Due date (optional)",
+      "due_date_error": "Due date must be today or later.",
+      "save_changes": "Save Changes"
+    }
+  },
+  "themes_manager": {
+    "title": "Theme",
+    "subtitle": "Choose the premade theme used for your public site.",
+    "load_error": "Could not load the theme catalog.",
+    "premium_badge": "Premium",
+    "applied_badge": "Applied",
+    "no_preview": "No preview",
+    "preview_aria_label": "Preview theme",
+    "currently_applied": "Currently applied",
+    "apply": "Apply",
+    "buy_for": "Buy for {{price}} {{currency}}",
+    "preview_modal": {
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "open_new_tab": "Open in new tab",
+      "apply_this_theme": "Apply this theme",
+      "preview_title": "Preview – {{name}}"
+    }
+  },
+  "applicant_card": {
+    "view_full_application": "View Full Application →",
+    "view_application_link": "View full application →",
+    "ready_to_onboard": "Ready to onboard this applicant?",
+    "hired_message": "Hired — employment record created.",
+    "no_resume": "No resume",
+    "show_less": "Show less",
+    "read_more": "Read more",
+    "your_note": "Your note",
+    "save_note": "Save Note"
+  },
+  "business_reviews_dashboard": {
+    "title": "Reviews",
+    "subtitle": "Monitor and moderate customer reviews",
+    "no_reviews_yet": "No reviews yet",
+    "review_count_one": "{{count}} review",
+    "review_count_other": "{{count}} reviews",
+    "all_ratings": "All ratings",
+    "star_count_one": "{{count}} star",
+    "star_count_other": "{{count}} stars",
+    "no_reviews_found": "No reviews found.",
+    "remove_dialog": {
+      "title": "Remove Review?",
+      "description": "This will permanently remove this review. Use only for abusive or fake content.",
+      "confirm": "Remove"
+    }
+  },
+  "joined_page": {
+    "title": "Joined Businesses",
+    "subtitle": "Manage your work within businesses you have joined as a staff member.",
+    "loading": "Loading joined businesses...",
+    "staff_member": "Staff Member",
+    "default_description": "You are an active member of this business's team.",
+    "latest_messages": "Latest messages",
+    "open_business_hub": "Open Business Hub",
+    "empty_title": "No joined businesses yet",
+    "empty_description": "When you are invited to join a business as a staff member, it will appear here for you to access.",
+    "view_my_businesses": "View My Businesses"
+  },
+  "organizations_page": {
+    "title": "Organizations",
+    "subtitle": "Group your businesses to see combined sales, labor cost, and inventory alerts across branches.",
+    "new_organization": "+ New Organization",
+    "loading": "Loading your organizations...",
+    "business_count_one": "{{count}} business",
+    "business_count_other": "{{count}} businesses",
+    "empty_title": "No organizations yet",
+    "empty_description": "If you own more than one business, group them into an organization to see combined performance.",
+    "create_organization": "Create an Organization",
+    "create_dialog": {
+      "title": "New Organization",
+      "name_label": "Name",
+      "name_placeholder": "e.g. Acme Restaurant Group",
+      "cancel": "Cancel",
+      "create": "Create"
+    },
+    "explainer": {
+      "title": "What's an Organization?",
+      "description": "The top of your multi-location structure. It can hold branches directly, or hold whole Regions — each grouping their own branches underneath. You own it, and every link works in either direction: invite a branch or region in, or approve one that asks to join. Nothing links without approval, and leaving works the same way in reverse."
+    }
+  },
+  "regions_page": {
+    "title": "Regions",
+    "subtitle": "Group a handful of branches under one regional manager — a region can stand on its own, or link up to an organization later.",
+    "new_region": "+ New Region",
+    "loading": "Loading your regions...",
+    "branch_count_one": "{{count}} branch",
+    "branch_count_other": "{{count}} branches",
+    "empty_title": "No regions yet",
+    "empty_description": "Managing a cluster of branches? Create a region to group them, whether or not they're part of a larger organization yet.",
+    "create_region": "Create a Region",
+    "create_dialog": {
+      "title": "New Region",
+      "name_placeholder": "e.g. Downtown Region"
+    },
+    "explainer": {
+      "title": "What's a Region?",
+      "description": "A cluster of branches under one regional manager. A region stands fully on its own — it doesn't need an organization above it — but can link up to one later if you want it rolled into a bigger group. Linking and leaving both require the other side's approval, the same as everywhere else in this structure."
+    }
+  },
+  "requests_page": {
+    "title": "Join requests",
+    "subtitle": "Approve or decline requests to link with your businesses, regions, or organizations — or track ones you've sent.",
+    "node_types": {
+      "BUSINESS": "Business",
+      "REGION": "Region",
+      "ORGANIZATION": "Organization"
+    },
+    "leaving_arrow": "→ leaving",
+    "arrow": "→",
+    "leaving": "leaving",
+    "joining": "joining",
+    "incoming": "Incoming",
+    "sent_by_you": "Sent by you",
+    "loading": "Loading...",
+    "decline": "Decline",
+    "cancel": "Cancel",
+    "approve": "Approve",
+    "nothing_waiting": "Nothing waiting on you.",
+    "none_sent": "You haven't sent any requests.",
+    "pending_requests": "Pending requests",
+    "wants_to_leave": "wants to leave",
+    "wants_to_join": "wants to join",
+    "join_confirm": {
+      "title": "Join {{name}}?",
+      "body1": "You'll keep managing {{name}} day-to-day — nothing about your access changes today.",
+      "body2": "But from now on, {{name}} can reassign this business's ownership to someone else at any time, without needing your confirmation. If that happens, you'd move to a regular staff role — your employment history is always kept, never deleted.",
+      "joining": "Joining…",
+      "confirm": "Yes, join"
+    }
+  },
+  "branding_page": {
+    "title": "Branding",
+    "qr_code": "QR Code",
+    "logo": "Logo",
+    "gallery": "Gallery",
+    "logo_upload": {
+      "description": "Add your restaurant brand logo, preferably without a background",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "gallery_upload": {
+      "save": "Save",
+      "drag": "Drag",
+      "marked_for_deletion": "Marked for deletion"
+    },
+    "qr_download": {
+      "button": "Download QR code",
+      "png": "Download PNG",
+      "svg": "Download SVG",
+      "error": "Failed to download QR code"
+    }
+  },
+  "stations_page": {
+    "title": "Stations",
+    "subtitle": "Manage POS terminals and kitchen displays linked to this business.",
+    "add_station": "Add Station",
+    "summary": {
+      "pos_terminals": "POS Terminals",
+      "kds_screens": "KDS Screens",
+      "online_now": "Online Now"
+    },
+    "kitchen_stations": {
+      "title": "Kitchen Stations",
+      "add": "Add",
+      "description": "Logical cooking areas (e.g. Grill, Fryer). Assign each KDS device to one of these.",
+      "name_placeholder": "e.g. Grill, Fryer, Cold Station…",
+      "create": "Create",
+      "cancel": "Cancel",
+      "empty": "No kitchen stations yet. Add one to assign KDS devices.",
+      "order_save_failed": "Failed to save order. Please try again.",
+      "renamed_toast": "Kitchen station renamed.",
+      "rename_failed_toast": "Failed to rename.",
+      "created_toast": "Kitchen station created.",
+      "create_failed_toast": "Failed to create kitchen station.",
+      "deleted_toast": "Kitchen station deleted.",
+      "delete_failed_toast": "Failed to delete kitchen station.",
+      "status": {
+        "ready": "Ready",
+        "getting_ready": "Getting ready",
+        "broken": "Broken"
+      }
+    },
+    "category_routing": {
+      "title": "Category Routing",
+      "description": "Automatically route order items to a kitchen station based on their menu category.",
+      "empty": "No menu categories found. Add categories to your menus first.",
+      "not_mapped": "Not mapped",
+      "assign_failed_toast": "Failed to assign category rule.",
+      "remove_failed_toast": "Failed to remove category rule."
+    },
+    "devices": {
+      "title": "Devices",
+      "empty_title": "No stations linked yet",
+      "empty_description": "Click \"Add Station\" to generate a pairing code, then scan the QR code (or enter the code manually) on any device running the station app."
+    },
+    "revoke_dialog": {
+      "title": "Revoke \"{{name}}\"?",
+      "description": "The device will be immediately disconnected. It will need a new pairing code to reconnect.",
+      "confirm": "Revoke Station",
+      "success_toast": "\"{{name}}\" has been revoked.",
+      "failed_toast": "Failed to revoke station."
+    },
+    "delete_ks_dialog": {
+      "title": "Delete \"{{name}}\"?",
+      "description": "Any KDS devices assigned to this station will lose their assignment. This cannot be undone.",
+      "confirm": "Delete"
+    },
+    "pairing_dialog": {
+      "title": "Pair a New Station",
+      "description": "Scan the QR code on the device, or enter the code manually, within 5 minutes.",
+      "station_type_label": "Station Type",
+      "kds_option": "Kitchen Display (KDS)",
+      "expires_in": "Expires in {{secs}}s",
+      "code_expired": "Code expired",
+      "generate_new_code": "Generate New Code",
+      "generate_failed_toast": "Failed to generate code. Please try again."
+    }
   }
 }

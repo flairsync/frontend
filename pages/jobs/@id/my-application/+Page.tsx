@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { format } from "date-fns";
 import {
@@ -38,6 +39,7 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
 type ResumeEditMode = "none" | "url" | "file";
 
 const MyApplicationDetailPage = () => {
+  const { t } = useTranslation("jobs");
   const { routeParams } = usePageContext() as any;
   const jobId = routeParams.id;
 
@@ -106,13 +108,13 @@ const MyApplicationDetailPage = () => {
         <PublicFeedHeader />
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-4">
           <Briefcase className="h-10 w-10 text-muted-foreground/40" />
-          <h1 className="text-xl font-bold">Application not found</h1>
+          <h1 className="text-xl font-bold">{t("my_application_detail_page.not_found_title")}</h1>
           <p className="text-muted-foreground text-sm max-w-sm">
-            We couldn't find this application. It may have been removed.
+            {t("my_application_detail_page.not_found_description")}
           </p>
           <a href="/jobs/my-applications" className="text-primary hover:underline text-sm flex items-center gap-1">
             <ArrowLeft className="h-4 w-4" />
-            Back to my applications
+            {t("my_application_detail_page.back_to_applications")}
           </a>
         </div>
         <WebsiteFooter />
@@ -136,7 +138,7 @@ const MyApplicationDetailPage = () => {
             className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
-            My Applications
+            {t("my_application_detail_page.breadcrumb")}
           </a>
 
           <div className="flex flex-col gap-6">
@@ -152,7 +154,7 @@ const MyApplicationDetailPage = () => {
 
                 <div className="min-w-0 flex-1">
                   <p className="text-xs text-muted-foreground">{job?.business?.name}</p>
-                  <h1 className="text-xl font-bold leading-snug">{job?.title ?? "Job position"}</h1>
+                  <h1 className="text-xl font-bold leading-snug">{job?.title ?? t("my_application_detail_page.job_position_fallback")}</h1>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {job?.type && <Badge variant="secondary" className="text-xs">{JOB_TYPE_LABELS[job.type]}</Badge>}
                     {job?.category && <Badge variant="outline" className="text-xs">{JOB_CATEGORY_LABELS[job.category]}</Badge>}
@@ -165,13 +167,13 @@ const MyApplicationDetailPage = () => {
               </div>
 
               <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-                <span>Applied on {format(new Date(application.createdAt), "MMM d, yyyy")}</span>
+                <span>{t("my_application_detail_page.applied_on", { date: format(new Date(application.createdAt), "MMM d, yyyy") })}</span>
                 {job?.slug && (
                   <a
                     href={`/jobs/${job.slug}`}
                     className="flex items-center gap-1 text-primary hover:underline"
                   >
-                    View job <ExternalLink className="h-3 w-3" />
+                    {t("my_application_detail_page.view_job")} <ExternalLink className="h-3 w-3" />
                   </a>
                 )}
               </div>
@@ -180,7 +182,7 @@ const MyApplicationDetailPage = () => {
             {/* Resume section */}
             <div className="bg-card rounded-xl border border-border p-5">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-sm font-semibold">Resume</h2>
+                <h2 className="text-sm font-semibold">{t("my_application_detail_page.resume.title")}</h2>
                 {resumeEditMode === "none" && (
                   <div className="flex gap-2">
                     <Button
@@ -189,7 +191,7 @@ const MyApplicationDetailPage = () => {
                       className="h-7 text-xs gap-1"
                       onClick={() => setResumeEditMode("url")}
                     >
-                      <Link className="h-3 w-3" /> Paste link
+                      <Link className="h-3 w-3" /> {t("my_application_detail_page.resume.paste_link")}
                     </Button>
                     <Button
                       variant="outline"
@@ -197,7 +199,7 @@ const MyApplicationDetailPage = () => {
                       className="h-7 text-xs gap-1"
                       onClick={() => setResumeEditMode("file")}
                     >
-                      <Upload className="h-3 w-3" /> Upload PDF
+                      <Upload className="h-3 w-3" /> {t("my_application_detail_page.resume.upload_pdf")}
                     </Button>
                   </div>
                 )}
@@ -215,12 +217,12 @@ const MyApplicationDetailPage = () => {
                   ) : (
                     <Link className="h-4 w-4" />
                   )}
-                  View current resume
+                  {t("my_application_detail_page.resume.view_current")}
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               ) : (
                 resumeEditMode === "none" && (
-                  <p className="text-sm text-muted-foreground">No resume added yet.</p>
+                  <p className="text-sm text-muted-foreground">{t("my_application_detail_page.resume.none_yet")}</p>
                 )
               )}
 
@@ -229,17 +231,17 @@ const MyApplicationDetailPage = () => {
                   <Input
                     value={urlInput}
                     onChange={(e) => setUrlInput(e.target.value)}
-                    placeholder="https://linkedin.com/in/your-profile"
+                    placeholder={t("my_application_detail_page.resume.url_placeholder")}
                     className="h-8 text-sm"
                     autoFocus
                     disabled={isBusy}
                   />
                   <div className="flex gap-2">
                     <Button size="sm" onClick={handleSaveUrl} disabled={isBusy || !urlInput.trim()}>
-                      {settingResumeUrl ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Save"}
+                      {settingResumeUrl ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("my_application_detail_page.resume.save")}
                     </Button>
                     <Button size="sm" variant="ghost" onClick={cancelEdit} disabled={isBusy}>
-                      Cancel
+                      {t("my_application_detail_page.resume.cancel")}
                     </Button>
                   </div>
                 </div>
@@ -256,7 +258,7 @@ const MyApplicationDetailPage = () => {
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isBusy}
                     >
-                      Choose PDF
+                      {t("my_application_detail_page.resume.choose_pdf")}
                     </Button>
                     {selectedFile ? (
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -267,7 +269,7 @@ const MyApplicationDetailPage = () => {
                         </button>
                       </div>
                     ) : (
-                      <span className="text-xs text-muted-foreground">PDF only, max 5 MB</span>
+                      <span className="text-xs text-muted-foreground">{t("my_application_detail_page.resume.pdf_hint")}</span>
                     )}
                     <input
                       ref={fileInputRef}
@@ -279,10 +281,10 @@ const MyApplicationDetailPage = () => {
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" onClick={handleSaveFile} disabled={isBusy || !selectedFile}>
-                      {uploadingResume ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Upload"}
+                      {uploadingResume ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("my_application_detail_page.resume.upload")}
                     </Button>
                     <Button size="sm" variant="ghost" onClick={cancelEdit} disabled={isBusy}>
-                      Cancel
+                      {t("my_application_detail_page.resume.cancel")}
                     </Button>
                   </div>
                 </div>
@@ -292,7 +294,7 @@ const MyApplicationDetailPage = () => {
             {/* Cover letter */}
             {application.coverLetter && (
               <div className="bg-card rounded-xl border border-border p-5">
-                <h2 className="text-sm font-semibold mb-3">Cover Letter</h2>
+                <h2 className="text-sm font-semibold mb-3">{t("my_application_detail_page.cover_letter_title")}</h2>
                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{application.coverLetter}</p>
               </div>
             )}
@@ -300,7 +302,7 @@ const MyApplicationDetailPage = () => {
             {/* Timeline */}
             {application.events && application.events.length > 0 && (
               <div className="bg-card rounded-xl border border-border p-5">
-                <h2 className="text-sm font-semibold mb-4">Application Timeline</h2>
+                <h2 className="text-sm font-semibold mb-4">{t("my_application_detail_page.timeline_title")}</h2>
                 <ProApplicationTimeline
                   events={application.events}
                   currentStatus={application.status}

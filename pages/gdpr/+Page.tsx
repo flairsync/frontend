@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -11,42 +12,15 @@ import WebsiteFooter from "@/components/shared/WebsiteFooter";
 import LandingHeader from "@/components/landing/LandingHeader";
 import { useLegalDocument } from "@/features/legal/useLegal";
 
-const cookieCategories = [
-    {
-        name: "Strictly Necessary",
-        badge: "Always Active",
-        badgeVariant: "default" as const,
-        description:
-            "These cookies are essential for the platform to function. They enable core features like user authentication, session management, and security. They cannot be disabled.",
-        examples: "Authentication tokens, CSRF protection, session identifiers",
-    },
-    {
-        name: "Functional",
-        badge: "Optional",
-        badgeVariant: "secondary" as const,
-        description:
-            "These cookies remember your preferences and settings to provide a more personalised experience (e.g., language, theme, timezone). Disabling them may affect usability.",
-        examples: "Language preference, UI theme, timezone setting",
-    },
-    {
-        name: "Analytics",
-        badge: "Consent Required",
-        badgeVariant: "outline" as const,
-        description:
-            "These cookies help us understand how users interact with our platform so we can improve it. All data is anonymised and aggregated. Set only with your consent.",
-        examples: "Page views, feature usage, session duration, error rates",
-    },
-    {
-        name: "Marketing",
-        badge: "Consent Required",
-        badgeVariant: "outline" as const,
-        description:
-            "These cookies are used to deliver relevant content and measure campaign effectiveness. We do not sell your data to advertisers. Set only with your explicit consent.",
-        examples: "Campaign source tracking, conversion events",
-    },
+const COOKIE_CATEGORY_KEYS = [
+    { key: "strictly_necessary", badgeVariant: "default" as const },
+    { key: "functional", badgeVariant: "secondary" as const },
+    { key: "analytics", badgeVariant: "outline" as const },
+    { key: "marketing", badgeVariant: "outline" as const },
 ];
 
 const GDPRPage: React.FC = () => {
+    const { t } = useTranslation("landing");
     const { data: document, isLoading, error } = useLegalDocument("COOKIE_POLICY");
 
     return (
@@ -54,19 +28,20 @@ const GDPRPage: React.FC = () => {
             <LandingHeader />
             <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-20 space-y-12">
                 <section className="text-center space-y-4">
-                    <h1 className="text-4xl font-extrabold">GDPR & Cookie Policy</h1>
+                    <h1 className="text-4xl font-extrabold">{t("gdpr_page.title")}</h1>
                     {document && (
                         <p className="text-muted-foreground">
-                            Last Updated: {new Date(document.publishedAt).toLocaleDateString(undefined, {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
+                            {t("gdpr_page.last_updated", {
+                                date: new Date(document.publishedAt).toLocaleDateString(undefined, {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                }),
                             })}
                         </p>
                     )}
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        FlairSync's full GDPR compliance statement, cookie policy, data subject rights guide, and
-                        information for EU residents.
+                        {t("gdpr_page.intro")}
                     </p>
                 </section>
 
@@ -74,24 +49,23 @@ const GDPRPage: React.FC = () => {
 
                 {/* Cookie Categories */}
                 <section className="space-y-6">
-                    <h2 className="text-2xl font-bold">Cookie Categories</h2>
+                    <h2 className="text-2xl font-bold">{t("gdpr_page.cookie_categories_title")}</h2>
                     <p className="text-muted-foreground">
-                        We use four categories of cookies on our platform. Strictly necessary cookies are always
-                        active. All other cookies require your consent, which you can manage at any time.
+                        {t("gdpr_page.cookie_categories_intro")}
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {cookieCategories.map(({ name, badge, badgeVariant, description, examples }) => (
-                            <Card key={name} className="shadow-none border border-border">
+                        {COOKIE_CATEGORY_KEYS.map(({ key, badgeVariant }) => (
+                            <Card key={key} className="shadow-none border border-border">
                                 <CardHeader className="pb-2">
                                     <div className="flex items-center justify-between">
-                                        <CardTitle className="text-base">{name}</CardTitle>
-                                        <Badge variant={badgeVariant}>{badge}</Badge>
+                                        <CardTitle className="text-base">{t(`gdpr_page.categories.${key}.name`)}</CardTitle>
+                                        <Badge variant={badgeVariant}>{t(`gdpr_page.categories.${key}.badge`)}</Badge>
                                     </div>
                                 </CardHeader>
                                 <CardContent className="space-y-2">
-                                    <p className="text-sm text-muted-foreground">{description}</p>
+                                    <p className="text-sm text-muted-foreground">{t(`gdpr_page.categories.${key}.description`)}</p>
                                     <p className="text-xs text-muted-foreground">
-                                        <span className="font-medium">Examples:</span> {examples}
+                                        <span className="font-medium">{t("gdpr_page.examples_label")}</span> {t(`gdpr_page.categories.${key}.examples`)}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -113,8 +87,8 @@ const GDPRPage: React.FC = () => {
                 {error && (
                     <Alert variant="destructive" className="max-w-2xl mx-auto">
                         <AlertCircle className="h-5 w-5" />
-                        <AlertTitle>Unable to load GDPR & Cookie Policy</AlertTitle>
-                        <AlertDescription>Please try refreshing the page in a moment.</AlertDescription>
+                        <AlertTitle>{t("gdpr_page.load_error_title")}</AlertTitle>
+                        <AlertDescription>{t("gdpr_page.load_error_description")}</AlertDescription>
                     </Alert>
                 )}
 
@@ -134,7 +108,7 @@ const GDPRPage: React.FC = () => {
                 {/* Contact */}
                 <section className="text-center space-y-2 pt-4">
                     <p className="text-muted-foreground text-sm">
-                        Questions about GDPR compliance or your rights?{" "}
+                        {t("gdpr_page.contact_question")}{" "}
                         <a href="mailto:privacy@flairsync.com" className="text-primary underline">
                             privacy@flairsync.com
                         </a>

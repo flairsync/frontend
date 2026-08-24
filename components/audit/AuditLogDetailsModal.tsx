@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
     Dialog,
     DialogContent,
@@ -12,10 +13,10 @@ import { AuditAction, AuditLog } from "@/features/audit/service";
 import { formatFieldName, renderAuditValue } from "@/features/audit/formatters";
 import { format, formatDistanceToNow } from "date-fns";
 
-const ACTION_STYLES: Record<AuditAction, { label: string; color: string }> = {
-    [AuditAction.CREATE]: { label: "Created", color: "bg-green-100 text-green-800 border-green-200" },
-    [AuditAction.UPDATE]: { label: "Updated", color: "bg-blue-100 text-blue-800 border-blue-200" },
-    [AuditAction.DELETE]: { label: "Deleted", color: "bg-red-100 text-red-800 border-red-200" },
+const ACTION_STYLES: Record<AuditAction, { labelKey: string; color: string }> = {
+    [AuditAction.CREATE]: { labelKey: "audit_logs_page.details_modal.action_labels.create", color: "bg-green-100 text-green-800 border-green-200" },
+    [AuditAction.UPDATE]: { labelKey: "audit_logs_page.details_modal.action_labels.update", color: "bg-blue-100 text-blue-800 border-blue-200" },
+    [AuditAction.DELETE]: { labelKey: "audit_logs_page.details_modal.action_labels.delete", color: "bg-red-100 text-red-800 border-red-200" },
 };
 
 interface AuditLogDetailsModalProps {
@@ -25,26 +26,32 @@ interface AuditLogDetailsModalProps {
 }
 
 export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({ log, open, onOpenChange }) => {
+    const { t } = useTranslation("management");
     if (!log) return null;
 
-    const style = ACTION_STYLES[log.action] ?? { label: log.action, color: "bg-gray-100 text-gray-800 border-gray-200" };
+    const style = ACTION_STYLES[log.action];
+    const actionLabel = style ? t(style.labelKey) : log.action;
+    const actionColor = style?.color ?? "bg-gray-100 text-gray-800 border-gray-200";
     const changeEntries = log.changes ? Object.entries(log.changes) : [];
     const actorName = log.actor ? `${log.actor.firstName} ${log.actor.lastName}`.trim() : null;
+    const entityTypeLabel = t(`audit_logs_page.entity_types.${log.entityType}`, {
+        defaultValue: log.entityType.replace(/_/g, " "),
+    });
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
-                        <Badge variant="outline" className={style.color}>
-                            {style.label}
+                        <Badge variant="outline" className={actionColor}>
+                            {actionLabel}
                         </Badge>
                         <span className="capitalize font-normal text-muted-foreground text-sm">
-                            {log.entityType.replace(/_/g, " ")}
+                            {entityTypeLabel}
                         </span>
                     </DialogTitle>
                     <DialogDescription className="sr-only">
-                        Full details for this audit log entry.
+                        {t("audit_logs_page.details_modal.sr_description")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -54,7 +61,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({ log,
                         <div className="flex items-start gap-2">
                             <User className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-xs text-muted-foreground">Who</p>
+                                <p className="text-xs text-muted-foreground">{t("audit_logs_page.details_modal.who")}</p>
                                 <p className="font-medium">
                                     {actorName || (
                                         <span className="font-mono text-xs">{log.changedBy.slice(0, 8)}…</span>
@@ -65,7 +72,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({ log,
                         <div className="flex items-start gap-2">
                             <Clock className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-xs text-muted-foreground">When</p>
+                                <p className="text-xs text-muted-foreground">{t("audit_logs_page.details_modal.when")}</p>
                                 <p className="font-medium">{format(new Date(log.createdAt), "PPpp")}</p>
                                 <p className="text-xs text-muted-foreground">
                                     {formatDistanceToNow(new Date(log.createdAt), { addSuffix: true })}
@@ -75,7 +82,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({ log,
                         <div className="flex items-start gap-2">
                             <Tag className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                             <div>
-                                <p className="text-xs text-muted-foreground">Entity ID</p>
+                                <p className="text-xs text-muted-foreground">{t("audit_logs_page.details_modal.entity_id")}</p>
                                 <p className="font-mono text-xs break-all">{log.entityId}</p>
                             </div>
                         </div>
@@ -83,7 +90,7 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({ log,
                             <div className="flex items-start gap-2">
                                 <FileText className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                                 <div>
-                                    <p className="text-xs text-muted-foreground">Reason</p>
+                                    <p className="text-xs text-muted-foreground">{t("audit_logs_page.details_modal.reason")}</p>
                                     <p className="italic">"{log.reason}"</p>
                                 </div>
                             </div>
@@ -93,10 +100,12 @@ export const AuditLogDetailsModal: React.FC<AuditLogDetailsModalProps> = ({ log,
                     {/* Full before/after diff */}
                     <div className="border-t pt-3">
                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                            {log.action === AuditAction.CREATE ? "Created with" : "What changed"}
+                            {log.action === AuditAction.CREATE
+                                ? t("audit_logs_page.details_modal.created_with")
+                                : t("audit_logs_page.details_modal.what_changed")}
                         </p>
                         {changeEntries.length === 0 ? (
-                            <p className="text-sm text-muted-foreground">No field-level changes recorded.</p>
+                            <p className="text-sm text-muted-foreground">{t("audit_logs_page.details_modal.no_changes")}</p>
                         ) : (
                             <div className="space-y-2.5">
                                 {changeEntries.map(([field, { old: oldVal, new: newVal }]) => (

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
     AlertDialog,
@@ -33,6 +34,7 @@ export const ApproveJoinRequestButton: React.FC<ApproveJoinRequestButtonProps> =
     onApprove,
     disabled,
 }) => {
+    const { t } = useTranslation("management");
     const { userProfile } = useProfile();
 
     const isOwnershipHandover =
@@ -41,7 +43,7 @@ export const ApproveJoinRequestButton: React.FC<ApproveJoinRequestButtonProps> =
     if (!isOwnershipHandover) {
         return (
             <Button size="sm" className="h-8" disabled={disabled} onClick={onApprove}>
-                <Check className="h-3.5 w-3.5 mr-1" /> Approve
+                <Check className="h-3.5 w-3.5 mr-1" /> {t("requests_page.approve")}
             </Button>
         );
     }
@@ -50,31 +52,27 @@ export const ApproveJoinRequestButton: React.FC<ApproveJoinRequestButtonProps> =
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 <Button size="sm" className="h-8" disabled={disabled}>
-                    <Check className="h-3.5 w-3.5 mr-1" /> Approve
+                    <Check className="h-3.5 w-3.5 mr-1" /> {t("requests_page.approve")}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Join {request.parentName}?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("requests_page.join_confirm.title", { name: request.parentName })}</AlertDialogTitle>
                     <AlertDialogDescription asChild>
                         <div className="space-y-3 text-sm text-muted-foreground">
                             <p>
-                                You'll keep managing {request.childName} day-to-day — nothing about your access
-                                changes today.
+                                {t("requests_page.join_confirm.body1", { name: request.childName })}
                             </p>
                             <p className="text-foreground font-medium">
-                                But from now on, {request.parentName} can reassign this business's ownership to
-                                someone else at any time, without needing your confirmation. If that happens,
-                                you'd move to a regular staff role — your employment history is always kept,
-                                never deleted.
+                                {t("requests_page.join_confirm.body2", { name: request.parentName })}
                             </p>
                         </div>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>{t("requests_page.cancel")}</AlertDialogCancel>
                     <AlertDialogAction disabled={disabled} onClick={onApprove}>
-                        {disabled ? "Joining…" : "Yes, join"}
+                        {disabled ? t("requests_page.join_confirm.joining") : t("requests_page.join_confirm.confirm")}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

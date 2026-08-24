@@ -64,7 +64,20 @@
   },
   "layout": {
     "tab_menu": "Menu",
-    "tab_my_order": "Ma commande"
+    "tab_my_order": "Ma commande",
+    "seated_at": "Vous êtes installé(e) à {{name}}",
+    "table_fallback": "Table {{number}}",
+    "exit": {
+      "title": "Merci de votre visite !",
+      "subtitle": "Votre session est terminée. Nous espérons que vous avez apprécié votre repas !",
+      "leave_review": "Laisser un avis",
+      "redirecting": "Redirection vers l'accueil…"
+    },
+    "order_ready": {
+      "title": "Votre commande est prête !",
+      "description": "Votre commande est prête à être servie. Bon appétit !",
+      "dismiss": "Fermer"
+    }
   },
   "banner": {
     "seated_title": "Tu es installé ici",

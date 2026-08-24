@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Inbox, X, Ban } from "lucide-react";
@@ -16,6 +17,7 @@ interface RequestsPanelProps {
 // in the global /manage/requests inbox, this is just the actionable subset
 // surfaced where you're already looking.
 export const RequestsPanel: React.FC<RequestsPanelProps> = ({ entityType, entityId }) => {
+    const { t } = useTranslation("management");
     const {
         incoming,
         loadingIncoming,
@@ -57,7 +59,7 @@ export const RequestsPanel: React.FC<RequestsPanelProps> = ({ entityType, entity
         <Card>
             <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
-                    <Inbox className="h-4 w-4" /> Pending requests
+                    <Inbox className="h-4 w-4" /> {t("requests_page.pending_requests")}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -68,7 +70,7 @@ export const RequestsPanel: React.FC<RequestsPanelProps> = ({ entityType, entity
                             <p className="text-sm font-medium min-w-0 truncate">
                                 {r.childName}{" "}
                                 <span className="text-muted-foreground">
-                                    {r.action === "UNLINK" ? "wants to leave" : "wants to join"}
+                                    {r.action === "UNLINK" ? t("requests_page.wants_to_leave") : t("requests_page.wants_to_join")}
                                 </span>{" "}
                                 {r.parentName}
                             </p>
@@ -82,7 +84,7 @@ export const RequestsPanel: React.FC<RequestsPanelProps> = ({ entityType, entity
                                             disabled={isDecliningJoinRequest}
                                             onClick={() => declineJoinRequest(r.id)}
                                         >
-                                            <X className="h-3.5 w-3.5 mr-1" /> Decline
+                                            <X className="h-3.5 w-3.5 mr-1" /> {t("requests_page.decline")}
                                         </Button>
                                         <ApproveJoinRequestButton
                                             request={r}
@@ -98,7 +100,7 @@ export const RequestsPanel: React.FC<RequestsPanelProps> = ({ entityType, entity
                                         disabled={isCancellingJoinRequest}
                                         onClick={() => cancelJoinRequest(r.id)}
                                     >
-                                        <Ban className="h-3.5 w-3.5 mr-1" /> Cancel
+                                        <Ban className="h-3.5 w-3.5 mr-1" /> {t("requests_page.cancel")}
                                     </Button>
                                 )}
                             </div>

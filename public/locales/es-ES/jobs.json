@@ -22,5 +22,29 @@
     "location_label": "Ubicación",
     "location_placeholder": "Ciudad, provincia...",
     "clear_filters": "Limpiar filtros"
+  },
+  "my_application_detail_page": {
+    "not_found_title": "Solicitud no encontrada",
+    "not_found_description": "No pudimos encontrar esta solicitud. Puede que se haya eliminado.",
+    "back_to_applications": "Volver a mis solicitudes",
+    "breadcrumb": "Mis solicitudes",
+    "job_position_fallback": "Puesto",
+    "applied_on": "Solicitado el {{date}}",
+    "view_job": "Ver oferta",
+    "resume": {
+      "title": "Currículum",
+      "paste_link": "Pegar enlace",
+      "upload_pdf": "Subir PDF",
+      "view_current": "Ver currículum actual",
+      "none_yet": "Aún no se ha añadido ningún currículum.",
+      "url_placeholder": "https://linkedin.com/in/tu-perfil",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "choose_pdf": "Elegir PDF",
+      "pdf_hint": "Solo PDF, máx. 5 MB",
+      "upload": "Subir"
+    },
+    "cover_letter_title": "Carta de presentación",
+    "timeline_title": "Seguimiento de la solicitud"
   }
 }

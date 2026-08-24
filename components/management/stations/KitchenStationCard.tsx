@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -23,6 +24,7 @@ interface KitchenStationCardProps {
 }
 
 export function KitchenStationCard({ ks, businessId, onDelete }: KitchenStationCardProps) {
+  const { t } = useTranslation("management");
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(ks.name);
   const qc = useQueryClient();
@@ -39,9 +41,9 @@ export function KitchenStationCard({ ks, businessId, onDelete }: KitchenStationC
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["kitchen-stations", businessId] });
       setEditing(false);
-      toast.success("Kitchen station renamed.");
+      toast.success(t("stations_page.kitchen_stations.renamed_toast"));
     },
-    onError: () => toast.error("Failed to rename."),
+    onError: () => toast.error(t("stations_page.kitchen_stations.rename_failed_toast")),
   });
 
   const statusColor: Record<KitchenStation["status"], string> = {
@@ -49,6 +51,13 @@ export function KitchenStationCard({ ks, businessId, onDelete }: KitchenStationC
     getting_ready: "bg-amber-500/10 text-amber-600 border-amber-500/20",
     broken: "bg-destructive/10 text-destructive border-destructive/20",
     offline: "bg-muted text-muted-foreground border-border",
+  };
+
+  const statusLabel: Record<KitchenStation["status"], string> = {
+    ready: t("stations_page.kitchen_stations.status.ready"),
+    getting_ready: t("stations_page.kitchen_stations.status.getting_ready"),
+    broken: t("stations_page.kitchen_stations.status.broken"),
+    offline: t("station_card.offline"),
   };
 
   return (
@@ -79,7 +88,7 @@ export function KitchenStationCard({ ks, businessId, onDelete }: KitchenStationC
               }}
             />
             <Button size="sm" className="h-7 px-2 text-xs" onClick={() => save()} disabled={isPending}>
-              {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+              {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : t("station_card.save")}
             </Button>
           </div>
         ) : (
@@ -89,7 +98,7 @@ export function KitchenStationCard({ ks, businessId, onDelete }: KitchenStationC
           variant="outline"
           className={`text-[10px] font-bold uppercase tracking-wide mt-0.5 ${statusColor[ks.status]}`}
         >
-          {ks.status.replace("_", " ")}
+          {statusLabel[ks.status]}
         </Badge>
       </div>
 

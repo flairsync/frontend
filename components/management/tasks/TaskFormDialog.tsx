@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { useCreateTask, useUpdateTask } from "@/features/tasks/useTasks";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
-import { Task, TaskStatus, TASK_STATUS_LABELS } from "@/models/Task";
+import { Task, TaskStatus, getTaskStatusLabel } from "@/models/Task";
 
 // ─── Task Form Dialog ─────────────────────────────────────────────────────────
 
@@ -33,6 +34,7 @@ interface TaskFormDialogProps {
 }
 
 export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFormDialogProps) {
+  const { t } = useTranslation("management");
   const isEdit = !!task;
 
   const [title, setTitle] = useState("");
@@ -67,7 +69,7 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (new Date(dueDate) < today) {
-        setDueDateError("Due date must be today or later.");
+        setDueDateError(t("owner_tasks_page.form_dialog.due_date_error"));
         return;
       }
     }
@@ -94,39 +96,41 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Task" : "Create Task"}</DialogTitle>
+          <DialogTitle>
+            {isEdit ? t("owner_tasks_page.form_dialog.edit_title") : t("owner_tasks_page.create_task")}
+          </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update task details, reassign, or force a status change."
-              : "Add a new task for your team. Leave assignee blank for a global task."}
+              ? t("owner_tasks_page.form_dialog.edit_description")
+              : t("owner_tasks_page.form_dialog.create_description")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="task-title">Title *</Label>
+            <Label htmlFor="task-title">{t("owner_tasks_page.form_dialog.title_label")}</Label>
             <Input
               id="task-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Clean the storage room"
+              placeholder={t("owner_tasks_page.form_dialog.title_placeholder")}
               required
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="task-description">Description</Label>
+            <Label htmlFor="task-description">{t("owner_tasks_page.form_dialog.description_label")}</Label>
             <Textarea
               id="task-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Optional details or instructions..."
+              placeholder={t("owner_tasks_page.form_dialog.description_placeholder")}
               rows={3}
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="task-assignee">Assign to (optional)</Label>
+            <Label htmlFor="task-assignee">{t("owner_tasks_page.form_dialog.assignee_label")}</Label>
             <Select
               value={assignedToEmploymentId || "global"}
               onValueChange={(v) => setAssignedToEmploymentId(v === "global" ? "" : v)}
@@ -134,12 +138,14 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
               <SelectTrigger id="task-assignee">
                 <SelectValue
                   placeholder={
-                    fetchingEmployees ? "Loading staff..." : "Global (visible to all)"
+                    fetchingEmployees
+                      ? t("owner_tasks_page.form_dialog.assignee_loading")
+                      : t("owner_tasks_page.form_dialog.assignee_global")
                   }
                 />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="global">Global (visible to all)</SelectItem>
+                <SelectItem value="global">{t("owner_tasks_page.form_dialog.assignee_global")}</SelectItem>
                 {employees.map((emp) => {
                   const name =
                     emp.professionalProfile?.getDisplayName() ??
@@ -156,7 +162,7 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="task-due-date">Due date (optional)</Label>
+            <Label htmlFor="task-due-date">{t("owner_tasks_page.form_dialog.due_date_label")}</Label>
             <Input
               id="task-due-date"
               type="date"
@@ -169,7 +175,7 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
 
           {isEdit && (
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="task-status">Status</Label>
+              <Label htmlFor="task-status">{t("staff_tasks.status_label")}</Label>
               <Select value={status} onValueChange={(v) => setStatus(v as TaskStatus)}>
                 <SelectTrigger id="task-status">
                   <SelectValue />
@@ -177,7 +183,7 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
                 <SelectContent>
                   {ALL_STATUSES.map((s) => (
                     <SelectItem key={s} value={s}>
-                      {TASK_STATUS_LABELS[s]}
+                      {getTaskStatusLabel(s, t)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -192,14 +198,18 @@ export function TaskFormDialog({ open, onOpenChange, task, businessId }: TaskFor
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              {t("staff_tasks.cancel")}
             </Button>
             <Button
               type="submit"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={isPending || !title.trim()}
             >
-              {isPending ? "Saving..." : isEdit ? "Save Changes" : "Create Task"}
+              {isPending
+                ? t("staff_tasks.saving")
+                : isEdit
+                ? t("owner_tasks_page.form_dialog.save_changes")
+                : t("owner_tasks_page.create_task")}
             </Button>
           </div>
         </form>

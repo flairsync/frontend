@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { ChevronDown, ChevronUp, Mail, Loader2, FileText, ExternalLink, Link, UserPlus, CheckCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -53,6 +54,7 @@ export function ApplicantCard({
   onUpdateStatus,
   isUpdating,
 }: ApplicantCardProps) {
+  const { t } = useTranslation("management");
   const [expanded, setExpanded] = useState(false);
   const [editingNote, setEditingNote] = useState(false);
   const [noteValue, setNoteValue] = useState(application.ownerNote ?? "");
@@ -116,31 +118,31 @@ export function ApplicantCard({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="h-8" disabled={isUpdating}>
-                    {isUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Actions"}
+                    {isUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("owner_application_detail_page.actions")}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => onUpdateStatus(application.id, "reviewed")}>
-                    Mark as Reviewed
+                    {t("owner_application_detail_page.mark_as_reviewed")}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onUpdateStatus(application.id, "shortlisted")}>
-                    Shortlist
+                    {t("owner_application_detail_page.shortlist")}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setAcceptConfirmOpen(true)} className="text-green-700">
-                    Accept
+                    {t("owner_application_detail_page.accept")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => onUpdateStatus(application.id, "rejected")}
                     className="text-destructive"
                   >
-                    Reject
+                    {t("owner_application_detail_page.reject")}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => setEditingNote(true)}>
-                    {application.ownerNote ? "Edit Note" : "Add Note"}
+                    {application.ownerNote ? t("owner_application_detail_page.edit_note") : t("owner_application_detail_page.add_note")}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => { window.location.href = detailUrl; }}>
-                    View Full Application →
+                    {t("applicant_card.view_full_application")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -151,7 +153,7 @@ export function ApplicantCard({
           {application.status === "accepted" && (
             <div className="flex items-center justify-between gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2">
               <p className="text-xs text-green-700 font-medium">
-                Ready to onboard this applicant?
+                {t("applicant_card.ready_to_onboard")}
               </p>
               <Button
                 size="sm"
@@ -165,7 +167,7 @@ export function ApplicantCard({
                 ) : (
                   <UserPlus className="h-3.5 w-3.5" />
                 )}
-                Send Staff Invite
+                {t("owner_application_detail_page.send_staff_invite")}
               </Button>
             </div>
           )}
@@ -173,13 +175,13 @@ export function ApplicantCard({
           {application.status === "hired" && (
             <div className="flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-              <p className="text-xs text-emerald-700 font-medium">Hired — employment record created.</p>
+              <p className="text-xs text-emerald-700 font-medium">{t("applicant_card.hired_message")}</p>
             </div>
           )}
 
           {/* Applied date + resume indicator */}
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Applied on {format(new Date(application.createdAt), "MMM d, yyyy")}</span>
+            <span>{t("owner_application_detail_page.applied_on", { date: format(new Date(application.createdAt), "MMM d, yyyy") })}</span>
             {application.resumeUrl ? (
               <a
                 href={application.resumeUrl}
@@ -192,11 +194,11 @@ export function ApplicantCard({
                 ) : (
                   <Link className="h-3.5 w-3.5" />
                 )}
-                View Resume
+                {t("owner_application_detail_page.view_resume")}
                 <ExternalLink className="h-3 w-3" />
               </a>
             ) : (
-              <span className="text-muted-foreground/60">No resume</span>
+              <span className="text-muted-foreground/60">{t("applicant_card.no_resume")}</span>
             )}
           </div>
 
@@ -204,7 +206,7 @@ export function ApplicantCard({
           {application.coverLetter && (
             <div className="flex flex-col gap-1">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Cover Letter
+                {t("owner_application_detail_page.cover_letter")}
               </p>
               <p className="text-sm whitespace-pre-wrap">{coverPreview}</p>
               {application.coverLetter.length > 100 && (
@@ -214,11 +216,11 @@ export function ApplicantCard({
                 >
                   {expanded ? (
                     <span className="flex items-center gap-0.5">
-                      <ChevronUp className="h-3.5 w-3.5" /> Show less
+                      <ChevronUp className="h-3.5 w-3.5" /> {t("applicant_card.show_less")}
                     </span>
                   ) : (
                     <span className="flex items-center gap-0.5">
-                      <ChevronDown className="h-3.5 w-3.5" /> Read more
+                      <ChevronDown className="h-3.5 w-3.5" /> {t("applicant_card.read_more")}
                     </span>
                   )}
                 </button>
@@ -229,7 +231,7 @@ export function ApplicantCard({
           {/* Owner note */}
           {application.ownerNote && !editingNote && (
             <div className="bg-muted/50 border border-border rounded-lg px-3 py-2 text-xs text-muted-foreground">
-              <span className="font-medium block mb-0.5">Your note</span>
+              <span className="font-medium block mb-0.5">{t("applicant_card.your_note")}</span>
               {application.ownerNote}
             </div>
           )}
@@ -239,16 +241,16 @@ export function ApplicantCard({
               <textarea
                 className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
                 rows={3}
-                placeholder="Add an internal note..."
+                placeholder={t("owner_application_detail_page.add_internal_note_placeholder")}
                 value={noteValue}
                 onChange={(e) => setNoteValue(e.target.value)}
               />
               <div className="flex gap-2">
                 <Button size="sm" onClick={handleSaveNote} disabled={isUpdating}>
-                  Save Note
+                  {t("applicant_card.save_note")}
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setEditingNote(false)}>
-                  Cancel
+                  {t("owner_application_detail_page.cancel")}
                 </Button>
               </div>
             </div>
@@ -259,7 +261,7 @@ export function ApplicantCard({
             href={detailUrl}
             className="text-xs text-primary hover:underline self-start"
           >
-            View full application →
+            {t("applicant_card.view_application_link")}
           </a>
         </CardContent>
       </Card>
@@ -268,13 +270,13 @@ export function ApplicantCard({
       <AlertDialog open={acceptConfirmOpen} onOpenChange={setAcceptConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Accept this applicant?</AlertDialogTitle>
+            <AlertDialogTitle>{t("owner_application_detail_page.accept_confirm_title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {profile?.displayName ?? profile?.firstName} will see their status updated to "Accepted". This is a meaningful action — confirm before proceeding.
+              {t("owner_application_detail_page.accept_confirm_description", { name: profile?.displayName ?? profile?.firstName })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("owner_application_detail_page.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-green-600 hover:bg-green-700"
               onClick={() => {
@@ -282,7 +284,7 @@ export function ApplicantCard({
                 setAcceptConfirmOpen(false);
               }}
             >
-              Accept Applicant
+              {t("owner_application_detail_page.accept_applicant")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

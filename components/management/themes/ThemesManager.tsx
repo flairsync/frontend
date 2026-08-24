@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Eye } from "lucide-react";
 import { useThemeCatalog } from "@/features/themes/useThemes";
 import { ThemeCatalogItem } from "@/features/themes/types";
@@ -28,6 +29,7 @@ const ThemeCard = ({
     applying: boolean;
     purchasing: boolean;
 }) => {
+    const { t } = useTranslation("management");
     // Only themes with a real coded design get a preview — otherwise the
     // iframe would silently render DefaultTheme's bare fallback and mislead
     // the owner into thinking that's the actual theme.
@@ -39,14 +41,14 @@ const ThemeCard = ({
                 {theme.previewImageUrl ? (
                     <img src={theme.previewImageUrl} alt={theme.name} className="w-full h-full object-cover" />
                 ) : (
-                    <span className="text-muted-foreground text-sm">No preview</span>
+                    <span className="text-muted-foreground text-sm">{t("themes_manager.no_preview")}</span>
                 )}
             </div>
             <CardHeader>
                 <div className="flex items-center justify-between gap-2">
                     <CardTitle className="text-base">{theme.name}</CardTitle>
-                    {theme.category === "premium" && <Badge variant="secondary">Premium</Badge>}
-                    {theme.applied && <Badge>Applied</Badge>}
+                    {theme.category === "premium" && <Badge variant="secondary">{t("themes_manager.premium_badge")}</Badge>}
+                    {theme.applied && <Badge>{t("themes_manager.applied_badge")}</Badge>}
                 </div>
             </CardHeader>
             <CardContent>
@@ -56,15 +58,15 @@ const ThemeCard = ({
             </CardContent>
             <CardFooter className="gap-2">
                 {hasRealDesign && (
-                    <Button variant="outline" size="icon" onClick={() => onPreview(theme)} aria-label="Preview theme">
+                    <Button variant="outline" size="icon" onClick={() => onPreview(theme)} aria-label={t("themes_manager.preview_aria_label")}>
                         <Eye />
                     </Button>
                 )}
                 {theme.applied ? (
-                    <Button disabled className="flex-1" variant="outline">Currently applied</Button>
+                    <Button disabled className="flex-1" variant="outline">{t("themes_manager.currently_applied")}</Button>
                 ) : theme.owned ? (
                     <Button className="flex-1" disabled={applying} onClick={() => onApply(theme.id)}>
-                        Apply
+                        {t("themes_manager.apply")}
                     </Button>
                 ) : (
                     <Button
@@ -73,7 +75,7 @@ const ThemeCard = ({
                         disabled={purchasing}
                         onClick={() => onPurchase(theme.id)}
                     >
-                        Buy for {theme.price.toFixed(2)} {theme.currency}
+                        {t("themes_manager.buy_for", { price: theme.price.toFixed(2), currency: theme.currency })}
                     </Button>
                 )}
             </CardFooter>
@@ -82,6 +84,7 @@ const ThemeCard = ({
 };
 
 export default function ThemesManager({ businessId }: ThemesManagerProps) {
+    const { t } = useTranslation("management");
     const {
         themes,
         fetchingThemes,
@@ -104,15 +107,15 @@ export default function ThemesManager({ businessId }: ThemesManagerProps) {
     }
 
     if (themesLoadError) {
-        return <p className="text-sm text-destructive">Could not load the theme catalog.</p>;
+        return <p className="text-sm text-destructive">{t("themes_manager.load_error")}</p>;
     }
 
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-semibold">Theme</h1>
+                <h1 className="text-2xl font-semibold">{t("themes_manager.title")}</h1>
                 <p className="text-muted-foreground">
-                    Choose the premade theme used for your public site.
+                    {t("themes_manager.subtitle")}
                 </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,5 +1,6 @@
 
 import { useState, ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ interface LogoUploaderProps {
 }
 
 export default function BusinessBrandingLogoUpload({ currentLogoUrl, loading = false, onSave }: LogoUploaderProps) {
+    const { t } = useTranslation("management");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -39,7 +41,7 @@ export default function BusinessBrandingLogoUpload({ currentLogoUrl, loading = f
     return (
         <Card>
             <CardHeader>
-                <CardDescription>Add your restaurant brand logo, preferably without a background</CardDescription>
+                <CardDescription>{t("branding_page.logo_upload.description")}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-4">
                 <PhotoProvider>
@@ -60,7 +62,7 @@ export default function BusinessBrandingLogoUpload({ currentLogoUrl, loading = f
 
                 <Input type="file" accept="image/*" onChange={handleFileChange} />
                 <Button onClick={handleSave} disabled={loading || !selectedFile}>
-                    {loading ? "Saving..." : "Save"}
+                    {loading ? t("branding_page.logo_upload.saving") : t("branding_page.logo_upload.save")}
                 </Button>
             </CardContent>
         </Card>

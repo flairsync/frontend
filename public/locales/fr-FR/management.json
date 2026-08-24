@@ -296,7 +296,12 @@
     "optional_note_placeholder": "Note facultative...",
     "cancel": "Annuler",
     "saving": "Enregistrement...",
-    "update": "Mettre à jour"
+    "update": "Mettre à jour",
+    "due_on": "Échéance {{date}}",
+    "last_updated_by": "Dernière mise à jour par {{name}}",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page_of": "Page {{page}} sur {{totalPages}}"
   },
   "staff_messages": {
     "title": "Messages et annonces",
@@ -1728,6 +1733,14 @@
       "col_cost": "Coût",
       "col_margin": "Marge",
       "col_margin_percent": "Marge %"
+    },
+    "time_filter": {
+      "placeholder": "Sélectionner la période",
+      "today": "Aujourd'hui",
+      "last_7_days": "7 derniers jours",
+      "last_30_days": "30 derniers jours",
+      "this_month": "Ce mois-ci",
+      "last_month": "Le mois dernier"
     }
   },
   "company_guide": {
@@ -3117,6 +3130,21 @@
       "reservation": "Réservation",
       "order": "Commande",
       "inventory_item": "Inventaire"
+    },
+    "details_modal": {
+      "sr_description": "Détails complets de cette entrée du journal d'audit.",
+      "who": "Qui",
+      "when": "Quand",
+      "entity_id": "ID de l'entité",
+      "reason": "Motif",
+      "created_with": "Créé avec",
+      "what_changed": "Ce qui a changé",
+      "no_changes": "Aucune modification de champ enregistrée.",
+      "action_labels": {
+        "create": "Créé",
+        "update": "Modifié",
+        "delete": "Supprimé"
+      }
     }
   },
   "billing_invoices_table": {
@@ -3725,5 +3753,264 @@
     "last_seen": "Vu pour la dernière fois {{time}}",
     "never_connected": "Jamais connectée",
     "revoke": "Révoquer"
+  },
+  "owner_tasks_page": {
+    "subtitle": "Créez et gérez les tâches de votre équipe.",
+    "create_task": "Créer une tâche",
+    "filters": {
+      "global": "Globales",
+      "assigned": "Assignées"
+    },
+    "empty": {
+      "title": "Aucune tâche pour le moment",
+      "description": "Créez votre première tâche pour organiser votre équipe."
+    },
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page_of": "Page {{page}} sur {{totalPages}}",
+    "delete_dialog": {
+      "title": "Supprimer cette tâche ?",
+      "description": "« {{title}} » sera supprimée définitivement. Cette action est irréversible.",
+      "confirm": "Supprimer"
+    },
+    "card": {
+      "due_on": "Échéance {{date}}",
+      "last_updated_by": "Dernière mise à jour par {{name}}",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "form_dialog": {
+      "edit_title": "Modifier la tâche",
+      "edit_description": "Mettez à jour les détails de la tâche, réassignez-la ou forcez un changement de statut.",
+      "create_description": "Ajoutez une nouvelle tâche pour votre équipe. Laissez l'assigné vide pour une tâche globale.",
+      "title_label": "Titre *",
+      "title_placeholder": "ex. Nettoyer la réserve",
+      "description_label": "Description",
+      "description_placeholder": "Détails ou instructions facultatifs...",
+      "assignee_label": "Assigner à (facultatif)",
+      "assignee_loading": "Chargement du personnel...",
+      "assignee_global": "Globale (visible par tous)",
+      "due_date_label": "Date d'échéance (facultatif)",
+      "due_date_error": "La date d'échéance doit être aujourd'hui ou plus tard.",
+      "save_changes": "Enregistrer les modifications"
+    }
+  },
+  "themes_manager": {
+    "title": "Thème",
+    "subtitle": "Choisissez le thème prêt à l'emploi utilisé pour votre site public.",
+    "load_error": "Impossible de charger le catalogue de thèmes.",
+    "premium_badge": "Premium",
+    "applied_badge": "Appliqué",
+    "no_preview": "Aucun aperçu",
+    "preview_aria_label": "Aperçu du thème",
+    "currently_applied": "Actuellement appliqué",
+    "apply": "Appliquer",
+    "buy_for": "Acheter pour {{price}} {{currency}}",
+    "preview_modal": {
+      "desktop": "Bureau",
+      "mobile": "Mobile",
+      "open_new_tab": "Ouvrir dans un nouvel onglet",
+      "apply_this_theme": "Appliquer ce thème",
+      "preview_title": "Aperçu – {{name}}"
+    }
+  },
+  "applicant_card": {
+    "view_full_application": "Voir la candidature complète →",
+    "view_application_link": "Voir la candidature complète →",
+    "ready_to_onboard": "Prêt à intégrer ce candidat ?",
+    "hired_message": "Embauché(e) — fiche d'emploi créée.",
+    "no_resume": "Aucun CV",
+    "show_less": "Afficher moins",
+    "read_more": "Lire la suite",
+    "your_note": "Votre note",
+    "save_note": "Enregistrer la note"
+  },
+  "business_reviews_dashboard": {
+    "title": "Avis",
+    "subtitle": "Surveillez et modérez les avis clients",
+    "no_reviews_yet": "Aucun avis pour le moment",
+    "review_count_one": "{{count}} avis",
+    "review_count_other": "{{count}} avis",
+    "all_ratings": "Toutes les notes",
+    "star_count_one": "{{count}} étoile",
+    "star_count_other": "{{count}} étoiles",
+    "no_reviews_found": "Aucun avis trouvé.",
+    "remove_dialog": {
+      "title": "Supprimer cet avis ?",
+      "description": "Cela supprimera définitivement cet avis. À utiliser uniquement pour un contenu abusif ou frauduleux.",
+      "confirm": "Supprimer"
+    }
+  },
+  "joined_page": {
+    "title": "Entreprises rejointes",
+    "subtitle": "Gérez votre travail au sein des entreprises que vous avez rejointes en tant que membre du personnel.",
+    "loading": "Chargement des entreprises rejointes...",
+    "staff_member": "Membre du personnel",
+    "default_description": "Vous êtes un membre actif de l'équipe de cette entreprise.",
+    "latest_messages": "Derniers messages",
+    "open_business_hub": "Ouvrir l'espace entreprise",
+    "empty_title": "Aucune entreprise rejointe pour le moment",
+    "empty_description": "Lorsque vous serez invité(e) à rejoindre une entreprise en tant que membre du personnel, elle apparaîtra ici.",
+    "view_my_businesses": "Voir mes entreprises"
+  },
+  "organizations_page": {
+    "title": "Organisations",
+    "subtitle": "Regroupez vos entreprises pour voir les ventes, le coût de la main-d'œuvre et les alertes de stock combinés entre les établissements.",
+    "new_organization": "+ Nouvelle organisation",
+    "loading": "Chargement de vos organisations...",
+    "business_count_one": "{{count}} entreprise",
+    "business_count_other": "{{count}} entreprises",
+    "empty_title": "Aucune organisation pour le moment",
+    "empty_description": "Si vous possédez plusieurs entreprises, regroupez-les en une organisation pour voir leurs performances combinées.",
+    "create_organization": "Créer une organisation",
+    "create_dialog": {
+      "title": "Nouvelle organisation",
+      "name_label": "Nom",
+      "name_placeholder": "ex. Groupe Restaurant Acme",
+      "cancel": "Annuler",
+      "create": "Créer"
+    },
+    "explainer": {
+      "title": "Qu'est-ce qu'une organisation ?",
+      "description": "Le sommet de votre structure multi-établissements. Elle peut contenir des établissements directement, ou contenir des Régions entières — chacune regroupant ses propres établissements. Vous en êtes propriétaire, et chaque lien fonctionne dans les deux sens : invitez un établissement ou une région, ou approuvez une demande d'adhésion. Rien ne se lie sans approbation, et quitter fonctionne de la même façon en sens inverse."
+    }
+  },
+  "regions_page": {
+    "title": "Régions",
+    "subtitle": "Regroupez quelques établissements sous un responsable régional — une région peut fonctionner de manière autonome, ou se rattacher à une organisation plus tard.",
+    "new_region": "+ Nouvelle région",
+    "loading": "Chargement de vos régions...",
+    "branch_count_one": "{{count}} établissement",
+    "branch_count_other": "{{count}} établissements",
+    "empty_title": "Aucune région pour le moment",
+    "empty_description": "Vous gérez un groupe d'établissements ? Créez une région pour les regrouper, qu'ils fassent déjà partie d'une organisation ou non.",
+    "create_region": "Créer une région",
+    "create_dialog": {
+      "title": "Nouvelle région",
+      "name_placeholder": "ex. Région Centre-ville"
+    },
+    "explainer": {
+      "title": "Qu'est-ce qu'une région ?",
+      "description": "Un groupe d'établissements sous un responsable régional. Une région fonctionne de façon totalement autonome — elle n'a pas besoin d'une organisation au-dessus — mais peut s'y rattacher plus tard si vous le souhaitez. Le rattachement et le retrait nécessitent tous deux l'approbation de l'autre partie, comme partout ailleurs dans cette structure."
+    }
+  },
+  "requests_page": {
+    "title": "Demandes de rattachement",
+    "subtitle": "Approuvez ou refusez les demandes de rattachement à vos entreprises, régions ou organisations — ou suivez celles que vous avez envoyées.",
+    "node_types": {
+      "BUSINESS": "Entreprise",
+      "REGION": "Région",
+      "ORGANIZATION": "Organisation"
+    },
+    "leaving_arrow": "→ quitte",
+    "arrow": "→",
+    "leaving": "quitte",
+    "joining": "rejoint",
+    "incoming": "Reçues",
+    "sent_by_you": "Envoyées par vous",
+    "loading": "Chargement...",
+    "decline": "Refuser",
+    "cancel": "Annuler",
+    "approve": "Approuver",
+    "nothing_waiting": "Rien n'est en attente de votre part.",
+    "none_sent": "Vous n'avez envoyé aucune demande.",
+    "pending_requests": "Demandes en attente",
+    "wants_to_leave": "souhaite quitter",
+    "wants_to_join": "souhaite rejoindre",
+    "join_confirm": {
+      "title": "Rejoindre {{name}} ?",
+      "body1": "Vous continuerez à gérer {{name}} au quotidien — rien ne change dans votre accès aujourd'hui.",
+      "body2": "Mais à partir de maintenant, {{name}} peut réattribuer la propriété de cette entreprise à quelqu'un d'autre à tout moment, sans avoir besoin de votre confirmation. Si cela arrive, vous passeriez à un rôle de personnel standard — votre historique d'emploi est toujours conservé, jamais supprimé.",
+      "joining": "Adhésion…",
+      "confirm": "Oui, rejoindre"
+    }
+  },
+  "branding_page": {
+    "title": "Identité visuelle",
+    "qr_code": "Code QR",
+    "logo": "Logo",
+    "gallery": "Galerie",
+    "logo_upload": {
+      "description": "Ajoutez le logo de votre restaurant, de préférence sans arrière-plan",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer"
+    },
+    "gallery_upload": {
+      "save": "Enregistrer",
+      "drag": "Glisser",
+      "marked_for_deletion": "Marqué pour suppression"
+    },
+    "qr_download": {
+      "button": "Télécharger le code QR",
+      "png": "Télécharger en PNG",
+      "svg": "Télécharger en SVG",
+      "error": "Échec du téléchargement du code QR"
+    }
+  },
+  "stations_page": {
+    "title": "Stations",
+    "subtitle": "Gérez les terminaux POS et les écrans de cuisine liés à cette entreprise.",
+    "add_station": "Ajouter une station",
+    "summary": {
+      "pos_terminals": "Terminaux POS",
+      "kds_screens": "Écrans KDS",
+      "online_now": "En ligne"
+    },
+    "kitchen_stations": {
+      "title": "Postes de cuisine",
+      "add": "Ajouter",
+      "description": "Zones de cuisson logiques (ex. Grill, Friteuse). Assignez chaque appareil KDS à l'une d'elles.",
+      "name_placeholder": "ex. Grill, Friteuse, Poste froid…",
+      "create": "Créer",
+      "cancel": "Annuler",
+      "empty": "Aucun poste de cuisine pour le moment. Ajoutez-en un pour assigner des appareils KDS.",
+      "order_save_failed": "Échec de l'enregistrement de l'ordre. Veuillez réessayer.",
+      "renamed_toast": "Poste de cuisine renommé.",
+      "rename_failed_toast": "Échec du renommage.",
+      "created_toast": "Poste de cuisine créé.",
+      "create_failed_toast": "Échec de la création du poste de cuisine.",
+      "deleted_toast": "Poste de cuisine supprimé.",
+      "delete_failed_toast": "Échec de la suppression du poste de cuisine.",
+      "status": {
+        "ready": "Prêt",
+        "getting_ready": "En préparation",
+        "broken": "En panne"
+      }
+    },
+    "category_routing": {
+      "title": "Routage des catégories",
+      "description": "Envoyez automatiquement les articles vers un poste de cuisine selon leur catégorie de menu.",
+      "empty": "Aucune catégorie de menu trouvée. Ajoutez d'abord des catégories à vos menus.",
+      "not_mapped": "Non assigné",
+      "assign_failed_toast": "Échec de l'attribution de la règle de catégorie.",
+      "remove_failed_toast": "Échec de la suppression de la règle de catégorie."
+    },
+    "devices": {
+      "title": "Appareils",
+      "empty_title": "Aucune station liée pour le moment",
+      "empty_description": "Cliquez sur « Ajouter une station » pour générer un code de jumelage, puis scannez le code QR (ou saisissez le code manuellement) sur l'appareil exécutant l'application station."
+    },
+    "revoke_dialog": {
+      "title": "Révoquer « {{name}} » ?",
+      "description": "L'appareil sera immédiatement déconnecté. Il aura besoin d'un nouveau code de jumelage pour se reconnecter.",
+      "confirm": "Révoquer la station",
+      "success_toast": "« {{name}} » a été révoqué(e).",
+      "failed_toast": "Échec de la révocation de la station."
+    },
+    "delete_ks_dialog": {
+      "title": "Supprimer « {{name}} » ?",
+      "description": "Les appareils KDS assignés à ce poste perdront leur assignation. Cette action est irréversible.",
+      "confirm": "Supprimer"
+    },
+    "pairing_dialog": {
+      "title": "Jumeler une nouvelle station",
+      "description": "Scannez le code QR sur l'appareil, ou saisissez le code manuellement, dans un délai de 5 minutes.",
+      "station_type_label": "Type de station",
+      "kds_option": "Écran de cuisine (KDS)",
+      "expires_in": "Expire dans {{secs}} s",
+      "code_expired": "Code expiré",
+      "generate_new_code": "Générer un nouveau code",
+      "generate_failed_toast": "Échec de la génération du code. Veuillez réessayer."
+    }
   }
 }

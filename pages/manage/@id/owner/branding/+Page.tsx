@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -21,6 +22,7 @@ const QrDesignEditor = clientOnly(() => import("@/components/qr/QrDesignEditor")
 
 
 const BusinessBrandingPage = () => {
+    const { t } = useTranslation("management");
 
     const {
         routeParams
@@ -41,7 +43,7 @@ const BusinessBrandingPage = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight">Branding</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{t("branding_page.title")}</h1>
 
             <Separator />
 
@@ -50,7 +52,7 @@ const BusinessBrandingPage = () => {
             }} >
             {/* QR Code */}
             <AccordionItem value="qr-code" className="border rounded-lg px-3">
-                <AccordionTrigger className="hover:cursor-pointer ">QR Code</AccordionTrigger>
+                <AccordionTrigger className="hover:cursor-pointer ">{t("branding_page.qr_code")}</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <div className="flex justify-end">
                         <DownloadBusinessQrButton businessId={routeParams.id} />
@@ -61,7 +63,7 @@ const BusinessBrandingPage = () => {
 
             {/* Logo */}
             <AccordionItem value="logo" className="border rounded-lg px-3  ">
-                <AccordionTrigger className="hover:cursor-pointer ">Logo</AccordionTrigger>
+                <AccordionTrigger className="hover:cursor-pointer ">{t("branding_page.logo")}</AccordionTrigger>
 
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingLogoUpload
@@ -79,7 +81,7 @@ const BusinessBrandingPage = () => {
 
             {/* Gallery */}
             <AccordionItem value="gallery" className="border rounded-lg px-3" >
-                <AccordionTrigger className="hover:cursor-pointer ">Gallery</AccordionTrigger>
+                <AccordionTrigger className="hover:cursor-pointer ">{t("branding_page.gallery")}</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
                     <BusinessBrandingGalleryUpload
                         loading={fetchingMyBusinessFullDetails || updatingMyBusinessGallery}

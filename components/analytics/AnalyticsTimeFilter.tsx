@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { subDays, subMonths, startOfMonth, startOfDay, endOfDay, formatISO } from "date-fns";
 import {
     Select,
@@ -10,12 +11,21 @@ import {
 
 export type TimeRangePreset = "Today" | "Last 7 Days" | "Last 30 Days" | "This Month" | "Last Month";
 
+const PRESET_LABEL_KEYS: Record<TimeRangePreset, string> = {
+    "Today": "analytics.time_filter.today",
+    "Last 7 Days": "analytics.time_filter.last_7_days",
+    "Last 30 Days": "analytics.time_filter.last_30_days",
+    "This Month": "analytics.time_filter.this_month",
+    "Last Month": "analytics.time_filter.last_month",
+};
+
 interface AnalyticsTimeFilterProps {
     value: TimeRangePreset;
     onChange: (preset: TimeRangePreset, startDate: string, endDate: string) => void;
 }
 
 export const AnalyticsTimeFilter: React.FC<AnalyticsTimeFilterProps> = ({ value, onChange }) => {
+    const { t } = useTranslation("management");
     const handleValueChange = (val: string) => {
         const preset = val as TimeRangePreset;
         const now = new Date();
@@ -51,14 +61,14 @@ export const AnalyticsTimeFilter: React.FC<AnalyticsTimeFilterProps> = ({ value,
     return (
         <Select value={value} onValueChange={handleValueChange}>
             <SelectTrigger className="w-48">
-                <SelectValue placeholder="Select Time Range" />
+                <SelectValue placeholder={t("analytics.time_filter.placeholder")} />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="Today">Today</SelectItem>
-                <SelectItem value="Last 7 Days">Last 7 Days</SelectItem>
-                <SelectItem value="Last 30 Days">Last 30 Days</SelectItem>
-                <SelectItem value="This Month">This Month</SelectItem>
-                <SelectItem value="Last Month">Last Month</SelectItem>
+                {(Object.keys(PRESET_LABEL_KEYS) as TimeRangePreset[]).map((preset) => (
+                    <SelectItem key={preset} value={preset}>
+                        {t(PRESET_LABEL_KEYS[preset])}
+                    </SelectItem>
+                ))}
             </SelectContent>
         </Select>
     );
