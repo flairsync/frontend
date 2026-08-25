@@ -43,6 +43,8 @@ export class SubscriptionPack {
   currency: string;
   maxBusinesses: number;
   minBusinesses: number;
+  includedBusinesses: number;
+  extraBusinessPrice: number;
   maxEmployees: number;
   maxMenus: number;
   maxProducts: number;
@@ -61,6 +63,8 @@ export class SubscriptionPack {
     currency: string,
     maxBusinesses: number,
     minBusinesses: number,
+    includedBusinesses: number,
+    extraBusinessPrice: number,
     maxEmployees: number,
     maxMenus: number,
     maxProducts: number,
@@ -78,6 +82,8 @@ export class SubscriptionPack {
     this.currency = currency;
     this.maxBusinesses = maxBusinesses;
     this.minBusinesses = minBusinesses;
+    this.includedBusinesses = includedBusinesses;
+    this.extraBusinessPrice = extraBusinessPrice;
     this.maxEmployees = maxEmployees;
     this.maxMenus = maxMenus;
     this.maxProducts = maxProducts;
@@ -101,6 +107,8 @@ export class SubscriptionPack {
         data.currency,
         data.maxBusinesses,
         data.minBusinesses ?? 1,
+        data.includedBusinesses ?? 1,
+        parseFloat(data.extraBusinessPrice ?? 0),
         data.maxEmployees,
         data.maxMenus,
         data.maxProducts,
@@ -135,11 +143,13 @@ export class SubscriptionPack {
     return `${this.price.toFixed(2)} ${this.currency}`;
   }
 
-  /** This pack's own per-business price times however many businesses are
-   * selected, clamped to this pack's own minimum — a pack with a 3-business
-   * minimum always prices at least 3, even if fewer are selected. */
+  /** `price` covers up to `includedBusinesses`; each business selected beyond
+   * that is billed at `extraBusinessPrice`. Selection is clamped to this
+   * pack's own minimum — a pack with a 3-business minimum always prices at
+   * least 3, even if fewer are selected. */
   getTotalPrice(businessCount: number): number {
-    return this.price * Math.max(businessCount, this.minBusinesses);
+    const count = Math.max(businessCount, this.minBusinesses);
+    return this.price + this.extraBusinessPrice * Math.max(0, count - this.includedBusinesses);
   }
 
   getFormattedTotalPrice(businessCount: number): string {

@@ -46,7 +46,7 @@ export const useSubscriptions = () => {
     mutate: createCheckout,
   } = useMutation({
     mutationKey: ["create_user_checkout"],
-    mutationFn: async (data: { packId: string }) => {
+    mutationFn: async (data: { packId: string; businessCount?: number }) => {
       const resp = await handleUserCheckoutApiCall(data);
       return (resp.data as any)?.url as string ?? null;
     },
@@ -142,8 +142,8 @@ export const useSubscriptions = () => {
 
   const { mutateAsync: changePlan, isPending: changingPlan } = useMutation({
     mutationKey: ["change_plan"],
-    mutationFn: async ({ subId, packId }: { subId: string; packId: string }) => {
-      const resp = await changePlanApiCall(subId, packId);
+    mutationFn: async ({ subId, packId, businessCount }: { subId: string; packId: string; businessCount?: number }) => {
+      const resp = await changePlanApiCall(subId, packId, businessCount);
       return resp.data ? Subscription.parseApiResponse(resp.data) : null;
     },
     onSuccess: () => {

@@ -76,7 +76,7 @@ const PlansPage: React.FC = () => {
       return;
     }
 
-    createCheckout({ packId }, {
+    createCheckout({ packId, businessCount }, {
       onSuccess: (url) => {
         if (url) setCheckoutLink(url);
       }
@@ -89,7 +89,7 @@ const PlansPage: React.FC = () => {
 
   const handleConfirmChangePlan = () => {
     if (!currentUserSubscription?.id || !confirmPack) return;
-    changePlan({ subId: currentUserSubscription.id, packId: confirmPack.id }, {
+    changePlan({ subId: currentUserSubscription.id, packId: confirmPack.id, businessCount }, {
       onSettled: () => setConfirmPack(null),
     });
   }
@@ -260,6 +260,12 @@ const PlansPage: React.FC = () => {
                       {t("plans_page.minimum_businesses", { count: pack.minBusinesses })}
                     </p>
                   )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {t("plans_page.included_businesses", { count: pack.includedBusinesses })}
+                    {pack.extraBusinessPrice > 0 && (
+                      <> · {t("plans_page.extra_business_price", { price: `${pack.extraBusinessPrice.toFixed(2)} ${pack.currency}` })}</>
+                    )}
+                  </p>
                   <p className="text-[11px] text-muted-foreground mt-1">{t("plans_page.estimated_at_checkout")}</p>
                 </div>
 

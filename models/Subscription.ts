@@ -25,6 +25,7 @@ export class Subscription {
   isAutoRenew: boolean;
   price: number | null;
   currency: string;
+  businessCount: number | null;
   createdAt: Date;
   updatedAt: Date;
   isDefault: boolean;
@@ -43,6 +44,7 @@ export class Subscription {
     isAutoRenew: boolean,
     price: number | null,
     currency: string,
+    businessCount: number | null,
     createdAt: Date,
     updatedAt: Date,
     isDefault: boolean = false
@@ -60,6 +62,7 @@ export class Subscription {
     this.isAutoRenew = isAutoRenew;
     this.price = price;
     this.currency = currency;
+    this.businessCount = businessCount;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.isDefault = isDefault;
@@ -82,6 +85,7 @@ export class Subscription {
         data.isAutoRenew ?? false,
         data.price ?? null,
         data.currency ?? "EUR",
+        data.businessCount ?? null,
         new Date(data.createdAt),
         new Date(data.updatedAt),
         data.isDefault ?? false

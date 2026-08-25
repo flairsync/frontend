@@ -22,7 +22,7 @@ export const getSubscriptionPacksApiCall = async (country?: string) => {
   return unwrap(await flairapi.get(`${subscriptionPacksUrl}${query}`));
 };
 
-export const handleUserCheckoutApiCall = async (data: { packId: string }) =>
+export const handleUserCheckoutApiCall = async (data: { packId: string; businessCount?: number }) =>
   unwrap(await flairapi.post(checkoutUrl, data));
 
 export const getUserSubscriptionsListApiCall = async () =>
@@ -44,8 +44,8 @@ export const cancelSubscriptionApiCall = async (subId: string) =>
 export const resumeSubscriptionApiCall = async (subId: string) =>
   unwrap(await flairapi.post(`${baseUrl}/${subId}/resume`));
 
-export const changePlanApiCall = async (subId: string, packId: string) =>
-  unwrap(await flairapi.post(`${baseUrl}/${subId}/change-plan`, { packId }));
+export const changePlanApiCall = async (subId: string, packId: string, businessCount?: number) =>
+  unwrap(await flairapi.post(`${baseUrl}/${subId}/change-plan`, { packId, businessCount }));
 
 export const getSubscriptionInvoicesApiCall = async (subId: string) =>
   unwrap(await flairapi.get(`${invoiceUrl}/${subId}`));
