@@ -301,5 +301,9 @@
     "expired": "Expired",
     "waitlist": "Waitlist",
     "rejected": "Rejected"
+  },
+  "feed_page": {
+    "no_businesses_found": "No businesses found",
+    "try_adjusting_search": "Try adjusting your search criteria"
   }
 }

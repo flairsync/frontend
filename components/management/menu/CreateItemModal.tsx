@@ -121,12 +121,12 @@ const ItemVariantsSection: React.FC<{
         <div className="space-y-4 pt-4 border-t">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-sm font-medium">Variants</h3>
-                    <p className="text-xs text-muted-foreground">Add sizes or specific variations with distinct prices.</p>
+                    <h3 className="text-sm font-medium">{t('item_modal.variants_section.title')}</h3>
+                    <p className="text-xs text-muted-foreground">{t('item_modal.variants_section.hint')}</p>
                 </div>
                 {!isAdding && (
                     <Button variant="outline" size="sm" onClick={() => setIsAdding(true)}>
-                        <Plus className="h-4 w-4 mr-1" /> Add Variant
+                        <Plus className="h-4 w-4 mr-1" /> {t('item_modal.variants_section.add_button')}
                     </Button>
                 )}
             </div>
@@ -149,10 +149,10 @@ const ItemVariantsSection: React.FC<{
 
             {isAdding && (
                 <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-md border">
-                    <Input placeholder="Name (e.g., Large)" value={newName} onChange={e => setNewName(e.target.value)} className="flex-1" />
-                    <Input type="number" placeholder="Price" value={newPrice} onChange={e => setNewPrice(e.target.value)} className="w-24" />
-                    <Button size="sm" onClick={handleAdd}>Save</Button>
-                    <Button size="sm" variant="ghost" onClick={() => setIsAdding(false)}>Cancel</Button>
+                    <Input placeholder={t('item_modal.variants_section.name_placeholder')} value={newName} onChange={e => setNewName(e.target.value)} className="flex-1" />
+                    <Input type="number" placeholder={t('item_modal.variants_section.price_placeholder')} value={newPrice} onChange={e => setNewPrice(e.target.value)} className="w-24" />
+                    <Button size="sm" onClick={handleAdd}>{t('item_modal.variants_section.save')}</Button>
+                    <Button size="sm" variant="ghost" onClick={() => setIsAdding(false)}>{t('item_modal.variants_section.cancel')}</Button>
                 </div>
             )}
         </div>
@@ -213,12 +213,12 @@ const ItemModifiersSection: React.FC<{
         <div className="space-y-4 pt-4 border-t">
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-sm font-medium">Modifier Groups</h3>
-                    <p className="text-xs text-muted-foreground">Add choices or add-ons (e.g., Milk Choice, Extra Toppings).</p>
+                    <h3 className="text-sm font-medium">{t('item_modal.modifiers_section.title')}</h3>
+                    <p className="text-xs text-muted-foreground">{t('item_modal.modifiers_section.hint')}</p>
                 </div>
                 {!isAddingGroup && (
                     <Button variant="outline" size="sm" onClick={() => setIsAddingGroup(true)}>
-                        <Plus className="h-4 w-4 mr-1" /> Add Group
+                        <Plus className="h-4 w-4 mr-1" /> {t('item_modal.modifiers_section.add_group')}
                     </Button>
                 )}
             </div>
@@ -255,14 +255,14 @@ const ItemModifiersSection: React.FC<{
 
                                 {addingItemToGroup === group.id ? (
                                     <div className="flex items-center gap-2 mt-2">
-                                        <Input placeholder="Choice name" value={newItemName} onChange={e => setNewItemName(e.target.value)} className="h-8 text-sm" />
-                                        <Input type="number" placeholder="+ Price" value={newItemPrice} onChange={e => setNewItemPrice(e.target.value)} className="w-20 h-8 text-sm" />
-                                        <Button size="sm" onClick={() => handleAddItem(group.id)}>Add</Button>
-                                        <Button size="sm" variant="ghost" onClick={() => setAddingItemToGroup(null)}>Cancel</Button>
+                                        <Input placeholder={t('item_modal.modifiers_section.choice_placeholder')} value={newItemName} onChange={e => setNewItemName(e.target.value)} className="h-8 text-sm" />
+                                        <Input type="number" placeholder={t('item_modal.modifiers_section.price_placeholder')} value={newItemPrice} onChange={e => setNewItemPrice(e.target.value)} className="w-20 h-8 text-sm" />
+                                        <Button size="sm" onClick={() => handleAddItem(group.id)}>{t('item_modal.modifiers_section.add')}</Button>
+                                        <Button size="sm" variant="ghost" onClick={() => setAddingItemToGroup(null)}>{t('item_modal.modifiers_section.cancel')}</Button>
                                     </div>
                                 ) : (
                                     <Button variant="ghost" size="sm" className="h-6 text-xs mt-1" onClick={() => { setAddingItemToGroup(group.id); setNewItemName(''); setNewItemPrice('0'); }}>
-                                        <Plus className="h-3 w-3 mr-1" /> Add Option
+                                        <Plus className="h-3 w-3 mr-1" /> {t('item_modal.modifiers_section.add_option')}
                                     </Button>
                                 )}
                             </div>
@@ -273,34 +273,34 @@ const ItemModifiersSection: React.FC<{
 
             {isAddingGroup && (
                 <div className="space-y-3 p-3 bg-muted/30 rounded-md border mt-2">
-                    <div className="font-medium text-sm">New Modifier Group</div>
+                    <div className="font-medium text-sm">{t('item_modal.modifiers_section.new_group_title')}</div>
                     <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-1">
-                            <label className="text-xs text-muted-foreground">Group Name</label>
-                            <Input placeholder="e.g. Milk Choice" value={newGroupName} onChange={e => setNewGroupName(e.target.value)} className="h-8" />
+                            <label className="text-xs text-muted-foreground">{t('item_modal.modifiers_section.group_name_label')}</label>
+                            <Input placeholder={t('item_modal.modifiers_section.group_name_placeholder')} value={newGroupName} onChange={e => setNewGroupName(e.target.value)} className="h-8" />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs text-muted-foreground">Selection Mode</label>
+                            <label className="text-xs text-muted-foreground">{t('item_modal.modifiers_section.selection_mode_label')}</label>
                             <Select value={newGroupSelMode} onValueChange={(val: any) => setNewGroupSelMode(val)}>
                                 <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="single">Single (Radio)</SelectItem>
-                                    <SelectItem value="multiple">Multiple (Checkbox)</SelectItem>
+                                    <SelectItem value="single">{t('item_modal.modifiers_section.single_option')}</SelectItem>
+                                    <SelectItem value="multiple">{t('item_modal.modifiers_section.multiple_option')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs text-muted-foreground">Min Selections (0 = optional)</label>
+                            <label className="text-xs text-muted-foreground">{t('item_modal.modifiers_section.min_selections_label')}</label>
                             <Input type="number" value={newGroupMin} onChange={e => setNewGroupMin(e.target.value)} className="h-8" />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs text-muted-foreground">Max Selections</label>
+                            <label className="text-xs text-muted-foreground">{t('item_modal.modifiers_section.max_selections_label')}</label>
                             <Input type="number" value={newGroupMax} onChange={e => setNewGroupMax(e.target.value)} className="h-8" />
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <Button size="sm" onClick={handleAddGroup}>Save Group</Button>
-                        <Button size="sm" variant="ghost" onClick={() => setIsAddingGroup(false)}>Cancel</Button>
+                        <Button size="sm" onClick={handleAddGroup}>{t('item_modal.modifiers_section.save_group')}</Button>
+                        <Button size="sm" variant="ghost" onClick={() => setIsAddingGroup(false)}>{t('item_modal.modifiers_section.cancel')}</Button>
                     </div>
                 </div>
             )}
@@ -475,8 +475,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
                     <PopoverContent className="w-full p-0" align="start">
                         <Command>
-                            <CommandInput placeholder="Search items..." />
-                            <CommandEmpty>No items found.</CommandEmpty>
+                            <CommandInput placeholder={t('item_modal.search_items_placeholder')} />
+                            <CommandEmpty>{t('item_modal.no_items_found')}</CommandEmpty>
 
                             <CommandGroup>
                                 {availableItems?.map((item) => (
@@ -568,8 +568,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             </PopoverTrigger>
                             <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                                 <Command>
-                                    <CommandInput placeholder="Search allergies..." />
-                                    <CommandEmpty>No allergies found.</CommandEmpty>
+                                    <CommandInput placeholder={t('item_modal.search_allergies_placeholder')} />
+                                    <CommandEmpty>{t('item_modal.no_allergies_found')}</CommandEmpty>
                                     <CommandList className="max-h-60 overflow-y-auto">
                                         <CommandGroup>
                                             {allergies.map((allergy) => {
@@ -657,15 +657,15 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     ) : (
                         <div className="p-4 bg-muted/40 rounded-lg text-sm text-muted-foreground border flex items-start gap-2">
                             <Info className="h-4 w-4 mt-0.5 shrink-0" />
-                            <p>Save this item first to add Variants and Modifier Groups.</p>
+                            <p>{t('item_modal.save_first_hint')}</p>
                         </div>
                     )}
 
                     {/* Kitchen Station */}
                     <div className="space-y-2 pt-4 border-t">
-                        <label className="text-sm font-medium">Kitchen Station</label>
+                        <label className="text-sm font-medium">{t('item_modal.kitchen_station.label')}</label>
                         <p className="text-xs text-muted-foreground">
-                            Which station prepares this item. Leave as "None" for items that need no kitchen prep.
+                            {t('item_modal.kitchen_station.hint')}
                         </p>
                         <Select
                             value={kitchenStationId ?? "none"}
@@ -675,7 +675,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="none">None — no prep needed</SelectItem>
+                                <SelectItem value="none">{t('item_modal.kitchen_station.none_option')}</SelectItem>
                                 {kitchenStations.map((ks) => (
                                     <SelectItem key={ks.id} value={ks.id}>
                                         {ks.name}
@@ -753,14 +753,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                                     >
                                                         {inventoryItemId
                                                             ? inventoryItems?.find((item: any) => item.id === inventoryItemId)?.name
-                                                            : fetchingInventoryItems ? "Loading..." : t('shared.actions.search')}
+                                                            : fetchingInventoryItems ? t('item_modal.loading') : t('shared.actions.search')}
                                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                     </Button>
                                                 </PopoverTrigger>
                                                 <PopoverContent className="w-full p-0">
                                                     <Command>
                                                         <CommandInput placeholder={t('shared.actions.search')} />
-                                                        <CommandEmpty>No items found.</CommandEmpty>
+                                                        <CommandEmpty>{t('item_modal.no_items_found')}</CommandEmpty>
                                                         <CommandGroup>
                                                             {inventoryItems?.map((item: any) => (
                                                                 <CommandItem
@@ -785,7 +785,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                     ) : (
                                         <div className="space-y-4 animate-in fade-in zoom-in-95">
                                             <div className="space-y-2">
-                                                <label className="text-sm font-medium">Unit System</label>
+                                                <label className="text-sm font-medium">{t('item_modal.unit_system.label')}</label>
                                                 <Select value={inventoryUnitSystem} onValueChange={(val) => {
                                                     setInventoryUnitSystem(val);
                                                     setInventoryUnit(''); // Reset selected unit when system changes
@@ -794,10 +794,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                                         <SelectValue />
                                                     </SelectTrigger>
                                                     <SelectContent className="max-h-60 overflow-y-auto">
-                                                        <SelectItem value="metric">Metric</SelectItem>
-                                                        <SelectItem value="imperial">Imperial</SelectItem>
-                                                        <SelectItem value="other">Other (Count/Pieces)</SelectItem>
-                                                        <SelectItem value="all">All Systems</SelectItem>
+                                                        <SelectItem value="metric">{t('item_modal.unit_system.metric')}</SelectItem>
+                                                        <SelectItem value="imperial">{t('item_modal.unit_system.imperial')}</SelectItem>
+                                                        <SelectItem value="other">{t('item_modal.unit_system.other')}</SelectItem>
+                                                        <SelectItem value="all">{t('item_modal.unit_system.all')}</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -814,14 +814,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                                         >
                                                             {inventoryUnit
                                                                 ? inventoryUnits?.find((u: any) => u.id.toString() === inventoryUnit)?.name
-                                                                : fetchingInventoryUnits ? "Loading..." : t('item_modal.tracking.unit_placeholder')}
+                                                                : fetchingInventoryUnits ? t('item_modal.loading') : t('item_modal.tracking.unit_placeholder')}
                                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                         </Button>
                                                     </PopoverTrigger>
                                                     <PopoverContent className="w-full p-0">
                                                         <Command>
                                                             <CommandInput placeholder={t('shared.actions.search')} />
-                                                            <CommandEmpty>No units found.</CommandEmpty>
+                                                            <CommandEmpty>{t('item_modal.no_units_found')}</CommandEmpty>
                                                             <CommandList className="max-h-60 overflow-y-auto">
                                                                 <CommandGroup>
                                                                     {inventoryUnits?.map((unit: any) => (
@@ -869,8 +869,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     <div className="space-y-4 pt-4 border-t">
                         <div className="flex items-center justify-between">
                             <div>
-                                <label className="text-sm font-medium">Bundle / Combo</label>
-                                <p className="text-xs text-muted-foreground">Sell this as a fixed set of other menu items at one price</p>
+                                <label className="text-sm font-medium">{t('item_modal.bundle.label')}</label>
+                                <p className="text-xs text-muted-foreground">{t('item_modal.bundle.hint')}</p>
                             </div>
                             <Switch checked={isBundle} onCheckedChange={setIsBundle} />
                         </div>
@@ -880,7 +880,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                 <div className="flex gap-2">
                                     <Select value={newComponentId} onValueChange={setNewComponentId}>
                                         <SelectTrigger className="flex-1">
-                                            <SelectValue placeholder="Add an item..." />
+                                            <SelectValue placeholder={t('item_modal.bundle.add_item_placeholder')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {(availableItems ?? [])

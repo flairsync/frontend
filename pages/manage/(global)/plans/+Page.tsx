@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck, Minus, Plus } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Loader2, BadgeCheck, Minus, Plus, AlertTriangle } from "lucide-react";
 import { SubscriptionPack, PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { SubscriptionStatus } from "@/models/Subscription";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
@@ -65,6 +65,8 @@ const PlansPage: React.FC = () => {
 
   const onChoosePlan = (packId: string) => {
     const pack = subscriptionPacks?.find((p) => p.id === packId);
+    if (pack?.exceedsMaxBusinesses(businessCount)) return;
+
     const hasRealSubscription = currentUserSubscription?.id && !currentUserSubscription.isDefault;
 
     // Existing subscribers must go through the change-plan flow (in-place PATCH on Lemon
@@ -224,6 +226,7 @@ const PlansPage: React.FC = () => {
         {displayedPacks.map((pack) => {
           const planAction = getPlanAction(pack);
           const isCurrentPlan = planAction === "current";
+          const exceedsMax = pack.exceedsMaxBusinesses(businessCount);
 
           return (
           <motion.div
@@ -233,7 +236,8 @@ const PlansPage: React.FC = () => {
           >
             <Card className={cn(
               "relative border border-border shadow-sm hover:shadow-lg transition bg-card flex flex-col h-full",
-              isCurrentPlan && "ring-2 ring-emerald-500 border-emerald-500"
+              isCurrentPlan && "ring-2 ring-emerald-500 border-emerald-500",
+              exceedsMax && !isCurrentPlan && "opacity-60"
             )}>
               {isCurrentPlan && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-md z-10">
@@ -255,7 +259,12 @@ const PlansPage: React.FC = () => {
                     <span className="text-lg font-normal">{pack.currency}</span>
                   </p>
                   <p className="text-muted-foreground text-sm">{pack.getPlanDuration()}</p>
-                  {businessCount < pack.minBusinesses && (
+                  {exceedsMax ? (
+                    <p className="text-xs text-destructive mt-1 font-medium flex items-center justify-center gap-1">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      {t("plans_page.exceeds_max_businesses", { count: pack.maxBusinesses })}
+                    </p>
+                  ) : businessCount < pack.minBusinesses && (
                     <p className="text-xs text-primary mt-1 font-medium">
                       {t("plans_page.minimum_businesses", { count: pack.minBusinesses })}
                     </p>
@@ -301,9 +310,9 @@ const PlansPage: React.FC = () => {
                   onClick={() => {
                     onChoosePlan(pack.id)
                   }}
-                  disabled={isCurrentPlan || creatingCheckout || changingPlan}
-                  variant={isCurrentPlan ? "outline" : planAction === "downgrade" ? "secondary" : "default"}
-                  className="w-full mt-auto">{planActionLabel[planAction]}</Button>
+                  disabled={isCurrentPlan || exceedsMax || creatingCheckout || changingPlan}
+                  variant={isCurrentPlan ? "outline" : exceedsMax ? "secondary" : planAction === "downgrade" ? "secondary" : "default"}
+                  className="w-full mt-auto">{exceedsMax ? t("plans_page.not_available") : planActionLabel[planAction]}</Button>
               </CardContent>
             </Card>
           </motion.div>

@@ -44,10 +44,10 @@ type BusinessGeneralInfo = {
 
 type BusinessStatusValue = "auto" | "open" | "closed";
 
-const STATUS_OPTIONS: { value: BusinessStatusValue; label: string; description: string }[] = [
-    { value: "auto", label: "Auto", description: "Open/closed follows your opening hours below" },
-    { value: "open", label: "Force open", description: "Always shows as open, regardless of hours" },
-    { value: "closed", label: "Force closed", description: "Always shows as closed, regardless of hours" },
+const getStatusOptions = (t: any): { value: BusinessStatusValue; label: string; description: string }[] => [
+    { value: "auto", label: t("settings_page.open_periods.status_auto"), description: t("settings_page.open_periods.status_auto_desc") },
+    { value: "open", label: t("settings_page.open_periods.status_force_open"), description: t("settings_page.open_periods.status_force_open_desc") },
+    { value: "closed", label: t("settings_page.open_periods.status_force_closed"), description: t("settings_page.open_periods.status_force_closed_desc") },
 ]
 
 type Props = {
@@ -60,6 +60,8 @@ type Props = {
     savingStatus?: boolean,
 }
 const BusinessSettingsOpenPeriods = (props: Props) => {
+    const { t } = useTranslation("management");
+    const STATUS_OPTIONS = getStatusOptions(t);
 
     const [status, setStatus] = useState<BusinessStatusValue>("auto");
     const [openHours, setOpenHours] = useState<OpeningHours[]>();
@@ -86,16 +88,16 @@ const BusinessSettingsOpenPeriods = (props: Props) => {
 
     return (
         <AccordionItem value="open-periods" className="border rounded-lg px-3">
-            <AccordionTrigger>Open periods</AccordionTrigger>
+            <AccordionTrigger>{t("settings_page.open_periods.title")}</AccordionTrigger>
             <AccordionContent className="space-y-4 py-2">
 
                 <div className="space-y-2 mb-3">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <span className="text-sm font-medium text-muted-foreground">Business status</span>
+                            <span className="text-sm font-medium text-muted-foreground">{t("settings_page.open_periods.business_status")}</span>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>Auto marks the business open/closed based on the opening hours below. Force open/closed overrides that until changed again.</p>
+                            <p>{t("settings_page.open_periods.business_status_hint")}</p>
                         </TooltipContent>
                     </Tooltip>
                     <div className="inline-flex rounded-lg border p-1 gap-1">
@@ -126,7 +128,7 @@ const BusinessSettingsOpenPeriods = (props: Props) => {
                 />
                 <Button
                     disabled={props.disabled}
-                    onClick={onSaveDetails}>Save</Button>
+                    onClick={onSaveDetails}>{t("shared.actions.save")}</Button>
             </AccordionContent>
         </AccordionItem>
     )

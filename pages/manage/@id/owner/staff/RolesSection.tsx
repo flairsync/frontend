@@ -51,6 +51,7 @@ type RolesSectionProps = {
 };
 
 const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: RolesSectionProps) => {
+    const { t } = useTranslation("management");
 
     const {
         routeParams
@@ -89,7 +90,7 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                 <CardHeader
                     className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
                 >
-                    <CardTitle>Roles</CardTitle>
+                    <CardTitle>{t("roles_section.title")}</CardTitle>
                     <div className="flex gap-2">
                         <div className="flex justify-end">
                             {canCreate && (
@@ -161,11 +162,11 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                         <Table className="min-w-full">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Role Name</TableHead>
-                                    {canUpdate && <TableHead>Employees</TableHead>}
-                                    <TableHead className="text-center">Permissions</TableHead>
+                                    <TableHead>{t("roles_section.role_name")}</TableHead>
+                                    {canUpdate && <TableHead>{t("roles_section.employees")}</TableHead>}
+                                    <TableHead className="text-center">{t("roles_section.permissions")}</TableHead>
                                     {(canUpdate || canDelete) && (
-                                        <TableHead className="sticky right-0 bg-card z-10 text-right">Actions</TableHead>
+                                        <TableHead className="sticky right-0 bg-card z-10 text-right">{t("shared.actions.all")}</TableHead>
                                     )}
                                 </TableRow>
                             </TableHeader>
@@ -202,13 +203,13 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                         setBatchEditRoleModal(true);
                                                     }}
                                                 >
-                                                    {getEmployeeCountForRole(role.id)} Emps.
+                                                    {t("roles_section.emps_count", { count: getEmployeeCountForRole(role.id) })}
                                                     <Edit className="h-4 w-4" />
                                                 </Button>
                                             </TableCell>
                                         )}
                                         <TableCell className="text-center align-middle">
-                                            {role.permissions.length} Permissions
+                                            {t("roles_section.permissions_count", { count: role.permissions.length })}
                                         </TableCell>
                                         {(canUpdate || canDelete) && (
                                             <TableCell className="sticky right-0 bg-card z-10 text-right align-middle">
@@ -224,7 +225,7 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                             }}
                                                         >
                                                             <Edit className="h-4 w-4 mr-1" />
-                                                            Edit
+                                                            {t("shared.actions.edit")}
                                                         </Button>
                                                     )}
                                                     {canDelete && (
@@ -233,7 +234,7 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                             variant="destructive"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                if (confirm(`Are you sure you want to delete the role "${role.name}"?`)) {
+                                                                if (confirm(t("roles_section.delete_confirm", { name: role.name }))) {
                                                                     deleteRole(role.id)
                                                                 }
                                                             }}

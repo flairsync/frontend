@@ -240,7 +240,7 @@ const MenusPage: React.FC = () => {
                                     {t('menu_management.list.create_new_menu_card')}
                                 </p>
                                 {!canCreateMenu && (
-                                    <span className="text-[10px] font-bold text-indigo-600 uppercase mt-1">Upgrade Required</span>
+                                    <span className="text-[10px] font-bold text-indigo-600 uppercase mt-1">{t('menu_management.upgrade_required')}</span>
                                 )}
                             </Card>
                         </motion.div>

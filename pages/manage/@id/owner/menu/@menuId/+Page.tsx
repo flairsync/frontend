@@ -621,7 +621,7 @@ const MenuDetailPage: React.FC = () => {
                     >
                         <Plus className="h-4 w-4 sm:mr-1" />
                         <span className="hidden sm:inline">{t('menu_management.actions.add_category')}</span>
-                        {!canCreateMenu && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">Upgrade</span>}
+                        {!canCreateMenu && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">{t('menu_management.upgrade')}</span>}
                     </Button>
                     <Button
                         onClick={() => {
@@ -640,7 +640,7 @@ const MenuDetailPage: React.FC = () => {
                     >
                         <Sparkles className="h-4 w-4 sm:mr-1" />
                         <span className="hidden sm:inline">{t('menu_management.actions.ai_import')}</span>
-                        {!canCreateProduct && <span className="text-[10px] font-bold text-fuchsia-600 uppercase ml-1">Upgrade</span>}
+                        {!canCreateProduct && <span className="text-[10px] font-bold text-fuchsia-600 uppercase ml-1">{t('menu_management.upgrade')}</span>}
                     </Button>
                     <Button
                         disabled={!hasChanges()}

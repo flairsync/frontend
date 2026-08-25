@@ -641,7 +641,9 @@
       "import_success": "Articles du menu importés avec succès !",
       "import_partial": "Articles importés, mais {{skipped}} article(s) ont été ignorés car la limite de produits de votre plan a été atteinte.",
       "limit_warning": "Votre plan n'autorise plus que {{remaining}} article(s). {{skipped}} article(s) ne seront pas importés sauf mise à niveau."
-    }
+    },
+    "upgrade": "Améliorer",
+    "upgrade_required": "Mise à niveau requise"
   },
   "item_modal": {
     "create_title": "Créer un nouvel article",
@@ -666,6 +668,58 @@
       "unit_placeholder": "Sélectionner l'unité",
       "quantity_per_sale": "Quelle quantité est consommée par vente ?",
       "quantity_hint": "S'il est vendu en litres et que cet article utilise 0,5 L, entrez 0,5"
+    },
+    "variants_section": {
+      "title": "Variantes",
+      "hint": "Ajoutez des tailles ou des variations spécifiques avec des prix distincts.",
+      "add_button": "Ajouter une variante",
+      "name_placeholder": "Nom (ex. Grand)",
+      "price_placeholder": "Prix",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "modifiers_section": {
+      "title": "Groupes de modificateurs",
+      "hint": "Ajoutez des choix ou des suppléments (ex. Choix du lait, Suppléments).",
+      "add_group": "Ajouter un groupe",
+      "choice_placeholder": "Nom du choix",
+      "price_placeholder": "+ Prix",
+      "add": "Ajouter",
+      "cancel": "Annuler",
+      "add_option": "Ajouter une option",
+      "new_group_title": "Nouveau groupe de modificateurs",
+      "group_name_label": "Nom du groupe",
+      "group_name_placeholder": "ex. Choix du lait",
+      "selection_mode_label": "Mode de sélection",
+      "single_option": "Unique (Radio)",
+      "multiple_option": "Multiple (Case à cocher)",
+      "min_selections_label": "Sélections min. (0 = optionnel)",
+      "max_selections_label": "Sélections max.",
+      "save_group": "Enregistrer le groupe"
+    },
+    "save_first_hint": "Enregistrez d'abord cet article pour ajouter des variantes et des groupes de modificateurs.",
+    "kitchen_station": {
+      "label": "Poste de cuisine",
+      "hint": "Le poste qui prépare cet article. Laissez sur « Aucun » pour les articles ne nécessitant aucune préparation.",
+      "none_option": "Aucun — pas de préparation nécessaire"
+    },
+    "search_items_placeholder": "Rechercher des articles...",
+    "no_items_found": "Aucun article trouvé.",
+    "no_allergies_found": "Aucun allergène trouvé.",
+    "search_allergies_placeholder": "Rechercher des allergènes...",
+    "loading": "Chargement...",
+    "no_units_found": "Aucune unité trouvée.",
+    "unit_system": {
+      "label": "Système d'unités",
+      "metric": "Métrique",
+      "imperial": "Impérial",
+      "other": "Autre (Nombre/Pièces)",
+      "all": "Tous les systèmes"
+    },
+    "bundle": {
+      "label": "Formule / Combo",
+      "hint": "Vendre comme un ensemble fixe d'autres articles du menu à un seul prix",
+      "add_item_placeholder": "Ajouter un article..."
     }
   },
   "inventory_management": {
@@ -800,7 +854,17 @@
       "invalid_file_type": "Veuillez sélectionner une image (JPEG, PNG, WEBP, GIF) ou un fichier CSV.",
       "analyze_button": "Analyser le fichier",
       "analyzing": "Analyse en cours..."
-    }
+    },
+    "tabs": {
+      "all_items": "Tous les articles",
+      "movement_timeline": "Historique des mouvements"
+    },
+    "search_barcode_placeholder": "Rechercher un code-barres",
+    "all_groups": "Tous les groupes",
+    "all_units": "Toutes les unités",
+    "no_group_found": "Aucun groupe trouvé.",
+    "loading": "Chargement de l'inventaire…",
+    "movement_history": "Historique des mouvements"
   },
   "manage_overview": {
     "current_plan_title": "Forfait actuel",
@@ -867,7 +931,8 @@
     "upgrade_message": "Choisissez un forfait adapté aux besoins de votre établissement et débloquez plus de puissance.",
     "per_business_price": "{{price}} / commerce",
     "min_businesses_one": "minimum {{count}} commerce",
-    "min_businesses_other": "minimum {{count}} commerces"
+    "min_businesses_other": "minimum {{count}} commerces",
+    "upgrade_your_plan": "Améliorez votre forfait"
   },
   "floor_plan": {
     "title": "Plan de salle",
@@ -881,7 +946,41 @@
     "delete_table": "Supprimer la table",
     "capacity": "Capacité",
     "position": "Position",
-    "shape": "Forme"
+    "shape": "Forme",
+    "disabled_banner": {
+      "message": "La vue du plan de salle est actuellement désactivée.",
+      "go_to_settings": "Aller aux paramètres →"
+    },
+    "batch_create": "Création en lot",
+    "stats": {
+      "total_floors": "Total des étages",
+      "published": "Publié",
+      "unpublished": "Non publié"
+    },
+    "designer": "Concepteur",
+    "status": "Statut",
+    "loading": "Chargement...",
+    "no_floors_found": "Aucun étage trouvé.",
+    "draft": "Brouillon",
+    "number": "Numéro",
+    "no_tables_found": "Aucune table trouvée.",
+    "mark_available": "Marquer disponible",
+    "table_status": {
+      "available": "Disponible",
+      "occupied": "Occupée",
+      "reserved": "Réservée",
+      "cleaning": "Nettoyage requis",
+      "out_of_service": "Hors service"
+    },
+    "published_hint": "Les étages publiés sont visibles dans la vue du plan",
+    "table_number": "Numéro de table",
+    "duplicate_number_warning": "Attention : ce numéro de table existe déjà.",
+    "select_floor_placeholder": "Sélectionner un étage",
+    "shapes": {
+      "circle": "Cercle",
+      "square": "Carré",
+      "rectangle": "Rectangle"
+    }
   },
   "orders": {
     "title": "Commandes",
@@ -2506,6 +2605,17 @@
         "save_changes": "Enregistrer les modifications",
         "create": "Créer"
       }
+    },
+    "open_periods": {
+      "title": "Périodes d'ouverture",
+      "business_status": "Statut de l'établissement",
+      "business_status_hint": "Auto affiche l'établissement ouvert/fermé selon les horaires ci-dessous. Forcer ouvert/fermé remplace cela jusqu'à nouveau changement.",
+      "status_auto": "Auto",
+      "status_auto_desc": "L'état ouvert/fermé suit vos horaires ci-dessous",
+      "status_force_open": "Forcer ouvert",
+      "status_force_open_desc": "Affiche toujours comme ouvert, quels que soient les horaires",
+      "status_force_closed": "Forcer fermé",
+      "status_force_closed_desc": "Affiche toujours comme fermé, quels que soient les horaires"
     }
   },
   "discounts_page": {
@@ -3461,7 +3571,10 @@
     "staff": "Personnel",
     "menus": "Menus",
     "products": "Produits",
-    "unlimited": "Illimité"
+    "unlimited": "Illimité",
+    "exceeds_max_businesses_one": "Cette formule ne prend en charge qu'{{count}} établissement",
+    "exceeds_max_businesses_other": "Cette formule ne prend en charge que {{count}} établissements",
+    "not_available": "Non disponible"
   },
   "owner_application_detail_page": {
     "not_found": "Candidature introuvable",
@@ -4284,5 +4397,110 @@
       "keep": "Conserver la réservation",
       "confirm": "Oui, annuler"
     }
+  },
+  "batch_create_table_modal": {
+    "select_floor_error": "Veuillez sélectionner un étage",
+    "no_tables_error": "Aucune table à créer",
+    "fix_conflicts_error": "Veuillez corriger les conflits de numéros de table avant de créer.",
+    "title_config": "Créer des tables en lot",
+    "title_review": "Vérifier les tables",
+    "description_config": "Configurez les paramètres pour générer plusieurs tables.",
+    "description_review": "Vérifiez et modifiez les tables générées avant de les créer.",
+    "count_label": "Nombre de tables",
+    "start_number_label": "Numéro de départ",
+    "default_capacity_label": "Capacité par défaut",
+    "default_shape_label": "Forme par défaut",
+    "name_prefix_label": "Préfixe du nom",
+    "name_prefix_placeholder": "ex. Table",
+    "table_hash": "Table n°{{number}}",
+    "duplicate_number": "Numéro en double",
+    "number_label": "Numéro",
+    "empty_review": "Aucune table à créer. Revenez en arrière pour en générer.",
+    "generate_preview": "Générer l'aperçu",
+    "back_to_config": "Retour à la configuration",
+    "creating": "Création...",
+    "confirm_count_one": "Confirmer {{count}} table",
+    "confirm_count_other": "Confirmer {{count}} tables"
+  },
+  "add_role_modal": {
+    "edit_role": "Modifier le rôle",
+    "add_role": "Ajouter un rôle",
+    "add_new_role": "Ajouter un nouveau rôle",
+    "update_description": "Mettre à jour le nom du rôle et les permissions.",
+    "create_description": "Créer un nouveau rôle et assigner des permissions.",
+    "role_name": "Nom du rôle",
+    "role_name_placeholder": "ex. Manager",
+    "add_permission": "Ajouter une permission",
+    "select_permission": "Sélectionner une permission",
+    "search_permission_placeholder": "Rechercher une permission...",
+    "no_permission_found": "Aucune permission trouvée.",
+    "assigned_permissions": "Permissions assignées",
+    "station_permissions": "Permissions de station",
+    "terminal_access": "Accès terminal",
+    "can_access_pos": "Peut accéder aux terminaux POS",
+    "can_access_kds": "Peut accéder aux terminaux KDS",
+    "pos_actions": "Actions POS",
+    "create_manage_orders": "Créer et gérer les commandes",
+    "void_line_items": "Annuler des articles",
+    "cancel_orders": "Annuler des commandes",
+    "process_refunds": "Traiter des remboursements",
+    "apply_discounts": "Appliquer des remises",
+    "update": "Mettre à jour"
+  },
+  "edit_staff_settings_modal": {
+    "title": "Modifier les paramètres de travail du personnel",
+    "max_weekly_hours": "Dépassement des heures hebdo. max",
+    "max_weekly_hours_placeholder": "ex. 40",
+    "min_gap_between_shifts": "Dépassement de l'écart min. entre services",
+    "min_gap_placeholder": "ex. 8",
+    "split_shift_gap": "Dépassement de l'écart de service fractionné",
+    "split_shift_gap_placeholder": "ex. 1",
+    "save_changes": "Enregistrer les modifications"
+  },
+  "edit_staff_roles_modal": {
+    "title": "Modifier les rôles du personnel",
+    "add_role": "Ajouter un rôle",
+    "search_role_placeholder": "Rechercher un rôle...",
+    "no_role_found": "Aucun rôle trouvé.",
+    "no_roles_assigned": "Aucun rôle assigné."
+  },
+  "roles_section": {
+    "title": "Rôles",
+    "role_name": "Nom du rôle",
+    "employees": "Employés",
+    "permissions": "Permissions",
+    "emps_count_one": "{{count}} employé",
+    "emps_count_other": "{{count}} employés",
+    "permissions_count_one": "{{count}} permission",
+    "permissions_count_other": "{{count}} permissions",
+    "delete_confirm": "Voulez-vous vraiment supprimer le rôle « {{name}} » ?"
+  },
+  "staff_menu_page": {
+    "access_denied": "Accès refusé",
+    "access_denied_description": "Vous n'avez pas la permission de voir le menu.",
+    "menus": "Menus",
+    "menu_structure": "Structure du menu",
+    "save_changes": "Enregistrer les modifications",
+    "add_category": "Ajouter une catégorie",
+    "select_a_menu": "Sélectionner un menu",
+    "select_a_menu_description": "Choisissez un menu dans la barre latérale ou créez-en un nouveau pour gérer sa structure, ses catégories et ses articles.",
+    "create_first_menu": "Créer le premier menu",
+    "move_to_category": "Déplacer vers une catégorie",
+    "move_to_category_description": "Sélectionnez la catégorie cible vers laquelle vous voulez déplacer cet article.",
+    "current": "(Actuel)"
+  },
+  "business_management_header": {
+    "marketplace": "Marketplace",
+    "guest_shop": "Boutique invité",
+    "b2b_supplies": "Fournitures B2B",
+    "official_gear": "Équipement officiel",
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "businesses": "Établissements"
+  },
+  "view_role_modal": {
+    "title": "Voir le rôle : {{name}}",
+    "description": "Permissions assignées à ce rôle.",
+    "no_permissions_assigned": "Aucune permission assignée."
   }
 }

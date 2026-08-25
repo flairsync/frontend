@@ -639,7 +639,9 @@
       "import_success": "Articles del menú importats correctament!",
       "import_partial": "Articles importats, però s'han omès {{skipped}} article(s) perquè s'ha assolit el límit de productes del teu pla.",
       "limit_warning": "El teu pla només permet {{remaining}} article(s) més. {{skipped}} article(s) no s'importaran llevat que actualitzis el pla."
-    }
+    },
+    "upgrade": "Millora",
+    "upgrade_required": "Cal millorar el pla"
   },
   "item_modal": {
     "create_title": "Crear nou article",
@@ -664,6 +666,58 @@
       "unit_placeholder": "Seleccionar unitat",
       "quantity_per_sale": "Quina quantitat es consumeix per venda?",
       "quantity_hint": "Si es ven en litres i aquest article usa 0.5 L, introdueix 0.5"
+    },
+    "variants_section": {
+      "title": "Variants",
+      "hint": "Afegeix mides o variacions específiques amb preus diferents.",
+      "add_button": "Afegeix variant",
+      "name_placeholder": "Nom (ex. Gran)",
+      "price_placeholder": "Preu",
+      "save": "Desa",
+      "cancel": "Cancel·la"
+    },
+    "modifiers_section": {
+      "title": "Grups de modificadors",
+      "hint": "Afegeix opcions o extres (ex. Tipus de llet, Extres).",
+      "add_group": "Afegeix grup",
+      "choice_placeholder": "Nom de l'opció",
+      "price_placeholder": "+ Preu",
+      "add": "Afegeix",
+      "cancel": "Cancel·la",
+      "add_option": "Afegeix opció",
+      "new_group_title": "Nou grup de modificadors",
+      "group_name_label": "Nom del grup",
+      "group_name_placeholder": "ex. Tipus de llet",
+      "selection_mode_label": "Mode de selecció",
+      "single_option": "Única (Ràdio)",
+      "multiple_option": "Múltiple (Casella)",
+      "min_selections_label": "Seleccions mín. (0 = opcional)",
+      "max_selections_label": "Seleccions màx.",
+      "save_group": "Desa el grup"
+    },
+    "save_first_hint": "Desa aquest article primer per afegir Variants i Grups de modificadors.",
+    "kitchen_station": {
+      "label": "Estació de cuina",
+      "hint": "Quina estació prepara aquest article. Deixa «Cap» per a articles que no necessiten preparació.",
+      "none_option": "Cap — sense preparació necessària"
+    },
+    "search_items_placeholder": "Cerca articles...",
+    "no_items_found": "No s'han trobat articles.",
+    "no_allergies_found": "No s'han trobat al·lergens.",
+    "search_allergies_placeholder": "Cerca al·lergens...",
+    "loading": "Carregant...",
+    "no_units_found": "No s'han trobat unitats.",
+    "unit_system": {
+      "label": "Sistema d'unitats",
+      "metric": "Mètric",
+      "imperial": "Imperial",
+      "other": "Altre (Quantitat/Peces)",
+      "all": "Tots els sistemes"
+    },
+    "bundle": {
+      "label": "Combo / Paquet",
+      "hint": "Vendre com un conjunt fix d'altres articles del menú a un sol preu",
+      "add_item_placeholder": "Afegeix un article..."
     }
   },
   "inventory_management": {
@@ -798,7 +852,17 @@
       "invalid_file_type": "Selecciona una imatge (JPEG, PNG, WEBP, GIF) o un fitxer CSV.",
       "analyze_button": "Analitzar Fitxer",
       "analyzing": "Analitzant..."
-    }
+    },
+    "tabs": {
+      "all_items": "Tots els articles",
+      "movement_timeline": "Historial de moviments"
+    },
+    "search_barcode_placeholder": "Cerca codi de barres",
+    "all_groups": "Tots els grups",
+    "all_units": "Totes les unitats",
+    "no_group_found": "No s'ha trobat cap grup.",
+    "loading": "Carregant inventari…",
+    "movement_history": "Historial de moviments"
   },
   "manage_overview": {
     "current_plan_title": "Pla actual",
@@ -865,7 +929,8 @@
     "upgrade_message": "Tria un pla adaptat a les necessitats del teu negoci i desbloqueja més potència.",
     "per_business_price": "{{price}} / negoci",
     "min_businesses_one": "mínim {{count}} negoci",
-    "min_businesses_other": "mínim {{count}} negocis"
+    "min_businesses_other": "mínim {{count}} negocis",
+    "upgrade_your_plan": "Millora el teu pla"
   },
   "floor_plan": {
     "title": "Plànol de planta",
@@ -879,7 +944,41 @@
     "delete_table": "Eliminar taula",
     "capacity": "Capacitat",
     "position": "Posició",
-    "shape": "Forma"
+    "shape": "Forma",
+    "disabled_banner": {
+      "message": "La vista del pla de sala està actualment desactivada.",
+      "go_to_settings": "Ves a Configuració →"
+    },
+    "batch_create": "Creació en lot",
+    "stats": {
+      "total_floors": "Total de plantes",
+      "published": "Publicat",
+      "unpublished": "Sense publicar"
+    },
+    "designer": "Dissenyador",
+    "status": "Estat",
+    "loading": "Carregant...",
+    "no_floors_found": "No s'han trobat plantes.",
+    "draft": "Esborrany",
+    "number": "Número",
+    "no_tables_found": "No s'han trobat taules.",
+    "mark_available": "Marca com a disponible",
+    "table_status": {
+      "available": "Disponible",
+      "occupied": "Ocupada",
+      "reserved": "Reservada",
+      "cleaning": "Cal netejar",
+      "out_of_service": "Fora de servei"
+    },
+    "published_hint": "Les plantes publicades són visibles a la vista del pla",
+    "table_number": "Número de taula",
+    "duplicate_number_warning": "Avís: aquest número de taula ja existeix.",
+    "select_floor_placeholder": "Selecciona planta",
+    "shapes": {
+      "circle": "Cercle",
+      "square": "Quadrat",
+      "rectangle": "Rectangle"
+    }
   },
   "orders": {
     "title": "Comandes",
@@ -2504,6 +2603,17 @@
         "save_changes": "Desar els canvis",
         "create": "Crear"
       }
+    },
+    "open_periods": {
+      "title": "Períodes d'obertura",
+      "business_status": "Estat del negoci",
+      "business_status_hint": "Automàtic marca el negoci obert/tancat segons l'horari de sota. Força obert/tancat ho substitueix fins que es torni a canviar.",
+      "status_auto": "Automàtic",
+      "status_auto_desc": "L'estat obert/tancat segueix el teu horari de sota",
+      "status_force_open": "Força obert",
+      "status_force_open_desc": "Sempre es mostra com a obert, sigui quin sigui l'horari",
+      "status_force_closed": "Força tancat",
+      "status_force_closed_desc": "Sempre es mostra com a tancat, sigui quin sigui l'horari"
     }
   },
   "discounts_page": {
@@ -3459,7 +3569,10 @@
     "staff": "Personal",
     "menus": "Menús",
     "products": "Productes",
-    "unlimited": "Il·limitat"
+    "unlimited": "Il·limitat",
+    "exceeds_max_businesses_one": "Aquest pla només admet fins a {{count}} negoci",
+    "exceeds_max_businesses_other": "Aquest pla només admet fins a {{count}} negocis",
+    "not_available": "No disponible"
   },
   "owner_application_detail_page": {
     "not_found": "Sol·licitud no trobada",
@@ -4282,5 +4395,110 @@
       "keep": "Mantenir la reserva",
       "confirm": "Sí, cancel·lar"
     }
+  },
+  "batch_create_table_modal": {
+    "select_floor_error": "Selecciona una planta",
+    "no_tables_error": "No hi ha taules per crear",
+    "fix_conflicts_error": "Corregeix els conflictes de números de taula abans de crear.",
+    "title_config": "Crea taules en lot",
+    "title_review": "Revisa les taules",
+    "description_config": "Configura els paràmetres per generar diverses taules.",
+    "description_review": "Revisa i edita les taules generades abans de crear-les.",
+    "count_label": "Nombre de taules",
+    "start_number_label": "Número inicial",
+    "default_capacity_label": "Capacitat predeterminada",
+    "default_shape_label": "Forma predeterminada",
+    "name_prefix_label": "Prefix del nom",
+    "name_prefix_placeholder": "ex. Taula",
+    "table_hash": "Taula núm. {{number}}",
+    "duplicate_number": "Número duplicat",
+    "number_label": "Número",
+    "empty_review": "No hi ha taules per crear. Torna enrere per generar-ne.",
+    "generate_preview": "Genera la vista prèvia",
+    "back_to_config": "Torna a la configuració",
+    "creating": "Creant...",
+    "confirm_count_one": "Confirma {{count}} taula",
+    "confirm_count_other": "Confirma {{count}} taules"
+  },
+  "add_role_modal": {
+    "edit_role": "Edita el rol",
+    "add_role": "Afegeix rol",
+    "add_new_role": "Afegeix un rol nou",
+    "update_description": "Actualitza el nom del rol i els permisos.",
+    "create_description": "Crea un nou rol i assigna permisos.",
+    "role_name": "Nom del rol",
+    "role_name_placeholder": "ex. Manager",
+    "add_permission": "Afegeix permís",
+    "select_permission": "Selecciona un permís",
+    "search_permission_placeholder": "Cerca un permís...",
+    "no_permission_found": "No s'ha trobat cap permís.",
+    "assigned_permissions": "Permisos assignats",
+    "station_permissions": "Permisos d'estació",
+    "terminal_access": "Accés al terminal",
+    "can_access_pos": "Pot accedir a terminals POS",
+    "can_access_kds": "Pot accedir a terminals KDS",
+    "pos_actions": "Accions de POS",
+    "create_manage_orders": "Crea i gestiona comandes",
+    "void_line_items": "Anul·la articles",
+    "cancel_orders": "Cancel·la comandes",
+    "process_refunds": "Processa reemborsaments",
+    "apply_discounts": "Aplica descomptes",
+    "update": "Actualitza"
+  },
+  "edit_staff_settings_modal": {
+    "title": "Edita la configuració laboral del personal",
+    "max_weekly_hours": "Anul·lació d'hores setmanals màx.",
+    "max_weekly_hours_placeholder": "ex. 40",
+    "min_gap_between_shifts": "Anul·lació de l'interval mín. entre torns",
+    "min_gap_placeholder": "ex. 8",
+    "split_shift_gap": "Anul·lació de l'interval de torn partit",
+    "split_shift_gap_placeholder": "ex. 1",
+    "save_changes": "Desa els canvis"
+  },
+  "edit_staff_roles_modal": {
+    "title": "Edita els rols del personal",
+    "add_role": "Afegeix rol",
+    "search_role_placeholder": "Cerca un rol...",
+    "no_role_found": "No s'ha trobat cap rol.",
+    "no_roles_assigned": "No hi ha rols assignats."
+  },
+  "roles_section": {
+    "title": "Rols",
+    "role_name": "Nom del rol",
+    "employees": "Empleats",
+    "permissions": "Permisos",
+    "emps_count_one": "{{count}} empleat",
+    "emps_count_other": "{{count}} empleats",
+    "permissions_count_one": "{{count}} permís",
+    "permissions_count_other": "{{count}} permisos",
+    "delete_confirm": "Segur que vols eliminar el rol «{{name}}»?"
+  },
+  "staff_menu_page": {
+    "access_denied": "Accés denegat",
+    "access_denied_description": "No tens permís per veure el menú.",
+    "menus": "Menús",
+    "menu_structure": "Estructura del menú",
+    "save_changes": "Desa els canvis",
+    "add_category": "Afegeix categoria",
+    "select_a_menu": "Selecciona un menú",
+    "select_a_menu_description": "Tria un menú de la barra lateral o crea'n un de nou per gestionar-ne l'estructura, categories i articles.",
+    "create_first_menu": "Crea el primer menú",
+    "move_to_category": "Mou a categoria",
+    "move_to_category_description": "Selecciona la categoria de destinació on vols moure aquest article.",
+    "current": "(Actual)"
+  },
+  "business_management_header": {
+    "marketplace": "Marketplace",
+    "guest_shop": "Botiga de convidats",
+    "b2b_supplies": "Subministraments B2B",
+    "official_gear": "Equipament oficial",
+    "home": "Inici",
+    "dashboard": "Tauler",
+    "businesses": "Negocis"
+  },
+  "view_role_modal": {
+    "title": "Veure rol: {{name}}",
+    "description": "Permisos assignats a aquest rol.",
+    "no_permissions_assigned": "No hi ha permisos assignats."
   }
 }

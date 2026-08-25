@@ -47,19 +47,19 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="gap-2">
                                 <ShoppingBag className="w-4 h-4" />
-                                Marketplace
+                                {t("business_management_header.marketplace")}
                                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
                             <DropdownMenuItem asChild>
-                                <a href="/marketplace/guest" className="cursor-pointer">Guest Shop</a>
+                                <a href="/marketplace/guest" className="cursor-pointer">{t("business_management_header.guest_shop")}</a>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                                <a href="/marketplace/b2b" className="cursor-pointer">B2B Supplies</a>
+                                <a href="/marketplace/b2b" className="cursor-pointer">{t("business_management_header.b2b_supplies")}</a>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                                <a href="/marketplace/saas" className="cursor-pointer">Official Gear</a>
+                                <a href="/marketplace/saas" className="cursor-pointer">{t("business_management_header.official_gear")}</a>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -96,7 +96,7 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
                             className="text-foreground hover:text-primary transition"
                             onClick={() => setIsOpen(false)}
                         >
-                            Home
+                            {t("business_management_header.home")}
                         </a>
 
                         <a
@@ -104,7 +104,7 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
                             className="text-foreground hover:text-primary transition"
                             onClick={() => setIsOpen(false)}
                         >
-                            Dashboard
+                            {t("business_management_header.dashboard")}
                         </a>
 
                         <a
@@ -112,32 +112,32 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
                             className="text-foreground hover:text-primary transition"
                             onClick={() => setIsOpen(false)}
                         >
-                            Businesses
+                            {t("business_management_header.businesses")}
                         </a>
 
                         {/* Mobile Marketplace Links */}
                         <div className="pt-2 flex flex-col space-y-3">
-                            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Marketplace</span>
+                            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t("business_management_header.marketplace")}</span>
                             <a
                                 href="/marketplace/guest"
                                 className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
                                 onClick={() => setIsOpen(false)}
                             >
-                                Guest Shop
+                                {t("business_management_header.guest_shop")}
                             </a>
                             <a
                                 href="/marketplace/b2b"
                                 className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
                                 onClick={() => setIsOpen(false)}
                             >
-                                B2B Supplies
+                                {t("business_management_header.b2b_supplies")}
                             </a>
                             <a
                                 href="/marketplace/saas"
                                 className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
                                 onClick={() => setIsOpen(false)}
                             >
-                                Official Gear
+                                {t("business_management_header.official_gear")}
                             </a>
                         </div>
 

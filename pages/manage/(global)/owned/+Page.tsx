@@ -32,9 +32,9 @@ const OwnedPage = () => {
         <div className="p-6 w-full">
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold">My Businesses</h1>
+                    <h1 className="text-2xl font-bold">{t("owned_page.title")}</h1>
                     <p className="text-muted-foreground mt-1">
-                        Manage the businesses you own and monitor their performance.
+                        {t("owned_page.subtitle")}
                     </p>
                 </div>
                 <div className="flex flex-col items-end">
@@ -49,12 +49,12 @@ const OwnedPage = () => {
                             if (canCreateBusiness) {
                                 window.location.href = "/manage/owned/new";
                             } else {
-                                openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                                openUpgradeModal(t("owned_page.limit_reached_message"));
                             }
                         }}
                     >
-                        + Create Business
-                        {!canCreateBusiness && <span className="text-[10px] font-bold text-primary uppercase ml-2">Upgrade</span>}
+                        {t("owned_page.create_business")}
+                        {!canCreateBusiness && <span className="text-[10px] font-bold text-primary uppercase ml-2">{t("owned_page.upgrade")}</span>}
                     </Button>
                 </div>
             </div>
@@ -63,7 +63,7 @@ const OwnedPage = () => {
                 isLoading && !myBusinesses?.length ? (
                     <div className="flex flex-col items-center justify-center py-20 gap-3 border border-dashed border-border rounded-xl bg-muted/50">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                        <p className="text-sm text-muted-foreground font-medium">Loading your businesses...</p>
+                        <p className="text-sm text-muted-foreground font-medium">{t("owned_page.loading")}</p>
                     </div>
                 ) : myBusinesses && myBusinesses.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -94,11 +94,11 @@ const OwnedPage = () => {
                                         <div className="flex flex-col gap-1.5">
                                             <p className="text-sm text-muted-foreground flex items-center gap-2">
                                                 <Users className="h-4 w-4 text-muted-foreground" />
-                                                <span className="font-medium text-foreground/80">Owner</span>
+                                                <span className="font-medium text-foreground/80">{t("owned_page.owner")}</span>
                                             </p>
                                             <p className="text-sm text-muted-foreground flex items-center gap-2">
                                                 <Building className="h-4 w-4 text-muted-foreground" />
-                                                <span className="font-medium text-foreground/80">{biz.type ? t(`business_types.${biz.type?.name ?? biz.type}`, { defaultValue: biz.type?.name ?? String(biz.type) }) : "Other"}</span>
+                                                <span className="font-medium text-foreground/80">{biz.type ? t(`business_types.${biz.type?.name ?? biz.type}`, { defaultValue: biz.type?.name ?? String(biz.type) }) : t("owned_page.other")}</span>
                                             </p>
                                         </div>
 
@@ -107,7 +107,7 @@ const OwnedPage = () => {
                                                 href={`/manage/${biz.id}/owner/dashboard`}
                                                 className="inline-flex items-center text-primary text-sm font-semibold hover:text-primary/80 transition-colors gap-1 group/link"
                                             >
-                                                View Dashboard
+                                                {t("owned_page.view_dashboard")}
                                                 <span className="group-hover/link:translate-x-0.5 transition-transform">→</span>
                                             </a>
                                             <div className="flex gap-2">
@@ -119,7 +119,7 @@ const OwnedPage = () => {
                                                 >
                                                     <a href={`/manage/${biz.id}/owner/settings`}>
                                                         <Settings className="h-4 w-4 mr-1" />
-                                                        <span className="text-xs">Settings</span>
+                                                        <span className="text-xs">{t("owned_page.settings")}</span>
                                                     </a>
                                                 </Button>
                                             </div>
@@ -134,9 +134,9 @@ const OwnedPage = () => {
                         <div className="bg-card p-4 rounded-full shadow-sm w-fit mx-auto mb-4 border border-border">
                             <Building className="h-8 w-8 text-muted-foreground/50" />
                         </div>
-                        <p className="text-xl font-bold text-foreground mb-2">You don’t own any businesses yet</p>
+                        <p className="text-xl font-bold text-foreground mb-2">{t("owned_page.empty_title")}</p>
                         <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-                            Create your first business to start managing your team, menu, and sales effortlessly.
+                            {t("owned_page.empty_description")}
                         </p>
                         <Button
                             className={cn(
@@ -149,11 +149,11 @@ const OwnedPage = () => {
                                 if (canCreateBusiness) {
                                     window.location.href = "/manage/owned/new";
                                 } else {
-                                    openUpgradeModal("You've reached your business limit. Upgrade to add more locations.");
+                                    openUpgradeModal(t("owned_page.limit_reached_message"));
                                 }
                             }}
                         >
-                            {canCreateBusiness ? "Create a Business Now" : "Unlock More Businesses"}
+                            {canCreateBusiness ? t("owned_page.create_business_now") : t("owned_page.unlock_more_businesses")}
                         </Button>
                     </div>
                 )

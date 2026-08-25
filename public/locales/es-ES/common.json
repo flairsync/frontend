@@ -25,7 +25,8 @@
       "previous": "Anterior",
       "next": "Siguiente",
       "retry": "Reintentar conexión",
-      "search_placeholder": "Buscar..."
+      "search_placeholder": "Buscar...",
+      "import": "Importar"
     },
     "messages": {
       "no_results_found": "No se encontraron resultados."
@@ -84,7 +85,8 @@
       "default": "Predeterminado",
       "large": "Grande",
       "xlarge": "Muy grande"
-    }
+    },
+    "tags_label": "Etiquetas"
   },
   "errors": {
     "404": {
@@ -267,5 +269,21 @@
       "new_time": "Nueva hora: {{time}}",
       "party_of": "Grupo de {{count}}"
     }
+  },
+  "owned_page": {
+    "title": "Mis negocios",
+    "subtitle": "Gestiona los negocios que posees y supervisa su rendimiento.",
+    "create_business": "+ Crear negocio",
+    "upgrade": "Mejorar plan",
+    "limit_reached_message": "Has alcanzado tu límite de negocios. Mejora tu plan para añadir más ubicaciones.",
+    "loading": "Cargando tus negocios...",
+    "owner": "Propietario",
+    "other": "Otro",
+    "view_dashboard": "Ver panel",
+    "settings": "Ajustes",
+    "empty_title": "Aún no tienes ningún negocio",
+    "empty_description": "Crea tu primer negocio para empezar a gestionar tu equipo, menú y ventas sin esfuerzo.",
+    "create_business_now": "Crear un negocio ahora",
+    "unlock_more_businesses": "Desbloquear más negocios"
   }
 }

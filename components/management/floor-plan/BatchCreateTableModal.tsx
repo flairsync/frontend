@@ -63,7 +63,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
 
     const handleGenerate = () => {
         if (!config.floorId) {
-            toast.error("Please select a floor");
+            toast.error(t("batch_create_table_modal.select_floor_error"));
             return;
         }
 
@@ -150,12 +150,12 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
 
     const handleConfirm = () => {
         if (generatedTables.length === 0) {
-            toast.error("No tables to create");
+            toast.error(t("batch_create_table_modal.no_tables_error"));
             return;
         }
 
         if (hasErrors) {
-            toast.error("Please fix table number conflicts before creating.");
+            toast.error(t("batch_create_table_modal.fix_conflicts_error"));
             return;
         }
 
@@ -175,11 +175,11 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="sm:max-w-[700px] max-h-[90vh] flex flex-col p-0 gap-0">
                 <DialogHeader className="p-6 pb-4 border-b">
-                    <DialogTitle>{step === "config" ? "Batch Create Tables" : "Review Tables"}</DialogTitle>
+                    <DialogTitle>{step === "config" ? t("batch_create_table_modal.title_config") : t("batch_create_table_modal.title_review")}</DialogTitle>
                     <DialogDescription>
                         {step === "config"
-                            ? "Configure settings to generate multiple tables."
-                            : "Review and edit the generated tables before creating them."}
+                            ? t("batch_create_table_modal.description_config")
+                            : t("batch_create_table_modal.description_review")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -187,13 +187,13 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                     {step === "config" ? (
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="floor">Floor</Label>
+                                <Label htmlFor="floor">{t("floor_plan.title")}</Label>
                                 <Select
                                     value={config.floorId}
                                     onValueChange={(val) => setConfig({ ...config, floorId: val })}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Select Floor" />
+                                        <SelectValue placeholder={t("floor_plan.select_floor_placeholder")} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {floors.map((floor) => (
@@ -207,7 +207,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="count">Number of Tables</Label>
+                                    <Label htmlFor="count">{t("batch_create_table_modal.count_label")}</Label>
                                     <Input
                                         id="count"
                                         type="number"
@@ -218,7 +218,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                     />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="startNumber">Starting Number</Label>
+                                    <Label htmlFor="startNumber">{t("batch_create_table_modal.start_number_label")}</Label>
                                     <Input
                                         id="startNumber"
                                         type="number"
@@ -231,7 +231,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="capacity">Default Capacity</Label>
+                                    <Label htmlFor="capacity">{t("batch_create_table_modal.default_capacity_label")}</Label>
                                     <Input
                                         id="capacity"
                                         type="number"
@@ -241,7 +241,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                     />
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="shape">Default Shape</Label>
+                                    <Label htmlFor="shape">{t("batch_create_table_modal.default_shape_label")}</Label>
                                     <Select
                                         value={config.shape}
                                         onValueChange={(val: any) => setConfig({ ...config, shape: val })}
@@ -250,21 +250,21 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="circle">Circle</SelectItem>
-                                            <SelectItem value="square">Square</SelectItem>
-                                            <SelectItem value="rectangle">Rectangle</SelectItem>
+                                            <SelectItem value="circle">{t("floor_plan.shapes.circle")}</SelectItem>
+                                            <SelectItem value="square">{t("floor_plan.shapes.square")}</SelectItem>
+                                            <SelectItem value="rectangle">{t("floor_plan.shapes.rectangle")}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="prefix">Name Prefix</Label>
+                                <Label htmlFor="prefix">{t("batch_create_table_modal.name_prefix_label")}</Label>
                                 <Input
                                     id="prefix"
                                     value={config.prefix}
                                     onChange={(e) => setConfig({ ...config, prefix: e.target.value })}
-                                    placeholder="e.g. Table"
+                                    placeholder={t("batch_create_table_modal.name_prefix_placeholder")}
                                 />
                             </div>
                         </div>
@@ -278,8 +278,8 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                         <CardContent className="p-4 pl-6">
                                             <div className="flex justify-between items-center mb-4">
                                                 <div className="flex items-center gap-2">
-                                                    <h4 className="font-semibold text-sm">Table #{table.number}</h4>
-                                                    {isError && <span className="text-xs text-destructive font-medium">Duplicate Number</span>}
+                                                    <h4 className="font-semibold text-sm">{t("batch_create_table_modal.table_hash", { number: table.number })}</h4>
+                                                    {isError && <span className="text-xs text-destructive font-medium">{t("batch_create_table_modal.duplicate_number")}</span>}
                                                 </div>
                                                 <Button
                                                     variant="ghost"
@@ -293,7 +293,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
 
                                             <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                                                 <div className="space-y-1.5 sm:col-span-1">
-                                                    <Label className="text-xs text-muted-foreground">Number</Label>
+                                                    <Label className="text-xs text-muted-foreground">{t("batch_create_table_modal.number_label")}</Label>
                                                     <Input
                                                         type="number"
                                                         value={table.number}
@@ -302,7 +302,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                                     />
                                                 </div>
                                                 <div className="space-y-1.5 sm:col-span-1">
-                                                    <Label className="text-xs text-muted-foreground">Name</Label>
+                                                    <Label className="text-xs text-muted-foreground">{t("item_modal.name")}</Label>
                                                     <Input
                                                         value={table.name}
                                                         onChange={(e) => handleUpdateTableName(index, e.target.value)}
@@ -310,7 +310,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                                     />
                                                 </div>
                                                 <div className="space-y-1.5 sm:col-span-1">
-                                                    <Label className="text-xs text-muted-foreground">Capacity</Label>
+                                                    <Label className="text-xs text-muted-foreground">{t("floor_plan.capacity")}</Label>
                                                     <Input
                                                         type="number"
                                                         value={table.capacity}
@@ -319,7 +319,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                                     />
                                                 </div>
                                                 <div className="space-y-1.5 sm:col-span-1">
-                                                    <Label className="text-xs text-muted-foreground">Shape</Label>
+                                                    <Label className="text-xs text-muted-foreground">{t("floor_plan.shape")}</Label>
                                                     <Select
                                                         value={table.position.shape}
                                                         onValueChange={(val: any) => handleUpdateTableShape(index, val)}
@@ -328,9 +328,9 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                                                             <SelectValue />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="circle">Circle</SelectItem>
-                                                            <SelectItem value="square">Square</SelectItem>
-                                                            <SelectItem value="rectangle">Rectangle</SelectItem>
+                                                            <SelectItem value="circle">{t("floor_plan.shapes.circle")}</SelectItem>
+                                                            <SelectItem value="square">{t("floor_plan.shapes.square")}</SelectItem>
+                                                            <SelectItem value="rectangle">{t("floor_plan.shapes.rectangle")}</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 </div>
@@ -341,7 +341,7 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                             })}
                             {generatedTables.length === 0 && (
                                 <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg bg-background">
-                                    No tables to create. Go back to generate some.
+                                    {t("batch_create_table_modal.empty_review")}
                                 </div>
                             )}
                         </div>
@@ -352,26 +352,26 @@ export const BatchCreateTableModal: React.FC<BatchCreateTableModalProps> = ({
                     {step === "config" ? (
                         <>
                             <Button variant="ghost" onClick={onClose}>
-                                Cancel
+                                {t("shared.actions.cancel")}
                             </Button>
                             <Button onClick={handleGenerate} className="gap-2">
                                 <Sparkles className="w-4 h-4" />
-                                Generate Preview
+                                {t("batch_create_table_modal.generate_preview")}
                             </Button>
                         </>
                     ) : (
                         <>
                             <Button variant="outline" onClick={() => setStep("config")} className="gap-2">
                                 <ArrowLeft className="w-4 h-4" />
-                                Back to Config
+                                {t("batch_create_table_modal.back_to_config")}
                             </Button>
                             <div className="flex gap-2">
                                 <Button variant="ghost" onClick={onClose}>
-                                    Cancel
+                                    {t("shared.actions.cancel")}
                                 </Button>
                                 <Button onClick={handleConfirm} disabled={isCreating || generatedTables.length === 0 || hasErrors} className="gap-2">
                                     <Check className="w-4 h-4" />
-                                    {isCreating ? "Creating..." : `Confirm ${generatedTables.length} Tables`}
+                                    {isCreating ? t("batch_create_table_modal.creating") : t("batch_create_table_modal.confirm_count", { count: generatedTables.length })}
                                 </Button>
                             </div>
                         </>

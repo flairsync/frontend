@@ -25,7 +25,8 @@
       "previous": "Anterior",
       "next": "Següent",
       "retry": "Reintentar connexió",
-      "search_placeholder": "Cercar..."
+      "search_placeholder": "Cercar...",
+      "import": "Importa"
     },
     "messages": {
       "no_results_found": "No s'han trobat resultats."
@@ -84,7 +85,8 @@
       "default": "Per defecte",
       "large": "Gran",
       "xlarge": "Molt gran"
-    }
+    },
+    "tags_label": "Etiquetes"
   },
   "errors": {
     "404": {
@@ -267,5 +269,21 @@
       "new_time": "Nova hora: {{time}}",
       "party_of": "Grup de {{count}}"
     }
+  },
+  "owned_page": {
+    "title": "Els meus negocis",
+    "subtitle": "Gestiona els negocis que posseeixes i supervisa'n el rendiment.",
+    "create_business": "+ Crea un negoci",
+    "upgrade": "Millora el pla",
+    "limit_reached_message": "Has arribat al límit de negocis. Millora el pla per afegir-ne més.",
+    "loading": "Carregant els teus negocis...",
+    "owner": "Propietari",
+    "other": "Altre",
+    "view_dashboard": "Mostra el tauler",
+    "settings": "Configuració",
+    "empty_title": "Encara no tens cap negoci",
+    "empty_description": "Crea el teu primer negoci per començar a gestionar l'equip, el menú i les vendes sense esforç.",
+    "create_business_now": "Crea un negoci ara",
+    "unlock_more_businesses": "Desbloqueja més negocis"
   }
 }

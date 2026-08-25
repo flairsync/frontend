@@ -172,18 +172,18 @@ export function AddRoleModal(props: Props) {
             }}
         >
             <DialogTrigger asChild>
-                <Button>{props.editRole ? "Edit Role" : "Add Role"}</Button>
+                <Button>{props.editRole ? t("add_role_modal.edit_role") : t("add_role_modal.add_role")}</Button>
             </DialogTrigger>
 
             <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
                 <DialogHeader>
                     <DialogTitle>
-                        {props.editRole ? "Edit Role" : "Add New Role"}
+                        {props.editRole ? t("add_role_modal.edit_role") : t("add_role_modal.add_new_role")}
                     </DialogTitle>
                     <DialogDescription>
                         {props.editRole
-                            ? "Update role name and permissions."
-                            : "Create a new role and assign permissions."}
+                            ? t("add_role_modal.update_description")
+                            : t("add_role_modal.create_description")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -199,13 +199,13 @@ export function AddRoleModal(props: Props) {
                         <div className="flex-1 overflow-y-auto space-y-6 pr-2">
                             {/* Role name */}
                             <div>
-                                <Label>Role Name</Label>
+                                <Label>{t("add_role_modal.role_name")}</Label>
                                 <Input
                                     name="name"
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    placeholder="e.g. Manager"
+                                    placeholder={t("add_role_modal.role_name_placeholder")}
                                 />
                                 {formik.touched.name && formik.errors.name && (
                                     <p className="text-sm text-destructive mt-1">
@@ -216,22 +216,22 @@ export function AddRoleModal(props: Props) {
 
                             {/* Permission selector */}
                             <div>
-                                <Label>Add Permission</Label>
+                                <Label>{t("add_role_modal.add_permission")}</Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant="outline"
                                             className="w-full justify-between"
                                         >
-                                            Select permission
+                                            {t("add_role_modal.select_permission")}
                                             <Plus className="ml-2 h-4 w-4 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
 
                                     <PopoverContent className="w-full p-0">
                                         <Command>
-                                            <CommandInput placeholder="Search permission..." />
-                                            <CommandEmpty>No permission found.</CommandEmpty>
+                                            <CommandInput placeholder={t("add_role_modal.search_permission_placeholder")} />
+                                            <CommandEmpty>{t("add_role_modal.no_permission_found")}</CommandEmpty>
                                             <CommandGroup>
                                                 {permissionsList?.map(perm => (
                                                     <CommandItem
@@ -264,7 +264,7 @@ export function AddRoleModal(props: Props) {
                             {/* Permissions table */}
                             {formik.values.permissions.length > 0 && (
                                 <div className="space-y-3">
-                                    <Label>Assigned Permissions</Label>
+                                    <Label>{t("add_role_modal.assigned_permissions")}</Label>
                                     <div className="border rounded-md divide-y">
                                         {formik.values.permissions.map(p => (
                                             <div
@@ -332,15 +332,15 @@ export function AddRoleModal(props: Props) {
 
                             {/* Station Permissions */}
                             <div className="space-y-4">
-                                <Label className="text-base font-semibold">Station Permissions</Label>
+                                <Label className="text-base font-semibold">{t("add_role_modal.station_permissions")}</Label>
 
                                 {/* Terminal Access */}
                                 <div className="space-y-3">
-                                    <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Terminal Access</p>
+                                    <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{t("add_role_modal.terminal_access")}</p>
                                     <div className="border rounded-md divide-y">
                                         {([
-                                            { field: "posAccess", label: "Can access POS terminals" },
-                                            { field: "kdsAccess", label: "Can access KDS terminals" },
+                                            { field: "posAccess", label: t("add_role_modal.can_access_pos") },
+                                            { field: "kdsAccess", label: t("add_role_modal.can_access_kds") },
                                         ] as const).map(({ field, label }) => (
                                             <div key={field} className="flex items-center justify-between p-3">
                                                 <span className="text-sm">{label}</span>
@@ -365,14 +365,14 @@ export function AddRoleModal(props: Props) {
                                 {/* POS Actions — only shown when posAccess is on */}
                                 {formik.values.posAccess && (
                                     <div className="space-y-3">
-                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">POS Actions</p>
+                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{t("add_role_modal.pos_actions")}</p>
                                         <div className="border rounded-md divide-y">
                                             {([
-                                                { field: "posCreateOrder", label: "Create & manage orders" },
-                                                { field: "posVoidItem", label: "Void line items" },
-                                                { field: "posCancelOrder", label: "Cancel orders" },
-                                                { field: "posRefund", label: "Process refunds" },
-                                                { field: "posApplyDiscount", label: "Apply discounts" },
+                                                { field: "posCreateOrder", label: t("add_role_modal.create_manage_orders") },
+                                                { field: "posVoidItem", label: t("add_role_modal.void_line_items") },
+                                                { field: "posCancelOrder", label: t("add_role_modal.cancel_orders") },
+                                                { field: "posRefund", label: t("add_role_modal.process_refunds") },
+                                                { field: "posApplyDiscount", label: t("add_role_modal.apply_discounts") },
                                             ] as const).map(({ field, label }) => (
                                                 <div key={field} className="flex items-center justify-between p-3">
                                                     <span className="text-sm">{label}</span>
@@ -392,11 +392,11 @@ export function AddRoleModal(props: Props) {
                         <div className="flex justify-end gap-2 pt-4 border-t">
                             <DialogClose asChild>
                                 <Button type="button" variant="outline">
-                                    Cancel
+                                    {t("shared.actions.cancel")}
                                 </Button>
                             </DialogClose>
                             <Button type="submit">
-                                {props.editRole ? "Update" : "Save"}
+                                {props.editRole ? t("add_role_modal.update") : t("shared.actions.save")}
                             </Button>
                         </div>
                     </form>

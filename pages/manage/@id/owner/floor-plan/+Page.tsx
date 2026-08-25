@@ -21,13 +21,8 @@ import { BatchCreateTableModal } from "@/components/management/floor-plan/BatchC
 import { PrintQrCodesButton } from "@/components/qr/PrintQrCodesButton";
 import { DownloadTableQrButton } from "@/components/qr/DownloadTableQrButton";
 
-const TABLE_STATUS_LABELS: Record<string, string> = {
-    available: "Available",
-    occupied: "Occupied",
-    reserved: "Reserved",
-    cleaning: "Needs Cleaning",
-    out_of_service: "Out of Service",
-};
+const getTableStatusLabel = (t: any, status: string): string =>
+    t(`floor_plan.table_status.${status}`, { defaultValue: status });
 
 const TABLE_STATUS_BADGE_CLASS: Record<string, string> = {
     available: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -143,12 +138,12 @@ const FloorPlanPage: React.FC = () => {
             {myBusinessFullDetails && !myBusinessFullDetails.enableFloorPlanView && !bannerDismissed && (
                 <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
                     <Info className="h-4 w-4 shrink-0" />
-                    <span>The floor plan layout view is currently disabled.</span>
+                    <span>{t("floor_plan.disabled_banner.message")}</span>
                     <a
                         href={`/manage/${routeParams.id}/owner/settings?section=floor-plan`}
                         className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100 whitespace-nowrap"
                     >
-                        Go to Settings →
+                        {t("floor_plan.disabled_banner.go_to_settings")}
                     </a>
                     <button
                         className="ml-auto text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
@@ -172,7 +167,7 @@ const FloorPlanPage: React.FC = () => {
                     </Button>
                     <Button variant="outline" onClick={() => setBatchModalOpen(true)} className="gap-2">
                         <Grid2X2 className="w-4 h-4" />
-                        Batch Create
+                        {t("floor_plan.batch_create")}
                     </Button>
                     <PrintQrCodesButton businessId={businessId} floors={floors || []} />
                 </div>
@@ -182,15 +177,15 @@ const FloorPlanPage: React.FC = () => {
 
             <div className="flex gap-3">
                 <div className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm">
-                    <span className="text-muted-foreground">Total Floors</span>
+                    <span className="text-muted-foreground">{t("floor_plan.stats.total_floors")}</span>
                     <span className="font-semibold">{stats?.total ?? 0}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm">
-                    <span className="text-muted-foreground">Published</span>
+                    <span className="text-muted-foreground">{t("floor_plan.stats.published")}</span>
                     <span className="font-semibold text-green-600">{stats?.published ?? 0}</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm">
-                    <span className="text-muted-foreground">Unpublished</span>
+                    <span className="text-muted-foreground">{t("floor_plan.stats.unpublished")}</span>
                     <span className="font-semibold text-muted-foreground">{stats?.unpublished ?? 0}</span>
                 </div>
             </div>
@@ -199,7 +194,7 @@ const FloorPlanPage: React.FC = () => {
                 <TabsList>
                     <TabsTrigger value="floors">{t("floor_plan.floors")}</TabsTrigger>
                     <TabsTrigger value="tables">{t("floor_plan.tables")}</TabsTrigger>
-                    <TabsTrigger value="designer">Designer</TabsTrigger>
+                    <TabsTrigger value="designer">{t("floor_plan.designer")}</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="designer" className="pt-4 h-[calc(100vh-210px)] min-h-[520px]">
@@ -217,15 +212,15 @@ const FloorPlanPage: React.FC = () => {
                                     <TableRow>
                                         <TableHead>{t("inventory_management.table.name")}</TableHead>
                                         <TableHead>{t("inventory_management.form.description")}</TableHead>
-                                        <TableHead>Status</TableHead>
+                                        <TableHead>{t("floor_plan.status")}</TableHead>
                                         <TableHead className="text-right">{t("shared.actions.all")}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {fetchingFloors ? (
-                                        <TableRow><TableCell colSpan={4} className="text-center">Loading...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={4} className="text-center">{t("floor_plan.loading")}</TableCell></TableRow>
                                     ) : floors?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={4} className="text-center">No floors found.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={4} className="text-center">{t("floor_plan.no_floors_found")}</TableCell></TableRow>
                                     ) : (
                                         floors?.map((floor: any) => (
                                             <TableRow key={floor.id}>
@@ -233,9 +228,9 @@ const FloorPlanPage: React.FC = () => {
                                                 <TableCell>{floor.description || "-"}</TableCell>
                                                 <TableCell>
                                                     {floor.isPublished ? (
-                                                        <Badge variant="default">Published</Badge>
+                                                        <Badge variant="default">{t("floor_plan.stats.published")}</Badge>
                                                     ) : (
-                                                        <Badge variant="secondary">Draft</Badge>
+                                                        <Badge variant="secondary">{t("floor_plan.draft")}</Badge>
                                                     )}
                                                 </TableCell>
                                                 <TableCell className="text-right">
@@ -275,19 +270,19 @@ const FloorPlanPage: React.FC = () => {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Number</TableHead>
+                                        <TableHead>{t("floor_plan.number")}</TableHead>
                                         <TableHead>{t("inventory_management.table.name")}</TableHead>
                                         <TableHead>{t("floor_plan.capacity")}</TableHead>
                                         <TableHead>{t("floor_plan.title")}</TableHead>
-                                        <TableHead>Status</TableHead>
+                                        <TableHead>{t("floor_plan.status")}</TableHead>
                                         <TableHead className="text-right">{t("shared.actions.all")}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {fetchingTables ? (
-                                        <TableRow><TableCell colSpan={6} className="text-center">Loading...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={6} className="text-center">{t("floor_plan.loading")}</TableCell></TableRow>
                                     ) : tables?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={6} className="text-center">No tables found.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={6} className="text-center">{t("floor_plan.no_tables_found")}</TableCell></TableRow>
                                     ) : (
                                         tables?.map((table: any) => (
                                             <TableRow key={table.id}>
@@ -297,7 +292,7 @@ const FloorPlanPage: React.FC = () => {
                                                 <TableCell>{floors?.find((f: any) => f.id === table.floorId)?.name || "-"}</TableCell>
                                                 <TableCell>
                                                     <Badge variant="outline" className={TABLE_STATUS_BADGE_CLASS[table.status] ?? ""}>
-                                                        {TABLE_STATUS_LABELS[table.status] ?? table.status}
+                                                        {getTableStatusLabel(t, table.status)}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="text-right">
@@ -308,7 +303,7 @@ const FloorPlanPage: React.FC = () => {
                                                                 variant="outline"
                                                                 onClick={() => updateTable({ tableId: table.id, data: { status: "available" } })}
                                                             >
-                                                                Mark Available
+                                                                {t("floor_plan.mark_available")}
                                                             </Button>
                                                         )}
                                                         <DownloadTableQrButton businessId={businessId} tableId={table.id} tableName={table.name} />
@@ -349,8 +344,8 @@ const FloorPlanPage: React.FC = () => {
                         </div>
                         <div className="flex items-center justify-between py-2">
                             <div className="space-y-0.5">
-                                <Label>Published</Label>
-                                <p className="text-xs text-muted-foreground">Published floors are visible in the layout view</p>
+                                <Label>{t("floor_plan.stats.published")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("floor_plan.published_hint")}</p>
                             </div>
                             <Switch
                                 checked={floorForm.isPublished}
@@ -378,14 +373,14 @@ const FloorPlanPage: React.FC = () => {
                                 <Input value={tableForm.name} onChange={(e) => setTableForm({ ...tableForm, name: e.target.value })} />
                             </div>
                             <div className="space-y-2">
-                                <Label>Table Number</Label>
+                                <Label>{t("floor_plan.table_number")}</Label>
                                 <Input
                                     type="number"
                                     value={tableForm.number}
                                     onChange={(e) => setTableForm({ ...tableForm, number: parseInt(e.target.value) || 0 })}
                                 />
-                                {tables?.some((t: any) => t.number === tableForm.number && t.id !== editingTable?.id) && (
-                                    <p className="text-[10px] text-amber-600 font-medium">Warning: This table number already exists.</p>
+                                {tables?.some((tbl: any) => tbl.number === tableForm.number && tbl.id !== editingTable?.id) && (
+                                    <p className="text-[10px] text-amber-600 font-medium">{t("floor_plan.duplicate_number_warning")}</p>
                                 )}
                             </div>
                         </div>
@@ -397,7 +392,7 @@ const FloorPlanPage: React.FC = () => {
                             <Label>{t("floor_plan.title")}</Label>
                             <Select value={tableForm.floorId} onValueChange={(val) => setTableForm({ ...tableForm, floorId: val })}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select Floor" />
+                                    <SelectValue placeholder={t("floor_plan.select_floor_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {floors?.map((f: any) => (
@@ -414,9 +409,9 @@ const FloorPlanPage: React.FC = () => {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="circle">Circle</SelectItem>
-                                        <SelectItem value="square">Square</SelectItem>
-                                        <SelectItem value="rectangle">Rectangle</SelectItem>
+                                        <SelectItem value="circle">{t("floor_plan.shapes.circle")}</SelectItem>
+                                        <SelectItem value="square">{t("floor_plan.shapes.square")}</SelectItem>
+                                        <SelectItem value="rectangle">{t("floor_plan.shapes.rectangle")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>

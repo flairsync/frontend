@@ -25,7 +25,8 @@
       "previous": "Previous",
       "next": "Next",
       "retry": "Retry Connection",
-      "search_placeholder": "Search..."
+      "search_placeholder": "Search...",
+      "import": "Import"
     },
     "messages": {
       "no_results_found": "No results found."
@@ -84,7 +85,8 @@
       "default": "Default",
       "large": "Large",
       "xlarge": "Extra Large"
-    }
+    },
+    "tags_label": "Tags"
   },
   "errors": {
     "404": {
@@ -272,5 +274,21 @@
       "new_time": "New time: {{time}}",
       "party_of": "Party of {{count}}"
     }
+  },
+  "owned_page": {
+    "title": "My Businesses",
+    "subtitle": "Manage the businesses you own and monitor their performance.",
+    "create_business": "+ Create Business",
+    "upgrade": "Upgrade",
+    "limit_reached_message": "You've reached your business limit. Upgrade to add more locations.",
+    "loading": "Loading your businesses...",
+    "owner": "Owner",
+    "other": "Other",
+    "view_dashboard": "View Dashboard",
+    "settings": "Settings",
+    "empty_title": "You don't own any businesses yet",
+    "empty_description": "Create your first business to start managing your team, menu, and sales effortlessly.",
+    "create_business_now": "Create a Business Now",
+    "unlock_more_businesses": "Unlock More Businesses"
   }
 }

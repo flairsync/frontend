@@ -301,5 +301,9 @@
     "expired": "Caducada",
     "waitlist": "Llista d'espera",
     "rejected": "Rebutjada"
+  },
+  "feed_page": {
+    "no_businesses_found": "No s'ha trobat cap negoci",
+    "try_adjusting_search": "Prova d'ajustar els criteris de cerca"
   }
 }

@@ -23,16 +23,16 @@ export function ViewRoleModal({ open, role, onOpenChange }: Props) {
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>View Role: {role?.name}</DialogTitle>
+                    <DialogTitle>{t("view_role_modal.title", { name: role?.name })}</DialogTitle>
                     <DialogDescription>
-                        Permissions assigned to this role.
+                        {t("view_role_modal.description")}
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="flex-1 overflow-y-auto space-y-6 pr-2">
                     {role?.permissions && role.permissions.length > 0 ? (
                         <div className="space-y-3">
-                            <Label>Assigned Permissions</Label>
+                            <Label>{t("add_role_modal.assigned_permissions")}</Label>
                             <div className="border rounded-md divide-y">
                                 {role.permissions.map((p) => (
                                     <div
@@ -65,7 +65,7 @@ export function ViewRoleModal({ open, role, onOpenChange }: Props) {
                             </div>
                         </div>
                     ) : (
-                        <p className="text-sm text-muted-foreground">No permissions assigned.</p>
+                        <p className="text-sm text-muted-foreground">{t("view_role_modal.no_permissions_assigned")}</p>
                     )}
                 </div>
             </DialogContent>

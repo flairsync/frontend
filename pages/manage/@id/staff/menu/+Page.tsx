@@ -155,8 +155,8 @@ export default function StaffMenuPage() {
         return (
             <div className="p-6 text-center">
                 <Utensils className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-20" />
-                <h2 className="text-xl font-bold">Access Denied</h2>
-                <p className="text-muted-foreground">You do not have permission to view the menu.</p>
+                <h2 className="text-xl font-bold">{t("staff_menu_page.access_denied")}</h2>
+                <p className="text-muted-foreground">{t("staff_menu_page.access_denied_description")}</p>
             </div>
         );
     }
@@ -168,7 +168,7 @@ export default function StaffMenuPage() {
                 <div className="p-4 flex items-center justify-between border-b">
                     <h2 className="font-semibold flex items-center gap-2 text-primary">
                         <LayoutGrid className="h-4 w-4" />
-                        Menus
+                        {t("staff_menu_page.menus")}
                     </h2>
                     {canCreate && (
                         <Button
@@ -221,7 +221,7 @@ export default function StaffMenuPage() {
                         />
 
                         <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-bold tracking-tight text-foreground">Menu Structure</h2>
+                            <h2 className="text-2xl font-bold tracking-tight text-foreground">{t("staff_menu_page.menu_structure")}</h2>
                             <div className="flex items-center gap-3">
                                 {hasChanges() && (
                                     <Button
@@ -229,7 +229,7 @@ export default function StaffMenuPage() {
                                         className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg transition-all animate-in fade-in slide-in-from-right-2"
                                     >
                                         <Save className="h-4 w-4 mr-2" />
-                                        Save Changes
+                                        {t("staff_menu_page.save_changes")}
                                     </Button>
                                 )}
                                 {canUpdate && (
@@ -241,7 +241,7 @@ export default function StaffMenuPage() {
                                         }}
                                         className="bg-primary hover:bg-primary/90 shadow-md"
                                     >
-                                        <Plus className="h-4 w-4 mr-1" /> Add Category
+                                        <Plus className="h-4 w-4 mr-1" /> {t("staff_menu_page.add_category")}
                                     </Button>
                                 )}
                             </div>
@@ -339,9 +339,9 @@ export default function StaffMenuPage() {
                 ) : (
                     <div className="h-full flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500">
                         <Utensils className="h-20 w-20 text-muted-foreground mb-6 opacity-10" />
-                        <h2 className="text-2xl font-bold text-foreground">Select a Menu</h2>
+                        <h2 className="text-2xl font-bold text-foreground">{t("staff_menu_page.select_a_menu")}</h2>
                         <p className="text-muted-foreground max-w-sm mt-2">
-                            Choose a menu from the sidebar or create a new one to manage its structure, categories, and items.
+                            {t("staff_menu_page.select_a_menu_description")}
                         </p>
                         {canCreate && (
                             <Button
@@ -352,7 +352,7 @@ export default function StaffMenuPage() {
                                     setIsMenuModalOpen(true);
                                 }}
                             >
-                                <Plus className="h-5 w-5 mr-2" /> Create First Menu
+                                <Plus className="h-5 w-5 mr-2" /> {t("staff_menu_page.create_first_menu")}
                             </Button>
                         )}
                     </div>
@@ -427,10 +427,10 @@ export default function StaffMenuPage() {
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <Info className="h-5 w-5 text-primary" />
-                            Move to Category
+                            {t("staff_menu_page.move_to_category")}
                         </DialogTitle>
                         <DialogDescription>
-                            Select the target category where you want to move this item.
+                            {t("staff_menu_page.move_to_category_description")}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-2 py-4 max-h-[60vh] overflow-y-auto pr-2">
@@ -445,7 +445,7 @@ export default function StaffMenuPage() {
                                 <LayoutGrid className="h-4 w-4 mr-2" />
                                 {cat.name}
                                 {movingItem?.currentCatId === cat.id && (
-                                    <span className="ml-auto text-xs italic opacity-70">(Current)</span>
+                                    <span className="ml-auto text-xs italic opacity-70">{t("staff_menu_page.current")}</span>
                                 )}
                             </Button>
                         ))}

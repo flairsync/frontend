@@ -44,7 +44,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
 
   return (
     <div className="space-y-2">
-      <label className="font-medium text-sm text-foreground">Tags</label>
+      <label className="font-medium text-sm text-foreground">{t("shared.tags_label")}</label>
 
       {/* Display Selected Tags */}
       {value.length > 0 && (

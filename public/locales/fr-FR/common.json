@@ -25,7 +25,8 @@
       "previous": "Précédent",
       "next": "Suivant",
       "retry": "Réessayer la connexion",
-      "search_placeholder": "Rechercher..."
+      "search_placeholder": "Rechercher...",
+      "import": "Importer"
     },
     "messages": {
       "no_results_found": "Aucun résultat trouvé."
@@ -84,7 +85,8 @@
       "default": "Par défaut",
       "large": "Grand",
       "xlarge": "Très grand"
-    }
+    },
+    "tags_label": "Étiquettes"
   },
   "errors": {
     "404": {
@@ -267,5 +269,21 @@
       "new_time": "Nouvelle heure : {{time}}",
       "party_of": "Groupe de {{count}}"
     }
+  },
+  "owned_page": {
+    "title": "Mes établissements",
+    "subtitle": "Gérez les établissements que vous possédez et suivez leurs performances.",
+    "create_business": "+ Créer un établissement",
+    "upgrade": "Améliorer",
+    "limit_reached_message": "Vous avez atteint votre limite d'établissements. Passez à un forfait supérieur pour en ajouter.",
+    "loading": "Chargement de vos établissements...",
+    "owner": "Propriétaire",
+    "other": "Autre",
+    "view_dashboard": "Voir le tableau de bord",
+    "settings": "Paramètres",
+    "empty_title": "Vous ne possédez encore aucun établissement",
+    "empty_description": "Créez votre premier établissement pour gérer facilement votre équipe, votre menu et vos ventes.",
+    "create_business_now": "Créer un établissement maintenant",
+    "unlock_more_businesses": "Débloquer plus d'établissements"
   }
 }

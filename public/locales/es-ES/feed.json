@@ -301,5 +301,9 @@
     "expired": "Caducada",
     "waitlist": "Lista de espera",
     "rejected": "Rechazada"
+  },
+  "feed_page": {
+    "no_businesses_found": "No se encontraron negocios",
+    "try_adjusting_search": "Prueba a ajustar tus criterios de búsqueda"
   }
 }

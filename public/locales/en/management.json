@@ -641,7 +641,9 @@
       "import_success": "Menu items imported successfully!",
       "import_partial": "Menu items imported, but {{skipped}} item(s) were skipped because your plan's product limit was reached.",
       "limit_warning": "Your plan only allows {{remaining}} more item(s). {{skipped}} item(s) won't be imported unless you upgrade."
-    }
+    },
+    "upgrade": "Upgrade",
+    "upgrade_required": "Upgrade Required"
   },
   "item_modal": {
     "create_title": "Create New Item",
@@ -666,6 +668,58 @@
       "unit_placeholder": "Select unit",
       "quantity_per_sale": "How much is consumed per sale?",
       "quantity_hint": "If sold in liters and this item uses 0.5L, enter 0.5"
+    },
+    "variants_section": {
+      "title": "Variants",
+      "hint": "Add sizes or specific variations with distinct prices.",
+      "add_button": "Add Variant",
+      "name_placeholder": "Name (e.g., Large)",
+      "price_placeholder": "Price",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "modifiers_section": {
+      "title": "Modifier Groups",
+      "hint": "Add choices or add-ons (e.g., Milk Choice, Extra Toppings).",
+      "add_group": "Add Group",
+      "choice_placeholder": "Choice name",
+      "price_placeholder": "+ Price",
+      "add": "Add",
+      "cancel": "Cancel",
+      "add_option": "Add Option",
+      "new_group_title": "New Modifier Group",
+      "group_name_label": "Group Name",
+      "group_name_placeholder": "e.g. Milk Choice",
+      "selection_mode_label": "Selection Mode",
+      "single_option": "Single (Radio)",
+      "multiple_option": "Multiple (Checkbox)",
+      "min_selections_label": "Min Selections (0 = optional)",
+      "max_selections_label": "Max Selections",
+      "save_group": "Save Group"
+    },
+    "save_first_hint": "Save this item first to add Variants and Modifier Groups.",
+    "kitchen_station": {
+      "label": "Kitchen Station",
+      "hint": "Which station prepares this item. Leave as \"None\" for items that need no kitchen prep.",
+      "none_option": "None — no prep needed"
+    },
+    "search_items_placeholder": "Search items...",
+    "no_items_found": "No items found.",
+    "no_allergies_found": "No allergies found.",
+    "search_allergies_placeholder": "Search allergies...",
+    "loading": "Loading...",
+    "no_units_found": "No units found.",
+    "unit_system": {
+      "label": "Unit System",
+      "metric": "Metric",
+      "imperial": "Imperial",
+      "other": "Other (Count/Pieces)",
+      "all": "All Systems"
+    },
+    "bundle": {
+      "label": "Bundle / Combo",
+      "hint": "Sell this as a fixed set of other menu items at one price",
+      "add_item_placeholder": "Add an item..."
     }
   },
   "inventory_management": {
@@ -800,7 +854,17 @@
       "invalid_file_type": "Please select an image (JPEG, PNG, WEBP, GIF) or a CSV file.",
       "analyze_button": "Analyze File",
       "analyzing": "Analyzing..."
-    }
+    },
+    "tabs": {
+      "all_items": "All Items",
+      "movement_timeline": "Movement Timeline"
+    },
+    "search_barcode_placeholder": "Search Barcode",
+    "all_groups": "All Groups",
+    "all_units": "All Units",
+    "no_group_found": "No group found.",
+    "loading": "Loading inventory…",
+    "movement_history": "Movement History"
   },
   "manage_overview": {
     "current_plan_title": "Current Plan",
@@ -868,7 +932,8 @@
     "upgrade_message": "Choose a plan that fits your business needs and unlock more power.",
     "per_business_price": "{{price}} / business",
     "min_businesses_one": "{{count}}-business minimum",
-    "min_businesses_other": "{{count}}-business minimum"
+    "min_businesses_other": "{{count}}-business minimum",
+    "upgrade_your_plan": "Upgrade Your Plan"
   },
   "floor_plan": {
     "title": "Floor Plan",
@@ -882,7 +947,41 @@
     "delete_table": "Delete Table",
     "capacity": "Capacity",
     "position": "Position",
-    "shape": "Shape"
+    "shape": "Shape",
+    "disabled_banner": {
+      "message": "The floor plan layout view is currently disabled.",
+      "go_to_settings": "Go to Settings →"
+    },
+    "batch_create": "Batch Create",
+    "stats": {
+      "total_floors": "Total Floors",
+      "published": "Published",
+      "unpublished": "Unpublished"
+    },
+    "designer": "Designer",
+    "status": "Status",
+    "loading": "Loading...",
+    "no_floors_found": "No floors found.",
+    "draft": "Draft",
+    "number": "Number",
+    "no_tables_found": "No tables found.",
+    "mark_available": "Mark Available",
+    "table_status": {
+      "available": "Available",
+      "occupied": "Occupied",
+      "reserved": "Reserved",
+      "cleaning": "Needs Cleaning",
+      "out_of_service": "Out of Service"
+    },
+    "published_hint": "Published floors are visible in the layout view",
+    "table_number": "Table Number",
+    "duplicate_number_warning": "Warning: This table number already exists.",
+    "select_floor_placeholder": "Select Floor",
+    "shapes": {
+      "circle": "Circle",
+      "square": "Square",
+      "rectangle": "Rectangle"
+    }
   },
   "orders": {
     "title": "Orders",
@@ -2507,6 +2606,17 @@
         "save_changes": "Save changes",
         "create": "Create"
       }
+    },
+    "open_periods": {
+      "title": "Open periods",
+      "business_status": "Business status",
+      "business_status_hint": "Auto marks the business open/closed based on the opening hours below. Force open/closed overrides that until changed again.",
+      "status_auto": "Auto",
+      "status_auto_desc": "Open/closed follows your opening hours below",
+      "status_force_open": "Force open",
+      "status_force_open_desc": "Always shows as open, regardless of hours",
+      "status_force_closed": "Force closed",
+      "status_force_closed_desc": "Always shows as closed, regardless of hours"
     }
   },
   "discounts_page": {
@@ -3462,7 +3572,10 @@
     "staff": "Staff",
     "menus": "Menus",
     "products": "Products",
-    "unlimited": "Unlimited"
+    "unlimited": "Unlimited",
+    "exceeds_max_businesses_one": "This plan only supports up to {{count}} business",
+    "exceeds_max_businesses_other": "This plan only supports up to {{count}} businesses",
+    "not_available": "Not Available"
   },
   "owner_application_detail_page": {
     "not_found": "Application not found",
@@ -4285,5 +4398,110 @@
       "keep": "Keep Reservation",
       "confirm": "Yes, Cancel It"
     }
+  },
+  "batch_create_table_modal": {
+    "select_floor_error": "Please select a floor",
+    "no_tables_error": "No tables to create",
+    "fix_conflicts_error": "Please fix table number conflicts before creating.",
+    "title_config": "Batch Create Tables",
+    "title_review": "Review Tables",
+    "description_config": "Configure settings to generate multiple tables.",
+    "description_review": "Review and edit the generated tables before creating them.",
+    "count_label": "Number of Tables",
+    "start_number_label": "Starting Number",
+    "default_capacity_label": "Default Capacity",
+    "default_shape_label": "Default Shape",
+    "name_prefix_label": "Name Prefix",
+    "name_prefix_placeholder": "e.g. Table",
+    "table_hash": "Table #{{number}}",
+    "duplicate_number": "Duplicate Number",
+    "number_label": "Number",
+    "empty_review": "No tables to create. Go back to generate some.",
+    "generate_preview": "Generate Preview",
+    "back_to_config": "Back to Config",
+    "creating": "Creating...",
+    "confirm_count_one": "Confirm {{count}} Table",
+    "confirm_count_other": "Confirm {{count}} Tables"
+  },
+  "add_role_modal": {
+    "edit_role": "Edit Role",
+    "add_role": "Add Role",
+    "add_new_role": "Add New Role",
+    "update_description": "Update role name and permissions.",
+    "create_description": "Create a new role and assign permissions.",
+    "role_name": "Role Name",
+    "role_name_placeholder": "e.g. Manager",
+    "add_permission": "Add Permission",
+    "select_permission": "Select permission",
+    "search_permission_placeholder": "Search permission...",
+    "no_permission_found": "No permission found.",
+    "assigned_permissions": "Assigned Permissions",
+    "station_permissions": "Station Permissions",
+    "terminal_access": "Terminal Access",
+    "can_access_pos": "Can access POS terminals",
+    "can_access_kds": "Can access KDS terminals",
+    "pos_actions": "POS Actions",
+    "create_manage_orders": "Create & manage orders",
+    "void_line_items": "Void line items",
+    "cancel_orders": "Cancel orders",
+    "process_refunds": "Process refunds",
+    "apply_discounts": "Apply discounts",
+    "update": "Update"
+  },
+  "edit_staff_settings_modal": {
+    "title": "Edit Staff Labor Settings",
+    "max_weekly_hours": "Max Weekly Hours Override",
+    "max_weekly_hours_placeholder": "e.g. 40",
+    "min_gap_between_shifts": "Min Gap Between Shifts Override",
+    "min_gap_placeholder": "e.g. 8",
+    "split_shift_gap": "Split Shift Gap Override",
+    "split_shift_gap_placeholder": "e.g. 1",
+    "save_changes": "Save changes"
+  },
+  "edit_staff_roles_modal": {
+    "title": "Edit Staff Roles",
+    "add_role": "Add role",
+    "search_role_placeholder": "Search role...",
+    "no_role_found": "No role found.",
+    "no_roles_assigned": "No roles assigned."
+  },
+  "roles_section": {
+    "title": "Roles",
+    "role_name": "Role Name",
+    "employees": "Employees",
+    "permissions": "Permissions",
+    "emps_count_one": "{{count}} Emp.",
+    "emps_count_other": "{{count}} Emps.",
+    "permissions_count_one": "{{count}} Permission",
+    "permissions_count_other": "{{count}} Permissions",
+    "delete_confirm": "Are you sure you want to delete the role \"{{name}}\"?"
+  },
+  "staff_menu_page": {
+    "access_denied": "Access Denied",
+    "access_denied_description": "You do not have permission to view the menu.",
+    "menus": "Menus",
+    "menu_structure": "Menu Structure",
+    "save_changes": "Save Changes",
+    "add_category": "Add Category",
+    "select_a_menu": "Select a Menu",
+    "select_a_menu_description": "Choose a menu from the sidebar or create a new one to manage its structure, categories, and items.",
+    "create_first_menu": "Create First Menu",
+    "move_to_category": "Move to Category",
+    "move_to_category_description": "Select the target category where you want to move this item.",
+    "current": "(Current)"
+  },
+  "business_management_header": {
+    "marketplace": "Marketplace",
+    "guest_shop": "Guest Shop",
+    "b2b_supplies": "B2B Supplies",
+    "official_gear": "Official Gear",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "businesses": "Businesses"
+  },
+  "view_role_modal": {
+    "title": "View Role: {{name}}",
+    "description": "Permissions assigned to this role.",
+    "no_permissions_assigned": "No permissions assigned."
   }
 }

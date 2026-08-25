@@ -50,7 +50,7 @@ export function EditStaffSettingsModal({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Edit Staff Labor Settings</DialogTitle>
+                    <DialogTitle>{t("edit_staff_settings_modal.title")}</DialogTitle>
                 </DialogHeader>
 
                 {/* Staff summary */}
@@ -62,30 +62,30 @@ export function EditStaffSettingsModal({
 
                 <div className="space-y-4">
                     <div className="space-y-1">
-                        <Label>Max Weekly Hours Override</Label>
+                        <Label>{t("edit_staff_settings_modal.max_weekly_hours")}</Label>
                         <Input
                             type="number"
-                            placeholder="e.g. 40"
+                            placeholder={t("edit_staff_settings_modal.max_weekly_hours_placeholder")}
                             value={maxWeeklyHours ?? ""}
                             onChange={(e) => setMaxWeeklyHours(e.target.value ? Number(e.target.value) : undefined)}
                         />
                     </div>
-                    
+
                     <div className="space-y-1">
-                        <Label>Min Gap Between Shifts Override</Label>
+                        <Label>{t("edit_staff_settings_modal.min_gap_between_shifts")}</Label>
                         <Input
                             type="number"
-                            placeholder="e.g. 8"
+                            placeholder={t("edit_staff_settings_modal.min_gap_placeholder")}
                             value={minGapBetweenShiftsHours ?? ""}
                             onChange={(e) => setMinGapBetweenShiftsHours(e.target.value ? Number(e.target.value) : undefined)}
                         />
                     </div>
 
                     <div className="space-y-1">
-                        <Label>Split Shift Gap Override</Label>
+                        <Label>{t("edit_staff_settings_modal.split_shift_gap")}</Label>
                         <Input
                             type="number"
-                            placeholder="e.g. 1"
+                            placeholder={t("edit_staff_settings_modal.split_shift_gap_placeholder")}
                             value={splitShiftGapHours ?? ""}
                             onChange={(e) => setSplitShiftGapHours(e.target.value ? Number(e.target.value) : undefined)}
                         />
@@ -94,8 +94,8 @@ export function EditStaffSettingsModal({
 
                 {/* Footer */}
                 <div className="flex justify-end gap-2 border-t pt-4 mt-6">
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-                    <Button onClick={handleSave}>Save changes</Button>
+                    <Button variant="outline" onClick={() => onOpenChange(false)}>{t("shared.actions.cancel")}</Button>
+                    <Button onClick={handleSave}>{t("edit_staff_settings_modal.save_changes")}</Button>
                 </div>
             </DialogContent>
         </Dialog>

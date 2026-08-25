@@ -119,8 +119,8 @@ const BusinessGrid = withFallback(
                     </motion.div>
                 ) : (
                     <div className="w-full py-20 flex flex-col items-center justify-center space-y-2">
-                        <h3 className="text-xl font-bold text-foreground">No businesses found</h3>
-                        <p className="text-muted-foreground">Try adjusting your search criteria</p>
+                        <h3 className="text-xl font-bold text-foreground">{t("feed_page.no_businesses_found")}</h3>
+                        <p className="text-muted-foreground">{t("feed_page.try_adjusting_search")}</p>
                     </div>
                 )}
 

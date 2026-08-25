@@ -146,14 +146,22 @@ export class SubscriptionPack {
   /** `price` covers up to `includedBusinesses`; each business selected beyond
    * that is billed at `extraBusinessPrice`. Selection is clamped to this
    * pack's own minimum — a pack with a 3-business minimum always prices at
-   * least 3, even if fewer are selected. */
+   * least 3, even if fewer are selected — and to its maximum, so the price
+   * stops climbing once `businessCount` exceeds what the plan supports
+   * (see `exceedsMaxBusinesses`). */
   getTotalPrice(businessCount: number): number {
-    const count = Math.max(businessCount, this.minBusinesses);
+    let count = Math.max(businessCount, this.minBusinesses);
+    if (this.maxBusinesses !== -1) count = Math.min(count, this.maxBusinesses);
     return this.price + this.extraBusinessPrice * Math.max(0, count - this.includedBusinesses);
   }
 
   getFormattedTotalPrice(businessCount: number): string {
     return `${this.getTotalPrice(businessCount).toFixed(2)} ${this.currency}`;
+  }
+
+  /** Whether `businessCount` is more than this pack allows (`-1` = unlimited). */
+  exceedsMaxBusinesses(businessCount: number): boolean {
+    return this.maxBusinesses !== -1 && businessCount > this.maxBusinesses;
   }
 
   getPlanDuration(): string {

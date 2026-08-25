@@ -86,7 +86,7 @@ export function EditStaffRolesModal({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-3xl h-[90vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Edit Staff Roles</DialogTitle>
+                    <DialogTitle>{t("edit_staff_roles_modal.title")}</DialogTitle>
                 </DialogHeader>
 
                 {/* Staff summary */}
@@ -105,15 +105,15 @@ export function EditStaffRolesModal({
                                 className="w-full justify-between"
                                 disabled={!availableRoles.length}
                             >
-                                Add role
+                                {t("edit_staff_roles_modal.add_role")}
                                 <Plus className="h-4 w-4 opacity-50" />
                             </Button>
                         </PopoverTrigger>
 
                         <PopoverContent className="w-full p-0 max-h-60 overflow-auto">
                             <Command>
-                                <CommandInput placeholder="Search role..." />
-                                <CommandEmpty>No role found.</CommandEmpty>
+                                <CommandInput placeholder={t("edit_staff_roles_modal.search_role_placeholder")} />
+                                <CommandEmpty>{t("edit_staff_roles_modal.no_role_found")}</CommandEmpty>
                                 <CommandGroup>
                                     {availableRoles.map(role => (
                                         <CommandItem key={role.id} onSelect={() => addRole(role.id)}>
@@ -159,15 +159,15 @@ export function EditStaffRolesModal({
                         ))}
 
                         {!assignedRoles.length && (
-                            <p className="text-sm text-muted-foreground">No roles assigned.</p>
+                            <p className="text-sm text-muted-foreground">{t("edit_staff_roles_modal.no_roles_assigned")}</p>
                         )}
                     </div>
                 </ScrollArea>
 
                 {/* Footer */}
                 <div className="flex justify-end gap-2 border-t pt-4">
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-                    <Button onClick={handleSave}>Save changes</Button>
+                    <Button variant="outline" onClick={() => onOpenChange(false)}>{t("shared.actions.cancel")}</Button>
+                    <Button onClick={handleSave}>{t("edit_staff_settings_modal.save_changes")}</Button>
                 </div>
             </DialogContent>
         </Dialog>

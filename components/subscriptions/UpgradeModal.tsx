@@ -65,7 +65,7 @@ const UpgradeModal: React.FC = () => {
                                 <Crown className="h-8 w-8 text-primary" />
                             </div>
                         </div>
-                        <DialogTitle className="text-3xl font-bold text-center">Upgrade Your Plan</DialogTitle>
+                        <DialogTitle className="text-3xl font-bold text-center">{t("subscriptions.upgrade_your_plan")}</DialogTitle>
                         <DialogDescription className="text-center text-muted-foreground text-lg mt-2 max-w-md mx-auto">
                             {limitMessage || t("subscriptions.upgrade_message", "Choose a plan that fits your business needs and unlock more power.")}
                         </DialogDescription>

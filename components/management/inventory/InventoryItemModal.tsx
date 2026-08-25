@@ -187,7 +187,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                             <PopoverContent className="w-full p-0">
                                                 <Command>
                                                     <CommandInput placeholder={t("shared.actions.search")} />
-                                                    <CommandEmpty>No unit found.</CommandEmpty>
+                                                    <CommandEmpty>{t("item_modal.no_units_found")}</CommandEmpty>
                                                     <CommandList className="max-h-60 overflow-y-auto">
                                                         <CommandGroup>
                                                             {inventoryUnits?.map((unit) => (
@@ -260,7 +260,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                         <PopoverContent className="w-full p-0">
                                             <Command>
                                                 <CommandInput placeholder={t("shared.actions.search")} />
-                                                <CommandEmpty>No group found.</CommandEmpty>
+                                                <CommandEmpty>{t("inventory_management.no_group_found")}</CommandEmpty>
                                                 <CommandList className="max-h-60 overflow-y-auto">
                                                     <CommandGroup>
                                                         <CommandItem

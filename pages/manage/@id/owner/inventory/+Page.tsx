@@ -193,17 +193,17 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                     <Button variant="outline" onClick={() => setGroupModalOpen(true)} className="flex-1 sm:flex-none gap-2 px-3 h-9">
                         <Layers className="w-4 h-4" />
                         <span className="hidden sm:inline">{t("inventory_management.manage_groups")}</span>
-                        <span className="sm:hidden text-xs">Groups</span>
+                        <span className="sm:hidden text-xs">{t("inventory_management.table.group")}</span>
                     </Button>
                     <Button variant="outline" onClick={() => setImportModalOpen(true)} className="flex-1 sm:flex-none gap-2 px-3 h-9">
                         <Sparkles className="w-4 h-4" />
                         <span className="hidden sm:inline">{t("inventory_management.import_inventory")}</span>
-                        <span className="sm:hidden text-xs">Import</span>
+                        <span className="sm:hidden text-xs">{t("shared.actions.import")}</span>
                     </Button>
                     <Button onClick={handleOpenCreateModal} className="flex-1 sm:flex-none gap-2 px-3 h-9">
                         <Plus className="w-4 h-4" />
                         <span className="hidden sm:inline">{t("inventory_management.add_item")}</span>
-                        <span className="sm:hidden text-xs">Add</span>
+                        <span className="sm:hidden text-xs">{t("shared.actions.add")}</span>
                     </Button>
                 </div>
             </div>
@@ -219,12 +219,12 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="mb-4">
-                    <TabsTrigger value="items">All Items</TabsTrigger>
+                    <TabsTrigger value="items">{t("inventory_management.tabs.all_items")}</TabsTrigger>
                     <TabsTrigger value="low-stock" className="gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5" />
-                        Low Stock
+                        {t("inventory_management.low_stock")}
                     </TabsTrigger>
-                    <TabsTrigger value="timeline">Movement Timeline</TabsTrigger>
+                    <TabsTrigger value="timeline">{t("inventory_management.tabs.movement_timeline")}</TabsTrigger>
                 </TabsList>
 
                 {/* All Items Tab */}
@@ -244,7 +244,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                         />
                                     </div>
                                     <Input
-                                        placeholder="Search Barcode"
+                                        placeholder={t("inventory_management.search_barcode_placeholder")}
                                         value={filters.barcode}
                                         className="h-9 w-full sm:w-44"
                                         onChange={(e) => { setFilters({ ...filters, barcode: e.target.value }); setCurrentPage(1); }}
@@ -268,12 +268,12 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                         <PopoverContent className="w-[200px] p-0" align="end">
                                             <Command>
                                                 <CommandInput placeholder={t("shared.actions.search")} />
-                                                <CommandEmpty>No group found.</CommandEmpty>
+                                                <CommandEmpty>{t("inventory_management.no_group_found")}</CommandEmpty>
                                                 <CommandList className="max-h-60 overflow-y-auto">
                                                     <CommandGroup>
                                                         <CommandItem value="all" onSelect={() => setFilters({ ...filters, groupId: "all" })}>
                                                             <Check className={cn("mr-2 h-4 w-4", filters.groupId === "all" ? "opacity-100" : "opacity-0")} />
-                                                            All Groups
+                                                            {t("inventory_management.all_groups")}
                                                         </CommandItem>
                                                         {inventoryGroups?.map((group) => (
                                                             <CommandItem key={group.id} value={group.name} onSelect={() => setFilters({ ...filters, groupId: group.id })}>
@@ -302,12 +302,12 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                         <PopoverContent className="w-[200px] p-0" align="end">
                                             <Command>
                                                 <CommandInput placeholder={t("shared.actions.search")} />
-                                                <CommandEmpty>No unit found.</CommandEmpty>
+                                                <CommandEmpty>{t("item_modal.no_units_found")}</CommandEmpty>
                                                 <CommandList className="max-h-60 overflow-y-auto">
                                                     <CommandGroup>
                                                         <CommandItem value="all" onSelect={() => setFilters({ ...filters, unitId: "all" })}>
                                                             <Check className={cn("mr-2 h-4 w-4", filters.unitId === "all" ? "opacity-100" : "opacity-0")} />
-                                                            All Units
+                                                            {t("inventory_management.all_units")}
                                                         </CommandItem>
                                                         {inventoryUnits?.map((unit) => (
                                                             <CommandItem key={unit.id} value={unit.name} onSelect={() => setFilters({ ...filters, unitId: String(unit.id) })}>
@@ -338,7 +338,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
 
                                     {hasActiveFilters && (
                                         <Button variant="ghost" size="sm" onClick={clearFilters} className="h-9 px-2 text-muted-foreground hover:text-foreground">
-                                            <X className="mr-2 h-4 w-4" /> Clear
+                                            <X className="mr-2 h-4 w-4" /> {t("shared.actions.clear")}
                                         </Button>
                                     )}
                                 </div>
@@ -369,7 +369,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                             {fetchingInventoryItems && !inventoryItems ? (
                                                 <TableRow>
                                                     <TableCell colSpan={6} className="text-center py-10 text-muted-foreground animate-pulse">
-                                                        Loading inventory…
+                                                        {t("inventory_management.loading")}
                                                     </TableCell>
                                                 </TableRow>
                                             ) : !inventoryItems || inventoryItems.length === 0 ? (
@@ -413,7 +413,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                                         <TableCell className="text-right text-muted-foreground">{item.lowStockThreshold}</TableCell>
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title="Movement History">
+                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title={t("inventory_management.movement_history")}>
                                                                     <History className="w-4 h-4 text-muted-foreground" />
                                                                 </Button>
                                                                 <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")}>
@@ -452,7 +452,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                                         disabled={currentPage === 1}
                                     >
-                                        <ChevronLeft className="h-4 w-4 mr-2" /> Previous
+                                        <ChevronLeft className="h-4 w-4 mr-2" /> {t("shared.actions.previous")}
                                     </Button>
                                     <span className="text-sm font-medium">{pagination.current} / {pagination.pages}</span>
                                     <Button
@@ -460,7 +460,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                         onClick={() => setCurrentPage((p) => Math.min(pagination.pages, p + 1))}
                                         disabled={currentPage === pagination.pages}
                                     >
-                                        Next <ChevronRight className="h-4 w-4 ml-2" />
+                                        {t("shared.actions.next")} <ChevronRight className="h-4 w-4 ml-2" />
                                     </Button>
                                 </div>
                             )}
