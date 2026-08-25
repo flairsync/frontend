@@ -45,6 +45,79 @@
       "upload": "Importer"
     },
     "cover_letter_title": "Lettre de motivation",
-    "timeline_title": "Suivi de la candidature"
+    "timeline_title": "Suivi de la candidature",
+    "invite_banner_title": "Vous avez été invité(e) à rejoindre l'équipe !",
+    "invite_banner_description": "Une invitation a été envoyée le {{date}}. Consultez votre boîte e-mail.",
+    "back_to_applications_list": "Mes candidatures"
+  },
+  "my_applications_list_page": {
+    "browse_all_positions": "Parcourir tous les postes",
+    "title": "Mes candidatures",
+    "subtitle": "Suivez l'état de vos candidatures.",
+    "tabs": {
+      "all": "Toutes",
+      "pending": "En attente",
+      "reviewed": "Examinées",
+      "shortlisted": "Présélectionnées",
+      "accepted": "Acceptées",
+      "rejected": "Rejetées"
+    },
+    "loading": "Chargement des candidatures...",
+    "empty_title": "Aucune candidature pour le moment",
+    "empty_description": "Vous n'avez encore postulé à aucun poste.",
+    "browse_open_jobs": "Parcourir les offres →",
+    "status": {
+      "pending": "Candidature reçue",
+      "reviewed": "En cours d'examen",
+      "shortlisted": "Vous avez été présélectionné(e) !",
+      "accepted": "Vous avez été accepté(e) !",
+      "hired": "Vous faites maintenant partie de l'équipe !",
+      "rejected": "Non retenu(e)"
+    },
+    "job_position_fallback": "Poste",
+    "staff_invite_sent": "Invitation envoyée",
+    "applied_on": "Candidature envoyée le {{date}}",
+    "view_details": "Voir les détails",
+    "view_resume": "Voir le CV",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page_of": "Page {{page}} sur {{totalPages}}"
+  },
+  "apply_modal": {
+    "apply_for": "Postuler pour :",
+    "at_business": "chez {{name}}",
+    "cover_letter_label": "Lettre de motivation",
+    "optional": "(facultatif)",
+    "cover_letter_placeholder": "Expliquez pourquoi vous êtes le bon candidat...",
+    "char_count": "{{count}} / {{max}}",
+    "resume_label": "CV",
+    "paste_link": "Coller un lien",
+    "url_placeholder": "https://linkedin.com/in/votre-profil",
+    "upload_pdf": "Importer un PDF",
+    "choose_file": "Choisir un fichier",
+    "pdf_hint": "PDF uniquement, 5 Mo max",
+    "cancel": "Annuler",
+    "submitting": "Envoi en cours...",
+    "submit": "Envoyer la candidature"
+  },
+  "job_detail_page": {
+    "position_closed": "Poste clôturé",
+    "applied_with_date": "Candidature envoyée le {{date}}",
+    "applied_no_date": "Candidature envoyée ✓",
+    "view_my_application": "Voir ma candidature →",
+    "sign_in_to_apply": "Se connecter pour postuler",
+    "complete_profile_to_apply": "Compléter le profil pour postuler",
+    "apply_now": "Postuler maintenant",
+    "not_found_title": "Poste non disponible",
+    "not_found_description": "Cette offre d'emploi a été supprimée ou n'accepte plus de candidatures.",
+    "browse_all_positions": "Parcourir tous les postes",
+    "closed_badge": "Clôturé",
+    "applicant_count_one": "{{count}} candidat",
+    "applicant_count_other": "{{count}} candidats",
+    "posted_on": "Publié le {{date}}",
+    "closes_on": "Clôture le {{date}}",
+    "about_role": "À propos de ce poste",
+    "share": "Partager",
+    "link_copied_toast": "Lien copié ! Partagez-le sur Facebook, WhatsApp ou là où vous recrutez."
   }
 }

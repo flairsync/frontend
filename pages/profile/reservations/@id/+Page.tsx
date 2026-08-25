@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from "vike/client/router";
 import { useReservationTimeline } from "@/features/discovery/useDiscovery";
@@ -16,6 +17,7 @@ import { ArrowLeft, CalendarDays, Clock, Users, Table2, AlertTriangle } from "lu
 const TERMINAL_STATUSES = ['completed', 'cancelled', 'no_show', 'expired'];
 
 const ReservationTimelinePage: React.FC = () => {
+    const { t } = useTranslation("profile");
     const { routeParams } = usePageContext();
     const reservationId = routeParams.id;
 
@@ -57,9 +59,9 @@ const ReservationTimelinePage: React.FC = () => {
         return (
             <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
                 <AlertTriangle className="w-10 h-10 text-amber-500" />
-                <p className="text-muted-foreground">Could not identify the restaurant for this reservation.</p>
+                <p className="text-muted-foreground">{t("reservation_detail_page.could_not_identify_restaurant")}</p>
                 <Button variant="outline" onClick={() => navigate('/profile/reservations')}>
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to Reservations
+                    <ArrowLeft className="w-4 h-4 mr-2" /> {t("reservation_detail_page.back_to_reservations")}
                 </Button>
             </div>
         );
@@ -77,15 +79,15 @@ const ReservationTimelinePage: React.FC = () => {
                         <Skeleton className="h-5 w-40" />
                     ) : (
                         <div className="flex items-center gap-2 flex-wrap">
-                            <h1 className="font-semibold">{businessProfile?.name ?? 'Reservation'}</h1>
-                            {reservation && getStatusBadge(reservation.status)}
+                            <h1 className="font-semibold">{businessProfile?.name ?? t("reservation_detail_page.reservation_fallback")}</h1>
+                            {reservation && getStatusBadge(reservation.status, t)}
                         </div>
                     )}
                 </div>
                 {!isLoading && canSelfCancel && (
                     <Button size="sm" variant="outline" className="border-red-300 text-red-700 hover:bg-red-50 text-xs"
                         onClick={() => setCancelDialogOpen(true)}>
-                        Cancel
+                        {t("reservations_page.cancel_button")}
                     </Button>
                 )}
             </div>
@@ -103,12 +105,12 @@ const ReservationTimelinePage: React.FC = () => {
                     </span>
                     <span className="flex items-center gap-1">
                         <Users className="w-3.5 h-3.5" />
-                        {reservation.guestCount} guests
+                        {t("reservations_page.guest_count", { count: reservation.guestCount })}
                     </span>
                     {reservation.table && (
                         <span className="flex items-center gap-1">
                             <Table2 className="w-3.5 h-3.5" />
-                            {reservation.table.name || `Table ${reservation.table.number}`}
+                            {reservation.table.name || t("reservation_detail_page.table_fallback", { number: reservation.table.number })}
                         </span>
                     )}
                 </div>
@@ -145,7 +147,7 @@ const ReservationTimelinePage: React.FC = () => {
             {/* Terminal state message */}
             {!isLoading && isTerminal && (
                 <div className="py-3 text-center text-sm text-muted-foreground border-t">
-                    This reservation is {reservation?.status?.toLowerCase().replace('_', '-')}.
+                    {t("reservation_detail_page.terminal_message", { status: reservation?.status?.toLowerCase().replace('_', '-') })}
                 </div>
             )}
 
@@ -153,13 +155,13 @@ const ReservationTimelinePage: React.FC = () => {
             <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
                 <DialogContent className="max-w-sm">
                     <DialogHeader>
-                        <DialogTitle>Cancel Reservation</DialogTitle>
+                        <DialogTitle>{t("reservation_detail_page.cancel_dialog.title")}</DialogTitle>
                         <DialogDescription>
-                            Are you sure you want to cancel this reservation? This action cannot be undone.
+                            {t("reservation_detail_page.cancel_dialog.description")}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="ghost" onClick={() => setCancelDialogOpen(false)}>Back</Button>
+                        <Button variant="ghost" onClick={() => setCancelDialogOpen(false)}>{t("reservation_detail_page.cancel_dialog.back")}</Button>
                         <Button
                             variant="destructive"
                             disabled={cancelling}
@@ -170,7 +172,7 @@ const ReservationTimelinePage: React.FC = () => {
                                 );
                             }}
                         >
-                            {cancelling ? "Cancelling…" : "Yes, Cancel"}
+                            {cancelling ? t("reservation_detail_page.cancel_dialog.cancelling") : t("reservation_detail_page.cancel_dialog.confirm")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

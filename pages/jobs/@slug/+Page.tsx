@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -24,6 +25,7 @@ import PublicFeedHeader from "@/components/feed/PublicFeedHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
 
 function ApplyButton({ job, user }: { job: Job; user: any }) {
+  const { t } = useTranslation("jobs");
   const [applyOpen, setApplyOpen] = useState(false);
   const [applied, setApplied] = useState(false);
   const existingApplication = useMyApplicationForJob(job.id);
@@ -37,7 +39,7 @@ function ApplyButton({ job, user }: { job: Job; user: any }) {
   if (isClosed) {
     return (
       <Button disabled size="lg">
-        Position Closed
+        {t("job_detail_page.position_closed")}
       </Button>
     );
   }
@@ -47,14 +49,16 @@ function ApplyButton({ job, user }: { job: Job; user: any }) {
       <div className="flex items-center gap-3 flex-wrap">
         <span className="flex items-center gap-1.5 text-sm font-medium text-green-700 bg-green-100 px-3 py-2 rounded-lg">
           <CheckCircle2 className="h-4 w-4" />
-          Applied{existingApplication ? ` on ${format(new Date(existingApplication.createdAt), "MMM d")}` : " ✓"}
+          {existingApplication
+            ? t("job_detail_page.applied_with_date", { date: format(new Date(existingApplication.createdAt), "MMM d") })
+            : t("job_detail_page.applied_no_date")}
         </span>
         {existingApplication && (
           <a
             href={`/jobs/${job.id}/my-application`}
             className="text-sm text-primary hover:underline font-medium"
           >
-            View my application →
+            {t("job_detail_page.view_my_application")}
           </a>
         )}
       </div>
@@ -68,7 +72,7 @@ function ApplyButton({ job, user }: { job: Job; user: any }) {
         size="lg"
         onClick={() => { window.location.href = `/login?returnTo=${returnTo}`; }}
       >
-        Sign in to Apply
+        {t("job_detail_page.sign_in_to_apply")}
       </Button>
     );
   }
@@ -79,7 +83,7 @@ function ApplyButton({ job, user }: { job: Job; user: any }) {
         size="lg"
         onClick={() => { window.location.href = "/manage/join"; }}
       >
-        Complete Profile to Apply
+        {t("job_detail_page.complete_profile_to_apply")}
       </Button>
     );
   }
@@ -87,7 +91,7 @@ function ApplyButton({ job, user }: { job: Job; user: any }) {
   return (
     <>
       <Button size="lg" onClick={() => setApplyOpen(true)}>
-        Apply Now
+        {t("job_detail_page.apply_now")}
       </Button>
       <ApplyModal
         job={job}
@@ -100,6 +104,7 @@ function ApplyButton({ job, user }: { job: Job; user: any }) {
 }
 
 const JobDetailPage = () => {
+  const { t } = useTranslation("jobs");
   const { routeParams, user } = usePageContext() as any;
   const slug = routeParams.slug;
 
@@ -115,7 +120,7 @@ const JobDetailPage = () => {
 
   const copyLink = async () => {
     await navigator.clipboard.writeText(window.location.href);
-    toast.success("Link copied! Share it on Facebook, WhatsApp, or wherever you recruit.");
+    toast.success(t("job_detail_page.link_copied_toast"));
   };
 
   if (loading) {
@@ -136,13 +141,13 @@ const JobDetailPage = () => {
         <PublicFeedHeader />
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-4">
           <Briefcase className="h-10 w-10 text-muted-foreground/40" />
-          <h1 className="text-2xl font-bold">Position no longer available</h1>
+          <h1 className="text-2xl font-bold">{t("job_detail_page.not_found_title")}</h1>
           <p className="text-muted-foreground max-w-sm">
-            This job posting has been removed or is no longer accepting applications.
+            {t("job_detail_page.not_found_description")}
           </p>
           <a href="/jobs" className="text-primary hover:underline text-sm flex items-center gap-1">
             <ArrowLeft className="h-4 w-4" />
-            Browse all positions
+            {t("job_detail_page.browse_all_positions")}
           </a>
         </div>
         <WebsiteFooter />
@@ -164,7 +169,7 @@ const JobDetailPage = () => {
           {/* Back */}
           <a href="/jobs" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-6">
             <ArrowLeft className="h-4 w-4" />
-            Browse all positions
+            {t("job_detail_page.browse_all_positions")}
           </a>
 
           <div className="bg-card rounded-xl border border-border overflow-hidden">
@@ -186,7 +191,7 @@ const JobDetailPage = () => {
                     <Badge variant="secondary">{JOB_TYPE_LABELS[job.type]}</Badge>
                     <Badge variant="outline">{JOB_CATEGORY_LABELS[job.category]}</Badge>
                     {isClosed && (
-                      <Badge className="bg-destructive/10 text-destructive border-0">Closed</Badge>
+                      <Badge className="bg-destructive/10 text-destructive border-0">{t("job_detail_page.closed_badge")}</Badge>
                     )}
                   </div>
                 </div>
@@ -206,16 +211,16 @@ const JobDetailPage = () => {
                 )}
                 <span className="flex items-center gap-1.5">
                   <Users className="h-4 w-4" />
-                  {job.applicationCount} applicant{job.applicationCount !== 1 ? "s" : ""}
+                  {t("job_detail_page.applicant_count", { count: job.applicationCount })}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  Posted {format(new Date(job.createdAt), "MMM d, yyyy")}
+                  {t("job_detail_page.posted_on", { date: format(new Date(job.createdAt), "MMM d, yyyy") })}
                 </span>
                 {job.closesAt && (
                   <span className="flex items-center gap-1.5 text-amber-600">
                     <Calendar className="h-4 w-4" />
-                    Closes {format(new Date(job.closesAt), "MMM d, yyyy")}
+                    {t("job_detail_page.closes_on", { date: format(new Date(job.closesAt), "MMM d, yyyy") })}
                   </span>
                 )}
               </div>
@@ -224,7 +229,7 @@ const JobDetailPage = () => {
             {/* Description */}
             <div className="p-6 border-b border-border">
               <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-                About this role
+                {t("job_detail_page.about_role")}
               </h2>
               <div className="text-sm leading-relaxed whitespace-pre-wrap">
                 {job.description}
@@ -236,7 +241,7 @@ const JobDetailPage = () => {
               <ApplyButton job={job} user={user} />
               <Button variant="outline" onClick={copyLink} className="gap-2">
                 <Share2 className="h-4 w-4" />
-                Share
+                {t("job_detail_page.share")}
               </Button>
             </div>
           </div>

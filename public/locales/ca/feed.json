@@ -290,5 +290,16 @@
     "custom_override_location": "Ubicació personalitzada",
     "cancel": "Cancel·lar",
     "apply_filters": "Aplicar filtres"
+  },
+  "reservation_status": {
+    "pending": "Pendent",
+    "confirmed": "Confirmada",
+    "seated": "Assegut",
+    "completed": "Completada",
+    "cancelled": "Cancel·lada",
+    "no_show": "No presentat",
+    "expired": "Caducada",
+    "waitlist": "Llista d'espera",
+    "rejected": "Rebutjada"
   }
 }

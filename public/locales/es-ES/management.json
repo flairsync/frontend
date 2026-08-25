@@ -4012,5 +4012,274 @@
       "generate_new_code": "Generar nuevo código",
       "generate_failed_toast": "No se pudo generar el código. Inténtalo de nuevo."
     }
+  },
+  "help_page": {
+    "title": "Ayuda y soporte",
+    "subtitle": "Encuentra respuestas a preguntas frecuentes, o ponte en contacto con nuestro equipo de soporte.",
+    "faq_title": "Preguntas frecuentes",
+    "faqs": [
+      {
+        "question": "¿Cómo me uno a un negocio?",
+        "answer": "Solo puedes unirte a un negocio si un propietario o administrador te envía un enlace de invitación. Una vez aceptada, aparecerá en tu pestaña 'Unido'."
+      },
+      {
+        "question": "¿Cómo puedo crear un nuevo negocio?",
+        "answer": "Ve a la página 'Mis negocios' y haz clic en 'Crear negocio'. Podrás configurar el nombre, la descripción e invitar miembros."
+      },
+      {
+        "question": "¿Dónde puedo gestionar mi suscripción?",
+        "answer": "Todos los detalles de facturación y suscripción se encuentran en la sección 'Facturación' de tu panel."
+      },
+      {
+        "question": "¿Cómo contacto con soporte?",
+        "answer": "Si necesitas ayuda, usa el formulario de soporte a continuación o envíanos un correo directamente."
+      }
+    ],
+    "contact_support": {
+      "title": "Contactar con soporte",
+      "description": "¿Necesitas más ayuda? Envíanos un mensaje y te responderemos pronto.",
+      "send_message": "Enviar un mensaje"
+    },
+    "docs": {
+      "title": "Documentación y tutoriales",
+      "description": "Explora nuestras guías para sacar el máximo partido a la plataforma.",
+      "getting_started": "Guía de inicio",
+      "billing_subscriptions": "Facturación y suscripciones",
+      "inviting_team": "Invitar a miembros del equipo",
+      "connecting_printer": "Conectar una impresora de recibos y un cajón portamonedas"
+    }
+  },
+  "business_feedback_dashboard": {
+    "title": "Comentarios",
+    "subtitle": "Comentarios posteriores a la comida enviados por tus clientes",
+    "all_ratings": "Todas las valoraciones",
+    "stars_and_up": "{{count}}+ estrellas",
+    "no_feedback": "No se encontraron comentarios.",
+    "sub_ratings": {
+      "food": "Comida",
+      "service": "Servicio",
+      "ambiance": "Ambiente",
+      "value": "Relación calidad-precio"
+    },
+    "nps_score": "NPS {{score}}/10",
+    "improvement_tags": {
+      "FOOD_TEMPERATURE": "Temperatura de la comida",
+      "ORDER_ACCURACY": "Precisión del pedido",
+      "WAIT_TIME": "Tiempo de espera",
+      "STAFF_FRIENDLINESS": "Amabilidad del personal",
+      "CLEANLINESS": "Limpieza",
+      "NOISE_LEVEL": "Nivel de ruido",
+      "PRICE": "Precio",
+      "PORTION_SIZE": "Tamaño de las raciones"
+    }
+  },
+  "barcode_scanner_dialog": {
+    "title": "Escanear código de barras",
+    "checking_permission": "Comprobando el permiso de la cámara…",
+    "permission_needed_title": "Se necesita acceso a la cámara",
+    "permission_needed_description": "Permite el acceso a la cámara para escanear códigos de barras directamente desde tu dispositivo.",
+    "grant_access": "Conceder acceso a la cámara",
+    "blocked_title": "Acceso a la cámara bloqueado",
+    "blocked_description": "Se denegó el permiso de la cámara. Para activarlo, abre la configuración de tu navegador o dispositivo y permite la cámara para este sitio.",
+    "open_settings": "Abrir configuración",
+    "starting_camera": "Iniciando la cámara…",
+    "retry": "Reintentar",
+    "select_camera_placeholder": "Seleccionar cámara",
+    "camera_label": "Cámara {{index}}",
+    "switch_camera": "Cambiar de cámara",
+    "status_denied": "Activa la cámara en la configuración de tu navegador para escanear",
+    "status_prompt": "Concede acceso a la cámara para empezar a escanear",
+    "status_scanning": "Apunta la cámara a un código de barras",
+    "no_camera_found": "No se encontró ninguna cámara en este dispositivo.",
+    "could_not_start_camera": "No se pudo iniciar la cámara. Inténtalo de nuevo.",
+    "could_not_access_camera": "No se pudo acceder a la cámara. Inténtalo de nuevo.",
+    "unknown_format": "Código de barras"
+  },
+  "print_qr_codes_button": {
+    "button": "Imprimir códigos QR",
+    "dialog_title": "Imprimir códigos QR de las mesas",
+    "floor_label": "Planta",
+    "all_floors": "Todas las plantas",
+    "cancel": "Cancelar",
+    "download_pdf": "Descargar PDF",
+    "error": "No se pudo generar el PDF de códigos QR"
+  },
+  "professional_profile_page": {
+    "title": "Perfil profesional",
+    "subtitle_update": "Actualiza cómo apareces ante empleadores y negocios.",
+    "subtitle_create": "Crea tu perfil profesional para postularte a empleos y conectar con negocios.",
+    "active_badge": "Activo",
+    "no_profile_yet": "Aún no hay perfil profesional",
+    "member_since": "Miembro desde {{date}}",
+    "your_profile_fallback": "Tu perfil",
+    "cta": {
+      "title": "Consigue que te descubran los negocios",
+      "description": "Completa tus datos a continuación para empezar a postularte a empleos y aparecer en las búsquedas de empleadores."
+    },
+    "form": {
+      "edit_title": "Editar detalles",
+      "create_title": "Configura tu perfil",
+      "legal_name_section": "Nombre legal",
+      "first_name_label": "Nombre",
+      "first_name_placeholder": "Juan",
+      "last_name_label": "Apellidos",
+      "last_name_placeholder": "Pérez",
+      "middle_name_label": "Segundo nombre",
+      "middle_name_optional": "(opcional)",
+      "middle_name_placeholder": "Opcional",
+      "public_identity_section": "Identidad pública",
+      "display_name_label": "Nombre público",
+      "display_name_placeholder": "Cómo quieres aparecer públicamente",
+      "display_name_hint": "Se muestra en las solicitudes de empleo y perfiles públicos.",
+      "work_email_label": "Correo laboral",
+      "verified_badge": "Verificado",
+      "unverified_badge": "Sin verificar",
+      "work_email_placeholder": "tu@trabajo.com",
+      "work_email_hint": "Se usa para comunicaciones laborales, como las nóminas. Cambiarlo requiere verificar la nueva dirección.",
+      "verification_pending_for": "Verificación pendiente para {{email}}",
+      "verification_pending_note_changing": "Enviamos un código de 6 dígitos a esa dirección. Tu correo laboral actual seguirá activo hasta que se confirme.",
+      "verification_pending_note_new": "Enviamos un código de 6 dígitos a esa dirección. Confírmalo para terminar de verificar tu perfil profesional.",
+      "enter_code": "Introducir código",
+      "sending": "Enviando…",
+      "resend_in": "Reenviar en {{seconds}} s",
+      "resend_code": "Reenviar código",
+      "saving": "Guardando…",
+      "save_changes": "Guardar cambios",
+      "create_profile": "Crear perfil"
+    },
+    "verify_modal": {
+      "title": "Verificar correo laboral",
+      "description": "Introduce el código de 6 dígitos que enviamos a {{email}}.",
+      "your_work_email_fallback": "tu correo laboral"
+    },
+    "invalid_or_expired_code": "Código inválido o caducado."
+  },
+  "join_professional_page": {
+    "header_title": "Cuenta profesional",
+    "header_subtitle": "Crea un perfil profesional para gestionar o unirte a negocios en la plataforma.",
+    "invited_title": "Te han invitado a unirte a un negocio",
+    "invited_description": "Para aceptar esta invitación, crea un perfil profesional con {{email}}.",
+    "invitation_not_found_title": "Invitación no encontrada",
+    "invitation_not_found_description_1": "El enlace de invitación que usaste no es válido o puede haber caducado.",
+    "invitation_not_found_description_2": "Aun así puedes continuar y crear un perfil profesional con normalidad.",
+    "verify": {
+      "title": "Verifica tu correo laboral",
+      "description": "Enviamos un código de 6 dígitos a {{email}}. Introdúcelo a continuación para terminar de configurar tu perfil profesional.",
+      "verifying": "Verificando…",
+      "verify_button": "Verificar correo laboral",
+      "no_code_question": "¿No recibiste un código?",
+      "resend_failed": "No se pudo reenviar el código."
+    },
+    "create": {
+      "title": "Crea tu perfil profesional",
+      "description": "Tu perfil profesional te representa en los negocios. El nombre público es opcional y puede diferir de tu nombre legal.",
+      "middle_name_placeholder": "Segundo nombre (opcional)",
+      "email_locked_hint": "Este correo está bloqueado porque la invitación se envió a él.",
+      "confirm_label": "Confirmo que la información anterior es exacta y me pertenece.",
+      "submit": "Crear perfil profesional"
+    },
+    "tips": {
+      "title": "Consejos para el perfil",
+      "tip1": "Usa tu nombre legal para la documentación oficial.",
+      "tip2": "El nombre público puede diferir por privacidad o marca.",
+      "tip3": "El correo laboral debe estar activo y ser accesible.",
+      "tip4": "Necesario para unirte a negocios o gestionarlos."
+    },
+    "why_matters": {
+      "title": "Por qué es importante",
+      "description": "Un perfil profesional separa tu cuenta personal de la actividad empresarial y mantiene segura la verificación y la facturación."
+    }
+  },
+  "work_hours_selector": {
+    "title": "🕒 Horario comercial",
+    "closed": "Cerrado",
+    "open": "Abierto",
+    "copy_to_all_days": "Copiar a todos los días",
+    "no_shifts_yet": "Aún no se han añadido turnos",
+    "opens_label": "Apertura",
+    "closes_label": "Cierre",
+    "next_day": "Día siguiente ➜",
+    "add_shift": "Añadir turno",
+    "day_off": "Día libre"
+  },
+  "job_form": {
+    "title_label": "Título del puesto",
+    "title_placeholder": "p. ej. Jefe de sala",
+    "title_error_min": "El título debe tener al menos 3 caracteres.",
+    "title_error_max": "El título debe tener menos de 100 caracteres.",
+    "employment_type_label": "Tipo de contrato",
+    "select_type_placeholder": "Seleccionar tipo",
+    "type_error": "El tipo de contrato es obligatorio.",
+    "category_label": "Categoría / Puesto",
+    "select_category_placeholder": "Seleccionar categoría",
+    "category_error": "La categoría es obligatoria.",
+    "description_label": "Descripción",
+    "description_placeholder": "Describe el puesto, los requisitos y lo que buscas...",
+    "description_error": "La descripción debe tener al menos 20 caracteres.",
+    "location_label": "Ubicación",
+    "location_placeholder": "p. ej. Centro, Madrid",
+    "salary_range_label": "Rango salarial",
+    "salary_range_placeholder": "p. ej. «15-18€/h» o «Negociable»",
+    "deadline_label": "Fecha límite de solicitud",
+    "deadline_error": "La fecha límite de solicitud debe ser en el futuro.",
+    "save_as_draft": "Guardar como borrador",
+    "save_changes": "Guardar cambios",
+    "publish_job": "Publicar oferta"
+  },
+  "reservation_status": {
+    "pending": "Pendiente",
+    "confirmed": "Confirmada",
+    "seated": "Sentado",
+    "completed": "Completada",
+    "cancelled": "Cancelada",
+    "no_show": "No presentado",
+    "expired": "Caducada",
+    "waitlist": "Lista de espera",
+    "rejected": "Rechazada"
+  },
+  "staff_reservations_page": {
+    "title": "Reservas",
+    "subtitle": "Gestiona las reservas próximas y pasadas de forma eficiente.",
+    "add_new": "Añadir reserva",
+    "tabs": {
+      "upcoming": "Próximas",
+      "past": "Pasadas"
+    },
+    "sort_by_placeholder": "Ordenar por",
+    "sort_options": {
+      "reservation_date": "Fecha de reserva",
+      "booking_date": "Fecha de solicitud"
+    },
+    "order_placeholder": "Orden",
+    "order_options": {
+      "newest_first": "Más recientes primero",
+      "oldest_first": "Más antiguas primero"
+    },
+    "status_label": "Estado",
+    "all": "Todas",
+    "date_range_label": "Rango de fechas",
+    "upcoming_reservations_title": "Reservas próximas",
+    "past_reservations_title": "Reservas pasadas",
+    "col_customer": "Cliente",
+    "col_table": "Mesa",
+    "col_date": "Fecha",
+    "col_time": "Hora",
+    "col_guests": "Comensales",
+    "col_action": "Acción",
+    "table_unassigned": "Sin asignar",
+    "table_fallback": "Mesa {{number}}",
+    "no_upcoming_found": "No se encontraron reservas próximas.",
+    "no_past_found": "No se encontraron reservas pasadas.",
+    "view": "Ver",
+    "edit": "Editar",
+    "approve": "Aprobar",
+    "cancel": "Cancelar",
+    "cancel_dialog": {
+      "title": "¿Cancelar esta reserva?",
+      "description_with_name": "Esto cancelará la reserva de {{name}}. Se notificará al cliente.",
+      "description_generic": "Esto cancelará la reserva. Se notificará al cliente.",
+      "keep": "Mantener reserva",
+      "confirm": "Sí, cancelar"
+    }
   }
 }

@@ -237,5 +237,35 @@
     "cancellation_notice": "Això envia una sol·licitud de cancel·lació al restaurant. Confirmaran d'aquí poc. La teva reserva segueix activa fins llavors.",
     "reason_label": "Motiu (opcional)",
     "reason_placeholder": "p. ex. Canvi de plans"
+  },
+  "customer_reservation_timeline": {
+    "event_labels": {
+      "created": "Reserva rebuda",
+      "confirmed": "Reserva confirmada",
+      "seated": "T'han assegut — gaudeix-ne!",
+      "completed": "Gràcies per venir",
+      "cancelled": "Reserva cancel·lada",
+      "rejected": "Reserva rebutjada",
+      "updated": "Detalls actualitzats",
+      "no_show": "Marcat com a no presentat",
+      "expired": "Reserva caducada",
+      "table_assigned": "Taula assignada",
+      "table_reassigned": "Taula reassignada",
+      "reminder_sent": "Recordatori enviat",
+      "customer_late": "Retard notificat",
+      "delay_noticed": "Retard detectat",
+      "customer_confirmed_attendance": "Has confirmat la teva assistència",
+      "customer_running_late": "Has notificat un retard",
+      "customer_requested_cancellation": "Has sol·licitat la cancel·lació",
+      "customer_requested_modification": "Has sol·licitat un canvi",
+      "customer_acknowledged_delay": "Has reconegut l'espera"
+    },
+    "empty_state": "Encara no hi ha novetats. Torna aviat!",
+    "meta": {
+      "delay_estimate": "~{{minutes}} min de retard",
+      "reminder_sent_before": "Enviat {{minutes}} min abans de la teva reserva",
+      "new_time": "Nova hora: {{time}}",
+      "party_of": "Grup de {{count}}"
+    }
   }
 }

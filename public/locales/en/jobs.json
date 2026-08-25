@@ -45,6 +45,79 @@
       "upload": "Upload"
     },
     "cover_letter_title": "Cover Letter",
-    "timeline_title": "Application Timeline"
+    "timeline_title": "Application Timeline",
+    "invite_banner_title": "You've been invited to join the team!",
+    "invite_banner_description": "A staff invitation was sent on {{date}}. Check your email inbox.",
+    "back_to_applications_list": "My Applications"
+  },
+  "my_applications_list_page": {
+    "browse_all_positions": "Browse all positions",
+    "title": "My Applications",
+    "subtitle": "Track the status of your job applications.",
+    "tabs": {
+      "all": "All",
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "shortlisted": "Shortlisted",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "loading": "Loading applications...",
+    "empty_title": "No applications yet",
+    "empty_description": "You haven't applied to any positions yet.",
+    "browse_open_jobs": "Browse open jobs →",
+    "status": {
+      "pending": "Application received",
+      "reviewed": "Being reviewed",
+      "shortlisted": "You've been shortlisted!",
+      "accepted": "You've been accepted!",
+      "hired": "You're now part of the team!",
+      "rejected": "Not selected"
+    },
+    "job_position_fallback": "Job position",
+    "staff_invite_sent": "Staff Invite Sent",
+    "applied_on": "Applied on {{date}}",
+    "view_details": "View details",
+    "view_resume": "View Resume",
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{page}} of {{totalPages}}"
+  },
+  "apply_modal": {
+    "apply_for": "Apply for:",
+    "at_business": "at {{name}}",
+    "cover_letter_label": "Cover Letter",
+    "optional": "(optional)",
+    "cover_letter_placeholder": "Tell them why you're a good fit...",
+    "char_count": "{{count}} / {{max}}",
+    "resume_label": "Resume",
+    "paste_link": "Paste a link",
+    "url_placeholder": "https://linkedin.com/in/your-profile",
+    "upload_pdf": "Upload a PDF",
+    "choose_file": "Choose file",
+    "pdf_hint": "PDF only, max 5 MB",
+    "cancel": "Cancel",
+    "submitting": "Submitting...",
+    "submit": "Submit Application"
+  },
+  "job_detail_page": {
+    "position_closed": "Position Closed",
+    "applied_with_date": "Applied on {{date}}",
+    "applied_no_date": "Applied ✓",
+    "view_my_application": "View my application →",
+    "sign_in_to_apply": "Sign in to Apply",
+    "complete_profile_to_apply": "Complete Profile to Apply",
+    "apply_now": "Apply Now",
+    "not_found_title": "Position no longer available",
+    "not_found_description": "This job posting has been removed or is no longer accepting applications.",
+    "browse_all_positions": "Browse all positions",
+    "closed_badge": "Closed",
+    "applicant_count_one": "{{count}} applicant",
+    "applicant_count_other": "{{count}} applicants",
+    "posted_on": "Posted {{date}}",
+    "closes_on": "Closes {{date}}",
+    "about_role": "About this role",
+    "share": "Share",
+    "link_copied_toast": "Link copied! Share it on Facebook, WhatsApp, or wherever you recruit."
   }
 }

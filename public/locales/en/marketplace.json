@@ -2,7 +2,8 @@
   "gallery_titles": {
     "b2b": "B2B Marketplace",
     "saas": "SaaS Shop",
-    "guest": "Guest Marketplace"
+    "guest": "Guest Marketplace",
+    "saas_official": "Official Shop"
   },
   "item_detail": {
     "back_to_gallery": "Back to Gallery",
@@ -34,5 +35,21 @@
     "out_of_stock_hint": "This item is out of stock",
     "select_business_hint": "Please select a business",
     "fill_shipping_hint": "Please fill in all shipping details"
+  },
+  "browse_page": {
+    "guest_subtitle_with_business": "Shop items from this business.",
+    "guest_subtitle_no_business": "Discover your favorite restaurant items.",
+    "b2b_subtitle": "Sourcing & supplies for your business.",
+    "saas_subtitle": "Exclusive gear and NFC technology.",
+    "no_business_selected": "No business selected.",
+    "no_business_hint": "Please visit a specific restaurant profile to see their retail items.",
+    "loading_items": "Loading items..."
+  },
+  "grid": {
+    "search_placeholder": "Search items...",
+    "empty_title": "No items found",
+    "empty_search_description": "No results for \"{{search}}\". Try a different search term.",
+    "empty_no_items_description": "This shop has no active items yet.",
+    "page_of": "Page {{page}} of {{totalPages}}"
   }
 }

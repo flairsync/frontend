@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { ArrowLeft, Briefcase, ExternalLink, FileText, Link } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -24,25 +25,10 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
   red: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
 };
 
-const STATUS_MESSAGES: Record<ApplicationStatus, string> = {
-  pending: "Application received",
-  reviewed: "Being reviewed",
-  shortlisted: "You've been shortlisted!",
-  accepted: "You've been accepted!",
-  hired: "You're now part of the team!",
-  rejected: "Not selected",
-};
-
-const ALL_TABS: Array<{ label: string; value: ApplicationStatus | "all" }> = [
-  { label: "All", value: "all" },
-  { label: "Pending", value: "pending" },
-  { label: "Reviewed", value: "reviewed" },
-  { label: "Shortlisted", value: "shortlisted" },
-  { label: "Accepted", value: "accepted" },
-  { label: "Rejected", value: "rejected" },
-];
+const ALL_TAB_VALUES: Array<ApplicationStatus | "all"> = ["all", "pending", "reviewed", "shortlisted", "accepted", "rejected"];
 
 const MyApplicationsPage = () => {
+  const { t } = useTranslation("jobs");
   const [activeTab, setActiveTab] = useState<ApplicationStatus | "all">("all");
   const [page, setPage] = useState(1);
 
@@ -61,30 +47,30 @@ const MyApplicationsPage = () => {
           {/* Header */}
           <a href="/jobs" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-6">
             <ArrowLeft className="h-4 w-4" />
-            Browse all positions
+            {t("my_applications_list_page.browse_all_positions")}
           </a>
 
           <div className="mb-6">
-            <h1 className="text-2xl font-bold">My Applications</h1>
+            <h1 className="text-2xl font-bold">{t("my_applications_list_page.title")}</h1>
             <p className="text-sm text-muted-foreground mt-0.5">
-              Track the status of your job applications.
+              {t("my_applications_list_page.subtitle")}
             </p>
           </div>
 
           {/* Status tabs */}
           <div className="flex gap-1 bg-muted rounded-lg p-1 mb-6 overflow-x-auto">
-            {ALL_TABS.map((tab) => (
+            {ALL_TAB_VALUES.map((value) => (
               <button
-                key={tab.value}
-                onClick={() => { setActiveTab(tab.value); setPage(1); }}
+                key={value}
+                onClick={() => { setActiveTab(value); setPage(1); }}
                 className={cn(
                   "px-3 py-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors",
-                  activeTab === tab.value
+                  activeTab === value
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                {tab.label}
+                {t(`my_applications_list_page.tabs.${value}`)}
               </button>
             ))}
           </div>
@@ -93,17 +79,17 @@ const MyApplicationsPage = () => {
           {loadingApplications ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              <p className="text-sm text-muted-foreground">Loading applications...</p>
+              <p className="text-sm text-muted-foreground">{t("my_applications_list_page.loading")}</p>
             </div>
           ) : applications.length === 0 ? (
             <div className="text-center border-2 border-dashed border-border rounded-2xl p-16 bg-card">
               <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-              <p className="text-lg font-semibold mb-1">No applications yet</p>
+              <p className="text-lg font-semibold mb-1">{t("my_applications_list_page.empty_title")}</p>
               <p className="text-sm text-muted-foreground mb-4">
-                You haven't applied to any positions yet.
+                {t("my_applications_list_page.empty_description")}
               </p>
               <a href="/jobs" className="text-primary hover:underline text-sm font-medium">
-                Browse open jobs →
+                {t("my_applications_list_page.browse_open_jobs")}
               </a>
             </div>
           ) : (
@@ -136,10 +122,10 @@ const MyApplicationsPage = () => {
                           <div className="flex items-start justify-between gap-2 flex-wrap">
                             <div>
                               <p className="text-xs text-muted-foreground truncate">{job?.business?.name}</p>
-                              <p className="font-semibold text-sm">{job?.title ?? "Job position"}</p>
+                              <p className="font-semibold text-sm">{job?.title ?? t("my_applications_list_page.job_position_fallback")}</p>
                             </div>
                             <span className={cn("text-xs font-medium px-2 py-1 rounded-full shrink-0", badgeClass)}>
-                              {STATUS_MESSAGES[app.status]}
+                              {t(`my_applications_list_page.status.${app.status}`)}
                             </span>
                           </div>
 
@@ -166,7 +152,7 @@ const MyApplicationsPage = () => {
                                 ) : (
                                   <Link className="h-3 w-3" />
                                 )}
-                                View Resume
+                                {t("my_applications_list_page.view_resume")}
                               </a>
                             )}
                           </div>
@@ -174,20 +160,20 @@ const MyApplicationsPage = () => {
                           {app.invitedAt && (
                             <div className="mt-2">
                               <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
-                                Staff Invite Sent
+                                {t("my_applications_list_page.staff_invite_sent")}
                               </span>
                             </div>
                           )}
 
                           <div className="flex items-center justify-between mt-3">
                             <p className="text-xs text-muted-foreground">
-                              Applied on {format(new Date(app.createdAt), "MMM d, yyyy")}
+                              {t("my_applications_list_page.applied_on", { date: format(new Date(app.createdAt), "MMM d, yyyy") })}
                             </p>
                             <a
                               href={`/jobs/my-applications/${app.id}`}
                               className="text-xs text-primary hover:underline flex items-center gap-1"
                             >
-                              View details <ExternalLink className="h-3 w-3" />
+                              {t("my_applications_list_page.view_details")} <ExternalLink className="h-3 w-3" />
                             </a>
                           </div>
                         </div>
@@ -200,13 +186,13 @@ const MyApplicationsPage = () => {
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                    Previous
+                    {t("my_applications_list_page.previous")}
                   </Button>
                   <span className="text-sm text-muted-foreground">
-                    Page {page} of {totalPages}
+                    {t("my_applications_list_page.page_of", { page, totalPages })}
                   </span>
                   <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                    Next
+                    {t("my_applications_list_page.next")}
                   </Button>
                 </div>
               )}

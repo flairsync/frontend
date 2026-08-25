@@ -65,7 +65,7 @@ export const BusinessDetailsReservationConversation: React.FC<BusinessDetailsRes
                             ) : (
                                 <>
                                     <span>{t("business_page.reservation_conversation.title", "Reservation")}</span>
-                                    {reservation && getStatusBadge(reservation.status)}
+                                    {reservation && getStatusBadge(reservation.status, t)}
                                 </>
                             )}
                         </SheetTitle>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -11,6 +12,7 @@ import LandingHeader from "@/components/landing/LandingHeader";
 import { useLegalDocument } from "@/features/legal/useLegal";
 
 const TermsPage: React.FC = () => {
+    const { t } = useTranslation("landing");
     const { data: document, isLoading, error } = useLegalDocument("TERMS_OF_SERVICE");
 
     return (
@@ -19,18 +21,20 @@ const TermsPage: React.FC = () => {
             <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-20 space-y-12">
                 {/* Hero Section */}
                 <section className="text-center space-y-4">
-                    <h1 className="text-4xl font-extrabold">Terms and Conditions</h1>
+                    <h1 className="text-4xl font-extrabold">{t("terms_page.title")}</h1>
                     {document && (
                         <p className="text-muted-foreground">
-                            Last Updated: {new Date(document.publishedAt).toLocaleDateString(undefined, {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
+                            {t("gdpr_page.last_updated", {
+                                date: new Date(document.publishedAt).toLocaleDateString(undefined, {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                }),
                             })}
                         </p>
                     )}
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        These Terms and Conditions govern your use of FlairSync. By using our services, you agree to comply with them.
+                        {t("terms_page.intro")}
                     </p>
                 </section>
 
@@ -48,8 +52,8 @@ const TermsPage: React.FC = () => {
                 {error && (
                     <Alert variant="destructive" className="max-w-2xl mx-auto">
                         <AlertCircle className="h-5 w-5" />
-                        <AlertTitle>Unable to load Terms and Conditions</AlertTitle>
-                        <AlertDescription>Please try refreshing the page in a moment.</AlertDescription>
+                        <AlertTitle>{t("terms_page.load_error_title")}</AlertTitle>
+                        <AlertDescription>{t("gdpr_page.load_error_description")}</AlertDescription>
                     </Alert>
                 )}
 

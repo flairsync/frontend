@@ -237,5 +237,35 @@
     "cancellation_notice": "Esto envía una solicitud de cancelación al restaurante. Confirmarán en breve. Tu reserva sigue activa hasta entonces.",
     "reason_label": "Motivo (opcional)",
     "reason_placeholder": "p. ej. Cambio de planes"
+  },
+  "customer_reservation_timeline": {
+    "event_labels": {
+      "created": "Reserva recibida",
+      "confirmed": "Reserva confirmada",
+      "seated": "Te han sentado — ¡disfruta!",
+      "completed": "Gracias por venir",
+      "cancelled": "Reserva cancelada",
+      "rejected": "Reserva rechazada",
+      "updated": "Detalles actualizados",
+      "no_show": "Marcado como no presentado",
+      "expired": "Reserva caducada",
+      "table_assigned": "Mesa asignada",
+      "table_reassigned": "Mesa reasignada",
+      "reminder_sent": "Recordatorio enviado",
+      "customer_late": "Retraso notificado",
+      "delay_noticed": "Retraso detectado",
+      "customer_confirmed_attendance": "Confirmaste tu asistencia",
+      "customer_running_late": "Notificaste un retraso",
+      "customer_requested_cancellation": "Solicitaste la cancelación",
+      "customer_requested_modification": "Solicitaste un cambio",
+      "customer_acknowledged_delay": "Reconociste la espera"
+    },
+    "empty_state": "Aún no hay novedades. ¡Vuelve pronto!",
+    "meta": {
+      "delay_estimate": "~{{minutes}} min de retraso",
+      "reminder_sent_before": "Enviado {{minutes}} min antes de tu reserva",
+      "new_time": "Nueva hora: {{time}}",
+      "party_of": "Grupo de {{count}}"
+    }
   }
 }

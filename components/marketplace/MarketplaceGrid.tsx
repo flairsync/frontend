@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MarketplaceItem } from '@/models/MarketplaceItem';
 import { MarketplaceCard } from './MarketplaceCard';
 import { motion } from 'framer-motion';
@@ -34,6 +35,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
     totalPages = 1,
     onPageChange,
 }) => {
+    const { t } = useTranslation('marketplace');
     const showPagination = totalPages > 1 && onPageChange;
 
     return (
@@ -44,7 +46,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                     <Input
                         value={search ?? ''}
                         onChange={(e) => onSearchChange(e.target.value)}
-                        placeholder="Search items..."
+                        placeholder={t('grid.search_placeholder')}
                         className="pl-9 bg-secondary/10 border-white/10"
                     />
                 </div>
@@ -53,11 +55,11 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
             {items.length === 0 ? (
                 <EmptyState
                     size={120}
-                    title="No items found"
+                    title={t('grid.empty_title')}
                     description={
                         search
-                            ? `No results for "${search}". Try a different search term.`
-                            : "This shop has no active items yet."
+                            ? t('grid.empty_search_description', { search })
+                            : t('grid.empty_no_items_description')
                     }
                     className="py-20"
                 />
@@ -87,7 +89,7 @@ export const MarketplaceGrid: React.FC<MarketplaceGridProps> = ({
                         <ChevronLeft className="w-4 h-4" />
                     </Button>
                     <span className="text-sm text-muted-foreground">
-                        Page {currentPage} of {totalPages}
+                        {t('grid.page_of', { page: currentPage, totalPages })}
                     </span>
                     <Button
                         variant="outline"

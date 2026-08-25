@@ -79,12 +79,12 @@ export default function StaffReservationsPage() {
 
     const getStatusBadge = (status: string) => {
         switch (status.toLowerCase()) {
-            case 'pending': return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 uppercase text-[10px]">Pending</Badge>;
-            case 'confirmed': return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 uppercase text-[10px]">Confirmed</Badge>;
-            case 'waitlist': return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 uppercase text-[10px]">Waitlist</Badge>;
-            case 'completed': return <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200 uppercase text-[10px]">Completed</Badge>;
-            case 'no_show': return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 uppercase text-[10px]">No Show</Badge>;
-            case 'cancelled': return <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 uppercase text-[10px]">Cancelled</Badge>;
+            case 'pending': return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 uppercase text-[10px]">{t("reservation_status.pending")}</Badge>;
+            case 'confirmed': return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 uppercase text-[10px]">{t("reservation_status.confirmed")}</Badge>;
+            case 'waitlist': return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 uppercase text-[10px]">{t("reservation_status.waitlist")}</Badge>;
+            case 'completed': return <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200 uppercase text-[10px]">{t("reservation_status.completed")}</Badge>;
+            case 'no_show': return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 uppercase text-[10px]">{t("reservation_status.no_show")}</Badge>;
+            case 'cancelled': return <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 uppercase text-[10px]">{t("reservation_status.cancelled")}</Badge>;
             default: return <Badge variant="outline" className="uppercase text-[10px]">{status}</Badge>;
         }
     };
@@ -105,16 +105,16 @@ export default function StaffReservationsPage() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Reservations</h1>
+                    <h1 className="text-2xl font-bold tracking-tight">{t("staff_reservations_page.title")}</h1>
                     <p className="text-muted-foreground">
-                        Manage upcoming and past reservations efficiently.
+                        {t("staff_reservations_page.subtitle")}
                     </p>
                 </div>
                 <Button
                     onClick={() => setAddingReservation(true)}
                     className="w-full sm:w-auto"
                 >
-                    Add New Reservation
+                    {t("staff_reservations_page.add_new")}
                 </Button>
             </div>
 
@@ -123,27 +123,27 @@ export default function StaffReservationsPage() {
                 <div className="flex flex-col gap-3 mb-6">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <TabsList className="grid grid-cols-2 w-full max-w-[300px]">
-                            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-                            <TabsTrigger value="past">Past</TabsTrigger>
+                            <TabsTrigger value="upcoming">{t("staff_reservations_page.tabs.upcoming")}</TabsTrigger>
+                            <TabsTrigger value="past">{t("staff_reservations_page.tabs.past")}</TabsTrigger>
                         </TabsList>
 
                         <div className="flex items-center gap-2 w-full sm:w-auto">
                             <Select value={sortBy} onValueChange={setSortBy}>
                                 <SelectTrigger className="w-[160px]">
-                                    <SelectValue placeholder="Sort By" />
+                                    <SelectValue placeholder={t("staff_reservations_page.sort_by_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="reservationTime">Reservation Date</SelectItem>
-                                    <SelectItem value="createdAt">Booking Date</SelectItem>
+                                    <SelectItem value="reservationTime">{t("staff_reservations_page.sort_options.reservation_date")}</SelectItem>
+                                    <SelectItem value="createdAt">{t("staff_reservations_page.sort_options.booking_date")}</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Select value={sortOrder} onValueChange={setSortOrder}>
                                 <SelectTrigger className="w-[130px]">
-                                    <SelectValue placeholder="Order" />
+                                    <SelectValue placeholder={t("staff_reservations_page.order_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="DESC">Newest First</SelectItem>
-                                    <SelectItem value="ASC">Oldest First</SelectItem>
+                                    <SelectItem value="DESC">{t("staff_reservations_page.order_options.newest_first")}</SelectItem>
+                                    <SelectItem value="ASC">{t("staff_reservations_page.order_options.oldest_first")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -151,26 +151,26 @@ export default function StaffReservationsPage() {
 
                     <div className="flex flex-wrap items-end gap-3">
                         <div className="space-y-1">
-                            <Label className="text-xs">Status</Label>
+                            <Label className="text-xs">{t("staff_reservations_page.status_label")}</Label>
                             <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
                                 <SelectTrigger className="w-[140px]">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">All</SelectItem>
-                                    <SelectItem value="pending">Pending</SelectItem>
-                                    <SelectItem value="confirmed">Confirmed</SelectItem>
-                                    <SelectItem value="seated">Seated</SelectItem>
-                                    <SelectItem value="completed">Completed</SelectItem>
-                                    <SelectItem value="cancelled">Cancelled</SelectItem>
-                                    <SelectItem value="no_show">No Show</SelectItem>
-                                    <SelectItem value="waitlist">Waitlist</SelectItem>
-                                    <SelectItem value="expired">Expired</SelectItem>
+                                    <SelectItem value="all">{t("staff_reservations_page.all")}</SelectItem>
+                                    <SelectItem value="pending">{t("edit_reservation_modal.status_options.PENDING")}</SelectItem>
+                                    <SelectItem value="confirmed">{t("edit_reservation_modal.status_options.CONFIRMED")}</SelectItem>
+                                    <SelectItem value="seated">{t("edit_reservation_modal.status_options.SEATED")}</SelectItem>
+                                    <SelectItem value="completed">{t("edit_reservation_modal.status_options.COMPLETED")}</SelectItem>
+                                    <SelectItem value="cancelled">{t("edit_reservation_modal.status_options.CANCELLED")}</SelectItem>
+                                    <SelectItem value="no_show">{t("edit_reservation_modal.status_options.NO_SHOW")}</SelectItem>
+                                    <SelectItem value="waitlist">{t("edit_reservation_modal.status_options.WAITLIST")}</SelectItem>
+                                    <SelectItem value="expired">{t("edit_reservation_modal.status_options.EXPIRED")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-1">
-                            <Label className="text-xs">Date Range</Label>
+                            <Label className="text-xs">{t("staff_reservations_page.date_range_label")}</Label>
                             <DatePickerWithRange
                                 date={dateRange}
                                 setDate={(range) => { setDateRange(range); setPage(1); }}
@@ -183,19 +183,19 @@ export default function StaffReservationsPage() {
                 <TabsContent value="upcoming" className="mt-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Upcoming Reservations</CardTitle>
+                            <CardTitle>{t("staff_reservations_page.upcoming_reservations_title")}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0 sm:p-6">
                             <div className="overflow-x-auto">
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Customer</TableHead>
-                                            <TableHead>Table</TableHead>
-                                            <TableHead>Time</TableHead>
-                                            <TableHead>Guests</TableHead>
-                                            <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Action</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_customer")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_table")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_time")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_guests")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.status_label")}</TableHead>
+                                            <TableHead className="text-right">{t("staff_reservations_page.col_action")}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -208,7 +208,7 @@ export default function StaffReservationsPage() {
                                         ) : displayReservations.length === 0 ? (
                                             <TableRow>
                                                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                                    No upcoming reservations found.
+                                                    {t("staff_reservations_page.no_upcoming_found")}
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
@@ -223,7 +223,7 @@ export default function StaffReservationsPage() {
                                                     <TableCell>
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <Table2 className="w-4 h-4 text-muted-foreground" />
-                                                            <span>{rsv.table ? (rsv.table.name || `Table ${rsv.table.number || rsv.table.id.substring(0, 4)}`) : "Unassigned"}</span>
+                                                            <span>{rsv.table ? (rsv.table.name || t("staff_reservations_page.table_fallback", { number: rsv.table.number || rsv.table.id.substring(0, 4) })) : t("staff_reservations_page.table_unassigned")}</span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
@@ -248,7 +248,7 @@ export default function StaffReservationsPage() {
                                                                 className="h-8 px-2"
                                                                 onClick={() => setViewingReservation(rsv)}
                                                             >
-                                                                <Eye className="w-4 h-4 mr-1" /> View
+                                                                <Eye className="w-4 h-4 mr-1" /> {t("staff_reservations_page.view")}
                                                             </Button>
                                                             {!isTerminalStatus(rsv.status) && (
                                                                 <Button
@@ -257,7 +257,7 @@ export default function StaffReservationsPage() {
                                                                     className="h-8 px-2"
                                                                     onClick={() => setEditingReservation(rsv)}
                                                                 >
-                                                                    Edit
+                                                                    {t("staff_reservations_page.edit")}
                                                                 </Button>
                                                             )}
                                                             {rsv.status.toLowerCase() === "pending" && (
@@ -267,7 +267,7 @@ export default function StaffReservationsPage() {
                                                                     className="h-8 px-2 text-green-600 hover:text-green-700"
                                                                     onClick={() => handleUpdateStatus(rsv.id, "confirmed")}
                                                                 >
-                                                                    Approve
+                                                                    {t("staff_reservations_page.approve")}
                                                                 </Button>
                                                             )}
                                                             {getAvailableActions(rsv.status).includes('cancel') && (
@@ -277,7 +277,7 @@ export default function StaffReservationsPage() {
                                                                     className="h-8 px-2 text-destructive hover:text-destructive hover:bg-destructive/10"
                                                                     onClick={() => setCancelTarget(rsv)}
                                                                 >
-                                                                    Cancel
+                                                                    {t("staff_reservations_page.cancel")}
                                                                 </Button>
                                                             )}
                                                         </div>
@@ -306,20 +306,20 @@ export default function StaffReservationsPage() {
                 <TabsContent value="past" className="mt-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Past Reservations</CardTitle>
+                            <CardTitle>{t("staff_reservations_page.past_reservations_title")}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0 sm:p-6">
                             <div className="overflow-x-auto">
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Customer</TableHead>
-                                            <TableHead>Table</TableHead>
-                                            <TableHead>Date</TableHead>
-                                            <TableHead>Time</TableHead>
-                                            <TableHead>Guests</TableHead>
-                                            <TableHead>Status</TableHead>
-                                            <TableHead className="text-right">Action</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_customer")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_table")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_date")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_time")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.col_guests")}</TableHead>
+                                            <TableHead>{t("staff_reservations_page.status_label")}</TableHead>
+                                            <TableHead className="text-right">{t("staff_reservations_page.col_action")}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -332,7 +332,7 @@ export default function StaffReservationsPage() {
                                         ) : displayReservations.length === 0 ? (
                                             <TableRow>
                                                 <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                                    No past reservations found.
+                                                    {t("staff_reservations_page.no_past_found")}
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
@@ -347,7 +347,7 @@ export default function StaffReservationsPage() {
                                                     <TableCell>
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <Table2 className="w-4 h-4 text-muted-foreground" />
-                                                            <span>{rsv.table ? (rsv.table.name || `Table ${rsv.table.number || rsv.table.id.substring(0, 4)}`) : "Unassigned"}</span>
+                                                            <span>{rsv.table ? (rsv.table.name || t("staff_reservations_page.table_fallback", { number: rsv.table.number || rsv.table.id.substring(0, 4) })) : t("staff_reservations_page.table_unassigned")}</span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
@@ -371,7 +371,7 @@ export default function StaffReservationsPage() {
                                                             className="h-8 px-2"
                                                             onClick={() => setViewingReservation(rsv)}
                                                         >
-                                                            <Eye className="w-4 h-4 mr-1" /> View
+                                                            <Eye className="w-4 h-4 mr-1" /> {t("staff_reservations_page.view")}
                                                         </Button>
                                                     </TableCell>
                                                 </TableRow>
@@ -416,15 +416,15 @@ export default function StaffReservationsPage() {
             <AlertDialog open={!!cancelTarget} onOpenChange={(open) => { if (!open) setCancelTarget(null); }}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Cancel this reservation?</AlertDialogTitle>
+                        <AlertDialogTitle>{t("staff_reservations_page.cancel_dialog.title")}</AlertDialogTitle>
                         <AlertDialogDescription>
                             {cancelTarget?.customerName
-                                ? `This will cancel the reservation for ${cancelTarget.customerName}. The customer will be notified.`
-                                : "This will cancel the reservation. The customer will be notified."}
+                                ? t("staff_reservations_page.cancel_dialog.description_with_name", { name: cancelTarget.customerName })
+                                : t("staff_reservations_page.cancel_dialog.description_generic")}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Keep Reservation</AlertDialogCancel>
+                        <AlertDialogCancel>{t("staff_reservations_page.cancel_dialog.keep")}</AlertDialogCancel>
                         <AlertDialogAction
                             className="bg-destructive hover:bg-destructive/90"
                             onClick={() => {
@@ -434,7 +434,7 @@ export default function StaffReservationsPage() {
                                 }
                             }}
                         >
-                            Yes, Cancel It
+                            {t("staff_reservations_page.cancel_dialog.confirm")}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

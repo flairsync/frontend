@@ -65,7 +65,7 @@ export const ViewReservationModal: React.FC<ViewReservationModalProps> = ({
                     <DialogHeader>
                         <div className="flex justify-between items-center pr-4">
                             <DialogTitle>{t("view_reservation_modal.title")}</DialogTitle>
-                            {getStatusBadge(res?.status ?? reservation?.status ?? "")}
+                            {getStatusBadge(res?.status ?? reservation?.status ?? "", t)}
                         </div>
                     </DialogHeader>
 

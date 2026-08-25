@@ -4013,5 +4013,274 @@
       "generate_new_code": "Generate New Code",
       "generate_failed_toast": "Failed to generate code. Please try again."
     }
+  },
+  "help_page": {
+    "title": "Help & Support",
+    "subtitle": "Find answers to common questions, or get in touch with our support team.",
+    "faq_title": "Frequently Asked Questions",
+    "faqs": [
+      {
+        "question": "How do I join a business?",
+        "answer": "You can join a business only if an owner or admin sends you an invite link. Once accepted, it will appear under your 'Joined' tab."
+      },
+      {
+        "question": "How can I create a new business?",
+        "answer": "Go to the 'My Businesses' page and click on 'Create Business'. You'll be able to set up your business name, description, and invite members."
+      },
+      {
+        "question": "Where can I manage my subscription?",
+        "answer": "All your billing details and subscription information can be found under the 'Billing' section in your dashboard."
+      },
+      {
+        "question": "How do I contact support?",
+        "answer": "If you need help, reach out through the support form below or email us directly."
+      }
+    ],
+    "contact_support": {
+      "title": "Contact Support",
+      "description": "Need more help? Send us a message and we'll get back to you soon.",
+      "send_message": "Send a Message"
+    },
+    "docs": {
+      "title": "Documentation & Tutorials",
+      "description": "Explore our guides to learn how to get the most out of the platform.",
+      "getting_started": "Getting Started Guide",
+      "billing_subscriptions": "Billing & Subscriptions",
+      "inviting_team": "Inviting Team Members",
+      "connecting_printer": "Connecting a Receipt Printer & Cash Drawer"
+    }
+  },
+  "business_feedback_dashboard": {
+    "title": "Feedback",
+    "subtitle": "Post-meal feedback submitted by your guests",
+    "all_ratings": "All ratings",
+    "stars_and_up": "{{count}}+ stars",
+    "no_feedback": "No feedback found.",
+    "sub_ratings": {
+      "food": "Food",
+      "service": "Service",
+      "ambiance": "Ambiance",
+      "value": "Value"
+    },
+    "nps_score": "NPS {{score}}/10",
+    "improvement_tags": {
+      "FOOD_TEMPERATURE": "Food temperature",
+      "ORDER_ACCURACY": "Order accuracy",
+      "WAIT_TIME": "Wait time",
+      "STAFF_FRIENDLINESS": "Staff friendliness",
+      "CLEANLINESS": "Cleanliness",
+      "NOISE_LEVEL": "Noise level",
+      "PRICE": "Price",
+      "PORTION_SIZE": "Portion size"
+    }
+  },
+  "barcode_scanner_dialog": {
+    "title": "Scan Barcode",
+    "checking_permission": "Checking camera permission…",
+    "permission_needed_title": "Camera access needed",
+    "permission_needed_description": "Allow camera access so you can scan barcodes directly from your device.",
+    "grant_access": "Grant Camera Access",
+    "blocked_title": "Camera access blocked",
+    "blocked_description": "Camera permission was denied. To enable it, open your browser or device settings and allow camera access for this site.",
+    "open_settings": "Open Settings",
+    "starting_camera": "Starting camera…",
+    "retry": "Retry",
+    "select_camera_placeholder": "Select camera",
+    "camera_label": "Camera {{index}}",
+    "switch_camera": "Switch camera",
+    "status_denied": "Enable camera in your browser settings to scan",
+    "status_prompt": "Grant camera access to start scanning",
+    "status_scanning": "Point camera at a barcode",
+    "no_camera_found": "No camera found on this device.",
+    "could_not_start_camera": "Could not start the camera. Please try again.",
+    "could_not_access_camera": "Could not access the camera. Please try again.",
+    "unknown_format": "Barcode"
+  },
+  "print_qr_codes_button": {
+    "button": "Print QR codes",
+    "dialog_title": "Print table QR codes",
+    "floor_label": "Floor",
+    "all_floors": "All floors",
+    "cancel": "Cancel",
+    "download_pdf": "Download PDF",
+    "error": "Failed to generate QR codes PDF"
+  },
+  "professional_profile_page": {
+    "title": "Professional Profile",
+    "subtitle_update": "Update how you appear to employers and businesses.",
+    "subtitle_create": "Create your professional profile to apply for jobs and connect with businesses.",
+    "active_badge": "Active",
+    "no_profile_yet": "No professional profile yet",
+    "member_since": "Member since {{date}}",
+    "your_profile_fallback": "Your Profile",
+    "cta": {
+      "title": "Get discovered by businesses",
+      "description": "Fill in your details below to start applying for jobs and appearing in employer searches."
+    },
+    "form": {
+      "edit_title": "Edit Details",
+      "create_title": "Set Up Your Profile",
+      "legal_name_section": "Legal Name",
+      "first_name_label": "First Name",
+      "first_name_placeholder": "John",
+      "last_name_label": "Last Name",
+      "last_name_placeholder": "Doe",
+      "middle_name_label": "Middle Name",
+      "middle_name_optional": "(optional)",
+      "middle_name_placeholder": "Optional",
+      "public_identity_section": "Public Identity",
+      "display_name_label": "Display Name",
+      "display_name_placeholder": "How you want to appear publicly",
+      "display_name_hint": "Shown on job applications and public-facing profiles.",
+      "work_email_label": "Work Email",
+      "verified_badge": "Verified",
+      "unverified_badge": "Unverified",
+      "work_email_placeholder": "you@work.com",
+      "work_email_hint": "Used for work-related communication, like payslips. Changing it requires verifying the new address.",
+      "verification_pending_for": "Verification pending for {{email}}",
+      "verification_pending_note_changing": "We sent a 6-digit code to that address. Your current work email stays active until it's confirmed.",
+      "verification_pending_note_new": "We sent a 6-digit code to that address. Confirm it to finish verifying your professional profile.",
+      "enter_code": "Enter code",
+      "sending": "Sending…",
+      "resend_in": "Resend in {{seconds}}s",
+      "resend_code": "Resend code",
+      "saving": "Saving…",
+      "save_changes": "Save Changes",
+      "create_profile": "Create Profile"
+    },
+    "verify_modal": {
+      "title": "Verify Work Email",
+      "description": "Enter the 6-digit code we sent to {{email}}.",
+      "your_work_email_fallback": "your work email"
+    },
+    "invalid_or_expired_code": "Invalid or expired code."
+  },
+  "join_professional_page": {
+    "header_title": "Professional Account",
+    "header_subtitle": "Create a professional profile to manage or join businesses on the platform.",
+    "invited_title": "You were invited to join a business",
+    "invited_description": "To accept this invitation, create a professional profile using {{email}}.",
+    "invitation_not_found_title": "Invitation not found",
+    "invitation_not_found_description_1": "The invitation link you used is not valid or may have expired.",
+    "invitation_not_found_description_2": "You can still continue and create a professional profile normally.",
+    "verify": {
+      "title": "Verify Your Work Email",
+      "description": "We sent a 6-digit code to {{email}}. Enter it below to finish setting up your professional profile.",
+      "verifying": "Verifying…",
+      "verify_button": "Verify Work Email",
+      "no_code_question": "Didn't get a code?",
+      "resend_failed": "Couldn't resend the code."
+    },
+    "create": {
+      "title": "Create Your Professional Profile",
+      "description": "Your professional profile represents you in businesses. A display name is optional and can differ from your legal name.",
+      "middle_name_placeholder": "Middle Name (optional)",
+      "email_locked_hint": "This email is locked because the invitation was sent to it.",
+      "confirm_label": "I confirm that the information above is accurate and belongs to me.",
+      "submit": "Create Professional Profile"
+    },
+    "tips": {
+      "title": "Profile Tips",
+      "tip1": "Use your legal name for official documentation.",
+      "tip2": "Display name can differ for privacy or branding.",
+      "tip3": "Work email should be active and accessible.",
+      "tip4": "Required to join or manage businesses."
+    },
+    "why_matters": {
+      "title": "Why this matters",
+      "description": "A professional profile separates your personal account from business activity while keeping verification and billing secure."
+    }
+  },
+  "work_hours_selector": {
+    "title": "🕒 Business Hours",
+    "closed": "Closed",
+    "open": "Open",
+    "copy_to_all_days": "Copy to all days",
+    "no_shifts_yet": "No shifts added yet",
+    "opens_label": "Opens",
+    "closes_label": "Closes",
+    "next_day": "Next day ➜",
+    "add_shift": "Add Shift",
+    "day_off": "Day off"
+  },
+  "job_form": {
+    "title_label": "Job Title",
+    "title_placeholder": "e.g. Head Server",
+    "title_error_min": "Title must be at least 3 characters.",
+    "title_error_max": "Title must be under 100 characters.",
+    "employment_type_label": "Employment Type",
+    "select_type_placeholder": "Select type",
+    "type_error": "Employment type is required.",
+    "category_label": "Category / Role",
+    "select_category_placeholder": "Select category",
+    "category_error": "Category is required.",
+    "description_label": "Description",
+    "description_placeholder": "Describe the role, requirements, and what you're looking for...",
+    "description_error": "Description must be at least 20 characters.",
+    "location_label": "Location",
+    "location_placeholder": "e.g. Downtown, New York",
+    "salary_range_label": "Salary Range",
+    "salary_range_placeholder": "e.g. \"$15-18/hr\" or \"Negotiable\"",
+    "deadline_label": "Application Deadline",
+    "deadline_error": "Application deadline must be in the future.",
+    "save_as_draft": "Save as Draft",
+    "save_changes": "Save Changes",
+    "publish_job": "Publish Job"
+  },
+  "reservation_status": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "seated": "Seated",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "no_show": "No Show",
+    "expired": "Expired",
+    "waitlist": "Waitlist",
+    "rejected": "Rejected"
+  },
+  "staff_reservations_page": {
+    "title": "Reservations",
+    "subtitle": "Manage upcoming and past reservations efficiently.",
+    "add_new": "Add New Reservation",
+    "tabs": {
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "sort_by_placeholder": "Sort By",
+    "sort_options": {
+      "reservation_date": "Reservation Date",
+      "booking_date": "Booking Date"
+    },
+    "order_placeholder": "Order",
+    "order_options": {
+      "newest_first": "Newest First",
+      "oldest_first": "Oldest First"
+    },
+    "status_label": "Status",
+    "all": "All",
+    "date_range_label": "Date Range",
+    "upcoming_reservations_title": "Upcoming Reservations",
+    "past_reservations_title": "Past Reservations",
+    "col_customer": "Customer",
+    "col_table": "Table",
+    "col_date": "Date",
+    "col_time": "Time",
+    "col_guests": "Guests",
+    "col_action": "Action",
+    "table_unassigned": "Unassigned",
+    "table_fallback": "Table {{number}}",
+    "no_upcoming_found": "No upcoming reservations found.",
+    "no_past_found": "No past reservations found.",
+    "view": "View",
+    "edit": "Edit",
+    "approve": "Approve",
+    "cancel": "Cancel",
+    "cancel_dialog": {
+      "title": "Cancel this reservation?",
+      "description_with_name": "This will cancel the reservation for {{name}}. The customer will be notified.",
+      "description_generic": "This will cancel the reservation. The customer will be notified.",
+      "keep": "Keep Reservation",
+      "confirm": "Yes, Cancel It"
+    }
   }
 }

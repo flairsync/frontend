@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { Briefcase, ExternalLink, Mail } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -23,27 +24,12 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
   red: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
 };
 
-const APP_STATUS_MESSAGES: Record<ApplicationStatus, string> = {
-  pending: "Application received",
-  reviewed: "Being reviewed",
-  shortlisted: "You've been shortlisted!",
-  accepted: "You've been accepted!",
-  hired: "You're now part of the team!",
-  rejected: "Not selected",
-};
-
-const APP_TABS: Array<{ label: string; value: ApplicationStatus | "all" }> = [
-  { label: "All", value: "all" },
-  { label: "Pending", value: "pending" },
-  { label: "Reviewed", value: "reviewed" },
-  { label: "Shortlisted", value: "shortlisted" },
-  { label: "Accepted", value: "accepted" },
-  { label: "Rejected", value: "rejected" },
-];
+const APP_TAB_VALUES: Array<ApplicationStatus | "all"> = ["all", "pending", "reviewed", "shortlisted", "accepted", "rejected"];
 
 // ─── Applications tab ─────────────────────────────────────────────────────────
 
 export const ApplicationsTab = () => {
+  const { t } = useTranslation("profile");
   const [activeTab, setActiveTab] = useState<ApplicationStatus | "all">("all");
   const [page, setPage] = useState(1);
 
@@ -57,18 +43,18 @@ export const ApplicationsTab = () => {
     <div className="space-y-4">
       {/* Filter tabs */}
       <div className="flex gap-1 bg-muted rounded-lg p-1 overflow-x-auto">
-        {APP_TABS.map((tab) => (
+        {APP_TAB_VALUES.map((value) => (
           <button
-            key={tab.value}
-            onClick={() => { setActiveTab(tab.value); setPage(1); }}
+            key={value}
+            onClick={() => { setActiveTab(value); setPage(1); }}
             className={cn(
               "px-3 py-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors",
-              activeTab === tab.value
+              activeTab === value
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            {tab.label}
+            {t(`my_jobs.applications.tabs.${value}`)}
           </button>
         ))}
       </div>
@@ -76,17 +62,17 @@ export const ApplicationsTab = () => {
       {loadingApplications ? (
         <div className="flex flex-col items-center justify-center py-16 gap-3">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-          <p className="text-sm text-muted-foreground">Loading applications...</p>
+          <p className="text-sm text-muted-foreground">{t("my_jobs.applications.loading")}</p>
         </div>
       ) : applications.length === 0 ? (
         <div className="text-center border-2 border-dashed border-border rounded-2xl p-12">
           <Briefcase className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-base font-semibold mb-1">No applications yet</p>
+          <p className="text-base font-semibold mb-1">{t("my_jobs.applications.empty_title")}</p>
           <p className="text-sm text-muted-foreground mb-4">
-            You haven't applied to any positions yet.
+            {t("my_jobs.applications.empty_description")}
           </p>
           <a href="/jobs" className="text-primary hover:underline text-sm font-medium">
-            Browse open jobs →
+            {t("my_jobs.applications.browse_open_jobs")}
           </a>
         </div>
       ) : (
@@ -119,10 +105,10 @@ export const ApplicationsTab = () => {
                       <div className="flex items-start justify-between gap-2 flex-wrap">
                         <div>
                           <p className="text-xs text-muted-foreground">{job?.business?.name}</p>
-                          <p className="font-semibold text-sm">{job?.title ?? "Job position"}</p>
+                          <p className="font-semibold text-sm">{job?.title ?? t("my_jobs.applications.job_position_fallback")}</p>
                         </div>
                         <span className={cn("text-xs font-medium px-2 py-1 rounded-full shrink-0", badgeClass)}>
-                          {APP_STATUS_MESSAGES[app.status]}
+                          {t(`my_jobs.applications.status.${app.status}`)}
                         </span>
                       </div>
 
@@ -136,20 +122,20 @@ export const ApplicationsTab = () => {
                         {app.invitedAt && (
                           <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
                             <Mail className="h-3 w-3" />
-                            Staff Invite Sent
+                            {t("my_jobs.applications.staff_invite_sent")}
                           </span>
                         )}
                       </div>
 
                       <div className="flex items-center justify-between mt-3">
                         <p className="text-xs text-muted-foreground">
-                          Applied {format(new Date(app.createdAt), "MMM d, yyyy")}
+                          {t("my_jobs.applications.applied_prefix", { date: format(new Date(app.createdAt), "MMM d, yyyy") })}
                         </p>
                         <a
                           href={`/profile/jobs/${app.id}`}
                           className="text-xs text-primary hover:underline flex items-center gap-1"
                         >
-                          View details <ExternalLink className="h-3 w-3" />
+                          {t("my_jobs.applications.view_details")} <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
                     </div>
@@ -162,11 +148,11 @@ export const ApplicationsTab = () => {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 pt-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                Previous
+                {t("my_jobs.applications.previous")}
               </Button>
-              <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+              <span className="text-sm text-muted-foreground">{t("my_jobs.applications.page_of", { page, totalPages })}</span>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                Next
+                {t("my_jobs.applications.next")}
               </Button>
             </div>
           )}

@@ -2,7 +2,8 @@
   "gallery_titles": {
     "b2b": "Marketplace B2B",
     "saas": "Botiga SaaS",
-    "guest": "Marketplace de convidats"
+    "guest": "Marketplace de convidats",
+    "saas_official": "Botiga oficial"
   },
   "item_detail": {
     "back_to_gallery": "Tornar a la galeria",
@@ -34,5 +35,21 @@
     "out_of_stock_hint": "Aquest article està esgotat",
     "select_business_hint": "Selecciona un negoci",
     "fill_shipping_hint": "Omple tots els detalls d'enviament"
+  },
+  "browse_page": {
+    "guest_subtitle_with_business": "Compra articles d'aquest negoci.",
+    "guest_subtitle_no_business": "Descobreix els articles del teu restaurant preferit.",
+    "b2b_subtitle": "Subministraments i proveïment per al teu negoci.",
+    "saas_subtitle": "Equipament exclusiu i tecnologia NFC.",
+    "no_business_selected": "Cap negoci seleccionat.",
+    "no_business_hint": "Visita el perfil d'un restaurant concret per veure els seus articles en venda.",
+    "loading_items": "Carregant articles..."
+  },
+  "grid": {
+    "search_placeholder": "Cercar articles...",
+    "empty_title": "No s'han trobat articles",
+    "empty_search_description": "Cap resultat per a \"{{search}}\". Prova un altre terme de cerca.",
+    "empty_no_items_description": "Aquesta botiga encara no té articles actius.",
+    "page_of": "Pàgina {{page}} de {{totalPages}}"
   }
 }

@@ -226,7 +226,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                             )}
                                         </div>
                                         <div className="flex flex-wrap items-center gap-1.5 flex-shrink-0">
-                                            {getStatusBadge(res.status)}
+                                            {getStatusBadge(res.status, t)}
                                             <Button size="sm" variant="ghost" className="h-9 w-9 p-0" onClick={() => onViewReservation(res)}>
                                                 <Eye className="w-3.5 h-3.5" />
                                             </Button>
@@ -333,7 +333,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                                     <span className="text-muted-foreground italic text-xs">{t("reservation_dashboard.all_reservations.unassigned")}</span>
                                                 )}
                                             </TableCell>
-                                            <TableCell>{getStatusBadge(res.status)}</TableCell>
+                                            <TableCell>{getStatusBadge(res.status, t)}</TableCell>
                                             <TableCell className="sticky right-0 bg-background">
                                                 <div className="flex flex-wrap justify-end items-center gap-1">
                                                     <Button variant="ghost" size="sm" className="h-9 w-9 p-0" onClick={() => onViewReservation(res)}>

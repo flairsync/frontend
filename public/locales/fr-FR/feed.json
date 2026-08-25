@@ -290,5 +290,16 @@
     "custom_override_location": "Emplacement personnalisé",
     "cancel": "Annuler",
     "apply_filters": "Appliquer les filtres"
+  },
+  "reservation_status": {
+    "pending": "En attente",
+    "confirmed": "Confirmée",
+    "seated": "Installée",
+    "completed": "Terminée",
+    "cancelled": "Annulée",
+    "no_show": "Absence",
+    "expired": "Expirée",
+    "waitlist": "Liste d'attente",
+    "rejected": "Refusée"
   }
 }

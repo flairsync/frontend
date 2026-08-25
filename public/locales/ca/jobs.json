@@ -45,6 +45,79 @@
       "upload": "Pujar"
     },
     "cover_letter_title": "Carta de presentació",
-    "timeline_title": "Seguiment de la sol·licitud"
+    "timeline_title": "Seguiment de la sol·licitud",
+    "invite_banner_title": "T'han convidat a unir-te a l'equip!",
+    "invite_banner_description": "S'ha enviat una invitació el {{date}}. Consulta la teva bústia de correu.",
+    "back_to_applications_list": "Les meves sol·licituds"
+  },
+  "my_applications_list_page": {
+    "browse_all_positions": "Consultar tots els llocs",
+    "title": "Les meves sol·licituds",
+    "subtitle": "Fes seguiment de l'estat de les teves sol·licituds.",
+    "tabs": {
+      "all": "Totes",
+      "pending": "Pendents",
+      "reviewed": "Revisades",
+      "shortlisted": "Preseleccionades",
+      "accepted": "Acceptades",
+      "rejected": "Rebutjades"
+    },
+    "loading": "Carregant sol·licituds...",
+    "empty_title": "Encara no hi ha sol·licituds",
+    "empty_description": "Encara no t'has presentat a cap lloc de feina.",
+    "browse_open_jobs": "Consultar ofertes obertes →",
+    "status": {
+      "pending": "Sol·licitud rebuda",
+      "reviewed": "En revisió",
+      "shortlisted": "Has estat preseleccionat/da!",
+      "accepted": "Has estat acceptat/da!",
+      "hired": "Ara formes part de l'equip!",
+      "rejected": "No seleccionat/da"
+    },
+    "job_position_fallback": "Lloc de feina",
+    "staff_invite_sent": "Invitació de personal enviada",
+    "applied_on": "Sol·licitat el {{date}}",
+    "view_details": "Veure detalls",
+    "view_resume": "Veure currículum",
+    "previous": "Anterior",
+    "next": "Següent",
+    "page_of": "Pàgina {{page}} de {{totalPages}}"
+  },
+  "apply_modal": {
+    "apply_for": "Postular-se a:",
+    "at_business": "a {{name}}",
+    "cover_letter_label": "Carta de presentació",
+    "optional": "(opcional)",
+    "cover_letter_placeholder": "Explica per què ets un bon candidat...",
+    "char_count": "{{count}} / {{max}}",
+    "resume_label": "Currículum",
+    "paste_link": "Enganxar un enllaç",
+    "url_placeholder": "https://linkedin.com/in/el-teu-perfil",
+    "upload_pdf": "Pujar un PDF",
+    "choose_file": "Triar fitxer",
+    "pdf_hint": "Només PDF, màx. 5 MB",
+    "cancel": "Cancel·lar",
+    "submitting": "Enviant...",
+    "submit": "Enviar sol·licitud"
+  },
+  "job_detail_page": {
+    "position_closed": "Lloc tancat",
+    "applied_with_date": "Sol·licitat el {{date}}",
+    "applied_no_date": "Sol·licitat ✓",
+    "view_my_application": "Veure la meva sol·licitud →",
+    "sign_in_to_apply": "Inicia sessió per postular-te",
+    "complete_profile_to_apply": "Completa el perfil per postular-te",
+    "apply_now": "Postular-se ara",
+    "not_found_title": "Lloc ja no disponible",
+    "not_found_description": "Aquesta oferta de feina s'ha eliminat o ja no accepta sol·licituds.",
+    "browse_all_positions": "Consultar tots els llocs",
+    "closed_badge": "Tancat",
+    "applicant_count_one": "{{count}} candidat",
+    "applicant_count_other": "{{count}} candidats",
+    "posted_on": "Publicat el {{date}}",
+    "closes_on": "Tanca el {{date}}",
+    "about_role": "Sobre aquest lloc",
+    "share": "Compartir",
+    "link_copied_toast": "Enllaç copiat! Comparteix-lo a Facebook, WhatsApp o on facis captació."
   }
 }

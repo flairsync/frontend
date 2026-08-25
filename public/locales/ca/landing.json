@@ -307,5 +307,90 @@
         "examples": "Seguiment de l'origen de campanyes, esdeveniments de conversió"
       }
     }
+  },
+  "privacy_page": {
+    "title": "Política de privacitat",
+    "intro": "Aquesta Política de Privacitat explica com FlairSync recull, utilitza i protegeix les teves dades personals en total compliment del RGPD (UE) 2016/679, la Directiva ePrivacy i la legislació aplicable de la UE en matèria de protecció de dades.",
+    "load_error_title": "No s'ha pogut carregar la Política de Privacitat"
+  },
+  "terms_page": {
+    "title": "Termes i condicions",
+    "intro": "Aquests Termes i Condicions regeixen l'ús de FlairSync. En utilitzar els nostres serveis, acceptes complir-los.",
+    "load_error_title": "No s'han pogut carregar els Termes i Condicions"
+  },
+  "about_page": {
+    "badge_early_access": "Ara en accés anticipat",
+    "hero_title_prefix": "La plataforma creada per a",
+    "hero_title_highlight": "l'hostaleria moderna",
+    "hero_subtitle": "FlairSync és una plataforma de gestió tot en un per a restaurants i cafeteries — gestiona reserves, menús, personal, anàlisis i relació amb els clients des d'un únic tauler.",
+    "get_started_free": "Comença gratis",
+    "talk_to_us": "Parla amb nosaltres",
+    "stats": [
+      {
+        "value": "Aviat",
+        "label": "Llançament en accés anticipat"
+      },
+      {
+        "value": "2026",
+        "label": "Fundada el"
+      },
+      {
+        "value": "1",
+        "label": "País, i creixent"
+      },
+      {
+        "value": "99,9 %",
+        "label": "Disponibilitat de la plataforma"
+      }
+    ],
+    "what_drives_us_title": "Què ens impulsa",
+    "what_drives_us_subtitle": "Tres pilars que guien cada decisió que prenem.",
+    "values": [
+      {
+        "title": "La nostra missió",
+        "description": "FlairSync existeix per donar a cada propietari de restaurant o cafeteria —gran o petit— la mateixa tecnologia potent que utilitzen les grans cadenes. Simplifiquem reserves, menús, comandes i opinions de clients en una sola plataforma fluida."
+      },
+      {
+        "title": "La nostra visió",
+        "description": "Un món on els negocis d'hostaleria prosperen gràcies a la tecnologia. Creem eines d'anàlisi en temps real i satisfacció del client que impulsen un creixement sostenible."
+      },
+      {
+        "title": "Seguretat i confiança",
+        "description": "La privacitat de les dades no és negociable. FlairSync utilitza emmagatzematge xifrat, control d'accés basat en rols, i compleix plenament els estàndards moderns de protecció de dades perquè el teu negoci estigui sempre protegit."
+      }
+    ],
+    "our_story_label": "La nostra història",
+    "our_story_title": "Nascuda d'un problema real, no d'una pissarra",
+    "our_story_paragraph1": "FlairSync va néixer en veure com molts propietaris de restaurants lluitaven amb eines fragmentades — una app per a reserves, una altra per a menús, fulls de càlcul per al personal. Ens vam proposar unificar tot això en una sola plataforma realment fàcil d'utilitzar.",
+    "our_story_paragraph2": "Avui donem servei a centenars de restaurants en més de 12 països, i això només és el començament. Cada funció que llancem sorgeix directament de converses amb qui l'utilitza cada dia.",
+    "principles": [
+      "Dissenyat per a la velocitat — cada funció es llança ràpid i funciona de manera fiable",
+      "Disseny centrat en el client a cada punt de contacte",
+      "Preus transparents sense comissions amagades",
+      "Suport dedicat que realment respon",
+      "Millora contínua impulsada per comentaris reals"
+    ],
+    "team_label": "L'equip",
+    "team_title": "Les persones darrere de FlairSync",
+    "team_subtitle": "Un equip petit però centrat, amb la missió de reinventar la gestió de restaurants.",
+    "team": [
+      {
+        "name": "Semah Chriha",
+        "role": "Fundador i CTO",
+        "bio": "Enginyer full-stack i emprenedor apassionat per crear eines que apoderen el sector de l'hostaleria.",
+        "initial": "S"
+      },
+      {
+        "name": "Sarah Chamekh",
+        "role": "Cofundadora i Enginyera d'IA",
+        "bio": "Impulsada per una visió que fa la gestió de restaurants més humana, Sarah dona forma a l'estratègia de producte i la direcció de negoci de FlairSync.",
+        "initial": "S"
+      }
+    ],
+    "cta_badge": "Sigues dels primers restaurants a FlairSync",
+    "cta_title": "Preparat per transformar el teu restaurant?",
+    "cta_subtitle": "Comença gratis. Sense targeta de crèdit. Configura el teu negoci en menys de 5 minuts.",
+    "start_for_free": "Comença gratis",
+    "contact_sales": "Contacta amb vendes"
   }
 }

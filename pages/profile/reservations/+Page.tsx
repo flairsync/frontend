@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button"
 import { useAllMyReservations, useCancelReservation } from "@/features/discovery/useDiscovery"
 import { Loader2, ChevronLeft, ChevronRight } from "lucide-react"
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 const ReservationsPage = () => {
+    const { t } = useTranslation("profile")
     const [filter, setFilter] = useState<"upcoming" | "past">("upcoming")
     const [page, setPage] = useState(1)
 
@@ -27,17 +29,17 @@ const ReservationsPage = () => {
 
     const emptyMessage =
         filter === "upcoming"
-            ? "You have no upcoming reservations."
-            : "You have no past reservations."
+            ? t("reservations_page.empty_upcoming")
+            : t("reservations_page.empty_past")
 
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between gap-4 flex-wrap">
-                <CardTitle>My Reservations</CardTitle>
+                <CardTitle>{t("reservations_page.title")}</CardTitle>
                 <Tabs value={filter} onValueChange={handleFilterChange}>
                     <TabsList>
-                        <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-                        <TabsTrigger value="past">Past</TabsTrigger>
+                        <TabsTrigger value="upcoming">{t("reservations_page.tabs.upcoming")}</TabsTrigger>
+                        <TabsTrigger value="past">{t("reservations_page.tabs.past")}</TabsTrigger>
                     </TabsList>
                 </Tabs>
             </CardHeader>
@@ -53,7 +55,7 @@ const ReservationsPage = () => {
                         {reservations.map((res: any) => {
                             const locationParts = [res.business?.city, res.business?.address].filter(Boolean)
                             const subtitle = [
-                                res.guestCount ? `${res.guestCount} guest${res.guestCount !== 1 ? "s" : ""}` : null,
+                                res.guestCount ? t("reservations_page.guest_count", { count: res.guestCount }) : null,
                                 locationParts.join(", "),
                             ].filter(Boolean).join(" · ")
 
@@ -62,7 +64,7 @@ const ReservationsPage = () => {
                                     key={res.id}
                                     id={res.id}
                                     businessId={res.businessId ?? res.business?.id}
-                                    restaurantName={res.business?.name ?? "Restaurant"}
+                                    restaurantName={res.business?.name ?? t("reservations_page.restaurant_fallback")}
                                     href={`/businesses/${res.businessId ?? res.business?.id}`}
                                     datetime={res.reservationTime}
                                     status={res.status}
@@ -84,7 +86,7 @@ const ReservationsPage = () => {
                                     <ChevronLeft className="h-4 w-4" />
                                 </Button>
                                 <span className="text-sm text-muted-foreground">
-                                    Page {page} of {totalPages}
+                                    {t("reservations_page.page_of", { page, totalPages })}
                                 </span>
                                 <Button
                                     size="sm"

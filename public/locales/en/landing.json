@@ -308,5 +308,90 @@
         "examples": "Campaign source tracking, conversion events"
       }
     }
+  },
+  "privacy_page": {
+    "title": "Privacy Policy",
+    "intro": "This Privacy Policy explains how FlairSync collects, uses, and protects your personal data in full compliance with the GDPR (EU) 2016/679, the ePrivacy Directive, and applicable EU data protection law.",
+    "load_error_title": "Unable to load Privacy Policy"
+  },
+  "terms_page": {
+    "title": "Terms and Conditions",
+    "intro": "These Terms and Conditions govern your use of FlairSync. By using our services, you agree to comply with them.",
+    "load_error_title": "Unable to load Terms and Conditions"
+  },
+  "about_page": {
+    "badge_early_access": "Now in Early Access",
+    "hero_title_prefix": "The platform built for",
+    "hero_title_highlight": "modern hospitality",
+    "hero_subtitle": "FlairSync is an all-in-one management platform for restaurants and cafés — handling reservations, menus, staff, analytics, and customer engagement from a single dashboard.",
+    "get_started_free": "Get Started Free",
+    "talk_to_us": "Talk to Us",
+    "stats": [
+      {
+        "value": "Early",
+        "label": "Access Launch"
+      },
+      {
+        "value": "2026",
+        "label": "Founded"
+      },
+      {
+        "value": "1",
+        "label": "Country & Growing"
+      },
+      {
+        "value": "99.9%",
+        "label": "Platform Uptime"
+      }
+    ],
+    "what_drives_us_title": "What drives us",
+    "what_drives_us_subtitle": "Three pillars that shape every decision we make.",
+    "values": [
+      {
+        "title": "Our Mission",
+        "description": "FlairSync exists to give every restaurant and café owner—big or small—the same powerful technology that enterprise chains use. We simplify reservations, menus, orders, and customer feedback into a single seamless platform."
+      },
+      {
+        "title": "Our Vision",
+        "description": "A world where hospitality businesses thrive through technology. We build for real-time insights, smart analytics, and customer satisfaction tools that drive sustainable growth."
+      },
+      {
+        "title": "Security & Trust",
+        "description": "Data privacy is non-negotiable. FlairSync uses encrypted storage, role-based access control, and is fully compliant with modern data-protection standards so your business is always protected."
+      }
+    ],
+    "our_story_label": "Our Story",
+    "our_story_title": "Built from a real problem, not a whiteboard",
+    "our_story_paragraph1": "FlairSync was born after seeing how many restaurant owners struggled with fragmented tools — one app for reservations, another for menus, spreadsheets for staff. We set out to unify all of that into one platform that actually makes sense to use.",
+    "our_story_paragraph2": "Today we power hundreds of restaurants across 12+ countries, and we're just getting started. Every feature we ship comes directly from conversations with the operators who use it every day.",
+    "principles": [
+      "Built for speed — every feature ships fast and works reliably",
+      "Customer-first design at every touchpoint",
+      "Transparent pricing with no hidden fees",
+      "Dedicated support that actually responds",
+      "Continuous improvement driven by real feedback"
+    ],
+    "team_label": "The Team",
+    "team_title": "People behind FlairSync",
+    "team_subtitle": "A small but focused team on a mission to reshape how restaurants operate.",
+    "team": [
+      {
+        "name": "Semah Chriha",
+        "role": "Founder & CTO",
+        "bio": "Full-stack engineer and entrepreneur passionate about building tools that empower the hospitality industry.",
+        "initial": "S"
+      },
+      {
+        "name": "Sarah Chamekh",
+        "role": "Co-Founder & AI Engineer",
+        "bio": "Driven by a vision to make restaurant management more human, Sarah shapes the product strategy and business direction at FlairSync.",
+        "initial": "S"
+      }
+    ],
+    "cta_badge": "Be among the first restaurants on FlairSync",
+    "cta_title": "Ready to transform your restaurant?",
+    "cta_subtitle": "Start for free. No credit card required. Set up your business in under 5 minutes.",
+    "start_for_free": "Start for Free",
+    "contact_sales": "Contact Sales"
   }
 }

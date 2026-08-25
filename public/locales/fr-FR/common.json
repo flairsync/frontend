@@ -237,5 +237,35 @@
     "cancellation_notice": "Cela envoie une demande d'annulation au restaurant. Il confirmera sous peu. Votre réservation reste active jusqu'à ce moment-là.",
     "reason_label": "Motif (facultatif)",
     "reason_placeholder": "ex. Changement de plans"
+  },
+  "customer_reservation_timeline": {
+    "event_labels": {
+      "created": "Réservation reçue",
+      "confirmed": "Réservation confirmée",
+      "seated": "Vous êtes installé(e) — profitez-en !",
+      "completed": "Merci de votre visite",
+      "cancelled": "Réservation annulée",
+      "rejected": "Réservation refusée",
+      "updated": "Détails mis à jour",
+      "no_show": "Marqué comme absence",
+      "expired": "Réservation expirée",
+      "table_assigned": "Table attribuée",
+      "table_reassigned": "Table réattribuée",
+      "reminder_sent": "Rappel envoyé",
+      "customer_late": "Retard signalé",
+      "delay_noticed": "Retard constaté",
+      "customer_confirmed_attendance": "Vous avez confirmé votre présence",
+      "customer_running_late": "Vous avez signalé un retard",
+      "customer_requested_cancellation": "Vous avez demandé l'annulation",
+      "customer_requested_modification": "Vous avez demandé une modification",
+      "customer_acknowledged_delay": "Vous avez pris connaissance de l'attente"
+    },
+    "empty_state": "Aucune mise à jour pour le moment. Revenez bientôt !",
+    "meta": {
+      "delay_estimate": "~{{minutes}} min de retard",
+      "reminder_sent_before": "Envoyé {{minutes}} min avant votre réservation",
+      "new_time": "Nouvelle heure : {{time}}",
+      "party_of": "Groupe de {{count}}"
+    }
   }
 }

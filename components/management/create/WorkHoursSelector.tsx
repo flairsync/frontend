@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ export default function WorkHoursSelector({
     onChange,
     hideTitle,
 }: WorkHoursSelectorProps) {
+    const { t } = useTranslation("management");
     /**
      * Normalize input:
      * - undefined value
@@ -121,7 +123,7 @@ export default function WorkHoursSelector({
             <CardContent className="p-4 space-y-6">
                 {!hideTitle && (
                     <h2 className="text-lg font-semibold text-foreground">
-                        🕒 Business Hours
+                        {t("work_hours_selector.title")}
                     </h2>
                 )}
 
@@ -133,7 +135,7 @@ export default function WorkHoursSelector({
                         >
                             <div className="flex items-center justify-between mb-3">
                                 <Label className="font-medium text-foreground capitalize">
-                                    {dayHours.day}
+                                    {t(`schedule_recurring_rules_tab.days.${dayHours.day}`)}
                                 </Label>
 
                                 <div className="flex items-center gap-2">
@@ -144,13 +146,13 @@ export default function WorkHoursSelector({
                                         }
                                     />
                                     <span className="text-sm text-muted-foreground">
-                                        {dayHours.isClosed ? "Closed" : "Open"}
+                                        {dayHours.isClosed ? t("work_hours_selector.closed") : t("work_hours_selector.open")}
                                     </span>
                                     <Button
                                         type="button"
                                         variant="ghost"
                                         size="icon"
-                                        title="Copy to all days"
+                                        title={t("work_hours_selector.copy_to_all_days")}
                                         className="text-muted-foreground hover:text-primary"
                                         onClick={() => duplicateToAllDays(dayHours.day)}
                                     >
@@ -163,7 +165,7 @@ export default function WorkHoursSelector({
                                 <div className="flex flex-col gap-3">
                                     {dayHours.periods.length === 0 && (
                                         <p className="text-sm text-muted-foreground italic">
-                                            No shifts added yet
+                                            {t("work_hours_selector.no_shifts_yet")}
                                         </p>
                                     )}
 
@@ -173,7 +175,7 @@ export default function WorkHoursSelector({
                                             className="flex flex-wrap items-center gap-3 border border-border bg-background p-2 rounded-lg"
                                         >
                                             <div className="flex flex-col">
-                                                <Label className="text-xs text-muted-foreground">Opens</Label>
+                                                <Label className="text-xs text-muted-foreground">{t("work_hours_selector.opens_label")}</Label>
                                                 <input
                                                     type="time"
                                                     value={p.open}
@@ -185,7 +187,7 @@ export default function WorkHoursSelector({
                                             </div>
 
                                             <div className="flex flex-col">
-                                                <Label className="text-xs text-muted-foreground">Closes</Label>
+                                                <Label className="text-xs text-muted-foreground">{t("work_hours_selector.closes_label")}</Label>
                                                 <input
                                                     type="time"
                                                     value={p.close}
@@ -197,7 +199,7 @@ export default function WorkHoursSelector({
                                             </div>
 
                                             <span className="text-xs text-muted-foreground italic">
-                                                {p.open > p.close ? "Next day ➜" : ""}
+                                                {p.open > p.close ? t("work_hours_selector.next_day") : ""}
                                             </span>
 
                                             <Button
@@ -216,11 +218,11 @@ export default function WorkHoursSelector({
                                         className="w-fit text-sm flex items-center gap-1 mt-2"
                                         onClick={() => addPeriod(dayHours.day)}
                                     >
-                                        <Plus className="h-4 w-4" /> Add Shift
+                                        <Plus className="h-4 w-4" /> {t("work_hours_selector.add_shift")}
                                     </Button>
                                 </div>
                             ) : (
-                                <span className="text-sm text-muted-foreground">Day off</span>
+                                <span className="text-sm text-muted-foreground">{t("work_hours_selector.day_off")}</span>
                             )}
                         </div>
                     ))}

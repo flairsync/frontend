@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useBusinessFeedback } from "@/features/business/feedback/useBusinessFeedback";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,17 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Star, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatInTimezone } from "@/lib/dateUtils";
-
-const IMPROVEMENT_TAG_LABELS: Record<string, string> = {
-    FOOD_TEMPERATURE: "Food temperature",
-    ORDER_ACCURACY: "Order accuracy",
-    WAIT_TIME: "Wait time",
-    STAFF_FRIENDLINESS: "Staff friendliness",
-    CLEANLINESS: "Cleanliness",
-    NOISE_LEVEL: "Noise level",
-    PRICE: "Price",
-    PORTION_SIZE: "Portion size",
-};
 
 function RenderStars({ rating, size = 14 }: { rating: number; size?: number }) {
     return (
@@ -44,11 +34,12 @@ function SubRating({ label, value }: { label: string; value: number | null | und
 }
 
 function NpsBadge({ score }: { score: number | null | undefined }) {
+    const { t } = useTranslation("management");
     if (score === null || score === undefined) return null;
     const variant = score >= 9 ? "default" : score >= 7 ? "secondary" : "destructive";
     return (
         <Badge variant={variant as any} className="font-normal">
-            NPS {score}/10
+            {t("business_feedback_dashboard.nps_score", { score })}
         </Badge>
     );
 }
@@ -58,6 +49,7 @@ interface BusinessFeedbackDashboardProps {
 }
 
 const BusinessFeedbackDashboard: React.FC<BusinessFeedbackDashboardProps> = ({ businessId }) => {
+    const { t } = useTranslation("management");
     const [page, setPage] = useState(1);
     const [ratingFilter, setRatingFilter] = useState<string>("all");
 
@@ -75,8 +67,8 @@ const BusinessFeedbackDashboard: React.FC<BusinessFeedbackDashboardProps> = ({ b
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Feedback</h1>
-                    <p className="text-sm text-muted-foreground">Post-meal feedback submitted by your guests</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t("business_feedback_dashboard.title")}</h1>
+                    <p className="text-sm text-muted-foreground">{t("business_feedback_dashboard.subtitle")}</p>
                 </div>
             </div>
 
@@ -84,13 +76,13 @@ const BusinessFeedbackDashboard: React.FC<BusinessFeedbackDashboardProps> = ({ b
             <div className="flex items-center gap-3">
                 <Select value={ratingFilter} onValueChange={(v) => { setRatingFilter(v); setPage(1); }}>
                     <SelectTrigger className="w-[180px] rounded-xl">
-                        <SelectValue placeholder="All ratings" />
+                        <SelectValue placeholder={t("business_feedback_dashboard.all_ratings")} />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl">
-                        <SelectItem value="all">All ratings</SelectItem>
+                        <SelectItem value="all">{t("business_feedback_dashboard.all_ratings")}</SelectItem>
                         {[5, 4, 3, 2, 1].map((r) => (
                             <SelectItem key={r} value={String(r)}>
-                                {r}+ stars
+                                {t("business_feedback_dashboard.stars_and_up", { count: r })}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -101,7 +93,7 @@ const BusinessFeedbackDashboard: React.FC<BusinessFeedbackDashboardProps> = ({ b
             {isLoading ? (
                 <div className="flex justify-center py-10"><Loader2 className="animate-spin text-muted-foreground" size={24} /></div>
             ) : feedback.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground text-sm">No feedback found.</div>
+                <div className="text-center py-12 text-muted-foreground text-sm">{t("business_feedback_dashboard.no_feedback")}</div>
             ) : (
                 <div className="space-y-3">
                     {feedback.map((entry: any) => (
@@ -118,10 +110,10 @@ const BusinessFeedbackDashboard: React.FC<BusinessFeedbackDashboardProps> = ({ b
                                 </div>
 
                                 <div className="flex flex-wrap gap-x-4 gap-y-1">
-                                    <SubRating label="Food" value={entry.foodRating} />
-                                    <SubRating label="Service" value={entry.serviceRating} />
-                                    <SubRating label="Ambiance" value={entry.ambianceRating} />
-                                    <SubRating label="Value" value={entry.valueRating} />
+                                    <SubRating label={t("business_feedback_dashboard.sub_ratings.food")} value={entry.foodRating} />
+                                    <SubRating label={t("business_feedback_dashboard.sub_ratings.service")} value={entry.serviceRating} />
+                                    <SubRating label={t("business_feedback_dashboard.sub_ratings.ambiance")} value={entry.ambianceRating} />
+                                    <SubRating label={t("business_feedback_dashboard.sub_ratings.value")} value={entry.valueRating} />
                                 </div>
 
                                 {entry.comment && (
@@ -134,7 +126,7 @@ const BusinessFeedbackDashboard: React.FC<BusinessFeedbackDashboardProps> = ({ b
                                     <div className="flex flex-wrap gap-1.5">
                                         {entry.improvementTags.map((tag: string) => (
                                             <Badge key={tag} variant="outline" className="font-normal text-xs">
-                                                {IMPROVEMENT_TAG_LABELS[tag] ?? tag}
+                                                {t(`business_feedback_dashboard.improvement_tags.${tag}`, { defaultValue: tag })}
                                             </Badge>
                                         ))}
                                     </div>

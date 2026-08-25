@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { CustomerTimelineEvent, CustomerEventType } from "@/features/discovery/types";
 import { formatDistanceToNow } from "date-fns";
 import { formatTime } from "@/lib/dateUtils";
@@ -8,46 +9,29 @@ interface CustomerReservationTimelineProps {
     timezone?: string;
 }
 
-interface EventConfig {
-    label: string;
-    icon: string;
-}
-
-const EVENT_CONFIG: Record<CustomerEventType, EventConfig> = {
-    created:                         { label: "Reservation received",          icon: "📅" },
-    confirmed:                       { label: "Reservation confirmed",         icon: "✅" },
-    seated:                          { label: "You've been seated — enjoy!",   icon: "🪑" },
-    completed:                       { label: "Thank you for dining with us",  icon: "🏁" },
-    cancelled:                       { label: "Reservation cancelled",         icon: "❌" },
-    rejected:                        { label: "Reservation rejected",          icon: "⛔" },
-    updated:                         { label: "Details updated",               icon: "✏️" },
-    no_show:                         { label: "Marked as no-show",             icon: "🚫" },
-    expired:                         { label: "Reservation expired",           icon: "⏰" },
-    table_assigned:                  { label: "Table assigned",                icon: "🪑" },
-    table_reassigned:                { label: "Table reassigned",              icon: "🔄" },
-    reminder_sent:                   { label: "Reminder sent",                 icon: "🔔" },
-    customer_late:                   { label: "Running late noted",            icon: "🏃" },
-    delay_noticed:                   { label: "Delay noticed",                 icon: "⏳" },
-    customer_confirmed_attendance:   { label: "You confirmed attendance",      icon: "👍" },
-    customer_running_late:           { label: "You reported running late",     icon: "🏃" },
-    customer_requested_cancellation: { label: "You requested cancellation",    icon: "🙋" },
-    customer_requested_modification: { label: "You requested a change",        icon: "✏️" },
-    customer_acknowledged_delay:     { label: "You acknowledged the wait",     icon: "👋" },
+const EVENT_ICONS: Record<CustomerEventType, string> = {
+    created: "📅", confirmed: "✅", seated: "🪑", completed: "🏁",
+    cancelled: "❌", rejected: "⛔", updated: "✏️", no_show: "🚫",
+    expired: "⏰", table_assigned: "🪑", table_reassigned: "🔄",
+    reminder_sent: "🔔", customer_late: "🏃", delay_noticed: "⏳",
+    customer_confirmed_attendance: "👍", customer_running_late: "🏃",
+    customer_requested_cancellation: "🙋", customer_requested_modification: "✏️",
+    customer_acknowledged_delay: "👋",
 };
 
-function getMetaSub(event: CustomerTimelineEvent): string | null {
+function getMetaSub(event: CustomerTimelineEvent, t: (key: string, options?: Record<string, unknown>) => string): string | null {
     const m = event.metadata;
     if (!m) return null;
 
     switch (event.type) {
         case 'customer_running_late':
-            return m.estimatedDelayMinutes ? `~${m.estimatedDelayMinutes} min behind schedule` : null;
+            return m.estimatedDelayMinutes ? t("customer_reservation_timeline.meta.delay_estimate", { minutes: m.estimatedDelayMinutes }) : null;
         case 'reminder_sent':
-            return m.minutesBefore ? `Sent ${m.minutesBefore} min before your reservation` : null;
+            return m.minutesBefore ? t("customer_reservation_timeline.meta.reminder_sent_before", { minutes: m.minutesBefore }) : null;
         case 'customer_requested_modification': {
             const parts: string[] = [];
-            if (m.requestedTime) parts.push(`New time: ${m.requestedTime}`);
-            if (m.requestedGuestCount) parts.push(`Party of ${m.requestedGuestCount}`);
+            if (m.requestedTime) parts.push(t("customer_reservation_timeline.meta.new_time", { time: m.requestedTime }));
+            if (m.requestedGuestCount) parts.push(t("customer_reservation_timeline.meta.party_of", { count: m.requestedGuestCount }));
             return parts.length > 0 ? parts.join(' · ') : null;
         }
         case 'customer_requested_cancellation':
@@ -61,11 +45,13 @@ export const CustomerReservationTimeline: React.FC<CustomerReservationTimelinePr
     events,
     timezone: tz,
 }) => {
+    const { t } = useTranslation();
+
     if (events.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-16 text-muted-foreground text-sm">
                 <span className="text-3xl mb-3">📅</span>
-                <p>No updates yet. Check back soon!</p>
+                <p>{t("customer_reservation_timeline.empty_state")}</p>
             </div>
         );
     }
@@ -74,8 +60,11 @@ export const CustomerReservationTimeline: React.FC<CustomerReservationTimelinePr
         <div className="flex flex-col gap-3 py-2 px-2">
             {events.map((event) => {
                 const isCustomer = event.source === 'customer';
-                const config = EVENT_CONFIG[event.type] ?? { label: event.type, icon: "•" };
-                const metaSub = getMetaSub(event);
+                const icon = EVENT_ICONS[event.type] ?? "•";
+                const label = EVENT_ICONS[event.type]
+                    ? t(`customer_reservation_timeline.event_labels.${event.type}`)
+                    : event.type;
+                const metaSub = getMetaSub(event, t);
                 const formattedTime = tz
                     ? formatTime(event.createdAt, tz)
                     : formatDistanceToNow(new Date(event.createdAt), { addSuffix: true });
@@ -96,8 +85,8 @@ export const CustomerReservationTimeline: React.FC<CustomerReservationTimelinePr
                             `}
                         >
                             <div className="flex items-center gap-2">
-                                <span className="text-base leading-none select-none">{config.icon}</span>
-                                <span className="text-sm font-medium">{config.label}</span>
+                                <span className="text-base leading-none select-none">{icon}</span>
+                                <span className="text-sm font-medium">{label}</span>
                             </div>
                             {metaSub && (
                                 <p className={`text-xs mt-1 ${isCustomer ? 'text-primary-foreground/75' : 'text-muted-foreground'}`}>

@@ -2,7 +2,8 @@
   "gallery_titles": {
     "b2b": "Marketplace B2B",
     "saas": "Tienda SaaS",
-    "guest": "Marketplace de invitados"
+    "guest": "Marketplace de invitados",
+    "saas_official": "Tienda oficial"
   },
   "item_detail": {
     "back_to_gallery": "Volver a la galería",
@@ -34,5 +35,21 @@
     "out_of_stock_hint": "Este artículo está agotado",
     "select_business_hint": "Selecciona un negocio",
     "fill_shipping_hint": "Completa todos los detalles de envío"
+  },
+  "browse_page": {
+    "guest_subtitle_with_business": "Compra artículos de este negocio.",
+    "guest_subtitle_no_business": "Descubre los artículos de tu restaurante favorito.",
+    "b2b_subtitle": "Suministros y abastecimiento para tu negocio.",
+    "saas_subtitle": "Equipamiento exclusivo y tecnología NFC.",
+    "no_business_selected": "Ningún negocio seleccionado.",
+    "no_business_hint": "Visita el perfil de un restaurante concreto para ver sus artículos en venta.",
+    "loading_items": "Cargando artículos..."
+  },
+  "grid": {
+    "search_placeholder": "Buscar artículos...",
+    "empty_title": "No se encontraron artículos",
+    "empty_search_description": "No hay resultados para \"{{search}}\". Prueba con otro término de búsqueda.",
+    "empty_no_items_description": "Esta tienda aún no tiene artículos activos.",
+    "page_of": "Página {{page}} de {{totalPages}}"
   }
 }

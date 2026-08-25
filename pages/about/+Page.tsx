@@ -1,64 +1,30 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Rocket, Activity, Shield, Users, TrendingUp, Globe, Star, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import LandingHeader from "@/components/landing/LandingHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
+import { resolveTolgeeArrays } from "@/utils/i18n-arrays";
 
-const stats = [
-    { value: "Early", label: "Access Launch" },
-    { value: "2026", label: "Founded" },
-    { value: "1", label: "Country & Growing" },
-    { value: "99.9%", label: "Platform Uptime" },
-];
+// Icons live here (not translation data) — paired by index with `about_page.values[]`.
+const VALUE_ICONS = [Rocket, Activity, Shield];
 
-const values = [
-    {
-        icon: Rocket,
-        title: "Our Mission",
-        description:
-            "FlairSync exists to give every restaurant and café owner—big or small—the same powerful technology that enterprise chains use. We simplify reservations, menus, orders, and customer feedback into a single seamless platform.",
-    },
-    {
-        icon: Activity,
-        title: "Our Vision",
-        description:
-            "A world where hospitality businesses thrive through technology. We build for real-time insights, smart analytics, and customer satisfaction tools that drive sustainable growth.",
-    },
-    {
-        icon: Shield,
-        title: "Security & Trust",
-        description:
-            "Data privacy is non-negotiable. FlairSync uses encrypted storage, role-based access control, and is fully compliant with modern data-protection standards so your business is always protected.",
-    },
-];
-
-const principles = [
-    "Built for speed — every feature ships fast and works reliably",
-    "Customer-first design at every touchpoint",
-    "Transparent pricing with no hidden fees",
-    "Dedicated support that actually responds",
-    "Continuous improvement driven by real feedback",
-];
-
-const team = [
-    {
-        name: "Semah Chriha",
-        role: "Founder & CTO",
-        bio: "Full-stack engineer and entrepreneur passionate about building tools that empower the hospitality industry.",
-        initial: "S",
-    },
-    {
-        name: "Sarah Chamekh",
-        role: "Co-Founder & AI Engineer",
-        bio: "Driven by a vision to make restaurant management more human, Sarah shapes the product strategy and business direction at FlairSync.",
-        initial: "S",
-    },
-];
+interface AboutPageContent {
+    stats: { value: string; label: string }[];
+    values: { title: string; description: string }[];
+    principles: string[];
+    team: { name: string; role: string; bio: string; initial: string }[];
+}
 
 const AboutUsPage: React.FC = () => {
+    const { t } = useTranslation("landing");
+    const { stats, values, principles, team } = resolveTolgeeArrays<AboutPageContent>(
+        t("about_page", { returnObjects: true })
+    );
+
     return (
         <div className="min-h-screen flex flex-col">
             <LandingHeader />
@@ -72,25 +38,25 @@ const AboutUsPage: React.FC = () => {
                     <div className="relative max-w-3xl mx-auto space-y-6">
                         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium">
                             <Star className="w-3.5 h-3.5" />
-                            Now in Early Access
+                            {t("about_page.badge_early_access")}
                         </span>
                         <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight">
-                            The platform built for{" "}
-                            <span className="text-primary">modern hospitality</span>
+                            {t("about_page.hero_title_prefix")}{" "}
+                            <span className="text-primary">{t("about_page.hero_title_highlight")}</span>
                         </h1>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                            FlairSync is an all-in-one management platform for restaurants and cafés — handling reservations, menus, staff, analytics, and customer engagement from a single dashboard.
+                            {t("about_page.hero_subtitle")}
                         </p>
                         <div className="flex flex-wrap justify-center gap-3 pt-2">
                             <a href="/signup">
                                 <Button className="rounded-full px-8 py-2.5 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-                                    Get Started Free
+                                    {t("about_page.get_started_free")}
                                     <ArrowRight className="w-4 h-4 ml-2" />
                                 </Button>
                             </a>
                             <a href="/support">
                                 <Button variant="outline" className="rounded-full px-8 py-2.5">
-                                    Talk to Us
+                                    {t("about_page.talk_to_us")}
                                 </Button>
                             </a>
                         </div>
@@ -100,8 +66,8 @@ const AboutUsPage: React.FC = () => {
                 {/* Stats */}
                 <section className="border-y border-border bg-card/50">
                     <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        {stats.map(({ value, label }) => (
-                            <div key={label} className="space-y-1">
+                        {stats.map(({ value, label }, i) => (
+                            <div key={i} className="space-y-1">
                                 <p className="text-4xl font-extrabold text-primary">{value}</p>
                                 <p className="text-sm text-muted-foreground font-medium">{label}</p>
                             </div>
@@ -113,24 +79,27 @@ const AboutUsPage: React.FC = () => {
                     {/* Mission / Vision / Security */}
                     <section className="space-y-6">
                         <div className="text-center space-y-2">
-                            <h2 className="text-3xl font-extrabold">What drives us</h2>
+                            <h2 className="text-3xl font-extrabold">{t("about_page.what_drives_us_title")}</h2>
                             <p className="text-muted-foreground max-w-xl mx-auto">
-                                Three pillars that shape every decision we make.
+                                {t("about_page.what_drives_us_subtitle")}
                             </p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-                            {values.map(({ icon: Icon, title, description }) => (
-                                <div
-                                    key={title}
-                                    className="group rounded-2xl border border-border bg-card p-8 space-y-4 hover:border-primary/40 hover:shadow-lg transition-all duration-300"
-                                >
-                                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                        <Icon className="w-6 h-6 text-primary" />
+                            {values.map(({ title, description }, i) => {
+                                const Icon = VALUE_ICONS[i];
+                                return (
+                                    <div
+                                        key={i}
+                                        className="group rounded-2xl border border-border bg-card p-8 space-y-4 hover:border-primary/40 hover:shadow-lg transition-all duration-300"
+                                    >
+                                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                            <Icon className="w-6 h-6 text-primary" />
+                                        </div>
+                                        <h3 className="text-xl font-bold">{title}</h3>
+                                        <p className="text-muted-foreground leading-relaxed">{description}</p>
                                     </div>
-                                    <h3 className="text-xl font-bold">{title}</h3>
-                                    <p className="text-muted-foreground leading-relaxed">{description}</p>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </section>
 
@@ -141,21 +110,21 @@ const AboutUsPage: React.FC = () => {
                         <div className="space-y-6">
                             <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-widest">
                                 <TrendingUp className="w-4 h-4" />
-                                Our Story
+                                {t("about_page.our_story_label")}
                             </div>
                             <h2 className="text-4xl font-extrabold leading-tight">
-                                Built from a real problem, not a whiteboard
+                                {t("about_page.our_story_title")}
                             </h2>
                             <p className="text-muted-foreground leading-relaxed">
-                                FlairSync was born after seeing how many restaurant owners struggled with fragmented tools — one app for reservations, another for menus, spreadsheets for staff. We set out to unify all of that into one platform that actually makes sense to use.
+                                {t("about_page.our_story_paragraph1")}
                             </p>
                             <p className="text-muted-foreground leading-relaxed">
-                                Today we power hundreds of restaurants across 12+ countries, and we're just getting started. Every feature we ship comes directly from conversations with the operators who use it every day.
+                                {t("about_page.our_story_paragraph2")}
                             </p>
                         </div>
                         <div className="space-y-3">
-                            {principles.map((p) => (
-                                <div key={p} className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card/60">
+                            {principles.map((p, i) => (
+                                <div key={i} className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card/60">
                                     <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                                     <span className="text-sm font-medium">{p}</span>
                                 </div>
@@ -170,11 +139,11 @@ const AboutUsPage: React.FC = () => {
                         <div className="space-y-2">
                             <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-widest">
                                 <Users className="w-4 h-4" />
-                                The Team
+                                {t("about_page.team_label")}
                             </div>
-                            <h2 className="text-3xl font-extrabold">People behind FlairSync</h2>
+                            <h2 className="text-3xl font-extrabold">{t("about_page.team_title")}</h2>
                             <p className="text-muted-foreground max-w-xl mx-auto">
-                                A small but focused team on a mission to reshape how restaurants operate.
+                                {t("about_page.team_subtitle")}
                             </p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto w-full">
@@ -207,22 +176,22 @@ const AboutUsPage: React.FC = () => {
                         <div className="relative space-y-4 max-w-2xl mx-auto">
                             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-sm font-medium">
                                 <Globe className="w-3.5 h-3.5" />
-                                Be among the first restaurants on FlairSync
+                                {t("about_page.cta_badge")}
                             </div>
-                            <h2 className="text-4xl font-extrabold">Ready to transform your restaurant?</h2>
+                            <h2 className="text-4xl font-extrabold">{t("about_page.cta_title")}</h2>
                             <p className="text-primary-foreground/80 max-w-lg mx-auto">
-                                Start for free. No credit card required. Set up your business in under 5 minutes.
+                                {t("about_page.cta_subtitle")}
                             </p>
                             <div className="flex flex-wrap justify-center gap-3 pt-2">
                                 <a href="/signup">
                                     <Button variant="secondary" className="rounded-full px-8 py-2.5 font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-                                        Start for Free
+                                        {t("about_page.start_for_free")}
                                         <ArrowRight className="w-4 h-4 ml-2" />
                                     </Button>
                                 </a>
                                 <a href="/support">
                                     <Button variant="outline" className="rounded-full px-8 py-2.5 border-white/60 text-white hover:bg-white/15 hover:text-white bg-transparent">
-                                        Contact Sales
+                                        {t("about_page.contact_sales")}
                                     </Button>
                                 </a>
                             </div>

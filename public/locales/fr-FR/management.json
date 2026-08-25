@@ -4012,5 +4012,274 @@
       "generate_new_code": "Générer un nouveau code",
       "generate_failed_toast": "Échec de la génération du code. Veuillez réessayer."
     }
+  },
+  "help_page": {
+    "title": "Aide et assistance",
+    "subtitle": "Trouvez des réponses aux questions fréquentes, ou contactez notre équipe d'assistance.",
+    "faq_title": "Questions fréquentes",
+    "faqs": [
+      {
+        "question": "Comment puis-je rejoindre une entreprise ?",
+        "answer": "Vous ne pouvez rejoindre une entreprise que si un propriétaire ou un administrateur vous envoie un lien d'invitation. Une fois accepté, elle apparaîtra dans votre onglet « Rejointes »."
+      },
+      {
+        "question": "Comment puis-je créer une nouvelle entreprise ?",
+        "answer": "Allez sur la page « Mes entreprises » et cliquez sur « Créer une entreprise ». Vous pourrez configurer le nom, la description et inviter des membres."
+      },
+      {
+        "question": "Où puis-je gérer mon abonnement ?",
+        "answer": "Toutes les informations de facturation et d'abonnement se trouvent dans la section « Facturation » de votre tableau de bord."
+      },
+      {
+        "question": "Comment contacter le support ?",
+        "answer": "Si vous avez besoin d'aide, utilisez le formulaire d'assistance ci-dessous ou envoyez-nous un e-mail directement."
+      }
+    ],
+    "contact_support": {
+      "title": "Contacter le support",
+      "description": "Besoin d'aide supplémentaire ? Envoyez-nous un message et nous vous répondrons rapidement.",
+      "send_message": "Envoyer un message"
+    },
+    "docs": {
+      "title": "Documentation et tutoriels",
+      "description": "Explorez nos guides pour tirer le meilleur parti de la plateforme.",
+      "getting_started": "Guide de démarrage",
+      "billing_subscriptions": "Facturation et abonnements",
+      "inviting_team": "Inviter des membres de l'équipe",
+      "connecting_printer": "Connecter une imprimante de reçus et un tiroir-caisse"
+    }
+  },
+  "business_feedback_dashboard": {
+    "title": "Retours",
+    "subtitle": "Retours post-repas envoyés par vos clients",
+    "all_ratings": "Toutes les notes",
+    "stars_and_up": "{{count}}+ étoiles",
+    "no_feedback": "Aucun retour trouvé.",
+    "sub_ratings": {
+      "food": "Nourriture",
+      "service": "Service",
+      "ambiance": "Ambiance",
+      "value": "Rapport qualité-prix"
+    },
+    "nps_score": "NPS {{score}}/10",
+    "improvement_tags": {
+      "FOOD_TEMPERATURE": "Température des plats",
+      "ORDER_ACCURACY": "Exactitude de la commande",
+      "WAIT_TIME": "Temps d'attente",
+      "STAFF_FRIENDLINESS": "Amabilité du personnel",
+      "CLEANLINESS": "Propreté",
+      "NOISE_LEVEL": "Niveau sonore",
+      "PRICE": "Prix",
+      "PORTION_SIZE": "Taille des portions"
+    }
+  },
+  "barcode_scanner_dialog": {
+    "title": "Scanner un code-barres",
+    "checking_permission": "Vérification de l'accès à la caméra…",
+    "permission_needed_title": "Accès à la caméra nécessaire",
+    "permission_needed_description": "Autorisez l'accès à la caméra pour scanner des codes-barres directement depuis votre appareil.",
+    "grant_access": "Autoriser l'accès à la caméra",
+    "blocked_title": "Accès à la caméra bloqué",
+    "blocked_description": "L'accès à la caméra a été refusé. Pour l'activer, ouvrez les paramètres de votre navigateur ou de votre appareil et autorisez la caméra pour ce site.",
+    "open_settings": "Ouvrir les paramètres",
+    "starting_camera": "Démarrage de la caméra…",
+    "retry": "Réessayer",
+    "select_camera_placeholder": "Sélectionner une caméra",
+    "camera_label": "Caméra {{index}}",
+    "switch_camera": "Changer de caméra",
+    "status_denied": "Activez la caméra dans les paramètres de votre navigateur pour scanner",
+    "status_prompt": "Autorisez l'accès à la caméra pour commencer à scanner",
+    "status_scanning": "Pointez la caméra vers un code-barres",
+    "no_camera_found": "Aucune caméra trouvée sur cet appareil.",
+    "could_not_start_camera": "Impossible de démarrer la caméra. Veuillez réessayer.",
+    "could_not_access_camera": "Impossible d'accéder à la caméra. Veuillez réessayer.",
+    "unknown_format": "Code-barres"
+  },
+  "print_qr_codes_button": {
+    "button": "Imprimer les codes QR",
+    "dialog_title": "Imprimer les codes QR des tables",
+    "floor_label": "Étage",
+    "all_floors": "Tous les étages",
+    "cancel": "Annuler",
+    "download_pdf": "Télécharger le PDF",
+    "error": "Échec de la génération du PDF des codes QR"
+  },
+  "professional_profile_page": {
+    "title": "Profil professionnel",
+    "subtitle_update": "Mettez à jour la façon dont vous apparaissez auprès des employeurs et des entreprises.",
+    "subtitle_create": "Créez votre profil professionnel pour postuler à des offres et entrer en contact avec des entreprises.",
+    "active_badge": "Actif",
+    "no_profile_yet": "Aucun profil professionnel pour le moment",
+    "member_since": "Membre depuis {{date}}",
+    "your_profile_fallback": "Votre profil",
+    "cta": {
+      "title": "Soyez repéré par les entreprises",
+      "description": "Renseignez vos informations ci-dessous pour commencer à postuler et apparaître dans les recherches des employeurs."
+    },
+    "form": {
+      "edit_title": "Modifier les détails",
+      "create_title": "Configurer votre profil",
+      "legal_name_section": "Nom légal",
+      "first_name_label": "Prénom",
+      "first_name_placeholder": "Jean",
+      "last_name_label": "Nom",
+      "last_name_placeholder": "Dupont",
+      "middle_name_label": "Deuxième prénom",
+      "middle_name_optional": "(facultatif)",
+      "middle_name_placeholder": "Facultatif",
+      "public_identity_section": "Identité publique",
+      "display_name_label": "Nom d'affichage",
+      "display_name_placeholder": "Comment vous souhaitez apparaître publiquement",
+      "display_name_hint": "Affiché sur les candidatures et les profils publics.",
+      "work_email_label": "E-mail professionnel",
+      "verified_badge": "Vérifié",
+      "unverified_badge": "Non vérifié",
+      "work_email_placeholder": "vous@travail.com",
+      "work_email_hint": "Utilisé pour les communications professionnelles, comme les fiches de paie. Le modifier nécessite de vérifier la nouvelle adresse.",
+      "verification_pending_for": "Vérification en attente pour {{email}}",
+      "verification_pending_note_changing": "Nous avons envoyé un code à 6 chiffres à cette adresse. Votre e-mail professionnel actuel reste actif jusqu'à sa confirmation.",
+      "verification_pending_note_new": "Nous avons envoyé un code à 6 chiffres à cette adresse. Confirmez-le pour terminer la vérification de votre profil professionnel.",
+      "enter_code": "Saisir le code",
+      "sending": "Envoi…",
+      "resend_in": "Renvoyer dans {{seconds}} s",
+      "resend_code": "Renvoyer le code",
+      "saving": "Enregistrement…",
+      "save_changes": "Enregistrer les modifications",
+      "create_profile": "Créer le profil"
+    },
+    "verify_modal": {
+      "title": "Vérifier l'e-mail professionnel",
+      "description": "Saisissez le code à 6 chiffres envoyé à {{email}}.",
+      "your_work_email_fallback": "votre e-mail professionnel"
+    },
+    "invalid_or_expired_code": "Code invalide ou expiré."
+  },
+  "join_professional_page": {
+    "header_title": "Compte professionnel",
+    "header_subtitle": "Créez un profil professionnel pour gérer ou rejoindre des entreprises sur la plateforme.",
+    "invited_title": "Vous avez été invité(e) à rejoindre une entreprise",
+    "invited_description": "Pour accepter cette invitation, créez un profil professionnel avec {{email}}.",
+    "invitation_not_found_title": "Invitation introuvable",
+    "invitation_not_found_description_1": "Le lien d'invitation utilisé n'est pas valide ou a peut-être expiré.",
+    "invitation_not_found_description_2": "Vous pouvez tout de même continuer et créer un profil professionnel normalement.",
+    "verify": {
+      "title": "Vérifiez votre e-mail professionnel",
+      "description": "Nous avons envoyé un code à 6 chiffres à {{email}}. Saisissez-le ci-dessous pour terminer la configuration de votre profil professionnel.",
+      "verifying": "Vérification…",
+      "verify_button": "Vérifier l'e-mail professionnel",
+      "no_code_question": "Vous n'avez pas reçu de code ?",
+      "resend_failed": "Impossible de renvoyer le code."
+    },
+    "create": {
+      "title": "Créez votre profil professionnel",
+      "description": "Votre profil professionnel vous représente au sein des entreprises. Le nom d'affichage est facultatif et peut différer de votre nom légal.",
+      "middle_name_placeholder": "Deuxième prénom (facultatif)",
+      "email_locked_hint": "Cet e-mail est verrouillé car l'invitation lui a été envoyée.",
+      "confirm_label": "Je confirme que les informations ci-dessus sont exactes et me concernent.",
+      "submit": "Créer le profil professionnel"
+    },
+    "tips": {
+      "title": "Conseils pour le profil",
+      "tip1": "Utilisez votre nom légal pour les documents officiels.",
+      "tip2": "Le nom d'affichage peut différer pour la confidentialité ou l'image.",
+      "tip3": "L'e-mail professionnel doit être actif et accessible.",
+      "tip4": "Requis pour rejoindre ou gérer des entreprises."
+    },
+    "why_matters": {
+      "title": "Pourquoi c'est important",
+      "description": "Un profil professionnel sépare votre compte personnel de l'activité professionnelle tout en sécurisant la vérification et la facturation."
+    }
+  },
+  "work_hours_selector": {
+    "title": "🕒 Horaires d'ouverture",
+    "closed": "Fermé",
+    "open": "Ouvert",
+    "copy_to_all_days": "Copier pour tous les jours",
+    "no_shifts_yet": "Aucun créneau ajouté pour le moment",
+    "opens_label": "Ouverture",
+    "closes_label": "Fermeture",
+    "next_day": "Jour suivant ➜",
+    "add_shift": "Ajouter un créneau",
+    "day_off": "Jour de repos"
+  },
+  "job_form": {
+    "title_label": "Titre du poste",
+    "title_placeholder": "ex. Chef de rang",
+    "title_error_min": "Le titre doit comporter au moins 3 caractères.",
+    "title_error_max": "Le titre doit comporter moins de 100 caractères.",
+    "employment_type_label": "Type de contrat",
+    "select_type_placeholder": "Sélectionner le type",
+    "type_error": "Le type de contrat est requis.",
+    "category_label": "Catégorie / Poste",
+    "select_category_placeholder": "Sélectionner la catégorie",
+    "category_error": "La catégorie est requise.",
+    "description_label": "Description",
+    "description_placeholder": "Décrivez le poste, les exigences et ce que vous recherchez...",
+    "description_error": "La description doit comporter au moins 20 caractères.",
+    "location_label": "Lieu",
+    "location_placeholder": "ex. Centre-ville, Paris",
+    "salary_range_label": "Fourchette salariale",
+    "salary_range_placeholder": "ex. « 12-15 €/h » ou « À négocier »",
+    "deadline_label": "Date limite de candidature",
+    "deadline_error": "La date limite de candidature doit être dans le futur.",
+    "save_as_draft": "Enregistrer comme brouillon",
+    "save_changes": "Enregistrer les modifications",
+    "publish_job": "Publier l'offre"
+  },
+  "reservation_status": {
+    "pending": "En attente",
+    "confirmed": "Confirmée",
+    "seated": "Installée",
+    "completed": "Terminée",
+    "cancelled": "Annulée",
+    "no_show": "Absence",
+    "expired": "Expirée",
+    "waitlist": "Liste d'attente",
+    "rejected": "Refusée"
+  },
+  "staff_reservations_page": {
+    "title": "Réservations",
+    "subtitle": "Gérez efficacement les réservations à venir et passées.",
+    "add_new": "Ajouter une réservation",
+    "tabs": {
+      "upcoming": "À venir",
+      "past": "Passées"
+    },
+    "sort_by_placeholder": "Trier par",
+    "sort_options": {
+      "reservation_date": "Date de réservation",
+      "booking_date": "Date de réservation en ligne"
+    },
+    "order_placeholder": "Ordre",
+    "order_options": {
+      "newest_first": "Plus récentes d'abord",
+      "oldest_first": "Plus anciennes d'abord"
+    },
+    "status_label": "Statut",
+    "all": "Toutes",
+    "date_range_label": "Plage de dates",
+    "upcoming_reservations_title": "Réservations à venir",
+    "past_reservations_title": "Réservations passées",
+    "col_customer": "Client",
+    "col_table": "Table",
+    "col_date": "Date",
+    "col_time": "Heure",
+    "col_guests": "Convives",
+    "col_action": "Action",
+    "table_unassigned": "Non assignée",
+    "table_fallback": "Table {{number}}",
+    "no_upcoming_found": "Aucune réservation à venir trouvée.",
+    "no_past_found": "Aucune réservation passée trouvée.",
+    "view": "Voir",
+    "edit": "Modifier",
+    "approve": "Approuver",
+    "cancel": "Annuler",
+    "cancel_dialog": {
+      "title": "Annuler cette réservation ?",
+      "description_with_name": "Cela annulera la réservation de {{name}}. Le client sera notifié.",
+      "description_generic": "Cela annulera la réservation. Le client sera notifié.",
+      "keep": "Conserver la réservation",
+      "confirm": "Oui, annuler"
+    }
   }
 }

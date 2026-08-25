@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Loader2, Link, FileText, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ interface ApplyModalProps {
 }
 
 export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalProps) {
+  const { t } = useTranslation("jobs");
   const [coverLetter, setCoverLetter] = useState("");
   const [resumeMode, setResumeMode] = useState<ResumeMode>('none');
   const [resumeUrl, setResumeUrl] = useState("");
@@ -81,9 +83,9 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-base leading-snug">
-            Apply for: <span className="text-primary">{job.title}</span>
+            {t("apply_modal.apply_for")} <span className="text-primary">{job.title}</span>
             {job.business && (
-              <span className="text-muted-foreground font-normal"> at {job.business.name}</span>
+              <span className="text-muted-foreground font-normal"> {t("apply_modal.at_business", { name: job.business.name })}</span>
             )}
           </DialogTitle>
         </DialogHeader>
@@ -92,24 +94,24 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
           {/* Cover letter */}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium">
-              Cover Letter <span className="font-normal text-muted-foreground">(optional)</span>
+              {t("apply_modal.cover_letter_label")} <span className="font-normal text-muted-foreground">{t("apply_modal.optional")}</span>
             </label>
             <textarea
               className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
               rows={5}
-              placeholder="Tell them why you're a good fit..."
+              placeholder={t("apply_modal.cover_letter_placeholder")}
               maxLength={2000}
               value={coverLetter}
               onChange={(e) => setCoverLetter(e.target.value)}
               disabled={applying}
             />
-            <p className="text-xs text-muted-foreground text-right">{coverLetter.length} / 2000</p>
+            <p className="text-xs text-muted-foreground text-right">{t("apply_modal.char_count", { count: coverLetter.length, max: 2000 })}</p>
           </div>
 
           {/* Resume */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">
-              Resume <span className="font-normal text-muted-foreground">(optional)</span>
+              {t("apply_modal.resume_label")} <span className="font-normal text-muted-foreground">{t("apply_modal.optional")}</span>
             </label>
 
             <div className="flex flex-col gap-2 rounded-lg border border-border p-3 bg-muted/20">
@@ -125,13 +127,13 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
                 />
                 <div className="flex flex-col gap-1 flex-1">
                   <span className="text-sm font-medium flex items-center gap-1.5">
-                    <Link className="h-3.5 w-3.5" /> Paste a link
+                    <Link className="h-3.5 w-3.5" /> {t("apply_modal.paste_link")}
                   </span>
                   {resumeMode === 'url' && (
                     <Input
                       value={resumeUrl}
                       onChange={(e) => setResumeUrl(e.target.value)}
-                      placeholder="https://linkedin.com/in/your-profile"
+                      placeholder={t("apply_modal.url_placeholder")}
                       className="h-8 text-sm mt-1"
                       disabled={applying}
                       autoFocus
@@ -152,7 +154,7 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
                 />
                 <div className="flex flex-col gap-1 flex-1">
                   <span className="text-sm font-medium flex items-center gap-1.5">
-                    <FileText className="h-3.5 w-3.5" /> Upload a PDF
+                    <FileText className="h-3.5 w-3.5" /> {t("apply_modal.upload_pdf")}
                   </span>
                   {resumeMode === 'file' && (
                     <div className="flex items-center gap-2 mt-1">
@@ -164,7 +166,7 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
                         onClick={() => fileInputRef.current?.click()}
                         disabled={applying}
                       >
-                        Choose file
+                        {t("apply_modal.choose_file")}
                       </Button>
                       {resumeFile ? (
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -178,7 +180,7 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
                           </button>
                         </div>
                       ) : (
-                        <span className="text-xs text-muted-foreground">PDF only, max 5 MB</span>
+                        <span className="text-xs text-muted-foreground">{t("apply_modal.pdf_hint")}</span>
                       )}
                       <input
                         ref={fileInputRef}
@@ -203,16 +205,16 @@ export function ApplyModal({ job, open, onOpenChange, onSuccess }: ApplyModalPro
 
         <DialogFooter>
           <Button variant="outline" onClick={() => handleClose(false)} disabled={applying}>
-            Cancel
+            {t("apply_modal.cancel")}
           </Button>
           <Button onClick={handleSubmit} disabled={applying} className="min-w-[160px]">
             {applying ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Submitting...
+                {t("apply_modal.submitting")}
               </>
             ) : (
-              "Submit Application"
+              t("apply_modal.submit")
             )}
           </Button>
         </DialogFooter>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { format } from "date-fns";
 import {
@@ -32,6 +33,7 @@ const STATUS_BADGE_CLASSES: Record<string, string> = {
 };
 
 const JobApplicationDetailPage = () => {
+  const { t } = useTranslation("profile");
   const { routeParams } = usePageContext() as any;
   const applicationId = routeParams.applicationId;
 
@@ -49,13 +51,13 @@ const JobApplicationDetailPage = () => {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
         <Briefcase className="h-10 w-10 text-muted-foreground/40" />
-        <p className="text-lg font-semibold">Application not found</p>
+        <p className="text-lg font-semibold">{t("my_jobs.detail.not_found_title")}</p>
         <p className="text-sm text-muted-foreground">
-          We couldn't find this application. It may have been removed.
+          {t("my_jobs.detail.not_found_description")}
         </p>
         <a href="/profile/job-applications" className="text-primary hover:underline text-sm flex items-center gap-1">
           <ArrowLeft className="h-4 w-4" />
-          Back to my applications
+          {t("my_jobs.legacy_list_page.back_to_applications")}
         </a>
       </div>
     );
@@ -72,7 +74,7 @@ const JobApplicationDetailPage = () => {
         className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
       >
         <ArrowLeft className="h-4 w-4" />
-        My Applications
+        {t("my_jobs.tabs_page.tab_applications")}
       </a>
 
       {/* Staff invite banner */}
@@ -81,10 +83,10 @@ const JobApplicationDetailPage = () => {
           <Mail className="h-5 w-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-semibold text-indigo-800 dark:text-indigo-300">
-              You've been invited to join the team!
+              {t("my_jobs.detail.invite_banner_title")}
             </p>
             <p className="text-xs text-indigo-700 dark:text-indigo-400 mt-0.5">
-              A staff invitation was sent on {format(new Date(application.invitedAt), "MMM d, yyyy")}. Check your email inbox.
+              {t("my_jobs.detail.invite_banner_description", { date: format(new Date(application.invitedAt), "MMM d, yyyy") })}
             </p>
           </div>
         </div>
@@ -95,10 +97,10 @@ const JobApplicationDetailPage = () => {
           <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
-              You're now part of the team!
+              {t("my_jobs.detail.hired_banner_title")}
             </p>
             <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">
-              Your employment has been set up. Welcome aboard!
+              {t("my_jobs.detail.hired_banner_description")}
             </p>
           </div>
         </div>
@@ -117,7 +119,7 @@ const JobApplicationDetailPage = () => {
 
             <div className="min-w-0 flex-1">
               <p className="text-xs text-muted-foreground">{job?.business?.name}</p>
-              <h1 className="text-xl font-bold leading-snug">{job?.title ?? "Job position"}</h1>
+              <h1 className="text-xl font-bold leading-snug">{job?.title ?? t("my_jobs.detail.job_position_fallback")}</h1>
               <div className="flex flex-wrap gap-2 mt-2">
                 {job?.type && <Badge variant="secondary" className="text-xs">{JOB_TYPE_LABELS[job.type]}</Badge>}
                 {job?.category && <Badge variant="outline" className="text-xs">{JOB_CATEGORY_LABELS[job.category]}</Badge>}
@@ -131,10 +133,10 @@ const JobApplicationDetailPage = () => {
           </div>
 
           <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-            <span>Applied on {format(new Date(application.createdAt), "MMM d, yyyy")}</span>
+            <span>{t("my_jobs.detail.applied_on", { date: format(new Date(application.createdAt), "MMM d, yyyy") })}</span>
             {job?.slug && (
               <a href={`/jobs/${job.slug}`} className="flex items-center gap-1 text-primary hover:underline">
-                View job listing <ExternalLink className="h-3 w-3" />
+                {t("my_jobs.detail.view_job_listing")} <ExternalLink className="h-3 w-3" />
               </a>
             )}
           </div>
@@ -145,7 +147,7 @@ const JobApplicationDetailPage = () => {
       {application.resumeUrl && (
         <Card>
           <CardContent className="pt-5">
-            <h2 className="text-sm font-semibold mb-3">Resume</h2>
+            <h2 className="text-sm font-semibold mb-3">{t("my_jobs.detail.resume_title")}</h2>
             <a
               href={application.resumeUrl}
               target="_blank"
@@ -157,7 +159,7 @@ const JobApplicationDetailPage = () => {
               ) : (
                 <Link className="h-4 w-4" />
               )}
-              View resume
+              {t("my_jobs.detail.view_resume")}
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </CardContent>
@@ -168,7 +170,7 @@ const JobApplicationDetailPage = () => {
       {application.coverLetter && (
         <Card>
           <CardContent className="pt-5">
-            <h2 className="text-sm font-semibold mb-3">Cover Letter</h2>
+            <h2 className="text-sm font-semibold mb-3">{t("my_jobs.detail.cover_letter_title")}</h2>
             <p className="text-sm whitespace-pre-wrap leading-relaxed">{application.coverLetter}</p>
           </CardContent>
         </Card>
@@ -178,7 +180,7 @@ const JobApplicationDetailPage = () => {
       {application.events && application.events.length > 0 && (
         <Card>
           <CardContent className="pt-5">
-            <h2 className="text-sm font-semibold mb-4">Application Timeline</h2>
+            <h2 className="text-sm font-semibold mb-4">{t("my_jobs.detail.timeline_title")}</h2>
             <ProApplicationTimeline
               events={application.events}
               currentStatus={application.status}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ApplicationsTab } from "@/components/profile/jobs/ApplicationsTab";
 import { InvitationsTab } from "@/components/profile/jobs/InvitationsTab";
@@ -9,12 +10,13 @@ import { cn } from "@/lib/utils";
 type Tab = "applications" | "invitations";
 
 const JobsPage = () => {
+  const { t } = useTranslation("profile");
   const [activeTab, setActiveTab] = useState<Tab>("applications");
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Jobs</CardTitle>
+        <CardTitle>{t("my_jobs.tabs_page.title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Top-level tabs */}
@@ -30,7 +32,7 @@ const JobsPage = () => {
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              {tab === "applications" ? "My Applications" : "Invitations"}
+              {tab === "applications" ? t("my_jobs.tabs_page.tab_applications") : t("my_jobs.tabs_page.tab_invitations")}
             </button>
           ))}
         </div>

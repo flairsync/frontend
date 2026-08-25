@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 const RESEND_COOLDOWN_SECONDS = 30;
 
 const JoinProfessionalPage = () => {
+    const { t } = useTranslation("management");
     const { urlParsed } = usePageContext();
     const { userProfile, loadingUserProfile } = useProfile();
 
@@ -94,10 +96,9 @@ const JoinProfessionalPage = () => {
             {/* Header */}
             <header className="bg-blue-600 text-white py-10 shadow-md pt-25">
                 <div className="max-w-6xl mx-auto px-6 space-y-2">
-                    <h1 className="text-3xl font-bold">Professional Account</h1>
+                    <h1 className="text-3xl font-bold">{t("join_professional_page.header_title")}</h1>
                     <p className="text-blue-100 max-w-2xl">
-                        Create a professional profile to manage or join businesses on the
-                        platform.
+                        {t("join_professional_page.header_subtitle")}
                     </p>
                 </div>
 
@@ -106,14 +107,10 @@ const JoinProfessionalPage = () => {
                         <Alert className="border-blue-200 bg-blue-50">
                             <Building2Icon className="h-5 w-5 text-blue-600" />
                             <AlertTitle className="text-blue-800">
-                                You were invited to join a business
+                                {t("join_professional_page.invited_title")}
                             </AlertTitle>
                             <AlertDescription className="text-blue-700">
-                                To accept this invitation, create a professional profile using{" "}
-                                <span className="font-medium">
-                                    {invitationDetails.email}
-                                </span>
-                                .
+                                {t("join_professional_page.invited_description", { email: invitationDetails.email })}
                             </AlertDescription>
                         </Alert>
                     </div>
@@ -123,12 +120,12 @@ const JoinProfessionalPage = () => {
                         <Alert className="border-amber-200 bg-amber-50">
                             <Building2Icon className="h-5 w-5 text-amber-600" />
                             <AlertTitle className="text-amber-800">
-                                Invitation not found
+                                {t("join_professional_page.invitation_not_found_title")}
                             </AlertTitle>
                             <AlertDescription className="text-amber-700">
-                                The invitation link you used is not valid or may have expired.
+                                {t("join_professional_page.invitation_not_found_description_1")}
                                 <br />
-                                You can still continue and create a professional profile normally.
+                                {t("join_professional_page.invitation_not_found_description_2")}
                             </AlertDescription>
                         </Alert>
                     </div>
@@ -145,14 +142,10 @@ const JoinProfessionalPage = () => {
                                 <CardHeader>
                                     <CardTitle className="text-xl font-bold flex items-center gap-2">
                                         <User className="h-5 w-5 text-blue-600" />
-                                        Verify Your Work Email
+                                        {t("join_professional_page.verify.title")}
                                     </CardTitle>
                                     <CardDescription>
-                                        We sent a 6-digit code to{" "}
-                                        <span className="font-medium text-foreground">
-                                            {userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail}
-                                        </span>
-                                        . Enter it below to finish setting up your professional profile.
+                                        {t("join_professional_page.verify.description", { email: userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail })}
                                     </CardDescription>
                                 </CardHeader>
 
@@ -184,11 +177,11 @@ const JoinProfessionalPage = () => {
                                         className="w-full rounded-xl bg-blue-600 hover:bg-blue-700"
                                         disabled={otp.length < 6 || confirmingWorkEmailVerification}
                                     >
-                                        {confirmingWorkEmailVerification ? "Verifying…" : "Verify Work Email"}
+                                        {confirmingWorkEmailVerification ? t("join_professional_page.verify.verifying") : t("join_professional_page.verify.verify_button")}
                                     </Button>
 
                                     <div className="text-center text-sm text-muted-foreground">
-                                        Didn't get a code?{" "}
+                                        {t("join_professional_page.verify.no_code_question")}{" "}
                                         <Button
                                             variant="link"
                                             onClick={handleResendWorkEmailCode}
@@ -196,21 +189,21 @@ const JoinProfessionalPage = () => {
                                             className="p-0 text-primary disabled:no-underline"
                                         >
                                             {resendingWorkEmailVerification
-                                                ? "Sending…"
+                                                ? t("professional_profile_page.form.sending")
                                                 : resendCooldown > 0
-                                                    ? `Resend in ${resendCooldown}s`
-                                                    : "Resend code"}
+                                                    ? t("professional_profile_page.form.resend_in", { seconds: resendCooldown })
+                                                    : t("professional_profile_page.form.resend_code")}
                                         </Button>
                                     </div>
 
                                     {errorConfirmingWorkEmailVerification && (
                                         <p className="text-center text-sm text-destructive">
-                                            {errorConfirmingWorkEmailVerification.response?.data?.message || "Invalid or expired code."}
+                                            {errorConfirmingWorkEmailVerification.response?.data?.message || t("professional_profile_page.invalid_or_expired_code")}
                                         </p>
                                     )}
                                     {errorResendingWorkEmailVerification && (
                                         <p className="text-center text-sm text-destructive">
-                                            {errorResendingWorkEmailVerification.response?.data?.message || "Couldn't resend the code."}
+                                            {errorResendingWorkEmailVerification.response?.data?.message || t("join_professional_page.verify.resend_failed")}
                                         </p>
                                     )}
                                 </CardContent>
@@ -220,14 +213,13 @@ const JoinProfessionalPage = () => {
                             <CardHeader>
                                 <CardTitle className="text-xl font-bold flex items-center gap-2">
                                     <User className="h-5 w-5 text-blue-600" />
-                                    Create Your Professional Profile
+                                    {t("join_professional_page.create.title")}
                                 </CardTitle>
                             </CardHeader>
 
                             <CardContent className="space-y-6">
                                 <p className="text-sm text-muted-foreground">
-                                    Your professional profile represents you in businesses. A
-                                    display name is optional and can differ from your legal name.
+                                    {t("join_professional_page.create.description")}
                                 </p>
 
                                 {!loadingUserProfile && (
@@ -264,7 +256,7 @@ const JoinProfessionalPage = () => {
                                                 <div className="space-y-3">
                                                     <Input
                                                         name="fname"
-                                                        placeholder="First Name"
+                                                        placeholder={t("professional_profile_page.form.first_name_label")}
                                                         value={values.fname}
                                                         onChange={handleChange}
                                                     />
@@ -274,14 +266,14 @@ const JoinProfessionalPage = () => {
 
                                                     <Input
                                                         name="mname"
-                                                        placeholder="Middle Name (optional)"
+                                                        placeholder={t("join_professional_page.create.middle_name_placeholder")}
                                                         value={values.mname}
                                                         onChange={handleChange}
                                                     />
 
                                                     <Input
                                                         name="lname"
-                                                        placeholder="Last Name"
+                                                        placeholder={t("professional_profile_page.form.last_name_label")}
                                                         value={values.lname}
                                                         onChange={handleChange}
                                                     />
@@ -291,7 +283,7 @@ const JoinProfessionalPage = () => {
 
                                                     <Input
                                                         name="dname"
-                                                        placeholder="Display Name"
+                                                        placeholder={t("professional_profile_page.form.display_name_label")}
                                                         value={values.dname}
                                                         onChange={handleChange}
                                                     />
@@ -305,7 +297,7 @@ const JoinProfessionalPage = () => {
                                                     <Input
                                                         name="email"
                                                         type="email"
-                                                        placeholder="Work Email"
+                                                        placeholder={t("professional_profile_page.form.work_email_label")}
                                                         disabled={!!invitationDetails}
                                                         value={values.email}
                                                         onChange={
@@ -314,8 +306,7 @@ const JoinProfessionalPage = () => {
                                                     />
                                                     {invitationDetails && (
                                                         <p className="text-xs text-muted-foreground">
-                                                            This email is locked because the invitation was
-                                                            sent to it.
+                                                            {t("join_professional_page.create.email_locked_hint")}
                                                         </p>
                                                     )}
                                                     {errors.email && (
@@ -335,8 +326,7 @@ const JoinProfessionalPage = () => {
                                                         }
                                                     />
                                                     <label className="text-sm leading-snug">
-                                                        I confirm that the information above is accurate and
-                                                        belongs to me.
+                                                        {t("join_professional_page.create.confirm_label")}
                                                     </label>
                                                 </div>
                                                 {errors.confirmed && (
@@ -348,7 +338,7 @@ const JoinProfessionalPage = () => {
                                                     className="w-full rounded-xl bg-blue-600 hover:bg-blue-700"
                                                     disabled={creatingProProfile}
                                                 >
-                                                    Create Professional Profile
+                                                    {t("join_professional_page.create.submit")}
                                                 </Button>
                                             </Form>
                                         )}
@@ -364,18 +354,18 @@ const JoinProfessionalPage = () => {
                         <Card className="border border-zinc-200">
                             <CardHeader className="flex items-center gap-2">
                                 <Info className="h-5 w-5 text-blue-600" />
-                                <CardTitle>Profile Tips</CardTitle>
+                                <CardTitle>{t("join_professional_page.tips.title")}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2 text-sm">
-                                <p>✅ Use your legal name for official documentation.</p>
+                                <p>✅ {t("join_professional_page.tips.tip1")}</p>
                                 <p>
-                                    ✅ Display name can differ for privacy or branding.
+                                    ✅ {t("join_professional_page.tips.tip2")}
                                 </p>
                                 <p>
-                                    ✅ Work email should be active and accessible.
+                                    ✅ {t("join_professional_page.tips.tip3")}
                                 </p>
                                 <p>
-                                    ✅ Required to join or manage businesses.
+                                    ✅ {t("join_professional_page.tips.tip4")}
                                 </p>
                             </CardContent>
                         </Card>
@@ -383,11 +373,10 @@ const JoinProfessionalPage = () => {
                         <Card className="border border-zinc-200">
                             <CardHeader className="flex items-center gap-2">
                                 <User className="h-5 w-5 text-blue-600" />
-                                <CardTitle>Why this matters</CardTitle>
+                                <CardTitle>{t("join_professional_page.why_matters.title")}</CardTitle>
                             </CardHeader>
                             <CardContent className="text-sm">
-                                A professional profile separates your personal account from
-                                business activity while keeping verification and billing secure.
+                                {t("join_professional_page.why_matters.description")}
                             </CardContent>
                         </Card>
                     </div>

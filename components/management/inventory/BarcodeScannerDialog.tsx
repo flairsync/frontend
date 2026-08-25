@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
 import { BarcodeFormat, Result } from "@zxing/library";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -20,8 +21,8 @@ const FORMAT_LABELS: Partial<Record<BarcodeFormat, string>> = {
     [BarcodeFormat.ITF]: "ITF",
 };
 
-function getFormatLabel(result: Result): string {
-    return FORMAT_LABELS[result.getBarcodeFormat()] ?? "Barcode";
+function getFormatLabel(result: Result, t: (key: string) => string): string {
+    return FORMAT_LABELS[result.getBarcodeFormat()] ?? t("barcode_scanner_dialog.unknown_format");
 }
 
 // ─── Permission state type ────────────────────────────────────────────────────
@@ -43,6 +44,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
     onOpenChange,
     onDetected,
 }) => {
+    const { t } = useTranslation("management");
     const videoRef = useRef<HTMLVideoElement>(null);
     const controlsRef = useRef<IScannerControls | null>(null);
     const permissionStatusRef = useRef<PermissionStatus | null>(null);
@@ -86,7 +88,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                 (result) => {
                     if (!result) return;
                     const text = result.getText();
-                    const format = getFormatLabel(result);
+                    const format = getFormatLabel(result, t);
                     stopScanner();
                     setDetectedFlash(true);
                     setTimeout(() => {
@@ -104,14 +106,14 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
             if (err?.name === "NotAllowedError") {
                 setPermission("denied");
             } else if (err?.name === "NotFoundError") {
-                setScanError("No camera found on this device.");
+                setScanError(t("barcode_scanner_dialog.no_camera_found"));
                 setScanStatus("error");
             } else {
-                setScanError("Could not start the camera. Please try again.");
+                setScanError(t("barcode_scanner_dialog.could_not_start_camera"));
                 setScanStatus("error");
             }
         }
-    }, [stopScanner, onDetected, onOpenChange]);
+    }, [stopScanner, onDetected, onOpenChange, t]);
 
     // ── Permission helpers ─────────────────────────────────────────────────────
 
@@ -168,15 +170,15 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
             if (err?.name === "NotAllowedError" || err?.name === "PermissionDeniedError") {
                 setPermission("denied");
             } else if (err?.name === "NotFoundError") {
-                setScanError("No camera found on this device.");
+                setScanError(t("barcode_scanner_dialog.no_camera_found"));
                 setScanStatus("error");
             } else {
-                setScanError("Could not access the camera. Please try again.");
+                setScanError(t("barcode_scanner_dialog.could_not_access_camera"));
                 setScanStatus("error");
             }
             setScanStatus("idle");
         }
-    }, [startScanner, selectedCameraId]);
+    }, [startScanner, selectedCameraId, t]);
 
     // ── Lifecycle ──────────────────────────────────────────────────────────────
 
@@ -223,7 +225,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
             return (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3">
                     <Loader2 className="w-8 h-8 text-white animate-spin" />
-                    <p className="text-white text-sm">Checking camera permission…</p>
+                    <p className="text-white text-sm">{t("barcode_scanner_dialog.checking_permission")}</p>
                 </div>
             );
         }
@@ -236,9 +238,9 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                         <Camera className="w-8 h-8 text-white" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-white font-semibold text-sm">Camera access needed</p>
+                        <p className="text-white font-semibold text-sm">{t("barcode_scanner_dialog.permission_needed_title")}</p>
                         <p className="text-white/60 text-xs leading-relaxed">
-                            Allow camera access so you can scan barcodes directly from your device.
+                            {t("barcode_scanner_dialog.permission_needed_description")}
                         </p>
                     </div>
                     <Button
@@ -247,7 +249,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                         onClick={requestPermission}
                     >
                         <ShieldCheck className="w-4 h-4" />
-                        Grant Camera Access
+                        {t("barcode_scanner_dialog.grant_access")}
                     </Button>
                 </div>
             );
@@ -261,9 +263,9 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                         <ShieldAlert className="w-8 h-8 text-destructive" />
                     </div>
                     <div className="space-y-1">
-                        <p className="text-white font-semibold text-sm">Camera access blocked</p>
+                        <p className="text-white font-semibold text-sm">{t("barcode_scanner_dialog.blocked_title")}</p>
                         <p className="text-white/60 text-xs leading-relaxed">
-                            Camera permission was denied. To enable it, open your browser or device settings and allow camera access for this site.
+                            {t("barcode_scanner_dialog.blocked_description")}
                         </p>
                     </div>
                     <Button
@@ -271,10 +273,10 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                         variant="outline"
                         className="gap-2 border-white/20 text-white hover:bg-white/10"
                         onClick={() => window.open("about:blank", "_blank")}
-                        title="Open browser settings"
+                        title={t("barcode_scanner_dialog.open_settings")}
                     >
                         <ExternalLink className="w-3.5 h-3.5" />
-                        Open Settings
+                        {t("barcode_scanner_dialog.open_settings")}
                     </Button>
                 </div>
             );
@@ -307,7 +309,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                     {scanStatus === "loading" && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 gap-3">
                             <Loader2 className="w-8 h-8 text-white animate-spin" />
-                            <p className="text-white text-sm">Starting camera…</p>
+                            <p className="text-white text-sm">{t("barcode_scanner_dialog.starting_camera")}</p>
                         </div>
                     )}
 
@@ -317,7 +319,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                             <ShieldAlert className="w-10 h-10 text-red-400" />
                             <p className="text-white text-sm">{scanError}</p>
                             <Button size="sm" variant="secondary" onClick={() => startScanner(selectedCameraId)}>
-                                Retry
+                                {t("barcode_scanner_dialog.retry")}
                             </Button>
                         </div>
                     )}
@@ -341,7 +343,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                 <DialogHeader className="px-4 pt-4 pb-2">
                     <DialogTitle className="flex items-center gap-2 text-base">
                         <ScanLine className="w-4 h-4" />
-                        Scan Barcode
+                        {t("barcode_scanner_dialog.title")}
                     </DialogTitle>
                 </DialogHeader>
 
@@ -364,12 +366,12 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                             <Select value={selectedCameraId} onValueChange={handleCameraSwitch}>
                                 <SelectTrigger className="h-8 text-xs flex-1 max-w-[200px]">
                                     <Camera className="w-3.5 h-3.5 mr-1.5 shrink-0" />
-                                    <SelectValue placeholder="Select camera" />
+                                    <SelectValue placeholder={t("barcode_scanner_dialog.select_camera_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {cameras.map((cam, i) => (
                                         <SelectItem key={cam.deviceId} value={cam.deviceId} className="text-xs">
-                                            {cam.label || `Camera ${i + 1}`}
+                                            {cam.label || t("barcode_scanner_dialog.camera_label", { index: i + 1 })}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -379,7 +381,7 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                                 variant="outline"
                                 className="h-8 w-8 shrink-0"
                                 onClick={nextCamera}
-                                title="Switch camera"
+                                title={t("barcode_scanner_dialog.switch_camera")}
                             >
                                 <FlipHorizontal className="w-4 h-4" />
                             </Button>
@@ -387,10 +389,10 @@ export const BarcodeScannerDialog: React.FC<BarcodeScannerDialogProps> = ({
                     ) : (
                         <span className="text-xs text-muted-foreground">
                             {permission === "denied"
-                                ? "Enable camera in your browser settings to scan"
+                                ? t("barcode_scanner_dialog.status_denied")
                                 : permission === "prompt"
-                                ? "Grant camera access to start scanning"
-                                : "Point camera at a barcode"}
+                                ? t("barcode_scanner_dialog.status_prompt")
+                                : t("barcode_scanner_dialog.status_scanning")}
                         </span>
                     )}
                 </div>

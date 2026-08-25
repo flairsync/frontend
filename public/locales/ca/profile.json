@@ -252,5 +252,121 @@
     "restaurant_types_title": "Tipus de restaurant",
     "max_distance": "Distància màxima",
     "maximum_distance": "Distància màxima: {{distance}} km"
+  },
+  "my_jobs": {
+    "tabs_page": {
+      "title": "Feines",
+      "tab_applications": "Les meves sol·licituds",
+      "tab_invitations": "Invitacions"
+    },
+    "applications": {
+      "tabs": {
+        "all": "Totes",
+        "pending": "Pendents",
+        "reviewed": "Revisades",
+        "shortlisted": "Preseleccionades",
+        "accepted": "Acceptades",
+        "rejected": "Rebutjades"
+      },
+      "loading": "Carregant sol·licituds...",
+      "empty_title": "Encara no hi ha sol·licituds",
+      "empty_description": "Encara no t'has presentat a cap lloc de feina.",
+      "browse_open_jobs": "Consultar ofertes obertes →",
+      "status": {
+        "pending": "Sol·licitud rebuda",
+        "reviewed": "En revisió",
+        "shortlisted": "Has estat preseleccionat/da!",
+        "accepted": "Has estat acceptat/da!",
+        "hired": "Ara formes part de l'equip!",
+        "rejected": "No seleccionat/da"
+      },
+      "job_position_fallback": "Lloc de feina",
+      "staff_invite_sent": "Invitació de personal enviada",
+      "applied_prefix": "Sol·licitat el {{date}}",
+      "view_details": "Veure detalls",
+      "previous": "Anterior",
+      "next": "Següent",
+      "page_of": "Pàgina {{page}} de {{totalPages}}"
+    },
+    "invitations": {
+      "loading": "Carregant invitacions...",
+      "empty_title": "Cap invitació",
+      "empty_description": "Quan un negoci et convidi a unir-te al seu equip, apareixerà aquí.",
+      "status": {
+        "PENDING": "Pendent",
+        "ACCEPTED": "Acceptada",
+        "DECLINED": "Rebutjada",
+        "EXPIRED": "Caducada",
+        "CANCELLED": "Cancel·lada"
+      },
+      "business_fallback": "Un negoci",
+      "invited_to_join": "Convidat/da a unir-te a l'equip",
+      "expires_on": "Caduca el {{date}}",
+      "accepted_on": "Acceptada el {{date}}",
+      "declined_on": "Rebutjada el {{date}}",
+      "sent_on": "Enviada el {{date}}",
+      "accept": "Acceptar",
+      "decline": "Rebutjar"
+    },
+    "detail": {
+      "not_found_title": "Sol·licitud no trobada",
+      "not_found_description": "No hem pogut trobar aquesta sol·licitud. És possible que s'hagi eliminat.",
+      "resume_title": "Currículum",
+      "view_resume": "Veure currículum",
+      "cover_letter_title": "Carta de presentació",
+      "timeline_title": "Seguiment de la sol·licitud",
+      "job_position_fallback": "Lloc de feina",
+      "applied_on": "Sol·licitat el {{date}}",
+      "view_job_listing": "Veure l'oferta de feina",
+      "invite_banner_title": "T'han convidat a unir-te a l'equip!",
+      "invite_banner_description": "S'ha enviat una invitació el {{date}}. Consulta la teva bústia de correu.",
+      "hired_banner_title": "Ara formes part de l'equip!",
+      "hired_banner_description": "La teva ocupació ja està configurada. Benvingut/da!"
+    },
+    "legacy_list_page": {
+      "title": "Sol·licituds de feina",
+      "back_to_applications": "Torna a les meves sol·licituds"
+    },
+    "back_to_jobs": "Torna a Feines"
+  },
+  "reservation_status": {
+    "pending": "Pendent",
+    "confirmed": "Confirmada",
+    "seated": "Assegut",
+    "completed": "Completada",
+    "cancelled": "Cancel·lada",
+    "no_show": "No presentat",
+    "expired": "Caducada",
+    "waitlist": "Llista d'espera",
+    "rejected": "Rebutjada"
+  },
+  "reservations_page": {
+    "title": "Les meves reserves",
+    "tabs": {
+      "upcoming": "Properes",
+      "past": "Passades"
+    },
+    "empty_upcoming": "No tens reserves properes.",
+    "empty_past": "No tens reserves passades.",
+    "guest_count_one": "{{count}} comensal",
+    "guest_count_other": "{{count}} comensals",
+    "restaurant_fallback": "Restaurant",
+    "page_of": "Pàgina {{page}} de {{totalPages}}",
+    "track_button": "Seguir",
+    "cancel_button": "Cancel·lar"
+  },
+  "reservation_detail_page": {
+    "could_not_identify_restaurant": "No s'ha pogut identificar el restaurant d'aquesta reserva.",
+    "back_to_reservations": "Torna a Reserves",
+    "reservation_fallback": "Reserva",
+    "table_fallback": "Taula {{number}}",
+    "terminal_message": "Aquesta reserva està {{status}}.",
+    "cancel_dialog": {
+      "title": "Cancel·lar reserva",
+      "description": "Segur que vols cancel·lar aquesta reserva? Aquesta acció no es pot desfer.",
+      "back": "Enrere",
+      "cancelling": "Cancel·lant…",
+      "confirm": "Sí, cancel·lar"
+    }
   }
 }

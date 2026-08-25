@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import TfaCodeModal from "@/components/inputs/TfaCodeModal";
 const RESEND_COOLDOWN_SECONDS = 30;
 
 const ProfessionalProfilePage: React.FC = () => {
+    const { t } = useTranslation("management");
     const {
         userProfessionalProfile,
         loadingProfessionalProfile,
@@ -112,24 +114,24 @@ const ProfessionalProfilePage: React.FC = () => {
 
     const displayName = userProfessionalProfile?.getDisplayName()
         || userProfile?.getFullName()
-        || "Your Profile";
+        || t("professional_profile_page.your_profile_fallback");
 
     return (
         <div className="max-w-2xl mx-auto space-y-6 p-6">
             {/* Header */}
             <div className="flex items-start justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold">Professional Profile</h1>
+                    <h1 className="text-2xl font-bold">{t("professional_profile_page.title")}</h1>
                     <p className="text-sm text-muted-foreground mt-1">
                         {hasProfile
-                            ? "Update how you appear to employers and businesses."
-                            : "Create your professional profile to apply for jobs and connect with businesses."}
+                            ? t("professional_profile_page.subtitle_update")
+                            : t("professional_profile_page.subtitle_create")}
                     </p>
                 </div>
                 {hasProfile && (
                     <Badge className="shrink-0 flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-50">
                         <CheckCircle2 className="h-3.5 w-3.5" />
-                        Active
+                        {t("professional_profile_page.active_badge")}
                     </Badge>
                 )}
             </div>
@@ -156,11 +158,11 @@ const ProfessionalProfilePage: React.FC = () => {
                             <span className="truncate">{userProfessionalProfile.workEmail}</span>
                         </p>
                     ) : (
-                        <p className="text-xs text-muted-foreground mt-1 italic">No professional profile yet</p>
+                        <p className="text-xs text-muted-foreground mt-1 italic">{t("professional_profile_page.no_profile_yet")}</p>
                     )}
                     {userProfessionalProfile?.getCreatedDate() && (
                         <p className="text-xs text-muted-foreground mt-2">
-                            Member since {userProfessionalProfile.getCreatedDate()}
+                            {t("professional_profile_page.member_since", { date: userProfessionalProfile.getCreatedDate() })}
                         </p>
                     )}
                 </CardContent>
@@ -171,9 +173,9 @@ const ProfessionalProfilePage: React.FC = () => {
                 <div className="flex items-start gap-3 rounded-xl bg-primary/5 border border-primary/20 px-4 py-3.5">
                     <Sparkles className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                     <div>
-                        <p className="text-sm font-semibold text-primary">Get discovered by businesses</p>
+                        <p className="text-sm font-semibold text-primary">{t("professional_profile_page.cta.title")}</p>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Fill in your details below to start applying for jobs and appearing in employer searches.
+                            {t("professional_profile_page.cta.description")}
                         </p>
                     </div>
                 </div>
@@ -186,7 +188,7 @@ const ProfessionalProfilePage: React.FC = () => {
                         <div className="p-1.5 rounded-md bg-primary/10">
                             <User className="h-4 w-4 text-primary" />
                         </div>
-                        {hasProfile ? "Edit Details" : "Set Up Your Profile"}
+                        {hasProfile ? t("professional_profile_page.form.edit_title") : t("professional_profile_page.form.create_title")}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -194,47 +196,47 @@ const ProfessionalProfilePage: React.FC = () => {
                         {/* Legal name section */}
                         <div className="space-y-4">
                             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                Legal Name
+                                {t("professional_profile_page.form.legal_name_section")}
                             </p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
                                     <Label htmlFor="firstName">
-                                        First Name <span className="text-destructive">*</span>
+                                        {t("professional_profile_page.form.first_name_label")} <span className="text-destructive">*</span>
                                     </Label>
                                     <Input
                                         id="firstName"
                                         name="firstName"
                                         value={form.firstName}
                                         onChange={handleChange}
-                                        placeholder="John"
+                                        placeholder={t("professional_profile_page.form.first_name_placeholder")}
                                         required
                                     />
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label htmlFor="lastName">
-                                        Last Name <span className="text-destructive">*</span>
+                                        {t("professional_profile_page.form.last_name_label")} <span className="text-destructive">*</span>
                                     </Label>
                                     <Input
                                         id="lastName"
                                         name="lastName"
                                         value={form.lastName}
                                         onChange={handleChange}
-                                        placeholder="Doe"
+                                        placeholder={t("professional_profile_page.form.last_name_placeholder")}
                                         required
                                     />
                                 </div>
                             </div>
                             <div className="space-y-1.5">
                                 <Label htmlFor="middleName" className="flex items-center gap-2">
-                                    Middle Name
-                                    <span className="text-xs text-muted-foreground font-normal">(optional)</span>
+                                    {t("professional_profile_page.form.middle_name_label")}
+                                    <span className="text-xs text-muted-foreground font-normal">{t("professional_profile_page.form.middle_name_optional")}</span>
                                 </Label>
                                 <Input
                                     id="middleName"
                                     name="middleName"
                                     value={form.middleName}
                                     onChange={handleChange}
-                                    placeholder="Optional"
+                                    placeholder={t("professional_profile_page.form.middle_name_placeholder")}
                                 />
                             </div>
                         </div>
@@ -244,39 +246,39 @@ const ProfessionalProfilePage: React.FC = () => {
                         {/* Public identity section */}
                         <div className="space-y-4">
                             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                Public Identity
+                                {t("professional_profile_page.form.public_identity_section")}
                             </p>
                             <div className="space-y-1.5">
                                 <Label htmlFor="displayName">
-                                    Display Name <span className="text-destructive">*</span>
+                                    {t("professional_profile_page.form.display_name_label")} <span className="text-destructive">*</span>
                                 </Label>
                                 <Input
                                     id="displayName"
                                     name="displayName"
                                     value={form.displayName}
                                     onChange={handleChange}
-                                    placeholder="How you want to appear publicly"
+                                    placeholder={t("professional_profile_page.form.display_name_placeholder")}
                                     required
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    Shown on job applications and public-facing profiles.
+                                    {t("professional_profile_page.form.display_name_hint")}
                                 </p>
                             </div>
                             <div className="space-y-1.5">
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="workEmail" className="flex items-center gap-1.5">
                                         <Briefcase className="h-3.5 w-3.5 text-muted-foreground" />
-                                        Work Email <span className="text-destructive">*</span>
+                                        {t("professional_profile_page.form.work_email_label")} <span className="text-destructive">*</span>
                                     </Label>
                                     {hasProfile && (
                                         userProfessionalProfile?.verified ? (
                                             <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-50 gap-1">
                                                 <CheckCircle2 className="h-3 w-3" />
-                                                Verified
+                                                {t("professional_profile_page.form.verified_badge")}
                                             </Badge>
                                         ) : (
                                             <Badge variant="outline" className="text-amber-700 border-amber-300 bg-amber-50 gap-1">
-                                                Unverified
+                                                {t("professional_profile_page.form.unverified_badge")}
                                             </Badge>
                                         )
                                     )}
@@ -287,23 +289,23 @@ const ProfessionalProfilePage: React.FC = () => {
                                     type="email"
                                     value={form.workEmail}
                                     onChange={handleChange}
-                                    placeholder="you@work.com"
+                                    placeholder={t("professional_profile_page.form.work_email_placeholder")}
                                     required
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    Used for work-related communication, like payslips. Changing it requires verifying the new address.
+                                    {t("professional_profile_page.form.work_email_hint")}
                                 </p>
                                 {hasProfile && !userProfessionalProfile?.verified && (
                                     <Alert className="mt-2 border-amber-300 bg-amber-50 dark:bg-amber-950/30">
                                         <Clock className="h-4 w-4 text-amber-600" />
                                         <AlertDescription className="text-amber-800 dark:text-amber-300">
                                             <p className="font-medium">
-                                                Verification pending for {userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail}
+                                                {t("professional_profile_page.form.verification_pending_for", { email: userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail })}
                                             </p>
                                             <p className="text-xs mt-0.5">
                                                 {userProfessionalProfile?.hasPendingWorkEmail()
-                                                    ? "We sent a 6-digit code to that address. Your current work email stays active until it's confirmed."
-                                                    : "We sent a 6-digit code to that address. Confirm it to finish verifying your professional profile."}
+                                                    ? t("professional_profile_page.form.verification_pending_note_changing")
+                                                    : t("professional_profile_page.form.verification_pending_note_new")}
                                             </p>
                                             <div className="flex items-center gap-3 mt-2">
                                                 <Button
@@ -311,7 +313,7 @@ const ProfessionalProfilePage: React.FC = () => {
                                                     size="sm"
                                                     onClick={() => setVerifyModalOpen(true)}
                                                 >
-                                                    Enter code
+                                                    {t("professional_profile_page.form.enter_code")}
                                                 </Button>
                                                 <Button
                                                     type="button"
@@ -321,10 +323,10 @@ const ProfessionalProfilePage: React.FC = () => {
                                                     disabled={resendingWorkEmailVerification || resendCooldown > 0}
                                                 >
                                                     {resendingWorkEmailVerification
-                                                        ? "Sending…"
+                                                        ? t("professional_profile_page.form.sending")
                                                         : resendCooldown > 0
-                                                            ? `Resend in ${resendCooldown}s`
-                                                            : "Resend code"}
+                                                            ? t("professional_profile_page.form.resend_in", { seconds: resendCooldown })
+                                                            : t("professional_profile_page.form.resend_code")}
                                                 </Button>
                                             </div>
                                         </AlertDescription>
@@ -336,7 +338,7 @@ const ProfessionalProfilePage: React.FC = () => {
                         <div className="flex justify-end pt-1">
                             <Button type="submit" disabled={isSaving} className="min-w-32">
                                 {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {isSaving ? "Saving…" : hasProfile ? "Save Changes" : "Create Profile"}
+                                {isSaving ? t("professional_profile_page.form.saving") : hasProfile ? t("professional_profile_page.form.save_changes") : t("professional_profile_page.form.create_profile")}
                             </Button>
                         </div>
                     </form>
@@ -348,12 +350,12 @@ const ProfessionalProfilePage: React.FC = () => {
                 onOpenChange={setVerifyModalOpen}
                 onConfirm={handleConfirmWorkEmailCode}
                 loading={confirmingWorkEmailVerification}
-                title="Verify Work Email"
-                description={`Enter the 6-digit code we sent to ${userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail ?? "your work email"}.`}
+                title={t("professional_profile_page.verify_modal.title")}
+                description={t("professional_profile_page.verify_modal.description", { email: userProfessionalProfile?.pendingWorkEmail ?? userProfessionalProfile?.workEmail ?? t("professional_profile_page.verify_modal.your_work_email_fallback") })}
             />
             {verifyModalOpen && errorConfirmingWorkEmailVerification && (
                 <p className="text-center text-sm text-destructive">
-                    {errorConfirmingWorkEmailVerification.response?.data?.message || "Invalid or expired code."}
+                    {errorConfirmingWorkEmailVerification.response?.data?.message || t("professional_profile_page.invalid_or_expired_code")}
                 </p>
             )}
         </div>

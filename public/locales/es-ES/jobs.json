@@ -45,6 +45,79 @@
       "upload": "Subir"
     },
     "cover_letter_title": "Carta de presentación",
-    "timeline_title": "Seguimiento de la solicitud"
+    "timeline_title": "Seguimiento de la solicitud",
+    "invite_banner_title": "¡Te han invitado a unirte al equipo!",
+    "invite_banner_description": "Se envió una invitación el {{date}}. Revisa tu bandeja de entrada.",
+    "back_to_applications_list": "Mis solicitudes"
+  },
+  "my_applications_list_page": {
+    "browse_all_positions": "Ver todos los puestos",
+    "title": "Mis solicitudes",
+    "subtitle": "Haz seguimiento del estado de tus solicitudes.",
+    "tabs": {
+      "all": "Todas",
+      "pending": "Pendientes",
+      "reviewed": "Revisadas",
+      "shortlisted": "Preseleccionadas",
+      "accepted": "Aceptadas",
+      "rejected": "Rechazadas"
+    },
+    "loading": "Cargando solicitudes...",
+    "empty_title": "Aún no hay solicitudes",
+    "empty_description": "Todavía no te has postulado a ningún puesto.",
+    "browse_open_jobs": "Ver ofertas abiertas →",
+    "status": {
+      "pending": "Solicitud recibida",
+      "reviewed": "En revisión",
+      "shortlisted": "¡Has sido preseleccionado/a!",
+      "accepted": "¡Has sido aceptado/a!",
+      "hired": "¡Ahora formas parte del equipo!",
+      "rejected": "No seleccionado/a"
+    },
+    "job_position_fallback": "Puesto",
+    "staff_invite_sent": "Invitación de personal enviada",
+    "applied_on": "Solicitado el {{date}}",
+    "view_details": "Ver detalles",
+    "view_resume": "Ver currículum",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page_of": "Página {{page}} de {{totalPages}}"
+  },
+  "apply_modal": {
+    "apply_for": "Postularse a:",
+    "at_business": "en {{name}}",
+    "cover_letter_label": "Carta de presentación",
+    "optional": "(opcional)",
+    "cover_letter_placeholder": "Cuéntales por qué eres un buen candidato...",
+    "char_count": "{{count}} / {{max}}",
+    "resume_label": "Currículum",
+    "paste_link": "Pegar un enlace",
+    "url_placeholder": "https://linkedin.com/in/tu-perfil",
+    "upload_pdf": "Subir un PDF",
+    "choose_file": "Elegir archivo",
+    "pdf_hint": "Solo PDF, máx. 5 MB",
+    "cancel": "Cancelar",
+    "submitting": "Enviando...",
+    "submit": "Enviar solicitud"
+  },
+  "job_detail_page": {
+    "position_closed": "Puesto cerrado",
+    "applied_with_date": "Solicitado el {{date}}",
+    "applied_no_date": "Solicitado ✓",
+    "view_my_application": "Ver mi solicitud →",
+    "sign_in_to_apply": "Inicia sesión para postularte",
+    "complete_profile_to_apply": "Completa tu perfil para postularte",
+    "apply_now": "Postularse ahora",
+    "not_found_title": "Puesto ya no disponible",
+    "not_found_description": "Esta oferta de empleo se ha eliminado o ya no acepta solicitudes.",
+    "browse_all_positions": "Ver todos los puestos",
+    "closed_badge": "Cerrado",
+    "applicant_count_one": "{{count}} candidato",
+    "applicant_count_other": "{{count}} candidatos",
+    "posted_on": "Publicado el {{date}}",
+    "closes_on": "Cierra el {{date}}",
+    "about_role": "Sobre este puesto",
+    "share": "Compartir",
+    "link_copied_toast": "¡Enlace copiado! Compártelo en Facebook, WhatsApp o donde captes candidatos."
   }
 }

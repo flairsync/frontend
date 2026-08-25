@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useDiscoveryProfile } from "@/features/discovery/useDiscovery"
 import { differenceInDays } from "date-fns"
 import { Loader2, Radio } from "lucide-react"
@@ -32,6 +33,7 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
     onCancel,
     isCanceling
 }) => {
+    const { t } = useTranslation("profile");
     const { data: businessProfile } = useDiscoveryProfile(businessId);
 
     const formattedDate = formatInTimezone(
@@ -58,7 +60,7 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
                         <h3 className="font-medium group-hover:text-primary transition-colors truncate">
                             {restaurantName}
                         </h3>
-                        {getStatusBadge(normalizedStatus)}
+                        {getStatusBadge(normalizedStatus, t)}
                     </div>
                     <p className="text-sm text-muted-foreground mt-0.5">{formattedDate}</p>
                     {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
@@ -71,7 +73,7 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
                         <a href={timelineHref}>
                             <Button size="sm" variant="outline" className="gap-1.5 text-xs border-primary/40 text-primary hover:bg-primary/5">
                                 <Radio className="w-3.5 h-3.5 animate-pulse" />
-                                Track
+                                {t("reservations_page.track_button")}
                             </Button>
                         </a>
                     )}
@@ -84,7 +86,7 @@ const ProfileReservationCard: React.FC<ProfileReservationCardProps> = ({
                             disabled={isCanceling}
                         >
                             {isCanceling && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />}
-                            Cancel
+                            {t("reservations_page.cancel_button")}
                         </Button>
                     )}
                 </div>

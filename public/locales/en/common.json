@@ -242,5 +242,35 @@
     "cancellation_notice": "This sends a cancellation request to the restaurant. They will confirm shortly. Your reservation remains active until then.",
     "reason_label": "Reason (optional)",
     "reason_placeholder": "e.g. Change of plans"
+  },
+  "customer_reservation_timeline": {
+    "event_labels": {
+      "created": "Reservation received",
+      "confirmed": "Reservation confirmed",
+      "seated": "You've been seated — enjoy!",
+      "completed": "Thank you for dining with us",
+      "cancelled": "Reservation cancelled",
+      "rejected": "Reservation rejected",
+      "updated": "Details updated",
+      "no_show": "Marked as no-show",
+      "expired": "Reservation expired",
+      "table_assigned": "Table assigned",
+      "table_reassigned": "Table reassigned",
+      "reminder_sent": "Reminder sent",
+      "customer_late": "Running late noted",
+      "delay_noticed": "Delay noticed",
+      "customer_confirmed_attendance": "You confirmed attendance",
+      "customer_running_late": "You reported running late",
+      "customer_requested_cancellation": "You requested cancellation",
+      "customer_requested_modification": "You requested a change",
+      "customer_acknowledged_delay": "You acknowledged the wait"
+    },
+    "empty_state": "No updates yet. Check back soon!",
+    "meta": {
+      "delay_estimate": "~{{minutes}} min behind schedule",
+      "reminder_sent_before": "Sent {{minutes}} min before your reservation",
+      "new_time": "New time: {{time}}",
+      "party_of": "Party of {{count}}"
+    }
   }
 }

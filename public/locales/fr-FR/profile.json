@@ -252,5 +252,121 @@
     "restaurant_types_title": "Types de restaurants",
     "max_distance": "Distance maximale",
     "maximum_distance": "Distance maximale : {{distance}} km"
+  },
+  "my_jobs": {
+    "tabs_page": {
+      "title": "Emplois",
+      "tab_applications": "Mes candidatures",
+      "tab_invitations": "Invitations"
+    },
+    "applications": {
+      "tabs": {
+        "all": "Toutes",
+        "pending": "En attente",
+        "reviewed": "Examinées",
+        "shortlisted": "Présélectionnées",
+        "accepted": "Acceptées",
+        "rejected": "Rejetées"
+      },
+      "loading": "Chargement des candidatures...",
+      "empty_title": "Aucune candidature pour le moment",
+      "empty_description": "Vous n'avez encore postulé à aucun poste.",
+      "browse_open_jobs": "Parcourir les offres →",
+      "status": {
+        "pending": "Candidature reçue",
+        "reviewed": "En cours d'examen",
+        "shortlisted": "Vous avez été présélectionné(e) !",
+        "accepted": "Vous avez été accepté(e) !",
+        "hired": "Vous faites maintenant partie de l'équipe !",
+        "rejected": "Non retenu(e)"
+      },
+      "job_position_fallback": "Poste",
+      "staff_invite_sent": "Invitation envoyée",
+      "applied_prefix": "Candidature du {{date}}",
+      "view_details": "Voir les détails",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page_of": "Page {{page}} sur {{totalPages}}"
+    },
+    "invitations": {
+      "loading": "Chargement des invitations...",
+      "empty_title": "Aucune invitation",
+      "empty_description": "Lorsqu'une entreprise vous invite à rejoindre son équipe, cela apparaîtra ici.",
+      "status": {
+        "PENDING": "En attente",
+        "ACCEPTED": "Acceptée",
+        "DECLINED": "Refusée",
+        "EXPIRED": "Expirée",
+        "CANCELLED": "Annulée"
+      },
+      "business_fallback": "Une entreprise",
+      "invited_to_join": "Invité(e) à rejoindre l'équipe",
+      "expires_on": "Expire le {{date}}",
+      "accepted_on": "Acceptée le {{date}}",
+      "declined_on": "Refusée le {{date}}",
+      "sent_on": "Envoyée le {{date}}",
+      "accept": "Accepter",
+      "decline": "Refuser"
+    },
+    "detail": {
+      "not_found_title": "Candidature introuvable",
+      "not_found_description": "Nous n'avons pas trouvé cette candidature. Elle a peut-être été supprimée.",
+      "resume_title": "CV",
+      "view_resume": "Voir le CV",
+      "cover_letter_title": "Lettre de motivation",
+      "timeline_title": "Suivi de la candidature",
+      "job_position_fallback": "Poste",
+      "applied_on": "Candidature envoyée le {{date}}",
+      "view_job_listing": "Voir l'offre d'emploi",
+      "invite_banner_title": "Vous avez été invité(e) à rejoindre l'équipe !",
+      "invite_banner_description": "Une invitation a été envoyée le {{date}}. Consultez votre boîte e-mail.",
+      "hired_banner_title": "Vous faites maintenant partie de l'équipe !",
+      "hired_banner_description": "Votre emploi a été configuré. Bienvenue à bord !"
+    },
+    "legacy_list_page": {
+      "title": "Candidatures",
+      "back_to_applications": "Retour à mes candidatures"
+    },
+    "back_to_jobs": "Retour aux emplois"
+  },
+  "reservation_status": {
+    "pending": "En attente",
+    "confirmed": "Confirmée",
+    "seated": "Installée",
+    "completed": "Terminée",
+    "cancelled": "Annulée",
+    "no_show": "Absence",
+    "expired": "Expirée",
+    "waitlist": "Liste d'attente",
+    "rejected": "Refusée"
+  },
+  "reservations_page": {
+    "title": "Mes réservations",
+    "tabs": {
+      "upcoming": "À venir",
+      "past": "Passées"
+    },
+    "empty_upcoming": "Vous n'avez aucune réservation à venir.",
+    "empty_past": "Vous n'avez aucune réservation passée.",
+    "guest_count_one": "{{count}} personne",
+    "guest_count_other": "{{count}} personnes",
+    "restaurant_fallback": "Restaurant",
+    "page_of": "Page {{page}} sur {{totalPages}}",
+    "track_button": "Suivre",
+    "cancel_button": "Annuler"
+  },
+  "reservation_detail_page": {
+    "could_not_identify_restaurant": "Impossible d'identifier le restaurant pour cette réservation.",
+    "back_to_reservations": "Retour aux réservations",
+    "reservation_fallback": "Réservation",
+    "table_fallback": "Table {{number}}",
+    "terminal_message": "Cette réservation est {{status}}.",
+    "cancel_dialog": {
+      "title": "Annuler la réservation",
+      "description": "Êtes-vous sûr(e) de vouloir annuler cette réservation ? Cette action est irréversible.",
+      "back": "Retour",
+      "cancelling": "Annulation…",
+      "confirm": "Oui, annuler"
+    }
   }
 }

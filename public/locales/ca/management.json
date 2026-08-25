@@ -4010,5 +4010,274 @@
       "generate_new_code": "Generar un codi nou",
       "generate_failed_toast": "No s'ha pogut generar el codi. Torna-ho a provar."
     }
+  },
+  "help_page": {
+    "title": "Ajuda i suport",
+    "subtitle": "Troba respostes a preguntes freqüents, o contacta amb el nostre equip de suport.",
+    "faq_title": "Preguntes freqüents",
+    "faqs": [
+      {
+        "question": "Com em puc unir a un negoci?",
+        "answer": "Només et pots unir a un negoci si un propietari o administrador t'envia un enllaç d'invitació. Un cop acceptada, apareixerà a la teva pestanya 'Unit'."
+      },
+      {
+        "question": "Com puc crear un negoci nou?",
+        "answer": "Ves a la pàgina 'Els meus negocis' i fes clic a 'Crear negoci'. Podràs configurar el nom, la descripció i convidar membres."
+      },
+      {
+        "question": "On puc gestionar la meva subscripció?",
+        "answer": "Tots els detalls de facturació i subscripció es troben a la secció 'Facturació' del teu tauler."
+      },
+      {
+        "question": "Com contacto amb suport?",
+        "answer": "Si necessites ajuda, fes servir el formulari de suport a continuació o envia'ns un correu directament."
+      }
+    ],
+    "contact_support": {
+      "title": "Contactar amb suport",
+      "description": "Necessites més ajuda? Envia'ns un missatge i et respondrem aviat.",
+      "send_message": "Enviar un missatge"
+    },
+    "docs": {
+      "title": "Documentació i tutorials",
+      "description": "Explora les nostres guies per treure el màxim partit de la plataforma.",
+      "getting_started": "Guia d'inici",
+      "billing_subscriptions": "Facturació i subscripcions",
+      "inviting_team": "Convidar membres de l'equip",
+      "connecting_printer": "Connectar una impressora de rebuts i un calaix portamonedes"
+    }
+  },
+  "business_feedback_dashboard": {
+    "title": "Comentaris",
+    "subtitle": "Comentaris posteriors a l'àpat enviats pels teus clients",
+    "all_ratings": "Totes les valoracions",
+    "stars_and_up": "{{count}}+ estrelles",
+    "no_feedback": "No s'han trobat comentaris.",
+    "sub_ratings": {
+      "food": "Menjar",
+      "service": "Servei",
+      "ambiance": "Ambient",
+      "value": "Relació qualitat-preu"
+    },
+    "nps_score": "NPS {{score}}/10",
+    "improvement_tags": {
+      "FOOD_TEMPERATURE": "Temperatura del menjar",
+      "ORDER_ACCURACY": "Precisió de la comanda",
+      "WAIT_TIME": "Temps d'espera",
+      "STAFF_FRIENDLINESS": "Amabilitat del personal",
+      "CLEANLINESS": "Netedat",
+      "NOISE_LEVEL": "Nivell de soroll",
+      "PRICE": "Preu",
+      "PORTION_SIZE": "Mida de les racions"
+    }
+  },
+  "barcode_scanner_dialog": {
+    "title": "Escanejar codi de barres",
+    "checking_permission": "Comprovant el permís de la càmera…",
+    "permission_needed_title": "Cal accés a la càmera",
+    "permission_needed_description": "Permet l'accés a la càmera per escanejar codis de barres directament des del teu dispositiu.",
+    "grant_access": "Concedir accés a la càmera",
+    "blocked_title": "Accés a la càmera bloquejat",
+    "blocked_description": "S'ha denegat el permís de la càmera. Per activar-lo, obre la configuració del teu navegador o dispositiu i permet la càmera per a aquest lloc.",
+    "open_settings": "Obrir configuració",
+    "starting_camera": "Iniciant la càmera…",
+    "retry": "Tornar-ho a provar",
+    "select_camera_placeholder": "Seleccionar càmera",
+    "camera_label": "Càmera {{index}}",
+    "switch_camera": "Canviar de càmera",
+    "status_denied": "Activa la càmera a la configuració del teu navegador per escanejar",
+    "status_prompt": "Concedeix accés a la càmera per començar a escanejar",
+    "status_scanning": "Apunta la càmera a un codi de barres",
+    "no_camera_found": "No s'ha trobat cap càmera en aquest dispositiu.",
+    "could_not_start_camera": "No s'ha pogut iniciar la càmera. Torna-ho a provar.",
+    "could_not_access_camera": "No s'ha pogut accedir a la càmera. Torna-ho a provar.",
+    "unknown_format": "Codi de barres"
+  },
+  "print_qr_codes_button": {
+    "button": "Imprimir codis QR",
+    "dialog_title": "Imprimir codis QR de les taules",
+    "floor_label": "Planta",
+    "all_floors": "Totes les plantes",
+    "cancel": "Cancel·lar",
+    "download_pdf": "Descarregar PDF",
+    "error": "No s'ha pogut generar el PDF de codis QR"
+  },
+  "professional_profile_page": {
+    "title": "Perfil professional",
+    "subtitle_update": "Actualitza com apareixes davant d'ocupadors i negocis.",
+    "subtitle_create": "Crea el teu perfil professional per postular-te a feines i connectar amb negocis.",
+    "active_badge": "Actiu",
+    "no_profile_yet": "Encara no hi ha perfil professional",
+    "member_since": "Membre des de {{date}}",
+    "your_profile_fallback": "El teu perfil",
+    "cta": {
+      "title": "Fes que et descobreixin els negocis",
+      "description": "Completa les teves dades a continuació per començar a postular-te a feines i aparèixer a les cerques d'ocupadors."
+    },
+    "form": {
+      "edit_title": "Editar detalls",
+      "create_title": "Configura el teu perfil",
+      "legal_name_section": "Nom legal",
+      "first_name_label": "Nom",
+      "first_name_placeholder": "Joan",
+      "last_name_label": "Cognoms",
+      "last_name_placeholder": "Puig",
+      "middle_name_label": "Segon nom",
+      "middle_name_optional": "(opcional)",
+      "middle_name_placeholder": "Opcional",
+      "public_identity_section": "Identitat pública",
+      "display_name_label": "Nom públic",
+      "display_name_placeholder": "Com vols aparèixer públicament",
+      "display_name_hint": "Es mostra a les sol·licituds de feina i perfils públics.",
+      "work_email_label": "Correu laboral",
+      "verified_badge": "Verificat",
+      "unverified_badge": "Sense verificar",
+      "work_email_placeholder": "tu@feina.com",
+      "work_email_hint": "S'utilitza per a comunicacions laborals, com les nòmines. Canviar-lo requereix verificar la nova adreça.",
+      "verification_pending_for": "Verificació pendent per a {{email}}",
+      "verification_pending_note_changing": "Hem enviat un codi de 6 dígits a aquesta adreça. El teu correu laboral actual continua actiu fins que es confirmi.",
+      "verification_pending_note_new": "Hem enviat un codi de 6 dígits a aquesta adreça. Confirma'l per acabar de verificar el teu perfil professional.",
+      "enter_code": "Introduir codi",
+      "sending": "Enviant…",
+      "resend_in": "Reenviar en {{seconds}} s",
+      "resend_code": "Reenviar codi",
+      "saving": "Desant…",
+      "save_changes": "Desar els canvis",
+      "create_profile": "Crear perfil"
+    },
+    "verify_modal": {
+      "title": "Verificar correu laboral",
+      "description": "Introdueix el codi de 6 dígits que hem enviat a {{email}}.",
+      "your_work_email_fallback": "el teu correu laboral"
+    },
+    "invalid_or_expired_code": "Codi no vàlid o caducat."
+  },
+  "join_professional_page": {
+    "header_title": "Compte professional",
+    "header_subtitle": "Crea un perfil professional per gestionar o unir-te a negocis a la plataforma.",
+    "invited_title": "T'han convidat a unir-te a un negoci",
+    "invited_description": "Per acceptar aquesta invitació, crea un perfil professional amb {{email}}.",
+    "invitation_not_found_title": "Invitació no trobada",
+    "invitation_not_found_description_1": "L'enllaç d'invitació que has fet servir no és vàlid o pot haver caducat.",
+    "invitation_not_found_description_2": "Tot i així pots continuar i crear un perfil professional amb normalitat.",
+    "verify": {
+      "title": "Verifica el teu correu laboral",
+      "description": "Hem enviat un codi de 6 dígits a {{email}}. Introdueix-lo a continuació per acabar de configurar el teu perfil professional.",
+      "verifying": "Verificant…",
+      "verify_button": "Verificar correu laboral",
+      "no_code_question": "No has rebut cap codi?",
+      "resend_failed": "No s'ha pogut reenviar el codi."
+    },
+    "create": {
+      "title": "Crea el teu perfil professional",
+      "description": "El teu perfil professional et representa als negocis. El nom públic és opcional i pot diferir del teu nom legal.",
+      "middle_name_placeholder": "Segon nom (opcional)",
+      "email_locked_hint": "Aquest correu està bloquejat perquè la invitació s'hi va enviar.",
+      "confirm_label": "Confirmo que la informació anterior és exacta i em pertany.",
+      "submit": "Crear perfil professional"
+    },
+    "tips": {
+      "title": "Consells per al perfil",
+      "tip1": "Utilitza el teu nom legal per a la documentació oficial.",
+      "tip2": "El nom públic pot diferir per privacitat o marca.",
+      "tip3": "El correu laboral ha d'estar actiu i ser accessible.",
+      "tip4": "Necessari per unir-te a negocis o gestionar-los."
+    },
+    "why_matters": {
+      "title": "Per què és important",
+      "description": "Un perfil professional separa el teu compte personal de l'activitat empresarial i manté segures la verificació i la facturació."
+    }
+  },
+  "work_hours_selector": {
+    "title": "🕒 Horari comercial",
+    "closed": "Tancat",
+    "open": "Obert",
+    "copy_to_all_days": "Copiar a tots els dies",
+    "no_shifts_yet": "Encara no s'han afegit torns",
+    "opens_label": "Obertura",
+    "closes_label": "Tancament",
+    "next_day": "Dia següent ➜",
+    "add_shift": "Afegir torn",
+    "day_off": "Dia lliure"
+  },
+  "job_form": {
+    "title_label": "Títol del lloc",
+    "title_placeholder": "p. ex. Cap de sala",
+    "title_error_min": "El títol ha de tenir com a mínim 3 caràcters.",
+    "title_error_max": "El títol ha de tenir menys de 100 caràcters.",
+    "employment_type_label": "Tipus de contracte",
+    "select_type_placeholder": "Seleccionar tipus",
+    "type_error": "El tipus de contracte és obligatori.",
+    "category_label": "Categoria / Lloc",
+    "select_category_placeholder": "Seleccionar categoria",
+    "category_error": "La categoria és obligatòria.",
+    "description_label": "Descripció",
+    "description_placeholder": "Descriu el lloc, els requisits i què estàs buscant...",
+    "description_error": "La descripció ha de tenir com a mínim 20 caràcters.",
+    "location_label": "Ubicació",
+    "location_placeholder": "p. ex. Centre, Barcelona",
+    "salary_range_label": "Rang salarial",
+    "salary_range_placeholder": "p. ex. «15-18€/h» o «Negociable»",
+    "deadline_label": "Data límit de sol·licitud",
+    "deadline_error": "La data límit de sol·licitud ha de ser en el futur.",
+    "save_as_draft": "Desar com a esborrany",
+    "save_changes": "Desar els canvis",
+    "publish_job": "Publicar l'oferta"
+  },
+  "reservation_status": {
+    "pending": "Pendent",
+    "confirmed": "Confirmada",
+    "seated": "Assegut",
+    "completed": "Completada",
+    "cancelled": "Cancel·lada",
+    "no_show": "No presentat",
+    "expired": "Caducada",
+    "waitlist": "Llista d'espera",
+    "rejected": "Rebutjada"
+  },
+  "staff_reservations_page": {
+    "title": "Reserves",
+    "subtitle": "Gestiona les reserves properes i passades de manera eficient.",
+    "add_new": "Afegir reserva",
+    "tabs": {
+      "upcoming": "Properes",
+      "past": "Passades"
+    },
+    "sort_by_placeholder": "Ordenar per",
+    "sort_options": {
+      "reservation_date": "Data de reserva",
+      "booking_date": "Data de sol·licitud"
+    },
+    "order_placeholder": "Ordre",
+    "order_options": {
+      "newest_first": "Més recents primer",
+      "oldest_first": "Més antigues primer"
+    },
+    "status_label": "Estat",
+    "all": "Totes",
+    "date_range_label": "Interval de dates",
+    "upcoming_reservations_title": "Reserves properes",
+    "past_reservations_title": "Reserves passades",
+    "col_customer": "Client",
+    "col_table": "Taula",
+    "col_date": "Data",
+    "col_time": "Hora",
+    "col_guests": "Comensals",
+    "col_action": "Acció",
+    "table_unassigned": "Sense assignar",
+    "table_fallback": "Taula {{number}}",
+    "no_upcoming_found": "No s'han trobat reserves properes.",
+    "no_past_found": "No s'han trobat reserves passades.",
+    "view": "Veure",
+    "edit": "Editar",
+    "approve": "Aprovar",
+    "cancel": "Cancel·lar",
+    "cancel_dialog": {
+      "title": "Vols cancel·lar aquesta reserva?",
+      "description_with_name": "Això cancel·larà la reserva de {{name}}. El client serà notificat.",
+      "description_generic": "Això cancel·larà la reserva. El client serà notificat.",
+      "keep": "Mantenir la reserva",
+      "confirm": "Sí, cancel·lar"
+    }
   }
 }

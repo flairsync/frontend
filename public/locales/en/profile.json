@@ -252,5 +252,121 @@
     "restaurant_types_title": "Restaurant Types",
     "max_distance": "Max Distance",
     "maximum_distance": "Maximum Distance: {{distance}} km"
+  },
+  "my_jobs": {
+    "tabs_page": {
+      "title": "Jobs",
+      "tab_applications": "My Applications",
+      "tab_invitations": "Invitations"
+    },
+    "applications": {
+      "tabs": {
+        "all": "All",
+        "pending": "Pending",
+        "reviewed": "Reviewed",
+        "shortlisted": "Shortlisted",
+        "accepted": "Accepted",
+        "rejected": "Rejected"
+      },
+      "loading": "Loading applications...",
+      "empty_title": "No applications yet",
+      "empty_description": "You haven't applied to any positions yet.",
+      "browse_open_jobs": "Browse open jobs →",
+      "status": {
+        "pending": "Application received",
+        "reviewed": "Being reviewed",
+        "shortlisted": "You've been shortlisted!",
+        "accepted": "You've been accepted!",
+        "hired": "You're now part of the team!",
+        "rejected": "Not selected"
+      },
+      "job_position_fallback": "Job position",
+      "staff_invite_sent": "Staff Invite Sent",
+      "applied_prefix": "Applied {{date}}",
+      "view_details": "View details",
+      "previous": "Previous",
+      "next": "Next",
+      "page_of": "Page {{page}} of {{totalPages}}"
+    },
+    "invitations": {
+      "loading": "Loading invitations...",
+      "empty_title": "No invitations",
+      "empty_description": "When a business invites you to join their team, it will appear here.",
+      "status": {
+        "PENDING": "Pending",
+        "ACCEPTED": "Accepted",
+        "DECLINED": "Declined",
+        "EXPIRED": "Expired",
+        "CANCELLED": "Cancelled"
+      },
+      "business_fallback": "A business",
+      "invited_to_join": "Invited to join the team",
+      "expires_on": "Expires {{date}}",
+      "accepted_on": "Accepted on {{date}}",
+      "declined_on": "Declined on {{date}}",
+      "sent_on": "Sent {{date}}",
+      "accept": "Accept",
+      "decline": "Decline"
+    },
+    "detail": {
+      "not_found_title": "Application not found",
+      "not_found_description": "We couldn't find this application. It may have been removed.",
+      "resume_title": "Resume",
+      "view_resume": "View Resume",
+      "cover_letter_title": "Cover Letter",
+      "timeline_title": "Application Timeline",
+      "job_position_fallback": "Job position",
+      "applied_on": "Applied on {{date}}",
+      "view_job_listing": "View job listing",
+      "invite_banner_title": "You've been invited to join the team!",
+      "invite_banner_description": "A staff invitation was sent on {{date}}. Check your email inbox.",
+      "hired_banner_title": "You're now part of the team!",
+      "hired_banner_description": "Your employment has been set up. Welcome aboard!"
+    },
+    "legacy_list_page": {
+      "title": "Job Applications",
+      "back_to_applications": "Back to my applications"
+    },
+    "back_to_jobs": "Back to Jobs"
+  },
+  "reservation_status": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "seated": "Seated",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "no_show": "No Show",
+    "expired": "Expired",
+    "waitlist": "Waitlist",
+    "rejected": "Rejected"
+  },
+  "reservations_page": {
+    "title": "My Reservations",
+    "tabs": {
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "empty_upcoming": "You have no upcoming reservations.",
+    "empty_past": "You have no past reservations.",
+    "guest_count_one": "{{count}} guest",
+    "guest_count_other": "{{count}} guests",
+    "restaurant_fallback": "Restaurant",
+    "page_of": "Page {{page}} of {{totalPages}}",
+    "track_button": "Track",
+    "cancel_button": "Cancel"
+  },
+  "reservation_detail_page": {
+    "could_not_identify_restaurant": "Could not identify the restaurant for this reservation.",
+    "back_to_reservations": "Back to Reservations",
+    "reservation_fallback": "Reservation",
+    "table_fallback": "Table {{number}}",
+    "terminal_message": "This reservation is {{status}}.",
+    "cancel_dialog": {
+      "title": "Cancel Reservation",
+      "description": "Are you sure you want to cancel this reservation? This action cannot be undone.",
+      "back": "Back",
+      "cancelling": "Cancelling…",
+      "confirm": "Yes, Cancel"
+    }
   }
 }
