@@ -3240,6 +3240,8 @@
       "role": "Role",
       "reservation": "Reservation",
       "order": "Order",
+      "order_item": "Order Item",
+      "order_payment": "Order Payment",
       "inventory_item": "Inventory"
     },
     "details_modal": {

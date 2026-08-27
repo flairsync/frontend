@@ -3237,6 +3237,8 @@
       "role": "Rol",
       "reservation": "Reserva",
       "order": "Comanda",
+      "order_item": "Article de la comanda",
+      "order_payment": "Pagament de la comanda",
       "inventory_item": "Inventari"
     },
     "details_modal": {

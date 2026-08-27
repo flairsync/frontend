@@ -43,6 +43,8 @@ function getEntityTypes(t: (key: string) => string) {
         { value: "role", label: t("audit_logs_page.entity_types.role") },
         { value: "reservation", label: t("audit_logs_page.entity_types.reservation") },
         { value: "order", label: t("audit_logs_page.entity_types.order") },
+        { value: "order_item", label: t("audit_logs_page.entity_types.order_item") },
+        { value: "order_payment", label: t("audit_logs_page.entity_types.order_payment") },
         { value: "inventory_item", label: t("audit_logs_page.entity_types.inventory_item") },
     ];
 }

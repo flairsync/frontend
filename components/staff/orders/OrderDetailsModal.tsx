@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CreditCard, Banknote, CalendarClock, Ban, CheckCircle, Undo, Pencil, ChevronRight, Flame } from "lucide-react";
 import { RefundPaymentModal } from "@/components/staff/orders/RefundPaymentModal";
 import { ManageOrderItemModal } from "@/components/staff/orders/ManageOrderItemModal";
+import { AuditLogHint } from "@/components/audit/AuditLogHint";
 
 import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
 import { useBusinessEmployment } from "@/features/business/employment/useBusinessEmployment";
@@ -153,6 +154,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                             <Badge variant="outline" className={getStatusColor(displayOrder.status)}>
                                 {getStatusLabel(displayOrder.status || "")}
                             </Badge>
+                            <AuditLogHint entityType="order" entityId={displayOrder.id} businessId={businessId} />
                         </DialogTitle>
                         <span className="text-sm text-muted-foreground">
                             {format(new Date(displayOrder.createdAt), "MMM d")}, {formatTime(displayOrder.createdAt)}
@@ -232,6 +234,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                         <Badge variant="outline" className={`h-4 text-[10px] px-1.5 ${getItemStatusBadgeClass(itemStatus)}`}>
                                                             {isVoided ? t("staff_orders.order_details_modal.voided_badge") : <span className="capitalize">{itemStatus}</span>}
                                                         </Badge>
+                                                        <AuditLogHint entityType="order_item" entityId={item.id} businessId={businessId} />
                                                     </span>
                                                     {isVoided && item.voidReason && (
                                                         <span className="text-xs text-red-500 mt-1 italic">{item.voidReason}</span>
