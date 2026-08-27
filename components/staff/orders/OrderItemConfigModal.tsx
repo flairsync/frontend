@@ -10,6 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Minus } from "lucide-react";
 import { BusinessMenuItem } from "@/models/business/menu/BusinessMenuItem";
 import { MenuItemModifierGroup } from "@/models/business/menu/MenuItemModifierGroup";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 export interface ConfiguredOrderItem {
     menuItemId: string;
@@ -32,6 +34,7 @@ interface OrderItemConfigModalProps {
 
 export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open, onClose, item, initialConfig, onSave, currencySymbol = "$" }) => {
     const { t } = useTranslation("management");
+    const isMobile = useIsMobile();
     const [quantity, setQuantity] = useState(1);
     const [notes, setNotes] = useState("");
     const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(undefined);
@@ -128,7 +131,14 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
 
     return (
         <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
-            <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col p-0 overflow-hidden">
+            <DialogContent
+                className={cn(
+                    "flex flex-col p-0 overflow-hidden",
+                    isMobile
+                        ? "max-w-none w-screen h-[100dvh] rounded-none top-0 left-0 translate-x-0 translate-y-0 gap-0"
+                        : "sm:max-w-[500px] max-h-[90vh]"
+                )}
+            >
                 <DialogHeader className="p-6 pb-4 border-b">
                     <DialogTitle>{t("order_item_config_modal.title", { name: item.name })}</DialogTitle>
                     <DialogDescription className="line-clamp-2">
@@ -287,7 +297,10 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                     </div>
                 </ScrollArea>
 
-                <DialogFooter className="p-4 border-t bg-muted/10 flex items-center justify-between sm:justify-between flex-row">
+                <DialogFooter
+                    className="p-4 border-t bg-muted/10 flex items-center justify-between sm:justify-between flex-row"
+                    style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+                >
                     <div className="flex flex-col">
                         <span className="text-sm text-muted-foreground font-medium">{t("order_item_config_modal.total")}</span>
                         <span className="text-xl font-bold">{currencySymbol}{calculateTotal().toFixed(2)}</span>
