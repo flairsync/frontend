@@ -161,7 +161,14 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
             onOpenChange(o)
         }}>
             {isMobile ? (
-                <DialogContent className="max-w-none w-screen h-[100dvh] rounded-none top-0 left-0 translate-x-0 translate-y-0 p-0 gap-0 overflow-hidden flex flex-col">
+                <DialogContent
+                    className="max-w-none w-screen h-[100dvh] rounded-none top-0 left-0 translate-x-0 translate-y-0 p-0 gap-0 overflow-hidden flex flex-col"
+                    onPointerDownOutside={(e) => {
+                        if ((e.target as HTMLElement | null)?.closest("[data-radix-popper-content-wrapper]")) {
+                            e.preventDefault()
+                        }
+                    }}
+                >
                     <DialogTitle className="sr-only">{t("staff_add_order.title")}</DialogTitle>
                     <DialogDescription className="sr-only">{t("staff_add_order.description")}</DialogDescription>
                     <StaffAddOrderMobileView
@@ -185,7 +192,14 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                     />
                 </DialogContent>
             ) : (
-                <DialogContent className="max-w-5xl p-0 overflow-hidden bg-background h-[90vh] md:h-[80vh] flex flex-col md:flex-row gap-0">
+                <DialogContent
+                    className="max-w-5xl p-0 overflow-hidden bg-background h-[90vh] md:h-[80vh] flex flex-col md:flex-row gap-0"
+                    onPointerDownOutside={(e) => {
+                        if ((e.target as HTMLElement | null)?.closest("[data-radix-popper-content-wrapper]")) {
+                            e.preventDefault()
+                        }
+                    }}
+                >
 
                     {/* Left Side: Menu Selection */}
                     <div className="flex-1 flex flex-col h-1/2 md:h-full bg-muted/10">
@@ -315,12 +329,12 @@ export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrder
                                                     <span className="text-xs text-muted-foreground mt-0.5">{t("staff_add_order.price_each", { price: `${currencySymbol}${item.price.toFixed(2)}` })}</span>
                                                 </div>
                                                 <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm">
-                                                    <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.id, -1)}>
-                                                        <Minus className="h-3 w-3" />
+                                                    <Button size="icon" variant="ghost" className="h-8 w-8 rounded-sm hover:bg-muted active:bg-muted" onClick={() => handleUpdateQuantity(item.id, -1)}>
+                                                        <Minus className="h-3.5 w-3.5" />
                                                     </Button>
                                                     <span className="text-sm font-medium w-5 text-center leading-none">{item.quantity}</span>
-                                                    <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateQuantity(item.id, 1)}>
-                                                        <Plus className="h-3 w-3" />
+                                                    <Button size="icon" variant="ghost" className="h-8 w-8 rounded-sm hover:bg-muted active:bg-muted" onClick={() => handleUpdateQuantity(item.id, 1)}>
+                                                        <Plus className="h-3.5 w-3.5" />
                                                     </Button>
                                                 </div>
                                             </div>

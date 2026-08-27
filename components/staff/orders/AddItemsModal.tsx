@@ -159,7 +159,14 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-md max-h-[90vh] flex flex-col">
+            <DialogContent
+                className="max-w-md max-h-[90vh] flex flex-col"
+                onPointerDownOutside={(e) => {
+                    if ((e.target as HTMLElement | null)?.closest("[data-radix-popper-content-wrapper]")) {
+                        e.preventDefault()
+                    }
+                }}
+            >
                 <DialogHeader>
                     <DialogTitle>{t("staff_orders.add_items_modal.title")}</DialogTitle>
                     <DialogDescription>
@@ -217,12 +224,12 @@ export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose 
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm">
-                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateCartQuantity(item.id, -1)}>
-                                                    <Minus className="h-3 w-3" />
+                                                <Button size="icon" variant="ghost" className="h-8 w-8 rounded-sm hover:bg-muted active:bg-muted" onClick={() => handleUpdateCartQuantity(item.id, -1)}>
+                                                    <Minus className="h-3.5 w-3.5" />
                                                 </Button>
                                                 <span className="text-sm font-medium w-5 text-center leading-none">{item.quantity}</span>
-                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-sm hover:bg-muted" onClick={() => handleUpdateCartQuantity(item.id, 1)}>
-                                                    <Plus className="h-3 w-3" />
+                                                <Button size="icon" variant="ghost" className="h-8 w-8 rounded-sm hover:bg-muted active:bg-muted" onClick={() => handleUpdateCartQuantity(item.id, 1)}>
+                                                    <Plus className="h-3.5 w-3.5" />
                                                 </Button>
                                             </div>
                                         </div>

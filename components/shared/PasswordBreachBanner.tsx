@@ -39,7 +39,7 @@ export default function PasswordBreachBanner() {
   );
 
   return (
-    <div className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2">
+    <div className="fixed inset-x-4 bottom-6 z-40 flex justify-center">
       <div
         role="button"
         tabIndex={0}
@@ -52,10 +52,10 @@ export default function PasswordBreachBanner() {
         }}
         aria-label={label}
         title={label}
-        className="flex cursor-pointer items-center gap-2 rounded-full bg-red-600 py-3 pl-4 pr-2 text-white shadow-2xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+        className="flex max-w-full cursor-pointer items-center gap-2 rounded-full bg-red-600 py-3 pl-4 pr-2 text-white shadow-2xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
       >
         <ShieldAlert className="h-4 w-4 shrink-0" />
-        <span className="whitespace-nowrap text-sm font-semibold">
+        <span className="min-w-0 text-sm font-semibold">
           {t(
             "password_breach_banner.text",
             "Your password was found in a data breach — please change it",

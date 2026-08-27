@@ -98,7 +98,7 @@ const StaffAddOrderMenu: React.FC<MenuSelectorProps> = ({ categories, onSelectIt
                                         <button
                                             key={item.id}
                                             onClick={() => onSelectItem?.(item)}
-                                            className="flex w-full flex-col items-start px-4 py-3 hover:bg-primary/5 transition-colors focus:outline-none focus:bg-primary/5"
+                                            className="flex w-full flex-col items-start px-4 py-3 hover:bg-primary/5 active:bg-primary/10 transition-colors focus:outline-none focus:bg-primary/5"
                                         >
                                             <div className="flex w-full justify-between items-center text-left gap-2">
                                                 <span className="font-medium text-foreground">{item.name}</span>

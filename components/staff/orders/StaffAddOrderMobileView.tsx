@@ -175,12 +175,12 @@ export function StaffAddOrderMobileView({
                                             <span className="text-xs text-muted-foreground mt-0.5">{t("staff_add_order.price_each", { price: `${currencySymbol}${item.price.toFixed(2)}` })}</span>
                                         </div>
                                         <div className="flex items-center gap-1.5 bg-background border rounded-md p-1 shadow-sm shrink-0">
-                                            <Button size="icon" variant="ghost" className="h-7 w-7 rounded-sm hover:bg-muted" onClick={() => onUpdateQuantity(item.id, -1)}>
-                                                <Minus className="h-3.5 w-3.5" />
+                                            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-sm hover:bg-muted active:bg-muted" onClick={() => onUpdateQuantity(item.id, -1)}>
+                                                <Minus className="h-4 w-4" />
                                             </Button>
                                             <span className="text-sm font-medium w-5 text-center leading-none">{item.quantity}</span>
-                                            <Button size="icon" variant="ghost" className="h-7 w-7 rounded-sm hover:bg-muted" onClick={() => onUpdateQuantity(item.id, 1)}>
-                                                <Plus className="h-3.5 w-3.5" />
+                                            <Button size="icon" variant="ghost" className="h-9 w-9 rounded-sm hover:bg-muted active:bg-muted" onClick={() => onUpdateQuantity(item.id, 1)}>
+                                                <Plus className="h-4 w-4" />
                                             </Button>
                                         </div>
                                     </div>

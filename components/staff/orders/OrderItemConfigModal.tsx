@@ -144,14 +144,14 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                             <div className="space-y-3">
                                 <Label className="text-base font-semibold">{t("order_item_config_modal.choose_variant")} <span className="text-muted-foreground ml-1 font-normal text-sm">{t("order_item_config_modal.optional")}</span></Label>
                                 <RadioGroup value={selectedVariantId} onValueChange={setSelectedVariantId} className="space-y-2">
-                                    <div className="flex items-center justify-between space-x-2 border p-3 rounded-md hover:bg-muted/50">
+                                    <div className="flex items-center justify-between space-x-2 border p-3 rounded-md hover:bg-muted/50 cursor-pointer" onClick={() => setSelectedVariantId("none")}>
                                         <div className="flex items-center space-x-2">
                                             <RadioGroupItem value="none" id={`variant-none`} />
                                             <Label htmlFor={`variant-none`} className="cursor-pointer">{t("order_item_config_modal.none_base_item")}</Label>
                                         </div>
                                     </div>
                                     {item.variants.map(variant => (
-                                        <div key={variant.id} className="flex items-center justify-between space-x-2 border p-3 rounded-md hover:bg-muted/50">
+                                        <div key={variant.id} className="flex items-center justify-between space-x-2 border p-3 rounded-md hover:bg-muted/50 cursor-pointer" onClick={() => setSelectedVariantId(variant.id)}>
                                             <div className="flex items-center space-x-2">
                                                 <RadioGroupItem value={variant.id} id={`variant-${variant.id}`} />
                                                 <Label htmlFor={`variant-${variant.id}`} className="cursor-pointer">{variant.name}</Label>
@@ -191,7 +191,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                 }}
                                                 className="space-y-2"
                                             >
-                                                <div className="flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors hover:bg-muted/50">
+                                                <div className="flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors hover:bg-muted/50 cursor-pointer" onClick={() => setSelectedModifiers(prev => ({ ...prev, [group.id]: [] }))}>
                                                     <div className="flex items-center space-x-3">
                                                         <RadioGroupItem value="none" id={`mod-none-${group.id}`} />
                                                         <Label htmlFor={`mod-none-${group.id}`} className="cursor-pointer">{t("order_item_config_modal.none")}</Label>
@@ -200,7 +200,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                 {group.items.map(mod => {
                                                     const isSelected = (selectedModifiers[group.id] || []).some(m => m.id === mod.id);
                                                     return (
-                                                        <div key={mod.id} className={`flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors ${isSelected ? 'bg-primary/5 border-primary/20' : 'hover:bg-muted/50'}`}>
+                                                        <div key={mod.id} className={`flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors cursor-pointer ${isSelected ? 'bg-primary/5 border-primary/20' : 'hover:bg-muted/50'}`} onClick={() => handleModifierToggle(group, mod, true)}>
                                                             <div className="flex items-center space-x-3">
                                                                 <RadioGroupItem value={mod.id} id={`mod-${mod.id}`} />
                                                                 <Label htmlFor={`mod-${mod.id}`} className="cursor-pointer">
@@ -220,7 +220,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                                                 const isDisabled = !isSelected && group.maxSelections > 0 && selectedCount >= group.maxSelections;
 
                                                 return (
-                                                    <div key={mod.id} className={`flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors ${isSelected ? 'bg-primary/5 border-primary/20' : 'hover:bg-muted/50'} ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                                    <div key={mod.id} className={`flex items-center justify-between space-x-2 border p-3 rounded-md transition-colors ${isSelected ? 'bg-primary/5 border-primary/20' : 'hover:bg-muted/50'} ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => !isDisabled && handleModifierToggle(group, mod, !isSelected)}>
                                                         <div className="flex items-center space-x-3">
                                                             <Checkbox
                                                                 id={`mod-${mod.id}`}

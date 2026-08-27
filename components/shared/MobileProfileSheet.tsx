@@ -70,7 +70,7 @@ const MobileProfileSheet = () => {
                     </button>
                 </SheetTrigger>
 
-                <SheetContent side="bottom" className="rounded-t-3xl pb-8">
+                <SheetContent side="bottom" className="rounded-t-3xl pb-8 max-h-[85dvh] overflow-y-auto">
                     {/* User info */}
                     <div className="flex items-center gap-3 px-2 pt-2 pb-4 border-b mb-2">
                         <Avatar className="h-11 w-11">
