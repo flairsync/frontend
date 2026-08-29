@@ -433,8 +433,10 @@
     "station_kds_tooltip": "Kitchen Display",
     "groups": {
       "business": "Business",
-      "team_workforce": "Team & Workforce",
-      "operations": "Operations",
+      "menu_catalog": "Menu & Catalog",
+      "floor_service": "Floor & Service",
+      "team": "Team",
+      "payroll_hiring": "Payroll & Hiring",
       "insights": "Insights",
       "system": "System"
     },

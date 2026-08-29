@@ -432,8 +432,10 @@
     "station_kds_tooltip": "Pantalla de cuina",
     "groups": {
       "business": "Negoci",
-      "team_workforce": "Equip i personal",
-      "operations": "Operacions",
+      "menu_catalog": "Menú i catàleg",
+      "floor_service": "Sala i servei",
+      "team": "Equip",
+      "payroll_hiring": "Nòmina i contractació",
       "insights": "Estadístiques",
       "system": "Sistema"
     },

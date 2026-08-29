@@ -120,37 +120,49 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "branding", titleKey: "sidebar.items.branding", url: "/manage/:id/owner/branding", icon: Images },
             { key: "settings", titleKey: "sidebar.items.settings", url: "/manage/:id/owner/settings", icon: Settings },
+            { key: "themes", titleKey: "sidebar.items.themes", url: "/manage/:id/owner/themes", icon: Palette },
+            { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
         ],
     },
     {
-        titleKey: "sidebar.groups.team_workforce",
+        titleKey: "sidebar.groups.menu_catalog",
+        icon: Utensils,
+        items: [
+            { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
+            { key: "discounts", titleKey: "sidebar.items.discounts", url: "/manage/:id/owner/discounts", icon: Tag },
+            { key: "inventory", titleKey: "sidebar.items.inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
+            { key: "menu-boards", titleKey: "sidebar.items.menu_boards", url: "/manage/:id/owner/menu-boards", icon: MonitorPlay },
+        ],
+    },
+    {
+        titleKey: "sidebar.groups.floor_service",
+        icon: LayoutGrid,
+        items: [
+            { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
+            { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
+            { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
+            { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
+            { key: "stations", titleKey: "sidebar.items.stations", url: "/manage/:id/owner/stations", icon: Tablet },
+            { key: "nfc-tags", titleKey: "sidebar.items.nfc_tags", url: "/manage/:id/owner/nfc-tags", icon: Nfc },
+        ],
+    },
+    {
+        titleKey: "sidebar.groups.team",
         icon: Users,
         items: [
             { key: "staff", titleKey: "sidebar.items.staff", url: "/manage/:id/owner/staff", icon: Users },
             { key: "announcements", titleKey: "sidebar.items.announcements", url: "/manage/:id/owner/announcements", icon: Megaphone },
             { key: "schedule", titleKey: "sidebar.items.schedule", url: "/manage/:id/owner/schedule", icon: CalendarCheck },
             { key: "attendance", titleKey: "sidebar.items.attendance", url: "/manage/:id/owner/attendance", icon: ClockFadingIcon },
-            { key: "payroll", titleKey: "sidebar.items.payroll", url: "/manage/:id/owner/payroll", icon: Banknote },
-            { key: "tip-pooling", titleKey: "sidebar.items.tip_pooling", url: "/manage/:id/owner/tip-pooling", icon: HandCoins },
-            { key: "jobs", titleKey: "sidebar.items.jobs", url: "/manage/:id/owner/jobs", icon: Briefcase },
         ],
     },
     {
-        titleKey: "sidebar.groups.operations",
-        icon: LayoutGrid,
+        titleKey: "sidebar.groups.payroll_hiring",
+        icon: Banknote,
         items: [
-            { key: "inventory", titleKey: "sidebar.items.inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
-            { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
-            { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
-            { key: "discounts", titleKey: "sidebar.items.discounts", url: "/manage/:id/owner/discounts", icon: Tag },
-            { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
-            { key: "themes", titleKey: "sidebar.items.themes", url: "/manage/:id/owner/themes", icon: Palette },
-            { key: "menu-boards", titleKey: "sidebar.items.menu_boards", url: "/manage/:id/owner/menu-boards", icon: MonitorPlay },
-            { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
-            { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
-            { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
-            { key: "stations", titleKey: "sidebar.items.stations", url: "/manage/:id/owner/stations", icon: Tablet },
-            { key: "nfc-tags", titleKey: "sidebar.items.nfc_tags", url: "/manage/:id/owner/nfc-tags", icon: Nfc },
+            { key: "payroll", titleKey: "sidebar.items.payroll", url: "/manage/:id/owner/payroll", icon: Banknote },
+            { key: "tip-pooling", titleKey: "sidebar.items.tip_pooling", url: "/manage/:id/owner/tip-pooling", icon: HandCoins },
+            { key: "jobs", titleKey: "sidebar.items.jobs", url: "/manage/:id/owner/jobs", icon: Briefcase },
         ],
     },
     {
@@ -312,7 +324,7 @@ export function BusinessOwnerManagementSidebar({
                     <BusinessSwitcher businesses={businesses} selectedBusiness={businessId} />
                 </SidebarHeader>
 
-                <SidebarContent className="gap-0">
+                <SidebarContent className="gap-0 pb-4">
                     {/* Launch Station — dropdown for POS / KDS */}
                     <SidebarGroup className="pb-2 border-b border-sidebar-border mb-1">
                         <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50 truncate">

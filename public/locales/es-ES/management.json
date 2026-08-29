@@ -433,8 +433,10 @@
     "station_kds_tooltip": "Pantalla de cocina",
     "groups": {
       "business": "Negocio",
-      "team_workforce": "Equipo y personal",
-      "operations": "Operaciones",
+      "menu_catalog": "Menú y catálogo",
+      "floor_service": "Sala y servicio",
+      "team": "Equipo",
+      "payroll_hiring": "Nómina y contratación",
       "insights": "Estadísticas",
       "system": "Sistema"
     },
