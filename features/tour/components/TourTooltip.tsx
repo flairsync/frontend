@@ -129,7 +129,7 @@ export function TourTooltip() {
             {isLast ? 'Finish' : 'Next'}
             {isLast ? (
               <span className="w-4 h-4 -mr-1">
-                <LottiePlayer animationData={successPopAnimation} loop={false} className="w-full h-full" />
+                <LottiePlayer animationData={successPopAnimation} className="w-full h-full" />
               </span>
             ) : (
               <ChevronRight size={13} />

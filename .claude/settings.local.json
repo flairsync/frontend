@@ -6,7 +6,8 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('dependencies',{}\\).get\\('@zxing/browser','not found'\\), d.get\\('dependencies',{}\\).get\\('@zxing/library','not found'\\)\\)\")",
       "Bash(mkdir -p /home/semeh/workspace/restaurant-saas/flairsync-api/src/alerts)",
       "Bash(curl -s -o /tmp/alerts_page.html -w \"HTTP_STATUS:%{http_code}\\\\n\" \"http://localhost:3000/manage/00000000-0000-0000-0000-000000000000/owner/alerts\")",
-      "Bash(kill -9 229127)"
+      "Bash(kill -9 229127)",
+      "Bash(python3 -c ' *)"
     ],
     "additionalDirectories": [
       "/home/semeh/workspace/restaurant-saas/flairsync-api/src"
