@@ -4043,10 +4043,10 @@
     "wants_to_join": "quiere unirse a",
     "join_confirm": {
       "title": "¿Unirte a {{name}}?",
-      "body1": "Seguirás gestionando {{name}} en el día a día — nada de tu acceso cambia hoy.",
-      "body2": "Pero a partir de ahora, {{name}} puede reasignar la propiedad de este negocio a otra persona en cualquier momento, sin necesitar tu confirmación. Si eso ocurre, pasarías a un rol de personal normal — tu historial de empleo siempre se conserva, nunca se elimina.",
-      "joining": "Uniéndose…",
-      "confirm": "Sí, unirme"
+      "body1": "Aceptar esto transfiere la propiedad de {{childName}} a {{parentName}} de inmediato — seguirás dirigiendo el día a día como gerente, y tu historial de empleo siempre se conserva, nunca se elimina.",
+      "body2": "A partir de este momento, {{parentName}} puede reasignar {{childName}} a otro propietario en cualquier momento, sin necesitar tu confirmación.",
+      "joining": "Transfiriendo…",
+      "confirm": "Sí, transferir la propiedad"
     }
   },
   "branding_page": {

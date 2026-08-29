@@ -23,12 +23,13 @@ interface ApproveJoinRequestButtonProps {
 }
 
 // Approving a LINK request is the moment a business actually becomes linked
-// to a region/org (JoinRequestsService never links silently, even when the
-// same person owns both sides — see applyLink()). When the approver is the
-// business's own owner, that's also the moment they hand the region/org the
-// ability to reassign this business's ownership later without needing their
-// confirmation again — worth a heads-up here since nothing else in the flow
-// surfaces it.
+// to a region/org — and, since the Org/Region Ownership Rework (Phase 2),
+// the moment real ownership transfers to it immediately, not just a rollup
+// link (JoinRequestsService.applyLink calls transferOwnershipToOrgOrRegion
+// in the same transaction as the link). When the approver is the business's
+// own current owner, that's the one moment in this whole flow where that
+// needs disclosing before it happens — everywhere else, the org/region side
+// already gave consent by initiating or approving the request itself.
 export const ApproveJoinRequestButton: React.FC<ApproveJoinRequestButtonProps> = ({
     request,
     onApprove,
@@ -61,10 +62,10 @@ export const ApproveJoinRequestButton: React.FC<ApproveJoinRequestButtonProps> =
                     <AlertDialogDescription asChild>
                         <div className="space-y-3 text-sm text-muted-foreground">
                             <p>
-                                {t("requests_page.join_confirm.body1", { name: request.childName })}
+                                {t("requests_page.join_confirm.body1", { childName: request.childName, parentName: request.parentName })}
                             </p>
                             <p className="text-foreground font-medium">
-                                {t("requests_page.join_confirm.body2", { name: request.parentName })}
+                                {t("requests_page.join_confirm.body2", { childName: request.childName, parentName: request.parentName })}
                             </p>
                         </div>
                     </AlertDialogDescription>

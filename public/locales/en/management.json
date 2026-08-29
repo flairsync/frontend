@@ -4044,10 +4044,10 @@
     "wants_to_join": "wants to join",
     "join_confirm": {
       "title": "Join {{name}}?",
-      "body1": "You'll keep managing {{name}} day-to-day — nothing about your access changes today.",
-      "body2": "But from now on, {{name}} can reassign this business's ownership to someone else at any time, without needing your confirmation. If that happens, you'd move to a regular staff role — your employment history is always kept, never deleted.",
-      "joining": "Joining…",
-      "confirm": "Yes, join"
+      "body1": "Approving this transfers ownership of {{childName}} to {{parentName}} immediately — you'll continue running things day-to-day as a manager, and your employment history is always kept, never deleted.",
+      "body2": "From this point on, {{parentName}} can reassign {{childName}} to a different owner at any time, without needing your confirmation.",
+      "joining": "Transferring…",
+      "confirm": "Yes, transfer ownership"
     }
   },
   "branding_page": {

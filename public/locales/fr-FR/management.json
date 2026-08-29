@@ -4043,10 +4043,10 @@
     "wants_to_join": "souhaite rejoindre",
     "join_confirm": {
       "title": "Rejoindre {{name}} ?",
-      "body1": "Vous continuerez à gérer {{name}} au quotidien — rien ne change dans votre accès aujourd'hui.",
-      "body2": "Mais à partir de maintenant, {{name}} peut réattribuer la propriété de cette entreprise à quelqu'un d'autre à tout moment, sans avoir besoin de votre confirmation. Si cela arrive, vous passeriez à un rôle de personnel standard — votre historique d'emploi est toujours conservé, jamais supprimé.",
-      "joining": "Adhésion…",
-      "confirm": "Oui, rejoindre"
+      "body1": "Accepter transfère immédiatement la propriété de {{childName}} à {{parentName}} — vous continuerez à gérer les opérations quotidiennes en tant que manager, et votre historique d'emploi est toujours conservé, jamais supprimé.",
+      "body2": "À partir de maintenant, {{parentName}} peut réattribuer {{childName}} à un autre propriétaire à tout moment, sans avoir besoin de votre confirmation.",
+      "joining": "Transfert en cours…",
+      "confirm": "Oui, transférer la propriété"
     }
   },
   "branding_page": {

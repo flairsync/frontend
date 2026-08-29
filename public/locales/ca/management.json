@@ -4041,10 +4041,10 @@
     "wants_to_join": "vol unir-se a",
     "join_confirm": {
       "title": "Vols unir-te a {{name}}?",
-      "body1": "Seguiràs gestionant {{name}} dia a dia — res del teu accés canvia avui.",
-      "body2": "Però a partir d'ara, {{name}} pot reassignar la propietat d'aquest negoci a algú altre en qualsevol moment, sense necessitar la teva confirmació. Si això passa, passaries a un rol de personal normal — el teu historial d'ocupació sempre es conserva, mai s'elimina.",
-      "joining": "Unint-se…",
-      "confirm": "Sí, unir-me"
+      "body1": "Acceptar això transfereix la propietat de {{childName}} a {{parentName}} immediatament — continuaràs dirigint el dia a dia com a gerent, i el teu historial d'ocupació sempre es conserva, mai s'elimina.",
+      "body2": "A partir d'ara, {{parentName}} pot reassignar {{childName}} a un altre propietari en qualsevol moment, sense necessitar la teva confirmació.",
+      "joining": "Transferint…",
+      "confirm": "Sí, transferir la propietat"
     }
   },
   "branding_page": {
