@@ -5,7 +5,7 @@ const baseUrl = `${API_URL}`;
 
 export const getDashboardAnalytics = async (
     businessId: string,
-    params?: { startDate?: string; endDate?: string }
+    params?: { startDate?: string; endDate?: string; comparePrevious?: boolean }
 ): Promise<DashboardAnalyticsResponse> => {
     const { data } = await api.get<DashboardAnalyticsResponse>(
         `${baseUrl}/analytics/dashboard`,

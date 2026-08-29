@@ -32,7 +32,12 @@ export const NotificationBubble = () => {
     // Initialize socket connection mapping to the user
     useNotificationSocket();
 
-    const { unreadCount, notifications, markAsRead, markAllAsRead } = useNotifications(5, 0); // Fetch top 5 for the bubbles
+    // Shares the same ['notifications', 20, 0] cache entry as any other view on the page
+    // using useNotifications()'s default limit (e.g. the staff dashboard) — fetching our
+    // own smaller page here would otherwise fire a second, near-duplicate request for the
+    // same "recent notifications" data. Slice down to 5 client-side for display.
+    const { unreadCount, notifications: recentNotifications, markAsRead, markAllAsRead } = useNotifications();
+    const notifications = recentNotifications.slice(0, 5);
 
     const handleNavigateToHub = () => {
         navigate('/notifications');

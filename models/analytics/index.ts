@@ -57,6 +57,13 @@ export interface DashboardAnalyticsData {
     productTotals: ProductTotalsMetric;
     hourlyVisitors: HourlyVisitorMetric[];
     feedback: DailyFeedbackMetric[];
+    // Present only when the request opted in via comparePreviousPeriod — folded into
+    // this same response so the KPI cards' "vs previous period" deltas don't need a
+    // second dashboard round trip.
+    previousPeriod?: {
+        sales: DailySalesMetric[];
+        productTotals: ProductTotalsMetric;
+    };
 }
 
 export interface ApiResponse<T = any> {

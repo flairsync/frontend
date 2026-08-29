@@ -7,6 +7,10 @@ interface UseDashboardAnalyticsProps {
     startDate?: string;
     endDate?: string;
     enabled?: boolean;
+    // Ask the backend to fold the equal-length preceding period's sales/productTotals
+    // into this same response, so the KPI cards can render "vs previous period" deltas
+    // without a second useDashboardAnalytics call.
+    comparePreviousPeriod?: boolean;
 }
 
 export const useDashboardAnalytics = ({
@@ -14,13 +18,15 @@ export const useDashboardAnalytics = ({
     startDate,
     endDate,
     enabled = true,
+    comparePreviousPeriod = false,
 }: UseDashboardAnalyticsProps) => {
     return useQuery({
-        queryKey: ["analytics", "dashboard", businessId, startDate, endDate],
+        queryKey: ["analytics", "dashboard", businessId, startDate, endDate, comparePreviousPeriod],
         queryFn: async () => {
             const response = await getDashboardAnalytics(businessId, {
                 startDate,
                 endDate,
+                comparePrevious: comparePreviousPeriod,
             });
             // Validating response logic if needed e.g. throw error on fetch failure
             if (!response.success) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Download, FileText, Sheet } from "lucide-react";
 import { useDashboardAnalytics, useAnalyticsExport } from "@/features/analytics/useDashboardAnalytics";
@@ -63,25 +63,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
         startDate,
         endDate,
         enabled: !!businessId,
-    });
-
-    // Equal-length period immediately preceding the current range, used to
-    // compute "+X% vs previous period" deltas on the KPI cards.
-    const { previousStartDate, previousEndDate } = useMemo(() => {
-        const startMs = new Date(startDate).getTime();
-        const endMs = new Date(endDate).getTime();
-        const durationMs = Math.max(endMs - startMs, 0);
-        return {
-            previousStartDate: new Date(startMs - durationMs).toISOString(),
-            previousEndDate: new Date(startMs - 1).toISOString(),
-        };
-    }, [startDate, endDate]);
-
-    const { data: previousAnalyticsData } = useDashboardAnalytics({
-        businessId,
-        startDate: previousStartDate,
-        endDate: previousEndDate,
-        enabled: !!businessId,
+        comparePreviousPeriod: true,
     });
 
     const { myBusinessFullDetails } = useMyBusiness(businessId);
@@ -145,10 +127,10 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     <AnalyticsKpiCards
                         sales={data.sales}
                         currency={currency}
-                        previousSales={previousAnalyticsData?.sales}
+                        previousSales={data.previousPeriod?.sales}
                         feedback={data.feedback}
                         productTotals={data.productTotals}
-                        previousProductTotals={previousAnalyticsData?.productTotals}
+                        previousProductTotals={data.previousPeriod?.productTotals}
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

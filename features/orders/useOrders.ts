@@ -56,6 +56,21 @@ export const useOrders = (
     const totalPages = ordersResponse?.pages ?? 1;
     const currentPage = ordersResponse?.current ?? page;
 
+    // Patches a single order across every cached orders-list page (any status/date/table/
+    // page variant) for instant feedback ahead of the invalidateQueries refetch below.
+    // Cached list data is PaginatedData<Order> (a {data, pages, current} envelope), not a
+    // bare Order[] — the plain Order[] shape here matches what queryFn/useQuery actually
+    // produce and cache.
+    const patchOrderInCachedLists = (orderId: string, patch: Partial<Order>) => {
+        queryClient.setQueriesData<PaginatedData<Order>>(
+            { queryKey: ["orders", businessId] },
+            (old) => {
+                if (!old) return old;
+                return { ...old, data: old.data.map((o) => (o.id === orderId ? { ...o, ...patch } : o)) };
+            },
+        );
+    };
+
     const createOrderMutation = useMutation({
         mutationFn: (data: CreateOrderDto) => createOrderApiCall(businessId, data),
         onSuccess: () => {
@@ -86,12 +101,7 @@ export const useOrders = (
             const updatedOrderData = response.data?.data !== undefined ? response.data.data : response.data;
             toast.success("Items added to order successfully");
 
-            queryClient.setQueryData(["orders", businessId], (oldOrders: Order[] | undefined) => {
-                if (!oldOrders) return oldOrders;
-                return oldOrders.map(order =>
-                    order.id === variables.orderId ? updatedOrderData : order
-                );
-            });
+            patchOrderInCachedLists(variables.orderId, updatedOrderData);
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
         },
         onError: (error: any) => {
@@ -306,12 +316,9 @@ export const useOrders = (
                 queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) =>
                     old ? { ...old, ...updatedOrder } : updatedOrder
                 );
-                queryClient.setQueryData(["orders", businessId], (old: Order[] | undefined) => {
-                    if (!old) return old;
-                    return old.map(o => o.id === orderId ? { ...o, ...updatedOrder } : o);
-                });
+                patchOrderInCachedLists(orderId, updatedOrder);
             }
-            // Only invalidate the list — setQueryData already has fresh data for the single order
+            // Only invalidate the list — patchOrderInCachedLists already has fresh data for the single order
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
         },
         onError: (error: any) => {
@@ -330,12 +337,9 @@ export const useOrders = (
                 queryClient.setQueryData(["order", businessId, orderId], (old: Order | undefined | null) =>
                     old ? { ...old, ...updatedOrder } : updatedOrder
                 );
-                queryClient.setQueryData(["orders", businessId], (old: Order[] | undefined) => {
-                    if (!old) return old;
-                    return old.map(o => o.id === orderId ? { ...o, ...updatedOrder } : o);
-                });
+                patchOrderInCachedLists(orderId, updatedOrder);
             }
-            // Only invalidate the list — setQueryData already has fresh data for the single order
+            // Only invalidate the list — patchOrderInCachedLists already has fresh data for the single order
             queryClient.invalidateQueries({ queryKey: ["orders", businessId] });
         },
         onError: (error: any) => {
