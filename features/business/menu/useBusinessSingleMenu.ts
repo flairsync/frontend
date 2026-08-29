@@ -47,6 +47,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     queryClient.invalidateQueries({ queryKey: ["business_menus", businessId] });
     queryClient.invalidateQueries({ queryKey: ["business_menu_items", businessId] });
     queryClient.invalidateQueries({ queryKey: ["business_menu_categories", businessId] });
+    queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
   };
 
   //#region Menu

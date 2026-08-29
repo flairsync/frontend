@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sidebar"
 import { BusinessOwnerManagementSidebar } from '@/components/management/BusinessOwnerManagementSidebar';
 import { QuickLinksDropdown } from '@/components/management/QuickLinksDropdown';
+import { AlertsBell } from '@/components/management/AlertsBell';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -66,6 +67,7 @@ const PAGE_LABELS: Record<string, string> = {
     "audit-logs": "Audit Logs",
     danger: "Danger Zone",
     marketplace: "Marketplace",
+    alerts: "Alerts",
 }
 
 function getCurrentPageLabel(): string {
@@ -199,6 +201,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex flex-1 items-center justify-end gap-1 mr-10">
+                            <AlertsBell businessId={routeParams.id} />
                             <QuickLinksDropdown businessId={routeParams.id} role="owner" />
                             <HeaderProfileAvatar />
                         </div>

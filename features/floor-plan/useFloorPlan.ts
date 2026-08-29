@@ -63,6 +63,7 @@ export const useFloors = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Floor created successfully");
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floor-stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
@@ -73,6 +74,7 @@ export const useFloors = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Floor updated successfully");
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floor-stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
@@ -82,6 +84,7 @@ export const useFloors = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Floor deleted successfully");
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floor-stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
@@ -121,6 +124,7 @@ export const useTables = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Table created successfully");
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] }); // Floors might include tables
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
@@ -131,6 +135,7 @@ export const useTables = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Table updated successfully");
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
@@ -140,6 +145,7 @@ export const useTables = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Table deleted successfully");
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
@@ -149,6 +155,7 @@ export const useTables = (businessId: string, publishedOnly?: boolean) => {
             toast.success("Tables created successfully");
             queryClient.invalidateQueries({ queryKey: ["tables", businessId] });
             queryClient.invalidateQueries({ queryKey: ["floors", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["alerts", businessId] });
         },
     });
 
