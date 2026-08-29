@@ -343,7 +343,7 @@ export const useReservationTimeline = (businessId: string, reservationId: string
         refetchInterval: (query) => {
             const status = query.state.data?.reservation?.status?.toLowerCase();
             if (status && TERMINAL_STATUSES.includes(status)) return false;
-            return 30_000;
+            return 60_000;
         },
     });
 };

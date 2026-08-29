@@ -9,6 +9,7 @@ const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provide
 const TextSizeProvider = clientOnly(() => import("@/components/shared/text-size-provider"));
 import { Toaster } from "@/components/ui/sonner"
 import { SystemErrorOverlay } from "@/features/system-errors/SystemErrorOverlay";
+import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 const UpgradeModal = clientOnly(() => import("@/components/subscriptions/UpgradeModal"));
 const DinerModeWatcher = clientOnly(() => import("@/components/diner-mode/DinerModeWatcher"));
 const ClockedInBanner = clientOnly(() => import("@/components/shift-tracking/ClockedInBanner"));
@@ -26,7 +27,9 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
 
       >
         <TextSizeProvider>
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
           <DinerModeWatcher />
           <ClockedInBanner />
           <Toaster />
