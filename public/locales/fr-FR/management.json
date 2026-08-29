@@ -3101,6 +3101,12 @@
     "next": "Suivant"
   },
   "organization_detail_page": {
+    "unlink_business": {
+      "title": "Retirer {{name}} ?",
+      "description": "{{name}} a besoin d'un nouveau propriétaire avant de pouvoir partir — indiquez l'e-mail du compte FlairSync auquel il doit appartenir. Cette personne doit déjà avoir un profil professionnel configuré.",
+      "confirm": "Retirer l'établissement",
+      "submitting": "Retrait en cours..."
+    },
     "loading": "Chargement de l'organisation...",
     "subtitle_one": "30 derniers jours, sur {{count}} succursale",
     "subtitle_other": "30 derniers jours, sur {{count}} succursales",

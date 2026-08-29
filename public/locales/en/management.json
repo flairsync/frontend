@@ -3102,6 +3102,12 @@
     "next": "Next"
   },
   "organization_detail_page": {
+    "unlink_business": {
+      "title": "Remove {{name}}?",
+      "description": "{{name}} needs a new owner before it can leave — enter the email of the FlairSync account it should belong to. They'll need a professional profile already set up.",
+      "confirm": "Remove business",
+      "submitting": "Removing..."
+    },
     "loading": "Loading organization...",
     "subtitle_one": "Last 30 days, across {{count}} branch",
     "subtitle_other": "Last 30 days, across {{count}} branches",

@@ -3099,6 +3099,12 @@
     "next": "Següent"
   },
   "organization_detail_page": {
+    "unlink_business": {
+      "title": "Eliminar {{name}}?",
+      "description": "{{name}} necessita un nou propietari abans de poder marxar — introdueix el correu del compte FlairSync al qual hauria de pertànyer. Aquesta persona ha de tenir ja un perfil professional configurat.",
+      "confirm": "Eliminar negoci",
+      "submitting": "Eliminant..."
+    },
     "loading": "Carregant l'organització...",
     "subtitle_one": "Últims 30 dies, en {{count}} sucursal",
     "subtitle_other": "Últims 30 dies, en {{count}} sucursals",

@@ -100,8 +100,8 @@ export const joinRequestsApi = {
     cancel: (id: string) =>
         flairapi.post(`${baseUrl}/${id}/cancel`).then((r) => r.data.data as JoinRequest),
 
-    unlink: (childType: JoinRequestChildType, childId: string) =>
-        flairapi.delete(`${baseUrl}/link/${childType}/${childId}`),
+    unlink: (childType: JoinRequestChildType, childId: string, newOwnerEmail?: string) =>
+        flairapi.delete(`${baseUrl}/link/${childType}/${childId}`, { data: { newOwnerEmail } }),
 
     requestLeave: (childType: JoinRequestChildType, childId: string) =>
         flairapi.post(`${baseUrl}/leave`, { childType, childId }).then((r) => r.data.data as JoinRequest),

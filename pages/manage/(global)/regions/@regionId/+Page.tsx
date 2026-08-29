@@ -14,6 +14,7 @@ import { InviteBusinessDialog } from "@/components/management/organizations/Invi
 import { JoinOrganizationDialog } from "@/components/management/organizations/JoinOrganizationDialog";
 import { RequestsPanel } from "@/components/management/organizations/RequestsPanel";
 import { BranchesMap } from "@/components/management/organizations/BranchesMap";
+import { UnlinkBusinessDialog } from "@/components/management/organizations/UnlinkBusinessDialog";
 
 const formatMoney = (n: number) => `$${(n ?? 0).toFixed(2)}`;
 
@@ -31,6 +32,7 @@ const RegionDetailPage = () => {
 
     const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
     const [joinOrgDialogOpen, setJoinOrgDialogOpen] = useState(false);
+    const [unlinkTarget, setUnlinkTarget] = useState<{ id: string; name: string } | null>(null);
 
     const { start, end } = useMemo(() => {
         const endDate = new Date();
@@ -178,7 +180,7 @@ const RegionDetailPage = () => {
                                     size="sm"
                                     className="text-muted-foreground hover:text-destructive"
                                     disabled={isUnlinking}
-                                    onClick={() => unlink({ childType: "BUSINESS", childId: b.id }, { onSettled: () => refreshRegion() })}
+                                    onClick={() => setUnlinkTarget({ id: b.id, name: b.name })}
                                 >
                                     <X className="h-4 w-4" />
                                 </Button>
@@ -249,6 +251,19 @@ const RegionDetailPage = () => {
                 onOpenChange={setJoinOrgDialogOpen}
                 regionId={regionId}
                 onLinked={refreshRegion}
+            />
+            <UnlinkBusinessDialog
+                open={!!unlinkTarget}
+                businessName={unlinkTarget?.name ?? ""}
+                isSubmitting={isUnlinking}
+                onOpenChange={(open) => !open && setUnlinkTarget(null)}
+                onConfirm={(newOwnerEmail) => {
+                    if (!unlinkTarget) return;
+                    unlink(
+                        { childType: "BUSINESS", childId: unlinkTarget.id, newOwnerEmail },
+                        { onSuccess: () => setUnlinkTarget(null), onSettled: () => refreshRegion() },
+                    );
+                }}
             />
         </div>
     );

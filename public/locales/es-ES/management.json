@@ -3101,6 +3101,12 @@
     "next": "Siguiente"
   },
   "organization_detail_page": {
+    "unlink_business": {
+      "title": "¿Eliminar {{name}}?",
+      "description": "{{name}} necesita un nuevo propietario antes de poder salir — introduce el correo de la cuenta FlairSync a la que debería pertenecer. Esa persona debe tener ya un perfil profesional configurado.",
+      "confirm": "Eliminar negocio",
+      "submitting": "Eliminando..."
+    },
     "loading": "Cargando organización...",
     "subtitle_one": "Últimos 30 días, en {{count}} sucursal",
     "subtitle_other": "Últimos 30 días, en {{count}} sucursales",

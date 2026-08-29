@@ -75,8 +75,8 @@ export const useJoinRequests = () => {
     });
 
     const unlinkMutation = useMutation({
-        mutationFn: ({ childType, childId }: { childType: JoinRequestChildType; childId: string }) =>
-            joinRequestsApi.unlink(childType, childId),
+        mutationFn: ({ childType, childId, newOwnerEmail }: { childType: JoinRequestChildType; childId: string; newOwnerEmail?: string }) =>
+            joinRequestsApi.unlink(childType, childId, newOwnerEmail),
         onSuccess: () => {
             toast.success("Unlinked");
             invalidateAll();
