@@ -55,7 +55,10 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     } = usePageContext();
 
     const { isLoading: loadingPermissions, permissions, hasPermission } = usePermissions(routeParams.id);
-    const { businessStatus, updateBusinessStatus, updatingBusinessStatus } = useBusinessStatus(routeParams.id);
+    const canViewOpeningHours = hasPermission("OPENING_HOURS", "read");
+    const { businessStatus, updateBusinessStatus, updatingBusinessStatus } = useBusinessStatus(
+        canViewOpeningHours ? routeParams.id : null
+    );
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
 
