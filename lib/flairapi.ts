@@ -257,7 +257,7 @@ flairapi.interceptors.response.use(
         );
         return Promise.reject(error);
       } else {
-        useSystemErrorStore.getState().openPermissionDenied(error.response?.data?.permission ?? null);
+        useSystemErrorStore.getState().openPermissionDenied(error.response?.data?.data?.permission ?? null);
         return Promise.reject(error);
       }
     }
