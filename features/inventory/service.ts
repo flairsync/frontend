@@ -70,7 +70,7 @@ export interface TimelineFilters {
 export interface RecipeIngredientDto {
     inventoryItemId: string;
     quantityRequired: number;
-    unit?: string;
+    recipeUnitId: number;
 }
 
 export interface SetRecipeDto {
