@@ -7,8 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 export const SystemErrorOverlay: React.FC = () => {
-    const { isLocked, errorType, unlock, permissionDenied, closePermissionDenied } = useSystemErrorStore();
+    const { isLocked, errorType, unlock, permissionDenied, deniedPermission, closePermissionDenied } = useSystemErrorStore();
     const { t } = useTranslation();
+
+    const deniedPermissionLabel = deniedPermission
+        ? t(`permissions.${deniedPermission}.label`, { ns: 'management', defaultValue: deniedPermission })
+        : null;
 
     React.useEffect(() => {
         if (isLocked) {
@@ -99,7 +103,9 @@ export const SystemErrorOverlay: React.FC = () => {
                     </div>
                     <DialogTitle>{t('errors.permission.title', 'Access Denied')}</DialogTitle>
                     <DialogDescription>
-                        {t('errors.permission.description', "You don't have permission to view this resource.")}
+                        {deniedPermissionLabel
+                            ? t('errors.permission.description_with_permission', 'Need permission for: {{permission}}', { permission: deniedPermissionLabel })
+                            : t('errors.permission.description', "You don't have permission to view this resource.")}
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="justify-center">
