@@ -29,9 +29,12 @@ import {
 import { fetchMyEmploymentsApiCall } from "@/features/business/service";
 import { MyEmployment } from "@/models/business/MyEmployment";
 
-export const useAttendance = (businessId?: string, filters?: BusinessAttendanceFilters) => {
-  const queryClient = useQueryClient();
-
+// Business-wide attendance log listing, split out from useAttendance so that
+// components which only need the check-in/out/break/validate mutations (e.g.
+// AttendanceDashboard, rendered on every staff member's dashboard) can never
+// accidentally trigger this request — only the pages that explicitly list
+// attendance records (permission-gated) call this hook.
+export const useAttendanceLogs = (businessId?: string, filters?: BusinessAttendanceFilters) => {
   const {
     data: logsPage,
     isLoading: isLoadingLogs,
@@ -46,6 +49,19 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
     },
     enabled: !!businessId,
   });
+
+  return {
+    logsPage,
+    logs: logsPage?.data ?? [],
+    isLoadingLogs,
+    isFetchingLogs,
+    logsUpdatedAt,
+    refetchLogs,
+  };
+};
+
+export const useAttendance = (businessId?: string) => {
+  const queryClient = useQueryClient();
 
   const invalidateAll = () => {
     queryClient.invalidateQueries({ queryKey: ["attendance-logs", businessId] });
@@ -130,12 +146,6 @@ export const useAttendance = (businessId?: string, filters?: BusinessAttendanceF
   });
 
   return {
-    logsPage,
-    logs: logsPage?.data ?? [],
-    isLoadingLogs,
-    isFetchingLogs,
-    logsUpdatedAt,
-    refetchLogs,
     checkIn: checkInMutation.mutateAsync,
     checkOut: checkOutMutation.mutateAsync,
     startBreak: startBreakMutation.mutateAsync,

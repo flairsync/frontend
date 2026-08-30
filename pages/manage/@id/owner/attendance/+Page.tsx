@@ -10,7 +10,7 @@ import LiveTab from "@/components/management/attendance/LiveTab";
 import ReportsTab from "@/components/management/attendance/ReportsTab";
 import AbsenceManagementTab from "@/components/management/attendance/AbsenceManagementTab";
 import { usePageContext } from "vike-react/usePageContext";
-import { useAttendance } from "@/features/shifts/useAttendance";
+import { useAttendanceLogs } from "@/features/shifts/useAttendance";
 import { BusinessAttendanceFilters, AttendanceLifecycleStatus, AttendanceStatus } from "@/models/business/shift/Attendance";
 import { Users, Activity, BarChart2, CalendarOff, RefreshCw } from "lucide-react";
 import { usePageTour } from "@/features/tour/usePageTour";
@@ -69,7 +69,7 @@ export default function AttendancePage() {
     limit: 200,
   };
 
-  const { logs, isLoadingLogs, logsPage, isFetchingLogs, logsUpdatedAt, refetchLogs } = useAttendance(businessId, filters);
+  const { logs, isLoadingLogs, logsPage, isFetchingLogs, logsUpdatedAt, refetchLogs } = useAttendanceLogs(businessId, filters);
 
   // Drives the "updated X ago" label — the query data itself only changes on refetch,
   // so without this tick the label would freeze at whatever it said on the last render.
