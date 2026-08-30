@@ -6,6 +6,7 @@ const TABLE_KEY = "fs_table";
 const ORDER_KEY = "fs_order";
 const EMAIL_PROMPT_SEEN_KEY = "fs_email_prompt_seen";
 const FEEDBACK_PROMPT_SEEN_KEY = "fs_feedback_prompt_seen";
+const PW_BREACH_DISMISSED_KEY = "fs_pw_breach_dismissed";
 const MAX_AGE = 60 * 60 * 24 * 365;
 // A scanned table represents one dining visit, not a lasting preference — expire it
 // well before it could realistically bleed into a future, unrelated visit.
@@ -140,6 +141,26 @@ export function setFeedbackPromptSeenOrderId(orderId: string): void {
   if (typeof document === "undefined") return;
   document.cookie = serialize(FEEDBACK_PROMPT_SEEN_KEY, orderId, {
     maxAge: ORDER_MAX_AGE,
+    path: "/",
+    sameSite: "lax",
+  });
+}
+
+// Stores the passwordBreachedAt value the user dismissed the breach banner
+// for, so the dismissal survives reloads/re-logins without needing a DB
+// column. Keyed to that timestamp (not a bare boolean) so if the password
+// is fixed and later shows up breached again with a new timestamp, the
+// banner reappears instead of staying silenced forever.
+export function getPasswordBreachDismissedAt(): string | null {
+  if (typeof document === "undefined") return null;
+  const cookies = parse(document.cookie);
+  return cookies[PW_BREACH_DISMISSED_KEY] ?? null;
+}
+
+export function setPasswordBreachDismissedAt(breachedAt: string): void {
+  if (typeof document === "undefined") return;
+  document.cookie = serialize(PW_BREACH_DISMISSED_KEY, breachedAt, {
+    maxAge: MAX_AGE,
     path: "/",
     sameSite: "lax",
   });
