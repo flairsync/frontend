@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { usePageContext } from "vike-react/usePageContext"
+import { navigate } from "vike/client/router"
+import { usePermissions } from "@/features/auth/usePermissions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
@@ -40,6 +42,8 @@ export default function StaffOrdersPage() {
     const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
+    const { hasPermission, isLoading: loadingPermissions } = usePermissions(businessId);
+    const canViewOrders = hasPermission("ORDERS", "read");
 
     const [createOrderOpen, setCreateOrderOpen] = useState(false);
     const [addItemsModalOpen, setAddItemsModalOpen] = useState(false);
@@ -163,7 +167,7 @@ export default function StaffOrdersPage() {
         dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
         tableFilter !== "all" ? tableFilter : undefined,
         customerNameFilter || undefined,
-        true,
+        canViewOrders,
         page,
     );
 
@@ -234,6 +238,11 @@ export default function StaffOrdersPage() {
     };
 
     const filteredOrders = filterType === "All" ? orders : orders?.filter((o: any) => o.type === filterType.toLowerCase());
+
+    if (!loadingPermissions && !canViewOrders) {
+        navigate(`/manage/${businessId}/staff/dashboard`);
+        return null;
+    }
 
     return (
         <div className="space-y-6">
