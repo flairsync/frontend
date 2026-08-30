@@ -17,7 +17,7 @@ interface ManageOrderItemModalProps {
 export const ManageOrderItemModal: React.FC<ManageOrderItemModalProps> = ({ open, onClose, businessId, orderId, item }) => {
     const { t } = useTranslation("management");
     const { updateOrderItem } = useOrders(businessId);
-    const { businessAllCategories } = useBusinessMenus(businessId);
+    const { businessAllCategories } = useBusinessMenus(businessId, open);
 
     const fullMenuItem = useMemo(() => {
         if (!item || !businessAllCategories) return null;

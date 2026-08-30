@@ -41,7 +41,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
     const { t } = useTranslation("management");
     const { data: fullOrder } = useOrderDetails(businessId, order?.id || "");
     const { voidOrderItem, isVoidingOrderItem, advanceOrderItem, isAdvancingOrderItem, firePending, isFiringPending, updateOrderDiscountAsync, isUpdatingDiscount } = useOrders(businessId);
-    const { businessEmployees } = useBusinessEmployment(businessId);
+    const { businessEmployees } = useBusinessEmployment(businessId, open);
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
 
     // All hooks (including these) must run unconditionally on every render, so they're kept

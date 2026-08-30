@@ -7,7 +7,7 @@ import {
 import { BusinessMenuBasic } from "@/models/business/menu/BusinessMenuBasic";
 import { BusinessMenuItem } from "@/models/business/menu/BusinessMenuItem";
 
-export const useBusinessMenus = (businessId: string) => {
+export const useBusinessMenus = (businessId: string, enabled: boolean = true) => {
   const queryClient = useQueryClient();
 
   const { data: businessBasicMenus } = useQuery({
@@ -21,7 +21,7 @@ export const useBusinessMenus = (businessId: string) => {
       }
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled: !!businessId,
+    enabled: !!businessId && enabled,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: false,
@@ -56,7 +56,7 @@ export const useBusinessMenus = (businessId: string) => {
       return allItems;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled: !!businessId,
+    enabled: !!businessId && enabled,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: false,
@@ -84,7 +84,7 @@ export const useBusinessMenus = (businessId: string) => {
       return allCategories;
     },
     staleTime: 1000 * 60 * 5,
-    enabled: !!businessId,
+    enabled: !!businessId && enabled,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: false,

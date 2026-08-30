@@ -31,7 +31,7 @@ interface AddItemsModalProps {
 
 export function AddItemsModal({ businessId, orderId, orderStatus, open, onClose }: AddItemsModalProps) {
     const { t } = useTranslation("management");
-    const { businessAllCategories } = useBusinessMenus(businessId);
+    const { businessAllCategories } = useBusinessMenus(businessId, open);
     const { addItemsToOrder, isAddingItems } = useOrders(businessId);
     const { businessBasicDetails } = useBusinessBasicDetails(businessId);
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);

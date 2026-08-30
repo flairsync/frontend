@@ -29,7 +29,7 @@ interface AddOrderDrawerProps {
 export function StaffAddOrderDrawer({ businessId, open, onOpenChange }: AddOrderDrawerProps) {
     const { t } = useTranslation("management")
     const isMobile = useIsMobile()
-    const { businessAllCategories } = useBusinessMenus(businessId)
+    const { businessAllCategories } = useBusinessMenus(businessId, open)
     const { floors } = useFloors(businessId, true)
     const { createOrder, isCreatingOrder } = useOrders(businessId)
     const { businessBasicDetails } = useBusinessBasicDetails(businessId)
