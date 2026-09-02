@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchAuditLogsApiCall, AuditLog, FetchAuditLogsParams } from "./service";
 
-export const useLatestAuditLog = (businessId: string | undefined, entityType: string, entityId: string | undefined) => {
+export const useLatestAuditLog = (businessId: string | undefined, entityType: string, entityId: string | undefined, enabled: boolean = true) => {
   return useQuery({
     queryKey: ["audit_logs", businessId, entityType, entityId, "latest"],
     queryFn: async () => {
       if (!businessId || !entityId) return null;
-      
+
       const response = await fetchAuditLogsApiCall({
         businessId,
         entityType,
@@ -14,11 +14,11 @@ export const useLatestAuditLog = (businessId: string | undefined, entityType: st
         limit: 1,
         page: 1,
       });
-      
+
       const logs = response.data as AuditLog[];
       return logs.length > 0 ? logs[0] : null;
     },
-    enabled: !!businessId && !!entityId,
+    enabled: enabled && !!businessId && !!entityId,
     staleTime: 1000 * 60 * 5,
   });
 };

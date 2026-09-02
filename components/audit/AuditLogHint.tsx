@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { History } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { usePageContext } from "vike-react/usePageContext";
 import {
   Tooltip,
   TooltipContent,
@@ -34,10 +35,18 @@ export const AuditLogHint: React.FC<AuditLogHintProps> = ({
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Audit history is owner-only — there's no assignable "audit log" permission staff
+  // can be granted (see public/locales/en/management.json's permissions list), so the
+  // API 403s for staff. Gate on the /owner/ route segment rather than calling it at all,
+  // since a failed request here trips flairapi's global permission-denied modal.
+  const { urlPathname } = usePageContext();
+  const canViewAuditLog = urlPathname.includes("/owner/");
+
   const { data: latestLog, isLoading } = useLatestAuditLog(
     businessId,
     entityType,
-    entityId
+    entityId,
+    canViewAuditLog
   );
 
   const { publicUserDispalyName } = usePublicProfile(latestLog?.changedBy);
