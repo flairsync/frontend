@@ -421,7 +421,8 @@
       "messages": "Messages et annonces",
       "themes": "Thème",
       "menu_boards": "Écrans de Menu",
-      "nfc_tags": "Cartes NFC"
+      "nfc_tags": "Cartes NFC",
+      "wifi_networks": "Réseaux WiFi"
     }
   },
   "sidebar": {
@@ -462,6 +463,7 @@
       "tasks": "Tâches",
       "stations": "Stations",
       "nfc_tags": "Cartes NFC",
+      "wifi_networks": "Réseaux WiFi",
       "analytics": "Analyses et rapports",
       "reviews": "Avis",
       "feedback": "Retours",
@@ -541,6 +543,10 @@
     "PAYROLL": {
       "label": "Gestion de la paie",
       "description": "Prévisualiser, générer, finaliser et exporter la paie du personnel."
+    },
+    "WIFI": {
+      "label": "Gestion des réseaux WiFi",
+      "description": "Gérer les réseaux WiFi invités et les étages ou impressions sur lesquels ils apparaissent."
     }
   },
   "menu_management": {
@@ -2151,6 +2157,37 @@
         "rejected": "Refusée"
       }
     }
+  },
+  "wifi_management": {
+    "title": "Réseaux WiFi",
+    "add_network": "Ajouter un réseau",
+    "edit_network": "Modifier le réseau",
+    "table": {
+      "label": "Libellé",
+      "ssid": "Nom du réseau (SSID)",
+      "visibility": "Visible sur",
+      "actions": "Actions"
+    },
+    "business_wide_badge": "Tout l'établissement",
+    "floor_count_badge_one": "{{count}} étage",
+    "floor_count_badge_other": "{{count}} étages",
+    "not_shown": "N'apparaît encore nulle part",
+    "form": {
+      "label": "Libellé",
+      "label_placeholder": "ex. WiFi clients",
+      "ssid": "Nom du réseau (SSID)",
+      "password": "Mot de passe",
+      "business_wide": "Afficher sur l'impression pour tout l'établissement",
+      "business_wide_hint": "Apparaît quel que soit l'étage pour lequel l'impression est générée",
+      "floors": "Afficher aussi sur des étages précis",
+      "floors_hint": "Facultatif : laissez tout décoché si ce réseau concerne uniquement tout l'établissement"
+    },
+    "delete_confirm_title": "Supprimer ce réseau WiFi ?",
+    "delete_confirm_description": "Il sera retiré de toutes les impressions où il apparaît actuellement.",
+    "empty": "Aucun réseau WiFi pour le moment",
+    "loading": "Chargement des réseaux WiFi…",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
   },
   "payroll_page": {
     "header": {

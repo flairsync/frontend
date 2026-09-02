@@ -420,7 +420,8 @@
       "menu": "Consultar el menú",
       "messages": "Missatges i anuncis",
       "themes": "Tema",
-      "menu_boards": "Pantalles de Menú"
+      "menu_boards": "Pantalles de Menú",
+      "wifi_networks": "Xarxes WiFi"
     }
   },
   "sidebar": {
@@ -460,6 +461,7 @@
       "reservations": "Reserves",
       "tasks": "Tasques",
       "stations": "Estacions",
+      "wifi_networks": "Xarxes WiFi",
       "analytics": "Anàlisi i informes",
       "reviews": "Ressenyes",
       "feedback": "Comentaris",
@@ -539,6 +541,10 @@
     "PAYROLL": {
       "label": "Gestió de nòmines",
       "description": "Previsualitzar, generar, finalitzar i exportar la nòmina del personal."
+    },
+    "WIFI": {
+      "label": "Gestió de xarxes WiFi",
+      "description": "Gestionar les xarxes WiFi per a clients i en quines plantes o impresos apareixen."
     }
   },
   "menu_management": {
@@ -2149,6 +2155,37 @@
         "rejected": "Rebutjada"
       }
     }
+  },
+  "wifi_management": {
+    "title": "Xarxes WiFi",
+    "add_network": "Afegir xarxa",
+    "edit_network": "Editar xarxa",
+    "table": {
+      "label": "Etiqueta",
+      "ssid": "Nom de la xarxa (SSID)",
+      "visibility": "Visible a",
+      "actions": "Accions"
+    },
+    "business_wide_badge": "Tot el negoci",
+    "floor_count_badge_one": "{{count}} planta",
+    "floor_count_badge_other": "{{count}} plantes",
+    "not_shown": "Encara no apareix enlloc",
+    "form": {
+      "label": "Etiqueta",
+      "label_placeholder": "p. ex. WiFi de clients",
+      "ssid": "Nom de la xarxa (SSID)",
+      "password": "Contrasenya",
+      "business_wide": "Mostrar a l'imprès de tot el negoci",
+      "business_wide_hint": "Apareix independentment de la planta per a la qual es generi l'imprès",
+      "floors": "Mostrar també en plantes concretes",
+      "floors_hint": "Opcional: deixa-ho tot desmarcat si aquesta xarxa és només per a tot el negoci"
+    },
+    "delete_confirm_title": "Eliminar aquesta xarxa WiFi?",
+    "delete_confirm_description": "S'eliminarà de tots els impresos on apareix actualment.",
+    "empty": "Encara no hi ha xarxes WiFi",
+    "loading": "Carregant xarxes WiFi…",
+    "cancel": "Cancel·lar",
+    "save": "Desar"
   },
   "payroll_page": {
     "header": {

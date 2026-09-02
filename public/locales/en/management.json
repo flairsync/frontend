@@ -421,7 +421,8 @@
       "messages": "Messages & Announcements",
       "themes": "Theme",
       "menu_boards": "Menu Boards",
-      "nfc_tags": "NFC Cards"
+      "nfc_tags": "NFC Cards",
+      "wifi_networks": "WiFi Networks"
     }
   },
   "sidebar": {
@@ -462,6 +463,7 @@
       "tasks": "Tasks",
       "stations": "Stations",
       "nfc_tags": "NFC Cards",
+      "wifi_networks": "WiFi Networks",
       "analytics": "Analytics & Reports",
       "reviews": "Reviews",
       "feedback": "Feedback",
@@ -541,6 +543,10 @@
     "PAYROLL": {
       "label": "Payroll management",
       "description": "Preview, generate, finalize, and export staff payroll."
+    },
+    "WIFI": {
+      "label": "WiFi network management",
+      "description": "Manage guest WiFi networks and which floors or printouts they appear on."
     }
   },
   "menu_management": {
@@ -2152,6 +2158,37 @@
         "rejected": "Rejected"
       }
     }
+  },
+  "wifi_management": {
+    "title": "WiFi Networks",
+    "add_network": "Add Network",
+    "edit_network": "Edit Network",
+    "table": {
+      "label": "Label",
+      "ssid": "Network name (SSID)",
+      "visibility": "Shown on",
+      "actions": "Actions"
+    },
+    "business_wide_badge": "Whole business",
+    "floor_count_badge_one": "{{count}} floor",
+    "floor_count_badge_other": "{{count}} floors",
+    "not_shown": "Not shown anywhere yet",
+    "form": {
+      "label": "Label",
+      "label_placeholder": "e.g. Guest WiFi",
+      "ssid": "Network name (SSID)",
+      "password": "Password",
+      "business_wide": "Show on business-wide printout",
+      "business_wide_hint": "Appears no matter which floor's printout is generated",
+      "floors": "Also show on specific floors",
+      "floors_hint": "Optional — leave all unchecked if this network is business-wide only"
+    },
+    "delete_confirm_title": "Delete this WiFi network?",
+    "delete_confirm_description": "It will be removed from every printout it currently appears on.",
+    "empty": "No WiFi networks yet",
+    "loading": "Loading WiFi networks…",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "payroll_page": {
     "header": {

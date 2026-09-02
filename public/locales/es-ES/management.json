@@ -421,7 +421,8 @@
       "messages": "Mensajes y anuncios",
       "themes": "Tema",
       "menu_boards": "Pantallas de Menú",
-      "nfc_tags": "Tarjetas NFC"
+      "nfc_tags": "Tarjetas NFC",
+      "wifi_networks": "Redes WiFi"
     }
   },
   "sidebar": {
@@ -462,6 +463,7 @@
       "tasks": "Tareas",
       "stations": "Estaciones",
       "nfc_tags": "Tarjetas NFC",
+      "wifi_networks": "Redes WiFi",
       "analytics": "Análisis e informes",
       "reviews": "Reseñas",
       "feedback": "Comentarios",
@@ -541,6 +543,10 @@
     "PAYROLL": {
       "label": "Gestión de nóminas",
       "description": "Previsualizar, generar, finalizar y exportar la nómina del personal."
+    },
+    "WIFI": {
+      "label": "Gestión de redes WiFi",
+      "description": "Gestionar las redes WiFi para invitados y en qué plantas o impresos aparecen."
     }
   },
   "menu_management": {
@@ -2151,6 +2157,37 @@
         "rejected": "Rechazada"
       }
     }
+  },
+  "wifi_management": {
+    "title": "Redes WiFi",
+    "add_network": "Añadir red",
+    "edit_network": "Editar red",
+    "table": {
+      "label": "Etiqueta",
+      "ssid": "Nombre de red (SSID)",
+      "visibility": "Visible en",
+      "actions": "Acciones"
+    },
+    "business_wide_badge": "Todo el negocio",
+    "floor_count_badge_one": "{{count}} planta",
+    "floor_count_badge_other": "{{count}} plantas",
+    "not_shown": "Aún no aparece en ningún sitio",
+    "form": {
+      "label": "Etiqueta",
+      "label_placeholder": "p. ej. WiFi para clientes",
+      "ssid": "Nombre de red (SSID)",
+      "password": "Contraseña",
+      "business_wide": "Mostrar en el impreso de todo el negocio",
+      "business_wide_hint": "Aparece sin importar la planta para la que se genere el impreso",
+      "floors": "Mostrar también en plantas concretas",
+      "floors_hint": "Opcional: deja todas sin marcar si esta red es solo para todo el negocio"
+    },
+    "delete_confirm_title": "¿Eliminar esta red WiFi?",
+    "delete_confirm_description": "Se eliminará de todos los impresos donde aparece actualmente.",
+    "empty": "Aún no hay redes WiFi",
+    "loading": "Cargando redes WiFi…",
+    "cancel": "Cancelar",
+    "save": "Guardar"
   },
   "payroll_page": {
     "header": {

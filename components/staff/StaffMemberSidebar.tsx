@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils } from "lucide-react"
+import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils, Wifi } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { SidebarPinToggle } from "../management/SidebarPinToggle"
 import { usePermissions } from "@/features/auth/usePermissions"
@@ -98,6 +98,14 @@ export const staffNavData = {
                     url: "/manage/:id/staff/nfc-tags",
                     icon: Nfc,
                     requiredPermission: "NFC",
+                    requiredAction: "read",
+                },
+                {
+                    key: "wifi",
+                    titleKey: "staff_sidebar.items.wifi_networks",
+                    url: "/manage/:id/staff/wifi",
+                    icon: Wifi,
+                    requiredPermission: "WIFI",
                     requiredAction: "read",
                 },
                 {
