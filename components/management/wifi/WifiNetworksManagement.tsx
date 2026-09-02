@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { DownloadWifiQrButton } from "@/components/qr/DownloadWifiQrButton";
 import { Eye, EyeOff, Loader2, Pencil, Plus, Trash2, Wifi } from "lucide-react";
 
 import { useWifiNetworks } from "@/features/wifi/useWifi";
@@ -67,7 +68,7 @@ export function WifiNetworksManagement({ businessId, canCreate, canUpdate, canDe
     const [form, setForm] = useState<WifiFormState>(EMPTY_FORM);
     const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
 
-    const hasActionsColumn = canUpdate || canDelete;
+    const hasActionsColumn = true;
 
     const toggleReveal = (id: string) => {
         setRevealedIds((prev) => {
@@ -197,6 +198,7 @@ export function WifiNetworksManagement({ businessId, canCreate, canUpdate, canDe
                                                     {hasActionsColumn && (
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-2">
+                                                                <DownloadWifiQrButton businessId={businessId} wifiNetworkId={network.id} label={network.label} />
                                                                 {canUpdate && (
                                                                     <Button size="icon" variant="ghost" onClick={() => handleOpenEdit(network)}>
                                                                         <Pencil className="w-4 h-4" />

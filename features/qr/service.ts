@@ -7,6 +7,7 @@ const getQrUrl = (businessId: string) =>
 export type DotsType = "square" | "dots" | "rounded" | "classy" | "classy-rounded" | "extra-rounded";
 export type CornersSquareType = "square" | "dot" | "extra-rounded";
 export type CornersDotType = "square" | "dot";
+export type CardLayoutPreset = "stacked" | "side_by_side";
 
 export interface QrDesign {
     id: string;
@@ -22,6 +23,9 @@ export interface QrDesign {
     logoSize: number;
     logoMargin: boolean;
     margin: number;
+    showTableName: boolean;
+    showWifi: boolean;
+    cardLayoutPreset: CardLayoutPreset;
 }
 
 export type UpdateQrDesignDto = Partial<
@@ -65,6 +69,17 @@ export const fetchQrPreviewBlob = async (
 export const fetchQrTablesPdfBlob = async (businessId: string, floorId?: string): Promise<Blob> => {
     const params = floorId ? `?floorId=${floorId}` : "";
     const response = await flairapi.get(`${getQrUrl(businessId)}/tables/pdf${params}`, {
+        responseType: "blob",
+    });
+    return response.data as Blob;
+};
+
+export const fetchWifiQrBlob = async (
+    businessId: string,
+    wifiNetworkId: string,
+    format: "png" | "svg" = "png"
+): Promise<Blob> => {
+    const response = await flairapi.get(`${getQrUrl(businessId)}/wifi/${wifiNetworkId}?format=${format}`, {
         responseType: "blob",
     });
     return response.data as Blob;

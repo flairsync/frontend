@@ -3759,6 +3759,16 @@
     "qr_logo_alt": "Logotip del QR",
     "no_logo": "Sense logotip",
     "live_preview": "Previsualització en directe",
+    "table_card_layout": "Imprès de la taula",
+    "table_card_layout_hint": "Controla què s'imprimeix a la targeta QR de cada taula (Pla del local → Imprimir codis QR)",
+    "card_layout_preset": "Disposició",
+    "card_layout_presets": {
+      "stacked": "Apilat (QR, nom, WiFi)",
+      "side_by_side": "Costat a costat (QR a l'esquerra, dades a la dreta)"
+    },
+    "show_table_name": "Mostrar el nom de la taula",
+    "show_wifi": "Mostrar WiFi",
+    "show_wifi_hint": "Inclou el SSID i la contrasenya de la xarxa WiFi aplicable, i un codi QR per connectar-s'hi",
     "save": "Desar"
   },
   "billing_page": {

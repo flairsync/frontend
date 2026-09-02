@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ColorPickerInput } from "@/components/inputs/ColorPickerInput";
 import { useQrDesign } from "@/features/qr/useQrDesign";
-import { CornersDotType, CornersSquareType, DotsType, UpdateQrDesignDto } from "@/features/qr/service";
+import { CardLayoutPreset, CornersDotType, CornersSquareType, DotsType, UpdateQrDesignDto } from "@/features/qr/service";
 import QrLivePreview from "@/components/qr/QrLivePreview";
 import { X, Loader2 } from "lucide-react";
 
@@ -34,6 +34,9 @@ const toUpdatePayload = (local: UpdateQrDesignDto): UpdateQrDesignDto => ({
     logoSize: local.logoSize,
     logoMargin: local.logoMargin,
     margin: local.margin,
+    showTableName: local.showTableName,
+    showWifi: local.showWifi,
+    cardLayoutPreset: local.cardLayoutPreset,
 });
 
 function getDotsTypeLabel(t: TFunction, type: DotsType): string {
@@ -232,6 +235,48 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                                         <X className="h-4 w-4" />
                                     </Button>
                                 )}
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardContent className="space-y-4 pt-6">
+                            <div>
+                                <Label className="text-base">{t("qr_design_editor.table_card_layout")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("qr_design_editor.table_card_layout_hint")}</p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>{t("qr_design_editor.card_layout_preset")}</Label>
+                                <Select
+                                    value={local.cardLayoutPreset ?? "stacked"}
+                                    onValueChange={(val: CardLayoutPreset) => updateLocal({ cardLayoutPreset: val })}
+                                >
+                                    <SelectTrigger><SelectValue /></SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="stacked">{t("qr_design_editor.card_layout_presets.stacked")}</SelectItem>
+                                        <SelectItem value="side_by_side">{t("qr_design_editor.card_layout_presets.side_by_side")}</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex items-center justify-between rounded-lg border px-4 py-3">
+                                <Label>{t("qr_design_editor.show_table_name")}</Label>
+                                <Switch
+                                    checked={local.showTableName ?? true}
+                                    onCheckedChange={(val) => updateLocal({ showTableName: val })}
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between rounded-lg border px-4 py-3">
+                                <div className="space-y-0.5">
+                                    <Label>{t("qr_design_editor.show_wifi")}</Label>
+                                    <p className="text-xs text-muted-foreground">{t("qr_design_editor.show_wifi_hint")}</p>
+                                </div>
+                                <Switch
+                                    checked={local.showWifi ?? true}
+                                    onCheckedChange={(val) => updateLocal({ showWifi: val })}
+                                />
                             </div>
                         </CardContent>
                     </Card>

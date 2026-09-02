@@ -3761,6 +3761,16 @@
     "qr_logo_alt": "Logo del QR",
     "no_logo": "Sin logo",
     "live_preview": "Vista previa en vivo",
+    "table_card_layout": "Impreso de la mesa",
+    "table_card_layout_hint": "Controla qué se imprime en la tarjeta QR de cada mesa (Plano del local → Imprimir códigos QR)",
+    "card_layout_preset": "Disposición",
+    "card_layout_presets": {
+      "stacked": "Apilado (QR, nombre, WiFi)",
+      "side_by_side": "Lado a lado (QR a la izquierda, datos a la derecha)"
+    },
+    "show_table_name": "Mostrar nombre de la mesa",
+    "show_wifi": "Mostrar WiFi",
+    "show_wifi_hint": "Incluye el SSID y la contraseña de la red WiFi aplicable, y un código QR para conectarse",
     "save": "Guardar"
   },
   "billing_page": {

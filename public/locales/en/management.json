@@ -3762,6 +3762,16 @@
     "qr_logo_alt": "QR logo",
     "no_logo": "No logo",
     "live_preview": "Live preview",
+    "table_card_layout": "Table card printout",
+    "table_card_layout_hint": "Controls what's printed on each table's QR card (Floor Plan → Print QR Codes)",
+    "card_layout_preset": "Layout",
+    "card_layout_presets": {
+      "stacked": "Stacked (QR, name, WiFi)",
+      "side_by_side": "Side by side (QR left, details right)"
+    },
+    "show_table_name": "Show table name",
+    "show_wifi": "Show WiFi",
+    "show_wifi_hint": "Includes the applicable WiFi network's SSID, password, and a scan-to-join QR code",
     "save": "Save"
   },
   "billing_page": {
