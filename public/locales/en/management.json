@@ -4494,6 +4494,7 @@
     "search_permission_placeholder": "Search permission...",
     "no_permission_found": "No permission found.",
     "assigned_permissions": "Assigned Permissions",
+    "permission_required_by": "Read access required — {{permissions}} needs it to work",
     "station_permissions": "Station Permissions",
     "terminal_access": "Terminal Access",
     "can_access_pos": "Can access POS terminals",

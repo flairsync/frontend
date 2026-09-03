@@ -33,10 +33,15 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePlatformPermissions } from "@/features/shared/usePlatformPermissions";
-import { Loader, Check, Plus, Trash, Info } from "lucide-react";
+import { Loader, Check, Plus, Trash, Info, Lock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Role } from "@/models/business/roles/Role";
 import { RoleSchema } from "@/misc/FormValidators";
+import {
+    applyPermissionDependencies,
+    getRequiredByKeys,
+    FlatPermissionGrant,
+} from "@/features/business/roles/permissionDependencies";
 
 type Props = {
     open?: boolean;
@@ -118,6 +123,53 @@ export function AddRoleModal(props: Props) {
         },
     });
 
+    /**
+     * 🔹 Re-derives the permission list so every granted permission also carries
+     * read access to whatever it depends on (e.g. Orders -> Menu:read), mirroring
+     * what the backend enforces on save. New dependency rows are resolved against
+     * the platform's permission list to get a permissionId; a dependency that
+     * isn't available on this platform is silently skipped.
+     */
+    const syncDependencies = (
+        perms: typeof formik.values.permissions
+    ): typeof formik.values.permissions => {
+        const flatGrants: FlatPermissionGrant[] = perms.map(p => ({
+            key: p.key,
+            ...p.flags,
+        }));
+
+        return applyPermissionDependencies(flatGrants)
+            .map(grant => {
+                const existingRow = perms.find(p => p.key === grant.key);
+                if (existingRow) {
+                    return {
+                        ...existingRow,
+                        flags: {
+                            canRead: grant.canRead,
+                            canCreate: grant.canCreate,
+                            canUpdate: grant.canUpdate,
+                            canDelete: grant.canDelete,
+                        },
+                    };
+                }
+
+                const meta = permissionsList?.find(pl => pl.key === grant.key);
+                if (!meta) return null;
+
+                return {
+                    permissionId: meta.id,
+                    key: grant.key,
+                    flags: {
+                        canRead: grant.canRead,
+                        canCreate: grant.canCreate,
+                        canUpdate: grant.canUpdate,
+                        canDelete: grant.canDelete,
+                    },
+                };
+            })
+            .filter((row): row is (typeof perms)[number] => row !== null);
+    };
+
     /** 🔹 Add permission */
     const addPermission = (perm: any) => {
         if (
@@ -127,19 +179,22 @@ export function AddRoleModal(props: Props) {
         )
             return;
 
-        formik.setFieldValue("permissions", [
-            ...formik.values.permissions,
-            {
-                permissionId: perm.id,
-                key: perm.key,
-                flags: {
-                    canRead: true,
-                    canCreate: false,
-                    canUpdate: false,
-                    canDelete: false,
+        formik.setFieldValue(
+            "permissions",
+            syncDependencies([
+                ...formik.values.permissions,
+                {
+                    permissionId: perm.id,
+                    key: perm.key,
+                    flags: {
+                        canRead: true,
+                        canCreate: false,
+                        canUpdate: false,
+                        canDelete: false,
+                    },
                 },
-            },
-        ]);
+            ])
+        );
     };
 
     /** 🔹 Toggle permission flag */
@@ -150,10 +205,12 @@ export function AddRoleModal(props: Props) {
     ) => {
         formik.setFieldValue(
             "permissions",
-            formik.values.permissions.map(p =>
-                p.permissionId === permissionId
-                    ? { ...p, flags: { ...p.flags, [flag]: value } }
-                    : p
+            syncDependencies(
+                formik.values.permissions.map(p =>
+                    p.permissionId === permissionId
+                        ? { ...p, flags: { ...p.flags, [flag]: value } }
+                        : p
+                )
             )
         );
     };
@@ -266,17 +323,40 @@ export function AddRoleModal(props: Props) {
                                 <div className="space-y-3">
                                     <Label>{t("add_role_modal.assigned_permissions")}</Label>
                                     <div className="border rounded-md divide-y">
-                                        {formik.values.permissions.map(p => (
+                                        {formik.values.permissions.map(p => {
+                                            const requiredBy = getRequiredByKeys(
+                                                p.key,
+                                                formik.values.permissions.map(perm => ({
+                                                    key: perm.key,
+                                                    ...perm.flags,
+                                                }))
+                                            );
+                                            const isReadLocked = requiredBy.length > 0;
+                                            const requiredByLabel = requiredBy
+                                                .map(key => t(`permissions.${key}.label`))
+                                                .join(", ");
+
+                                            return (
                                             <div
                                                 key={p.permissionId}
                                                 className="flex justify-between items-center p-3"
                                             >
-                                                <span className="font-medium">
-                                                    <PermissionLabel
-                                                        label={t(`permissions.${p.key}.label`)}
-                                                        description={t(`permissions.${p.key}.description`, { defaultValue: "" })}
-                                                    />
-                                                </span>
+                                                <div>
+                                                    <span className="font-medium">
+                                                        <PermissionLabel
+                                                            label={t(`permissions.${p.key}.label`)}
+                                                            description={t(`permissions.${p.key}.description`, { defaultValue: "" })}
+                                                        />
+                                                    </span>
+                                                    {isReadLocked && (
+                                                        <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                                                            <Lock className="h-3 w-3" />
+                                                            {t("add_role_modal.permission_required_by", {
+                                                                permissions: requiredByLabel,
+                                                            })}
+                                                        </p>
+                                                    )}
+                                                </div>
                                                 <div className="flex items-center gap-4">
                                                     <div className="flex gap-4">
                                                         {(
@@ -288,6 +368,7 @@ export function AddRoleModal(props: Props) {
                                                             >
                                                                 <Checkbox
                                                                     checked={p.flags[flag]}
+                                                                    disabled={flag === "canRead" && isReadLocked}
                                                                     onCheckedChange={v =>
                                                                         updateFlag(
                                                                             p.permissionId,
@@ -303,29 +384,53 @@ export function AddRoleModal(props: Props) {
                                                         ))}
                                                     </div>
                                                     {props.editRole && (
-                                                        <Button
-                                                            type="button"
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-8 w-8"
-                                                            onClick={() => {
-                                                                if (props.onDeletePermission) {
-                                                                    props.onDeletePermission(p.key);
-                                                                }
-                                                                formik.setFieldValue(
-                                                                    "permissions",
-                                                                    formik.values.permissions.filter(
-                                                                        perm => perm.key !== p.key
-                                                                    )
-                                                                );
-                                                            }}
-                                                        >
-                                                            <Trash className="h-4 w-4 text-destructive" />
-                                                        </Button>
+                                                        isReadLocked ? (
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <span>
+                                                                        <Button
+                                                                            type="button"
+                                                                            variant="ghost"
+                                                                            size="icon"
+                                                                            className="h-8 w-8"
+                                                                            disabled
+                                                                        >
+                                                                            <Trash className="h-4 w-4 text-muted-foreground" />
+                                                                        </Button>
+                                                                    </span>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent className="max-w-xs">
+                                                                    {t("add_role_modal.permission_required_by", {
+                                                                        permissions: requiredByLabel,
+                                                                    })}
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        ) : (
+                                                            <Button
+                                                                type="button"
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8"
+                                                                onClick={() => {
+                                                                    if (props.onDeletePermission) {
+                                                                        props.onDeletePermission(p.key);
+                                                                    }
+                                                                    formik.setFieldValue(
+                                                                        "permissions",
+                                                                        formik.values.permissions.filter(
+                                                                            perm => perm.key !== p.key
+                                                                        )
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <Trash className="h-4 w-4 text-destructive" />
+                                                            </Button>
+                                                        )
                                                     )}
                                                 </div>
                                             </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}

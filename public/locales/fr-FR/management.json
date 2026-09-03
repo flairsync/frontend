@@ -4493,6 +4493,7 @@
     "search_permission_placeholder": "Rechercher une permission...",
     "no_permission_found": "Aucune permission trouvée.",
     "assigned_permissions": "Permissions assignées",
+    "permission_required_by": "Accès en lecture requis — nécessaire pour {{permissions}}",
     "station_permissions": "Permissions de station",
     "terminal_access": "Accès terminal",
     "can_access_pos": "Peut accéder aux terminaux POS",

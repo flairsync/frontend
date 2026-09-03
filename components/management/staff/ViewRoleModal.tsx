@@ -7,8 +7,10 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Lock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Role } from "@/models/business/roles/Role";
+import { getRequiredByKeys } from "@/features/business/roles/permissionDependencies";
 
 type Props = {
     open: boolean;
@@ -34,14 +36,38 @@ export function ViewRoleModal({ open, role, onOpenChange }: Props) {
                         <div className="space-y-3">
                             <Label>{t("add_role_modal.assigned_permissions")}</Label>
                             <div className="border rounded-md divide-y">
-                                {role.permissions.map((p) => (
+                                {role.permissions.map((p) => {
+                                    const requiredBy = getRequiredByKeys(
+                                        p.permission.key,
+                                        role.permissions.map(perm => ({
+                                            key: perm.permission.key,
+                                            canRead: perm.canRead,
+                                            canCreate: perm.canCreate,
+                                            canUpdate: perm.canUpdate,
+                                            canDelete: perm.canDelete,
+                                        }))
+                                    );
+
+                                    return (
                                     <div
                                         key={p.permission.id}
                                         className="flex justify-between p-3"
                                     >
-                                        <span className="font-medium">
-                                            {t(`permissions.${p.permission.key}.label`)}
-                                        </span>
+                                        <div>
+                                            <span className="font-medium">
+                                                {t(`permissions.${p.permission.key}.label`)}
+                                            </span>
+                                            {requiredBy.length > 0 && (
+                                                <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                                                    <Lock className="h-3 w-3" />
+                                                    {t("add_role_modal.permission_required_by", {
+                                                        permissions: requiredBy
+                                                            .map(key => t(`permissions.${key}.label`))
+                                                            .join(", "),
+                                                    })}
+                                                </p>
+                                            )}
+                                        </div>
                                         <div className="flex gap-4">
                                             {(
                                                 ["canRead", "canCreate", "canUpdate", "canDelete"] as const
@@ -61,7 +87,8 @@ export function ViewRoleModal({ open, role, onOpenChange }: Props) {
                                             ))}
                                         </div>
                                     </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     ) : (

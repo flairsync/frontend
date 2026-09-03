@@ -4491,6 +4491,7 @@
     "search_permission_placeholder": "Cerca un permís...",
     "no_permission_found": "No s'ha trobat cap permís.",
     "assigned_permissions": "Permisos assignats",
+    "permission_required_by": "Cal accés de lectura: {{permissions}} el necessita",
     "station_permissions": "Permisos d'estació",
     "terminal_access": "Accés al terminal",
     "can_access_pos": "Pot accedir a terminals POS",
