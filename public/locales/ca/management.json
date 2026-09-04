@@ -444,6 +444,7 @@
       "dashboard": "Tauler",
       "branding": "Marca del negoci",
       "settings": "Configuració del negoci",
+      "payments": "Pagaments",
       "staff": "Gestió del personal",
       "announcements": "Anuncis",
       "schedule": "Horari",
@@ -3679,6 +3680,28 @@
     "recipient_name": "Nom del destinatari",
     "recipient_tax_id": "NIF del destinatari",
     "recipient_address": "Adreça del destinatari"
+  },
+  "payments_page": {
+    "title": "Pagaments",
+    "subtitle": "Accepta pagaments amb targeta per a comandes i lliuraments directament a través de FlairSync — amb tecnologia MONEI. Els pagaments es liquiden directament al teu propi compte; FlairSync mai reté els teus fons.",
+    "monei_card_title": "Compte de MONEI",
+    "monei_card_description": "Connecta el teu negoci a MONEI per acceptar pagaments amb targeta en línia — inclòs el pagament anticipat de lliuraments, l'autopagament amb QR a taula i el pagament anticipat per recollir.",
+    "loading": "Carregant l'estat del compte…",
+    "status": {
+      "not_connected": "No connectat",
+      "pending": "Configuració pendent",
+      "active": "Actiu",
+      "rejected": "Rebutjat"
+    },
+    "not_connected_description": "Encara no has connectat cap compte de pagament. Connecta MONEI per començar a acceptar pagaments en línia.",
+    "pending_description": "La configuració s'ha iniciat però encara no s'ha completat. Finalitza la verificació amb MONEI per activar els pagaments en línia.",
+    "active_description": "Els pagaments en línia estan actius. Els cobraments es liquiden directament al teu compte de MONEI connectat.",
+    "rejected_description": "MONEI no ha pogut aprovar aquest compte. Contacta amb el suport de MONEI o torna-ho a intentar.",
+    "account_id": "ID del compte",
+    "connect_button": "Connecta MONEI",
+    "refresh_link": "Actualitza l'enllaç de configuració",
+    "continue_setup": "Continua la configuració",
+    "not_configured_notice": "Els pagaments en línia encara s'estan configurant per la nostra part — aquesta integració encara no està activa. Torna-ho a comprovar aviat."
   },
   "owner_jobs_page": {
     "status": {

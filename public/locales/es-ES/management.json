@@ -445,6 +445,7 @@
       "dashboard": "Panel de control",
       "branding": "Marca del negocio",
       "settings": "Configuración del negocio",
+      "payments": "Pagos",
       "staff": "Gestión del personal",
       "announcements": "Anuncios",
       "schedule": "Horario",
@@ -3681,6 +3682,28 @@
     "recipient_name": "Nombre del destinatario",
     "recipient_tax_id": "NIF del destinatario",
     "recipient_address": "Dirección del destinatario"
+  },
+  "payments_page": {
+    "title": "Pagos",
+    "subtitle": "Acepta pagos con tarjeta para pedidos y entregas directamente a través de FlairSync — con la tecnología de MONEI. Los pagos se liquidan directamente en tu propia cuenta; FlairSync nunca retiene tus fondos.",
+    "monei_card_title": "Cuenta de MONEI",
+    "monei_card_description": "Conecta tu negocio a MONEI para aceptar pagos con tarjeta online — incluyendo pago anticipado de entregas, autopago con QR en mesa y pago anticipado para recoger.",
+    "loading": "Cargando estado de la cuenta…",
+    "status": {
+      "not_connected": "No conectada",
+      "pending": "Configuración pendiente",
+      "active": "Activa",
+      "rejected": "Rechazada"
+    },
+    "not_connected_description": "Aún no has conectado una cuenta de pago. Conecta MONEI para empezar a aceptar pagos online.",
+    "pending_description": "La configuración se inició pero no se ha completado. Finaliza la verificación con MONEI para activar los pagos online.",
+    "active_description": "Los pagos online están activos. Los cobros se liquidan directamente en tu cuenta de MONEI conectada.",
+    "rejected_description": "MONEI no ha podido aprobar esta cuenta. Contacta con el soporte de MONEI o intenta conectar de nuevo.",
+    "account_id": "ID de cuenta",
+    "connect_button": "Conectar MONEI",
+    "refresh_link": "Actualizar enlace de configuración",
+    "continue_setup": "Continuar configuración",
+    "not_configured_notice": "Los pagos online todavía se están configurando por nuestra parte — esta integración aún no está activa. Vuelve a comprobarlo pronto."
   },
   "owner_jobs_page": {
     "status": {

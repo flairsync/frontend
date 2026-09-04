@@ -60,6 +60,7 @@ import {
     Receipt,
     FileSpreadsheet,
     Wifi,
+    CreditCard,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -121,6 +122,7 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "branding", titleKey: "sidebar.items.branding", url: "/manage/:id/owner/branding", icon: Images },
             { key: "settings", titleKey: "sidebar.items.settings", url: "/manage/:id/owner/settings", icon: Settings },
+            { key: "payments", titleKey: "sidebar.items.payments", url: "/manage/:id/owner/payments", icon: CreditCard },
             { key: "themes", titleKey: "sidebar.items.themes", url: "/manage/:id/owner/themes", icon: Palette },
             { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
         ],

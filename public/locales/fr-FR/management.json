@@ -445,6 +445,7 @@
       "dashboard": "Tableau de bord",
       "branding": "Image de l'établissement",
       "settings": "Paramètres de l'établissement",
+      "payments": "Paiements",
       "staff": "Gestion du personnel",
       "announcements": "Annonces",
       "schedule": "Planning",
@@ -3681,6 +3682,28 @@
     "recipient_name": "Nom du destinataire",
     "recipient_tax_id": "Numéro fiscal du destinataire",
     "recipient_address": "Adresse du destinataire"
+  },
+  "payments_page": {
+    "title": "Paiements",
+    "subtitle": "Acceptez les paiements par carte pour les commandes et les livraisons directement via FlairSync — propulsé par MONEI. Les paiements sont versés directement sur votre propre compte ; FlairSync ne détient jamais vos fonds.",
+    "monei_card_title": "Compte MONEI",
+    "monei_card_description": "Connectez votre établissement à MONEI pour accepter les paiements par carte en ligne — y compris le prépaiement des livraisons, le paiement autonome par QR à table et le prépaiement à emporter.",
+    "loading": "Chargement du statut du compte…",
+    "status": {
+      "not_connected": "Non connecté",
+      "pending": "Configuration en attente",
+      "active": "Actif",
+      "rejected": "Rejeté"
+    },
+    "not_connected_description": "Vous n'avez pas encore connecté de compte de paiement. Connectez MONEI pour commencer à accepter les paiements en ligne.",
+    "pending_description": "La configuration a été démarrée mais n'est pas terminée. Finalisez la vérification avec MONEI pour activer les paiements en ligne.",
+    "active_description": "Les paiements en ligne sont actifs. Les paiements sont versés directement sur votre compte MONEI connecté.",
+    "rejected_description": "MONEI n'a pas pu approuver ce compte. Contactez le support MONEI ou essayez de vous reconnecter.",
+    "account_id": "ID du compte",
+    "connect_button": "Connecter MONEI",
+    "refresh_link": "Actualiser le lien de configuration",
+    "continue_setup": "Continuer la configuration",
+    "not_configured_notice": "Les paiements en ligne sont encore en cours de configuration de notre côté — cette intégration n'est pas encore active. Revenez bientôt."
   },
   "owner_jobs_page": {
     "status": {

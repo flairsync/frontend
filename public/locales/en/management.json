@@ -445,6 +445,7 @@
       "dashboard": "Dashboard",
       "branding": "Business Branding",
       "settings": "Business Settings",
+      "payments": "Payments",
       "staff": "Staff Management",
       "announcements": "Announcements",
       "schedule": "Schedule",
@@ -3682,6 +3683,28 @@
     "recipient_name": "Recipient name",
     "recipient_tax_id": "Recipient tax ID",
     "recipient_address": "Recipient address"
+  },
+  "payments_page": {
+    "title": "Payments",
+    "subtitle": "Accept card payments for orders and deliveries directly through FlairSync — powered by MONEI. Payments settle straight to your own account; FlairSync never holds your funds.",
+    "monei_card_title": "MONEI Account",
+    "monei_card_description": "Connect your business to MONEI to accept online card payments — including delivery prepay, table QR self-pay, and takeaway prepay.",
+    "loading": "Loading account status…",
+    "status": {
+      "not_connected": "Not connected",
+      "pending": "Pending setup",
+      "active": "Active",
+      "rejected": "Rejected"
+    },
+    "not_connected_description": "You haven't connected a payment account yet. Connect MONEI to start accepting online payments.",
+    "pending_description": "Setup was started but hasn't been completed yet. Finish verification with MONEI to activate online payments.",
+    "active_description": "Online payments are active. Charges settle directly to your connected MONEI account.",
+    "rejected_description": "MONEI wasn't able to approve this account. Contact MONEI support or try connecting again.",
+    "account_id": "Account ID",
+    "connect_button": "Connect MONEI",
+    "refresh_link": "Refresh setup link",
+    "continue_setup": "Continue setup",
+    "not_configured_notice": "Online payments are still being set up on our end — this integration isn't live yet. Check back soon."
   },
   "owner_jobs_page": {
     "status": {
