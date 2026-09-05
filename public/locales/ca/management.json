@@ -622,6 +622,15 @@
       "manage_menu_hint": "Fes clic per obrir i gestionar aquest menú.",
       "create_new_menu_card": "Crear nou menú"
     },
+    "hint_details": {
+      "menu_never_displayed": "Aquest menú no té dies actius configurats i mai es mostrarà",
+      "menu_not_started_yet": "La data d'inici d'aquest menú encara no ha arribat",
+      "menu_expired": "La data de finalització d'aquest menú ja ha passat",
+      "menu_limited_days": "Aquest menú només es mostra els dies de la setmana seleccionats",
+      "menu_limited_hours": "Aquest menú només es mostra durant les hores seleccionades",
+      "menu_soft_deleted": "Aquest menú ha estat eliminat",
+      "menu_scheduled_hard_delete": "Aquest menú està programat per eliminar-se permanentment"
+    },
     "ai_import": {
       "title": "Importar menú amb IA",
       "description": "Puja una foto del teu menú i la IA extraurà automàticament categories, articles, preus i al·lèrgens perquè els revisis.",

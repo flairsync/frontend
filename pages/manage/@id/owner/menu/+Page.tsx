@@ -192,7 +192,7 @@ const MenusPage: React.FC = () => {
                                                                             key={hintKey}
                                                                             className="flex justify-between gap-3 text-xs"
                                                                         >
-                                                                            <span className="truncate">{hintKey}</span>
+                                                                            <span className="truncate">{t(`menu_management.hint_details.${hintKey}`, { defaultValue: hintKey })}</span>
                                                                             <span className="font-medium text-muted-foreground">
                                                                                 {importance}/5
                                                                             </span>

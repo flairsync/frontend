@@ -624,6 +624,15 @@
       "manage_menu_hint": "Haz clic para abrir y gestionar este menú.",
       "create_new_menu_card": "Crear nuevo menú"
     },
+    "hint_details": {
+      "menu_never_displayed": "Este menú no tiene días activos configurados y nunca se mostrará",
+      "menu_not_started_yet": "La fecha de inicio de este menú aún no ha llegado",
+      "menu_expired": "La fecha de fin de este menú ya ha pasado",
+      "menu_limited_days": "Este menú solo se muestra los días de la semana seleccionados",
+      "menu_limited_hours": "Este menú solo se muestra durante las horas seleccionadas",
+      "menu_soft_deleted": "Este menú ha sido eliminado",
+      "menu_scheduled_hard_delete": "Este menú está programado para eliminarse permanentemente"
+    },
     "ai_import": {
       "title": "Importar menú con IA",
       "description": "Sube una foto de tu menú y la IA extraerá automáticamente categorías, artículos, precios y alérgenos para que los revises.",

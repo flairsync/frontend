@@ -624,6 +624,15 @@
       "manage_menu_hint": "Click to open and manage this menu.",
       "create_new_menu_card": "Create New Menu"
     },
+    "hint_details": {
+      "menu_never_displayed": "This menu has no active days set and will never be displayed",
+      "menu_not_started_yet": "This menu's start date is in the future",
+      "menu_expired": "This menu's end date has passed",
+      "menu_limited_days": "This menu only displays on selected days of the week",
+      "menu_limited_hours": "This menu only displays during selected hours",
+      "menu_soft_deleted": "This menu has been deleted",
+      "menu_scheduled_hard_delete": "This menu is scheduled to be permanently deleted"
+    },
     "ai_import": {
       "title": "Import Menu with AI",
       "description": "Upload a photo of your menu and AI will automatically extract categories, items, prices, and allergens for you to review.",

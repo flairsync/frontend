@@ -560,15 +560,11 @@ const MenuDetailPage: React.FC = () => {
                                                         </div>
                                                         <div className="flex-1 space-y-1">
                                                             <div className="flex items-center gap-2">
-                                                                <h5 className="font-medium">{hintKey}</h5>
+                                                                <h5 className="font-medium">{t(`menu_management.hint_details.${hintKey}`, { defaultValue: hintKey })}</h5>
                                                                 <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${meta.badge}`}>
                                                                     {meta.label} • {importance}/5
                                                                 </span>
                                                             </div>
-                                                            <p className="text-sm text-zinc-500">
-                                                                No description yet. This hint may require adjusting menu
-                                                                configuration such as dates, availability, or pricing.
-                                                            </p>
                                                         </div>
                                                     </div>
                                                 );
