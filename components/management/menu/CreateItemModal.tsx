@@ -23,7 +23,7 @@ import {
     useComboboxAnchor,
 } from '@/components/ui/combobox';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { X, Info, Check, ChevronsUpDown, Plus } from 'lucide-react';
+import { X, Info, Check, ChevronsUpDown, Plus, Lock } from 'lucide-react';
 import { Allergy } from '@/models/shared/Allergy';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +57,7 @@ import {
 } from "@/components/ui/command";
 import { useInventory } from '@/features/inventory/useInventory';
 import { useInventoryUnits } from '@/features/inventory/useInventoryUnits';
+import { usePermissions } from '@/features/auth/usePermissions';
 import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
 import { kitchenStationService } from "@/features/station/service";
 import { useQuery } from "@tanstack/react-query";
@@ -360,10 +361,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({
         setNewComponentQty('1');
     };
 
+    const { hasPermission } = usePermissions(businessId);
+    const canViewInventory = hasPermission('INVENTORY', 'read');
+
     const {
         inventoryItems,
         fetchingInventoryItems,
-    } = useInventory(businessId);
+    } = useInventory(businessId, {}, { enabled: open && canViewInventory });
 
     const {
         inventoryUnits,
@@ -701,6 +705,13 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             </TooltipProvider>
                         </div>
 
+                        {!canViewInventory ? (
+                            <div className="flex items-center gap-2 p-3 rounded-md border bg-muted/40 text-muted-foreground opacity-70">
+                                <Lock className="h-4 w-4 shrink-0" />
+                                <p className="text-sm">{t('item_modal.tracking.no_permission')}</p>
+                            </div>
+                        ) : (
+                        <>
                         <Select
                             value={trackingMode}
                             onValueChange={(val: any) => setTrackingMode(val)}
@@ -862,6 +873,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                     </div>
                                 </div>
                             </div>
+                        )}
+                        </>
                         )}
                     </div>
 

@@ -27,8 +27,9 @@ import {
 import { InventoryItem } from "@/models/inventory/InventoryItem";
 import { toast } from "sonner";
 
-export const useInventory = (businessId: string, filters: InventoryFilters = {}) => {
+export const useInventory = (businessId: string, filters: InventoryFilters = {}, options: { enabled?: boolean } = {}) => {
     const queryClient = useQueryClient();
+    const { enabled = true } = options;
 
     const {
         data: inventoryItems,
@@ -46,7 +47,7 @@ export const useInventory = (businessId: string, filters: InventoryFilters = {})
                 pagination: { current: paged.current, pages: paged.pages, total: paged.data.length },
             };
         },
-        enabled: !!businessId,
+        enabled: !!businessId && enabled,
         staleTime: 1000 * 60 * 2,
     });
 

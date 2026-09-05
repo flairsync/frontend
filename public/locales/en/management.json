@@ -677,7 +677,8 @@
       "unit": "Unit",
       "unit_placeholder": "Select unit",
       "quantity_per_sale": "How much is consumed per sale?",
-      "quantity_hint": "If sold in liters and this item uses 0.5L, enter 0.5"
+      "quantity_hint": "If sold in liters and this item uses 0.5L, enter 0.5",
+      "no_permission": "You don't have inventory permission"
     },
     "variants_section": {
       "title": "Variants",
