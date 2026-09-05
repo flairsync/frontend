@@ -4,6 +4,9 @@ import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 import { ClassicTheme } from "./components/ClassicTheme";
 import { ModernMinimalTheme } from "./components/ModernMinimal";
 import { WarmBistroTheme } from "./components/WarmBistro";
+import { AlpineSnowTheme } from "./components/AlpineSnow";
+import { PyreneanPeakTheme } from "./components/PyreneanPeak";
+import { VallAntigaTheme } from "./components/VallAntiga";
 import { DefaultTheme } from "./components/DefaultTheme";
 
 export interface ThemeComponentProps {
@@ -23,6 +26,9 @@ export const THEME_REGISTRY: Record<string, ComponentType<ThemeComponentProps>> 
   "classic": ClassicTheme,
   "modern-minimal": ModernMinimalTheme,
   "warm-bistro": WarmBistroTheme,
+  "alpine-snow": AlpineSnowTheme,
+  "pyrenean-peak": PyreneanPeakTheme,
+  "vall-antiga": VallAntigaTheme,
 };
 
 export const resolveThemeComponent = (
