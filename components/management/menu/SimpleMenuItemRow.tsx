@@ -1,7 +1,6 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { PermissionButton } from "@/components/ui/permission-button";
 import { Edit, Trash, Copy, ArrowRight, ChevronUp, ChevronDown, MoreVertical } from "lucide-react";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
@@ -53,36 +52,34 @@ export const SimpleMenuItemRow = ({
         <div className="flex p-3 bg-muted rounded-lg border border-border hover:shadow-sm transition">
             <div className="flex-1 flex justify-between items-center gap-2 overflow-hidden">
                 {/* Reorder Buttons */}
-                <div className="flex flex-col gap-1 pr-2 border-r border-border mr-2">
-                    <PermissionButton
-                        hasPermission={canEdit}
-                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
-                        size="sm"
-                        variant="ghost"
-                        className="h-6 w-6 p-0 hover:bg-muted rounded-full"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onMoveUp?.();
-                        }}
-                        disabled={!onMoveUp}
-                    >
-                        <ChevronUp className="h-4 w-4" />
-                    </PermissionButton>
-                    <PermissionButton
-                        hasPermission={canEdit}
-                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
-                        size="sm"
-                        variant="ghost"
-                        className="h-6 w-6 p-0 hover:bg-muted rounded-full"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onMoveDown?.();
-                        }}
-                        disabled={!onMoveDown}
-                    >
-                        <ChevronDown className="h-4 w-4" />
-                    </PermissionButton>
-                </div>
+                {canEdit && (onMoveUp || onMoveDown) && (
+                    <div className="flex flex-col gap-1 pr-2 border-r border-border mr-2">
+                        <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-6 p-0 hover:bg-muted rounded-full"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMoveUp?.();
+                            }}
+                            disabled={!onMoveUp}
+                        >
+                            <ChevronUp className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-6 p-0 hover:bg-muted rounded-full"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMoveDown?.();
+                            }}
+                            disabled={!onMoveDown}
+                        >
+                            <ChevronDown className="h-4 w-4" />
+                        </Button>
+                    </div>
+                )}
 
                 <div className="flex-1 min-w-0 pr-2">
                     <div className="flex items-center gap-1">
@@ -99,10 +96,8 @@ export const SimpleMenuItemRow = ({
                 <div className="hidden sm:flex items-center gap-2">
                     <span className="font-semibold text-primary mr-2 text-base">{currencySymbol}{item.price}</span>
 
-                    {onMoveToCategory && (
-                        <PermissionButton
-                            hasPermission={canEdit}
-                            permissionMessage={t('menu_management.messages.no_permission_edit_item')}
+                    {canEdit && onMoveToCategory && (
+                        <Button
                             size="sm"
                             variant="outline"
                             className="h-8 px-3"
@@ -113,10 +108,10 @@ export const SimpleMenuItemRow = ({
                         >
                             <ArrowRight className="h-4 w-4 mr-1" />
                             <span>{t('shared.actions.move')}</span>
-                        </PermissionButton>
+                        </Button>
                     )}
 
-                    {canDelete ? (
+                    {canDelete && (
                         <ConfirmAction
                             onConfirm={onDelete}
                             title={t('menu_management.messages.delete_item_confirm_title')}
@@ -133,85 +128,81 @@ export const SimpleMenuItemRow = ({
                                 <span>{t('shared.actions.delete')}</span>
                             </Button>
                         </ConfirmAction>
-                    ) : (
-                        <PermissionButton
-                            hasPermission={false}
-                            permissionMessage={t('menu_management.messages.no_permission_delete_item')}
-                            size="sm"
-                            variant="destructive"
-                            className="h-8 px-3"
-                        >
-                            <Trash className="h-4 w-4 mr-1" />
-                            <span>{t('shared.actions.delete')}</span>
-                        </PermissionButton>
                     )}
 
-                    <PermissionButton
-                        hasPermission={canEdit}
-                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
-                        size="sm"
-                        variant="outline"
-                        className="h-8 px-3"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onEdit();
-                        }}
-                    >
-                        <Edit className="h-4 w-4 mr-1" />
-                        <span>{t('shared.actions.edit')}</span>
-                    </PermissionButton>
-                    <PermissionButton
-                        hasPermission={canEdit}
-                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
-                        size="sm"
-                        variant="outline"
-                        className="h-8 px-3"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onDuplicate();
-                        }}
-                    >
-                        <Copy className="h-4 w-4 mr-1" />
-                        <span>{t('shared.actions.duplicate')}</span>
-                    </PermissionButton>
+                    {canEdit && (
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 px-3"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onEdit();
+                            }}
+                        >
+                            <Edit className="h-4 w-4 mr-1" />
+                            <span>{t('shared.actions.edit')}</span>
+                        </Button>
+                    )}
+                    {canEdit && (
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 px-3"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDuplicate();
+                            }}
+                        >
+                            <Copy className="h-4 w-4 mr-1" />
+                            <span>{t('shared.actions.duplicate')}</span>
+                        </Button>
+                    )}
                 </div>
 
                 {/* Mobile Actions (Dropdown) */}
                 <div className="flex sm:hidden items-center gap-2">
                     <span className="font-semibold text-primary text-sm">{currencySymbol}{item.price}</span>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                <MoreVertical className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem disabled={!canEdit} onClick={(e) => { e.stopPropagation(); onEdit(); }}>
-                                <Edit className="h-4 w-4 mr-2" /> {t('shared.actions.edit')}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem disabled={!canEdit} onClick={(e) => { e.stopPropagation(); onDuplicate(); }}>
-                                <Copy className="h-4 w-4 mr-2" /> {t('shared.actions.duplicate')}
-                            </DropdownMenuItem>
-                            {onMoveToCategory && (
-                                <DropdownMenuItem disabled={!canEdit} onClick={(e) => { e.stopPropagation(); onMoveToCategory(); }}>
-                                    <ArrowRight className="h-4 w-4 mr-2" /> {t('menu_management.actions.move_to_category')}
-                                </DropdownMenuItem>
-                            )}
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                disabled={!canDelete}
-                                className="text-destructive focus:text-destructive"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (window.confirm(t('menu_management.messages.delete_item_confirm_desc', { name: item.name }))) {
-                                        onDelete();
-                                    }
-                                }}
-                            >
-                                <Trash className="h-4 w-4 mr-2" /> {t('shared.actions.delete')}
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    {(canEdit || canDelete) && (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                    <MoreVertical className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                {canEdit && (
+                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onEdit(); }}>
+                                        <Edit className="h-4 w-4 mr-2" /> {t('shared.actions.edit')}
+                                    </DropdownMenuItem>
+                                )}
+                                {canEdit && (
+                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onDuplicate(); }}>
+                                        <Copy className="h-4 w-4 mr-2" /> {t('shared.actions.duplicate')}
+                                    </DropdownMenuItem>
+                                )}
+                                {canEdit && onMoveToCategory && (
+                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onMoveToCategory(); }}>
+                                        <ArrowRight className="h-4 w-4 mr-2" /> {t('menu_management.actions.move_to_category')}
+                                    </DropdownMenuItem>
+                                )}
+                                {canEdit && canDelete && <DropdownMenuSeparator />}
+                                {canDelete && (
+                                    <DropdownMenuItem
+                                        className="text-destructive focus:text-destructive"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (window.confirm(t('menu_management.messages.delete_item_confirm_desc', { name: item.name }))) {
+                                                onDelete();
+                                            }
+                                        }}
+                                    >
+                                        <Trash className="h-4 w-4 mr-2" /> {t('shared.actions.delete')}
+                                    </DropdownMenuItem>
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )}
                 </div>
             </div>
         </div>

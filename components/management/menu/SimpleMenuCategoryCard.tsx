@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PermissionButton } from "@/components/ui/permission-button";
+import { Button } from "@/components/ui/button";
 import {
     ChevronDown, ChevronUp, Edit, MoreVertical, Plus, Trash, UtensilsCrossed
 } from "lucide-react";
@@ -66,36 +66,34 @@ export const SimpleMenuCategoryCard = ({
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
-                        <div className="flex flex-col gap-1 mr-2 border-r border-border pr-2">
-                            <PermissionButton
-                                hasPermission={canEdit}
-                                permissionMessage={t('menu_management.messages.no_permission_edit_category')}
-                                size="sm"
-                                variant="ghost"
-                                className="h-9 w-9 p-0 hover:bg-muted rounded-full"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onMoveCategoryUp?.();
-                                }}
-                                disabled={!onMoveCategoryUp}
-                            >
-                                <ChevronUp className="h-4 w-4" />
-                            </PermissionButton>
-                            <PermissionButton
-                                hasPermission={canEdit}
-                                permissionMessage={t('menu_management.messages.no_permission_edit_category')}
-                                size="sm"
-                                variant="ghost"
-                                className="h-9 w-9 p-0 hover:bg-muted rounded-full"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onMoveCategoryDown?.();
-                                }}
-                                disabled={!onMoveCategoryDown}
-                            >
-                                <ChevronDown className="h-4 w-4" />
-                            </PermissionButton>
-                        </div>
+                        {canEdit && (onMoveCategoryUp || onMoveCategoryDown) && (
+                            <div className="flex flex-col gap-1 mr-2 border-r border-border pr-2">
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-9 w-9 p-0 hover:bg-muted rounded-full"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onMoveCategoryUp?.();
+                                    }}
+                                    disabled={!onMoveCategoryUp}
+                                >
+                                    <ChevronUp className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-9 w-9 p-0 hover:bg-muted rounded-full"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onMoveCategoryDown?.();
+                                    }}
+                                    disabled={!onMoveCategoryDown}
+                                >
+                                    <ChevronDown className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        )}
 
                         <div className="bg-primary/10 p-2 rounded-lg text-primary">
                             <UtensilsCrossed className="h-5 w-5" />
@@ -121,53 +119,53 @@ export const SimpleMenuCategoryCard = ({
                     </div>
 
                     <div className="flex items-center gap-2 self-end sm:self-auto ml-auto sm:ml-0">
-                        <PermissionButton
-                            hasPermission={canEdit}
-                            permissionMessage={t('menu_management.messages.no_permission_edit_category')}
-                            size="icon"
-                            variant="ghost"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onEdit();
-                            }}
-                        >
-                            <Edit className="h-4 w-4" />
-                        </PermissionButton>
-                        <PermissionButton
-                            hasPermission={canDelete}
-                            permissionMessage={t('menu_management.messages.no_permission_delete_category')}
-                            size="icon"
-                            variant="destructive"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onDelete();
-                            }}
-                        >
-                            <Trash className="h-4 w-4" />
-                        </PermissionButton>
-                        <PermissionButton
-                            hasPermission={canEdit}
-                            permissionMessage={t('menu_management.messages.no_permission_edit_category')}
-                            size="sm"
-                            className={cn(
-                                "transition",
-                                canCreateProduct
-                                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                    : "bg-muted text-muted-foreground cursor-not-allowed border-border"
-                            )}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (canCreateProduct) {
-                                    onAddItem();
-                                } else {
-                                    openUpgradeModal("You've reached your product limit. Upgrade to add more items.");
-                                }
-                            }}
-                        >
-                            <Plus className="h-4 w-4 mr-1" /> <span className="hidden sm:inline">{t('menu_management.actions.add_item')}</span>
-                            <span className="sm:hidden">{t('shared.actions.add')}</span>
-                            {!canCreateProduct && <span className="text-[10px] font-bold text-primary uppercase ml-1">{t('menu_management.upgrade')}</span>}
-                        </PermissionButton>
+                        {canEdit && (
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onEdit();
+                                }}
+                            >
+                                <Edit className="h-4 w-4" />
+                            </Button>
+                        )}
+                        {canDelete && (
+                            <Button
+                                size="icon"
+                                variant="destructive"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDelete();
+                                }}
+                            >
+                                <Trash className="h-4 w-4" />
+                            </Button>
+                        )}
+                        {canEdit && (
+                            <Button
+                                size="sm"
+                                className={cn(
+                                    "transition",
+                                    canCreateProduct
+                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                        : "bg-muted text-muted-foreground cursor-not-allowed border-border"
+                                )}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (canCreateProduct) {
+                                        onAddItem();
+                                    } else {
+                                        openUpgradeModal("You've reached your product limit. Upgrade to add more items.");
+                                    }
+                                }}
+                            >
+                                <Plus className="h-4 w-4 mr-1" /> <span className="hidden sm:inline">{t('menu_management.actions.add_item')}</span>
+                                <span className="sm:hidden">{t('shared.actions.add')}</span>
+                                {!canCreateProduct && <span className="text-[10px] font-bold text-primary uppercase ml-1">{t('menu_management.upgrade')}</span>}
+                            </Button>
+                        )}
                     </div>
                 </div>
 
@@ -204,15 +202,15 @@ export const SimpleMenuCategoryCard = ({
                                             <p className="text-muted-foreground italic text-sm">
                                                 {t('menu_management.labels.no_items_category')}
                                             </p>
-                                            <PermissionButton
-                                                hasPermission={canEdit}
-                                                permissionMessage={t('menu_management.messages.no_permission_edit_category')}
-                                                variant="link"
-                                                className="text-primary mt-2 h-auto p-0"
-                                                onClick={onAddItem}
-                                            >
-                                                {t('menu_management.labels.add_first_item')}
-                                            </PermissionButton>
+                                            {canEdit && (
+                                                <Button
+                                                    variant="link"
+                                                    className="text-primary mt-2 h-auto p-0"
+                                                    onClick={onAddItem}
+                                                >
+                                                    {t('menu_management.labels.add_first_item')}
+                                                </Button>
+                                            )}
                                         </div>
                                     )}
                                 </div>

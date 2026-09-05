@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PermissionButton } from "@/components/ui/permission-button";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
 import { usePermissions } from "@/features/auth/usePermissions";
@@ -171,20 +170,20 @@ export default function StaffMenuPage() {
                         <LayoutGrid className="h-4 w-4" />
                         {t("staff_menu_page.menus")}
                     </h2>
-                    <PermissionButton
-                        hasPermission={canCreate}
-                        permissionMessage={t("staff_menu_page.no_permission_create_menu")}
-                        size="icon"
-                        variant="ghost"
-                        className="h-8 w-8 text-primary hover:bg-primary/10"
-                        onClick={() => {
-                            setEditingMenu(null);
-                            setModalMode('create');
-                            setIsMenuModalOpen(true);
-                        }}
-                    >
-                        <Plus className="h-4 w-4" />
-                    </PermissionButton>
+                    {canCreate && (
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-8 w-8 text-primary hover:bg-primary/10"
+                            onClick={() => {
+                                setEditingMenu(null);
+                                setModalMode('create');
+                                setIsMenuModalOpen(true);
+                            }}
+                        >
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    )}
                 </div>
                 <ScrollArea className="flex-1">
                     <div className="p-2 space-y-1">
@@ -225,29 +224,27 @@ export default function StaffMenuPage() {
                         <div className="flex items-center justify-between">
                             <h2 className="text-2xl font-bold tracking-tight text-foreground">{t("staff_menu_page.menu_structure")}</h2>
                             <div className="flex items-center gap-3">
-                                {hasChanges() && (
-                                    <PermissionButton
-                                        hasPermission={canUpdate}
-                                        permissionMessage={t("staff_menu_page.no_permission_edit_menu")}
+                                {canUpdate && hasChanges() && (
+                                    <Button
                                         onClick={handleSaveStructure}
                                         className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg transition-all animate-in fade-in slide-in-from-right-2"
                                     >
                                         <Save className="h-4 w-4 mr-2" />
                                         {t("staff_menu_page.save_changes")}
-                                    </PermissionButton>
+                                    </Button>
                                 )}
-                                <PermissionButton
-                                    hasPermission={canUpdate}
-                                    permissionMessage={t("staff_menu_page.no_permission_edit_menu")}
-                                    onClick={() => {
-                                        setEditingCategory(null);
-                                        setModalMode('create');
-                                        setIsCategoryModalOpen(true);
-                                    }}
-                                    className="bg-primary hover:bg-primary/90 shadow-md"
-                                >
-                                    <Plus className="h-4 w-4 mr-1" /> {t("staff_menu_page.add_category")}
-                                </PermissionButton>
+                                {canUpdate && (
+                                    <Button
+                                        onClick={() => {
+                                            setEditingCategory(null);
+                                            setModalMode('create');
+                                            setIsCategoryModalOpen(true);
+                                        }}
+                                        className="bg-primary hover:bg-primary/90 shadow-md"
+                                    >
+                                        <Plus className="h-4 w-4 mr-1" /> {t("staff_menu_page.add_category")}
+                                    </Button>
+                                )}
                             </div>
                         </div>
 
@@ -297,6 +294,7 @@ export default function StaffMenuPage() {
                                 });
                             }}
                             onMoveItemUp={(itemId, catId) => {
+                                if (!canUpdate) return;
                                 const catIndex = categories.findIndex(c => c.id === catId);
                                 if (catIndex === -1) return;
                                 const items = [...(categories[catIndex].items || [])];
@@ -309,6 +307,7 @@ export default function StaffMenuPage() {
                                 }
                             }}
                             onMoveItemDown={(itemId, catId) => {
+                                if (!canUpdate) return;
                                 const catIndex = categories.findIndex(c => c.id === catId);
                                 if (catIndex === -1) return;
                                 const items = [...(categories[catIndex].items || [])];
@@ -325,6 +324,7 @@ export default function StaffMenuPage() {
                                 setMovingItem({ itemId, currentCatId: catId });
                             }}
                             onMoveCategoryUp={(catId) => {
+                                if (!canUpdate) return;
                                 const index = categories.findIndex(c => c.id === catId);
                                 if (index > 0) {
                                     const newCats = [...categories];
@@ -333,6 +333,7 @@ export default function StaffMenuPage() {
                                 }
                             }}
                             onMoveCategoryDown={(catId) => {
+                                if (!canUpdate) return;
                                 const index = categories.findIndex(c => c.id === catId);
                                 if (index < categories.length - 1) {
                                     const newCats = [...categories];
@@ -349,18 +350,18 @@ export default function StaffMenuPage() {
                         <p className="text-muted-foreground max-w-sm mt-2">
                             {t("staff_menu_page.select_a_menu_description")}
                         </p>
-                        <PermissionButton
-                            hasPermission={canCreate}
-                            permissionMessage={t("staff_menu_page.no_permission_create_menu")}
-                            className="mt-8 bg-primary hover:bg-primary/90 shadow-lg px-8 py-6 rounded-xl text-lg"
-                            onClick={() => {
-                                setEditingMenu(null);
-                                setModalMode('create');
-                                setIsMenuModalOpen(true);
-                            }}
-                        >
-                            <Plus className="h-5 w-5 mr-2" /> {t("staff_menu_page.create_first_menu")}
-                        </PermissionButton>
+                        {canCreate && (
+                            <Button
+                                className="mt-8 bg-primary hover:bg-primary/90 shadow-lg px-8 py-6 rounded-xl text-lg"
+                                onClick={() => {
+                                    setEditingMenu(null);
+                                    setModalMode('create');
+                                    setIsMenuModalOpen(true);
+                                }}
+                            >
+                                <Plus className="h-5 w-5 mr-2" /> {t("staff_menu_page.create_first_menu")}
+                            </Button>
+                        )}
                     </div>
                 )}
             </main>

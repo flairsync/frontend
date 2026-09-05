@@ -1,5 +1,3 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
 type MenuHeaderProps = {
     menu: {
         id: string;
@@ -65,7 +63,7 @@ export const MenuHeader = ({
 
                 {/* Actions */}
                 <div className="flex gap-2 flex-wrap">
-                    {canEdit ? (
+                    {canEdit && (
                         <button
                             onClick={onEdit}
                             className="px-3 py-1.5 rounded-md text-sm font-medium
@@ -73,22 +71,6 @@ export const MenuHeader = ({
                         >
                             Edit
                         </button>
-                    ) : (
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <span tabIndex={0}>
-                                    <button
-                                        disabled
-                                        className="px-3 py-1.5 rounded-md text-sm font-medium
-              bg-zinc-200 text-zinc-400 cursor-not-allowed
-              dark:bg-zinc-800 dark:text-zinc-600"
-                                    >
-                                        Edit
-                                    </button>
-                                </span>
-                            </TooltipTrigger>
-                            <TooltipContent>You don't have permission to edit this menu</TooltipContent>
-                        </Tooltip>
                     )}
 
                     <button
