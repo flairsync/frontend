@@ -1,3 +1,5 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 type MenuHeaderProps = {
     menu: {
         id: string;
@@ -11,6 +13,7 @@ type MenuHeaderProps = {
     onEdit: () => void;
     onDuplicate: () => void;
     onDelete: () => void;
+    canEdit?: boolean;
 };
 
 export const MenuHeader = ({
@@ -18,6 +21,7 @@ export const MenuHeader = ({
     onEdit,
     onDuplicate,
     onDelete,
+    canEdit = true,
 }: MenuHeaderProps) => {
     return (
         <div className="flex flex-col gap-4 border-b border-zinc-200 dark:border-zinc-700 pb-6">
@@ -61,13 +65,31 @@ export const MenuHeader = ({
 
                 {/* Actions */}
                 <div className="flex gap-2 flex-wrap">
-                    <button
-                        onClick={onEdit}
-                        className="px-3 py-1.5 rounded-md text-sm font-medium
+                    {canEdit ? (
+                        <button
+                            onClick={onEdit}
+                            className="px-3 py-1.5 rounded-md text-sm font-medium
               bg-indigo-500 text-white hover:bg-indigo-600 transition"
-                    >
-                        Edit
-                    </button>
+                        >
+                            Edit
+                        </button>
+                    ) : (
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <span tabIndex={0}>
+                                    <button
+                                        disabled
+                                        className="px-3 py-1.5 rounded-md text-sm font-medium
+              bg-zinc-200 text-zinc-400 cursor-not-allowed
+              dark:bg-zinc-800 dark:text-zinc-600"
+                                    >
+                                        Edit
+                                    </button>
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent>You don't have permission to edit this menu</TooltipContent>
+                        </Tooltip>
+                    )}
 
                     <button
                         onClick={onDuplicate}

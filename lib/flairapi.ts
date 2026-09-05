@@ -97,6 +97,15 @@ export function attachNetworkErrorToast(instance: AxiosInstance): void {
             toast.error(i18n.t("errors.technical.network_error"));
           }
         } else if (error.response.status >= 500) {
+          // "payment_provider.*" (e.g. payment_provider.not_configured) is an expected,
+          // intentional 503 from the null payment gateway adapter — not a real outage — so
+          // it's excluded here and left for the calling feature's own onError to handle
+          // (see useOnboardPaymentAccount in features/payments/usePayments.ts).
+          const errorCode = error.response.data?.code as string | undefined;
+          if (errorCode?.startsWith("payment_provider.")) {
+            return Promise.reject(error);
+          }
+
           console.warn("SERVER ERROR DETECTED - LOCKING APP");
           useSystemErrorStore.getState().lock('server');
           toast.error(i18n.t("errors.technical.server_error"));

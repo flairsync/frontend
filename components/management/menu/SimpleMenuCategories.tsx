@@ -6,6 +6,8 @@ import { SimpleMenuCategoryCard } from "./SimpleMenuCategoryCard";
 type Props = {
     categories: BusinessMenuCategory[];
     businessId?: string;
+    canEdit?: boolean;
+    canDelete?: boolean;
     onEditCategory: (id: string) => void;
     onDeleteCategory: (id: string) => void;
     onAddItem: (catId: string) => void;
@@ -22,6 +24,8 @@ type Props = {
 export const SimpleMenuCategories = ({
     categories,
     businessId,
+    canEdit = true,
+    canDelete = true,
     onEditCategory,
     onDeleteCategory,
     onAddItem,
@@ -47,6 +51,8 @@ export const SimpleMenuCategories = ({
                     key={cat.id}
                     category={cat}
                     businessId={businessId}
+                    canEdit={canEdit}
+                    canDelete={canDelete}
                     onEdit={() => onEditCategory(cat.id)}
                     onDelete={() => onDeleteCategory(cat.id)}
                     onAddItem={() => onAddItem(cat.id)}

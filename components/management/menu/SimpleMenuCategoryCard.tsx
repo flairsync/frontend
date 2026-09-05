@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PermissionButton } from "@/components/ui/permission-button";
 import {
     ChevronDown, ChevronUp, Edit, MoreVertical, Plus, Trash, UtensilsCrossed
 } from "lucide-react";
@@ -18,6 +19,8 @@ import { AuditLogHint } from "@/components/audit/AuditLogHint";
 type Props = {
     category: BusinessMenuCategory;
     businessId?: string;
+    canEdit?: boolean;
+    canDelete?: boolean;
     onEdit: () => void;
     onDelete: () => void;
     onAddItem: () => void;
@@ -34,6 +37,8 @@ type Props = {
 export const SimpleMenuCategoryCard = ({
     category,
     businessId,
+    canEdit = true,
+    canDelete = true,
     onEdit,
     onDelete,
     onAddItem,
@@ -113,7 +118,9 @@ export const SimpleMenuCategoryCard = ({
                     </div>
 
                     <div className="flex items-center gap-2 self-end sm:self-auto ml-auto sm:ml-0">
-                        <Button
+                        <PermissionButton
+                            hasPermission={canEdit}
+                            permissionMessage={t('menu_management.messages.no_permission_edit_category')}
                             size="icon"
                             variant="ghost"
                             onClick={(e) => {
@@ -122,8 +129,10 @@ export const SimpleMenuCategoryCard = ({
                             }}
                         >
                             <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
+                        </PermissionButton>
+                        <PermissionButton
+                            hasPermission={canDelete}
+                            permissionMessage={t('menu_management.messages.no_permission_delete_category')}
                             size="icon"
                             variant="destructive"
                             onClick={(e) => {
@@ -132,8 +141,10 @@ export const SimpleMenuCategoryCard = ({
                             }}
                         >
                             <Trash className="h-4 w-4" />
-                        </Button>
-                        <Button
+                        </PermissionButton>
+                        <PermissionButton
+                            hasPermission={canEdit}
+                            permissionMessage={t('menu_management.messages.no_permission_edit_category')}
                             size="sm"
                             className={cn(
                                 "transition",
@@ -153,7 +164,7 @@ export const SimpleMenuCategoryCard = ({
                             <Plus className="h-4 w-4 mr-1" /> <span className="hidden sm:inline">{t('menu_management.actions.add_item')}</span>
                             <span className="sm:hidden">{t('shared.actions.add')}</span>
                             {!canCreateProduct && <span className="text-[10px] font-bold text-primary uppercase ml-1">{t('menu_management.upgrade')}</span>}
-                        </Button>
+                        </PermissionButton>
                     </div>
                 </div>
 
@@ -175,6 +186,8 @@ export const SimpleMenuCategoryCard = ({
                                                 item={item}
                                                 category={category}
                                                 businessId={businessId}
+                                                canEdit={canEdit}
+                                                canDelete={canDelete}
                                                 onEdit={() => onEditItem(item.id)}
                                                 onDelete={() => onDeleteItem(item.id)}
                                                 onDuplicate={() => onDuplicateItem(item.id)}
@@ -188,13 +201,15 @@ export const SimpleMenuCategoryCard = ({
                                             <p className="text-muted-foreground italic text-sm">
                                                 {t('menu_management.labels.no_items_category')}
                                             </p>
-                                            <Button
+                                            <PermissionButton
+                                                hasPermission={canEdit}
+                                                permissionMessage={t('menu_management.messages.no_permission_edit_category')}
                                                 variant="link"
                                                 className="text-primary mt-2 h-auto p-0"
                                                 onClick={onAddItem}
                                             >
                                                 {t('menu_management.labels.add_first_item')}
-                                            </Button>
+                                            </PermissionButton>
                                         </div>
                                     )}
                                 </div>

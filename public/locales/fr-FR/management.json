@@ -577,7 +577,11 @@
       "delete_category_confirm": "Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible et supprimera tous les articles qu'elle contient.",
       "delete_item_confirm_title": "Supprimer l'article ?",
       "delete_item_confirm_desc": "Cela supprimera définitivement \"{{name}}\".",
-      "move_item_select_category": "Sélectionnez la catégorie vers laquelle déplacer cet article."
+      "move_item_select_category": "Sélectionnez la catégorie vers laquelle déplacer cet article.",
+      "no_permission_edit_category": "Vous n'avez pas la permission de modifier cette catégorie",
+      "no_permission_delete_category": "Vous n'avez pas la permission de supprimer cette catégorie",
+      "no_permission_edit_item": "Vous n'avez pas la permission de modifier cet article",
+      "no_permission_delete_item": "Vous n'avez pas la permission de supprimer cet article"
     },
     "modal": {
       "create_title": "Créer un nouveau menu",
@@ -4569,7 +4573,9 @@
     "create_first_menu": "Créer le premier menu",
     "move_to_category": "Déplacer vers une catégorie",
     "move_to_category_description": "Sélectionnez la catégorie cible vers laquelle vous voulez déplacer cet article.",
-    "current": "(Actuel)"
+    "current": "(Actuel)",
+    "no_permission_create_menu": "Vous n'avez pas la permission de créer des menus",
+    "no_permission_edit_menu": "Vous n'avez pas la permission de modifier ce menu"
   },
   "business_management_header": {
     "marketplace": "Marketplace",

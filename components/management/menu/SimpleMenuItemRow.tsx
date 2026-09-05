@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { PermissionButton } from "@/components/ui/permission-button";
 import { Edit, Trash, Copy, ArrowRight, ChevronUp, ChevronDown, MoreVertical } from "lucide-react";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
@@ -20,6 +21,8 @@ type Props = {
     item: any;
     category: BusinessMenuCategory;
     businessId?: string;
+    canEdit?: boolean;
+    canDelete?: boolean;
     onEdit: () => void;
     onDelete: () => void;
     onDuplicate: () => void;
@@ -29,6 +32,8 @@ export const SimpleMenuItemRow = ({
     item,
     category,
     businessId,
+    canEdit = true,
+    canDelete = true,
     onEdit,
     onDelete,
     onDuplicate,
@@ -105,24 +110,39 @@ export const SimpleMenuItemRow = ({
                         </Button>
                     )}
 
-                    <ConfirmAction
-                        onConfirm={onDelete}
-                        title={t('menu_management.messages.delete_item_confirm_title')}
-                        description={t('menu_management.messages.delete_item_confirm_desc', { name: item.name })}
-                        confirmText={t('shared.actions.delete')}
-                        storageKey="delete-item-confirm"
-                    >
-                        <Button
+                    {canDelete ? (
+                        <ConfirmAction
+                            onConfirm={onDelete}
+                            title={t('menu_management.messages.delete_item_confirm_title')}
+                            description={t('menu_management.messages.delete_item_confirm_desc', { name: item.name })}
+                            confirmText={t('shared.actions.delete')}
+                            storageKey="delete-item-confirm"
+                        >
+                            <Button
+                                size="sm"
+                                variant="destructive"
+                                className="h-8 px-3"
+                            >
+                                <Trash className="h-4 w-4 mr-1" />
+                                <span>{t('shared.actions.delete')}</span>
+                            </Button>
+                        </ConfirmAction>
+                    ) : (
+                        <PermissionButton
+                            hasPermission={false}
+                            permissionMessage={t('menu_management.messages.no_permission_delete_item')}
                             size="sm"
                             variant="destructive"
                             className="h-8 px-3"
                         >
                             <Trash className="h-4 w-4 mr-1" />
                             <span>{t('shared.actions.delete')}</span>
-                        </Button>
-                    </ConfirmAction>
+                        </PermissionButton>
+                    )}
 
-                    <Button
+                    <PermissionButton
+                        hasPermission={canEdit}
+                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
                         size="sm"
                         variant="outline"
                         className="h-8 px-3"
@@ -133,8 +153,10 @@ export const SimpleMenuItemRow = ({
                     >
                         <Edit className="h-4 w-4 mr-1" />
                         <span>{t('shared.actions.edit')}</span>
-                    </Button>
-                    <Button
+                    </PermissionButton>
+                    <PermissionButton
+                        hasPermission={canEdit}
+                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
                         size="sm"
                         variant="outline"
                         className="h-8 px-3"
@@ -145,7 +167,7 @@ export const SimpleMenuItemRow = ({
                     >
                         <Copy className="h-4 w-4 mr-1" />
                         <span>{t('shared.actions.duplicate')}</span>
-                    </Button>
+                    </PermissionButton>
                 </div>
 
                 {/* Mobile Actions (Dropdown) */}
@@ -158,19 +180,20 @@ export const SimpleMenuItemRow = ({
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onEdit(); }}>
+                            <DropdownMenuItem disabled={!canEdit} onClick={(e) => { e.stopPropagation(); onEdit(); }}>
                                 <Edit className="h-4 w-4 mr-2" /> {t('shared.actions.edit')}
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onDuplicate(); }}>
+                            <DropdownMenuItem disabled={!canEdit} onClick={(e) => { e.stopPropagation(); onDuplicate(); }}>
                                 <Copy className="h-4 w-4 mr-2" /> {t('shared.actions.duplicate')}
                             </DropdownMenuItem>
                             {onMoveToCategory && (
-                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onMoveToCategory(); }}>
+                                <DropdownMenuItem disabled={!canEdit} onClick={(e) => { e.stopPropagation(); onMoveToCategory(); }}>
                                     <ArrowRight className="h-4 w-4 mr-2" /> {t('menu_management.actions.move_to_category')}
                                 </DropdownMenuItem>
                             )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
+                                disabled={!canDelete}
                                 className="text-destructive focus:text-destructive"
                                 onClick={(e) => {
                                     e.stopPropagation();

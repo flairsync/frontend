@@ -577,7 +577,11 @@
       "delete_category_confirm": "Are you sure you want to delete this category? This action cannot be undone and will remove all items within it.",
       "delete_item_confirm_title": "Delete item?",
       "delete_item_confirm_desc": "This will permanently delete \"{{name}}\".",
-      "move_item_select_category": "Select the category to move this item to."
+      "move_item_select_category": "Select the category to move this item to.",
+      "no_permission_edit_category": "You don't have permission to edit this category",
+      "no_permission_delete_category": "You don't have permission to delete this category",
+      "no_permission_edit_item": "You don't have permission to edit this item",
+      "no_permission_delete_item": "You don't have permission to delete this item"
     },
     "modal": {
       "create_title": "Create New Menu",
@@ -4571,7 +4575,9 @@
     "create_first_menu": "Create First Menu",
     "move_to_category": "Move to Category",
     "move_to_category_description": "Select the target category where you want to move this item.",
-    "current": "(Current)"
+    "current": "(Current)",
+    "no_permission_create_menu": "You don't have permission to create menus",
+    "no_permission_edit_menu": "You don't have permission to edit this menu"
   },
   "business_management_header": {
     "marketplace": "Marketplace",

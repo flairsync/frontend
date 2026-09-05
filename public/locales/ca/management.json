@@ -575,7 +575,11 @@
       "delete_category_confirm": "Estàs segur que vols eliminar aquesta categoria? Aquesta acció no es pot desfer i eliminarà tots els articles que contingui.",
       "delete_item_confirm_title": "Eliminar article?",
       "delete_item_confirm_desc": "Això eliminarà permanentment \"{{name}}\".",
-      "move_item_select_category": "Selecciona la categoria on vols moure aquest article."
+      "move_item_select_category": "Selecciona la categoria on vols moure aquest article.",
+      "no_permission_edit_category": "No tens permís per editar aquesta categoria",
+      "no_permission_delete_category": "No tens permís per eliminar aquesta categoria",
+      "no_permission_edit_item": "No tens permís per editar aquest article",
+      "no_permission_delete_item": "No tens permís per eliminar aquest article"
     },
     "modal": {
       "create_title": "Crear nou menú",
@@ -4567,7 +4571,9 @@
     "create_first_menu": "Crea el primer menú",
     "move_to_category": "Mou a categoria",
     "move_to_category_description": "Selecciona la categoria de destinació on vols moure aquest article.",
-    "current": "(Actual)"
+    "current": "(Actual)",
+    "no_permission_create_menu": "No tens permís per crear menús",
+    "no_permission_edit_menu": "No tens permís per editar aquest menú"
   },
   "business_management_header": {
     "marketplace": "Marketplace",
