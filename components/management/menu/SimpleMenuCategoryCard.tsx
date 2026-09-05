@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { PermissionButton } from "@/components/ui/permission-button";
 import {
     ChevronDown, ChevronUp, Edit, MoreVertical, Plus, Trash, UtensilsCrossed
@@ -68,7 +67,9 @@ export const SimpleMenuCategoryCard = ({
                 >
                     <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
                         <div className="flex flex-col gap-1 mr-2 border-r border-border pr-2">
-                            <Button
+                            <PermissionButton
+                                hasPermission={canEdit}
+                                permissionMessage={t('menu_management.messages.no_permission_edit_category')}
                                 size="sm"
                                 variant="ghost"
                                 className="h-9 w-9 p-0 hover:bg-muted rounded-full"
@@ -79,8 +80,10 @@ export const SimpleMenuCategoryCard = ({
                                 disabled={!onMoveCategoryUp}
                             >
                                 <ChevronUp className="h-4 w-4" />
-                            </Button>
-                            <Button
+                            </PermissionButton>
+                            <PermissionButton
+                                hasPermission={canEdit}
+                                permissionMessage={t('menu_management.messages.no_permission_edit_category')}
                                 size="sm"
                                 variant="ghost"
                                 className="h-9 w-9 p-0 hover:bg-muted rounded-full"
@@ -91,7 +94,7 @@ export const SimpleMenuCategoryCard = ({
                                 disabled={!onMoveCategoryDown}
                             >
                                 <ChevronDown className="h-4 w-4" />
-                            </Button>
+                            </PermissionButton>
                         </div>
 
                         <div className="bg-primary/10 p-2 rounded-lg text-primary">

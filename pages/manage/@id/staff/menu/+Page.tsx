@@ -226,13 +226,15 @@ export default function StaffMenuPage() {
                             <h2 className="text-2xl font-bold tracking-tight text-foreground">{t("staff_menu_page.menu_structure")}</h2>
                             <div className="flex items-center gap-3">
                                 {hasChanges() && (
-                                    <Button
+                                    <PermissionButton
+                                        hasPermission={canUpdate}
+                                        permissionMessage={t("staff_menu_page.no_permission_edit_menu")}
                                         onClick={handleSaveStructure}
                                         className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg transition-all animate-in fade-in slide-in-from-right-2"
                                     >
                                         <Save className="h-4 w-4 mr-2" />
                                         {t("staff_menu_page.save_changes")}
-                                    </Button>
+                                    </PermissionButton>
                                 )}
                                 <PermissionButton
                                     hasPermission={canUpdate}

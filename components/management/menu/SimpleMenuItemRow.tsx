@@ -54,7 +54,9 @@ export const SimpleMenuItemRow = ({
             <div className="flex-1 flex justify-between items-center gap-2 overflow-hidden">
                 {/* Reorder Buttons */}
                 <div className="flex flex-col gap-1 pr-2 border-r border-border mr-2">
-                    <Button
+                    <PermissionButton
+                        hasPermission={canEdit}
+                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
                         size="sm"
                         variant="ghost"
                         className="h-6 w-6 p-0 hover:bg-muted rounded-full"
@@ -65,8 +67,10 @@ export const SimpleMenuItemRow = ({
                         disabled={!onMoveUp}
                     >
                         <ChevronUp className="h-4 w-4" />
-                    </Button>
-                    <Button
+                    </PermissionButton>
+                    <PermissionButton
+                        hasPermission={canEdit}
+                        permissionMessage={t('menu_management.messages.no_permission_edit_item')}
                         size="sm"
                         variant="ghost"
                         className="h-6 w-6 p-0 hover:bg-muted rounded-full"
@@ -77,7 +81,7 @@ export const SimpleMenuItemRow = ({
                         disabled={!onMoveDown}
                     >
                         <ChevronDown className="h-4 w-4" />
-                    </Button>
+                    </PermissionButton>
                 </div>
 
                 <div className="flex-1 min-w-0 pr-2">
@@ -96,7 +100,9 @@ export const SimpleMenuItemRow = ({
                     <span className="font-semibold text-primary mr-2 text-base">{currencySymbol}{item.price}</span>
 
                     {onMoveToCategory && (
-                        <Button
+                        <PermissionButton
+                            hasPermission={canEdit}
+                            permissionMessage={t('menu_management.messages.no_permission_edit_item')}
                             size="sm"
                             variant="outline"
                             className="h-8 px-3"
@@ -107,7 +113,7 @@ export const SimpleMenuItemRow = ({
                         >
                             <ArrowRight className="h-4 w-4 mr-1" />
                             <span>{t('shared.actions.move')}</span>
-                        </Button>
+                        </PermissionButton>
                     )}
 
                     {canDelete ? (

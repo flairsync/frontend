@@ -24,11 +24,12 @@ export function PermissionButton({
     variant,
     size,
     children,
+    disabled,
     ...props
 }: PermissionButtonProps) {
     if (hasPermission) {
         return (
-            <Button className={className} variant={variant} size={size} {...props}>
+            <Button className={className} variant={variant} size={size} disabled={disabled} {...props}>
                 {children}
             </Button>
         )
@@ -38,7 +39,7 @@ export function PermissionButton({
         <Tooltip>
             <TooltipTrigger asChild>
                 <span className="inline-flex" tabIndex={0}>
-                    <Button className={className} variant={variant} size={size} disabled {...props}>
+                    <Button className={className} variant={variant} size={size} {...props} disabled>
                         {children}
                     </Button>
                 </span>
