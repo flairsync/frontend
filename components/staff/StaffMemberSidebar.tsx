@@ -65,8 +65,6 @@ export const staffNavData = {
                     titleKey: "staff_sidebar.items.tasks",
                     url: "/manage/:id/staff/tasks",
                     icon: ClipboardList,
-                    requiredPermission: "STAFF",
-                    requiredAction: "read",
                 },
                 {
                     key: "orders",
