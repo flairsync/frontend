@@ -67,15 +67,15 @@ function PermissionLabel({ label, description }: { label: string; description?: 
     if (!description) return <>{label}</>;
 
     return (
-        <Tooltip>
-            <TooltipTrigger asChild>
-                <span className="inline-flex items-center gap-1 cursor-help">
-                    {label}
-                    <Info className="h-3.5 w-3.5 text-muted-foreground" />
-                </span>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-xs">{description}</TooltipContent>
-        </Tooltip>
+        <span className="inline-flex items-center gap-1">
+            {label}
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">{description}</TooltipContent>
+            </Tooltip>
+        </span>
     );
 }
 
