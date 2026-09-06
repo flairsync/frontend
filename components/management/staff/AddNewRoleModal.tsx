@@ -25,6 +25,7 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
+    CommandList,
 } from "@/components/ui/command";
 import {
     Tooltip,
@@ -288,25 +289,27 @@ export function AddRoleModal(props: Props) {
                                     <PopoverContent className="w-full p-0">
                                         <Command>
                                             <CommandInput placeholder={t("add_role_modal.search_permission_placeholder")} />
-                                            <CommandEmpty>{t("add_role_modal.no_permission_found")}</CommandEmpty>
-                                            <CommandGroup>
-                                                {permissionsList?.map(perm => (
-                                                    <CommandItem
-                                                        key={perm.id}
-                                                        onSelect={() => addPermission(perm)}
-                                                    >
-                                                        <PermissionLabel
-                                                            label={t(`permissions.${perm.key}.label`)}
-                                                            description={t(`permissions.${perm.key}.description`, { defaultValue: "" })}
-                                                        />
-                                                        {formik.values.permissions.some(
-                                                            p => p.permissionId === perm.id
-                                                        ) && (
-                                                                <Check className="ml-auto h-4 w-4" />
-                                                            )}
-                                                    </CommandItem>
-                                                ))}
-                                            </CommandGroup>
+                                            <CommandList>
+                                                <CommandEmpty>{t("add_role_modal.no_permission_found")}</CommandEmpty>
+                                                <CommandGroup>
+                                                    {permissionsList?.map(perm => (
+                                                        <CommandItem
+                                                            key={perm.id}
+                                                            onSelect={() => addPermission(perm)}
+                                                        >
+                                                            <PermissionLabel
+                                                                label={t(`permissions.${perm.key}.label`)}
+                                                                description={t(`permissions.${perm.key}.description`, { defaultValue: "" })}
+                                                            />
+                                                            {formik.values.permissions.some(
+                                                                p => p.permissionId === perm.id
+                                                            ) && (
+                                                                    <Check className="ml-auto h-4 w-4" />
+                                                                )}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
                                         </Command>
                                     </PopoverContent>
                                 </Popover>
