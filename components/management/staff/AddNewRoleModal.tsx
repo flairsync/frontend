@@ -286,7 +286,10 @@ export function AddRoleModal(props: Props) {
                                         </Button>
                                     </PopoverTrigger>
 
-                                    <PopoverContent className="w-full p-0">
+                                    <PopoverContent
+                                        className="w-full p-0"
+                                        onWheel={e => e.stopPropagation()}
+                                    >
                                         <Command>
                                             <CommandInput placeholder={t("add_role_modal.search_permission_placeholder")} />
                                             <CommandList>
