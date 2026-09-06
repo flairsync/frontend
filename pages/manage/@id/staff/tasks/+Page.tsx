@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { useBusinessTasks, useUpdateTaskStatus } from "@/features/tasks/useTasks";
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
-import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance";
 import {
   Task,
@@ -246,9 +246,9 @@ const StaffTasksPage = () => {
   // Owners are exempt from the clock-in-to-start-a-task gate server-side
   // (assertClockedInForTasks), so don't disable the button for an owner
   // who genuinely isn't clocked in.
-  const { myBusinessFullDetails } = useMyBusiness(businessId);
+  const { businessBasicDetails } = useBusinessBasicDetails(businessId);
   const requireClockInForTasks =
-    activeEmployment?.type !== "OWNER" && !!myBusinessFullDetails?.requireClockInForTasks;
+    activeEmployment?.type !== "OWNER" && !!businessBasicDetails?.requireClockInForTasks;
 
   const { data: todayDashboard } = useTodayAttendanceDashboard(
     requireClockInForTasks ? businessId : undefined,

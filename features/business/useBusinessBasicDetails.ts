@@ -19,6 +19,7 @@ export interface BusinessBasicDetails {
   };
   requireGpsForAttendance?: boolean;
   requireQrForAttendance?: boolean;
+  requireClockInForTasks?: boolean;
   taxRate?: number;
   taxName?: string;
   taxIncluded?: boolean;
