@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { AlertTriangle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -32,13 +33,20 @@ interface StatusUpdateDialogProps {
   onOpenChange: (open: boolean) => void;
   task: Task | null;
   businessId: string;
+  // True when the business requires staff to be clocked in to start a task
+  // (settings_page.location.attendance.require_clock_in_tasks) and the current
+  // user isn't. Blocks selecting/submitting IN_PROGRESS client-side so staff get
+  // an immediate explanation instead of a failed request — the backend
+  // (assertClockedInForTasks) is still the real enforcement point.
+  blockStartWithoutClockIn?: boolean;
 }
 
-export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpdateDialogProps) {
+export function StatusUpdateDialog({ open, onOpenChange, task, businessId, blockStartWithoutClockIn }: StatusUpdateDialogProps) {
   const { t } = useTranslation("management");
   const [newStatus, setNewStatus] = useState<TaskStatus>("NOT_STARTED");
   const [comment, setComment] = useState("");
   const { updateTaskStatus, updatingStatus } = useUpdateTaskStatus(businessId);
+  const blocksThisSelection = !!blockStartWithoutClockIn && newStatus === "IN_PROGRESS";
 
   useEffect(() => {
     if (open && task) {
@@ -81,6 +89,12 @@ export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: Sta
                 ))}
               </SelectContent>
             </Select>
+            {blocksThisSelection && (
+              <p className="text-xs text-amber-600 flex items-center gap-1 mt-0.5">
+                <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                {t("staff_tasks.clock_in_required_to_start")}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -112,7 +126,7 @@ export function StatusUpdateDialog({ open, onOpenChange, task, businessId }: Sta
             <Button
               type="submit"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim())}
+              disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim()) || blocksThisSelection}
             >
               {updatingStatus ? t("staff_tasks.saving") : t("staff_tasks.update")}
             </Button>

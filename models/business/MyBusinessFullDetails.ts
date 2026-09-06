@@ -145,6 +145,7 @@ export class MyBusinessFullDetails {
   attendanceGraceMinutes: number;
   maxPaidBreakMinutes: number;
   requireClockInForPos: boolean;
+  requireClockInForTasks: boolean = false;
   counts?: {
     employees: number;
     menus: number;
@@ -399,6 +400,7 @@ export class MyBusinessFullDetails {
         data.receiptLanguage ?? null,
       );
       instance.slug = data.slug ?? undefined;
+      instance.requireClockInForTasks = !!data.requireClockInForTasks;
       instance.receiptSecondaryLanguage = data.receiptSecondaryLanguage ?? null;
       instance.organizationId = data.organizationId ?? null;
       instance.organizationName = data.organizationName ?? null;
@@ -460,6 +462,7 @@ export type UpdateBusinessDetailsDto = {
   attendanceGraceMinutes?: number;
   maxPaidBreakMinutes?: number;
   requireClockInForPos?: boolean;
+  requireClockInForTasks?: boolean;
   countryId?: number;
   location?: { type: "Point"; coordinates: [number, number] };
   maxWeeklyHours?: number;

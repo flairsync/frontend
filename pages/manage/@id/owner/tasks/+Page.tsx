@@ -23,6 +23,9 @@ import { cn } from "@/lib/utils";
 import { TaskFormDialog } from "@/components/management/tasks/TaskFormDialog";
 import { StatusUpdateDialog } from "@/components/management/tasks/StatusUpdateDialog";
 import { TaskCard } from "@/components/management/tasks/TaskCard";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance";
+import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -50,6 +53,21 @@ const OwnerTasksPage = () => {
 
   const { tasks, totalPages, loadingTasks } = useBusinessTasks(businessId, { page, limit: 10 });
   const { deleteTask, deletingTask } = useDeleteTask(businessId);
+
+  // Owners are exempt from the clock-in-to-start-a-task gate server-side
+  // (assertClockedInForTasks), so this page — reachable by both owners and
+  // managers with full TASKS access — must not disable the button for an
+  // owner who genuinely isn't clocked in.
+  const { myEmployments } = useMyEmployments();
+  const isOwner = myEmployments?.find((e) => e.business?.id === businessId)?.type === "OWNER";
+
+  const { myBusinessFullDetails } = useMyBusiness(businessId);
+  const requireClockInForTasks = !isOwner && !!myBusinessFullDetails?.requireClockInForTasks;
+  const { data: todayDashboard } = useTodayAttendanceDashboard(
+    requireClockInForTasks ? businessId : undefined,
+  );
+  const todayAttendance = (todayDashboard as { attendance?: { checkInTime?: string; checkOutTime?: string } } | undefined)?.attendance;
+  const isClockedIn = !!todayAttendance?.checkInTime && !todayAttendance?.checkOutTime;
 
   // Filter tabs apply client-side to the current page of results — a task on
   // another page won't show up in a tab until you page to it.
@@ -167,6 +185,7 @@ const OwnerTasksPage = () => {
         onOpenChange={(v) => { if (!v) setStatusTarget(null); }}
         task={statusTarget}
         businessId={businessId}
+        blockStartWithoutClockIn={requireClockInForTasks && !isClockedIn}
       />
 
       {/* Delete confirmation */}

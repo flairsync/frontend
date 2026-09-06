@@ -28,6 +28,8 @@ import {
 } from "@/components/ui/select";
 import { useBusinessTasks, useUpdateTaskStatus } from "@/features/tasks/useTasks";
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
+import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance";
 import {
   Task,
   TaskStatus,
@@ -56,13 +58,20 @@ interface StatusUpdateDialogProps {
   onOpenChange: (open: boolean) => void;
   task: Task | null;
   businessId: string;
+  // True when the business requires staff to be clocked in to start a task
+  // (settings_page.location.attendance.require_clock_in_tasks) and the current
+  // user isn't. Blocks selecting/submitting IN_PROGRESS client-side so staff get
+  // an immediate explanation instead of a failed request — the backend
+  // (assertClockedInForTasks) is still the real enforcement point.
+  blockStartWithoutClockIn?: boolean;
 }
 
-function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpdateDialogProps) {
+function StatusUpdateDialog({ open, onOpenChange, task, businessId, blockStartWithoutClockIn }: StatusUpdateDialogProps) {
   const { t } = useTranslation("management");
   const [newStatus, setNewStatus] = useState<TaskStatus>("NOT_STARTED");
   const [comment, setComment] = useState("");
   const { updateTaskStatus, updatingStatus } = useUpdateTaskStatus(businessId);
+  const blocksThisSelection = !!blockStartWithoutClockIn && newStatus === "IN_PROGRESS";
 
   useEffect(() => {
     if (open && task) {
@@ -105,6 +114,12 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
                 ))}
               </SelectContent>
             </Select>
+            {blocksThisSelection && (
+              <p className="text-xs text-amber-600 flex items-center gap-1 mt-0.5">
+                <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                {t("staff_tasks.clock_in_required_to_start")}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -134,7 +149,7 @@ function StatusUpdateDialog({ open, onOpenChange, task, businessId }: StatusUpda
             <Button
               type="submit"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim())}
+              disabled={updatingStatus || (newStatus === "ISSUE" && !comment.trim()) || blocksThisSelection}
             >
               {updatingStatus ? t("staff_tasks.saving") : t("staff_tasks.update")}
             </Button>
@@ -228,6 +243,19 @@ const StaffTasksPage = () => {
   const activeEmployment = myEmployments?.find((e) => e.business?.id === businessId);
   const myEmploymentId = activeEmployment?.id;
 
+  // Owners are exempt from the clock-in-to-start-a-task gate server-side
+  // (assertClockedInForTasks), so don't disable the button for an owner
+  // who genuinely isn't clocked in.
+  const { myBusinessFullDetails } = useMyBusiness(businessId);
+  const requireClockInForTasks =
+    activeEmployment?.type !== "OWNER" && !!myBusinessFullDetails?.requireClockInForTasks;
+
+  const { data: todayDashboard } = useTodayAttendanceDashboard(
+    requireClockInForTasks ? businessId : undefined,
+  );
+  const todayAttendance = (todayDashboard as { attendance?: { checkInTime?: string; checkOutTime?: string } } | undefined)?.attendance;
+  const isClockedIn = !!todayAttendance?.checkInTime && !todayAttendance?.checkOutTime;
+
   const { tasks, totalPages, loadingTasks } = useBusinessTasks(businessId, { page, limit: 10 });
 
   const relevantTasks = tasks.filter(
@@ -314,6 +342,7 @@ const StaffTasksPage = () => {
         onOpenChange={(v) => { if (!v) setStatusTarget(null); }}
         task={statusTarget}
         businessId={businessId}
+        blockStartWithoutClockIn={requireClockInForTasks && !isClockedIn}
       />
     </div>
   );

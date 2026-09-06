@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/utils/error-utils";
 import { PaginatedResponse, Task } from "@/models/Task";
 import {
   CreateTaskDto,
@@ -49,8 +50,8 @@ export const useCreateTask = (businessId: string) => {
       toast.success("Task created successfully!");
       queryClient.invalidateQueries({ queryKey: ["business_tasks", businessId] });
     },
-    onError: () => {
-      toast.error("Failed to create task. Please try again.");
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to create task. Please try again."));
     },
   });
 
@@ -67,8 +68,8 @@ export const useUpdateTask = (businessId: string, taskId: string) => {
       queryClient.invalidateQueries({ queryKey: ["business_tasks", businessId] });
       queryClient.invalidateQueries({ queryKey: ["business_task", businessId, taskId] });
     },
-    onError: () => {
-      toast.error("Failed to update task. Please try again.");
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to update task. Please try again."));
     },
   });
 
@@ -85,8 +86,8 @@ export const useUpdateTaskStatus = (businessId: string) => {
       toast.success("Task status updated.");
       queryClient.invalidateQueries({ queryKey: ["business_tasks", businessId] });
     },
-    onError: () => {
-      toast.error("Failed to update status. Please try again.");
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to update status. Please try again."));
     },
   });
 
@@ -102,8 +103,8 @@ export const useDeleteTask = (businessId: string) => {
       toast.success("Task deleted.");
       queryClient.invalidateQueries({ queryKey: ["business_tasks", businessId] });
     },
-    onError: () => {
-      toast.error("Failed to delete task. Please try again.");
+    onError: (error: any) => {
+      toast.error(extractErrorMessage(error, "Failed to delete task. Please try again."));
     },
   });
 

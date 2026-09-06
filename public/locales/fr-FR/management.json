@@ -291,6 +291,7 @@
     "update_status_dialog_title": "Mettre à jour le statut",
     "update_status_dialog_description": "Modifiez le statut de la tâche et ajoutez un commentaire si besoin.",
     "status_label": "Statut",
+    "clock_in_required_to_start": "Vous devez être pointé pour démarrer cette tâche.",
     "comment_label": "Commentaire",
     "describe_issue_placeholder": "Décrivez le problème...",
     "optional_note_placeholder": "Note facultative...",
@@ -2489,6 +2490,10 @@
         "require_clock_in_pos": {
           "label": "Exiger le pointage pour utiliser la caisse",
           "desc": "Le personnel doit être pointé pour prendre des commandes, accepter des paiements ou gérer les tables sur un terminal de caisse partagé. Les propriétaires en sont toujours exemptés."
+        },
+        "require_clock_in_tasks": {
+          "label": "Exiger le pointage pour démarrer une tâche",
+          "desc": "Le personnel doit être pointé pour démarrer une tâche. Les propriétaires en sont toujours exemptés."
         },
         "require_qr": {
           "label": "Exiger un code QR pour la présence",

@@ -291,6 +291,7 @@
     "update_status_dialog_title": "Actualitzar estat",
     "update_status_dialog_description": "Canvia l'estat de la tasca i, si vols, afegeix un comentari.",
     "status_label": "Estat",
+    "clock_in_required_to_start": "Has d'haver fitxat per iniciar aquesta tasca.",
     "comment_label": "Comentari",
     "describe_issue_placeholder": "Descriu el problema...",
     "optional_note_placeholder": "Nota opcional...",
@@ -2487,6 +2488,10 @@
         "require_clock_in_pos": {
           "label": "Exigir fitxatge per utilitzar el TPV",
           "desc": "El personal ha d'haver fitxat per prendre comandes, acceptar pagaments o gestionar taules en un terminal TPV compartit. Els propietaris sempre n'estan exempts."
+        },
+        "require_clock_in_tasks": {
+          "label": "Exigir fitxatge per iniciar tasques",
+          "desc": "El personal ha d'haver fitxat per iniciar una tasca. Els propietaris sempre n'estan exempts."
         },
         "require_qr": {
           "label": "Exigir codi QR per a l'assistència",

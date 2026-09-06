@@ -291,6 +291,7 @@
     "update_status_dialog_title": "Update Status",
     "update_status_dialog_description": "Change the task status and optionally add a comment.",
     "status_label": "Status",
+    "clock_in_required_to_start": "You must be clocked in to start this task.",
     "comment_label": "Comment",
     "describe_issue_placeholder": "Describe the issue...",
     "optional_note_placeholder": "Optional note...",
@@ -2491,6 +2492,10 @@
         "require_clock_in_pos": {
           "label": "Require Clock-In to Use POS",
           "desc": "Staff must be clocked in to take orders, accept payments, or manage tables on a shared POS terminal. Owners are always exempt."
+        },
+        "require_clock_in_tasks": {
+          "label": "Require Clock-In to Start Tasks",
+          "desc": "Staff must be clocked in to start a task. Owners are always exempt."
         },
         "require_qr": {
           "label": "Require QR Code for Attendance",

@@ -78,6 +78,7 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
     const [attendanceGraceMinutes, setAttendanceGraceMinutes] = useState(businessDetails?.attendanceGraceMinutes ?? 15);
     const [maxPaidBreakMinutes, setMaxPaidBreakMinutes] = useState(businessDetails?.maxPaidBreakMinutes ?? 30);
     const [requireClockInForPos, setRequireClockInForPos] = useState(!!businessDetails?.requireClockInForPos);
+    const [requireClockInForTasks, setRequireClockInForTasks] = useState(!!businessDetails?.requireClockInForTasks);
 
     const handleLocationChange = (val: any) => {
         setLocationValue(val);
@@ -114,7 +115,8 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                 requireQrForAttendance,
                 attendanceGraceMinutes,
                 maxPaidBreakMinutes,
-                requireClockInForPos
+                requireClockInForPos,
+                requireClockInForTasks
             });
         }
     };
@@ -277,6 +279,17 @@ export default function BusinessSettingsLocation({ businessDetails, onSaveDetail
                             <Switch
                                 checked={requireClockInForPos}
                                 onCheckedChange={setRequireClockInForPos}
+                                disabled={disabled}
+                            />
+                        </div>
+                        <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">
+                            <div className="space-y-0.5">
+                                <Label>{t("settings_page.location.attendance.require_clock_in_tasks.label")}</Label>
+                                <p className="text-xs text-muted-foreground">{t("settings_page.location.attendance.require_clock_in_tasks.desc")}</p>
+                            </div>
+                            <Switch
+                                checked={requireClockInForTasks}
+                                onCheckedChange={setRequireClockInForTasks}
                                 disabled={disabled}
                             />
                         </div>

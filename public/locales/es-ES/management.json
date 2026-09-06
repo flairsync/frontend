@@ -291,6 +291,7 @@
     "update_status_dialog_title": "Actualizar estado",
     "update_status_dialog_description": "Cambia el estado de la tarea y, si quieres, añade un comentario.",
     "status_label": "Estado",
+    "clock_in_required_to_start": "Debes haber fichado para iniciar esta tarea.",
     "comment_label": "Comentario",
     "describe_issue_placeholder": "Describe el problema...",
     "optional_note_placeholder": "Nota opcional...",
@@ -2489,6 +2490,10 @@
         "require_clock_in_pos": {
           "label": "Exigir fichaje para usar el TPV",
           "desc": "El personal debe haber fichado para tomar pedidos, aceptar pagos o gestionar mesas en un terminal TPV compartido. Los propietarios siempre están exentos."
+        },
+        "require_clock_in_tasks": {
+          "label": "Exigir fichaje para iniciar tareas",
+          "desc": "El personal debe haber fichado para iniciar una tarea. Los propietarios siempre están exentos."
         },
         "require_qr": {
           "label": "Exigir código QR para la asistencia",

@@ -71,7 +71,7 @@ function PermissionLabel({ label, description }: { label: string; description?: 
             {label}
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                    <Info className="h-3.5 w-3.5 text-muted-foreground cursor-help !pointer-events-auto" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">{description}</TooltipContent>
             </Tooltip>
