@@ -182,6 +182,13 @@ const PlansPage: React.FC = () => {
             {t("plans_page.monthly")}
           </Button>
           <Button
+            variant={billingType === PricingType.QUARTERLY ? "default" : "ghost"}
+            className="rounded-full px-5 py-2"
+            onClick={() => setBillingType(PricingType.QUARTERLY)}
+          >
+            {t("plans_page.quarterly")}
+          </Button>
+          <Button
             variant={billingType === PricingType.YEARLY ? "default" : "ghost"}
             className="rounded-full px-5 py-2"
             onClick={() => setBillingType(PricingType.YEARLY)}

@@ -19,12 +19,12 @@ const FEATURED_GRADIENT_CLASS = "bg-gradient-to-b from-[#8A89F9] to-[#6366F1] ri
 const LandingPricingSection = () => {
     const { t } = useTranslation("landing");
     const { user } = usePageContext();
-    const [isMonthly, setIsMonthly] = useState(true);
+    const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
     const scope = useRef<Scope>(null);
 
     const { subscriptionPacks, fetchingPacks, currentUserSubscription, creatingCheckout } = useSubscriptions();
 
-    const displayedPacks = subscriptionPacks?.filter(p => p.pricingType === (isMonthly ? PricingType.MONTHLY : PricingType.YEARLY)) || [];
+    const displayedPacks = subscriptionPacks?.filter(p => p.pricingType === billingType) || [];
     const freePack = displayedPacks.find(p => parseFloat(p.price.toString()) === 0);
     const paidPacks = displayedPacks.filter(p => parseFloat(p.price.toString()) > 0).slice(0, 3);
 
@@ -197,19 +197,28 @@ const LandingPricingSection = () => {
             {/* Toggle Buttons */}
             <div className="flex bg-muted p-1 rounded-full mb-16 relative gap-3" id='landing_pricing_selector'>
                 <Button
-                    onClick={() => setIsMonthly(true)}
+                    onClick={() => setBillingType(PricingType.MONTHLY)}
                     className={cn(
                         "rounded-full px-6 py-2 transition-all duration-300 hover:cursor-pointer hover:scale-105",
-                        isMonthly ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
+                        billingType === PricingType.MONTHLY ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
                     )}
                 >
                     {t('landing_page.pricing.monthly_label')}
                 </Button>
                 <Button
-                    onClick={() => setIsMonthly(false)}
+                    onClick={() => setBillingType(PricingType.QUARTERLY)}
                     className={cn(
                         "rounded-full px-6 py-2 transition-all duration-300 relative hover:cursor-pointer hover:scale-105",
-                        !isMonthly ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
+                        billingType === PricingType.QUARTERLY ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
+                    )}
+                >
+                    {t('landing_page.pricing.quarterly_label')}
+                </Button>
+                <Button
+                    onClick={() => setBillingType(PricingType.YEARLY)}
+                    className={cn(
+                        "rounded-full px-6 py-2 transition-all duration-300 relative hover:cursor-pointer hover:scale-105",
+                        billingType === PricingType.YEARLY ? 'shadow-sm' : 'bg-transparent text-muted-foreground'
                     )}
                 >
                     {t('landing_page.pricing.yearly_label')}

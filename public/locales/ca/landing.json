@@ -141,6 +141,7 @@
     "pricing": {
       "title": "Tria el pla que millor s'adapti a tu!",
       "monthly_label": "Facturació mensual",
+      "quarterly_label": "Facturació trimestral (10% de descompte)",
       "yearly_label": "Facturació anual (41% de descompte)",
       "billed_note": "*Facturat anualment, impostos de l'aplicació no inclosos",
       "choose_plan_button": "Tria pla",

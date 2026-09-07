@@ -141,6 +141,7 @@
     "pricing": {
       "title": "Choose The Plans That Suits You!",
       "monthly_label": "Bill monthly",
+      "quarterly_label": "Bill quarterly (10% off)",
       "yearly_label": "Bill yearly (41% off)",
       "billed_note": "*Billed annually, plus application taxes",
       "choose_plan_button": "Choose Plan",

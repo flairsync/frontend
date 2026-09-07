@@ -141,6 +141,7 @@
     "pricing": {
       "title": "¡Elige el plan que se adapte a ti!",
       "monthly_label": "Facturación mensual",
+      "quarterly_label": "Facturación trimestral (10% de descuento)",
       "yearly_label": "Facturación anual (41% de descuento)",
       "billed_note": "*Facturado anualmente, impuestos de la aplicación no incluidos",
       "choose_plan_button": "Elegir plan",

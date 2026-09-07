@@ -12,7 +12,7 @@ const UpgradeModal: React.FC = () => {
     const { t } = useTranslation("management");
     const { isUpgradeModalOpen, closeUpgradeModal, limitMessage } = useSubscriptionStore();
     const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
-    const [isMonthly, setIsMonthly] = useState(true);
+    const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
 
     const handleSubscribe = (packId: string) => {
         const hasRealSubscription = currentUserSubscription?.id && !currentUserSubscription.isDefault;
@@ -37,7 +37,7 @@ const UpgradeModal: React.FC = () => {
     };
 
     const displayedPacks = subscriptionPacks?.filter(
-        (p) => p.pricingType === (isMonthly ? PricingType.MONTHLY : PricingType.YEARLY)
+        (p) => p.pricingType === billingType
     ) || [];
 
     // Only show plans that are a genuine tier upgrade, comparing on a normalized
@@ -75,23 +75,34 @@ const UpgradeModal: React.FC = () => {
                         <div className="flex bg-muted p-1 rounded-full gap-1 shadow-inner border border-border/50">
                             <Button
                                 size="sm"
-                                variant={isMonthly ? "default" : "ghost"}
+                                variant={billingType === PricingType.MONTHLY ? "default" : "ghost"}
                                 className={cn(
                                     "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
-                                    isMonthly ? "shadow-sm" : "text-muted-foreground hover:bg-background"
+                                    billingType === PricingType.MONTHLY ? "shadow-sm" : "text-muted-foreground hover:bg-background"
                                 )}
-                                onClick={() => setIsMonthly(true)}
+                                onClick={() => setBillingType(PricingType.MONTHLY)}
                             >
                                 Monthly
                             </Button>
                             <Button
                                 size="sm"
-                                variant={!isMonthly ? "default" : "ghost"}
+                                variant={billingType === PricingType.QUARTERLY ? "default" : "ghost"}
                                 className={cn(
                                     "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
-                                    !isMonthly ? "shadow-sm" : "text-muted-foreground hover:bg-background"
+                                    billingType === PricingType.QUARTERLY ? "shadow-sm" : "text-muted-foreground hover:bg-background"
                                 )}
-                                onClick={() => setIsMonthly(false)}
+                                onClick={() => setBillingType(PricingType.QUARTERLY)}
+                            >
+                                Quarterly
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={billingType === PricingType.YEARLY ? "default" : "ghost"}
+                                className={cn(
+                                    "rounded-full px-6 py-2.5 h-auto font-bold transition-all text-sm",
+                                    billingType === PricingType.YEARLY ? "shadow-sm" : "text-muted-foreground hover:bg-background"
+                                )}
+                                onClick={() => setBillingType(PricingType.YEARLY)}
                             >
                                 Yearly
                             </Button>
@@ -129,7 +140,11 @@ const UpgradeModal: React.FC = () => {
                                                 <span className="text-4xl font-black text-foreground">
                                                     {isFree ? "Free" : t("subscriptions.per_business_price", { price: pack.getFormattedPrice() })}
                                                 </span>
-                                                {!isFree && <span className="text-muted-foreground font-bold text-lg">/{isMonthly ? "mo" : "yr"}</span>}
+                                                {!isFree && (
+                                                    <span className="text-muted-foreground font-bold text-lg">
+                                                        /{billingType === PricingType.MONTHLY ? "mo" : billingType === PricingType.QUARTERLY ? "qtr" : "yr"}
+                                                    </span>
+                                                )}
                                             </div>
                                             {!isFree && (
                                                 <p className="text-xs text-muted-foreground mt-1">
