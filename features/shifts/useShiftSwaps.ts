@@ -3,10 +3,31 @@ import { toast } from "sonner";
 import { extractErrorMessage } from "@/utils/error-utils";
 import {
   fetchShiftSwapsApiCall,
+  fetchMyShiftSwapsApiCall,
   requestShiftSwapApiCall,
   updateShiftSwapStatusApiCall
 } from "./service";
 import { ShiftSwap } from "@/models/business/shift/ShiftSwap";
+
+// Self-scoped: no STAFF permission required — for a staff member checking their own swaps
+// (e.g. the staff "Requests" tab), as opposed to useShiftSwaps's manager-facing list.
+export const useMyShiftSwaps = (businessId: string, options?: { enabled?: boolean }) => {
+  const { data: swaps, isFetching: fetchingSwaps } = useQuery<ShiftSwap[]>({
+    queryKey: ["my_shift_swaps", businessId],
+    queryFn: async () => {
+      try {
+        const data = await fetchMyShiftSwapsApiCall(businessId);
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        console.warn("Failed to fetch my shift swaps:", error);
+        return [];
+      }
+    },
+    enabled: options?.enabled !== false && !!businessId,
+  });
+
+  return { swaps, fetchingSwaps };
+};
 
 export const useShiftSwaps = (businessId: string, employmentId?: string, options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();

@@ -9,17 +9,17 @@ type MenuHeaderProps = {
     };
 
     onEdit: () => void;
-    onDuplicate: () => void;
     onDelete: () => void;
     canEdit?: boolean;
+    canDelete?: boolean;
 };
 
 export const MenuHeader = ({
     menu,
     onEdit,
-    onDuplicate,
     onDelete,
     canEdit = true,
+    canDelete = true,
 }: MenuHeaderProps) => {
     return (
         <div className="flex flex-col gap-4 border-b border-zinc-200 dark:border-zinc-700 pb-6">
@@ -54,10 +54,6 @@ export const MenuHeader = ({
                         >
                             {menu.isActive ? "Active" : "Inactive"}
                         </span>
-
-                        <span className="text-xs text-zinc-400">
-                            ID: {menu.id}
-                        </span>
                     </div>
                 </div>
 
@@ -73,22 +69,15 @@ export const MenuHeader = ({
                         </button>
                     )}
 
-                    <button
-                        onClick={onDuplicate}
-                        className="px-3 py-1.5 rounded-md text-sm font-medium
-              bg-zinc-200 text-zinc-800 hover:bg-zinc-300
-              dark:bg-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-600 transition"
-                    >
-                        Duplicate
-                    </button>
-
-                    <button
-                        onClick={onDelete}
-                        className="px-3 py-1.5 rounded-md text-sm font-medium
+                    {canDelete && (
+                        <button
+                            onClick={onDelete}
+                            className="px-3 py-1.5 rounded-md text-sm font-medium
               bg-red-500 text-white hover:bg-red-600 transition"
-                    >
-                        Delete
-                    </button>
+                        >
+                            Delete
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

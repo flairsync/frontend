@@ -7,6 +7,7 @@ import { useBusinessEmployees } from "@/features/business/employment/useBusiness
 import { useBusinessRoles } from "@/features/business/roles/useBusinessRoles";
 import { useBusinessEmployeeOps } from "@/features/business/employment/useBusinessEmployeeOps";
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments";
+import { ConfirmationPopup } from "@/components/shared/ConfirmationPopup";
 import {
     Card,
     CardContent,
@@ -165,9 +166,11 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
     const { routeParams } = usePageContext();
     const { employees, isPending: loadingEmployees } = useBusinessEmployees(routeParams.id);
     const { businessRoles, updateEmployeeRoles } = useBusinessRoles(routeParams.id);
+    const { terminateEmployee, terminatingEmployee } = useBusinessEmployeeOps(routeParams.id);
 
     const [selectedStaff, setSelectedStaff] = useState<BusinessEmployee | null>(null);
     const [bulkAssignOpen, setBulkAssignOpen] = useState(false);
+    const [removingStaff, setRemovingStaff] = useState<BusinessEmployee | null>(null);
 
     const hasActionsColumn = canUpdate || canDelete;
 
@@ -199,6 +202,21 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                     businessId={routeParams.id}
                 />
             )}
+
+            <ConfirmationPopup
+                isOpen={Boolean(removingStaff)}
+                onCancel={() => setRemovingStaff(null)}
+                onConfirm={() => {
+                    if (removingStaff) terminateEmployee(removingStaff.id);
+                    setRemovingStaff(null);
+                }}
+                variant="danger"
+                title={t("staff_management_page.staff_tab.remove_staff_title")}
+                description={t("staff_management_page.staff_tab.remove_staff_description", {
+                    name: removingStaff?.professionalProfile?.displayName ?? t("staff_management_page.staff_tab.unnamed_staff"),
+                })}
+                confirmLabel={t("staff_management_page.staff_tab.remove")}
+            />
 
             <Card>
                 <CardHeader>
@@ -284,7 +302,13 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                                                             </Button>
                                                         )}
                                                         {canDelete && (
-                                                            <Button size="sm" variant="destructive">
+                                                            <Button
+                                                                size="sm"
+                                                                variant="destructive"
+                                                                title={t("staff_management_page.staff_tab.remove_staff_title")}
+                                                                disabled={terminatingEmployee}
+                                                                onClick={() => setRemovingStaff(member)}
+                                                            >
                                                                 <Trash className="h-4 w-4" />
                                                             </Button>
                                                         )}

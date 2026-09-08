@@ -291,6 +291,13 @@ export const fetchTimeOffRequestsApiCall = async (businessId: string, employment
   return unwrap(await flairapi.get(`${baseUrl}/time-off?${params.toString()}`));
 };
 
+// Self-scoped: no STAFF permission required — the backend resolves the caller's own employment.
+export const fetchMyTimeOffRequestsApiCall = async (businessId: string) => {
+  const params = new URLSearchParams();
+  params.append("businessId", businessId);
+  return unwrap(await flairapi.get(`${baseUrl}/time-off/mine?${params.toString()}`));
+};
+
 export const submitTimeOffRequestApiCall = (data: { businessId: string; employmentId: string; startDate: string; endDate: string; leaveType: string; reason: string; documentUrl?: string }) => {
   return flairapi.post(`${baseUrl}/time-off`, data);
 };
@@ -305,6 +312,13 @@ export const fetchShiftSwapsApiCall = async (businessId: string, employmentId?: 
   params.append("businessId", businessId);
   if (employmentId) params.append("employmentId", employmentId);
   return unwrap(await flairapi.get(`${baseUrl}/swaps?${params.toString()}`));
+};
+
+// Self-scoped: no STAFF permission required — the backend resolves the caller's own employment.
+export const fetchMyShiftSwapsApiCall = async (businessId: string) => {
+  const params = new URLSearchParams();
+  params.append("businessId", businessId);
+  return unwrap(await flairapi.get(`${baseUrl}/swaps/mine?${params.toString()}`));
 };
 
 export const requestShiftSwapApiCall = (data: { businessId: string; shiftId: string; fromEmploymentId: string; toEmploymentId: string }) => {

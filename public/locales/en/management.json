@@ -558,7 +558,8 @@
       "ai_import": "AI Import",
       "save_changes": "Save changes",
       "move_to_category": "Move to Category",
-      "delete_category": "Delete Category"
+      "delete_category": "Delete Category",
+      "delete_menu": "Delete menu"
     },
     "labels": {
       "simple_view": "Simple",
@@ -575,6 +576,7 @@
       "go_back_menus": "Go back to all menus"
     },
     "messages": {
+      "delete_menu_confirm": "This will permanently delete \"{{name}}\" and everything on it — all categories and items. This cannot be undone.",
       "delete_category_confirm": "Are you sure you want to delete this category? This action cannot be undone and will remove all items within it.",
       "delete_item_confirm_title": "Delete item?",
       "delete_item_confirm_desc": "This will permanently delete \"{{name}}\".",
@@ -1176,7 +1178,11 @@
       "no_roles_badge": "No roles",
       "edit_roles_title": "Edit Roles",
       "status_active": "ACTIVE",
-      "status_suspended": "SUSPENDED"
+      "status_suspended": "SUSPENDED",
+      "remove_staff_title": "Remove staff member",
+      "remove_staff_description": "This will remove {{name}} from your team. They will lose access immediately. This cannot be undone.",
+      "unnamed_staff": "this staff member",
+      "remove": "Remove"
     }
   },
   "attendance_page": {

@@ -14,6 +14,7 @@ export type FlatPermissionGrant = PermissionFlags & { key: string };
 // after a refetch.
 export const PERMISSION_DEPENDENCIES: Record<string, string[]> = {
   ORDERS: ["MENU"],
+  MENU_DISPLAY: ["MENU"],
   TASKS: ["STAFF"],
   COMMUNICATIONS: ["STAFF"],
   JOBS: ["STAFF"],

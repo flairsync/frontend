@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash, Copy } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useTranslation } from "react-i18next";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { getCurrencySymbol } from "@/utils/currency";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
 type Props = {
     item: any;
@@ -27,6 +29,7 @@ export const MenuItemRowSortable = ({
     onDelete,
     onDuplicate
 }: Props) => {
+    const { t } = useTranslation("management");
     const { businessBasicDetails } = useBusinessBasicDetails(businessId ?? null);
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
@@ -56,16 +59,21 @@ export const MenuItemRowSortable = ({
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="font-semibold text-primary">{currencySymbol}{item.price}</span>
-                    <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete();
-                        }}
+                    <ConfirmAction
+                        onConfirm={onDelete}
+                        title={t('menu_management.messages.delete_item_confirm_title')}
+                        description={t('menu_management.messages.delete_item_confirm_desc', { name: item.name })}
+                        confirmText={t('shared.actions.delete')}
+                        storageKey="delete-item-confirm"
                     >
-                        <Trash className="h-4 w-4" />
-                    </Button>
+                        <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Trash className="h-4 w-4" />
+                        </Button>
+                    </ConfirmAction>
                     <Button
                         size="sm"
                         variant="outline"

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePageContext } from "vike-react/usePageContext";
+import { navigate } from "vike/client/router";
 import { useTranslation } from "react-i18next";
 
 // #region UI Components
@@ -114,7 +115,8 @@ const MenuDetailPage: React.FC = () => {
         // Items
         updateItem,
         createNewItem,
-        removeItem
+        removeItem,
+        removeMenu
     } = useBusinessSingleMenu(id, menuId);
 
     const { businessAllItems } = useBusinessMenus(id);
@@ -141,6 +143,7 @@ const MenuDetailPage: React.FC = () => {
     const [editMenu, setEditMenu] = useState(false);
     const [toDuplicateCategory, setToDuplicateCategory] = useState<string | undefined>();
     const [deleteCategoryConfirm, setDeleteCategoryConfirm] = useState<string | null>(null);
+    const [deleteMenuConfirm, setDeleteMenuConfirm] = useState(false);
     const [movingItem, setMovingItem] = useState<{ itemId: string, currentCatId: string } | null>(null);
     const [aiImportOpen, setAiImportOpen] = useState(false);
 
@@ -496,6 +499,33 @@ const MenuDetailPage: React.FC = () => {
                 </DialogContent>
             </Dialog>
 
+            <Dialog open={deleteMenuConfirm} onOpenChange={setDeleteMenuConfirm}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{t('menu_management.actions.delete_menu', { defaultValue: 'Delete menu' })}</DialogTitle>
+                        <DialogDescription>
+                            {t('menu_management.messages.delete_menu_confirm', {
+                                defaultValue: `This will permanently delete "${businessMenu?.name}" and everything on it — all categories and items. This cannot be undone.`,
+                                name: businessMenu?.name,
+                            })}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setDeleteMenuConfirm(false)}>
+                            {t('shared.actions.cancel')}
+                        </Button>
+                        <Button variant="destructive" onClick={() => {
+                            setDeleteMenuConfirm(false);
+                            removeMenu(undefined, {
+                                onSuccess: () => navigate("./"),
+                            });
+                        }}>
+                            {t('shared.actions.delete')}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
             <Dialog open={movingItem != null} onOpenChange={(open) => !open && setMovingItem(null)}>
                 <DialogContent>
                     <DialogHeader>
@@ -536,8 +566,7 @@ const MenuDetailPage: React.FC = () => {
                                 description: businessMenu?.description,
                             }}
                             onEdit={() => setEditMenu(true)}
-                            onDuplicate={() => { }}
-                            onDelete={() => { }}
+                            onDelete={() => setDeleteMenuConfirm(true)}
                         />
                         {businessMenu.hints && Object.keys(businessMenu.hints).length > 0 && (
                             <>

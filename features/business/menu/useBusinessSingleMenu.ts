@@ -4,6 +4,7 @@ import {
   CreateMenuItemDto,
   createNewMenuCategoryApiCall,
   createNewMenuItemApiCall,
+  deleteBusinessMenuApiCall,
   deleteMenuCategoryApiCall,
   deleteMenuItemApiCall,
   DuplicateItemsInCatDto,
@@ -72,6 +73,17 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Menu updated !");
       refreshBusinessMenu();
+    },
+  });
+
+  const { mutate: removeMenu, isPending: isRemovingMenu } = useMutation({
+    mutationKey: ["menu_del", businessId, menuId],
+    mutationFn: async () => {
+      return deleteBusinessMenuApiCall(businessId, menuId);
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Menu deleted!");
+      invalidateBusinessMenuAggregates();
     },
   });
 
@@ -363,6 +375,8 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     // Menu
     businessMenu,
     updateMenu,
+    removeMenu,
+    isRemovingMenu,
     updateMenuStructure,
     // Categories
     createNewCategory,

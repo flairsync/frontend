@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import {
   fetchTimeOffRequestsApiCall,
+  fetchMyTimeOffRequestsApiCall,
   submitTimeOffRequestApiCall,
   updateTimeOffStatusApiCall
 } from "./service";
@@ -11,6 +12,26 @@ import { TimeOffRequest, LeaveType } from "@/models/business/shift/TimeOffReques
 const formatToDateOnly = (date: Date | string) => {
   const d = typeof date === 'string' ? parseISO(date) : date;
   return format(d, "yyyy-MM-dd");
+};
+
+// Self-scoped: no STAFF permission required — for a staff member checking their own requests
+// (e.g. the staff "Requests" tab), as opposed to useTimeOff's manager-facing list.
+export const useMyTimeOffRequests = (businessId: string, options?: { enabled?: boolean }) => {
+  const { data: requests, isFetching: fetchingRequests } = useQuery<TimeOffRequest[]>({
+    queryKey: ["my_time_off_requests", businessId],
+    queryFn: async () => {
+      try {
+        const data = await fetchMyTimeOffRequestsApiCall(businessId);
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        console.warn("Failed to fetch my time off requests:", error);
+        return [];
+      }
+    },
+    enabled: options?.enabled !== false && !!businessId,
+  });
+
+  return { requests, fetchingRequests };
 };
 
 export const useTimeOff = (businessId: string, employmentId?: string, options?: { enabled?: boolean }) => {

@@ -74,6 +74,13 @@ export const updateBusinessMenuApiCall = (
   return flairapi.patch(`${getMenusUrl(businessId)}/${menuId}`, data);
 };
 
+export const deleteBusinessMenuApiCall = (
+  businessId: string,
+  menuId: string,
+) => {
+  return flairapi.delete(`${getMenusUrl(businessId)}/${menuId}`);
+};
+
 export const updateBusinessMenuStructureApiCall = (
   businessId: string,
   menuId: string,

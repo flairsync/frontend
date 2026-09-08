@@ -119,8 +119,6 @@ export const staffNavData = {
                     titleKey: "staff_sidebar.items.messages",
                     url: "/manage/:id/staff/messages",
                     icon: MessageSquare,
-                    requiredPermission: "BUSINESS_SETTINGS",
-                    requiredAction: "read",
                 },
                 {
                     key: "themes",

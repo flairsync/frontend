@@ -47,6 +47,7 @@ export default function StaffMenuPage() {
         createNewItem,
         updateItem,
         removeItem,
+        removeMenu,
         updateMenuStructure,
         duplicateItemsIntoCategory
     } = useBusinessSingleMenu(businessId, selectedMenuId || "");
@@ -74,6 +75,7 @@ export default function StaffMenuPage() {
     const [editingCategory, setEditingCategory] = useState<any>(null);
     const [editingItem, setEditingItem] = useState<any>(null);
     const [targetCategoryId, setTargetCategoryId] = useState<string | null>(null);
+    const [deleteMenuConfirm, setDeleteMenuConfirm] = useState(false);
 
     const { allergies } = useAllergies();
 
@@ -211,14 +213,17 @@ export default function StaffMenuPage() {
                         <MenuHeader
                             menu={businessMenu as any}
                             canEdit={canUpdate}
+                            canDelete={canDelete}
                             onEdit={() => {
                                 if (!canUpdate) return;
                                 setEditingMenu(businessMenu);
                                 setModalMode('edit');
                                 setIsMenuModalOpen(true);
                             }}
-                            onDuplicate={() => { }}
-                            onDelete={() => { }}
+                            onDelete={() => {
+                                if (!canDelete) return;
+                                setDeleteMenuConfirm(true);
+                            }}
                         />
 
                         <div className="flex items-center justify-between">
@@ -428,6 +433,33 @@ export default function StaffMenuPage() {
                 businessId={businessId}
                 availableItems={businessAllItems}
             />
+
+            <Dialog open={deleteMenuConfirm} onOpenChange={setDeleteMenuConfirm}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{t('menu_management.actions.delete_menu', { defaultValue: 'Delete menu' })}</DialogTitle>
+                        <DialogDescription>
+                            {t('menu_management.messages.delete_menu_confirm', {
+                                defaultValue: `This will permanently delete "${businessMenu?.name}" and everything on it — all categories and items. This cannot be undone.`,
+                                name: businessMenu?.name,
+                            })}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex justify-end gap-2 pt-2">
+                        <Button variant="outline" onClick={() => setDeleteMenuConfirm(false)}>
+                            {t('shared.actions.cancel')}
+                        </Button>
+                        <Button variant="destructive" onClick={() => {
+                            setDeleteMenuConfirm(false);
+                            removeMenu(undefined, {
+                                onSuccess: () => setSelectedMenuId(null),
+                            });
+                        }}>
+                            {t('shared.actions.delete')}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
 
             <Dialog open={movingItem != null} onOpenChange={(open) => !open && setMovingItem(null)}>
                 <DialogContent className="sm:max-w-[425px]">

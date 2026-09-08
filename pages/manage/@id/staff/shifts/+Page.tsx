@@ -21,8 +21,8 @@ import { useState, useMemo, useEffect } from "react"
 import { RequestTimeOffModal } from "@/components/management/schedule/RequestTimeOffModal"
 import { RequestShiftSwapModal } from "@/components/management/schedule/RequestShiftSwapModal"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useTimeOff } from "@/features/shifts/useTimeOff"
-import { useShiftSwaps } from "@/features/shifts/useShiftSwaps"
+import { useMyTimeOffRequests } from "@/features/shifts/useTimeOff"
+import { useMyShiftSwaps } from "@/features/shifts/useShiftSwaps"
 import { AttendanceDashboard } from "@/components/management/schedule/AttendanceDashboard"
 import { useTodayAttendanceDashboard } from "@/features/shifts/useAttendance"
 import { StaffAvailabilityModal } from "@/components/management/schedule/StaffAvailabilityModal"
@@ -87,8 +87,8 @@ export default function StaffShiftsPage() {
 
     const [activeTab, setActiveTab] = useState(urlParsed.search.tab || "today");
 
-    const { requests: timeOffRequests, fetchingRequests } = useTimeOff(businessId as string, employmentId, { enabled: activeTab === "requests" });
-    const { swaps: shiftSwaps, fetchingSwaps } = useShiftSwaps(businessId as string, employmentId, { enabled: activeTab === "requests" });
+    const { requests: timeOffRequests, fetchingRequests } = useMyTimeOffRequests(businessId as string, { enabled: activeTab === "requests" });
+    const { swaps: shiftSwaps, fetchingSwaps } = useMyShiftSwaps(businessId as string, { enabled: activeTab === "requests" });
 
     const { data: availableShifts, isLoading: loadingAvailable } = useAvailableShifts(businessId as string);
     const { data: myBids, isLoading: loadingMyBids } = useMyBids();
