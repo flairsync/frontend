@@ -1448,7 +1448,8 @@
     }
   },
   "schedule_staff_scheduling_tab": {
-    "confirm_delete_shift": "Are you sure you want to delete this shift?",
+    "confirm_delete_shift_title": "Delete shift?",
+    "confirm_delete_shift": "This will delete the {{time}} shift. This cannot be undone.",
     "toast_already_has_attendance": "This shift now has an attendance record — use Validate Shift to resolve it.",
     "status_accepted": "Accepted",
     "status_rejected": "Rejected",

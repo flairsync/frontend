@@ -69,7 +69,6 @@ export const MenuItemRowSortable = ({
                         <Button
                             size="sm"
                             variant="destructive"
-                            onClick={(e) => e.stopPropagation()}
                         >
                             <Trash className="h-4 w-4" />
                         </Button>

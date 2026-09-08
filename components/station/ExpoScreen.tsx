@@ -19,6 +19,7 @@ import { useExpoOrders, EXPO_ORDERS_QUERY_KEY } from "@/features/station/useExpo
 import type { ExpoOrder } from "@/features/station/expo.service";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import OfflineBanner from "@/components/station/OfflineBanner";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import type { StationInfo } from "@/models/Station";
 
 interface Props {
@@ -149,18 +150,25 @@ function ExpoTicket({
       {/* Footer */}
       <div className="p-4 bg-muted/70 border-t border-border rounded-b-lg mt-auto">
         {isReady ? (
-          <Button
-            className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
-            onClick={() => onMarkServed(order.id)}
-            disabled={markingServedIds.has(order.id)}
+          <ConfirmAction
+            onConfirm={() => onMarkServed(order.id)}
+            title={t("expo_screen.ticket.confirm_mark_served_title")}
+            description={t("expo_screen.ticket.confirm_mark_served_desc")}
+            confirmText={t("expo_screen.ticket.mark_served")}
+            storageKey="expo-mark-served-confirm"
           >
-            {markingServedIds.has(order.id) ? (
-              <Loader2 className="w-4 h-4 animate-spin mr-2" />
-            ) : (
-              <CheckCircle2 className="w-4 h-4 mr-2" />
-            )}
-            {t("expo_screen.ticket.mark_served")}
-          </Button>
+            <Button
+              className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
+              disabled={markingServedIds.has(order.id)}
+            >
+              {markingServedIds.has(order.id) ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              ) : (
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+              )}
+              {t("expo_screen.ticket.mark_served")}
+            </Button>
+          </ConfirmAction>
         ) : needsConfirm ? (
           <Button
             className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"

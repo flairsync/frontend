@@ -47,6 +47,8 @@
       "other_items_count_other": "{{count}} more items from other stations",
       "ready_for_pickup": "Ready for Pickup",
       "mark_served": "Mark Served",
+      "confirm_mark_served_title": "Mark this order served?",
+      "confirm_mark_served_desc": "This removes the order from the board. Only do this once it's left the kitchen.",
       "awaiting_expo_confirmation": "Awaiting Expo Confirmation",
       "station_done_waiting": "Station done — waiting for other stations",
       "start_preparing": "Start Preparing",
@@ -89,7 +91,9 @@
       "confirm_and_send": "Confirm & Send",
       "all_stations_done": "All Stations Done",
       "in_progress": "In Progress",
-      "mark_served": "Mark Served"
+      "mark_served": "Mark Served",
+      "confirm_mark_served_title": "Mark this order served?",
+      "confirm_mark_served_desc": "This removes the order from the board. Only do this once it's left the kitchen."
     },
     "toasts": {
       "confirm_success": "Order confirmed — ready for pickup!",

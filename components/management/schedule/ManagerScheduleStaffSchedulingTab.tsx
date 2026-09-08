@@ -39,6 +39,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ValidationModal } from './ValidationModal'
 import { LogShiftWorkedModal } from './LogShiftWorkedModal'
 import { ShiftStatus } from '@/models/business/shift/Shift'
+import { ConfirmationPopup } from '@/components/shared/ConfirmationPopup'
 
 const ManagerScheduleStaffSchedulingTab = () => {
     const { t } = useTranslation("management");
@@ -124,6 +125,9 @@ const ManagerScheduleStaffSchedulingTab = () => {
     // No-show resolution state
     const [isLogWorkedModalOpen, setIsLogWorkedModalOpen] = useState(false);
     const [logWorkedShift, setLogWorkedShift] = useState<Shift | null>(null);
+
+    // Delete-shift confirmation state
+    const [deletingShift, setDeletingShift] = useState<Shift | null>(null);
 
     const { hasPermission } = usePermissions(businessId as string);
     const canLogNoShow = hasPermission('STAFF', 'update');
@@ -234,10 +238,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
         setIsIndividualModalOpen(true);
     };
 
-    const handleDeleteShift = (shiftId: string) => {
-        if (confirm(t("schedule_staff_scheduling_tab.confirm_delete_shift"))) {
-            deleteShift(shiftId);
-        }
+    const handleDeleteShift = (shift: Shift) => {
+        setDeletingShift(shift);
     };
 
     const handleValidateShift = (shift: Shift) => {
@@ -674,7 +676,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                                 <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleEditShift(s)} className="pl-4">
                                                                                     {t("schedule_staff_scheduling_tab.context_edit_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
                                                                                 </ContextMenuItem>
-                                                                                <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleDeleteShift(s.id)} className="pl-4 text-destructive focus:text-destructive">
+                                                                                <ContextMenuItem disabled={s.status === ShiftStatus.VALIDATED} onClick={() => handleDeleteShift(s)} className="pl-4 text-destructive focus:text-destructive">
                                                                                     {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
                                                                                 </ContextMenuItem>
                                                                             </div>
@@ -852,7 +854,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                 </ContextMenuItem>
                                                                 <ContextMenuItem
                                                                     disabled={s.status === ShiftStatus.VALIDATED}
-                                                                    onClick={() => handleDeleteShift(s.id)}
+                                                                    onClick={() => handleDeleteShift(s)}
                                                                     className="pl-4 text-destructive focus:text-destructive"
                                                                 >
                                                                     {t("schedule_staff_scheduling_tab.context_delete_at_time", { time: formatTimeInBusinessTimezone(s.startTime, businessTz) })}
@@ -924,6 +926,21 @@ const ManagerScheduleStaffSchedulingTab = () => {
                 shift={logWorkedShift}
                 businessId={businessId as string}
                 onAlreadyHasAttendance={handleLogWorkedConflict}
+            />
+
+            <ConfirmationPopup
+                isOpen={Boolean(deletingShift)}
+                onCancel={() => setDeletingShift(null)}
+                onConfirm={() => {
+                    if (deletingShift) deleteShift(deletingShift.id);
+                    setDeletingShift(null);
+                }}
+                variant="danger"
+                title={t("schedule_staff_scheduling_tab.confirm_delete_shift_title")}
+                description={deletingShift
+                    ? t("schedule_staff_scheduling_tab.confirm_delete_shift", { time: formatTimeInBusinessTimezone(deletingShift.startTime, businessTz) })
+                    : undefined}
+                confirmLabel={t("shared.actions.delete")}
             />
         </Card>
     )

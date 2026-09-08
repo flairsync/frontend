@@ -26,6 +26,7 @@ import {
 import { useNetworkStatus } from "@/features/station/useNetworkStatus";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import OfflineBanner from "@/components/station/OfflineBanner";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import StaffPinScreen from "@/components/pos/StaffPinScreen";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import type { StationInfo } from "@/models/Station";
@@ -449,18 +450,25 @@ const KdsTicketCard = memo(function KdsTicketCard({
           </p>
         )}
         {isReady ? (
-          <Button
-            className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
-            onClick={() => onMarkServed(order.id)}
-            disabled={markingServed.has(order.id)}
+          <ConfirmAction
+            onConfirm={() => onMarkServed(order.id)}
+            title={t("kds_app.ticket.confirm_mark_served_title")}
+            description={t("kds_app.ticket.confirm_mark_served_desc")}
+            confirmText={t("kds_app.ticket.mark_served")}
+            storageKey="kds-mark-served-confirm"
           >
-            {markingServed.has(order.id) ? (
-              <Loader2 className="w-4 h-4 animate-spin mr-2" />
-            ) : (
-              <CheckCircle2 className="w-4 h-4 mr-2" />
-            )}
-            {t("kds_app.ticket.mark_served")}
-          </Button>
+            <Button
+              className="w-full h-12 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase tracking-widest rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-green-500/20"
+              disabled={markingServed.has(order.id)}
+            >
+              {markingServed.has(order.id) ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              ) : (
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+              )}
+              {t("kds_app.ticket.mark_served")}
+            </Button>
+          </ConfirmAction>
         ) : awaitingExpoConfirm ? (
           <div className="flex items-center justify-center gap-2 py-2 text-amber-600">
             <Timer className="w-4 h-4" />
