@@ -19,8 +19,13 @@ import {
 import { toast } from "sonner";
 import { stationApi, staffApi } from "@/features/station/station-api";
 import { useStationSocket } from "@/features/station/useStationSocket";
-import { generateIdempotencyKey } from "@/features/station/offlineQueue";
+import {
+  enqueueOperation, getAllPending, removeOperations, generateIdempotencyKey,
+  type ReconcileResult,
+} from "@/features/station/offlineQueue";
+import { useNetworkStatus } from "@/features/station/useNetworkStatus";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
+import OfflineBanner from "@/components/station/OfflineBanner";
 import StaffPinScreen from "@/components/pos/StaffPinScreen";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import type { StationInfo } from "@/models/Station";
@@ -520,6 +525,16 @@ function KDSMain({ station }: { station: StationInfo }) {
   );
   const knownIdsRef = useRef<Set<string>>(new Set());
   const firstPollRef = useRef(true);
+  const isOnline = useNetworkStatus();
+  const [pendingOpsCount, setPendingOpsCount] = useState(0);
+
+  const refreshPendingCount = useCallback(() => {
+    getAllPending().then((pending) => setPendingOpsCount(pending.length)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    refreshPendingCount();
+  }, [refreshPendingCount]);
 
   useEffect(() => {
     stationApi.patch("/station/kds-station/status", { status: "ready" }).catch(() => {});
@@ -588,6 +603,39 @@ function KDSMain({ station }: { station: StationInfo }) {
     fetchOrders();
   }, [fetchOrders]));
 
+  // Replay queued offline operations (bump/recall/prepare/served) on reconnect
+  useEffect(() => {
+    const handleOnline = async () => {
+      const pending = await getAllPending();
+      if (!pending.length) return;
+
+      try {
+        const res = await staffApi.post("/station/reconcile", { operations: pending });
+        const results: ReconcileResult[] = res.data?.data ?? res.data ?? [];
+
+        const clearKeys = results
+          .filter((r) => r.status === "applied" || r.status === "already_applied")
+          .map((r) => r.idempotencyKey);
+        await removeOperations(clearKeys);
+
+        const issues = results.filter((r) => r.status === "conflict" || r.status === "error");
+        if (issues.length > 0) {
+          toast.warning(t("kds_app.toasts.offline_sync_issues", { count: issues.length }));
+        } else if (clearKeys.length > 0) {
+          toast.success(t("kds_app.toasts.offline_sync_success", { count: clearKeys.length }));
+        }
+      } catch {
+        // next poll / manual retry covers this
+      } finally {
+        refreshPendingCount();
+        fetchOrders();
+      }
+    };
+
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
+  }, [fetchOrders, refreshPendingCount, t]);
+
   const bumpItem = useCallback(async (orderId: string, itemId: string) => {
     // Optimistic: mark item ready locally
     setOrders((prev) =>
@@ -602,6 +650,20 @@ function KDSMain({ station }: { station: StationInfo }) {
             }
       )
     );
+
+    if (!navigator.onLine) {
+      await enqueueOperation({
+        idempotencyKey: generateIdempotencyKey(),
+        type: "bump_item",
+        orderId,
+        itemId,
+        clientTimestamp: new Date().toISOString(),
+      });
+      refreshPendingCount();
+      toast.info(t("kds_app.toasts.offline_action_queued"));
+      return;
+    }
+
     setBumpingItems((prev) => new Set([...prev, itemId]));
 
     try {
@@ -635,9 +697,34 @@ function KDSMain({ station }: { station: StationInfo }) {
         return next;
       });
     }
-  }, [fetchOrders]);
+  }, [fetchOrders, refreshPendingCount, t]);
 
   const recallItem = useCallback(async (orderId: string, itemId: string) => {
+    if (!navigator.onLine) {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id !== orderId
+            ? o
+            : {
+                ...o,
+                stationItems: o.stationItems.map((i) =>
+                  i.id === itemId ? { ...i, status: "sent" as const, readyAt: null } : i
+                ),
+              }
+        )
+      );
+      await enqueueOperation({
+        idempotencyKey: generateIdempotencyKey(),
+        type: "recall_item",
+        orderId,
+        itemId,
+        clientTimestamp: new Date().toISOString(),
+      });
+      refreshPendingCount();
+      toast.info(t("kds_app.toasts.offline_action_queued"));
+      return;
+    }
+
     setRecallingItems((prev) => new Set([...prev, itemId]));
     try {
       const res = await staffApi.patch(
@@ -680,7 +767,7 @@ function KDSMain({ station }: { station: StationInfo }) {
         return next;
       });
     }
-  }, []);
+  }, [refreshPendingCount, t]);
 
   const bumpAll = useCallback(
     async (order: KdsOrder) => {
@@ -693,11 +780,7 @@ function KDSMain({ station }: { station: StationInfo }) {
   );
 
   const startPreparing = useCallback(async (orderId: string) => {
-    setStartingPreparing((prev) => new Set([...prev, orderId]));
-    try {
-      await staffApi.patch(`/station/orders/${orderId}/prepare`, {}, {
-        headers: { "X-Idempotency-Key": generateIdempotencyKey() },
-      });
+    const applyLocally = () =>
       setOrders((prev) =>
         prev.map((o) =>
           o.id !== orderId
@@ -711,6 +794,26 @@ function KDSMain({ station }: { station: StationInfo }) {
               }
         )
       );
+
+    if (!navigator.onLine) {
+      applyLocally();
+      await enqueueOperation({
+        idempotencyKey: generateIdempotencyKey(),
+        type: "start_preparing",
+        orderId,
+        clientTimestamp: new Date().toISOString(),
+      });
+      refreshPendingCount();
+      toast.info(t("kds_app.toasts.offline_action_queued"));
+      return;
+    }
+
+    setStartingPreparing((prev) => new Set([...prev, orderId]));
+    try {
+      await staffApi.patch(`/station/orders/${orderId}/prepare`, {}, {
+        headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+      });
+      applyLocally();
     } catch {
       toast.error(t("kds_app.toasts.start_preparing_failed"));
     } finally {
@@ -720,9 +823,23 @@ function KDSMain({ station }: { station: StationInfo }) {
         return next;
       });
     }
-  }, []);
+  }, [refreshPendingCount, t]);
 
   const markServed = useCallback(async (orderId: string) => {
+    if (!navigator.onLine) {
+      await enqueueOperation({
+        idempotencyKey: generateIdempotencyKey(),
+        type: "mark_served",
+        orderId,
+        clientTimestamp: new Date().toISOString(),
+      });
+      refreshPendingCount();
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+      knownIdsRef.current.delete(orderId);
+      toast.info(t("kds_app.toasts.offline_action_queued"));
+      return;
+    }
+
     setMarkingServed((prev) => new Set([...prev, orderId]));
     try {
       await staffApi.patch(`/station/orders/${orderId}/served`, {}, {
@@ -739,7 +856,7 @@ function KDSMain({ station }: { station: StationInfo }) {
         return next;
       });
     }
-  }, [t]);
+  }, [refreshPendingCount, t]);
 
   const setPriority = useCallback(async (orderId: string, priority: number) => {
     // Optimistic update
@@ -762,6 +879,7 @@ function KDSMain({ station }: { station: StationInfo }) {
 
   return (
     <div className="h-screen flex flex-col bg-background text-foreground overflow-hidden font-sans antialiased">
+      {!isOnline && <OfflineBanner pendingCount={pendingOpsCount} />}
       {/* Header */}
       <header className="h-16 flex items-center px-6 bg-card border-b border-border flex-shrink-0 z-20">
         <div className="flex items-center gap-3">

@@ -68,6 +68,8 @@ import {
     enqueueOperation, getAllPending, removeOperations, generateIdempotencyKey,
     type QueuedOperation, type ReconcileResult, type StationOpType,
 } from "@/features/station/offlineQueue";
+import { useNetworkStatus } from "@/features/station/useNetworkStatus";
+import OfflineBanner from "@/components/station/OfflineBanner";
 import type { StationInfo } from "@/models/Station";
 import type {
     CartItem, PosBootstrapData, PosMenu, PosTable,
@@ -196,6 +198,16 @@ function POSMain({
     const [menus, setMenus] = useState<PosMenu[]>(bootstrapData.menus);
     const [tables, setTables] = useState<PosTable[]>(bootstrapData.tables);
     const [activeOrders, setActiveOrders] = useState<Order[]>([]);
+
+    // ── Connectivity state ──
+    const isOnline = useNetworkStatus();
+    const [pendingOpsCount, setPendingOpsCount] = useState(0);
+    const refreshPendingCount = useCallback(() => {
+        getAllPending().then((pending) => setPendingOpsCount(pending.length)).catch(() => {});
+    }, []);
+    useEffect(() => {
+        refreshPendingCount();
+    }, [refreshPendingCount]);
 
     // ── UI state ──
     const [activeMainSection, setActiveMainSection] = useState<"menu" | "orders" | "tables">("menu");
@@ -368,13 +380,14 @@ function POSMain({
                     toast.error(t("pos_app.toasts.session_expired_offline_sync"));
                 }
             } finally {
+                refreshPendingCount();
                 await Promise.all([refreshOrders(), refreshTables()]);
             }
         };
 
         window.addEventListener("online", handleOnline);
         return () => window.removeEventListener("online", handleOnline);
-    }, [refreshOrders, refreshTables]);
+    }, [refreshOrders, refreshTables, refreshPendingCount]);
 
     // ── Kitchen notes & tax-exempt ──
     const [kitchenNotes, setKitchenNotes] = useState("");
@@ -450,6 +463,7 @@ function POSMain({
                 payload: orderPayload,
                 clientTimestamp: new Date().toISOString(),
             });
+            refreshPendingCount();
             const offlineErr = Object.assign(new Error("offline"), { queued: true });
             throw offlineErr;
         }
@@ -552,6 +566,7 @@ function POSMain({
                     orderId,
                     clientTimestamp: new Date().toISOString(),
                 });
+                refreshPendingCount();
                 toast.info(t("pos_app.toasts.offline_action_queued"));
                 return;
             }
@@ -565,7 +580,7 @@ function POSMain({
                 toast.error(err?.response?.data?.message ?? t("pos_app.toasts.update_order_failed"));
             }
         },
-        [refreshOrders, refreshTables, t],
+        [refreshOrders, refreshTables, refreshPendingCount, t],
     );
 
     const handleCancelOrder = useCallback(
@@ -583,6 +598,7 @@ function POSMain({
                             orderId,
                             clientTimestamp: new Date().toISOString(),
                         });
+                        refreshPendingCount();
                         toast.info(t("pos_app.toasts.offline_cancel_queued"));
                         return;
                     }
@@ -599,7 +615,7 @@ function POSMain({
                 },
             });
         },
-        [refreshOrders, refreshTables, t],
+        [refreshOrders, refreshTables, refreshPendingCount, t],
     );
 
     const handleMarkTableClean = useCallback(async (table: PosTable) => {
@@ -656,6 +672,7 @@ function POSMain({
 
     return (
         <div className="h-full flex flex-col overflow-hidden bg-background text-foreground antialiased">
+            {!isOnline && <OfflineBanner pendingCount={pendingOpsCount} />}
             {/* TOP NAV */}
             <nav className="h-16 flex items-center px-6 bg-card border-b border-border flex-shrink-0 z-20">
                 <div className="flex items-center gap-6 mr-12">

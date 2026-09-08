@@ -1,4 +1,9 @@
 {
+  "offline_banner": {
+    "message": "No connection — actions are being saved and will sync automatically",
+    "message_with_count_one": "No connection — {{count}} action saved, will sync automatically",
+    "message_with_count_other": "No connection — {{count}} actions saved, will sync automatically"
+  },
   "kds_app": {
     "header": {
       "title": "Kitchen Display",
@@ -55,7 +60,12 @@
       "recall_failed": "Failed to recall item — please try again.",
       "start_preparing_failed": "Failed to start preparing — please try again.",
       "mark_served_failed": "Failed to mark as served — please try again.",
-      "priority_update_failed": "Failed to update priority."
+      "priority_update_failed": "Failed to update priority.",
+      "offline_action_queued": "No connection — action saved, will sync automatically",
+      "offline_sync_issues_one": "{{count}} offline action could not be synced — please review",
+      "offline_sync_issues_other": "{{count}} offline actions could not be synced — please review",
+      "offline_sync_success_one": "{{count}} offline action synced",
+      "offline_sync_success_other": "{{count}} offline actions synced"
     }
   },
   "expo_screen": {
@@ -86,7 +96,12 @@
       "items_not_ready": "Some items are still being prepared.",
       "invalid_status": "Order is not in a confirmable state.",
       "confirm_failed": "Failed to confirm order.",
-      "mark_served_failed": "Failed to mark as served — please try again."
+      "mark_served_failed": "Failed to mark as served — please try again.",
+      "offline_action_queued": "No connection — action saved, will sync automatically",
+      "offline_sync_issues_one": "{{count}} offline action could not be synced — please review",
+      "offline_sync_issues_other": "{{count}} offline actions could not be synced — please review",
+      "offline_sync_success_one": "{{count}} offline action synced",
+      "offline_sync_success_other": "{{count}} offline actions synced"
     }
   },
   "station_bootstrap": {
