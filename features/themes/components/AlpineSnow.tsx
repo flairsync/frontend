@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star, Snowflake } from "lucide-react";
@@ -9,7 +10,7 @@ import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMe
 import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
-import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, SECTION_CONTAINER } from "../utils";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
 
 // Ice-blue + frosted glass, full-bleed photo hero, scattered snowflake
@@ -51,51 +52,124 @@ const SHADCN_VARS: Record<string, string> = {
     "--radius": "0.75rem",
 };
 
-// Fixed positions/sizes/delays for the ambient snowflake motifs so they
-// don't reshuffle on every render.
-const SNOWFLAKES = [
-    { top: "12%", left: "8%", size: 18, delay: 0 },
-    { top: "22%", left: "88%", size: 14, delay: 0.4 },
-    { top: "68%", left: "6%", size: 12, delay: 0.8 },
-    { top: "78%", left: "92%", size: 20, delay: 1.2 },
-    { top: "40%", left: "50%", size: 10, delay: 1.6 },
-];
-
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+type Flake = { x: number; y: number; r: number; speed: number; drift: number; angle: number };
+
+// Continuous ambient snowfall across the hero, replacing the old five fixed
+// <Snowflake/> icons — this theme's signature motion. A no-op single frame
+// (flakes drawn at rest, no rAF loop) when the viewer prefers reduced motion.
+function SnowfallCanvas() {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const parent = canvas?.parentElement;
+        if (!canvas || !parent) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let width = 0;
+        let height = 0;
+        let flakes: Flake[] = [];
+        let frameId = 0;
+
+        const resize = () => {
+            width = parent.clientWidth;
+            height = parent.clientHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const count = Math.round((width * height) / 12000);
+            flakes = Array.from({ length: count }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: 1 + Math.random() * 2.5,
+                speed: 0.3 + Math.random() * 0.8,
+                drift: Math.random() * 0.6 - 0.3,
+                angle: Math.random() * Math.PI * 2,
+            }));
+        };
+
+        const draw = () => {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+            for (const f of flakes) {
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        };
+
+        const step = () => {
+            for (const f of flakes) {
+                f.angle += 0.01;
+                f.y += f.speed;
+                f.x += f.drift + Math.sin(f.angle) * 0.3;
+                if (f.y > height + 4) {
+                    f.y = -4;
+                    f.x = Math.random() * width;
+                }
+                if (f.x > width + 4) f.x = -4;
+                if (f.x < -4) f.x = width + 4;
+            }
+            draw();
+            frameId = requestAnimationFrame(step);
+        };
+
+        resize();
+        draw();
+        window.addEventListener("resize", resize);
+        if (!prefersReducedMotion) frameId = requestAnimationFrame(step);
+
+        return () => {
+            window.removeEventListener("resize", resize);
+            if (frameId) cancelAnimationFrame(frameId);
+        };
+    }, []);
+
+    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden />;
+}
 
 export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
     const { t } = useTranslation("feed");
     useBodyThemeScope(SHADCN_VARS);
+    const heroRef = useRef<HTMLElement>(null);
+    const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+    const heroImageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
 
     const media = getOrderedMedia(profile.media);
     const hours = sortOpeningHours(profile.openingHours);
     const hasMenu = !!menu && menu.categories.length > 0;
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
     const heroImage = media[0];
+    const signatureDishes = getSignatureMenuItems(menu);
     const today = new Date().toLocaleDateString(undefined, { weekday: "long" }).toLowerCase();
 
     return (
         <main style={{ ...TOKENS, ...SHADCN_VARS }} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
-            {/* Hero — full-bleed photo (or icy gradient) with a frosted glass card */}
-            <header className="relative min-h-[85vh] flex items-end overflow-hidden">
+            {/* Hero — full-bleed photo (or icy gradient) drifting at a slower parallax
+               rate than the page scroll, under a continuous ambient snowfall */}
+            <header ref={heroRef} className="relative min-h-[85vh] flex items-end overflow-hidden">
                 {heroImage ? (
-                    <img src={heroImage.url} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                    <motion.img
+                        src={heroImage.url}
+                        alt=""
+                        style={{ y: heroImageY }}
+                        className="absolute inset-0 w-full h-[125%] object-cover"
+                    />
                 ) : (
                     <div className="absolute inset-0 bg-gradient-to-b from-[var(--t-muted)] to-[var(--t-accent)]/20" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a1520] via-[#0a1520]/40 to-transparent" />
 
-                {SNOWFLAKES.map((s, i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute text-white/70 pointer-events-none"
-                        style={{ top: s.top, left: s.left }}
-                        animate={{ y: [0, 14, 0], opacity: [0.4, 0.9, 0.4] }}
-                        transition={{ duration: 4 + i, repeat: Infinity, delay: s.delay, ease: "easeInOut" }}
-                    >
-                        <Snowflake size={s.size} />
-                    </motion.div>
-                ))}
+                <SnowfallCanvas />
 
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -178,6 +252,34 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                                 ))}
                             </div>
                         </PhotoProvider>
+                    </div>
+                </section>
+            )}
+
+            {/* Signature dishes — frosted tiles in a snap-scrolling row, echoing
+               the hero's frosted-glass chrome */}
+            {signatureDishes.length > 0 && (
+                <section className="py-16 border-t border-[var(--t-border)]">
+                    <div className={`${SECTION_CONTAINER} !px-6 md:!px-10`}>
+                        <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
+                            <Snowflake size={20} className="text-[var(--t-accent)]" />
+                            {t("business_page.signature_dishes.section_title", "On the Mountain")}
+                        </h2>
+                        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory [scrollbar-width:thin]">
+                            {signatureDishes.map((dish) => (
+                                <div
+                                    key={dish.id}
+                                    className="relative shrink-0 w-56 h-72 snap-start rounded-2xl overflow-hidden border border-[var(--t-border)] shadow-md"
+                                >
+                                    <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 rounded-2xl m-2 bg-white/10 backdrop-blur-md border border-white/20 text-white">
+                                        <p className="font-semibold leading-tight">{dish.name}</p>
+                                        <p className="text-sm text-white/80 mt-0.5">{profile.currency || "€"}{dish.price}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
             )}

@@ -1,5 +1,6 @@
 import { OpeningHours, OpeningPeriod } from "@/models/business/MyBusinessFullDetails";
 import { BusinessMedia } from "@/models/business/BusinessMedia";
+import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 
 // Shared width/padding for the sections every theme reuses as-is (Menu,
 // Reservation, InfoCards, Reviews) so those line up consistently across all
@@ -42,4 +43,30 @@ export function formatOpeningPeriod(period: OpeningPeriod): string {
 // BusinessMedia.parseApiArrayResponse doesn't sort by .order itself.
 export function getOrderedMedia(media: BusinessMedia[]): BusinessMedia[] {
   return [...media].sort((a, b) => a.order - b.order);
+}
+
+export interface SignatureMenuItem {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+// Picks up to `limit` menu items to feature in a theme's "signature dishes"
+// spotlight. There's no owner-curation flag on MenuItem, so this deliberately
+// stays simple: the first items (in menu order) that the owner has actually
+// photographed — a cheap proxy for "the dishes worth showing off" without
+// inventing a new field.
+export function getSignatureMenuItems(menu: BusinessMenu | null, limit = 4): SignatureMenuItem[] {
+  if (!menu) return [];
+  const items: SignatureMenuItem[] = [];
+  for (const category of menu.getOrderedCategories()) {
+    for (const item of category.items ?? []) {
+      const imageUrl = item.media?.[0]?.url;
+      if (!imageUrl) continue;
+      items.push({ id: item.id, name: item.name, price: item.price, imageUrl });
+      if (items.length >= limit) return items;
+    }
+  }
+  return items;
 }

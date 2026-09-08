@@ -1,16 +1,37 @@
 import type { CSSProperties } from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
-import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star, Mountain, TreePine } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star, Mountain, TreePine, Flag } from "lucide-react";
 import { ThemeComponentProps } from "../registry";
 import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMenu";
 import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
-import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, SECTION_CONTAINER } from "../utils";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
+
+// One waypoint per unit height in the trail's viewBox. Swings the path out to
+// alternating sides at each waypoint's midpoint and back to center at its
+// edges, so a card placed on the outside of each swing reads as sitting
+// "on the trail". Coarse (not pixel-matched to the card list below), but
+// this is a decorative backdrop, not a data visualization.
+function buildTrailPath(waypointCount: number, segmentHeight: number): string {
+    if (waypointCount === 0) return "";
+    let d = "M50,0";
+    for (let i = 0; i < waypointCount; i++) {
+        const side = i % 2 === 0 ? 82 : 18;
+        const y0 = i * segmentHeight;
+        const y1 = (i + 1) * segmentHeight;
+        const mid = (y0 + y1) / 2;
+        const ease = segmentHeight * 0.3;
+        d += ` C50,${y0 + ease} ${side},${mid - ease} ${side},${mid}`;
+        d += ` C${side},${mid + ease} 50,${y1 - ease} 50,${y1}`;
+    }
+    return d;
+}
 
 // Pine green + granite stone, rugged/outdoorsy — a Pyrenees hiking-lodge
 // identity (Andorra's mountain landscape rather than its winter/ski side —
@@ -56,12 +77,18 @@ const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ b
 export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
     const { t } = useTranslation("feed");
     useBodyThemeScope(SHADCN_VARS);
+    const trailRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress: trailProgress } = useScroll({ target: trailRef, offset: ["start 0.8", "end 0.65"] });
+    const trailPathLength = useTransform(trailProgress, [0, 1], [0, 1]);
 
     const media = getOrderedMedia(profile.media);
     const hours = sortOpeningHours(profile.openingHours);
     const hasMenu = !!menu && menu.categories.length > 0;
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
     const heroImage = media[0];
+    const signatureDishes = getSignatureMenuItems(menu);
+    const trailSegmentHeight = 100;
+    const trailPath = buildTrailPath(signatureDishes.length, trailSegmentHeight);
     const today = new Date().toLocaleDateString(undefined, { weekday: "long" }).toLowerCase();
 
     return (
@@ -166,6 +193,49 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
                                 ))}
                             </div>
                         </PhotoProvider>
+                    </div>
+                </section>
+            )}
+
+            {/* The Trail — signature dishes as waypoints along a winding path,
+               drawn in as the section scrolls into view */}
+            {signatureDishes.length > 0 && (
+                <section className="py-16 border-t border-[var(--t-border)]">
+                    <div className={SECTION_CONTAINER}>
+                        <h2 className="text-2xl font-bold mb-12 flex items-center justify-center gap-2">
+                            <Flag size={20} className="text-[var(--t-accent)]" />
+                            {t("business_page.signature_dishes.section_title", "Along the Trail")}
+                        </h2>
+                        <div ref={trailRef} className="relative">
+                            <svg
+                                className="absolute inset-0 w-full h-full hidden md:block"
+                                viewBox={`0 0 100 ${signatureDishes.length * trailSegmentHeight}`}
+                                preserveAspectRatio="none"
+                                aria-hidden
+                            >
+                                <motion.path
+                                    d={trailPath}
+                                    fill="none"
+                                    stroke="var(--t-accent)"
+                                    strokeWidth={0.6}
+                                    strokeDasharray="2 2"
+                                    style={{ pathLength: trailPathLength }}
+                                />
+                            </svg>
+                            <div className="relative flex flex-col gap-10">
+                                {signatureDishes.map((dish, i) => (
+                                    <div key={dish.id} className={`md:w-[46%] ${i % 2 === 0 ? "md:mr-auto" : "md:ml-auto"}`}>
+                                        <div className="flex items-center gap-4 rounded bg-[var(--t-bg)] border-2 border-[var(--t-border)] p-3 shadow-sm">
+                                            <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="w-20 h-20 rounded object-cover shrink-0" />
+                                            <div>
+                                                <p className="font-semibold">{dish.name}</p>
+                                                <p className="text-sm text-[var(--t-muted-fg)] mt-0.5">{profile.currency || "€"}{dish.price}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </section>
             )}

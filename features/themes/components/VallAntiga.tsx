@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
-import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star, Landmark } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Globe, Star, Landmark, UtensilsCrossed, CalendarClock, Clock, MessageSquareText } from "lucide-react";
 import { ThemeComponentProps } from "../registry";
 import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMenu";
 import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
-import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, SECTION_CONTAINER } from "../utils";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
 
 // Stone + aged copper/gold, small-caps serif, arch-topped image frames
@@ -63,9 +63,34 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
     const hasMenu = !!menu && menu.categories.length > 0;
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
     const heroImage = media[0];
+    const signatureDishes = getSignatureMenuItems(menu);
+
+    const wayfindingLinks = [
+        hasMenu && { id: "menu-section", label: t("business_page.header.order_online_button", "Menu"), icon: UtensilsCrossed },
+        profile.allowReservations && { id: "reservation-section", label: t("business_page.header.reserve_table_button", "Reserve"), icon: CalendarClock },
+        hours.length > 0 && { id: "hours-section", label: t("business_page.timing.section_title", "Hours"), icon: Clock },
+        { id: "reviews-section", label: t("business_page.reviews.section_title", "Reviews"), icon: MessageSquareText },
+    ].filter(Boolean) as { id: string; label: string; icon: typeof UtensilsCrossed }[];
 
     return (
         <main style={{ ...TOKENS, ...SHADCN_VARS }} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
+            {/* Wayfinding bar — a heritage-site directory plaque, sticky at the
+               top. No other theme has a persistent nav; here it doubles as the
+               "distinct structure" this theme is built around. */}
+            <nav className="sticky top-0 z-20 bg-[var(--t-bg)]/95 backdrop-blur-sm border-b border-[var(--t-border)]">
+                <div className={`${SECTION_CONTAINER} !py-3 flex items-center justify-center gap-6 overflow-x-auto`}>
+                    {wayfindingLinks.map(({ id, label, icon: Icon }) => (
+                        <button
+                            key={id}
+                            onClick={() => scrollTo(id)}
+                            className="shrink-0 flex items-center gap-1.5 text-xs uppercase tracking-wide text-[var(--t-muted-fg)] hover:text-[var(--t-accent)] transition-colors"
+                        >
+                            <Icon size={13} /> {label}
+                        </button>
+                    ))}
+                </div>
+            </nav>
+
             {/* Hero — centered, symmetric, arch-topped image frame */}
             <header className="px-6 pt-20 pb-16 text-center">
                 <div className="max-w-xl mx-auto flex flex-col items-center">
@@ -76,7 +101,16 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                             transition={{ duration: 0.7, ease: "easeOut" }}
                             className="w-40 h-52 md:w-48 md:h-64 rounded-t-full overflow-hidden border-4 border-[var(--t-accent)] shadow-lg mb-8"
                         >
-                            <img src={heroImage.url} alt="" className="w-full h-full object-cover" />
+                            {/* An old photograph coming into color — this theme's
+                               signature motion, standing in for a "chef's story" beat */}
+                            <motion.img
+                                src={heroImage.url}
+                                alt=""
+                                className="w-full h-full object-cover"
+                                initial={{ filter: "sepia(1) contrast(1.05) brightness(0.9)" }}
+                                animate={{ filter: "sepia(0) contrast(1) brightness(1)" }}
+                                transition={{ duration: 1.8, delay: 0.4, ease: "easeInOut" }}
+                            />
                         </motion.div>
                     ) : profile.logo ? (
                         <img src={profile.logo} alt={profile.name} className="w-20 h-20 rounded-full object-cover border-2 border-[var(--t-accent)] mb-6" />
@@ -160,6 +194,29 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                 </section>
             )}
 
+            {/* Signature dishes — the same arch frame as the hero and gallery,
+               now naming a dish and price beneath each one */}
+            {signatureDishes.length > 0 && (
+                <section className="px-6 py-16 border-t border-[var(--t-border)]">
+                    <div className={`${SECTION_CONTAINER} !px-0`}>
+                        <h2 className="text-2xl font-semibold text-center uppercase tracking-wide mb-10">
+                            {t("business_page.signature_dishes.section_title", "House Favourites")}
+                        </h2>
+                        <div className="flex flex-wrap justify-center gap-8">
+                            {signatureDishes.map((dish) => (
+                                <div key={dish.id} className="flex flex-col items-center w-28 md:w-36">
+                                    <div className="w-28 h-36 md:w-36 md:h-48 rounded-t-full overflow-hidden border-2 border-[var(--t-accent)]">
+                                        <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="w-full h-full object-cover" />
+                                    </div>
+                                    <p className="mt-3 text-sm font-medium text-center" style={{ fontVariant: "small-caps" }}>{dish.name}</p>
+                                    <p className="text-xs text-[var(--t-muted-fg)]">{profile.currency || "€"}{dish.price}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {/* Menu + ordering */}
             {hasMenu && (
                 <section id="menu-section" className={`${SECTION_CONTAINER} py-16 border-t border-[var(--t-border)]`}>
@@ -169,14 +226,14 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
 
             {/* Reservations */}
             {profile.allowReservations && (
-                <section className={`${SECTION_CONTAINER} py-16 border-t border-[var(--t-border)]`}>
+                <section id="reservation-section" className={`${SECTION_CONTAINER} py-16 border-t border-[var(--t-border)]`}>
                     <BusinessDetailsTableReservation businessId={profile.id} />
                 </section>
             )}
 
             {/* Opening hours */}
             {hours.length > 0 && (
-                <section className="px-6 py-16 max-w-2xl mx-auto border-t border-[var(--t-border)]">
+                <section id="hours-section" className="px-6 py-16 max-w-2xl mx-auto border-t border-[var(--t-border)]">
                     <h2 className="text-2xl font-semibold text-center uppercase tracking-wide mb-10">
                         {t("business_page.timing.section_title", "Opening Hours")}
                     </h2>
@@ -200,7 +257,7 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
             )}
 
             {/* Reviews */}
-            <section className={`${SECTION_CONTAINER} py-16 border-t border-[var(--t-border)]`}>
+            <section id="reviews-section" className={`${SECTION_CONTAINER} py-16 border-t border-[var(--t-border)]`}>
                 <BusinessDetailsReviews businessId={profile.id} businessName={profile.name} />
             </section>
 
