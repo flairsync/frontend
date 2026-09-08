@@ -12,7 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     Plus, Pencil, Trash2, Search, History, AlertTriangle, Layers, Sparkles,
-    ChevronLeft, ChevronRight, ChevronsUpDown, Check, X, ChevronUp, ChevronDown
+    ChevronLeft, ChevronRight, ChevronsUpDown, Check, X, ChevronUp, ChevronDown,
+    SlidersHorizontal
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -413,15 +414,13 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                                         <TableCell className="text-right text-muted-foreground">{item.lowStockThreshold}</TableCell>
                                                         <TableCell className="text-right">
                                                             <div className="flex justify-end gap-1">
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title={t("inventory_management.movement_history")}>
+                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title={t("inventory_management.movement_history")} aria-label={t("inventory_management.movement_history")}>
                                                                     <History className="w-4 h-4 text-muted-foreground" />
                                                                 </Button>
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")}>
-                                                                    <svg className="w-4 h-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-                                                                    </svg>
+                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")} aria-label={t("inventory_management.adjust_stock")}>
+                                                                    <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
                                                                 </Button>
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditItem(item)}>
+                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditItem(item)} title={t("shared.actions.edit")} aria-label={t("shared.actions.edit")}>
                                                                     <Pencil className="w-4 h-4 text-muted-foreground" />
                                                                 </Button>
                                                                 <ConfirmAction
@@ -431,7 +430,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                                                     confirmText={t("shared.actions.delete")}
                                                                     cancelText={t("shared.actions.cancel")}
                                                                 >
-                                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10">
+                                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" aria-label={t("shared.actions.delete")}>
                                                                         <Trash2 className="w-4 h-4" />
                                                                     </Button>
                                                                 </ConfirmAction>

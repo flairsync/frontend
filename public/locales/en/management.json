@@ -1474,6 +1474,7 @@
     "generating": "Generating…",
     "generate_button": "Generate",
     "copy_previous_week_title": "Copy previous week",
+    "copy_previous_week_button": "Copy Week",
     "publishing": "Publishing…",
     "publish_button": "Publish",
     "view_day": "Day",
@@ -3588,6 +3589,7 @@
     "business_owner": "Business Owner",
     "status_active": "ACTIVE",
     "schedule_shift": "Schedule Shift",
+    "edit_staff_settings": "Edit Settings",
     "set_pos_pin": "Set POS PIN",
     "remove_staff_title_short": "Remove Staff",
     "no_roles_yet": "No roles yet"
@@ -4569,6 +4571,7 @@
   "edit_staff_roles_modal": {
     "title": "Edit Staff Roles",
     "add_role": "Add role",
+    "remove_role": "Remove role",
     "search_role_placeholder": "Search role...",
     "no_role_found": "No role found.",
     "no_roles_assigned": "No roles assigned."

@@ -373,13 +373,13 @@ export const FloorPlanDesigner: React.FC = () => {
                 {/* Zoom + Save */}
                 <div className="flex items-center gap-2 shrink-0">
                     <div className="flex items-center bg-slate-100 rounded-lg p-0.5">
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.max(0.2, z - 0.1))}>
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} title="Zoom out" aria-label="Zoom out">
                             <ZoomOut className="w-3.5 h-3.5" />
                         </Button>
                         <span className="text-[11px] w-11 text-center font-mono font-bold tracking-tight">
                             {Math.round(zoom * 100)}%
                         </span>
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.min(5, z + 0.1))}>
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.min(5, z + 0.1))} title="Zoom in" aria-label="Zoom in">
                             <ZoomIn className="w-3.5 h-3.5" />
                         </Button>
                         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={handleFitZoom} title="Reset zoom">

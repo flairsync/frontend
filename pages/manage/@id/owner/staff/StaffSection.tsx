@@ -308,6 +308,7 @@ const StaffSection = () => {
                         <Button
                           size="sm"
                           variant="outline"
+                          title={t("staff_section.edit_staff_settings")}
                           onClick={() => setEditingSettingsStaff(member)}
                         >
                           <Edit className="h-4 w-4" />

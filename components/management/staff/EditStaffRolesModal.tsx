@@ -134,7 +134,13 @@ export function EditStaffRolesModal({
                                 {/* Role header with remove button */}
                                 <div className="flex items-center justify-between">
                                     <h4 className="font-semibold">{role.name}</h4>
-                                    <Button size="icon" variant="ghost" onClick={() => removeRole(role.id)}>
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        title={t("edit_staff_roles_modal.remove_role")}
+                                        aria-label={t("edit_staff_roles_modal.remove_role")}
+                                        onClick={() => removeRole(role.id)}
+                                    >
                                         <Trash className="h-4 w-4 text-destructive" />
                                     </Button>
                                 </div>

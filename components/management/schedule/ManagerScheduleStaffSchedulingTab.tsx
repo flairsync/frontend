@@ -384,6 +384,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                 onClick={handleRefreshAll}
                                 disabled={isRefreshingAll}
                                 title={t("schedule_staff_scheduling_tab.refresh_button")}
+                                aria-label={t("schedule_staff_scheduling_tab.refresh_button")}
                             >
                                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingAll ? 'animate-spin' : ''}`} />
                             </Button>
@@ -451,16 +452,18 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             {isGeneratingDraft ? t("schedule_staff_scheduling_tab.generating") : t("schedule_staff_scheduling_tab.generate_button")}
                         </Button>
 
-                        {/* Copy previous — icon-only to save space */}
+                        {/* Copy previous week */}
                         <Button
                             variant="outline"
-                            size="icon"
+                            size="sm"
                             onClick={handleCopyWeek}
                             disabled={isCopyingWeek}
                             title={t("schedule_staff_scheduling_tab.copy_previous_week_title")}
-                            className="shrink-0"
+                            aria-label={t("schedule_staff_scheduling_tab.copy_previous_week_title")}
+                            className="gap-1.5 shrink-0"
                         >
                             <Copy className="w-4 h-4" />
+                            <span className="hidden md:inline">{t("schedule_staff_scheduling_tab.copy_previous_week_button")}</span>
                         </Button>
 
                         <div className="w-px h-5 bg-border mx-1" />
@@ -481,7 +484,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                 {/* Row 2: Navigation + filters */}
                 <div className="flex flex-wrap items-center gap-2">
                     <div className="flex items-center bg-background border rounded-md">
-                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handlePrev}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handlePrev} title={t("shared.actions.previous")} aria-label={t("shared.actions.previous")}>
                             <ChevronLeft className="w-4 h-4" />
                         </Button>
                         <span className="text-sm font-medium w-40 text-center select-none">
@@ -491,7 +494,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                 ? format(currentDate, 'MMMM yyyy')
                                 : `${format(dateStart, 'MMM d')} – ${format(dateEnd, 'MMM d, yyyy')}`}
                         </span>
-                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleNext}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleNext} title={t("shared.actions.next")} aria-label={t("shared.actions.next")}>
                             <ChevronRight className="w-4 h-4" />
                         </Button>
                     </div>
