@@ -8,15 +8,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useWalkIn } from "@/features/reservations/useReservationDashboard";
 import { useAvailability } from "@/features/reservations/useReservations";
-import { Loader2, Users } from "lucide-react";
+import { Loader2, Users, Hourglass } from "lucide-react";
 
 interface WalkInModalProps {
     businessId: string;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onJoinWaitlist?: (prefill: {
+        customerName: string;
+        customerPhone: string;
+        customerEmail: string;
+        guestCount: number;
+        notes: string;
+    }) => void;
 }
 
-export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOpenChange }) => {
+export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOpenChange, onJoinWaitlist }) => {
     const { t } = useTranslation("management");
     const [customerName, setCustomerName] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
@@ -63,6 +70,14 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
             }
         );
     };
+
+    const handleJoinWaitlistInstead = () => {
+        onJoinWaitlist?.({ customerName, customerPhone, customerEmail, guestCount, notes });
+        reset();
+        onOpenChange(false);
+    };
+
+    const noTablesAvailable = !checkingAvailability && availableTables.length === 0;
 
     return (
         <Dialog open={open} onOpenChange={(v) => { if (!v) reset(); onOpenChange(v); }}>
@@ -115,6 +130,15 @@ export const WalkInModal: React.FC<WalkInModalProps> = ({ businessId, open, onOp
                                     ))}
                                 </SelectContent>
                             </Select>
+                        )}
+                        {noTablesAvailable && onJoinWaitlist && (
+                            <div className="flex items-center justify-between gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 mt-1">
+                                <span className="text-xs text-amber-800">{t("walk_in_modal.no_tables_hint")}</span>
+                                <Button type="button" size="sm" variant="outline" className="shrink-0 gap-1.5" onClick={handleJoinWaitlistInstead}>
+                                    <Hourglass className="w-3.5 h-3.5" />
+                                    {t("walk_in_modal.join_waitlist_instead")}
+                                </Button>
+                            </div>
                         )}
                     </div>
 

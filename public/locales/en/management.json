@@ -3040,6 +3040,8 @@
     "table_label": "Table",
     "checking_availability": "Checking availability…",
     "no_tables_available": "No tables available",
+    "no_tables_hint": "No tables free right now.",
+    "join_waitlist_instead": "Add to Waitlist",
     "select_table_placeholder": "Select a table",
     "table_option": "{{name}} — seats {{capacity}}",
     "table_fallback_name": "Table {{number}}",

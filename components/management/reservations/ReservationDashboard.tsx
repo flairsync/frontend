@@ -66,6 +66,13 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
     const { t } = useTranslation("management");
     const [walkInOpen, setWalkInOpen] = useState(false);
     const [waitlistOpen, setWaitlistOpen] = useState(false);
+    const [waitlistPrefill, setWaitlistPrefill] = useState<{
+        customerName: string;
+        customerPhone: string;
+        customerEmail: string;
+        guestCount: number;
+        notes: string;
+    } | null>(null);
     const [assignTarget, setAssignTarget] = useState<any>(null);
     const [seatTarget, setSeatTarget] = useState<any>(null);
     const [statFilter, setStatFilter] = useState<string>("all");
@@ -408,8 +415,21 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
             )}
 
             {/* Modals */}
-            <WalkInModal businessId={businessId} open={walkInOpen} onOpenChange={setWalkInOpen} />
-            <JoinWaitlistModal businessId={businessId} open={waitlistOpen} onOpenChange={setWaitlistOpen} />
+            <WalkInModal
+                businessId={businessId}
+                open={walkInOpen}
+                onOpenChange={setWalkInOpen}
+                onJoinWaitlist={(prefill) => {
+                    setWaitlistPrefill(prefill);
+                    setWaitlistOpen(true);
+                }}
+            />
+            <JoinWaitlistModal
+                businessId={businessId}
+                open={waitlistOpen}
+                onOpenChange={(v) => { setWaitlistOpen(v); if (!v) setWaitlistPrefill(null); }}
+                initialValues={waitlistPrefill}
+            />
             <AssignTableModal
                 businessId={businessId}
                 reservation={assignTarget}

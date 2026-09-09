@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -8,13 +8,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { useJoinWaitlist } from "@/features/reservations/useReservationDashboard";
 import { Loader2, Users } from "lucide-react";
 
+interface WaitlistPrefill {
+    customerName?: string;
+    customerPhone?: string;
+    customerEmail?: string;
+    guestCount?: number;
+    notes?: string;
+}
+
 interface JoinWaitlistModalProps {
     businessId: string;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    initialValues?: WaitlistPrefill | null;
 }
 
-export const JoinWaitlistModal: React.FC<JoinWaitlistModalProps> = ({ businessId, open, onOpenChange }) => {
+export const JoinWaitlistModal: React.FC<JoinWaitlistModalProps> = ({ businessId, open, onOpenChange, initialValues }) => {
     const { t } = useTranslation("management");
     const [customerName, setCustomerName] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
@@ -23,6 +32,17 @@ export const JoinWaitlistModal: React.FC<JoinWaitlistModalProps> = ({ businessId
     const [notes, setNotes] = useState("");
 
     const { mutate: joinWaitlist, isPending } = useJoinWaitlist(businessId);
+
+    // Carry over whatever was already typed when arriving here from "no tables free" in the Walk-in modal
+    useEffect(() => {
+        if (open && initialValues) {
+            setCustomerName(initialValues.customerName ?? "");
+            setCustomerPhone(initialValues.customerPhone ?? "");
+            setCustomerEmail(initialValues.customerEmail ?? "");
+            setGuestCount(initialValues.guestCount ?? 2);
+            setNotes(initialValues.notes ?? "");
+        }
+    }, [open, initialValues]);
 
     const reset = () => {
         setCustomerName("");
