@@ -43,6 +43,12 @@ export function getStationToken(): string | null {
 
 export function saveStationToken(token: string): void {
   saveSecureItem(TOKEN_KEYS[_activeType], token);
+  // A freshly (re-)paired device is a known-good state — clear the auto-reload
+  // guard so a genuine future invalid-token event can still trigger one recovery
+  // reload instead of being silently blocked by an unrelated past occurrence.
+  if (typeof window !== "undefined") {
+    sessionStorage.removeItem("flairsync_station_reload_guard");
+  }
 }
 
 export function clearStationToken(): void {

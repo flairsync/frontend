@@ -14,6 +14,19 @@ import { attachRequestDedupe, attachNetworkErrorToast, API_URL } from "@/lib/fla
 // failures — so that's wired in explicitly below instead of being silently absent.
 const STATION_TIMEOUT_MS = 30_000; // shorter than flairapi's 60s default: fail fast on a flaky restaurant WiFi/kiosk connection
 
+// Guards the auto-reload-on-invalid-token recovery below against turning into a
+// reload loop (e.g. if a broken device/pairing state kept re-triggering the same
+// 401 immediately after each reload). Survives the reload itself (sessionStorage),
+// but not a fresh tab, so a device that genuinely gets re-paired later isn't stuck.
+const RELOAD_GUARD_KEY = "flairsync_station_reload_guard";
+function reloadOnceFor(reason: string): void {
+  if (typeof window === "undefined") return;
+  const last = sessionStorage.getItem(RELOAD_GUARD_KEY);
+  if (last === reason) return; // already reloaded once for this exact reason this session — stop, don't loop
+  sessionStorage.setItem(RELOAD_GUARD_KEY, reason);
+  window.location.reload();
+}
+
 // Station-authenticated requests (uses device token via Bearer header)
 export const stationApi = axios.create({
   baseURL: API_URL,
@@ -43,7 +56,7 @@ stationApi.interceptors.response.use(
     const code = err.response?.data?.code;
     if (err.response?.status === 401 && STATION_TOKEN_ERROR_CODES.has(code)) {
       clearStationToken();
-      window.location.reload(); // triggers PairingScreen on next load
+      reloadOnceFor(`station:${code}`); // triggers PairingScreen on next load
     }
     return Promise.reject(err);
   }
@@ -75,7 +88,7 @@ staffApi.interceptors.response.use(
         // The device token itself is invalid (StationAuthGuard runs before
         // StaffPosGuard) — this is a real unpair, not a staff/PIN issue.
         clearStationToken();
-        window.location.reload();
+        reloadOnceFor(`staff:${code}`);
       } else if (typeof code === "string" && code.startsWith("staff.")) {
         // Staff short token expired/invalid/logged out — clear session to trigger PIN pad
         useStaffSession.getState().clearSession();

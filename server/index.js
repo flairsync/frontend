@@ -21,7 +21,16 @@ function startServer() {
     if (userCookie) {
       const clean = userCookie.replace(/^j:/, ""); // remove the leading 'J:'
 
-      user = JSON.parse(clean);
+      // A stale/oversized/malformed cookie (e.g. left over across a deploy that
+      // changed the cookie's shape) must never crash this middleware — it runs on
+      // every request, so an uncaught throw here previously meant every request
+      // failed until the user manually cleared cookies. Treat it as signed-out
+      // instead; the next successful login overwrites the cookie with a fresh one.
+      try {
+        user = JSON.parse(clean);
+      } catch {
+        user = null;
+      }
     }
     if (tfaCookie) {
       tfa = tfaCookie;
