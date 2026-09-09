@@ -2283,6 +2283,10 @@
       "record_line_other": "{{name}} — {{count}} unvalidated records",
       "still_clocked_in": ", {{count}} still clocked in"
     },
+    "missing_rate_banner": {
+      "message_one": "{{count}} employee has no hourly rate set and will be paid nothing this period until you set one.",
+      "message_other": "{{count}} employees have no hourly rate set and will be paid nothing this period until you set one."
+    },
     "draft_entries": {
       "title": "Draft Entries",
       "loading": "Loading…"
@@ -2788,7 +2792,7 @@
       "order_heading": "Order ({{count}})",
       "remove": "Remove",
       "empty_order": "No items added yet.",
-      "total": "Total: ${{amount}}"
+      "total": "Total: {{symbol}}{{amount}}"
     },
     "customer_step": {
       "found_user": "Found user: {{name}}",

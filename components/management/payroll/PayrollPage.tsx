@@ -22,7 +22,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, DollarSign } from "lucide-react";
 import { usePayroll, usePayrollPreview, usePayrollEntries, minutesToHoursLabel } from "@/features/payroll/usePayroll";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { PayrollSummaryEntry, PayrollEntry, PayPeriodType, UnvalidatedAttendanceWarning } from "@/models/business/shift/PayrollEntry";
@@ -111,6 +111,26 @@ const UnvalidatedWarningBanner = ({ warnings }: { warnings: UnvalidatedAttendanc
                     {t("payroll_page.warning_banner.record_line", { name: w.employeeName, count: w.unvalidatedCount })}
                     {w.openCount > 0 ? t("payroll_page.warning_banner.still_clocked_in", { count: w.openCount }) : ''}
                 </li>
+            ))}
+        </ul>
+    </div>
+    );
+};
+
+const MissingRateWarningBanner = ({ entries }: { entries: PayrollSummaryEntry[] }) => {
+    const { t } = useTranslation("management");
+    const missingRateEntries = entries.filter((e) => e.hourlyRate === 0);
+    if (missingRateEntries.length === 0) return null;
+
+    return (
+    <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 space-y-2">
+        <div className="flex items-center gap-2 font-medium">
+            <DollarSign className="h-4 w-4 text-amber-600" />
+            {t("payroll_page.missing_rate_banner.message", { count: missingRateEntries.length })}
+        </div>
+        <ul className="space-y-1 pl-6 list-disc">
+            {missingRateEntries.map((e) => (
+                <li key={e.employmentId}>{e.employeeName}</li>
             ))}
         </ul>
     </div>
@@ -279,6 +299,9 @@ const PayrollPage = ({ businessId }: Props) => {
                                     {preview.periodStart} → {preview.periodEnd} · {preview.payPeriodType}
                                 </span>
                             </div>
+                            {preview.entries && preview.entries.length > 0 && (
+                                <MissingRateWarningBanner entries={preview.entries} />
+                            )}
                             {preview.unvalidatedWarnings && preview.unvalidatedWarnings.length > 0 && (
                                 <UnvalidatedWarningBanner warnings={preview.unvalidatedWarnings} />
                             )}

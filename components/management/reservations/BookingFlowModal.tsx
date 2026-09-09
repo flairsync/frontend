@@ -17,6 +17,7 @@ import { useAvailability, useReservations, useUserLookup } from "@/features/rese
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { parseInTimezone } from "@/lib/dateUtils";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
+import { getCurrencySymbol } from "@/utils/currency";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { CalendarIcon, Users, Clock, Check, ChevronRight, ChevronLeft, ShoppingCart, Loader2 } from "lucide-react";
@@ -75,6 +76,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
     const { businessAllItems: menuItems } = useBusinessMenus(businessId);
 
     const { myBusinessFullDetails } = useMyBusiness(businessId);
+    const currencySymbol = getCurrencySymbol(myBusinessFullDetails?.currency);
     const businessTimezone = myBusinessFullDetails?.timezone;
 
     const [availableTables, setAvailableTables] = useState<any[]>([]);
@@ -386,7 +388,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                         <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
                                             <div>
                                                 <h4 className="font-medium">{item.name}</h4>
-                                                <p className="text-sm text-muted-foreground">${item.price}</p>
+                                                <p className="text-sm text-muted-foreground">{currencySymbol}{item.price}</p>
                                             </div>
                                             <Button size="sm" variant="outline" onClick={() => addToOrder(item)}>{t("booking_flow_modal.pre_order_step.add")}</Button>
                                         </div>
@@ -408,7 +410,10 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                     {bookingData.orderItems.length === 0 && <p className="text-xs text-muted-foreground">{t("booking_flow_modal.pre_order_step.empty_order")}</p>}
                                 </div>
                                 <div className="pt-2 border-t text-sm font-bold">
-                                    {t("booking_flow_modal.pre_order_step.total", { amount: bookingData.orderItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0).toFixed(2) })}
+                                    {t("booking_flow_modal.pre_order_step.total", {
+                                        symbol: currencySymbol,
+                                        amount: bookingData.orderItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0).toFixed(2),
+                                    })}
                                 </div>
                             </div>
                         </div>

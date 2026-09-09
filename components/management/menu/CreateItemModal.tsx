@@ -57,6 +57,8 @@ import {
 } from "@/components/ui/command";
 import { useInventory } from '@/features/inventory/useInventory';
 import { useInventoryUnits } from '@/features/inventory/useInventoryUnits';
+import { useBusinessBasicDetails } from '@/features/business/useBusinessBasicDetails';
+import { getCurrencySymbol } from '@/utils/currency';
 import { usePermissions } from '@/features/auth/usePermissions';
 import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
 import { kitchenStationService } from "@/features/station/service";
@@ -101,6 +103,8 @@ const ItemVariantsSection: React.FC<{
 }> = ({ businessId, menuId, categoryId, itemId, variants }) => {
     const { t } = useTranslation("management");
     const { createVariant, updateVariant, deleteVariant } = useBusinessSingleMenu(businessId, menuId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const [isAdding, setIsAdding] = useState(false);
     const [newName, setNewName] = useState('');
@@ -138,7 +142,7 @@ const ItemVariantsSection: React.FC<{
                         <div key={v.id} className="flex items-center justify-between p-2 border rounded-md">
                             <div className="text-sm font-medium">{v.name}</div>
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                {v.price}€
+                                {currencySymbol}{v.price}
                                 <button type="button" onClick={() => deleteVariant({ categoryId, itemId, variantId: v.id })} className="text-destructive hover:text-destructive/80">
                                     <X className="h-4 w-4" />
                                 </button>
@@ -173,6 +177,8 @@ const ItemModifiersSection: React.FC<{
         createModifierGroup, deleteModifierGroup,
         createModifierItem, deleteModifierItem
     } = useBusinessSingleMenu(businessId, menuId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const [isAddingGroup, setIsAddingGroup] = useState(false);
     const [newGroupName, setNewGroupName] = useState('');
@@ -246,7 +252,7 @@ const ItemModifiersSection: React.FC<{
                                     <div key={modItem.id} className="flex items-center justify-between text-sm p-1">
                                         <span>{modItem.name}</span>
                                         <div className="flex items-center gap-3 text-muted-foreground">
-                                            +{modItem.price}€
+                                            +{currencySymbol}{modItem.price}
                                             <button type="button" onClick={() => deleteModifierItem({ categoryId, itemId, groupId: group.id, modItemId: modItem.id })} className="text-destructive hover:text-destructive/80">
                                                 <X className="h-3 w-3" />
                                             </button>
@@ -321,6 +327,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({
     categoryId
 }) => {
     const anchor = useComboboxAnchor();
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     // State
     const [name, setName] = useState('');
@@ -503,7 +511,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                             className={`mr-2 h-4 w-4 ${selectedCopyItemId === item.id ? "opacity-100" : "opacity-0"
                                                 }`}
                                         />
-                                        {item.name} — {item.price}€
+                                        {item.name} — {currencySymbol}{item.price}
                                     </CommandItem>
                                 ))}
                             </CommandGroup>
