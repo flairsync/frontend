@@ -11,6 +11,7 @@ import {
   fetchPayrollPreviewApiCall,
   generatePayrollApiCall,
   finalizePayrollApiCall,
+  unfinalizePayrollApiCall,
   fetchPayrollEntriesApiCall,
   getPayrollExportUrl,
 } from "./service";
@@ -83,6 +84,17 @@ export const usePayroll = (businessId: string) => {
     },
   });
 
+  const unfinalizeMutation = useMutation({
+    mutationFn: (data: FinalizePayrollDto) => unfinalizePayrollApiCall(data),
+    onSuccess: () => {
+      toast.success("Payroll reopened for editing");
+      queryClient.invalidateQueries({ queryKey: ["payroll_entries", businessId] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to reopen payroll");
+    },
+  });
+
   const exportPayroll = (startDate: string, endDate: string, format: 'pdf' | 'csv' = 'pdf') => {
     const url = getPayrollExportUrl(businessId, startDate, endDate, format);
     const a = document.createElement('a');
@@ -95,6 +107,8 @@ export const usePayroll = (businessId: string) => {
     isGenerating: generateMutation.isPending,
     finalizePayroll: finalizeMutation.mutate,
     isFinalizing: finalizeMutation.isPending,
+    unfinalizePayroll: unfinalizeMutation.mutate,
+    isUnfinalizing: unfinalizeMutation.isPending,
     exportPayroll,
   };
 };

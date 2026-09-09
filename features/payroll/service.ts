@@ -23,6 +23,10 @@ export const finalizePayrollApiCall = (data: FinalizePayrollDto) => {
   return flairapi.patch(`${baseUrl}/finalize`, data);
 };
 
+export const unfinalizePayrollApiCall = (data: FinalizePayrollDto) => {
+  return flairapi.patch(`${baseUrl}/unfinalize`, data);
+};
+
 export const fetchPayrollEntriesApiCall = async (
   businessId: string,
   startDate?: string,

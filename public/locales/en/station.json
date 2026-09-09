@@ -42,6 +42,8 @@
       "waiting_for_expo": "Waiting for Expo",
       "done_in": "Done in {{time}}",
       "unbump_title": "Un-bump this item",
+      "item_voided": "Voided — do not make",
+      "item_cancelled": "Cancelled — do not make",
       "recall": "Recall",
       "other_items_count_one": "{{count}} more item from other stations",
       "other_items_count_other": "{{count}} more items from other stations",

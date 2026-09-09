@@ -14,7 +14,7 @@ import {
   ChefHat, Clock, CheckCircle2, AlertCircle,
   Utensils, Package, Building2, Loader2, Undo2,
   Flame, Settings, ChevronUp, ChevronDown, Timer,
-  AlertTriangle,
+  AlertTriangle, Ban,
 } from "lucide-react";
 import { toast } from "sonner";
 import { stationApi, staffApi } from "@/features/station/station-api";
@@ -337,16 +337,19 @@ const KdsTicketCard = memo(function KdsTicketCard({
         <div className="space-y-3 py-1">
           {order.stationItems.map((item) => {
             const isItemReady = item.status === "ready";
-            const isNotSent = item.status !== "sent" && item.status !== "ready";
+            const isVoided = item.status === "cancelled" || item.status === "voided";
+            const isNotSent = item.status !== "sent" && item.status !== "ready" && !isVoided;
             const bumping = bumpingItems.has(item.id);
             const recalling = recallingItems.has(item.id);
 
             return (
               <div
                 key={item.id}
-                onClick={() => !isItemReady && !isNotSent && !bumping && !recalling && onBumpItem(order.id, item.id)}
+                onClick={() => !isItemReady && !isNotSent && !isVoided && !bumping && !recalling && onBumpItem(order.id, item.id)}
                 className={`p-3 rounded-2xl transition-all border ${
-                  isNotSent
+                  isVoided
+                    ? "bg-destructive/5 border-destructive/20 opacity-60 cursor-default"
+                    : isNotSent
                     ? "bg-muted border-border opacity-30 cursor-default"
                     : isItemReady
                     ? "bg-muted border-border opacity-50 cursor-default"
@@ -355,13 +358,21 @@ const KdsTicketCard = memo(function KdsTicketCard({
                     : "bg-muted hover:bg-accent border-transparent cursor-pointer shadow-lg shadow-black/20 active:scale-95"
                 }`}
               >
+                {isVoided && (
+                  <div className="flex items-center gap-1 mb-1.5 text-destructive">
+                    <Ban className="w-3 h-3 flex-shrink-0" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">
+                      {item.status === "voided" ? t("kds_app.ticket.item_voided") : t("kds_app.ticket.item_cancelled")}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex gap-3 flex-1 min-w-0">
-                    <span className={`text-xl font-black flex-shrink-0 ${isItemReady || isNotSent ? "text-muted-foreground" : "text-primary"}`}>
+                    <span className={`text-xl font-black flex-shrink-0 ${isItemReady || isNotSent ? "text-muted-foreground" : isVoided ? "text-destructive/70" : "text-primary"}`}>
                       {item.quantity}×
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h4 className={`text-sm font-black uppercase tracking-tight ${isItemReady || isNotSent ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                      <h4 className={`text-sm font-black uppercase tracking-tight ${isVoided ? "text-destructive/70 line-through" : isItemReady || isNotSent ? "text-muted-foreground line-through" : "text-foreground"}`}>
                         {item.nameSnapshot}
                       </h4>
                       {item.selectedModifiers && item.selectedModifiers.length > 0 && (

@@ -174,6 +174,27 @@ export const fetchAvailableShiftsApiCall = async (businessId: string) =>
 export const fetchMyBidsApiCall = async () =>
   unwrap(await flairapi.get(`${baseUrl}/my-bids`));
 
+export interface StaffCalendarShift {
+  id: string;
+  businessId: string;
+  employmentId: string;
+  startTime: string;
+  endTime: string;
+  status: ShiftStatus;
+  staffResponse: string | null;
+}
+
+export const fetchStaffCalendarShiftsApiCall = async (
+  businessId: string,
+  startDate: string,
+  endDate: string,
+): Promise<StaffCalendarShift[]> => {
+  const data = await unwrap<StaffCalendarShift[]>(
+    await flairapi.get(`${baseUrl}/staff/calendar`, { params: { businessId, startDate, endDate } }),
+  );
+  return Array.isArray(data) ? data : [];
+};
+
 export const bulkScheduleTeamShiftsApiCall = async (data: BulkScheduleTeamDto) => {
   return unwrap<BulkShiftResult>(await flairapi.post(`${baseUrl}/bulk-team`, data));
 };

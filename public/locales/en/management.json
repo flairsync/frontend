@@ -2029,6 +2029,8 @@
     "upcoming": {
       "title": "Upcoming Schedule",
       "subtitle": "Your scheduled shifts for the selected period.",
+      "view_list": "List",
+      "view_calendar": "Calendar",
       "status_label": "Status",
       "all_statuses": "All Statuses",
       "from_label": "From",
@@ -2050,6 +2052,20 @@
       "previous": "Previous",
       "next": "Next",
       "cancelled": "Cancelled"
+    },
+    "calendar_tab": {
+      "today_button": "Today",
+      "more_shifts_one": "+{{count}} more",
+      "more_shifts_other": "+{{count}} more"
+    },
+    "history_tab": {
+      "title": "Shift History",
+      "subtitle": "Your shifts from the last 90 days.",
+      "col_date": "Date",
+      "col_times": "Times",
+      "col_status": "Status",
+      "loading": "Loading your history...",
+      "empty": "No past shifts in the last 90 days."
     },
     "time_off": {
       "title": "Time Off Requests",
@@ -2273,13 +2289,20 @@
     },
     "finalized_entries": {
       "title": "Finalized",
-      "loading": "Loading…"
+      "loading": "Loading…",
+      "reopen": "Reopen for Editing"
     },
     "finalize_dialog": {
       "title": "Finalize Payroll",
-      "description": "This will lock all draft entries for the period {{startDate}} to {{endDate}}. Finalized entries cannot be overwritten. This action is irreversible.",
+      "description": "This will lock all draft entries for the period {{startDate}} to {{endDate}} so they're ready to export. Made a mistake? You can reopen this period afterward from the Finalized section.",
       "cancel": "Cancel",
       "finalizing": "Finalizing…"
+    },
+    "unfinalize_dialog": {
+      "title": "Reopen payroll for editing?",
+      "description": "This moves the {{startDate}} to {{endDate}} period back to Draft so you can fix a mistake. If you've already exported or shared this payroll, those copies won't update automatically.",
+      "cancel": "Cancel",
+      "reopening": "Reopening…"
     }
   },
   "absence_log_panel": {

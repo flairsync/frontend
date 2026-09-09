@@ -174,12 +174,13 @@ const PayrollPage = ({ businessId }: Props) => {
     const [startDate, setStartDate] = useState(defaultPeriod.start);
     const [endDate, setEndDate] = useState(defaultPeriod.end);
     const [showFinalizeDialog, setShowFinalizeDialog] = useState(false);
+    const [showUnfinalizeDialog, setShowUnfinalizeDialog] = useState(false);
 
     const { preview, fetchingPreview } = usePayrollPreview(businessId, startDate, endDate);
     const { entries: draftEntries, fetchingEntries } = usePayrollEntries(businessId, startDate, endDate, 'DRAFT');
     const { entries: finalizedEntries, fetchingEntries: fetchingFinalized } = usePayrollEntries(businessId, startDate, endDate, 'FINALIZED');
 
-    const { generatePayroll, isGenerating, finalizePayroll, isFinalizing, exportPayroll } = usePayroll(businessId);
+    const { generatePayroll, isGenerating, finalizePayroll, isFinalizing, unfinalizePayroll, isUnfinalizing, exportPayroll } = usePayroll(businessId);
 
     const currency = preview?.currency ?? myBusinessFullDetails?.currency ?? 'USD';
     const hasDraft = draftEntries.length > 0;
@@ -192,6 +193,12 @@ const PayrollPage = ({ businessId }: Props) => {
     const handleFinalize = () => {
         finalizePayroll({ businessId, startDate, endDate }, {
             onSuccess: () => setShowFinalizeDialog(false),
+        });
+    };
+
+    const handleUnfinalize = () => {
+        unfinalizePayroll({ businessId, startDate, endDate }, {
+            onSuccess: () => setShowUnfinalizeDialog(false),
         });
     };
 
@@ -312,7 +319,17 @@ const PayrollPage = ({ businessId }: Props) => {
                     {/* Finalized Entries */}
                     {finalizedEntries.length > 0 && (
                         <div className="space-y-3">
-                            <h2 className="text-lg font-semibold">{t("payroll_page.finalized_entries.title")}</h2>
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-lg font-semibold">{t("payroll_page.finalized_entries.title")}</h2>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setShowUnfinalizeDialog(true)}
+                                    disabled={isUnfinalizing}
+                                >
+                                    {t("payroll_page.finalized_entries.reopen")}
+                                </Button>
+                            </div>
                             {fetchingFinalized ? (
                                 <p className="text-sm text-muted-foreground">{t("payroll_page.finalized_entries.loading")}</p>
                             ) : (
@@ -340,6 +357,24 @@ const PayrollPage = ({ businessId }: Props) => {
                         <Button variant="outline" onClick={() => setShowFinalizeDialog(false)}>{t("payroll_page.finalize_dialog.cancel")}</Button>
                         <Button onClick={handleFinalize} disabled={isFinalizing}>
                             {isFinalizing ? t("payroll_page.finalize_dialog.finalizing") : t("payroll_page.period_picker.finalize")}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Unfinalize (reopen) confirmation dialog */}
+            <Dialog open={showUnfinalizeDialog} onOpenChange={setShowUnfinalizeDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{t("payroll_page.unfinalize_dialog.title")}</DialogTitle>
+                        <DialogDescription>
+                            {t("payroll_page.unfinalize_dialog.description", { startDate, endDate })}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setShowUnfinalizeDialog(false)}>{t("payroll_page.unfinalize_dialog.cancel")}</Button>
+                        <Button variant="destructive" onClick={handleUnfinalize} disabled={isUnfinalizing}>
+                            {isUnfinalizing ? t("payroll_page.unfinalize_dialog.reopening") : t("payroll_page.finalized_entries.reopen")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

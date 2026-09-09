@@ -24,6 +24,8 @@ import {
   getUpcomingShiftsApiCall,
   fetchAvailableShiftsApiCall,
   fetchMyBidsApiCall,
+  fetchStaffCalendarShiftsApiCall,
+  StaffCalendarShift,
   BulkScheduleTeamDto,
   BulkStaffWeeklyDto,
   BulkShiftResult,
@@ -411,6 +413,16 @@ export const useMyBids = () => {
       return Array.isArray(data) ? data : [];
     },
   });
+};
+
+export const useMyShiftCalendar = (businessId: string, startDate: string, endDate: string, enabled: boolean = true) => {
+  const { data: calendarShifts = [], isFetching: fetchingCalendarShifts } = useQuery<StaffCalendarShift[]>({
+    queryKey: ["my-shift-calendar", businessId, startDate, endDate],
+    queryFn: () => fetchStaffCalendarShiftsApiCall(businessId, startDate, endDate),
+    enabled: enabled && !!businessId && !!startDate && !!endDate,
+  });
+
+  return { calendarShifts, fetchingCalendarShifts };
 };
 
 export const useAllBusinessBids = (businessId: string) => {

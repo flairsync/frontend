@@ -4,18 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRightLeft, Loader2, DollarSign, ChevronLeft, ChevronRight, Filter, CheckCircle2, Lock, ShieldCheck, Clock, Info, UserX, ClipboardCheck } from "lucide-react"
+import { Calendar, ArrowRightLeft, Loader2, DollarSign, ChevronLeft, ChevronRight, Filter, CheckCircle2, Lock, ShieldCheck, Clock, Info, UserX, ClipboardCheck, List, CalendarDays, History } from "lucide-react"
 import { usePageContext } from "vike-react/usePageContext"
 import { navigate } from "vike/client/router"
 import { toast } from "sonner"
-import { useShifts, useUpcomingShifts, useAvailableShifts, useMyBids } from "@/features/shifts/useShifts"
+import { useShifts, useUpcomingShifts, useAvailableShifts, useMyBids, useMyShiftCalendar } from "@/features/shifts/useShifts"
+import { StaffShiftCalendarView } from "@/components/management/schedule/StaffShiftCalendarView"
 import { useMyEmployments } from "@/features/business/employment/useMyEmployments"
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails"
 import { usePermissions } from "@/features/auth/usePermissions"
 import { formatInBusinessTimezone, formatTimeInBusinessTimezone } from "@/utils/date-utils"
 import { getCurrencySymbol } from "@/utils/currency"
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift"
-import { format, parseISO, addDays, startOfDay, differenceInHours } from "date-fns"
+import { format, parseISO, addDays, startOfDay, differenceInHours, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addMonths, subMonths } from "date-fns"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState, useMemo, useEffect } from "react"
 import { RequestTimeOffModal } from "@/components/management/schedule/RequestTimeOffModal"
@@ -62,6 +63,10 @@ export default function StaffShiftsPage() {
     const [page, setPage] = useState(1);
     const limit = 10;
 
+    // Schedule view mode (list vs calendar) + calendar month state
+    const [scheduleView, setScheduleView] = useState<'list' | 'calendar'>('list');
+    const [calendarMonth, setCalendarMonth] = useState(() => startOfDay(new Date()));
+
     // Personal shifts via the permission-free /upcoming endpoint
     const { data: myShiftsData, isFetching: fetchingShifts, isLoading: loadingShifts } = useUpcomingShifts({
         businessId: businessId as string,
@@ -92,6 +97,37 @@ export default function StaffShiftsPage() {
 
     const { data: availableShifts, isLoading: loadingAvailable } = useAvailableShifts(businessId as string);
     const { data: myBids, isLoading: loadingMyBids } = useMyBids();
+
+    // Calendar view range — includes the leading/trailing days shown in the grid
+    const { calendarRangeStart, calendarRangeEnd } = useMemo(() => ({
+        calendarRangeStart: format(startOfWeek(startOfMonth(calendarMonth)), 'yyyy-MM-dd'),
+        calendarRangeEnd: format(endOfWeek(endOfMonth(calendarMonth)), 'yyyy-MM-dd'),
+    }), [calendarMonth]);
+
+    const { calendarShifts, fetchingCalendarShifts } = useMyShiftCalendar(
+        businessId as string,
+        calendarRangeStart,
+        calendarRangeEnd,
+        activeTab === "schedule" && scheduleView === "calendar",
+    );
+
+    // Shift history — reuses the /upcoming endpoint with a past date range (it only
+    // clamps to "today" when no startDate is passed, so an explicit past range works).
+    const historyRange = useMemo(() => ({
+        start: format(addDays(new Date(), -90), 'yyyy-MM-dd'),
+        end: format(addDays(new Date(), -1), 'yyyy-MM-dd'),
+    }), []);
+    const { data: historyData, isFetching: fetchingHistory } = useUpcomingShifts({
+        businessId: businessId as string,
+        startDate: historyRange.start,
+        endDate: historyRange.end,
+        limit: 20,
+        enabled: activeTab === "bids",
+    });
+    const historyShifts = useMemo(() => {
+        const list = Array.isArray(historyData) ? historyData : (historyData?.data || []);
+        return [...list].reverse();
+    }, [historyData]);
     const { claimShift, isClaiming, respondToShift, isResponding, bidOnShift, isBidding } = useShifts(businessId as string);
     const [isTimeOffOpen, setIsTimeOffOpen] = useState(false);
     const [isSwapOpen, setIsSwapOpen] = useState(false);
@@ -422,7 +458,29 @@ export default function StaffShiftsPage() {
                                     <CardTitle>{t("staff_shifts_page.upcoming.title")}</CardTitle>
                                     <CardDescription>{t("staff_shifts_page.upcoming.subtitle")}</CardDescription>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 items-end gap-3 w-full lg:w-auto">
+                                <div className="flex bg-muted p-1 rounded-lg self-start">
+                                    <Button
+                                        variant={scheduleView === 'list' ? 'default' : 'ghost'}
+                                        size="sm"
+                                        className="gap-1.5"
+                                        onClick={() => setScheduleView('list')}
+                                    >
+                                        <List className="h-4 w-4" />
+                                        {t("staff_shifts_page.upcoming.view_list")}
+                                    </Button>
+                                    <Button
+                                        variant={scheduleView === 'calendar' ? 'default' : 'ghost'}
+                                        size="sm"
+                                        className="gap-1.5"
+                                        onClick={() => setScheduleView('calendar')}
+                                    >
+                                        <CalendarDays className="h-4 w-4" />
+                                        {t("staff_shifts_page.upcoming.view_calendar")}
+                                    </Button>
+                                </div>
+                            </div>
+                            {scheduleView === 'list' && (
+                                <div className="grid grid-cols-1 md:grid-cols-3 items-end gap-3 w-full lg:w-auto pt-4">
                                     <div className="grid gap-1.5">
                                         <Label htmlFor="status-filter" className="text-[10px] uppercase text-muted-foreground font-semibold">{t("staff_shifts_page.upcoming.status_label")}</Label>
                                         <Select value={status} onValueChange={setStatus}>
@@ -453,16 +511,28 @@ export default function StaffShiftsPage() {
                                         <Label htmlFor="end-date" className="text-[10px] uppercase text-muted-foreground font-semibold">{t("staff_shifts_page.upcoming.to_label")}</Label>
                                         <Input
                                             id="end-date"
-                                            type="date" 
-                                            value={scheduleEndDate} 
+                                            type="date"
+                                            value={scheduleEndDate}
                                             onChange={(e) => setScheduleEndDate(e.target.value)}
                                             className="w-full h-9"
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </CardHeader>
                         <CardContent>
+                            {scheduleView === 'calendar' ? (
+                                <StaffShiftCalendarView
+                                    currentMonth={calendarMonth}
+                                    onPrevMonth={() => setCalendarMonth(m => subMonths(m, 1))}
+                                    onNextMonth={() => setCalendarMonth(m => addMonths(m, 1))}
+                                    onToday={() => setCalendarMonth(startOfDay(new Date()))}
+                                    shifts={calendarShifts}
+                                    fetching={fetchingCalendarShifts}
+                                    businessTz={businessTz}
+                                />
+                            ) : (
+                            <>
                             <div className="rounded-md border">
                                 <Table>
                                     <TableHeader>
@@ -587,6 +657,8 @@ export default function StaffShiftsPage() {
                                         </Button>
                                     </div>
                                 </div>
+                            )}
+                            </>
                             )}
                         </CardContent>
                     </Card>
@@ -746,6 +818,58 @@ export default function StaffShiftsPage() {
                                                                 {t("staff_shifts_page.bids_tab.rejected")}
                                                             </Badge>
                                                         )}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <History className="h-4 w-4" />
+                                {t("staff_shifts_page.history_tab.title")}
+                            </CardTitle>
+                            <CardDescription>{t("staff_shifts_page.history_tab.subtitle")}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>{t("staff_shifts_page.history_tab.col_date")}</TableHead>
+                                            <TableHead>{t("staff_shifts_page.history_tab.col_times")}</TableHead>
+                                            <TableHead>{t("staff_shifts_page.history_tab.col_status")}</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {fetchingHistory ? (
+                                            <TableRow><TableCell colSpan={3} className="text-center py-8">
+                                                <div className="flex items-center justify-center gap-2">
+                                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                                    <span>{t("staff_shifts_page.history_tab.loading")}</span>
+                                                </div>
+                                            </TableCell></TableRow>
+                                        ) : historyShifts.length === 0 ? (
+                                            <TableRow><TableCell colSpan={3} className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2">
+                                                <History className="h-8 w-8 opacity-20" />
+                                                <p>{t("staff_shifts_page.history_tab.empty")}</p>
+                                            </TableCell></TableRow>
+                                        ) : (
+                                            historyShifts.map((shift: Shift) => (
+                                                <TableRow key={shift.id}>
+                                                    <TableCell className="font-medium">
+                                                        {formatInBusinessTimezone(shift.startTime, businessTz, 'ddd, MMM D, YYYY')}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {getStatusBadge(shift.status)}
                                                     </TableCell>
                                                 </TableRow>
                                             ))
