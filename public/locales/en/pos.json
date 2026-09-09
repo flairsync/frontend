@@ -332,7 +332,10 @@
         "accepted": "ACCEPTED",
         "preparing": "PREPARING",
         "ready": "READY",
-        "served": "SERVED"
+        "served": "SERVED",
+        "completed": "COMPLETED",
+        "rejected": "REJECTED",
+        "canceled": "CANCELED"
       },
       "transition": {
         "accept": "ACCEPT",

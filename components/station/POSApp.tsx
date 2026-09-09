@@ -112,6 +112,16 @@ function useInactivityLock(timeoutMs: number, onLock: () => void) {
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
 
+// Fallback for any status not in the label maps below — turns "some_status"
+// into "Some Status" instead of showing the raw enum value to staff.
+function humanizeStatus(status: string): string {
+    return status
+        .split(/[_\s]+/)
+        .filter(Boolean)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(" ");
+}
+
 const TABLE_STATUS_STYLES: Record<string, string> = {
     available: "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/20",
     occupied: "bg-red-500/10 border-red-500/30 text-red-600 hover:bg-red-500/20",
@@ -1076,7 +1086,7 @@ function POSMain({
                                                         {isActive
                                                             ? t("pos_app.tables_view.current")
                                                             : tableStatusLabels[table.status] ??
-                                                              table.status}
+                                                              humanizeStatus(table.status)}
                                                     </span>
                                                 </div>
                                                 {table.status === "occupied" && !isActive && (
@@ -1206,6 +1216,9 @@ function getOrderStatusLabels(t: (key: string) => string): Record<string, string
         PREPARING: t("pos_app.order_card.status.preparing"),
         READY: t("pos_app.order_card.status.ready"),
         SERVED: t("pos_app.order_card.status.served"),
+        COMPLETED: t("pos_app.order_card.status.completed"),
+        REJECTED: t("pos_app.order_card.status.rejected"),
+        CANCELED: t("pos_app.order_card.status.canceled"),
     };
 }
 
@@ -1215,6 +1228,9 @@ const STATUS_COLOR: Record<string, string> = {
     PREPARING: "bg-orange-500/10 text-orange-600",
     READY: "bg-emerald-500/10 text-emerald-600",
     SERVED: "bg-teal-500/10 text-teal-600",
+    COMPLETED: "bg-gray-500/10 text-gray-600",
+    REJECTED: "bg-red-500/10 text-red-600",
+    CANCELED: "bg-red-500/10 text-red-600",
 };
 
 function ActiveOrderCard({
@@ -1262,7 +1278,7 @@ function ActiveOrderCard({
                                     {order.table?.name ?? (order.type === "dine_in" ? t("pos_app.order_card.table") : t("pos_app.order_card.takeaway"))}
                                 </h3>
                                 <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${STATUS_COLOR[statusUpper] ?? "bg-muted text-muted-foreground"}`}>
-                                    {getOrderStatusLabels(t)[statusUpper] ?? order.status}
+                                    {getOrderStatusLabels(t)[statusUpper] ?? humanizeStatus(order.status)}
                                 </span>
                             </div>
                         </div>

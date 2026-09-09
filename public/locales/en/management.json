@@ -1994,6 +1994,79 @@
       "interval_seconds_hint": "How long each screen stays up before advancing to the next one."
     }
   },
+  "floor_plan_designer": {
+    "floor_label": "Floor:",
+    "loading": "Loading...",
+    "no_floors_yet": "No floors yet — create one in the Floors tab.",
+    "select_floor_placeholder": "Select floor",
+    "zoom_out": "Zoom out",
+    "zoom_in": "Zoom in",
+    "reset_zoom": "Reset zoom",
+    "save": "Save",
+    "save_success": "Floor plan saved!",
+    "save_error": "Failed to save — check your connection and try again.",
+    "select_floor_to_start": "Select a floor to start designing",
+    "collapse_sidebar": "Collapse sidebar",
+    "expand_sidebar": "Expand sidebar",
+    "no_element_selected": "No element selected",
+    "click_item_hint": "Click an item on the canvas",
+    "default_floor_name": "Floor",
+    "label_name": "Label / Name",
+    "size_meters": "Size (meters)",
+    "width": "Width",
+    "height": "Height",
+    "rotation": "Rotation",
+    "assigned_table": "Assigned Table",
+    "table_linked_desc": "Linked — this table's position will be saved and used for reservations and orders.",
+    "table_unlinked_desc": "Not linked to a table yet — it won't appear in reservations or orders.",
+    "saved": "Saved.",
+    "not_saved_yet": "Not saved yet — click Save to keep this.",
+    "remove_item": "Remove Item",
+    "floor_name": "Floor Name",
+    "canvas_size_meters": "Canvas Size (meters)",
+    "tabs": {
+      "item": "Item",
+      "canvas": "Canvas"
+    },
+    "tips": {
+      "title": "Tips",
+      "scroll_pan": "Scroll to pan, Shift or Ctrl + Scroll to zoom",
+      "alt_drag_pan": "Alt + Drag on the canvas to pan",
+      "shift_drag_rotate": "Shift + Drag the rotation handle to snap every 15°",
+      "autosave_note": "Elements and linked tables are saved to the database when you click Save."
+    },
+    "toolbar": {
+      "sections": {
+        "tables": "Tables",
+        "structure": "Structure",
+        "decor": "Decor",
+        "other": "Other"
+      },
+      "items": {
+        "rectangle": "Rectangle",
+        "square": "Square",
+        "round": "Round",
+        "wall": "Wall",
+        "window": "Window",
+        "door": "Door",
+        "pillar": "Pillar",
+        "plant": "Plant",
+        "wc": "WC",
+        "bar": "Bar",
+        "stairs": "Stairs",
+        "lift": "Lift",
+        "label": "Label",
+        "shape": "Shape"
+      },
+      "expand": "Expand toolbar",
+      "collapse": "Collapse toolbar"
+    },
+    "table_assignment": {
+      "loading": "Loading tables...",
+      "unassigned": "Unassigned",
+      "none_decor": "None / Decor"
+    }
+  },
   "staff_shifts_page": {
     "header": {
       "title": "My Shifts",

@@ -297,19 +297,23 @@ const KdsTicketCard = memo(function KdsTicketCard({
             </span>
             {/* Priority stepper — only on in-progress tickets */}
             {(isPreparing || isAccepted) && (
-              <div className="flex items-center gap-1 mt-0.5">
+              <div className="flex items-center gap-1.5 mt-0.5">
                 <button
                   onClick={() => onSetPriority(order.id, Math.max(0, order.priority - 1))}
-                  className="w-5 h-5 rounded bg-muted hover:bg-accent flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  title={t("kds_app.ticket.lower_priority")}
+                  aria-label={t("kds_app.ticket.lower_priority")}
+                  className="w-9 h-9 rounded-lg bg-muted hover:bg-accent active:scale-95 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ChevronDown className="w-3 h-3" />
+                  <ChevronDown className="w-4 h-4" />
                 </button>
-                <span className="text-[10px] font-mono text-muted-foreground w-4 text-center">{order.priority}</span>
+                <span className="text-xs font-mono text-muted-foreground w-5 text-center">{order.priority}</span>
                 <button
                   onClick={() => onSetPriority(order.id, order.priority + 1)}
-                  className="w-5 h-5 rounded bg-muted hover:bg-accent flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  title={t("kds_app.ticket.raise_priority")}
+                  aria-label={t("kds_app.ticket.raise_priority")}
+                  className="w-9 h-9 rounded-lg bg-muted hover:bg-accent active:scale-95 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ChevronUp className="w-3 h-3" />
+                  <ChevronUp className="w-4 h-4" />
                 </button>
               </div>
             )}

@@ -349,7 +349,7 @@ export default function StaffOrdersPage() {
                                             <TableRow key={o.id} className="hover:bg-muted/50 transition-colors">
                                                 <TableCell>
                                                     <div className="flex flex-col gap-1 items-start">
-                                                        <span className="font-mono text-xs">{o.id.substring(0, 8)}</span>
+                                                        <span className="font-mono text-xs text-muted-foreground" title={o.id}>{o.id.substring(0, 8)}</span>
                                                         <Badge variant="outline" className="capitalize text-[10px] h-4">
                                                             {o.type.replace("_", " ")}
                                                         </Badge>

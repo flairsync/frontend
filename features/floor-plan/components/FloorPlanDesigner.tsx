@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DesignerToolbar } from "@/features/floor-plan/components/DesignerToolbar";
@@ -74,6 +75,7 @@ const designerToApiPayload = (el: DesignerElement) => ({
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export const FloorPlanDesigner: React.FC = () => {
+    const { t } = useTranslation("management");
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
 
@@ -84,7 +86,7 @@ export const FloorPlanDesigner: React.FC = () => {
     const [selectedFloorId, setSelectedFloorId] = useState<string | null>(null);
     const [layout, setLayout] = useState<FloorPlanLayout>({
         id: 'init',
-        name: 'Loading...',
+        name: t("floor_plan_designer.loading"),
         elements: [],
         ...DEFAULT_CANVAS,
     });
@@ -129,7 +131,7 @@ export const FloorPlanDesigner: React.FC = () => {
 
         const newLayout: FloorPlanLayout = {
             id: floorId,
-            name: floor.name || 'Floor',
+            name: floor.name || t("floor_plan_designer.default_floor_name"),
             elements: [...serverElements, ...tableElements],
             ...DEFAULT_CANVAS,
         };
@@ -294,9 +296,9 @@ export const FloorPlanDesigner: React.FC = () => {
             ]);
             originalApiIds.current[selectedFloorId] = newApiIds;
 
-            toast.success("Floor plan saved!");
+            toast.success(t("floor_plan_designer.save_success"));
         } catch {
-            toast.error("Failed to save — check your connection and try again.");
+            toast.error(t("floor_plan_designer.save_error"));
         } finally {
             setIsSaving(false);
         }
@@ -322,14 +324,14 @@ export const FloorPlanDesigner: React.FC = () => {
                 {/* Floor switcher */}
                 <div className="flex items-center gap-2 min-w-0">
                     <Layers className="w-4 h-4 text-muted-foreground shrink-0" />
-                    <span className="text-[10px] uppercase font-bold text-muted-foreground shrink-0 hidden sm:block">Floor:</span>
+                    <span className="text-xs uppercase font-bold text-muted-foreground shrink-0 hidden sm:block">{t("floor_plan_designer.floor_label")}</span>
 
                     {fetchingFloors ? (
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Loader2 className="w-3 h-3 animate-spin" /> Loading...
+                            <Loader2 className="w-3 h-3 animate-spin" /> {t("floor_plan_designer.loading")}
                         </div>
                     ) : !floors?.length ? (
-                        <span className="text-xs text-muted-foreground">No floors yet — create one in the Floors tab.</span>
+                        <span className="text-xs text-muted-foreground">{t("floor_plan_designer.no_floors_yet")}</span>
                     ) : floors.length <= 5 ? (
                         <div className="flex items-center gap-1 flex-wrap">
                             {floors.map((floor: any) => (
@@ -350,7 +352,7 @@ export const FloorPlanDesigner: React.FC = () => {
                     ) : (
                         <Select value={selectedFloorId || ''} onValueChange={selectFloor}>
                             <SelectTrigger className="h-7 text-xs w-40">
-                                <SelectValue placeholder="Select floor" />
+                                <SelectValue placeholder={t("floor_plan_designer.select_floor_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {floors.map((f: any) => (
@@ -363,7 +365,7 @@ export const FloorPlanDesigner: React.FC = () => {
                     {selectedFloorId && (
                         <>
                             <div className="h-4 w-px bg-slate-200 hidden sm:block" />
-                            <span className="text-[10px] text-muted-foreground font-mono hidden sm:block">
+                            <span className="text-xs text-muted-foreground font-mono hidden sm:block">
                                 {layout.widthMeters}m × {layout.heightMeters}m
                             </span>
                         </>
@@ -373,16 +375,16 @@ export const FloorPlanDesigner: React.FC = () => {
                 {/* Zoom + Save */}
                 <div className="flex items-center gap-2 shrink-0">
                     <div className="flex items-center bg-slate-100 rounded-lg p-0.5">
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} title="Zoom out" aria-label="Zoom out">
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} title={t("floor_plan_designer.zoom_out")} aria-label={t("floor_plan_designer.zoom_out")}>
                             <ZoomOut className="w-3.5 h-3.5" />
                         </Button>
                         <span className="text-[11px] w-11 text-center font-mono font-bold tracking-tight">
                             {Math.round(zoom * 100)}%
                         </span>
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.min(5, z + 0.1))} title="Zoom in" aria-label="Zoom in">
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom(z => Math.min(5, z + 0.1))} title={t("floor_plan_designer.zoom_in")} aria-label={t("floor_plan_designer.zoom_in")}>
                             <ZoomIn className="w-3.5 h-3.5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={handleFitZoom} title="Reset zoom">
+                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={handleFitZoom} title={t("floor_plan_designer.reset_zoom")}>
                             <Maximize2 className="w-3.5 h-3.5" />
                         </Button>
                     </div>
@@ -396,7 +398,7 @@ export const FloorPlanDesigner: React.FC = () => {
                         {isSaving
                             ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             : <Save className="w-3.5 h-3.5" />}
-                        <span className="hidden sm:inline">Save</span>
+                        <span className="hidden sm:inline">{t("floor_plan_designer.save")}</span>
                     </Button>
                 </div>
             </div>
@@ -421,7 +423,7 @@ export const FloorPlanDesigner: React.FC = () => {
                     {!selectedFloorId && !isLoadingFloor && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground gap-2">
                             <Layers className="w-10 h-10 opacity-20" />
-                            <p className="text-sm font-medium">Select a floor to start designing</p>
+                            <p className="text-sm font-medium">{t("floor_plan_designer.select_floor_to_start")}</p>
                         </div>
                     )}
                     {selectedFloorId && (
@@ -441,23 +443,24 @@ export const FloorPlanDesigner: React.FC = () => {
                     <Card className="w-60 xl:w-64 shadow-sm shrink-0 flex flex-col overflow-hidden">
                         <div className="flex border-b shrink-0">
                             <button
-                                className={cn("flex-1 py-2.5 text-[10px] font-bold uppercase tracking-wider transition-colors",
+                                className={cn("flex-1 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors",
                                     activeTab === 'item' ? 'bg-white border-b-2 border-primary' : 'bg-slate-50 text-muted-foreground')}
                                 onClick={() => setActiveTab('item')}
                             >
-                                Item
+                                {t("floor_plan_designer.tabs.item")}
                             </button>
                             <button
-                                className={cn("flex-1 py-2.5 text-[10px] font-bold uppercase tracking-wider transition-colors",
+                                className={cn("flex-1 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors",
                                     activeTab === 'canvas' ? 'bg-white border-b-2 border-primary' : 'bg-slate-50 text-muted-foreground')}
                                 onClick={() => setActiveTab('canvas')}
                             >
-                                Canvas
+                                {t("floor_plan_designer.tabs.canvas")}
                             </button>
                             <button
                                 className="px-2 py-2.5 text-muted-foreground hover:text-foreground transition-colors"
                                 onClick={() => setSidebarCollapsed(true)}
-                                title="Collapse sidebar"
+                                title={t("floor_plan_designer.collapse_sidebar")}
+                                aria-label={t("floor_plan_designer.collapse_sidebar")}
                             >
                                 <ChevronDown className="w-3.5 h-3.5 rotate-90" />
                             </button>
@@ -478,8 +481,8 @@ export const FloorPlanDesigner: React.FC = () => {
                                 ) : (
                                     <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
                                         <Settings2 className="w-8 h-8 mb-2 opacity-20" />
-                                        <p className="text-sm">No element selected</p>
-                                        <p className="text-[10px] opacity-60 mt-1">Click an item on the canvas</p>
+                                        <p className="text-sm">{t("floor_plan_designer.no_element_selected")}</p>
+                                        <p className="text-xs opacity-60 mt-1">{t("floor_plan_designer.click_item_hint")}</p>
                                     </div>
                                 )
                             ) : (
@@ -494,7 +497,8 @@ export const FloorPlanDesigner: React.FC = () => {
                     <button
                         className="shrink-0 w-6 flex items-center justify-center bg-white border rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
                         onClick={() => setSidebarCollapsed(false)}
-                        title="Expand sidebar"
+                        title={t("floor_plan_designer.expand_sidebar")}
+                        aria-label={t("floor_plan_designer.expand_sidebar")}
                     >
                         <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-muted-foreground" />
                     </button>
@@ -516,10 +520,12 @@ interface ItemPanelProps {
     onDelete: (id: string) => void;
 }
 
-const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tables, onUpdate, onRotate, onDelete }) => (
+const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tables, onUpdate, onRotate, onDelete }) => {
+    const { t } = useTranslation("management");
+    return (
     <div className="space-y-5">
         <div className="space-y-1">
-            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Label / Name</Label>
+            <Label className="text-xs uppercase font-bold text-muted-foreground">{t("floor_plan_designer.label_name")}</Label>
             <Input
                 type="text"
                 className="h-8 text-sm"
@@ -529,10 +535,10 @@ const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tabl
         </div>
 
         <div className="space-y-2">
-            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Size (meters)</Label>
+            <Label className="text-xs uppercase font-bold text-muted-foreground">{t("floor_plan_designer.size_meters")}</Label>
             <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                    <Label className="text-[10px] text-slate-500">Width</Label>
+                    <Label className="text-xs text-slate-500">{t("floor_plan_designer.width")}</Label>
                     <Input
                         type="number" step="0.1" className="h-8 text-sm"
                         value={el.widthMeters}
@@ -540,7 +546,7 @@ const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tabl
                     />
                 </div>
                 <div className="space-y-1">
-                    <Label className="text-[10px] text-slate-500">Height</Label>
+                    <Label className="text-xs text-slate-500">{t("floor_plan_designer.height")}</Label>
                     <Input
                         type="number" step="0.1" className="h-8 text-sm"
                         value={el.heightMeters}
@@ -551,7 +557,7 @@ const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tabl
         </div>
 
         <div className="space-y-2">
-            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Rotation</Label>
+            <Label className="text-xs uppercase font-bold text-muted-foreground">{t("floor_plan_designer.rotation")}</Label>
             <div className="grid grid-cols-2 gap-2">
                 <Input
                     type="number" className="h-8 text-sm"
@@ -566,8 +572,8 @@ const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tabl
 
         {el.type === 'table' && (
             <div className="space-y-1">
-                <Label className="text-[10px] uppercase font-bold text-muted-foreground">
-                    Linked DB Table
+                <Label className="text-xs uppercase font-bold text-muted-foreground">
+                    {t("floor_plan_designer.assigned_table")}
                 </Label>
                 <TableAssignmentDropdown
                     businessId={businessId}
@@ -582,23 +588,23 @@ const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tabl
                     }}
                 />
                 {el.tableId && (
-                    <p className="text-[10px] text-green-600 font-medium">
-                        Linked — position will be saved to the database.
+                    <p className="text-xs text-green-600 font-medium">
+                        {t("floor_plan_designer.table_linked_desc")}
                     </p>
                 )}
                 {!el.tableId && (
-                    <p className="text-[10px] text-amber-600">
-                        Unlinked — won't appear in reservations/orders.
+                    <p className="text-xs text-amber-600">
+                        {t("floor_plan_designer.table_unlinked_desc")}
                     </p>
                 )}
             </div>
         )}
 
         {el.type !== 'table' && el.apiId && (
-            <p className="text-[10px] text-green-600 font-medium">Saved to database.</p>
+            <p className="text-xs text-green-600 font-medium">{t("floor_plan_designer.saved")}</p>
         )}
         {el.type !== 'table' && !el.apiId && (
-            <p className="text-[10px] text-amber-600">Not yet saved — hit Save to persist.</p>
+            <p className="text-xs text-amber-600">{t("floor_plan_designer.not_saved_yet")}</p>
         )}
 
         <div className="flex flex-col gap-2 pt-2 border-t">
@@ -607,11 +613,12 @@ const ItemPanel: React.FC<ItemPanelProps> = ({ el, businessId, floorTables, tabl
                 className="w-full gap-2 justify-start text-destructive hover:bg-destructive/10"
                 onClick={() => onDelete(el.id)}
             >
-                <Trash2 className="w-4 h-4" /> Remove Item
+                <Trash2 className="w-4 h-4" /> {t("floor_plan_designer.remove_item")}
             </Button>
         </div>
     </div>
-);
+    );
+};
 
 // ─── Canvas settings panel ───────────────────────────────────────────────────
 
@@ -623,6 +630,7 @@ interface CanvasPanelProps {
 }
 
 const CanvasPanel: React.FC<CanvasPanelProps> = ({ layout, setLayout, layoutCache, selectedFloorId }) => {
+    const { t } = useTranslation("management");
     const update = (patch: Partial<FloorPlanLayout>) => {
         setLayout(prev => {
             const updated = { ...prev, ...patch };
@@ -634,7 +642,7 @@ const CanvasPanel: React.FC<CanvasPanelProps> = ({ layout, setLayout, layoutCach
     return (
         <div className="space-y-5">
             <div className="space-y-1">
-                <Label className="text-[10px] uppercase font-bold text-muted-foreground">Floor Name</Label>
+                <Label className="text-xs uppercase font-bold text-muted-foreground">{t("floor_plan_designer.floor_name")}</Label>
                 <Input
                     type="text" className="h-8 text-sm"
                     value={layout.name}
@@ -642,10 +650,10 @@ const CanvasPanel: React.FC<CanvasPanelProps> = ({ layout, setLayout, layoutCach
                 />
             </div>
             <div className="space-y-2">
-                <Label className="text-[10px] uppercase font-bold text-muted-foreground">Canvas Size (meters)</Label>
+                <Label className="text-xs uppercase font-bold text-muted-foreground">{t("floor_plan_designer.canvas_size_meters")}</Label>
                 <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-1">
-                        <Label className="text-[10px] text-slate-500">Width</Label>
+                        <Label className="text-xs text-slate-500">{t("floor_plan_designer.width")}</Label>
                         <Input
                             type="number" className="h-8 text-sm"
                             value={layout.widthMeters}
@@ -653,7 +661,7 @@ const CanvasPanel: React.FC<CanvasPanelProps> = ({ layout, setLayout, layoutCach
                         />
                     </div>
                     <div className="space-y-1">
-                        <Label className="text-[10px] text-slate-500">Height</Label>
+                        <Label className="text-xs text-slate-500">{t("floor_plan_designer.height")}</Label>
                         <Input
                             type="number" className="h-8 text-sm"
                             value={layout.heightMeters}
@@ -663,12 +671,12 @@ const CanvasPanel: React.FC<CanvasPanelProps> = ({ layout, setLayout, layoutCach
                 </div>
             </div>
             <div className="p-3 bg-blue-50 rounded-lg border border-blue-100 space-y-1.5">
-                <p className="text-[10px] text-blue-700 font-bold uppercase">Tips</p>
-                <p className="text-[10px] text-blue-600 leading-relaxed">
-                    <b>Scroll</b> to pan · <b>Shift/Ctrl+Scroll</b> to zoom<br />
-                    <b>Alt+Drag</b> on canvas to pan<br />
-                    <b>Shift+Drag</b> rotation handle for 15° snapping<br />
-                    Elements and linked tables are saved to the database on Save.
+                <p className="text-xs text-blue-700 font-bold uppercase">{t("floor_plan_designer.tips.title")}</p>
+                <p className="text-xs text-blue-600 leading-relaxed space-y-0.5">
+                    <span className="block">{t("floor_plan_designer.tips.scroll_pan")}</span>
+                    <span className="block">{t("floor_plan_designer.tips.alt_drag_pan")}</span>
+                    <span className="block">{t("floor_plan_designer.tips.shift_drag_rotate")}</span>
+                    <span className="block">{t("floor_plan_designer.tips.autosave_note")}</span>
                 </p>
             </div>
         </div>

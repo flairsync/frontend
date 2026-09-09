@@ -272,51 +272,51 @@ const ManagerScheduleStaffSchedulingTab = () => {
             case ShiftStatus.SCHEDULED:
                 if (staffResponse === 'ACCEPTED') {
                     return (
-                        <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-emerald-500 bg-emerald-50 text-emerald-700 flex items-center gap-1">
-                            <CheckCircle2 className="w-2 h-2" />
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-emerald-500 bg-emerald-50 text-emerald-700 flex items-center gap-1">
+                            <CheckCircle2 className="w-2.5 h-2.5" />
                             {t("schedule_staff_scheduling_tab.status_accepted")}
                         </Badge>
                     );
                 }
                 if (staffResponse === 'REJECTED') {
                     return (
-                        <Badge variant="destructive" className="text-[8px] px-1 py-0 h-3.5 bg-red-50 text-red-700 border-red-200">
+                        <Badge variant="destructive" className="text-[10px] px-1.5 py-0 h-5 bg-red-50 text-red-700 border-red-200">
                             {t("schedule_staff_scheduling_tab.status_rejected")}
                         </Badge>
                     );
                 }
-                return <Badge variant="secondary" className="text-[8px] px-1 py-0 h-3.5 bg-gray-100 text-gray-600 font-normal">{t("schedule_staff_scheduling_tab.status_pending")}</Badge>;
+                return <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-5 bg-gray-100 text-gray-600 font-normal">{t("schedule_staff_scheduling_tab.status_pending")}</Badge>;
             case ShiftStatus.IN_PROGRESS:
                 return (
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-green-200 bg-green-50 text-green-700 flex items-center gap-1">
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-green-200 bg-green-50 text-green-700 flex items-center gap-1">
                         <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
                         {t("schedule_staff_scheduling_tab.status_ongoing")}
                     </Badge>
                 );
             case ShiftStatus.COMPLETED:
-                return <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-amber-200 bg-amber-50 text-amber-700">{t("schedule_staff_scheduling_tab.status_finished")}</Badge>;
+                return <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-amber-200 bg-amber-50 text-amber-700">{t("schedule_staff_scheduling_tab.status_finished")}</Badge>;
             case ShiftStatus.VALIDATED:
                 return (
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-green-500 bg-green-50 text-green-700 flex items-center gap-1">
-                        <CheckCircle2 className="w-2 h-2" />
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-green-500 bg-green-50 text-green-700 flex items-center gap-1">
+                        <CheckCircle2 className="w-2.5 h-2.5" />
                         {t("schedule_staff_scheduling_tab.status_validated")}
                     </Badge>
                 );
             case ShiftStatus.NO_SHOW:
                 return (
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400 flex items-center gap-1">
-                        <UserX className="w-2 h-2" />
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400 flex items-center gap-1">
+                        <UserX className="w-2.5 h-2.5" />
                         {t("schedule_staff_scheduling_tab.status_no_show")}
                     </Badge>
                 );
             case ShiftStatus.OPEN:
                 return (
-                    <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5 border-orange-500 bg-orange-50 text-orange-700 font-bold uppercase">
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-orange-500 bg-orange-50 text-orange-700 font-bold uppercase">
                         {t("schedule_staff_scheduling_tab.status_open")}
                     </Badge>
                 );
             default:
-                return <Badge variant="outline" className="text-[8px] px-1 py-0 h-3.5">{status}</Badge>;
+                return <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5">{status}</Badge>;
         }
     };
 
@@ -643,8 +643,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     <div className={`font-semibold truncate min-w-0 ${shift.status === ShiftStatus.NO_SHOW ? 'text-red-700 dark:text-red-400' : hasConflict ? 'text-destructive' : shift.status === ShiftStatus.VALIDATED ? 'text-green-700' : shift.isPublished ? 'text-primary' : 'text-amber-700'}`}>
                                                                         {formatTimeInBusinessTimezone(shift.startTime, businessTz)} - {formatTimeInBusinessTimezone(shift.endTime, businessTz)}
                                                                     </div>
-                                                                    {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2 h-2 text-green-600 shrink-0" />}
-                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2 h-2 text-red-600 dark:text-red-400 shrink-0" />}
+                                                                    {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2.5 h-2.5 text-green-600 shrink-0" />}
+                                                                    {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2.5 h-2.5 text-red-600 dark:text-red-400 shrink-0" />}
                                                                 </div>
                                                             </div>
                                                         );
@@ -806,7 +806,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     <div className="flex items-center gap-1 shrink-0">
                                                                         {shift.status === ShiftStatus.VALIDATED && <Lock className="w-2.5 h-2.5 text-green-600" />}
                                                                         {shift.status === ShiftStatus.NO_SHOW && <UserX className="w-2.5 h-2.5 text-red-600 dark:text-red-400" />}
-                                                                        {hasConflict && <Badge variant="destructive" className="h-3 w-3 p-0 flex items-center justify-center text-[8px] rounded-full">!</Badge>}
+                                                                        {hasConflict && <Badge variant="destructive" className="h-4 w-4 p-0 flex items-center justify-center text-[10px] rounded-full">!</Badge>}
                                                                     </div>
                                                                 </div>
                                                                 <div className="text-[10px] text-muted-foreground mt-0.5 truncate flex flex-wrap gap-1 items-center justify-between">

@@ -32,6 +32,8 @@
     "ticket": {
       "rush": "Rush",
       "priority_value": "P{{value}}",
+      "lower_priority": "Lower priority",
+      "raise_priority": "Raise priority",
       "order_type_dine_in": "Dine In",
       "order_type_takeaway": "Takeaway",
       "order_type_labels": {
