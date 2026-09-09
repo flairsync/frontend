@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils, Wifi } from "lucide-react"
+import { Calendar, CalendarDays, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils, Wifi } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { SidebarPinToggle } from "../management/SidebarPinToggle"
 import { usePermissions } from "@/features/auth/usePermissions"
@@ -43,6 +43,12 @@ export const staffNavData = {
                     titleKey: "staff_sidebar.items.my_shifts",
                     url: "/manage/:id/staff/shifts",
                     icon: Calendar,
+                },
+                {
+                    key: "calendar",
+                    titleKey: "staff_sidebar.items.calendar",
+                    url: "/manage/:id/staff/calendar",
+                    icon: CalendarDays,
                 },
                 {
                     key: "schedule",

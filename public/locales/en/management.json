@@ -412,6 +412,7 @@
     "items": {
       "dashboard": "Dashboard",
       "my_shifts": "My Shifts",
+      "calendar": "Calendar",
       "schedule": "Shifts & Schedule",
       "staff": "Staff Management",
       "tasks": "Tasks & Checklists",
@@ -1993,6 +1994,9 @@
       "create_button": "Create Board",
       "interval_seconds_hint": "How long each screen stays up before advancing to the next one."
     }
+  },
+  "staff_calendar_page": {
+    "subtitle": "A month-at-a-glance view of your shifts."
   },
   "staff_shifts_page": {
     "header": {
