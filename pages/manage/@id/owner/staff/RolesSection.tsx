@@ -43,6 +43,7 @@ import { usePlatformPermissions } from "@/features/shared/usePlatformPermissions
 import { Checkbox } from "@/components/ui/checkbox";
 import { Role } from "@/models/business/roles/Role";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
 type RolesSectionProps = {
     canCreate?: boolean;
@@ -229,18 +230,20 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                         </Button>
                                                     )}
                                                     {canDelete && (
-                                                        <Button
-                                                            size="sm"
-                                                            variant="destructive"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                if (confirm(t("roles_section.delete_confirm", { name: role.name }))) {
-                                                                    deleteRole(role.id)
-                                                                }
-                                                            }}
+                                                        <ConfirmAction
+                                                            onConfirm={() => deleteRole(role.id)}
+                                                            title={t("roles_section.delete_confirm_title")}
+                                                            description={t("roles_section.delete_confirm", { name: role.name })}
+                                                            confirmText={t("shared.actions.delete")}
+                                                            cancelText={t("shared.actions.cancel")}
                                                         >
-                                                            <Trash className="h-4 w-4" />
-                                                        </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="destructive"
+                                                            >
+                                                                <Trash className="h-4 w-4" />
+                                                            </Button>
+                                                        </ConfirmAction>
                                                     )}
                                                 </div>
                                             </TableCell>

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { Team } from "@/models/business/Team";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
 interface CreateEditTeamModalProps {
     open: boolean;
@@ -74,13 +75,19 @@ export const CreateEditTeamModal: React.FC<CreateEditTeamModalProps> = ({
                     <div className="flex justify-between items-center pt-4">
                         <div>
                             {team && onDelete && (
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    onClick={() => onDelete(team.id)}
+                                <ConfirmAction
+                                    onConfirm={() => onDelete(team.id)}
+                                    description={t("staff_teams.section.delete_confirm")}
+                                    confirmText={t("staff_teams.edit_modal.delete")}
+                                    cancelText={t("staff_teams.edit_modal.cancel")}
                                 >
-                                    {t("staff_teams.edit_modal.delete")}
-                                </Button>
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                    >
+                                        {t("staff_teams.edit_modal.delete")}
+                                    </Button>
+                                </ConfirmAction>
                             )}
                         </div>
                         <div className="flex gap-2">

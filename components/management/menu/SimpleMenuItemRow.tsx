@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash, Copy, ArrowRight, ChevronUp, ChevronDown, MoreVertical } from "lucide-react";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
@@ -12,6 +12,16 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { getCurrencySymbol } from "@/utils/currency";
@@ -47,6 +57,7 @@ export const SimpleMenuItemRow = ({
     const { t } = useTranslation("management");
     const { businessBasicDetails } = useBusinessBasicDetails(businessId ?? null);
     const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
     return (
         <div className="flex p-3 bg-muted rounded-lg border border-border hover:shadow-sm transition">
@@ -192,9 +203,7 @@ export const SimpleMenuItemRow = ({
                                         className="text-destructive focus:text-destructive"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            if (window.confirm(t('menu_management.messages.delete_item_confirm_desc', { name: item.name }))) {
-                                                onDelete();
-                                            }
+                                            setConfirmDeleteOpen(true);
                                         }}
                                     >
                                         <Trash className="h-4 w-4 mr-2" /> {t('shared.actions.delete')}
@@ -205,6 +214,29 @@ export const SimpleMenuItemRow = ({
                     )}
                 </div>
             </div>
+
+            <AlertDialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{t('menu_management.messages.delete_item_confirm_title')}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {t('menu_management.messages.delete_item_confirm_desc', { name: item.name })}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>{t('shared.actions.cancel')}</AlertDialogCancel>
+                        <AlertDialogAction
+                            className="bg-destructive hover:bg-destructive/90"
+                            onClick={() => {
+                                onDelete();
+                                setConfirmDeleteOpen(false);
+                            }}
+                        >
+                            {t('shared.actions.delete')}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 };

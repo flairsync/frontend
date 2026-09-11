@@ -4574,6 +4574,7 @@
     "emps_count_other": "{{count}} empleados",
     "permissions_count_one": "{{count}} permiso",
     "permissions_count_other": "{{count}} permisos",
+    "delete_confirm_title": "¿Eliminar este rol?",
     "delete_confirm": "¿Seguro que quieres eliminar el rol «{{name}}»?"
   },
   "staff_menu_page": {

@@ -11,6 +11,7 @@ import { Team } from "@/models/business/Team";
 import { CreateEditTeamModal } from "./CreateEditTeamModal";
 import { TeamRosterModal } from "./TeamRosterModal";
 import { AssignStaffModal } from "./AssignStaffModal";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
 type TeamsSectionProps = {
     canCreate?: boolean;
@@ -171,19 +172,21 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                             </Button>
                                         )}
                                         {canDelete && (
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="text-destructive hover:bg-destructive/10"
-                                                onClick={() => {
-                                                    if (confirm(t("staff_teams.section.delete_confirm"))) {
-                                                        deleteTeam(team.id);
-                                                    }
-                                                }}
-                                                disabled={deletingTeam}
+                                            <ConfirmAction
+                                                onConfirm={() => deleteTeam(team.id)}
+                                                description={t("staff_teams.section.delete_confirm")}
+                                                confirmText={t("shared.actions.delete")}
+                                                cancelText={t("shared.actions.cancel")}
                                             >
-                                                <Trash2 className="w-4 h-4" />
-                                            </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="text-destructive hover:bg-destructive/10"
+                                                    disabled={deletingTeam}
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </Button>
+                                            </ConfirmAction>
                                         )}
                                     </div>
                                 </div>
@@ -201,11 +204,9 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                 onSubmit={handleSaveTeam}
                 isLoading={creatingTeam || updatingTeam}
                 onDelete={canDelete ? (teamId) => {
-                    if (confirm(t("staff_teams.section.delete_confirm"))) {
-                        deleteTeam(teamId);
-                        setIsCreateModalOpen(false);
-                        setSelectedTeam(null);
-                    }
+                    deleteTeam(teamId);
+                    setIsCreateModalOpen(false);
+                    setSelectedTeam(null);
                 } : undefined}
             />
 

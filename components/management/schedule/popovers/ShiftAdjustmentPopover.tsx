@@ -10,6 +10,7 @@ import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { parseISO, format } from "date-fns";
 import { Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
 interface ShiftAdjustmentPopoverProps {
     shift: Shift;
@@ -68,11 +69,9 @@ export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ 
     };
 
     const handleDelete = () => {
-        if (confirm(t("schedule_modals.shift_adjustment_popover.confirm_delete"))) {
-            deleteShift(shift.id, {
-                onSuccess: () => setOpen(false)
-            });
-        }
+        deleteShift(shift.id, {
+            onSuccess: () => setOpen(false)
+        });
     };
 
     return (
@@ -115,10 +114,17 @@ export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ 
                     </div>
 
                     <div className="flex justify-between items-center pt-2">
-                        <Button variant="ghost" size="sm" className="text-destructive px-2" onClick={handleDelete} disabled={isDeletingShift}>
-                            <Trash className="w-4 h-4 mr-1" />
-                            {t("schedule_modals.shift_adjustment_popover.delete")}
-                        </Button>
+                        <ConfirmAction
+                            onConfirm={handleDelete}
+                            description={t("schedule_modals.shift_adjustment_popover.confirm_delete")}
+                            confirmText={t("shared.actions.delete")}
+                            cancelText={t("shared.actions.cancel")}
+                        >
+                            <Button variant="ghost" size="sm" className="text-destructive px-2" disabled={isDeletingShift}>
+                                <Trash className="w-4 h-4 mr-1" />
+                                {t("schedule_modals.shift_adjustment_popover.delete")}
+                            </Button>
+                        </ConfirmAction>
                         <div className="flex gap-2">
                             <Button variant="outline" size="sm" onClick={() => setOpen(false)}>{t("schedule_modals.shift_adjustment_popover.cancel")}</Button>
                             <Button size="sm" onClick={handleSave} disabled={isUpdatingShift}>{t("schedule_modals.shift_adjustment_popover.save")}</Button>

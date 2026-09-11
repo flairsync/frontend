@@ -4688,6 +4688,7 @@
     "emps_count_other": "{{count}} Emps.",
     "permissions_count_one": "{{count}} Permission",
     "permissions_count_other": "{{count}} Permissions",
+    "delete_confirm_title": "Delete this role?",
     "delete_confirm": "Are you sure you want to delete the role \"{{name}}\"?"
   },
   "staff_menu_page": {
