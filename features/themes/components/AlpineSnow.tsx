@@ -56,6 +56,39 @@ const SHADCN_VARS: Record<string, string> = {
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
+// Fixed positions/sizes/delays so the star field doesn't reshuffle on every render.
+const STARS = [
+    { top: "8%", left: "12%", size: 2, delay: 0 },
+    { top: "14%", left: "28%", size: 1.5, delay: 0.6 },
+    { top: "6%", left: "45%", size: 2.5, delay: 1.1 },
+    { top: "18%", left: "62%", size: 1.5, delay: 0.3 },
+    { top: "10%", left: "78%", size: 2, delay: 1.6 },
+    { top: "22%", left: "8%", size: 1.5, delay: 2.1 },
+    { top: "26%", left: "38%", size: 1.5, delay: 0.9 },
+    { top: "16%", left: "90%", size: 2, delay: 1.4 },
+    { top: "30%", left: "70%", size: 1.5, delay: 0.4 },
+    { top: "24%", left: "20%", size: 2, delay: 1.9 },
+];
+
+// This business's local hour right now, from its own timezone — falls back
+// to the viewer's clock if the timezone string is missing/invalid. Drives
+// the hero's day/night mood below: this theme's own "dynamic" signature,
+// reacting to real conditions rather than a fixed animation.
+function useIsNightAt(timezone?: string): boolean {
+    let hour = new Date().getHours();
+    try {
+        if (timezone) {
+            hour = parseInt(
+                new Intl.DateTimeFormat("en-US", { timeZone: timezone, hour: "numeric", hourCycle: "h23" }).format(new Date()),
+                10,
+            );
+        }
+    } catch {
+        // Invalid IANA timezone string — keep the viewer's local hour.
+    }
+    return hour < 6 || hour >= 20;
+}
+
 type Flake = { x: number; y: number; r: number; speed: number; drift: number; angle: number };
 
 // Continuous ambient snowfall across the hero, replacing the old five fixed
@@ -152,6 +185,7 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
     const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ""}` : profile.country?.name || "");
     const heroImage = media[0];
     const signatureDishes = getSignatureMenuItems(menu);
+    const isNight = useIsNightAt(profile.timezone);
     const today = new Date().toLocaleDateString(undefined, { weekday: "long" }).toLowerCase();
 
     return (
@@ -170,6 +204,27 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                     <div className="absolute inset-0 bg-gradient-to-b from-[var(--t-muted)] to-[var(--t-accent)]/20" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a1520] via-[#0a1520]/40 to-transparent" />
+
+                {/* Day/night mood — this business's own local conditions, not a
+                   fixed look. A deep-sky tint and star field settle in after dark. */}
+                {isNight && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.2 }}
+                        className="absolute inset-0 bg-gradient-to-b from-[#0b1330]/70 via-[#0b1330]/15 to-transparent"
+                    >
+                        {STARS.map((s, i) => (
+                            <motion.span
+                                key={i}
+                                className="absolute rounded-full bg-white"
+                                style={{ top: s.top, left: s.left, width: s.size, height: s.size }}
+                                animate={{ opacity: [0.2, 1, 0.2] }}
+                                transition={{ duration: 2.5 + i * 0.3, repeat: Infinity, delay: s.delay, ease: "easeInOut" }}
+                            />
+                        ))}
+                    </motion.div>
+                )}
 
                 <SnowfallCanvas />
 
@@ -192,6 +247,17 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                             <p className="mt-4 text-white/80 leading-relaxed max-w-xl mx-auto">{profile.description}</p>
                         )}
                         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 border border-white/25 px-3 py-1">
+                                <span className="relative flex h-2 w-2">
+                                    {profile.isOpen && (
+                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                                    )}
+                                    <span className={`relative inline-flex h-2 w-2 rounded-full ${profile.isOpen ? "bg-emerald-400" : "bg-white/50"}`} />
+                                </span>
+                                {profile.isOpen
+                                    ? t("business_page.header.open_now", "Open now")
+                                    : t("business_page.header.closed_now", "Closed now")}
+                            </span>
                             {profile.rating !== null && (
                                 <span className="inline-flex items-center gap-1 rounded-full bg-white/15 border border-white/25 px-3 py-1">
                                     <Star size={14} className="fill-white text-white" />

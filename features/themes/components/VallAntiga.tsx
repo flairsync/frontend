@@ -12,7 +12,92 @@ import BusinessDetailsReviews from "@/components/business_details/BusinessDetail
 import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER, SignatureMenuItem } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
 import { DepthCarousel } from "../DepthCarousel";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type Mote = { x: number; y: number; r: number; speed: number; drift: number; angle: number; alpha: number };
+
+// Ambient dust motes drifting slowly upward across the hero, as if catching
+// a shaft of sunlight in an old building — this theme's answer to Alpine
+// Snow's falling snow, but rising, warm, and far sparser. A single static
+// frame (no rAF loop) when the viewer prefers reduced motion.
+function DustMotes() {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const parent = canvas?.parentElement;
+        if (!canvas || !parent) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let width = 0;
+        let height = 0;
+        let motes: Mote[] = [];
+        let frameId = 0;
+
+        const resize = () => {
+            width = parent.clientWidth;
+            height = parent.clientHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const count = Math.round((width * height) / 28000);
+            motes = Array.from({ length: count }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: 0.8 + Math.random() * 1.8,
+                speed: 0.15 + Math.random() * 0.3,
+                drift: Math.random() * 0.4 - 0.2,
+                angle: Math.random() * Math.PI * 2,
+                alpha: 0.2 + Math.random() * 0.4,
+            }));
+        };
+
+        const draw = () => {
+            ctx.clearRect(0, 0, width, height);
+            for (const m of motes) {
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(214, 178, 122, ${m.alpha})`;
+                ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        };
+
+        const step = () => {
+            for (const m of motes) {
+                m.angle += 0.006;
+                m.y -= m.speed;
+                m.x += m.drift + Math.sin(m.angle) * 0.25;
+                if (m.y < -4) {
+                    m.y = height + 4;
+                    m.x = Math.random() * width;
+                }
+                if (m.x > width + 4) m.x = -4;
+                if (m.x < -4) m.x = width + 4;
+            }
+            draw();
+            frameId = requestAnimationFrame(step);
+        };
+
+        resize();
+        draw();
+        window.addEventListener("resize", resize);
+        if (!prefersReducedMotion) frameId = requestAnimationFrame(step);
+
+        return () => {
+            window.removeEventListener("resize", resize);
+            if (frameId) cancelAnimationFrame(frameId);
+        };
+    }, []);
+
+    return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden />;
+}
 
 // The heritage identity's own 3D gesture: a museum-plaque arch that turns
 // over — face is the photo, reverse is the dish's own description (or a
@@ -132,15 +217,18 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                 </div>
             </nav>
 
-            {/* Hero — centered, symmetric, arch-topped image frame */}
-            <header className="px-6 pt-20 pb-16 text-center">
-                <div className="max-w-xl mx-auto flex flex-col items-center">
+            {/* Hero — centered, symmetric, arch-topped image frame, with dust
+               motes drifting through the whole hero like sunlight in an old
+               building */}
+            <header className="relative px-6 pt-20 pb-16 text-center overflow-hidden">
+                <DustMotes />
+                <div className="relative max-w-xl mx-auto flex flex-col items-center">
                     {heroImage ? (
                         <motion.div
                             initial={{ opacity: 0, y: -16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, ease: "easeOut" }}
-                            className="w-40 h-52 md:w-48 md:h-64 rounded-t-full overflow-hidden border-4 border-[var(--t-accent)] shadow-lg mb-8"
+                            className="relative w-40 h-52 md:w-48 md:h-64 rounded-t-full overflow-hidden border-4 border-[var(--t-accent)] shadow-lg mb-8"
                         >
                             {/* An old photograph coming into color, then a slow
                                idle drift — this theme's signature motion,
@@ -155,6 +243,17 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                                     filter: { duration: 1.8, delay: 0.4, ease: "easeInOut" },
                                     scale: { duration: 14, repeat: Infinity, ease: "easeInOut" },
                                 }}
+                            />
+                            {/* A single glint of light catching the glass, once the
+                               photograph has come into color */}
+                            <motion.div
+                                className="absolute inset-0 pointer-events-none"
+                                style={{
+                                    background: "linear-gradient(115deg, transparent 42%, rgba(255,255,255,0.55) 50%, transparent 58%)",
+                                }}
+                                initial={{ x: "-120%" }}
+                                animate={{ x: "120%" }}
+                                transition={{ duration: 1.4, delay: 2.4, ease: "easeInOut" }}
                             />
                         </motion.div>
                     ) : profile.logo ? (

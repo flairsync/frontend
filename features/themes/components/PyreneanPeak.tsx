@@ -93,10 +93,18 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
     const trailPath = buildTrailPath(signatureDishes.length, trailSegmentHeight);
     const today = new Date().toLocaleDateString(undefined, { weekday: "long" }).toLowerCase();
 
+    const heroRef = useRef<HTMLElement>(null);
+    const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+    const ridgeBackY = useTransform(heroProgress, [0, 1], [0, -18]);
+    const ridgeMidY = useTransform(heroProgress, [0, 1], [0, -36]);
+    const ridgeFrontY = useTransform(heroProgress, [0, 1], [0, -60]);
+
     return (
         <main style={{ ...TOKENS, ...SHADCN_VARS }} className="min-h-screen bg-[var(--t-bg)] text-[var(--t-fg)]">
-            {/* Hero — image (or forest gradient) with a jagged mountain-skyline cut at the bottom */}
-            <header className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden">
+            {/* Hero — image (or forest gradient), three ridgelines layered at
+               the bottom that drift apart at different speeds as the hero
+               scrolls by, reading as distance the way real mountain ranges do */}
+            <header ref={heroRef} className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden">
                 {heroImage ? (
                     <img src={heroImage.url} alt="" className="absolute inset-0 w-full h-full object-cover" />
                 ) : (
@@ -157,18 +165,50 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
                     )}
                 </motion.div>
 
-                {/* Jagged skyline divider into the page background */}
-                <svg
-                    className="absolute bottom-0 left-0 w-full h-16 md:h-24"
+                {/* Back ridge — farthest, palest, drifts the least */}
+                <motion.svg
+                    className="absolute bottom-0 left-0 w-full h-14 md:h-20 z-0"
+                    viewBox="0 0 1200 100"
+                    preserveAspectRatio="none"
+                    style={{ y: ridgeBackY }}
+                    aria-hidden
+                >
+                    <path
+                        d="M0,100 L0,55 L100,20 L220,60 L340,10 L460,45 L600,15 L740,55 L860,20 L980,50 L1100,25 L1200,45 L1200,100 Z"
+                        fill="#dfe6d4"
+                        opacity={0.55}
+                    />
+                </motion.svg>
+
+                {/* Mid ridge — closer, deeper tone, drifts a little more */}
+                <motion.svg
+                    className="absolute bottom-0 left-0 w-full h-16 md:h-24 z-0"
+                    viewBox="0 0 1200 110"
+                    preserveAspectRatio="none"
+                    style={{ y: ridgeMidY }}
+                    aria-hidden
+                >
+                    <path
+                        d="M0,110 L0,65 L140,25 L260,70 L400,15 L520,58 L660,20 L780,62 L920,28 L1040,58 L1160,30 L1200,50 L1200,110 Z"
+                        fill="#8fa77f"
+                        opacity={0.8}
+                    />
+                </motion.svg>
+
+                {/* Front ridge — nearest, matches the page background so the
+                   hero blends straight into the content below it, drifts the most */}
+                <motion.svg
+                    className="absolute bottom-0 left-0 w-full h-16 md:h-24 z-0"
                     viewBox="0 0 1200 120"
                     preserveAspectRatio="none"
+                    style={{ y: ridgeFrontY }}
                     aria-hidden
                 >
                     <path
                         d="M0,120 L0,70 L80,30 L160,80 L260,10 L340,60 L430,20 L520,75 L620,15 L720,65 L820,25 L910,70 L1000,35 L1090,80 L1200,40 L1200,120 Z"
                         fill="var(--t-bg)"
                     />
-                </svg>
+                </motion.svg>
             </header>
 
             {/* Live status / rating / map */}
