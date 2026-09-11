@@ -9,8 +9,49 @@ import BusinessDetailsMenu from "@/components/business_details/BusinessDetailsMe
 import BusinessDetailsTableReservation from "@/components/business_details/BusinessDetailsTableReservation";
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
-import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
+import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER, SignatureMenuItem } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
+import { DepthCarousel } from "../DepthCarousel";
+import { useState } from "react";
+
+// The heritage identity's own 3D gesture: a museum-plaque arch that turns
+// over — face is the photo, reverse is the dish's own description (or a
+// generic "house favourite" line when the owner hasn't written one).
+function FlipArch({ dish, currency }: { dish: SignatureMenuItem; currency?: string }) {
+    const { t } = useTranslation("feed");
+    const [flipped, setFlipped] = useState(false);
+
+    return (
+        <div
+            className="flex flex-col items-center w-28 md:w-36 [perspective:1000px] cursor-pointer"
+            onClick={() => setFlipped((f) => !f)}
+            onMouseEnter={() => setFlipped(true)}
+            onMouseLeave={() => setFlipped(false)}
+        >
+            <div className="relative w-28 h-36 md:w-36 md:h-48 [transform-style:preserve-3d]">
+                <motion.div
+                    animate={{ rotateY: flipped ? 180 : 0 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="absolute inset-0 [transform-style:preserve-3d]"
+                >
+                    <div className="absolute inset-0 rounded-t-full overflow-hidden border-2 border-[var(--t-accent)] [backface-visibility:hidden]">
+                        <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="w-full h-full object-cover" />
+                    </div>
+                    <div
+                        className="absolute inset-0 rounded-t-full overflow-hidden border-2 border-[var(--t-accent)] bg-[var(--t-accent)] text-[var(--t-accent-fg)] flex items-center justify-center p-4 text-center [backface-visibility:hidden]"
+                        style={{ transform: "rotateY(180deg)" }}
+                    >
+                        <p className="text-xs leading-snug">
+                            {dish.description || t("business_page.signature_dishes.house_favourite", "A house favourite.")}
+                        </p>
+                    </div>
+                </motion.div>
+            </div>
+            <p className="mt-3 text-sm font-medium text-center" style={{ fontVariant: "small-caps" }}>{dish.name}</p>
+            <p className="text-xs text-[var(--t-muted-fg)]">{currency || "€"}{dish.price}</p>
+        </div>
+    );
+}
 
 // Stone + aged copper/gold, small-caps serif, arch-topped image frames
 // echoing the Romanesque architecture of Andorra's old towns (e.g. Sant
@@ -101,15 +142,19 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                             transition={{ duration: 0.7, ease: "easeOut" }}
                             className="w-40 h-52 md:w-48 md:h-64 rounded-t-full overflow-hidden border-4 border-[var(--t-accent)] shadow-lg mb-8"
                         >
-                            {/* An old photograph coming into color — this theme's
-                               signature motion, standing in for a "chef's story" beat */}
+                            {/* An old photograph coming into color, then a slow
+                               idle drift — this theme's signature motion,
+                               standing in for a "chef's story" beat */}
                             <motion.img
                                 src={heroImage.url}
                                 alt=""
                                 className="w-full h-full object-cover"
-                                initial={{ filter: "sepia(1) contrast(1.05) brightness(0.9)" }}
-                                animate={{ filter: "sepia(0) contrast(1) brightness(1)" }}
-                                transition={{ duration: 1.8, delay: 0.4, ease: "easeInOut" }}
+                                initial={{ filter: "sepia(1) contrast(1.05) brightness(0.9)", scale: 1 }}
+                                animate={{ filter: "sepia(0) contrast(1) brightness(1)", scale: [1, 1.07, 1] }}
+                                transition={{
+                                    filter: { duration: 1.8, delay: 0.4, ease: "easeInOut" },
+                                    scale: { duration: 14, repeat: Infinity, ease: "easeInOut" },
+                                }}
                             />
                         </motion.div>
                     ) : profile.logo ? (
@@ -172,30 +217,38 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                 <BusinessDetailsInfoCards profile={profile} />
             </section>
 
-            {/* Gallery — arch-topped frames, echoing the hero */}
+            {/* Gallery — a slow, stately plaque rail: one arch centered at a
+               time, the next and previous peeking in at the sides */}
             {media.length > 1 && (
-                <section className="px-6 py-16 border-t border-[var(--t-border)]">
+                <section className="px-6 py-16 border-t border-[var(--t-border)] overflow-hidden">
                     <div className={`${SECTION_CONTAINER} !px-0`}>
                         <h2 className="text-2xl font-semibold text-center uppercase tracking-wide mb-10">
                             {t("business_page.gallery.section_title", "Gallery")}
                         </h2>
                         <PhotoProvider>
-                            <div className="flex flex-wrap justify-center gap-5">
-                                {media.slice(1).map((m) => (
+                            <DepthCarousel
+                                items={media.slice(1)}
+                                autoplayDelay={5500}
+                                depthStyle={(offset) => ({
+                                    scale: Math.max(1 - Math.abs(offset) * 0.22, 0.5),
+                                    opacity: Math.max(1 - Math.abs(offset) * 0.45, 0.3),
+                                    rotateY: Math.max(-28, Math.min(28, -offset * 22)),
+                                })}
+                                renderItem={(m) => (
                                     <PhotoView key={m.id} src={m.url}>
-                                        <div className="w-28 h-36 md:w-36 md:h-48 rounded-t-full overflow-hidden border-2 border-[var(--t-border)] cursor-pointer">
-                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                                        <div className="w-40 h-52 md:w-56 md:h-72 rounded-t-full overflow-hidden border-2 border-[var(--t-border)] cursor-pointer shadow-lg">
+                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover" />
                                         </div>
                                     </PhotoView>
-                                ))}
-                            </div>
+                                )}
+                            />
                         </PhotoProvider>
                     </div>
                 </section>
             )}
 
-            {/* Signature dishes — the same arch frame as the hero and gallery,
-               now naming a dish and price beneath each one */}
+            {/* Signature dishes — the same arch frame, now flipping over on
+               tap/hover to reveal the dish's own description on its reverse */}
             {signatureDishes.length > 0 && (
                 <section className="px-6 py-16 border-t border-[var(--t-border)]">
                     <div className={`${SECTION_CONTAINER} !px-0`}>
@@ -204,13 +257,7 @@ export function VallAntigaTheme({ profile, menu }: ThemeComponentProps) {
                         </h2>
                         <div className="flex flex-wrap justify-center gap-8">
                             {signatureDishes.map((dish) => (
-                                <div key={dish.id} className="flex flex-col items-center w-28 md:w-36">
-                                    <div className="w-28 h-36 md:w-36 md:h-48 rounded-t-full overflow-hidden border-2 border-[var(--t-accent)]">
-                                        <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="w-full h-full object-cover" />
-                                    </div>
-                                    <p className="mt-3 text-sm font-medium text-center" style={{ fontVariant: "small-caps" }}>{dish.name}</p>
-                                    <p className="text-xs text-[var(--t-muted-fg)]">{profile.currency || "€"}{dish.price}</p>
-                                </div>
+                                <FlipArch key={dish.id} dish={dish} currency={profile.currency} />
                             ))}
                         </div>
                     </div>

@@ -50,6 +50,7 @@ export interface SignatureMenuItem {
   name: string;
   price: number;
   imageUrl: string;
+  description?: string;
 }
 
 // Picks up to `limit` menu items to feature in a theme's "signature dishes"
@@ -64,7 +65,7 @@ export function getSignatureMenuItems(menu: BusinessMenu | null, limit = 4): Sig
     for (const item of category.items ?? []) {
       const imageUrl = item.media?.[0]?.url;
       if (!imageUrl) continue;
-      items.push({ id: item.id, name: item.name, price: item.price, imageUrl });
+      items.push({ id: item.id, name: item.name, price: item.price, imageUrl, description: item.description });
       if (items.length >= limit) return items;
     }
   }

@@ -12,6 +12,8 @@ import BusinessDetailsInfoCards from "@/components/business_details/BusinessDeta
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
 import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
+import { TiltCard } from "../TiltCard";
+import { DepthCarousel } from "../DepthCarousel";
 
 // One waypoint per unit height in the trail's viewBox. Swings the path out to
 // alternating sides at each waypoint's midpoint and back to center at its
@@ -174,24 +176,36 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
                 <BusinessDetailsInfoCards profile={profile} />
             </section>
 
-            {/* Gallery */}
+            {/* Gallery — a ridgeline coverflow: angular, clipped-corner panes
+               sliding past like a row of peaks, distinct from Alpine Snow's
+               soft frosted coverflow */}
             {media.length > 1 && (
-                <section className="px-6 md:px-10 pb-16">
+                <section className="px-6 md:px-10 pb-16 overflow-hidden">
                     <div className={`${SECTION_CONTAINER} !px-0`}>
                         <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
                             <TreePine size={20} className="text-[var(--t-accent)]" />
                             {t("business_page.gallery.section_title", "Gallery")}
                         </h2>
                         <PhotoProvider>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                {media.slice(1).map((m) => (
+                            <DepthCarousel
+                                items={media.slice(1)}
+                                autoplayDelay={4800}
+                                depthStyle={(offset) => ({
+                                    scale: Math.max(1 - Math.abs(offset) * 0.16, 0.6),
+                                    opacity: Math.max(1 - Math.abs(offset) * 0.3, 0.35),
+                                    rotateY: Math.max(-30, Math.min(30, -offset * 20)),
+                                })}
+                                renderItem={(m) => (
                                     <PhotoView key={m.id} src={m.url}>
-                                        <div className="aspect-square rounded overflow-hidden border-2 border-[var(--t-border)] cursor-pointer">
-                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                                        <div
+                                            className="w-56 h-64 md:w-64 md:h-72 overflow-hidden border-2 border-[var(--t-accent)] cursor-pointer shadow-lg"
+                                            style={{ clipPath: "polygon(0 12%, 12% 0, 100% 0, 100% 88%, 88% 100%, 0 100%)" }}
+                                        >
+                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover" />
                                         </div>
                                     </PhotoView>
-                                ))}
-                            </div>
+                                )}
+                            />
                         </PhotoProvider>
                     </div>
                 </section>
@@ -222,16 +236,16 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
                                     style={{ pathLength: trailPathLength }}
                                 />
                             </svg>
-                            <div className="relative flex flex-col gap-10">
+                            <div className="relative flex flex-col gap-10 [perspective:1000px]">
                                 {signatureDishes.map((dish, i) => (
                                     <div key={dish.id} className={`md:w-[46%] ${i % 2 === 0 ? "md:mr-auto" : "md:ml-auto"}`}>
-                                        <div className="flex items-center gap-4 rounded bg-[var(--t-bg)] border-2 border-[var(--t-border)] p-3 shadow-sm">
+                                        <TiltCard maxDeg={6} scaleOnHover={1.02} className="flex items-center gap-4 rounded bg-[var(--t-bg)] border-2 border-[var(--t-border)] p-3 shadow-sm">
                                             <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="w-20 h-20 rounded object-cover shrink-0" />
                                             <div>
                                                 <p className="font-semibold">{dish.name}</p>
                                                 <p className="text-sm text-[var(--t-muted-fg)] mt-0.5">{profile.currency || "€"}{dish.price}</p>
                                             </div>
-                                        </div>
+                                        </TiltCard>
                                     </div>
                                 ))}
                             </div>

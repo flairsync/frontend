@@ -12,6 +12,8 @@ import BusinessDetailsInfoCards from "@/components/business_details/BusinessDeta
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
 import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
 import { useBodyThemeScope } from "../useBodyThemeScope";
+import { TiltCard } from "../TiltCard";
+import { DepthCarousel } from "../DepthCarousel";
 
 // Ice-blue + frosted glass, full-bleed photo hero, scattered snowflake
 // motifs — a ski-resort/winter-chalet identity. Distinct from the other
@@ -233,24 +235,33 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                 <BusinessDetailsInfoCards profile={profile} />
             </section>
 
-            {/* Gallery */}
+            {/* Gallery — a frosted-pane coverflow: photos slide past like looking
+               through angled ice panes, receding and fading with distance
+               from center */}
             {media.length > 1 && (
-                <section className="px-6 md:px-10 pb-16">
+                <section className="px-6 md:px-10 pb-16 overflow-hidden">
                     <div className={`${SECTION_CONTAINER} !px-0`}>
                         <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
                             <Snowflake size={20} className="text-[var(--t-accent)]" />
                             {t("business_page.gallery.section_title", "Gallery")}
                         </h2>
                         <PhotoProvider>
-                            <div className="columns-2 md:columns-3 gap-3">
-                                {media.slice(1).map((m) => (
+                            <DepthCarousel
+                                items={media.slice(1)}
+                                autoplayDelay={4200}
+                                depthStyle={(offset) => ({
+                                    scale: Math.max(1 - Math.abs(offset) * 0.18, 0.55),
+                                    opacity: Math.max(1 - Math.abs(offset) * 0.35, 0.25),
+                                    rotateY: Math.max(-35, Math.min(35, -offset * 25)),
+                                })}
+                                renderItem={(m) => (
                                     <PhotoView key={m.id} src={m.url}>
-                                        <div className="mb-3 rounded-xl overflow-hidden border border-[var(--t-border)] shadow-sm cursor-pointer">
-                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                                        <div className="w-56 h-72 md:w-64 md:h-80 rounded-2xl overflow-hidden border border-white/40 bg-white/10 backdrop-blur-sm shadow-xl cursor-pointer">
+                                            <img src={m.url} alt="" loading="lazy" className="w-full h-full object-cover" />
                                         </div>
                                     </PhotoView>
-                                ))}
-                            </div>
+                                )}
+                            />
                         </PhotoProvider>
                     </div>
                 </section>
@@ -265,10 +276,11 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                             <Snowflake size={20} className="text-[var(--t-accent)]" />
                             {t("business_page.signature_dishes.section_title", "On the Mountain")}
                         </h2>
-                        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory [scrollbar-width:thin]">
+                        <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory [scrollbar-width:thin] [perspective:1000px]">
                             {signatureDishes.map((dish) => (
-                                <div
+                                <TiltCard
                                     key={dish.id}
+                                    maxDeg={10}
                                     className="relative shrink-0 w-56 h-72 snap-start rounded-2xl overflow-hidden border border-[var(--t-border)] shadow-md"
                                 >
                                     <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
@@ -277,7 +289,7 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                                         <p className="font-semibold leading-tight">{dish.name}</p>
                                         <p className="text-sm text-white/80 mt-0.5">{profile.currency || "€"}{dish.price}</p>
                                     </div>
-                                </div>
+                                </TiltCard>
                             ))}
                         </div>
                     </div>
