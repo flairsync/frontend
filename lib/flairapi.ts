@@ -240,7 +240,8 @@ flairapi.interceptors.response.use(
         // navigation, not a retry loop.
         if (typeof window !== "undefined") {
           saveSecureItem('auth_logout_reason', 'inactivity');
-          window.location.href = '/login';
+          const origin = window.location.pathname + window.location.search;
+          window.location.href = `/login?origin=${encodeURIComponent(origin)}`;
         }
         return Promise.reject(refreshError);
       } finally {
