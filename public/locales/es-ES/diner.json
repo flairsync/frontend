@@ -77,7 +77,8 @@
       "title": "¡Tu pedido está listo!",
       "description": "Tu pedido está listo para servirse. ¡Que aproveche!",
       "dismiss": "Cerrar"
-    }
+    },
+    "tab_loyalty": "Puntos"
   },
   "banner": {
     "seated_title": "Estás sentado aquí",
@@ -146,5 +147,16 @@
     "unavailable_title": "Menú no disponible",
     "unavailable_description": "No se ha podido cargar el menú en este momento.",
     "retry": "Reintentar"
+  },
+  "loyalty_page": {
+    "title": "Puntos de fidelización",
+    "balance_label": "Tu saldo",
+    "points_suffix": "pts",
+    "enrolled_since": "Miembro desde {{date}}",
+    "not_enrolled_title": "Aún no te has unido",
+    "not_enrolled_description": "Pide a un miembro del personal que te envíe una invitación para unirte al programa de fidelización la próxima vez que pidas.",
+    "login_required_title": "Inicia sesión para ver tus puntos",
+    "login_required_description": "Los puntos de fidelización están vinculados a tu cuenta de FlairSync.",
+    "login_button": "Iniciar sesión"
   }
 }

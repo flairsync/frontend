@@ -77,7 +77,8 @@
       "title": "Votre commande est prête !",
       "description": "Votre commande est prête à être servie. Bon appétit !",
       "dismiss": "Fermer"
-    }
+    },
+    "tab_loyalty": "Points"
   },
   "banner": {
     "seated_title": "Tu es installé ici",
@@ -146,5 +147,16 @@
     "unavailable_title": "Menu indisponible",
     "unavailable_description": "Le menu n'a pas pu être chargé pour le moment.",
     "retry": "Réessayer"
+  },
+  "loyalty_page": {
+    "title": "Points de fidélité",
+    "balance_label": "Votre solde",
+    "points_suffix": "pts",
+    "enrolled_since": "Membre depuis le {{date}}",
+    "not_enrolled_title": "Pas encore inscrit",
+    "not_enrolled_description": "Demandez à un membre du personnel de vous envoyer une invitation pour rejoindre le programme de fidélité lors de votre prochaine commande.",
+    "login_required_title": "Connectez-vous pour voir vos points",
+    "login_required_description": "Les points de fidélité sont liés à votre compte FlairSync.",
+    "login_button": "Se connecter"
   }
 }

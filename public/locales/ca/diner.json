@@ -77,7 +77,8 @@
       "title": "La teva comanda està llesta!",
       "description": "La teva comanda està llesta per servir-se. Bon profit!",
       "dismiss": "Tancar"
-    }
+    },
+    "tab_loyalty": "Punts"
   },
   "banner": {
     "seated_title": "Estàs assegut aquí",
@@ -146,5 +147,16 @@
     "unavailable_title": "Menú no disponible",
     "unavailable_description": "El menú no s'ha pogut carregar en aquest moment.",
     "retry": "Torna-ho a provar"
+  },
+  "loyalty_page": {
+    "title": "Punts de fidelització",
+    "balance_label": "El teu saldo",
+    "points_suffix": "pts",
+    "enrolled_since": "Membre des de {{date}}",
+    "not_enrolled_title": "Encara no t'has unit",
+    "not_enrolled_description": "Demana a un membre del personal que t'enviï una invitació per unir-te al programa de fidelització la propera vegada que facis una comanda.",
+    "login_required_title": "Inicia sessió per veure els teus punts",
+    "login_required_description": "Els punts de fidelització estan vinculats al teu compte de FlairSync.",
+    "login_button": "Inicia sessió"
   }
 }

@@ -77,7 +77,8 @@
       "title": "Your order is ready!",
       "description": "Your order is ready to be served. Enjoy your meal!",
       "dismiss": "Dismiss"
-    }
+    },
+    "tab_loyalty": "Points"
   },
   "banner": {
     "seated_title": "You're seated here",
@@ -146,5 +147,16 @@
     "unavailable_title": "Menu unavailable",
     "unavailable_description": "The menu could not be loaded right now.",
     "retry": "Retry"
+  },
+  "loyalty_page": {
+    "title": "Loyalty Points",
+    "balance_label": "Your balance",
+    "points_suffix": "pts",
+    "enrolled_since": "Member since {{date}}",
+    "not_enrolled_title": "Not enrolled yet",
+    "not_enrolled_description": "Ask a staff member to send you an invite to join this business's loyalty program next time you order.",
+    "login_required_title": "Log in to see your points",
+    "login_required_description": "Loyalty points are tied to your FlairSync account.",
+    "login_button": "Log in"
   }
 }

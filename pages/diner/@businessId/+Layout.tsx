@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePageContext } from 'vike-react/usePageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UtensilsCrossed, ClipboardList, Star, X, PartyPopper } from 'lucide-react';
+import { UtensilsCrossed, ClipboardList, Star, X, PartyPopper, Gift } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useDiscoveryProfile, useDiscoveryFloors } from '@/features/discovery/useDiscovery';
 import {
@@ -114,6 +114,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
         currentPath === `/diner/${businessId}` ||
         currentPath === `/diner/${businessId}/menu`;
     const isOrderActive = currentPath === `/diner/${businessId}/order`;
+    const isLoyaltyActive = currentPath === `/diner/${businessId}/loyalty`;
 
     if (isLoading) {
         return (
@@ -252,6 +253,19 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                             )}
                         </div>
                         <span className="text-[10px] font-medium">{t('layout.tab_my_order')}</span>
+                    </a>
+
+                    <a
+                        href={`/diner/${businessId}/loyalty`}
+                        className={cn(
+                            "flex-1 flex flex-col items-center justify-center gap-0.5 h-full transition-colors",
+                            isLoyaltyActive
+                                ? "text-primary"
+                                : "text-muted-foreground hover:text-foreground"
+                        )}
+                    >
+                        <Gift className="w-5 h-5" />
+                        <span className="text-[10px] font-medium">{t('layout.tab_loyalty')}</span>
                     </a>
 
                     <div className="flex-1 flex items-center justify-center px-3">

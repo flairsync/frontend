@@ -55,6 +55,9 @@ export const signupUserApiCall = (data: {
   firstName: string;
   lastName: string;
   termsAccepted: boolean;
+  // Carries a loyalty signup-invite token through registration so the new
+  // account gets auto-enrolled in the inviting business's loyalty program.
+  loyaltyInviteToken?: string;
 }) => {
   return flairapi.post(registerUrl, {
     email: data.email,
@@ -62,6 +65,7 @@ export const signupUserApiCall = (data: {
     firstName: data.firstName,
     lastName: data.lastName,
     termsAccepted: data.termsAccepted,
+    loyaltyInviteToken: data.loyaltyInviteToken,
   });
 };
 
