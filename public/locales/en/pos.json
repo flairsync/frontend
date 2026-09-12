@@ -141,7 +141,21 @@
       "email_receipt_button": "Send",
       "email_receipt_sent": "Receipt sent!",
       "email_receipt_invalid": "Please enter a valid email address",
-      "email_receipt_failed": "Couldn't send the receipt email"
+      "email_receipt_failed": "Couldn't send the receipt email",
+      "loyalty_label": "Loyalty program",
+      "loyalty_phone_placeholder": "Phone number (optional)",
+      "loyalty_check_button": "Check",
+      "loyalty_checking": "Checking...",
+      "loyalty_member": "Already earning points!",
+      "loyalty_not_found": "No FlairSync account found for this contact",
+      "loyalty_not_enrolled": "Has an account, but hasn't joined this program yet",
+      "loyalty_invite_button": "Invite to join",
+      "loyalty_invite_sending": "Sending invite...",
+      "loyalty_invite_sent": "Invite sent!",
+      "loyalty_invite_email_required": "An email is required to send the invite link",
+      "loyalty_invite_failed": "Couldn't send the invite",
+      "loyalty_lookup_missing_contact": "Enter an email or phone number first",
+      "loyalty_lookup_failed": "Couldn't check loyalty status"
     },
     "confirm": {
       "cash_payment": "Cash Payment",

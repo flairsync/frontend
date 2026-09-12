@@ -130,6 +130,29 @@ export const setStationOrderEmailApiCall = (orderId: string, email: string) =>
     { headers: { "Idempotency-Key": crypto.randomUUID() } },
   );
 
+// Checks whether a contact (email and/or phone) belongs to an existing FlairSync
+// account and whether it's already opted into this business's loyalty program.
+export const lookupStationOrderLoyaltyApiCall = (
+  orderId: string,
+  contact: { email?: string; phone?: string },
+) =>
+  staffApi.get<{ data: { userFound: boolean; alreadyEnrolled: boolean } }>(
+    `/station/orders/${orderId}/loyalty/lookup`,
+    { params: contact },
+  );
+
+// Sends the customer a signup-invite link — email is required (no SMS-sending
+// infra exists), phone is optional and stored for future lookup only.
+export const inviteStationOrderLoyaltyApiCall = (
+  orderId: string,
+  contact: { email: string; phone?: string },
+) =>
+  staffApi.post(
+    `/station/orders/${orderId}/loyalty/invite`,
+    contact,
+    { headers: { "Idempotency-Key": crypto.randomUUID() } },
+  );
+
 // Triggers a real physical print (+ cash-drawer kick, if the station has one) on the
 // calling station's configured printer — distinct from the browser print-dialog fallback
 // in StationReceiptView.tsx. Never rejects on "printer offline"/"not configured" (the

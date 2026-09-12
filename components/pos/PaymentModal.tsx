@@ -6,10 +6,15 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2, Download, Mail } from "lucide-react";
+import { CheckCircle2, ArrowRight, Banknote, CreditCard, Delete, Tag, Split, Receipt, Loader2, Download, Mail, Gift, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { staffApi, setStationOrderEmailApiCall } from "@/features/station/station-api";
+import {
+    staffApi,
+    setStationOrderEmailApiCall,
+    lookupStationOrderLoyaltyApiCall,
+    inviteStationOrderLoyaltyApiCall,
+} from "@/features/station/station-api";
 import { printReceiptApiCall } from "@/features/orders/service";
 import { getCurrencySymbol } from "@/utils/currency";
 import DiscountPanel from "./DiscountPanel";
@@ -69,6 +74,9 @@ export function PaymentModal({
     const [isPrintingPdf, setIsPrintingPdf] = useState(false);
     const [guestEmail, setGuestEmail] = useState("");
     const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent">("idle");
+    const [guestPhone, setGuestPhone] = useState("");
+    const [loyaltyPhase, setLoyaltyPhase] = useState<"idle" | "checking" | "checked" | "inviting" | "invited">("idle");
+    const [loyaltyResult, setLoyaltyResult] = useState<{ userFound: boolean; alreadyEnrolled: boolean } | null>(null);
 
     const effectiveTotal = total - discountAmount;
 
@@ -83,6 +91,9 @@ export function PaymentModal({
             setIsPrintingPdf(false);
             setGuestEmail("");
             setEmailStatus("idle");
+            setGuestPhone("");
+            setLoyaltyPhase("idle");
+            setLoyaltyResult(null);
         }
     }, [isOpen]);
 
@@ -163,6 +174,42 @@ export function PaymentModal({
         } catch (e: any) {
             setEmailStatus("idle");
             toast.error(e?.response?.data?.message ?? t("payment_modal.success.email_receipt_failed"));
+        }
+    }
+
+    async function handleCheckLoyalty() {
+        if (!orderId) return;
+        const email = EMAIL_REGEX.test(guestEmail) ? guestEmail : undefined;
+        const phone = guestPhone.trim() || undefined;
+        if (!email && !phone) {
+            toast.error(t("payment_modal.success.loyalty_lookup_missing_contact"));
+            return;
+        }
+        setLoyaltyPhase("checking");
+        try {
+            const res = await lookupStationOrderLoyaltyApiCall(orderId, { email, phone });
+            setLoyaltyResult(res.data.data);
+            setLoyaltyPhase("checked");
+        } catch (e: any) {
+            setLoyaltyPhase("idle");
+            toast.error(e?.response?.data?.message ?? t("payment_modal.success.loyalty_lookup_failed"));
+        }
+    }
+
+    async function handleInviteLoyalty() {
+        if (!orderId) return;
+        if (!EMAIL_REGEX.test(guestEmail)) {
+            toast.error(t("payment_modal.success.loyalty_invite_email_required"));
+            return;
+        }
+        setLoyaltyPhase("inviting");
+        try {
+            await inviteStationOrderLoyaltyApiCall(orderId, { email: guestEmail, phone: guestPhone.trim() || undefined });
+            setLoyaltyPhase("invited");
+            toast.success(t("payment_modal.success.loyalty_invite_sent"));
+        } catch (e: any) {
+            setLoyaltyPhase("checked");
+            toast.error(e?.response?.data?.message ?? t("payment_modal.success.loyalty_invite_failed"));
         }
     }
 
@@ -277,6 +324,100 @@ export function PaymentModal({
                                             {t("payment_modal.success.email_receipt_button")}
                                         </Button>
                                     </div>
+                                </>
+                            )}
+                        </div>
+                    )}
+
+                    {orderId && stationMode && (
+                        <div className="mx-2 mb-2 p-4 rounded-2xl border border-border space-y-2">
+                            <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                <Gift className="h-3.5 w-3.5" />
+                                {t("payment_modal.success.loyalty_label")}
+                            </p>
+
+                            {loyaltyPhase === "idle" || loyaltyPhase === "checking" ? (
+                                <>
+                                    <div className="flex gap-2">
+                                        <Input
+                                            type="email"
+                                            inputMode="email"
+                                            autoComplete="email"
+                                            placeholder={t("payment_modal.success.email_receipt_placeholder")}
+                                            value={guestEmail}
+                                            onChange={(e) => setGuestEmail(e.target.value)}
+                                            disabled={loyaltyPhase === "checking"}
+                                        />
+                                        <Input
+                                            type="tel"
+                                            inputMode="tel"
+                                            autoComplete="tel"
+                                            placeholder={t("payment_modal.success.loyalty_phone_placeholder")}
+                                            value={guestPhone}
+                                            onChange={(e) => setGuestPhone(e.target.value)}
+                                            onKeyDown={(e) => e.key === "Enter" && handleCheckLoyalty()}
+                                            disabled={loyaltyPhase === "checking"}
+                                        />
+                                    </div>
+                                    <Button
+                                        variant="outline"
+                                        className="w-full gap-2"
+                                        disabled={loyaltyPhase === "checking" || (!guestEmail && !guestPhone)}
+                                        onClick={handleCheckLoyalty}
+                                    >
+                                        {loyaltyPhase === "checking" ? (
+                                            <>
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                {t("payment_modal.success.loyalty_checking")}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Gift className="h-4 w-4" />
+                                                {t("payment_modal.success.loyalty_check_button")}
+                                            </>
+                                        )}
+                                    </Button>
+                                </>
+                            ) : loyaltyResult?.alreadyEnrolled ? (
+                                <p className="text-sm text-primary font-bold flex items-center gap-2">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    {t("payment_modal.success.loyalty_member")}
+                                </p>
+                            ) : loyaltyPhase === "invited" ? (
+                                <p className="text-sm text-primary font-bold flex items-center gap-2">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    {t("payment_modal.success.loyalty_invite_sent")}
+                                </p>
+                            ) : (
+                                <>
+                                    <p className="text-sm text-muted-foreground">
+                                        {loyaltyResult?.userFound
+                                            ? t("payment_modal.success.loyalty_not_enrolled")
+                                            : t("payment_modal.success.loyalty_not_found")}
+                                    </p>
+                                    <Button
+                                        variant="outline"
+                                        className="w-full gap-2"
+                                        disabled={loyaltyPhase === "inviting" || !EMAIL_REGEX.test(guestEmail)}
+                                        onClick={handleInviteLoyalty}
+                                    >
+                                        {loyaltyPhase === "inviting" ? (
+                                            <>
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                {t("payment_modal.success.loyalty_invite_sending")}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <UserPlus className="h-4 w-4" />
+                                                {t("payment_modal.success.loyalty_invite_button")}
+                                            </>
+                                        )}
+                                    </Button>
+                                    {!EMAIL_REGEX.test(guestEmail) && (
+                                        <p className="text-xs text-muted-foreground">
+                                            {t("payment_modal.success.loyalty_invite_email_required")}
+                                        </p>
+                                    )}
                                 </>
                             )}
                         </div>

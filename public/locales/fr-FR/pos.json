@@ -141,7 +141,21 @@
       "email_receipt_button": "Envoyer",
       "email_receipt_sent": "Reçu envoyé !",
       "email_receipt_invalid": "Veuillez saisir une adresse e-mail valide",
-      "email_receipt_failed": "Impossible d'envoyer le reçu par e-mail"
+      "email_receipt_failed": "Impossible d'envoyer le reçu par e-mail",
+      "loyalty_label": "Programme de fidélité",
+      "loyalty_phone_placeholder": "Téléphone (facultatif)",
+      "loyalty_check_button": "Vérifier",
+      "loyalty_checking": "Vérification...",
+      "loyalty_member": "Gagne déjà des points !",
+      "loyalty_not_found": "Aucun compte FlairSync trouvé pour ce contact",
+      "loyalty_not_enrolled": "A un compte, mais n'a pas encore rejoint ce programme",
+      "loyalty_invite_button": "Inviter à rejoindre",
+      "loyalty_invite_sending": "Envoi de l'invitation...",
+      "loyalty_invite_sent": "Invitation envoyée !",
+      "loyalty_invite_email_required": "Un e-mail est nécessaire pour envoyer le lien d'invitation",
+      "loyalty_invite_failed": "Impossible d'envoyer l'invitation",
+      "loyalty_lookup_missing_contact": "Saisissez d'abord un e-mail ou un téléphone",
+      "loyalty_lookup_failed": "Impossible de vérifier le statut de fidélité"
     },
     "confirm": {
       "cash_payment": "Paiement en espèces",

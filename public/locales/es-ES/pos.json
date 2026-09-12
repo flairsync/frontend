@@ -141,7 +141,21 @@
       "email_receipt_button": "Enviar",
       "email_receipt_sent": "¡Recibo enviado!",
       "email_receipt_invalid": "Introduce una dirección de correo válida",
-      "email_receipt_failed": "No se pudo enviar el recibo por correo"
+      "email_receipt_failed": "No se pudo enviar el recibo por correo",
+      "loyalty_label": "Programa de fidelización",
+      "loyalty_phone_placeholder": "Teléfono (opcional)",
+      "loyalty_check_button": "Comprobar",
+      "loyalty_checking": "Comprobando...",
+      "loyalty_member": "¡Ya está ganando puntos!",
+      "loyalty_not_found": "No se encontró ninguna cuenta de FlairSync con este contacto",
+      "loyalty_not_enrolled": "Tiene una cuenta, pero aún no se ha unido a este programa",
+      "loyalty_invite_button": "Invitar a unirse",
+      "loyalty_invite_sending": "Enviando invitación...",
+      "loyalty_invite_sent": "¡Invitación enviada!",
+      "loyalty_invite_email_required": "Se necesita un correo para enviar el enlace de invitación",
+      "loyalty_invite_failed": "No se pudo enviar la invitación",
+      "loyalty_lookup_missing_contact": "Introduce primero un correo o un teléfono",
+      "loyalty_lookup_failed": "No se pudo comprobar el estado de fidelización"
     },
     "confirm": {
       "cash_payment": "Pago en efectivo",

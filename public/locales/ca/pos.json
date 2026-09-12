@@ -141,7 +141,21 @@
       "email_receipt_button": "Envia",
       "email_receipt_sent": "Rebut enviat!",
       "email_receipt_invalid": "Introdueix una adreça de correu vàlida",
-      "email_receipt_failed": "No s'ha pogut enviar el rebut per correu"
+      "email_receipt_failed": "No s'ha pogut enviar el rebut per correu",
+      "loyalty_label": "Programa de fidelització",
+      "loyalty_phone_placeholder": "Telèfon (opcional)",
+      "loyalty_check_button": "Comprova",
+      "loyalty_checking": "Comprovant...",
+      "loyalty_member": "Ja està guanyant punts!",
+      "loyalty_not_found": "No s'ha trobat cap compte de FlairSync per a aquest contacte",
+      "loyalty_not_enrolled": "Té un compte, però encara no s'ha unit a aquest programa",
+      "loyalty_invite_button": "Convida a unir-se",
+      "loyalty_invite_sending": "Enviant la invitació...",
+      "loyalty_invite_sent": "Invitació enviada!",
+      "loyalty_invite_email_required": "Cal un correu per enviar l'enllaç d'invitació",
+      "loyalty_invite_failed": "No s'ha pogut enviar la invitació",
+      "loyalty_lookup_missing_contact": "Introdueix primer un correu o un telèfon",
+      "loyalty_lookup_failed": "No s'ha pogut comprovar l'estat de fidelització"
     },
     "confirm": {
       "cash_payment": "Pagament en efectiu",
