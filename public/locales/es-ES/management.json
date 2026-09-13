@@ -423,7 +423,8 @@
       "themes": "Tema",
       "menu_boards": "Pantallas de Menú",
       "nfc_tags": "Tarjetas NFC",
-      "wifi_networks": "Redes WiFi"
+      "wifi_networks": "Redes WiFi",
+      "loyalty": "Fidelización"
     }
   },
   "sidebar": {
@@ -474,7 +475,8 @@
       "fiscal_invoices": "Facturas fiscales",
       "fiscal_services": "Servicios fiscales",
       "danger": "Zona de peligro",
-      "menu_boards": "Pantallas de Menú"
+      "menu_boards": "Pantallas de Menú",
+      "loyalty": "Fidelización"
     }
   },
   "permissions": {
@@ -4606,5 +4608,17 @@
     "title": "Ver rol: {{name}}",
     "description": "Permisos asignados a este rol.",
     "no_permissions_assigned": "No hay permisos asignados."
+  },
+  "loyalty_management": {
+    "title": "Programa de fidelización",
+    "subtitle": "Recompensa a los clientes habituales con puntos en cada pedido.",
+    "active_label": "Programa activo",
+    "active_description": "Si está desactivado, no se otorgan puntos y el personal no puede enviar nuevas invitaciones.",
+    "rate_label": "Puntos por unidad de moneda gastada",
+    "rate_description": "Por ejemplo, 1.00 significa que el cliente gana 1 punto por cada 1 € (o 1 $) gastado.",
+    "save_button": "Guardar",
+    "locked_title": "Los programas de fidelización son una función premium",
+    "locked_description": "Mejora el plan de este negocio para desbloquear puntos y recompensas de fidelización.",
+    "upgrade_button": "Ver planes"
   }
 }

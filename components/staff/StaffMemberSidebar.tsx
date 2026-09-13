@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { Calendar, ClipboardList, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils, Wifi } from "lucide-react"
+import { Calendar, ClipboardList, Gift, LayoutDashboard, MessageSquare, MonitorPlay, Nfc, PackageOpen, Palette, ShoppingBag, Users, Utensils, Wifi } from "lucide-react"
 import { BusinessSwitcher } from "../management/BusinessSwitcher"
 import { SidebarPinToggle } from "../management/SidebarPinToggle"
 import { usePermissions } from "@/features/auth/usePermissions"
@@ -104,6 +104,14 @@ export const staffNavData = {
                     url: "/manage/:id/staff/wifi",
                     icon: Wifi,
                     requiredPermission: "WIFI",
+                    requiredAction: "read",
+                },
+                {
+                    key: "loyalty",
+                    titleKey: "staff_sidebar.items.loyalty",
+                    url: "/manage/:id/staff/loyalty",
+                    icon: Gift,
+                    requiredPermission: "LOYALTY",
                     requiredAction: "read",
                 },
                 {

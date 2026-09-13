@@ -61,6 +61,7 @@ import {
     FileSpreadsheet,
     Wifi,
     CreditCard,
+    Gift,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -133,6 +134,7 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "menu", titleKey: "sidebar.items.menu", url: "/manage/:id/owner/menu", icon: Utensils },
             { key: "discounts", titleKey: "sidebar.items.discounts", url: "/manage/:id/owner/discounts", icon: Tag },
+            { key: "loyalty", titleKey: "sidebar.items.loyalty", url: "/manage/:id/owner/loyalty", icon: Gift },
             { key: "inventory", titleKey: "sidebar.items.inventory", url: "/manage/:id/owner/inventory", icon: PackageOpen },
             { key: "menu-boards", titleKey: "sidebar.items.menu_boards", url: "/manage/:id/owner/menu-boards", icon: MonitorPlay },
         ],

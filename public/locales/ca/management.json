@@ -422,7 +422,8 @@
       "messages": "Missatges i anuncis",
       "themes": "Tema",
       "menu_boards": "Pantalles de Menú",
-      "wifi_networks": "Xarxes WiFi"
+      "wifi_networks": "Xarxes WiFi",
+      "loyalty": "Fidelització"
     }
   },
   "sidebar": {
@@ -472,7 +473,8 @@
       "fiscal_invoices": "Factures fiscals",
       "fiscal_services": "Serveis fiscals",
       "danger": "Zona de perill",
-      "menu_boards": "Pantalles de Menú"
+      "menu_boards": "Pantalles de Menú",
+      "loyalty": "Fidelització"
     }
   },
   "permissions": {
@@ -4604,5 +4606,17 @@
     "title": "Veure rol: {{name}}",
     "description": "Permisos assignats a aquest rol.",
     "no_permissions_assigned": "No hi ha permisos assignats."
+  },
+  "loyalty_management": {
+    "title": "Programa de fidelització",
+    "subtitle": "Recompensa els clients habituals amb punts a cada comanda.",
+    "active_label": "Programa actiu",
+    "active_description": "Si està desactivat, no s'atorguen punts i el personal no pot enviar noves invitacions.",
+    "rate_label": "Punts per unitat de moneda gastada",
+    "rate_description": "Per exemple, 1.00 vol dir que el client guanya 1 punt per cada 1 € (o 1 $) gastat.",
+    "save_button": "Desa",
+    "locked_title": "Els programes de fidelització són una funció premium",
+    "locked_description": "Millora el pla d'aquest negoci per desbloquejar punts i recompenses de fidelització.",
+    "upgrade_button": "Veure plans"
   }
 }

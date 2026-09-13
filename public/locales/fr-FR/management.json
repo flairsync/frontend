@@ -423,7 +423,8 @@
       "themes": "Thème",
       "menu_boards": "Écrans de Menu",
       "nfc_tags": "Cartes NFC",
-      "wifi_networks": "Réseaux WiFi"
+      "wifi_networks": "Réseaux WiFi",
+      "loyalty": "Fidélité"
     }
   },
   "sidebar": {
@@ -474,7 +475,8 @@
       "fiscal_invoices": "Factures fiscales",
       "fiscal_services": "Services fiscaux",
       "danger": "Zone de danger",
-      "menu_boards": "Écrans de Menu"
+      "menu_boards": "Écrans de Menu",
+      "loyalty": "Fidélité"
     }
   },
   "permissions": {
@@ -4606,5 +4608,17 @@
     "title": "Voir le rôle : {{name}}",
     "description": "Permissions assignées à ce rôle.",
     "no_permissions_assigned": "Aucune permission assignée."
+  },
+  "loyalty_management": {
+    "title": "Programme de fidélité",
+    "subtitle": "Récompensez les clients fidèles avec des points à chaque commande.",
+    "active_label": "Programme actif",
+    "active_description": "S'il est désactivé, aucun point n'est attribué et le personnel ne peut pas envoyer de nouvelles invitations.",
+    "rate_label": "Points par unité de devise dépensée",
+    "rate_description": "Par exemple, 1,00 signifie que le client gagne 1 point par tranche de 1 € (ou 1 $) dépensé.",
+    "save_button": "Enregistrer",
+    "locked_title": "Les programmes de fidélité sont une fonctionnalité premium",
+    "locked_description": "Passez à un forfait supérieur pour ce commerce afin de débloquer les points et récompenses de fidélité.",
+    "upgrade_button": "Voir les forfaits"
   }
 }

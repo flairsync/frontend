@@ -423,7 +423,8 @@
       "themes": "Theme",
       "menu_boards": "Menu Boards",
       "nfc_tags": "NFC Cards",
-      "wifi_networks": "WiFi Networks"
+      "wifi_networks": "WiFi Networks",
+      "loyalty": "Loyalty"
     }
   },
   "sidebar": {
@@ -474,7 +475,8 @@
       "fiscal_invoices": "Fiscal Invoices",
       "fiscal_services": "Fiscal Services",
       "danger": "Danger Zone",
-      "menu_boards": "Menu Boards"
+      "menu_boards": "Menu Boards",
+      "loyalty": "Loyalty"
     }
   },
   "permissions": {
@@ -4720,5 +4722,17 @@
     "title": "View Role: {{name}}",
     "description": "Permissions assigned to this role.",
     "no_permissions_assigned": "No permissions assigned."
+  },
+  "loyalty_management": {
+    "title": "Loyalty Program",
+    "subtitle": "Reward repeat customers with points on every order.",
+    "active_label": "Program active",
+    "active_description": "When off, no points are awarded and staff can't send new invites.",
+    "rate_label": "Points per currency unit spent",
+    "rate_description": "E.g. 1.00 means a customer earns 1 point per €1 (or $1) spent.",
+    "save_button": "Save",
+    "locked_title": "Loyalty programs are a premium feature",
+    "locked_description": "Upgrade this business's plan to unlock loyalty points and rewards.",
+    "upgrade_button": "View plans"
   }
 }

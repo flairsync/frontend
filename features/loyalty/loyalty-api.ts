@@ -13,6 +13,27 @@ export interface LoyaltySignupInviteResolution {
   alreadyHasAccount?: boolean;
 }
 
+export interface LoyaltyProgram {
+  businessId: string;
+  pointsPerCurrencyUnit: string | null;
+  isActive: boolean;
+}
+
+export interface UpsertLoyaltyProgramDto {
+  pointsPerCurrencyUnit: string;
+  isActive: boolean;
+}
+
+const getLoyaltyProgramUrl = (businessId: string) => `${API_URL}/businesses/${businessId}/loyalty/program`;
+
+// Owner/staff-facing config — 403s if the business's Pack doesn't include the
+// "loyalty_points" feature flag (see LoyaltyService.hasLoyaltyAccess).
+export const getLoyaltyProgramApiCall = (businessId: string) =>
+  flairapi.get<{ data: LoyaltyProgram }>(getLoyaltyProgramUrl(businessId));
+
+export const upsertLoyaltyProgramApiCall = (businessId: string, dto: UpsertLoyaltyProgramDto) =>
+  flairapi.put<{ data: LoyaltyProgram }>(getLoyaltyProgramUrl(businessId), dto);
+
 // Any logged-in end-user, no staff permission — the customer checking their
 // own balance (used by Diner Mode's loyalty tab).
 export const getMyLoyaltyBalanceApiCall = (businessId: string) =>
