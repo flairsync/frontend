@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Lock, Gift } from "lucide-react";
 import { useLoyaltyProgram } from "@/features/loyalty/useLoyaltyProgram";
+import { LoyaltyQrCard } from "./LoyaltyQrCard";
 
 type LoyaltyProgramManagementProps = {
     businessId: string;
@@ -66,54 +67,58 @@ export function LoyaltyProgramManagement({ businessId, canUpdate }: LoyaltyProgr
     const isRateValid = !isNaN(parsedRate) && parsedRate > 0;
 
     return (
-        <Card>
-            <CardHeader>
-                <div className="flex items-center gap-2">
-                    <Gift className="h-5 w-5 text-primary" />
-                    <CardTitle>{t("loyalty_management.title")}</CardTitle>
-                </div>
-                <CardDescription>{t("loyalty_management.subtitle")}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="flex items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                        <Label htmlFor="loyalty-active">{t("loyalty_management.active_label")}</Label>
-                        <p className="text-sm text-muted-foreground">{t("loyalty_management.active_description")}</p>
+        <div className="space-y-6">
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <Gift className="h-5 w-5 text-primary" />
+                        <CardTitle>{t("loyalty_management.title")}</CardTitle>
                     </div>
-                    <Switch
-                        id="loyalty-active"
-                        checked={isActive}
-                        onCheckedChange={setIsActive}
-                        disabled={!canUpdate}
-                    />
-                </div>
+                    <CardDescription>{t("loyalty_management.subtitle")}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                            <Label htmlFor="loyalty-active">{t("loyalty_management.active_label")}</Label>
+                            <p className="text-sm text-muted-foreground">{t("loyalty_management.active_description")}</p>
+                        </div>
+                        <Switch
+                            id="loyalty-active"
+                            checked={isActive}
+                            onCheckedChange={setIsActive}
+                            disabled={!canUpdate}
+                        />
+                    </div>
 
-                <div className="space-y-1.5">
-                    <Label htmlFor="loyalty-rate">{t("loyalty_management.rate_label")}</Label>
-                    <p className="text-sm text-muted-foreground mb-2">{t("loyalty_management.rate_description")}</p>
-                    <Input
-                        id="loyalty-rate"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={rate}
-                        onChange={(e) => setRate(e.target.value)}
-                        disabled={!canUpdate}
-                        className="max-w-[160px]"
-                    />
-                </div>
+                    <div className="space-y-1.5">
+                        <Label htmlFor="loyalty-rate">{t("loyalty_management.rate_label")}</Label>
+                        <p className="text-sm text-muted-foreground mb-2">{t("loyalty_management.rate_description")}</p>
+                        <Input
+                            id="loyalty-rate"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={rate}
+                            onChange={(e) => setRate(e.target.value)}
+                            disabled={!canUpdate}
+                            className="max-w-[160px]"
+                        />
+                    </div>
 
-                {canUpdate && (
-                    <Button
-                        onClick={() => saveProgram({ pointsPerCurrencyUnit: parsedRate.toFixed(2), isActive })}
-                        disabled={savingProgram || !isRateValid}
-                        className="gap-2"
-                    >
-                        {savingProgram && <Loader2 className="h-4 w-4 animate-spin" />}
-                        {t("loyalty_management.save_button")}
-                    </Button>
-                )}
-            </CardContent>
-        </Card>
+                    {canUpdate && (
+                        <Button
+                            onClick={() => saveProgram({ pointsPerCurrencyUnit: parsedRate.toFixed(2), isActive })}
+                            disabled={savingProgram || !isRateValid}
+                            className="gap-2"
+                        >
+                            {savingProgram && <Loader2 className="h-4 w-4 animate-spin" />}
+                            {t("loyalty_management.save_button")}
+                        </Button>
+                    )}
+                </CardContent>
+            </Card>
+
+            <LoyaltyQrCard businessId={businessId} />
+        </div>
     );
 }

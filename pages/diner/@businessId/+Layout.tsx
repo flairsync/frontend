@@ -80,11 +80,16 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
         ACTIVE_ORDER_STATUSES.includes(activeOrderSummary.status as any);
     const hasScannedTable = !!scannedTableId;
 
+    // Checking your points balance isn't a "dining session" — exempt the loyalty
+    // tab so a customer visiting it outside of an active table/order isn't
+    // auto-redirected home a few seconds after landing on their own balance.
+    const isLoyaltyActive = currentPath === `/diner/${businessId}/loyalty`;
+
     useEffect(() => {
-        if (!isLoading && !hasSeatedReservation && !hasActiveOrder && !hasScannedTable && cart.length === 0) {
+        if (!isLoading && !hasSeatedReservation && !hasActiveOrder && !hasScannedTable && cart.length === 0 && !isLoyaltyActive) {
             setExitVisible(true);
         }
-    }, [hasSeatedReservation, hasActiveOrder, hasScannedTable, isLoading, cart.length]);
+    }, [hasSeatedReservation, hasActiveOrder, hasScannedTable, isLoading, cart.length, isLoyaltyActive]);
 
     // Auto-dismiss the order-ready banner when the order moves to completed
     useEffect(() => {
@@ -114,7 +119,6 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
         currentPath === `/diner/${businessId}` ||
         currentPath === `/diner/${businessId}/menu`;
     const isOrderActive = currentPath === `/diner/${businessId}/order`;
-    const isLoyaltyActive = currentPath === `/diner/${businessId}/loyalty`;
 
     if (isLoading) {
         return (

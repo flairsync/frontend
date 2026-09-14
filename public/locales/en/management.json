@@ -4733,6 +4733,13 @@
     "save_button": "Save",
     "locked_title": "Loyalty programs are a premium feature",
     "locked_description": "Upgrade this business's plan to unlock loyalty points and rewards.",
-    "upgrade_button": "View plans"
+    "upgrade_button": "View plans",
+    "qr": {
+      "title": "Loyalty QR Code",
+      "subtitle": "Print or display this QR code so customers can join your loyalty program without ordering first.",
+      "download_button": "Download PNG",
+      "load_error": "Couldn't load the QR code",
+      "download_error": "Couldn't download the QR code"
+    }
   }
 }

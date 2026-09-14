@@ -4619,6 +4619,13 @@
     "save_button": "Guardar",
     "locked_title": "Los programas de fidelización son una función premium",
     "locked_description": "Mejora el plan de este negocio para desbloquear puntos y recompensas de fidelización.",
-    "upgrade_button": "Ver planes"
+    "upgrade_button": "Ver planes",
+    "qr": {
+      "title": "Código QR de fidelización",
+      "subtitle": "Imprime o muestra este código QR para que los clientes puedan unirse a tu programa de fidelización sin necesidad de pedir antes.",
+      "download_button": "Descargar PNG",
+      "load_error": "No se pudo cargar el código QR",
+      "download_error": "No se pudo descargar el código QR"
+    }
   }
 }

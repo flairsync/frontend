@@ -49,7 +49,8 @@ export const deleteQrLogoApiCall = (businessId: string) =>
 
 export type QrPreviewTarget =
     | { type: "business" }
-    | { type: "table"; tableId: string };
+    | { type: "table"; tableId: string }
+    | { type: "loyalty" };
 
 // Goes through flairapi (not a raw <a href>) so the request carries auth cookies —
 // the preview/print endpoints are cookie-protected, a plain navigation would 401.

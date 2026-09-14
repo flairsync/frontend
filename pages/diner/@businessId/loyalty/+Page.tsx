@@ -4,6 +4,8 @@ import { Gift, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMyLoyaltyBalance } from '@/features/loyalty/useLoyalty';
+import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
+import { LoyaltyCard } from '@/components/loyalty/LoyaltyCard';
 
 export default function DinerLoyaltyPage() {
     const { t } = useTranslation('diner');
@@ -12,6 +14,7 @@ export default function DinerLoyaltyPage() {
     const isLoggedIn = !!pageContext.user;
 
     const { data: balance, isLoading } = useMyLoyaltyBalance(businessId);
+    const { data: profile } = useDiscoveryProfile(businessId);
 
     // No self-serve opt-in in v1 — enrollment only happens via a staff-sent
     // invite link at checkout, so a guest (or a logged-in user who was never
@@ -61,21 +64,19 @@ export default function DinerLoyaltyPage() {
 
     return (
         <div className="flex-1 p-4">
-            <div className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground rounded-3xl p-6 shadow-lg">
-                <div className="flex items-center gap-2 mb-4 opacity-90">
-                    <Gift className="w-5 h-5" />
-                    <span className="text-xs font-bold uppercase tracking-widest">{t('loyalty_page.title')}</span>
-                </div>
-                <p className="text-sm opacity-80">{t('loyalty_page.balance_label')}</p>
-                <p className="text-5xl font-black mt-1">
-                    {balance.balance} <span className="text-xl font-bold opacity-80">{t('loyalty_page.points_suffix')}</span>
-                </p>
-                {balance.enrolledAt && (
-                    <p className="text-xs opacity-70 mt-4">
-                        {t('loyalty_page.enrolled_since', { date: new Date(balance.enrolledAt).toLocaleDateString() })}
-                    </p>
-                )}
-            </div>
+            <LoyaltyCard
+                businessName={profile?.name ?? ''}
+                businessLogo={profile?.logo}
+                balance={balance.balance}
+                title={t('loyalty_page.title')}
+                balanceLabel={t('loyalty_page.balance_label')}
+                pointsSuffix={t('loyalty_page.points_suffix')}
+                memberSinceText={
+                    balance.enrolledAt
+                        ? t('loyalty_page.enrolled_since', { date: new Date(balance.enrolledAt).toLocaleDateString() })
+                        : undefined
+                }
+            />
         </div>
     );
 }

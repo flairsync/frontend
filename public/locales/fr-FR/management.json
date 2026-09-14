@@ -4619,6 +4619,13 @@
     "save_button": "Enregistrer",
     "locked_title": "Les programmes de fidélité sont une fonctionnalité premium",
     "locked_description": "Passez à un forfait supérieur pour ce commerce afin de débloquer les points et récompenses de fidélité.",
-    "upgrade_button": "Voir les forfaits"
+    "upgrade_button": "Voir les forfaits",
+    "qr": {
+      "title": "QR code de fidélité",
+      "subtitle": "Imprimez ou affichez ce QR code pour que les clients puissent rejoindre votre programme de fidélité sans commander au préalable.",
+      "download_button": "Télécharger en PNG",
+      "load_error": "Impossible de charger le QR code",
+      "download_error": "Impossible de télécharger le QR code"
+    }
   }
 }

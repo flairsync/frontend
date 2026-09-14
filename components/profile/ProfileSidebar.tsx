@@ -12,7 +12,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import { Briefcase, Calendar, Heart, Settings, Star, User, UserCog } from "lucide-react"
+import { Briefcase, Calendar, Gift, Heart, Settings, Star, User, UserCog } from "lucide-react"
 import WebsiteLogo from "../shared/WebsiteLogo"
 
 const ownerNavData = {
@@ -40,6 +40,11 @@ const ownerNavData = {
                     title: "Reservations",
                     url: "/profile/reservations",
                     icon: Calendar,
+                },
+                {
+                    title: "Loyalty",
+                    url: "/profile/loyalty",
+                    icon: Gift,
                 },
                 {
                     title: "Jobs",
