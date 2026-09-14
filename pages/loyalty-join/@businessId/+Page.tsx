@@ -13,7 +13,7 @@ import { LoginFormSchema, SignupFormSchema } from '@/misc/FormValidators';
 import { useAuth } from '@/features/auth/useAuth';
 import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
 import { joinLoyaltyProgramApiCall } from '@/features/loyalty/loyalty-api';
-import { Gift, XCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Gift, XCircle, CheckCircle, Loader2, Eye, EyeOff } from 'lucide-react';
 
 function PageShell({ children }: { children: React.ReactNode }) {
     return (
@@ -52,21 +52,19 @@ const LoyaltyJoinPage = () => {
     const {
         mutate: join,
         isPending: joining,
+        isSuccess: joined,
         isError: joinFailed,
         error: joinError,
     } = useMutation({
         mutationKey: ['join_loyalty_program', businessId],
         mutationFn: () => joinLoyaltyProgramApiCall(businessId),
-        onSuccess: () => {
-            window.location.href = `/diner/${businessId}/loyalty`;
-        },
     });
 
     // Fires once the visitor is authenticated (they just logged in, just
     // registered, or were already logged in when they scanned the QR) — the
     // single point where scanning the QR turns into a LoyaltyAccount.
     useEffect(() => {
-        if (user && profile && !joining && !joinFailed) {
+        if (user && profile && !joining && !joined && !joinFailed) {
             join();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,9 +103,11 @@ const LoyaltyJoinPage = () => {
     }
 
     if (user) {
-        // Logged in: either still resolving the join call (redirects away on
-        // success), or it failed (program inactive/not entitled) — never the
-        // login/signup forms below, since there's nothing left to authenticate.
+        // Logged in: resolving the join call, it failed (program inactive/not
+        // entitled), or it succeeded — never the login/signup forms below,
+        // since there's nothing left to authenticate. Success shows a plain
+        // confirmation here rather than dropping the customer into full Diner
+        // Mode — joining via QR is a lightweight action, not a dining session.
         if (joinFailed) {
             const message = (joinError as any)?.response?.data?.message ?? t('auth_page.loyalty_join.inactive_message');
             return (
@@ -120,6 +120,26 @@ const LoyaltyJoinPage = () => {
                         </div>
                         <h1 className="text-3xl font-extrabold mb-3">{t('auth_page.loyalty_join.inactive_title')}</h1>
                         <p className="text-muted-foreground">{message}</p>
+                    </div>
+                </PageShell>
+            );
+        }
+        if (joined) {
+            return (
+                <PageShell>
+                    <div className="text-center">
+                        <div className="flex justify-center mb-6">
+                            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-50">
+                                <CheckCircle className="h-8 w-8 text-green-500" />
+                            </div>
+                        </div>
+                        <h1 className="text-3xl font-extrabold mb-3">{t('auth_page.loyalty_join.joined_title')}</h1>
+                        <p className="text-muted-foreground mb-8">
+                            {t('auth_page.loyalty_join.joined_message', { businessName: profile.name })}
+                        </p>
+                        <Button asChild className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg">
+                            <a href="/profile/loyalty">{t('auth_page.loyalty_join.view_cards_button')}</a>
+                        </Button>
                     </div>
                 </PageShell>
             );

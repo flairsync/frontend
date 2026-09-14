@@ -39,13 +39,21 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
     const { data: activeOrderSummary } = useActiveOrderDetail(businessId, activeOrderId);
 
-    const [entryVisible, setEntryVisible] = useState(true);
+    const [entryVisible, setEntryVisible] = useState(false);
     const [exitVisible, setExitVisible] = useState(false);
+    const hasSeatedReservation = !!reservation;
 
+    // Only a genuine reservation-based seating gets the "You're seated at X"
+    // banner — it used to show unconditionally on every Diner Mode page load,
+    // which was harmless while the only ways to land here implied real
+    // seating (a table scan or an active order), but became misleading once
+    // the Loyalty tab let a customer land here without either.
     useEffect(() => {
+        if (!hasSeatedReservation) return;
+        setEntryVisible(true);
         const t = setTimeout(() => setEntryVisible(false), 3000);
         return () => clearTimeout(t);
-    }, []);
+    }, [hasSeatedReservation]);
 
     // Hydrate from the cookies dropped when the table was scanned / an order was
     // placed as a guest — only trust them for the business they were set for.
@@ -74,7 +82,6 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const resolvedTable = floors?.flatMap((f) => f.tables ?? []).find((t) => t.id === resolvedTableId);
     const tableLabel = resolvedTable ? (resolvedTable.name || t('layout.table_fallback', { number: resolvedTable.number })) : resolvedTableId;
 
-    const hasSeatedReservation = !!reservation;
     const hasActiveOrder =
         !!activeOrderSummary &&
         ACTIVE_ORDER_STATUSES.includes(activeOrderSummary.status as any);
