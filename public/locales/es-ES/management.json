@@ -4625,7 +4625,12 @@
       "subtitle": "Imprime o muestra este código QR para que los clientes puedan unirse a tu programa de fidelización sin necesidad de pedir antes.",
       "download_button": "Descargar PNG",
       "load_error": "No se pudo cargar el código QR",
-      "download_error": "No se pudo descargar el código QR"
-    }
+      "download_error": "No se pudo descargar el código QR",
+      "flyer_button": "Imprimir folleto (PDF)",
+      "flyer_error": "No se pudo generar el folleto en PDF"
+    },
+    "expiry_label": "Los puntos caducan después de",
+    "expiry_description": "Número de meses tras ganarlos antes de que los puntos caduquen. Déjalo en blanco para que los puntos no caduquen nunca.",
+    "expiry_placeholder": "Nunca"
   }
 }

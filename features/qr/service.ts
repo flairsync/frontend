@@ -75,6 +75,15 @@ export const fetchQrTablesPdfBlob = async (businessId: string, floorId?: string)
     return response.data as Blob;
 };
 
+// A printable sheet of identical "Join our Loyalty Program" cards, to cut out
+// and place one per table/at the counter.
+export const fetchLoyaltyFlyerPdfBlob = async (businessId: string): Promise<Blob> => {
+    const response = await flairapi.get(`${getQrUrl(businessId)}/loyalty/pdf`, {
+        responseType: "blob",
+    });
+    return response.data as Blob;
+};
+
 export const fetchWifiQrBlob = async (
     businessId: string,
     wifiNetworkId: string,

@@ -4623,7 +4623,12 @@
       "subtitle": "Imprimeix o mostra aquest codi QR perquè els clients puguin unir-se al teu programa de fidelització sense haver de fer una comanda abans.",
       "download_button": "Descarrega PNG",
       "load_error": "No s'ha pogut carregar el codi QR",
-      "download_error": "No s'ha pogut descarregar el codi QR"
-    }
+      "download_error": "No s'ha pogut descarregar el codi QR",
+      "flyer_button": "Imprimeix el fullet (PDF)",
+      "flyer_error": "No s'ha pogut generar el fullet en PDF"
+    },
+    "expiry_label": "Els punts caduquen després de",
+    "expiry_description": "Nombre de mesos després de guanyar-los abans que els punts caduquin. Deixa-ho en blanc perquè els punts no caduquin mai.",
+    "expiry_placeholder": "Mai"
   }
 }

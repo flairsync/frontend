@@ -35,7 +35,10 @@ const ProfileLoyaltyPage = () => {
                     </div>
                 ) : (
                     myAccounts.map((account) => (
-                        <a key={account.businessId} href={`/diner/${account.businessId}/loyalty`}>
+                        // Links to the business's public profile (menu/reviews/reservations/order),
+                        // not Diner Mode — that's for an active dining session, and browsing your
+                        // loyalty cards from your profile isn't one.
+                        <a key={account.businessId} href={`/business/${account.businessId}`}>
                             <LoyaltyCard
                                 businessName={account.businessName}
                                 businessLogo={account.businessLogo}

@@ -4739,7 +4739,12 @@
       "subtitle": "Print or display this QR code so customers can join your loyalty program without ordering first.",
       "download_button": "Download PNG",
       "load_error": "Couldn't load the QR code",
-      "download_error": "Couldn't download the QR code"
-    }
+      "download_error": "Couldn't download the QR code",
+      "flyer_button": "Print flyer (PDF)",
+      "flyer_error": "Couldn't generate the flyer PDF"
+    },
+    "expiry_label": "Points expire after",
+    "expiry_description": "Number of months after earning before points expire. Leave blank for points that never expire.",
+    "expiry_placeholder": "Never"
   }
 }

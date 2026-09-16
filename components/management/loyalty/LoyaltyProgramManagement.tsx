@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Lock, Gift } from "lucide-react";
 import { useLoyaltyProgram } from "@/features/loyalty/useLoyaltyProgram";
 import { LoyaltyQrCard } from "./LoyaltyQrCard";
+import { LoyaltyMembersManagement } from "./LoyaltyMembersManagement";
 
 type LoyaltyProgramManagementProps = {
     businessId: string;
@@ -26,11 +27,13 @@ export function LoyaltyProgramManagement({ businessId, canUpdate }: LoyaltyProgr
 
     const [isActive, setIsActive] = useState(false);
     const [rate, setRate] = useState("1.00");
+    const [expiryMonths, setExpiryMonths] = useState("");
 
     useEffect(() => {
         if (program) {
             setIsActive(program.isActive);
             setRate(program.pointsPerCurrencyUnit ?? "1.00");
+            setExpiryMonths(program.expiryMonths ? String(program.expiryMonths) : "");
         }
     }, [program]);
 
@@ -65,6 +68,8 @@ export function LoyaltyProgramManagement({ businessId, canUpdate }: LoyaltyProgr
 
     const parsedRate = parseFloat(rate);
     const isRateValid = !isNaN(parsedRate) && parsedRate > 0;
+    const parsedExpiryMonths = expiryMonths.trim() === "" ? null : parseInt(expiryMonths, 10);
+    const isExpiryValid = parsedExpiryMonths === null || (Number.isInteger(parsedExpiryMonths) && parsedExpiryMonths >= 0);
 
     return (
         <div className="space-y-6">
@@ -105,10 +110,30 @@ export function LoyaltyProgramManagement({ businessId, canUpdate }: LoyaltyProgr
                         />
                     </div>
 
+                    <div className="space-y-1.5">
+                        <Label htmlFor="loyalty-expiry">{t("loyalty_management.expiry_label")}</Label>
+                        <p className="text-sm text-muted-foreground mb-2">{t("loyalty_management.expiry_description")}</p>
+                        <Input
+                            id="loyalty-expiry"
+                            type="number"
+                            min="0"
+                            step="1"
+                            placeholder={t("loyalty_management.expiry_placeholder")}
+                            value={expiryMonths}
+                            onChange={(e) => setExpiryMonths(e.target.value)}
+                            disabled={!canUpdate}
+                            className="max-w-[160px]"
+                        />
+                    </div>
+
                     {canUpdate && (
                         <Button
-                            onClick={() => saveProgram({ pointsPerCurrencyUnit: parsedRate.toFixed(2), isActive })}
-                            disabled={savingProgram || !isRateValid}
+                            onClick={() => saveProgram({
+                                pointsPerCurrencyUnit: parsedRate.toFixed(2),
+                                isActive,
+                                expiryMonths: parsedExpiryMonths,
+                            })}
+                            disabled={savingProgram || !isRateValid || !isExpiryValid}
                             className="gap-2"
                         >
                             {savingProgram && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -119,6 +144,8 @@ export function LoyaltyProgramManagement({ businessId, canUpdate }: LoyaltyProgr
             </Card>
 
             <LoyaltyQrCard businessId={businessId} />
+
+            <LoyaltyMembersManagement businessId={businessId} canUpdate={canUpdate} />
         </div>
     );
 }

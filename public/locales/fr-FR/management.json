@@ -4625,7 +4625,12 @@
       "subtitle": "Imprimez ou affichez ce QR code pour que les clients puissent rejoindre votre programme de fidélité sans commander au préalable.",
       "download_button": "Télécharger en PNG",
       "load_error": "Impossible de charger le QR code",
-      "download_error": "Impossible de télécharger le QR code"
-    }
+      "download_error": "Impossible de télécharger le QR code",
+      "flyer_button": "Imprimer le flyer (PDF)",
+      "flyer_error": "Impossible de générer le flyer PDF"
+    },
+    "expiry_label": "Les points expirent après",
+    "expiry_description": "Nombre de mois après leur obtention avant que les points n'expirent. Laissez vide pour des points qui n'expirent jamais.",
+    "expiry_placeholder": "Jamais"
   }
 }

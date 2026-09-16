@@ -17,11 +17,13 @@ export interface LoyaltyProgram {
   businessId: string;
   pointsPerCurrencyUnit: string | null;
   isActive: boolean;
+  expiryMonths: number | null;
 }
 
 export interface UpsertLoyaltyProgramDto {
   pointsPerCurrencyUnit: string;
   isActive: boolean;
+  expiryMonths?: number | null;
 }
 
 const getLoyaltyProgramUrl = (businessId: string) => `${API_URL}/businesses/${businessId}/loyalty/program`;
@@ -66,3 +68,42 @@ export const resolveLoyaltySignupInviteApiCall = (token: string) =>
 // customer has logged in from the landing page.
 export const consumeLoyaltySignupInviteApiCall = (token: string) =>
   flairapi.post(`${API_URL}/loyalty/signup-invite/${token}/consume`);
+
+export interface LoyaltyMember {
+  userId: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  balance: number;
+  enrolledAt: string;
+}
+
+export interface LoyaltyMembersPage {
+  data: LoyaltyMember[];
+  current: number;
+  pages: number;
+}
+
+export interface LoyaltyStats {
+  memberCount: number;
+  pointsOutstanding: number;
+  pointsIssued: number;
+}
+
+// Owner/staff dashboard — paginated member list.
+export const getLoyaltyMembersApiCall = (businessId: string, page: number, limit: number) =>
+  flairapi.get<{ data: LoyaltyMembersPage }>(
+    `${API_URL}/businesses/${businessId}/loyalty/members`,
+    { params: { page, limit } },
+  );
+
+// Owner/staff dashboard — summary stats.
+export const getLoyaltyStatsApiCall = (businessId: string) =>
+  flairapi.get<{ data: LoyaltyStats }>(`${API_URL}/businesses/${businessId}/loyalty/stats`);
+
+// Staff correction to a member's balance — dispute fix or goodwill gesture.
+export const adjustLoyaltyPointsApiCall = (businessId: string, userId: string, delta: number, note?: string) =>
+  flairapi.post<{ data: { balance: number } }>(
+    `${API_URL}/businesses/${businessId}/loyalty/members/${userId}/adjust`,
+    { delta, note },
+  );

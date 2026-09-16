@@ -8,9 +8,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, QrCode } from "lucide-react";
+import { Download, Loader2, Printer, QrCode } from "lucide-react";
 import { toast } from "sonner";
-import { fetchQrPreviewBlob } from "@/features/qr/service";
+import { fetchQrPreviewBlob, fetchLoyaltyFlyerPdfBlob } from "@/features/qr/service";
 import { downloadBlob } from "@/lib/downloadBlob";
 
 type LoyaltyQrCardProps = {
@@ -22,6 +22,7 @@ export function LoyaltyQrCard({ businessId }: LoyaltyQrCardProps) {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [downloading, setDownloading] = useState(false);
+    const [printing, setPrinting] = useState(false);
 
     useEffect(() => {
         let objectUrl: string | null = null;
@@ -51,6 +52,18 @@ export function LoyaltyQrCard({ businessId }: LoyaltyQrCardProps) {
         }
     };
 
+    const handlePrintFlyer = async () => {
+        setPrinting(true);
+        try {
+            const blob = await fetchLoyaltyFlyerPdfBlob(businessId);
+            downloadBlob(blob, "loyalty-qr-codes.pdf");
+        } catch {
+            toast.error(t("loyalty_management.qr.flyer_error"));
+        } finally {
+            setPrinting(false);
+        }
+    };
+
     return (
         <Card>
             <CardHeader>
@@ -68,10 +81,16 @@ export function LoyaltyQrCard({ businessId }: LoyaltyQrCardProps) {
                         <img src={imageUrl} alt={t("loyalty_management.qr.title")} className="h-full w-full object-contain p-2" />
                     ) : null}
                 </div>
-                <Button variant="outline" onClick={handleDownload} disabled={downloading || loading} className="gap-2">
-                    {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-                    {t("loyalty_management.qr.download_button")}
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="outline" onClick={handleDownload} disabled={downloading || loading} className="gap-2">
+                        {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                        {t("loyalty_management.qr.download_button")}
+                    </Button>
+                    <Button variant="outline" onClick={handlePrintFlyer} disabled={printing || loading} className="gap-2">
+                        {printing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Printer className="h-4 w-4" />}
+                        {t("loyalty_management.qr.flyer_button")}
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     );
