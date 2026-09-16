@@ -166,12 +166,12 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                 <div className="flex gap-2">
                                     {profile.type && (
                                         <Badge className="bg-primary/20 backdrop-blur-md border-primary/20 text-primary-foreground capitalize">
-                                            {profile.type.name.replace('_', ' ')}
+                                            {t(`business_types.${profile.type.name}`, profile.type.name.replace('_', ' '))}
                                         </Badge>
                                     )}
                                     {profile.tags.slice(0, 2).map(tag => (
                                         <Badge key={tag.id} className="bg-white/10 backdrop-blur-md border-white/10 text-white">
-                                            {tag.name}
+                                            {t(`shared.tags.${tag.name}`, tag.name)}
                                         </Badge>
                                     ))}
                                 </div>
@@ -242,11 +242,11 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                         <div className="flex gap-2 flex-wrap">
                             {profile.type && (
                                 <Badge variant="secondary" className="capitalize">
-                                    {profile.type.name.replace('_', ' ')}
+                                    {t(`business_types.${profile.type.name}`, profile.type.name.replace('_', ' '))}
                                 </Badge>
                             )}
                             {profile.tags.slice(0, 2).map(tag => (
-                                <Badge key={tag.id} variant="secondary">{tag.name}</Badge>
+                                <Badge key={tag.id} variant="secondary">{t(`shared.tags.${tag.name}`, tag.name)}</Badge>
                             ))}
                         </div>
                         <div className="flex items-center gap-3">
@@ -340,9 +340,9 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                 )}
 
                 <div className="flex flex-wrap gap-2">
-                    {profile.type && <Badge variant="secondary" className="rounded-full capitalize">{profile.type.name.replace('_', ' ')}</Badge>}
+                    {profile.type && <Badge variant="secondary" className="rounded-full capitalize">{t(`business_types.${profile.type.name}`, profile.type.name.replace('_', ' '))}</Badge>}
                     {profile.tags.map(tag => (
-                        <Badge key={tag.id} variant="secondary" className="rounded-full">{tag.name}</Badge>
+                        <Badge key={tag.id} variant="secondary" className="rounded-full">{t(`shared.tags.${tag.name}`, tag.name)}</Badge>
                     ))}
                 </div>
 

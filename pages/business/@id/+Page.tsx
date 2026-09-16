@@ -12,6 +12,7 @@ import BusinessDetailsHero from '@/components/business_details/BusinessDetailsHe
 import BusinessDetailsSectionNav from '@/components/business_details/BusinessDetailsSectionNav';
 import { BusinessDetailsOrderModal } from "@/components/business_details/BusinessDetailsOrderModal";
 import BusinessDetailsUserHistory from "@/components/business_details/BusinessDetailsUserHistory";
+import BusinessDetailsLoyaltyCard from "@/components/business_details/BusinessDetailsLoyaltyCard";
 import BusinessDetailsContact from '@/components/business_details/BusinessDetailsContact';
 import BusinessDetailsInfoCards from '@/components/business_details/BusinessDetailsInfoCards';
 import BusinessDetailsMenu from '@/components/business_details/BusinessDetailsMenu';
@@ -62,6 +63,12 @@ const BusinessContent = withFallback(
                         <motion.div variants={item}>
                             <BusinessDetailsInfoCards profile={profile} />
                         </motion.div>
+
+                        {user && (
+                            <motion.div variants={item}>
+                                <BusinessDetailsLoyaltyCard businessId={id} businessName={profile.name} businessLogo={profile.logo} />
+                            </motion.div>
+                        )}
 
                         {user && (
                             <BusinessDetailsUserHistory businessId={id} />

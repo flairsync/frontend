@@ -139,7 +139,7 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
                             </span>
                         )}
                         {profile.tags.slice(0, 2).map((tag) => (
-                            <span key={tag.id} className="rounded bg-white/15 border border-white/30 px-3 py-1">{tag.name}</span>
+                            <span key={tag.id} className="rounded bg-white/15 border border-white/30 px-3 py-1">{t(`shared.tags.${tag.name}`, tag.name)}</span>
                         ))}
                     </div>
 

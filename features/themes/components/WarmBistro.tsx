@@ -97,7 +97,7 @@ export function WarmBistroTheme({ profile, menu }: ThemeComponentProps) {
                             </span>
                         )}
                         {profile.tags.slice(0, 2).map((tag) => (
-                            <span key={tag.id} className="rounded-full bg-[var(--t-muted)] px-3 py-1 text-sm">{tag.name}</span>
+                            <span key={tag.id} className="rounded-full bg-[var(--t-muted)] px-3 py-1 text-sm">{t(`shared.tags.${tag.name}`, tag.name)}</span>
                         ))}
                     </div>
 

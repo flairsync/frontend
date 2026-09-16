@@ -98,7 +98,7 @@ export function ModernMinimalTheme({ profile, menu }: ThemeComponentProps) {
                     {profile.rating !== null && addressLabel && <span>&middot;</span>}
                     {addressLabel && <span>{addressLabel}</span>}
                     {profile.tags.slice(0, 3).map((tag) => (
-                        <span key={tag.id}>&middot; {tag.name}</span>
+                        <span key={tag.id}>&middot; {t(`shared.tags.${tag.name}`, tag.name)}</span>
                     ))}
                 </div>
             </motion.header>
