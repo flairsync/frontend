@@ -4,8 +4,10 @@ import {
     getLoyaltyMembersApiCall,
     getLoyaltyStatsApiCall,
     adjustLoyaltyPointsApiCall,
+    getLoyaltyMemberHistoryApiCall,
     LoyaltyMembersPage,
     LoyaltyStats,
+    LoyaltyHistoryPage,
 } from "./loyalty-api";
 
 export const useLoyaltyMembers = (businessId: string, page: number, limit = 10) => {
@@ -30,14 +32,25 @@ export const useAdjustLoyaltyPoints = (businessId: string) => {
     return useMutation({
         mutationFn: ({ userId, delta, note }: { userId: string; delta: number; note?: string }) =>
             adjustLoyaltyPointsApiCall(businessId, userId, delta, note),
-        onSuccess: () => {
+        onSuccess: (_res, { userId }) => {
             queryClient.invalidateQueries({ queryKey: ["loyalty_members", businessId] });
             queryClient.invalidateQueries({ queryKey: ["loyalty_stats", businessId] });
+            queryClient.invalidateQueries({ queryKey: ["loyalty_member_history", businessId, userId] });
             toast.success("Points adjusted");
         },
         onError: (error: any) => {
             const msg = error.response?.data?.message || "Couldn't adjust points";
             toast.error(msg);
         },
+    });
+};
+
+// One member's transaction history — powers the "History" dialog on the
+// owner/staff member list, for dispute/support lookups.
+export const useLoyaltyMemberHistory = (businessId: string, userId: string | undefined, page: number, limit = 10) => {
+    return useQuery({
+        queryKey: ["loyalty_member_history", businessId, userId, page, limit],
+        queryFn: async (): Promise<LoyaltyHistoryPage> => (await getLoyaltyMemberHistoryApiCall(businessId, userId!, page, limit)).data.data,
+        enabled: !!businessId && !!userId,
     });
 };

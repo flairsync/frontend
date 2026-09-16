@@ -1,6 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { usePageContext } from "vike-react/usePageContext";
-import { getMyLoyaltyBalanceApiCall, LoyaltyBalance, getMyLoyaltyAccountsApiCall, MyLoyaltyAccount } from "./loyalty-api";
+import {
+    getMyLoyaltyBalanceApiCall,
+    LoyaltyBalance,
+    getMyLoyaltyAccountsApiCall,
+    MyLoyaltyAccount,
+    getMyLoyaltyHistoryApiCall,
+    LoyaltyHistoryPage,
+} from "./loyalty-api";
 
 export const useMyLoyaltyBalance = (businessId: string | undefined) => {
     const pageContext = usePageContext();
@@ -29,5 +36,18 @@ export const useMyLoyaltyAccounts = () => {
         queryKey: ["my_loyalty_accounts"],
         queryFn: async (): Promise<MyLoyaltyAccount[]> => (await getMyLoyaltyAccountsApiCall()).data.data,
         enabled: isLoggedIn,
+    });
+};
+
+// The customer's own transaction history at one business — powers the
+// "Recent Activity" list on Diner Mode's loyalty tab.
+export const useMyLoyaltyHistory = (businessId: string | undefined, page: number, limit = 10) => {
+    const pageContext = usePageContext();
+    const isLoggedIn = !!pageContext.user;
+
+    return useQuery({
+        queryKey: ["my_loyalty_history", businessId, page, limit],
+        queryFn: async (): Promise<LoyaltyHistoryPage> => (await getMyLoyaltyHistoryApiCall(businessId!, page, limit)).data.data,
+        enabled: !!businessId && isLoggedIn,
     });
 };

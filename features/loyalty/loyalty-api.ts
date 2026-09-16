@@ -107,3 +107,35 @@ export const adjustLoyaltyPointsApiCall = (businessId: string, userId: string, d
     `${API_URL}/businesses/${businessId}/loyalty/members/${userId}/adjust`,
     { delta, note },
   );
+
+export type LoyaltyLedgerReason = "EARN_ORDER" | "MANUAL_ADJUSTMENT" | "EXPIRY";
+
+export interface LoyaltyHistoryEntry {
+  id: string;
+  delta: number;
+  reason: LoyaltyLedgerReason;
+  note?: string | null;
+  orderId?: string | null;
+  createdAt: string;
+}
+
+export interface LoyaltyHistoryPage {
+  data: LoyaltyHistoryEntry[];
+  current: number;
+  pages: number;
+}
+
+// Any logged-in end-user, no staff permission — the customer's own
+// transaction history at this business (Diner Mode).
+export const getMyLoyaltyHistoryApiCall = (businessId: string, page: number, limit: number) =>
+  flairapi.get<{ data: LoyaltyHistoryPage }>(
+    `${API_URL}/businesses/${businessId}/loyalty/me/history`,
+    { params: { page, limit } },
+  );
+
+// Owner/staff dashboard — one member's transaction history (dispute/support lookups).
+export const getLoyaltyMemberHistoryApiCall = (businessId: string, userId: string, page: number, limit: number) =>
+  flairapi.get<{ data: LoyaltyHistoryPage }>(
+    `${API_URL}/businesses/${businessId}/loyalty/members/${userId}/history`,
+    { params: { page, limit } },
+  );

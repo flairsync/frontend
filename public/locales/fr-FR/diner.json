@@ -157,6 +157,8 @@
     "not_enrolled_description": "Demandez à un membre du personnel de vous envoyer une invitation pour rejoindre le programme de fidélité lors de votre prochaine commande.",
     "login_required_title": "Connectez-vous pour voir vos points",
     "login_required_description": "Les points de fidélité sont liés à votre compte FlairSync.",
-    "login_button": "Se connecter"
+    "login_button": "Se connecter",
+    "activity_title": "Activité récente",
+    "activity_empty": "Pas encore d'activité."
   }
 }

@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, Coins, TrendingUp, Pencil } from "lucide-react";
+import { Users, Coins, TrendingUp, Pencil, History } from "lucide-react";
 import DataPagination from "@/components/inputs/DataPagination";
 import { useLoyaltyMembers, useLoyaltyStats, useAdjustLoyaltyPoints } from "@/features/loyalty/useLoyaltyMembers";
 import { LoyaltyMember } from "@/features/loyalty/loyalty-api";
 import { AdjustLoyaltyPointsDialog } from "./AdjustLoyaltyPointsDialog";
+import { LoyaltyMemberHistoryDialog } from "./LoyaltyMemberHistoryDialog";
 
 const LIMIT = 10;
 
@@ -43,12 +44,16 @@ type LoyaltyMembersManagementProps = {
 export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembersManagementProps) {
     const [page, setPage] = useState(1);
     const [adjustingMember, setAdjustingMember] = useState<LoyaltyMember | null>(null);
+    const [viewingHistoryMember, setViewingHistoryMember] = useState<LoyaltyMember | null>(null);
 
     const { data: stats, isFetching: fetchingStats } = useLoyaltyStats(businessId);
     const { data: membersPage, isFetching: fetchingMembers } = useLoyaltyMembers(businessId, page, LIMIT);
     const { mutateAsync: adjustPoints, isPending: isAdjusting } = useAdjustLoyaltyPoints(businessId);
 
-    const hasActionsColumn = canUpdate;
+    // History is a read action (always available to whoever can see this list
+    // at all, since fetching the list itself already required LOYALTY:read) —
+    // only the Adjust button is gated on canUpdate specifically.
+    const hasActionsColumn = true;
     const members = membersPage?.data ?? [];
 
     const handleConfirmAdjust = async (userId: string, delta: number, note?: string) => {
@@ -119,10 +124,21 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                                                     <Button
                                                         size="icon"
                                                         variant="ghost"
-                                                        onClick={() => setAdjustingMember(member)}
+                                                        onClick={() => setViewingHistoryMember(member)}
+                                                        title="View history"
                                                     >
-                                                        <Pencil className="h-4 w-4" />
+                                                        <History className="h-4 w-4" />
                                                     </Button>
+                                                    {canUpdate && (
+                                                        <Button
+                                                            size="icon"
+                                                            variant="ghost"
+                                                            onClick={() => setAdjustingMember(member)}
+                                                            title="Adjust points"
+                                                        >
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
+                                                    )}
                                                 </TableCell>
                                             )}
                                         </TableRow>
@@ -149,6 +165,13 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                 member={adjustingMember}
                 onConfirm={handleConfirmAdjust}
                 isAdjusting={isAdjusting}
+            />
+
+            <LoyaltyMemberHistoryDialog
+                businessId={businessId}
+                member={viewingHistoryMember}
+                open={!!viewingHistoryMember}
+                onOpenChange={(open) => !open && setViewingHistoryMember(null)}
             />
         </Card>
     );

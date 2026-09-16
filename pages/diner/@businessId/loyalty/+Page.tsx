@@ -1,20 +1,27 @@
+import { useState } from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useTranslation } from 'react-i18next';
 import { Gift, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useMyLoyaltyBalance } from '@/features/loyalty/useLoyalty';
+import DataPagination from '@/components/inputs/DataPagination';
+import { useMyLoyaltyBalance, useMyLoyaltyHistory } from '@/features/loyalty/useLoyalty';
 import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
 import { LoyaltyCard } from '@/components/loyalty/LoyaltyCard';
+import { LoyaltyHistoryList } from '@/components/loyalty/LoyaltyHistoryList';
+
+const HISTORY_LIMIT = 10;
 
 export default function DinerLoyaltyPage() {
     const { t } = useTranslation('diner');
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
     const isLoggedIn = !!pageContext.user;
+    const [historyPage, setHistoryPage] = useState(1);
 
     const { data: balance, isLoading } = useMyLoyaltyBalance(businessId);
     const { data: profile } = useDiscoveryProfile(businessId);
+    const { data: history } = useMyLoyaltyHistory(businessId, historyPage, HISTORY_LIMIT);
 
     // No self-serve opt-in in v1 — enrollment only happens via a staff-sent
     // invite link at checkout, so a guest (or a logged-in user who was never
@@ -77,6 +84,23 @@ export default function DinerLoyaltyPage() {
                         : undefined
                 }
             />
+
+            <div className="mt-6">
+                <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2 px-1">
+                    {t('loyalty_page.activity_title')}
+                </h3>
+                <LoyaltyHistoryList entries={history?.data ?? []} emptyText={t('loyalty_page.activity_empty')} />
+                {history && history.pages > 1 && (
+                    <div className="mt-3">
+                        <DataPagination
+                            current={historyPage}
+                            total={history.pages * HISTORY_LIMIT}
+                            pageSize={HISTORY_LIMIT}
+                            onChange={setHistoryPage}
+                        />
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

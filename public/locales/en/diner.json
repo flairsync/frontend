@@ -157,6 +157,8 @@
     "not_enrolled_description": "Ask a staff member to send you an invite to join this business's loyalty program next time you order.",
     "login_required_title": "Log in to see your points",
     "login_required_description": "Loyalty points are tied to your FlairSync account.",
-    "login_button": "Log in"
+    "login_button": "Log in",
+    "activity_title": "Recent Activity",
+    "activity_empty": "No activity yet."
   }
 }

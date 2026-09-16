@@ -157,6 +157,8 @@
     "not_enrolled_description": "Demana a un membre del personal que t'enviï una invitació per unir-te al programa de fidelització la propera vegada que facis una comanda.",
     "login_required_title": "Inicia sessió per veure els teus punts",
     "login_required_description": "Els punts de fidelització estan vinculats al teu compte de FlairSync.",
-    "login_button": "Inicia sessió"
+    "login_button": "Inicia sessió",
+    "activity_title": "Activitat recent",
+    "activity_empty": "Encara no hi ha activitat."
   }
 }
