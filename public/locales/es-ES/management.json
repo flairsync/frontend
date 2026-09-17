@@ -1866,6 +1866,30 @@
       "last_30_days": "Últimos 30 días",
       "this_month": "Este mes",
       "last_month": "El mes pasado"
+    },
+    "kpi": {
+      "total_revenue": "Ingresos Totales",
+      "total_orders": "Pedidos Totales",
+      "avg_order_value": "Valor Medio por Pedido",
+      "total_tips": "Propinas Totales",
+      "gross_margin": "Margen Bruto",
+      "avg_rating": "Valoración Media",
+      "nps_score": "Puntuación NPS",
+      "labor_cost": "Coste Laboral",
+      "sales_per_labor_hour": "Ventas por Hora Trabajada",
+      "prime_cost": "Coste Primo"
+    },
+    "labor_table": {
+      "title": "Coste Laboral por Empleado",
+      "description": "Horas trabajadas y salarios del periodo seleccionado, según la asistencia validada",
+      "no_data": "No hay asistencia validada en este periodo.",
+      "col_employee": "Empleado",
+      "col_hours": "Horas",
+      "col_overtime_hours": "Horas Extra",
+      "col_cost": "Coste Laboral",
+      "col_share": "% del Coste Laboral",
+      "totals": "Totales",
+      "paid_leave_note": "Incluye {{hours}} h de permiso retribuido ({{amount}}), contabilizadas en el coste pero no en las horas trabajadas."
     }
   },
   "company_guide": {

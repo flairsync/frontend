@@ -1864,6 +1864,30 @@
       "last_30_days": "Darrers 30 dies",
       "this_month": "Aquest mes",
       "last_month": "El mes passat"
+    },
+    "kpi": {
+      "total_revenue": "Ingressos Totals",
+      "total_orders": "Comandes Totals",
+      "avg_order_value": "Valor Mitjà per Comanda",
+      "total_tips": "Propines Totals",
+      "gross_margin": "Marge Brut",
+      "avg_rating": "Valoració Mitjana",
+      "nps_score": "Puntuació NPS",
+      "labor_cost": "Cost Laboral",
+      "sales_per_labor_hour": "Vendes per Hora Treballada",
+      "prime_cost": "Cost Primer"
+    },
+    "labor_table": {
+      "title": "Cost Laboral per Empleat",
+      "description": "Hores treballades i salaris del període seleccionat, segons l'assistència validada",
+      "no_data": "No hi ha assistència validada en aquest període.",
+      "col_employee": "Empleat",
+      "col_hours": "Hores",
+      "col_overtime_hours": "Hores Extra",
+      "col_cost": "Cost Laboral",
+      "col_share": "% del Cost Laboral",
+      "totals": "Totals",
+      "paid_leave_note": "Inclou {{hours}} h de permís retribuït ({{amount}}), comptabilitzades en el cost però no en les hores treballades."
     }
   },
   "company_guide": {

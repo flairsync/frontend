@@ -1876,6 +1876,30 @@
       "last_30_days": "Last 30 Days",
       "this_month": "This Month",
       "last_month": "Last Month"
+    },
+    "kpi": {
+      "total_revenue": "Total Revenue",
+      "total_orders": "Total Orders",
+      "avg_order_value": "Average Order Value",
+      "total_tips": "Total Tips",
+      "gross_margin": "Gross Margin",
+      "avg_rating": "Avg Rating",
+      "nps_score": "NPS Score",
+      "labor_cost": "Labor Cost",
+      "sales_per_labor_hour": "Sales per Labor Hour",
+      "prime_cost": "Prime Cost"
+    },
+    "labor_table": {
+      "title": "Labor Cost by Employee",
+      "description": "Hours worked and wages for the selected period, from validated attendance",
+      "no_data": "No validated attendance in this period.",
+      "col_employee": "Employee",
+      "col_hours": "Hours",
+      "col_overtime_hours": "Overtime Hours",
+      "col_cost": "Labor Cost",
+      "col_share": "Share of Labor",
+      "totals": "Totals",
+      "paid_leave_note": "Includes {{hours}} h of paid leave ({{amount}}), counted in cost but not in hours worked."
     }
   },
   "company_guide": {

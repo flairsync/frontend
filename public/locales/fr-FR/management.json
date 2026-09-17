@@ -1866,6 +1866,30 @@
       "last_30_days": "30 derniers jours",
       "this_month": "Ce mois-ci",
       "last_month": "Le mois dernier"
+    },
+    "kpi": {
+      "total_revenue": "Chiffre d'Affaires Total",
+      "total_orders": "Commandes Totales",
+      "avg_order_value": "Panier Moyen",
+      "total_tips": "Pourboires Totaux",
+      "gross_margin": "Marge Brute",
+      "avg_rating": "Note Moyenne",
+      "nps_score": "Score NPS",
+      "labor_cost": "Coût de la Main-d'Œuvre",
+      "sales_per_labor_hour": "Ventes par Heure Travaillée",
+      "prime_cost": "Coût Principal"
+    },
+    "labor_table": {
+      "title": "Coût de la Main-d'Œuvre par Employé",
+      "description": "Heures travaillées et salaires pour la période sélectionnée, d'après les présences validées",
+      "no_data": "Aucune présence validée sur cette période.",
+      "col_employee": "Employé",
+      "col_hours": "Heures",
+      "col_overtime_hours": "Heures Supp.",
+      "col_cost": "Coût",
+      "col_share": "Part du Coût",
+      "totals": "Totaux",
+      "paid_leave_note": "Inclut {{hours}} h de congés payés ({{amount}}), comptées dans le coût mais pas dans les heures travaillées."
     }
   },
   "company_guide": {
