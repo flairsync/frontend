@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DailySalesMetric, DailyFeedbackMetric, ProductTotalsMetric } from "@/models/analytics";
-import { DollarSign, ShoppingBag, TrendingUp, HandCoins, ArrowUp, ArrowDown, Star, Smile, PiggyBank } from "lucide-react";
+import { DailySalesMetric, DailyFeedbackMetric, ProductTotalsMetric, DashboardKpis } from "@/models/analytics";
+import { DollarSign, ShoppingBag, TrendingUp, HandCoins, ArrowUp, ArrowDown, Star, Smile, PiggyBank, Users, Timer, Layers } from "lucide-react";
 
 interface AnalyticsKpiCardsProps {
     sales: DailySalesMetric[];
@@ -9,6 +10,12 @@ interface AnalyticsKpiCardsProps {
     feedback?: DailyFeedbackMetric[];
     productTotals?: ProductTotalsMetric;
     previousProductTotals?: ProductTotalsMetric;
+    // Server-computed. Only the labor figures are read from here — everything else stays
+    // derived locally from `sales`/`productTotals` as before. The split isn't arbitrary:
+    // labor cost depends on attendance records and pay rates the client never receives,
+    // so it cannot be computed here at all.
+    kpis?: DashboardKpis;
+    previousKpis?: DashboardKpis;
     currency?: string;
 }
 
@@ -86,7 +93,8 @@ const DeltaBadge: React.FC<{ delta: number | null }> = ({ delta }) => {
     );
 };
 
-export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, previousSales, feedback, productTotals, previousProductTotals, currency = "$" }) => {
+export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, previousSales, feedback, productTotals, previousProductTotals, kpis, previousKpis, currency = "$" }) => {
+    const { t } = useTranslation("management");
     const current = useMemo(() => sumTotals(sales), [sales]);
     const previous = useMemo(() => (previousSales ? sumTotals(previousSales) : null), [previousSales]);
     const feedbackSummary = useMemo(() => (feedback ? summarizeFeedback(feedback) : null), [feedback]);
@@ -98,31 +106,35 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, pre
 
     const formatCurrency = (val: number) => `${currency}${val.toFixed(2)}`;
 
+    // Labor is only meaningful once somebody has validated attendance in the period —
+    // otherwise every figure is zero and three empty cards just add noise.
+    const hasLabor = !!kpis && kpis.laborHours > 0;
+
     const stats = [
         {
             key: "revenue",
-            label: "Total Revenue",
+            label: t("analytics.kpi.total_revenue"),
             value: formatCurrency(current.totalRevenue),
             delta: previous ? percentChange(current.totalRevenue, previous.totalRevenue) : undefined,
             icon: DollarSign,
         },
         {
             key: "orders",
-            label: "Total Orders",
+            label: t("analytics.kpi.total_orders"),
             value: current.totalOrders.toString(),
             delta: previous ? percentChange(current.totalOrders, previous.totalOrders) : undefined,
             icon: ShoppingBag,
         },
         {
             key: "aov",
-            label: "Average Order Value",
+            label: t("analytics.kpi.avg_order_value"),
             value: formatCurrency(current.aov),
             delta: previous ? percentChange(current.aov, previous.aov) : undefined,
             icon: TrendingUp,
         },
         {
             key: "tips",
-            label: "Total Tips",
+            label: t("analytics.kpi.total_tips"),
             value: formatCurrency(current.totalTips),
             delta: previous ? percentChange(current.totalTips, previous.totalTips) : undefined,
             icon: HandCoins,
@@ -131,10 +143,37 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, pre
             ? [
                 {
                     key: "grossMargin",
-                    label: "Gross Margin",
+                    label: t("analytics.kpi.gross_margin"),
                     value: `${formatCurrency(margin.margin)} (${margin.marginPercent.toFixed(1)}%)`,
                     delta: previousMargin ? percentChange(margin.margin, previousMargin.margin) : undefined,
                     icon: PiggyBank,
+                },
+            ]
+            : []),
+        ...(hasLabor && kpis
+            ? [
+                {
+                    key: "laborCost",
+                    label: t("analytics.kpi.labor_cost"),
+                    value: `${formatCurrency(kpis.totalLaborCost)} (${kpis.laborPercent.toFixed(1)}%)`,
+                    // Delta tracks the cost, not the percentage: a percentage-point move
+                    // expressed as a percentage change reads as nonsense to an owner.
+                    delta: previousKpis ? percentChange(kpis.totalLaborCost, previousKpis.totalLaborCost) : undefined,
+                    icon: Users,
+                },
+                {
+                    key: "salesPerLaborHour",
+                    label: t("analytics.kpi.sales_per_labor_hour"),
+                    value: formatCurrency(kpis.salesPerLaborHour),
+                    delta: previousKpis ? percentChange(kpis.salesPerLaborHour, previousKpis.salesPerLaborHour) : undefined,
+                    icon: Timer,
+                },
+                {
+                    key: "primeCost",
+                    label: t("analytics.kpi.prime_cost"),
+                    value: `${formatCurrency(kpis.primeCost)} (${kpis.primeCostPercent.toFixed(1)}%)`,
+                    delta: previousKpis ? percentChange(kpis.primeCost, previousKpis.primeCost) : undefined,
+                    icon: Layers,
                 },
             ]
             : []),
@@ -142,14 +181,14 @@ export const AnalyticsKpiCards: React.FC<AnalyticsKpiCardsProps> = ({ sales, pre
             ? [
                 {
                     key: "avgRating",
-                    label: "Avg Rating",
+                    label: t("analytics.kpi.avg_rating"),
                     value: feedbackSummary.avgRating !== null ? `${feedbackSummary.avgRating.toFixed(1)} / 5` : "—",
                     delta: undefined,
                     icon: Star,
                 },
                 {
                     key: "nps",
-                    label: "NPS Score",
+                    label: t("analytics.kpi.nps_score"),
                     value: feedbackSummary.nps !== null ? String(feedbackSummary.nps) : "—",
                     delta: undefined,
                     icon: Smile,

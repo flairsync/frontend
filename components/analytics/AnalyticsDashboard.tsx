@@ -16,9 +16,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// We will implement these next:
 import { AnalyticsKpiCards } from "./AnalyticsKpiCards";
 import { AnalyticsTopProductsTable } from "./AnalyticsTopProductsTable";
+import { AnalyticsLaborTable } from "./AnalyticsLaborTable";
 
 // recharts is a heavy dependency — defer it off the initial render path so the
 // KPI cards and top-products table become interactive without waiting on it.
@@ -131,6 +131,8 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                         feedback={data.feedback}
                         productTotals={data.productTotals}
                         previousProductTotals={data.previousPeriod?.productTotals}
+                        kpis={data.kpis}
+                        previousKpis={data.previousPeriod?.kpis}
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,6 +147,12 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     <div className="grid grid-cols-1 gap-4">
                         <AnalyticsTopProductsTable topProducts={data.topProducts} currency={currency} />
                     </div>
+
+                    {data.labor && (
+                        <div className="grid grid-cols-1 gap-4">
+                            <AnalyticsLaborTable labor={data.labor} currency={currency} />
+                        </div>
+                    )}
                 </>
             )}
         </div>
