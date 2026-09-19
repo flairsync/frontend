@@ -10,6 +10,7 @@ import { SubscriptionStatus } from "@/models/Subscription";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
 import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
+import { openPaddleCheckout } from "@/lib/paddle";
 import { toast } from "sonner";
 import { usePageContext } from "vike-react/usePageContext";
 import {
@@ -79,8 +80,17 @@ const PlansPage: React.FC = () => {
     }
 
     createCheckout({ packId, businessCount }, {
-      onSuccess: (url) => {
-        if (url) setCheckoutLink(url);
+      onSuccess: (checkout) => {
+        // Paddle: open its overlay for the transaction our backend created.
+        // Lemon Squeezy: hand the hosted URL to the old overlay. Only one of
+        // the two comes back, depending on BILLING_PROVIDER.
+        if (checkout?.transactionId) {
+          void openPaddleCheckout(checkout.transactionId, {
+            onCompleted: () => toast(t("plans_page.payment_success")),
+          });
+          return;
+        }
+        if (checkout?.url) setCheckoutLink(checkout.url);
       }
     });
   }

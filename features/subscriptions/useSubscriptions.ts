@@ -48,7 +48,9 @@ export const useSubscriptions = () => {
     mutationKey: ["create_user_checkout"],
     mutationFn: async (data: { packId: string; businessCount?: number }) => {
       const resp = await handleUserCheckoutApiCall(data);
-      return (resp.data as any)?.url as string ?? null;
+      // Lemon Squeezy returns a hosted `url`; Paddle returns a `transactionId`
+      // the caller opens with Paddle.js. Exactly one is set.
+      return (resp.data ?? null) as { url?: string; transactionId?: string } | null;
     },
     onError: (error: any) => {
       const code = error?.response?.data?.code;

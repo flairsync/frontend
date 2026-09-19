@@ -14,6 +14,24 @@ const PADDLE_ENV = import.meta.env.VITE_PADDLE_ENV as string | undefined;
 
 let loadPromise: Promise<any> | null = null;
 
+// Paddle.js takes its event callback at Initialize() time and it can't be
+// swapped afterwards, so the one callback dispatches to whichever checkout is
+// currently open.
+type CheckoutHandlers = { onCompleted?: () => void; onClosed?: () => void };
+let activeHandlers: CheckoutHandlers | null = null;
+
+function handlePaddleEvent(event: any) {
+    switch (event?.name) {
+        case "checkout.completed":
+            activeHandlers?.onCompleted?.();
+            break;
+        case "checkout.closed":
+            activeHandlers?.onClosed?.();
+            activeHandlers = null;
+            break;
+    }
+}
+
 function injectScript(): Promise<void> {
     return new Promise((resolve, reject) => {
         const existing = document.querySelector<HTMLScriptElement>(`script[src="${PADDLE_JS_SRC}"]`);
@@ -49,7 +67,7 @@ export function loadPaddle(): Promise<any> {
             if (!CLIENT_TOKEN) throw new Error("VITE_PADDLE_CLIENT_TOKEN is not set");
 
             if (PADDLE_ENV) Paddle.Environment.set(PADDLE_ENV);
-            Paddle.Initialize({ token: CLIENT_TOKEN });
+            Paddle.Initialize({ token: CLIENT_TOKEN, eventCallback: handlePaddleEvent });
 
             return Paddle;
         });
@@ -61,4 +79,19 @@ export function loadPaddle(): Promise<any> {
     }
 
     return loadPromise;
+}
+
+/**
+ * Opens Paddle's overlay checkout for a transaction created by our backend
+ * (POST /subscriptions/checkout returns `transactionId`). Creating the
+ * transaction server-side keeps the pack, price and business count out of the
+ * client's hands.
+ */
+export async function openPaddleCheckout(
+    transactionId: string,
+    handlers: CheckoutHandlers = {},
+): Promise<void> {
+    const Paddle = await loadPaddle();
+    activeHandlers = handlers;
+    Paddle.Checkout.open({ transactionId });
 }
