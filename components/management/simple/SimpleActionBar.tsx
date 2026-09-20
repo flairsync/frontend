@@ -46,6 +46,25 @@ export function SimpleActionBar({ businessId, role, pathname }: Props) {
     const secondary = actions.filter((a) => !a.primary);
     const accent = TILE_ACCENTS[tile.accent];
 
+    // These buttons point at the page they're already on, so letting the client
+    // router handle the click just swaps the URL — the page component never
+    // remounts. Every convention these links use (?action=, and the pre-existing
+    // ?tab=/?status=/?section= readers on the pages themselves) initialises from
+    // the URL once on mount, so nothing would happen at all.
+    //
+    // Forcing a real navigation re-initialises all of them uniformly, and means
+    // this doesn't depend on how any individual page chose to read its params.
+    // Cross-page links fall through to normal client-side routing.
+    const currentPath = pathname.split("?")[0];
+    const handleActionClick =
+        (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+            // Leave modified clicks alone — new tab / new window still work.
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            if (href.split("?")[0] !== currentPath) return;
+            event.preventDefault();
+            window.location.assign(href);
+        };
+
     return (
         <div className="flex flex-wrap items-center gap-2 border-b pb-4">
             <a
@@ -57,10 +76,13 @@ export function SimpleActionBar({ businessId, role, pathname }: Props) {
                 <span className="text-[11px] font-medium">{t("simple_mode.launcher.home")}</span>
             </a>
 
-            {primary.map((action) => (
+            {primary.map((action) => {
+                const href = buildActionHref(tile, action, businessId, role);
+                return (
                 <a
                     key={action.key}
-                    href={buildActionHref(tile, action, businessId, role)}
+                    href={href}
+                    onClick={handleActionClick(href)}
                     className="flex h-16 min-w-[104px] flex-col items-center justify-center gap-1 rounded-xl border bg-card px-3 text-center transition-colors hover:bg-muted"
                 >
                     <span
@@ -73,7 +95,8 @@ export function SimpleActionBar({ businessId, role, pathname }: Props) {
                     </span>
                     <span className="text-xs font-medium leading-tight">{t(action.labelKey)}</span>
                 </a>
-            ))}
+                );
+            })}
 
             {secondary.length > 0 && (
                 <DropdownMenu>
@@ -89,17 +112,21 @@ export function SimpleActionBar({ businessId, role, pathname }: Props) {
                         </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="w-56">
-                        {secondary.map((action) => (
+                        {secondary.map((action) => {
+                            const href = buildActionHref(tile, action, businessId, role);
+                            return (
                             <DropdownMenuItem key={action.key} asChild>
                                 <a
-                                    href={buildActionHref(tile, action, businessId, role)}
+                                    href={href}
+                                    onClick={handleActionClick(href)}
                                     className="cursor-pointer"
                                 >
                                     <action.icon className="h-4 w-4 text-muted-foreground" />
                                     {t(action.labelKey)}
                                 </a>
                             </DropdownMenuItem>
-                        ))}
+                            );
+                        })}
                     </DropdownMenuContent>
                 </DropdownMenu>
             )}

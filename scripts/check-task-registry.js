@@ -124,6 +124,33 @@ function collectHandledActions(dir) {
     return handled;
 }
 
+
+function collectTabValues(dir) {
+    const values = new Set();
+    const walk = (current) => {
+        for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+            const full = path.join(current, entry.name);
+            if (entry.isDirectory()) walk(full);
+            else if (FILE_EXTENSIONS.some((ext) => entry.name.endsWith(ext))) {
+                const src = fs.readFileSync(full, "utf-8");
+                for (const m of src.matchAll(/<TabsTrigger[^>]*?value="([^"]+)"/g)) values.add(m[1]);
+                for (const m of src.matchAll(/VALID_TABS\s*=\s*\[([^\]]*)\]/g)) {
+                    for (const q of m[1].matchAll(/"([^"]+)"/g)) values.add(q[1]);
+                }
+            }
+        }
+    };
+    if (fs.existsSync(dir)) walk(dir);
+    return values;
+}
+
+// Roles declared on the action itself, if any, else null.
+function actionRolesRawEarly(_block, actionMatch) {
+    const raw = actionMatch[2];
+    if (!raw) return null;
+    return [...raw.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+}
+
 // Pull each tile's key, its roles, and its actions' query strings out of the
 // registry source. Crude, but it means the check needs no build step.
 const tileBlocks = registrySrc.split(/\n    \{\n        key: "/).slice(1);
@@ -139,8 +166,29 @@ for (const block of tileBlocks) {
         /key: "([^"]+)",\s*\n\s*labelKey: "[^"]+",\s*\n(?:\s*roles: \[([^\]]*)\],\s*\n)?[^}]*?query: "([^"]*)"/g
     )) {
         const [, actionKey, actionRolesRaw, query] = actionMatch;
-        const actionParam = new URLSearchParams(query.replace(/^\?/, "")).get("action");
-        if (!actionParam) continue; // pure ?tab= / ?status= links need no handler
+        const params = new URLSearchParams(query.replace(/^\?/, ""));
+
+        // A ?tab= link is only as good as the value matching a real tab on the
+        // target page. Getting this wrong is silent — the page just ignores the
+        // param and renders its default tab — so check it rather than trust it.
+        const tabParam = params.get("tab");
+        if (tabParam) {
+            const rolesForTab = actionRolesRawEarly(block, actionMatch) ?? tileRoles;
+            for (const role of rolesForTab) {
+                const pageDir = path.join(root, "pages", "manage", "@id", role, tileKey);
+                if (!fs.existsSync(pageDir)) continue;
+                if (!collectTabValues(pageDir).has(tabParam)) {
+                    problems.push(
+                        `?tab=${tabParam} (tile "${tileKey}", role ${role}) matches no tab on ` +
+                        `pages/manage/@id/${role}/${tileKey}/ — that button would land on the ` +
+                        `default tab instead.`
+                    );
+                }
+            }
+        }
+
+        const actionParam = params.get("action");
+        if (!actionParam) continue; // ?tab=/?status= links have no dialog to open
 
         const actionRoles = actionRolesRaw
             ? [...actionRolesRaw.matchAll(/"([^"]+)"/g)].map((m) => m[1])
