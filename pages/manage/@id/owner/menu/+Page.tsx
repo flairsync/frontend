@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Coffee, Moon, ForkKnife } from "lucide-react";
@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { usePageContext } from "vike-react/usePageContext";
 import { MenuModal } from "@/components/management/menu/CreateMenuModal";
+import { useActionParam } from "@/hooks/use-action-param";
 import { IconRenderer } from "@/components/shared/IconRenderer";
 import { useTranslation } from "react-i18next";
 import {
@@ -57,6 +58,16 @@ const MenusPage: React.FC = () => {
     const currentMenus = plan?.current.menus || 0;
     const remainingMenus = Math.max(0, maxMenus - currentMenus);
     const canCreateMenu = plan ? plan.canCreateMenu : true;
+
+    // Easy View's "Add a menu" tile links here with ?action=add. Waits for the
+    // plan to load so a deep link can't slip past the same limit check the
+    // on-page button enforces.
+    const deepLinkAction = useActionParam(["add"]);
+    useEffect(() => {
+        if (deepLinkAction !== "add" || !plan) return;
+        if (canCreateMenu) setCreateModal(true);
+        else openUpgradeModal(`The business plan allows up to ${plan.allowed.menus} menus. The owner needs to upgrade to add more.`);
+    }, [deepLinkAction, plan, canCreateMenu, openUpgradeModal]);
 
     return (
         <div className="min-h-screen bg-background p-8">

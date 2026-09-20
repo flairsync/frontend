@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useActionParam } from "@/hooks/use-action-param";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,14 @@ export default function StaffMenuPage() {
     // Modal States
     const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+
+    // Easy View's "Add a menu" action links here with ?action=add. Gated on the
+    // same MENU:create permission as the on-page button, and on permissions
+    // having loaded, so a deep link can't open a dialog the user may not use.
+    const deepLinkAction = useActionParam(["add"]);
+    useEffect(() => {
+        if (deepLinkAction === "add" && !loadingPermissions && canCreate) setIsMenuModalOpen(true);
+    }, [deepLinkAction, loadingPermissions, canCreate]);
     const [isItemModalOpen, setIsItemModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
 

@@ -26,6 +26,7 @@ import { AlertsBell } from '@/components/management/AlertsBell';
 import { UiModeToggle } from '@/components/shared/UiModeToggle';
 import { useUiMode } from '@/components/shared/ui-mode-provider';
 import SimpleActionBar from '@/components/management/simple/SimpleActionBar';
+import TaskSearchDialog from '@/components/management/simple/TaskSearchDialog';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -227,6 +228,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex flex-1 items-center justify-end gap-1 mr-10">
+                            <TaskSearchDialog businessId={routeParams.id} role="owner" />
                             <UiModeToggle />
                             <AlertsBell businessId={routeParams.id} />
                             {!isSimple && (

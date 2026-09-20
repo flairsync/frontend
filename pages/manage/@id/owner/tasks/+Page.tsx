@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react"
+import { useActionParam } from "@/hooks/use-action-param";;
 import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/ui/separator";
 import { usePageContext } from "vike-react/usePageContext";
@@ -47,6 +48,12 @@ const OwnerTasksPage = () => {
   const [filter, setFilter] = useState<FilterTab>("all");
   const [page, setPage] = useState(1);
   const [createOpen, setCreateOpen] = useState(false);
+
+  // Easy View's "Add a job" tile links here with ?action=add.
+  const deepLinkAction = useActionParam(["add"]);
+  useEffect(() => {
+    if (deepLinkAction === "add") setCreateOpen(true);
+  }, [deepLinkAction]);
   const [editTarget, setEditTarget] = useState<Task | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
   const [statusTarget, setStatusTarget] = useState<Task | null>(null);

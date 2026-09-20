@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { FloorPlanDesigner } from "@/features/floor-plan/components/FloorPlanDes
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { BatchCreateTableModal } from "@/components/management/floor-plan/BatchCreateTableModal";
+import { useActionParam } from "@/hooks/use-action-param";
 import { PrintQrCodesButton } from "@/components/qr/PrintQrCodesButton";
 import { DownloadTableQrButton } from "@/components/qr/DownloadTableQrButton";
 
@@ -111,6 +112,23 @@ const FloorPlanPage: React.FC = () => {
         });
         setTableModalOpen(true);
     };
+
+    // Easy View deep links: ?action=add-table | add-many | add-floor.
+    // handleOpenCreateTable derives the next table number and a default floor
+    // from already-fetched data, so this waits for both queries — firing it
+    // early would open the dialog with no floor selected.
+    const deepLinkAction = useActionParam(["add-table", "add-many", "add-floor"]);
+    useEffect(() => {
+        if (!deepLinkAction) return;
+        if (deepLinkAction === "add-floor") {
+            handleOpenCreateFloor();
+            return;
+        }
+        if (fetchingFloors || fetchingTables) return;
+        if (deepLinkAction === "add-table") handleOpenCreateTable();
+        else if (deepLinkAction === "add-many") setBatchModalOpen(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [deepLinkAction, fetchingFloors, fetchingTables]);
 
     const handleEditTable = (table: any) => {
         setEditingTable(table);

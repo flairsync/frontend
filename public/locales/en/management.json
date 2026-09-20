@@ -5035,7 +5035,42 @@
       },
       "settings": {
         "general": "Name, address & hours"
+      },
+      "menu": {
+        "add": "Add a menu"
+      },
+      "inventory": {
+        "add": "Add a stock item",
+        "import": "Import from a file",
+        "groups": "Stock groups"
+      },
+      "reservations": {
+        "add": "Add a booking"
+      },
+      "tasks": {
+        "add": "Add a job"
+      },
+      "floor_plan": {
+        "add_table": "Add a table",
+        "add_many": "Add several tables",
+        "add_floor": "Add a room"
       }
+    },
+    "search": {
+      "empty": "Nothing found. Try another word.",
+      "actions_heading": "Things you can do",
+      "pages_heading": "Places you can go",
+      "button_label": "Search"
+    },
+    "right_now": {
+      "open_orders": "Orders open",
+      "tables_busy": "Tables busy",
+      "tables_sub": "in use",
+      "clocked_in": "Team clocked in",
+      "today_sales": "Sales today"
+    },
+    "advanced_controls": {
+      "label": "More filters"
     }
   }
 }

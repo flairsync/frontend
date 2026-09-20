@@ -39,3 +39,10 @@ interface Window {
     };
   };
 }
+
+/**
+ * Build stamp injected by vite.config.ts, used as the i18next localStorage cache
+ * version so a deploy invalidates cached translations instead of leaving users
+ * on stale copy for up to 24h.
+ */
+declare const __I18N_VERSION__: string;

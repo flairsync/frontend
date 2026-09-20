@@ -55,6 +55,10 @@ export const useOrders = (
     const orders = ordersResponse?.data;
     const totalPages = ordersResponse?.pages ?? 1;
     const currentPage = ordersResponse?.current ?? page;
+    // Server-side count across every page, not just the rows in hand — the Easy
+    // View home screen needs the real "orders open right now" figure, and
+    // orders.length would silently cap at the page limit.
+    const totalOrders = ordersResponse?.total;
 
     // Patches a single order across every cached orders-list page (any status/date/table/
     // page variant) for instant feedback ahead of the invalidateQueries refetch below.
@@ -469,6 +473,7 @@ export const useOrders = (
 
     return {
         orders,
+        totalOrders,
         totalPages,
         currentPage,
         fetchingOrders,

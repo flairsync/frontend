@@ -37,6 +37,7 @@ import { TransferTableModal } from "@/components/staff/orders/TransferTableModal
 import { ActiveOrdersView } from "@/components/management/orders/ActiveOrdersView"
 import ReceiptView from "@/components/pos/ReceiptView"
 import { formatTime } from "@/lib/dateUtils"
+import AdvancedControls from "@/components/management/simple/AdvancedControls";
 
 export default function StaffOrdersPage() {
     const { t } = useTranslation("management");
@@ -75,6 +76,14 @@ export default function StaffOrdersPage() {
     const [customerNameFilter, setCustomerNameFilter] = useState<string>("");
     const customerNameDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [page, setPage] = useState(1);
+
+    // Drives the Easy View "More filters" disclosure: its badge, and whether it
+    // has to start open because something is already narrowing the list.
+    const activeFilterCount =
+        (filterType !== "All" ? 1 : 0) +
+        (tableFilter !== "all" ? 1 : 0) +
+        (customerNameFilter ? 1 : 0) +
+        (dateRange?.from ? 1 : 0);
 
     useEffect(() => {
         setPage(1);
@@ -266,7 +275,21 @@ export default function StaffOrdersPage() {
                 </TabsList>
 
                 <TabsContent value="list">
+                    {/* In Easy View only the status switch shows by default;
+                        the rest sit behind "More filters". Floor staff opening
+                        this mid-service want "what's open", not a query builder. */}
                     <div className="flex flex-wrap items-center gap-2 mb-4">
+                        <Select value={statusFilter} onValueChange={(val: any) => setStatusFilter(val)}>
+                            <SelectTrigger className="w-40">
+                                <SelectValue placeholder={t("orders.status")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="ongoing">{t("orders.ongoing_orders")}</SelectItem>
+                                <SelectItem value="all">{t("orders.order_history")}</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+                        <AdvancedControls activeCount={activeFilterCount}>
                         <Select value={filterType} onValueChange={setFilterType}>
                             <SelectTrigger className="w-36">
                                 <SelectValue placeholder={t("orders.filter_by_type")} />
@@ -312,18 +335,8 @@ export default function StaffOrdersPage() {
                             )}
                         </div>
 
-                        <div className="flex items-center gap-2 ml-auto">
-                            <DatePickerWithRange date={dateRange} setDate={setDateRange} />
-                            <Select value={statusFilter} onValueChange={(val: any) => setStatusFilter(val)}>
-                                <SelectTrigger className="w-40">
-                                    <SelectValue placeholder={t("orders.status")} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="ongoing">{t("orders.ongoing_orders")}</SelectItem>
-                                    <SelectItem value="all">{t("orders.order_history")}</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
+                        <DatePickerWithRange date={dateRange} setDate={setDateRange} />
+                        </AdvancedControls>
                     </div>
 
                     <Card>

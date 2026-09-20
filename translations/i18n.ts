@@ -8,6 +8,13 @@ import { getLangCookie } from "@/utils/cookies";
 
 export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca"] as const;
 
+// vite.config.ts replaces __I18N_VERSION__ with a per-build stamp. The typeof
+// guard keeps this import-safe in any context the define might not reach (a
+// test runner, a tool importing this module directly) — a missing stamp would
+// otherwise throw a ReferenceError here and take down every translation.
+const I18N_CACHE_VERSION =
+  typeof __I18N_VERSION__ !== "undefined" ? __I18N_VERSION__ : "dev";
+
 // Maps a base subtag (from a browser Accept-Language value, or a cookie set before this
 // project switched to full BCP-47 tags matching Tolgee's project languages) to the supported
 // tag it corresponds to.
@@ -79,7 +86,14 @@ i18n
       // can take to reach an already-loaded browser.
       backends: [LocalStorageBackend, tolgeeBackend(tolgee), HttpBackend],
       backendOptions: [
-        { expirationTime: 24 * 60 * 60 * 1000 },
+        {
+          expirationTime: 24 * 60 * 60 * 1000,
+          // Stamped fresh by vite.config.ts on every build. LocalStorageBackend
+          // treats a cached entry whose stored version differs from this as a
+          // miss, so a deploy that adds or edits copy shows up immediately
+          // instead of waiting out the 24h expiry on every warm browser.
+          defaultVersion: I18N_CACHE_VERSION,
+        },
         {},
         { loadPath: "/locales/{{lng}}/{{ns}}.json" },
       ],

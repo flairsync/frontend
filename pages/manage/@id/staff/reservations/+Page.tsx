@@ -19,19 +19,26 @@ import { isTerminalStatus, getAvailableActions } from "@/features/reservations/r
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal"
 import { EditReservationModal } from "@/components/management/reservations/EditReservationModal"
 import { ViewReservationModal } from "@/components/management/reservations/ViewReservationModal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useReservations } from "@/features/reservations/useReservations"
 import { usePageContext } from "vike-react/usePageContext"
 import { format } from "date-fns"
 import { formatTime } from "@/lib/dateUtils"
 import { useTranslation } from "react-i18next"
 import DataPagination from "@/components/inputs/DataPagination"
+import { useActionParam } from "@/hooks/use-action-param"
 
 export default function StaffReservationsPage() {
     const { routeParams } = usePageContext();
     const businessId = routeParams.id;
     const { t } = useTranslation("management");
     const [addingReservation, setAddingReservation] = useState(false);
+
+    // Easy View's "Add a booking" action links here with ?action=add.
+    const deepLinkAction = useActionParam(["add"]);
+    useEffect(() => {
+        if (deepLinkAction === "add") setAddingReservation(true);
+    }, [deepLinkAction]);
     const [editingReservation, setEditingReservation] = useState<any>(null);
     const [viewingReservation, setViewingReservation] = useState<any>(null);
     const [cancelTarget, setCancelTarget] = useState<any>(null);

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { ReservationDashboard } from "@/components/management/reservations/ReservationDashboard";
 import { BookingFlowModal } from "@/components/management/reservations/BookingFlowModal";
+import { useActionParam } from "@/hooks/use-action-param";
 import { EditReservationModal } from "@/components/management/reservations/EditReservationModal";
 import { ViewReservationModal } from "@/components/management/reservations/ViewReservationModal";
 
@@ -14,6 +15,13 @@ const ReservationsPage: React.FC = () => {
     const businessTimezone = myBusinessFullDetails?.timezone;
 
     const [createOpen, setCreateOpen] = useState(false);
+
+    // Easy View's "Add a booking" tile links here with ?action=add.
+    const deepLinkAction = useActionParam(["add"]);
+    useEffect(() => {
+        if (deepLinkAction === "add") setCreateOpen(true);
+    }, [deepLinkAction]);
+
     const [editingReservation, setEditingReservation] = useState<any>(null);
     const [viewingReservation, setViewingReservation] = useState<any>(null);
 

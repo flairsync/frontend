@@ -51,13 +51,131 @@ for (const role of ["owner", "staff"]) {
     }
 }
 
-// ── 2. Every referenced i18n key exists ──────────────────────────────────────
+// ── 2. Every ?action= deep link is actually handled ──────────────────────────
+//
+// An action bar button whose action nobody consumes is worse than no button:
+// it looks clickable, navigates, and then nothing happens. The page (or any
+// component beside it) has to list the action in its useActionParam([...]) call.
+
+// Pages routinely reuse a section component from another route's folder (the
+// staff staff-page imports the owner's InvitationsSection, for instance), so a
+// directory-only scan reports false failures. Follow the import graph instead.
+const FILE_EXTENSIONS = [".tsx", ".ts"];
+
+function resolveImport(specifier, fromFile) {
+    let base;
+    if (specifier.startsWith(".")) {
+        base = path.resolve(path.dirname(fromFile), specifier);
+    } else if (specifier.startsWith("@/")) {
+        base = path.join(root, specifier.slice(2));
+    } else {
+        return null; // node_modules — nothing of ours in there
+    }
+
+    for (const ext of FILE_EXTENSIONS) {
+        if (fs.existsSync(base + ext)) return base + ext;
+    }
+    for (const ext of FILE_EXTENSIONS) {
+        const asIndex = path.join(base, "index" + ext);
+        if (fs.existsSync(asIndex)) return asIndex;
+    }
+    return fs.existsSync(base) && fs.statSync(base).isFile() ? base : null;
+}
+
+function collectHandledActions(dir) {
+    const handled = new Set();
+    if (!fs.existsSync(dir)) return handled;
+
+    const queue = [];
+    const seen = new Set();
+
+    const seedFrom = (current) => {
+        for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+            const full = path.join(current, entry.name);
+            if (entry.isDirectory()) seedFrom(full);
+            else if (FILE_EXTENSIONS.some((ext) => entry.name.endsWith(ext))) {
+                queue.push({ file: full, depth: 0 });
+            }
+        }
+    };
+    seedFrom(dir);
+
+    // Depth 3 comfortably covers page -> section -> child modal without
+    // walking half the codebase on every run.
+    while (queue.length > 0) {
+        const { file, depth } = queue.shift();
+        if (seen.has(file)) continue;
+        seen.add(file);
+
+        const src = fs.readFileSync(file, "utf-8");
+        for (const call of src.matchAll(/useActionParam\(\s*\[([^\]]*)\]/g)) {
+            for (const quoted of call[1].matchAll(/["'`]([^"'`]+)["'`]/g)) {
+                handled.add(quoted[1]);
+            }
+        }
+
+        if (depth >= 3) continue;
+        for (const imp of src.matchAll(/from\s+["']([^"']+)["']/g)) {
+            const resolved = resolveImport(imp[1], file);
+            if (resolved && !seen.has(resolved)) queue.push({ file: resolved, depth: depth + 1 });
+        }
+    }
+
+    return handled;
+}
+
+// Pull each tile's key, its roles, and its actions' query strings out of the
+// registry source. Crude, but it means the check needs no build step.
+const tileBlocks = registrySrc.split(/\n    \{\n        key: "/).slice(1);
+
+for (const block of tileBlocks) {
+    const tileKey = block.slice(0, block.indexOf('"'));
+    const rolesMatch = block.match(/roles: \[([^\]]*)\]/);
+    const tileRoles = rolesMatch
+        ? [...rolesMatch[1].matchAll(/"([^"]+)"/g)].map((m) => m[1])
+        : [];
+
+    for (const actionMatch of block.matchAll(
+        /key: "([^"]+)",\s*\n\s*labelKey: "[^"]+",\s*\n(?:\s*roles: \[([^\]]*)\],\s*\n)?[^}]*?query: "([^"]*)"/g
+    )) {
+        const [, actionKey, actionRolesRaw, query] = actionMatch;
+        const actionParam = new URLSearchParams(query.replace(/^\?/, "")).get("action");
+        if (!actionParam) continue; // pure ?tab= / ?status= links need no handler
+
+        const actionRoles = actionRolesRaw
+            ? [...actionRolesRaw.matchAll(/"([^"]+)"/g)].map((m) => m[1])
+            : tileRoles;
+
+        for (const role of actionRoles) {
+            const pageDir = path.join(root, "pages", "manage", "@id", role, tileKey);
+            if (!fs.existsSync(pageDir)) {
+                problems.push(
+                    `Tile "${tileKey}" action "${actionKey}" targets ${role}, but ` +
+                    `pages/manage/@id/${role}/${tileKey}/ does not exist.`
+                );
+                continue;
+            }
+            if (!collectHandledActions(pageDir).has(actionParam)) {
+                problems.push(
+                    `?action=${actionParam} (tile "${tileKey}", action "${actionKey}", role ${role}) ` +
+                    `is not handled — no useActionParam([...]) under pages/manage/@id/${role}/${tileKey}/ ` +
+                    `lists it. That button would do nothing.`
+                );
+            }
+        }
+    }
+}
+
+// ── 3. Every referenced i18n key exists ──────────────────────────────────────
 
 const sourceFiles = [
     registryPath,
     path.join(root, "components", "management", "simple", "AppLauncher.tsx"),
     path.join(root, "components", "management", "simple", "AppTileCard.tsx"),
     path.join(root, "components", "management", "simple", "SimpleActionBar.tsx"),
+    path.join(root, "components", "management", "simple", "RightNowStrip.tsx"),
+    path.join(root, "components", "management", "simple", "AdvancedControls.tsx"),
+    path.join(root, "components", "management", "simple", "TaskSearchDialog.tsx"),
     path.join(root, "components", "shared", "UiModeToggle.tsx"),
     path.join(root, "pages", "manage", "@id", "owner", "home", "+Page.tsx"),
     path.join(root, "pages", "manage", "@id", "staff", "home", "+Page.tsx"),

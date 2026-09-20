@@ -4,6 +4,7 @@ import { usePageContext } from "vike-react/usePageContext";
 
 import { Separator } from "@/components/ui/separator";
 import AppLauncher from "@/components/management/simple/AppLauncher";
+import RightNowStrip from "@/components/management/simple/RightNowStrip";
 import { WelcomeChecklist } from "@/components/management/dashboard/WelcomeChecklist";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 
@@ -33,6 +34,8 @@ const OwnerHomePage: React.FC = () => {
             </div>
 
             <Separator />
+
+            <RightNowStrip businessId={businessId} />
 
             <WelcomeChecklist businessId={businessId} />
 

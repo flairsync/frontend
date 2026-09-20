@@ -4919,7 +4919,42 @@
       },
       "settings": {
         "general": "Nom, adreça i horaris"
+      },
+      "menu": {
+        "add": "Afegir una carta"
+      },
+      "inventory": {
+        "add": "Afegir un article",
+        "import": "Importar des d'un fitxer",
+        "groups": "Grups d'estoc"
+      },
+      "reservations": {
+        "add": "Afegir una reserva"
+      },
+      "tasks": {
+        "add": "Afegir una tasca"
+      },
+      "floor_plan": {
+        "add_table": "Afegir una taula",
+        "add_many": "Afegir diverses taules",
+        "add_floor": "Afegir una sala"
       }
+    },
+    "search": {
+      "empty": "No s'ha trobat res. Prova una altra paraula.",
+      "actions_heading": "Coses que pots fer",
+      "pages_heading": "On pots anar",
+      "button_label": "Cercar"
+    },
+    "right_now": {
+      "open_orders": "Comandes obertes",
+      "tables_busy": "Taules ocupades",
+      "tables_sub": "en ús",
+      "clocked_in": "Equip fitxat",
+      "today_sales": "Vendes d'avui"
+    },
+    "advanced_controls": {
+      "label": "Més filtres"
     }
   }
 }

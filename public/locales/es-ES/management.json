@@ -4921,7 +4921,42 @@
       },
       "settings": {
         "general": "Nombre, dirección y horarios"
+      },
+      "menu": {
+        "add": "Añadir una carta"
+      },
+      "inventory": {
+        "add": "Añadir un artículo",
+        "import": "Importar desde un archivo",
+        "groups": "Grupos de stock"
+      },
+      "reservations": {
+        "add": "Añadir una reserva"
+      },
+      "tasks": {
+        "add": "Añadir una tarea"
+      },
+      "floor_plan": {
+        "add_table": "Añadir una mesa",
+        "add_many": "Añadir varias mesas",
+        "add_floor": "Añadir una sala"
       }
+    },
+    "search": {
+      "empty": "No se encontró nada. Prueba otra palabra.",
+      "actions_heading": "Cosas que puedes hacer",
+      "pages_heading": "Dónde puedes ir",
+      "button_label": "Buscar"
+    },
+    "right_now": {
+      "open_orders": "Pedidos abiertos",
+      "tables_busy": "Mesas ocupadas",
+      "tables_sub": "en uso",
+      "clocked_in": "Equipo fichado",
+      "today_sales": "Ventas de hoy"
+    },
+    "advanced_controls": {
+      "label": "Más filtros"
     }
   }
 }

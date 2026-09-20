@@ -40,6 +40,7 @@ import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
 import { UiModeToggle } from '@/components/shared/UiModeToggle';
 import { useUiMode } from '@/components/shared/ui-mode-provider';
 import SimpleActionBar from '@/components/management/simple/SimpleActionBar';
+import TaskSearchDialog from '@/components/management/simple/TaskSearchDialog';
 import { usePermissions } from '@/features/auth/usePermissions';
 import { useBusinessStatus } from '@/features/business/useBusinessStatus';
 import BusinessStatusPill from '@/components/management/BusinessStatusPill';
@@ -157,6 +158,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         <div
                             className='flex flex-1 items-center justify-end gap-1 mr-10'
                         >
+                            <TaskSearchDialog businessId={routeParams.id} role="staff" />
                             <UiModeToggle />
                             {!isSimple && (
                                 <QuickLinksDropdown businessId={routeParams.id} role="staff" />

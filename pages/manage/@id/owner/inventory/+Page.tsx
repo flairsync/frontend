@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePageContext } from "vike-react/usePageContext";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,8 @@ import { useInventoryGroups } from "@/features/inventory/useInventoryGroups";
 import { useInventoryUnits } from "@/features/inventory/useInventoryUnits";
 
 import { InventoryItemModal } from "@/components/management/inventory/InventoryItemModal";
+import { useActionParam } from "@/hooks/use-action-param";
+import AdvancedControls from "@/components/management/simple/AdvancedControls";
 import { InventoryImportModal } from "@/components/management/inventory/InventoryImportModal";
 import { AdjustStockModal } from "@/components/management/inventory/AdjustStockModal";
 import { ManageGroupsModal } from "@/components/management/inventory/ManageGroupsModal";
@@ -111,6 +113,15 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
         setItemModalOpen(true);
     };
 
+    // Easy View deep links: ?action=add | import | groups.
+    const deepLinkAction = useActionParam(["add", "import", "groups"]);
+    useEffect(() => {
+        if (deepLinkAction === "add") handleOpenCreateModal();
+        else if (deepLinkAction === "import") setImportModalOpen(true);
+        else if (deepLinkAction === "groups") setGroupModalOpen(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [deepLinkAction]);
+
     const handleEditItem = (item: any) => {
         setEditingItem(item);
         setItemModalOpen(true);
@@ -185,6 +196,14 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
 
     const hasActiveFilters = filters.search || filters.barcode || filters.groupId !== "all" || filters.unitId !== "all" || filters.lowStock;
 
+    // Only counts the three filters Easy View tucks away. Search and the
+    // low-stock toggle stay on screen — "what am I about to run out of" is the
+    // question this page exists to answer, so it never gets hidden.
+    const hiddenFilterCount =
+        (filters.barcode ? 1 : 0) +
+        (filters.groupId !== "all" ? 1 : 0) +
+        (filters.unitId !== "all" ? 1 : 0);
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -244,16 +263,18 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                             onChange={(e) => { setFilters({ ...filters, search: e.target.value }); setCurrentPage(1); }}
                                         />
                                     </div>
+                                </div>
+
+                                {/* Filters */}
+                                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-start lg:justify-end">
+                                    <AdvancedControls activeCount={hiddenFilterCount}>
                                     <Input
                                         placeholder={t("inventory_management.search_barcode_placeholder")}
                                         value={filters.barcode}
                                         className="h-9 w-full sm:w-44"
                                         onChange={(e) => { setFilters({ ...filters, barcode: e.target.value }); setCurrentPage(1); }}
                                     />
-                                </div>
 
-                                {/* Filters */}
-                                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-start lg:justify-end">
                                     {/* Group filter */}
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -321,6 +342,8 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                             </Command>
                                         </PopoverContent>
                                     </Popover>
+
+                                    </AdvancedControls>
 
                                     {/* Low stock toggle */}
                                     <div
