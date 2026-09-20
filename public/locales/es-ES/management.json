@@ -4656,5 +4656,272 @@
     "expiry_label": "Los puntos caducan después de",
     "expiry_description": "Número de meses tras ganarlos antes de que los puntos caduquen. Déjalo en blanco para que los puntos no caduquen nunca.",
     "expiry_placeholder": "Nunca"
+  },
+  "simple_mode": {
+    "toggle": {
+      "title": "Cómo se ve esta página",
+      "aria_label": "Cambiar cómo se ve esta página",
+      "simple_label": "Vista sencilla",
+      "simple_description": "Iconos grandes para lo principal",
+      "advanced_label": "Vista completa",
+      "advanced_description": "El menú completo, con todo listado"
+    },
+    "launcher": {
+      "home": "Inicio",
+      "more_actions": "Más",
+      "greeting": "¿Qué quieres hacer?",
+      "greeting_named": "{{name}} — ¿qué quieres hacer?",
+      "subtitle": "Elige lo que necesites. Marca con estrella lo que más uses.",
+      "search_placeholder": "Buscar — prueba «añadir personal» o «precios»",
+      "clear_search": "Borrar búsqueda",
+      "search_results": "Encontrados: {{count}}",
+      "no_results": "No hay nada para «{{query}}». Prueba otra palabra.",
+      "shortcuts": "Tus accesos directos"
+    },
+    "customize": {
+      "start": "Personalizar",
+      "done": "Hecho",
+      "explainer": "Marca con estrella lo que más uses para fijarlo arriba, y oculta lo que nunca tocas. Lo oculto sigue disponible en la búsqueda y en la vista completa.",
+      "add_shortcut": "Añadir a tus accesos directos",
+      "remove_shortcut": "Quitar de tus accesos directos",
+      "shortcuts_full": "Has alcanzado el máximo de accesos directos",
+      "hide_tile": "Ocultar de mi inicio",
+      "show_tile": "Mostrar en mi inicio",
+      "show_all": "Volver a mostrar {{count}} oculto(s)"
+    },
+    "sections": {
+      "service": {
+        "label": "El servicio de hoy",
+        "description": "Lo que necesitas mientras estás abierto"
+      },
+      "house": {
+        "label": "Tu local",
+        "description": "Tu carta, tu equipo y cómo funcionas"
+      },
+      "money": {
+        "label": "Dinero y crecimiento",
+        "description": "Lo que ganas y cómo hacerlo crecer"
+      },
+      "setup": {
+        "label": "Configuración y extras",
+        "description": "Todo lo demás que puedes configurar"
+      }
+    },
+    "tiles": {
+      "dashboard": {
+        "label": "Resumen",
+        "description": "Un vistazo rápido a cómo va el día",
+        "synonyms": "inicio, resumen, estadísticas, hoy"
+      },
+      "orders": {
+        "label": "Pedidos",
+        "description": "Todo lo que han pedido los clientes",
+        "synonyms": "tickets, cuentas, para llevar, reparto, ventas"
+      },
+      "reservations": {
+        "label": "Reservas",
+        "description": "Las mesas que han reservado los clientes",
+        "synonyms": "reservas, sin reserva, comensales, clientes"
+      },
+      "floor_plan": {
+        "label": "Mesas",
+        "description": "Tus salas, mesas y asientos",
+        "synonyms": "plano, distribución, sitios, terraza, sala"
+      },
+      "tasks": {
+        "label": "Tareas",
+        "description": "Listas y tareas para el equipo",
+        "synonyms": "tareas, checklist, pendientes, limpieza, preparación"
+      },
+      "my_shifts": {
+        "label": "Mis turnos",
+        "description": "Cuándo trabajas",
+        "synonyms": "mis horas, mi horario, mi semana"
+      },
+      "messages": {
+        "label": "Mensajes",
+        "description": "Notas de tu encargado y del equipo",
+        "synonyms": "chat, bandeja, notas, avisos"
+      },
+      "pos_app": {
+        "label": "Caja",
+        "description": "Abrir la pantalla de punto de venta",
+        "synonyms": "tpv, caja registradora, cobro, mostrador"
+      },
+      "kds_app": {
+        "label": "Pantalla de cocina",
+        "description": "Abrir la pantalla que usa la cocina",
+        "synonyms": "kds, pantalla cocina, pase, chef"
+      },
+      "menu": {
+        "label": "Carta",
+        "description": "Tus platos, bebidas y precios",
+        "synonyms": "comida, bebidas, platos, artículos, precios, menú"
+      },
+      "inventory": {
+        "label": "Stock",
+        "description": "Lo que tienes y lo que se acaba",
+        "synonyms": "inventario, suministros, ingredientes, almacén, bodega"
+      },
+      "staff": {
+        "label": "Equipo",
+        "description": "Las personas que trabajan aquí",
+        "synonyms": "personal, empleados, camareros, cocineros, contratar, roles"
+      },
+      "schedule": {
+        "label": "Horarios",
+        "description": "Quién trabaja y cuándo",
+        "synonyms": "horario, turnos, planificación, cuadrante"
+      },
+      "attendance": {
+        "label": "Horas trabajadas",
+        "description": "Fichajes, salidas y ausencias",
+        "synonyms": "asistencia, fichaje, horas, ausencias"
+      },
+      "settings": {
+        "label": "Horarios y datos",
+        "description": "Dirección, horarios, datos fiscales y contacto",
+        "synonyms": "ajustes, dirección, horarios, nif, contacto"
+      },
+      "analytics": {
+        "label": "Ventas e informes",
+        "description": "Cómo va el negocio con el tiempo",
+        "synonyms": "analíticas, informes, ingresos, cifras, facturación"
+      },
+      "payments": {
+        "label": "Pagos con tarjeta",
+        "description": "Cómo pagan los clientes y dónde llega el dinero",
+        "synonyms": "pagos, tarjeta, stripe, datáfono, cobros"
+      },
+      "payroll": {
+        "label": "Nóminas",
+        "description": "Calcular y exportar lo que se debe al equipo",
+        "synonyms": "nómina, sueldos, salario, exportar"
+      },
+      "tip_pooling": {
+        "label": "Propinas",
+        "description": "Cómo se reparten las propinas",
+        "synonyms": "propinas, servicio, reparto"
+      },
+      "discounts": {
+        "label": "Ofertas",
+        "description": "Promociones y descuentos para clientes",
+        "synonyms": "descuentos, promociones, ofertas, happy hour, vales"
+      },
+      "loyalty": {
+        "label": "Fidelización",
+        "description": "Recompensas para que vuelvan los clientes",
+        "synonyms": "fidelidad, puntos, sellos, recompensas, clientes habituales"
+      },
+      "reviews": {
+        "label": "Reseñas",
+        "description": "Lo que dicen los clientes en público",
+        "synonyms": "reseñas, valoraciones, estrellas, comentarios, reputación"
+      },
+      "feedback": {
+        "label": "Opiniones privadas",
+        "description": "Comentarios que los clientes te envían solo a ti",
+        "synonyms": "opiniones, quejas, sugerencias, encuesta"
+      },
+      "fiscal_invoices": {
+        "label": "Facturas fiscales",
+        "description": "Recibos y facturas oficiales emitidos",
+        "synonyms": "facturas, recibos, fiscal, impuestos"
+      },
+      "fiscal_services": {
+        "label": "Configuración fiscal",
+        "description": "Cómo se emiten los recibos oficiales en tu país",
+        "synonyms": "fiscal, ajustes fiscales, cumplimiento, país"
+      },
+      "branding": {
+        "label": "Logo y fotos",
+        "description": "Cómo se ve tu local para los clientes en línea",
+        "synonyms": "marca, logo, fotos, imágenes, galería"
+      },
+      "themes": {
+        "label": "Colores",
+        "description": "Colores y estilo de tus páginas para clientes",
+        "synonyms": "tema, colores, estilo, aspecto, diseño"
+      },
+      "menu_boards": {
+        "label": "Pantallas de carta",
+        "description": "Pantallas que muestran tu carta en el local",
+        "synonyms": "cartelería, pantalla, tv, señalización"
+      },
+      "stations": {
+        "label": "Dispositivos",
+        "description": "Tablets y pantallas vinculadas a este local",
+        "synonyms": "estaciones, dispositivos, tablets, terminales, vinculación"
+      },
+      "nfc_tags": {
+        "label": "Tarjetas NFC",
+        "description": "Tarjetas y pegatinas que los clientes acercan para pedir",
+        "synonyms": "nfc, etiquetas, contactless, escanear, qr"
+      },
+      "wifi": {
+        "label": "WiFi para clientes",
+        "description": "La red que compartes con los clientes",
+        "synonyms": "wifi, internet, red, contraseña"
+      },
+      "announcements": {
+        "label": "Avisos",
+        "description": "Mensajes para todo el equipo",
+        "synonyms": "avisos, comunicados, memo, novedades"
+      },
+      "jobs": {
+        "label": "Contratación",
+        "description": "Ofertas de empleo y candidaturas",
+        "synonyms": "empleo, reclutamiento, vacantes, candidaturas"
+      },
+      "marketplace": {
+        "label": "Mercado",
+        "description": "Compra y vende equipamiento con otros locales",
+        "synonyms": "mercado, equipamiento, segunda mano, comprar, vender"
+      },
+      "alerts": {
+        "label": "Cosas por arreglar",
+        "description": "Problemas de configuración que conviene resolver",
+        "synonyms": "alertas, avisos, problemas, configuración"
+      },
+      "audit_logs": {
+        "label": "Historial de actividad",
+        "description": "Quién cambió qué y cuándo",
+        "synonyms": "auditoría, registros, historial, cambios"
+      },
+      "danger": {
+        "label": "Cerrar o eliminar",
+        "description": "Pausar o eliminar definitivamente este negocio",
+        "synonyms": "peligro, eliminar, cerrar, borrar"
+      }
+    },
+    "actions": {
+      "orders": {
+        "live": "Pedidos en curso",
+        "today": "Todos los pedidos"
+      },
+      "staff": {
+        "invite": "Añadir a alguien al equipo",
+        "people": "Quién trabaja aquí",
+        "roles": "Qué puede hacer cada uno",
+        "teams": "Equipos"
+      },
+      "schedule": {
+        "rota": "Planificar la semana",
+        "time_off": "Solicitudes de vacaciones",
+        "swaps": "Cambios de turno",
+        "bids": "Turnos libres",
+        "rules": "Turnos que se repiten",
+        "templates": "Plantillas de turno"
+      },
+      "attendance": {
+        "live": "Quién está ahora",
+        "overview": "Resumen de horas",
+        "reports": "Exportar horas",
+        "absences": "Ausencias"
+      },
+      "settings": {
+        "general": "Nombre, dirección y horarios"
+      }
+    }
   }
 }

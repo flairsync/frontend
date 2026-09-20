@@ -4770,5 +4770,272 @@
     "expiry_label": "Points expire after",
     "expiry_description": "Number of months after earning before points expire. Leave blank for points that never expire.",
     "expiry_placeholder": "Never"
+  },
+  "simple_mode": {
+    "toggle": {
+      "title": "How this page looks",
+      "aria_label": "Change how this page looks",
+      "simple_label": "Easy view",
+      "simple_description": "Big icons for the main things you do",
+      "advanced_label": "Full view",
+      "advanced_description": "The full menu, with everything listed"
+    },
+    "launcher": {
+      "home": "Home",
+      "more_actions": "More",
+      "greeting": "What would you like to do?",
+      "greeting_named": "{{name}} — what would you like to do?",
+      "subtitle": "Pick anything below. Star the ones you use most.",
+      "search_placeholder": "Search — try \"add staff\" or \"prices\"",
+      "clear_search": "Clear search",
+      "search_results": "Found: {{count}}",
+      "no_results": "Nothing matches \"{{query}}\". Try another word.",
+      "shortcuts": "Your shortcuts"
+    },
+    "customize": {
+      "start": "Customise",
+      "done": "Done",
+      "explainer": "Star what you use most to pin it to the top, and hide what you never touch. Hidden things stay available through search and Full view.",
+      "add_shortcut": "Add to your shortcuts",
+      "remove_shortcut": "Remove from your shortcuts",
+      "shortcuts_full": "You've reached the maximum number of shortcuts",
+      "hide_tile": "Hide this from my home screen",
+      "show_tile": "Show this on my home screen",
+      "show_all": "Show {{count}} hidden again"
+    },
+    "sections": {
+      "service": {
+        "label": "Today's service",
+        "description": "What you need while you're open"
+      },
+      "house": {
+        "label": "Your place",
+        "description": "Your menu, your team and how you run"
+      },
+      "money": {
+        "label": "Money & growth",
+        "description": "What you earn and how to grow it"
+      },
+      "setup": {
+        "label": "Setup & extras",
+        "description": "Everything else you can set up"
+      }
+    },
+    "tiles": {
+      "dashboard": {
+        "label": "Overview",
+        "description": "A quick look at how today is going",
+        "synonyms": "home, summary, stats, today"
+      },
+      "orders": {
+        "label": "Orders",
+        "description": "Everything guests have ordered",
+        "synonyms": "tickets, bills, checks, takeaway, delivery, sales"
+      },
+      "reservations": {
+        "label": "Bookings",
+        "description": "Tables guests have reserved",
+        "synonyms": "reservations, walk-ins, covers, guests"
+      },
+      "floor_plan": {
+        "label": "Tables",
+        "description": "Your rooms, tables and seating",
+        "synonyms": "floor plan, layout, seats, terrace, room"
+      },
+      "tasks": {
+        "label": "Jobs to do",
+        "description": "Checklists and jobs for the team",
+        "synonyms": "tasks, checklist, to-do, cleaning, prep"
+      },
+      "my_shifts": {
+        "label": "My shifts",
+        "description": "When you are working",
+        "synonyms": "my hours, my rota, my schedule, my week"
+      },
+      "messages": {
+        "label": "Messages",
+        "description": "Notes from your manager and team",
+        "synonyms": "chat, inbox, notes, announcements"
+      },
+      "pos_app": {
+        "label": "Till",
+        "description": "Open the point of sale screen",
+        "synonyms": "pos, cash register, checkout, counter, epos"
+      },
+      "kds_app": {
+        "label": "Kitchen screen",
+        "description": "Open the screen the kitchen works from",
+        "synonyms": "kds, kitchen display, pass, chef screen"
+      },
+      "menu": {
+        "label": "Menu",
+        "description": "Your dishes, drinks and prices",
+        "synonyms": "food, drinks, dishes, items, prices, card"
+      },
+      "inventory": {
+        "label": "Stock",
+        "description": "What you have in and what's running low",
+        "synonyms": "inventory, supplies, ingredients, stock take, cellar"
+      },
+      "staff": {
+        "label": "Team",
+        "description": "The people who work here",
+        "synonyms": "staff, employees, waiters, chefs, hire, roles"
+      },
+      "schedule": {
+        "label": "Rota",
+        "description": "Who works when",
+        "synonyms": "schedule, shifts, planning, roster, timetable"
+      },
+      "attendance": {
+        "label": "Hours worked",
+        "description": "Clock-ins, clock-outs and absences",
+        "synonyms": "attendance, timesheet, clocking, hours, absence"
+      },
+      "settings": {
+        "label": "Opening hours & details",
+        "description": "Address, hours, tax details and contact",
+        "synonyms": "settings, address, hours, tax, nrt, nif, contact"
+      },
+      "analytics": {
+        "label": "Sales & reports",
+        "description": "How the business is doing over time",
+        "synonyms": "analytics, reports, revenue, figures, numbers, turnover"
+      },
+      "payments": {
+        "label": "Card payments",
+        "description": "How guests pay and where money lands",
+        "synonyms": "payments, card, stripe, terminal, payouts"
+      },
+      "payroll": {
+        "label": "Pay",
+        "description": "Work out and export what the team is owed",
+        "synonyms": "payroll, wages, salary, pay run, export"
+      },
+      "tip_pooling": {
+        "label": "Tips",
+        "description": "How tips are shared out",
+        "synonyms": "tips, gratuity, service charge, pooling, share"
+      },
+      "discounts": {
+        "label": "Offers",
+        "description": "Deals and discounts for guests",
+        "synonyms": "discounts, promotions, deals, happy hour, vouchers"
+      },
+      "loyalty": {
+        "label": "Loyalty",
+        "description": "Rewards that bring guests back",
+        "synonyms": "loyalty, points, stamps, rewards, regulars"
+      },
+      "reviews": {
+        "label": "Reviews",
+        "description": "What guests say about you publicly",
+        "synonyms": "reviews, ratings, stars, comments, reputation"
+      },
+      "feedback": {
+        "label": "Private feedback",
+        "description": "Comments guests send only to you",
+        "synonyms": "feedback, complaints, suggestions, survey"
+      },
+      "fiscal_invoices": {
+        "label": "Tax receipts",
+        "description": "Official receipts and invoices you've issued",
+        "synonyms": "invoices, receipts, fiscal, tax, billing"
+      },
+      "fiscal_services": {
+        "label": "Tax setup",
+        "description": "How official receipts are issued for your country",
+        "synonyms": "fiscal, tax settings, compliance, country"
+      },
+      "branding": {
+        "label": "Logo & photos",
+        "description": "How your place looks to guests online",
+        "synonyms": "branding, logo, pictures, images, gallery, cover"
+      },
+      "themes": {
+        "label": "Colours",
+        "description": "Colours and style for your guest-facing pages",
+        "synonyms": "theme, colours, style, look, design"
+      },
+      "menu_boards": {
+        "label": "Menu screens",
+        "description": "Screens showing your menu in the venue",
+        "synonyms": "menu board, display, signage, tv, screen"
+      },
+      "stations": {
+        "label": "Devices",
+        "description": "Tablets and screens paired to this place",
+        "synonyms": "stations, devices, tablets, terminals, pairing"
+      },
+      "nfc_tags": {
+        "label": "Tap cards",
+        "description": "Cards and stickers guests tap to order",
+        "synonyms": "nfc, tags, tap, scan, qr, table card"
+      },
+      "wifi": {
+        "label": "Guest WiFi",
+        "description": "The network you share with guests",
+        "synonyms": "wifi, internet, network, password, hotspot"
+      },
+      "announcements": {
+        "label": "Notices",
+        "description": "Messages for everyone on the team",
+        "synonyms": "announcements, notices, memo, broadcast, news"
+      },
+      "jobs": {
+        "label": "Hiring",
+        "description": "Job adverts and people applying",
+        "synonyms": "jobs, recruitment, vacancies, applications, hire"
+      },
+      "marketplace": {
+        "label": "Marketplace",
+        "description": "Buy and sell equipment with other venues",
+        "synonyms": "marketplace, equipment, second hand, buy, sell"
+      },
+      "alerts": {
+        "label": "Things to fix",
+        "description": "Setup problems worth sorting out",
+        "synonyms": "alerts, warnings, issues, problems, setup"
+      },
+      "audit_logs": {
+        "label": "Activity history",
+        "description": "Who changed what, and when",
+        "synonyms": "audit, logs, history, changes, tracking"
+      },
+      "danger": {
+        "label": "Close or delete",
+        "description": "Pause or permanently remove this business",
+        "synonyms": "danger, delete, close, shut down, remove"
+      }
+    },
+    "actions": {
+      "orders": {
+        "live": "Orders happening now",
+        "today": "All orders"
+      },
+      "staff": {
+        "invite": "Add a team member",
+        "people": "Who works here",
+        "roles": "What they can do",
+        "teams": "Teams"
+      },
+      "schedule": {
+        "rota": "Plan the week",
+        "time_off": "Time off requests",
+        "swaps": "Shift swaps",
+        "bids": "Open shifts",
+        "rules": "Repeating shifts",
+        "templates": "Shift templates"
+      },
+      "attendance": {
+        "live": "Who's in right now",
+        "overview": "Hours summary",
+        "reports": "Export hours",
+        "absences": "Absences"
+      },
+      "settings": {
+        "general": "Name, address & hours"
+      }
+    }
   }
 }

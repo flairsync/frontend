@@ -37,10 +37,13 @@ import { QuickLinksDropdown } from '@/components/management/QuickLinksDropdown';
 import PublicFeedHeader from '@/components/feed/PublicFeedHeader';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
+import { UiModeToggle } from '@/components/shared/UiModeToggle';
+import { useUiMode } from '@/components/shared/ui-mode-provider';
+import SimpleActionBar from '@/components/management/simple/SimpleActionBar';
 import { usePermissions } from '@/features/auth/usePermissions';
 import { useBusinessStatus } from '@/features/business/useBusinessStatus';
 import BusinessStatusPill from '@/components/management/BusinessStatusPill';
-import { Loader, ShieldAlert, LogOut } from 'lucide-react';
+import { Home, Loader, ShieldAlert, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 
@@ -61,6 +64,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     );
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
+    const { isSimple } = useUiMode();
+    const onHomePage = urlPathname.endsWith('/home');
 
     if (loadingPermissions) {
         return (
@@ -72,7 +77,10 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
     const isAwaysAllowedPage =
         urlPathname.endsWith('/dashboard') ||
-        urlPathname.endsWith('/shifts');
+        urlPathname.endsWith('/shifts') ||
+        // The launcher only ever renders tiles this person has permission for,
+        // so it's safe — and it's the screen that shows them what they *can* open.
+        urlPathname.endsWith('/home');
 
     const hasAnyPermission = permissions && Object.values(permissions).some((p: any) => p.read || p.create || p.update || p.delete);
 
@@ -98,13 +106,28 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                 open={sidebarOpen}
                 className="flex h-screen w-full overflow-hidden "
             >
-                <StaffMemberSidebar
-                    businessId={routeParams.id}
-                    className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
-                />
+                {!isSimple && (
+                    <StaffMemberSidebar
+                        businessId={routeParams.id}
+                        className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
+                    />
+                )}
                 <SidebarInset>
                     <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-                        <SidebarTrigger className="-ml-1" />
+                        {isSimple ? (
+                            <a
+                                href={`/manage/${routeParams.id}/staff/home`}
+                                className={`-ml-1 flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors ${onHomePage
+                                    ? "text-foreground"
+                                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                                    }`}
+                            >
+                                <Home className="h-4 w-4" />
+                                <span className="hidden sm:inline">Home</span>
+                            </a>
+                        ) : (
+                            <SidebarTrigger className="-ml-1" />
+                        )}
                         <Separator
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
@@ -134,11 +157,21 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         <div
                             className='flex flex-1 items-center justify-end gap-1 mr-10'
                         >
-                            <QuickLinksDropdown businessId={routeParams.id} role="staff" />
+                            <UiModeToggle />
+                            {!isSimple && (
+                                <QuickLinksDropdown businessId={routeParams.id} role="staff" />
+                            )}
                             <HeaderProfileAvatar />
                         </div>
                     </header>
                     <div className="flex flex-1 flex-col gap-4 p-4 overflow-scroll">
+                        {isSimple && !onHomePage && (
+                            <SimpleActionBar
+                                businessId={routeParams.id}
+                                role="staff"
+                                pathname={urlPathname}
+                            />
+                        )}
                         {children}
                     </div>
                 </SidebarInset>

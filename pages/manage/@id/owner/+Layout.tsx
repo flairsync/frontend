@@ -23,6 +23,9 @@ import {
 import { BusinessOwnerManagementSidebar } from '@/components/management/BusinessOwnerManagementSidebar';
 import { QuickLinksDropdown } from '@/components/management/QuickLinksDropdown';
 import { AlertsBell } from '@/components/management/AlertsBell';
+import { UiModeToggle } from '@/components/shared/UiModeToggle';
+import { useUiMode } from '@/components/shared/ui-mode-provider';
+import SimpleActionBar from '@/components/management/simple/SimpleActionBar';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +38,7 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { Loader, TriangleAlert } from 'lucide-react';
+import { Home, Loader, TriangleAlert } from 'lucide-react';
 
 // Countries whose fiscal adapter is actually LIVE (FiscalAdapterFactory routes to the
 // real per-country adapter, not the generic one) and therefore actually requires
@@ -47,6 +50,7 @@ import { Loader, TriangleAlert } from 'lucide-react';
 const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
 
 const PAGE_LABELS: Record<string, string> = {
+    home: "Home",
     dashboard: "Dashboard",
     branding: "Business Branding",
     settings: "Business Settings",
@@ -85,8 +89,15 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     } = useTranslation("management");
     const {
         routeParams,
-        data
+        data,
+        urlPathname
     } = usePageContext();
+
+    const { isSimple } = useUiMode();
+    // Easy View drops the sidebar entirely: its navigation is the Home launcher
+    // plus the action bar, and leaving a 34-item sidebar alongside them would
+    // re-introduce exactly the wall of links we're trying to get away from.
+    const onHomePage = urlPathname?.includes("/owner/home") ?? false;
 
 
     const {
@@ -125,13 +136,28 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                 open={sidebarOpen}
                 className="flex h-screen w-full overflow-hidden "
             >
-                <BusinessOwnerManagementSidebar
-                    businessId={routeParams.id}
-                    className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
-                />
+                {!isSimple && (
+                    <BusinessOwnerManagementSidebar
+                        businessId={routeParams.id}
+                        className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
+                    />
+                )}
                 <SidebarInset>
                     <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-                        <SidebarTrigger className="-ml-1" />
+                        {isSimple ? (
+                            <a
+                                href={`/manage/${routeParams.id}/owner/home`}
+                                className={`-ml-1 flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors ${onHomePage
+                                    ? "text-foreground"
+                                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                                    }`}
+                            >
+                                <Home className="h-4 w-4" />
+                                <span className="hidden sm:inline">Home</span>
+                            </a>
+                        ) : (
+                            <SidebarTrigger className="-ml-1" />
+                        )}
                         <Separator
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
@@ -201,12 +227,22 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex flex-1 items-center justify-end gap-1 mr-10">
+                            <UiModeToggle />
                             <AlertsBell businessId={routeParams.id} />
-                            <QuickLinksDropdown businessId={routeParams.id} role="owner" />
+                            {!isSimple && (
+                                <QuickLinksDropdown businessId={routeParams.id} role="owner" />
+                            )}
                             <HeaderProfileAvatar />
                         </div>
                     </header>
                     <div className="flex flex-1 flex-col gap-4 p-4 overflow-scroll">
+                        {isSimple && !onHomePage && (
+                            <SimpleActionBar
+                                businessId={routeParams.id}
+                                role="owner"
+                                pathname={urlPathname ?? ""}
+                            />
+                        )}
                         {children}
                     </div>
                 </SidebarInset>

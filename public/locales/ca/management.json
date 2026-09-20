@@ -4654,5 +4654,272 @@
     "expiry_label": "Els punts caduquen després de",
     "expiry_description": "Nombre de mesos després de guanyar-los abans que els punts caduquin. Deixa-ho en blanc perquè els punts no caduquin mai.",
     "expiry_placeholder": "Mai"
+  },
+  "simple_mode": {
+    "toggle": {
+      "title": "Com es veu aquesta pàgina",
+      "aria_label": "Canviar com es veu aquesta pàgina",
+      "simple_label": "Vista senzilla",
+      "simple_description": "Icones grans per al més important",
+      "advanced_label": "Vista completa",
+      "advanced_description": "El menú complet, amb tot llistat"
+    },
+    "launcher": {
+      "home": "Inici",
+      "more_actions": "Més",
+      "greeting": "Què vols fer?",
+      "greeting_named": "{{name}} — què vols fer?",
+      "subtitle": "Tria el que necessitis. Marca amb estrella el que més facis servir.",
+      "search_placeholder": "Cerca — prova «afegir personal» o «preus»",
+      "clear_search": "Esborrar la cerca",
+      "search_results": "Trobats: {{count}}",
+      "no_results": "No hi ha res per a «{{query}}». Prova una altra paraula.",
+      "shortcuts": "Els teus accessos directes"
+    },
+    "customize": {
+      "start": "Personalitzar",
+      "done": "Fet",
+      "explainer": "Marca amb estrella el que més facis servir per fixar-ho a dalt, i amaga el que no fas servir mai. El que amaguis continua disponible a la cerca i a la vista completa.",
+      "add_shortcut": "Afegir als teus accessos directes",
+      "remove_shortcut": "Treure dels teus accessos directes",
+      "shortcuts_full": "Has arribat al màxim d'accessos directes",
+      "hide_tile": "Amagar del meu inici",
+      "show_tile": "Mostrar al meu inici",
+      "show_all": "Tornar a mostrar {{count}} amagat(s)"
+    },
+    "sections": {
+      "service": {
+        "label": "El servei d'avui",
+        "description": "El que necessites mentre estàs obert"
+      },
+      "house": {
+        "label": "El teu local",
+        "description": "La teva carta, el teu equip i com funciones"
+      },
+      "money": {
+        "label": "Diners i creixement",
+        "description": "El que guanyes i com fer-ho créixer"
+      },
+      "setup": {
+        "label": "Configuració i extres",
+        "description": "Tota la resta que pots configurar"
+      }
+    },
+    "tiles": {
+      "dashboard": {
+        "label": "Resum",
+        "description": "Una ullada ràpida a com va el dia",
+        "synonyms": "inici, resum, estadístiques, avui"
+      },
+      "orders": {
+        "label": "Comandes",
+        "description": "Tot el que han demanat els clients",
+        "synonyms": "tiquets, comptes, per emportar, repartiment, vendes"
+      },
+      "reservations": {
+        "label": "Reserves",
+        "description": "Les taules que han reservat els clients",
+        "synonyms": "reserves, sense reserva, comensals, clients"
+      },
+      "floor_plan": {
+        "label": "Taules",
+        "description": "Les teves sales, taules i seients",
+        "synonyms": "plànol, distribució, seients, terrassa, sala"
+      },
+      "tasks": {
+        "label": "Tasques",
+        "description": "Llistes i tasques per a l'equip",
+        "synonyms": "tasques, checklist, pendents, neteja, preparació"
+      },
+      "my_shifts": {
+        "label": "Els meus torns",
+        "description": "Quan treballes",
+        "synonyms": "les meves hores, el meu horari, la meva setmana"
+      },
+      "messages": {
+        "label": "Missatges",
+        "description": "Notes del teu encarregat i de l'equip",
+        "synonyms": "xat, safata, notes, avisos"
+      },
+      "pos_app": {
+        "label": "Caixa",
+        "description": "Obrir la pantalla de punt de venda",
+        "synonyms": "tpv, caixa registradora, cobrament, taulell"
+      },
+      "kds_app": {
+        "label": "Pantalla de cuina",
+        "description": "Obrir la pantalla que fa servir la cuina",
+        "synonyms": "kds, pantalla cuina, pas, xef"
+      },
+      "menu": {
+        "label": "Carta",
+        "description": "Els teus plats, begudes i preus",
+        "synonyms": "menjar, begudes, plats, articles, preus, menú"
+      },
+      "inventory": {
+        "label": "Estoc",
+        "description": "El que tens i el que s'acaba",
+        "synonyms": "inventari, subministraments, ingredients, magatzem, celler"
+      },
+      "staff": {
+        "label": "Equip",
+        "description": "Les persones que treballen aquí",
+        "synonyms": "personal, empleats, cambrers, cuiners, contractar, rols"
+      },
+      "schedule": {
+        "label": "Horaris",
+        "description": "Qui treballa i quan",
+        "synonyms": "horari, torns, planificació, quadrant"
+      },
+      "attendance": {
+        "label": "Hores treballades",
+        "description": "Fitxatges, sortides i absències",
+        "synonyms": "assistència, fitxatge, hores, absències"
+      },
+      "settings": {
+        "label": "Horaris i dades",
+        "description": "Adreça, horaris, dades fiscals i contacte",
+        "synonyms": "ajustos, adreça, horaris, nif, contacte"
+      },
+      "analytics": {
+        "label": "Vendes i informes",
+        "description": "Com va el negoci al llarg del temps",
+        "synonyms": "analítiques, informes, ingressos, xifres, facturació"
+      },
+      "payments": {
+        "label": "Pagaments amb targeta",
+        "description": "Com paguen els clients i on arriba els diners",
+        "synonyms": "pagaments, targeta, stripe, datàfon, cobraments"
+      },
+      "payroll": {
+        "label": "Nòmines",
+        "description": "Calcular i exportar el que es deu a l'equip",
+        "synonyms": "nòmina, sous, salari, exportar"
+      },
+      "tip_pooling": {
+        "label": "Propines",
+        "description": "Com es reparteixen les propines",
+        "synonyms": "propines, servei, repartiment"
+      },
+      "discounts": {
+        "label": "Ofertes",
+        "description": "Promocions i descomptes per als clients",
+        "synonyms": "descomptes, promocions, ofertes, happy hour, vals"
+      },
+      "loyalty": {
+        "label": "Fidelització",
+        "description": "Recompenses perquè tornin els clients",
+        "synonyms": "fidelitat, punts, segells, recompenses, clients habituals"
+      },
+      "reviews": {
+        "label": "Ressenyes",
+        "description": "El que diuen els clients públicament",
+        "synonyms": "ressenyes, valoracions, estrelles, comentaris, reputació"
+      },
+      "feedback": {
+        "label": "Opinions privades",
+        "description": "Comentaris que els clients t'envien només a tu",
+        "synonyms": "opinions, queixes, suggeriments, enquesta"
+      },
+      "fiscal_invoices": {
+        "label": "Factures fiscals",
+        "description": "Rebuts i factures oficials emesos",
+        "synonyms": "factures, rebuts, fiscal, impostos"
+      },
+      "fiscal_services": {
+        "label": "Configuració fiscal",
+        "description": "Com s'emeten els rebuts oficials al teu país",
+        "synonyms": "fiscal, ajustos fiscals, compliment, país"
+      },
+      "branding": {
+        "label": "Logotip i fotos",
+        "description": "Com es veu el teu local per als clients en línia",
+        "synonyms": "marca, logotip, fotos, imatges, galeria"
+      },
+      "themes": {
+        "label": "Colors",
+        "description": "Colors i estil de les teves pàgines per a clients",
+        "synonyms": "tema, colors, estil, aspecte, disseny"
+      },
+      "menu_boards": {
+        "label": "Pantalles de carta",
+        "description": "Pantalles que mostren la teva carta al local",
+        "synonyms": "cartelleria, pantalla, tv, senyalització"
+      },
+      "stations": {
+        "label": "Dispositius",
+        "description": "Tauletes i pantalles vinculades a aquest local",
+        "synonyms": "estacions, dispositius, tauletes, terminals, vinculació"
+      },
+      "nfc_tags": {
+        "label": "Targetes NFC",
+        "description": "Targetes i adhesius que els clients apropen per demanar",
+        "synonyms": "nfc, etiquetes, contactless, escanejar, qr"
+      },
+      "wifi": {
+        "label": "WiFi per a clients",
+        "description": "La xarxa que comparteixes amb els clients",
+        "synonyms": "wifi, internet, xarxa, contrasenya"
+      },
+      "announcements": {
+        "label": "Avisos",
+        "description": "Missatges per a tot l'equip",
+        "synonyms": "avisos, comunicats, memo, novetats"
+      },
+      "jobs": {
+        "label": "Contractació",
+        "description": "Ofertes de feina i candidatures",
+        "synonyms": "feina, reclutament, vacants, candidatures"
+      },
+      "marketplace": {
+        "label": "Mercat",
+        "description": "Compra i ven equipament amb altres locals",
+        "synonyms": "mercat, equipament, segona mà, comprar, vendre"
+      },
+      "alerts": {
+        "label": "Coses per arreglar",
+        "description": "Problemes de configuració que convé resoldre",
+        "synonyms": "alertes, avisos, problemes, configuració"
+      },
+      "audit_logs": {
+        "label": "Historial d'activitat",
+        "description": "Qui ha canviat què i quan",
+        "synonyms": "auditoria, registres, historial, canvis"
+      },
+      "danger": {
+        "label": "Tancar o eliminar",
+        "description": "Pausar o eliminar definitivament aquest negoci",
+        "synonyms": "perill, eliminar, tancar, esborrar"
+      }
+    },
+    "actions": {
+      "orders": {
+        "live": "Comandes en curs",
+        "today": "Totes les comandes"
+      },
+      "staff": {
+        "invite": "Afegir algú a l'equip",
+        "people": "Qui treballa aquí",
+        "roles": "Què pot fer cadascú",
+        "teams": "Equips"
+      },
+      "schedule": {
+        "rota": "Planificar la setmana",
+        "time_off": "Sol·licituds de vacances",
+        "swaps": "Canvis de torn",
+        "bids": "Torns lliures",
+        "rules": "Torns que es repeteixen",
+        "templates": "Plantilles de torn"
+      },
+      "attendance": {
+        "live": "Qui hi ha ara",
+        "overview": "Resum d'hores",
+        "reports": "Exportar hores",
+        "absences": "Absències"
+      },
+      "settings": {
+        "general": "Nom, adreça i horaris"
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@
     "build": "vike build",
     "preview": "vike preview",
     "shadcn": "npx shadcn@latest",
+    "check:nav": "node scripts/check-task-registry.js",
     "start": "node server.mjs",
     "prod": "NODE_ENV=production node dist/server/index.js",
     "postinstall": "patch-package",

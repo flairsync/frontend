@@ -7,6 +7,10 @@ import "@/translations/i18n"
 import { clientOnly } from "vike-react/clientOnly";
 const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provider"));
 const TextSizeProvider = clientOnly(() => import("@/components/shared/text-size-provider"));
+// Deliberately NOT clientOnly: the management shells branch on uiMode during
+// SSR, so this has to render on the server or every manage page flashes the
+// wrong navigation before hydration.
+import UiModeProvider from "@/components/shared/ui-mode-provider";
 import { Toaster } from "@/components/ui/sonner"
 import { SystemErrorOverlay } from "@/features/system-errors/SystemErrorOverlay";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
@@ -20,7 +24,7 @@ const PasswordBreachBanner = clientOnly(() => import("@/components/shared/Passwo
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <UiModeProvider>
       <ThemeProvider
         defaultTheme="light"
         storageKey="vite-ui-theme"
@@ -41,7 +45,7 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
           <PasswordBreachBanner />
         </TextSizeProvider>
       </ThemeProvider>
-    </>
+    </UiModeProvider>
   );
 }
 

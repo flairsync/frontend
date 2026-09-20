@@ -7,6 +7,8 @@ const ORDER_KEY = "fs_order";
 const EMAIL_PROMPT_SEEN_KEY = "fs_email_prompt_seen";
 const FEEDBACK_PROMPT_SEEN_KEY = "fs_feedback_prompt_seen";
 const PW_BREACH_DISMISSED_KEY = "fs_pw_breach_dismissed";
+const UI_MODE_KEY = "fs_ui_mode";
+const HIDDEN_TILES_KEY = "fs_hidden_tiles";
 const MAX_AGE = 60 * 60 * 24 * 365;
 // A scanned table represents one dining visit, not a lasting preference — expire it
 // well before it could realistically bleed into a future, unrelated visit.
@@ -160,6 +162,60 @@ export function getPasswordBreachDismissedAt(): string | null {
 export function setPasswordBreachDismissedAt(breachedAt: string): void {
   if (typeof document === "undefined") return;
   document.cookie = serialize(PW_BREACH_DISMISSED_KEY, breachedAt, {
+    maxAge: MAX_AGE,
+    path: "/",
+    sameSite: "lax",
+  });
+}
+
+export type UiMode = "simple" | "advanced";
+
+export function isUiMode(value: unknown): value is UiMode {
+  return value === "simple" || value === "advanced";
+}
+
+// Which management shell the user gets: "simple" is the icon/tile-driven Easy
+// View, "advanced" is the original sidebar. A cookie (not localStorage) so the
+// Hono middleware can read it and hand it to the first SSR render — otherwise
+// every manage page would flash the wrong shell before hydration.
+//
+// Deliberately per-device: a shared floor tablet and the owner's laptop are
+// different users in practice even when they're the same account.
+export function getUiModeCookie(): UiMode | null {
+  if (typeof document === "undefined") return null;
+  const cookies = parse(document.cookie);
+  const value = cookies[UI_MODE_KEY];
+  return isUiMode(value) ? value : null;
+}
+
+export function setUiModeCookie(mode: UiMode): void {
+  if (typeof document === "undefined") return;
+  document.cookie = serialize(UI_MODE_KEY, mode, {
+    maxAge: MAX_AGE,
+    path: "/",
+    sameSite: "lax",
+  });
+}
+
+// Tile keys the user has chosen to hide from their Easy View launcher, stored
+// per-device alongside the mode itself. Hiding is presentation-only: a hidden
+// tile stays reachable through search, Full View and direct links, so this can
+// never lock anyone out of a feature they still have permission for.
+export function getHiddenTiles(): string[] {
+  if (typeof document === "undefined") return [];
+  const cookies = parse(document.cookie);
+  if (!cookies[HIDDEN_TILES_KEY]) return [];
+  try {
+    const parsed = JSON.parse(cookies[HIDDEN_TILES_KEY]);
+    return Array.isArray(parsed) ? parsed.filter((k): k is string => typeof k === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+export function setHiddenTiles(keys: string[]): void {
+  if (typeof document === "undefined") return;
+  document.cookie = serialize(HIDDEN_TILES_KEY, JSON.stringify(keys), {
     maxAge: MAX_AGE,
     path: "/",
     sameSite: "lax",

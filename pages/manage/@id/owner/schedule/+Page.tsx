@@ -64,7 +64,10 @@ export default function OwnerManageSchedulesPage() {
             if (tab) setActiveTab(tab);
 
             // Cleanup non-schedule parameters
-            const allowedParams = ["tab", "date", "view", "staffId"];
+            // "action" is the Easy View deep link (see useActionParam); it is
+            // consumed and removed by whichever child handles it, so it must
+            // survive this cleanup rather than being stripped on arrival.
+            const allowedParams = ["tab", "date", "view", "staffId", "action"];
             let changed = false;
             for (const key of Array.from(params.keys())) {
                 if (!allowedParams.includes(key)) {

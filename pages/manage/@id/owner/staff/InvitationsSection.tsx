@@ -1,5 +1,5 @@
 import { useBusinessEmpInvitations } from '@/features/business/employment/useBusinessEmpInvitations'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePageContext } from 'vike-react/usePageContext';
 
@@ -42,6 +42,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useBusinessPlan } from '@/features/business/useBusinessPlan';
 import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
 import { cn } from '@/lib/utils';
+import { useActionParam } from '@/hooks/use-action-param';
 
 
 type InvitationsSectionProps = {
@@ -58,6 +59,14 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
 
     const { plan } = useBusinessPlan(routeParams.id);
     const canAddEmployee = plan ? plan.canAddEmployee : true;
+
+    // Easy View's "Add a staff member" button links straight here with
+    // ?tab=invitations&action=invite, so the dialog opens on arrival instead of
+    // leaving someone hunting for a button on a tab they didn't expect.
+    const deepLinkAction = useActionParam(["invite"]);
+    useEffect(() => {
+        if (deepLinkAction === "invite" && canCreate) setInviteModalOpen(true);
+    }, [deepLinkAction, canCreate]);
 
     const [invitationQrValue, setInvitationQrValue] = useState<string>();
     const [cancelInvitationId, setCancelInvitationId] = useState<string>()

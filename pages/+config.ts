@@ -21,7 +21,7 @@ export default {
   extends: [vikeReact, vikeReactQuery, vikeServer],
   server: "server/index.js",
 
-  passToClient: ["user", "tfa", "session"],
+  passToClient: ["user", "tfa", "session", "uiMode"],
 
   // Default TanStack Query staleTime: without this it's 0, so every query
   // refetches on mount/window-focus. Screens that need fresher data (KDS,
@@ -53,6 +53,10 @@ declare global {
       session?: {
         id: string;
       };
+      // "simple" (Easy View) | "advanced" (Full View), read from the fs_ui_mode
+      // cookie server-side. null when the user has never chosen — the provider
+      // then applies the default for their account age.
+      uiMode?: "simple" | "advanced" | null;
       // Refine type of pageContext.Page
     }
   }

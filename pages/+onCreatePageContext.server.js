@@ -5,23 +5,28 @@ export async function onCreatePageContext(pageContext) {
     pageContext.user = null;
     pageContext.tfa = null;
     pageContext.session = null;
+    pageContext.uiMode = null;
     return {
       user: null,
       tfa: null,
-      session: null
+      session: null,
+      uiMode: null
     };
   }
 
   const user = pageContext.hono.get("user");
   const tfa = pageContext.hono.get("tfa");
   const sess = pageContext.hono.get("session");
+  const uiMode = pageContext.hono.get("uiMode");
 
   pageContext.user = user;
   pageContext.tfa = tfa;
   pageContext.session = sess;
+  pageContext.uiMode = uiMode;
   return {
     user,
     tfa,
-    session: sess
+    session: sess,
+    uiMode
   };
 }

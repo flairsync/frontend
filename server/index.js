@@ -11,6 +11,10 @@ function startServer() {
     const userCookie = getCookie(c, "user"); // 👈 Your HttpOnly cookie name
     const tfaCookie = getCookie(c, "tfa");
     const sessionId = getCookie(c, "sid");
+    // Which management shell to render (Easy View vs Full View). Read here so
+    // the very first SSR paint already has it — reading it client-side instead
+    // would flash the wrong shell on every manage page load.
+    const uiModeCookie = getCookie(c, "fs_ui_mode");
 
     let user = null;
     let tfa = null;
@@ -39,6 +43,10 @@ function startServer() {
     c.set("user", user);
     c.set("tfa", tfa);
     c.set("session", session);
+    c.set(
+      "uiMode",
+      uiModeCookie === "simple" || uiModeCookie === "advanced" ? uiModeCookie : null
+    );
     await next();
   });
 
