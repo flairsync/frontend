@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -23,6 +23,7 @@ import BusinessSettingsTax from "@/components/management/settings/BusinessSettin
 import { AuditLogHint } from "@/components/audit/AuditLogHint"
 import { usePageTour } from "@/features/tour/usePageTour"
 import type { TourStep } from "@/features/tour/types"
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 const SETTINGS_TOUR_STEPS: TourStep[] = [
     {
@@ -136,9 +137,9 @@ const BusinessSettingsPage = () => {
     const [highlightedSection, setHighlightedSection] = useState<string | null>(null)
     const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
-    useEffect(() => {
-        const section = new URLSearchParams(window.location.search).get("section")
-        if (!section) return
+    // Shared by the cold-load URL reader and the Easy View action bar, which
+    // publishes the section in place rather than navigating.
+    const openSection = useCallback((section: string) => {
         setAccordionValue(section)
         const tryScroll = () => {
             const el = sectionRefs.current[section]
@@ -150,6 +151,14 @@ const BusinessSettingsPage = () => {
         }
         setTimeout(tryScroll, 150)
     }, [])
+
+    useEffect(() => {
+        const section = new URLSearchParams(window.location.search).get("section")
+        if (!section) return
+        openSection(section)
+    }, [openSection])
+
+    useParamFromAction("section", openSection)
 
     return (
         <div className="space-y-6">

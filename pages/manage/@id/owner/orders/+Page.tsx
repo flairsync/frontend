@@ -32,6 +32,7 @@ import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
 import { DateRange } from "react-day-picker";
 import { formatTime } from "@/lib/dateUtils";
 import AdvancedControls from "@/components/management/simple/AdvancedControls";
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 const OwnerOrdersPage: React.FC = () => {
     const { t } = useTranslation("management");
@@ -73,6 +74,12 @@ const OwnerOrdersPage: React.FC = () => {
     const [customerNameFilter, setCustomerNameFilter] = useState<string>("");
     const customerNameDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [page, setPage] = useState(1);
+
+    // Easy View's action bar publishes the filter in place rather than
+    // navigating. Same accepted values as the URL reader below.
+    useParamFromAction("status", (status) => {
+        if (status === "ongoing" || status === "all") setStatusFilter(status);
+    });
 
     // Drives the Easy View "More filters" disclosure: its badge, and whether it
     // has to start open because something is already narrowing the list.

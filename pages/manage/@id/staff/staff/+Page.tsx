@@ -47,6 +47,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import TeamsSection from "@/components/management/staff/teams/TeamsSection";
 import RolesSection from "../../owner/staff/RolesSection";
 import InvitationsSection from "../../owner/staff/InvitationsSection";
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 // ─── Bulk Assign Role Modal ──────────────────────────────────────────────────
 
@@ -342,6 +343,10 @@ const StaffManagementPage: React.FC = () => {
     const myEmploymentId = myEmployments?.find(e => e.business?.id === routeParams.id)?.id;
 
     const [activeTab, setActiveTab] = useState<TabValue>("staff");
+    // Easy View's action bar publishes the tab in place rather than navigating.
+    useParamFromAction("tab", (tab) => {
+        if (VALID_TABS.includes(tab as TabValue)) setActiveTab(tab as TabValue);
+    });
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {

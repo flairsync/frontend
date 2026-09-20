@@ -15,6 +15,7 @@ import {
     TILE_ACCENTS,
     type TaskRole,
 } from "@/features/navigation/taskRegistry";
+import { emitAction } from "@/features/navigation/actionBus";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -46,23 +47,26 @@ export function SimpleActionBar({ businessId, role, pathname }: Props) {
     const secondary = actions.filter((a) => !a.primary);
     const accent = TILE_ACCENTS[tile.accent];
 
-    // These buttons point at the page they're already on, so letting the client
-    // router handle the click just swaps the URL — the page component never
-    // remounts. Every convention these links use (?action=, and the pre-existing
-    // ?tab=/?status=/?section= readers on the pages themselves) initialises from
-    // the URL once on mount, so nothing would happen at all.
+    // These buttons point at the page they're already on. Letting the router
+    // handle the click only swaps the URL — the page never remounts, so
+    // anything reading its params on mount wouldn't notice. Navigating for real
+    // would fix that but makes the page visibly reload just to open a dialog.
     //
-    // Forcing a real navigation re-initialises all of them uniformly, and means
-    // this doesn't depend on how any individual page chose to read its params.
-    // Cross-page links fall through to normal client-side routing.
+    // So for a same-page click nothing navigates: we publish the params the URL
+    // would have carried and the page picks them up in place. The href stays on
+    // the anchor so middle-click and "open in new tab" still work, and clicks
+    // that land on another page fall through to normal routing.
     const currentPath = pathname.split("?")[0];
     const handleActionClick =
         (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
             // Leave modified clicks alone — new tab / new window still work.
             if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-            if (href.split("?")[0] !== currentPath) return;
+
+            const [targetPath, queryString = ""] = href.split("?");
+            if (targetPath !== currentPath) return;
+
             event.preventDefault();
-            window.location.assign(href);
+            emitAction(Object.fromEntries(new URLSearchParams(queryString)));
         };
 
     return (

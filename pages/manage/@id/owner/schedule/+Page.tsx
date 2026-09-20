@@ -10,6 +10,7 @@ import ManagerScheduleSwapsTab from "@/components/management/schedule/ManagerSch
 import ManagerScheduleBidsTab from "@/components/management/schedule/ManagerScheduleBidsTab";
 import { usePageTour } from "@/features/tour/usePageTour";
 import type { TourStep } from "@/features/tour/types";
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 const SCHEDULE_TOUR_STEPS: TourStep[] = [
     {
@@ -56,6 +57,8 @@ export default function OwnerManageSchedulesPage() {
 
     const [activeTab, setActiveTab] = useState("manage");
     const [isInitialized, setIsInitialized] = useState(false);
+    // Easy View's action bar publishes the tab in place rather than navigating.
+    useParamFromAction("tab", (tab) => setActiveTab(tab));
 
     useEffect(() => {
         if (typeof window !== "undefined") {

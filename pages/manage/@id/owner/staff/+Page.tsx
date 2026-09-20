@@ -8,6 +8,7 @@ import InvitationsSection from "./InvitationsSection";
 import TeamsSection from "@/components/management/staff/teams/TeamsSection";
 import { usePageTour } from "@/features/tour/usePageTour";
 import type { TourStep } from "@/features/tour/types";
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 const STAFF_TOUR_STEPS: TourStep[] = [
     {
@@ -45,6 +46,11 @@ const OwnerStaffManagementPage: React.FC = () => {
 
     const [activeTab, setActiveTab] = useState<TabValue>("staff");
     const [isInitialized, setIsInitialized] = useState(false);
+    // Easy View's action bar publishes the tab in place rather than navigating,
+    // so this page never remounts and the mount-only reader below never re-runs.
+    useParamFromAction("tab", (tab) => {
+        if (VALID_TABS.includes(tab as TabValue)) setActiveTab(tab as TabValue);
+    });
 
     useEffect(() => {
         if (typeof window !== "undefined") {

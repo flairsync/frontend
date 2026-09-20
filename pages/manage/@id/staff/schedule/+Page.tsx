@@ -8,10 +8,13 @@ import ManagerScheduleRecurringRulesTab from "@/components/management/schedule/M
 import ManagerScheduleTimeOffTab from "@/components/management/schedule/ManagerScheduleTimeOffTab";
 import ManagerScheduleSwapsTab from "@/components/management/schedule/ManagerScheduleSwapsTab";
 import ManagerScheduleBidsTab from "@/components/management/schedule/ManagerScheduleBidsTab";
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 export default function StaffSchedulePage() {
     const { t } = useTranslation("management");
     const [activeTab, setActiveTab] = useState("manage");
+    // Easy View's action bar publishes the tab in place rather than navigating.
+    useParamFromAction("tab", (tab) => setActiveTab(tab));
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {

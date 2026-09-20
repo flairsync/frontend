@@ -15,6 +15,7 @@ import { BusinessAttendanceFilters, AttendanceLifecycleStatus, AttendanceStatus 
 import { Users, Activity, BarChart2, CalendarOff, RefreshCw } from "lucide-react";
 import { usePageTour } from "@/features/tour/usePageTour";
 import type { TourStep } from "@/features/tour/types";
+import { useParamFromAction } from "@/features/navigation/actionBus";
 
 const ATTENDANCE_TOUR_STEPS: TourStep[] = [
     {
@@ -51,6 +52,8 @@ export default function AttendancePage() {
   const businessId = routeParams.id as string;
 
   const [activeTab, setActiveTab] = useState("overview");
+  // Easy View's action bar publishes the tab in place rather than navigating.
+  useParamFromAction("tab", (tab) => setActiveTab(tab));
   const [isInitialized, setIsInitialized] = useState(false);
 
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
