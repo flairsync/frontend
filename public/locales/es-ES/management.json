@@ -5005,6 +5005,32 @@
         "title": "Nada coincide con esos filtros",
         "description": "Prueba a ampliarlos o borrarlos."
       }
+    },
+    "form": {
+      "copy_existing": {
+        "title": "Empezar desde un plato existente",
+        "hint": "Copia los datos de algo que ya vendes"
+      },
+      "allergies": {
+        "title": "Alergias y dieta",
+        "hint": "Di a los clientes qué lleva"
+      },
+      "options": {
+        "title": "Tamaños y opciones",
+        "hint": "Pequeño/grande, extras, opciones para el cliente"
+      },
+      "kitchen": {
+        "title": "Dónde se prepara",
+        "hint": "A qué pantalla de cocina va"
+      },
+      "stock": {
+        "title": "Vincular al stock",
+        "hint": "Descontar ingredientes con cada venta"
+      },
+      "set_menu": {
+        "title": "Parte de un menú",
+        "hint": "Agrupar con otros platos"
+      }
     }
   }
 }

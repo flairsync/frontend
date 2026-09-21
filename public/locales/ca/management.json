@@ -5005,6 +5005,32 @@
         "title": "Res no coincideix amb aquests filtres",
         "description": "Prova d'ampliar-los o esborrar-los."
       }
+    },
+    "form": {
+      "copy_existing": {
+        "title": "Començar des d'un plat existent",
+        "hint": "Copia les dades d'alguna cosa que ja véns"
+      },
+      "allergies": {
+        "title": "Al·lèrgies i dieta",
+        "hint": "Digues als clients què porta"
+      },
+      "options": {
+        "title": "Mides i opcions",
+        "hint": "Petit/gran, extres, opcions per al client"
+      },
+      "kitchen": {
+        "title": "On es prepara",
+        "hint": "A quina pantalla de cuina va"
+      },
+      "stock": {
+        "title": "Vincular a l'estoc",
+        "hint": "Descomptar ingredients a cada venda"
+      },
+      "set_menu": {
+        "title": "Part d'un menú",
+        "hint": "Agrupar amb altres plats"
+      }
     }
   }
 }

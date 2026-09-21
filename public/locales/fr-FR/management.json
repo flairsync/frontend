@@ -5005,6 +5005,32 @@
         "title": "Aucun résultat pour ces filtres",
         "description": "Essayez de les élargir ou de les effacer."
       }
+    },
+    "form": {
+      "copy_existing": {
+        "title": "Partir d'un plat existant",
+        "hint": "Copier les détails d'un plat déjà proposé"
+      },
+      "allergies": {
+        "title": "Allergies et régime",
+        "hint": "Indiquez aux clients ce qu'il contient"
+      },
+      "options": {
+        "title": "Tailles et options",
+        "hint": "Petit/grand, suppléments, choix proposés"
+      },
+      "kitchen": {
+        "title": "Où c'est préparé",
+        "hint": "Vers quel écran cuisine cela part"
+      },
+      "stock": {
+        "title": "Lier au stock",
+        "hint": "Décompter les ingrédients à chaque vente"
+      },
+      "set_menu": {
+        "title": "Inclus dans un menu",
+        "hint": "Regrouper avec d'autres plats"
+      }
     }
   }
 }

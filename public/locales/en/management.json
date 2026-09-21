@@ -5119,6 +5119,32 @@
         "title": "Nothing matches those filters",
         "description": "Try widening or clearing them."
       }
+    },
+    "form": {
+      "copy_existing": {
+        "title": "Start from an existing dish",
+        "hint": "Copy the details of something you already sell"
+      },
+      "allergies": {
+        "title": "Allergies and diet",
+        "hint": "Tell guests what's in it"
+      },
+      "options": {
+        "title": "Sizes and options",
+        "hint": "Small/large, extras, choices guests can make"
+      },
+      "kitchen": {
+        "title": "Where it's made",
+        "hint": "Which kitchen screen this goes to"
+      },
+      "stock": {
+        "title": "Link to stock",
+        "hint": "Count ingredients down as this sells"
+      },
+      "set_menu": {
+        "title": "Part of a set menu",
+        "hint": "Bundle this with other dishes"
+      }
     }
   }
 }

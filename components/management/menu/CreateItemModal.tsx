@@ -66,6 +66,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MenuItemVariant } from '@/models/business/menu/MenuItemVariant';
 import { MenuItemModifierGroup } from '@/models/business/menu/MenuItemModifierGroup';
 import { MenuItemModifierItem } from '@/models/business/menu/MenuItemModifierItem';
+import FormSection from "@/components/management/simple/FormSection";
 
 interface ItemModalProps {
     open: boolean;
@@ -467,6 +468,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
                 </DialogHeader>
 
+                <FormSection title={t("simple_mode.form.copy_existing.title")} hint={t("simple_mode.form.copy_existing.hint")}>
                 <div className="space-y-1">
                     <label className="text-sm font-medium text-foreground">
                         {t('item_modal.copy_label')}
@@ -518,6 +520,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                         </Command>
                     </PopoverContent>
                 </Popover>
+                </FormSection>
 
                 <div className="space-y-4">
                     {/* Name */}
@@ -544,6 +547,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     </div>
 
                     {/* Allergies */}
+                    <FormSection title={t("simple_mode.form.allergies.title")} hint={t("simple_mode.form.allergies.hint")} filledCount={selectedAllergies.length}>
                     <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium">{t('item_modal.allergies')}</label>
                         <Popover>
@@ -611,6 +615,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             </PopoverContent>
                         </Popover>
                     </div>
+                    </FormSection>
 
                     {/* Images */}
                     <div>
@@ -649,6 +654,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     )}
 
                     {/* Variants and Modifiers */}
+                    <FormSection title={t("simple_mode.form.options.title")} hint={t("simple_mode.form.options.hint")} defaultOpen={!!initialData}>
                     {initialData && categoryId && menuId ? (
                         <>
                             <ItemVariantsSection
@@ -672,8 +678,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             <p>{t('item_modal.save_first_hint')}</p>
                         </div>
                     )}
+                    </FormSection>
 
                     {/* Kitchen Station */}
+                    <FormSection title={t("simple_mode.form.kitchen.title")} hint={t("simple_mode.form.kitchen.hint")} defaultOpen={!!initialData}>
                     <div className="space-y-2 pt-4 border-t">
                         <label className="text-sm font-medium">{t('item_modal.kitchen_station.label')}</label>
                         <p className="text-xs text-muted-foreground">
@@ -696,8 +704,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             </SelectContent>
                         </Select>
                     </div>
+                    </FormSection>
 
                     {/* Tracking Section */}
+                    <FormSection title={t("simple_mode.form.stock.title")} hint={t("simple_mode.form.stock.hint")} defaultOpen={!!initialData}>
                     <div className="space-y-4 pt-4 border-t">
                         <div className="flex items-center gap-2">
                             <label className="text-sm font-medium">{t('item_modal.tracking.label')}</label>
@@ -885,8 +895,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                         </>
                         )}
                     </div>
+                    </FormSection>
 
                     {/* Bundle Section */}
+                    <FormSection title={t("simple_mode.form.set_menu.title")} hint={t("simple_mode.form.set_menu.hint")} defaultOpen={!!initialData}>
                     <div className="space-y-4 pt-4 border-t">
                         <div className="flex items-center justify-between">
                             <div>
@@ -951,6 +963,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                             </div>
                         )}
                     </div>
+                    </FormSection>
                 </div>
 
                 <DialogFooter className="mt-4">
