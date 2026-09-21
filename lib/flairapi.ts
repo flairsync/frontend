@@ -11,10 +11,9 @@ import { saveSecureItem } from "@/misc/SecureStorage";
 export const API_URL = import.meta.env.VITE_API_URL;
 const baseUrl = `${API_URL}/auth/refresh`;
 
-import NProgress from "nprogress";
-
-// Configure NProgress (optional tweak)
-NProgress.configure({ showSpinner: false });
+// The nprogress bar is shared with Vike's page-transition hooks, so both sides
+// reference-count through this instead of calling NProgress directly — see lib/progressBar.ts.
+import { holdProgress, releaseProgress } from "@/lib/progressBar";
 
 // Use these when a specific endpoint needs a tighter or looser bound than the default.
 // e.g. flairapi.get('/search', { timeout: Timeouts.SHORT })
@@ -124,7 +123,7 @@ let slowNetworkToastId: any = null;
 
 const startRequest = () => {
   if (activeRequests === 0) {
-    NProgress.start();
+    holdProgress("requests");
     // Set a timer to show a hint if requests are taking too long (> 2s to be safe/responsive, or 4s as requested)
     // Using 4s to avoid flashing on merely "kind of slow" 3G
     showSlowNetworkHint();
@@ -136,7 +135,7 @@ const endRequest = () => {
   activeRequests--;
   if (activeRequests <= 0) {
     activeRequests = 0;
-    NProgress.done();
+    releaseProgress("requests");
     clearSlowNetworkHint();
   }
 };

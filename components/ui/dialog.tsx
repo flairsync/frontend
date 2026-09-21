@@ -5,8 +5,14 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { useOverlayBackClose } from "@/hooks/use-close-on-back"
 
-const Dialog = DialogPrimitive.Root
+// Wrapped (rather than re-exported directly) so the device back gesture closes the
+// dialog instead of navigating away — see hooks/use-close-on-back.ts.
+const Dialog = (props: React.ComponentProps<typeof DialogPrimitive.Root>) => {
+  const backClose = useOverlayBackClose(props)
+  return <DialogPrimitive.Root {...props} {...backClose} />
+}
 
 const DialogTrigger = DialogPrimitive.Trigger
 

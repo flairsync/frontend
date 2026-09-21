@@ -5,9 +5,12 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { useOverlayBackClose } from "@/hooks/use-close-on-back"
 
+// Wrapped so the device back gesture dismisses it — see hooks/use-close-on-back.ts.
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />
+  const backClose = useOverlayBackClose(props)
+  return <SheetPrimitive.Root data-slot="sheet" {...props} {...backClose} />
 }
 
 function SheetTrigger({

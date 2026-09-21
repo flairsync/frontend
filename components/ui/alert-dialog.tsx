@@ -3,9 +3,14 @@
 import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import { cn } from "@/lib/utils"
+import { useOverlayBackClose } from "@/hooks/use-close-on-back"
 import { buttonVariants } from "@/components/ui/button"
 
-const AlertDialog = AlertDialogPrimitive.Root
+// Wrapped so the device back gesture dismisses it — see hooks/use-close-on-back.ts.
+const AlertDialog = (props: React.ComponentProps<typeof AlertDialogPrimitive.Root>) => {
+  const backClose = useOverlayBackClose(props)
+  return <AlertDialogPrimitive.Root {...props} {...backClose} />
+}
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger
 const AlertDialogPortal = AlertDialogPrimitive.Portal
 
