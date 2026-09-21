@@ -607,7 +607,7 @@ const MenuDetailPage: React.FC = () => {
                 {/* #endregion */}
 
                 {/* #region Controls */}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-6">
                     <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg self-start">
                         <Button
                             variant={viewMode === 'simple' ? 'default' : 'ghost'}
@@ -644,8 +644,8 @@ const MenuDetailPage: React.FC = () => {
                                 : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
                         )}
                     >
-                        <Plus className="h-4 w-4 sm:mr-1" />
-                        <span className="hidden sm:inline">{t('menu_management.actions.add_category')}</span>
+                        <Plus className="h-4 w-4" />
+                        <span>{t('menu_management.actions.add_category')}</span>
                         {!canCreateMenu && <span className="text-[10px] font-bold text-indigo-600 uppercase ml-1">{t('menu_management.upgrade')}</span>}
                     </Button>
                     <Button
@@ -663,8 +663,8 @@ const MenuDetailPage: React.FC = () => {
                                 : "bg-zinc-100 text-zinc-400 cursor-not-allowed border-zinc-200"
                         )}
                     >
-                        <Sparkles className="h-4 w-4 sm:mr-1" />
-                        <span className="hidden sm:inline">{t('menu_management.actions.ai_import')}</span>
+                        <Sparkles className="h-4 w-4" />
+                        <span>{t('menu_management.actions.ai_import')}</span>
                         {!canCreateProduct && <span className="text-[10px] font-bold text-fuchsia-600 uppercase ml-1">{t('menu_management.upgrade')}</span>}
                     </Button>
                     <Button
@@ -672,8 +672,8 @@ const MenuDetailPage: React.FC = () => {
                         onClick={handleSaveStructure}
                         className="flex items-center gap-2 bg-indigo-500 text-white hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-500 transition px-3 sm:px-4"
                     >
-                        <Save className="h-4 w-4 sm:mr-1" />
-                        <span className="hidden sm:inline">{t('menu_management.actions.save_changes')}</span>
+                        <Save className="h-4 w-4" />
+                        <span>{t('menu_management.actions.save_changes')}</span>
                     </Button>
                 </div>
                 {/* #endregion */}

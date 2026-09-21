@@ -238,7 +238,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             <DialogContent className="max-w-2xl p-0 flex flex-col max-h-[90vh] overflow-hidden gap-0">
 
                 {/* ── Fixed header ── */}
-                <div className="flex-shrink-0 px-6 pt-6 pb-4 border-b">
+                <div className="flex-shrink-0 px-4 sm:px-6 pt-6 pb-4 border-b">
                     <DialogTitle className="text-lg font-semibold mb-4">{t("booking_flow_modal.title")}</DialogTitle>
 
                     {/* Step indicator */}
@@ -286,11 +286,11 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 </div>
 
                 {/* ── Scrollable content ── */}
-                <div className="flex-1 overflow-y-auto px-6 py-5">
+                <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5">
 
                     {step === "SEARCH" && (
                         <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>{t("booking_flow_modal.search_step.date_label")}</Label>
                                     <Popover>
@@ -377,7 +377,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                     )}
 
                     {step === "PRE_ORDER" && (
-                        <div className="flex gap-4 h-full">
+                        <div className="flex flex-col gap-4 md:h-full md:flex-row">
                             <div className="flex-1 space-y-3 min-w-0">
                                 {!menuItems ? (
                                     <div className="flex justify-center py-8"><Loader2 className="animate-spin" /></div>
@@ -395,7 +395,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                     ))
                                 )}
                             </div>
-                            <div className="w-56 flex-shrink-0 border-l pl-4 space-y-3">
+                            <div className="order-first w-full space-y-3 border-b pb-4 md:order-none md:w-56 md:flex-shrink-0 md:border-b-0 md:border-l md:pb-0 md:pl-4">
                                 <div className="flex items-center gap-2 font-semibold text-sm">
                                     <ShoppingCart className="h-4 w-4" />
                                     {t("booking_flow_modal.pre_order_step.order_heading", { count: bookingData.orderItems.length })}
@@ -422,7 +422,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                     {step === "CUSTOMER_INFO" && (
                         <div className="space-y-4">
                             {foundUser && !linkedUserId && !declinedLink && (
-                                <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between">
+                                <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg flex flex-wrap items-center justify-between gap-3">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
                                             {foundUser.firstName?.[0]}{foundUser.lastName?.[0]}
@@ -445,7 +445,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                 </div>
                             )}
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>{t("booking_flow_modal.customer_step.name_label")}</Label>
                                     <Input
@@ -495,7 +495,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                                     onChange={e => setBookingData({ ...bookingData, notes: e.target.value })}
                                 />
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>{t("booking_flow_modal.customer_step.source_label")}</Label>
                                     <Select value={bookingData.reservationSource} onValueChange={(val) => setBookingData({ ...bookingData, reservationSource: val })}>
@@ -528,7 +528,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 </div>
 
                 {/* ── Fixed footer ── */}
-                <div className="flex-shrink-0 border-t bg-muted/30 px-6 py-4 flex justify-between items-center">
+                <div className="flex-shrink-0 border-t bg-muted/30 px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-2">
                     <div>
                         {step !== "SEARCH" ? (
                             <Button variant="ghost" onClick={handleBack} className="gap-1.5">
@@ -543,7 +543,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                     </div>
                     <div className="flex items-center gap-2">
                         {step !== "SEARCH" && (
-                            <Button variant="outline" onClick={() => onOpenChange(false)}>{t("booking_flow_modal.footer.cancel")}</Button>
+                            <Button variant="outline" className="hidden sm:inline-flex" onClick={() => onOpenChange(false)}>{t("booking_flow_modal.footer.cancel")}</Button>
                         )}
                         {step === "CUSTOMER_INFO" ? (
                             <Button onClick={handleBooking} disabled={isCreatingReservation || !bookingData.customerName || !bookingData.customerPhone}>

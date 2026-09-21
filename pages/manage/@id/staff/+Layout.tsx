@@ -120,7 +120,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         className={`relative hidden md:flex  flex-col ${sidebarOpen ? "w-64" : "w-0"}  `}
                     />
                 )}
-                <SidebarInset>
+                <SidebarInset className="min-w-0 overflow-hidden">
                     <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                         {isSimple ? (
                             <a
@@ -140,8 +140,8 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
                         />
-                        <Breadcrumb>
-                            <BreadcrumbList>
+                        <Breadcrumb className="min-w-0 flex-shrink">
+                            <BreadcrumbList className="min-w-0 flex-nowrap overflow-hidden">
                                 <BreadcrumbItem className="hidden md:flex items-center gap-2">
                                     <BreadcrumbLink href="/manage">
                                         {t("staff_layout.business_name_breadcrumb")}
@@ -157,13 +157,13 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                     )}
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>{currentPageLabel}</BreadcrumbPage>
+                                <BreadcrumbItem className="min-w-0">
+                                    <BreadcrumbPage className="truncate">{currentPageLabel}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div
-                            className='flex flex-1 items-center justify-end gap-1 mr-10'
+                            className='flex flex-1 items-center justify-end gap-1 mr-0 sm:mr-10'
                         >
                             <TaskSearchDialog businessId={routeParams.id} role="staff" />
                             <UiModeToggle />
@@ -173,7 +173,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             <HeaderProfileAvatar />
                         </div>
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4 overflow-scroll">
+                    <div className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
                         {isSimple && !onHomePage && (
                             <SimpleActionBar
                                 businessId={routeParams.id}

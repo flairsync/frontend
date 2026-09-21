@@ -231,7 +231,7 @@ const PayrollPage = ({ businessId }: Props) => {
             <Separator />
 
             <Tabs defaultValue="payroll">
-                <TabsList>
+                <TabsList className="max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="payroll">{t("payroll_page.header.title")}</TabsTrigger>
                     <TabsTrigger value="absences">{t("payroll_page.tabs.absences")}</TabsTrigger>
                 </TabsList>
@@ -239,25 +239,25 @@ const PayrollPage = ({ businessId }: Props) => {
                 <TabsContent value="payroll" className="space-y-6 pt-4">
                     {/* Period Picker */}
                     <div className="flex flex-wrap items-end gap-4">
-                        <div className="space-y-1">
+                        <div className="w-full space-y-1 sm:w-auto">
                             <Label className="text-xs text-muted-foreground">{t("payroll_page.period_picker.start_date")}</Label>
                             <Input
                                 type="date"
-                                className="w-40"
+                                className="w-full min-w-0 sm:w-40"
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
                             />
                         </div>
-                        <div className="space-y-1">
+                        <div className="w-full space-y-1 sm:w-auto">
                             <Label className="text-xs text-muted-foreground">{t("payroll_page.period_picker.end_date")}</Label>
                             <Input
                                 type="date"
-                                className="w-40"
+                                className="w-full min-w-0 sm:w-40"
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
                             />
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                             <Button
                                 onClick={handleGenerate}
                                 disabled={isGenerating || !startDate || !endDate || startDate > endDate}

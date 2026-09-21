@@ -105,7 +105,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
             </div>
 
             <Tabs defaultValue="items">
-                <TabsList>
+                <TabsList className="max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="items">{t('marketplace_management.tabs.items')}</TabsTrigger>
                     <TabsTrigger value="incoming">{t('marketplace_management.tabs.incoming_orders')}</TabsTrigger>
                     <TabsTrigger value="mine">{t('marketplace_management.tabs.my_orders')}</TabsTrigger>

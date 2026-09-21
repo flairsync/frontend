@@ -166,7 +166,7 @@ const FloorPlanPage: React.FC = () => {
     return (
         <div className="space-y-6">
             {myBusinessFullDetails && !myBusinessFullDetails.enableFloorPlanView && !bannerDismissed && (
-                <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
+                <div className="flex flex-wrap items-start gap-x-3 gap-y-2 sm:items-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200">
                     <Info className="h-4 w-4 shrink-0" />
                     <span>{t("floor_plan.disabled_banner.message")}</span>
                     <a
@@ -184,9 +184,9 @@ const FloorPlanPage: React.FC = () => {
                 </div>
             )}
 
-            <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">{t("floor_plan.page_heading")}</h1>
-                <div className="flex gap-2">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("floor_plan.page_heading")}</h1>
+                <div className="flex flex-wrap gap-2">
                     <Button variant="outline" onClick={handleOpenCreateFloor} className="gap-2">
                         <Layers className="w-4 h-4" />
                         {t("floor_plan.add_floor")}
@@ -205,7 +205,7 @@ const FloorPlanPage: React.FC = () => {
 
             <Separator />
 
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
                 <div className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm">
                     <span className="text-muted-foreground">{t("floor_plan.stats.total_floors")}</span>
                     <span className="font-semibold">{stats?.total ?? 0}</span>
@@ -221,7 +221,7 @@ const FloorPlanPage: React.FC = () => {
             </div>
 
             <Tabs defaultValue="floors" className="w-full">
-                <TabsList>
+                <TabsList className="max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="floors">{t("floor_plan.floors")}</TabsTrigger>
                     <TabsTrigger value="tables">{t("floor_plan.tables")}</TabsTrigger>
                     <TabsTrigger value="designer">{t("floor_plan.designer")}</TabsTrigger>

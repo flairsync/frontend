@@ -267,7 +267,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
 
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="mb-4">
+                <TabsList className="mb-4 max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="items">{t("inventory_management.tabs.all_items")}</TabsTrigger>
                     <TabsTrigger value="low-stock" className="gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5" />

@@ -627,7 +627,7 @@ export function NfcTagsManagement({ businessId, canCreate, canUpdate }: NfcTagsM
 
     return (
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mb-4">
+            <TabsList className="mb-4 max-w-full justify-start overflow-x-auto">
                 <TabsTrigger value="cards">{t("nfc_tags_management.tabs.cards")}</TabsTrigger>
                 <TabsTrigger value="requests">{t("nfc_tags_management.tabs.requests")}</TabsTrigger>
             </TabsList>

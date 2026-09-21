@@ -409,7 +409,7 @@ const OwnerOrdersPage: React.FC = () => {
             <Separator />
 
             <Tabs defaultValue="list" className="w-full">
-                <TabsList className="mb-4">
+                <TabsList className="mb-4 max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="list">{t("orders.title")}</TabsTrigger>
                     <TabsTrigger value="live">{t("orders.live_tables")}</TabsTrigger>
                 </TabsList>

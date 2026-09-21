@@ -68,7 +68,7 @@ export default function StaffMessagesPage() {
             </div>
 
             <Tabs defaultValue="announcements" className="w-full">
-                <TabsList>
+                <TabsList className="max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="announcements">{t("staff_messages.announcements_tab")}</TabsTrigger>
                     <TabsTrigger value="messages">{t("staff_messages.messages_tab")}</TabsTrigger>
                 </TabsList>

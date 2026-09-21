@@ -76,7 +76,7 @@ const OwnerStaffManagementPage: React.FC = () => {
             <Separator />
 
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabValue)} className="space-y-6">
-                <TabsList className="flex flex-wrap sm:flex-nowrap gap-2 overflow-x-auto scrollbar-none">
+                <TabsList className="flex h-auto flex-wrap sm:h-10 sm:flex-nowrap gap-2 overflow-x-auto scrollbar-none">
                     <TabsTrigger data-tour="staff-tab-staff" value="staff" className="flex-1 sm:flex-none min-w-[120px] text-center">
                         {t("staff_management_page.owner_tabs.staff")}
                     </TabsTrigger>

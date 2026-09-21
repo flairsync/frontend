@@ -41,7 +41,7 @@ export default function ThemePreviewModal({
 
     return (
         <Dialog open={!!theme} onOpenChange={onOpenChange}>
-            <DialogContent className="w-[96vw] max-w-[1400px] h-[92vh] p-0 flex flex-col gap-0 sm:rounded-2xl overflow-hidden">
+            <DialogContent className="w-[96vw] sm:w-[96vw] max-w-[1400px] h-[92vh] p-0 flex flex-col gap-0 sm:rounded-2xl overflow-hidden">
                 {theme && (
                     <>
                         <div className="flex items-center justify-between gap-4 border-b px-6 py-3 shrink-0">
@@ -51,7 +51,7 @@ export default function ThemePreviewModal({
                             </div>
 
                             <Tabs value={viewport} onValueChange={(v) => setViewport(v as "desktop" | "mobile")}>
-                                <TabsList>
+                                <TabsList className="max-w-full justify-start overflow-x-auto">
                                     <TabsTrigger value="desktop" className="gap-1.5">
                                         <Monitor size={14} /> {t("themes_manager.preview_modal.desktop")}
                                     </TabsTrigger>

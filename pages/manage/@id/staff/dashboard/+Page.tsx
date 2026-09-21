@@ -114,7 +114,7 @@ export default function StaffDashboard() {
             </div>
 
             <Tabs defaultValue="tasks" className="w-full">
-                <TabsList>
+                <TabsList className="max-w-full justify-start overflow-x-auto">
                     <TabsTrigger value="tasks">{t("staff_dashboard.tabs.tasks")}</TabsTrigger>
                     {canViewOrders && <TabsTrigger value="orders">{t("staff_dashboard.tabs.orders")}</TabsTrigger>}
                     <TabsTrigger value="notifications">{t("staff_dashboard.tabs.notifications")}</TabsTrigger>

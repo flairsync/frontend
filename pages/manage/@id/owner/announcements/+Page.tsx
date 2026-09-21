@@ -395,7 +395,7 @@ const AnnouncementsPage = () => {
                             setPage(1);
                         }}
                     >
-                        <TabsList>
+                        <TabsList className="max-w-full justify-start overflow-x-auto">
                             <TabsTrigger value="ANNOUNCEMENT" className="flex items-center gap-1.5">
                                 <Megaphone className="h-3.5 w-3.5" />
                                 {t("staff_messages.announcements_tab")}

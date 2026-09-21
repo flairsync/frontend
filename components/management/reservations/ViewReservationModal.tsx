@@ -116,7 +116,7 @@ export const ViewReservationModal: React.FC<ViewReservationModalProps> = ({
                             )}
 
                             <Tabs defaultValue="details">
-                                <TabsList>
+                                <TabsList className="max-w-full justify-start overflow-x-auto">
                                     <TabsTrigger value="details">{t("view_reservation_modal.tabs.details")}</TabsTrigger>
                                     <TabsTrigger value="timeline" className="flex items-center gap-1">
                                         <History className="w-3.5 h-3.5" /> {t("view_reservation_modal.tabs.timeline")}

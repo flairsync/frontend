@@ -30,7 +30,7 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
                 <ProfileSidebar
                     className={`relative hidden md:flex flex-col ${sidebarOpen ? "w-64" : "w-0"}`}
                 />
-                <SidebarInset>
+                <SidebarInset className="min-w-0 overflow-hidden">
                     <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
@@ -60,7 +60,7 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             </div>
                         </div>
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4 overflow-scroll">
+                    <div className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
                         {children}
                     </div>
                 </SidebarInset>

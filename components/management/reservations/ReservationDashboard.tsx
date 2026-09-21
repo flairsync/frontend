@@ -293,8 +293,8 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent>
-                    <Table>
+                <CardContent className="px-2 sm:px-6">
+                    <Table className="min-w-[560px]">
                         <TableHeader>
                             <TableRow>
                                 <TableHead>{t("reservation_dashboard.all_reservations.col_date_time")}</TableHead>
@@ -302,7 +302,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                 <TableHead className="hidden md:table-cell">{t("reservation_dashboard.all_reservations.col_guests")}</TableHead>
                                 <TableHead className="hidden md:table-cell">{t("reservation_dashboard.all_reservations.col_table")}</TableHead>
                                 <TableHead>{t("reservation_dashboard.all_reservations.col_status")}</TableHead>
-                                <TableHead className="sticky right-0 bg-background text-right">{t("reservation_dashboard.all_reservations.col_actions")}</TableHead>
+                                <TableHead className="sticky right-0 bg-background border-l text-right">{t("reservation_dashboard.all_reservations.col_actions")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -341,7 +341,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
                                                 )}
                                             </TableCell>
                                             <TableCell>{getStatusBadge(res.status, t)}</TableCell>
-                                            <TableCell className="sticky right-0 bg-background">
+                                            <TableCell className="sticky right-0 bg-background border-l">
                                                 <div className="flex flex-wrap justify-end items-center gap-1">
                                                     <Button variant="ghost" size="sm" className="h-9 w-9 p-0" onClick={() => onViewReservation(res)}>
                                                         <Eye className="w-3.5 h-3.5" />

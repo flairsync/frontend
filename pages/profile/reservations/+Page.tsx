@@ -37,7 +37,7 @@ const ReservationsPage = () => {
             <CardHeader className="flex flex-row items-center justify-between gap-4 flex-wrap">
                 <CardTitle>{t("reservations_page.title")}</CardTitle>
                 <Tabs value={filter} onValueChange={handleFilterChange}>
-                    <TabsList>
+                    <TabsList className="max-w-full justify-start overflow-x-auto">
                         <TabsTrigger value="upcoming">{t("reservations_page.tabs.upcoming")}</TabsTrigger>
                         <TabsTrigger value="past">{t("reservations_page.tabs.past")}</TabsTrigger>
                     </TabsList>
