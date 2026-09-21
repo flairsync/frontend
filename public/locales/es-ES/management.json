@@ -4898,13 +4898,15 @@
     "actions": {
       "orders": {
         "live": "Pedidos en curso",
-        "today": "Todos los pedidos"
+        "today": "Todos los pedidos",
+        "add": "Añadir un pedido"
       },
       "staff": {
         "invite": "Añadir a alguien al equipo",
         "people": "Quién trabaja aquí",
         "roles": "Qué puede hacer cada uno",
-        "teams": "Equipos"
+        "teams": "Equipos",
+        "add_role": "Añadir un rol"
       },
       "schedule": {
         "rota": "Planificar la semana",
@@ -4941,6 +4943,9 @@
         "add_table": "Añadir una mesa",
         "add_many": "Añadir varias mesas",
         "add_floor": "Añadir una sala"
+      },
+      "announcements": {
+        "send": "Enviar un aviso"
       }
     },
     "search": {
@@ -4958,6 +4963,48 @@
     },
     "advanced_controls": {
       "label": "Más filtros"
+    },
+    "empty": {
+      "inventory": {
+        "title": "Aún no hay artículos",
+        "description": "Añade lo que guardas — ingredientes, bebidas, suministros — y te avisaremos cuando se acabe."
+      },
+      "floors": {
+        "title": "Aún no hay salas",
+        "description": "Una sala es una zona de tu local — el comedor, la terraza, la barra. Las mesas van dentro de una."
+      },
+      "tables": {
+        "title": "Aún no hay mesas",
+        "description": "Añade tus mesas para que el equipo pueda sentar a los clientes y tomar pedidos en el local."
+      },
+      "tables_no_room": {
+        "title": "Primero añade una sala",
+        "description": "Cada mesa pertenece a una sala, así que empieza creando una — tu comedor, por ejemplo."
+      },
+      "team": {
+        "title": "Aún no hay nadie en el equipo",
+        "description": "Invita a las personas que trabajan aquí. Recibirán un correo y podrán fichar, tomar pedidos y ver sus turnos."
+      },
+      "invitations": {
+        "title": "Aún no has enviado invitaciones",
+        "description": "Invita a alguien por correo y podrá unirse a tu equipo."
+      },
+      "roles": {
+        "title": "Aún no hay roles",
+        "description": "Un rol decide qué puede ver y hacer cada persona — camarero, cocinero, encargado. Crea uno y asígnalo a tu equipo."
+      },
+      "announcements": {
+        "title": "Aún no has enviado avisos",
+        "description": "Envía un mensaje a todo el equipo — un cambio de horario, un plato nuevo, un recordatorio."
+      },
+      "orders": {
+        "title": "Aún no hay pedidos",
+        "description": "Los pedidos aparecen aquí según llegan — desde la caja, un QR de mesa o reparto."
+      },
+      "filtered": {
+        "title": "Nada coincide con esos filtros",
+        "description": "Prueba a ampliarlos o borrarlos."
+      }
     }
   }
 }

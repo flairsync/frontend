@@ -37,6 +37,8 @@ import { IndividualScheduleModal } from '@/components/management/schedule/Indivi
 import { EditStaffSettingsModal } from "@/components/management/staff/EditStaffSettingsModal";
 import SetPinModal from "@/components/management/staff/SetPinModal";
 import { ConfirmationPopup } from "@/components/shared/ConfirmationPopup";
+import { TableEmptyState } from "@/components/shared/EmptyState";
+import { emitAction } from "@/features/navigation/actionBus";
 
 interface EditableHourlyRateProps {
   employeeId: string;
@@ -262,6 +264,23 @@ const StaffSection = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
+              {!isPending && (employees?.length ?? 0) === 0 && (
+                // Was an empty table with headers and nothing under them — the
+                // first thing a brand-new business sees on this page.
+                <TableEmptyState
+                  colSpan={6}
+                  title={t("simple_mode.empty.team.title")}
+                  description={t("simple_mode.empty.team.description")}
+                  action={{
+                    label: t("simple_mode.actions.staff.invite"),
+                    icon: UserPlus,
+                    // The invite dialog lives in the Invitations tab, which only
+                    // mounts once that tab is active — so switch tabs rather than
+                    // firing an action nothing is listening for yet.
+                    onClick: () => emitAction({ tab: "invitations" }),
+                  }}
+                />
+              )}
               {employees?.map((member) => (
                 <TableRow key={member.id}>
                   <TableCell>{member.professionalProfile?.displayName}</TableCell>

@@ -5012,13 +5012,15 @@
     "actions": {
       "orders": {
         "live": "Orders happening now",
-        "today": "All orders"
+        "today": "All orders",
+        "add": "Add an order"
       },
       "staff": {
         "invite": "Add a team member",
         "people": "Who works here",
         "roles": "What they can do",
-        "teams": "Teams"
+        "teams": "Teams",
+        "add_role": "Add a role"
       },
       "schedule": {
         "rota": "Plan the week",
@@ -5055,6 +5057,9 @@
         "add_table": "Add a table",
         "add_many": "Add several tables",
         "add_floor": "Add a room"
+      },
+      "announcements": {
+        "send": "Send a notice"
       }
     },
     "search": {
@@ -5072,6 +5077,48 @@
     },
     "advanced_controls": {
       "label": "More filters"
+    },
+    "empty": {
+      "inventory": {
+        "title": "No stock items yet",
+        "description": "Add what you keep in — ingredients, drinks, supplies — and we'll warn you when it runs low."
+      },
+      "floors": {
+        "title": "No rooms yet",
+        "description": "A room is an area of your place — the dining room, the terrace, the bar. Tables live inside one."
+      },
+      "tables": {
+        "title": "No tables yet",
+        "description": "Add your tables so staff can seat guests and take dine-in orders."
+      },
+      "tables_no_room": {
+        "title": "Add a room first",
+        "description": "Every table belongs to a room, so start by creating one — your dining room, say."
+      },
+      "team": {
+        "title": "No one on the team yet",
+        "description": "Invite the people who work here. They'll get an email and can clock in, take orders and see their shifts."
+      },
+      "invitations": {
+        "title": "No invitations sent yet",
+        "description": "Invite someone by email and they'll be able to join your team."
+      },
+      "roles": {
+        "title": "No roles yet",
+        "description": "A role decides what someone can see and do — waiter, chef, manager. Create one, then assign it to your team."
+      },
+      "announcements": {
+        "title": "No notices sent yet",
+        "description": "Send a message to everyone on the team — a rota change, a new dish, a reminder."
+      },
+      "orders": {
+        "title": "No orders yet",
+        "description": "Orders appear here as guests place them, from the till, a table QR code or delivery."
+      },
+      "filtered": {
+        "title": "Nothing matches those filters",
+        "description": "Try widening or clearing them."
+      }
     }
   }
 }

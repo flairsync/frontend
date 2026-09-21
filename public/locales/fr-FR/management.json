@@ -4898,13 +4898,15 @@
     "actions": {
       "orders": {
         "live": "Commandes en cours",
-        "today": "Toutes les commandes"
+        "today": "Toutes les commandes",
+        "add": "Ajouter une commande"
       },
       "staff": {
         "invite": "Ajouter un membre",
         "people": "Qui travaille ici",
         "roles": "Ce qu'ils peuvent faire",
-        "teams": "Équipes"
+        "teams": "Équipes",
+        "add_role": "Ajouter un rôle"
       },
       "schedule": {
         "rota": "Planifier la semaine",
@@ -4941,6 +4943,9 @@
         "add_table": "Ajouter une table",
         "add_many": "Ajouter plusieurs tables",
         "add_floor": "Ajouter une salle"
+      },
+      "announcements": {
+        "send": "Envoyer une annonce"
       }
     },
     "search": {
@@ -4958,6 +4963,48 @@
     },
     "advanced_controls": {
       "label": "Plus de filtres"
+    },
+    "empty": {
+      "inventory": {
+        "title": "Aucun article en stock",
+        "description": "Ajoutez ce que vous stockez — ingrédients, boissons, fournitures — et nous vous préviendrons quand il en manquera."
+      },
+      "floors": {
+        "title": "Aucune salle",
+        "description": "Une salle est un espace de votre établissement — la salle, la terrasse, le bar. Les tables s'y trouvent."
+      },
+      "tables": {
+        "title": "Aucune table",
+        "description": "Ajoutez vos tables pour que l'équipe puisse placer les clients et prendre les commandes sur place."
+      },
+      "tables_no_room": {
+        "title": "Ajoutez d'abord une salle",
+        "description": "Chaque table appartient à une salle : commencez par en créer une, votre salle par exemple."
+      },
+      "team": {
+        "title": "Personne dans l'équipe",
+        "description": "Invitez les personnes qui travaillent ici. Elles recevront un e-mail et pourront pointer, prendre les commandes et voir leurs services."
+      },
+      "invitations": {
+        "title": "Aucune invitation envoyée",
+        "description": "Invitez quelqu'un par e-mail et il pourra rejoindre votre équipe."
+      },
+      "roles": {
+        "title": "Aucun rôle",
+        "description": "Un rôle détermine ce qu'une personne peut voir et faire — serveur, cuisinier, responsable. Créez-en un, puis attribuez-le."
+      },
+      "announcements": {
+        "title": "Aucune annonce envoyée",
+        "description": "Envoyez un message à toute l'équipe — un changement de planning, un nouveau plat, un rappel."
+      },
+      "orders": {
+        "title": "Aucune commande",
+        "description": "Les commandes apparaissent ici au fur et à mesure — depuis la caisse, un QR de table ou la livraison."
+      },
+      "filtered": {
+        "title": "Aucun résultat pour ces filtres",
+        "description": "Essayez de les élargir ou de les effacer."
+      }
     }
   }
 }

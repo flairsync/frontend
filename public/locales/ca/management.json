@@ -4898,13 +4898,15 @@
     "actions": {
       "orders": {
         "live": "Comandes en curs",
-        "today": "Totes les comandes"
+        "today": "Totes les comandes",
+        "add": "Afegir una comanda"
       },
       "staff": {
         "invite": "Afegir algú a l'equip",
         "people": "Qui treballa aquí",
         "roles": "Què pot fer cadascú",
-        "teams": "Equips"
+        "teams": "Equips",
+        "add_role": "Afegir un rol"
       },
       "schedule": {
         "rota": "Planificar la setmana",
@@ -4941,6 +4943,9 @@
         "add_table": "Afegir una taula",
         "add_many": "Afegir diverses taules",
         "add_floor": "Afegir una sala"
+      },
+      "announcements": {
+        "send": "Enviar un avís"
       }
     },
     "search": {
@@ -4958,6 +4963,48 @@
     },
     "advanced_controls": {
       "label": "Més filtres"
+    },
+    "empty": {
+      "inventory": {
+        "title": "Encara no hi ha articles",
+        "description": "Afegeix el que guardes — ingredients, begudes, subministraments — i t'avisarem quan s'acabi."
+      },
+      "floors": {
+        "title": "Encara no hi ha sales",
+        "description": "Una sala és una zona del teu local — el menjador, la terrassa, la barra. Les taules hi van a dins."
+      },
+      "tables": {
+        "title": "Encara no hi ha taules",
+        "description": "Afegeix les teves taules perquè l'equip pugui asseure els clients i prendre comandes al local."
+      },
+      "tables_no_room": {
+        "title": "Primer afegeix una sala",
+        "description": "Cada taula pertany a una sala, així que comença creant-ne una — el teu menjador, per exemple."
+      },
+      "team": {
+        "title": "Encara no hi ha ningú a l'equip",
+        "description": "Convida les persones que treballen aquí. Rebran un correu i podran fitxar, prendre comandes i veure els seus torns."
+      },
+      "invitations": {
+        "title": "Encara no has enviat invitacions",
+        "description": "Convida algú per correu i podrà unir-se al teu equip."
+      },
+      "roles": {
+        "title": "Encara no hi ha rols",
+        "description": "Un rol decideix què pot veure i fer cada persona — cambrer, cuiner, encarregat. Crea'n un i assigna'l al teu equip."
+      },
+      "announcements": {
+        "title": "Encara no has enviat avisos",
+        "description": "Envia un missatge a tot l'equip — un canvi d'horari, un plat nou, un recordatori."
+      },
+      "orders": {
+        "title": "Encara no hi ha comandes",
+        "description": "Les comandes apareixen aquí a mesura que arriben — des de la caixa, un QR de taula o repartiment."
+      },
+      "filtered": {
+        "title": "Res no coincideix amb aquests filtres",
+        "description": "Prova d'ampliar-los o esborrar-los."
+      }
     }
   }
 }

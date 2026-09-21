@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { BatchCreateTableModal } from "@/components/management/floor-plan/BatchCreateTableModal";
 import { useActionParam } from "@/hooks/use-action-param";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 import { PrintQrCodesButton } from "@/components/qr/PrintQrCodesButton";
 import { DownloadTableQrButton } from "@/components/qr/DownloadTableQrButton";
 
@@ -64,6 +65,10 @@ const FloorPlanPage: React.FC = () => {
     const [editingTable, setEditingTable] = useState<any>(null);
     const [batchModalOpen, setBatchModalOpen] = useState(false);
     const [bannerDismissed, setBannerDismissed] = useState(false);
+
+    // Drives both the tables empty state and the guard below: you cannot
+    // meaningfully add a table before there's a room to put it in.
+    const hasNoFloors = !fetchingFloors && (floors?.length ?? 0) === 0;
 
     const {
         batchCreateTables,
@@ -125,10 +130,17 @@ const FloorPlanPage: React.FC = () => {
             return;
         }
         if (fetchingFloors || fetchingTables) return;
+        // Both table dialogs need a room to assign to. Arriving here with none
+        // would open a dialog with an empty, unselectable floor picker, so send
+        // them to the room dialog — the same thing the empty state offers.
+        if (hasNoFloors) {
+            handleOpenCreateFloor();
+            return;
+        }
         if (deepLinkAction === "add-table") handleOpenCreateTable();
         else if (deepLinkAction === "add-many") setBatchModalOpen(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [deepLinkAction, fetchingFloors, fetchingTables]);
+    }, [deepLinkAction, fetchingFloors, fetchingTables, hasNoFloors]);
 
     const handleEditTable = (table: any) => {
         setEditingTable(table);
@@ -238,7 +250,16 @@ const FloorPlanPage: React.FC = () => {
                                     {fetchingFloors ? (
                                         <TableRow><TableCell colSpan={4} className="text-center">{t("floor_plan.loading")}</TableCell></TableRow>
                                     ) : floors?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={4} className="text-center">{t("floor_plan.no_floors_found")}</TableCell></TableRow>
+                                        <TableEmptyState
+                                            colSpan={4}
+                                            title={t("simple_mode.empty.floors.title")}
+                                            description={t("simple_mode.empty.floors.description")}
+                                            action={{
+                                                label: t("simple_mode.actions.floor_plan.add_floor"),
+                                                icon: Plus,
+                                                onClick: handleOpenCreateFloor,
+                                            }}
+                                        />
                                     ) : (
                                         floors?.map((floor: any) => (
                                             <TableRow key={floor.id}>
@@ -300,7 +321,36 @@ const FloorPlanPage: React.FC = () => {
                                     {fetchingTables ? (
                                         <TableRow><TableCell colSpan={6} className="text-center">{t("floor_plan.loading")}</TableCell></TableRow>
                                     ) : tables?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={6} className="text-center">{t("floor_plan.no_tables_found")}</TableCell></TableRow>
+                                        // A table has to belong to a room, and "Add a table" with no
+                                        // rooms opens a dialog with nothing to pick. Send them to the
+                                        // step that actually unblocks them instead.
+                                        hasNoFloors ? (
+                                            <TableEmptyState
+                                                colSpan={6}
+                                                title={t("simple_mode.empty.tables_no_room.title")}
+                                                description={t("simple_mode.empty.tables_no_room.description")}
+                                                action={{
+                                                    label: t("simple_mode.actions.floor_plan.add_floor"),
+                                                    icon: Plus,
+                                                    onClick: handleOpenCreateFloor,
+                                                }}
+                                            />
+                                        ) : (
+                                            <TableEmptyState
+                                                colSpan={6}
+                                                title={t("simple_mode.empty.tables.title")}
+                                                description={t("simple_mode.empty.tables.description")}
+                                                action={{
+                                                    label: t("simple_mode.actions.floor_plan.add_table"),
+                                                    icon: Plus,
+                                                    onClick: handleOpenCreateTable,
+                                                }}
+                                                secondaryAction={{
+                                                    label: t("simple_mode.actions.floor_plan.add_many"),
+                                                    onClick: () => setBatchModalOpen(true),
+                                                }}
+                                            />
+                                        )
                                     ) : (
                                         tables?.map((table: any) => (
                                             <TableRow key={table.id}>

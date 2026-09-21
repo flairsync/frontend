@@ -30,6 +30,7 @@ import { useInventoryUnits } from "@/features/inventory/useInventoryUnits";
 import { InventoryItemModal } from "@/components/management/inventory/InventoryItemModal";
 import { useActionParam } from "@/hooks/use-action-param";
 import AdvancedControls from "@/components/management/simple/AdvancedControls";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 import { InventoryImportModal } from "@/components/management/inventory/InventoryImportModal";
 import { AdjustStockModal } from "@/components/management/inventory/AdjustStockModal";
 import { ManageGroupsModal } from "@/components/management/inventory/ManageGroupsModal";
@@ -397,11 +398,26 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                                     </TableCell>
                                                 </TableRow>
                                             ) : !inventoryItems || inventoryItems.length === 0 ? (
-                                                <TableRow>
-                                                    <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                                        {t("inventory_management.messages.no_items")}
-                                                    </TableCell>
-                                                </TableRow>
+                                                // A filtered-to-nothing list isn't a first run, so don't
+                                                // offer "add your first item" when a filter is the reason.
+                                                <TableEmptyState
+                                                    colSpan={6}
+                                                    title={hasActiveFilters
+                                                        ? t("inventory_management.messages.no_items")
+                                                        : t("simple_mode.empty.inventory.title")}
+                                                    description={hasActiveFilters
+                                                        ? undefined
+                                                        : t("simple_mode.empty.inventory.description")}
+                                                    action={hasActiveFilters ? undefined : {
+                                                        label: t("simple_mode.actions.inventory.add"),
+                                                        icon: Plus,
+                                                        onClick: handleOpenCreateModal,
+                                                    }}
+                                                    secondaryAction={hasActiveFilters ? {
+                                                        label: t("shared.actions.clear"),
+                                                        onClick: clearFilters,
+                                                    } : undefined}
+                                                />
                                             ) : (
                                                 inventoryItems.map((item) => (
                                                     <TableRow key={item.id} className="hover:bg-muted/20 transition-colors">
