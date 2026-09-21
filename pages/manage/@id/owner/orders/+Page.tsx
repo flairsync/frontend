@@ -34,6 +34,7 @@ import { formatTime } from "@/lib/dateUtils";
 import AdvancedControls from "@/components/management/simple/AdvancedControls";
 import { useParamFromAction } from "@/features/navigation/actionBus";
 import { TableEmptyState } from "@/components/shared/EmptyState";
+import ResponsiveList from "@/components/management/simple/ResponsiveList";
 
 const OwnerOrdersPage: React.FC = () => {
     const { t } = useTranslation("management");
@@ -287,6 +288,114 @@ const OwnerOrdersPage: React.FC = () => {
         setSelectedOrderIds(new Set());
     };
 
+
+    // Shared by the table row and the phone card — the order actions are long
+    // and conditional, so they get one definition rather than two.
+    const renderOrderActions = (o: any) => (
+    <div className="flex justify-center">
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">{t("orders.open_menu")}</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                {!isTerminal(o.status) && (
+                    <DropdownMenuItem
+                        onClick={() => quickCompleteOrder(o.id, {
+                            onSuccess: (updated: Order) => {
+                                if (updated.status === "ready") handleOpenPayment(o);
+                            },
+                        })}
+                        disabled={isQuickCompletingOrder}
+                        className="text-purple-600 focus:text-purple-700"
+                    >
+                        <Zap className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.quick_complete")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.paymentStatus !== "paid" && !isTerminal(o.status) && (
+                    <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.add_payment")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "created" && (
+                    <DropdownMenuItem onClick={() => acceptOrder(o.id)} disabled={isAcceptingOrder} className="text-blue-600 focus:text-blue-700">
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.accept")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "created" && (
+                    <DropdownMenuItem onClick={() => rejectOrder({ orderId: o.id })} disabled={isRejectingOrder} className="text-red-600 focus:text-red-700">
+                        <ThumbsDown className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.reject")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "accepted" && (
+                    <DropdownMenuItem onClick={() => prepareOrder(o.id)} disabled={isPreparingOrder} className="text-orange-600 focus:text-orange-700">
+                        <ChefHat className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.start_preparing")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "preparing" && (
+                    <DropdownMenuItem onClick={() => readyOrder(o.id)} disabled={isMarkingReady} className="text-green-600 focus:text-green-700">
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.mark_ready")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "ready" && (
+                    <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isMarkingServed} className="text-green-600 focus:text-green-700">
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.mark_served")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "served" && o.paymentStatus === "paid" && (
+                    <DropdownMenuItem onClick={() => completeOrder({ orderId: o.id })} disabled={isCompletingOrder} className="text-green-600 focus:text-green-700">
+                        <CheckSquare className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.complete")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.status === "served" && o.paymentStatus !== "paid" && (
+                    <DropdownMenuItem onClick={() => handleOpenForceClose(o)} className="text-green-600 focus:text-green-700">
+                        <CheckSquare className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.force_complete")}</span>
+                    </DropdownMenuItem>
+                )}
+                {["created", "accepted", "preparing"].includes(o.status) && (
+                    <DropdownMenuItem onClick={() => handleOpenAddItems(o.id)}>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.add_items")}</span>
+                    </DropdownMenuItem>
+                )}
+                {o.type === "dine_in" && !isTerminal(o.status) && (
+                    <DropdownMenuItem onClick={() => handleOpenTransfer(o)}>
+                        <ArrowRightLeft className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.transfer_table")}</span>
+                    </DropdownMenuItem>
+                )}
+                {["created", "accepted", "preparing", "ready"].includes(o.status) && (
+                    <DropdownMenuItem onClick={() => handleOpenCancel(o)} className="text-red-600 focus:text-red-700">
+                        <XCircle className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.cancel")}</span>
+                    </DropdownMenuItem>
+                )}
+                <DropdownMenuItem onClick={() => handleViewDetails(o)}>
+                    <Eye className="mr-2 h-4 w-4" />
+                    <span>{t("orders.actions.view_details")}</span>
+                </DropdownMenuItem>
+                {(o.status === "completed" || o.paymentStatus === "paid" || o.paymentStatus === "partially_paid") && (
+                    <DropdownMenuItem onClick={() => handleViewReceipt(o)}>
+                        <Receipt className="mr-2 h-4 w-4" />
+                        <span>{t("orders.actions.view_receipt")}</span>
+                    </DropdownMenuItem>
+                )}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </div>
+    );
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -424,6 +533,62 @@ const OwnerOrdersPage: React.FC = () => {
                             <CardTitle>{t("orders.title")}</CardTitle>
                         </CardHeader>
                         <CardContent>
+                            <ResponsiveList
+                                items={filteredOrders}
+                                loading={fetchingOrders}
+                                keyFor={(o: any) => o.id}
+                                empty={
+                                    <div className="rounded-xl border border-dashed p-6 text-center">
+                                        <p className="text-sm font-medium">
+                                            {activeFilterCount > 0
+                                                ? t("simple_mode.empty.filtered.title")
+                                                : t("simple_mode.empty.orders.title")}
+                                        </p>
+                                        <p className="mt-1 text-xs text-muted-foreground">
+                                            {activeFilterCount > 0
+                                                ? t("simple_mode.empty.filtered.description")
+                                                : t("simple_mode.empty.orders.description")}
+                                        </p>
+                                    </div>
+                                }
+                                renderCard={(o: any) => (
+                                    <div className="space-y-2">
+                                        {/* Table and total first: mid-service you're looking for
+                                            "table 6" and what they owe, not an order id. */}
+                                        <div className="flex items-start justify-between gap-2">
+                                            <span className="font-medium">
+                                                {o.type === 'dine_in' && o.table ? o.table.name : t("orders.walk_in")}
+                                            </span>
+                                            <span className="shrink-0 font-semibold">
+                                                {currencySymbol}{Number(o.totalAmount || 0).toFixed(2)}
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-wrap items-center gap-1.5">
+                                            <Badge variant={getStatusVariant(o.status)} className="capitalize">
+                                                {getStatusLabel(o.status)}
+                                            </Badge>
+                                            <Badge
+                                                variant={o.paymentStatus === 'paid' ? 'default' : o.paymentStatus === 'partially_paid' ? 'outline' : 'secondary'}
+                                                className="capitalize text-[10px] h-4"
+                                            >
+                                                {t(`orders.payment_status_labels.${o.paymentStatus || 'unpaid'}`)}
+                                            </Badge>
+                                            <Badge variant="outline" className="capitalize text-[10px] h-4">
+                                                {o.type.replace("_", " ")}
+                                            </Badge>
+                                        </div>
+                                        <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                                            <span className="flex items-center gap-1">
+                                                <Clock className="w-3 h-3" />{formatTime(o.createdAt)}
+                                            </span>
+                                            <span className="flex items-center gap-1">
+                                                <Hash className="w-3 h-3" />{getItemsCount(o)}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-end">{renderOrderActions(o)}</div>
+                                    </div>
+                                )}
+                            >
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -512,115 +677,13 @@ const OwnerOrdersPage: React.FC = () => {
                                                         </Badge>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="align-middle">
-                                                    <div className="flex justify-center">
-                                                        <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
-                                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                    <span className="sr-only">{t("orders.open_menu")}</span>
-                                                                    <MoreHorizontal className="h-4 w-4" />
-                                                                </Button>
-                                                            </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end">
-                                                                {!isTerminal(o.status) && (
-                                                                    <DropdownMenuItem
-                                                                        onClick={() => quickCompleteOrder(o.id, {
-                                                                            onSuccess: (updated: Order) => {
-                                                                                if (updated.status === "ready") handleOpenPayment(o);
-                                                                            },
-                                                                        })}
-                                                                        disabled={isQuickCompletingOrder}
-                                                                        className="text-purple-600 focus:text-purple-700"
-                                                                    >
-                                                                        <Zap className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.quick_complete")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.paymentStatus !== "paid" && !isTerminal(o.status) && (
-                                                                    <DropdownMenuItem onClick={() => handleOpenPayment(o)} className="text-emerald-600 focus:text-emerald-700">
-                                                                        <CreditCard className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.add_payment")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "created" && (
-                                                                    <DropdownMenuItem onClick={() => acceptOrder(o.id)} disabled={isAcceptingOrder} className="text-blue-600 focus:text-blue-700">
-                                                                        <CheckCircle className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.accept")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "created" && (
-                                                                    <DropdownMenuItem onClick={() => rejectOrder({ orderId: o.id })} disabled={isRejectingOrder} className="text-red-600 focus:text-red-700">
-                                                                        <ThumbsDown className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.reject")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "accepted" && (
-                                                                    <DropdownMenuItem onClick={() => prepareOrder(o.id)} disabled={isPreparingOrder} className="text-orange-600 focus:text-orange-700">
-                                                                        <ChefHat className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.start_preparing")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "preparing" && (
-                                                                    <DropdownMenuItem onClick={() => readyOrder(o.id)} disabled={isMarkingReady} className="text-green-600 focus:text-green-700">
-                                                                        <CheckCircle className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.mark_ready")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "ready" && (
-                                                                    <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isMarkingServed} className="text-green-600 focus:text-green-700">
-                                                                        <CheckCircle className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.mark_served")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "served" && o.paymentStatus === "paid" && (
-                                                                    <DropdownMenuItem onClick={() => completeOrder({ orderId: o.id })} disabled={isCompletingOrder} className="text-green-600 focus:text-green-700">
-                                                                        <CheckSquare className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.complete")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.status === "served" && o.paymentStatus !== "paid" && (
-                                                                    <DropdownMenuItem onClick={() => handleOpenForceClose(o)} className="text-green-600 focus:text-green-700">
-                                                                        <CheckSquare className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.force_complete")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {["created", "accepted", "preparing"].includes(o.status) && (
-                                                                    <DropdownMenuItem onClick={() => handleOpenAddItems(o.id)}>
-                                                                        <PlusCircle className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.add_items")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {o.type === "dine_in" && !isTerminal(o.status) && (
-                                                                    <DropdownMenuItem onClick={() => handleOpenTransfer(o)}>
-                                                                        <ArrowRightLeft className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.transfer_table")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                {["created", "accepted", "preparing", "ready"].includes(o.status) && (
-                                                                    <DropdownMenuItem onClick={() => handleOpenCancel(o)} className="text-red-600 focus:text-red-700">
-                                                                        <XCircle className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.cancel")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                                <DropdownMenuItem onClick={() => handleViewDetails(o)}>
-                                                                    <Eye className="mr-2 h-4 w-4" />
-                                                                    <span>{t("orders.actions.view_details")}</span>
-                                                                </DropdownMenuItem>
-                                                                {(o.status === "completed" || o.paymentStatus === "paid" || o.paymentStatus === "partially_paid") && (
-                                                                    <DropdownMenuItem onClick={() => handleViewReceipt(o)}>
-                                                                        <Receipt className="mr-2 h-4 w-4" />
-                                                                        <span>{t("orders.actions.view_receipt")}</span>
-                                                                    </DropdownMenuItem>
-                                                                )}
-                                                            </DropdownMenuContent>
-                                                        </DropdownMenu>
-                                                    </div>
-                                                </TableCell>
+                                                <TableCell className="align-middle">{renderOrderActions(o)}</TableCell>
                                             </TableRow>
                                         ))
                                     )}
                                 </TableBody>
                             </Table>
+                            </ResponsiveList>
 
                             {totalPages > 1 && (
                                 <div className="flex items-center justify-center gap-2 pt-4">

@@ -30,6 +30,7 @@ import { useInventoryUnits } from "@/features/inventory/useInventoryUnits";
 import { InventoryItemModal } from "@/components/management/inventory/InventoryItemModal";
 import { useActionParam } from "@/hooks/use-action-param";
 import AdvancedControls from "@/components/management/simple/AdvancedControls";
+import ResponsiveList from "@/components/management/simple/ResponsiveList";
 import { TableEmptyState } from "@/components/shared/EmptyState";
 import { InventoryImportModal } from "@/components/management/inventory/InventoryImportModal";
 import { AdjustStockModal } from "@/components/management/inventory/AdjustStockModal";
@@ -205,6 +206,33 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
         (filters.groupId !== "all" ? 1 : 0) +
         (filters.unitId !== "all" ? 1 : 0);
 
+
+    // Shared by the table row and the phone card.
+    const renderItemActions = (item: any) => (
+        <div className="flex justify-end gap-1">
+            <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title={t("inventory_management.movement_history")} aria-label={t("inventory_management.movement_history")}>
+                <History className="w-4 h-4 text-muted-foreground" />
+            </Button>
+            <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")} aria-label={t("inventory_management.adjust_stock")}>
+                <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
+            </Button>
+            <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditItem(item)} title={t("shared.actions.edit")} aria-label={t("shared.actions.edit")}>
+                <Pencil className="w-4 h-4 text-muted-foreground" />
+            </Button>
+            <ConfirmAction
+                onConfirm={() => handleDeleteItem(item.id)}
+                title={t("shared.actions.delete")}
+                description={t("inventory_management.messages.delete_item_confirm")}
+                confirmText={t("shared.actions.delete")}
+                cancelText={t("shared.actions.cancel")}
+            >
+                <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" aria-label={t("shared.actions.delete")}>
+                    <Trash2 className="w-4 h-4" />
+                </Button>
+            </ConfirmAction>
+        </div>
+    );
+
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -373,6 +401,46 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                         <CardContent>
                             <div className="rounded-md border overflow-hidden">
                                 <div className="overflow-x-auto">
+                                    <ResponsiveList
+                                        items={inventoryItems}
+                                        loading={fetchingInventoryItems && !inventoryItems}
+                                        keyFor={(i: any) => i.id}
+                                        empty={
+                                            <div className="rounded-xl border border-dashed p-6 text-center">
+                                                <p className="text-sm font-medium">
+                                                    {hasActiveFilters
+                                                        ? t("inventory_management.messages.no_items")
+                                                        : t("simple_mode.empty.inventory.title")}
+                                                </p>
+                                            </div>
+                                        }
+                                        renderCard={(item: any) => (
+                                            <div className="space-y-2">
+                                                {/* Name and how much is left — the two things you
+                                                    check on a phone while counting stock. */}
+                                                <div className="flex items-start justify-between gap-2">
+                                                    <span className="font-medium">{item.name}</span>
+                                                    <span className={cn(
+                                                        "shrink-0 rounded-full px-2 py-0.5 text-sm font-bold",
+                                                        item.quantity <= item.lowStockThreshold && item.lowStockThreshold > 0
+                                                            ? "bg-destructive/10 text-destructive"
+                                                            : "bg-primary/10 text-primary"
+                                                    )}>
+                                                        {item.quantity} {getUnitName(item.unitId)}
+                                                    </span>
+                                                </div>
+                                                {item.quantity <= item.lowStockThreshold && item.lowStockThreshold > 0 && (
+                                                    <Badge variant="destructive" className="flex w-fit items-center gap-1 text-[10px]">
+                                                        <AlertTriangle className="w-2.5 h-2.5" /> {t("inventory_management.low_stock")}
+                                                    </Badge>
+                                                )}
+                                                <Badge variant="outline" className="font-normal">
+                                                    {item.group?.name || t("inventory_management.form.no_group")}
+                                                </Badge>
+                                                <div className="flex justify-end">{renderItemActions(item)}</div>
+                                            </div>
+                                        )}
+                                    >
                                     <Table>
                                         <TableHeader className="bg-muted/30">
                                             <TableRow>
@@ -451,35 +519,13 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                                                         </TableCell>
                                                         <TableCell className="text-muted-foreground">{getUnitName(item.unitId)}</TableCell>
                                                         <TableCell className="text-right text-muted-foreground">{item.lowStockThreshold}</TableCell>
-                                                        <TableCell className="text-right">
-                                                            <div className="flex justify-end gap-1">
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenHistory(item)} title={t("inventory_management.movement_history")} aria-label={t("inventory_management.movement_history")}>
-                                                                    <History className="w-4 h-4 text-muted-foreground" />
-                                                                </Button>
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleOpenAdjust(item)} title={t("inventory_management.adjust_stock")} aria-label={t("inventory_management.adjust_stock")}>
-                                                                    <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
-                                                                </Button>
-                                                                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditItem(item)} title={t("shared.actions.edit")} aria-label={t("shared.actions.edit")}>
-                                                                    <Pencil className="w-4 h-4 text-muted-foreground" />
-                                                                </Button>
-                                                                <ConfirmAction
-                                                                    onConfirm={() => handleDeleteItem(item.id)}
-                                                                    title={t("shared.actions.delete")}
-                                                                    description={t("inventory_management.messages.delete_item_confirm")}
-                                                                    confirmText={t("shared.actions.delete")}
-                                                                    cancelText={t("shared.actions.cancel")}
-                                                                >
-                                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" aria-label={t("shared.actions.delete")}>
-                                                                        <Trash2 className="w-4 h-4" />
-                                                                    </Button>
-                                                                </ConfirmAction>
-                                                            </div>
-                                                        </TableCell>
+                                                        <TableCell className="text-right">{renderItemActions(item)}</TableCell>
                                                     </TableRow>
                                                 ))
                                             )}
                                         </TableBody>
                                     </Table>
+                                    </ResponsiveList>
                                 </div>
                             </div>
 

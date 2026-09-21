@@ -39,6 +39,7 @@ import SetPinModal from "@/components/management/staff/SetPinModal";
 import { ConfirmationPopup } from "@/components/shared/ConfirmationPopup";
 import { TableEmptyState } from "@/components/shared/EmptyState";
 import { emitAction } from "@/features/navigation/actionBus";
+import ResponsiveList from "@/components/management/simple/ResponsiveList";
 
 interface EditableHourlyRateProps {
   employeeId: string;
@@ -171,6 +172,56 @@ const StaffSection = () => {
   const [scheduleStaffId, setScheduleStaffId] = useState<string | null>(null);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
+
+  // Shared by the table row and the phone card below — one definition, so the
+  // two layouts can't drift apart as these buttons change.
+  const renderStaffActions = (member: any) => (
+    <div className="flex flex-wrap gap-2">
+      {member.type !== 'OWNER' && (
+        <>
+          <Button
+            size="sm"
+            variant="outline"
+            title={t("staff_section.schedule_shift")}
+            onClick={() => {
+              setScheduleStaffId(member.id);
+              setIsScheduleModalOpen(true);
+            }}
+          >
+            <CalendarPlus className="h-4 w-4" />
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            title={t("staff_section.edit_staff_settings")}
+            onClick={() => setEditingSettingsStaff(member)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          {member.status === 'ACTIVE' && (
+            <Button
+              size="sm"
+              variant="outline"
+              title={t("staff_section.set_pos_pin")}
+              onClick={() => setPinStaff(member)}
+            >
+              <KeyRound className="h-4 w-4" />
+            </Button>
+          )}
+          <Button
+            size="sm"
+            variant="destructive"
+            title={t("staff_section.remove_staff_title_short")}
+            disabled={terminatingEmployee}
+            onClick={() => setRemovingStaff(member)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        </>
+      )}
+    </div>
+  );
+
   return (
     <div>
 
@@ -252,6 +303,47 @@ const StaffSection = () => {
 
         </CardHeader>
         <CardContent>
+          <ResponsiveList
+            items={employees}
+            loading={isPending}
+            keyFor={(m: any) => m.id}
+            empty={
+              // Same words as the table's empty state, without the colSpan.
+              <div className="rounded-xl border border-dashed p-6 text-center">
+                <p className="text-sm font-medium">{t("simple_mode.empty.team.title")}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{t("simple_mode.empty.team.description")}</p>
+                <Button className="mt-3 gap-2" onClick={() => emitAction({ tab: "invitations" })}>
+                  <UserPlus className="h-4 w-4" />
+                  {t("simple_mode.actions.staff.invite")}
+                </Button>
+              </div>
+            }
+            renderCard={(member: any) => (
+              <div className="space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="font-medium">{member.professionalProfile?.displayName}</span>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {member.status === 'ACTIVE' ? t("staff_section.status_active") : member.status}
+                  </span>
+                </div>
+                {member.professionalProfile?.workEmail && (
+                  <p className="truncate text-xs text-muted-foreground">
+                    {member.professionalProfile.workEmail}
+                  </p>
+                )}
+                <div>
+                  {member.type === 'OWNER' ? (
+                    <Badge variant="default" className="bg-indigo-600 hover:bg-indigo-700">
+                      {t("staff_section.business_owner")}
+                    </Badge>
+                  ) : (
+                    <StaffRolesCell roles={member.roles} onEdit={() => setSelectedStaff(member)} />
+                  )}
+                </div>
+                {renderStaffActions(member)}
+              </div>
+            )}
+          >
           <Table>
             <TableHeader>
               <TableRow>
@@ -310,54 +402,12 @@ const StaffSection = () => {
                     {member.status === 'ACTIVE' ? t("staff_section.status_active") : member.status}
                   </TableCell>
 
-                  <TableCell className="flex gap-2">
-                    {member.type !== 'OWNER' && (
-                      <>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          title={t("staff_section.schedule_shift")}
-                          onClick={() => {
-                            setScheduleStaffId(member.id);
-                            setIsScheduleModalOpen(true);
-                          }}
-                        >
-                          <CalendarPlus className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          title={t("staff_section.edit_staff_settings")}
-                          onClick={() => setEditingSettingsStaff(member)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        {member.status === 'ACTIVE' && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            title={t("staff_section.set_pos_pin")}
-                            onClick={() => setPinStaff(member)}
-                          >
-                            <KeyRound className="h-4 w-4" />
-                          </Button>
-                        )}
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          title={t("staff_section.remove_staff_title_short")}
-                          disabled={terminatingEmployee}
-                          onClick={() => setRemovingStaff(member)}
-                        >
-                          <Trash className="h-4 w-4" />
-                        </Button>
-                      </>
-                    )}
-                  </TableCell>
+                  <TableCell>{renderStaffActions(member)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+          </ResponsiveList>
         </CardContent>
       </Card>
 
