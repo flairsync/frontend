@@ -333,7 +333,7 @@ const MenuDetailPage: React.FC = () => {
     // #endregion
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 p-8">
+        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 px-0 py-4 sm:p-8">
 
             {/* #region Modals */}
             {/* No local UpgradeModal component here anymore, handled globally */}

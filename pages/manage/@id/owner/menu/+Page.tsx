@@ -70,7 +70,7 @@ const MenusPage: React.FC = () => {
     }, [deepLinkAction, plan, canCreateMenu, openUpgradeModal]);
 
     return (
-        <div className="min-h-screen bg-background p-8">
+        <div className="min-h-screen bg-background px-0 py-4 sm:p-8">
             <MenuModal
                 isOpen={createModal}
                 onClose={() => {

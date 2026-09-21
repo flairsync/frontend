@@ -125,7 +125,7 @@ export const MenuBoardsManager: React.FC<Props> = ({ businessId }) => {
 
   if (!loadingPermissions && !canRead) {
     return (
-      <div className="min-h-screen bg-background p-8">
+      <div className="min-h-screen bg-background px-0 py-4 sm:p-8">
         <div className="max-w-6xl mx-auto">
           <p className="text-muted-foreground">
             {t("menu_board_management.list.no_permission")}
@@ -136,7 +136,7 @@ export const MenuBoardsManager: React.FC<Props> = ({ businessId }) => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background px-0 py-4 sm:p-8">
       <BoardModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

@@ -64,7 +64,7 @@ export const SimpleMenuItemRow = ({
             <div className="flex-1 flex justify-between items-center gap-2 overflow-hidden">
                 {/* Reorder Buttons */}
                 {canEdit && (onMoveUp || onMoveDown) && (
-                    <div className="flex flex-col gap-1 pr-2 border-r border-border mr-2">
+                    <div className="flex flex-col gap-0.5 pr-1 border-r border-border mr-1 sm:gap-1 sm:pr-2 sm:mr-2 shrink-0">
                         <Button
                             size="sm"
                             variant="ghost"
@@ -92,16 +92,20 @@ export const SimpleMenuItemRow = ({
                     </div>
                 )}
 
-                <div className="flex-1 min-w-0 pr-2">
-                    <div className="flex items-center gap-1">
-                        <p className="font-medium text-foreground truncate">{item.name}</p>
+                <div className="flex-1 min-w-0 pr-1 sm:pr-2">
+                    {/* Same reasoning as the category heading: the item name is the thing
+                        being identified, so it wraps instead of truncating. */}
+                    <div className="flex items-start gap-1 min-w-0">
+                        <p className="font-medium text-sm sm:text-base text-foreground break-words">{item.name}</p>
                         <AuditLogHint
                             entityType="menu_item"
                             entityId={item.id}
                             businessId={businessId}
                         />
                     </div>
-                    {item.description && <p className="text-sm text-muted-foreground truncate">{item.description}</p>}
+                    {/* The description is supporting detail and can run long, so it gets two
+                        lines rather than unbounded height — the full text is in the editor. */}
+                    {item.description && <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>}
                 </div>
                 {/* Desktop Actions */}
                 <div className="hidden sm:flex items-center gap-2">

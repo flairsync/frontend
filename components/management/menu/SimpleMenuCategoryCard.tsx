@@ -65,13 +65,13 @@ export const SimpleMenuCategoryCard = ({
                     className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-t-xl transition gap-4 sm:gap-0"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
+                    <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto overflow-hidden">
                         {canEdit && (onMoveCategoryUp || onMoveCategoryDown) && (
-                            <div className="flex flex-col gap-1 mr-2 border-r border-border pr-2">
+                            <div className="flex flex-col gap-0.5 mr-1 border-r border-border pr-1 sm:gap-1 sm:mr-2 sm:pr-2">
                                 <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-9 w-9 p-0 hover:bg-muted rounded-full"
+                                    className="h-8 w-8 p-0 hover:bg-muted rounded-full sm:h-9 sm:w-9"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onMoveCategoryUp?.();
@@ -83,7 +83,7 @@ export const SimpleMenuCategoryCard = ({
                                 <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-9 w-9 p-0 hover:bg-muted rounded-full"
+                                    className="h-8 w-8 p-0 hover:bg-muted rounded-full sm:h-9 sm:w-9"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onMoveCategoryDown?.();
@@ -95,12 +95,15 @@ export const SimpleMenuCategoryCard = ({
                             </div>
                         )}
 
-                        <div className="bg-primary/10 p-2 rounded-lg text-primary">
-                            <UtensilsCrossed className="h-5 w-5" />
+                        <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg text-primary shrink-0">
+                            <UtensilsCrossed className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1">
-                                <h3 className="font-semibold text-lg text-foreground truncate">
+                            {/* Wraps rather than truncates: a category name is how you tell
+                                categories apart, and at phone width "Hot Drinks" was landing
+                                as "Hot D…". The header row grows to fit instead. */}
+                            <div className="flex items-start gap-1 min-w-0">
+                                <h3 className="font-semibold text-base sm:text-lg text-foreground break-words">
                                     {category.name}
                                 </h3>
                                 <AuditLogHint

@@ -27,7 +27,7 @@ export const MenuHeader = ({
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 {/* Menu info */}
                 <div className="space-y-1">
-                    <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-100">
+                    <h1 className="text-2xl sm:text-4xl font-bold text-zinc-800 dark:text-zinc-100">
                         {menu.name}
                     </h1>
 
