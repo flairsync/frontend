@@ -26,6 +26,7 @@ import { AlertsBell } from '@/components/management/AlertsBell';
 import { UiModeToggle } from '@/components/shared/UiModeToggle';
 import { useUiMode } from '@/components/shared/ui-mode-provider';
 import SimpleActionBar from '@/components/management/simple/SimpleActionBar';
+import { getTileForPathname } from '@/features/navigation/taskRegistry';
 import TaskSearchDialog from '@/components/management/simple/TaskSearchDialog';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
 import i18next from 'i18next';
@@ -50,36 +51,13 @@ import { Home, Loader, TriangleAlert } from 'lucide-react';
 // FiscalAdapterFactory's 'ES' case is flipped on, not before.
 const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
 
-const PAGE_LABELS: Record<string, string> = {
-    home: "Home",
-    dashboard: "Dashboard",
-    branding: "Business Branding",
-    settings: "Business Settings",
-    staff: "Staff Management",
-    schedule: "Schedule",
-    attendance: "Attendance",
-    payroll: "Payroll",
-    jobs: "Job Postings",
-    inventory: "Inventory",
-    menu: "Menu",
-    "floor-plan": "Floor Plan",
-    orders: "Orders",
-    reservations: "Reservations",
-    tasks: "Tasks",
-    stations: "Stations",
-    analytics: "Analytics & Reports",
-    reviews: "Reviews",
-    "audit-logs": "Audit Logs",
-    danger: "Danger Zone",
-    marketplace: "Marketplace",
-    alerts: "Alerts",
-}
-
-function getCurrentPageLabel(): string {
-    if (typeof window === "undefined") return "Dashboard"
-    const match = window.location.pathname.match(/\/owner\/([^/]+)/)
-    const key = match?.[1]
-    return key ? (PAGE_LABELS[key] ?? key) : "Dashboard"
+// Page names come from the task registry, so the breadcrumb, the launcher tile
+// and the page's own heading can't drift apart — and it's translated, which the
+// hardcoded English map this replaced was not.
+function useCurrentPageLabel(urlPathname: string | undefined): string {
+    const { t } = useTranslation("management");
+    const tile = getTileForPathname(urlPathname ?? "", "owner");
+    return tile ? t(tile.labelKey) : t("simple_mode.tiles.dashboard.label");
 }
 
 
@@ -95,6 +73,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     } = usePageContext();
 
     const { isSimple } = useUiMode();
+    const currentPageLabel = useCurrentPageLabel(urlPathname);
     // Easy View drops the sidebar entirely: its navigation is the Home launcher
     // plus the action bar, and leaving a 34-item sidebar alongside them would
     // re-introduce exactly the wall of links we're trying to get away from.
@@ -223,7 +202,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>{getCurrentPageLabel()}</BreadcrumbPage>
+                                    <BreadcrumbPage>{currentPageLabel}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>

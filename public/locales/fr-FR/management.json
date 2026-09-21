@@ -305,7 +305,7 @@
     "page_of": "Page {{page}} sur {{totalPages}}"
   },
   "staff_messages": {
-    "title": "Messages et annonces",
+    "title": "Messages",
     "subtitle": "Restez informé des dernières nouvelles et messages.",
     "announcements_tab": "Annonces",
     "messages_tab": "Messages",
@@ -319,7 +319,7 @@
     "page_indicator": "Page {{current}} sur {{total}}"
   },
   "staff_dashboard": {
-    "title": "Tableau de bord du personnel",
+    "title": "Vue d'ensemble",
     "subtitle": "Bon retour ! Voici ce qui se passe aujourd'hui.",
     "my_shifts_card": "Mes services",
     "shifts_today": "Services aujourd'hui",
@@ -410,20 +410,20 @@
     "current_business_fallback": "Établissement actuel",
     "workspace_group": "Votre espace de travail",
     "items": {
-      "dashboard": "Tableau de bord",
+      "dashboard": "Vue d'ensemble",
       "my_shifts": "Mes services",
-      "schedule": "Services et planning",
-      "staff": "Gestion du personnel",
-      "tasks": "Tâches et checklists",
+      "schedule": "Planning",
+      "staff": "Équipe",
+      "tasks": "Tâches",
       "orders": "Commandes",
       "reservations": "Réservations",
-      "inventory": "Inventaire",
-      "menu": "Consulter le menu",
-      "messages": "Messages et annonces",
-      "themes": "Thème",
-      "menu_boards": "Écrans de Menu",
-      "nfc_tags": "Cartes NFC",
-      "wifi_networks": "Réseaux WiFi",
+      "inventory": "Stock",
+      "menu": "Carte",
+      "messages": "Messages",
+      "themes": "Couleurs",
+      "menu_boards": "Écrans de menu",
+      "nfc_tags": "Cartes sans contact",
+      "wifi_networks": "WiFi clients",
       "loyalty": "Fidélité"
     }
   },
@@ -444,38 +444,38 @@
       "system": "Système"
     },
     "items": {
-      "dashboard": "Tableau de bord",
-      "branding": "Image de l'établissement",
-      "settings": "Paramètres de l'établissement",
-      "payments": "Paiements",
-      "staff": "Gestion du personnel",
+      "dashboard": "Vue d'ensemble",
+      "branding": "Logo et photos",
+      "settings": "Horaires et informations",
+      "payments": "Paiements par carte",
+      "staff": "Équipe",
       "announcements": "Annonces",
       "schedule": "Planning",
-      "attendance": "Présence",
+      "attendance": "Heures travaillées",
       "payroll": "Paie",
-      "tip_pooling": "Pot commun de pourboires",
-      "jobs": "Offres d'emploi",
-      "inventory": "Inventaire",
-      "marketplace": "Marketplace",
-      "menu": "Menu",
-      "discounts": "Réductions",
-      "floor_plan": "Plan de salle",
-      "themes": "Thème",
+      "tip_pooling": "Pourboires",
+      "jobs": "Recrutement",
+      "inventory": "Stock",
+      "marketplace": "Place de marché",
+      "menu": "Carte",
+      "discounts": "Offres",
+      "floor_plan": "Tables",
+      "themes": "Couleurs",
       "orders": "Commandes",
       "reservations": "Réservations",
       "tasks": "Tâches",
-      "stations": "Stations",
-      "nfc_tags": "Cartes NFC",
-      "wifi_networks": "Réseaux WiFi",
-      "analytics": "Analyses et rapports",
+      "stations": "Appareils",
+      "nfc_tags": "Cartes sans contact",
+      "wifi_networks": "WiFi clients",
+      "analytics": "Ventes et rapports",
       "reviews": "Avis",
-      "feedback": "Retours",
-      "audit_logs": "Journaux d'audit",
-      "alerts": "Alertes",
-      "fiscal_invoices": "Factures fiscales",
-      "fiscal_services": "Services fiscaux",
-      "danger": "Zone de danger",
-      "menu_boards": "Écrans de Menu",
+      "feedback": "Retours privés",
+      "audit_logs": "Historique d'activité",
+      "alerts": "À corriger",
+      "fiscal_invoices": "Justificatifs fiscaux",
+      "fiscal_services": "Configuration fiscale",
+      "danger": "Fermer ou supprimer",
+      "menu_boards": "Écrans de menu",
       "loyalty": "Fidélité"
     }
   },
@@ -749,7 +749,7 @@
     }
   },
   "inventory_management": {
-    "title": "Gestion des stocks",
+    "title": "Stock",
     "add_item": "Ajouter un article",
     "edit_item": "Modifier l'article",
     "delete_item": "Supprimer l'article",
@@ -1006,7 +1006,8 @@
       "circle": "Cercle",
       "square": "Carré",
       "rectangle": "Rectangle"
-    }
+    },
+    "page_heading": "Tables"
   },
   "orders": {
     "title": "Commandes",
@@ -1142,7 +1143,7 @@
     "set_failed": "Échec de la définition du code PIN"
   },
   "staff_management_page": {
-    "heading": "Personnel et rôles",
+    "heading": "Équipe",
     "tabs": {
       "staff": "Personnel",
       "invitations": "Invitations",
@@ -1180,7 +1181,7 @@
     }
   },
   "attendance_page": {
-    "heading": "Présence",
+    "heading": "Heures travaillées",
     "refresh_button": "Actualiser",
     "last_updated_just_now": "Mis à jour à l'instant",
     "last_updated_minutes_ago_one": "Mis à jour il y a {{count}} minute",
@@ -1785,7 +1786,7 @@
     }
   },
   "staff_messages_compose": {
-    "heading": "Envoyer des annonces et des messages",
+    "heading": "Annonces",
     "compose_button": "Rédiger",
     "dialog_title": "Nouvelle annonce ou message",
     "kind_label": "Type",
@@ -2354,7 +2355,7 @@
     "APPROVED_LEAVE": "Congé approuvé"
   },
   "settings_page": {
-    "title": "Paramètres de l'établissement",
+    "title": "Horaires et informations",
     "reservations_orders": {
       "trigger": "Réservations et commandes",
       "enable_reservations": {
@@ -3275,7 +3276,7 @@
     "join_organization_hint": "Envoie une demande — le propriétaire de l'organisation doit l'approuver avant que cette région (et chaque succursale qui en dépend) ne soit liée."
   },
   "fiscal_invoices_page": {
-    "title": "Factures fiscales",
+    "title": "Justificatifs fiscaux",
     "subtitle": "Le registre légal des factures de votre établissement — numéros séquentiels et corrections.",
     "export_csv": "Exporter en CSV",
     "all_types": "Tous les types",
@@ -3300,7 +3301,7 @@
     "loading_order": "Chargement de la commande"
   },
   "audit_logs_page": {
-    "title": "Journaux d'audit",
+    "title": "Historique d'activité",
     "subtitle": "Traçabilité complète de chaque modification apportée à votre établissement.",
     "all_entity_types": "Tous les types d'entités",
     "all_actions": "Toutes les actions",
@@ -3440,7 +3441,7 @@
     "confirm_switch": "Confirmer le changement"
   },
   "danger_page": {
-    "title": "Zone de danger",
+    "title": "Fermer ou supprimer",
     "warning": "Ces actions sont destructrices et irréversibles. Soyez prudent.",
     "reset_shifts": "Réinitialiser tous les créneaux du personnel",
     "reset_shifts_description": "Cela supprimera tous les plannings actuels du personnel. Cette action est irréversible.",
@@ -3699,7 +3700,7 @@
     "accept_applicant": "Accepter le candidat"
   },
   "fiscal_services_page": {
-    "title": "Services fiscaux",
+    "title": "Configuration fiscale",
     "subtitle": "Outils pour les déclarations fiscales périodiques et la facturation légale — le même moteur fiscal qui assure la conformité pour l'Espagne et Andorre, piloté par le pays de votre établissement.",
     "period_summary": "Résumé de période",
     "period_summary_description": "Totaux agrégés pour une plage de dates — les chiffres nécessaires pour remplir une déclaration fiscale périodique auto-déclarée (ex. le Formulari 900/910 du DTF andorran).",
@@ -3729,7 +3730,7 @@
     "recipient_address": "Adresse du destinataire"
   },
   "payments_page": {
-    "title": "Paiements",
+    "title": "Paiements par carte",
     "subtitle": "Acceptez les paiements par carte pour les commandes et les livraisons directement via FlairSync — propulsé par MONEI. Les paiements sont versés directement sur votre propre compte ; FlairSync ne détient jamais vos fonds.",
     "monei_card_title": "Compte MONEI",
     "monei_card_description": "Connectez votre établissement à MONEI pour accepter les paiements par carte en ligne — y compris le prépaiement des livraisons, le paiement autonome par QR à table et le prépaiement à emporter.",
@@ -3758,7 +3759,7 @@
       "closed": "Fermé"
     },
     "link_copied": "Lien copié ! Partagez-le sur les réseaux sociaux.",
-    "title": "Offres d'emploi",
+    "title": "Recrutement",
     "subtitle": "Gérez vos postes ouverts et examinez les candidatures.",
     "post_a_job": "Publier une offre",
     "loading_jobs": "Chargement des offres...",
@@ -3871,7 +3872,7 @@
     "see_pro_plans": "Voir les formules Pro"
   },
   "schedule_page": {
-    "title": "Gestion des horaires",
+    "title": "Planning",
     "tabs": {
       "staff_scheduling": "Planification du personnel",
       "open_shift_bids": "Enchères de créneaux ouverts",
@@ -3882,7 +3883,7 @@
     }
   },
   "staff_inventory_page": {
-    "title": "Inventaire",
+    "title": "Stock",
     "all_items": "Tous les articles",
     "low_stock": "Stock faible",
     "search_placeholder": "Rechercher des articles…",
@@ -3896,7 +3897,7 @@
     "next": "Suivant"
   },
   "staff_schedule_page": {
-    "title": "Créneaux et horaires"
+    "title": "Planning"
   },
   "invite_business_dialog": {
     "title": "Trouver un établissement à inviter",
@@ -4168,7 +4169,7 @@
     }
   },
   "branding_page": {
-    "title": "Identité visuelle",
+    "title": "Logo et photos",
     "qr_code": "Code QR",
     "logo": "Logo",
     "gallery": "Galerie",
@@ -4190,7 +4191,7 @@
     }
   },
   "stations_page": {
-    "title": "Stations",
+    "title": "Appareils",
     "subtitle": "Gérez les terminaux POS et les écrans de cuisine liés à cette entreprise.",
     "add_station": "Ajouter une station",
     "summary": {
@@ -4729,7 +4730,7 @@
         "synonyms": "plan de salle, agencement, places, terrasse"
       },
       "tasks": {
-        "label": "Tâches à faire",
+        "label": "Tâches",
         "description": "Listes et tâches pour l'équipe",
         "synonyms": "tâches, checklist, à faire, ménage, mise en place"
       },

@@ -305,7 +305,7 @@
     "page_of": "Pàgina {{page}} de {{totalPages}}"
   },
   "staff_messages": {
-    "title": "Missatges i anuncis",
+    "title": "Missatges",
     "subtitle": "Mantén-te al dia amb les últimes notícies i missatges.",
     "announcements_tab": "Anuncis",
     "messages_tab": "Missatges",
@@ -319,7 +319,7 @@
     "page_indicator": "Pàgina {{current}} de {{total}}"
   },
   "staff_dashboard": {
-    "title": "Tauler del personal",
+    "title": "Resum",
     "subtitle": "Benvingut de nou! Això és el que passa avui.",
     "my_shifts_card": "Els meus torns",
     "shifts_today": "Torns avui",
@@ -410,20 +410,21 @@
     "current_business_fallback": "Negoci actual",
     "workspace_group": "El teu espai de treball",
     "items": {
-      "dashboard": "Tauler",
+      "dashboard": "Resum",
       "my_shifts": "Els meus torns",
-      "schedule": "Torns i horari",
-      "staff": "Gestió del personal",
-      "tasks": "Tasques i checklists",
+      "schedule": "Horaris",
+      "staff": "Equip",
+      "tasks": "Tasques",
       "orders": "Comandes",
       "reservations": "Reserves",
-      "inventory": "Inventari",
-      "menu": "Consultar el menú",
-      "messages": "Missatges i anuncis",
-      "themes": "Tema",
-      "menu_boards": "Pantalles de Menú",
-      "wifi_networks": "Xarxes WiFi",
-      "loyalty": "Fidelització"
+      "inventory": "Estoc",
+      "menu": "Carta",
+      "messages": "Missatges",
+      "themes": "Colors",
+      "menu_boards": "Pantalles de carta",
+      "wifi_networks": "WiFi per a clients",
+      "loyalty": "Fidelització",
+      "nfc_tags": "Targetes NFC"
     }
   },
   "sidebar": {
@@ -443,38 +444,39 @@
       "system": "Sistema"
     },
     "items": {
-      "dashboard": "Tauler",
-      "branding": "Marca del negoci",
-      "settings": "Configuració del negoci",
-      "payments": "Pagaments",
-      "staff": "Gestió del personal",
-      "announcements": "Anuncis",
-      "schedule": "Horari",
-      "attendance": "Assistència",
-      "payroll": "Nòmina",
-      "tip_pooling": "Fons comú de propines",
-      "jobs": "Ofertes de feina",
-      "inventory": "Inventari",
-      "marketplace": "Marketplace",
-      "menu": "Menú",
-      "discounts": "Descomptes",
-      "floor_plan": "Pla del local",
-      "themes": "Tema",
+      "dashboard": "Resum",
+      "branding": "Logotip i fotos",
+      "settings": "Horaris i dades",
+      "payments": "Pagaments amb targeta",
+      "staff": "Equip",
+      "announcements": "Avisos",
+      "schedule": "Horaris",
+      "attendance": "Hores treballades",
+      "payroll": "Nòmines",
+      "tip_pooling": "Propines",
+      "jobs": "Contractació",
+      "inventory": "Estoc",
+      "marketplace": "Mercat",
+      "menu": "Carta",
+      "discounts": "Ofertes",
+      "floor_plan": "Taules",
+      "themes": "Colors",
       "orders": "Comandes",
       "reservations": "Reserves",
       "tasks": "Tasques",
-      "stations": "Estacions",
-      "wifi_networks": "Xarxes WiFi",
-      "analytics": "Anàlisi i informes",
+      "stations": "Dispositius",
+      "wifi_networks": "WiFi per a clients",
+      "analytics": "Vendes i informes",
       "reviews": "Ressenyes",
-      "feedback": "Comentaris",
-      "audit_logs": "Registres d'auditoria",
-      "alerts": "Alertes",
+      "feedback": "Opinions privades",
+      "audit_logs": "Historial d'activitat",
+      "alerts": "Coses per arreglar",
       "fiscal_invoices": "Factures fiscals",
-      "fiscal_services": "Serveis fiscals",
-      "danger": "Zona de perill",
-      "menu_boards": "Pantalles de Menú",
-      "loyalty": "Fidelització"
+      "fiscal_services": "Configuració fiscal",
+      "danger": "Tancar o eliminar",
+      "menu_boards": "Pantalles de carta",
+      "loyalty": "Fidelització",
+      "nfc_tags": "Targetes NFC"
     }
   },
   "permissions": {
@@ -747,7 +749,7 @@
     }
   },
   "inventory_management": {
-    "title": "Gestió d'Inventari",
+    "title": "Estoc",
     "add_item": "Afegir Article",
     "edit_item": "Editar Article",
     "delete_item": "Eliminar Article",
@@ -1004,7 +1006,8 @@
       "circle": "Cercle",
       "square": "Quadrat",
       "rectangle": "Rectangle"
-    }
+    },
+    "page_heading": "Taules"
   },
   "orders": {
     "title": "Comandes",
@@ -1140,7 +1143,7 @@
     "set_failed": "No s'ha pogut establir el PIN"
   },
   "staff_management_page": {
-    "heading": "Personal i rols",
+    "heading": "Equip",
     "tabs": {
       "staff": "Personal",
       "invitations": "Invitacions",
@@ -1178,7 +1181,7 @@
     }
   },
   "attendance_page": {
-    "heading": "Assistència",
+    "heading": "Hores treballades",
     "refresh_button": "Actualitzar",
     "last_updated_just_now": "Actualitzat ara mateix",
     "last_updated_minutes_ago_one": "Actualitzat fa {{count}} minut",
@@ -1783,7 +1786,7 @@
     }
   },
   "staff_messages_compose": {
-    "heading": "Enviar anuncis i missatges",
+    "heading": "Avisos",
     "compose_button": "Redactar",
     "dialog_title": "Nou anunci o missatge",
     "kind_label": "Tipus",
@@ -2352,7 +2355,7 @@
     "APPROVED_LEAVE": "Permís aprovat"
   },
   "settings_page": {
-    "title": "Configuració del negoci",
+    "title": "Horaris i dades",
     "reservations_orders": {
       "trigger": "Reserves i comandes",
       "enable_reservations": {
@@ -3298,7 +3301,7 @@
     "loading_order": "Carregant la comanda"
   },
   "audit_logs_page": {
-    "title": "Registres d'auditoria",
+    "title": "Historial d'activitat",
     "subtitle": "Traçabilitat completa de cada canvi fet al teu negoci.",
     "all_entity_types": "Tots els tipus d'entitat",
     "all_actions": "Totes les accions",
@@ -3438,7 +3441,7 @@
     "confirm_switch": "Confirmar canvi"
   },
   "danger_page": {
-    "title": "Zona de perill",
+    "title": "Tancar o eliminar",
     "warning": "Aquestes accions són destructives i irreversibles. Vés amb compte.",
     "reset_shifts": "Restablir tots els torns del personal",
     "reset_shifts_description": "Això eliminarà tots els horaris actuals del personal. Aquesta acció no es pot desfer.",
@@ -3697,7 +3700,7 @@
     "accept_applicant": "Acceptar candidat"
   },
   "fiscal_services_page": {
-    "title": "Serveis fiscals",
+    "title": "Configuració fiscal",
     "subtitle": "Eines per a declaracions fiscals periòdiques i facturació legal — el mateix motor fiscal que dona suport al compliment a Espanya i Andorra, segons el país del teu negoci.",
     "period_summary": "Resum del període",
     "period_summary_description": "Totals agregats per a un rang de dates — les xifres que necessites per emplenar una declaració fiscal periòdica autoliquidada (p. ex. el Formulari 900/910 del DTF d'Andorra).",
@@ -3727,7 +3730,7 @@
     "recipient_address": "Adreça del destinatari"
   },
   "payments_page": {
-    "title": "Pagaments",
+    "title": "Pagaments amb targeta",
     "subtitle": "Accepta pagaments amb targeta per a comandes i lliuraments directament a través de FlairSync — amb tecnologia MONEI. Els pagaments es liquiden directament al teu propi compte; FlairSync mai reté els teus fons.",
     "monei_card_title": "Compte de MONEI",
     "monei_card_description": "Connecta el teu negoci a MONEI per acceptar pagaments amb targeta en línia — inclòs el pagament anticipat de lliuraments, l'autopagament amb QR a taula i el pagament anticipat per recollir.",
@@ -3756,7 +3759,7 @@
       "closed": "Tancada"
     },
     "link_copied": "Enllaç copiat! Comparteix-lo a les xarxes socials.",
-    "title": "Ofertes de feina",
+    "title": "Contractació",
     "subtitle": "Gestiona els teus llocs oberts i revisa les candidatures.",
     "post_a_job": "Publicar oferta",
     "loading_jobs": "Carregant ofertes...",
@@ -3869,7 +3872,7 @@
     "see_pro_plans": "Veure plans Pro"
   },
   "schedule_page": {
-    "title": "Gestió d'horaris",
+    "title": "Horaris",
     "tabs": {
       "staff_scheduling": "Planificació del personal",
       "open_shift_bids": "Ofertes de torns oberts",
@@ -3880,7 +3883,7 @@
     }
   },
   "staff_inventory_page": {
-    "title": "Inventari",
+    "title": "Estoc",
     "all_items": "Tots els articles",
     "low_stock": "Estoc baix",
     "search_placeholder": "Cercar articles…",
@@ -3894,7 +3897,7 @@
     "next": "Següent"
   },
   "staff_schedule_page": {
-    "title": "Torns i horaris"
+    "title": "Horaris"
   },
   "invite_business_dialog": {
     "title": "Cercar un negoci per convidar",
@@ -4166,7 +4169,7 @@
     }
   },
   "branding_page": {
-    "title": "Identitat visual",
+    "title": "Logotip i fotos",
     "qr_code": "Codi QR",
     "logo": "Logotip",
     "gallery": "Galeria",
@@ -4188,7 +4191,7 @@
     }
   },
   "stations_page": {
-    "title": "Estacions",
+    "title": "Dispositius",
     "subtitle": "Gestiona els terminals POS i les pantalles de cuina vinculats a aquest negoci.",
     "add_station": "Afegir estació",
     "summary": {

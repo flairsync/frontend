@@ -40,6 +40,7 @@ import { StaffMemberSidebar } from '@/components/staff/StaffMemberSidebar';
 import { UiModeToggle } from '@/components/shared/UiModeToggle';
 import { useUiMode } from '@/components/shared/ui-mode-provider';
 import SimpleActionBar from '@/components/management/simple/SimpleActionBar';
+import { getTileForPathname } from '@/features/navigation/taskRegistry';
 import TaskSearchDialog from '@/components/management/simple/TaskSearchDialog';
 import { usePermissions } from '@/features/auth/usePermissions';
 import { useBusinessStatus } from '@/features/business/useBusinessStatus';
@@ -66,6 +67,12 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const { isSimple } = useUiMode();
+    // Was hardcoded to "Dashboard" on every page. Same registry as the owner
+    // side, so the breadcrumb matches the tile and the page heading.
+    const currentTile = getTileForPathname(urlPathname, "staff");
+    const currentPageLabel = currentTile
+        ? t(currentTile.labelKey)
+        : t("staff_layout.dashboard_breadcrumb");
     const onHomePage = urlPathname.endsWith('/home');
 
     if (loadingPermissions) {
@@ -151,7 +158,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>{t("staff_layout.dashboard_breadcrumb")}</BreadcrumbPage>
+                                    <BreadcrumbPage>{currentPageLabel}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>

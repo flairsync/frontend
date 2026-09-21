@@ -140,3 +140,7 @@ dist
 # aws-cdk
 .cdk.staging
 cdk.out
+
+# Tutorial video pipeline output
+tutorials-output/
+/tutorials

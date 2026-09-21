@@ -214,7 +214,58 @@ for (const block of tileBlocks) {
     }
 }
 
-// ── 3. Every referenced i18n key exists ──────────────────────────────────────
+// ── 3. A tile and the page it opens use the same word ────────────────────────
+//
+// Clicking a tile called "Stock" and landing on a page headed "Inventory
+// Management" makes people think they clicked the wrong thing. The tile label
+// is the vocabulary; the page heading has to agree with it.
+
+const SLUG_OVERRIDES = { shifts: "my_shifts", "pos-app": "pos_app", "kds-app": "kds_app" };
+const tileSlug = (key) => SLUG_OVERRIDES[key] ?? key.replace(/-/g, "_");
+
+const enPath = path.join(root, "public", "locales", "en", "management.json");
+const enStrings = fs.existsSync(enPath) ? JSON.parse(fs.readFileSync(enPath, "utf-8")) : null;
+
+const resolveKey = (dotted) => {
+    let node = enStrings;
+    for (const part of dotted.split(".")) {
+        node = node && typeof node === "object" ? node[part] : undefined;
+    }
+    return typeof node === "string" ? node : null;
+};
+
+if (enStrings) {
+    for (const block of tileBlocks) {
+        const tileKey = block.slice(0, block.indexOf('"'));
+        const rolesMatch = block.match(/roles: \[([^\]]*)\]/);
+        const roles = rolesMatch
+            ? [...rolesMatch[1].matchAll(/"([^"]+)"/g)].map((m) => m[1])
+            : [];
+
+        const label = resolveKey(`simple_mode.tiles.${tileSlug(tileKey)}.label`);
+        if (!label) continue;
+
+        for (const role of roles) {
+            const pageFile = path.join(root, "pages", "manage", "@id", role, tileKey, "+Page.tsx");
+            if (!fs.existsSync(pageFile)) continue;
+
+            const heading = fs
+                .readFileSync(pageFile, "utf-8")
+                .match(/<h1[^>]*>\s*\{t\("([^"]+)"\)\}/);
+            if (!heading) continue;
+
+            const headingText = resolveKey(heading[1]);
+            if (headingText && headingText.trim().toLowerCase() !== label.trim().toLowerCase()) {
+                problems.push(
+                    `Tile "${tileKey}" is called "${label}" but ${role}/${tileKey} is headed ` +
+                    `"${headingText}" (${heading[1]}). Same page, two names.`
+                );
+            }
+        }
+    }
+}
+
+// ── 4. Every referenced i18n key exists ──────────────────────────────────────
 
 const sourceFiles = [
     registryPath,

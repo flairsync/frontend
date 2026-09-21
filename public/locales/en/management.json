@@ -305,7 +305,7 @@
     "page_of": "Page {{page}} of {{totalPages}}"
   },
   "staff_messages": {
-    "title": "Messages & Announcements",
+    "title": "Messages",
     "subtitle": "Stay updated with the latest news and messages.",
     "announcements_tab": "Announcements",
     "messages_tab": "Messages",
@@ -319,7 +319,7 @@
     "page_indicator": "Page {{current}} of {{total}}"
   },
   "staff_dashboard": {
-    "title": "Staff Dashboard",
+    "title": "Overview",
     "subtitle": "Welcome back! Here's what's happening today.",
     "my_shifts_card": "My Shifts",
     "shifts_today": "Shifts today",
@@ -410,20 +410,20 @@
     "current_business_fallback": "Current Business",
     "workspace_group": "Your Workspace",
     "items": {
-      "dashboard": "Dashboard",
-      "my_shifts": "My Shifts",
-      "schedule": "Shifts & Schedule",
-      "staff": "Staff Management",
-      "tasks": "Tasks & Checklists",
+      "dashboard": "Overview",
+      "my_shifts": "My shifts",
+      "schedule": "Rota",
+      "staff": "Team",
+      "tasks": "Tasks",
       "orders": "Orders",
-      "reservations": "Reservations",
-      "inventory": "Inventory",
-      "menu": "Menu Lookup",
-      "messages": "Messages & Announcements",
-      "themes": "Theme",
-      "menu_boards": "Menu Boards",
-      "nfc_tags": "NFC Cards",
-      "wifi_networks": "WiFi Networks",
+      "reservations": "Bookings",
+      "inventory": "Stock",
+      "menu": "Menu",
+      "messages": "Messages",
+      "themes": "Colours",
+      "menu_boards": "Menu screens",
+      "nfc_tags": "Tap cards",
+      "wifi_networks": "Guest WiFi",
       "loyalty": "Loyalty"
     }
   },
@@ -444,38 +444,38 @@
       "system": "System"
     },
     "items": {
-      "dashboard": "Dashboard",
-      "branding": "Business Branding",
-      "settings": "Business Settings",
-      "payments": "Payments",
-      "staff": "Staff Management",
-      "announcements": "Announcements",
-      "schedule": "Schedule",
-      "attendance": "Attendance",
-      "payroll": "Payroll",
-      "tip_pooling": "Tip Pooling",
-      "jobs": "Job Postings",
-      "inventory": "Inventory",
+      "dashboard": "Overview",
+      "branding": "Logo & photos",
+      "settings": "Opening hours & details",
+      "payments": "Card payments",
+      "staff": "Team",
+      "announcements": "Notices",
+      "schedule": "Rota",
+      "attendance": "Hours worked",
+      "payroll": "Pay",
+      "tip_pooling": "Tips",
+      "jobs": "Hiring",
+      "inventory": "Stock",
       "marketplace": "Marketplace",
       "menu": "Menu",
-      "discounts": "Discounts",
-      "floor_plan": "Floor Plan",
-      "themes": "Theme",
+      "discounts": "Offers",
+      "floor_plan": "Tables",
+      "themes": "Colours",
       "orders": "Orders",
-      "reservations": "Reservations",
+      "reservations": "Bookings",
       "tasks": "Tasks",
-      "stations": "Stations",
-      "nfc_tags": "NFC Cards",
-      "wifi_networks": "WiFi Networks",
-      "analytics": "Analytics & Reports",
+      "stations": "Devices",
+      "nfc_tags": "Tap cards",
+      "wifi_networks": "Guest WiFi",
+      "analytics": "Sales & reports",
       "reviews": "Reviews",
-      "feedback": "Feedback",
-      "audit_logs": "Audit Logs",
-      "alerts": "Alerts",
-      "fiscal_invoices": "Fiscal Invoices",
-      "fiscal_services": "Fiscal Services",
-      "danger": "Danger Zone",
-      "menu_boards": "Menu Boards",
+      "feedback": "Private feedback",
+      "audit_logs": "Activity history",
+      "alerts": "Things to fix",
+      "fiscal_invoices": "Tax receipts",
+      "fiscal_services": "Tax setup",
+      "danger": "Close or delete",
+      "menu_boards": "Menu screens",
       "loyalty": "Loyalty"
     }
   },
@@ -752,7 +752,7 @@
     }
   },
   "inventory_management": {
-    "title": "Inventory Management",
+    "title": "Stock",
     "add_item": "Add Item",
     "edit_item": "Edit Item",
     "delete_item": "Delete Item",
@@ -1010,7 +1010,8 @@
       "circle": "Circle",
       "square": "Square",
       "rectangle": "Rectangle"
-    }
+    },
+    "page_heading": "Tables"
   },
   "orders": {
     "title": "Orders",
@@ -1146,7 +1147,7 @@
     "set_failed": "Failed to set PIN"
   },
   "staff_management_page": {
-    "heading": "Staff & Roles",
+    "heading": "Team",
     "tabs": {
       "staff": "Staff",
       "invitations": "Invitations",
@@ -1188,7 +1189,7 @@
     }
   },
   "attendance_page": {
-    "heading": "Attendance",
+    "heading": "Hours worked",
     "refresh_button": "Refresh",
     "last_updated_just_now": "Updated just now",
     "last_updated_minutes_ago_one": "Updated {{count}} minute ago",
@@ -1795,7 +1796,7 @@
     }
   },
   "staff_messages_compose": {
-    "heading": "Send Announcements & Messages",
+    "heading": "Notices",
     "compose_button": "Compose",
     "dialog_title": "New Announcement or Message",
     "kind_label": "Type",
@@ -2464,7 +2465,7 @@
     "APPROVED_LEAVE": "Approved Leave"
   },
   "settings_page": {
-    "title": "Business Settings",
+    "title": "Opening hours & details",
     "reservations_orders": {
       "trigger": "Reservations & Orders",
       "enable_reservations": {
@@ -3387,7 +3388,7 @@
     "join_organization_hint": "Sends a request — the organization's owner needs to approve before this region (and every branch under it) links up."
   },
   "fiscal_invoices_page": {
-    "title": "Fiscal Invoices",
+    "title": "Tax receipts",
     "subtitle": "The legal invoice register for your business — sequential numbers and corrections.",
     "export_csv": "Export CSV",
     "all_types": "All types",
@@ -3412,7 +3413,7 @@
     "loading_order": "Loading order"
   },
   "audit_logs_page": {
-    "title": "Audit Logs",
+    "title": "Activity history",
     "subtitle": "Full traceability of every change made across your business.",
     "all_entity_types": "All entity types",
     "all_actions": "All actions",
@@ -3552,7 +3553,7 @@
     "confirm_switch": "Confirm switch"
   },
   "danger_page": {
-    "title": "Danger Zone",
+    "title": "Close or delete",
     "warning": "These actions are destructive and cannot be undone. Please be careful.",
     "reset_shifts": "Reset All Staff Shifts",
     "reset_shifts_description": "This will remove all current staff schedules. This action cannot be undone.",
@@ -3812,7 +3813,7 @@
     "accept_applicant": "Accept Applicant"
   },
   "fiscal_services_page": {
-    "title": "Fiscal Services",
+    "title": "Tax setup",
     "subtitle": "Tools for periodic tax declarations and legal invoicing — same fiscal engine that backs Spain and Andorra compliance, driven by your business's country.",
     "period_summary": "Period Summary",
     "period_summary_description": "Aggregate totals for a date range — the figures you need to fill in a periodic self-filed tax declaration (e.g. Andorra's DTF Formulari 900/910).",
@@ -3842,7 +3843,7 @@
     "recipient_address": "Recipient address"
   },
   "payments_page": {
-    "title": "Payments",
+    "title": "Card payments",
     "subtitle": "Accept card payments for orders and deliveries directly through FlairSync — powered by MONEI. Payments settle straight to your own account; FlairSync never holds your funds.",
     "monei_card_title": "MONEI Account",
     "monei_card_description": "Connect your business to MONEI to accept online card payments — including delivery prepay, table QR self-pay, and takeaway prepay.",
@@ -3871,7 +3872,7 @@
       "closed": "Closed"
     },
     "link_copied": "Link copied! Share it on social media.",
-    "title": "Job Postings",
+    "title": "Hiring",
     "subtitle": "Manage your open positions and review applicants.",
     "post_a_job": "Post a Job",
     "loading_jobs": "Loading jobs...",
@@ -3984,7 +3985,7 @@
     "see_pro_plans": "See Pro Plans"
   },
   "schedule_page": {
-    "title": "Schedule Management",
+    "title": "Rota",
     "tabs": {
       "staff_scheduling": "Staff Scheduling",
       "open_shift_bids": "Open Shift Bids",
@@ -3995,7 +3996,7 @@
     }
   },
   "staff_inventory_page": {
-    "title": "Inventory",
+    "title": "Stock",
     "all_items": "All Items",
     "low_stock": "Low Stock",
     "search_placeholder": "Search items…",
@@ -4009,7 +4010,7 @@
     "next": "Next"
   },
   "staff_schedule_page": {
-    "title": "Shifts & Schedule"
+    "title": "Rota"
   },
   "invite_business_dialog": {
     "title": "Find a business to invite",
@@ -4281,7 +4282,7 @@
     }
   },
   "branding_page": {
-    "title": "Branding",
+    "title": "Logo & photos",
     "qr_code": "QR Code",
     "logo": "Logo",
     "gallery": "Gallery",
@@ -4303,7 +4304,7 @@
     }
   },
   "stations_page": {
-    "title": "Stations",
+    "title": "Devices",
     "subtitle": "Manage POS terminals and kitchen displays linked to this business.",
     "add_station": "Add Station",
     "summary": {
@@ -4593,7 +4594,7 @@
     "rejected": "Rejected"
   },
   "staff_reservations_page": {
-    "title": "Reservations",
+    "title": "Bookings",
     "subtitle": "Manage upcoming and past reservations efficiently.",
     "add_new": "Add New Reservation",
     "tabs": {
@@ -4843,7 +4844,7 @@
         "synonyms": "floor plan, layout, seats, terrace, room"
       },
       "tasks": {
-        "label": "Jobs to do",
+        "label": "Tasks",
         "description": "Checklists and jobs for the team",
         "synonyms": "tasks, checklist, to-do, cleaning, prep"
       },

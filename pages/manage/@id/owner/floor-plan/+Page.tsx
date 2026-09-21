@@ -173,7 +173,7 @@ const FloorPlanPage: React.FC = () => {
             )}
 
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold tracking-tight">{t("floor_plan.title")}</h1>
+                <h1 className="text-3xl font-bold tracking-tight">{t("floor_plan.page_heading")}</h1>
                 <div className="flex gap-2">
                     <Button variant="outline" onClick={handleOpenCreateFloor} className="gap-2">
                         <Layers className="w-4 h-4" />
