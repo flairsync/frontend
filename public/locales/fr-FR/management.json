@@ -609,7 +609,7 @@
       }
     },
     "list": {
-      "title": "Vos Menus",
+      "title": "Carte",
       "description": "Cliquez sur un menu pour gérer ses catégories et ses articles. Ajoutez de nouveaux menus pour commencer !",
       "remaining_menus_one": "Vous pouvez créer {{count}} menu supplémentaire avec votre abonnement.",
       "remaining_menus_other": "Vous pouvez créer {{count}} menus supplémentaires avec votre abonnement.",
@@ -1960,7 +1960,7 @@
   },
   "menu_board_management": {
     "list": {
-      "title": "Écrans de Menu",
+      "title": "Écrans de menu",
       "description": "Créez des écrans de menu numériques pour téléviseurs et bornes. Chaque écran dispose de son propre lien public à ouvrir sur n'importe quel écran.",
       "remaining_boards_one": "Vous pouvez créer {{count}} écran supplémentaire avec votre abonnement.",
       "remaining_boards_other": "Vous pouvez créer {{count}} écrans supplémentaires avec votre abonnement.",
@@ -2705,7 +2705,7 @@
     }
   },
   "discounts_page": {
-    "title": "Remises",
+    "title": "Offres",
     "subtitle": "Créez des codes promo et des remises appliquées par les managers que le personnel peut utiliser en caisse.",
     "new_discount": "Nouvelle remise",
     "all_discounts": "Toutes les remises",
@@ -3136,7 +3136,7 @@
     "loading": "Chargement des détails de l'article..."
   },
   "tip_pooling_page": {
-    "title": "Pot commun de pourboires",
+    "title": "Pourboires",
     "subtitle": "Prévisualisez, générez et finalisez les répartitions de pourboires pour n'importe quelle période.",
     "disabled_notice": "Le pot commun de pourboires est actuellement désactivé pour cet établissement. Activez-le dans Paramètres → Travail et conformité pour commencer à répartir les pourboires groupés.",
     "generate_distribution": "Générer la répartition",
@@ -4039,7 +4039,7 @@
     }
   },
   "themes_manager": {
-    "title": "Thème",
+    "title": "Couleurs",
     "subtitle": "Choisissez le thème prêt à l'emploi utilisé pour votre site public.",
     "load_error": "Impossible de charger le catalogue de thèmes.",
     "premium_badge": "Premium",
@@ -4293,7 +4293,7 @@
     }
   },
   "business_feedback_dashboard": {
-    "title": "Retours",
+    "title": "Retours privés",
     "subtitle": "Retours post-repas envoyés par vos clients",
     "all_ratings": "Toutes les notes",
     "stars_and_up": "{{count}}+ étoiles",

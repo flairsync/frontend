@@ -611,7 +611,7 @@
       }
     },
     "list": {
-      "title": "Your Menus",
+      "title": "Menu",
       "description": "Click on a menu to manage its categories and items. Add new menus to get started!",
       "remaining_menus_one": "You can create {{count}} more menu with your subscription.",
       "remaining_menus_other": "You can create {{count}} more menus with your subscription.",
@@ -1970,7 +1970,7 @@
   },
   "menu_board_management": {
     "list": {
-      "title": "Menu Display Boards",
+      "title": "Menu screens",
       "description": "Create digital menu boards for TVs and kiosks. Each board gets its own public link you can open on any screen.",
       "remaining_boards_one": "You can create {{count}} more menu board with your subscription.",
       "remaining_boards_other": "You can create {{count}} more menu boards with your subscription.",
@@ -2332,7 +2332,7 @@
   },
   "payroll_page": {
     "header": {
-      "title": "Payroll",
+      "title": "Pay",
       "subtitle": "Preview, generate, and finalize payroll for any period."
     },
     "tabs": {
@@ -2815,7 +2815,7 @@
     }
   },
   "discounts_page": {
-    "title": "Discounts",
+    "title": "Offers",
     "subtitle": "Create promo codes and manager-applied discounts staff can apply at checkout.",
     "new_discount": "New Discount",
     "all_discounts": "All Discounts",
@@ -3009,7 +3009,7 @@
     "save": "Save"
   },
   "reservation_dashboard": {
-    "title": "Reservations",
+    "title": "Bookings",
     "subtitle": "Live dashboard — refreshes every 60s",
     "refresh": "Refresh",
     "new_reservation": "New Reservation",
@@ -3248,7 +3248,7 @@
     "loading": "Loading item details..."
   },
   "tip_pooling_page": {
-    "title": "Tip Pooling",
+    "title": "Tips",
     "subtitle": "Preview, generate, and finalize tip distributions for any period.",
     "disabled_notice": "Tip pooling is currently disabled for this business. Enable it under Settings → Labor & Compliance to start distributing pooled tips.",
     "generate_distribution": "Generate Distribution",
@@ -4152,7 +4152,7 @@
     }
   },
   "themes_manager": {
-    "title": "Theme",
+    "title": "Colours",
     "subtitle": "Choose the premade theme used for your public site.",
     "load_error": "Could not load the theme catalog.",
     "premium_badge": "Premium",
@@ -4406,7 +4406,7 @@
     }
   },
   "business_feedback_dashboard": {
-    "title": "Feedback",
+    "title": "Private feedback",
     "subtitle": "Post-meal feedback submitted by your guests",
     "all_ratings": "All ratings",
     "stars_and_up": "{{count}}+ stars",

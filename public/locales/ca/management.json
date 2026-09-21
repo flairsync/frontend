@@ -609,7 +609,7 @@
       }
     },
     "list": {
-      "title": "Els teus Menús",
+      "title": "Carta",
       "description": "Fes clic en un menú per gestionar les seves categories i articles. Afegeix nous menús per començar!",
       "remaining_menus_one": "Pots crear {{count}} menú més amb la teva subscripció.",
       "remaining_menus_other": "Pots crear {{count}} menús més amb la teva subscripció.",
@@ -1960,7 +1960,7 @@
   },
   "menu_board_management": {
     "list": {
-      "title": "Pantalles de Menú",
+      "title": "Pantalles de carta",
       "description": "Crea pantalles de menú digitals per a televisors i quioscos. Cada pantalla té el seu propi enllaç públic que pots obrir a qualsevol pantalla.",
       "remaining_boards_one": "Pots crear {{count}} pantalla més amb la teva subscripció.",
       "remaining_boards_other": "Pots crear {{count}} pantalles més amb la teva subscripció.",
@@ -2233,7 +2233,7 @@
   },
   "payroll_page": {
     "header": {
-      "title": "Nòmina",
+      "title": "Nòmines",
       "subtitle": "Previsualitza, genera i finalitza la nòmina per a qualsevol període."
     },
     "tabs": {
@@ -2705,7 +2705,7 @@
     }
   },
   "discounts_page": {
-    "title": "Descomptes",
+    "title": "Ofertes",
     "subtitle": "Crea codis promocionals i descomptes aplicats pel responsable que el personal pot fer servir en cobrar.",
     "new_discount": "Nou descompte",
     "all_discounts": "Tots els descomptes",
@@ -3136,7 +3136,7 @@
     "loading": "Carregant detalls de l'article..."
   },
   "tip_pooling_page": {
-    "title": "Fons comú de propines",
+    "title": "Propines",
     "subtitle": "Previsualitza, genera i finalitza els repartiments de propines per a qualsevol període.",
     "disabled_notice": "El fons comú de propines està desactivat actualment per a aquest negoci. Activa'l a Configuració → Mà d'obra i compliment per començar a repartir les propines agrupades.",
     "generate_distribution": "Generar repartiment",
@@ -4039,7 +4039,7 @@
     }
   },
   "themes_manager": {
-    "title": "Tema",
+    "title": "Colors",
     "subtitle": "Tria el tema predissenyat que s'utilitzarà al teu lloc públic.",
     "load_error": "No s'ha pogut carregar el catàleg de temes.",
     "premium_badge": "Premium",
@@ -4293,7 +4293,7 @@
     }
   },
   "business_feedback_dashboard": {
-    "title": "Comentaris",
+    "title": "Opinions privades",
     "subtitle": "Comentaris posteriors a l'àpat enviats pels teus clients",
     "all_ratings": "Totes les valoracions",
     "stars_and_up": "{{count}}+ estrelles",

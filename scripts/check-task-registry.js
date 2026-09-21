@@ -223,6 +223,29 @@ for (const block of tileBlocks) {
 const SLUG_OVERRIDES = { shifts: "my_shifts", "pos-app": "pos_app", "kds-app": "kds_app" };
 const tileSlug = (key) => SLUG_OVERRIDES[key] ?? key.replace(/-/g, "_");
 
+const HEADING_RE = /<h1[^>]*>\s*\{t\(["'`]([^"'`]+)["'`]\)\}/;
+
+// A page's <h1> is often not in its own +Page.tsx — reservations, for one, renders
+// its heading from <ReservationDashboard />. Looking only at +Page.tsx silently
+// skipped those pages, which is how "Bookings" came to open a page headed
+// "Reservations". So when the page file has no heading of its own, follow the
+// components it imports (one level, @/ only) and look there.
+function findHeadingKey(pageFile) {
+    const src = fs.readFileSync(pageFile, "utf-8");
+    const own = src.match(HEADING_RE);
+    if (own) return own;
+
+    for (const m of src.matchAll(/^\s*import\s+[^;]*?from\s+["'](@\/[^"']+)["']/gm)) {
+        const rel = m[1].slice(2);
+        const candidates = [".tsx", ".ts", "/index.tsx"].map((ext) => path.join(root, rel + ext));
+        const file = candidates.find((f) => fs.existsSync(f));
+        if (!file) continue;
+        const found = fs.readFileSync(file, "utf-8").match(HEADING_RE);
+        if (found) return found;
+    }
+    return null;
+}
+
 const enPath = path.join(root, "public", "locales", "en", "management.json");
 const enStrings = fs.existsSync(enPath) ? JSON.parse(fs.readFileSync(enPath, "utf-8")) : null;
 
@@ -249,9 +272,7 @@ if (enStrings) {
             const pageFile = path.join(root, "pages", "manage", "@id", role, tileKey, "+Page.tsx");
             if (!fs.existsSync(pageFile)) continue;
 
-            const heading = fs
-                .readFileSync(pageFile, "utf-8")
-                .match(/<h1[^>]*>\s*\{t\("([^"]+)"\)\}/);
+            const heading = findHeadingKey(pageFile);
             if (!heading) continue;
 
             const headingText = resolveKey(heading[1]);

@@ -105,7 +105,7 @@ export default function OwnerManageSchedulesPage() {
 
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                    <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
+                    <TabsList className="w-full flex justify-start overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
                         <TabsTrigger data-tour="schedule-tab-manage" value="manage" className="flex-1">{t("schedule_page.tabs.staff_scheduling")}</TabsTrigger>
                         <TabsTrigger data-tour="schedule-tab-bids" value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
                         <TabsTrigger data-tour="schedule-tab-rules" value="rules" className="flex-1">{t("schedule_page.tabs.recurring_rules")}</TabsTrigger>

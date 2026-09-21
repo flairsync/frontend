@@ -81,7 +81,7 @@ export function LoyaltyQrCard({ businessId }: LoyaltyQrCardProps) {
                         <img src={imageUrl} alt={t("loyalty_management.qr.title")} className="h-full w-full object-contain p-2" />
                     ) : null}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                     <Button variant="outline" onClick={handleDownload} disabled={downloading || loading} className="gap-2">
                         {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
                         {t("loyalty_management.qr.download_button")}

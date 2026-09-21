@@ -609,7 +609,7 @@
       }
     },
     "list": {
-      "title": "Tus Menús",
+      "title": "Carta",
       "description": "Haz clic en un menú para gestionar sus categorías y artículos. ¡Añade nuevos menús para comenzar!",
       "remaining_menus_one": "Puedes crear {{count}} menú más con tu suscripción.",
       "remaining_menus_other": "Puedes crear {{count}} menús más con tu suscripción.",
@@ -1960,7 +1960,7 @@
   },
   "menu_board_management": {
     "list": {
-      "title": "Pantallas de Menú",
+      "title": "Pantallas de carta",
       "description": "Crea pantallas de menú digitales para TVs y quioscos. Cada pantalla tiene su propio enlace público que puedes abrir en cualquier pantalla.",
       "remaining_boards_one": "Puedes crear {{count}} pantalla más con tu suscripción.",
       "remaining_boards_other": "Puedes crear {{count}} pantallas más con tu suscripción.",
@@ -2233,7 +2233,7 @@
   },
   "payroll_page": {
     "header": {
-      "title": "Nómina",
+      "title": "Nóminas",
       "subtitle": "Previsualiza, genera y finaliza la nómina para cualquier período."
     },
     "tabs": {
@@ -2705,7 +2705,7 @@
     }
   },
   "discounts_page": {
-    "title": "Descuentos",
+    "title": "Ofertas",
     "subtitle": "Crea códigos promocionales y descuentos aplicados por el encargado que el personal puede usar al cobrar.",
     "new_discount": "Nuevo descuento",
     "all_discounts": "Todos los descuentos",
@@ -3136,7 +3136,7 @@
     "loading": "Cargando detalles del artículo..."
   },
   "tip_pooling_page": {
-    "title": "Fondo común de propinas",
+    "title": "Propinas",
     "subtitle": "Previsualiza, genera y finaliza los repartos de propinas para cualquier período.",
     "disabled_notice": "El fondo común de propinas está actualmente desactivado para este negocio. Actívalo en Configuración → Mano de obra y cumplimiento para empezar a repartir las propinas agrupadas.",
     "generate_distribution": "Generar reparto",
@@ -4039,7 +4039,7 @@
     }
   },
   "themes_manager": {
-    "title": "Tema",
+    "title": "Colores",
     "subtitle": "Elige el tema prediseñado que se usará en tu sitio público.",
     "load_error": "No se pudo cargar el catálogo de temas.",
     "premium_badge": "Premium",
@@ -4293,7 +4293,7 @@
     }
   },
   "business_feedback_dashboard": {
-    "title": "Comentarios",
+    "title": "Opiniones privadas",
     "subtitle": "Comentarios posteriores a la comida enviados por tus clientes",
     "all_ratings": "Todas las valoraciones",
     "stars_and_up": "{{count}}+ estrellas",

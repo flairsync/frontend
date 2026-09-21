@@ -16,7 +16,7 @@ const NotificationsPage = () => {
                 <p className="text-muted-foreground">{t("notifications_page.subtitle")}</p>
 
                 <Tabs defaultValue="all" className="w-full">
-                    <TabsList className="mb-4 flex overflow-x-auto">
+                    <TabsList className="mb-4 flex justify-start overflow-x-auto">
                         <TabsTrigger value="all">{t("notifications_page.tabs.all")}</TabsTrigger>
                         <TabsTrigger value="ALERT">{t("notifications_page.tabs.alerts")}</TabsTrigger>
                         <TabsTrigger value="RESERVATION">{t("notifications_page.tabs.reservations")}</TabsTrigger>

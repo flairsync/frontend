@@ -140,7 +140,7 @@ export default function AttendancePage() {
       <Separator />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
+          <TabsList className="w-full flex justify-start overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
             <TabsTrigger data-tour="attendance-tab-overview" value="overview" className="flex-1 px-4 py-2 flex items-center justify-center gap-2">
               <Users className="h-4 w-4" />
               {t("attendance_page.tabs.overview")}

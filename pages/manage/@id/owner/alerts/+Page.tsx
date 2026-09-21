@@ -23,7 +23,7 @@ const AlertsPage = () => {
             </div>
 
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabValue)}>
-                <TabsList className="mb-4 flex overflow-x-auto">
+                <TabsList className="mb-4 flex justify-start overflow-x-auto">
                     <TabsTrigger value="all">All</TabsTrigger>
                     <TabsTrigger value="floor_plan">Floor Plan</TabsTrigger>
                     <TabsTrigger value="menu">Menu</TabsTrigger>

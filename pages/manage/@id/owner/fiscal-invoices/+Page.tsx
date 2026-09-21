@@ -142,19 +142,19 @@ const FiscalInvoicesPage: React.FC = () => {
                         </SelectContent>
                     </Select>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex w-full items-center gap-2 sm:w-auto">
                         <Input
                             type="date"
                             value={from}
                             onChange={(e) => { setFrom(e.target.value); setPage(1); }}
-                            className="w-40"
+                            className="w-full min-w-0 sm:w-40"
                         />
                         <span className="text-zinc-400 text-sm">{t("fiscal_invoices_page.to")}</span>
                         <Input
                             type="date"
                             value={to}
                             onChange={(e) => { setTo(e.target.value); setPage(1); }}
-                            className="w-40"
+                            className="w-full min-w-0 sm:w-40"
                         />
                     </div>
 

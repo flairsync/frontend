@@ -60,7 +60,7 @@ export default function StaffSchedulePage() {
             <Separator />
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                <TabsList className="w-full flex overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
+                <TabsList className="w-full flex justify-start overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
                     <TabsTrigger value="manage" className="flex-1">{t("schedule_page.tabs.staff_scheduling")}</TabsTrigger>
                     <TabsTrigger value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
                     <TabsTrigger value="rules" className="flex-1">{t("schedule_page.tabs.recurring_rules")}</TabsTrigger>
