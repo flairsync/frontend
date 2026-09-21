@@ -18,6 +18,7 @@ import { MovementHistoryDrawer } from "@/components/management/inventory/Movemen
 import { LowStockItemsView } from "@/components/management/inventory/LowStockItemsView";
 import { InventoryDashboardCards } from "@/components/management/inventory/InventoryDashboardCards";
 import { AdjustStockModal } from "@/components/management/inventory/AdjustStockModal";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 const StaffInventoryPage: React.FC = () => {
     const { t } = useTranslation("management");
@@ -125,11 +126,10 @@ const StaffInventoryPage: React.FC = () => {
                                                     </TableCell>
                                                 </TableRow>
                                             ) : !inventoryItems || inventoryItems.length === 0 ? (
-                                                <TableRow>
-                                                    <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
-                                                        {t("staff_inventory_page.no_items_found")}
-                                                    </TableCell>
-                                                </TableRow>
+                                                <TableEmptyState
+                                                    colSpan={5}
+                                                    title={t("staff_inventory_page.no_items_found")}
+                                                />
                                             ) : (
                                                 inventoryItems.map((item) => (
                                                     <TableRow key={item.id} className="hover:bg-muted/20 transition-colors">

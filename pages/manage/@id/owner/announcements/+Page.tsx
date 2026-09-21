@@ -37,6 +37,7 @@ import { useBusinessEmployees } from "@/features/business/employment/useBusiness
 import { useBusinessTeams } from "@/features/business/team/useBusinessTeams";
 import { AnnouncementKind, AnnouncementAudienceType } from "@/models/business/Announcement";
 import { cn } from "@/lib/utils";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 const TITLE_MAX = 150;
 const CONTENT_MAX = 2000;
@@ -469,11 +470,15 @@ const AnnouncementsPage = () => {
                                 </TableRow>
                             ))}
                             {!loadingAnnouncements && announcements.length === 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-10">
-                                        {t("staff_messages_compose.no_history")}
-                                    </TableCell>
-                                </TableRow>
+                                <TableEmptyState
+                                    colSpan={6}
+                                    title={t("simple_mode.empty.announcements.title")}
+                                    description={t("simple_mode.empty.announcements.description")}
+                                    action={{
+                                        label: t("simple_mode.actions.announcements.send"),
+                                        onClick: () => setComposeOpen(true),
+                                    }}
+                                />
                             )}
                         </TableBody>
                     </Table>

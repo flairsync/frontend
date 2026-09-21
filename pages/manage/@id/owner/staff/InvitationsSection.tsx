@@ -43,6 +43,7 @@ import { useBusinessPlan } from '@/features/business/useBusinessPlan';
 import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
 import { cn } from '@/lib/utils';
 import { useActionParam } from '@/hooks/use-action-param';
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 
 type InvitationsSectionProps = {
@@ -232,6 +233,18 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
+                            {!isPending && (invitations?.length ?? 0) === 0 && (
+                                <TableEmptyState
+                                    colSpan={7}
+                                    title={t("simple_mode.empty.invitations.title")}
+                                    description={t("simple_mode.empty.invitations.description")}
+                                    action={canCreate ? {
+                                        label: t("simple_mode.actions.staff.invite"),
+                                        icon: UserPlus,
+                                        onClick: () => setInviteModalOpen(true),
+                                    } : undefined}
+                                />
+                            )}
                             {invitations?.map((invite) => (
                                 <TableRow key={invite.id}>
                                     <TableCell>{invite.email}</TableCell>

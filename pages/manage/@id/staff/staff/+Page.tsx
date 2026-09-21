@@ -48,6 +48,7 @@ import TeamsSection from "@/components/management/staff/teams/TeamsSection";
 import RolesSection from "../../owner/staff/RolesSection";
 import InvitationsSection from "../../owner/staff/InvitationsSection";
 import { useParamFromAction } from "@/features/navigation/actionBus";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 // ─── Bulk Assign Role Modal ──────────────────────────────────────────────────
 
@@ -241,11 +242,14 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                                     </TableCell>
                                 </TableRow>
                             ) : employees.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={hasActionsColumn ? 4 : 3} className="text-center py-8 text-muted-foreground">
-                                        {t("staff_management_page.staff_tab.no_staff_found")}
-                                    </TableCell>
-                                </TableRow>
+                                <TableEmptyState
+                                    colSpan={hasActionsColumn ? 4 : 3}
+                                    title={t("simple_mode.empty.team.title")}
+                                    description={t("simple_mode.empty.team.description")}
+                                    // No invite action here: only owners and staff
+                                    // with STAFF:create can invite, and this view is
+                                    // often read-only.
+                                />
                             ) : (
                                 employees.map((member) => (
                                     <TableRow key={member.id}>

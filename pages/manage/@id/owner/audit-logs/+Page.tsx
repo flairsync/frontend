@@ -26,6 +26,7 @@ import { ChevronLeft, ChevronRight, ScrollText, X, Eye } from "lucide-react";
 import { useAuditLogs } from "@/features/audit/useAuditLogs";
 import { AuditAction, AuditLog } from "@/features/audit/service";
 import { AuditLogDetailsModal } from "@/components/audit/AuditLogDetailsModal";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 const ACTION_STYLES: Record<AuditAction, string> = {
     [AuditAction.CREATE]: "bg-green-100 text-green-700 hover:bg-green-100",
@@ -178,11 +179,11 @@ const AuditLogsPage: React.FC = () => {
                                     </TableRow>
                                 ))
                             ) : logs.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-16">
-                                        {hasFilters ? t("audit_logs_page.empty_filtered") : t("audit_logs_page.empty")}
-                                    </TableCell>
-                                </TableRow>
+                                <TableEmptyState
+                                    colSpan={6}
+                                    title={hasFilters ? t("audit_logs_page.empty_filtered") : t("audit_logs_page.empty")}
+                                    description={hasFilters ? t("simple_mode.empty.filtered.description") : undefined}
+                                />
                             ) : logs.map((log) => (
                                 <TableRow
                                     key={log.id}

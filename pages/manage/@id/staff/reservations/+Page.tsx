@@ -27,6 +27,7 @@ import { formatTime } from "@/lib/dateUtils"
 import { useTranslation } from "react-i18next"
 import DataPagination from "@/components/inputs/DataPagination"
 import { useActionParam } from "@/hooks/use-action-param"
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 export default function StaffReservationsPage() {
     const { routeParams } = usePageContext();
@@ -213,11 +214,14 @@ export default function StaffReservationsPage() {
                                                 </TableCell>
                                             </TableRow>
                                         ) : displayReservations.length === 0 ? (
-                                            <TableRow>
-                                                <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                                    {t("staff_reservations_page.no_upcoming_found")}
-                                                </TableCell>
-                                            </TableRow>
+                                            <TableEmptyState
+                                                colSpan={6}
+                                                title={t("staff_reservations_page.no_upcoming_found")}
+                                                action={{
+                                                    label: t("simple_mode.actions.reservations.add"),
+                                                    onClick: () => setAddingReservation(true),
+                                                }}
+                                            />
                                         ) : (
                                             displayReservations.map((rsv: any) => (
                                                 <TableRow key={rsv.id} className="hover:bg-muted/50 transition-colors">
@@ -337,11 +341,10 @@ export default function StaffReservationsPage() {
                                                 </TableCell>
                                             </TableRow>
                                         ) : displayReservations.length === 0 ? (
-                                            <TableRow>
-                                                <TableCell colSpan={6} className="text-center py-10 text-muted-foreground">
-                                                    {t("staff_reservations_page.no_past_found")}
-                                                </TableCell>
-                                            </TableRow>
+                                            <TableEmptyState
+                                                colSpan={6}
+                                                title={t("staff_reservations_page.no_past_found")}
+                                            />
                                         ) : (
                                             displayReservations.map((rsv: any) => (
                                                 <TableRow key={rsv.id} className="hover:bg-muted/50 transition-colors">

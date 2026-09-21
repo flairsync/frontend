@@ -39,6 +39,7 @@ import ReceiptView from "@/components/pos/ReceiptView"
 import { formatTime } from "@/lib/dateUtils"
 import AdvancedControls from "@/components/management/simple/AdvancedControls";
 import { useParamFromAction } from "@/features/navigation/actionBus";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 export default function StaffOrdersPage() {
     const { t } = useTranslation("management");
@@ -366,7 +367,22 @@ export default function StaffOrdersPage() {
                                     {fetchingOrders ? (
                                         <TableRow><TableCell colSpan={6} className="text-center py-8">{t("orders.loading")}</TableCell></TableRow>
                                     ) : filteredOrders?.length === 0 ? (
-                                        <TableRow><TableCell colSpan={6} className="text-center py-8">{t("orders.empty")}</TableCell></TableRow>
+                                        <TableEmptyState
+                                            colSpan={6}
+                                            // An empty order list is usually a filter, not a new
+                                            // restaurant — don't invite them to "add an order" when
+                                            // the real fix is clearing a filter.
+                                            title={activeFilterCount > 0
+                                                ? t("simple_mode.empty.filtered.title")
+                                                : t("simple_mode.empty.orders.title")}
+                                            description={activeFilterCount > 0
+                                                ? t("simple_mode.empty.filtered.description")
+                                                : t("simple_mode.empty.orders.description")}
+                                            action={activeFilterCount > 0 ? undefined : {
+                                                label: t("simple_mode.actions.orders.add"),
+                                                onClick: () => setCreateOrderOpen(true),
+                                            }}
+                                        />
                                     ) : (
                                         filteredOrders?.map((o: any) => (
                                             <TableRow key={o.id} className="hover:bg-muted/50 transition-colors">

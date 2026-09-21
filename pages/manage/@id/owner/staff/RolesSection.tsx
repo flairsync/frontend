@@ -44,6 +44,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Role } from "@/models/business/roles/Role";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 type RolesSectionProps = {
     canCreate?: boolean;
@@ -173,6 +174,19 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                             </TableHeader>
 
                             <TableBody>
+                                {(businessRoles?.length ?? 0) === 0 && (
+                                    <TableEmptyState
+                                        // Columns are conditional on permissions, so count them
+                                        // the same way the header does rather than hardcoding.
+                                        colSpan={2 + (canUpdate ? 1 : 0) + ((canUpdate || canDelete) ? 1 : 0)}
+                                        title={t("simple_mode.empty.roles.title")}
+                                        description={t("simple_mode.empty.roles.description")}
+                                        action={canCreate ? {
+                                            label: t("simple_mode.actions.staff.add_role"),
+                                            onClick: () => setRoleModal(true),
+                                        } : undefined}
+                                    />
+                                )}
                                 {businessRoles?.map((role) => (
                                     <TableRow
                                         key={role.id}

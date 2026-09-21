@@ -30,6 +30,7 @@ import { FiscalInvoiceDetailsModal } from "@/components/fiscal/FiscalInvoiceDeta
 import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
 import { useOrderDetails } from "@/features/orders/useOrders";
 import { Order } from "@/features/orders/service";
+import { TableEmptyState } from "@/components/shared/EmptyState";
 
 const TYPE_STYLES: Record<FiscalInvoiceType, string> = {
     [FiscalInvoiceType.STANDARD]: "bg-blue-100 text-blue-700 hover:bg-blue-100",
@@ -193,11 +194,11 @@ const FiscalInvoicesPage: React.FC = () => {
                                     </TableRow>
                                 ))
                             ) : invoices.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={8} className="text-center text-muted-foreground py-16">
-                                        {hasFilters ? t("fiscal_invoices_page.empty_filtered") : t("fiscal_invoices_page.empty")}
-                                    </TableCell>
-                                </TableRow>
+                                <TableEmptyState
+                                    colSpan={8}
+                                    title={hasFilters ? t("fiscal_invoices_page.empty_filtered") : t("fiscal_invoices_page.empty")}
+                                    description={hasFilters ? t("simple_mode.empty.filtered.description") : undefined}
+                                />
                             ) : invoices.map((inv) => (
                                 <TableRow
                                     key={inv.id}
