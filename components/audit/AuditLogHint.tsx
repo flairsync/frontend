@@ -75,12 +75,20 @@ export const AuditLogHint: React.FC<AuditLogHintProps> = ({
             <span
               role="button"
               tabIndex={0}
+              // preventDefault matters as much as stopPropagation: this hint is often
+              // rendered inside a link (a menu card linking to the menu, for one), and
+              // stopPropagation only stops the event reaching other handlers — the
+              // anchor's own default navigation still fires. Without this, opening the
+              // history also navigated away from the page you opened it on.
+              // For the keyboard path it also stops Space scrolling the page.
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 if (canOpenDrawer) setDrawerOpen(true);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
                   e.stopPropagation();
                   if (canOpenDrawer) setDrawerOpen(true);
                 }
