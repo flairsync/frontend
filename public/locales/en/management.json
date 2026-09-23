@@ -476,7 +476,8 @@
       "fiscal_services": "Tax setup",
       "danger": "Close or delete",
       "menu_boards": "Menu screens",
-      "loyalty": "Loyalty"
+      "loyalty": "Loyalty",
+      "data_export": "Data & backups"
     }
   },
   "permissions": {
@@ -5145,6 +5146,52 @@
         "title": "Part of a set menu",
         "hint": "Bundle this with other dishes"
       }
+    }
+  },
+  "data_export_page": {
+    "title": "Data & Backups",
+    "subtitle": "Export everything in this business — staff, menu, inventory, schedule and sales history — as a file you keep.",
+    "last_backup": "Last backup: {{when}}",
+    "records": "records",
+    "no_backup_yet": "No backup yet. Generate one below and it will be ready in about a minute.",
+    "last_failed": "The last backup failed",
+    "export_now": "Export now",
+    "preparing": "Preparing…",
+    "preparing_hint": "We're preparing your export. This usually takes under a minute — we'll email you when it's ready.",
+    "started": "Export started. We'll email you when it's ready.",
+    "include_guest_data": "Include guest details",
+    "include_guest_data_hint": "Names, emails and phone numbers of guests. Off by default — an exported file can't be reached by our privacy cleanup later, so keep it somewhere safe.",
+    "history": "Previous exports",
+    "empty": "No exports yet",
+    "download": "Download",
+    "with_guests": "with guest details",
+    "footnote": "Exports stay available for 7 days. We keep the 4 most recent for each business.",
+    "unavailable_title": "Exports aren't switched on for this deployment",
+    "unavailable_body": "Secure storage hasn't been configured yet, so we won't generate a file. Contact support and we'll sort it out.",
+    "columns": {
+      "date": "Date",
+      "type": "Type",
+      "status": "Status",
+      "size": "Size",
+      "action": ""
+    },
+    "trigger": {
+      "manual": "Manual",
+      "scheduled": "Automatic"
+    },
+    "status": {
+      "pending": "Queued",
+      "running": "In progress",
+      "ready": "Ready",
+      "failed": "Failed",
+      "expired": "Expired"
+    },
+    "errors": {
+      "already_running": "An export is already running, or one was made in the last hour.",
+      "unavailable": "Exports aren't available on this deployment yet.",
+      "expired": "That link has expired. Generate a new export.",
+      "download_failed": "Couldn't start the download. Try again.",
+      "generic": "Couldn't start the export. Try again."
     }
   }
 }

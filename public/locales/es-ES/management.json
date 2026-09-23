@@ -476,7 +476,8 @@
       "fiscal_services": "Configuración fiscal",
       "danger": "Cerrar o eliminar",
       "menu_boards": "Pantallas de carta",
-      "loyalty": "Fidelización"
+      "loyalty": "Fidelización",
+      "data_export": "Datos y copias"
     }
   },
   "permissions": {
@@ -5031,6 +5032,52 @@
         "title": "Parte de un menú",
         "hint": "Agrupar con otros platos"
       }
+    }
+  },
+  "data_export_page": {
+    "title": "Datos y copias de seguridad",
+    "subtitle": "Exporta todo lo de este negocio —personal, carta, inventario, horarios e historial de ventas— en un archivo que guardas tú.",
+    "last_backup": "Última copia: {{when}}",
+    "records": "registros",
+    "no_backup_yet": "Aún no hay ninguna copia. Genera una abajo y estará lista en un minuto aproximadamente.",
+    "last_failed": "La última copia falló",
+    "export_now": "Exportar ahora",
+    "preparing": "Preparando…",
+    "preparing_hint": "Estamos preparando tu exportación. Suele tardar menos de un minuto; te avisaremos por correo cuando esté lista.",
+    "started": "Exportación iniciada. Te avisaremos por correo cuando esté lista.",
+    "include_guest_data": "Incluir datos de clientes",
+    "include_guest_data_hint": "Nombres, correos y teléfonos de los clientes. Desactivado por defecto: nuestra limpieza de privacidad no puede alcanzar un archivo ya exportado, así que guárdalo en un lugar seguro.",
+    "history": "Exportaciones anteriores",
+    "empty": "Todavía no hay exportaciones",
+    "download": "Descargar",
+    "with_guests": "con datos de clientes",
+    "footnote": "Las exportaciones están disponibles durante 7 días. Guardamos las 4 más recientes de cada negocio.",
+    "unavailable_title": "Las exportaciones no están activadas en esta instalación",
+    "unavailable_body": "Aún no se ha configurado el almacenamiento seguro, así que no generaremos el archivo. Contacta con soporte y lo resolvemos.",
+    "columns": {
+      "date": "Fecha",
+      "type": "Tipo",
+      "status": "Estado",
+      "size": "Tamaño",
+      "action": ""
+    },
+    "trigger": {
+      "manual": "Manual",
+      "scheduled": "Automática"
+    },
+    "status": {
+      "pending": "En cola",
+      "running": "En curso",
+      "ready": "Lista",
+      "failed": "Fallida",
+      "expired": "Caducada"
+    },
+    "errors": {
+      "already_running": "Ya hay una exportación en curso, o se hizo una en la última hora.",
+      "unavailable": "Las exportaciones aún no están disponibles en esta instalación.",
+      "expired": "Ese enlace ha caducado. Genera una exportación nueva.",
+      "download_failed": "No se pudo iniciar la descarga. Inténtalo de nuevo.",
+      "generic": "No se pudo iniciar la exportación. Inténtalo de nuevo."
     }
   }
 }

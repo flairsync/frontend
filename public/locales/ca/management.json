@@ -476,7 +476,8 @@
       "danger": "Tancar o eliminar",
       "menu_boards": "Pantalles de carta",
       "loyalty": "Fidelització",
-      "nfc_tags": "Targetes NFC"
+      "nfc_tags": "Targetes NFC",
+      "data_export": "Dades i còpies"
     }
   },
   "permissions": {
@@ -5031,6 +5032,52 @@
         "title": "Part d'un menú",
         "hint": "Agrupar amb altres plats"
       }
+    }
+  },
+  "data_export_page": {
+    "title": "Dades i còpies de seguretat",
+    "subtitle": "Exporta tot el d'aquest negoci —personal, carta, inventari, horaris i historial de vendes— en un fitxer que guardes tu.",
+    "last_backup": "Última còpia: {{when}}",
+    "records": "registres",
+    "no_backup_yet": "Encara no hi ha cap còpia. Genera'n una a sota i estarà llesta en un minut aproximadament.",
+    "last_failed": "L'última còpia ha fallat",
+    "export_now": "Exporta ara",
+    "preparing": "Preparant…",
+    "preparing_hint": "Estem preparant la teva exportació. Acostuma a trigar menys d'un minut; t'avisarem per correu quan estigui llesta.",
+    "started": "Exportació iniciada. T'avisarem per correu quan estigui llesta.",
+    "include_guest_data": "Inclou dades dels clients",
+    "include_guest_data_hint": "Noms, correus i telèfons dels clients. Desactivat per defecte: la nostra neteja de privacitat no pot arribar a un fitxer ja exportat, així que guarda'l en un lloc segur.",
+    "history": "Exportacions anteriors",
+    "empty": "Encara no hi ha exportacions",
+    "download": "Descarrega",
+    "with_guests": "amb dades dels clients",
+    "footnote": "Les exportacions estan disponibles durant 7 dies. Guardem les 4 més recents de cada negoci.",
+    "unavailable_title": "Les exportacions no estan activades en aquesta instal·lació",
+    "unavailable_body": "Encara no s'ha configurat l'emmagatzematge segur, així que no generarem el fitxer. Contacta amb suport i ho resolem.",
+    "columns": {
+      "date": "Data",
+      "type": "Tipus",
+      "status": "Estat",
+      "size": "Mida",
+      "action": ""
+    },
+    "trigger": {
+      "manual": "Manual",
+      "scheduled": "Automàtica"
+    },
+    "status": {
+      "pending": "En cua",
+      "running": "En curs",
+      "ready": "Llesta",
+      "failed": "Fallida",
+      "expired": "Caducada"
+    },
+    "errors": {
+      "already_running": "Ja hi ha una exportació en curs, o se n'ha fet una a l'última hora.",
+      "unavailable": "Les exportacions encara no estan disponibles en aquesta instal·lació.",
+      "expired": "Aquest enllaç ha caducat. Genera una exportació nova.",
+      "download_failed": "No s'ha pogut iniciar la descàrrega. Torna-ho a provar.",
+      "generic": "No s'ha pogut iniciar l'exportació. Torna-ho a provar."
     }
   }
 }

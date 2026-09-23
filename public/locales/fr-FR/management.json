@@ -476,7 +476,8 @@
       "fiscal_services": "Configuration fiscale",
       "danger": "Fermer ou supprimer",
       "menu_boards": "Écrans de menu",
-      "loyalty": "Fidélité"
+      "loyalty": "Fidélité",
+      "data_export": "Données et sauvegardes"
     }
   },
   "permissions": {
@@ -5031,6 +5032,52 @@
         "title": "Inclus dans un menu",
         "hint": "Regrouper avec d'autres plats"
       }
+    }
+  },
+  "data_export_page": {
+    "title": "Données et sauvegardes",
+    "subtitle": "Exportez tout ce qui concerne cet établissement — personnel, carte, stocks, planning et historique des ventes — dans un fichier que vous conservez.",
+    "last_backup": "Dernière sauvegarde : {{when}}",
+    "records": "enregistrements",
+    "no_backup_yet": "Aucune sauvegarde pour l'instant. Générez-en une ci-dessous, elle sera prête en une minute environ.",
+    "last_failed": "La dernière sauvegarde a échoué",
+    "export_now": "Exporter maintenant",
+    "preparing": "Préparation…",
+    "preparing_hint": "Nous préparons votre export. Cela prend généralement moins d'une minute ; nous vous préviendrons par e-mail.",
+    "started": "Export lancé. Nous vous préviendrons par e-mail dès qu'il sera prêt.",
+    "include_guest_data": "Inclure les coordonnées des clients",
+    "include_guest_data_hint": "Noms, e-mails et téléphones des clients. Désactivé par défaut : notre nettoyage de confidentialité ne peut pas atteindre un fichier déjà exporté, conservez-le donc en lieu sûr.",
+    "history": "Exports précédents",
+    "empty": "Aucun export pour l'instant",
+    "download": "Télécharger",
+    "with_guests": "avec coordonnées clients",
+    "footnote": "Les exports restent disponibles 7 jours. Nous conservons les 4 plus récents par établissement.",
+    "unavailable_title": "Les exports ne sont pas activés sur cette installation",
+    "unavailable_body": "Le stockage sécurisé n'est pas encore configuré, nous ne générerons donc pas de fichier. Contactez le support.",
+    "columns": {
+      "date": "Date",
+      "type": "Type",
+      "status": "Statut",
+      "size": "Taille",
+      "action": ""
+    },
+    "trigger": {
+      "manual": "Manuel",
+      "scheduled": "Automatique"
+    },
+    "status": {
+      "pending": "En attente",
+      "running": "En cours",
+      "ready": "Prêt",
+      "failed": "Échec",
+      "expired": "Expiré"
+    },
+    "errors": {
+      "already_running": "Un export est déjà en cours, ou un export a été fait dans la dernière heure.",
+      "unavailable": "Les exports ne sont pas encore disponibles sur cette installation.",
+      "expired": "Ce lien a expiré. Générez un nouvel export.",
+      "download_failed": "Impossible de lancer le téléchargement. Réessayez.",
+      "generic": "Impossible de lancer l'export. Réessayez."
     }
   }
 }
