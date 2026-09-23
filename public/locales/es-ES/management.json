@@ -4894,6 +4894,11 @@
         "label": "Cerrar o eliminar",
         "description": "Pausar o eliminar definitivamente este negocio",
         "synonyms": "peligro, eliminar, cerrar, borrar"
+      },
+      "data_export": {
+        "label": "Datos y copias",
+        "description": "Descarga todo lo de este negocio",
+        "synonyms": "copia, seguridad, exportar, descargar, datos, guardar"
       }
     },
     "actions": {

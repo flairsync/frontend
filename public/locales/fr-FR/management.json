@@ -4894,6 +4894,11 @@
         "label": "Fermer ou supprimer",
         "description": "Suspendre ou supprimer définitivement cet établissement",
         "synonyms": "danger, supprimer, fermer, désactiver"
+      },
+      "data_export": {
+        "label": "Données et sauvegardes",
+        "description": "Téléchargez tout ce qui concerne cet établissement",
+        "synonyms": "sauvegarde, export, télécharger, données, copie"
       }
     },
     "actions": {

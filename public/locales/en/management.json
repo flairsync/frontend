@@ -5008,6 +5008,11 @@
         "label": "Close or delete",
         "description": "Pause or permanently remove this business",
         "synonyms": "danger, delete, close, shut down, remove"
+      },
+      "data_export": {
+        "label": "Data & backups",
+        "description": "Download everything in this business",
+        "synonyms": "backup, export, download, data, copy, save"
       }
     },
     "actions": {

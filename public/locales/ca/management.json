@@ -4894,6 +4894,11 @@
         "label": "Tancar o eliminar",
         "description": "Pausar o eliminar definitivament aquest negoci",
         "synonyms": "perill, eliminar, tancar, esborrar"
+      },
+      "data_export": {
+        "label": "Dades i còpies",
+        "description": "Descarrega tot el d'aquest negoci",
+        "synonyms": "còpia, seguretat, exportar, descarregar, dades, desar"
       }
     },
     "actions": {
