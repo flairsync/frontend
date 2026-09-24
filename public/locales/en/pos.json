@@ -302,6 +302,7 @@
     "order_filters": {
       "all_active": "All Active",
       "created": "Created",
+      "accepted": "Accepted",
       "preparing": "Preparing",
       "ready": "Ready"
     },
@@ -315,7 +316,8 @@
       "total_count_one": "{{count}} Total",
       "total_count_other": "{{count}} Total",
       "no_active_orders": "No active orders",
-      "load_more": "Load More"
+      "load_more": "Load More",
+      "no_matching_orders": "No orders match this filter"
     },
     "tables_view": {
       "select_a_table": "Select a Table",

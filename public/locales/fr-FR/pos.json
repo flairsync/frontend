@@ -302,6 +302,7 @@
     "order_filters": {
       "all_active": "Toutes actives",
       "created": "Créée",
+      "accepted": "Acceptée",
       "preparing": "En préparation",
       "ready": "Prête"
     },
@@ -315,7 +316,8 @@
       "total_count_one": "{{count}} au total",
       "total_count_other": "{{count}} au total",
       "no_active_orders": "Aucune commande active",
-      "load_more": "Charger plus"
+      "load_more": "Charger plus",
+      "no_matching_orders": "Aucune commande ne correspond à ce filtre"
     },
     "tables_view": {
       "select_a_table": "Sélectionner une table",

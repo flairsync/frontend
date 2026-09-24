@@ -302,6 +302,7 @@
     "order_filters": {
       "all_active": "Todos activos",
       "created": "Creado",
+      "accepted": "Aceptado",
       "preparing": "En preparación",
       "ready": "Listo"
     },
@@ -315,7 +316,8 @@
       "total_count_one": "{{count}} en total",
       "total_count_other": "{{count}} en total",
       "no_active_orders": "No hay pedidos activos",
-      "load_more": "Cargar más"
+      "load_more": "Cargar más",
+      "no_matching_orders": "Ningún pedido coincide con este filtro"
     },
     "tables_view": {
       "select_a_table": "Seleccionar una mesa",

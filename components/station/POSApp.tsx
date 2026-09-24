@@ -112,6 +112,19 @@ function useInactivityLock(timeoutMs: number, onLock: () => void) {
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
 
+// Sidebar order filters. "all" shows everything refreshOrders fetched; the rest match a
+// single OrderStatus. Every status in the fetch's status list has a chip here, so no active
+// order can become unreachable by filtering.
+type OrderFilter = "all" | "created" | "accepted" | "preparing" | "ready";
+
+const ORDER_FILTERS: { id: OrderFilter; labelKey: string }[] = [
+    { id: "all", labelKey: "pos_app.order_filters.all_active" },
+    { id: "created", labelKey: "pos_app.order_filters.created" },
+    { id: "accepted", labelKey: "pos_app.order_filters.accepted" },
+    { id: "preparing", labelKey: "pos_app.order_filters.preparing" },
+    { id: "ready", labelKey: "pos_app.order_filters.ready" },
+];
+
 // Fallback for any status not in the label maps below — turns "some_status"
 // into "Some Status" instead of showing the raw enum value to staff.
 function humanizeStatus(status: string): string {
@@ -208,6 +221,7 @@ function POSMain({
     const [menus, setMenus] = useState<PosMenu[]>(bootstrapData.menus);
     const [tables, setTables] = useState<PosTable[]>(bootstrapData.tables);
     const [activeOrders, setActiveOrders] = useState<Order[]>([]);
+    const [orderFilter, setOrderFilter] = useState<OrderFilter>("all");
 
     // ── Connectivity state ──
     const isOnline = useNetworkStatus();
@@ -300,6 +314,29 @@ function POSMain({
         () => calcTotal(cart, defaultTaxRate, station.business.taxIncluded),
         [cart, defaultTaxRate, station.business.taxIncluded],
     );
+
+    // The sidebar filter narrows what's rendered only — it never refetches, because
+    // refreshOrders already pulls the whole active set (created,accepted,preparing,ready)
+    // and paginates over it server-side. Statuses are lowercase on the wire (OrderStatus),
+    // so compare lowercased like ActiveOrderCard does.
+    const visibleOrders = useMemo(
+        () =>
+            orderFilter === "all"
+                ? activeOrders
+                : activeOrders.filter((o) => o.status?.toLowerCase() === orderFilter),
+        [activeOrders, orderFilter],
+    );
+
+    // Counts shown on the filter chips — one pass per orders change rather than one
+    // pass per chip per render, same reasoning as cartQuantityByMenuItemId below.
+    const orderCountByStatus = useMemo(() => {
+        const map = new Map<string, number>();
+        for (const o of activeOrders) {
+            const key = o.status?.toLowerCase() ?? "";
+            map.set(key, (map.get(key) ?? 0) + 1);
+        }
+        return map;
+    }, [activeOrders]);
 
     // ── Data fetching ──
     const [orderPage, setOrderPage] = useState(1);
@@ -876,18 +913,25 @@ function POSMain({
                             {/* Orders section: filters */}
                             {activeMainSection === "orders" && (
                                 <>
-                                    {[
-                                        t("pos_app.order_filters.all_active"),
-                                        t("pos_app.order_filters.created"),
-                                        t("pos_app.order_filters.preparing"),
-                                        t("pos_app.order_filters.ready"),
-                                    ].map((f) => (
+                                    {ORDER_FILTERS.map((f) => (
                                         <button
-                                            key={f}
-                                            className="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-bold text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+                                            key={f.id}
+                                            onClick={() => setOrderFilter(f.id)}
+                                            className={`flex items-center justify-between gap-3 px-3 py-3 rounded-xl text-xs font-bold transition-all ${
+                                                orderFilter === f.id
+                                                    ? "bg-primary text-primary-foreground shadow-lg"
+                                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                            }`}
                                         >
-                                            <ClipboardList className="w-4 h-4 flex-shrink-0" />
-                                            {f}
+                                            <span className="flex items-center gap-3 min-w-0">
+                                                <ClipboardList className="w-4 h-4 flex-shrink-0" />
+                                                <span className="truncate">{t(f.labelKey)}</span>
+                                            </span>
+                                            <span className="text-[10px] font-black tabular-nums opacity-70">
+                                                {f.id === "all"
+                                                    ? activeOrders.length
+                                                    : orderCountByStatus.get(f.id) ?? 0}
+                                            </span>
                                         </button>
                                     ))}
                                 </>
@@ -958,7 +1002,7 @@ function POSMain({
                                     {t("pos_app.orders_view.active_orders")}
                                 </h2>
                                 <span className="text-xs text-muted-foreground font-bold mb-1 uppercase tracking-widest">
-                                    {t("pos_app.orders_view.total_count", { count: activeOrders.length })}
+                                    {t("pos_app.orders_view.total_count", { count: visibleOrders.length })}
                                 </span>
                                 <Button
                                     variant="ghost"
@@ -971,15 +1015,17 @@ function POSMain({
                                 </Button>
                             </div>
                             <div className="grid grid-cols-[repeat(auto-fill,minmax(20rem,20rem))] gap-6">
-                                {activeOrders.length === 0 && (
+                                {visibleOrders.length === 0 && (
                                     <div className="col-span-full py-20 flex flex-col items-center justify-center text-muted-foreground bg-card/30 rounded-3xl border border-dashed border-border">
                                         <ClipboardList className="w-12 h-12 mb-4 opacity-10" />
                                         <p className="font-bold uppercase tracking-widest text-xs">
-                                            {t("pos_app.orders_view.no_active_orders")}
+                                            {activeOrders.length === 0
+                                                ? t("pos_app.orders_view.no_active_orders")
+                                                : t("pos_app.orders_view.no_matching_orders")}
                                         </p>
                                     </div>
                                 )}
-                                {activeOrders.map((order) => (
+                                {visibleOrders.map((order) => (
                                     <ActiveOrderCard
                                         key={order.id}
                                         order={order}

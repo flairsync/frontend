@@ -158,6 +158,9 @@ These are point-in-time specs written when a backend feature shipped/changed —
 | Folder/File | Topic |
 |---|---|
 | `Auth/forgot_reset_password_frontend_guide.md` | Forgot/reset password flow |
+| `Design/mobile_design_system_and_icons.md` | Design tokens, typography registers, icon sizing + the 38-tile icon/accent catalogue — the visual port target for the mobile apps |
+| `EasyMode/android_easy_mode_prompt.md` | Easy Mode (simple UI mode) port spec for the Android manager app |
+| `MobileApp/guest_app_navigation_spec.md` | Guest mobile app navigation + data spec |
 | `DinerMode/frontend_diner_mode_guide.md`, `frontend_diner_mode_updates.md` | Customer ordering UI, later updates |
 | `FloorPlan/frontend_floor_elements_guide.md` | Floor/table element editor |
 | `Jobs/frontend_jobs_guide.md`, `frontend_jobs_update_hub_invite.md` | Jobs board; invite-button + status-freeze update |

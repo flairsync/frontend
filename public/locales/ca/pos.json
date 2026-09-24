@@ -302,6 +302,7 @@
     "order_filters": {
       "all_active": "Totes actives",
       "created": "Creada",
+      "accepted": "Acceptada",
       "preparing": "En preparació",
       "ready": "Llesta"
     },
@@ -315,7 +316,8 @@
       "total_count_one": "{{count}} en total",
       "total_count_other": "{{count}} en total",
       "no_active_orders": "No hi ha comandes actives",
-      "load_more": "Carregar més"
+      "load_more": "Carregar més",
+      "no_matching_orders": "Cap comanda coincideix amb aquest filtre"
     },
     "tables_view": {
       "select_a_table": "Seleccionar una taula",
