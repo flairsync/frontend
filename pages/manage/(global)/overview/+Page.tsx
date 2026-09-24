@@ -168,7 +168,7 @@ const ManagePage: React.FC = () => {
                                     >
                                         <Card
                                             className="cursor-pointer hover:shadow-md transition-all border-border/80 bg-card group flex flex-col"
-                                            onClick={() => (window.location.href = `/manage/${biz.id}/owner/dashboard`)}
+                                            onClick={() => (window.location.href = `/manage/${biz.id}/owner/home`)}
                                         >
                                             <CardContent className="p-6">
                                                 <div className="flex items-center justify-between mb-4">

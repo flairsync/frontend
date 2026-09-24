@@ -58,7 +58,7 @@ export const BranchesMap: React.FC<BranchesMapProps> = ({ businesses }) => {
                 {located.map((b, i) => (
                     <Marker key={b.id} icon={customMarkerIcon} position={points[i]}>
                         <Popup>
-                            <a href={`/manage/${b.id}/owner/dashboard`} className="font-medium text-sm">
+                            <a href={`/manage/${b.id}/owner/home`} className="font-medium text-sm">
                                 {b.name}
                             </a>
                         </Popup>

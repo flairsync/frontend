@@ -104,7 +104,7 @@ const OwnedPage = () => {
 
                                         <div className="pt-4 flex items-center justify-between border-t border-border">
                                             <a
-                                                href={`/manage/${biz.id}/owner/dashboard`}
+                                                href={`/manage/${biz.id}/owner/home`}
                                                 className="inline-flex items-center text-primary text-sm font-semibold hover:text-primary/80 transition-colors gap-1 group/link"
                                             >
                                                 {t("owned_page.view_dashboard")}

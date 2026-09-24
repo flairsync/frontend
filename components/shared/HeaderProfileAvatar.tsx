@@ -222,7 +222,7 @@ const HeaderProfileAvatar = () => {
                                                     <DropdownMenuPortal>
                                                         <DropdownMenuSubContent>
                                                             {myBusinesses.map((biz) => (
-                                                                <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`}>
+                                                                <a key={biz.id} href={`/manage/${biz.id}/owner/home`}>
                                                                     <DropdownMenuItem className='hover:cursor-pointer'>
                                                                         {biz.name}
                                                                     </DropdownMenuItem>
@@ -250,7 +250,7 @@ const HeaderProfileAvatar = () => {
                                             </>
                                         ) : hasOwnedBusinesses ? (
                                             myBusinesses.map((biz) => (
-                                                <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`}>
+                                                <a key={biz.id} href={`/manage/${biz.id}/owner/home`}>
                                                     <DropdownMenuItem className='hover:cursor-pointer'>
                                                         {biz.name}
                                                     </DropdownMenuItem>

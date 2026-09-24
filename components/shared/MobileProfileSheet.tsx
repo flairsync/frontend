@@ -112,7 +112,7 @@ const MobileProfileSheet = () => {
                                                         {t("shared.user_menu.owned_businesses", "Owned")}
                                                     </p>
                                                     {myBusinesses.map((biz) => (
-                                                        <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
+                                                        <a key={biz.id} href={`/manage/${biz.id}/owner/home`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
                                                             {biz.name}
                                                         </a>
                                                     ))}
@@ -130,7 +130,7 @@ const MobileProfileSheet = () => {
                                             </div>
                                         ) : hasOwnedBusinesses ? (
                                             myBusinesses.map((biz) => (
-                                                <a key={biz.id} href={`/manage/${biz.id}/owner/dashboard`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
+                                                <a key={biz.id} href={`/manage/${biz.id}/owner/home`} className="block px-3 py-2 rounded-lg hover:bg-primary/5 text-sm">
                                                     {biz.name}
                                                 </a>
                                             ))

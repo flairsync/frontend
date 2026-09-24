@@ -126,7 +126,7 @@ const OrganizationDetailPage = () => {
                                 {dashboard.businesses.map((row) => (
                                     <TableRow key={row.businessId}>
                                         <TableCell className="font-medium">
-                                            <a href={`/manage/${row.businessId}/owner/dashboard`} className="hover:text-primary">
+                                            <a href={`/manage/${row.businessId}/owner/home`} className="hover:text-primary">
                                                 {row.name}
                                             </a>
                                         </TableCell>
@@ -203,7 +203,7 @@ const OrganizationDetailPage = () => {
                                             regionBusinesses.map((b) => (
                                                 <a
                                                     key={b.id}
-                                                    href={`/manage/${b.id}/owner/dashboard`}
+                                                    href={`/manage/${b.id}/owner/home`}
                                                     className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
                                                 >
                                                     <Store className="h-3.5 w-3.5" />
@@ -246,7 +246,7 @@ const OrganizationDetailPage = () => {
                     <div className="space-y-2">
                         {directBusinesses.map((b) => (
                             <div key={b.id} className="flex items-center justify-between border border-border rounded-lg p-3">
-                                <a href={`/manage/${b.id}/owner/dashboard`} className="flex items-center gap-3 min-w-0 hover:text-primary">
+                                <a href={`/manage/${b.id}/owner/home`} className="flex items-center gap-3 min-w-0 hover:text-primary">
                                     <Avatar className="h-8 w-8">
                                         <AvatarImage src={b.logo || undefined} alt={b.name} />
                                         <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">
