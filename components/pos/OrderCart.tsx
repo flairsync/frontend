@@ -66,8 +66,11 @@ export function OrderCart({
     const { t } = useTranslation("pos");
     const [itemsOpen, setItemsOpen] = useState(true);
     const [totalsOpen, setTotalsOpen] = useState(true);
+    // taxRate can arrive as a decimal string from the API — normalise before comparing or
+    // formatting it (`"10.00".toFixed` is not a function).
+    const taxRatePct = Number(taxRate) || 0;
     const grossItemsTotal = calcSubtotal(items);
-    const tax = taxExempt ? 0 : calcTax(grossItemsTotal, taxRate, taxIncluded);
+    const tax = taxExempt ? 0 : calcTax(grossItemsTotal, taxRatePct, taxIncluded);
     // When tax is included in item prices, grossItemsTotal already has it baked in — net it
     // back out for display so Subtotal + Tax = Total, same reasoning as the backend receipt
     // (GenericFiscalAdapter.buildSnapshot / OrderService.recomputeOrderTotal).
@@ -366,8 +369,8 @@ export function OrderCart({
                             <span>
                                 {taxExempt
                                     ? t("order_cart.totals.tax_exempt")
-                                    : taxRate > 0
-                                    ? t("order_cart.totals.tax_with_rate", { rate: taxRate.toFixed(0) })
+                                    : taxRatePct > 0
+                                    ? t("order_cart.totals.tax_with_rate", { rate: taxRatePct.toFixed(0) })
                                     : t("order_cart.totals.tax")}
                             </span>
                             <span>{formatCurrency(tax, currency)}</span>

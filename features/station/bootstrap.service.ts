@@ -40,6 +40,22 @@ export function normalizePosMenus(raw: any[]): PosMenu[] {
   }));
 }
 
+// The /station/me payload is the raw Station entity, so decimal columns arrive as strings
+// ("10.00"). Normalise them here the same way normalizePosMenus does for menu prices, so no
+// consumer has to remember to coerce before doing arithmetic or calling toFixed.
+export function normalizeStationInfo(raw: any): StationInfo {
+  return {
+    ...raw,
+    business: {
+      ...raw?.business,
+      taxes: (raw?.business?.taxes ?? []).map((tax: any) => ({
+        ...tax,
+        rate: Number(tax.rate) || 0,
+      })),
+    },
+  };
+}
+
 export interface StationBootstrapResult {
   stationInfo: StationInfo;
   bootstrapData: PosBootstrapData;
@@ -61,7 +77,7 @@ export const fetchStationBootstrapApiCall = async (): Promise<StationBootstrapRe
   const tables = tableRes.data?.data ?? [];
 
   return {
-    stationInfo: stationRes.data.data,
+    stationInfo: normalizeStationInfo(stationRes.data.data),
     bootstrapData: { menus: normalizePosMenus(rawMenuArray), tables },
   };
 };

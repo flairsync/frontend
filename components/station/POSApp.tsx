@@ -293,7 +293,9 @@ function POSMain({
         [tables, selectedTableId],
     );
 
-    const defaultTaxRate = station.business.taxes?.find((t) => t.isDefault)?.rate ?? 0;
+    // `rate` is a decimal column and comes back from the API as a string — coerce here so
+    // every downstream consumer (calcTotal, OrderCart, PaymentModal) gets a real number.
+    const defaultTaxRate = Number(station.business.taxes?.find((t) => t.isDefault)?.rate) || 0;
     const cartTotal = useMemo(
         () => calcTotal(cart, defaultTaxRate, station.business.taxIncluded),
         [cart, defaultTaxRate, station.business.taxIncluded],

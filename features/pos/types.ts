@@ -102,10 +102,15 @@ export function calcSubtotal(items: CartItem[]): number {
 // fraction. This is a pre-checkout preview only; the backend recomputes authoritatively once
 // the order actually exists.
 export function calcTax(subtotal: number, rate: number, included: boolean): number {
-  if (rate <= 0) return 0;
+  // BusinessTax.rate is a Postgres `decimal` column, which TypeORM serialises as a string
+  // ("10.00"), so `rate` can arrive as a string despite the type. Coerce before any
+  // arithmetic — the tax-included branch does `100 + rate`, which would otherwise
+  // string-concatenate into "10010.00".
+  const pct = Number(rate) || 0;
+  if (pct <= 0) return 0;
   return included
-    ? parseFloat((subtotal * rate / (100 + rate)).toFixed(2))
-    : parseFloat((subtotal * rate / 100).toFixed(2));
+    ? parseFloat((subtotal * pct / (100 + pct)).toFixed(2))
+    : parseFloat((subtotal * pct / 100).toFixed(2));
 }
 
 export function calcTotal(items: CartItem[], rate: number, included: boolean): number {

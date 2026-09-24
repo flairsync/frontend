@@ -23,6 +23,9 @@ export interface StationInfo {
     allowTableOrdering: boolean;
     allowTakeawayOrdering: boolean;
     taxIncluded: boolean;
+    // `rate` is a Postgres decimal column, so /station/me sends it as a string ("10.00").
+    // normalizeStationInfo (features/station/bootstrap.service.ts) coerces it on the way in,
+    // which is what makes `number` true here — don't bypass that parse step.
     taxes: { id: string; name: string; rate: number; isDefault: boolean }[];
   };
 }
