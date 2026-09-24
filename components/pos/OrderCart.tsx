@@ -40,6 +40,14 @@ interface OrderCartProps {
     onCollapse?: () => void;
 }
 
+// BusinessTax.rate is decimal(5,2), so at most two decimals are ever meaningful.
+// Trailing zeros are dropped, so 4.5 shows as "4.5%" and 10 as "10%" — never "5%"
+// (toFixed(0) rounded real rates) or "10.00%". Locale-aware for the same reason
+// formatCurrency is: a French browser writes "4,5".
+function formatTaxRate(pct: number): string {
+    return pct.toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
+
 export function OrderCart({
     items,
     orderMode,
@@ -370,7 +378,7 @@ export function OrderCart({
                                 {taxExempt
                                     ? t("order_cart.totals.tax_exempt")
                                     : taxRatePct > 0
-                                    ? t("order_cart.totals.tax_with_rate", { rate: taxRatePct.toFixed(0) })
+                                    ? t("order_cart.totals.tax_with_rate", { rate: formatTaxRate(taxRatePct) })
                                     : t("order_cart.totals.tax")}
                             </span>
                             <span>{formatCurrency(tax, currency)}</span>
