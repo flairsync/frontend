@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import WebsiteLogo from "../shared/WebsiteLogo";
 import { usePageContext } from "vike-react/usePageContext";
 import HeaderProfileAvatar from "../shared/HeaderProfileAvatar";
-import MobileProfileSheet from "../shared/MobileProfileSheet";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { ThemeToggle } from "../shared/ThemeToggle";
 import { TextSizeToggle } from "../shared/TextSizeToggle";
@@ -181,24 +180,27 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                         </div>
                     )}
 
-                    {/* Desktop auth */}
-                    <div className="hidden md:flex items-center pl-2 border-l border-border/50">
-                        {!authResolved ? (
-                            <div className="w-9 h-9" />
-                        ) : user ? (
+                    {/* Auth: HeaderProfileAvatar picks dropdown vs. bottom sheet itself */}
+                    {authResolved && user && (
+                        <div className="flex items-center md:pl-2 md:border-l md:border-border/50">
                             <HeaderProfileAvatar />
-                        ) : (
-                            <a href="/login">
-                                <Button className="px-5 py-2 ml-1 hover:cursor-pointer bg-primary text-primary-foreground rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-sm">
-                                    {t("landing_page.header.joinUsButton")}
-                                </Button>
-                            </a>
-                        )}
-                    </div>
+                        </div>
+                    )}
+                    {!(authResolved && user) && (
+                        <div className="hidden md:flex items-center pl-2 border-l border-border/50">
+                            {!authResolved ? (
+                                <div className="w-9 h-9" />
+                            ) : (
+                                <a href="/login">
+                                    <Button className="px-5 py-2 ml-1 hover:cursor-pointer bg-primary text-primary-foreground rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-sm">
+                                        {t("landing_page.header.joinUsButton")}
+                                    </Button>
+                                </a>
+                            )}
+                        </div>
+                    )}
 
-                    {/* Mobile: avatar sheet (logged in) + hamburger */}
                     <div className="md:hidden flex items-center gap-2">
-                        {authResolved && user && <MobileProfileSheet />}
                         <button
                             className="lg:hidden p-2 text-foreground/80 hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
                             onClick={() => setIsOpen(!isOpen)}

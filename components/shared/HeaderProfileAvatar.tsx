@@ -33,6 +33,7 @@ import { usePageContext } from 'vike-react/usePageContext'
 import { setLangCookie } from '@/utils/cookies'
 import { useMyBusinesses } from '@/features/business/useMyBusinesses'
 import { useMyEmployments } from '@/features/business/employment/useMyEmployments'
+import MobileProfileSheet from '@/components/shared/MobileProfileSheet'
 
 
 const languages = [
@@ -41,7 +42,7 @@ const languages = [
     { code: "es-ES", label: "Español", flag: EsFlag },
     { code: "ca", label: "Català", flag: CatFlag },
 ];
-const HeaderProfileAvatar = () => {
+const ProfileDropdownMenu = () => {
 
     const { setTheme, theme } = useTheme();
     const { setTextSize, textSize } = useTextSize();
@@ -82,213 +83,232 @@ const HeaderProfileAvatar = () => {
 
 
     return (
-        <div className="flex items-center gap-2">
-            <NotificationBubble />
-            <DropdownMenu>
-                <DropdownMenuTrigger>
-                    <div className="relative">
-                        <Avatar className='hover:cursor-pointer'>
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                                {userProfile?.getInitials() ?? "?"}
-                            </AvatarFallback>
-                        </Avatar>
-                        {user && user.verified === false && (
-                            <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full"></span>
-                        )}
-                    </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                    <DropdownMenuLabel className="flex flex-col">
-                        <span>{userProfile?.getFullName() ?? i18n.t("shared.user_menu.default_user", "User")}</span>
-                        {user && user.verified === false && (
-                            <span className="text-xs text-red-500 font-normal flex items-center gap-1 mt-1">
-                                <AlertTriangle className="w-3 h-3" />
-                                {i18n.t("shared.user_menu.unverified_account", "Unverified Account")}
-                            </span>
-                        )}
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                <div className="relative">
+                    <Avatar className='hover:cursor-pointer'>
+                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            {userProfile?.getInitials() ?? "?"}
+                        </AvatarFallback>
+                    </Avatar>
                     {user && user.verified === false && (
-                        <>
-                            <a href='/verify'>
-                                <DropdownMenuItem className='hover:cursor-pointer text-red-600 focus:text-red-700 focus:bg-red-50'>
-                                    <AlertTriangle className="w-4 h-4 mr-2" />
-                                    {i18n.t("shared.user_menu.verify_email", "Verify Email")}
-                                </DropdownMenuItem>
-                            </a>
-                            <DropdownMenuSeparator />
-                        </>
+                        <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full"></span>
                     )}
+                </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuLabel className="flex flex-col">
+                    <span>{userProfile?.getFullName() ?? i18n.t("shared.user_menu.default_user", "User")}</span>
+                    {user && user.verified === false && (
+                        <span className="text-xs text-red-500 font-normal flex items-center gap-1 mt-1">
+                            <AlertTriangle className="w-3 h-3" />
+                            {i18n.t("shared.user_menu.unverified_account", "Unverified Account")}
+                        </span>
+                    )}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
 
-                    <a
-                        href='/profile/overview'
-                    >
-                        <DropdownMenuItem className='hover:cursor-pointer'>
-                            {i18n.t("shared.user_menu.profile", "Profile")}
-                        </DropdownMenuItem>
-                    </a>
-
-                    <a href='/profile/settings'>
-                        <DropdownMenuItem className='hover:cursor-pointer'>
-                            {i18n.t("shared.user_menu.settings", "Settings")}
-                        </DropdownMenuItem>
-                    </a>
-
-                    <a href='/profile/jobs'>
-                        <DropdownMenuItem className='hover:cursor-pointer'>
-                            {i18n.t("shared.user_menu.jobs", "Jobs")}
-                        </DropdownMenuItem>
-                    </a>
-
-                    <DropdownMenuGroup>
-                        <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.language", "Language")}</DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-
-                                    {languages.map((lang) => (
-                                        <DropdownMenuItem
-                                            key={lang.code}
-                                            onClick={() => handleSelect(lang.code)}
-                                            className="flex items-center gap-2 hover:cursor-pointer"
-
-                                        >
-                                            {i18n.language == lang.code && <CheckCircle />}
-                                            <img src={lang.flag} alt={lang.label} loading="lazy" className="w-5 h-5" />
-                                            {lang.label}
-                                        </DropdownMenuItem>
-                                    ))}
-
-                                </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                    </DropdownMenuGroup>
-                    <DropdownMenuGroup>
-                        <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.theme", "Theme")}</DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    <DropdownMenuItem onClick={() => setTheme("light")}>
-                                        {theme == "light" && <CheckCircle2 />}
-                                        {i18n.t("shared.theme.light", "Light")}</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                        {theme == "dark" && <CheckCircle2 />}
-                                        {i18n.t("shared.theme.dark", "Dark")}</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => setTheme("system")}>
-                                        {theme == "system" && <CheckCircle2 />}
-                                        {i18n.t("shared.theme.auto", "Auto")}</DropdownMenuItem>
-                                </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                    </DropdownMenuGroup>
-                    <DropdownMenuGroup>
-                        <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.text_size", "Text Size")}</DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    {textSizeOptions.map(({ value, labelKey, fallback }) => (
-                                        <DropdownMenuItem key={value} onClick={() => setTextSize(value)}>
-                                            {textSize == value && <CheckCircle2 />}
-                                            {i18n.t(labelKey, fallback)}
-                                        </DropdownMenuItem>
-                                    ))}
-                                </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-
-                    {hasOwnedBusinesses || hasJoinedBusinesses ? (
-                        <DropdownMenuGroup>
-                            <DropdownMenuSub>
-                                <DropdownMenuSubTrigger>
-                                    {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
-                                </DropdownMenuSubTrigger>
-                                <DropdownMenuPortal>
-                                    <DropdownMenuSubContent>
-                                        <a href='/manage/overview'>
-                                            <DropdownMenuItem className='hover:cursor-pointer'>
-                                                {i18n.t("shared.user_menu.view_all_businesses", "View All")}
-                                            </DropdownMenuItem>
-                                        </a>
-                                        <DropdownMenuSeparator />
-                                        {hasOwnedBusinesses && hasJoinedBusinesses ? (
-                                            <>
-                                                <DropdownMenuSub>
-                                                    <DropdownMenuSubTrigger>
-                                                        {i18n.t("shared.user_menu.owned_businesses", "Owned")}
-                                                    </DropdownMenuSubTrigger>
-                                                    <DropdownMenuPortal>
-                                                        <DropdownMenuSubContent>
-                                                            {myBusinesses.map((biz) => (
-                                                                <a key={biz.id} href={`/manage/${biz.id}/owner/home`}>
-                                                                    <DropdownMenuItem className='hover:cursor-pointer'>
-                                                                        {biz.name}
-                                                                    </DropdownMenuItem>
-                                                                </a>
-                                                            ))}
-                                                        </DropdownMenuSubContent>
-                                                    </DropdownMenuPortal>
-                                                </DropdownMenuSub>
-                                                <DropdownMenuSub>
-                                                    <DropdownMenuSubTrigger>
-                                                        {i18n.t("shared.user_menu.joined_businesses", "Joined")}
-                                                    </DropdownMenuSubTrigger>
-                                                    <DropdownMenuPortal>
-                                                        <DropdownMenuSubContent>
-                                                            {joinedBusinesses.map((emp) => (
-                                                                <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`}>
-                                                                    <DropdownMenuItem className='hover:cursor-pointer'>
-                                                                        {emp.business.name}
-                                                                    </DropdownMenuItem>
-                                                                </a>
-                                                            ))}
-                                                        </DropdownMenuSubContent>
-                                                    </DropdownMenuPortal>
-                                                </DropdownMenuSub>
-                                            </>
-                                        ) : hasOwnedBusinesses ? (
-                                            myBusinesses.map((biz) => (
-                                                <a key={biz.id} href={`/manage/${biz.id}/owner/home`}>
-                                                    <DropdownMenuItem className='hover:cursor-pointer'>
-                                                        {biz.name}
-                                                    </DropdownMenuItem>
-                                                </a>
-                                            ))
-                                        ) : (
-                                            joinedBusinesses.map((emp) => (
-                                                <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`}>
-                                                    <DropdownMenuItem className='hover:cursor-pointer'>
-                                                        {emp.business.name}
-                                                    </DropdownMenuItem>
-                                                </a>
-                                            ))
-                                        )}
-                                    </DropdownMenuSubContent>
-                                </DropdownMenuPortal>
-                            </DropdownMenuSub>
-                        </DropdownMenuGroup>
-                    ) : (
-                        <a
-                            href='/manage/overview'
-                        >
-                            <DropdownMenuItem className='hover:cursor-pointer'>
-                                {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                {user && user.verified === false && (
+                    <>
+                        <a href='/verify'>
+                            <DropdownMenuItem className='hover:cursor-pointer text-red-600 focus:text-red-700 focus:bg-red-50'>
+                                <AlertTriangle className="w-4 h-4 mr-2" />
+                                {i18n.t("shared.user_menu.verify_email", "Verify Email")}
                             </DropdownMenuItem>
                         </a>
-                    )}
+                        <DropdownMenuSeparator />
+                    </>
+                )}
 
-                    <DropdownMenuSeparator />
+                <a
+                    href='/profile/overview'
+                >
+                    <DropdownMenuItem className='hover:cursor-pointer'>
+                        {i18n.t("shared.user_menu.profile", "Profile")}
+                    </DropdownMenuItem>
+                </a>
+
+                <a href='/profile/settings'>
+                    <DropdownMenuItem className='hover:cursor-pointer'>
+                        {i18n.t("shared.user_menu.settings", "Settings")}
+                    </DropdownMenuItem>
+                </a>
+
+                <a href='/profile/jobs'>
+                    <DropdownMenuItem className='hover:cursor-pointer'>
+                        {i18n.t("shared.user_menu.jobs", "Jobs")}
+                    </DropdownMenuItem>
+                </a>
+
+                <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.language", "Language")}</DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+
+                                {languages.map((lang) => (
+                                    <DropdownMenuItem
+                                        key={lang.code}
+                                        onClick={() => handleSelect(lang.code)}
+                                        className="flex items-center gap-2 hover:cursor-pointer"
+
+                                    >
+                                        {i18n.language == lang.code && <CheckCircle />}
+                                        <img src={lang.flag} alt={lang.label} loading="lazy" className="w-5 h-5" />
+                                        {lang.label}
+                                    </DropdownMenuItem>
+                                ))}
+
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.theme", "Theme")}</DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                                <DropdownMenuItem onClick={() => setTheme("light")}>
+                                    {theme == "light" && <CheckCircle2 />}
+                                    {i18n.t("shared.theme.light", "Light")}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                    {theme == "dark" && <CheckCircle2 />}
+                                    {i18n.t("shared.theme.dark", "Dark")}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setTheme("system")}>
+                                    {theme == "system" && <CheckCircle2 />}
+                                    {i18n.t("shared.theme.auto", "Auto")}</DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>{i18n.t("shared.user_menu.text_size", "Text Size")}</DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                                {textSizeOptions.map(({ value, labelKey, fallback }) => (
+                                    <DropdownMenuItem key={value} onClick={() => setTextSize(value)}>
+                                        {textSize == value && <CheckCircle2 />}
+                                        {i18n.t(labelKey, fallback)}
+                                    </DropdownMenuItem>
+                                ))}
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+
+                {hasOwnedBusinesses || hasJoinedBusinesses ? (
+                    <DropdownMenuGroup>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                                {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    <a href='/manage/overview'>
+                                        <DropdownMenuItem className='hover:cursor-pointer'>
+                                            {i18n.t("shared.user_menu.view_all_businesses", "View All")}
+                                        </DropdownMenuItem>
+                                    </a>
+                                    <DropdownMenuSeparator />
+                                    {hasOwnedBusinesses && hasJoinedBusinesses ? (
+                                        <>
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger>
+                                                    {i18n.t("shared.user_menu.owned_businesses", "Owned")}
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+                                                        {myBusinesses.map((biz) => (
+                                                            <a key={biz.id} href={`/manage/${biz.id}/owner/home`}>
+                                                                <DropdownMenuItem className='hover:cursor-pointer'>
+                                                                    {biz.name}
+                                                                </DropdownMenuItem>
+                                                            </a>
+                                                        ))}
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                            <DropdownMenuSub>
+                                                <DropdownMenuSubTrigger>
+                                                    {i18n.t("shared.user_menu.joined_businesses", "Joined")}
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+                                                        {joinedBusinesses.map((emp) => (
+                                                            <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`}>
+                                                                <DropdownMenuItem className='hover:cursor-pointer'>
+                                                                    {emp.business.name}
+                                                                </DropdownMenuItem>
+                                                            </a>
+                                                        ))}
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                        </>
+                                    ) : hasOwnedBusinesses ? (
+                                        myBusinesses.map((biz) => (
+                                            <a key={biz.id} href={`/manage/${biz.id}/owner/home`}>
+                                                <DropdownMenuItem className='hover:cursor-pointer'>
+                                                    {biz.name}
+                                                </DropdownMenuItem>
+                                            </a>
+                                        ))
+                                    ) : (
+                                        joinedBusinesses.map((emp) => (
+                                            <a key={emp.id} href={`/manage/${emp.business.id}/staff/dashboard`}>
+                                                <DropdownMenuItem className='hover:cursor-pointer'>
+                                                    {emp.business.name}
+                                                </DropdownMenuItem>
+                                            </a>
+                                        ))
+                                    )}
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                ) : (
+                    <a
+                        href='/manage/overview'
+                    >
+                        <DropdownMenuItem className='hover:cursor-pointer'>
+                            {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                        </DropdownMenuItem>
+                    </a>
+                )}
+
+                <DropdownMenuSeparator />
 
 
-                    <DropdownMenuItem
-                        onClick={() => {
-                            logoutUser();
-                        }}
-                    >{i18n.t("shared.user_menu.logout", "Logout")}</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+                <DropdownMenuItem
+                    onClick={() => {
+                        logoutUser();
+                    }}
+                >{i18n.t("shared.user_menu.logout", "Logout")}</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
+
+/**
+ * The single entry point for the header user menu.
+ *
+ * Both variants are rendered and swapped with CSS rather than a matchMedia hook so the
+ * server-rendered markup matches the client on first paint. Call sites must not pick a
+ * variant themselves — that's what left the owner/staff layouts showing a desktop
+ * dropdown on phones.
+ */
+const HeaderProfileAvatar = () => {
+    return (
+        <div className="flex items-center gap-1">
+            <NotificationBubble />
+            <div className="hidden md:flex">
+                <ProfileDropdownMenu />
+            </div>
+            <div className="flex md:hidden">
+                <MobileProfileSheet />
+            </div>
         </div>
     )
 }

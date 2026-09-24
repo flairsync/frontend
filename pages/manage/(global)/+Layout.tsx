@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import HeaderProfileAvatar from '@/components/shared/HeaderProfileAvatar';
-import MobileProfileSheet from '@/components/shared/MobileProfileSheet';
 import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { motion, AnimatePresence } from "framer-motion"
 import { useProfile } from '@/features/profile/useProfile';
@@ -55,12 +54,7 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         Welcome back, {userProfile?.getFullName()}
                     </span>
                     <div className="flex flex-1 justify-end items-center gap-1 mr-2 md:mr-10">
-                        <div className="hidden md:flex">
-                            <HeaderProfileAvatar />
-                        </div>
-                        <div className="flex md:hidden">
-                            <MobileProfileSheet />
-                        </div>
+                        <HeaderProfileAvatar />
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
