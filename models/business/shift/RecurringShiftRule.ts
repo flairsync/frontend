@@ -1,8 +1,14 @@
 export interface RecurringShiftRule {
   id: string;
   businessId: string;
-  employmentId: string;
-  dayOfWeek: number; // 0=Sunday, 1=Monday...
+  /**
+   * Who the rule schedules. Both may be set at once, and the two behave differently:
+   * employmentIds is a fixed list, while teamId is re-read from the team's membership on
+   * every generation pass — so someone joining the team later gets scheduled automatically.
+   */
+  employmentIds: string[];
+  teamId: string | null;
+  daysOfWeek: number[]; // 0=Sunday, 1=Monday...
   startTime: string; // "HH:mm"
   endTime: string; // "HH:mm"
   startDate: string; // "YYYY-MM-DD"

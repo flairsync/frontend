@@ -38,7 +38,10 @@ export const useRecurringRules = (businessId: string) => {
         businessId,
         startDate: formatToDateOnly(data.startDate),
         endDate: data.endDate ? formatToDateOnly(data.endDate) : null,
-        interval: data.interval || 1
+        interval: data.interval || 1,
+        daysOfWeek: data.daysOfWeek ?? [],
+        employmentIds: data.employmentIds ?? [],
+        teamId: data.teamId || undefined,
       }),
     onSuccess: () => {
       toast.success("Recurring rule created successfully");
@@ -55,7 +58,13 @@ export const useRecurringRules = (businessId: string) => {
       updateRecurringRuleApiCall(ruleId, businessId, {
         ...data,
         startDate: data.startDate ? formatToDateOnly(data.startDate) : undefined,
-        endDate: data.endDate ? formatToDateOnly(data.endDate) : undefined, // Could be null
+        // Distinguish "not editing the end date" from "clearing it": undefined is dropped
+        // server-side, null is an explicit "repeat with no end".
+        endDate: data.endDate === undefined ? undefined : data.endDate ? formatToDateOnly(data.endDate) : null,
+        // teamId null means "no team" and must reach the API; undefined would leave the
+        // existing team in place, so switching a team rule back to named staff would silently
+        // keep scheduling the whole team.
+        teamId: data.teamId === undefined ? undefined : data.teamId,
       }),
     onSuccess: () => {
       toast.success("Recurring rule updated successfully");

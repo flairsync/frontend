@@ -1,5 +1,6 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
+import { RecurringShiftRule } from "@/models/business/shift/RecurringShiftRule";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 // DTOs
@@ -270,10 +271,14 @@ export const generateDraftApiCall = async (
   businessId: string,
   startDate: string,
   endDate: string,
-  employmentId?: string
+  employmentId?: string,
+  ruleId?: string
 ): Promise<Shift[]> => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append("employmentId", employmentId);
+  // Scopes generation to the rule that was just saved, so saving one rule doesn't
+  // materialize drafts for every other rule in the business.
+  if (ruleId) params.append("ruleId", ruleId);
   const created = unwrap<Shift[]>(await flairapi.post(`${baseUrl}/generate-draft?${params.toString()}`));
   return Array.isArray(created) ? created : [];
 };
@@ -292,12 +297,14 @@ export const fetchRecurringRulesApiCall = async (businessId: string) => {
   return data;
 };
 
-export const createRecurringRuleApiCall = (data: any) => {
-  return flairapi.post(`${baseUrl}/rules`, data);
+// Unwrapped so the caller gets the saved rule back — its id is what scopes the
+// generate-draft call that runs straight after saving.
+export const createRecurringRuleApiCall = async (data: any): Promise<RecurringShiftRule> => {
+  return unwrap<RecurringShiftRule>(await flairapi.post(`${baseUrl}/rules`, data));
 };
 
-export const updateRecurringRuleApiCall = (ruleId: string, businessId: string, data: any) => {
-  return flairapi.patch(`${baseUrl}/rules/${ruleId}`, { ...data, businessId });
+export const updateRecurringRuleApiCall = async (ruleId: string, businessId: string, data: any): Promise<RecurringShiftRule> => {
+  return unwrap<RecurringShiftRule>(await flairapi.patch(`${baseUrl}/rules/${ruleId}`, { ...data, businessId }));
 };
 
 export const deleteRecurringRuleApiCall = (ruleId: string, businessId: string) => {
