@@ -2,11 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
-import { Plus, Edit, Trash2, Info } from 'lucide-react'
+import { Plus, Edit, Trash2, Info, Users } from 'lucide-react'
 import { TableEmptyState } from '@/components/shared/EmptyState'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useRecurringRules } from '@/features/shifts/useRecurringRules'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
+import { useBusinessTeams } from '@/features/business/team/useBusinessTeams'
 import { RecurringShiftRule } from '@/models/business/shift/RecurringShiftRule'
 import { Badge } from '@/components/ui/badge'
 import { RecurringRuleModal } from './RecurringRuleModal'
@@ -23,6 +24,7 @@ const ManagerScheduleRecurringRulesTab = () => {
     } = useRecurringRules(businessId as string);
 
     const { employees } = useBusinessEmployees(businessId as string, { limit: 100 });
+    const { teams } = useBusinessTeams(businessId as string);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRule, setSelectedRule] = useState<RecurringShiftRule | null>(null);
@@ -41,6 +43,11 @@ const ManagerScheduleRecurringRulesTab = () => {
         const emp = employees?.find(e => e.id === id);
         return emp?.professionalProfile?.displayName || emp?.professionalProfile?.firstName || t("schedule_recurring_rules_tab.unknown_staff");
     };
+
+    const getTeamName = (id: string) => teams?.find(tm => tm.id === id)?.name ?? t("schedule_recurring_rules_tab.unknown_team");
+
+    // Rotas read Monday-first; stored day numbers stay 0=Sunday to match Date.getDay().
+    const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
     const DAYS = [
         t("schedule_recurring_rules_tab.days.sunday"),
@@ -78,8 +85,8 @@ const ManagerScheduleRecurringRulesTab = () => {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>{t("schedule_recurring_rules_tab.col_staff_member")}</TableHead>
-                            <TableHead>{t("schedule_recurring_rules_tab.col_day_of_week")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_who")}</TableHead>
+                            <TableHead>{t("schedule_recurring_rules_tab.col_days")}</TableHead>
                             <TableHead>{t("schedule_recurring_rules_tab.col_start_time")}</TableHead>
                             <TableHead>{t("schedule_recurring_rules_tab.col_end_time")}</TableHead>
                             <TableHead>{t("schedule_recurring_rules_tab.col_start_date")}</TableHead>
@@ -102,8 +109,34 @@ const ManagerScheduleRecurringRulesTab = () => {
                         ) : (
                             rules.map((rule) => (
                                 <TableRow key={rule.id}>
-                                    <TableCell className="font-medium">{getEmployeeName(rule.employmentId)}</TableCell>
-                                    <TableCell>{DAYS[rule.dayOfWeek]}</TableCell>
+                                    <TableCell className="font-medium">
+                                        {rule.teamId ? (
+                                            <span className="flex items-center gap-1.5">
+                                                <Users className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                                                {getTeamName(rule.teamId)}
+                                            </span>
+                                        ) : rule.employmentIds?.length === 1 ? (
+                                            getEmployeeName(rule.employmentIds[0])
+                                        ) : rule.employmentIds?.length ? (
+                                            /* Names in full past a couple of people would push every other
+                                               column off screen, so the count leads and the names stay
+                                               available on hover. */
+                                            <span title={rule.employmentIds.map(getEmployeeName).join(", ")}>
+                                                {t("schedule_recurring_rules_tab.staff_count", { count: rule.employmentIds.length })}
+                                            </span>
+                                        ) : (
+                                            <span className="text-muted-foreground">{t("schedule_recurring_rules_tab.no_target")}</span>
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1">
+                                            {DAY_ORDER.filter(d => rule.daysOfWeek?.includes(d)).map(d => (
+                                                <Badge key={d} variant="outline" className="px-1.5 py-0 text-[10px] font-normal">
+                                                    {DAYS[d].slice(0, 3)}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </TableCell>
                                     <TableCell>{rule.startTime}</TableCell>
                                     <TableCell>{rule.endTime}</TableCell>
                                     <TableCell>{rule.startDate}</TableCell>
