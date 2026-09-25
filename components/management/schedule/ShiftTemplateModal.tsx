@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { ShiftTemplate } from "@/models/business/shift/ShiftTemplate";
+import { toTimeInputValue } from "./ShiftPresetPicker";
 import { useTranslation } from "react-i18next";
 
 interface ShiftTemplateModalProps {
@@ -29,8 +30,8 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
         enableReinitialize: true,
         initialValues: {
             name: template?.name || "",
-            startTime: template?.startTime || "09:00",
-            endTime: template?.endTime || "17:00",
+            startTime: toTimeInputValue(template?.startTime || "") || "09:00",
+            endTime: toTimeInputValue(template?.endTime || "") || "17:00",
             colorCode: template?.colorCode || "#000000",
         },
         onSubmit,
@@ -41,11 +42,22 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
 
+    // Live length feedback, so a typo like 09:00–07:00 reads as "22h 0m, ends next day"
+    // instead of silently saving an overnight preset nobody meant to create.
+    const duration = (() => {
+        const [sh, sm] = formik.values.startTime.split(':').map(Number);
+        const [eh, em] = formik.values.endTime.split(':').map(Number);
+        if ([sh, sm, eh, em].some(n => Number.isNaN(n))) return null;
+        const minutes = ((eh * 60 + em) - (sh * 60 + sm) + 24 * 60) % (24 * 60);
+        return { hours: Math.floor(minutes / 60), minutes: minutes % 60, overnight: eh * 60 + em < sh * 60 + sm };
+    })();
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>{template ? t("schedule_modals.shift_template.edit_title") : t("schedule_modals.shift_template.create_title")}</DialogTitle>
+                    <DialogDescription>{t("schedule_modals.shift_template.description")}</DialogDescription>
                 </DialogHeader>
                 <form onSubmit={formik.handleSubmit} className="space-y-4 pt-4">
                     <div className="space-y-2">
@@ -83,6 +95,12 @@ export const ShiftTemplateModal: React.FC<ShiftTemplateModalProps> = ({
                             />
                         </div>
                     </div>
+                    {duration && (
+                        <p className="text-xs text-muted-foreground">
+                            {t("schedule_modals.shift_template.duration_summary", { hours: duration.hours, minutes: duration.minutes })}
+                            {duration.overnight && ` — ${t("schedule_modals.shift_template.overnight_note")}`}
+                        </p>
+                    )}
                     <div className="space-y-2">
                         <Label htmlFor="colorCode">{t("schedule_modals.shift_template.color_label")}</Label>
                         <div className="flex gap-2 items-center">

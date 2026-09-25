@@ -1379,7 +1379,7 @@
       "saturday": "Samedi"
     },
     "heading": "Règles de créneaux récurrents",
-    "subheading": "Gérez les modèles de créneaux à long terme pour votre personnel.",
+    "subheading": "Habitudes hebdomadaires par salarié, par exemple « Sam travaille tous les vendredis soir ».",
     "new_rule": "Nouvelle règle",
     "col_staff_member": "Membre du personnel",
     "col_day_of_week": "Jour de la semaine",
@@ -1391,7 +1391,10 @@
     "loading": "Chargement...",
     "no_rules": "Aucune règle récurrente trouvée.",
     "status_active": "Active",
-    "status_inactive": "Inactive"
+    "status_inactive": "Inactive",
+    "how_it_works_title": "Une règle décrit une habitude — elle ne crée pas de services",
+    "how_it_works_body": "Rien n'apparaît sur le planning avant d'appuyer sur Générer dans l'onglet Planification du personnel, ce qui transforme les règles couvrant la semaine affichée en services brouillons. Enregistrer une règle ici génère aussi immédiatement les brouillons de la semaine en cours.",
+    "empty_description": "Les règles sont facultatives. Ajoutez-en une pour toute personne qui travaille les mêmes jours et heures chaque semaine, puis appuyez sur Générer sur le planning."
   },
   "schedule_time_off_tab": {
     "unknown_staff": "Personnel inconnu",
@@ -1411,16 +1414,26 @@
     }
   },
   "schedule_shifts_tab": {
-    "heading": "Modèles de créneaux",
-    "new_template": "Nouveau modèle",
+    "heading": "Horaires types",
+    "new_template": "Nouvel horaire type",
     "col_color": "Couleur",
     "col_shift_name": "Nom du créneau",
     "col_start_time": "Heure de début",
     "col_end_time": "Heure de fin",
     "col_actions": "Actions",
     "loading": "Chargement...",
-    "no_templates": "Aucun modèle trouvé. Créez-en un pour commencer.",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "subheading": "Des heures de début/fin nommées, à réutiliser au lieu de les retaper. Un horaire type n'est pas un planning — seul, il n'affecte personne.",
+    "where_used_title": "Où sert un horaire type",
+    "where_used_single": "En ajoutant ou modifiant un service sur le planning — choisissez un horaire type pour remplir les heures.",
+    "where_used_bulk": "Ajouter des services → Configuration groupée ou Planifier une équipe — appliquez un horaire type sur une plage de dates.",
+    "where_used_rule": "En créant un service récurrent — choisissez un horaire type pour remplir les heures de la règle.",
+    "where_used_caveat": "La couleur n'apparaît que dans cette liste. Sur le planning, les services sont colorés selon leur état (brouillon, publié, validé), pas selon l'horaire type.",
+    "col_length": "Durée",
+    "duration": "{{hours}} h {{minutes}} min",
+    "next_day": "jour suivant",
+    "empty_title": "Aucun horaire type",
+    "empty_description": "Les horaires types sont facultatifs. Ajoutez-en un pour chaque service fréquent — « Matin 08:00–16:00 », « Soir 17:00–23:00 » — et vous ne retaperez plus les heures."
   },
   "schedule_swaps_tab": {
     "unknown_staff": "Inconnu",
@@ -1508,7 +1521,25 @@
     "context_create_open_shift": "Créer un créneau ouvert",
     "unnamed_staff_fallback": "Personnel sans nom",
     "footer_daily_totals": "TOTAUX QUOTIDIENS",
-    "footer_hrs_est_cost": "Heures / Coût estimé"
+    "footer_hrs_est_cost": "Heures / Coût estimé",
+    "bulk_staff_setup_hint": "Un seul salarié, les mêmes heures sur une plage de dates.",
+    "schedule_team_hint": "Tous les membres d'une équipe, les mêmes heures sur une plage de dates.",
+    "add_shifts_single_hint": "Pour un seul service, faites un clic droit sur une case de la grille ci-dessous.",
+    "generate_tooltip": "Crée des services brouillons à partir de vos règles récurrentes actives, pour les dates affichées. Ne fait rien si aucune règle ne couvre cette période.",
+    "copy_previous_week_tooltip": "Duplique les services de la semaine précédente dans la semaine affichée. Les services en conflit sont ignorés.",
+    "publish_tooltip_one": "Rend visible au personnel le brouillon de ces dates. Jusque-là, vous seul le voyez.",
+    "publish_tooltip_other": "Rend visibles au personnel les {{count}} brouillons de ces dates. Jusque-là, vous seul les voyez.",
+    "publish_tooltip_empty": "Rien à publier — tous les services de ces dates sont déjà visibles par le personnel.",
+    "filter_all": "Tous",
+    "filter_draft": "Brouillons",
+    "filter_published": "Publiés",
+    "legend_published": "Publié — visible par le personnel",
+    "legend_draft": "Brouillon — visible par vous seul",
+    "legend_validated": "Validé — heures verrouillées pour la paie",
+    "legend_no_show": "Absence injustifiée",
+    "legend_open": "Service à pourvoir — personne d'affecté",
+    "legend_conflict": "En conflit avec un congé approuvé",
+    "legend_right_click_hint": "Clic droit sur une case pour ajouter un service."
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -1588,18 +1619,21 @@
       "submit_request": "Envoyer la demande"
     },
     "shift_template": {
-      "edit_title": "Modifier le modèle de créneau",
-      "create_title": "Créer un nouveau modèle",
-      "name_label": "Nom du modèle",
+      "edit_title": "Modifier l'horaire type",
+      "create_title": "Nouvel horaire type",
+      "name_label": "Nom de l'horaire type",
       "name_placeholder": "ex. Créneau du matin",
       "start_time_label": "Heure de début",
       "end_time_label": "Heure de fin",
-      "color_label": "Couleur du modèle",
-      "color_hint": "Sélectionnez une couleur pour identifier ce modèle",
+      "color_label": "Couleur",
+      "color_hint": "Sert uniquement à distinguer les horaires types dans cette liste.",
       "delete": "Supprimer",
       "cancel": "Annuler",
       "saving": "Enregistrement...",
-      "save": "Enregistrer"
+      "save": "Enregistrer",
+      "description": "Un couple d'heures de début/fin réutilisable. Vous l'appliquez en ajoutant des services ou en créant une règle récurrente — l'enregistrer ne planifie personne.",
+      "duration_summary": "Durée : {{hours}} h {{minutes}} min",
+      "overnight_note": "se termine le jour suivant"
     },
     "request_shift_swap": {
       "title": "Demander un échange de créneau",
@@ -1655,29 +1689,28 @@
     },
     "bulk_weekly_setup": {
       "error_default": "Échec de la planification des créneaux du personnel",
-      "title": "Configuration groupée des créneaux du personnel",
-      "description": "Affectez plusieurs créneaux à un membre du personnel spécifique sur différentes dates.",
+      "title": "Planifier un salarié",
+      "description": "Donne le même service à un seul salarié, à chaque date choisie. Pour toute une équipe d'un coup, utilisez Planifier une équipe.",
       "conflicts_count": "{{count}} créneau(x) n'ont pas pu être planifiés :",
       "select_staff_label": "Sélectionner un membre du personnel",
       "loading_employees": "Chargement des employés...",
       "choose_employee": "Choisir un employé",
       "unnamed_staff": "Personnel sans nom",
       "shift_time_label": "Horaire du créneau",
-      "use_template": "Utiliser un modèle",
-      "custom_time": "Horaire personnalisé",
-      "loading_templates": "Chargement des modèles...",
-      "choose_template": "Choisir un modèle",
+      "use_template": "Utiliser un horaire type",
+      "custom_time": "Saisir les heures manuellement",
+      "loading_templates": "Chargement des horaires types…",
+      "choose_template": "Choisir un horaire type",
       "start_label": "Début",
       "end_label": "Fin",
-      "unpaid_break_label": "Pause non rémunérée (minutes)",
-      "unpaid_break_placeholder": "ex. 30",
-      "unpaid_break_hint": "Ce temps sera déduit des heures rémunérées.",
       "date_range_label": "Plage de dates",
       "days_selected_one": "{{count}} jour sélectionné — cliquez pour retirer",
       "days_selected_other": "{{count}} jours sélectionnés — cliquez pour retirer",
       "cancel": "Annuler",
       "scheduling": "Planification...",
-      "schedule_staff": "Planifier le personnel"
+      "schedule_staff": "Planifier le personnel",
+      "no_presets_hint": "Aucun horaire type enregistré — créez-en sous Planning → Horaires types.",
+      "break_hint": "Les pauses non payées se règlent service par service : créez les services ici, puis ouvrez-en un sur le planning pour ajouter sa pause."
     },
     "individual_schedule": {
       "error_update": "Échec de la mise à jour du créneau",
@@ -1734,7 +1767,7 @@
       },
       "edit_title": "Modifier la règle récurrente",
       "create_title": "Créer une règle récurrente",
-      "description": "Définissez un modèle de créneau qui se répète chaque semaine.",
+      "description": "Une habitude hebdomadaire pour un salarié. La règle elle-même ne crée pas de services — c'est Générer, sur le planning, qui la transforme en brouillons.",
       "employee_label": "Employé",
       "loading_employees": "Chargement des employés...",
       "choose_employee": "Choisir un employé",
@@ -1757,33 +1790,33 @@
       "cancel": "Annuler",
       "saving": "Enregistrement...",
       "update_rule": "Mettre à jour la règle",
-      "create_rule": "Créer la règle"
+      "create_rule": "Créer la règle",
+      "generates_draft_note": "Enregistrer cette règle génère immédiatement les services brouillons de la semaine en cours. Pour toute autre semaine, ouvrez le planning et appuyez sur Générer."
     },
     "bulk_schedule": {
       "error_default": "Échec de la planification des créneaux de l'équipe",
-      "title": "Planification groupée de l'équipe",
-      "description": "Affectez des créneaux à tous les employés actifs d'une équipe sur plusieurs dates.",
+      "title": "Planifier toute une équipe",
+      "description": "Donne le même service à chaque membre d'une équipe, à chaque date choisie. Pour une seule personne, utilisez la configuration groupée par salarié.",
       "conflicts_count": "{{count}} créneau(x) n'ont pas pu être planifiés :",
       "conflict_employee_line": "{{date}} — Employé {{employmentId}}",
       "select_team_label": "Sélectionner une équipe",
       "loading_teams": "Chargement des équipes...",
       "choose_team": "Choisir une équipe",
       "shift_time_label": "Horaire du créneau",
-      "use_template": "Utiliser un modèle",
-      "custom_time": "Horaire personnalisé",
-      "loading_templates": "Chargement des modèles...",
-      "choose_template": "Choisir un modèle",
+      "use_template": "Utiliser un horaire type",
+      "custom_time": "Saisir les heures manuellement",
+      "loading_templates": "Chargement des horaires types…",
+      "choose_template": "Choisir un horaire type",
       "start_label": "Début",
       "end_label": "Fin",
-      "unpaid_break_label": "Pause non rémunérée (minutes)",
-      "unpaid_break_placeholder": "ex. 30",
-      "unpaid_break_hint": "Ce temps sera déduit des heures rémunérées.",
       "date_range_label": "Plage de dates",
       "days_selected_one": "{{count}} jour sélectionné — cliquez pour retirer",
       "days_selected_other": "{{count}} jours sélectionnés — cliquez pour retirer",
       "cancel": "Annuler",
       "scheduling": "Planification...",
-      "schedule_team": "Planifier l'équipe"
+      "schedule_team": "Planifier l'équipe",
+      "no_presets_hint": "Aucun horaire type enregistré — créez-en sous Planning → Horaires types.",
+      "break_hint": "Les pauses non payées se règlent service par service : créez les services ici, puis ouvrez-en un sur le planning pour ajouter sa pause."
     }
   },
   "staff_messages_compose": {
@@ -3878,9 +3911,9 @@
       "staff_scheduling": "Planification du personnel",
       "open_shift_bids": "Enchères de créneaux ouverts",
       "recurring_rules": "Règles récurrentes",
-      "shift_templates": "Modèles de créneaux",
       "time_off": "Congés",
-      "swaps": "Échanges"
+      "swaps": "Échanges",
+      "shift_presets": "Horaires types"
     }
   },
   "staff_inventory_page": {
@@ -4920,7 +4953,7 @@
         "swaps": "Échanges de services",
         "bids": "Services à pourvoir",
         "rules": "Services récurrents",
-        "templates": "Modèles de service"
+        "templates": "Horaires enregistrés"
       },
       "attendance": {
         "live": "Qui est présent maintenant",
@@ -5084,5 +5117,27 @@
       "download_failed": "Impossible de lancer le téléchargement. Réessayez.",
       "generic": "Impossible de lancer l'export. Réessayez."
     }
+  },
+  "schedule_workflow_guide": {
+    "title": "Comment fonctionne la planification",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "optional": "Facultatif",
+    "step_presets_title": "Enregistrez vos horaires habituels",
+    "step_presets_body": "Un horaire type n'est qu'un couple d'heures nommé, par exemple « Matin 08:00–16:00 ». Choisissez-le au lieu de retaper les heures. Seul, il ne planifie personne.",
+    "step_rules_title": "Définissez les habitudes",
+    "step_rules_body": "Un service récurrent dit « Amina travaille le lundi de 09:00 à 17:00 », semaine après semaine. Une règle ne met rien sur le planning par elle-même.",
+    "step_build_title": "Construisez la semaine",
+    "step_build_body": "Sur le planning : clic droit sur une case pour un service, Ajouter des services pour une personne ou toute une équipe, Générer pour transformer les règles récurrentes en brouillons, ou copiez la semaine précédente.",
+    "step_publish_title": "Publiez",
+    "step_publish_body": "Les nouveaux services sont d'abord des brouillons (ambre en pointillés) et votre personnel ne les voit pas. Publier transforme chaque brouillon des dates affichées en service réel et visible.",
+    "footnote": "Les étapes 1 et 2 sont facultatives — vous pouvez construire toute une semaine à la main sur le planning, puis la publier."
+  },
+  "shift_preset_picker": {
+    "label": "Appliquer un horaire type",
+    "placeholder": "Choisir un horaire type pour remplir les heures",
+    "loading": "Chargement des horaires types…",
+    "hint": "Remplit les heures de début et de fin ci-dessous. Vous pouvez encore les modifier.",
+    "empty_hint": "Aucun horaire type enregistré. Créez-en sous Planning → Horaires types pour ne plus retaper les heures courantes."
   }
 }

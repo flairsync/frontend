@@ -259,15 +259,23 @@ export const fetchShiftExportApiCall = async (
   return response.data as Blob;
 };
 
-export const generateDraftApiCall = (
+/**
+ * Turns active recurring rules into draft shifts over the given range.
+ *
+ * Unwrapped so callers can see how many shifts were actually created — generating
+ * against a range that no rule covers succeeds with an empty array, and reporting
+ * that as a flat "generated successfully" is what makes the button look broken.
+ */
+export const generateDraftApiCall = async (
   businessId: string,
   startDate: string,
   endDate: string,
   employmentId?: string
-) => {
+): Promise<Shift[]> => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append("employmentId", employmentId);
-  return flairapi.post(`${baseUrl}/generate-draft?${params.toString()}`);
+  const created = unwrap<Shift[]>(await flairapi.post(`${baseUrl}/generate-draft?${params.toString()}`));
+  return Array.isArray(created) ? created : [];
 };
 
 export const publishWeeklyScheduleApiCall = (data: { businessId: string; startDate: string; endDate: string }) => {

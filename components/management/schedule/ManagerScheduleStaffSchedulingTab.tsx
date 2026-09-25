@@ -36,6 +36,7 @@ import { Shift } from '@/models/business/shift/Shift'
 import { startOfWeek, endOfWeek, addDays, format, isSameDay, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, startOfDay, endOfDay, addMonths, isSameMonth, differenceInMinutes, differenceInSeconds } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { ValidationModal } from './ValidationModal'
 import { LogShiftWorkedModal } from './LogShiftWorkedModal'
 import { ShiftStatus } from '@/models/business/shift/Shift'
@@ -213,6 +214,8 @@ const ManagerScheduleStaffSchedulingTab = () => {
     };
 
     const noShowCount = (shifts || []).filter(s => s.status === ShiftStatus.NO_SHOW).length;
+    // Drives the Publish tooltip: "N drafts in this range will become visible to staff".
+    const draftCount = (shifts || []).filter(s => !s.isPublished).length;
 
     // Intervals for viewing
     const viewInterval = eachDayOfInterval({ start: dateStart, end: dateEnd });
@@ -430,56 +433,96 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                     <ChevronDown className="w-3.5 h-3.5 opacity-60" />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-52">
-                                <DropdownMenuItem onClick={() => setIsBulkStaffModalOpen(true)}>
-                                    <CalendarPlus className="w-4 h-4 mr-2" />
-                                    {t("schedule_staff_scheduling_tab.bulk_staff_setup")}
+                            {/* "Bulk staff setup" and "Schedule team" are the same form with a
+                                different first field, so each says whose shifts it creates. */}
+                            <DropdownMenuContent align="end" className="w-72">
+                                <DropdownMenuItem onClick={() => setIsBulkStaffModalOpen(true)} className="items-start gap-2 py-2">
+                                    <CalendarPlus className="w-4 h-4 mt-0.5 shrink-0" />
+                                    <div className="space-y-0.5">
+                                        <div className="text-sm">{t("schedule_staff_scheduling_tab.bulk_staff_setup")}</div>
+                                        <p className="text-[11px] text-muted-foreground leading-snug">{t("schedule_staff_scheduling_tab.bulk_staff_setup_hint")}</p>
+                                    </div>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setIsBulkModalOpen(true)}>
-                                    <Users className="w-4 h-4 mr-2" />
-                                    {t("schedule_staff_scheduling_tab.schedule_team")}
+                                <DropdownMenuItem onClick={() => setIsBulkModalOpen(true)} className="items-start gap-2 py-2">
+                                    <Users className="w-4 h-4 mt-0.5 shrink-0" />
+                                    <div className="space-y-0.5">
+                                        <div className="text-sm">{t("schedule_staff_scheduling_tab.schedule_team")}</div>
+                                        <p className="text-[11px] text-muted-foreground leading-snug">{t("schedule_staff_scheduling_tab.schedule_team_hint")}</p>
+                                    </div>
                                 </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <div className="px-2 py-1.5 text-[11px] text-muted-foreground leading-snug">
+                                    {t("schedule_staff_scheduling_tab.add_shifts_single_hint")}
+                                </div>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {/* Generate Draft */}
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleGenerate}
-                            disabled={isGeneratingDraft}
-                            className="gap-1.5"
-                        >
-                            <Wand2 className="w-4 h-4" />
-                            {isGeneratingDraft ? t("schedule_staff_scheduling_tab.generating") : t("schedule_staff_scheduling_tab.generate_button")}
-                        </Button>
+                        {/* Generate Draft — reads recurring rules, which is not guessable from a wand icon. */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleGenerate}
+                                    disabled={isGeneratingDraft}
+                                    className="gap-1.5"
+                                >
+                                    <Wand2 className="w-4 h-4" />
+                                    {isGeneratingDraft ? t("schedule_staff_scheduling_tab.generating") : t("schedule_staff_scheduling_tab.generate_button")}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="max-w-[260px]">
+                                {t("schedule_staff_scheduling_tab.generate_tooltip")}
+                            </TooltipContent>
+                        </Tooltip>
 
                         {/* Copy previous week */}
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleCopyWeek}
-                            disabled={isCopyingWeek}
-                            title={t("schedule_staff_scheduling_tab.copy_previous_week_title")}
-                            aria-label={t("schedule_staff_scheduling_tab.copy_previous_week_title")}
-                            className="gap-1.5 shrink-0"
-                        >
-                            <Copy className="w-4 h-4" />
-                            <span className="hidden md:inline">{t("schedule_staff_scheduling_tab.copy_previous_week_button")}</span>
-                        </Button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleCopyWeek}
+                                    disabled={isCopyingWeek}
+                                    aria-label={t("schedule_staff_scheduling_tab.copy_previous_week_title")}
+                                    className="gap-1.5 shrink-0"
+                                >
+                                    <Copy className="w-4 h-4" />
+                                    <span className="hidden md:inline">{t("schedule_staff_scheduling_tab.copy_previous_week_button")}</span>
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="max-w-[260px]">
+                                {t("schedule_staff_scheduling_tab.copy_previous_week_tooltip")}
+                            </TooltipContent>
+                        </Tooltip>
 
                         <div className="w-px h-5 bg-border mx-1" />
 
-                        {/* Publish — primary CTA */}
-                        <Button
-                            size="sm"
-                            onClick={handlePublish}
-                            disabled={isPublishing}
-                            className="gap-1.5"
-                        >
-                            <Send className="w-4 h-4" />
-                            {isPublishing ? t("schedule_staff_scheduling_tab.publishing") : t("schedule_staff_scheduling_tab.publish_button")}
-                        </Button>
+                        {/* Publish — primary CTA. The draft/published split is the single thing
+                            most worth being explicit about: unpublished shifts are invisible to staff. */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    size="sm"
+                                    onClick={handlePublish}
+                                    disabled={isPublishing}
+                                    className="gap-1.5"
+                                >
+                                    <Send className="w-4 h-4" />
+                                    {isPublishing ? t("schedule_staff_scheduling_tab.publishing") : t("schedule_staff_scheduling_tab.publish_button")}
+                                    {draftCount > 0 && (
+                                        <span className="ml-0.5 rounded-full bg-primary-foreground/20 px-1.5 text-[10px] font-bold leading-4">
+                                            {draftCount}
+                                        </span>
+                                    )}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="max-w-[260px]">
+                                {draftCount > 0
+                                    ? t("schedule_staff_scheduling_tab.publish_tooltip", { count: draftCount })
+                                    : t("schedule_staff_scheduling_tab.publish_tooltip_empty")}
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
                 </div>
 
@@ -515,6 +558,23 @@ const ManagerScheduleStaffSchedulingTab = () => {
                         ))}
                     </div>
 
+                    {/* The grid already filtered on viewMode, but nothing ever set it — this is
+                        the missing control, and it's also the clearest way to answer
+                        "which of these has my team actually seen?". */}
+                    <div className="flex items-center gap-1 bg-background border rounded-md p-1">
+                        {(['all', 'draft', 'published'] as const).map((mode) => (
+                            <Button
+                                key={mode}
+                                variant={viewMode === mode ? 'secondary' : 'ghost'}
+                                size="sm"
+                                onClick={() => setViewMode(mode)}
+                                className="h-7 text-xs px-3"
+                            >
+                                {t(`schedule_staff_scheduling_tab.filter_${mode}`)}
+                            </Button>
+                        ))}
+                    </div>
+
                     <Select
                         value={filterStaffId || 'all'}
                         onValueChange={(val: string) => setFilterStaffId(val === 'all' ? null : val)}
@@ -545,6 +605,36 @@ const ManagerScheduleStaffSchedulingTab = () => {
                             {t("schedule_staff_scheduling_tab.no_show_count", { count: noShowCount })}
                         </Badge>
                     )}
+                </div>
+
+                {/* Row 3: what the shift-card colours mean. The swatches deliberately reuse the
+                    exact classes the cards below use, so the legend can't drift from reality. */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-sm border border-primary/20 bg-primary/10" />
+                        {t("schedule_staff_scheduling_tab.legend_published")}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-sm border border-dashed border-amber-500/30 bg-amber-500/10" />
+                        {t("schedule_staff_scheduling_tab.legend_draft")}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-sm border border-green-500/20 bg-green-500/10" />
+                        {t("schedule_staff_scheduling_tab.legend_validated")}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-sm border border-red-500/40 bg-red-500/10" />
+                        {t("schedule_staff_scheduling_tab.legend_no_show")}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-sm border-2 border-dashed border-orange-300 bg-orange-50" />
+                        {t("schedule_staff_scheduling_tab.legend_open")}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <Badge variant="destructive" className="h-3.5 w-3.5 p-0 flex items-center justify-center text-[9px] rounded-full">!</Badge>
+                        {t("schedule_staff_scheduling_tab.legend_conflict")}
+                    </span>
+                    <span className="hidden sm:inline">{t("schedule_staff_scheduling_tab.legend_right_click_hint")}</span>
                 </div>
             </CardHeader>
             <CardContent className="p-0 overflow-x-auto min-h-[400px]">

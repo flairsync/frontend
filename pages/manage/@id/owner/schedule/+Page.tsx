@@ -8,33 +8,35 @@ import ManagerScheduleRecurringRulesTab from "@/components/management/schedule/M
 import ManagerScheduleTimeOffTab from "@/components/management/schedule/ManagerScheduleTimeOffTab";
 import ManagerScheduleSwapsTab from "@/components/management/schedule/ManagerScheduleSwapsTab";
 import ManagerScheduleBidsTab from "@/components/management/schedule/ManagerScheduleBidsTab";
+import ScheduleWorkflowGuide from "@/components/management/schedule/ScheduleWorkflowGuide";
 import { usePageTour } from "@/features/tour/usePageTour";
 import type { TourStep } from "@/features/tour/types";
 import { useParamFromAction } from "@/features/navigation/actionBus";
 
+// Ordered the way you'd actually set scheduling up, not the order the tabs were built in.
 const SCHEDULE_TOUR_STEPS: TourStep[] = [
     {
         target: '[data-tour="schedule-tab-manage"]',
-        title: 'Staff Scheduling',
-        description: 'The main scheduling view. Assign shifts to staff, view the weekly calendar, and manage who is working when across your whole team.',
-        position: 'bottom',
-    },
-    {
-        target: '[data-tour="schedule-tab-bids"]',
-        title: 'Open Shift Bids',
-        description: 'Post open shifts that staff can bid on. Review bids and approve the best candidate — great for filling gaps without manual assignment.',
+        title: 'The Rota',
+        description: 'Where the week is actually built. Right-click any cell to add one shift, use Add shifts for a person or a whole team at once, then Publish to make it visible to staff.',
         position: 'bottom',
     },
     {
         target: '[data-tour="schedule-tab-rules"]',
         title: 'Recurring Rules',
-        description: 'Define repeating schedule patterns so shifts are auto-generated each week. Reduces manual scheduling for predictable rosters.',
+        description: 'A standing pattern for one person: "Amina works Mondays 09:00–17:00". Rules never create shifts by themselves — the Generate button on the Rota turns them into draft shifts for the week you are looking at.',
         position: 'bottom',
     },
     {
         target: '[data-tour="schedule-tab-shifts"]',
-        title: 'Shift Templates',
-        description: 'Create reusable shift templates (e.g. "Morning 8–4", "Evening 5–11") that can be quickly applied when building the schedule.',
+        title: 'Shift Presets',
+        description: 'Just saved start/end times, e.g. "Morning 08:00–16:00". Pick one instead of retyping the hours when you add a shift, set up a recurring rule, or bulk-schedule. A preset on its own schedules nobody.',
+        position: 'bottom',
+    },
+    {
+        target: '[data-tour="schedule-tab-bids"]',
+        title: 'Open Shift Bids',
+        description: 'Post a shift with nobody assigned and let staff bid for it. Review the bids here and approve one — good for filling gaps without chasing people.',
         position: 'bottom',
     },
     {
@@ -103,13 +105,17 @@ export default function OwnerManageSchedulesPage() {
 
             <Separator />
 
-            {/* Tabs */}
+            <ScheduleWorkflowGuide onJumpToTab={setActiveTab} />
+
+            {/* Tabs — ordered by the workflow (build → automate → requests), not by build date.
+                The `value`s are a deep-link contract: Easy View's action bar and the tour both
+                address these tabs by name, so they must not be renamed. */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                     <TabsList className="w-full flex justify-start overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
                         <TabsTrigger data-tour="schedule-tab-manage" value="manage" className="flex-1">{t("schedule_page.tabs.staff_scheduling")}</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-bids" value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
                         <TabsTrigger data-tour="schedule-tab-rules" value="rules" className="flex-1">{t("schedule_page.tabs.recurring_rules")}</TabsTrigger>
-                        <TabsTrigger data-tour="schedule-tab-shifts" value="shifts" className="flex-1">{t("schedule_page.tabs.shift_templates")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-shifts" value="shifts" className="flex-1">{t("schedule_page.tabs.shift_presets")}</TabsTrigger>
+                        <TabsTrigger data-tour="schedule-tab-bids" value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
                         <TabsTrigger data-tour="schedule-tab-time-off" value="time-off" className="flex-1">{t("schedule_page.tabs.time_off")}</TabsTrigger>
                         <TabsTrigger data-tour="schedule-tab-swaps" value="swaps" className="flex-1">{t("schedule_page.tabs.swaps")}</TabsTrigger>
                     </TabsList>

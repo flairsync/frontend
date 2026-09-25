@@ -1387,7 +1387,7 @@
       "saturday": "Saturday"
     },
     "heading": "Recurring Shift Rules",
-    "subheading": "Manage long-term shift patterns for your staff.",
+    "subheading": "Standing weekly patterns for individual staff, e.g. “Sam works every Friday evening”.",
     "new_rule": "New Rule",
     "col_staff_member": "Staff Member",
     "col_day_of_week": "Day of Week",
@@ -1399,7 +1399,10 @@
     "loading": "Loading...",
     "no_rules": "No recurring rules found.",
     "status_active": "Active",
-    "status_inactive": "Inactive"
+    "status_inactive": "Inactive",
+    "how_it_works_title": "Rules describe a pattern — they don't create shifts",
+    "how_it_works_body": "Nothing appears on the rota until you press Generate on the Staff Scheduling tab, which turns the rules covering the week you're viewing into draft shifts. Saving a rule here also generates drafts for the current week straight away.",
+    "empty_description": "Rules are optional. Add one for anybody who works the same day and hours every week, then press Generate on the rota to fill the week in."
   },
   "schedule_time_off_tab": {
     "unknown_staff": "Unknown Staff",
@@ -1419,16 +1422,26 @@
     }
   },
   "schedule_shifts_tab": {
-    "heading": "Shift Templates",
-    "new_template": "New Template",
+    "heading": "Shift Presets",
+    "new_template": "New Preset",
     "col_color": "Color",
     "col_shift_name": "Shift Name",
     "col_start_time": "Start Time",
     "col_end_time": "End Time",
     "col_actions": "Actions",
     "loading": "Loading...",
-    "no_templates": "No templates found. Create one to get started.",
-    "edit": "Edit"
+    "edit": "Edit",
+    "subheading": "Named start/end times you reuse instead of retyping hours. A preset is not a schedule — on its own it assigns nobody to anything.",
+    "where_used_title": "Where a preset gets used",
+    "where_used_single": "Adding or editing a single shift on the rota — pick a preset to fill in the times.",
+    "where_used_bulk": "Add Shifts → Bulk Staff Setup or Schedule Team — apply one preset across a date range.",
+    "where_used_rule": "Creating a recurring rule — pick a preset to fill in the rule's times.",
+    "where_used_caveat": "The colour only shows in this list. Shift cards on the rota are coloured by status (draft, published, validated), not by preset.",
+    "col_length": "Length",
+    "duration": "{{hours}}h {{minutes}}m",
+    "next_day": "next day",
+    "empty_title": "No presets yet",
+    "empty_description": "Presets are optional. Add one for each shift you run often — “Morning 08:00–16:00”, “Evening 17:00–23:00” — and you'll stop retyping hours."
   },
   "schedule_swaps_tab": {
     "unknown_staff": "Unknown",
@@ -1518,7 +1531,25 @@
     "context_create_open_shift": "Create Open Shift",
     "unnamed_staff_fallback": "Unnamed Staff",
     "footer_daily_totals": "DAILY TOTALS",
-    "footer_hrs_est_cost": "Hrs / Est. Cost"
+    "footer_hrs_est_cost": "Hrs / Est. Cost",
+    "bulk_staff_setup_hint": "One staff member, the same hours across a range of dates.",
+    "schedule_team_hint": "Every member of a team, the same hours across a range of dates.",
+    "add_shifts_single_hint": "For a single shift, right-click any cell in the grid below.",
+    "generate_tooltip": "Creates draft shifts from your active recurring rules for the dates shown. Does nothing if no rule covers this range.",
+    "copy_previous_week_tooltip": "Duplicates the previous week's shifts into the week shown. Shifts that would clash are skipped.",
+    "publish_tooltip_one": "Makes the 1 draft in these dates visible to staff. Until then, only you can see it.",
+    "publish_tooltip_other": "Makes the {{count}} drafts in these dates visible to staff. Until then, only you can see them.",
+    "publish_tooltip_empty": "Nothing to publish — every shift in these dates is already visible to staff.",
+    "filter_all": "All",
+    "filter_draft": "Drafts",
+    "filter_published": "Published",
+    "legend_published": "Published — staff can see it",
+    "legend_draft": "Draft — only you can see it",
+    "legend_validated": "Validated — hours locked for payroll",
+    "legend_no_show": "No-show",
+    "legend_open": "Open shift — nobody assigned",
+    "legend_conflict": "Clashes with approved time off",
+    "legend_right_click_hint": "Right-click a cell to add a shift."
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -1598,18 +1629,21 @@
       "submit_request": "Submit Request"
     },
     "shift_template": {
-      "edit_title": "Edit Shift Template",
-      "create_title": "Create New Template",
-      "name_label": "Template Name",
+      "edit_title": "Edit Shift Preset",
+      "create_title": "New Shift Preset",
+      "name_label": "Preset Name",
       "name_placeholder": "e.g. Morning Shift",
       "start_time_label": "Start Time",
       "end_time_label": "End Time",
-      "color_label": "Template Color",
-      "color_hint": "Select a color to identify this template",
+      "color_label": "Preset Colour",
+      "color_hint": "Only used to tell presets apart in this list.",
       "delete": "Delete",
       "cancel": "Cancel",
       "saving": "Saving...",
-      "save": "Save"
+      "save": "Save",
+      "description": "A reusable pair of start/end times. You apply it when adding shifts or setting up a recurring rule — saving a preset does not schedule anybody.",
+      "duration_summary": "Length: {{hours}}h {{minutes}}m",
+      "overnight_note": "ends the next day"
     },
     "request_shift_swap": {
       "title": "Request Shift Swap",
@@ -1665,29 +1699,28 @@
     },
     "bulk_weekly_setup": {
       "error_default": "Failed to schedule staff shifts",
-      "title": "Bulk Staff Shift Setup",
-      "description": "Assign multiple shifts to a specific staff member across different dates.",
+      "title": "Schedule One Staff Member",
+      "description": "Gives a single staff member the same shift on each date you pick. For a whole team at once, use Schedule Team instead.",
       "conflicts_count": "{{count}} shift(s) could not be scheduled:",
       "select_staff_label": "Select Staff Member",
       "loading_employees": "Loading employees...",
       "choose_employee": "Choose an employee",
       "unnamed_staff": "Unnamed Staff",
       "shift_time_label": "Shift Time",
-      "use_template": "Use Template",
-      "custom_time": "Custom Time",
-      "loading_templates": "Loading templates...",
-      "choose_template": "Choose a template",
+      "use_template": "Use a saved preset",
+      "custom_time": "Enter times manually",
+      "loading_templates": "Loading presets…",
+      "choose_template": "Choose a preset",
       "start_label": "Start",
       "end_label": "End",
-      "unpaid_break_label": "Unpaid Break (Minutes)",
-      "unpaid_break_placeholder": "e.g. 30",
-      "unpaid_break_hint": "This time will be deducted from paid hours.",
       "date_range_label": "Date Range",
       "days_selected_one": "{{count}} day selected — click to remove",
       "days_selected_other": "{{count}} days selected — click to remove",
       "cancel": "Cancel",
       "scheduling": "Scheduling...",
-      "schedule_staff": "Schedule Staff"
+      "schedule_staff": "Schedule Staff",
+      "no_presets_hint": "No presets saved yet — you can create reusable times under Rota → Shift Presets.",
+      "break_hint": "Unpaid breaks are set per shift: create the shifts here, then open one on the rota to add its break."
     },
     "individual_schedule": {
       "error_update": "Failed to update shift",
@@ -1744,7 +1777,7 @@
       },
       "edit_title": "Edit Recurring Rule",
       "create_title": "Create Recurring Rule",
-      "description": "Define a shift pattern that repeats every week.",
+      "description": "A standing weekly pattern for one staff member. The rule itself doesn't create shifts — Generate on the rota turns it into draft shifts.",
       "employee_label": "Employee",
       "loading_employees": "Loading employees...",
       "choose_employee": "Choose an employee",
@@ -1767,33 +1800,33 @@
       "cancel": "Cancel",
       "saving": "Saving...",
       "update_rule": "Update Rule",
-      "create_rule": "Create Rule"
+      "create_rule": "Create Rule",
+      "generates_draft_note": "Saving this rule immediately generates draft shifts for the current week. For any other week, open the rota and press Generate."
     },
     "bulk_schedule": {
       "error_default": "Failed to schedule team shifts",
-      "title": "Bulk Schedule Team",
-      "description": "Assign shifts to all active employees in a team across multiple dates.",
+      "title": "Schedule a Whole Team",
+      "description": "Gives every member of one team the same shift on each date you pick. For a single person, use Bulk Staff Setup instead.",
       "conflicts_count": "{{count}} shift(s) could not be scheduled:",
       "conflict_employee_line": "{{date}} — Employee {{employmentId}}",
       "select_team_label": "Select Team",
       "loading_teams": "Loading teams...",
       "choose_team": "Choose a team",
       "shift_time_label": "Shift Time",
-      "use_template": "Use Template",
-      "custom_time": "Custom Time",
-      "loading_templates": "Loading templates...",
-      "choose_template": "Choose a template",
+      "use_template": "Use a saved preset",
+      "custom_time": "Enter times manually",
+      "loading_templates": "Loading presets…",
+      "choose_template": "Choose a preset",
       "start_label": "Start",
       "end_label": "End",
-      "unpaid_break_label": "Unpaid Break (Minutes)",
-      "unpaid_break_placeholder": "e.g. 30",
-      "unpaid_break_hint": "This time will be deducted from paid hours.",
       "date_range_label": "Date Range",
       "days_selected_one": "{{count}} day selected — click to remove",
       "days_selected_other": "{{count}} days selected — click to remove",
       "cancel": "Cancel",
       "scheduling": "Scheduling...",
-      "schedule_team": "Schedule Team"
+      "schedule_team": "Schedule Team",
+      "no_presets_hint": "No presets saved yet — you can create reusable times under Rota → Shift Presets.",
+      "break_hint": "Unpaid breaks are set per shift: create the shifts here, then open one on the rota to add its break."
     }
   },
   "staff_messages_compose": {
@@ -3991,9 +4024,9 @@
       "staff_scheduling": "Staff Scheduling",
       "open_shift_bids": "Open Shift Bids",
       "recurring_rules": "Recurring Rules",
-      "shift_templates": "Shift Templates",
       "time_off": "Time Off",
-      "swaps": "Swaps"
+      "swaps": "Swaps",
+      "shift_presets": "Shift Presets"
     }
   },
   "staff_inventory_page": {
@@ -5034,7 +5067,7 @@
         "swaps": "Shift swaps",
         "bids": "Open shifts",
         "rules": "Repeating shifts",
-        "templates": "Shift templates"
+        "templates": "Saved shift times"
       },
       "attendance": {
         "live": "Who's in right now",
@@ -5198,5 +5231,27 @@
       "download_failed": "Couldn't start the download. Try again.",
       "generic": "Couldn't start the export. Try again."
     }
+  },
+  "schedule_workflow_guide": {
+    "title": "How scheduling works",
+    "show": "Show",
+    "hide": "Hide",
+    "optional": "Optional",
+    "step_presets_title": "Save your usual times",
+    "step_presets_body": "A preset is just a named pair of times, like “Morning 08:00–16:00”. Pick one instead of retyping hours. On its own it schedules nobody.",
+    "step_rules_title": "Set standing patterns",
+    "step_rules_body": "A recurring rule says “Amina works Mondays 09:00–17:00”, week after week. Rules put nothing on the rota by themselves.",
+    "step_build_title": "Build the week",
+    "step_build_body": "On the rota: right-click a cell for one shift, use Add Shifts for a person or a whole team, press Generate to turn recurring rules into drafts, or copy last week.",
+    "step_publish_title": "Publish it",
+    "step_publish_body": "New shifts start as drafts (dashed amber) and staff cannot see them. Publish turns every draft in the dates shown into a real, visible shift.",
+    "footnote": "Steps 1 and 2 are optional — you can build a whole week by hand on the rota and publish it."
+  },
+  "shift_preset_picker": {
+    "label": "Apply a shift preset",
+    "placeholder": "Pick a preset to fill the times",
+    "loading": "Loading presets…",
+    "hint": "Fills the start and end times below. You can still change them afterwards.",
+    "empty_hint": "No presets saved yet. Create them under Rota → Shift Presets to stop retyping common hours."
   }
 }

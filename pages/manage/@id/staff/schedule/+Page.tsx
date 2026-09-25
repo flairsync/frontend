@@ -8,6 +8,7 @@ import ManagerScheduleRecurringRulesTab from "@/components/management/schedule/M
 import ManagerScheduleTimeOffTab from "@/components/management/schedule/ManagerScheduleTimeOffTab";
 import ManagerScheduleSwapsTab from "@/components/management/schedule/ManagerScheduleSwapsTab";
 import ManagerScheduleBidsTab from "@/components/management/schedule/ManagerScheduleBidsTab";
+import ScheduleWorkflowGuide from "@/components/management/schedule/ScheduleWorkflowGuide";
 import { useParamFromAction } from "@/features/navigation/actionBus";
 
 export default function StaffSchedulePage() {
@@ -59,12 +60,15 @@ export default function StaffSchedulePage() {
 
             <Separator />
 
+            <ScheduleWorkflowGuide onJumpToTab={setActiveTab} />
+
+            {/* Same tab order and same `value` deep-link contract as the owner page. */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                 <TabsList className="w-full flex justify-start overflow-x-auto whitespace-nowrap bg-muted/50 p-1">
                     <TabsTrigger value="manage" className="flex-1">{t("schedule_page.tabs.staff_scheduling")}</TabsTrigger>
-                    <TabsTrigger value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
                     <TabsTrigger value="rules" className="flex-1">{t("schedule_page.tabs.recurring_rules")}</TabsTrigger>
-                    <TabsTrigger value="shifts" className="flex-1">{t("schedule_page.tabs.shift_templates")}</TabsTrigger>
+                    <TabsTrigger value="shifts" className="flex-1">{t("schedule_page.tabs.shift_presets")}</TabsTrigger>
+                    <TabsTrigger value="bids" className="flex-1">{t("schedule_page.tabs.open_shift_bids")}</TabsTrigger>
                     <TabsTrigger value="time-off" className="flex-1">{t("schedule_page.tabs.time_off")}</TabsTrigger>
                     <TabsTrigger value="swaps" className="flex-1">{t("schedule_page.tabs.swaps")}</TabsTrigger>
                 </TabsList>

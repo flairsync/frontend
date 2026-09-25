@@ -1379,7 +1379,7 @@
       "saturday": "Dissabte"
     },
     "heading": "Regles de torns recurrents",
-    "subheading": "Gestiona els patrons de torns a llarg termini del teu personal.",
+    "subheading": "Pautes setmanals fixes per empleat, per exemple «El Sam treballa tots els divendres a la tarda».",
     "new_rule": "Nova regla",
     "col_staff_member": "Membre del personal",
     "col_day_of_week": "Dia de la setmana",
@@ -1391,7 +1391,10 @@
     "loading": "Carregant...",
     "no_rules": "No s'ha trobat cap regla recurrent.",
     "status_active": "Activa",
-    "status_inactive": "Inactiva"
+    "status_inactive": "Inactiva",
+    "how_it_works_title": "Les regles descriuen una pauta — no creen torns",
+    "how_it_works_body": "No apareix res al quadrant fins que prems Generar a la pestanya Planificació de personal, que converteix en esborranys les regles que cobreixen la setmana que estàs veient. Desar una regla aquí també genera a l'instant els esborranys de la setmana actual.",
+    "empty_description": "Les regles són opcionals. Afegeix-ne una per a qui treballi el mateix dia i les mateixes hores cada setmana, i prem Generar al quadrant."
   },
   "schedule_time_off_tab": {
     "unknown_staff": "Personal desconegut",
@@ -1411,16 +1414,26 @@
     }
   },
   "schedule_shifts_tab": {
-    "heading": "Plantilles de torns",
-    "new_template": "Nova plantilla",
+    "heading": "Horaris tipus",
+    "new_template": "Nou horari tipus",
     "col_color": "Color",
     "col_shift_name": "Nom del torn",
     "col_start_time": "Hora d'inici",
     "col_end_time": "Hora de fi",
     "col_actions": "Accions",
     "loading": "Carregant...",
-    "no_templates": "No s'ha trobat cap plantilla. Crea'n una per començar.",
-    "edit": "Editar"
+    "edit": "Editar",
+    "subheading": "Hores d'inici/fi amb nom que reutilitzes en lloc de tornar-les a escriure. Un horari tipus no és un quadrant: tot sol no assigna ningú.",
+    "where_used_title": "On es fa servir un horari tipus",
+    "where_used_single": "En afegir o editar un torn al quadrant — tria un horari tipus per omplir les hores.",
+    "where_used_bulk": "Afegir torns → Configuració per empleat o Planificar equip — aplica un horari tipus a un interval de dates.",
+    "where_used_rule": "En crear un torn recurrent — tria un horari tipus per omplir les hores de la regla.",
+    "where_used_caveat": "El color només apareix en aquesta llista. Al quadrant els torns es coloregen segons el seu estat (esborrany, publicat, validat), no segons l'horari tipus.",
+    "col_length": "Durada",
+    "duration": "{{hours}} h {{minutes}} min",
+    "next_day": "dia següent",
+    "empty_title": "Encara no hi ha horaris tipus",
+    "empty_description": "Són opcionals. Afegeix-ne un per cada torn que repeteixis sovint — «Matí 08:00–16:00», «Tarda 17:00–23:00» — i deixaràs d'escriure les hores."
   },
   "schedule_swaps_tab": {
     "unknown_staff": "Desconegut",
@@ -1508,7 +1521,25 @@
     "context_create_open_shift": "Crear torn obert",
     "unnamed_staff_fallback": "Personal sense nom",
     "footer_daily_totals": "TOTALS DIARIS",
-    "footer_hrs_est_cost": "Hores / Cost estimat"
+    "footer_hrs_est_cost": "Hores / Cost estimat",
+    "bulk_staff_setup_hint": "Un sol empleat, les mateixes hores en un interval de dates.",
+    "schedule_team_hint": "Tots els membres d'un equip, les mateixes hores en un interval de dates.",
+    "add_shifts_single_hint": "Per a un torn sol, fes clic dret en qualsevol cel·la de la taula.",
+    "generate_tooltip": "Crea torns en esborrany a partir de les teves regles recurrents actives, per a les dates mostrades. No fa res si cap regla no cobreix aquest interval.",
+    "copy_previous_week_tooltip": "Duplica els torns de la setmana anterior a la setmana mostrada. Els torns que xocarien s'ometen.",
+    "publish_tooltip_one": "Fa visible al personal l'esborrany d'aquestes dates. Fins llavors només el veus tu.",
+    "publish_tooltip_other": "Fa visibles al personal els {{count}} esborranys d'aquestes dates. Fins llavors només els veus tu.",
+    "publish_tooltip_empty": "Res a publicar — tots els torns d'aquestes dates ja són visibles per al personal.",
+    "filter_all": "Tots",
+    "filter_draft": "Esborranys",
+    "filter_published": "Publicats",
+    "legend_published": "Publicat — el personal el veu",
+    "legend_draft": "Esborrany — només el veus tu",
+    "legend_validated": "Validat — hores blocades per a la nòmina",
+    "legend_no_show": "Absència sense avisar",
+    "legend_open": "Torn lliure — sense assignar",
+    "legend_conflict": "Xoca amb vacances aprovades",
+    "legend_right_click_hint": "Clic dret en una cel·la per afegir un torn."
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -1588,18 +1619,21 @@
       "submit_request": "Enviar sol·licitud"
     },
     "shift_template": {
-      "edit_title": "Editar plantilla de torn",
-      "create_title": "Crear nova plantilla",
-      "name_label": "Nom de la plantilla",
+      "edit_title": "Editar horari tipus",
+      "create_title": "Nou horari tipus",
+      "name_label": "Nom de l'horari tipus",
       "name_placeholder": "p. ex. Torn de matí",
       "start_time_label": "Hora d'inici",
       "end_time_label": "Hora de fi",
-      "color_label": "Color de la plantilla",
-      "color_hint": "Selecciona un color per identificar aquesta plantilla",
+      "color_label": "Color",
+      "color_hint": "Només serveix per distingir els horaris tipus en aquesta llista.",
       "delete": "Eliminar",
       "cancel": "Cancel·lar",
       "saving": "Desant...",
-      "save": "Desar"
+      "save": "Desar",
+      "description": "Un parell d'hores d'inici/fi reutilitzable. L'apliques en afegir torns o en crear una regla recurrent — desar-lo no assigna ningú.",
+      "duration_summary": "Durada: {{hours}} h {{minutes}} min",
+      "overnight_note": "acaba el dia següent"
     },
     "request_shift_swap": {
       "title": "Sol·licitar canvi de torn",
@@ -1655,29 +1689,28 @@
     },
     "bulk_weekly_setup": {
       "error_default": "No s'han pogut programar els torns del personal",
-      "title": "Configuració massiva de torns del personal",
-      "description": "Assigna diversos torns a un membre del personal específic en diferents dates.",
+      "title": "Planificar un empleat",
+      "description": "Dona el mateix torn a un sol empleat en totes les dates que triïs. Per a un equip sencer de cop, fes servir Planificar equip.",
       "conflicts_count": "{{count}} torn(s) no s'han pogut programar:",
       "select_staff_label": "Seleccionar membre del personal",
       "loading_employees": "Carregant empleats...",
       "choose_employee": "Tria un empleat",
       "unnamed_staff": "Personal sense nom",
       "shift_time_label": "Horari del torn",
-      "use_template": "Usar plantilla",
-      "custom_time": "Horari personalitzat",
-      "loading_templates": "Carregant plantilles...",
-      "choose_template": "Tria una plantilla",
+      "use_template": "Fer servir un horari tipus",
+      "custom_time": "Introduir les hores manualment",
+      "loading_templates": "Carregant horaris tipus…",
+      "choose_template": "Triar un horari tipus",
       "start_label": "Inici",
       "end_label": "Fi",
-      "unpaid_break_label": "Pausa no remunerada (minuts)",
-      "unpaid_break_placeholder": "p. ex. 30",
-      "unpaid_break_hint": "Aquest temps es deduirà de les hores pagades.",
       "date_range_label": "Interval de dates",
       "days_selected_one": "{{count}} dia seleccionat — fes clic per eliminar",
       "days_selected_other": "{{count}} dies seleccionats — fes clic per eliminar",
       "cancel": "Cancel·lar",
       "scheduling": "Programant...",
-      "schedule_staff": "Programar personal"
+      "schedule_staff": "Programar personal",
+      "no_presets_hint": "Encara no hi ha horaris tipus desats — pots crear-ne a Quadrant → Horaris tipus.",
+      "break_hint": "Els descansos no pagats es defineixen torn a torn: crea els torns aquí i després obre'n un al quadrant per afegir-hi el descans."
     },
     "individual_schedule": {
       "error_update": "No s'ha pogut actualitzar el torn",
@@ -1734,7 +1767,7 @@
       },
       "edit_title": "Editar regla recurrent",
       "create_title": "Crear regla recurrent",
-      "description": "Defineix un patró de torn que es repeteix cada setmana.",
+      "description": "Una pauta setmanal fixa per a un empleat. La regla en si no crea torns — Generar, al quadrant, la converteix en esborranys.",
       "employee_label": "Empleat",
       "loading_employees": "Carregant empleats...",
       "choose_employee": "Tria un empleat",
@@ -1757,33 +1790,33 @@
       "cancel": "Cancel·lar",
       "saving": "Desant...",
       "update_rule": "Actualitzar regla",
-      "create_rule": "Crear regla"
+      "create_rule": "Crear regla",
+      "generates_draft_note": "Desar aquesta regla genera de seguida els torns en esborrany de la setmana actual. Per a qualsevol altra setmana, obre el quadrant i prem Generar."
     },
     "bulk_schedule": {
       "error_default": "No s'han pogut programar els torns de l'equip",
-      "title": "Programació massiva de l'equip",
-      "description": "Assigna torns a tots els empleats actius d'un equip en diverses dates.",
+      "title": "Planificar un equip sencer",
+      "description": "Dona el mateix torn a cada membre d'un equip en totes les dates que triïs. Per a una sola persona, fes servir la configuració per empleat.",
       "conflicts_count": "{{count}} torn(s) no s'han pogut programar:",
       "conflict_employee_line": "{{date}} — Empleat {{employmentId}}",
       "select_team_label": "Seleccionar equip",
       "loading_teams": "Carregant equips...",
       "choose_team": "Tria un equip",
       "shift_time_label": "Horari del torn",
-      "use_template": "Usar plantilla",
-      "custom_time": "Horari personalitzat",
-      "loading_templates": "Carregant plantilles...",
-      "choose_template": "Tria una plantilla",
+      "use_template": "Fer servir un horari tipus",
+      "custom_time": "Introduir les hores manualment",
+      "loading_templates": "Carregant horaris tipus…",
+      "choose_template": "Triar un horari tipus",
       "start_label": "Inici",
       "end_label": "Fi",
-      "unpaid_break_label": "Pausa no remunerada (minuts)",
-      "unpaid_break_placeholder": "p. ex. 30",
-      "unpaid_break_hint": "Aquest temps es deduirà de les hores pagades.",
       "date_range_label": "Interval de dates",
       "days_selected_one": "{{count}} dia seleccionat — fes clic per eliminar",
       "days_selected_other": "{{count}} dies seleccionats — fes clic per eliminar",
       "cancel": "Cancel·lar",
       "scheduling": "Programant...",
-      "schedule_team": "Programar equip"
+      "schedule_team": "Programar equip",
+      "no_presets_hint": "Encara no hi ha horaris tipus desats — pots crear-ne a Quadrant → Horaris tipus.",
+      "break_hint": "Els descansos no pagats es defineixen torn a torn: crea els torns aquí i després obre'n un al quadrant per afegir-hi el descans."
     }
   },
   "staff_messages_compose": {
@@ -3878,9 +3911,9 @@
       "staff_scheduling": "Planificació del personal",
       "open_shift_bids": "Ofertes de torns oberts",
       "recurring_rules": "Regles recurrents",
-      "shift_templates": "Plantilles de torns",
       "time_off": "Temps lliure",
-      "swaps": "Intercanvis"
+      "swaps": "Intercanvis",
+      "shift_presets": "Horaris tipus"
     }
   },
   "staff_inventory_page": {
@@ -4920,7 +4953,7 @@
         "swaps": "Canvis de torn",
         "bids": "Torns lliures",
         "rules": "Torns que es repeteixen",
-        "templates": "Plantilles de torn"
+        "templates": "Horaris desats"
       },
       "attendance": {
         "live": "Qui hi ha ara",
@@ -5084,5 +5117,27 @@
       "download_failed": "No s'ha pogut iniciar la descàrrega. Torna-ho a provar.",
       "generic": "No s'ha pogut iniciar l'exportació. Torna-ho a provar."
     }
+  },
+  "schedule_workflow_guide": {
+    "title": "Com funciona la planificació",
+    "show": "Mostrar",
+    "hide": "Amagar",
+    "optional": "Opcional",
+    "step_presets_title": "Desa les teves hores habituals",
+    "step_presets_body": "Un horari tipus només és un parell d'hores amb nom, com «Matí 08:00–16:00». Tria'l en lloc de tornar a escriure les hores. Tot sol no assigna ningú.",
+    "step_rules_title": "Defineix les pautes fixes",
+    "step_rules_body": "Un torn recurrent diu «L'Amina treballa els dilluns de 09:00 a 17:00», setmana rere setmana. Les regles no posen res al quadrant per si soles.",
+    "step_build_title": "Munta la setmana",
+    "step_build_body": "Al quadrant: clic dret en una cel·la per a un torn, Afegir torns per a una persona o un equip sencer, Generar per convertir les regles recurrents en esborranys, o copia la setmana anterior.",
+    "step_publish_title": "Publica-la",
+    "step_publish_body": "Els torns nous neixen com a esborranys (ambre discontinu) i el teu personal no els veu. Publicar converteix cada esborrany de les dates mostrades en un torn real i visible.",
+    "footnote": "Els passos 1 i 2 són opcionals — pots muntar una setmana sencera a mà al quadrant i publicar-la."
+  },
+  "shift_preset_picker": {
+    "label": "Aplicar un horari tipus",
+    "placeholder": "Tria un horari tipus per omplir les hores",
+    "loading": "Carregant horaris tipus…",
+    "hint": "Omple les hores d'inici i fi de sota. Encara les pots canviar després.",
+    "empty_hint": "Encara no hi ha horaris tipus desats. Crea'n a Quadrant → Horaris tipus per no repetir les hores més habituals."
   }
 }

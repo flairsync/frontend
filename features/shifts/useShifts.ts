@@ -190,8 +190,15 @@ export const useShifts = (businessId: string, startDate?: Date | string, endDate
   const generateDraftMutation = useMutation({
     mutationFn: (data: { startDate: string; endDate: string; employmentId?: string }) =>
       generateDraftApiCall(businessId, formatToDateOnly(data.startDate), formatToDateOnly(data.endDate), data.employmentId),
-    onSuccess: () => {
-      toast.success("Draft shifts generated successfully");
+    onSuccess: (created) => {
+      // Generating against a range no active rule covers is a success with zero shifts.
+      // Saying "generated successfully" there sends people hunting for shifts that were
+      // never created, so the empty case names its own cause instead.
+      if (created.length === 0) {
+        toast.info("No draft shifts to generate — no active recurring rule covers this range. Add one under Recurring Rules.");
+      } else {
+        toast.success(`${created.length} draft shift${created.length === 1 ? '' : 's'} generated`);
+      }
       queryClient.invalidateQueries({ queryKey: ["shifts", businessId] });
       queryClient.invalidateQueries({ queryKey: ["unvalidated_summary", businessId] });
     },

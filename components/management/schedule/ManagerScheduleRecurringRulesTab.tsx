@@ -2,7 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
-import { Plus, Edit, Trash2 } from 'lucide-react'
+import { Plus, Edit, Trash2, Info } from 'lucide-react'
+import { TableEmptyState } from '@/components/shared/EmptyState'
 import { usePageContext } from 'vike-react/usePageContext'
 import { useRecurringRules } from '@/features/shifts/useRecurringRules'
 import { useBusinessEmployees } from '@/features/business/employment/useBusinessEmployees'
@@ -63,7 +64,17 @@ const ManagerScheduleRecurringRulesTab = () => {
                     {t("schedule_recurring_rules_tab.new_rule")}
                 </Button>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
+                {/* A rule is a pattern, not a schedule — nothing appears on the rota until
+                    Generate materialises it. That gap is where people assume it's broken. */}
+                <div className="rounded-md border border-dashed bg-muted/20 p-3 text-xs text-muted-foreground space-y-1">
+                    <p className="flex items-start gap-2 font-medium text-foreground">
+                        <Info className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                        {t("schedule_recurring_rules_tab.how_it_works_title")}
+                    </p>
+                    <p className="pl-[22px]">{t("schedule_recurring_rules_tab.how_it_works_body")}</p>
+                </div>
+
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -82,9 +93,12 @@ const ManagerScheduleRecurringRulesTab = () => {
                                 <TableCell colSpan={7} className="text-center py-4">{t("schedule_recurring_rules_tab.loading")}</TableCell>
                             </TableRow>
                         ) : !rules || rules.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={7} className="text-center py-4 text-muted-foreground">{t("schedule_recurring_rules_tab.no_rules")}</TableCell>
-                            </TableRow>
+                            <TableEmptyState
+                                colSpan={7}
+                                title={t("schedule_recurring_rules_tab.no_rules")}
+                                description={t("schedule_recurring_rules_tab.empty_description")}
+                                action={{ label: t("schedule_recurring_rules_tab.new_rule"), onClick: handleAdd, icon: Plus }}
+                            />
                         ) : (
                             rules.map((rule) => (
                                 <TableRow key={rule.id}>

@@ -20,6 +20,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, UserCheck, ShieldCheck, Loader2, UserX, ClipboardCheck } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useShiftBids } from "@/features/shifts/useShifts";
+import { ShiftPresetPicker } from "./ShiftPresetPicker";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -277,6 +278,14 @@ export const IndividualScheduleModal: React.FC<IndividualScheduleModalProps> = (
                                     </p>
                                 )}
                             </div>
+
+                            <ShiftPresetPicker
+                                businessId={businessId}
+                                onApply={(start, end) => {
+                                    setStartTime(start);
+                                    setEndTime(end);
+                                }}
+                            />
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">

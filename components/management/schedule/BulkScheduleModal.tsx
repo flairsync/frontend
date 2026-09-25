@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useBusinessTeams } from "@/features/business/team/useBusinessTeams";
 import { useShiftTemplates } from "@/features/shifts/useShiftTemplates";
+import { asPresetList, toTimeInputValue } from "./ShiftPresetPicker";
 import { useShifts } from "@/features/shifts/useShifts";
 import { BulkShiftConflict } from "@/features/shifts/service";
 import { usePageContext } from "vike-react/usePageContext";
@@ -43,9 +44,17 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
     const [templateId, setTemplateId] = useState<string>("");
     const [startTime, setStartTime] = useState<string>("09:00");
     const [endTime, setEndTime] = useState<string>("17:00");
-    const [unpaidBreakMinutes, setUnpaidBreakMinutes] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [conflicts, setConflicts] = useState<BulkShiftConflict[]>([]);
+
+    const presets = asPresetList(templates);
+    const hasPresets = presets.length > 0;
+
+    // A business with no presets yet would otherwise land on an empty dropdown and a
+    // dead submit button, with nothing saying why.
+    useEffect(() => {
+        if (!fetchingTemplates && !hasPresets) setUseTemplate(false);
+    }, [fetchingTemplates, hasPresets]);
 
     // Dates
     const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
@@ -71,7 +80,7 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
 
         bulkScheduleTeam({
             teamId,
-            ...(useTemplate ? { templateId } : { startTime, endTime, unpaidBreakMinutes: unpaidBreakMinutes > 0 ? unpaidBreakMinutes : undefined }),
+            ...(useTemplate ? { templateId } : { startTime, endTime }),
             dates: dates.map(d => ({ date: d }))
         }, {
             onSuccess: (data) => {
@@ -140,11 +149,12 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
 
                     <div className="space-y-2 border-t pt-2">
                         <Label>{t("schedule_modals.bulk_schedule.shift_time_label")}</Label>
-                        <div className="flex gap-4 mb-2">
-                            <label className="flex items-center gap-2 text-sm">
+                        <div className="flex flex-wrap gap-4 mb-2">
+                            <label className={`flex items-center gap-2 text-sm ${hasPresets ? '' : 'opacity-50'}`}>
                                 <input
                                     type="radio"
                                     checked={useTemplate}
+                                    disabled={!hasPresets}
                                     onChange={() => setUseTemplate(true)}
                                 />
                                 {t("schedule_modals.bulk_schedule.use_template")}
@@ -165,13 +175,15 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                                     <SelectValue placeholder={fetchingTemplates ? t("schedule_modals.bulk_schedule.loading_templates") : t("schedule_modals.bulk_schedule.choose_template")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {templates?.map(tpl => (
-                                        <SelectItem key={tpl.id} value={tpl.id}>{tpl.name} ({tpl.startTime} - {tpl.endTime})</SelectItem>
+                                    {presets.map(tpl => (
+                                        <SelectItem key={tpl.id} value={tpl.id}>
+                                            {tpl.name} ({toTimeInputValue(tpl.startTime)} – {toTimeInputValue(tpl.endTime)})
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-2">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <Label className="text-xs text-muted-foreground">{t("schedule_modals.bulk_schedule.start_label")}</Label>
@@ -182,20 +194,15 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                                         <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} required />
                                     </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label className="text-xs text-muted-foreground">{t("schedule_modals.bulk_schedule.unpaid_break_label")}</Label>
-                                    <Input
-                                        type="number"
-                                        min="0"
-                                        step="5"
-                                        value={unpaidBreakMinutes}
-                                        onChange={e => setUnpaidBreakMinutes(Number(e.target.value))}
-                                        placeholder={t("schedule_modals.bulk_schedule.unpaid_break_placeholder")}
-                                    />
-                                    <p className="text-[10px] text-muted-foreground">{t("schedule_modals.bulk_schedule.unpaid_break_hint")}</p>
-                                </div>
+                                {!fetchingTemplates && !hasPresets && (
+                                    <p className="text-[10px] text-muted-foreground">{t("schedule_modals.bulk_schedule.no_presets_hint")}</p>
+                                )}
                             </div>
                         )}
+                        {/* Unpaid break isn't accepted by the bulk endpoint (it only takes times or
+                            a preset), so it's set per shift after creation rather than offered here
+                            as a field that silently does nothing. */}
+                        <p className="text-[10px] text-muted-foreground pt-1">{t("schedule_modals.bulk_schedule.break_hint")}</p>
                     </div>
 
                     <div className="space-y-2 border-t pt-2">

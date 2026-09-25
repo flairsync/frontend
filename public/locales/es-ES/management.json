@@ -1379,7 +1379,7 @@
       "saturday": "Sábado"
     },
     "heading": "Reglas de turnos recurrentes",
-    "subheading": "Gestiona los patrones de turnos a largo plazo de tu personal.",
+    "subheading": "Pautas semanales fijas por empleado, por ejemplo «Sam trabaja todos los viernes por la tarde».",
     "new_rule": "Nueva regla",
     "col_staff_member": "Miembro del personal",
     "col_day_of_week": "Día de la semana",
@@ -1391,7 +1391,10 @@
     "loading": "Cargando...",
     "no_rules": "No se encontraron reglas recurrentes.",
     "status_active": "Activa",
-    "status_inactive": "Inactiva"
+    "status_inactive": "Inactiva",
+    "how_it_works_title": "Las reglas describen una pauta — no crean turnos",
+    "how_it_works_body": "No aparece nada en el cuadrante hasta que pulsas Generar en la pestaña Planificación de personal, que convierte en borradores las reglas que cubren la semana que estás viendo. Guardar una regla aquí también genera al momento los borradores de la semana actual.",
+    "empty_description": "Las reglas son opcionales. Añade una para quien trabaje el mismo día y las mismas horas cada semana, y pulsa Generar en el cuadrante."
   },
   "schedule_time_off_tab": {
     "unknown_staff": "Personal desconocido",
@@ -1411,16 +1414,26 @@
     }
   },
   "schedule_shifts_tab": {
-    "heading": "Plantillas de turnos",
-    "new_template": "Nueva plantilla",
+    "heading": "Horarios tipo",
+    "new_template": "Nuevo horario tipo",
     "col_color": "Color",
     "col_shift_name": "Nombre del turno",
     "col_start_time": "Hora de inicio",
     "col_end_time": "Hora de fin",
     "col_actions": "Acciones",
     "loading": "Cargando...",
-    "no_templates": "No se encontraron plantillas. Crea una para empezar.",
-    "edit": "Editar"
+    "edit": "Editar",
+    "subheading": "Horas de inicio/fin con nombre que reutilizas en vez de volver a escribirlas. Un horario tipo no es un cuadrante: por sí solo no asigna a nadie.",
+    "where_used_title": "Dónde se usa un horario tipo",
+    "where_used_single": "Al añadir o editar un turno en el cuadrante — elige un horario tipo para rellenar las horas.",
+    "where_used_bulk": "Añadir turnos → Configuración por empleado o Planificar equipo — aplica un horario tipo a un rango de fechas.",
+    "where_used_rule": "Al crear un turno recurrente — elige un horario tipo para rellenar las horas de la regla.",
+    "where_used_caveat": "El color solo aparece en esta lista. En el cuadrante los turnos se colorean según su estado (borrador, publicado, validado), no según el horario tipo.",
+    "col_length": "Duración",
+    "duration": "{{hours}} h {{minutes}} min",
+    "next_day": "día siguiente",
+    "empty_title": "Aún no hay horarios tipo",
+    "empty_description": "Son opcionales. Añade uno por cada turno que repitas a menudo — «Mañana 08:00–16:00», «Tarde 17:00–23:00» — y dejarás de escribir las horas."
   },
   "schedule_swaps_tab": {
     "unknown_staff": "Desconocido",
@@ -1508,7 +1521,25 @@
     "context_create_open_shift": "Crear turno abierto",
     "unnamed_staff_fallback": "Personal sin nombre",
     "footer_daily_totals": "TOTALES DIARIOS",
-    "footer_hrs_est_cost": "Horas / Costo est."
+    "footer_hrs_est_cost": "Horas / Costo est.",
+    "bulk_staff_setup_hint": "Un solo empleado, las mismas horas en un rango de fechas.",
+    "schedule_team_hint": "Todos los miembros de un equipo, las mismas horas en un rango de fechas.",
+    "add_shifts_single_hint": "Para un turno suelto, haz clic derecho en cualquier celda de la tabla.",
+    "generate_tooltip": "Crea turnos en borrador a partir de tus reglas recurrentes activas, para las fechas mostradas. No hace nada si ninguna regla cubre este rango.",
+    "copy_previous_week_tooltip": "Duplica los turnos de la semana anterior en la semana mostrada. Los turnos que chocarían se omiten.",
+    "publish_tooltip_one": "Hace visible al personal el borrador de estas fechas. Hasta entonces solo lo ves tú.",
+    "publish_tooltip_other": "Hace visibles al personal los {{count}} borradores de estas fechas. Hasta entonces solo los ves tú.",
+    "publish_tooltip_empty": "Nada que publicar — todos los turnos de estas fechas ya son visibles para el personal.",
+    "filter_all": "Todos",
+    "filter_draft": "Borradores",
+    "filter_published": "Publicados",
+    "legend_published": "Publicado — el personal lo ve",
+    "legend_draft": "Borrador — solo lo ves tú",
+    "legend_validated": "Validado — horas bloqueadas para nómina",
+    "legend_no_show": "Ausencia sin avisar",
+    "legend_open": "Turno libre — sin asignar",
+    "legend_conflict": "Choca con vacaciones aprobadas",
+    "legend_right_click_hint": "Clic derecho en una celda para añadir un turno."
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -1588,18 +1619,21 @@
       "submit_request": "Enviar solicitud"
     },
     "shift_template": {
-      "edit_title": "Editar plantilla de turno",
-      "create_title": "Crear nueva plantilla",
-      "name_label": "Nombre de la plantilla",
+      "edit_title": "Editar horario tipo",
+      "create_title": "Nuevo horario tipo",
+      "name_label": "Nombre del horario tipo",
       "name_placeholder": "ej. Turno de mañana",
       "start_time_label": "Hora de inicio",
       "end_time_label": "Hora de fin",
-      "color_label": "Color de la plantilla",
-      "color_hint": "Selecciona un color para identificar esta plantilla",
+      "color_label": "Color",
+      "color_hint": "Solo sirve para distinguir los horarios tipo en esta lista.",
       "delete": "Eliminar",
       "cancel": "Cancelar",
       "saving": "Guardando...",
-      "save": "Guardar"
+      "save": "Guardar",
+      "description": "Un par de horas de inicio/fin reutilizable. Lo aplicas al añadir turnos o al crear una regla recurrente — guardarlo no asigna a nadie.",
+      "duration_summary": "Duración: {{hours}} h {{minutes}} min",
+      "overnight_note": "termina al día siguiente"
     },
     "request_shift_swap": {
       "title": "Solicitar cambio de turno",
@@ -1655,29 +1689,28 @@
     },
     "bulk_weekly_setup": {
       "error_default": "Error al programar los turnos del personal",
-      "title": "Configuración masiva de turnos del personal",
-      "description": "Asigna varios turnos a un miembro del personal específico en distintas fechas.",
+      "title": "Planificar un empleado",
+      "description": "Da el mismo turno a un solo empleado en todas las fechas que elijas. Para un equipo entero de golpe, usa Planificar equipo.",
       "conflicts_count": "{{count}} turno(s) no se pudieron programar:",
       "select_staff_label": "Seleccionar miembro del personal",
       "loading_employees": "Cargando empleados...",
       "choose_employee": "Elige un empleado",
       "unnamed_staff": "Personal sin nombre",
       "shift_time_label": "Horario del turno",
-      "use_template": "Usar plantilla",
-      "custom_time": "Horario personalizado",
-      "loading_templates": "Cargando plantillas...",
-      "choose_template": "Elige una plantilla",
+      "use_template": "Usar un horario tipo",
+      "custom_time": "Introducir las horas manualmente",
+      "loading_templates": "Cargando horarios tipo…",
+      "choose_template": "Elegir un horario tipo",
       "start_label": "Inicio",
       "end_label": "Fin",
-      "unpaid_break_label": "Descanso no remunerado (minutos)",
-      "unpaid_break_placeholder": "ej. 30",
-      "unpaid_break_hint": "Este tiempo se deducirá de las horas pagadas.",
       "date_range_label": "Rango de fechas",
       "days_selected_one": "{{count}} día seleccionado — haz clic para quitar",
       "days_selected_other": "{{count}} días seleccionados — haz clic para quitar",
       "cancel": "Cancelar",
       "scheduling": "Programando...",
-      "schedule_staff": "Programar personal"
+      "schedule_staff": "Programar personal",
+      "no_presets_hint": "Aún no hay horarios tipo guardados — puedes crearlos en Cuadrante → Horarios tipo.",
+      "break_hint": "Los descansos no pagados se definen turno a turno: crea los turnos aquí y luego abre uno en el cuadrante para añadir su descanso."
     },
     "individual_schedule": {
       "error_update": "Error al actualizar el turno",
@@ -1734,7 +1767,7 @@
       },
       "edit_title": "Editar regla recurrente",
       "create_title": "Crear regla recurrente",
-      "description": "Define un patrón de turno que se repite cada semana.",
+      "description": "Una pauta semanal fija para un empleado. La regla en sí no crea turnos — Generar, en el cuadrante, la convierte en borradores.",
       "employee_label": "Empleado",
       "loading_employees": "Cargando empleados...",
       "choose_employee": "Elige un empleado",
@@ -1757,33 +1790,33 @@
       "cancel": "Cancelar",
       "saving": "Guardando...",
       "update_rule": "Actualizar regla",
-      "create_rule": "Crear regla"
+      "create_rule": "Crear regla",
+      "generates_draft_note": "Al guardar esta regla se generan de inmediato los turnos en borrador de la semana actual. Para cualquier otra semana, abre el cuadrante y pulsa Generar."
     },
     "bulk_schedule": {
       "error_default": "Error al programar los turnos del equipo",
-      "title": "Programación masiva del equipo",
-      "description": "Asigna turnos a todos los empleados activos de un equipo en varias fechas.",
+      "title": "Planificar un equipo entero",
+      "description": "Da el mismo turno a cada miembro de un equipo en todas las fechas que elijas. Para una sola persona, usa la configuración por empleado.",
       "conflicts_count": "{{count}} turno(s) no se pudieron programar:",
       "conflict_employee_line": "{{date}} — Empleado {{employmentId}}",
       "select_team_label": "Seleccionar equipo",
       "loading_teams": "Cargando equipos...",
       "choose_team": "Elige un equipo",
       "shift_time_label": "Horario del turno",
-      "use_template": "Usar plantilla",
-      "custom_time": "Horario personalizado",
-      "loading_templates": "Cargando plantillas...",
-      "choose_template": "Elige una plantilla",
+      "use_template": "Usar un horario tipo",
+      "custom_time": "Introducir las horas manualmente",
+      "loading_templates": "Cargando horarios tipo…",
+      "choose_template": "Elegir un horario tipo",
       "start_label": "Inicio",
       "end_label": "Fin",
-      "unpaid_break_label": "Descanso no remunerado (minutos)",
-      "unpaid_break_placeholder": "ej. 30",
-      "unpaid_break_hint": "Este tiempo se deducirá de las horas pagadas.",
       "date_range_label": "Rango de fechas",
       "days_selected_one": "{{count}} día seleccionado — haz clic para quitar",
       "days_selected_other": "{{count}} días seleccionados — haz clic para quitar",
       "cancel": "Cancelar",
       "scheduling": "Programando...",
-      "schedule_team": "Programar equipo"
+      "schedule_team": "Programar equipo",
+      "no_presets_hint": "Aún no hay horarios tipo guardados — puedes crearlos en Cuadrante → Horarios tipo.",
+      "break_hint": "Los descansos no pagados se definen turno a turno: crea los turnos aquí y luego abre uno en el cuadrante para añadir su descanso."
     }
   },
   "staff_messages_compose": {
@@ -3878,9 +3911,9 @@
       "staff_scheduling": "Planificación del personal",
       "open_shift_bids": "Ofertas de turnos abiertos",
       "recurring_rules": "Reglas recurrentes",
-      "shift_templates": "Plantillas de turnos",
       "time_off": "Tiempo libre",
-      "swaps": "Intercambios"
+      "swaps": "Intercambios",
+      "shift_presets": "Horarios tipo"
     }
   },
   "staff_inventory_page": {
@@ -4920,7 +4953,7 @@
         "swaps": "Cambios de turno",
         "bids": "Turnos libres",
         "rules": "Turnos que se repiten",
-        "templates": "Plantillas de turno"
+        "templates": "Horarios guardados"
       },
       "attendance": {
         "live": "Quién está ahora",
@@ -5084,5 +5117,27 @@
       "download_failed": "No se pudo iniciar la descarga. Inténtalo de nuevo.",
       "generic": "No se pudo iniciar la exportación. Inténtalo de nuevo."
     }
+  },
+  "schedule_workflow_guide": {
+    "title": "Cómo funciona la planificación",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "optional": "Opcional",
+    "step_presets_title": "Guarda tus horas habituales",
+    "step_presets_body": "Un horario tipo es solo un par de horas con nombre, como «Mañana 08:00–16:00». Elígelo en vez de volver a escribir las horas. Por sí solo no asigna a nadie.",
+    "step_rules_title": "Define las pautas fijas",
+    "step_rules_body": "Un turno recurrente dice «Amina trabaja los lunes de 09:00 a 17:00», semana tras semana. Las reglas no ponen nada en el cuadrante por sí solas.",
+    "step_build_title": "Monta la semana",
+    "step_build_body": "En el cuadrante: clic derecho en una celda para un turno, Añadir turnos para una persona o un equipo entero, Generar para convertir las reglas recurrentes en borradores, o copia la semana anterior.",
+    "step_publish_title": "Publícala",
+    "step_publish_body": "Los turnos nuevos nacen como borradores (ámbar discontinuo) y tu personal no los ve. Publicar convierte cada borrador de las fechas mostradas en un turno real y visible.",
+    "footnote": "Los pasos 1 y 2 son opcionales — puedes montar una semana entera a mano en el cuadrante y publicarla."
+  },
+  "shift_preset_picker": {
+    "label": "Aplicar un horario tipo",
+    "placeholder": "Elige un horario tipo para rellenar las horas",
+    "loading": "Cargando horarios tipo…",
+    "hint": "Rellena las horas de inicio y fin de abajo. Podrás cambiarlas después.",
+    "empty_hint": "Aún no hay horarios tipo guardados. Créalos en Cuadrante → Horarios tipo para no repetir las horas más habituales."
   }
 }

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useRecurringRules } from "@/features/shifts/useRecurringRules";
+import { ShiftPresetPicker } from "./ShiftPresetPicker";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { usePageContext } from "vike-react/usePageContext";
 import { RecurringShiftRule } from "@/models/business/shift/RecurringShiftRule";
@@ -179,6 +180,14 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                         </Select>
                     </div>
 
+                    <ShiftPresetPicker
+                        businessId={businessId as string}
+                        onApply={(start, end) => {
+                            setStartTime(start);
+                            setEndTime(end);
+                        }}
+                    />
+
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
                             <Label className="text-xs text-muted-foreground">{t("schedule_modals.recurring_rule.start_time_label")}</Label>
@@ -246,6 +255,13 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                                 ))}
                             </div>
                         )}
+                    </div>
+
+                    {/* Saving quietly kicks off generateDraft for the current week (see
+                        triggerDraft). Without saying so, the draft shifts that appear on the
+                        rota look like they came from nowhere. */}
+                    <div className="rounded-md border border-dashed bg-muted/20 p-3 text-[11px] text-muted-foreground">
+                        {t("schedule_modals.recurring_rule.generates_draft_note")}
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
