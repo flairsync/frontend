@@ -11,9 +11,9 @@ import {
 import { toast } from "sonner";
 import { staffApi } from "@/features/station/station-api";
 import {
-  enqueueOperation, getAllPending, removeOperations, generateIdempotencyKey,
-  type ReconcileResult,
+  enqueueOperation, generateIdempotencyKey, isNetworkFailure,
 } from "@/features/station/offlineQueue";
+import { useOfflineReconcile } from "@/features/station/useOfflineReconcile";
 import { useNetworkStatus } from "@/features/station/useNetworkStatus";
 import { useExpoOrders, EXPO_ORDERS_QUERY_KEY } from "@/features/station/useExpoOrders";
 import type { ExpoOrder } from "@/features/station/expo.service";
@@ -208,47 +208,19 @@ export default function ExpoScreen({ station }: Props) {
   const [markingServedIds, setMarkingServedIds] = useState<Set<string>>(new Set());
   const [currentTime, setCurrentTime] = useState(new Date());
   const isOnline = useNetworkStatus();
-  const [pendingOpsCount, setPendingOpsCount] = useState(0);
-  const refreshPendingCount = useCallback(() => {
-    getAllPending().then((pending) => setPendingOpsCount(pending.length)).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    refreshPendingCount();
-  }, [refreshPendingCount]);
-
-  // Replay queued offline "mark served" actions on reconnect
-  useEffect(() => {
-    const handleOnline = async () => {
-      const pending = await getAllPending();
-      if (!pending.length) return;
-
-      try {
-        const res = await staffApi.post("/station/reconcile", { operations: pending });
-        const results: ReconcileResult[] = res.data?.data ?? res.data ?? [];
-
-        const clearKeys = results
-          .filter((r) => r.status === "applied" || r.status === "already_applied")
-          .map((r) => r.idempotencyKey);
-        await removeOperations(clearKeys);
-
-        const issues = results.filter((r) => r.status === "conflict" || r.status === "error");
-        if (issues.length > 0) {
-          toast.warning(t("expo_screen.toasts.offline_sync_issues", { count: issues.length }));
-        } else if (clearKeys.length > 0) {
-          toast.success(t("expo_screen.toasts.offline_sync_success", { count: clearKeys.length }));
-        }
-      } catch {
-        // next poll / manual retry covers this
-      } finally {
-        refreshPendingCount();
-        refetch();
+  // Replays queued offline "mark served" actions (see useOfflineReconcile for when).
+  const { pendingCount: pendingOpsCount, refreshPendingCount } = useOfflineReconcile({
+    onOutcome: ({ synced, rejected }) => {
+      if (rejected > 0) {
+        toast.warning(t("expo_screen.toasts.offline_sync_issues", { count: rejected }));
+      } else if (synced > 0) {
+        toast.success(t("expo_screen.toasts.offline_sync_success", { count: synced }));
       }
-    };
-
-    window.addEventListener("online", handleOnline);
-    return () => window.removeEventListener("online", handleOnline);
-  }, [refetch, refreshPendingCount, t]);
+    },
+    onSettled: () => {
+      void refetch();
+    },
+  });
 
   useEffect(() => {
     const t = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -287,9 +259,10 @@ export default function ExpoScreen({ station }: Props) {
   }, [queryClient, refetch, t]);
 
   const markServed = useCallback(async (orderId: string) => {
-    if (!navigator.onLine) {
+    const idempotencyKey = generateIdempotencyKey();
+    const queue = async () => {
       await enqueueOperation({
-        idempotencyKey: generateIdempotencyKey(),
+        idempotencyKey,
         type: "mark_served",
         orderId,
         clientTimestamp: new Date().toISOString(),
@@ -299,19 +272,21 @@ export default function ExpoScreen({ station }: Props) {
         prev?.filter((o) => o.id !== orderId)
       );
       toast.info(t("expo_screen.toasts.offline_action_queued"));
-      return;
-    }
+    };
+
+    if (!navigator.onLine) return queue();
 
     setMarkingServedIds((prev) => new Set([...prev, orderId]));
     try {
       await staffApi.patch(`/station/orders/${orderId}/served`, {}, {
-        headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+        headers: { "X-Idempotency-Key": idempotencyKey },
       });
       queryClient.setQueryData<ExpoOrder[]>(EXPO_ORDERS_QUERY_KEY, (prev) =>
         prev?.filter((o) => o.id !== orderId)
       );
-    } catch {
-      toast.error(t("expo_screen.toasts.mark_served_failed"));
+    } catch (err) {
+      if (isNetworkFailure(err)) await queue();
+      else toast.error(t("expo_screen.toasts.mark_served_failed"));
     } finally {
       setMarkingServedIds((prev) => {
         const next = new Set(prev);

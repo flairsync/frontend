@@ -65,9 +65,10 @@ import StationQuickSettings from "@/components/station/StationQuickSettings";
 import { useStaffSession } from "@/features/pos/useStaffSession";
 import { useStationSocket } from "@/features/station/useStationSocket";
 import {
-    enqueueOperation, getAllPending, removeOperations, generateIdempotencyKey,
-    type QueuedOperation, type ReconcileResult, type StationOpType,
+    enqueueOperation, generateIdempotencyKey, generateOrderId, isNetworkFailure,
+    type StationOpType,
 } from "@/features/station/offlineQueue";
+import { useOfflineReconcile } from "@/features/station/useOfflineReconcile";
 import { useNetworkStatus } from "@/features/station/useNetworkStatus";
 import OfflineBanner from "@/components/station/OfflineBanner";
 import type { StationInfo } from "@/models/Station";
@@ -225,13 +226,20 @@ function POSMain({
 
     // ── Connectivity state ──
     const isOnline = useNetworkStatus();
-    const [pendingOpsCount, setPendingOpsCount] = useState(0);
-    const refreshPendingCount = useCallback(() => {
-        getAllPending().then((pending) => setPendingOpsCount(pending.length)).catch(() => {});
-    }, []);
-    useEffect(() => {
-        refreshPendingCount();
-    }, [refreshPendingCount]);
+    // Replays queued offline operations (see useOfflineReconcile for when).
+    const { pendingCount: pendingOpsCount, refreshPendingCount } = useOfflineReconcile({
+        onOutcome: ({ synced, rejected }) => {
+            if (rejected > 0) {
+                toast.warning(t("pos_app.toasts.offline_sync_issues", { count: rejected }));
+            } else if (synced > 0) {
+                toast.success(t("pos_app.toasts.offline_sync_success", { count: synced }));
+            }
+        },
+        onSessionExpired: () => toast.error(t("pos_app.toasts.session_expired_offline_sync")),
+        onSettled: () => {
+            void Promise.all([refreshOrders(), refreshTables()]);
+        },
+    });
 
     // ── UI state ──
     const [activeMainSection, setActiveMainSection] = useState<"menu" | "orders" | "tables">("menu");
@@ -399,44 +407,6 @@ function POSMain({
         refreshMenus();
     }, [refreshOrders, refreshTables, refreshMenus]));
 
-    // Replay queued offline operations on reconnect
-    useEffect(() => {
-        const handleOnline = async () => {
-            const pending = await getAllPending();
-            if (!pending.length) return;
-
-            try {
-                const res = await staffApi.post("/station/reconcile", { operations: pending });
-                const results: ReconcileResult[] = res.data?.data ?? res.data ?? [];
-
-                const clearKeys = results
-                    .filter((r) => r.status === "applied" || r.status === "already_applied")
-                    .map((r) => r.idempotencyKey);
-                await removeOperations(clearKeys);
-
-                const issues = results.filter(
-                    (r) => r.status === "conflict" || r.status === "error",
-                );
-                if (issues.length > 0) {
-                    toast.warning(
-                        t("pos_app.toasts.offline_sync_issues", { count: issues.length }),
-                    );
-                } else if (clearKeys.length > 0) {
-                    toast.success(t("pos_app.toasts.offline_sync_success", { count: clearKeys.length }));
-                }
-            } catch (err: any) {
-                if (err?.response?.status === 401) {
-                    toast.error(t("pos_app.toasts.session_expired_offline_sync"));
-                }
-            } finally {
-                refreshPendingCount();
-                await Promise.all([refreshOrders(), refreshTables()]);
-            }
-        };
-
-        window.addEventListener("online", handleOnline);
-        return () => window.removeEventListener("online", handleOnline);
-    }, [refreshOrders, refreshTables, refreshPendingCount]);
 
     // ── Kitchen notes & tax-exempt ──
     const [kitchenNotes, setKitchenNotes] = useState("");
@@ -500,35 +470,65 @@ function POSMain({
         taxExempt: taxExempt || undefined,
     });
 
-    // Throws an error with `queued: true` when offline so the caller can distinguish.
+    // Throws an error with `queued: true` when the order was queued for later instead, so
+    // the caller can distinguish. The id is generated here, so the queued accept can point at
+    // the queued create, and a create that reached the server but lost its response is
+    // recognised on replay rather than duplicated.
     const createAndAcceptOrder = async () => {
-        const orderPayload = buildOrderPayload();
+        const orderId = generateOrderId();
+        const orderPayload = { ...buildOrderPayload(), id: orderId };
+        const createKey = generateIdempotencyKey();
 
-        if (!navigator.onLine) {
-            const createKey = generateIdempotencyKey();
+        const queueCreateAndAccept = async () => {
+            const now = Date.now();
             await enqueueOperation({
                 idempotencyKey: createKey,
                 type: "create_order",
+                orderId,
                 payload: orderPayload,
-                clientTimestamp: new Date().toISOString(),
+                clientTimestamp: new Date(now).toISOString(),
+            });
+            await enqueueOperation({
+                idempotencyKey: generateIdempotencyKey(),
+                type: "accept_order",
+                orderId,
+                clientTimestamp: new Date(now + 1).toISOString(),
             });
             refreshPendingCount();
-            const offlineErr = Object.assign(new Error("offline"), { queued: true });
-            throw offlineErr;
+            return Object.assign(new Error("offline"), { queued: true });
+        };
+
+        if (!navigator.onLine) throw await queueCreateAndAccept();
+
+        let order: Order;
+        try {
+            const res = await staffApi.post("/station/orders", orderPayload, {
+                headers: { "X-Idempotency-Key": createKey },
+            });
+            order = res.data.data;
+        } catch (err) {
+            if (isNetworkFailure(err)) throw await queueCreateAndAccept();
+            throw err;
         }
 
-        const createKey = generateIdempotencyKey();
-        const res = await staffApi.post("/station/orders", orderPayload, {
-            headers: { "X-Idempotency-Key": createKey },
-        });
-        const order: Order = res.data.data;
-
+        const acceptKey = generateIdempotencyKey();
         try {
-            const acceptKey = generateIdempotencyKey();
             await staffApi.patch(`/station/orders/${order.id}/accept`, {}, {
                 headers: { "X-Idempotency-Key": acceptKey },
             });
-        } catch { /* accept failure is non-fatal */ }
+        } catch (err) {
+            // Accepting is non-fatal online (staff can accept from the orders list), but
+            // if the connection dropped in between, queue it so the kitchen still gets it.
+            if (isNetworkFailure(err)) {
+                await enqueueOperation({
+                    idempotencyKey: acceptKey,
+                    type: "accept_order",
+                    orderId: order.id,
+                    clientTimestamp: new Date().toISOString(),
+                });
+                refreshPendingCount();
+            }
+        }
 
         return order;
     };
@@ -590,7 +590,14 @@ function POSMain({
             setPaymentMethod(method);
             setIsPaymentModalOpen(true);
         } catch (err: any) {
-            toast.error(err?.response?.data?.message ?? t("pos_app.toasts.create_order_failed"));
+            if (err.queued) {
+                // The connection dropped mid-checkout: the order is queued for the kitchen,
+                // but taking payment has to wait until it syncs.
+                resetActiveOrder();
+                toast.info(t("pos_app.toasts.offline_order_queued"));
+            } else {
+                toast.error(err?.response?.data?.message ?? t("pos_app.toasts.create_order_failed"));
+            }
         } finally {
             setCreatingOrder(false);
         }
@@ -607,25 +614,26 @@ function POSMain({
     // ── Order transition helpers ──
     const handleTransition = useCallback(
         async (orderId: string, action: string) => {
-            if (!navigator.onLine) {
-                const opType = TRANSITION_OP_TYPE[action] ?? "accept_order";
+            const idempotencyKey = generateIdempotencyKey();
+            const queue = async () => {
                 await enqueueOperation({
-                    idempotencyKey: generateIdempotencyKey(),
-                    type: opType,
+                    idempotencyKey,
+                    type: TRANSITION_OP_TYPE[action] ?? "accept_order",
                     orderId,
                     clientTimestamp: new Date().toISOString(),
                 });
                 refreshPendingCount();
                 toast.info(t("pos_app.toasts.offline_action_queued"));
-                return;
-            }
+            };
+            if (!navigator.onLine) return queue();
             try {
                 await staffApi.patch(`/station/orders/${orderId}/${action}`, {}, {
-                    headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+                    headers: { "X-Idempotency-Key": idempotencyKey },
                 });
                 refreshOrders();
                 refreshTables();
             } catch (err: any) {
+                if (isNetworkFailure(err)) return queue();
                 toast.error(err?.response?.data?.message ?? t("pos_app.toasts.update_order_failed"));
             }
         },
@@ -640,25 +648,27 @@ function POSMain({
                 description: t("pos_app.confirm_modals.cancel_order.description"),
                 variant: "destructive",
                 onConfirm: async () => {
-                    if (!navigator.onLine) {
+                    const idempotencyKey = generateIdempotencyKey();
+                    const queue = async () => {
                         await enqueueOperation({
-                            idempotencyKey: generateIdempotencyKey(),
+                            idempotencyKey,
                             type: "cancel_order",
                             orderId,
                             clientTimestamp: new Date().toISOString(),
                         });
                         refreshPendingCount();
                         toast.info(t("pos_app.toasts.offline_cancel_queued"));
-                        return;
-                    }
+                    };
+                    if (!navigator.onLine) return queue();
                     try {
                         await staffApi.patch(`/station/orders/${orderId}/cancel`, {}, {
-                            headers: { "X-Idempotency-Key": generateIdempotencyKey() },
+                            headers: { "X-Idempotency-Key": idempotencyKey },
                         });
                         toast.success(t("pos_app.toasts.order_cancelled"));
                         refreshOrders();
                         refreshTables();
                     } catch (err: any) {
+                        if (isNetworkFailure(err)) return queue();
                         toast.error(err?.response?.data?.message ?? t("pos_app.toasts.cancel_order_failed"));
                     }
                 },
