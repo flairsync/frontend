@@ -28,7 +28,7 @@ export default function DinerOrderPage() {
     const { data: profile } = useDiscoveryProfile(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: myOrderSummary } = useActiveDineInOrder(businessId);
-    const { cart, clearCart, removeFromCart, scannedTableId, guestOrderId } = useDinerModeStore();
+    const { cart, clearCart, removeFromCart, scannedTableId, scannedTableToken, guestOrderId } = useDinerModeStore();
     // Logged-in diners are looked up via their account; guests track the order
     // id they were handed at checkout time (held in a cookie-backed store).
     const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
@@ -100,15 +100,21 @@ export default function DinerOrderPage() {
         } else {
             // Reservation/active-order data is live backend state and always wins;
             // the scanned-table cookie is only a fallback for walk-ins with neither.
+            const tableId = reservation?.tableId ?? activeOrder?.tableId ?? scannedTableId ?? '';
             const payload: PlaceDineInOrderPayload = {
                 type: 'dine_in',
-                tableId: reservation?.tableId ?? activeOrder?.tableId ?? scannedTableId ?? '',
+                tableId,
                 reservationId: reservation?.id,
+                // Only carries a token when tableId is actually the scanned one — the
+                // reservation/active-order cases prove table access a different way
+                // (a verified seated reservation), which the backend checks itself
+                // rather than trusting a token here that wouldn't apply to them.
+                tableToken: tableId === scannedTableId ? (scannedTableToken ?? undefined) : undefined,
                 items,
             };
             placeDineInOrder.mutate(payload, { onSuccess: () => clearCart() });
         }
-    }, [cart, activeOrderId, activeOrder, reservation, scannedTableId, addItemsToOrder, placeDineInOrder, clearCart]);
+    }, [cart, activeOrderId, activeOrder, reservation, scannedTableId, scannedTableToken, addItemsToOrder, placeDineInOrder, clearCart]);
 
     const isSubmitting = placeDineInOrder.isPending || addItemsToOrder.isPending;
 

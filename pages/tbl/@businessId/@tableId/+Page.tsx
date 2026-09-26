@@ -10,12 +10,15 @@ export default function ScannedTablePage() {
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
     const tableId = pageContext.routeParams?.tableId as string;
+    // Signed proof this table's own QR/link was what was actually opened — see
+    // qr-code.service.ts (issues it) and utils/cookies.ts (why it's optional here).
+    const qrToken = pageContext.urlParsed.search.qt;
 
     useEffect(() => {
         if (!businessId || !tableId) return;
-        setTableCookie(businessId, tableId);
+        setTableCookie(businessId, tableId, qrToken);
         window.location.replace(`/diner/${businessId}/menu`);
-    }, [businessId, tableId]);
+    }, [businessId, tableId, qrToken]);
 
     return null;
 }

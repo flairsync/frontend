@@ -59,7 +59,10 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     // placed as a guest — only trust them for the business they were set for.
     useEffect(() => {
         const scanned = getTableCookie();
-        setScannedTableId(scanned?.businessId === businessId ? scanned.tableId : null);
+        setScannedTableId(
+            scanned?.businessId === businessId ? scanned.tableId : null,
+            scanned?.qrToken,
+        );
 
         const guestOrder = getGuestOrderCookie();
         setGuestOrderId(guestOrder?.businessId === businessId ? guestOrder.orderId : null);

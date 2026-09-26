@@ -58,7 +58,13 @@ export function setLangCookie(lang: string): void {
   });
 }
 
-export type ScannedTable = { businessId: string; tableId: string };
+// qrToken proves this table's QR code was actually scanned — it's the `qt` query
+// param FlairSync signs into every table's /tbl/... link server-side (see the API's
+// table-qr-token.util.ts) — as opposed to a businessId/tableId pair typed in or
+// copied from somewhere else. Optional only so a link scanned before this existed
+// (or with the param stripped) still resolves to *a* table; it just won't be able
+// to place an order or occupy that table without rescanning (see usages).
+export type ScannedTable = { businessId: string; tableId: string; qrToken?: string };
 
 export function getTableCookie(): ScannedTable | null {
   if (typeof document === "undefined") return null;
@@ -71,9 +77,9 @@ export function getTableCookie(): ScannedTable | null {
   }
 }
 
-export function setTableCookie(businessId: string, tableId: string): void {
+export function setTableCookie(businessId: string, tableId: string, qrToken?: string): void {
   if (typeof document === "undefined") return;
-  document.cookie = serialize(TABLE_KEY, JSON.stringify({ businessId, tableId }), {
+  document.cookie = serialize(TABLE_KEY, JSON.stringify({ businessId, tableId, qrToken }), {
     maxAge: TABLE_MAX_AGE,
     path: "/",
     sameSite: "lax",
