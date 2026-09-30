@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   bulkAssignRoleToEmployeesApiCall,
   createNewBusinessRoleApiCall,
@@ -60,6 +61,12 @@ export const useBusinessRoles = (businessId?: string) => {
       queryClient.refetchQueries({
         queryKey: ["business_roles", businessId],
       });
+    },
+    onError(error: any) {
+      // e.g. role.in_use — backend refuses to delete a role while active staff
+      // still hold it. Falls through the axios interceptor with no default toast
+      // for plain 4xx errors, so this mutation needs its own.
+      toast.error(error?.response?.data?.message ?? "Failed to delete role.");
     },
   });
 

@@ -241,6 +241,9 @@
   },
   "split_bill_panel": {
     "all_checks_paid": "Todas las cuentas están pagadas",
+    "order_changed_since_split_title": "El total del pedido ha cambiado desde que se crearon estas cuentas",
+    "order_changed_since_split_paid": "{{amount}} no está cubierto por ninguna cuenta. Como una cuenta ya está pagada, las divisiones no se pueden reconfigurar — cierra este panel y cobra {{amount}} como un pago normal.",
+    "order_changed_since_split_unpaid": "{{amount}} no está cubierto por ninguna cuenta. Elimina las divisiones y vuelve a configurarlas incluyendo los nuevos artículos.",
     "complete_order": "Completar pedido",
     "checks_count_one": "{{count}} cuenta",
     "checks_count_other": "{{count}} cuentas",

@@ -4769,7 +4769,9 @@
     "permissions_count_one": "{{count}} Permission",
     "permissions_count_other": "{{count}} Permissions",
     "delete_confirm_title": "Delete this role?",
-    "delete_confirm": "Are you sure you want to delete the role \"{{name}}\"?"
+    "delete_confirm": "Are you sure you want to delete the role \"{{name}}\"?",
+    "delete_confirm_in_use_one": "{{count}} staff member currently holds \"{{name}}\". Deleting it will remove their access if they have no other role. Reassign them first, then delete.",
+    "delete_confirm_in_use_other": "{{count}} staff members currently hold \"{{name}}\". Deleting it will remove their access if they have no other role. Reassign them first, then delete."
   },
   "staff_menu_page": {
     "access_denied": "Access Denied",

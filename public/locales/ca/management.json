@@ -4655,7 +4655,9 @@
     "permissions_count_one": "{{count}} permís",
     "permissions_count_other": "{{count}} permisos",
     "delete_confirm_title": "Eliminar aquest rol?",
-    "delete_confirm": "Segur que vols eliminar el rol «{{name}}»?"
+    "delete_confirm": "Segur que vols eliminar el rol «{{name}}»?",
+    "delete_confirm_in_use_one": "{{count}} empleat té assignat «{{name}}». Si l'elimines, perdrà l'accés si no té cap altre rol. Reassigna'l abans d'eliminar.",
+    "delete_confirm_in_use_other": "{{count}} empleats tenen assignat «{{name}}». Si l'elimines, perdran l'accés si no tenen cap altre rol. Reassigna'ls abans d'eliminar."
   },
   "staff_menu_page": {
     "access_denied": "Accés denegat",

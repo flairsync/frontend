@@ -247,7 +247,11 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                         <ConfirmAction
                                                             onConfirm={() => deleteRole(role.id)}
                                                             title={t("roles_section.delete_confirm_title")}
-                                                            description={t("roles_section.delete_confirm", { name: role.name })}
+                                                            description={
+                                                                getEmployeeCountForRole(role.id) > 0
+                                                                    ? t("roles_section.delete_confirm_in_use", { name: role.name, count: getEmployeeCountForRole(role.id) })
+                                                                    : t("roles_section.delete_confirm", { name: role.name })
+                                                            }
                                                             confirmText={t("shared.actions.delete")}
                                                             cancelText={t("shared.actions.cancel")}
                                                         >

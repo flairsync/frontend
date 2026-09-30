@@ -242,6 +242,9 @@
   "split_bill_panel": {
     "all_checks_paid": "All checks paid",
     "complete_order": "Complete Order",
+    "order_changed_since_split_title": "Order total changed since these checks were created",
+    "order_changed_since_split_paid": "{{amount}} isn't covered by any check. Since a check is already paid, splits can't be reconfigured — close this panel and collect {{amount}} as a regular payment.",
+    "order_changed_since_split_unpaid": "{{amount}} isn't covered by any check. Remove the splits and reconfigure them to include the new item(s).",
     "checks_count_one": "{{count}} Check",
     "checks_count_other": "{{count}} Checks",
     "cannot_remove_has_payment": "Cannot remove — a payment has been recorded",

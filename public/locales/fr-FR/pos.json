@@ -241,6 +241,9 @@
   },
   "split_bill_panel": {
     "all_checks_paid": "Toutes les additions sont payées",
+    "order_changed_since_split_title": "Le total de la commande a changé depuis la création de ces additions",
+    "order_changed_since_split_paid": "{{amount}} n'est couvert par aucune addition. Une addition étant déjà payée, les divisions ne peuvent plus être reconfigurées — fermez ce panneau et encaissez {{amount}} comme un paiement normal.",
+    "order_changed_since_split_unpaid": "{{amount}} n'est couvert par aucune addition. Supprimez les divisions et reconfigurez-les pour inclure le(s) nouvel(aux) article(s).",
     "complete_order": "Finaliser la commande",
     "checks_count_one": "{{count}} addition",
     "checks_count_other": "{{count}} additions",

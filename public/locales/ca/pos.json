@@ -242,6 +242,9 @@
   "split_bill_panel": {
     "all_checks_paid": "Tots els comptes estan pagats",
     "complete_order": "Completar comanda",
+    "order_changed_since_split_title": "El total de la comanda ha canviat des que es van crear aquests comptes",
+    "order_changed_since_split_paid": "{{amount}} no està cobert per cap compte. Com que un compte ja està pagat, no es poden reconfigurar les divisions — tanca aquest panell i cobra {{amount}} com a pagament normal.",
+    "order_changed_since_split_unpaid": "{{amount}} no està cobert per cap compte. Elimina les divisions i torna-les a configurar incloent els articles nous.",
     "checks_count_one": "{{count}} compte",
     "checks_count_other": "{{count}} comptes",
     "cannot_remove_has_payment": "No es pot eliminar — ja s'ha registrat un pagament",

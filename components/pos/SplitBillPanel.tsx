@@ -78,7 +78,18 @@ export default function SplitBillPanel({
 
     const hasSplits = splits && splits.length > 0;
     const anyPaid = hasSplits && splits.some((s) => s.totalPaid > 0);
-    const allPaid = hasSplits && splits.every((s) => s.paymentStatus === "paid");
+    // Items added to the order after splits were created (e.g. a late round ordered
+    // right before the table pays) change orderTotal but never touch the existing
+    // OrderSplit rows — nothing recalculates their totalAmount server-side. Without
+    // this check, `splits.every(paid)` alone would still read true, showing "All
+    // checks paid" even though real money is now owed, and staff would hit
+    // order.force_complete_required after trusting that screen.
+    const splitsTotalAmount = hasSplits
+        ? splits.reduce((sum, s) => sum + Number(s.totalAmount), 0)
+        : 0;
+    const splitsCoverOrderTotal = hasSplits && Math.abs(splitsTotalAmount - orderTotal) < 0.01;
+    const allPaid = hasSplits && splitsCoverOrderTotal && splits.every((s) => s.paymentStatus === "paid");
+    const orderChangedSinceSplit = hasSplits && !splitsCoverOrderTotal;
 
     function handleCreateByItems() {
         const groups: Record<string, string[]> = {};
@@ -126,6 +137,19 @@ export default function SplitBillPanel({
             {/* Splits list */}
             {hasSplits && (
                 <div className="space-y-2">
+                    {orderChangedSinceSplit && (
+                        <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-xs text-destructive space-y-1">
+                            <p className="font-semibold">{t("split_bill_panel.order_changed_since_split_title")}</p>
+                            <p>
+                                {t(
+                                    anyPaid
+                                        ? "split_bill_panel.order_changed_since_split_paid"
+                                        : "split_bill_panel.order_changed_since_split_unpaid",
+                                    { amount: fmt(orderTotal - splitsTotalAmount) },
+                                )}
+                            </p>
+                        </div>
+                    )}
                     <div className="flex items-center justify-between">
                         <p className="text-sm font-semibold">{t("split_bill_panel.checks_count", { count: splits.length })}</p>
                         <button

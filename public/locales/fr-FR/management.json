@@ -4655,7 +4655,9 @@
     "permissions_count_one": "{{count}} permission",
     "permissions_count_other": "{{count}} permissions",
     "delete_confirm_title": "Supprimer ce rôle ?",
-    "delete_confirm": "Voulez-vous vraiment supprimer le rôle « {{name}} » ?"
+    "delete_confirm": "Voulez-vous vraiment supprimer le rôle « {{name}} » ?",
+    "delete_confirm_in_use_one": "{{count}} membre du personnel a encore « {{name}} ». La suppression lui retirera son accès s'il n'a pas d'autre rôle. Réassignez-le avant de supprimer.",
+    "delete_confirm_in_use_other": "{{count}} membres du personnel ont encore « {{name}} ». La suppression leur retirera l'accès s'ils n'ont pas d'autre rôle. Réassignez-les avant de supprimer."
   },
   "staff_menu_page": {
     "access_denied": "Accès refusé",
