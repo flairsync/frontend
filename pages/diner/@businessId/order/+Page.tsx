@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { usePageContext } from 'vike-react/usePageContext';
 import { useDiscoveryProfile } from '@/features/discovery/useDiscovery';
 import {
     useBusinessSeatedReservation,
     useActiveDineInOrder,
     useActiveOrderDetail,
+    useActiveOrderForTable,
     usePlaceDineInOrder,
     useAddItemsToOrder,
 } from '@/features/diner-mode/useDinerMode';
@@ -18,6 +19,7 @@ import {
     setEmailPromptSeenOrderId,
     getFeedbackPromptSeenOrderId,
     setFeedbackPromptSeenOrderId,
+    setGuestOrderCookie,
 } from '@/utils/cookies';
 
 export default function DinerOrderPage() {
@@ -28,7 +30,7 @@ export default function DinerOrderPage() {
     const { data: profile } = useDiscoveryProfile(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: myOrderSummary } = useActiveDineInOrder(businessId);
-    const { cart, clearCart, removeFromCart, scannedTableId, scannedTableToken, guestOrderId } = useDinerModeStore();
+    const { cart, clearCart, removeFromCart, scannedTableId, scannedTableToken, guestOrderId, setGuestOrderId } = useDinerModeStore();
     // Logged-in diners are looked up via their account; guests track the order
     // id they were handed at checkout time (held in a cookie-backed store).
     const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
@@ -38,6 +40,18 @@ export default function DinerOrderPage() {
         isFetching: isRefreshingOrder,
         dataUpdatedAt: orderUpdatedAt,
     } = useActiveOrderDetail(businessId, activeOrderId);
+
+    // A guest who scans this table's QR on their own phone, with another guest's
+    // order already open on it, has no guestOrderId cookie of their own yet — find
+    // and join the table's existing order instead of only discovering it via a
+    // table.not_available error on their first attempt to place one.
+    const { data: tableActiveOrder } = useActiveOrderForTable(businessId, scannedTableId, scannedTableToken);
+    useEffect(() => {
+        if (!isLoggedIn && !guestOrderId && tableActiveOrder?.id) {
+            setGuestOrderCookie(businessId, tableActiveOrder.id);
+            setGuestOrderId(tableActiveOrder.id);
+        }
+    }, [isLoggedIn, guestOrderId, tableActiveOrder, businessId, setGuestOrderId]);
 
     const placeDineInOrder = usePlaceDineInOrder(businessId);
     const addItemsToOrder = useAddItemsToOrder(businessId, activeOrderId ?? '');
@@ -83,6 +97,16 @@ export default function DinerOrderPage() {
         }
     }, [activeOrderId]);
 
+    // Idempotency key for the in-progress "place order" attempt — stable across
+    // retries (a timeout, a dropped connection, an impatient re-tap after an
+    // error all reuse the same id, so the backend recognizes a retry instead of
+    // creating a second order) but dropped once an order actually becomes active,
+    // so the next genuinely new order gets its own fresh id.
+    const pendingOrderIdRef = useRef<string | null>(null);
+    useEffect(() => {
+        if (activeOrderId) pendingOrderIdRef.current = null;
+    }, [activeOrderId]);
+
     const handlePlaceOrder = useCallback(() => {
         if (cart.length === 0) return;
 
@@ -101,7 +125,9 @@ export default function DinerOrderPage() {
             // Reservation/active-order data is live backend state and always wins;
             // the scanned-table cookie is only a fallback for walk-ins with neither.
             const tableId = reservation?.tableId ?? activeOrder?.tableId ?? scannedTableId ?? '';
+            if (!pendingOrderIdRef.current) pendingOrderIdRef.current = crypto.randomUUID();
             const payload: PlaceDineInOrderPayload = {
+                id: pendingOrderIdRef.current,
                 type: 'dine_in',
                 tableId,
                 reservationId: reservation?.id,

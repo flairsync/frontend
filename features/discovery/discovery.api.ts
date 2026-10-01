@@ -105,6 +105,16 @@ export const fetchMyOrdersApiCall = async (businessId: string, params?: FetchMyO
 export const fetchSingleOrderApiCall = async (businessId: string, orderId: string): Promise<any> =>
     unwrap(await flairapi.get(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}`));
 
+// Looks up the order already open on a table (another guest's, most likely) so a
+// second scanner can join it instead of being rejected as table.not_available.
+// tableToken is the same QR-scan proof required to create an order on this table.
+export const fetchActiveOrderForTableApiCall = async (
+    businessId: string,
+    tableId: string,
+    params?: { tableToken?: string; reservationId?: string },
+): Promise<any> =>
+    unwrap(await flairapi.get(`${baseUrl}/businesses/${businessId}/tables/${tableId}/active-order`, { params }));
+
 export const reorderApiCall = (businessId: string, orderId: string, payload?: { type?: string; tableId?: string }) =>
     flairapi.post(`${baseUrl}/businesses/${businessId}/my-orders/${orderId}/reorder`, payload || {});
 

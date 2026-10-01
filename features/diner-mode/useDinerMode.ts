@@ -3,6 +3,7 @@ import {
     fetchAllMyReservationsApiCall,
     fetchMyOrdersApiCall,
     fetchSingleOrderApiCall,
+    fetchActiveOrderForTableApiCall,
     submitOrderApiCall,
     addItemsToOrderApiCall,
     setGuestOrderEmailApiCall,
@@ -139,11 +140,37 @@ export const useActiveOrderDetail = (
     });
 };
 
+// A second (or third...) guest scanning the same table's QR after someone else
+// already ordered has nothing in their own cookie yet, so this runs on page load
+// to find and join the table's existing order — same table-access proof
+// (tableToken) the backend requires to create an order there in the first place.
+// Guests only: a logged-in diner's active order is resolved via useActiveDineInOrder,
+// and a table currently held by a logged-in user's order won't surface here anyway
+// (see findActiveOrderForTable's userId: IsNull() scope).
+export const useActiveOrderForTable = (
+    businessId: string | undefined,
+    tableId: string | undefined | null,
+    tableToken: string | undefined | null,
+) => {
+    const pageContext = usePageContext();
+    const isLoggedIn = !!pageContext.user;
+
+    return useQuery({
+        queryKey: ["diner_table_active_order", businessId, tableId],
+        queryFn: async (): Promise<DinerOrder | null> => {
+            if (!businessId || !tableId) return null;
+            return fetchActiveOrderForTableApiCall(businessId, tableId, { tableToken: tableToken ?? undefined });
+        },
+        enabled: !isLoggedIn && !!businessId && !!tableId && !!tableToken,
+    });
+};
+
 export const usePlaceDineInOrder = (businessId: string) => {
     const queryClient = useQueryClient();
     const pageContext = usePageContext();
     const isLoggedIn = !!pageContext.user;
     const setGuestOrderId = useDinerModeStore((s) => s.setGuestOrderId);
+    const clearCart = useDinerModeStore((s) => s.clearCart);
 
     return useMutation({
         mutationFn: async (payload: PlaceDineInOrderPayload) => {
@@ -159,7 +186,39 @@ export const usePlaceDineInOrder = (businessId: string) => {
                 setGuestOrderId(data.id);
             }
         },
-        onError: (error: any) => {
+        onError: async (error: any, variables) => {
+            const code = error.response?.data?.code;
+            // This exact submit was already applied server-side — the client just never
+            // got the response (timeout, dropped connection) and retried with the same
+            // id. Not a real failure: the order the guest meant to place exists, so
+            // recover into it rather than showing an error for something that worked.
+            if (code === 'order.already_exists' && !isLoggedIn && variables.id) {
+                queryClient.invalidateQueries({ queryKey: ["diner_active_order", businessId] });
+                setGuestOrderCookie(businessId, variables.id);
+                setGuestOrderId(variables.id);
+                clearCart();
+                return;
+            }
+            // Lost the race: someone else at this table ordered between this guest
+            // loading the page and tapping "place order". Rather than a dead-end
+            // error, look the table's now-existing order up (same proof as the
+            // failed create attempt) and join it instead.
+            if (code === 'table.not_available' && !isLoggedIn && variables.tableId) {
+                try {
+                    const existing = await fetchActiveOrderForTableApiCall(businessId, variables.tableId, {
+                        tableToken: variables.tableToken,
+                    });
+                    if (existing?.id) {
+                        setGuestOrderCookie(businessId, existing.id);
+                        setGuestOrderId(existing.id);
+                        queryClient.invalidateQueries({ queryKey: ["diner_order_detail", businessId, existing.id] });
+                        toast.info("Someone at this table already started an order — you've joined it.");
+                        return;
+                    }
+                } catch {
+                    // Fall through to the generic error below.
+                }
+            }
             const msg =
                 error.response?.data?.message ?? "Failed to place order. Please try again.";
             toast.error(msg);

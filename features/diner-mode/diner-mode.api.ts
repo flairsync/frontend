@@ -11,6 +11,10 @@ export interface AddItemsToOrderPayload {
 }
 
 export interface PlaceDineInOrderPayload {
+    // Client-generated idempotency key — see usePlaceDineInOrder. Lets a retried
+    // submit (timeout, flaky connection, impatient re-tap after an error) be
+    // recognized as the same order instead of creating a second one.
+    id?: string;
     type: "dine_in";
     tableId: string;
     reservationId?: string;
