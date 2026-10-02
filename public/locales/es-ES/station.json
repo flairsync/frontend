@@ -45,7 +45,13 @@
       "awaiting_expo_confirmation": "Esperando confirmación del expo",
       "station_done_waiting": "Estación terminada — esperando a otras estaciones",
       "start_preparing": "Empezar a preparar",
-      "bump_all": "Validar todo ({{count}})"
+      "bump_all": "Validar todo ({{count}})",
+      "lower_priority": "Bajar prioridad",
+      "raise_priority": "Subir prioridad",
+      "item_voided": "Anulado — no preparar",
+      "item_cancelled": "Cancelado — no preparar",
+      "confirm_mark_served_title": "¿Marcar este pedido como servido?",
+      "confirm_mark_served_desc": "Esto retira el pedido del tablero. Hazlo solo cuando haya salido de cocina."
     },
     "toasts": {
       "new_orders_arrived_one": "{{count}} pedido nuevo recibido",
@@ -55,7 +61,12 @@
       "recall_failed": "No se pudo recuperar el artículo — inténtalo de nuevo.",
       "start_preparing_failed": "No se pudo iniciar la preparación — inténtalo de nuevo.",
       "mark_served_failed": "No se pudo marcar como servido — inténtalo de nuevo.",
-      "priority_update_failed": "No se pudo actualizar la prioridad."
+      "priority_update_failed": "No se pudo actualizar la prioridad.",
+      "offline_action_queued": "Sin conexión — acción guardada, se sincronizará automáticamente",
+      "offline_sync_issues_one": "{{count}} acción sin conexión no se pudo sincronizar — revísala",
+      "offline_sync_issues_other": "{{count}} acciones sin conexión no se pudieron sincronizar — revísalas",
+      "offline_sync_success_one": "{{count}} acción sin conexión sincronizada",
+      "offline_sync_success_other": "{{count}} acciones sin conexión sincronizadas"
     }
   },
   "expo_screen": {
@@ -79,14 +90,21 @@
       "confirm_and_send": "Confirmar y enviar",
       "all_stations_done": "Todas las estaciones terminadas",
       "in_progress": "En curso",
-      "mark_served": "Marcar como servido"
+      "mark_served": "Marcar como servido",
+      "confirm_mark_served_title": "¿Marcar este pedido como servido?",
+      "confirm_mark_served_desc": "Esto retira el pedido del tablero. Hazlo solo cuando haya salido de cocina."
     },
     "toasts": {
       "confirm_success": "Pedido confirmado — ¡listo para recoger!",
       "items_not_ready": "Algunos artículos todavía se están preparando.",
       "invalid_status": "El pedido no está en un estado confirmable.",
       "confirm_failed": "No se pudo confirmar el pedido.",
-      "mark_served_failed": "No se pudo marcar como servido — inténtalo de nuevo."
+      "mark_served_failed": "No se pudo marcar como servido — inténtalo de nuevo.",
+      "offline_action_queued": "Sin conexión — acción guardada, se sincronizará automáticamente",
+      "offline_sync_issues_one": "{{count}} acción sin conexión no se pudo sincronizar — revísala",
+      "offline_sync_issues_other": "{{count}} acciones sin conexión no se pudieron sincronizar — revísalas",
+      "offline_sync_success_one": "{{count}} acción sin conexión sincronizada",
+      "offline_sync_success_other": "{{count}} acciones sin conexión sincronizadas"
     }
   },
   "station_bootstrap": {
@@ -153,5 +171,10 @@
     "errors": {
       "generic": "No se pudo procesar la tarjeta. Inténtalo de nuevo."
     }
+  },
+  "offline_banner": {
+    "message": "Sin conexión — las acciones se están guardando y se sincronizarán automáticamente",
+    "message_with_count_one": "Sin conexión — {{count}} acción guardada, se sincronizará automáticamente",
+    "message_with_count_other": "Sin conexión — {{count}} acciones guardadas, se sincronizarán automáticamente"
   }
 }

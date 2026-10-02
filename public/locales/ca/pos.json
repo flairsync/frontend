@@ -366,7 +366,10 @@
         "accepted": "ACCEPTADA",
         "preparing": "EN PREPARACIÓ",
         "ready": "LLESTA",
-        "served": "SERVIDA"
+        "served": "SERVIDA",
+        "completed": "COMPLETAT",
+        "rejected": "REBUTJAT",
+        "canceled": "CANCEL·LAT"
       },
       "transition": {
         "accept": "ACCEPTAR",

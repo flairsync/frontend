@@ -130,9 +130,10 @@
     "choose_up_to": "Up to {{count}}",
     "required": "Required",
     "min_selections_hint": "Select at least {{count}}",
+    "none": "None",
     "special_instructions": "Special instructions",
     "special_instructions_placeholder": "E.g. No onions, extra sauce…",
-    "add_to_order": "Add to order · ${{price}}"
+    "add_to_order": "Add to order · {{price}}"
   },
   "header": {
     "table_label": "Table {{table}}",

@@ -285,5 +285,10 @@
     "empty_description": "Crea el teu primer negoci per començar a gestionar l'equip, el menú i les vendes sense esforç.",
     "create_business_now": "Crea un negoci ara",
     "unlock_more_businesses": "Desbloqueja més negocis"
+  },
+  "password_breach_banner": {
+    "text": "La teva contrasenya s'ha trobat en una filtració de dades — si us plau, canvia-la",
+    "aria_label": "La teva contrasenya s'ha trobat en una filtració de dades — fes clic per canviar-la",
+    "dismiss_aria_label": "Descartar"
   }
 }

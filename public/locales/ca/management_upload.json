@@ -416,7 +416,8 @@
         "menu": "Consultar el menú",
         "messages": "Missatges i anuncis",
         "themes": "Tema",
-        "menu_boards": "Pantalles de Menú"
+        "menu_boards": "Pantalles de Menú",
+        "nfc_tags": "Targetes NFC"
       }
     },
     "sidebar": {
@@ -461,7 +462,8 @@
         "fiscal_invoices": "Factures fiscals",
         "fiscal_services": "Serveis fiscals",
         "danger": "Zona de perill",
-        "menu_boards": "Pantalles de Menú"
+        "menu_boards": "Pantalles de Menú",
+        "nfc_tags": "Targetes NFC"
       }
     },
     "permissions": {

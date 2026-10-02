@@ -4,8 +4,13 @@ import { usePageContext } from 'vike-react/usePageContext';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
+import { formatCurrency } from '@/lib/formatCurrency';
 
-export default function DinerCartFab() {
+interface DinerCartFabProps {
+    currency: string;
+}
+
+export default function DinerCartFab({ currency }: DinerCartFabProps) {
     const { t } = useTranslation('diner');
     const pageContext = usePageContext();
     const businessId = pageContext.routeParams?.businessId as string;
@@ -29,7 +34,7 @@ export default function DinerCartFab() {
                 </div>
                 <span>{t('cart_fab.view_order')}</span>
                 <span className="opacity-80">·</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{formatCurrency(total, currency)}</span>
             </Button>
         </div>
     );

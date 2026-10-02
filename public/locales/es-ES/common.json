@@ -285,5 +285,10 @@
     "empty_description": "Crea tu primer negocio para empezar a gestionar tu equipo, menú y ventas sin esfuerzo.",
     "create_business_now": "Crear un negocio ahora",
     "unlock_more_businesses": "Desbloquear más negocios"
+  },
+  "password_breach_banner": {
+    "text": "Tu contraseña se encontró en una filtración de datos — por favor, cámbiala",
+    "aria_label": "Tu contraseña se encontró en una filtración de datos — haz clic para cambiarla",
+    "dismiss_aria_label": "Descartar"
   }
 }

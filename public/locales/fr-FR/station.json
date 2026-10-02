@@ -45,7 +45,13 @@
       "awaiting_expo_confirmation": "En attente de confirmation de l'expo",
       "station_done_waiting": "Poste terminé — en attente des autres postes",
       "start_preparing": "Commencer la préparation",
-      "bump_all": "Tout valider ({{count}})"
+      "bump_all": "Tout valider ({{count}})",
+      "lower_priority": "Baisser la priorité",
+      "raise_priority": "Augmenter la priorité",
+      "item_voided": "Annulé — ne pas préparer",
+      "item_cancelled": "Annulé — ne pas préparer",
+      "confirm_mark_served_title": "Marquer cette commande comme servie ?",
+      "confirm_mark_served_desc": "Cela retire la commande du tableau. À faire uniquement une fois sortie de cuisine."
     },
     "toasts": {
       "new_orders_arrived_one": "{{count}} nouvelle commande reçue",
@@ -55,7 +61,12 @@
       "recall_failed": "Échec du rappel de l'article — veuillez réessayer.",
       "start_preparing_failed": "Échec du démarrage de la préparation — veuillez réessayer.",
       "mark_served_failed": "Échec du marquage comme servie — veuillez réessayer.",
-      "priority_update_failed": "Échec de la mise à jour de la priorité."
+      "priority_update_failed": "Échec de la mise à jour de la priorité.",
+      "offline_action_queued": "Pas de connexion — action enregistrée, sera synchronisée automatiquement",
+      "offline_sync_issues_one": "{{count}} action hors connexion n'a pas pu être synchronisée — veuillez vérifier",
+      "offline_sync_issues_other": "{{count}} actions hors connexion n'ont pas pu être synchronisées — veuillez vérifier",
+      "offline_sync_success_one": "{{count}} action hors connexion synchronisée",
+      "offline_sync_success_other": "{{count}} actions hors connexion synchronisées"
     }
   },
   "expo_screen": {
@@ -79,14 +90,21 @@
       "confirm_and_send": "Confirmer et envoyer",
       "all_stations_done": "Tous les postes terminés",
       "in_progress": "En cours",
-      "mark_served": "Marquer comme servie"
+      "mark_served": "Marquer comme servie",
+      "confirm_mark_served_title": "Marquer cette commande comme servie ?",
+      "confirm_mark_served_desc": "Cela retire la commande du tableau. À faire uniquement une fois sortie de cuisine."
     },
     "toasts": {
       "confirm_success": "Commande confirmée — prête à servir !",
       "items_not_ready": "Certains articles sont encore en préparation.",
       "invalid_status": "La commande n'est pas dans un état confirmable.",
       "confirm_failed": "Échec de la confirmation de la commande.",
-      "mark_served_failed": "Échec du marquage comme servie — veuillez réessayer."
+      "mark_served_failed": "Échec du marquage comme servie — veuillez réessayer.",
+      "offline_action_queued": "Pas de connexion — action enregistrée, sera synchronisée automatiquement",
+      "offline_sync_issues_one": "{{count}} action hors connexion n'a pas pu être synchronisée — veuillez vérifier",
+      "offline_sync_issues_other": "{{count}} actions hors connexion n'ont pas pu être synchronisées — veuillez vérifier",
+      "offline_sync_success_one": "{{count}} action hors connexion synchronisée",
+      "offline_sync_success_other": "{{count}} actions hors connexion synchronisées"
     }
   },
   "station_bootstrap": {
@@ -153,5 +171,10 @@
     "errors": {
       "generic": "Impossible de traiter ce badge. Veuillez réessayer."
     }
+  },
+  "offline_banner": {
+    "message": "Pas de connexion — les actions sont enregistrées et seront synchronisées automatiquement",
+    "message_with_count_one": "Pas de connexion — {{count}} action enregistrée, sera synchronisée automatiquement",
+    "message_with_count_other": "Pas de connexion — {{count}} actions enregistrées, seront synchronisées automatiquement"
   }
 }

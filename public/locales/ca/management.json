@@ -561,7 +561,8 @@
       "ai_import": "Importar amb IA",
       "save_changes": "Guardar canvis",
       "move_to_category": "Moure a categoria",
-      "delete_category": "Eliminar categoria"
+      "delete_category": "Eliminar categoria",
+      "delete_menu": "Eliminar menú"
     },
     "labels": {
       "simple_view": "Simple",
@@ -585,7 +586,8 @@
       "no_permission_edit_category": "No tens permís per editar aquesta categoria",
       "no_permission_delete_category": "No tens permís per eliminar aquesta categoria",
       "no_permission_edit_item": "No tens permís per editar aquest article",
-      "no_permission_delete_item": "No tens permís per eliminar aquest article"
+      "no_permission_delete_item": "No tens permís per eliminar aquest article",
+      "delete_menu_confirm": "Això eliminarà permanentment \"{{name}}\" i tot el seu contingut: totes les categories i articles. Aquesta acció no es pot desfer."
     },
     "modal": {
       "create_title": "Crear nou menú",
@@ -694,7 +696,8 @@
       "unit": "Unitat",
       "unit_placeholder": "Seleccionar unitat",
       "quantity_per_sale": "Quina quantitat es consumeix per venda?",
-      "quantity_hint": "Si es ven en litres i aquest article usa 0.5 L, introdueix 0.5"
+      "quantity_hint": "Si es ven en litres i aquest article usa 0.5 L, introdueix 0.5",
+      "no_permission": "No tens permís d'inventari"
     },
     "variants_section": {
       "title": "Variants",
@@ -943,7 +946,8 @@
       "reservation_system": "Sistema de reserves",
       "priority_support": "Suport prioritari",
       "ded_acc_manager": "Gestor de comptes dedicat",
-      "custom_branding": "Marca personalitzada"
+      "custom_branding": "Marca personalitzada",
+      "premium_themes": "Temes Premium"
     },
     "limits": {
       "businesses_one": "Fins a {{count}} negoci",
@@ -1178,7 +1182,11 @@
       "no_roles_badge": "Sense rols",
       "edit_roles_title": "Editar rols",
       "status_active": "ACTIU",
-      "status_suspended": "SUSPÈS"
+      "status_suspended": "SUSPÈS",
+      "remove_staff_title": "Eliminar membre del personal",
+      "remove_staff_description": "Això eliminarà {{name}} del teu equip. Perdrà l'accés immediatament. Aquesta acció no es pot desfer.",
+      "unnamed_staff": "aquest membre del personal",
+      "remove": "Eliminar"
     }
   },
   "attendance_page": {
@@ -1461,7 +1469,7 @@
     }
   },
   "schedule_staff_scheduling_tab": {
-    "confirm_delete_shift": "Estàs segur que vols eliminar aquest torn?",
+    "confirm_delete_shift": "Això eliminarà el torn de les {{time}}. Aquesta acció no es pot desfer.",
     "toast_already_has_attendance": "Aquest torn ja té un registre d'assistència — utilitza Validar torn per resoldre-ho.",
     "status_accepted": "Acceptat",
     "status_rejected": "Rebutjat",
@@ -1543,7 +1551,9 @@
     "legend_no_show": "Absència sense avisar",
     "legend_open": "Torn lliure — sense assignar",
     "legend_conflict": "Xoca amb vacances aprovades",
-    "legend_right_click_hint": "Clic dret en una cel·la per afegir un torn."
+    "legend_right_click_hint": "Clic dret en una cel·la per afegir un torn.",
+    "confirm_delete_shift_title": "Eliminar torn?",
+    "copy_previous_week_button": "Copiar setmana"
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -2119,7 +2129,9 @@
       "pagination_showing": "Pàgina {{page}} de {{totalPages}}",
       "previous": "Anterior",
       "next": "Següent",
-      "cancelled": "Cancel·lat"
+      "cancelled": "Cancel·lat",
+      "view_list": "Llista",
+      "view_calendar": "Calendari"
     },
     "time_off": {
       "title": "Sol·licituds d'absència",
@@ -2160,6 +2172,20 @@
       "pending_review": "En revisió",
       "approved": "Aprovada",
       "rejected": "Rebutjada"
+    },
+    "calendar_tab": {
+      "today_button": "Avui",
+      "more_shifts_one": "+{{count}} més",
+      "more_shifts_other": "+{{count}} més"
+    },
+    "history_tab": {
+      "title": "Historial de torns",
+      "subtitle": "Els teus torns dels últims 90 dies.",
+      "col_date": "Data",
+      "col_times": "Horaris",
+      "col_status": "Estat",
+      "loading": "Carregant el teu historial...",
+      "empty": "Sense torns passats en els últims 90 dies."
     }
   },
   "nfc_tags_management": {
@@ -2343,13 +2369,24 @@
     },
     "finalized_entries": {
       "title": "Finalitzades",
-      "loading": "Carregant…"
+      "loading": "Carregant…",
+      "reopen": "Reobrir per editar"
     },
     "finalize_dialog": {
       "title": "Finalitzar nòmina",
       "description": "Això bloquejarà totes les entrades esborrany per al període del {{startDate}} al {{endDate}}. Les entrades finalitzades no es poden sobreescriure. Aquesta acció és irreversible.",
       "cancel": "Cancel·lar",
       "finalizing": "Finalitzant…"
+    },
+    "missing_rate_banner": {
+      "message_one": "{{count}} empleat no té tarifa per hora definida i no se li pagarà res aquest període fins que en definis una.",
+      "message_other": "{{count}} empleats no tenen tarifa per hora definida i no se'ls pagarà res aquest període fins que en definis una."
+    },
+    "unfinalize_dialog": {
+      "title": "Reobrir la nòmina per editar-la?",
+      "description": "Això tornarà el període del {{startDate}} al {{endDate}} a l'estat Esborrany perquè puguis corregir un error. Si ja has exportat o compartit aquesta nòmina, aquestes còpies no s'actualitzaran automàticament.",
+      "cancel": "Cancel·lar",
+      "reopening": "Reobrint…"
     }
   },
   "absence_log_panel": {
@@ -2835,7 +2872,7 @@
       "order_heading": "Comanda ({{count}})",
       "remove": "Treure",
       "empty_order": "Encara no s'ha afegit cap article.",
-      "total": "Total: {{amount}} €"
+      "total": "Total: {{symbol}}{{amount}}"
     },
     "customer_step": {
       "found_user": "Usuari trobat: {{name}}",
@@ -3017,7 +3054,9 @@
     "notes_placeholder": "Al·lèrgies, preferències…",
     "cancel": "Cancel·lar",
     "creating": "Creant…",
-    "create": "Crear client"
+    "create": "Crear client",
+    "no_tables_hint": "Ara mateix no hi ha taules lliures.",
+    "join_waitlist_instead": "Afegir a la llista d'espera"
   },
   "join_waitlist_modal": {
     "title": "Afegir a la llista d'espera",
@@ -3664,7 +3703,8 @@
     "schedule_shift": "Planificar torn",
     "set_pos_pin": "Definir PIN del TPV",
     "remove_staff_title_short": "Eliminar personal",
-    "no_roles_yet": "Encara no hi ha rols"
+    "no_roles_yet": "Encara no hi ha rols",
+    "edit_staff_settings": "Edita la configuració"
   },
   "fiscal_invoice_details_modal": {
     "view": "Veure",
@@ -4645,7 +4685,8 @@
     "add_role": "Afegeix rol",
     "search_role_placeholder": "Cerca un rol...",
     "no_role_found": "No s'ha trobat cap rol.",
-    "no_roles_assigned": "No hi ha rols assignats."
+    "no_roles_assigned": "No hi ha rols assignats.",
+    "remove_role": "Treure rol"
   },
   "roles_section": {
     "title": "Rols",
@@ -5162,5 +5203,78 @@
     "loading": "Carregant horaris tipus…",
     "hint": "Omple les hores d'inici i fi de sota. Encara les pots canviar després.",
     "empty_hint": "Encara no hi ha horaris tipus desats. Crea'n a Quadrant → Horaris tipus per no repetir les hores més habituals."
+  },
+  "floor_plan_designer": {
+    "floor_label": "Planta:",
+    "loading": "Carregant...",
+    "no_floors_yet": "Encara no hi ha plantes — crea'n una a la pestanya Plantes.",
+    "select_floor_placeholder": "Selecciona planta",
+    "zoom_out": "Allunyar",
+    "zoom_in": "Apropar",
+    "reset_zoom": "Restablir el zoom",
+    "save": "Desa",
+    "save_success": "Plànol de planta desat!",
+    "save_error": "No s'ha pogut desar — comprova la connexió i torna-ho a provar.",
+    "select_floor_to_start": "Selecciona una planta per començar a dissenyar",
+    "collapse_sidebar": "Replega la barra lateral",
+    "expand_sidebar": "Desplega la barra lateral",
+    "no_element_selected": "Cap element seleccionat",
+    "click_item_hint": "Fes clic en un element del llenç",
+    "default_floor_name": "Planta",
+    "label_name": "Etiqueta / Nom",
+    "size_meters": "Mida (metres)",
+    "width": "Amplada",
+    "height": "Alçada",
+    "rotation": "Rotació",
+    "assigned_table": "Taula assignada",
+    "table_linked_desc": "Vinculada — la posició d'aquesta taula es desarà i s'utilitzarà per a reserves i comandes.",
+    "table_unlinked_desc": "Encara no està vinculada a cap taula — no apareixerà a reserves ni comandes.",
+    "saved": "Desat.",
+    "not_saved_yet": "Encara no desat — fes clic a Desa per conservar-ho.",
+    "remove_item": "Elimina l'element",
+    "floor_name": "Nom de la planta",
+    "canvas_size_meters": "Mida del llenç (metres)",
+    "tabs": {
+      "item": "Element",
+      "canvas": "Llenç"
+    },
+    "tips": {
+      "title": "Consells",
+      "scroll_pan": "Desplaça't per moure la vista, Maj o Ctrl + desplaçament per fer zoom",
+      "alt_drag_pan": "Alt + arrossega sobre el llenç per moure la vista",
+      "shift_drag_rotate": "Maj + arrossega la nansa de rotació per ajustar cada 15°",
+      "autosave_note": "Els elements i les taules vinculades es desen a la base de dades en fer clic a Desa."
+    },
+    "toolbar": {
+      "sections": {
+        "tables": "Taules",
+        "structure": "Estructura",
+        "decor": "Decoració",
+        "other": "Altres"
+      },
+      "items": {
+        "rectangle": "Rectangle",
+        "square": "Quadrat",
+        "round": "Rodona",
+        "wall": "Paret",
+        "window": "Finestra",
+        "door": "Porta",
+        "pillar": "Pilar",
+        "plant": "Planta (decorativa)",
+        "wc": "Lavabo",
+        "bar": "Barra",
+        "stairs": "Escales",
+        "lift": "Ascensor",
+        "label": "Etiqueta",
+        "shape": "Forma"
+      },
+      "expand": "Desplega la barra d'eines",
+      "collapse": "Replega la barra d'eines"
+    },
+    "table_assignment": {
+      "loading": "Carregant taules...",
+      "unassigned": "Sense assignar",
+      "none_decor": "Cap / Decoració"
+    }
   }
 }

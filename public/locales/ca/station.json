@@ -45,7 +45,13 @@
       "awaiting_expo_confirmation": "Esperant confirmació de l'expo",
       "station_done_waiting": "Estació acabada — esperant altres estacions",
       "start_preparing": "Comença a preparar",
-      "bump_all": "Valida-ho tot ({{count}})"
+      "bump_all": "Valida-ho tot ({{count}})",
+      "lower_priority": "Baixar prioritat",
+      "raise_priority": "Pujar prioritat",
+      "item_voided": "Anul·lat — no preparar",
+      "item_cancelled": "Cancel·lat — no preparar",
+      "confirm_mark_served_title": "Vols marcar aquesta comanda com a servida?",
+      "confirm_mark_served_desc": "Això retira la comanda del tauler. Fes-ho només quan hagi sortit de cuina."
     },
     "toasts": {
       "new_orders_arrived_one": "{{count}} comanda nova rebuda",
@@ -55,7 +61,12 @@
       "recall_failed": "No s'ha pogut recuperar l'article — torna-ho a provar.",
       "start_preparing_failed": "No s'ha pogut iniciar la preparació — torna-ho a provar.",
       "mark_served_failed": "No s'ha pogut marcar com a servit — torna-ho a provar.",
-      "priority_update_failed": "No s'ha pogut actualitzar la prioritat."
+      "priority_update_failed": "No s'ha pogut actualitzar la prioritat.",
+      "offline_action_queued": "Sense connexió — acció desada, se sincronitzarà automàticament",
+      "offline_sync_issues_one": "{{count}} acció sense connexió no s'ha pogut sincronitzar — revisa-la",
+      "offline_sync_issues_other": "{{count}} accions sense connexió no s'han pogut sincronitzar — revisa-les",
+      "offline_sync_success_one": "{{count}} acció sense connexió sincronitzada",
+      "offline_sync_success_other": "{{count}} accions sense connexió sincronitzades"
     }
   },
   "expo_screen": {
@@ -79,14 +90,21 @@
       "confirm_and_send": "Confirma i envia",
       "all_stations_done": "Totes les estacions acabades",
       "in_progress": "En curs",
-      "mark_served": "Marca com a servit"
+      "mark_served": "Marca com a servit",
+      "confirm_mark_served_title": "Vols marcar aquesta comanda com a servida?",
+      "confirm_mark_served_desc": "Això retira la comanda del tauler. Fes-ho només quan hagi sortit de cuina."
     },
     "toasts": {
       "confirm_success": "Comanda confirmada — llesta per recollir!",
       "items_not_ready": "Alguns articles encara s'estan preparant.",
       "invalid_status": "La comanda no està en un estat confirmable.",
       "confirm_failed": "No s'ha pogut confirmar la comanda.",
-      "mark_served_failed": "No s'ha pogut marcar com a servit — torna-ho a provar."
+      "mark_served_failed": "No s'ha pogut marcar com a servit — torna-ho a provar.",
+      "offline_action_queued": "Sense connexió — acció desada, se sincronitzarà automàticament",
+      "offline_sync_issues_one": "{{count}} acció sense connexió no s'ha pogut sincronitzar — revisa-la",
+      "offline_sync_issues_other": "{{count}} accions sense connexió no s'han pogut sincronitzar — revisa-les",
+      "offline_sync_success_one": "{{count}} acció sense connexió sincronitzada",
+      "offline_sync_success_other": "{{count}} accions sense connexió sincronitzades"
     }
   },
   "station_bootstrap": {
@@ -153,5 +171,10 @@
     "errors": {
       "generic": "No s'ha pogut processar la targeta. Torna-ho a provar."
     }
+  },
+  "offline_banner": {
+    "message": "Sense connexió — les accions es desen i se sincronitzaran automàticament",
+    "message_with_count_one": "Sense connexió — {{count}} acció desada, se sincronitzarà automàticament",
+    "message_with_count_other": "Sense connexió — {{count}} accions desades, se sincronitzaran automàticament"
   }
 }

@@ -6,6 +6,7 @@ import {
     XCircle,
     ShoppingCart,
     Plus,
+    Minus,
     RefreshCw,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +17,7 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { DinerOrder } from '@/features/diner-mode/useDinerMode';
 import { CartItem } from '@/features/diner-mode/DinerModeStore';
+import { formatCurrency } from '@/lib/formatCurrency';
 import celebratePopAnimation from '@/components/tutorials/animations/celebrate-pop.json';
 
 const LottiePlayer = clientOnly(() => import('@/components/shared/LottiePlayer'));
@@ -28,9 +30,11 @@ interface DinerMyOrderTabProps {
     isSubmitting: boolean;
     onPlaceOrder: () => void;
     onRemoveCartItem: (index: number) => void;
+    onUpdateCartItemQuantity: (index: number, delta: number) => void;
     onRefresh: () => void;
     isRefreshing: boolean;
     lastUpdatedAt: number;
+    currency: string;
 }
 
 // Ticks once a second so the "updated Xs ago" text stays live without polling.
@@ -119,9 +123,11 @@ export default function DinerMyOrderTab({
     isSubmitting,
     onPlaceOrder,
     onRemoveCartItem,
+    onUpdateCartItemQuantity,
     onRefresh,
     isRefreshing,
     lastUpdatedAt,
+    currency,
 }: DinerMyOrderTabProps) {
     const { t } = useTranslation('diner');
     const menuHref = `/diner/${businessId}/menu`;
@@ -192,7 +198,7 @@ export default function DinerMyOrderTab({
                         )}
                     </div>
                     <span className="ml-auto text-sm font-bold">
-                        ${Number(activeOrder.totalAmount).toFixed(2)}
+                        {formatCurrency(Number(activeOrder.totalAmount), currency)}
                     </span>
                 </div>
             )}
@@ -233,7 +239,7 @@ export default function DinerMyOrderTab({
                                     )}
                                 </div>
                                 <span className="text-sm font-medium shrink-0">
-                                    ${getItemTotal(item).toFixed(2)}
+                                    {formatCurrency(getItemTotal(item), currency)}
                                 </span>
                             </div>
                         ))}
@@ -255,9 +261,7 @@ export default function DinerMyOrderTab({
                         {cart.map((item, index) => (
                             <div key={index} className="px-4 py-3 flex justify-between items-start gap-2">
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-sm font-medium">
-                                        {item.quantity}× {item.name}
-                                    </p>
+                                    <p className="text-sm font-medium">{item.name}</p>
                                     {item.variantName && (
                                         <p className="text-xs text-muted-foreground">{item.variantName}</p>
                                     )}
@@ -269,9 +273,25 @@ export default function DinerMyOrderTab({
                                     {item.notes && (
                                         <p className="text-xs text-muted-foreground italic">{item.notes}</p>
                                     )}
+                                    <div className="flex items-center gap-1.5 mt-2 border rounded-full w-fit px-1 py-0.5">
+                                        <button
+                                            onClick={() => onUpdateCartItemQuantity(index, -1)}
+                                            disabled={item.quantity <= 1}
+                                            className="w-6 h-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                                        >
+                                            <Minus className="w-3 h-3" />
+                                        </button>
+                                        <span className="text-xs font-semibold w-4 text-center">{item.quantity}</span>
+                                        <button
+                                            onClick={() => onUpdateCartItemQuantity(index, 1)}
+                                            className="w-6 h-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition-colors"
+                                        >
+                                            <Plus className="w-3 h-3" />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2 shrink-0">
-                                    <span className="text-sm font-medium">${item.lineTotal.toFixed(2)}</span>
+                                <div className="flex flex-col items-end gap-2 shrink-0">
+                                    <span className="text-sm font-medium">{formatCurrency(item.lineTotal, currency)}</span>
                                     <button
                                         onClick={() => onRemoveCartItem(index)}
                                         className="text-muted-foreground hover:text-destructive transition-colors p-1"
@@ -288,7 +308,7 @@ export default function DinerMyOrderTab({
                     <div className="px-4 py-3 flex items-center justify-between">
                         <span className="text-sm text-muted-foreground">{t('my_order_tab.subtotal')}</span>
                         <span className="text-sm font-bold">
-                            ${cart.reduce((s, i) => s + i.lineTotal, 0).toFixed(2)}
+                            {formatCurrency(cart.reduce((s, i) => s + i.lineTotal, 0), currency)}
                         </span>
                     </div>
 

@@ -15,13 +15,15 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
 import { useDinerModeStore, CartItem } from '@/features/diner-mode/DinerModeStore';
+import { formatCurrency } from '@/lib/formatCurrency';
 
 interface DinerMenuItemSheetProps {
     item: BusinessMenuItem | null;
     onClose: () => void;
+    currency: string;
 }
 
-export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheetProps) {
+export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMenuItemSheetProps) {
     const { t } = useTranslation('diner');
     const { addToCart } = useDinerModeStore();
 
@@ -59,15 +61,17 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
         (group) => group.minSelections > 0 && (selectedModifiers[group.id]?.size ?? 0) < group.minSelections,
     );
 
-    const handleToggleModifier = (groupId: string, modId: string, mode: 'single' | 'multiple') => {
+    const handleToggleModifier = (groupId: string, modId: string | null, mode: 'single' | 'multiple', maxSelections?: number) => {
         setSelectedModifiers((prev) => {
             const groupSet = new Set(prev[groupId] ?? []);
             if (mode === 'single') {
-                return { ...prev, [groupId]: new Set([modId]) };
+                return { ...prev, [groupId]: modId ? new Set([modId]) : new Set() };
             }
+            if (!modId) return prev;
             if (groupSet.has(modId)) {
                 groupSet.delete(modId);
             } else {
+                if (maxSelections && maxSelections > 0 && groupSet.size >= maxSelections) return prev;
                 groupSet.add(modId);
             }
             return { ...prev, [groupId]: groupSet };
@@ -130,7 +134,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                 </p>
                             )}
                             <p className="text-base font-semibold text-primary">
-                                ${item.price.toFixed(2)}
+                                {formatCurrency(item.price, currency)}
                             </p>
                         </SheetHeader>
 
@@ -151,7 +155,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                                         {v.name}
                                                     </Label>
                                                 </div>
-                                                <span className="text-sm text-muted-foreground">${v.price.toFixed(2)}</span>
+                                                <span className="text-sm text-muted-foreground">{formatCurrency(v.price, currency)}</span>
                                             </div>
                                         ))}
                                     </RadioGroup>
@@ -177,38 +181,63 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                         </span>
                                     </div>
                                     <div className="space-y-2">
-                                        {group.items.map((mod) => {
-                                            const isSelected = selectedModifiers[group.id]?.has(mod.id) ?? false;
-                                            return (
-                                                <div
-                                                    key={mod.id}
-                                                    className="flex items-center justify-between rounded-xl border px-3 py-2.5"
-                                                >
-                                                    <div className="flex items-center gap-2">
-                                                        {group.selectionMode === 'single' ? (
-                                                            <RadioGroup
-                                                                value={selectedModifiers[group.id] ? [...selectedModifiers[group.id]][0] ?? '' : ''}
-                                                                onValueChange={(val) => handleToggleModifier(group.id, val, 'single')}
-                                                            >
-                                                                <RadioGroupItem value={mod.id} id={`mod-${mod.id}`} />
-                                                            </RadioGroup>
-                                                        ) : (
+                                        {group.selectionMode === 'single' ? (
+                                            <RadioGroup
+                                                value={selectedModifiers[group.id]?.size ? [...selectedModifiers[group.id]][0] : 'none'}
+                                                onValueChange={(val) => handleToggleModifier(group.id, val === 'none' ? null : val, 'single')}
+                                            >
+                                                {!isRequired && (
+                                                    <div className="flex items-center justify-between rounded-xl border px-3 py-2.5">
+                                                        <div className="flex items-center gap-2">
+                                                            <RadioGroupItem value="none" id={`mod-none-${group.id}`} />
+                                                            <Label htmlFor={`mod-none-${group.id}`} className="cursor-pointer font-normal">
+                                                                {t('menu_item_sheet.none')}
+                                                            </Label>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {group.items.map((mod) => (
+                                                    <div key={mod.id} className="flex items-center justify-between rounded-xl border px-3 py-2.5">
+                                                        <div className="flex items-center gap-2">
+                                                            <RadioGroupItem value={mod.id} id={`mod-${mod.id}`} />
+                                                            <Label htmlFor={`mod-${mod.id}`} className="cursor-pointer font-normal">
+                                                                {mod.name}
+                                                            </Label>
+                                                        </div>
+                                                        {mod.price > 0 && (
+                                                            <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency)}</span>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </RadioGroup>
+                                        ) : (
+                                            group.items.map((mod) => {
+                                                const isSelected = selectedModifiers[group.id]?.has(mod.id) ?? false;
+                                                const selectedCount = selectedModifiers[group.id]?.size ?? 0;
+                                                const isDisabled = !isSelected && group.maxSelections > 0 && selectedCount >= group.maxSelections;
+                                                return (
+                                                    <div
+                                                        key={mod.id}
+                                                        className={`flex items-center justify-between rounded-xl border px-3 py-2.5 ${isDisabled ? 'opacity-50' : ''}`}
+                                                    >
+                                                        <div className="flex items-center gap-2">
                                                             <Checkbox
                                                                 id={`mod-${mod.id}`}
                                                                 checked={isSelected}
-                                                                onCheckedChange={() => handleToggleModifier(group.id, mod.id, 'multiple')}
+                                                                disabled={isDisabled}
+                                                                onCheckedChange={() => handleToggleModifier(group.id, mod.id, 'multiple', group.maxSelections)}
                                                             />
+                                                            <Label htmlFor={`mod-${mod.id}`} className={`cursor-pointer font-normal ${isDisabled ? 'cursor-not-allowed' : ''}`}>
+                                                                {mod.name}
+                                                            </Label>
+                                                        </div>
+                                                        {mod.price > 0 && (
+                                                            <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency)}</span>
                                                         )}
-                                                        <Label htmlFor={`mod-${mod.id}`} className="cursor-pointer font-normal">
-                                                            {mod.name}
-                                                        </Label>
                                                     </div>
-                                                    {mod.price > 0 && (
-                                                        <span className="text-sm text-muted-foreground">+${mod.price.toFixed(2)}</span>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })
+                                        )}
                                     </div>
                                 </div>
                                 );
@@ -254,7 +283,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                 onClick={handleAdd}
                                 disabled={(hasVariants && !selectedVariantId) || unsatisfiedGroups.length > 0}
                             >
-                                {t('menu_item_sheet.add_to_order', { price: lineTotal.toFixed(2) })}
+                                {t('menu_item_sheet.add_to_order', { price: formatCurrency(lineTotal, currency) })}
                             </Button>
                         </div>
                     </>

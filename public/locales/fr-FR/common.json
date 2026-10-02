@@ -285,5 +285,10 @@
     "empty_description": "Créez votre premier établissement pour gérer facilement votre équipe, votre menu et vos ventes.",
     "create_business_now": "Créer un établissement maintenant",
     "unlock_more_businesses": "Débloquer plus d'établissements"
+  },
+  "password_breach_banner": {
+    "text": "Votre mot de passe a été trouvé dans une fuite de données — veuillez le changer",
+    "aria_label": "Votre mot de passe a été trouvé dans une fuite de données — cliquez pour le changer",
+    "dismiss_aria_label": "Ignorer"
   }
 }

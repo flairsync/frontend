@@ -366,7 +366,10 @@
         "accepted": "ACEPTADO",
         "preparing": "EN PREPARACIÓN",
         "ready": "LISTO",
-        "served": "SERVIDO"
+        "served": "SERVIDO",
+        "completed": "COMPLETADO",
+        "rejected": "RECHAZADO",
+        "canceled": "CANCELADO"
       },
       "transition": {
         "accept": "ACEPTAR",

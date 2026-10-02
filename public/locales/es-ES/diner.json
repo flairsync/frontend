@@ -130,9 +130,10 @@
     "choose_up_to": "Hasta {{count}}",
     "required": "Obligatorio",
     "min_selections_hint": "Selecciona al menos {{count}}",
+    "none": "Ninguno",
     "special_instructions": "Instrucciones especiales",
     "special_instructions_placeholder": "Ej. Sin cebolla, más salsa…",
-    "add_to_order": "Añadir al pedido · {{price}} $"
+    "add_to_order": "Añadir al pedido · {{price}}"
   },
   "header": {
     "table_label": "Mesa {{table}}",

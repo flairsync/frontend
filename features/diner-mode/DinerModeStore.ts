@@ -28,6 +28,7 @@ interface DinerModeState {
     closeItemSheet: () => void;
     addToCart: (item: CartItem) => void;
     removeFromCart: (index: number) => void;
+    updateCartItemQuantity: (index: number, delta: number) => void;
     clearCart: () => void;
     cartItemCount: () => number;
     cartTotal: () => number;
@@ -51,6 +52,19 @@ export const useDinerModeStore = create<DinerModeState>((set, get) => ({
 
     removeFromCart: (index) =>
         set((state) => ({ cart: state.cart.filter((_, i) => i !== index) })),
+
+    // Recomputes lineTotal from the item's own unit price (base + modifiers) rather than
+    // scaling the existing lineTotal, so repeated +/- taps can't drift from floating-point
+    // round-tripping.
+    updateCartItemQuantity: (index, delta) =>
+        set((state) => ({
+            cart: state.cart.map((item, i) => {
+                if (i !== index) return item;
+                const unitPrice = item.basePrice + item.modifiers.reduce((sum, m) => sum + m.price, 0);
+                const quantity = Math.max(1, item.quantity + delta);
+                return { ...item, quantity, lineTotal: unitPrice * quantity };
+            }),
+        })),
 
     clearCart: () => set({ cart: [] }),
 

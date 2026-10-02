@@ -130,9 +130,10 @@
     "choose_up_to": "Fins a {{count}}",
     "required": "Obligatori",
     "min_selections_hint": "Selecciona almenys {{count}}",
+    "none": "Cap",
     "special_instructions": "Instruccions especials",
     "special_instructions_placeholder": "Ex. Sense ceba, salsa extra…",
-    "add_to_order": "Afegeix a la comanda · {{price}} $"
+    "add_to_order": "Afegeix a la comanda · {{price}}"
   },
   "header": {
     "table_label": "Taula {{table}}",

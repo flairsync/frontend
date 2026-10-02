@@ -30,7 +30,7 @@ export default function DinerOrderPage() {
     const { data: profile } = useDiscoveryProfile(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: myOrderSummary } = useActiveDineInOrder(businessId);
-    const { cart, clearCart, removeFromCart, scannedTableId, scannedTableToken, guestOrderId, setGuestOrderId } = useDinerModeStore();
+    const { cart, clearCart, removeFromCart, updateCartItemQuantity, scannedTableId, scannedTableToken, guestOrderId, setGuestOrderId } = useDinerModeStore();
     // Logged-in diners are looked up via their account; guests track the order
     // id they were handed at checkout time (held in a cookie-backed store).
     const activeOrderId = isLoggedIn ? myOrderSummary?.id : (guestOrderId ?? undefined);
@@ -154,9 +154,11 @@ export default function DinerOrderPage() {
                 isSubmitting={isSubmitting}
                 onPlaceOrder={handlePlaceOrder}
                 onRemoveCartItem={removeFromCart}
+                onUpdateCartItemQuantity={updateCartItemQuantity}
                 onRefresh={() => refetchActiveOrder()}
                 isRefreshing={isRefreshingOrder}
                 lastUpdatedAt={orderUpdatedAt}
+                currency={profile?.currency || 'EUR'}
             />
             {activeOrderId && (
                 <GuestEmailPrompt

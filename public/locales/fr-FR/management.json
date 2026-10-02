@@ -561,7 +561,8 @@
       "ai_import": "Importer avec l'IA",
       "save_changes": "Enregistrer",
       "move_to_category": "Déplacer vers une catégorie",
-      "delete_category": "Supprimer la catégorie"
+      "delete_category": "Supprimer la catégorie",
+      "delete_menu": "Supprimer le menu"
     },
     "labels": {
       "simple_view": "Simple",
@@ -585,7 +586,8 @@
       "no_permission_edit_category": "Vous n'avez pas la permission de modifier cette catégorie",
       "no_permission_delete_category": "Vous n'avez pas la permission de supprimer cette catégorie",
       "no_permission_edit_item": "Vous n'avez pas la permission de modifier cet article",
-      "no_permission_delete_item": "Vous n'avez pas la permission de supprimer cet article"
+      "no_permission_delete_item": "Vous n'avez pas la permission de supprimer cet article",
+      "delete_menu_confirm": "Cela supprimera définitivement \"{{name}}\" et tout son contenu : toutes les catégories et tous les articles. Cette action est irréversible."
     },
     "modal": {
       "create_title": "Créer un nouveau menu",
@@ -694,7 +696,8 @@
       "unit": "Unité",
       "unit_placeholder": "Sélectionner l'unité",
       "quantity_per_sale": "Quelle quantité est consommée par vente ?",
-      "quantity_hint": "S'il est vendu en litres et que cet article utilise 0,5 L, entrez 0,5"
+      "quantity_hint": "S'il est vendu en litres et que cet article utilise 0,5 L, entrez 0,5",
+      "no_permission": "Vous n'avez pas la permission sur l'inventaire"
     },
     "variants_section": {
       "title": "Variantes",
@@ -943,7 +946,8 @@
       "reservation_system": "Système de réservation",
       "priority_support": "Support prioritaire",
       "ded_acc_manager": "Gestionnaire de compte dédié",
-      "custom_branding": "Branding personnalisé"
+      "custom_branding": "Branding personnalisé",
+      "premium_themes": "Thèmes Premium"
     },
     "limits": {
       "businesses_one": "Jusqu'à {{count}} établissement",
@@ -1178,7 +1182,11 @@
       "no_roles_badge": "Aucun rôle",
       "edit_roles_title": "Modifier les rôles",
       "status_active": "ACTIF",
-      "status_suspended": "SUSPENDU"
+      "status_suspended": "SUSPENDU",
+      "remove_staff_title": "Retirer un membre du personnel",
+      "remove_staff_description": "Cela retirera {{name}} de votre équipe. Il perdra immédiatement son accès. Cette action est irréversible.",
+      "unnamed_staff": "ce membre du personnel",
+      "remove": "Retirer"
     }
   },
   "attendance_page": {
@@ -1461,7 +1469,7 @@
     }
   },
   "schedule_staff_scheduling_tab": {
-    "confirm_delete_shift": "Êtes-vous sûr de vouloir supprimer ce créneau ?",
+    "confirm_delete_shift": "Cela supprimera le créneau de {{time}}. Cette action est irréversible.",
     "toast_already_has_attendance": "Ce créneau dispose désormais d'un enregistrement de présence — utilisez Valider le créneau pour le résoudre.",
     "status_accepted": "Accepté",
     "status_rejected": "Rejeté",
@@ -1543,7 +1551,9 @@
     "legend_no_show": "Absence injustifiée",
     "legend_open": "Service à pourvoir — personne d'affecté",
     "legend_conflict": "En conflit avec un congé approuvé",
-    "legend_right_click_hint": "Clic droit sur une case pour ajouter un service."
+    "legend_right_click_hint": "Clic droit sur une case pour ajouter un service.",
+    "confirm_delete_shift_title": "Supprimer le créneau ?",
+    "copy_previous_week_button": "Copier la semaine"
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -2119,7 +2129,9 @@
       "pagination_showing": "Page {{page}} sur {{totalPages}}",
       "previous": "Précédent",
       "next": "Suivant",
-      "cancelled": "Annulé"
+      "cancelled": "Annulé",
+      "view_list": "Liste",
+      "view_calendar": "Calendrier"
     },
     "time_off": {
       "title": "Demandes de congé",
@@ -2160,6 +2172,20 @@
       "pending_review": "En cours d'examen",
       "approved": "Approuvée",
       "rejected": "Refusée"
+    },
+    "calendar_tab": {
+      "today_button": "Aujourd'hui",
+      "more_shifts_one": "+{{count}} de plus",
+      "more_shifts_other": "+{{count}} de plus"
+    },
+    "history_tab": {
+      "title": "Historique des créneaux",
+      "subtitle": "Vos créneaux des 90 derniers jours.",
+      "col_date": "Date",
+      "col_times": "Horaires",
+      "col_status": "Statut",
+      "loading": "Chargement de votre historique...",
+      "empty": "Aucun créneau passé au cours des 90 derniers jours."
     }
   },
   "nfc_tags_management": {
@@ -2343,13 +2369,24 @@
     },
     "finalized_entries": {
       "title": "Finalisées",
-      "loading": "Chargement…"
+      "loading": "Chargement…",
+      "reopen": "Rouvrir pour modifier"
     },
     "finalize_dialog": {
       "title": "Finaliser la paie",
       "description": "Cela verrouillera toutes les entrées brouillon pour la période du {{startDate}} au {{endDate}}. Les entrées finalisées ne peuvent pas être écrasées. Cette action est irréversible.",
       "cancel": "Annuler",
       "finalizing": "Finalisation…"
+    },
+    "missing_rate_banner": {
+      "message_one": "{{count}} employé n'a pas de taux horaire défini et ne sera pas payé cette période tant que vous n'en définissez pas un.",
+      "message_other": "{{count}} employés n'ont pas de taux horaire défini et ne seront pas payés cette période tant que vous n'en définissez pas un."
+    },
+    "unfinalize_dialog": {
+      "title": "Rouvrir la paie pour la modifier ?",
+      "description": "Cela ramènera la période du {{startDate}} au {{endDate}} à l'état Brouillon afin que vous puissiez corriger une erreur. Si vous avez déjà exporté ou partagé cette paie, ces copies ne seront pas mises à jour automatiquement.",
+      "cancel": "Annuler",
+      "reopening": "Réouverture…"
     }
   },
   "absence_log_panel": {
@@ -2835,7 +2872,7 @@
       "order_heading": "Commande ({{count}})",
       "remove": "Retirer",
       "empty_order": "Aucun article ajouté pour le moment.",
-      "total": "Total : {{amount}} €"
+      "total": "Total : {{symbol}}{{amount}}"
     },
     "customer_step": {
       "found_user": "Utilisateur trouvé : {{name}}",
@@ -3017,7 +3054,9 @@
     "notes_placeholder": "Allergies, préférences…",
     "cancel": "Annuler",
     "creating": "Création…",
-    "create": "Créer le client"
+    "create": "Créer le client",
+    "no_tables_hint": "Aucune table libre pour le moment.",
+    "join_waitlist_instead": "Ajouter à la liste d'attente"
   },
   "join_waitlist_modal": {
     "title": "Ajouter à la liste d'attente",
@@ -3664,7 +3703,8 @@
     "schedule_shift": "Planifier un créneau",
     "set_pos_pin": "Définir le code PIN du point de vente",
     "remove_staff_title_short": "Retirer le personnel",
-    "no_roles_yet": "Aucun rôle pour le moment"
+    "no_roles_yet": "Aucun rôle pour le moment",
+    "edit_staff_settings": "Modifier les paramètres"
   },
   "fiscal_invoice_details_modal": {
     "view": "Voir",
@@ -4645,7 +4685,8 @@
     "add_role": "Ajouter un rôle",
     "search_role_placeholder": "Rechercher un rôle...",
     "no_role_found": "Aucun rôle trouvé.",
-    "no_roles_assigned": "Aucun rôle assigné."
+    "no_roles_assigned": "Aucun rôle assigné.",
+    "remove_role": "Retirer le rôle"
   },
   "roles_section": {
     "title": "Rôles",
@@ -5162,5 +5203,78 @@
     "loading": "Chargement des horaires types…",
     "hint": "Remplit les heures de début et de fin ci-dessous. Vous pouvez encore les modifier.",
     "empty_hint": "Aucun horaire type enregistré. Créez-en sous Planning → Horaires types pour ne plus retaper les heures courantes."
+  },
+  "floor_plan_designer": {
+    "floor_label": "Étage :",
+    "loading": "Chargement...",
+    "no_floors_yet": "Aucun étage pour l'instant — créez-en un dans l'onglet Étages.",
+    "select_floor_placeholder": "Sélectionner un étage",
+    "zoom_out": "Dézoomer",
+    "zoom_in": "Zoomer",
+    "reset_zoom": "Réinitialiser le zoom",
+    "save": "Enregistrer",
+    "save_success": "Plan de salle enregistré !",
+    "save_error": "Échec de l'enregistrement — vérifiez votre connexion et réessayez.",
+    "select_floor_to_start": "Sélectionnez un étage pour commencer la conception",
+    "collapse_sidebar": "Réduire la barre latérale",
+    "expand_sidebar": "Développer la barre latérale",
+    "no_element_selected": "Aucun élément sélectionné",
+    "click_item_hint": "Cliquez sur un élément du plan",
+    "default_floor_name": "Étage",
+    "label_name": "Étiquette / Nom",
+    "size_meters": "Taille (mètres)",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "rotation": "Rotation",
+    "assigned_table": "Table assignée",
+    "table_linked_desc": "Liée — la position de cette table sera enregistrée et utilisée pour les réservations et les commandes.",
+    "table_unlinked_desc": "Pas encore liée à une table — elle n'apparaîtra ni dans les réservations ni dans les commandes.",
+    "saved": "Enregistré.",
+    "not_saved_yet": "Pas encore enregistré — cliquez sur Enregistrer pour conserver.",
+    "remove_item": "Supprimer l'élément",
+    "floor_name": "Nom de l'étage",
+    "canvas_size_meters": "Taille du plan (mètres)",
+    "tabs": {
+      "item": "Élément",
+      "canvas": "Plan"
+    },
+    "tips": {
+      "title": "Astuces",
+      "scroll_pan": "Faites défiler pour déplacer la vue, Maj ou Ctrl + défilement pour zoomer",
+      "alt_drag_pan": "Alt + glisser sur le plan pour déplacer la vue",
+      "shift_drag_rotate": "Maj + glisser la poignée de rotation pour un ajustement tous les 15°",
+      "autosave_note": "Les éléments et les tables liées sont enregistrés dans la base de données quand vous cliquez sur Enregistrer."
+    },
+    "toolbar": {
+      "sections": {
+        "tables": "Tables",
+        "structure": "Structure",
+        "decor": "Décoration",
+        "other": "Autres"
+      },
+      "items": {
+        "rectangle": "Rectangle",
+        "square": "Carré",
+        "round": "Ronde",
+        "wall": "Mur",
+        "window": "Fenêtre",
+        "door": "Porte",
+        "pillar": "Pilier",
+        "plant": "Plante (décoration)",
+        "wc": "Toilettes",
+        "bar": "Bar",
+        "stairs": "Escalier",
+        "lift": "Ascenseur",
+        "label": "Étiquette",
+        "shape": "Forme"
+      },
+      "expand": "Développer la barre d'outils",
+      "collapse": "Réduire la barre d'outils"
+    },
+    "table_assignment": {
+      "loading": "Chargement des tables...",
+      "unassigned": "Non assignée",
+      "none_decor": "Aucune / Décoration"
+    }
   }
 }

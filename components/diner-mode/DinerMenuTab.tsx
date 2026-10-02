@@ -8,15 +8,17 @@ import { cn } from '@/lib/utils';
 import { BusinessMenu } from '@/models/business/menu/BusinessMenu';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
+import { formatCurrency } from '@/lib/formatCurrency';
 import DinerMenuItemSheet from './DinerMenuItemSheet';
 import DinerCartFab from './DinerCartFab';
 
 interface DinerMenuTabProps {
     menu: BusinessMenu;
     canOrder: boolean;
+    currency: string;
 }
 
-export default function DinerMenuTab({ menu, canOrder }: DinerMenuTabProps) {
+export default function DinerMenuTab({ menu, canOrder, currency }: DinerMenuTabProps) {
     const { t } = useTranslation('diner');
     const { openItemSheet, selectedItem, closeItemSheet } = useDinerModeStore();
     const [activeCategoryId, setActiveCategoryId] = useState<string>('');
@@ -109,6 +111,7 @@ export default function DinerMenuTab({ menu, canOrder }: DinerMenuTabProps) {
                                         key={menuItem.id}
                                         item={menuItem}
                                         canOrder={canOrder}
+                                        currency={currency}
                                         onAdd={() => openItemSheet(menuItem)}
                                     />
                                 ))}
@@ -120,8 +123,8 @@ export default function DinerMenuTab({ menu, canOrder }: DinerMenuTabProps) {
 
             {canOrder && (
                 <>
-                    <DinerMenuItemSheet item={selectedItem} onClose={closeItemSheet} />
-                    <DinerCartFab />
+                    <DinerMenuItemSheet item={selectedItem} onClose={closeItemSheet} currency={currency} />
+                    <DinerCartFab currency={currency} />
                 </>
             )}
         </div>
@@ -131,10 +134,11 @@ export default function DinerMenuTab({ menu, canOrder }: DinerMenuTabProps) {
 interface MenuItemCardProps {
     item: BusinessMenuItem;
     canOrder: boolean;
+    currency: string;
     onAdd: () => void;
 }
 
-function MenuItemCard({ item, canOrder, onAdd }: MenuItemCardProps) {
+function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
     const { t } = useTranslation('diner');
     const image = item.media?.[0]?.url;
     const isUnavailable = (item as any).isAvailable === false;
@@ -191,7 +195,7 @@ function MenuItemCard({ item, canOrder, onAdd }: MenuItemCardProps) {
 
                 <div className="flex items-center justify-between mt-2">
                     <span className="text-sm font-semibold">
-                        ${item.price.toFixed(2)}
+                        {formatCurrency(item.price, currency)}
                     </span>
                     {canOrder && !isUnavailable && (
                         <Button

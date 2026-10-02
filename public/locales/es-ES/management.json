@@ -561,7 +561,8 @@
       "ai_import": "Importar con IA",
       "save_changes": "Guardar cambios",
       "move_to_category": "Mover a categoría",
-      "delete_category": "Eliminar categoría"
+      "delete_category": "Eliminar categoría",
+      "delete_menu": "Eliminar menú"
     },
     "labels": {
       "simple_view": "Simple",
@@ -585,7 +586,8 @@
       "no_permission_edit_category": "No tienes permiso para editar esta categoría",
       "no_permission_delete_category": "No tienes permiso para eliminar esta categoría",
       "no_permission_edit_item": "No tienes permiso para editar este artículo",
-      "no_permission_delete_item": "No tienes permiso para eliminar este artículo"
+      "no_permission_delete_item": "No tienes permiso para eliminar este artículo",
+      "delete_menu_confirm": "Esto eliminará permanentemente \"{{name}}\" y todo su contenido: todas las categorías y artículos. Esta acción no se puede deshacer."
     },
     "modal": {
       "create_title": "Crear nuevo menú",
@@ -694,7 +696,8 @@
       "unit": "Unidad",
       "unit_placeholder": "Seleccionar unidad",
       "quantity_per_sale": "¿Qué cantidad se consume por venta?",
-      "quantity_hint": "Si se vende en litros y este artículo usa 0.5 L, ingresa 0.5"
+      "quantity_hint": "Si se vende en litros y este artículo usa 0.5 L, ingresa 0.5",
+      "no_permission": "No tienes permiso de inventario"
     },
     "variants_section": {
       "title": "Variantes",
@@ -943,7 +946,8 @@
       "reservation_system": "Sistema de reservas",
       "priority_support": "Soporte prioritario",
       "ded_acc_manager": "Gestor de cuentas dedicado",
-      "custom_branding": "Marca personalizada"
+      "custom_branding": "Marca personalizada",
+      "premium_themes": "Temas Premium"
     },
     "limits": {
       "businesses_one": "Hasta {{count}} negocio",
@@ -1178,7 +1182,11 @@
       "no_roles_badge": "Sin roles",
       "edit_roles_title": "Editar roles",
       "status_active": "ACTIVO",
-      "status_suspended": "SUSPENDIDO"
+      "status_suspended": "SUSPENDIDO",
+      "remove_staff_title": "Eliminar miembro del personal",
+      "remove_staff_description": "Esto eliminará a {{name}} de tu equipo. Perderá el acceso de inmediato. Esta acción no se puede deshacer.",
+      "unnamed_staff": "este miembro del personal",
+      "remove": "Eliminar"
     }
   },
   "attendance_page": {
@@ -1461,7 +1469,7 @@
     }
   },
   "schedule_staff_scheduling_tab": {
-    "confirm_delete_shift": "¿Estás seguro de que quieres eliminar este turno?",
+    "confirm_delete_shift": "Esto eliminará el turno de las {{time}}. Esta acción no se puede deshacer.",
     "toast_already_has_attendance": "Este turno ya tiene un registro de asistencia — usa Validar turno para resolverlo.",
     "status_accepted": "Aceptado",
     "status_rejected": "Rechazado",
@@ -1543,7 +1551,9 @@
     "legend_no_show": "Ausencia sin avisar",
     "legend_open": "Turno libre — sin asignar",
     "legend_conflict": "Choca con vacaciones aprobadas",
-    "legend_right_click_hint": "Clic derecho en una celda para añadir un turno."
+    "legend_right_click_hint": "Clic derecho en una celda para añadir un turno.",
+    "confirm_delete_shift_title": "¿Eliminar turno?",
+    "copy_previous_week_button": "Copiar semana"
   },
   "schedule_modals": {
     "shift_adjustment_popover": {
@@ -2119,7 +2129,9 @@
       "pagination_showing": "Página {{page}} de {{totalPages}}",
       "previous": "Anterior",
       "next": "Siguiente",
-      "cancelled": "Cancelado"
+      "cancelled": "Cancelado",
+      "view_list": "Lista",
+      "view_calendar": "Calendario"
     },
     "time_off": {
       "title": "Solicitudes de ausencia",
@@ -2160,6 +2172,20 @@
       "pending_review": "En revisión",
       "approved": "Aprobada",
       "rejected": "Rechazada"
+    },
+    "calendar_tab": {
+      "today_button": "Hoy",
+      "more_shifts_one": "+{{count}} más",
+      "more_shifts_other": "+{{count}} más"
+    },
+    "history_tab": {
+      "title": "Historial de turnos",
+      "subtitle": "Tus turnos de los últimos 90 días.",
+      "col_date": "Fecha",
+      "col_times": "Horarios",
+      "col_status": "Estado",
+      "loading": "Cargando tu historial...",
+      "empty": "Sin turnos pasados en los últimos 90 días."
     }
   },
   "nfc_tags_management": {
@@ -2343,13 +2369,24 @@
     },
     "finalized_entries": {
       "title": "Finalizadas",
-      "loading": "Cargando…"
+      "loading": "Cargando…",
+      "reopen": "Reabrir para editar"
     },
     "finalize_dialog": {
       "title": "Finalizar nómina",
       "description": "Esto bloqueará todas las entradas en borrador para el período del {{startDate}} al {{endDate}}. Las entradas finalizadas no se pueden sobrescribir. Esta acción es irreversible.",
       "cancel": "Cancelar",
       "finalizing": "Finalizando…"
+    },
+    "missing_rate_banner": {
+      "message_one": "{{count}} empleado no tiene tarifa por hora definida y no se le pagará nada este período hasta que la definas.",
+      "message_other": "{{count}} empleados no tienen tarifa por hora definida y no se les pagará nada este período hasta que la definas."
+    },
+    "unfinalize_dialog": {
+      "title": "¿Reabrir la nómina para editarla?",
+      "description": "Esto devolverá el período del {{startDate}} al {{endDate}} al estado Borrador para que puedas corregir un error. Si ya has exportado o compartido esta nómina, esas copias no se actualizarán automáticamente.",
+      "cancel": "Cancelar",
+      "reopening": "Reabriendo…"
     }
   },
   "absence_log_panel": {
@@ -2835,7 +2872,7 @@
       "order_heading": "Pedido ({{count}})",
       "remove": "Quitar",
       "empty_order": "Todavía no se han añadido artículos.",
-      "total": "Total: {{amount}} €"
+      "total": "Total: {{symbol}}{{amount}}"
     },
     "customer_step": {
       "found_user": "Usuario encontrado: {{name}}",
@@ -3017,7 +3054,9 @@
     "notes_placeholder": "Alergias, preferencias…",
     "cancel": "Cancelar",
     "creating": "Creando…",
-    "create": "Crear cliente"
+    "create": "Crear cliente",
+    "no_tables_hint": "No hay mesas libres ahora mismo.",
+    "join_waitlist_instead": "Añadir a la lista de espera"
   },
   "join_waitlist_modal": {
     "title": "Añadir a la lista de espera",
@@ -3664,7 +3703,8 @@
     "schedule_shift": "Programar turno",
     "set_pos_pin": "Definir PIN del TPV",
     "remove_staff_title_short": "Eliminar personal",
-    "no_roles_yet": "Aún no hay roles"
+    "no_roles_yet": "Aún no hay roles",
+    "edit_staff_settings": "Editar ajustes"
   },
   "fiscal_invoice_details_modal": {
     "view": "Ver",
@@ -4645,7 +4685,8 @@
     "add_role": "Añadir rol",
     "search_role_placeholder": "Buscar rol...",
     "no_role_found": "No se encontró ningún rol.",
-    "no_roles_assigned": "No hay roles asignados."
+    "no_roles_assigned": "No hay roles asignados.",
+    "remove_role": "Quitar rol"
   },
   "roles_section": {
     "title": "Roles",
@@ -5162,5 +5203,78 @@
     "loading": "Cargando horarios tipo…",
     "hint": "Rellena las horas de inicio y fin de abajo. Podrás cambiarlas después.",
     "empty_hint": "Aún no hay horarios tipo guardados. Créalos en Cuadrante → Horarios tipo para no repetir las horas más habituales."
+  },
+  "floor_plan_designer": {
+    "floor_label": "Planta:",
+    "loading": "Cargando...",
+    "no_floors_yet": "Aún no hay plantas — crea una en la pestaña Plantas.",
+    "select_floor_placeholder": "Seleccionar planta",
+    "zoom_out": "Alejar",
+    "zoom_in": "Acercar",
+    "reset_zoom": "Restablecer zoom",
+    "save": "Guardar",
+    "save_success": "¡Plano de planta guardado!",
+    "save_error": "No se pudo guardar — comprueba tu conexión e inténtalo de nuevo.",
+    "select_floor_to_start": "Selecciona una planta para empezar a diseñar",
+    "collapse_sidebar": "Contraer barra lateral",
+    "expand_sidebar": "Expandir barra lateral",
+    "no_element_selected": "Ningún elemento seleccionado",
+    "click_item_hint": "Haz clic en un elemento del lienzo",
+    "default_floor_name": "Planta",
+    "label_name": "Etiqueta / Nombre",
+    "size_meters": "Tamaño (metros)",
+    "width": "Ancho",
+    "height": "Alto",
+    "rotation": "Rotación",
+    "assigned_table": "Mesa asignada",
+    "table_linked_desc": "Vinculada — la posición de esta mesa se guardará y se usará para reservas y pedidos.",
+    "table_unlinked_desc": "Aún no está vinculada a una mesa — no aparecerá en reservas ni pedidos.",
+    "saved": "Guardado.",
+    "not_saved_yet": "Aún no guardado — haz clic en Guardar para conservarlo.",
+    "remove_item": "Eliminar elemento",
+    "floor_name": "Nombre de la planta",
+    "canvas_size_meters": "Tamaño del lienzo (metros)",
+    "tabs": {
+      "item": "Elemento",
+      "canvas": "Lienzo"
+    },
+    "tips": {
+      "title": "Consejos",
+      "scroll_pan": "Desplázate para mover la vista, Mayús o Ctrl + desplazar para hacer zoom",
+      "alt_drag_pan": "Alt + arrastrar sobre el lienzo para mover la vista",
+      "shift_drag_rotate": "Mayús + arrastrar el tirador de rotación para ajustar cada 15°",
+      "autosave_note": "Los elementos y las mesas vinculadas se guardan en la base de datos al hacer clic en Guardar."
+    },
+    "toolbar": {
+      "sections": {
+        "tables": "Mesas",
+        "structure": "Estructura",
+        "decor": "Decoración",
+        "other": "Otros"
+      },
+      "items": {
+        "rectangle": "Rectángulo",
+        "square": "Cuadrado",
+        "round": "Redonda",
+        "wall": "Pared",
+        "window": "Ventana",
+        "door": "Puerta",
+        "pillar": "Pilar",
+        "plant": "Planta (decorativa)",
+        "wc": "Aseo",
+        "bar": "Barra",
+        "stairs": "Escaleras",
+        "lift": "Ascensor",
+        "label": "Etiqueta",
+        "shape": "Forma"
+      },
+      "expand": "Expandir barra de herramientas",
+      "collapse": "Contraer barra de herramientas"
+    },
+    "table_assignment": {
+      "loading": "Cargando mesas...",
+      "unassigned": "Sin asignar",
+      "none_decor": "Ninguna / Decoración"
+    }
   }
 }
