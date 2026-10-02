@@ -6,6 +6,7 @@ import {
 } from "./service";
 import { BusinessMenuBasic } from "@/models/business/menu/BusinessMenuBasic";
 import { BusinessMenuItem } from "@/models/business/menu/BusinessMenuItem";
+import { toast } from "sonner";
 
 export const useBusinessMenus = (businessId: string, enabled: boolean = true) => {
   const queryClient = useQueryClient();
@@ -36,6 +37,9 @@ export const useBusinessMenus = (businessId: string, enabled: boolean = true) =>
       queryClient.refetchQueries({
         queryKey: ["business_menus", businessId],
       });
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to create menu");
     },
   });
 

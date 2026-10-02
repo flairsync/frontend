@@ -74,6 +74,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Menu updated !");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update menu");
+    },
   });
 
   const { mutate: removeMenu, isPending: isRemovingMenu } = useMutation({
@@ -84,6 +87,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Menu deleted!");
       invalidateBusinessMenuAggregates();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete menu");
     },
   });
 
@@ -120,6 +126,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to create category");
+    },
   });
 
   const { mutate: updateCategoriesOrder } = useMutation({
@@ -130,6 +139,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Categories order updated !");
       refreshBusinessMenu();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update categories order");
     },
   });
 
@@ -153,6 +165,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Category Updated !");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update category");
+    },
   });
 
   const { mutate: removeCategory } = useMutation({
@@ -164,6 +179,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Category Removed !");
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete category");
     },
   });
 
@@ -184,6 +202,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Items added !");
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to add items");
     },
   });
 
@@ -225,6 +246,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to create item");
+    },
   });
 
   const { mutate: removeItem } = useMutation({
@@ -240,6 +264,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete item");
     },
   });
 
@@ -262,6 +289,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update item");
+    },
   });
 
   //#endregion
@@ -276,6 +306,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Variant created!");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to create variant");
+    },
   });
 
   const { mutate: updateVariant } = useMutation({
@@ -287,6 +320,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Variant updated!");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update variant");
+    },
   });
 
   const { mutate: deleteVariant } = useMutation({
@@ -297,6 +333,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Variant deleted!");
       refreshBusinessMenu();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete variant");
     },
   });
   //#endregion
@@ -311,6 +350,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Modifier Group created!");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to create modifier group");
+    },
   });
 
   const { mutate: updateModifierGroup } = useMutation({
@@ -322,6 +364,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Modifier Group updated!");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update modifier group");
+    },
   });
 
   const { mutate: deleteModifierGroup } = useMutation({
@@ -332,6 +377,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Modifier Group deleted!");
       refreshBusinessMenu();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete modifier group");
     },
   });
   //#endregion
@@ -346,6 +394,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Modifier Item created!");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to create modifier item");
+    },
   });
 
   const { mutate: updateModifierItem } = useMutation({
@@ -357,6 +408,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       toast.success("Modifier Item updated!");
       refreshBusinessMenu();
     },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to update modifier item");
+    },
   });
 
   const { mutate: deleteModifierItem } = useMutation({
@@ -367,6 +421,9 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
     onSuccess(data, variables, context) {
       toast.success("Modifier Item deleted!");
       refreshBusinessMenu();
+    },
+    onError(error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete modifier item");
     },
   });
   //#endregion
