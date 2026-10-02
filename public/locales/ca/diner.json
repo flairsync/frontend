@@ -128,6 +128,8 @@
     "choose_variant": "Tria una variant",
     "choose_one": "Tria'n una",
     "choose_up_to": "Fins a {{count}}",
+    "required": "Obligatori",
+    "min_selections_hint": "Selecciona almenys {{count}}",
     "special_instructions": "Instruccions especials",
     "special_instructions_placeholder": "Ex. Sense ceba, salsa extra…",
     "add_to_order": "Afegeix a la comanda · {{price}} $"

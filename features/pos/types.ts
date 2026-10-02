@@ -9,6 +9,7 @@ export interface ModifierItem {
 export interface ModifierGroup {
   id: string;
   name: string;
+  selectionMode: "single" | "multiple";
   required: boolean;
   minSelections: number;
   maxSelections: number;

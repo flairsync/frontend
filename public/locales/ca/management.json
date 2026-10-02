@@ -3104,6 +3104,8 @@
     "default_description": "Personalitza el teu article",
     "choose_variant": "Triar mida/variant",
     "optional": "(Opcional)",
+    "required": "(Obligatori)",
+    "min_selections_hint": "Selecciona almenys {{count}}",
     "none_base_item": "Cap (article base)",
     "none": "Cap",
     "quantity": "Quantitat",

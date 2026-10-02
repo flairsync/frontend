@@ -55,6 +55,10 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
     const unitPrice = basePrice + modifierTotal;
     const lineTotal = unitPrice * quantity;
 
+    const unsatisfiedGroups = (item?.modifierGroups ?? []).filter(
+        (group) => group.minSelections > 0 && (selectedModifiers[group.id]?.size ?? 0) < group.minSelections,
+    );
+
     const handleToggleModifier = (groupId: string, modId: string, mode: 'single' | 'multiple') => {
         setSelectedModifiers((prev) => {
             const groupSet = new Set(prev[groupId] ?? []);
@@ -71,7 +75,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
     };
 
     const handleAdd = () => {
-        if (!item) return;
+        if (!item || unsatisfiedGroups.length > 0) return;
 
         const flatModifiers: CartItem['modifiers'] = [];
         Object.entries(selectedModifiers).forEach(([, modSet]) => {
@@ -154,14 +158,22 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                 </div>
                             )}
 
-                            {hasModifiers && item.modifierGroups!.map((group) => (
+                            {hasModifiers && item.modifierGroups!.map((group) => {
+                                const isRequired = group.minSelections > 0;
+                                const isUnsatisfied = isRequired && (selectedModifiers[group.id]?.size ?? 0) < group.minSelections;
+                                return (
                                 <div key={group.id}>
                                     <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm font-semibold">{group.name}</p>
-                                        <span className="text-xs text-muted-foreground capitalize">
-                                            {group.selectionMode === 'single'
-                                                ? t('menu_item_sheet.choose_one')
-                                                : t('menu_item_sheet.choose_up_to', { count: group.maxSelections })}
+                                        <p className="text-sm font-semibold">
+                                            {group.name}
+                                            {isRequired && <span className="text-destructive ml-1">*</span>}
+                                        </p>
+                                        <span className={`text-xs capitalize ${isUnsatisfied ? 'text-destructive font-medium' : 'text-muted-foreground'}`}>
+                                            {isUnsatisfied
+                                                ? t('menu_item_sheet.min_selections_hint', { count: group.minSelections })
+                                                : group.selectionMode === 'single'
+                                                    ? t('menu_item_sheet.choose_one')
+                                                    : t('menu_item_sheet.choose_up_to', { count: group.maxSelections })}
                                         </span>
                                     </div>
                                     <div className="space-y-2">
@@ -199,7 +211,8 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                                         })}
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
 
                             <div>
                                 <p className="text-sm font-semibold mb-2">{t('menu_item_sheet.special_instructions')}</p>
@@ -239,7 +252,7 @@ export default function DinerMenuItemSheet({ item, onClose }: DinerMenuItemSheet
                             <Button
                                 className="flex-1 rounded-full font-semibold"
                                 onClick={handleAdd}
-                                disabled={hasVariants && !selectedVariantId}
+                                disabled={(hasVariants && !selectedVariantId) || unsatisfiedGroups.length > 0}
                             >
                                 {t('menu_item_sheet.add_to_order', { price: lineTotal.toFixed(2) })}
                             </Button>

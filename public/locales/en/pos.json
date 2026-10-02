@@ -17,6 +17,21 @@
     "allergens_label": "Contains",
     "includes_label": "Includes"
   },
+  "item_config_modal": {
+    "default_description": "Customize your item",
+    "choose_variant": "Choose size/variant",
+    "base_item": "Base item",
+    "optional": "(Optional)",
+    "required": "(Required)",
+    "min_selections_hint": "Select at least {{count}}",
+    "none": "None",
+    "quantity": "Quantity",
+    "notes_label": "Notes",
+    "notes_placeholder": "e.g. No onions, extra spicy...",
+    "total": "Total",
+    "cancel": "Cancel",
+    "add_to_order": "Add to order"
+  },
   "discount_panel": {
     "discount_applied": "Discount applied",
     "mode": {

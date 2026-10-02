@@ -128,6 +128,8 @@
     "choose_variant": "Choisis une variante",
     "choose_one": "Choisis-en un",
     "choose_up_to": "Jusqu'à {{count}}",
+    "required": "Obligatoire",
+    "min_selections_hint": "Sélectionnez au moins {{count}}",
     "special_instructions": "Instructions spéciales",
     "special_instructions_placeholder": "Ex. Sans oignons, sauce en plus…",
     "add_to_order": "Ajouter à la commande · {{price}} $"

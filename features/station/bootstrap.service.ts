@@ -26,6 +26,7 @@ export function normalizePosMenus(raw: any[]): PosMenu[] {
         modifierGroups: (item.modifierGroups ?? []).map((mg: any) => ({
           id: mg.id,
           name: mg.name,
+          selectionMode: mg.selectionMode === "single" ? "single" : "multiple",
           required: mg.required ?? (mg.minSelections > 0),
           minSelections: mg.minSelections ?? 0,
           maxSelections: mg.maxSelections ?? 1,

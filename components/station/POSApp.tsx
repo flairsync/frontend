@@ -40,6 +40,7 @@ function useResizablePanel(initial: number, min: number, max: number, invertDelt
     return { width, startResize };
 }
 import { ProductCard } from "@/components/pos/ProductCard";
+import { ItemConfigModal, type ConfiguredCartItem } from "@/components/pos/ItemConfigModal";
 import { OrderCart } from "@/components/pos/OrderCart";
 import { PaymentModal } from "@/components/pos/PaymentModal";
 import { ConfirmationModal } from "@/components/pos/ConfirmationModal";
@@ -251,6 +252,7 @@ function POSMain({
     const [searchQuery, setSearchQuery] = useState("");
     const [cart, setCart] = useState<CartItem[]>([]);
     const [creatingOrder, setCreatingOrder] = useState(false);
+    const [configModalItem, setConfigModalItem] = useState<MenuItem | null>(null);
 
     // ── Payment modal state ──
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -414,6 +416,11 @@ function POSMain({
 
     // ── Cart helpers ──
     const addToCart = useCallback((item: MenuItem) => {
+        if (item.variants.length > 0 || item.modifierGroups.length > 0) {
+            setConfigModalItem(item);
+            return;
+        }
+
         const cartId = item.id;
         setCart((prev) => {
             const existing = prev.find((c) => c.id === cartId);
@@ -437,12 +444,50 @@ function POSMain({
         });
     }, []);
 
-    // Mirrors the old cart.find(...)?.quantity semantics (first match wins),
-    // just precomputed once per cart change instead of once per rendered card.
+    // Items with variants/modifiers each get their own cart line rather than merging into an
+    // existing one, unless the selected configuration (variant + modifiers + notes) is an exact
+    // match — mirrors the staff POS drawer's dedup rule (StaffAddOrderDrawer.handleSaveConfig).
+    const addConfiguredItemToCart = useCallback((config: ConfiguredCartItem) => {
+        setCart((prev) => {
+            const existingIndex = prev.findIndex((c) =>
+                c.menuItemId === config.menuItemId &&
+                c.variantId === config.variantId &&
+                JSON.stringify(c.modifiers ?? []) === JSON.stringify(config.modifiers.map((m) => ({ modifierItemId: m.modifierItemId }))) &&
+                c.notes === config.notes,
+            );
+
+            if (existingIndex >= 0) {
+                const updated = [...prev];
+                updated[existingIndex] = { ...updated[existingIndex], quantity: updated[existingIndex].quantity + config.quantity };
+                return updated;
+            }
+
+            return [
+                ...prev,
+                {
+                    id: `${config.menuItemId}-${Date.now()}`,
+                    name: config.name,
+                    price: config.price,
+                    quantity: config.quantity,
+                    variantName: config.variantName,
+                    modifierNames: config.modifierNames,
+                    notes: config.notes,
+                    menuItemId: config.menuItemId,
+                    variantId: config.variantId,
+                    modifiers: config.modifiers.map((m) => ({ modifierItemId: m.modifierItemId })),
+                },
+            ];
+        });
+        setConfigModalItem(null);
+    }, []);
+
+    // Sums quantity across all cart lines for a menu item — items with variants/modifiers can
+    // produce multiple distinct lines (see addConfiguredItemToCart), so this can no longer be a
+    // first-match-wins lookup the way it was back when every item collapsed to a single line.
     const cartQuantityByMenuItemId = useMemo(() => {
         const map = new Map<string, number>();
         for (const c of cart) {
-            if (!map.has(c.menuItemId)) map.set(c.menuItemId, c.quantity);
+            map.set(c.menuItemId, (map.get(c.menuItemId) ?? 0) + c.quantity);
         }
         return map;
     }, [cart]);
@@ -1251,6 +1296,14 @@ function POSMain({
                 title={confirmModal.title}
                 description={confirmModal.description}
                 variant={confirmModal.variant}
+            />
+
+            <ItemConfigModal
+                open={!!configModalItem}
+                onClose={() => setConfigModalItem(null)}
+                item={configModalItem}
+                onConfirm={addConfiguredItemToCart}
+                currency={station.business.currency}
             />
         </div>
     );

@@ -3104,6 +3104,8 @@
     "default_description": "Personaliza tu artículo",
     "choose_variant": "Elegir tamaño/variante",
     "optional": "(Opcional)",
+    "required": "(Obligatorio)",
+    "min_selections_hint": "Selecciona al menos {{count}}",
     "none_base_item": "Ninguno (artículo base)",
     "none": "Ninguno",
     "quantity": "Cantidad",

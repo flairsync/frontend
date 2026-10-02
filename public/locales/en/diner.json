@@ -128,6 +128,8 @@
     "choose_variant": "Choose a variant",
     "choose_one": "Choose one",
     "choose_up_to": "Up to {{count}}",
+    "required": "Required",
+    "min_selections_hint": "Select at least {{count}}",
     "special_instructions": "Special instructions",
     "special_instructions_placeholder": "E.g. No onions, extra sauce…",
     "add_to_order": "Add to order · ${{price}}"

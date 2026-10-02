@@ -3216,6 +3216,8 @@
     "default_description": "Customize your item",
     "choose_variant": "Choose Size/Variant",
     "optional": "(Optional)",
+    "required": "(Required)",
+    "min_selections_hint": "Select at least {{count}}",
     "none_base_item": "None (Base Item)",
     "none": "None",
     "quantity": "Quantity",

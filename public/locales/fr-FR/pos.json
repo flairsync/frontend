@@ -17,6 +17,21 @@
     "allergens_label": "Contient",
     "includes_label": "Comprend"
   },
+  "item_config_modal": {
+    "default_description": "Personnalisez votre article",
+    "choose_variant": "Choisir taille/variante",
+    "base_item": "Article de base",
+    "optional": "(Facultatif)",
+    "required": "(Obligatoire)",
+    "min_selections_hint": "Sélectionnez au moins {{count}}",
+    "none": "Aucun",
+    "quantity": "Quantité",
+    "notes_label": "Notes",
+    "notes_placeholder": "Ex. Sans oignon, extra épicé...",
+    "total": "Total",
+    "cancel": "Annuler",
+    "add_to_order": "Ajouter à la commande"
+  },
   "discount_panel": {
     "discount_applied": "Remise appliquée",
     "mode": {

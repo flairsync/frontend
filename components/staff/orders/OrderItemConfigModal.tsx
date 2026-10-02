@@ -69,6 +69,10 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
 
     if (!item) return null;
 
+    const unsatisfiedGroups = (item.modifierGroups ?? []).filter(
+        (group) => group.minSelections > 0 && (selectedModifiers[group.id] || []).length < group.minSelections,
+    );
+
     const handleModifierToggle = (group: MenuItemModifierGroup, modifier: any, checked: boolean) => {
         setSelectedModifiers(prev => {
             const currentGroupSelections = prev[group.id] || [];
@@ -103,6 +107,8 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
     };
 
     const handleSave = () => {
+        if (unsatisfiedGroups.length > 0) return;
+
         const allSelectedMods = Object.values(selectedModifiers).flat().map(m => ({
             modifierItemId: m.id,
             name: m.name,
@@ -177,14 +183,23 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                         {item.modifierGroups?.sort((a, b) => a.order - b.order).map(group => {
                             const selectedCount = (selectedModifiers[group.id] || []).length;
                             const isSingle = group.selectionMode === 'single';
+                            const isRequired = group.minSelections > 0;
+                            const isUnsatisfied = isRequired && selectedCount < group.minSelections;
 
                             return (
                                 <div key={group.id} className="space-y-3">
                                     <div className="flex items-center justify-between">
                                         <Label className="text-base font-semibold">
                                             {group.name}
-                                            <span className="text-muted-foreground ml-1 font-normal text-sm">{t("order_item_config_modal.optional")}</span>
+                                            <span className={cn("ml-1 font-normal text-sm", isRequired ? "text-destructive" : "text-muted-foreground")}>
+                                                {t(isRequired ? "order_item_config_modal.required" : "order_item_config_modal.optional")}
+                                            </span>
                                         </Label>
+                                        {isUnsatisfied && (
+                                            <span className="text-xs text-destructive font-medium">
+                                                {t("order_item_config_modal.min_selections_hint", { count: group.minSelections })}
+                                            </span>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -307,7 +322,7 @@ export const OrderItemConfigModal: React.FC<OrderItemConfigModalProps> = ({ open
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" onClick={onClose}>{t("order_item_config_modal.cancel")}</Button>
-                        <Button onClick={handleSave}>
+                        <Button onClick={handleSave} disabled={unsatisfiedGroups.length > 0}>
                             {initialConfig ? t("order_item_config_modal.save_changes") : t("order_item_config_modal.add_to_order")}
                         </Button>
                     </div>

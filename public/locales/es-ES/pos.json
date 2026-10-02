@@ -17,6 +17,21 @@
     "allergens_label": "Contiene",
     "includes_label": "Incluye"
   },
+  "item_config_modal": {
+    "default_description": "Personaliza tu artículo",
+    "choose_variant": "Elegir tamaño/variante",
+    "base_item": "Artículo base",
+    "optional": "(Opcional)",
+    "required": "(Obligatorio)",
+    "min_selections_hint": "Selecciona al menos {{count}}",
+    "none": "Ninguno",
+    "quantity": "Cantidad",
+    "notes_label": "Notas",
+    "notes_placeholder": "Ej. Sin cebolla, extra picante...",
+    "total": "Total",
+    "cancel": "Cancelar",
+    "add_to_order": "Añadir al pedido"
+  },
   "discount_panel": {
     "discount_applied": "Descuento aplicado",
     "mode": {

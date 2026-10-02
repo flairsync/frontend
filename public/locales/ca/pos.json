@@ -17,6 +17,21 @@
     "allergens_label": "Conté",
     "includes_label": "Inclou"
   },
+  "item_config_modal": {
+    "default_description": "Personalitza el teu article",
+    "choose_variant": "Triar mida/variant",
+    "base_item": "Article base",
+    "optional": "(Opcional)",
+    "required": "(Obligatori)",
+    "min_selections_hint": "Selecciona almenys {{count}}",
+    "none": "Cap",
+    "quantity": "Quantitat",
+    "notes_label": "Notes",
+    "notes_placeholder": "P. ex. Sense ceba, extra picant...",
+    "total": "Total",
+    "cancel": "Cancel·la",
+    "add_to_order": "Afegeix a la comanda"
+  },
   "discount_panel": {
     "discount_applied": "Descompte aplicat",
     "mode": {
