@@ -189,15 +189,15 @@ export default function DinerMyOrderTab({
                 >
                     <span className={statusConfig.color}>{statusConfig.icon}</span>
                     <div>
-                        <p className="font-semibold text-sm">{statusConfig.label}</p>
+                        <p className="font-semibold text-base">{statusConfig.label}</p>
                         {statusConfig.description && (
-                            <p className="text-xs text-muted-foreground">{statusConfig.description}</p>
+                            <p className="text-sm text-muted-foreground">{statusConfig.description}</p>
                         )}
                         {activeOrder.status === 'completed' && activeOrder.paymentStatus === 'unpaid' && (
-                            <p className="text-xs text-muted-foreground">{t('my_order_tab.payment_pending')}</p>
+                            <p className="text-sm text-muted-foreground">{t('my_order_tab.payment_pending')}</p>
                         )}
                     </div>
-                    <span className="ml-auto text-sm font-bold">
+                    <span className="ml-auto text-base font-bold">
                         {formatCurrency(Number(activeOrder.totalAmount), currency)}
                     </span>
                 </div>
@@ -206,7 +206,7 @@ export default function DinerMyOrderTab({
             {activeOrder && (
                 <div className="rounded-2xl border bg-card overflow-hidden">
                     <div className="px-4 py-3 border-b flex items-center justify-between">
-                        <p className="text-sm font-semibold">{t('my_order_tab.your_order_heading')}</p>
+                        <p className="text-base font-semibold">{t('my_order_tab.your_order_heading')}</p>
                         {isEditable && canOrder && (
                             <Button
                                 variant="ghost"
@@ -223,22 +223,22 @@ export default function DinerMyOrderTab({
                         {activeOrder.items.map((item) => (
                             <div key={item.id} className="px-4 py-3 flex justify-between items-start gap-2">
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-sm font-medium">
+                                    <p className="text-base font-medium">
                                         {item.quantity}× {getItemName(item, t('my_order_tab.unnamed_item'))}
                                     </p>
                                     {item.variantName && (
-                                        <p className="text-xs text-muted-foreground">{item.variantName}</p>
+                                        <p className="text-sm text-muted-foreground">{item.variantName}</p>
                                     )}
                                     {item.selectedModifiers && item.selectedModifiers.length > 0 && (
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-sm text-muted-foreground">
                                             + {item.selectedModifiers.map((m) => m.name).join(', ')}
                                         </p>
                                     )}
                                     {item.notes && (
-                                        <p className="text-xs text-muted-foreground italic">{item.notes}</p>
+                                        <p className="text-sm text-muted-foreground italic">{item.notes}</p>
                                     )}
                                 </div>
-                                <span className="text-sm font-medium shrink-0">
+                                <span className="text-base font-medium shrink-0">
                                     {formatCurrency(getItemTotal(item), currency)}
                                 </span>
                             </div>
@@ -261,42 +261,42 @@ export default function DinerMyOrderTab({
                         {cart.map((item, index) => (
                             <div key={index} className="px-4 py-3 flex justify-between items-start gap-2">
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-sm font-medium">{item.name}</p>
+                                    <p className="text-base font-medium">{item.name}</p>
                                     {item.variantName && (
-                                        <p className="text-xs text-muted-foreground">{item.variantName}</p>
+                                        <p className="text-sm text-muted-foreground">{item.variantName}</p>
                                     )}
                                     {item.modifiers.length > 0 && (
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-sm text-muted-foreground">
                                             + {item.modifiers.map((m) => m.name).join(', ')}
                                         </p>
                                     )}
                                     {item.notes && (
-                                        <p className="text-xs text-muted-foreground italic">{item.notes}</p>
+                                        <p className="text-sm text-muted-foreground italic">{item.notes}</p>
                                     )}
-                                    <div className="flex items-center gap-1.5 mt-2 border rounded-full w-fit px-1 py-0.5">
+                                    <div className="flex items-center gap-1.5 mt-2 border rounded-full w-fit px-1">
                                         <button
                                             onClick={() => onUpdateCartItemQuantity(index, -1)}
                                             disabled={item.quantity <= 1}
-                                            className="w-6 h-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                                            className="w-10 h-10 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                                         >
-                                            <Minus className="w-3 h-3" />
+                                            <Minus className="w-3.5 h-3.5" />
                                         </button>
-                                        <span className="text-xs font-semibold w-4 text-center">{item.quantity}</span>
+                                        <span className="text-sm font-semibold w-5 text-center">{item.quantity}</span>
                                         <button
                                             onClick={() => onUpdateCartItemQuantity(index, 1)}
-                                            className="w-6 h-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition-colors"
+                                            className="w-10 h-10 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition-colors"
                                         >
-                                            <Plus className="w-3 h-3" />
+                                            <Plus className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end gap-2 shrink-0">
-                                    <span className="text-sm font-medium">{formatCurrency(item.lineTotal, currency)}</span>
+                                    <span className="text-base font-medium">{formatCurrency(item.lineTotal, currency)}</span>
                                     <button
                                         onClick={() => onRemoveCartItem(index)}
-                                        className="text-muted-foreground hover:text-destructive transition-colors p-1"
+                                        className="text-muted-foreground hover:text-destructive transition-colors p-2 -m-2"
                                     >
-                                        <XCircle className="w-3.5 h-3.5" />
+                                        <XCircle className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
@@ -314,7 +314,7 @@ export default function DinerMyOrderTab({
 
                     <div className="px-4 pb-4">
                         <Button
-                            className="w-full rounded-full font-semibold"
+                            className="w-full rounded-full h-12 text-base font-semibold"
                             onClick={onPlaceOrder}
                             disabled={isSubmitting}
                         >

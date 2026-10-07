@@ -24,7 +24,7 @@ export default function DinerCartFab({ currency }: DinerCartFabProps) {
         <div className="fixed bottom-[max(6rem,calc(6rem+env(safe-area-inset-bottom)))] left-1/2 -translate-x-1/2 z-50">
             <Button
                 onClick={() => { window.location.href = `/diner/${businessId}/order`; }}
-                className="rounded-full shadow-xl px-5 py-3 gap-3 text-sm font-semibold h-auto"
+                className="rounded-full shadow-xl px-5 py-3.5 gap-3 text-base font-semibold h-auto"
             >
                 <div className="relative">
                     <ShoppingCart className="w-4 h-4" />

@@ -80,6 +80,13 @@
     },
     "tab_loyalty": "Puntos"
   },
+  "onboarding": {
+    "title": "¡Bienvenido! Así funciona",
+    "step_1": "Toca un plato para añadirlo a tu pedido",
+    "step_2": "Revisa todo en \"Mi pedido\"",
+    "step_3": "Envíalo — empezaremos a cocinar enseguida",
+    "got_it": "Entendido"
+  },
   "banner": {
     "seated_title": "Estás sentado aquí",
     "active_order_title": "Tienes un pedido activo",

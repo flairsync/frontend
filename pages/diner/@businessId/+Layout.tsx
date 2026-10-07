@@ -16,9 +16,10 @@ import {
 import { useDinerModeStore } from '@/features/diner-mode/DinerModeStore';
 import DinerModeHeader from '@/components/diner-mode/DinerModeHeader';
 import DinerCallWaiterButton from '@/components/diner-mode/DinerCallWaiterButton';
+import DinerOnboardingHint from '@/components/diner-mode/DinerOnboardingHint';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { getTableCookie, getGuestOrderCookie, clearGuestOrderCookie } from '@/utils/cookies';
+import { getTableCookie, getGuestOrderCookie, clearGuestOrderCookie, getDinerOnboardingSeen, setDinerOnboardingSeen } from '@/utils/cookies';
 
 const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const { t } = useTranslation('diner');
@@ -100,6 +101,21 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
             setExitVisible(true);
         }
     }, [hasSeatedReservation, hasActiveOrder, hasScannedTable, isLoading, cart.length, isLoyaltyActive]);
+
+    // One-time, plain-language explainer for the self-order paradigm itself, shown only once
+    // this device actually has something to order against (not on the loyalty-only landing
+    // the exit-redirect effect above already covers) — see DinerOnboardingHint.
+    const [onboardingVisible, setOnboardingVisible] = useState(false);
+    useEffect(() => {
+        if (!isLoading && !getDinerOnboardingSeen() && (hasSeatedReservation || hasActiveOrder || hasScannedTable)) {
+            setOnboardingVisible(true);
+        }
+    }, [isLoading, hasSeatedReservation, hasActiveOrder, hasScannedTable]);
+
+    const dismissOnboarding = () => {
+        setDinerOnboardingSeen();
+        setOnboardingVisible(false);
+    };
 
     // Auto-dismiss the order-ready banner when the order moves to completed
     useEffect(() => {
@@ -224,6 +240,8 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                 )}
             </AnimatePresence>
 
+            <DinerOnboardingHint open={onboardingVisible} onDismiss={dismissOnboarding} />
+
             <DinerModeHeader
                 profile={profile}
                 tableLabel={tableLabel}
@@ -246,7 +264,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         )}
                     >
                         <UtensilsCrossed className="w-5 h-5" />
-                        <span className="text-[10px] font-medium">{t('layout.tab_menu')}</span>
+                        <span className="text-xs font-medium">{t('layout.tab_menu')}</span>
                     </a>
 
                     <a
@@ -266,7 +284,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                                 </span>
                             )}
                         </div>
-                        <span className="text-[10px] font-medium">{t('layout.tab_my_order')}</span>
+                        <span className="text-xs font-medium">{t('layout.tab_my_order')}</span>
                     </a>
 
                     <a
@@ -279,7 +297,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         )}
                     >
                         <Gift className="w-5 h-5" />
-                        <span className="text-[10px] font-medium">{t('layout.tab_loyalty')}</span>
+                        <span className="text-xs font-medium">{t('layout.tab_loyalty')}</span>
                     </a>
 
                     <div className="flex-1 flex items-center justify-center px-3">

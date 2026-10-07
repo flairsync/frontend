@@ -77,7 +77,7 @@ export default function DinerMenuTab({ menu, canOrder, currency }: DinerMenuTabP
                             key={cat.id}
                             onClick={() => scrollToCategory(cat.id)}
                             className={cn(
-                                "px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
+                                "px-3.5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
                                 activeCategoryId === cat.id
                                     ? "bg-primary text-primary-foreground"
                                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -168,22 +168,22 @@ function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
             <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                        <p className="text-sm font-semibold leading-snug">{item.name}</p>
+                        <p className="text-base font-semibold leading-snug">{item.name}</p>
                         {item.description && (
-                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                            <p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">
                                 {item.description}
                             </p>
                         )}
                         {item.allergies && item.allergies.length > 0 && (
-                            <p className="text-[10px] text-amber-600 mt-0.5 flex items-center gap-1">
-                                <AlertTriangle className="w-3 h-3 flex-shrink-0" />
+                            <p className="text-xs font-medium text-amber-600 mt-0.5 flex items-center gap-1">
+                                <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
                                 <span className="line-clamp-1">
                                     {t('menu_tab.contains_allergens')}: {item.allergies.map((a) => a.name).join(', ')}
                                 </span>
                             </p>
                         )}
                         {item.isBundle && item.bundleComponentDetails && item.bundleComponentDetails.length > 0 && (
-                            <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1">
+                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
                                 {t('menu_tab.includes_label')}: {item.bundleComponentDetails.map((c) => `${c.name} ×${c.quantity}`).join(', ')}
                             </p>
                         )}
@@ -194,13 +194,13 @@ function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
                 </div>
 
                 <div className="flex items-center justify-between mt-2">
-                    <span className="text-sm font-semibold">
+                    <span className="text-base font-semibold">
                         {formatCurrency(item.price, currency)}
                     </span>
                     {canOrder && !isUnavailable && (
                         <Button
                             size="icon"
-                            className="h-9 w-9 rounded-full shrink-0"
+                            className="h-11 w-11 rounded-full shrink-0"
                             onClick={onAdd}
                         >
                             <Plus className="w-4 h-4" />

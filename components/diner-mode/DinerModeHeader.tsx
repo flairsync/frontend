@@ -2,6 +2,7 @@ import React from 'react';
 import { X, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher';
 import { DiscoveryBusinessProfile } from '@/models/discovery/DiscoveryBusinessProfile';
 
 interface DinerModeHeaderProps {
@@ -34,15 +35,18 @@ export default function DinerModeHeader({ profile, tableLabel, onExit }: DinerMo
                     </div>
                 </div>
 
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full shrink-0"
-                    onClick={onExit}
-                    title={t('header.leave_diner_mode')}
-                >
-                    <X className="w-4 h-4" />
-                </Button>
+                <div className="flex items-center gap-1 shrink-0">
+                    <LanguageSwitcher compact />
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full h-11 w-11"
+                        onClick={onExit}
+                        title={t('header.leave_diner_mode')}
+                    >
+                        <X className="w-4 h-4" />
+                    </Button>
+                </div>
             </div>
         </header>
     );

@@ -80,6 +80,13 @@
     },
     "tab_loyalty": "Points"
   },
+  "onboarding": {
+    "title": "Bienvenue ! Voici comment ça marche",
+    "step_1": "Touchez un plat pour l'ajouter à votre commande",
+    "step_2": "Vérifiez tout dans « Ma commande »",
+    "step_3": "Envoyez-la — nous commencerons à cuisiner tout de suite",
+    "got_it": "Compris"
+  },
   "banner": {
     "seated_title": "Tu es installé ici",
     "active_order_title": "Tu as une commande en cours",

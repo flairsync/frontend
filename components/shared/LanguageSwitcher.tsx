@@ -22,7 +22,7 @@ const languages = [
     { code: "en", label: "English", flag: EnFlag },
     { code: "fr-FR", label: "Français", flag: FrFlag },
     { code: "es-ES", label: "Español", flag: EsFlag },
-    { code: "ca", label: "Catalan", flag: CatFlag },
+    { code: "ca", label: "Català", flag: CatFlag },
 ];
 
 
@@ -50,7 +50,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="flex items-center gap-1.5 px-2 text-foreground/70 hover:text-foreground"
+                        className="flex items-center gap-1.5 px-2 h-11 min-w-11 text-foreground/70 hover:text-foreground"
                         aria-label="Select language"
                     >
                         <Globe className="h-4 w-4 shrink-0" />
@@ -68,12 +68,12 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                     </Button>
                 )}
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuContent align="end" className="w-44">
                 {languages.map((lang) => (
                     <DropdownMenuItem
                         key={lang.code}
                         onClick={() => handleSelect(lang.code)}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 py-2.5 text-base"
                     >
                         <img src={lang.flag} alt={lang.label} loading="lazy" className="w-5 h-5" />
                         {lang.label}

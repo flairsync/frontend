@@ -6,6 +6,7 @@ const TABLE_KEY = "fs_table";
 const ORDER_KEY = "fs_order";
 const EMAIL_PROMPT_SEEN_KEY = "fs_email_prompt_seen";
 const FEEDBACK_PROMPT_SEEN_KEY = "fs_feedback_prompt_seen";
+const DINER_ONBOARDING_SEEN_KEY = "fs_diner_onboarding_seen";
 const PW_BREACH_DISMISSED_KEY = "fs_pw_breach_dismissed";
 const UI_MODE_KEY = "fs_ui_mode";
 const HIDDEN_TILES_KEY = "fs_hidden_tiles";
@@ -149,6 +150,24 @@ export function setFeedbackPromptSeenOrderId(orderId: string): void {
   if (typeof document === "undefined") return;
   document.cookie = serialize(FEEDBACK_PROMPT_SEEN_KEY, orderId, {
     maxAge: ORDER_MAX_AGE,
+    path: "/",
+    sameSite: "lax",
+  });
+}
+
+// Whether this device has already dismissed the Diner Mode first-visit explainer
+// ("tap an item to order, check My Order to send it") — a lasting preference, not
+// scoped to a single dining visit, so it gets the long-lived MAX_AGE like consent/lang.
+export function getDinerOnboardingSeen(): boolean {
+  if (typeof document === "undefined") return false;
+  const cookies = parse(document.cookie);
+  return cookies[DINER_ONBOARDING_SEEN_KEY] === "1";
+}
+
+export function setDinerOnboardingSeen(): void {
+  if (typeof document === "undefined") return;
+  document.cookie = serialize(DINER_ONBOARDING_SEEN_KEY, "1", {
+    maxAge: MAX_AGE,
     path: "/",
     sameSite: "lax",
   });

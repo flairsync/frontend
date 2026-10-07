@@ -80,6 +80,13 @@
     },
     "tab_loyalty": "Punts"
   },
+  "onboarding": {
+    "title": "Benvingut! Així funciona",
+    "step_1": "Toca un plat per afegir-lo a la teva comanda",
+    "step_2": "Revisa-ho tot a \"La meva comanda\"",
+    "step_3": "Envia-la — començarem a cuinar de seguida",
+    "got_it": "Entès"
+  },
   "banner": {
     "seated_title": "Estàs assegut aquí",
     "active_order_title": "Tens una comanda activa",

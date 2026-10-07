@@ -123,7 +123,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                 <p className="text-sm text-muted-foreground">{item.description}</p>
                             )}
                             {item.allergies && item.allergies.length > 0 && (
-                                <p className="text-xs text-amber-600 flex items-start gap-1.5">
+                                <p className="text-xs font-medium text-amber-600 flex items-start gap-1.5">
                                     <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
                                     <span>{t('menu_tab.contains_allergens')}: {item.allergies.map((a) => a.name).join(', ')}</span>
                                 </p>
@@ -141,7 +141,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                         <div className="space-y-5 mt-4">
                             {hasVariants && (
                                 <div>
-                                    <p className="text-sm font-semibold mb-2">{t('menu_item_sheet.choose_variant')}</p>
+                                    <p className="text-base font-semibold mb-2">{t('menu_item_sheet.choose_variant')}</p>
                                     <RadioGroup
                                         value={selectedVariantId}
                                         onValueChange={setSelectedVariantId}
@@ -168,7 +168,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                 return (
                                 <div key={group.id}>
                                     <div className="flex items-center justify-between mb-2">
-                                        <p className="text-sm font-semibold">
+                                        <p className="text-base font-semibold">
                                             {group.name}
                                             {isRequired && <span className="text-destructive ml-1">*</span>}
                                         </p>
@@ -262,24 +262,24 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="rounded-full h-9 w-9"
+                                    className="rounded-full h-11 w-11"
                                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                                 >
-                                    <Minus className="w-3 h-3" />
+                                    <Minus className="w-4 h-4" />
                                 </Button>
-                                <span className="text-sm font-semibold w-6 text-center">{quantity}</span>
+                                <span className="text-base font-semibold w-6 text-center">{quantity}</span>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="rounded-full h-9 w-9"
+                                    className="rounded-full h-11 w-11"
                                     onClick={() => setQuantity((q) => q + 1)}
                                 >
-                                    <Plus className="w-3 h-3" />
+                                    <Plus className="w-4 h-4" />
                                 </Button>
                             </div>
 
                             <Button
-                                className="flex-1 rounded-full font-semibold"
+                                className="flex-1 rounded-full h-11 text-base font-semibold"
                                 onClick={handleAdd}
                                 disabled={(hasVariants && !selectedVariantId) || unsatisfiedGroups.length > 0}
                             >

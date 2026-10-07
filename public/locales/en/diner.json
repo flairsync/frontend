@@ -80,6 +80,13 @@
     },
     "tab_loyalty": "Points"
   },
+  "onboarding": {
+    "title": "Welcome! Here's how it works",
+    "step_1": "Tap a dish to add it to your order",
+    "step_2": "Check everything under \"My Order\"",
+    "step_3": "Send it — we'll start cooking right away",
+    "got_it": "Got it"
+  },
   "banner": {
     "seated_title": "You're seated here",
     "active_order_title": "You have an active order",
