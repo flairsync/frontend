@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePageContext } from 'vike-react/usePageContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -131,12 +131,27 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const showOrderReadyBanner =
         !!orderReadyId && activeOrderSummary?.id === orderReadyId;
 
+    // 12s (not the original 3.5s) and cancellable by tapping the card — someone reading
+    // slowly, or still deciding whether to leave a review, shouldn't get redirected out
+    // from under them before they've even finished reading two sentences.
+    const [exitRedirectCancelled, setExitRedirectCancelled] = useState(false);
+    const exitRedirectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     useEffect(() => {
-        if (exitVisible) {
-            const t = setTimeout(() => { window.location.href = '/'; }, 3500);
-            return () => clearTimeout(t);
+        if (exitVisible && !exitRedirectCancelled) {
+            exitRedirectTimerRef.current = setTimeout(() => { window.location.href = '/'; }, 12000);
+            return () => {
+                if (exitRedirectTimerRef.current) clearTimeout(exitRedirectTimerRef.current);
+            };
         }
-    }, [exitVisible]);
+    }, [exitVisible, exitRedirectCancelled]);
+
+    const cancelExitRedirect = () => {
+        if (exitRedirectTimerRef.current) {
+            clearTimeout(exitRedirectTimerRef.current);
+            exitRedirectTimerRef.current = null;
+        }
+        setExitRedirectCancelled(true);
+    };
 
     const orderBadgeCount =
         (activeOrderSummary?.items?.length ?? 0) + cart.reduce((s, i) => s + i.quantity, 0);
@@ -189,24 +204,29 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
                         animate={{ opacity: 1, scale: 1 }}
                         className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm px-6"
                     >
-                        <div className="bg-card border rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl space-y-4">
+                        <div
+                            className="bg-card border rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl space-y-4"
+                            onClick={cancelExitRedirect}
+                        >
                             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                                 <Star className="w-8 h-8 text-primary" />
                             </div>
                             <div>
                                 <h2 className="text-xl font-bold">{t('layout.exit.title')}</h2>
-                                <p className="text-sm text-muted-foreground mt-1">
+                                <p className="text-base text-muted-foreground mt-1">
                                     {t('layout.exit.subtitle')}
                                 </p>
                             </div>
                             <Button
                                 variant="outline"
-                                className="w-full rounded-full"
+                                className="w-full rounded-full h-11 text-base"
                                 onClick={() => { window.location.href = `/business/${businessId}#reviews`; }}
                             >
                                 {t('layout.exit.leave_review')}
                             </Button>
-                            <p className="text-xs text-muted-foreground">{t('layout.exit.redirecting')}</p>
+                            {!exitRedirectCancelled && (
+                                <p className="text-sm text-muted-foreground">{t('layout.exit.redirecting')}</p>
+                            )}
                         </div>
                     </motion.div>
                 )}
