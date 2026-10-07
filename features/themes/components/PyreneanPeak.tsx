@@ -11,6 +11,7 @@ import BusinessDetailsTableReservation from "@/components/business_details/Busin
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
 import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { useBodyThemeScope } from "../useBodyThemeScope";
 import { TiltCard } from "../TiltCard";
 import { DepthCarousel } from "../DepthCarousel";
@@ -283,7 +284,7 @@ export function PyreneanPeakTheme({ profile, menu }: ThemeComponentProps) {
                                             <img src={dish.imageUrl} alt={dish.name} loading="lazy" className="w-20 h-20 rounded object-cover shrink-0" />
                                             <div>
                                                 <p className="font-semibold">{dish.name}</p>
-                                                <p className="text-sm text-[var(--t-muted-fg)] mt-0.5">{profile.currency || "€"}{dish.price}</p>
+                                                <p className="text-sm text-[var(--t-muted-fg)] mt-0.5">{formatCurrency(dish.price, profile.currency || "EUR")}</p>
                                             </div>
                                         </TiltCard>
                                     </div>

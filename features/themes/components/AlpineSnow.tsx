@@ -11,6 +11,7 @@ import BusinessDetailsTableReservation from "@/components/business_details/Busin
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
 import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER } from "../utils";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { useBodyThemeScope } from "../useBodyThemeScope";
 import { TiltCard } from "../TiltCard";
 import { DepthCarousel } from "../DepthCarousel";
@@ -353,7 +354,7 @@ export function AlpineSnowTheme({ profile, menu }: ThemeComponentProps) {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
                                     <div className="absolute bottom-0 left-0 right-0 p-4 rounded-2xl m-2 bg-white/10 backdrop-blur-md border border-white/20 text-white">
                                         <p className="font-semibold leading-tight">{dish.name}</p>
-                                        <p className="text-sm text-white/80 mt-0.5">{profile.currency || "€"}{dish.price}</p>
+                                        <p className="text-sm text-white/80 mt-0.5">{formatCurrency(dish.price, profile.currency || "EUR")}</p>
                                     </div>
                                 </TiltCard>
                             ))}

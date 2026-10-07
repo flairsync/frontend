@@ -10,6 +10,7 @@ import BusinessDetailsTableReservation from "@/components/business_details/Busin
 import BusinessDetailsInfoCards from "@/components/business_details/BusinessDetailsInfoCards";
 import BusinessDetailsReviews from "@/components/business_details/BusinessDetailsReviews";
 import { sortOpeningHours, formatOpeningPeriod, getOrderedMedia, getSignatureMenuItems, SECTION_CONTAINER, SignatureMenuItem } from "../utils";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { useBodyThemeScope } from "../useBodyThemeScope";
 import { DepthCarousel } from "../DepthCarousel";
 import { useEffect, useRef, useState } from "react";
@@ -133,7 +134,7 @@ function FlipArch({ dish, currency }: { dish: SignatureMenuItem; currency?: stri
                 </motion.div>
             </div>
             <p className="mt-3 text-sm font-medium text-center" style={{ fontVariant: "small-caps" }}>{dish.name}</p>
-            <p className="text-xs text-[var(--t-muted-fg)]">{currency || "€"}{dish.price}</p>
+            <p className="text-xs text-[var(--t-muted-fg)]">{formatCurrency(dish.price, currency || "EUR")}</p>
         </div>
     );
 }
