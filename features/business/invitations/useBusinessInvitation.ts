@@ -13,6 +13,7 @@ export const useBusinessInvitation = (inviteId?: string) => {
   const {
     data: invitationDetails,
     isPending: loadingInvitationDetails,
+    isError: invitationError,
     refetch: refreshInvitation,
   } = useQuery({
     queryKey: ["business_invitation_details", inviteId],
@@ -86,6 +87,7 @@ export const useBusinessInvitation = (inviteId?: string) => {
   return {
     invitationDetails,
     loadingInvitationDetails,
+    invitationError,
     acceptInvitation,
     acceptingInvitation,
     refuseInvitation,

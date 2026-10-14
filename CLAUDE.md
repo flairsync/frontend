@@ -176,6 +176,7 @@ These are point-in-time specs written when a backend feature shipped/changed —
 | `attendance/frontend_attendance_guide.md` | Attendance/clock in-out |
 | `audits/audit_log_frontend_guide.md` | Audit log viewer |
 | `frontend_delete_business_guide.md` (root) | Business deletion |
+| `pilot_readiness_ux_audit.md` (root) | Full-platform UI/UX audit (2026-10-14) vs. "ready for first paying pilot restaurants" bar — checklist of findings by phase, work through one by one |
 | `inventory/frontend_inventory_instructions.md` | Inventory module |
 | `orders/frontend_idempotency_update.md`, `frontend_state_machine_update.md` | Order idempotency, order status state machine |
 | `public/frontend_public_history_and_reviews.md` | Public profile history/reviews |
