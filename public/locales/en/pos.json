@@ -7,7 +7,8 @@
     "errors": {
       "incorrect_pin": "Incorrect PIN",
       "no_access": "You don't have access to this terminal",
-      "terminal_locked": "Terminal locked for 15 minutes"
+      "terminal_locked": "Terminal locked for 15 minutes",
+      "connection_failed": "Can't reach the server — check the connection and try again"
     }
   },
   "product_card": {

@@ -7,7 +7,8 @@
     "errors": {
       "incorrect_pin": "PIN incorrecte",
       "no_access": "No tens accés a aquest terminal",
-      "terminal_locked": "Terminal bloquejat durant 15 minuts"
+      "terminal_locked": "Terminal bloquejat durant 15 minuts",
+      "connection_failed": "No es pot connectar amb el servidor — comprova la connexió i torna-ho a intentar"
     }
   },
   "product_card": {

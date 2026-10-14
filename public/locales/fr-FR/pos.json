@@ -7,7 +7,8 @@
     "errors": {
       "incorrect_pin": "Code PIN incorrect",
       "no_access": "Vous n'avez pas accès à ce terminal",
-      "terminal_locked": "Terminal verrouillé pendant 15 minutes"
+      "terminal_locked": "Terminal verrouillé pendant 15 minutes",
+      "connection_failed": "Impossible de joindre le serveur — vérifiez la connexion et réessayez"
     }
   },
   "product_card": {

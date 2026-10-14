@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { stationApi } from "@/features/station/station-api";
 import { useStaffSession } from "@/features/pos/useStaffSession";
+import { isNetworkFailure } from "@/features/station/offlineQueue";
 import { Lock, QrCode } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -63,9 +64,15 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
         } catch (err: any) {
             const status = err?.response?.status;
             const message = err?.response?.data?.message ?? "";
+            // A timeout/dropped-connection error never reached the server, so it's
+            // never actually a wrong PIN — don't tell staff it is, and don't shake
+            // (that reads as "wrong code", which this isn't).
+            const connectionIssue = isNetworkFailure(err);
 
             let errorMsg = t("staff_pin_screen.errors.incorrect_pin");
-            if (status === 403) {
+            if (connectionIssue) {
+                errorMsg = t("staff_pin_screen.errors.connection_failed");
+            } else if (status === 403) {
                 errorMsg = t("staff_pin_screen.errors.no_access");
             } else if (status === 401 && message.toLowerCase().includes("lock")) {
                 errorMsg = t("staff_pin_screen.errors.terminal_locked");
@@ -73,8 +80,10 @@ export default function StaffPinScreen({ businessId, onLogin }: Props) {
 
             setError(errorMsg);
             setPin("");
-            setShake(true);
-            setTimeout(() => setShake(false), 600);
+            if (!connectionIssue) {
+                setShake(true);
+                setTimeout(() => setShake(false), 600);
+            }
         } finally {
             setLoading(false);
         }
