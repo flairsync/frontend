@@ -176,5 +176,11 @@
     "message": "Sense connexió — les accions es desen i se sincronitzaran automàticament",
     "message_with_count_one": "Sense connexió — {{count}} acció desada, se sincronitzarà automàticament",
     "message_with_count_other": "Sense connexió — {{count}} accions desades, se sincronitzaran automàticament"
+  },
+  "live_indicator": {
+    "connected": "En directe",
+    "connecting": "Reconnectant…",
+    "disconnected": "Sense connexió",
+    "tooltip": "Estat de la connexió d'actualització de comandes en directe"
   }
 }

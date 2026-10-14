@@ -176,5 +176,11 @@
     "message": "Sin conexión — las acciones se están guardando y se sincronizarán automáticamente",
     "message_with_count_one": "Sin conexión — {{count}} acción guardada, se sincronizará automáticamente",
     "message_with_count_other": "Sin conexión — {{count}} acciones guardadas, se sincronizarán automáticamente"
+  },
+  "live_indicator": {
+    "connected": "En directo",
+    "connecting": "Reconectando…",
+    "disconnected": "Sin conexión",
+    "tooltip": "Estado de la conexión de actualización de pedidos en directo"
   }
 }

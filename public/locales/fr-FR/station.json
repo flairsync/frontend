@@ -176,5 +176,11 @@
     "message": "Pas de connexion — les actions sont enregistrées et seront synchronisées automatiquement",
     "message_with_count_one": "Pas de connexion — {{count}} action enregistrée, sera synchronisée automatiquement",
     "message_with_count_other": "Pas de connexion — {{count}} actions enregistrées, seront synchronisées automatiquement"
+  },
+  "live_indicator": {
+    "connected": "En direct",
+    "connecting": "Reconnexion…",
+    "disconnected": "Hors ligne",
+    "tooltip": "État de la connexion de mise à jour des commandes en direct"
   }
 }

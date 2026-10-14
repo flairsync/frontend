@@ -72,6 +72,7 @@ import {
 import { useOfflineReconcile } from "@/features/station/useOfflineReconcile";
 import { useNetworkStatus } from "@/features/station/useNetworkStatus";
 import OfflineBanner from "@/components/station/OfflineBanner";
+import StationLiveIndicator from "@/components/station/StationLiveIndicator";
 import type { StationInfo } from "@/models/Station";
 import type {
     CartItem, PosBootstrapData, PosMenu, PosTable,
@@ -403,7 +404,7 @@ function POSMain({
     }, [refreshOrders, refreshTables, refreshMenus]);
 
     // Real-time order updates via WebSocket
-    useStationSocket(useCallback(() => {
+    const socketStatus = useStationSocket(useCallback(() => {
         refreshOrders();
         refreshTables();
         refreshMenus();
@@ -821,6 +822,7 @@ function POSMain({
                 </div>
 
                 <div className="ml-auto flex items-center gap-3">
+                    <StationLiveIndicator status={socketStatus} />
                     <div className="flex items-center gap-3 bg-muted/40 px-3 py-1.5 rounded-full border border-border">
                         <div className="text-right flex flex-col leading-none">
                             <p className="text-[10px] font-black text-foreground">

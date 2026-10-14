@@ -22,7 +22,7 @@ All three audits independently found hardcoded English on screens a translated a
 
 ## Phase 2 — before the first live dinner service
 
-- [ ] Add a visible connection/reconnecting indicator to the station socket (no `connect_error`/`disconnect` handling today — silent drop with wifi still up gives staff zero signal). — `features/station/useStationSocket.ts:18-39` — High / M
+- [x] Add a visible connection/reconnecting indicator to the station socket (no `connect_error`/`disconnect` handling today — silent drop with wifi still up gives staff zero signal). — `features/station/useStationSocket.ts:18-39` — High / M
 - [ ] Detect "backend unreachable," not just local NIC online/offline — the banner misses the likeliest real outage (wifi up, backend down). — `features/station/useNetworkStatus.ts`, `offlineQueue.ts:126-129` — High / M
 - [ ] Distinguish "wrong PIN" from "network failure" on staff PIN login — currently any no-response error falls through to the generic incorrect-PIN message. — `components/pos/StaffPinScreen.tsx:63-74` — High / S
 - [ ] Add an audio alert for new KDS tickets (toast-only today; easy to miss in a loud kitchen). — `components/station/KDSApp.tsx:598-601` — Medium/High / S-M

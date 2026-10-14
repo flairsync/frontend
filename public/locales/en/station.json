@@ -4,6 +4,12 @@
     "message_with_count_one": "No connection — {{count}} action saved, will sync automatically",
     "message_with_count_other": "No connection — {{count}} actions saved, will sync automatically"
   },
+  "live_indicator": {
+    "connected": "Live",
+    "connecting": "Reconnecting…",
+    "disconnected": "Offline",
+    "tooltip": "Status of the live order-update connection"
+  },
   "kds_app": {
     "header": {
       "title": "Kitchen Display",

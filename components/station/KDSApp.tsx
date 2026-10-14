@@ -26,6 +26,7 @@ import {
 import { useNetworkStatus } from "@/features/station/useNetworkStatus";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import OfflineBanner from "@/components/station/OfflineBanner";
+import StationLiveIndicator from "@/components/station/StationLiveIndicator";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import StaffPinScreen from "@/components/pos/StaffPinScreen";
 import { useStaffSession } from "@/features/pos/useStaffSession";
@@ -622,7 +623,7 @@ function KDSMain({ station }: { station: StationInfo }) {
     return () => clearInterval(interval);
   }, [fetchOrders]);
 
-  useStationSocket(useCallback(() => {
+  const socketStatus = useStationSocket(useCallback(() => {
     fetchOrders();
   }, [fetchOrders]));
 
@@ -924,6 +925,7 @@ function KDSMain({ station }: { station: StationInfo }) {
               </span>
             </div>
           )}
+          <StationLiveIndicator status={socketStatus} />
           <div className="flex flex-col items-end leading-none">
             <KdsClock />
           </div>
