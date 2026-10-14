@@ -170,5 +170,11 @@
     "login_button": "Se connecter",
     "activity_title": "Activité récente",
     "activity_empty": "Pas encore d'activité."
+  },
+  "errors": {
+    "order_already_joined": "Quelqu'un à cette table a déjà passé une commande — vous l'avez rejointe.",
+    "order_place_failed": "Impossible de passer la commande. Veuillez réessayer.",
+    "email_save_failed": "Impossible d'enregistrer votre email. Veuillez réessayer.",
+    "feedback_submit_failed": "Impossible d'envoyer votre avis. Veuillez réessayer."
   }
 }

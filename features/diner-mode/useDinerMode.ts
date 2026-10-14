@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { usePageContext } from "vike-react/usePageContext";
 import { useDinerModeStore } from "./DinerModeStore";
 import { setGuestOrderCookie } from "@/utils/cookies";
+import { useTranslation } from "react-i18next";
 
 export const ACTIVE_ORDER_STATUSES = ['created', 'accepted', 'preparing', 'ready'] as const;
 export const TERMINAL_ORDER_STATUSES = ['completed', 'canceled', 'rejected'] as const;
@@ -166,6 +167,7 @@ export const useActiveOrderForTable = (
 };
 
 export const usePlaceDineInOrder = (businessId: string) => {
+    const { t } = useTranslation('diner');
     const queryClient = useQueryClient();
     const pageContext = usePageContext();
     const isLoggedIn = !!pageContext.user;
@@ -212,7 +214,7 @@ export const usePlaceDineInOrder = (businessId: string) => {
                         setGuestOrderCookie(businessId, existing.id);
                         setGuestOrderId(existing.id);
                         queryClient.invalidateQueries({ queryKey: ["diner_order_detail", businessId, existing.id] });
-                        toast.info("Someone at this table already started an order — you've joined it.");
+                        toast.info(t('errors.order_already_joined'));
                         return;
                     }
                 } catch {
@@ -220,13 +222,14 @@ export const usePlaceDineInOrder = (businessId: string) => {
                 }
             }
             const msg =
-                error.response?.data?.message ?? "Failed to place order. Please try again.";
+                error.response?.data?.message ?? t('errors.order_place_failed');
             toast.error(msg);
         },
     });
 };
 
 export const useSetGuestOrderEmail = (businessId: string) => {
+    const { t } = useTranslation('diner');
     return useMutation({
         mutationFn: async ({ orderId, email }: { orderId: string; email: string }) => {
             const res = await setGuestOrderEmailApiCall(businessId, orderId, email);
@@ -234,13 +237,14 @@ export const useSetGuestOrderEmail = (businessId: string) => {
         },
         onError: (error: any) => {
             const msg =
-                error.response?.data?.message ?? "Failed to save your email. Please try again.";
+                error.response?.data?.message ?? t('errors.email_save_failed');
             toast.error(msg);
         },
     });
 };
 
 export const useSubmitFeedback = (businessId: string, orderId: string) => {
+    const { t } = useTranslation('diner');
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (payload: SubmitOrderFeedbackPayload) => {
@@ -252,7 +256,7 @@ export const useSubmitFeedback = (businessId: string, orderId: string) => {
         },
         onError: (error: any) => {
             const msg =
-                error.response?.data?.message ?? "Failed to submit feedback. Please try again.";
+                error.response?.data?.message ?? t('errors.feedback_submit_failed');
             toast.error(msg);
         },
     });

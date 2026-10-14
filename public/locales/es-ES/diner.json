@@ -170,5 +170,11 @@
     "login_button": "Iniciar sesión",
     "activity_title": "Actividad reciente",
     "activity_empty": "Aún no hay actividad."
+  },
+  "errors": {
+    "order_already_joined": "Alguien en esta mesa ya ha iniciado un pedido — te has unido a él.",
+    "order_place_failed": "No se pudo realizar el pedido. Inténtalo de nuevo.",
+    "email_save_failed": "No se pudo guardar tu correo. Inténtalo de nuevo.",
+    "feedback_submit_failed": "No se pudo enviar tu opinión. Inténtalo de nuevo."
   }
 }

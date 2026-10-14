@@ -170,5 +170,11 @@
     "login_button": "Log in",
     "activity_title": "Recent Activity",
     "activity_empty": "No activity yet."
+  },
+  "errors": {
+    "order_already_joined": "Someone at this table already started an order — you've joined it.",
+    "order_place_failed": "Failed to place order. Please try again.",
+    "email_save_failed": "Failed to save your email. Please try again.",
+    "feedback_submit_failed": "Failed to submit feedback. Please try again."
   }
 }

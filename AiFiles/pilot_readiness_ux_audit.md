@@ -17,8 +17,8 @@ All three audits independently found hardcoded English on screens a translated a
 - [x] Fix hardcoded `$` currency symbol on customer's own order history — use the shared currency formatter instead. — `components/business_details/BusinessDetailsUserHistory.tsx:95,104,266` — High / S
 - [x] Give the table-QR landing route a server-side redirect instead of client `useEffect` + `window.location.replace` (SSR renders nothing, blank screen until hydration on every scan). — `pages/diner/@businessId/+Page.tsx:8-10` — High / S
 - [x] Translate the welcome checklist (menu/floor-plan/staff/publish steps). — `components/management/dashboard/WelcomeChecklist.tsx:46-106` — High / S-M
-- [ ] Translate the TFA page (zero `t()` calls, no locale keys exist). — `pages/tfa/+Page.tsx` — High / S
-- [ ] Translate Diner Mode order-error toasts (duplicate order at table, failed submit, failed feedback). — `features/diner-mode/useDinerMode.ts:215,223,237,255` — High / S
+- [x] Translate the TFA page (zero `t()` calls, no locale keys exist). — `pages/tfa/+Page.tsx` — High / S
+- [x] Translate Diner Mode order-error toasts (duplicate order at table, failed submit, failed feedback). — `features/diner-mode/useDinerMode.ts:215,223,237,255` — High / S
 
 ## Phase 2 — before the first live dinner service
 

@@ -170,5 +170,11 @@
     "login_button": "Inicia sessió",
     "activity_title": "Activitat recent",
     "activity_empty": "Encara no hi ha activitat."
+  },
+  "errors": {
+    "order_already_joined": "Algú en aquesta taula ja ha iniciat una comanda — t'hi has unit.",
+    "order_place_failed": "No s'ha pogut fer la comanda. Torna-ho a intentar.",
+    "email_save_failed": "No s'ha pogut desar el teu correu. Torna-ho a intentar.",
+    "feedback_submit_failed": "No s'ha pogut enviar la teva opinió. Torna-ho a intentar."
   }
 }

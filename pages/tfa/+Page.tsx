@@ -13,8 +13,10 @@ import { useTfaChallenge } from "@/features/auth/useTfaChallenge"
 import { usePageContext } from "vike-react/usePageContext"
 import { navigate } from "vike/client/router"
 import { useAuth } from "@/features/auth/useAuth"
+import { useTranslation } from "react-i18next"
 
 export default function TwoFactorAuthPage() {
+    const { t } = useTranslation("auth")
     const { urlParsed } = usePageContext()
     const origin = urlParsed.search.origin || "/"
     const { logoutUser, loggingOut } = useAuth()
@@ -32,24 +34,24 @@ export default function TwoFactorAuthPage() {
 
     const handleVerify = async () => {
         if (otp.length < 6) {
-            setMessage({ type: "error", text: "Please enter the 6-digit code from your authenticator app." })
+            setMessage({ type: "error", text: t("auth_page.tfa.code_required") })
             return
         }
-        setMessage({ type: "info", text: "Verifying 2FA code..." })
+        setMessage({ type: "info", text: t("auth_page.tfa.verifying_label") })
         try {
             const result = await verifyTfaCode(otp)
             if (result.success) {
-                setMessage({ type: "success", text: "✅ Two-factor authentication successful!" })
+                setMessage({ type: "success", text: t("auth_page.tfa.success_message") })
                 // The access cookie was just reissued with tfaVerified=true — re-fetch
                 // SSR data on the way so the rest of the app reflects the new state.
                 navigate(origin, { keepScrollPosition: true })
             } else {
                 setOtp("")
-                setMessage({ type: "error", text: "Invalid or expired code. Please try again." })
+                setMessage({ type: "error", text: t("auth_page.tfa.invalid_code") })
             }
         } catch (err) {
             setOtp("")
-            setMessage({ type: "error", text: "Invalid or expired code. Please try again." })
+            setMessage({ type: "error", text: t("auth_page.tfa.invalid_code") })
         }
     }
 
@@ -59,11 +61,10 @@ export default function TwoFactorAuthPage() {
                 <Card className="shadow-lg border-border">
                     <CardHeader>
                         <CardTitle className="text-2xl font-semibold text-foreground">
-                            Two-Factor Authentication
+                            {t("auth_page.tfa.title")}
                         </CardTitle>
                         <CardDescription className="text-muted-foreground">
-                            Enter the 6-digit code from your authenticator app (like Google Authenticator or Authy)
-                            to continue. This step adds an extra layer of security to your account.
+                            {t("auth_page.tfa.description")}
                         </CardDescription>
                     </CardHeader>
 
@@ -95,7 +96,7 @@ export default function TwoFactorAuthPage() {
                             className="w-full"
                             disabled={otp.length < 6 || isVerifying}
                         >
-                            {isVerifying ? "Verifying…" : "Confirm & Continue"}
+                            {isVerifying ? t("auth_page.tfa.verifying_button") : t("auth_page.tfa.confirm_button")}
                         </Button>
 
                         {message && (
@@ -118,7 +119,7 @@ export default function TwoFactorAuthPage() {
                             onClick={() => logoutUser()}
                             disabled={loggingOut}
                         >
-                            {loggingOut ? "Logging out…" : "Not you? Log out"}
+                            {loggingOut ? t("auth_page.tfa.logging_out_button") : t("auth_page.tfa.logout_button")}
                         </Button>
                     </CardContent>
                 </Card>
