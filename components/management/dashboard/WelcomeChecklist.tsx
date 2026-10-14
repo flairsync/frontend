@@ -10,6 +10,7 @@ import { useTables } from "@/features/floor-plan/useFloorPlan";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { navigate } from "vike/client/router";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface WelcomeChecklistProps {
     businessId: string;
@@ -18,6 +19,7 @@ interface WelcomeChecklistProps {
 const DISMISS_KEY_PREFIX = "flairsync_welcome_checklist_dismissed_";
 
 export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }) => {
+    const { t } = useTranslation("management");
     const [dismissed, setDismissed] = useState(true);
 
     useEffect(() => {
@@ -42,32 +44,32 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
     const steps = [
         {
             key: "menu",
-            label: "Add your menu",
-            description: "Create categories and items so guests know what you serve",
+            label: t("welcome_checklist.steps.menu.label"),
+            description: t("welcome_checklist.steps.menu.description"),
             done: (businessAllItems?.length ?? 0) > 0,
             icon: Utensils,
             href: `/manage/${businessId}/owner/menu`,
         },
         {
             key: "floor-plan",
-            label: "Set up your floor plan",
-            description: "Add tables so staff can seat guests and take dine-in orders",
+            label: t("welcome_checklist.steps.floor_plan.label"),
+            description: t("welcome_checklist.steps.floor_plan.description"),
             done: (tables?.length ?? 0) > 0,
             icon: LayoutDashboard,
             href: `/manage/${businessId}/owner/floor-plan`,
         },
         {
             key: "staff",
-            label: "Invite your team",
-            description: "Bring in staff and assign them roles",
+            label: t("welcome_checklist.steps.staff.label"),
+            description: t("welcome_checklist.steps.staff.description"),
             done: (employees ?? []).some((e) => e.type !== "OWNER"),
             icon: Users,
             href: `/manage/${businessId}/owner/staff`,
         },
         {
             key: "publish",
-            label: "Publish your business",
-            description: "Go live so customers can find and order from you",
+            label: t("welcome_checklist.steps.publish.label"),
+            description: t("welcome_checklist.steps.publish.description"),
             done: Boolean(myBusinessFullDetails?.isPublished),
             icon: Rocket,
             href: `/manage/${businessId}/owner/settings?section=general-info`,
@@ -101,12 +103,12 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
                     <Card className="shadow-sm border-primary/20 bg-primary/[0.02]">
                         <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
                             <div>
-                                <CardTitle>Welcome! Let's get you set up</CardTitle>
+                                <CardTitle>{t("welcome_checklist.title")}</CardTitle>
                                 <CardDescription>
-                                    {completedCount} of {steps.length} steps complete — finish these to get your business ready for guests.
+                                    {t("welcome_checklist.subtitle", { completed: completedCount, total: steps.length })}
                                 </CardDescription>
                             </div>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleDismiss} title="Dismiss">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={handleDismiss} title={t("welcome_checklist.dismiss_label")}>
                                 <X className="h-4 w-4" />
                             </Button>
                         </CardHeader>

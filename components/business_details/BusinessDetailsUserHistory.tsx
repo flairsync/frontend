@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { BusinessDetailsReservationConversation } from "@/components/business_details/BusinessDetailsReservationConversation";
 import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components/shared/EmptyState";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 interface BusinessDetailsUserHistoryProps {
     businessId: string;
@@ -48,10 +49,11 @@ function StatusBadge({ status, styleMap }: { status: string; styleMap: Record<st
     );
 }
 
-function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
+function OrderDetailSheet({ businessId, orderId, timezone, currency, open, onClose }: {
     businessId: string;
     orderId: string;
     timezone?: string;
+    currency: string;
     open: boolean;
     onClose: () => void;
 }) {
@@ -92,7 +94,7 @@ function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
                                         {item.notes && <p className="text-xs text-muted-foreground italic">"{item.notes}"</p>}
                                     </div>
                                     <div className="text-right shrink-0">
-                                        <p className="text-sm font-bold">${item.totalPrice}</p>
+                                        <p className="text-sm font-bold">{formatCurrency(item.totalPrice, currency)}</p>
                                         <p className="text-xs text-muted-foreground">x{item.quantity}</p>
                                     </div>
                                 </div>
@@ -101,7 +103,7 @@ function OrderDetailSheet({ businessId, orderId, timezone, open, onClose }: {
 
                         <div className="flex items-center justify-between pt-2 border-t border-border/50">
                             <span className="font-black text-sm">{t("business_page.user_history.total_label", "Total")}</span>
-                            <span className="font-black text-lg">${order.totalAmount}</span>
+                            <span className="font-black text-lg">{formatCurrency(order.totalAmount, currency)}</span>
                         </div>
                     </div>
                 ) : (
@@ -116,6 +118,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
     const { t } = useTranslation("feed");
     const { data: businessProfile } = useDiscoveryProfile(businessId);
     const timezone = businessProfile?.timezone;
+    const currency = businessProfile?.currency || 'EUR';
 
     const { data: activeOrdersResult = { data: [], page: 1, totalPages: 1 } } = useMyOrders(businessId);
     const { data: completedOrdersResult = { data: [], page: 1, totalPages: 1 }, isLoading: isLoadingCompleted } = useMyOrders(businessId, { status: "completed", limit: 20 });
@@ -263,7 +266,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                                     <Clock size={12} />
                                                     <span>{formatInTimezone(order.createdAt, 'MMM D, HH:mm', timezone)}</span>
-                                                    {order.totalAmount && <span>• ${order.totalAmount}</span>}
+                                                    {order.totalAmount && <span>• {formatCurrency(order.totalAmount, currency)}</span>}
                                                 </div>
                                             </div>
                                         </div>
@@ -390,6 +393,7 @@ const BusinessDetailsUserHistory: React.FC<BusinessDetailsUserHistoryProps> = ({
                     businessId={businessId}
                     orderId={selectedOrderId}
                     timezone={timezone}
+                    currency={currency}
                     open={!!selectedOrderId}
                     onClose={() => setSelectedOrderId(null)}
                 />

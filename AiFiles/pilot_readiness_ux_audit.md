@@ -13,10 +13,10 @@ All three audits independently found hardcoded English on screens a translated a
 ## Phase 1 — before any pilot invite goes out
 
 - [x] Fix Join invitation page: add loading/error state for `loadingInvitationDetails` (currently renders "Join undefined"), guard `handleRefuse` against invalid/expired token like `handleAccept` already does, remove dead commented `useJoinInvitation` reference. — `pages/join/+Page.tsx` — High / M
-- [ ] Translate or gate Simple Mode's default-shell strings (nav tiles, action bar, empty states) for fr-FR/es-ES/ca — 218 keys in `public/locales/en/management.json` (`simple_mode` namespace), 0 in the other three. — High/Blocker for non-English pilots / L
-- [ ] Fix hardcoded `$` currency symbol on customer's own order history — use the shared currency formatter instead. — `components/business_details/BusinessDetailsUserHistory.tsx:95,104,266` — High / S
-- [ ] Give the table-QR landing route a server-side redirect instead of client `useEffect` + `window.location.replace` (SSR renders nothing, blank screen until hydration on every scan). — `pages/diner/@businessId/+Page.tsx:8-10` — High / S
-- [ ] Translate the welcome checklist (menu/floor-plan/staff/publish steps). — `components/management/dashboard/WelcomeChecklist.tsx:46-106` — High / S-M
+- [x] ~~Translate Simple Mode's default-shell strings for fr-FR/es-ES/ca~~ — **false positive, verified 2026-10-14.** All 218 `simple_mode` keys already exist and are properly translated in `fr-FR`/`es-ES`/`ca` management.json (not just present — spot-checked for machine-translation artifacts and English fallback leakage, found none). Original audit agent likely checked the wrong locale dir names (`fr`/`es`/`cat` per CLAUDE.md's stale naming) instead of the real ones. No action needed.
+- [x] Fix hardcoded `$` currency symbol on customer's own order history — use the shared currency formatter instead. — `components/business_details/BusinessDetailsUserHistory.tsx:95,104,266` — High / S
+- [x] Give the table-QR landing route a server-side redirect instead of client `useEffect` + `window.location.replace` (SSR renders nothing, blank screen until hydration on every scan). — `pages/diner/@businessId/+Page.tsx:8-10` — High / S
+- [x] Translate the welcome checklist (menu/floor-plan/staff/publish steps). — `components/management/dashboard/WelcomeChecklist.tsx:46-106` — High / S-M
 - [ ] Translate the TFA page (zero `t()` calls, no locale keys exist). — `pages/tfa/+Page.tsx` — High / S
 - [ ] Translate Diner Mode order-error toasts (duplicate order at table, failed submit, failed feedback). — `features/diner-mode/useDinerMode.ts:215,223,237,255` — High / S
 

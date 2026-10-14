@@ -5276,5 +5276,28 @@
       "unassigned": "Sin asignar",
       "none_decor": "Ninguna / Decoración"
     }
+  },
+  "welcome_checklist": {
+    "title": "¡Bienvenido! Vamos a configurarlo todo",
+    "subtitle": "{{completed}} de {{total}} pasos completados — termina estos para que tu negocio esté listo para recibir clientes.",
+    "dismiss_label": "Cerrar",
+    "steps": {
+      "menu": {
+        "label": "Añade tu menú",
+        "description": "Crea categorías y artículos para que los clientes sepan qué ofreces"
+      },
+      "floor_plan": {
+        "label": "Configura tu plano de sala",
+        "description": "Añade mesas para que el equipo pueda sentar a los clientes y tomar pedidos en el local"
+      },
+      "staff": {
+        "label": "Invita a tu equipo",
+        "description": "Añade personal y asígnale roles"
+      },
+      "publish": {
+        "label": "Publica tu negocio",
+        "description": "Publícate para que los clientes puedan encontrarte y pedir"
+      }
+    }
   }
 }

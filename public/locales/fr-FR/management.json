@@ -5276,5 +5276,28 @@
       "unassigned": "Non assignée",
       "none_decor": "Aucune / Décoration"
     }
+  },
+  "welcome_checklist": {
+    "title": "Bienvenue ! Configurons votre compte",
+    "subtitle": "{{completed}} étape(s) sur {{total}} terminée(s) — terminez-les pour que votre établissement soit prêt à accueillir des clients.",
+    "dismiss_label": "Fermer",
+    "steps": {
+      "menu": {
+        "label": "Ajoutez votre menu",
+        "description": "Créez des catégories et des articles pour que les clients sachent ce que vous proposez"
+      },
+      "floor_plan": {
+        "label": "Configurez votre plan de salle",
+        "description": "Ajoutez des tables pour que l'équipe puisse installer les clients et prendre les commandes sur place"
+      },
+      "staff": {
+        "label": "Invitez votre équipe",
+        "description": "Ajoutez des membres de l'équipe et attribuez-leur des rôles"
+      },
+      "publish": {
+        "label": "Publiez votre établissement",
+        "description": "Passez en ligne pour que les clients puissent vous trouver et commander"
+      }
+    }
   }
 }

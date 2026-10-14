@@ -5276,5 +5276,28 @@
       "unassigned": "Sense assignar",
       "none_decor": "Cap / Decoració"
     }
+  },
+  "welcome_checklist": {
+    "title": "Benvingut! Configurem-ho tot",
+    "subtitle": "{{completed}} de {{total}} passos completats — acaba'ls perquè el teu negoci estigui a punt per rebre clients.",
+    "dismiss_label": "Tancar",
+    "steps": {
+      "menu": {
+        "label": "Afegeix el teu menú",
+        "description": "Crea categories i articles perquè els clients sàpiguen què ofereixes"
+      },
+      "floor_plan": {
+        "label": "Configura el teu pla de sala",
+        "description": "Afegeix taules perquè l'equip pugui asseure els clients i prendre comandes al local"
+      },
+      "staff": {
+        "label": "Convida el teu equip",
+        "description": "Afegeix personal i assigna'ls rols"
+      },
+      "publish": {
+        "label": "Publica el teu negoci",
+        "description": "Posa't en línia perquè els clients et puguin trobar i fer comandes"
+      }
+    }
   }
 }

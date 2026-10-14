@@ -5276,5 +5276,28 @@
     "loading": "Loading presets…",
     "hint": "Fills the start and end times below. You can still change them afterwards.",
     "empty_hint": "No presets saved yet. Create them under Rota → Shift Presets to stop retyping common hours."
+  },
+  "welcome_checklist": {
+    "title": "Welcome! Let's get you set up",
+    "subtitle": "{{completed}} of {{total}} steps complete — finish these to get your business ready for guests.",
+    "dismiss_label": "Dismiss",
+    "steps": {
+      "menu": {
+        "label": "Add your menu",
+        "description": "Create categories and items so guests know what you serve"
+      },
+      "floor_plan": {
+        "label": "Set up your floor plan",
+        "description": "Add tables so staff can seat guests and take dine-in orders"
+      },
+      "staff": {
+        "label": "Invite your team",
+        "description": "Bring in staff and assign them roles"
+      },
+      "publish": {
+        "label": "Publish your business",
+        "description": "Go live so customers can find and order from you"
+      }
+    }
   }
 }

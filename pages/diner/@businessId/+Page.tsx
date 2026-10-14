@@ -1,13 +1,5 @@
-import React, { useEffect } from 'react';
-import { usePageContext } from 'vike-react/usePageContext';
-
+// Unreachable: +guard.ts redirects every request for this route to /menu
+// before this component would ever render.
 export default function DinerRootPage() {
-    const pageContext = usePageContext();
-    const businessId = pageContext.routeParams?.businessId as string;
-
-    useEffect(() => {
-        window.location.replace(`/diner/${businessId}/menu`);
-    }, [businessId]);
-
     return null;
 }
