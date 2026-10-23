@@ -20,6 +20,7 @@
     },
     "settings_popover": {
       "title": "Configuració del KDS",
+      "sound_label": "So en arribar una comanda",
       "hide_after_label": "Amaga els tiquets completats després de (minuts)",
       "never_placeholder": "Mai",
       "hint": "Deixa-ho buit per mostrar sempre els tiquets completats."
@@ -35,6 +36,7 @@
         "delivery": "a domicili"
       },
       "waiting_for_expo": "Esperant l'expo",
+      "allergens_in_order": "Al·lèrgens en aquesta comanda: {{list}}",
       "done_in": "Acabat en {{time}}",
       "unbump_title": "Desfés la validació d'aquest article",
       "recall": "Recupera",

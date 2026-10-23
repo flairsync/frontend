@@ -20,6 +20,7 @@
     },
     "settings_popover": {
       "title": "Paramètres KDS",
+      "sound_label": "Son à l'arrivée d'une commande",
       "hide_after_label": "Masquer les tickets terminés après (minutes)",
       "never_placeholder": "Jamais",
       "hint": "Laissez vide pour toujours afficher les tickets terminés."
@@ -35,6 +36,7 @@
         "delivery": "livraison"
       },
       "waiting_for_expo": "En attente de l'expo",
+      "allergens_in_order": "Allergènes dans cette commande : {{list}}",
       "done_in": "Terminé en {{time}}",
       "unbump_title": "Annuler la validation de cet article",
       "recall": "Rappeler",

@@ -31,6 +31,7 @@
     },
     "settings_popover": {
       "title": "KDS Settings",
+      "sound_label": "Sound on new orders",
       "hide_after_label": "Hide completed tickets after (minutes)",
       "never_placeholder": "Never",
       "hint": "Leave empty to always show completed tickets."
@@ -48,6 +49,7 @@
         "delivery": "delivery"
       },
       "waiting_for_expo": "Waiting for Expo",
+      "allergens_in_order": "Allergens in this order: {{list}}",
       "done_in": "Done in {{time}}",
       "unbump_title": "Un-bump this item",
       "item_voided": "Voided — do not make",

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Popover, PopoverContent, PopoverTrigger,
 } from "@/components/ui/popover";
@@ -24,6 +25,7 @@ import {
   type ReconcileResult,
 } from "@/features/station/offlineQueue";
 import { useNetworkStatus } from "@/features/station/useNetworkStatus";
+import { playNewOrderChime } from "@/features/station/kdsSound";
 import StationQuickSettings from "@/components/station/StationQuickSettings";
 import OfflineBanner from "@/components/station/OfflineBanner";
 import StationLiveIndicator from "@/components/station/StationLiveIndicator";
@@ -126,9 +128,13 @@ function PriorityBadge({ value, t }: { value: number; t: TFunction }) {
 function KdsSettingsPopover({
   readyMaxAge,
   onReadyMaxAgeChange,
+  soundEnabled,
+  onSoundEnabledChange,
 }: {
   readyMaxAge: string;
   onReadyMaxAgeChange: (v: string) => void;
+  soundEnabled: boolean;
+  onSoundEnabledChange: (v: boolean) => void;
 }) {
   const { t } = useTranslation("station");
   return (
@@ -141,6 +147,12 @@ function KdsSettingsPopover({
       <PopoverContent className="w-64 bg-popover border-border text-popover-foreground" align="end">
         <div className="space-y-3">
           <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t("kds_app.settings_popover.title")}</p>
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="kds-sound-enabled" className="text-[11px] font-bold text-muted-foreground">
+              {t("kds_app.settings_popover.sound_label")}
+            </Label>
+            <Switch id="kds-sound-enabled" checked={soundEnabled} onCheckedChange={onSoundEnabledChange} />
+          </div>
           <div className="space-y-1.5">
             <Label htmlFor="ready-max-age" className="text-[11px] font-bold text-muted-foreground">
               {t("kds_app.settings_popover.hide_after_label")}
@@ -244,6 +256,20 @@ const KdsTicketCard = memo(function KdsTicketCard({
   const sentItems = order.stationItems.filter((i) => i.status === "sent");
   const allStationItemsBumped = isPreparing && sentItems.length === 0;
 
+  // Surfaced in the always-visible header, not just per-item inside the
+  // scrollable item list below — a long order's allergen note shouldn't
+  // depend on scrolling to find it during a rush.
+  const allergensInOrder = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const item of order.stationItems) {
+      if (item.status === "cancelled" || item.status === "voided") continue;
+      for (const a of item.allergensSnapshot ?? []) {
+        seen.set(a.code, a.name);
+      }
+    }
+    return Array.from(seen.values());
+  }, [order.stationItems]);
+
   return (
     <Card
       className={`flex flex-col border-2 bg-card shadow-2xl transition-all ${
@@ -293,7 +319,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
               <Clock className="w-4 h-4" />
               {formatAge(order.createdAt)}
             </div>
-            <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
               {t(`kds_app.ticket.order_type_labels.${order.type}`)}
             </span>
             {/* Priority stepper — only on in-progress tickets */}
@@ -320,25 +346,33 @@ const KdsTicketCard = memo(function KdsTicketCard({
             )}
           </div>
         </div>
-        <p className="text-[9px] text-muted-foreground font-mono uppercase tracking-widest">
+        <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
           #{order.id.slice(0, 8)}
         </p>
         {order.kitchenNotes && (
           <div className="mt-1.5 flex items-start gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
             <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
-            <p className="text-[11px] font-bold text-amber-800 leading-tight">{order.kitchenNotes}</p>
+            <p className="text-[13px] font-bold text-amber-800 leading-tight">{order.kitchenNotes}</p>
           </div>
         )}
         {awaitingExpoConfirm && (
           <div className="mt-1 flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
             <Timer className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-            <p className="text-[11px] font-bold text-amber-800 uppercase tracking-wide">{t("kds_app.ticket.waiting_for_expo")}</p>
+            <p className="text-[13px] font-bold text-amber-800 uppercase tracking-wide">{t("kds_app.ticket.waiting_for_expo")}</p>
+          </div>
+        )}
+        {allergensInOrder.length > 0 && (
+          <div className="mt-1.5 flex items-start gap-1.5 bg-red-500/15 border border-red-500/40 rounded-lg px-2.5 py-1.5">
+            <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+            <p className="text-[13px] font-black text-red-700 uppercase tracking-tight leading-tight">
+              {t("kds_app.ticket.allergens_in_order", { list: allergensInOrder.join(", ") })}
+            </p>
           </div>
         )}
       </div>
 
       {/* Items */}
-      <ScrollArea className="px-4 py-2" style={{ maxHeight: "260px" }}>
+      <ScrollArea className="px-4 py-2" style={{ maxHeight: "340px" }}>
         <div className="space-y-3 py-1">
           {order.stationItems.map((item) => {
             const isItemReady = item.status === "ready";
@@ -366,7 +400,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                 {isVoided && (
                   <div className="flex items-center gap-1 mb-1.5 text-destructive">
                     <Ban className="w-3 h-3 flex-shrink-0" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">
+                    <span className="text-[11px] font-black uppercase tracking-widest">
                       {item.status === "voided" ? t("kds_app.ticket.item_voided") : t("kds_app.ticket.item_cancelled")}
                     </span>
                   </div>
@@ -377,13 +411,13 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       {item.quantity}×
                     </span>
                     <div className="flex-1 min-w-0">
-                      <h4 className={`text-sm font-black uppercase tracking-tight ${isVoided ? "text-destructive/70 line-through" : isItemReady || isNotSent ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                      <h4 className={`text-base font-black uppercase tracking-tight ${isVoided ? "text-destructive/70 line-through" : isItemReady || isNotSent ? "text-muted-foreground line-through" : "text-foreground"}`}>
                         {item.nameSnapshot}
                       </h4>
                       {item.selectedModifiers && item.selectedModifiers.length > 0 && (
                         <div className="mt-0.5 space-y-0.5">
                           {item.selectedModifiers.map((m) => (
-                            <p key={m.modifierItemId} className="text-[10px] text-muted-foreground font-bold">
+                            <p key={m.modifierItemId} className="text-[12px] text-muted-foreground font-bold">
                               + {m.name}
                             </p>
                           ))}
@@ -392,7 +426,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       {item.bundleComponentsSnapshot && item.bundleComponentsSnapshot.length > 0 && (
                         <div className="mt-0.5 space-y-0.5">
                           {item.bundleComponentsSnapshot.map((c, idx) => (
-                            <p key={idx} className="text-[10px] text-muted-foreground font-bold">
+                            <p key={idx} className="text-[12px] text-muted-foreground font-bold">
                               • {c.name} ×{c.quantity}
                             </p>
                           ))}
@@ -400,8 +434,8 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       )}
                       {item.allergensSnapshot && item.allergensSnapshot.length > 0 && (
                         <div className="mt-1 flex items-start gap-1.5 text-red-600">
-                          <AlertTriangle className="w-3 h-3 flex-shrink-0 mt-0.5" />
-                          <p className="text-[10px] font-black uppercase tracking-tight leading-tight">
+                          <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                          <p className="text-[13px] font-black uppercase tracking-tight leading-tight">
                             {item.allergensSnapshot.map((a) => a.name).join(", ")}
                           </p>
                         </div>
@@ -409,21 +443,21 @@ const KdsTicketCard = memo(function KdsTicketCard({
                       {item.notes && (
                         <div className="mt-1 flex items-start gap-1.5 text-amber-600/80">
                           <AlertCircle className="w-3 h-3 flex-shrink-0 mt-0.5" />
-                          <p className="text-[10px] font-bold italic leading-tight">"{item.notes}"</p>
+                          <p className="text-[12px] font-bold italic leading-tight">"{item.notes}"</p>
                         </div>
                       )}
                       {/* Elapsed time for in-queue items */}
                       {item.status === "sent" && item.sentAt && (
                         <div className={`mt-1 flex items-center gap-1 ${itemAgeColor(item.sentAt)}`}>
-                          <Timer className="w-3 h-3 flex-shrink-0" />
-                          <span className="text-[10px] font-mono font-bold">{formatItemAge(item.sentAt)}</span>
+                          <Timer className="w-3.5 h-3.5 flex-shrink-0" />
+                          <span className="text-[12px] font-mono font-bold">{formatItemAge(item.sentAt)}</span>
                         </div>
                       )}
                       {/* Prep time for finished items */}
                       {item.status === "ready" && item.sentAt && item.readyAt && (
                         <div className="mt-1 flex items-center gap-1 text-green-700/70">
-                          <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
-                          <span className="text-[10px] font-mono font-bold">
+                          <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                          <span className="text-[12px] font-mono font-bold">
                             {t("kds_app.ticket.done_in", { time: formatPrepTime(item.sentAt, item.readyAt) })}
                           </span>
                         </div>
@@ -443,7 +477,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
                           }}
                           disabled={recalling}
                           title={t("kds_app.ticket.unbump_title")}
-                          className="flex items-center gap-0.5 text-[9px] font-bold text-muted-foreground hover:text-amber-600 border border-border hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
+                          className="flex items-center gap-0.5 text-[10px] font-bold text-muted-foreground hover:text-amber-600 border border-border hover:border-amber-500/40 rounded-md px-1.5 py-0.5 transition-colors mt-0.5"
                         >
                           <Undo2 className="w-2.5 h-2.5" />
                           {t("kds_app.ticket.recall")}
@@ -461,7 +495,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
       {/* Footer */}
       <div className="p-4 bg-muted/70 border-t border-border rounded-b-lg mt-auto">
         {order.otherItemsCount > 0 && (
-          <p className="text-[10px] text-muted-foreground font-bold text-center mb-2">
+          <p className="text-[11px] text-muted-foreground font-bold text-center mb-2">
             {t("kds_app.ticket.other_items_count", { count: order.otherItemsCount })}
           </p>
         )}
@@ -488,12 +522,12 @@ const KdsTicketCard = memo(function KdsTicketCard({
         ) : awaitingExpoConfirm ? (
           <div className="flex items-center justify-center gap-2 py-2 text-amber-600">
             <Timer className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">{t("kds_app.ticket.awaiting_expo_confirmation")}</span>
+            <span className="text-xs font-black uppercase tracking-widest">{t("kds_app.ticket.awaiting_expo_confirmation")}</span>
           </div>
         ) : allStationItemsBumped ? (
           <div className="flex items-center justify-center gap-2 py-2 text-green-600/70">
             <CheckCircle2 className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">
+            <span className="text-xs font-black uppercase tracking-widest">
               {t("kds_app.ticket.station_done_waiting")}
             </span>
           </div>
@@ -511,7 +545,7 @@ const KdsTicketCard = memo(function KdsTicketCard({
             {order.priority === 0 && (
               <Button
                 variant="outline"
-                className="h-12 px-3 border-red-500/30 text-red-600 hover:bg-red-500/10 hover:text-red-700 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                className="h-12 px-3 border-red-500/30 text-red-600 hover:bg-red-500/10 hover:text-red-700 rounded-xl text-xs font-black uppercase tracking-widest transition-all"
                 onClick={() => onSetPriority(order.id, 1)}
               >
                 <Flame className="w-3.5 h-3.5 mr-1" />
@@ -547,6 +581,13 @@ function KDSMain({ station }: { station: StationInfo }) {
   const [readyMaxAge, setReadyMaxAge] = useState(
     () => localStorage.getItem("kds_ready_max_age") ?? ""
   );
+  const [soundEnabled, setSoundEnabled] = useState(
+    () => localStorage.getItem("kds_sound_enabled") !== "0"
+  );
+  // Read inside fetchOrders via a ref rather than a dependency, so toggling
+  // sound doesn't tear down and restart the 60s poll interval below.
+  const soundEnabledRef = useRef(soundEnabled);
+  soundEnabledRef.current = soundEnabled;
   const knownIdsRef = useRef<Set<string>>(new Set());
   const firstPollRef = useRef(true);
   const isOnline = useNetworkStatus();
@@ -582,6 +623,10 @@ function KDSMain({ station }: { station: StationInfo }) {
     }
   }, [readyMaxAge]);
 
+  useEffect(() => {
+    localStorage.setItem("kds_sound_enabled", soundEnabled ? "1" : "0");
+  }, [soundEnabled]);
+
   const fetchOrders = useCallback(async () => {
     try {
       const params: Record<string, string> = {};
@@ -599,6 +644,7 @@ function KDSMain({ station }: { station: StationInfo }) {
           toast.info(t("kds_app.toasts.new_orders_arrived", { count: newOrders.length }), {
             duration: 3000,
           });
+          if (soundEnabledRef.current) playNewOrderChime();
         }
       }
 
@@ -930,7 +976,12 @@ function KDSMain({ station }: { station: StationInfo }) {
             <KdsClock />
           </div>
           <Separator orientation="vertical" className="h-8 bg-border" />
-          <KdsSettingsPopover readyMaxAge={readyMaxAge} onReadyMaxAgeChange={setReadyMaxAge} />
+          <KdsSettingsPopover
+            readyMaxAge={readyMaxAge}
+            onReadyMaxAgeChange={setReadyMaxAge}
+            soundEnabled={soundEnabled}
+            onSoundEnabledChange={setSoundEnabled}
+          />
           <StationQuickSettings station={station} />
         </div>
       </header>

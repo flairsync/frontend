@@ -25,9 +25,9 @@ All three audits independently found hardcoded English on screens a translated a
 - [x] Add a visible connection/reconnecting indicator to the station socket (no `connect_error`/`disconnect` handling today — silent drop with wifi still up gives staff zero signal). — `features/station/useStationSocket.ts:18-39` — High / M
 - [x] Detect "backend unreachable," not just local NIC online/offline — the banner misses the likeliest real outage (wifi up, backend down). — `features/station/useNetworkStatus.ts`, `offlineQueue.ts:126-129` — High / M
 - [x] Distinguish "wrong PIN" from "network failure" on staff PIN login — currently any no-response error falls through to the generic incorrect-PIN message. — `components/pos/StaffPinScreen.tsx:63-74` — High / S
-- [ ] Add an audio alert for new KDS tickets (toast-only today; easy to miss in a loud kitchen). — `components/station/KDSApp.tsx:598-601` — Medium/High / S-M
-- [ ] Bump KDS ticket text size for at-a-glance legibility (currently 9-11px for most fields). — `components/station/KDSApp.tsx` — Medium / M
-- [ ] Fix KDS item-list 260px scroll cap so allergen notes on long orders can't scroll out of view during a rush. — `components/station/KDSApp.tsx:340` — Medium / S
+- [x] Add an audio alert for new KDS tickets (toast-only today; easy to miss in a loud kitchen). — `components/station/KDSApp.tsx:598-601` — Medium/High / S-M
+- [x] Bump KDS ticket text size for at-a-glance legibility (currently 9-11px for most fields). — `components/station/KDSApp.tsx` — Medium / M
+- [x] Fix KDS item-list 260px scroll cap so allergen notes on long orders can't scroll out of view during a rush. — `components/station/KDSApp.tsx:340` — Medium / S
 
 ## Phase 3 — during the pilot, not blocking it
 

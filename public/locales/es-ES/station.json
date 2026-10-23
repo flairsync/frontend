@@ -20,6 +20,7 @@
     },
     "settings_popover": {
       "title": "Ajustes del KDS",
+      "sound_label": "Sonido al llegar un pedido",
       "hide_after_label": "Ocultar pedidos completados después de (minutos)",
       "never_placeholder": "Nunca",
       "hint": "Deja vacío para mostrar siempre los pedidos completados."
@@ -35,6 +36,7 @@
         "delivery": "a domicilio"
       },
       "waiting_for_expo": "Esperando al expo",
+      "allergens_in_order": "Alérgenos en este pedido: {{list}}",
       "done_in": "Terminado en {{time}}",
       "unbump_title": "Deshacer validación de este artículo",
       "recall": "Recuperar",
