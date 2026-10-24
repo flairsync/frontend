@@ -139,6 +139,9 @@ const MenuDetailPage: React.FC = () => {
     const [createCategoryModal, setCreateCategoryModal] = useState(false);
     const [editingCategory, setEditingCategory] = useState<{ id: string; name: string; description: string; } | undefined>();
     const [createItemCatId, setCreateItemCatId] = useState<string | undefined>();
+    // Briefly forces the just-added-to category open so a new item isn't left
+    // invisible inside a collapsed category with no confirmation it saved.
+    const [justAddedCategoryId, setJustAddedCategoryId] = useState<string | undefined>();
     const [editingItem, setEditingItem] = useState<{ category: string, item: BusinessMenuItem } | undefined>();
     const [editMenu, setEditMenu] = useState(false);
     const [toDuplicateCategory, setToDuplicateCategory] = useState<string | undefined>();
@@ -413,6 +416,11 @@ const MenuDetailPage: React.FC = () => {
                                 bundleComponents: data.bundleComponents,
                             },
                         }, {
+                            onSuccess: () => {
+                                const addedCatId = createItemCatId;
+                                setJustAddedCategoryId(addedCatId);
+                                setTimeout(() => setJustAddedCategoryId((current) => current === addedCatId ? undefined : current), 2500);
+                            },
                             onError: (err: any) => {
                                 // Global interceptor handles this, but we can explicitly call it too if needed
                             }
@@ -689,6 +697,7 @@ const MenuDetailPage: React.FC = () => {
                         onEditItem={handleEditItem}
                         onDeleteItem={handleDeleteItem}
                         onDuplicateItem={handleDuplicateItem}
+                        forceOpenCategoryId={justAddedCategoryId}
                         onMoveItemUp={handleMoveItemUp}
                         onMoveItemDown={handleMoveItemDown}
                         onMoveItemToCategory={(itemId, currentCatId) => setMovingItem({ itemId, currentCatId })}
@@ -707,6 +716,7 @@ const MenuDetailPage: React.FC = () => {
                         onEditItem={handleEditItem}
                         onDeleteItem={handleDeleteItem}
                         onDuplicateItem={handleDuplicateItem}
+                        forceOpenCategoryId={justAddedCategoryId}
                     />
                 )}
                 {/* #endregion */}

@@ -50,6 +50,7 @@ type Props = {
     onEditItem: (id: string) => void;
     onDeleteItem: (id: string) => void;
     onDuplicateItem: (id: string) => void;
+    forceOpenCategoryId?: string;
 };
 
 /* =========================
@@ -77,6 +78,7 @@ export const MenuCategoriesSortable = ({
     onEditItem,
     onDeleteItem,
     onDuplicateItem,
+    forceOpenCategoryId,
 }: Props) => {
     const sensors = useSensors(useSensor(PointerSensor));
     const [activeDrag, setActiveDrag] = useState<any>(null);
@@ -205,6 +207,7 @@ export const MenuCategoriesSortable = ({
                         onEditItem={onEditItem}
                         onDeleteItem={onDeleteItem}
                         onDuplicateItem={onDuplicateItem}
+                        forceOpen={cat.id === forceOpenCategoryId}
                     />
                 ))}
             </SortableContext>

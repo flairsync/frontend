@@ -19,6 +19,7 @@ type Props = {
     onMoveItemToCategory: (itemId: string, catId: string) => void;
     onMoveCategoryUp: (catId: string) => void;
     onMoveCategoryDown: (catId: string) => void;
+    forceOpenCategoryId?: string;
 };
 
 export const SimpleMenuCategories = ({
@@ -36,7 +37,8 @@ export const SimpleMenuCategories = ({
     onMoveItemDown,
     onMoveItemToCategory,
     onMoveCategoryUp,
-    onMoveCategoryDown
+    onMoveCategoryDown,
+    forceOpenCategoryId
 }: Props) => {
     return (
         <div className="space-y-4">
@@ -64,6 +66,7 @@ export const SimpleMenuCategories = ({
                     onMoveItemToCategory={(itemId) => onMoveItemToCategory(itemId, cat.id)}
                     onMoveCategoryUp={index > 0 ? () => onMoveCategoryUp(cat.id) : undefined}
                     onMoveCategoryDown={index < categories.length - 1 ? () => onMoveCategoryDown(cat.id) : undefined}
+                    forceOpen={cat.id === forceOpenCategoryId}
                 />
             ))}
         </div>

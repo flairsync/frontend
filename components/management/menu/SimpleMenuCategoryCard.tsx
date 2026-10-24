@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +31,7 @@ type Props = {
     onMoveItemToCategory: (id: string) => void;
     onMoveCategoryUp?: () => void;
     onMoveCategoryDown?: () => void;
+    forceOpen?: boolean;
 };
 
 export const SimpleMenuCategoryCard = ({
@@ -48,11 +49,16 @@ export const SimpleMenuCategoryCard = ({
     onMoveItemDown,
     onMoveItemToCategory,
     onMoveCategoryUp,
-    onMoveCategoryDown
+    onMoveCategoryDown,
+    forceOpen
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation("management");
     const { plan } = useBusinessPlan(businessId);
+
+    useEffect(() => {
+        if (forceOpen) setIsOpen(true);
+    }, [forceOpen]);
     const { openUpgradeModal } = useSubscriptionStore();
     // Product limits are enforced per business, not account-wide.
     const canCreateProduct = plan?.canCreateProduct ?? true;

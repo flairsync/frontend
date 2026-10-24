@@ -707,10 +707,22 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                         <ContextMenu key={day.toString()}>
                                             <ContextMenuTrigger asChild>
                                                 <div
-                                                    className={`p-2 border-r last:border-r-0 min-h-[100px] min-w-0 hover:bg-muted/10 transition-colors cursor-default ${
+                                                    className={`relative group p-2 border-r last:border-r-0 min-h-[100px] min-w-0 hover:bg-muted/10 transition-colors cursor-default ${
                                                         !isSameMonth(day, currentDate) ? 'bg-muted/5 opacity-40' : ''
                                                     } ${isSameDay(day, new Date()) ? 'bg-primary/5 ring-1 ring-inset ring-primary/20' : ''}`}
                                                 >
+                                                    <button
+                                                        type="button"
+                                                        title={t("schedule_staff_scheduling_tab.context_add_new_shift")}
+                                                        aria-label={t("schedule_staff_scheduling_tab.context_add_new_shift")}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleRightClick(employee.id, day);
+                                                        }}
+                                                        className="absolute top-1 left-1 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-muted text-muted-foreground opacity-60 hover:opacity-100 hover:bg-primary hover:text-primary-foreground transition-opacity"
+                                                    >
+                                                        <PlusCircle className="h-3 w-3" />
+                                                    </button>
                                                     <div className={`text-[10px] mb-1 text-right ${isSameDay(day, new Date()) ? 'text-primary font-bold' : 'text-muted-foreground'}`}>{format(day, 'd')}</div>
                                                     {dayShifts.map((shift) => {
                                                         const hasConflict = checkConflict(shift);
@@ -819,10 +831,12 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                         </div>
                                                     ))}
                                                     {dayOpenShifts.length === 0 && (
-                                                        <div className="h-full w-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <Button 
-                                                                variant="ghost" 
-                                                                size="icon" 
+                                                        <div className="h-full w-full flex items-center justify-center">
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                title={t("schedule_staff_scheduling_tab.context_add_new_shift")}
+                                                                aria-label={t("schedule_staff_scheduling_tab.context_add_new_shift")}
                                                                 className="h-6 w-6 text-orange-400 hover:text-orange-600 hover:bg-orange-100"
                                                                 onClick={() => handleRightClick("", day)}
                                                             >
