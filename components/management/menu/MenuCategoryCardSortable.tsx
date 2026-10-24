@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, Plus, Pencil, Trash2 } from "lucide-react";
@@ -25,6 +26,7 @@ type Props = {
     onEditItem: (id: string) => void;
     onDeleteItem: (id: string) => void;
     onDuplicateItem: (id: string) => void;
+    forceOpen?: boolean;
 };
 
 export const MenuCategoryCardSortable = ({
@@ -37,11 +39,17 @@ export const MenuCategoryCardSortable = ({
     onAddItem,
     onEditItem,
     onDeleteItem,
-    onDuplicateItem
+    onDuplicateItem,
+    forceOpen
 }: Props) => {
+    const { t } = useTranslation("management");
     const [isOpen, setIsOpen] = useState(false);
     const { plan } = useBusinessPlan(businessId);
     const { openUpgradeModal } = useSubscriptionStore();
+
+    useEffect(() => {
+        if (forceOpen) setIsOpen(true);
+    }, [forceOpen]);
     // Product limits are enforced per business, not account-wide.
     const canCreateProduct = plan?.canCreateProduct ?? true;
 
@@ -84,7 +92,7 @@ export const MenuCategoryCardSortable = ({
                                 businessId={businessId}
                             />
                             <span className="text-sm text-muted-foreground">
-                                ({category.items?.length || 0} items)
+                                ({t("menu_management.labels.items_count", { count: category.items?.length || 0 })})
                             </span>
                         </div>
 
@@ -92,22 +100,13 @@ export const MenuCategoryCardSortable = ({
                             <Button
                                 size="icon"
                                 variant="ghost"
+                                aria-label="Edit category"
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onEdit();
                                 }}
                             >
                                 <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                                size="icon"
-                                variant="destructive"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onDelete();
-                                }}
-                            >
-                                <Trash2 className="h-4 w-4" />
                             </Button>
                             <Button
                                 size="sm"
@@ -128,6 +127,18 @@ export const MenuCategoryCardSortable = ({
                             >
                                 <Plus className="h-4 w-4 mr-1" /> Add Item
                                 {!canCreateProduct && <span className="text-[10px] font-bold text-primary uppercase ml-1">Upgrade</span>}
+                            </Button>
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                aria-label="Delete category"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDelete();
+                                }}
+                            >
+                                <Trash2 className="h-4 w-4" />
                             </Button>
                         </div>
                     </CardHeader>

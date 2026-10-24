@@ -11,6 +11,7 @@ import {
 import { Order } from "@/features/orders/service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useOrders, useOrderDetails } from "@/features/orders/useOrders";
@@ -110,27 +111,21 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ businessId, order, o
 
                         <div className="grid gap-2">
                             <Label htmlFor="amount">{t("payment_modal.payment_amount_label", { symbol: currencySymbol })}</Label>
-                            <Input
+                            <NumberInput
                                 id="amount"
-                                type="number"
-                                step="0.01"
-                                min="0.01"
                                 // allow overpaying just in case, or cap it at remainingBalance, but typically POS systems allow precise input
                                 value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
+                                onChange={setAmount}
                                 required
                             />
                         </div>
 
                         <div className="grid gap-2">
                             <Label htmlFor="tipAmount">{t("payment_modal.tip_amount_label", { symbol: currencySymbol })} <span className="text-muted-foreground text-xs font-normal">{t("payment_modal.optional")}</span></Label>
-                            <Input
+                            <NumberInput
                                 id="tipAmount"
-                                type="number"
-                                step="0.01"
-                                min="0"
                                 value={tipAmount}
-                                onChange={(e) => setTipAmount(e.target.value)}
+                                onChange={setTipAmount}
                                 placeholder="0.00"
                             />
                         </div>

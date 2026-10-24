@@ -25,12 +25,17 @@ const LandingPricingSection = () => {
     const { subscriptionPacks, fetchingPacks, currentUserSubscription, creatingCheckout } = useSubscriptions();
 
     const displayedPacks = subscriptionPacks?.filter(p => p.pricingType === billingType) || [];
-    const freePack = displayedPacks.find(p => parseFloat(p.price.toString()) === 0);
+    // The Free pack only exists as a single row with no billing period of its own,
+    // so it has to be found independently of `billingType` or it vanishes whenever
+    // Quarterly/Yearly is selected.
+    const freePack = subscriptionPacks?.find(p => parseFloat(p.price.toString()) === 0);
     const paidPacks = displayedPacks.filter(p => parseFloat(p.price.toString()) > 0).slice(0, 3);
+
+    const periodSuffix = t(`landing_page.pricing.period_suffix.${billingType}`);
 
     const handleSubscribe = (pack: any) => {
         if (!user) {
-            navigate(`/login?origin=${encodeURIComponent('/manage/plans')}&packId=${pack.id}`);
+            navigate(`/signup?origin=${encodeURIComponent('/manage/plans')}&packId=${pack.id}`);
             return;
         }
 
@@ -114,7 +119,7 @@ const LandingPricingSection = () => {
                     </CardTitle>
                     <div className="flex items-baseline gap-1">
                         <h2 className={cn("text-4xl font-extrabold", isHighlighted ? 'text-white' : 'text-foreground')}>
-                            {isFree ? "Free" : t('landing_page.pricing.per_business_price', { price: pack.getFormattedPrice() })}
+                            {isFree ? "Free" : t('landing_page.pricing.per_business_price', { price: pack.getFormattedPrice(), period: periodSuffix })}
                         </h2>
                     </div>
                     {!isFree && (
@@ -178,7 +183,7 @@ const LandingPricingSection = () => {
                     </div>
                     {!isFree && (
                         <p className={cn("text-xs mt-3 text-center", isHighlighted ? 'text-white/70' : 'text-muted-foreground')}>
-                            {t('landing_page.pricing.billed_note')}
+                            {t(`landing_page.pricing.billed_note.${billingType}`)}
                         </p>
                     )}
                 </CardContent>

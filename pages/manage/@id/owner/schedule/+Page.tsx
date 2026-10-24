@@ -18,25 +18,25 @@ const SCHEDULE_TOUR_STEPS: TourStep[] = [
     {
         target: '[data-tour="schedule-tab-manage"]',
         title: 'The Rota',
-        description: 'Where the week is actually built. Right-click any cell to add one shift, use Add shifts for a person or a whole team at once, then Publish to make it visible to staff.',
+        description: 'Where the week is actually built. Tap the + on any cell to add one shift (or right-click on a computer), use Add shifts for a person or a whole team at once, then Publish to make it visible to staff.',
         position: 'bottom',
     },
     {
         target: '[data-tour="schedule-tab-rules"]',
-        title: 'Recurring Rules',
-        description: 'A standing pattern for one person: "Amina works Mondays 09:00–17:00". Rules never create shifts by themselves — the Generate button on the Rota turns them into draft shifts for the week you are looking at.',
+        title: 'Weekly Patterns',
+        description: 'A standing pattern for one person: "Amina works Mondays 09:00–17:00". A pattern never creates shifts by itself — the Generate button on the Rota turns it into draft shifts for the week you are looking at.',
         position: 'bottom',
     },
     {
         target: '[data-tour="schedule-tab-shifts"]',
-        title: 'Shift Presets',
-        description: 'Just saved start/end times, e.g. "Morning 08:00–16:00". Pick one instead of retyping the hours when you add a shift, set up a recurring rule, or bulk-schedule. A preset on its own schedules nobody.',
+        title: 'Shift Templates',
+        description: 'Just saved start/end times, e.g. "Morning 08:00–16:00". Pick one instead of retyping the hours when you add a shift, set up a weekly pattern, or bulk-schedule. A template on its own schedules nobody.',
         position: 'bottom',
     },
     {
         target: '[data-tour="schedule-tab-bids"]',
-        title: 'Open Shift Bids',
-        description: 'Post a shift with nobody assigned and let staff bid for it. Review the bids here and approve one — good for filling gaps without chasing people.',
+        title: 'Shifts Anyone Can Claim',
+        description: 'Post a shift with nobody assigned and let staff put their hand up for it. Review who wants it here and approve one — good for filling gaps without chasing people.',
         position: 'bottom',
     },
     {

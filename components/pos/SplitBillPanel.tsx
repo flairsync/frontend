@@ -8,6 +8,7 @@ import {
 } from "@/features/orders/service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 } from "lucide-react";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
@@ -420,23 +421,17 @@ function SplitRow({
                         ))}
                     </div>
                     {method === "cash" && (
-                        <Input
-                            type="number"
+                        <NumberInput
                             placeholder={t("split_bill_panel.cash_tendered_placeholder", { amount: fmt(remaining) })}
                             value={cashTendered}
-                            onChange={(e) => setCashTendered(e.target.value)}
-                            min={remaining}
-                            step={0.01}
+                            onChange={setCashTendered}
                             className="text-sm"
                         />
                     )}
-                    <Input
-                        type="number"
+                    <NumberInput
                         placeholder={t("split_bill_panel.tip_placeholder")}
                         value={tip}
-                        onChange={(e) => setTip(e.target.value)}
-                        min={0}
-                        step={0.01}
+                        onChange={setTip}
                         className="text-sm"
                     />
                     <Button

@@ -132,20 +132,29 @@
       "subtitle": "No complicated integrations. Just create your account, set up your business details, and start managing everything from one place — right away.",
       "buttonText": "Book a Demo",
       "mainCard": {
-        "title": "Overdraft Prevention",
+        "title": "Low Stock Alert",
         "status": "Currently On",
         "progress": "93%",
         "progressLabel": "Weekly Progress"
       }
     },
     "pricing": {
-      "title": "Choose The Plans That Suits You!",
+      "title": "Choose the plan that suits you",
       "monthly_label": "Bill monthly",
       "quarterly_label": "Bill quarterly (10% off)",
-      "yearly_label": "Bill yearly (41% off)",
-      "billed_note": "*Billed annually, plus application taxes",
+      "yearly_label": "Bill yearly (17% off)",
+      "billed_note": {
+        "monthly": "*Billed monthly, plus applicable taxes",
+        "quarterly": "*Billed quarterly, plus applicable taxes",
+        "yearly": "*Billed annually, plus applicable taxes"
+      },
       "choose_plan_button": "Choose Plan",
-      "per_business_price": "{{price}} / business / mo",
+      "per_business_price": "{{price}} / business / {{period}}",
+      "period_suffix": {
+        "monthly": "mo",
+        "quarterly": "quarter",
+        "yearly": "yr"
+      },
       "min_businesses_one": "{{count}}-business minimum",
       "min_businesses_other": "{{count}}-business minimum"
     },
@@ -206,7 +215,8 @@
       "priority_support": "Priority support",
       "ded_acc_manager": "Dedicated account manager",
       "custom_branding": "Custom branding",
-      "premium_themes": "Premium themes"
+      "premium_themes": "Premium themes",
+      "loyalty_points": "Loyalty points"
     }
   },
   "support_page": {

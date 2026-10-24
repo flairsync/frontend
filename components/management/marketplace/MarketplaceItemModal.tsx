@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { NumberInput } from '@/components/ui/number-input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -184,12 +185,9 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                     {/* Price */}
                     <div className="space-y-1.5">
                         <Label>{t('marketplace_management.item_modal.price')} *</Label>
-                        <Input
-                            type="number"
-                            min="0"
-                            step="0.01"
+                        <NumberInput
                             value={form.price}
-                            onChange={(e) => setForm({ ...form, price: e.target.value })}
+                            onChange={(v) => setForm({ ...form, price: v })}
                             placeholder="0.00"
                             required
                         />
@@ -198,12 +196,9 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                     <div className="grid grid-cols-2 gap-3 items-end">
                         <div className="space-y-1.5">
                             <Label>{t('marketplace_management.item_modal.stock')}</Label>
-                            <Input
-                                type="number"
-                                min="0"
-                                step="1"
+                            <NumberInput
                                 value={form.stock}
-                                onChange={(e) => setForm({ ...form, stock: e.target.value })}
+                                onChange={(v) => setForm({ ...form, stock: v })}
                             />
                         </div>
                         <div className="flex items-center gap-2 pb-1">
@@ -244,13 +239,9 @@ export function MarketplaceItemModal({ businessId, item, open, onClose }: Props)
                                 </div>
                                 <div className="space-y-1.5">
                                     <Label>{form.discountType === 'PERCENTAGE' ? t('marketplace_management.item_modal.percent_off') : t('marketplace_management.item_modal.amount_off')}</Label>
-                                    <Input
-                                        type="number"
-                                        min="0"
-                                        max={form.discountType === 'PERCENTAGE' ? 100 : undefined}
-                                        step="0.01"
+                                    <NumberInput
                                         value={form.discountValue}
-                                        onChange={(e) => setForm({ ...form, discountValue: e.target.value })}
+                                        onChange={(v) => setForm({ ...form, discountValue: v })}
                                         placeholder={form.discountType === 'PERCENTAGE' ? '10' : '5.00'}
                                     />
                                 </div>

@@ -132,20 +132,29 @@
       "subtitle": "Pas d'intégrations compliquées. Créez simplement votre compte, configurez les détails de votre entreprise et commencez à tout gérer depuis un seul endroit — immédiatement.",
       "buttonText": "Réservez une démo",
       "mainCard": {
-        "title": "Prévention des découverts",
+        "title": "Alerte de stock bas",
         "status": "Actuellement activé",
         "progress": "93%",
         "progressLabel": "Progression hebdomadaire"
       }
     },
     "pricing": {
-      "title": "Choisissez le plan qui vous convient !",
+      "title": "Choisissez le plan qui vous convient",
       "monthly_label": "Facturation mensuelle",
       "quarterly_label": "Facturation trimestrielle (10% de réduction)",
-      "yearly_label": "Facturation annuelle (41% de réduction)",
-      "billed_note": "*Facturé annuellement, taxes de l'application en sus",
+      "yearly_label": "Facturation annuelle (17% de réduction)",
+      "billed_note": {
+        "monthly": "*Facturé mensuellement, taxes applicables en sus",
+        "quarterly": "*Facturé trimestriellement, taxes applicables en sus",
+        "yearly": "*Facturé annuellement, taxes applicables en sus"
+      },
       "choose_plan_button": "Choisir le plan",
-      "per_business_price": "{{price}} / commerce / mois",
+      "per_business_price": "{{price}} / commerce / {{period}}",
+      "period_suffix": {
+        "monthly": "mois",
+        "quarterly": "trimestre",
+        "yearly": "an"
+      },
       "min_businesses_one": "minimum {{count}} commerce",
       "min_businesses_other": "minimum {{count}} commerces"
     },
@@ -206,7 +215,8 @@
       "priority_support": "Support prioritaire",
       "ded_acc_manager": "Gestionnaire de compte dédié",
       "custom_branding": "Image de marque personnalisée",
-      "premium_themes": "Thèmes premium"
+      "premium_themes": "Thèmes premium",
+      "loyalty_points": "Points de fidélité"
     }
   },
   "support_page": {

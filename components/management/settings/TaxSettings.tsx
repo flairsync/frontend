@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { taxesApi, TaxRate, CreateTaxRatePayload } from "@/features/orders/taxes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -194,14 +195,10 @@ function TaxRateForm({
             <div className="space-y-1">
                 <Label>{t("tax_settings.rate_percent")}</Label>
                 <div className="flex gap-2 items-center">
-                    <Input
-                        type="number"
+                    <NumberInput
                         placeholder="0.00"
                         value={rate}
-                        onChange={(e) => setRate(e.target.value)}
-                        min={0}
-                        max={100}
-                        step={0.01}
+                        onChange={setRate}
                         required
                     />
                     <span className="text-muted-foreground">%</span>

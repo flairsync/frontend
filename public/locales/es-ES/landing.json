@@ -132,20 +132,29 @@
       "subtitle": "Sin integraciones complicadas. Solo crea tu cuenta, configura los detalles de tu negocio y empieza a gestionar todo desde un solo lugar, de inmediato.",
       "buttonText": "Reservar una demo",
       "mainCard": {
-        "title": "Prevención de sobregiros",
+        "title": "Alerta de stock bajo",
         "status": "Actualmente activo",
         "progress": "93%",
         "progressLabel": "Progreso semanal"
       }
     },
     "pricing": {
-      "title": "¡Elige el plan que se adapte a ti!",
+      "title": "Elige el plan que se adapte a ti",
       "monthly_label": "Facturación mensual",
       "quarterly_label": "Facturación trimestral (10% de descuento)",
-      "yearly_label": "Facturación anual (41% de descuento)",
-      "billed_note": "*Facturado anualmente, impuestos de la aplicación no incluidos",
+      "yearly_label": "Facturación anual (17% de descuento)",
+      "billed_note": {
+        "monthly": "*Facturado mensualmente, impuestos aplicables no incluidos",
+        "quarterly": "*Facturado trimestralmente, impuestos aplicables no incluidos",
+        "yearly": "*Facturado anualmente, impuestos aplicables no incluidos"
+      },
       "choose_plan_button": "Elegir plan",
-      "per_business_price": "{{price}} / negocio / mes",
+      "per_business_price": "{{price}} / negocio / {{period}}",
+      "period_suffix": {
+        "monthly": "mes",
+        "quarterly": "trimestre",
+        "yearly": "año"
+      },
       "min_businesses_one": "mínimo {{count}} negocio",
       "min_businesses_other": "mínimo {{count}} negocios"
     },
@@ -206,7 +215,8 @@
       "priority_support": "Soporte prioritario",
       "ded_acc_manager": "Gestor de cuenta dedicado",
       "custom_branding": "Marca personalizada",
-      "premium_themes": "Temas premium"
+      "premium_themes": "Temas premium",
+      "loyalty_points": "Puntos de fidelidad"
     }
   },
   "support_page": {

@@ -170,7 +170,7 @@ export const useInventoryDashboard = (businessId: string) => {
             return {
                 totalItems: (data as any)?.totalItems ?? 0,
                 lowStockItems: (data as any)?.lowStockItems ?? 0,
-                totalStockUnits: (data as any)?.totalStockUnits ?? 0,
+                totalStockValue: (data as any)?.totalStockValue ?? 0,
             };
         },
         enabled: !!businessId,

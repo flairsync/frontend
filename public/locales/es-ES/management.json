@@ -570,7 +570,8 @@
       "menu_hints": "Sugerencias del menú",
       "no_items": "No hay artículos todavía. Haz clic en \"Añadir artículo\" para comenzar.",
       "no_items_category": "No hay artículos en esta categoría todavía.",
-      "items_count": "{{count}} artículos",
+      "items_count_one": "{{count}} artículo",
+      "items_count_other": "{{count}} artículos",
       "add_first_item": "Añade tu primer artículo",
       "critical": "Crítico",
       "high": "Alto",
@@ -947,7 +948,8 @@
       "priority_support": "Soporte prioritario",
       "ded_acc_manager": "Gestor de cuentas dedicado",
       "custom_branding": "Marca personalizada",
-      "premium_themes": "Temas Premium"
+      "premium_themes": "Temas Premium",
+      "loyalty_points": "Puntos de Fidelidad"
     },
     "limits": {
       "businesses_one": "Hasta {{count}} negocio",
@@ -2783,7 +2785,7 @@
       }
     },
     "open_periods": {
-      "title": "Periodos de apertura",
+      "title": "Horario de apertura",
       "business_status": "Estado del negocio",
       "business_status_hint": "Automático marca el negocio abierto/cerrado según el horario de abajo. Forzar abierto/cerrado anula eso hasta que se cambie de nuevo.",
       "status_auto": "Automático",

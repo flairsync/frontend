@@ -45,15 +45,22 @@ export const MenuHeader = ({
                             </span>
                         )}
 
-                        <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium
-                ${menu.isActive
-                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                                    : "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300"
-                                }`}
-                        >
-                            {menu.isActive ? "Active" : "Inactive"}
-                        </span>
+                        {menu.isActive ? (
+                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                                Active
+                            </span>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={canEdit ? onEdit : undefined}
+                                title={canEdit
+                                    ? "This menu is outside its active dates/hours, or was turned off — click to edit and activate it"
+                                    : "This menu is outside its active dates/hours, or was turned off"}
+                                className={`px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300 ${canEdit ? "cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-600" : ""}`}
+                            >
+                                Inactive{canEdit ? " · Activate" : ""}
+                            </button>
+                        )}
                     </div>
                 </div>
 

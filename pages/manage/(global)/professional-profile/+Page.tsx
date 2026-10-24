@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, User, Briefcase, Mail, Sparkles, CheckCircle2, Clock } from "lucide-react";
+import { Loader2, User, Briefcase, Mail, Sparkles, CheckCircle2, Clock, Hourglass } from "lucide-react";
 import { useProfessionalProfile } from "@/features/professionalProfile/useProfessionalProfile";
 import { useProfile } from "@/features/profile/useProfile";
 import TfaCodeModal from "@/components/inputs/TfaCodeModal";
@@ -167,6 +167,17 @@ const ProfessionalProfilePage: React.FC = () => {
                     )}
                 </CardContent>
             </Card>
+
+            {/* Beta approval notice — explains why saving may not go through yet,
+                instead of a silent/confusing 403 on submit */}
+            {userProfile?.betaApplicationStatus === "PENDING" && (
+                <Alert>
+                    <Hourglass className="h-4 w-4" />
+                    <AlertDescription>
+                        {t("professional_profile_page.beta_pending_notice", "FlairSync is in a limited beta — your account is still waiting on approval, so this won't save until then. We'll email you once it's approved.")}
+                    </AlertDescription>
+                </Alert>
+            )}
 
             {/* Call-to-action when no profile */}
             {!hasProfile && (

@@ -37,12 +37,20 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <p className="text-sm text-muted-foreground max-w-sm">
             An unexpected error occurred. Reloading the page usually fixes this.
           </p>
-          <button
-            onClick={this.handleReload}
-            className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
-          >
-            Reload page
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={this.handleReload}
+              className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
+            >
+              Reload page
+            </button>
+            <a
+              href="/"
+              className="px-4 py-2 rounded-md border border-border text-sm font-medium hover:bg-muted"
+            >
+              Go to homepage
+            </a>
+          </div>
         </div>
       );
     }

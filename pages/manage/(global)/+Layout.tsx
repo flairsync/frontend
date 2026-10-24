@@ -9,12 +9,27 @@ import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { motion, AnimatePresence } from "framer-motion"
 import { useProfile } from '@/features/profile/useProfile';
 import { BusinessManageHubSidebar } from '@/components/management/layouts/BusinessManageHubSidebar';
+import BetaPendingScreen from '@/components/shared/BetaPendingScreen';
+import { usePageContext } from 'vike-react/usePageContext';
 
 const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const [sidebarOpen, setsidebarOpen] = useState(true);
+    const { urlParsed } = usePageContext();
     const {
         userProfile
     } = useProfile();
+
+    // The professional-profile page hosts its own OTP/edit UI and must stay
+    // reachable regardless of beta status, so a pending/rejected user isn't
+    // blocked from updating the info an admin reviews.
+    const betaStatus = userProfile?.betaApplicationStatus;
+    const showBetaScreen =
+        urlParsed.pathname !== "/manage/professional-profile" &&
+        (betaStatus === "PENDING" || betaStatus === "REJECTED");
+
+    if (showBetaScreen) {
+        return <BetaPendingScreen status={betaStatus as "PENDING" | "REJECTED"} />;
+    }
 
     return (<div>
 

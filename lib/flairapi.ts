@@ -265,10 +265,32 @@ flairapi.interceptors.response.use(
           error.response?.data?.message || i18n.t("subscriptions.errors.limit_reached")
         );
         return Promise.reject(error);
-      } else {
-        useSystemErrorStore.getState().openPermissionDenied(error.response?.data?.data?.permission ?? null);
+      }
+
+      // A pending/rejected beta user hitting the global BetaApprovedGuard —
+      // this is expected and not a real "Access Denied" situation, so never
+      // show that dialog for it. Send them straight to the dashboard, whose
+      // layout (pages/manage/(global)/+Layout.tsx) already renders the
+      // waiting/rejected screen in place of the page for this exact status,
+      // instead of popping a confusing generic denial on every attempt.
+      if (errorCode === "beta.application.pending" || errorCode === "beta.application.rejected") {
+        if (typeof window !== "undefined" && !window.location.pathname.startsWith("/manage")) {
+          window.location.href = "/manage/overview";
+        }
         return Promise.reject(error);
       }
+
+      // Only surface the "Access Denied" dialog for requests the user actually
+      // triggered (a button click, a form submit — i.e. a mutation), never for
+      // background/passive GETs (notifications, usage checks, list hydration,
+      // etc.) that the user never asked for and shouldn't have to dismiss a
+      // popup over. A request can opt out entirely via `suppressPermissionDialog`.
+      const method = (originalRequest?.method || error.config?.method || "get").toLowerCase();
+      const isBackgroundRead = method === "get";
+      if (!isBackgroundRead && !error.config?.suppressPermissionDialog) {
+        useSystemErrorStore.getState().openPermissionDenied(error.response?.data?.data?.permission ?? null);
+      }
+      return Promise.reject(error);
     }
 
     // Network/CORS/timeout and 5xx handling for this error now lives in

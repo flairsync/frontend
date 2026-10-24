@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -89,14 +90,11 @@ export const AdjustStockModal: React.FC<AdjustStockModalProps> = ({
 
                     <div className="space-y-1.5">
                         <Label htmlFor="amount">Amount</Label>
-                        <Input
+                        <NumberInput
                             id="amount"
-                            type="number"
-                            min="0"
-                            step="any"
                             placeholder="0"
                             value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
+                            onChange={setAmount}
                         />
                         {parsedAmount > 0 && (
                             <p className={cn("text-sm font-medium", preview < 0 ? "text-destructive" : "text-muted-foreground")}>

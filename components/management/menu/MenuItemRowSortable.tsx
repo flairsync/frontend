@@ -58,21 +58,7 @@ export const MenuItemRowSortable = ({
                     {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="font-semibold text-primary">{currencySymbol}{item.price}</span>
-                    <ConfirmAction
-                        onConfirm={onDelete}
-                        title={t('menu_management.messages.delete_item_confirm_title')}
-                        description={t('menu_management.messages.delete_item_confirm_desc', { name: item.name })}
-                        confirmText={t('shared.actions.delete')}
-                        storageKey="delete-item-confirm"
-                    >
-                        <Button
-                            size="sm"
-                            variant="destructive"
-                        >
-                            <Trash className="h-4 w-4" />
-                        </Button>
-                    </ConfirmAction>
+                    <span className="font-semibold text-primary">{currencySymbol}{Number(item.price || 0).toFixed(2)}</span>
                     <Button
                         size="sm"
                         variant="outline"
@@ -93,6 +79,22 @@ export const MenuItemRowSortable = ({
                     >
                         <Copy className="h-4 w-4" /> Duplicate
                     </Button>
+                    <ConfirmAction
+                        onConfirm={onDelete}
+                        title={t('menu_management.messages.delete_item_confirm_title')}
+                        description={t('menu_management.messages.delete_item_confirm_desc', { name: item.name })}
+                        confirmText={t('shared.actions.delete')}
+                        storageKey="delete-item-confirm"
+                    >
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-destructive hover:text-destructive border-destructive/30 hover:bg-destructive/10"
+                            aria-label={t('shared.actions.delete')}
+                        >
+                            <Trash className="h-4 w-4" />
+                        </Button>
+                    </ConfirmAction>
                 </div>
             </div>
         </div>

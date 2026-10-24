@@ -43,22 +43,8 @@ export const MenuItemRow = ({
 
             <div className="flex items-center gap-2">
                 <span className="font-semibold text-primary">
-                    {item.price}
+                    {Number(item.price || 0).toFixed(2)}
                 </span>
-
-                <ConfirmAction
-                    onConfirm={() => onDelete(item.id)}
-                    title="Delete item?"
-                    description={`This will permanently delete "${item.name}".`}
-                    storageKey="menu-item-delete-confirm"
-                >
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                    >
-                        <Trash className="h-4 w-4" />
-                    </Button>
-                </ConfirmAction>
 
                 <Button
                     size="sm"
@@ -76,6 +62,21 @@ export const MenuItemRow = ({
                 >
                     <Plus className="h-4 w-4" /> Duplicate
                 </Button>
+                <ConfirmAction
+                    onConfirm={() => onDelete(item.id)}
+                    title="Delete item?"
+                    description={`This will permanently delete "${item.name}".`}
+                    storageKey="menu-item-delete-confirm"
+                >
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-destructive hover:text-destructive border-destructive/30 hover:bg-destructive/10"
+                        aria-label="Delete"
+                    >
+                        <Trash className="h-4 w-4" />
+                    </Button>
+                </ConfirmAction>
             </div>
         </div>
     );

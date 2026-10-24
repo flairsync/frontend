@@ -132,20 +132,29 @@
       "subtitle": "Sense integracions complicades. Simplement crea el teu compte, configura els detalls del teu negoci i comença a gestionar-ho tot des d'un sol lloc, immediatament.",
       "buttonText": "Reserva una demo",
       "mainCard": {
-        "title": "Prevenció de descoberts",
+        "title": "Alerta d'estoc baix",
         "status": "Actualment actiu",
         "progress": "93%",
         "progressLabel": "Progrés setmanal"
       }
     },
     "pricing": {
-      "title": "Tria el pla que millor s'adapti a tu!",
+      "title": "Tria el pla que millor s'adapti a tu",
       "monthly_label": "Facturació mensual",
       "quarterly_label": "Facturació trimestral (10% de descompte)",
-      "yearly_label": "Facturació anual (41% de descompte)",
-      "billed_note": "*Facturat anualment, impostos de l'aplicació no inclosos",
+      "yearly_label": "Facturació anual (17% de descompte)",
+      "billed_note": {
+        "monthly": "*Facturat mensualment, impostos aplicables no inclosos",
+        "quarterly": "*Facturat trimestralment, impostos aplicables no inclosos",
+        "yearly": "*Facturat anualment, impostos aplicables no inclosos"
+      },
       "choose_plan_button": "Tria pla",
-      "per_business_price": "{{price}} / negoci / mes",
+      "per_business_price": "{{price}} / negoci / {{period}}",
+      "period_suffix": {
+        "monthly": "mes",
+        "quarterly": "trimestre",
+        "yearly": "any"
+      },
       "min_businesses_one": "mínim {{count}} negoci",
       "min_businesses_other": "mínim {{count}} negocis"
     },
@@ -206,7 +215,8 @@
       "priority_support": "Suport prioritari",
       "ded_acc_manager": "Gestor de compte dedicat",
       "custom_branding": "Marca personalitzada",
-      "premium_themes": "Temes premium"
+      "premium_themes": "Temes premium",
+      "loyalty_points": "Punts de fidelitat"
     }
   },
   "support_page": {

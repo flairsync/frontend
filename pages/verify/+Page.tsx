@@ -10,12 +10,16 @@ import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { useVerification } from "@/features/auth/useVerification"
+import { useProfile } from "@/features/profile/useProfile"
 import { navigate } from "vike/client/router"
 import { useTranslation } from "react-i18next"
+import WebsiteLogo from "@/components/shared/WebsiteLogo"
 
 export default function VerifyAccountPage() {
 
     const { t } = useTranslation("auth")
+
+    const { userProfile } = useProfile({ enabled: true })
 
     const {
         resendOtpCode,
@@ -64,7 +68,7 @@ export default function VerifyAccountPage() {
                         type: "success",
                         text: t("auth_page.verify.success_message"),
                     })
-                    const origin = new URLSearchParams(window.location.search).get('origin') || '/feed';
+                    const origin = new URLSearchParams(window.location.search).get('origin') || '/manage/join';
                     setTimeout(() => {
                         navigate(origin);
                     }, 1500);
@@ -102,13 +106,24 @@ export default function VerifyAccountPage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-background px-4">
             <div className="w-full max-w-md">
+                <div className="flex justify-center mb-6">
+                    <a href="/" className="flex items-center gap-3">
+                        <WebsiteLogo />
+                    </a>
+                </div>
                 <Card className="shadow-lg border-border">
                     <CardHeader>
                         <CardTitle className="text-2xl font-semibold text-foreground">
                             {t("auth_page.verify.title")}
                         </CardTitle>
                         <CardDescription className="text-muted-foreground">
-                            {t("auth_page.verify.description")}
+                            {userProfile?.email
+                                ? t("auth_page.verify.description_with_email", { email: userProfile.email })
+                                : t("auth_page.verify.description")}
+                            {" · "}
+                            <a href="/signup" className="text-primary hover:underline">
+                                {t("auth_page.verify.wrong_email")}
+                            </a>
                         </CardDescription>
                     </CardHeader>
 

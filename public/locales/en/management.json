@@ -570,7 +570,8 @@
       "menu_hints": "Menu Hints",
       "no_items": "No items yet. Click \"Add Item\" to start.",
       "no_items_category": "No items in this category yet.",
-      "items_count": "{{count}} items",
+      "items_count_one": "{{count}} item",
+      "items_count_other": "{{count}} items",
       "add_first_item": "Add your first item",
       "critical": "Critical",
       "high": "High",
@@ -684,6 +685,7 @@
     "price": "Price",
     "allergies": "Allergies",
     "images": "Images",
+    "images_dropzone_hint": "Drag photos here, or click to browse",
     "tracking": {
       "label": "Tracking",
       "tooltip": "Choose how this item links to your inventory.",
@@ -947,7 +949,8 @@
       "priority_support": "Priority Support",
       "ded_acc_manager": "Dedicated Account Manager",
       "custom_branding": "Custom Branding",
-      "premium_themes": "Premium Themes"
+      "premium_themes": "Premium Themes",
+      "loyalty_points": "Loyalty Points"
     },
     "limits": {
       "businesses_one": "Up to {{count}} Business",
@@ -1156,10 +1159,10 @@
       "teams": "Teams"
     },
     "owner_tabs": {
-      "staff": "Staff Management",
-      "invitations": "Staff Invitations",
-      "roles": "Roles Management",
-      "teams": "Teams Management"
+      "staff": "Who works here",
+      "invitations": "Invitations",
+      "roles": "What they can do",
+      "teams": "Teams"
     },
     "bulk_assign_modal": {
       "title": "Bulk Assign Role",
@@ -1538,7 +1541,7 @@
     "footer_hrs_est_cost": "Hrs / Est. Cost",
     "bulk_staff_setup_hint": "One staff member, the same hours across a range of dates.",
     "schedule_team_hint": "Every member of a team, the same hours across a range of dates.",
-    "add_shifts_single_hint": "For a single shift, right-click any cell in the grid below.",
+    "add_shifts_single_hint": "For a single shift, tap the + on any cell in the grid below (or right-click on a computer).",
     "generate_tooltip": "Creates draft shifts from your active recurring rules for the dates shown. Does nothing if no rule covers this range.",
     "copy_previous_week_tooltip": "Duplicates the previous week's shifts into the week shown. Shifts that would clash are skipped.",
     "publish_tooltip_one": "Makes the 1 draft in these dates visible to staff. Until then, only you can see it.",
@@ -2856,7 +2859,7 @@
       }
     },
     "open_periods": {
-      "title": "Open periods",
+      "title": "Opening hours",
       "business_status": "Business status",
       "business_status_hint": "Auto marks the business open/closed based on the opening hours below. Force open/closed overrides that until changed again.",
       "status_auto": "Auto",
@@ -3328,7 +3331,7 @@
     "upgrade_prompt_generic": "The business plan employee limit has been reached. The owner needs to upgrade to add more staff.",
     "add_new_staff_title": "Add New Staff",
     "email_placeholder": "Email",
-    "add": "Add",
+    "add": "Send invite",
     "import_csv": "Import CSV",
     "status_filter_placeholder": "Select status",
     "status_options": {
@@ -3764,7 +3767,8 @@
     "this_staff_member": "this staff member",
     "remove": "Remove",
     "all_staff": "All Staff",
-    "resync_invitations": "Re-Sync invitations",
+    "resync_invitations": "Refresh",
+    "resync_invitations_hint": "Re-checks accepted invitations against your team list and fixes any that are out of sync.",
     "col_name": "Name",
     "col_email": "Email",
     "col_roles": "Roles",
@@ -4519,6 +4523,7 @@
     "title": "Professional Profile",
     "subtitle_update": "Update how you appear to employers and businesses.",
     "subtitle_create": "Create your professional profile to apply for jobs and connect with businesses.",
+    "beta_pending_notice": "FlairSync is in a limited beta — your account is still waiting on approval, so this won't save until then. We'll email you once it's approved.",
     "active_badge": "Active",
     "no_profile_yet": "No professional profile yet",
     "member_since": "Member since {{date}}",
@@ -5265,7 +5270,7 @@
     "step_rules_title": "Set standing patterns",
     "step_rules_body": "A recurring rule says “Amina works Mondays 09:00–17:00”, or “the kitchen team works Mon–Fri mornings”, week after week. Rules put nothing on the rota by themselves.",
     "step_build_title": "Build the week",
-    "step_build_body": "On the rota: right-click a cell for one shift, use Add Shifts for a person or a whole team, press Generate to turn recurring rules into drafts, or copy last week.",
+    "step_build_body": "On the rota: tap the + on a cell for one shift (or right-click on a computer), use Add Shifts for a person or a whole team, press Generate to turn weekly patterns into drafts, or copy last week.",
     "step_publish_title": "Publish it",
     "step_publish_body": "New shifts start as drafts (dashed amber) and staff cannot see them. Publish turns every draft in the dates shown into a real, visible shift.",
     "footnote": "Steps 1 and 2 are optional — you can build a whole week by hand on the rota and publish it."

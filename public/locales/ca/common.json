@@ -155,6 +155,9 @@
     },
     "checkbox": {
       "required": "Has de confirmar aquesta casella"
+    },
+    "terms": {
+      "required": "Si us plau accepta els Termes i Condicions"
     }
   },
   "business_types": {
@@ -206,7 +209,14 @@
     "modal_point_changing_text": "Les funcions, els preus i els fluxos de treball encara poden canviar abans del llançament general.",
     "modal_point_transition_title": "Avís abans que acabi la beta",
     "modal_point_transition_text": "Quan acabi el període beta, rebreu un correu sobre el pas a un pla de pagament, amb el preu i la data en què entra en vigor — enviat com a mínim 14 dies abans que calgui començar a pagar per continuar utilitzant el servei.",
-    "modal_close": "Entesos"
+    "modal_close": "Entesos",
+    "pending_title": "Estàs a la llista",
+    "pending_description": "FlairSync està en una beta limitada — els comptes nous s'aproven manualment. T'avisarem per correu quan s'aprovi el teu compte, normalment en un parell de dies feiners, amb un enllaç directe a la configuració.",
+    "rejected_title": "La teva sol·licitud de beta no ha estat aprovada",
+    "rejected_description": "Si creus que és un error, contacta amb nosaltres i ho tornarem a revisar.",
+    "contact_link": "Contacta'ns",
+    "go_home_link": "Anar a la pàgina principal",
+    "check_again": "Tornar a comprovar"
   },
   "notifications_page": {
     "title": "Centre de notificacions",

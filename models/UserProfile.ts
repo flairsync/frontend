@@ -30,6 +30,8 @@ export class UserProfile {
   deletionRequestedAt?: string | null;
   // Null = not breached (or not checked yet) — see PasswordBreachService on the API.
   passwordBreachedAt?: string | null;
+  // Null = never applied (beta mode was off, or account predates beta mode).
+  betaApplicationStatus?: "PENDING" | "APPROVED" | "REJECTED" | null;
 
   constructor(
     id: string,
@@ -49,7 +51,8 @@ export class UserProfile {
     countryId?: number,
     country?: PlatformCountry,
     deletionRequestedAt?: string | null,
-    passwordBreachedAt?: string | null
+    passwordBreachedAt?: string | null,
+    betaApplicationStatus?: "PENDING" | "APPROVED" | "REJECTED" | null
   ) {
     this.id = id;
     this.email = email;
@@ -69,6 +72,7 @@ export class UserProfile {
     this.country = country;
     this.deletionRequestedAt = deletionRequestedAt;
     this.passwordBreachedAt = passwordBreachedAt;
+    this.betaApplicationStatus = betaApplicationStatus;
   }
 
   static parseApiResponse(data: any): UserProfile {
@@ -92,7 +96,8 @@ export class UserProfile {
       data.countryId,
       countryObj ? countryObj : undefined,
       data.deletionRequestedAt ?? null,
-      data.passwordBreachedAt ?? null
+      data.passwordBreachedAt ?? null,
+      data.betaApplicationStatus ?? null
     );
   }
 

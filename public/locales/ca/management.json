@@ -570,7 +570,8 @@
       "menu_hints": "Suggeriments del menú",
       "no_items": "Encara no hi ha articles. Fes clic a \"Afegir article\" per començar.",
       "no_items_category": "Encara no hi ha articles en aquesta categoria.",
-      "items_count": "{{count}} articles",
+      "items_count_one": "{{count}} article",
+      "items_count_other": "{{count}} articles",
       "add_first_item": "Afegeix el teu primer article",
       "critical": "Crític",
       "high": "Alt",
@@ -947,7 +948,8 @@
       "priority_support": "Suport prioritari",
       "ded_acc_manager": "Gestor de comptes dedicat",
       "custom_branding": "Marca personalitzada",
-      "premium_themes": "Temes Premium"
+      "premium_themes": "Temes Premium",
+      "loyalty_points": "Punts de Fidelitat"
     },
     "limits": {
       "businesses_one": "Fins a {{count}} negoci",
@@ -2783,7 +2785,7 @@
       }
     },
     "open_periods": {
-      "title": "Períodes d'obertura",
+      "title": "Horari d'obertura",
       "business_status": "Estat del negoci",
       "business_status_hint": "Automàtic marca el negoci obert/tancat segons l'horari de sota. Força obert/tancat ho substitueix fins que es torni a canviar.",
       "status_auto": "Automàtic",

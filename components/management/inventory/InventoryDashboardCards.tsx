@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useInventoryDashboard } from "@/features/inventory/useInventory";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
+import { getCurrencySymbol } from "@/utils/currency";
 import { Package, AlertTriangle, BarChart2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +16,8 @@ export const InventoryDashboardCards: React.FC<InventoryDashboardCardsProps> = (
     onLowStockClick,
 }) => {
     const { data, isFetching } = useInventoryDashboard(businessId);
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId);
+    const currencySymbol = getCurrencySymbol(businessBasicDetails?.currency);
 
     const cards = [
         {
@@ -31,8 +35,8 @@ export const InventoryDashboardCards: React.FC<InventoryDashboardCardsProps> = (
             onClick: onLowStockClick,
         },
         {
-            label: "Total Stock Units",
-            value: data?.totalStockUnits != null ? Number(data.totalStockUnits).toLocaleString() : 0,
+            label: "Total Stock Value",
+            value: data?.totalStockValue != null ? `${currencySymbol}${Number(data.totalStockValue).toFixed(2)}` : `${currencySymbol}0.00`,
             icon: <BarChart2 className="w-5 h-5 text-green-500" />,
             bg: "bg-green-50 dark:bg-green-950/30",
         },

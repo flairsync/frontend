@@ -2,6 +2,7 @@ import { useState } from "react";
 import { discountsApi } from "@/features/orders/discounts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Tag, X } from "lucide-react";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { formatCurrency } from "@/lib/formatCurrency";
@@ -128,16 +129,12 @@ export default function DiscountPanel({
                 />
             ) : (
                 <>
-                    <Input
-                        type="number"
+                    <NumberInput
                         placeholder={t("discount_panel.amount_placeholder")}
                         value={manualAmount}
-                        onChange={(e) => {
-                            const v = e.target.value;
+                        onChange={(v) => {
                             if (v === "" || parseFloat(v) >= 0) setManualAmount(v);
                         }}
-                        min={0}
-                        step={0.01}
                     />
                     <Input
                         placeholder={t("discount_panel.reason_placeholder")}

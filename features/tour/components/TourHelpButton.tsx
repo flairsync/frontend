@@ -22,7 +22,11 @@ export function TourHelpButton() {
     <AnimatePresence>
       {hasSteps && (
         <motion.div
-          className="fixed bottom-6 right-6 z-[9990] flex items-center group"
+          // Several pages (e.g. the Rota) put their primary action — Publish,
+          // Save — in that same bottom-right corner, either in-flow near the
+          // page's end or in their own sticky footer. bottom-24 floats this
+          // well clear of both, instead of sitting on top of them.
+          className="fixed bottom-24 right-6 z-[9990] flex items-center group"
           initial={{ opacity: 0, y: 16, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 12, scale: 0.9 }}

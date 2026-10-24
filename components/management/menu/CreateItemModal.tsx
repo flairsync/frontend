@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { NumberInput } from '@/components/ui/number-input';
 import { Textarea } from '@/components/ui/textarea';
 import {
     Combobox,
@@ -23,7 +24,7 @@ import {
     useComboboxAnchor,
 } from '@/components/ui/combobox';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { X, Info, Check, ChevronsUpDown, Plus, Lock } from 'lucide-react';
+import { X, Info, Check, ChevronsUpDown, Plus, Lock, Image as ImageIcon } from 'lucide-react';
 import { Allergy } from '@/models/shared/Allergy';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
 import { useTranslation } from 'react-i18next';
@@ -143,7 +144,7 @@ const ItemVariantsSection: React.FC<{
                         <div key={v.id} className="flex items-center justify-between p-2 border rounded-md">
                             <div className="text-sm font-medium">{v.name}</div>
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                {currencySymbol}{v.price}
+                                {currencySymbol}{Number(v.price || 0).toFixed(2)}
                                 <button type="button" onClick={() => deleteVariant({ categoryId, itemId, variantId: v.id })} className="text-destructive hover:text-destructive/80">
                                     <X className="h-4 w-4" />
                                 </button>
@@ -156,7 +157,7 @@ const ItemVariantsSection: React.FC<{
             {isAdding && (
                 <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-md border">
                     <Input placeholder={t('item_modal.variants_section.name_placeholder')} value={newName} onChange={e => setNewName(e.target.value)} className="flex-1" />
-                    <Input type="number" placeholder={t('item_modal.variants_section.price_placeholder')} value={newPrice} onChange={e => setNewPrice(e.target.value)} className="w-24" />
+                    <NumberInput placeholder={t('item_modal.variants_section.price_placeholder')} value={newPrice} onChange={setNewPrice} className="w-24" />
                     <Button size="sm" onClick={handleAdd}>{t('item_modal.variants_section.save')}</Button>
                     <Button size="sm" variant="ghost" onClick={() => setIsAdding(false)}>{t('item_modal.variants_section.cancel')}</Button>
                 </div>
@@ -253,7 +254,7 @@ const ItemModifiersSection: React.FC<{
                                     <div key={modItem.id} className="flex items-center justify-between text-sm p-1">
                                         <span>{modItem.name}</span>
                                         <div className="flex items-center gap-3 text-muted-foreground">
-                                            +{currencySymbol}{modItem.price}
+                                            +{currencySymbol}{Number(modItem.price || 0).toFixed(2)}
                                             <button type="button" onClick={() => deleteModifierItem({ categoryId, itemId, groupId: group.id, modItemId: modItem.id })} className="text-destructive hover:text-destructive/80">
                                                 <X className="h-3 w-3" />
                                             </button>
@@ -264,7 +265,7 @@ const ItemModifiersSection: React.FC<{
                                 {addingItemToGroup === group.id ? (
                                     <div className="flex items-center gap-2 mt-2">
                                         <Input placeholder={t('item_modal.modifiers_section.choice_placeholder')} value={newItemName} onChange={e => setNewItemName(e.target.value)} className="h-8 text-sm" />
-                                        <Input type="number" placeholder={t('item_modal.modifiers_section.price_placeholder')} value={newItemPrice} onChange={e => setNewItemPrice(e.target.value)} className="w-20 h-8 text-sm" />
+                                        <NumberInput placeholder={t('item_modal.modifiers_section.price_placeholder')} value={newItemPrice} onChange={setNewItemPrice} className="w-20 h-8 text-sm" />
                                         <Button size="sm" onClick={() => handleAddItem(group.id)}>{t('item_modal.modifiers_section.add')}</Button>
                                         <Button size="sm" variant="ghost" onClick={() => setAddingItemToGroup(null)}>{t('item_modal.modifiers_section.cancel')}</Button>
                                     </div>
@@ -434,6 +435,14 @@ export const ItemModal: React.FC<ItemModalProps> = ({
         setImages((prev) => prev.filter((_, i) => i !== index));
     };
 
+    const [isDraggingImage, setIsDraggingImage] = useState(false);
+    const handleImagesDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
+        setIsDraggingImage(false);
+        const files = Array.from(e.dataTransfer.files).filter((f) => f.type.startsWith("image/"));
+        if (files.length > 0) setImages((prev) => [...prev, ...files]);
+    };
+
     const handleConfirm = () => {
         if (!name.trim() || !price) return;
 
@@ -513,7 +522,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                                             className={`mr-2 h-4 w-4 ${selectedCopyItemId === item.id ? "opacity-100" : "opacity-0"
                                                 }`}
                                         />
-                                        {item.name} — {currencySymbol}{item.price}
+                                        {item.name} — {currencySymbol}{Number(item.price || 0).toFixed(2)}
                                     </CommandItem>
                                 ))}
                             </CommandGroup>
@@ -538,11 +547,9 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     {/* Price */}
                     <div>
                         <label className="text-sm font-medium">{t('item_modal.price')}</label>
-                        <Input
-                            type="number"
-                            min={0}
+                        <NumberInput
                             value={price}
-                            onChange={(e) => setPrice(e.target.value)}
+                            onChange={setPrice}
                         />
                     </div>
 
@@ -620,7 +627,20 @@ export const ItemModal: React.FC<ItemModalProps> = ({
                     {/* Images */}
                     <div>
                         <label className="text-sm font-medium">{t('item_modal.images')}</label>
-                        <Input type="file" multiple accept="image/*" onChange={handleImagesChange} />
+                        <label
+                            onDragOver={(e) => { e.preventDefault(); setIsDraggingImage(true); }}
+                            onDragLeave={() => setIsDraggingImage(false)}
+                            onDrop={handleImagesDrop}
+                            className={`mt-1 flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
+                                isDraggingImage ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                            }`}
+                        >
+                            <ImageIcon className="h-6 w-6 text-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">
+                                {t('item_modal.images_dropzone_hint', "Drag photos here, or click to browse")}
+                            </span>
+                            <input type="file" multiple accept="image/*" onChange={handleImagesChange} className="hidden" />
+                        </label>
                     </div>
 
                     {/* Image carousel */}
@@ -879,11 +899,9 @@ export const ItemModal: React.FC<ItemModalProps> = ({
 
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium">{t('item_modal.tracking.quantity_per_sale')}</label>
-                                        <Input
-                                            type="number"
-                                            step="0.01"
+                                        <NumberInput
                                             value={quantityPerSale}
-                                            onChange={(e) => setQuantityPerSale(e.target.value)}
+                                            onChange={setQuantityPerSale}
                                         />
                                         <p className="text-xs text-muted-foreground">
                                             {t('item_modal.tracking.quantity_hint')}

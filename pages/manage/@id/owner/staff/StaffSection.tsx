@@ -294,6 +294,7 @@ const StaffSection = () => {
           <div className="flex gap-2">
             <div className="flex justify-end">
               <Button
+                title={t("staff_section.resync_invitations_hint")}
                 onClick={() => {
                   resyncInvitations();
                 }}

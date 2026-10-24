@@ -158,7 +158,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                             <nav className="flex items-center gap-5 mr-2">
                                 <a href="/feed" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
                                     <Newspaper className="w-4 h-4" />
-                                    {t("public_feed.title", "Feed")}
+                                    {t("public_feed.title", "Explore Feed")}
                                 </a>
                                 <a href="/jobs" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
                                     <Briefcase className="w-4 h-4" />
@@ -182,6 +182,16 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
 
                     {/* Auth: HeaderProfileAvatar picks dropdown vs. bottom sheet itself */}
                     {authResolved && user && (
+                        <div className="hidden md:flex items-center">
+                            <a
+                                href="/manage/overview"
+                                className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors mr-3"
+                            >
+                                {t("shared.user_menu.business_hub", "BusinessHub")}
+                            </a>
+                        </div>
+                    )}
+                    {authResolved && user && (
                         <div className="flex items-center md:pl-2 md:border-l md:border-border/50">
                             <HeaderProfileAvatar />
                         </div>
@@ -191,7 +201,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                             {!authResolved ? (
                                 <div className="w-9 h-9" />
                             ) : (
-                                <a href="/login">
+                                <a href="/signup">
                                     <Button className="px-5 py-2 ml-1 hover:cursor-pointer bg-primary text-primary-foreground rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 text-sm">
                                         {t("landing_page.header.joinUsButton")}
                                     </Button>
@@ -257,7 +267,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
 
                             {authResolved && !user && (
                                 <div className="pt-4">
-                                    <a href="/login" onClick={() => setIsOpen(false)}>
+                                    <a href="/signup" onClick={() => setIsOpen(false)}>
                                         <Button className="w-full rounded-full bg-primary text-primary-foreground">
                                             {t("landing_page.header.joinUsButton")}
                                         </Button>

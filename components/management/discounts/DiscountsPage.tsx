@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -186,24 +187,18 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                             </div>
                             <div className="space-y-1">
                                 <Label className="text-xs">{t("discounts_page.form.value_label")} <span className="text-destructive">*</span></Label>
-                                <Input
-                                    type="number"
-                                    min={0}
-                                    step={0.01}
+                                <NumberInput
                                     value={form.value || ""}
-                                    onChange={(e) => setForm({ ...form, value: Number(e.target.value) })}
+                                    onChange={(v) => setForm({ ...form, value: Number(v) })}
                                 />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1">
                                 <Label className="text-xs">{t("discounts_page.form.min_order_label")}</Label>
-                                <Input
-                                    type="number"
-                                    min={0}
-                                    step={0.01}
+                                <NumberInput
                                     value={form.minOrderAmount ?? ""}
-                                    onChange={(e) => setForm({ ...form, minOrderAmount: e.target.value ? Number(e.target.value) : undefined })}
+                                    onChange={(v) => setForm({ ...form, minOrderAmount: v ? Number(v) : undefined })}
                                 />
                             </div>
                             <div className="space-y-1">

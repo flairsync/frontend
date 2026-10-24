@@ -178,6 +178,7 @@ export default function WorkHoursSelector({
                                                 <Label className="text-xs text-muted-foreground">{t("work_hours_selector.opens_label")}</Label>
                                                 <input
                                                     type="time"
+                                                    lang="en-GB"
                                                     value={p.open}
                                                     className="border border-border rounded-md p-1 text-sm bg-background text-foreground"
                                                     onChange={(e) =>
@@ -190,6 +191,7 @@ export default function WorkHoursSelector({
                                                 <Label className="text-xs text-muted-foreground">{t("work_hours_selector.closes_label")}</Label>
                                                 <input
                                                     type="time"
+                                                    lang="en-GB"
                                                     value={p.close}
                                                     className="border border-border rounded-md p-1 text-sm bg-background text-foreground"
                                                     onChange={(e) =>

@@ -19,6 +19,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
 import GoogleLoginButton from '@/components/inputs/GoogleLoginButton';
+import { usePublicPlatformSettings } from '@/features/platform-settings/usePlatformSettings';
+import { Hourglass } from 'lucide-react';
 
 const RegisterPage = () => {
     const { t } = useTranslation("auth");
@@ -27,8 +29,9 @@ const RegisterPage = () => {
     const [signupErrorText, setSignupErrorText] = useState<string>();
     const { signupUser, signingUp, signupError } = useAuth();
     const { urlParsed } = usePageContext();
+    const { data: platformSettings } = usePublicPlatformSettings();
 
-    const origin = urlParsed.search.origin || '/';
+    const origin = urlParsed.search.origin || '/manage/join';
     const packId = urlParsed.search.packId;
     const prefilledEmail = urlParsed.search.email || '';
 
@@ -76,6 +79,15 @@ const RegisterPage = () => {
                             {t("auth_page.register.signup_page_subtitle")}
                         </p>
 
+                        {platformSettings?.betaModeEnabled && (
+                            <div className="flex items-start gap-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 px-3.5 py-3 mb-6 text-sm">
+                                <Hourglass className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
+                                <p className="text-amber-900 dark:text-amber-200">
+                                    {t("auth_page.register.beta_notice", "FlairSync is in a limited beta — new accounts are approved by hand, usually within a couple of business days. We'll email you as soon as you're approved.")}
+                                </p>
+                            </div>
+                        )}
+
                         <Formik
                             initialValues={{
                                 firstName: '',
@@ -112,7 +124,7 @@ const RegisterPage = () => {
                                             name="firstName"
                                             type="text"
                                             onChange={handleChange}
-                                            placeholder="firstName"
+                                            placeholder={t("auth_page.register.firstname_label")}
                                             className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.firstName && touched.firstName && <InputError message={errors.firstName} />}
@@ -126,7 +138,7 @@ const RegisterPage = () => {
                                             name="lastName"
                                             type="text"
                                             onChange={handleChange}
-                                            placeholder="lastName"
+                                            placeholder={t("auth_page.register.lastname_label")}
                                             className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.lastName && touched.lastName && <InputError message={errors.lastName} />}
@@ -281,6 +293,12 @@ const RegisterPage = () => {
                                                 <h3 className="font-semibold text-foreground mt-4">8. Dispute Resolution</h3>
                                                 <p>Any disputes arising from these Terms will be governed by local laws without regard to conflict of law provisions. We aim to resolve disputes informally first, but formal proceedings should be brought in competent courts.</p>
                                             </div>
+
+                                            {!hasScrolledToBottom && (
+                                                <p className="text-xs text-muted-foreground text-center mt-2">
+                                                    {t("auth_page.register.scroll_to_continue", "Scroll to the end to continue")}
+                                                </p>
+                                            )}
 
                                             <DialogFooter className="mt-6">
                                                 <Button

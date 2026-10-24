@@ -99,7 +99,11 @@ export const ManageGroupsModal: React.FC<ManageGroupsModalProps> = ({
                             value={groupName}
                             onChange={(e) => setGroupName(e.target.value)}
                         />
-                        <Button onClick={handleSubmit} disabled={isProcessing}>
+                        <Button
+                            onClick={handleSubmit}
+                            disabled={isProcessing}
+                            aria-label={editingGroup ? t("common:shared.actions.save") : t("common:shared.actions.add")}
+                        >
                             {editingGroup ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                         </Button>
                     </div>
@@ -113,10 +117,10 @@ export const ManageGroupsModal: React.FC<ManageGroupsModalProps> = ({
                                 <div key={group.id} className="flex justify-between items-center p-2 border rounded-md">
                                     <span>{group.name}</span>
                                     <div className="flex gap-1">
-                                        <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditGroup(group)}>
+                                        <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={t("common:shared.actions.edit")} onClick={() => handleEditGroup(group)}>
                                             <Pencil className="w-4 h-4" />
                                         </Button>
-                                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => onDeleteGroup(group.id)}>
+                                        <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={t("common:shared.actions.delete")} onClick={() => onDeleteGroup(group.id)}>
                                             <Trash2 className="w-4 h-4" />
                                         </Button>
                                     </div>

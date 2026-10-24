@@ -155,6 +155,9 @@
     },
     "checkbox": {
       "required": "Debes confirmar esta casilla"
+    },
+    "terms": {
+      "required": "Por favor acepta los Términos y Condiciones"
     }
   },
   "business_types": {
@@ -206,7 +209,14 @@
     "modal_point_changing_text": "Las funciones, los precios y los flujos de trabajo aún pueden cambiar antes del lanzamiento general.",
     "modal_point_transition_title": "Aviso antes de que termine la beta",
     "modal_point_transition_text": "Cuando termine el período beta, recibirás un correo sobre el paso a un plan de pago, con el precio y la fecha en que entra en vigor — enviado al menos 14 días antes de que debas empezar a pagar para seguir usando el servicio.",
-    "modal_close": "Entendido"
+    "modal_close": "Entendido",
+    "pending_title": "Estás en la lista",
+    "pending_description": "FlairSync está en una beta limitada — las cuentas nuevas se aprueban manualmente. Te avisaremos por correo en cuanto se apruebe tu cuenta, normalmente en un par de días hábiles, con un enlace directo a la configuración.",
+    "rejected_title": "Tu solicitud de beta no fue aprobada",
+    "rejected_description": "Si crees que es un error, contáctanos y lo revisaremos de nuevo.",
+    "contact_link": "Contáctanos",
+    "go_home_link": "Ir a la página principal",
+    "check_again": "Comprobar de nuevo"
   },
   "notifications_page": {
     "title": "Centro de notificaciones",

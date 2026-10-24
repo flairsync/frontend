@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, AnimatePresence, Reorder, useDragControls, DragControls } from "framer-motion";
@@ -43,6 +44,7 @@ export const MenuCategoryCard = ({
     onEditCategory,
     onDeleteCategory,
 }: MenuCategoryCardProps) => {
+    const { t } = useTranslation("management");
     const items = category.items ?? [];
     const controls = useDragControls()
 
@@ -86,7 +88,7 @@ export const MenuCategoryCard = ({
                             </CardTitle>
 
                             <span className="text-sm text-muted-foreground">
-                                ({items.length} items)
+                                ({t("menu_management.labels.items_count", { count: items.length })})
                             </span>
                         </div>
 

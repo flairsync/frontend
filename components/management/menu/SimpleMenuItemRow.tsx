@@ -109,7 +109,7 @@ export const SimpleMenuItemRow = ({
                 </div>
                 {/* Desktop Actions */}
                 <div className="hidden sm:flex items-center gap-2">
-                    <span className="font-semibold text-primary mr-2 text-base">{currencySymbol}{item.price}</span>
+                    <span className="font-semibold text-primary mr-2 text-base">{currencySymbol}{Number(item.price || 0).toFixed(2)}</span>
 
                     {canEdit && onMoveToCategory && (
                         <Button
@@ -177,7 +177,7 @@ export const SimpleMenuItemRow = ({
 
                 {/* Mobile Actions (Dropdown) */}
                 <div className="flex sm:hidden items-center gap-2">
-                    <span className="font-semibold text-primary text-sm">{currencySymbol}{item.price}</span>
+                    <span className="font-semibold text-primary text-sm">{currencySymbol}{Number(item.price || 0).toFixed(2)}</span>
                     {(canEdit || canDelete) && (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>

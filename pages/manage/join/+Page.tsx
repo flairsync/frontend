@@ -137,6 +137,14 @@ const JoinProfessionalPage = () => {
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
                     {/* Form Section */}
                     <div className="md:col-span-2">
+                        {userProfile?.betaApplicationStatus === "PENDING" && (
+                            <Alert className="border-amber-200 bg-amber-50 mb-6">
+                                <Building2Icon className="h-5 w-5 text-amber-600" />
+                                <AlertDescription className="text-amber-700">
+                                    {t("join_professional_page.beta_pending_notice", "FlairSync is in a limited beta — your account is still waiting on approval, so this won't save until then. We'll email you once it's approved.")}
+                                </AlertDescription>
+                            </Alert>
+                        )}
                         {needsWorkEmailVerification ? (
                             <Card className="border border-zinc-200 shadow-sm">
                                 <CardHeader>

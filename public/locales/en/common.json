@@ -155,6 +155,9 @@
     },
     "checkbox": {
       "required": "You must confirm this checkbox"
+    },
+    "terms": {
+      "required": "Please accept the Terms and Conditions"
     }
   },
   "business_types": {
@@ -206,7 +209,14 @@
     "modal_point_changing_text": "Features, pricing, and workflows can still change before general availability.",
     "modal_point_transition_title": "Heads-up before the beta ends",
     "modal_point_transition_text": "When the beta period ends, you'll get an email about moving to a paid plan, including pricing and the date it takes effect — sent at least 14 days before you'd need to start paying to keep using the service.",
-    "modal_close": "Got it"
+    "modal_close": "Got it",
+    "pending_title": "You're on the list",
+    "pending_description": "FlairSync is in a limited beta — new accounts are approved by hand. We'll email you as soon as your account is approved, usually within a couple of business days, with a link straight to setup.",
+    "rejected_title": "Your beta application wasn't approved",
+    "rejected_description": "If you think this is a mistake, contact us and we'll take another look.",
+    "contact_link": "Contact us",
+    "go_home_link": "Go to homepage",
+    "check_again": "Check again"
   },
   "password_breach_banner": {
     "text": "Your password was found in a data breach — please change it",

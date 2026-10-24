@@ -66,7 +66,14 @@ export function SimpleActionBar({ businessId, role, pathname }: Props) {
             if (targetPath !== currentPath) return;
 
             event.preventDefault();
-            emitAction(Object.fromEntries(new URLSearchParams(queryString)));
+            const params = Object.fromEntries(new URLSearchParams(queryString));
+            // If this click also switches tabs (e.g. "tab=invitations&action=invite"),
+            // the target tab's panel — and whatever in it listens for "action" —
+            // only mounts after React commits that state update, which happens
+            // after this handler returns. Emitting on a fresh tick means the panel
+            // has already mounted and subscribed by the time this fires, instead of
+            // the "invite" action being broadcast to no one and requiring a second click.
+            setTimeout(() => emitAction(params), 0);
         };
 
     return (

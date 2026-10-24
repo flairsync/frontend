@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NumberInput } from "@/components/ui/number-input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Pencil, Check, ChevronsUpDown, ScanLine } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -154,11 +155,10 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                 {!editingItem && (
                                     <div className="grid gap-2">
                                         <Label htmlFor="qty">{t("inventory_management.form.quantity")}</Label>
-                                        <Field
-                                            as={Input}
-                                            type="number"
+                                        <NumberInput
                                             id="qty"
-                                            name="quantity"
+                                            value={values.quantity}
+                                            onChange={(v) => setFieldValue("quantity", v)}
                                             className={cn(errors.quantity && touched.quantity && "border-destructive")}
                                         />
                                         <ErrorMessage name="quantity">
@@ -212,11 +212,10 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="threshold">{t("inventory_management.form.threshold")}</Label>
-                                        <Field
-                                            as={Input}
-                                            type="number"
+                                        <NumberInput
                                             id="threshold"
-                                            name="lowStockThreshold"
+                                            value={values.lowStockThreshold}
+                                            onChange={(v) => setFieldValue("lowStockThreshold", v)}
                                             className={cn(errors.lowStockThreshold && touched.lowStockThreshold && "border-destructive")}
                                         />
                                         <ErrorMessage name="lowStockThreshold">
@@ -228,12 +227,10 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                                 {/* Unit Cost — feeds menu-item margin analytics */}
                                 <div className="grid gap-2">
                                     <Label htmlFor="unitCost">{t("inventory_management.form.unit_cost")}</Label>
-                                    <Field
-                                        as={Input}
-                                        type="number"
-                                        step="0.01"
+                                    <NumberInput
                                         id="unitCost"
-                                        name="unitCost"
+                                        value={values.unitCost}
+                                        onChange={(v) => setFieldValue("unitCost", v)}
                                         className={cn(errors.unitCost && touched.unitCost && "border-destructive")}
                                     />
                                     <ErrorMessage name="unitCost">
