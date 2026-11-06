@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Plus, AlertCircle, AlertTriangle } from 'lucide-react';
+import { Plus, AlertCircle, AlertTriangle, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -141,7 +141,7 @@ interface MenuItemCardProps {
 function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
     const { t } = useTranslation('diner');
     const image = item.media?.[0]?.url;
-    const isUnavailable = (item as any).isAvailable === false;
+    const isUnavailable = item.isActive === false;
     const isSelectable = canOrder && !isUnavailable;
 
     return (
@@ -156,13 +156,17 @@ function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
                 isUnavailable && "opacity-50 pointer-events-none"
             )}
         >
-            {image && (
+            {image ? (
                 <img
                     src={image}
                     alt={item.name}
                     loading="lazy"
                     className="w-20 h-20 rounded-xl object-cover shrink-0"
                 />
+            ) : (
+                <div className="w-20 h-20 rounded-xl shrink-0 bg-muted flex items-center justify-center">
+                    <UtensilsCrossed className="w-7 h-7 text-muted-foreground/50" />
+                </div>
             )}
 
             <div className="flex-1 min-w-0">

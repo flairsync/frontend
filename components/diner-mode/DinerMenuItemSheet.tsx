@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Minus, Plus, AlertTriangle } from 'lucide-react';
+import { Minus, Plus, AlertTriangle, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
     Sheet,
@@ -117,6 +117,17 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
             <SheetContent side="bottom" className="rounded-t-2xl max-h-[90dvh] overflow-y-auto pb-[max(1rem,env(safe-area-inset-bottom))]">
                 {item && (
                     <>
+                        {item.media?.[0]?.url ? (
+                            <img
+                                src={item.media[0].url}
+                                alt={item.name}
+                                className="w-full h-48 object-cover rounded-t-2xl -mb-4"
+                            />
+                        ) : (
+                            <div className="w-full h-48 rounded-t-2xl -mb-4 bg-muted flex items-center justify-center">
+                                <UtensilsCrossed className="w-10 h-10 text-muted-foreground/50" />
+                            </div>
+                        )}
                         <SheetHeader className="text-left pb-2">
                             <SheetTitle className="text-xl">{item.name}</SheetTitle>
                             {item.description && (

@@ -1,14 +1,14 @@
 {
   "watcher": {
-    "seated_single": "Tu es installé — Ouvrir le mode client",
-    "seated_multiple": "Tu es installé ({{count}})",
+    "seated_single": "Vous êtes installé(e) — Ouvrir le mode client",
+    "seated_multiple": "Vous êtes installé(e) ({{count}})",
     "open_diner_for": "Ouvrir le mode client — {{businessId}}"
   },
   "call_waiter": {
     "success_title": "Le serveur a été prévenu",
     "success_description": "Quelqu'un va arriver très vite.",
     "error_title": "Impossible de joindre le personnel",
-    "error_description": "Réessaie ou demande de l'aide directement.",
+    "error_description": "Réessayez ou demandez de l'aide directement.",
     "unavailable_title": "Aucun serveur disponible pour le moment",
     "unavailable_description": "Merci de demander de l'aide directement.",
     "calling": "Appel en cours…",
@@ -88,10 +88,10 @@
     "got_it": "Compris"
   },
   "banner": {
-    "seated_title": "Tu es installé ici",
-    "active_order_title": "Tu as une commande en cours",
-    "seated_subtitle": "Passe en mode client pour commander",
-    "active_order_subtitle": "Suis ta commande en mode client",
+    "seated_title": "Vous êtes installé(e) ici",
+    "active_order_title": "Vous avez une commande en cours",
+    "seated_subtitle": "Passez en mode client pour commander",
+    "active_order_subtitle": "Suivez votre commande en mode client",
     "enter_button": "Entrer"
   },
   "my_order_tab": {
@@ -107,13 +107,13 @@
     "status_description": {
       "created": "En attente de confirmation du restaurant",
       "accepted": "Confirmée — la cuisine va bientôt commencer à la préparer",
-      "preparing": "La cuisine prépare ta commande"
+      "preparing": "La cuisine prépare votre commande"
     },
-    "empty_title": "Ta commande est vide",
-    "empty_description": "Parcours le menu et ajoute des plats pour commencer.",
+    "empty_title": "Votre commande est vide",
+    "empty_description": "Parcourez le menu et ajoutez des plats pour commencer.",
     "browse_menu": "Voir le menu",
     "payment_pending": "Paiement en attente",
-    "your_order_heading": "Ta commande",
+    "your_order_heading": "Votre commande",
     "add_more": "Ajouter",
     "unnamed_item": "Article",
     "items_to_add_heading": "Articles à ajouter",
@@ -132,8 +132,8 @@
     "updated_minutes_ago_other": "Mis à jour il y a {{count}} minutes"
   },
   "menu_item_sheet": {
-    "choose_variant": "Choisis une variante",
-    "choose_one": "Choisis-en un",
+    "choose_variant": "Choisissez une variante",
+    "choose_one": "Choisissez-en un",
     "choose_up_to": "Jusqu'à {{count}}",
     "required": "Obligatoire",
     "min_selections_hint": "Sélectionnez au moins {{count}}",
