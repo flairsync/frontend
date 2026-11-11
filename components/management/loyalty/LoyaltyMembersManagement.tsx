@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Card,
     CardContent,
@@ -42,6 +43,7 @@ type LoyaltyMembersManagementProps = {
 };
 
 export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembersManagementProps) {
+    const { t } = useTranslation("management");
     const [page, setPage] = useState(1);
     const [adjustingMember, setAdjustingMember] = useState<LoyaltyMember | null>(null);
     const [viewingHistoryMember, setViewingHistoryMember] = useState<LoyaltyMember | null>(null);
@@ -68,7 +70,7 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Loyalty Members</CardTitle>
+                <CardTitle>{t("loyalty_management.members.title")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-3">
@@ -78,9 +80,9 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                         ))
                     ) : (
                         <>
-                            <StatTile label="Members" value={stats?.memberCount ?? 0} icon={Users} color="bg-primary/10 text-primary" />
-                            <StatTile label="Points Outstanding" value={stats?.pointsOutstanding ?? 0} icon={Coins} color="bg-amber-500/10 text-amber-600" />
-                            <StatTile label="Points Issued" value={stats?.pointsIssued ?? 0} icon={TrendingUp} color="bg-emerald-500/10 text-emerald-600" />
+                            <StatTile label={t("loyalty_management.members.stats.members")} value={stats?.memberCount ?? 0} icon={Users} color="bg-primary/10 text-primary" />
+                            <StatTile label={t("loyalty_management.members.stats.points_outstanding")} value={stats?.pointsOutstanding ?? 0} icon={Coins} color="bg-amber-500/10 text-amber-600" />
+                            <StatTile label={t("loyalty_management.members.stats.points_issued")} value={stats?.pointsIssued ?? 0} icon={TrendingUp} color="bg-emerald-500/10 text-emerald-600" />
                         </>
                     )}
                 </div>
@@ -90,24 +92,24 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                         <Table>
                             <TableHeader className="bg-muted/30">
                                 <TableRow>
-                                    <TableHead className="font-semibold">Name</TableHead>
-                                    <TableHead className="font-semibold">Email</TableHead>
-                                    <TableHead className="font-semibold">Balance</TableHead>
-                                    <TableHead className="font-semibold">Joined</TableHead>
-                                    {hasActionsColumn && <TableHead className="text-right font-semibold">Actions</TableHead>}
+                                    <TableHead className="font-semibold">{t("loyalty_management.members.col_name")}</TableHead>
+                                    <TableHead className="font-semibold">{t("loyalty_management.members.col_email")}</TableHead>
+                                    <TableHead className="font-semibold">{t("loyalty_management.members.col_balance")}</TableHead>
+                                    <TableHead className="font-semibold">{t("loyalty_management.members.col_joined")}</TableHead>
+                                    {hasActionsColumn && <TableHead className="text-right font-semibold">{t("loyalty_management.members.col_actions")}</TableHead>}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {fetchingMembers && !membersPage ? (
                                     <TableRow>
                                         <TableCell colSpan={hasActionsColumn ? 5 : 4} className="text-center py-10 text-muted-foreground animate-pulse">
-                                            Loading members...
+                                            {t("loyalty_management.members.loading")}
                                         </TableCell>
                                     </TableRow>
                                 ) : members.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={hasActionsColumn ? 5 : 4} className="text-center py-10 text-muted-foreground">
-                                            No one has joined this loyalty program yet.
+                                            {t("loyalty_management.members.empty")}
                                         </TableCell>
                                     </TableRow>
                                 ) : (
@@ -117,7 +119,7 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                                                 {[member.firstName, member.lastName].filter(Boolean).join(" ") || "—"}
                                             </TableCell>
                                             <TableCell>{member.email ?? "—"}</TableCell>
-                                            <TableCell className="font-mono">{member.balance} pts</TableCell>
+                                            <TableCell className="font-mono">{t("loyalty_management.members.points", { count: member.balance })}</TableCell>
                                             <TableCell>{new Date(member.enrolledAt).toLocaleDateString()}</TableCell>
                                             {hasActionsColumn && (
                                                 <TableCell className="text-right">
@@ -125,7 +127,7 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                                                         size="icon"
                                                         variant="ghost"
                                                         onClick={() => setViewingHistoryMember(member)}
-                                                        title="View history"
+                                                        title={t("loyalty_management.members.view_history")}
                                                     >
                                                         <History className="h-4 w-4" />
                                                     </Button>
@@ -134,7 +136,7 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                                                             size="icon"
                                                             variant="ghost"
                                                             onClick={() => setAdjustingMember(member)}
-                                                            title="Adjust points"
+                                                            title={t("loyalty_management.members.adjust_points")}
                                                         >
                                                             <Pencil className="h-4 w-4" />
                                                         </Button>

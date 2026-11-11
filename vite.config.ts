@@ -11,7 +11,7 @@ import { defineConfig, type Plugin } from "vite";
 // each visitor's localStorage for 24h, so without this a deploy that adds or
 // edits copy stays invisible to anyone with a warm cache until that expires.
 // Changing the version invalidates those entries, and the next page load falls
-// through to Tolgee (then the static JSON) for fresh strings.
+// through to the static JSON for fresh strings.
 const I18N_BUILD_VERSION = `build-${Date.now()}`;
 
 // Generates public/firebase-messaging-sw.js with env vars baked in at build/dev time.

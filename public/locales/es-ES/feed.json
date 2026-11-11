@@ -305,5 +305,18 @@
   "feed_page": {
     "no_businesses_found": "No se encontraron negocios",
     "try_adjusting_search": "Prueba a ajustar tus criterios de búsqueda"
+  },
+  "join_business_page": {
+    "title": "Unirte a {{businessName}}",
+    "subtitle": "Has sido invitado/a a unirte a este negocio en FlairSync",
+    "accept": "Aceptar invitación",
+    "decline": "Rechazar",
+    "expiry_note": "Esta invitación caducará en 24 horas. Si no deseas unirte, simplemente ignora esta página.",
+    "back_to_home": "Volver al inicio",
+    "invalid": {
+      "title": "Invitación no disponible",
+      "alert_title": "Este enlace no es válido",
+      "alert_description": "Este enlace de invitación no es válido, ha caducado o ya se ha utilizado. Pide a quien te invitó que te envíe uno nuevo."
+    }
   }
 }

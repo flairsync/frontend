@@ -305,5 +305,18 @@
   "feed_page": {
     "no_businesses_found": "No s'ha trobat cap negoci",
     "try_adjusting_search": "Prova d'ajustar els criteris de cerca"
+  },
+  "join_business_page": {
+    "title": "Unir-te a {{businessName}}",
+    "subtitle": "Has estat convidat/a a unir-te a aquest negoci a FlairSync",
+    "accept": "Acceptar invitació",
+    "decline": "Rebutjar",
+    "expiry_note": "Aquesta invitació caducarà en 24 hores. Si no vols unir-te, simplement ignora aquesta pàgina.",
+    "back_to_home": "Tornar a l'inici",
+    "invalid": {
+      "title": "Invitació no disponible",
+      "alert_title": "Aquest enllaç no és vàlid",
+      "alert_description": "Aquest enllaç d'invitació no és vàlid, ha caducat o ja s'ha fet servir. Demana a qui t'ha convidat que te n'enviï un de nou."
+    }
   }
 }

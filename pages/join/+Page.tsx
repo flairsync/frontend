@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -19,6 +20,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const JoinBusinessPage: React.FC = () => {
 
+  const { t } = useTranslation("feed");
   const { urlParsed } = usePageContext();
 
   const invitationToken = urlParsed.search["invitation"];
@@ -91,27 +93,27 @@ const JoinBusinessPage: React.FC = () => {
         ) : invitationInvalid ? (
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold">Invitation not available</CardTitle>
+              <CardTitle className="text-2xl font-bold">{t("join_business_page.invalid.title")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-4">
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>This link isn't valid</AlertTitle>
+                <AlertTitle>{t("join_business_page.invalid.alert_title")}</AlertTitle>
                 <AlertDescription>
-                  This invitation link is invalid, expired, or has already been used. Ask whoever invited you to send a new one.
+                  {t("join_business_page.invalid.alert_description")}
                 </AlertDescription>
               </Alert>
               <Button variant="outline" onClick={() => navigate("/")}>
-                Back to home
+                {t("join_business_page.back_to_home")}
               </Button>
             </CardContent>
           </Card>
         ) : (
           <Card>
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold">Join {invitationDetails?.business?.name}</CardTitle>
+              <CardTitle className="text-2xl font-bold">{t("join_business_page.title", { businessName: invitationDetails?.business?.name })}</CardTitle>
               <CardDescription className="mt-1 text-gray-500">
-                You have been invited to join this business on FlairSync
+                {t("join_business_page.subtitle")}
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-4">
@@ -137,7 +139,7 @@ const JoinBusinessPage: React.FC = () => {
                   disabled={actionInProgress || acceptingInvitation || refuseingInvitation}
                 >
                   <Check className="w-4 h-4" />
-                  Accept Invitation
+                  {t("join_business_page.accept")}
                 </Button>
                 <Button
                   variant="destructive"
@@ -146,7 +148,7 @@ const JoinBusinessPage: React.FC = () => {
                   disabled={actionInProgress || acceptingInvitation || refuseingInvitation}
                 >
                   <X className="w-4 h-4" />
-                  Decline
+                  {t("join_business_page.decline")}
                 </Button>
               </div>
             </CardContent>
@@ -156,7 +158,7 @@ const JoinBusinessPage: React.FC = () => {
         {/* Optional footer / note */}
         {!loadingInvitationDetails && !invitationInvalid && (
           <p className="text-center text-gray-400 text-sm mt-4">
-            This invitation will expire in 24 hours. If you don’t want to join, simply ignore this page.
+            {t("join_business_page.expiry_note")}
           </p>
         )}
       </div>

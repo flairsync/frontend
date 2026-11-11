@@ -305,5 +305,18 @@
   "feed_page": {
     "no_businesses_found": "No businesses found",
     "try_adjusting_search": "Try adjusting your search criteria"
+  },
+  "join_business_page": {
+    "title": "Join {{businessName}}",
+    "subtitle": "You have been invited to join this business on FlairSync",
+    "accept": "Accept Invitation",
+    "decline": "Decline",
+    "expiry_note": "This invitation will expire in 24 hours. If you don't want to join, simply ignore this page.",
+    "back_to_home": "Back to home",
+    "invalid": {
+      "title": "Invitation not available",
+      "alert_title": "This link isn't valid",
+      "alert_description": "This invitation link is invalid, expired, or has already been used. Ask whoever invited you to send a new one."
+    }
   }
 }

@@ -139,12 +139,14 @@ Nested: `business/` (employee, invitation, tag, type, media, team, employment), 
 
 ## i18n — Actual Implementation
 
-Real setup (`translations/i18n.ts`) uses **`i18next-http-backend`** loading JSON files from `public/locales/{{lng}}/{{ns}}.json` — **not** the plain TS-object pattern shown in `VIKE_PROJECT_GUIDE.md`'s i18n section (that example is stale, see Known Doc Drift).
+Real setup (`translations/i18n.ts`) uses **`i18next-chained-backend`** with `[LocalStorageBackend, HttpBackend]` loading JSON files from `public/locales/{{lng}}/{{ns}}.json` — **not** the plain TS-object pattern shown in `VIKE_PROJECT_GUIDE.md`'s i18n section (that example is stale, see Known Doc Drift). As of 2026-11-11, `public/locales/` is the **sole source of truth** at runtime — there is no Tolgee (or any other translation-management service) in the chain. Edit the JSON files directly; don't push to or expect a sync from an external service.
 
-- Locales: `en`, `fr`, `es`, `cat` — files exist under `public/locales/<locale>/`.
-- Namespaces: `common`, `landing`, `auth`, `feed`, `management`, `tutorials` (one JSON file per namespace per locale).
+- Locales: `en`, `fr-FR`, `es-ES`, `ca` (full BCP-47 tags) — files exist under `public/locales/<locale>/`. `BASE_LANG_MAP` in `translations/i18n.ts` maps bare `fr`/`es`/`cat` subtags onto these.
+- Namespaces: `common`, `landing`, `auth`, `feed`, `management`, `tutorials`, `pos`, `station`, `diner`, `profile`, `jobs`, `marketplace`, `business`, `menu_board` (one JSON file per namespace per locale).
 - Detection order: cookie (`getLangCookie()` from `@/utils/cookies`) → browser language → fallback `en`.
+- `LocalStorageBackend` caches translations in the browser for 24h; cache-busted per build via a `__I18N_VERSION__` stamp from `vite.config.ts`, so a deploy's copy edits show up immediately instead of waiting out the cache.
 - `react.useSuspense: false` is set, so don't wrap translation-dependent components assuming Suspense.
+- `@tolgee/i18next`, `tolgee.config.cjs`, `scripts/import-to-tolgee.js`, and `scripts/generate-tolgee-upload-files.js` still exist in the repo but are dead/unused — left in place in case Tolgee is reintroduced later, not wired into dev or build. Don't tell someone to run `npm run i18n:push` to fix a missing-translation symptom; just edit the JSON.
 
 ## Realtime (Socket.io)
 
@@ -186,6 +188,6 @@ These are point-in-time specs written when a backend feature shipped/changed —
 
 ## Known Doc Drift
 
-- **i18n**: `VIKE_PROJECT_GUIDE.md`'s i18n section shows TS-object translation files (`translations/english_us.ts` etc.) and manual `resources` config. The actual code uses `i18next-http-backend` + JSON files in `public/locales/`. Trust the code (and the section above), not that guide's example.
+- **i18n**: `VIKE_PROJECT_GUIDE.md`'s i18n section shows TS-object translation files (`translations/english_us.ts` etc.) and manual `resources` config. The actual code uses `i18next-chained-backend` (`LocalStorageBackend` → `HttpBackend`) + JSON files in `public/locales/`. Trust the code (and the section above), not that guide's example. The repo briefly ran Tolgee as a translation-management layer ahead of the static JSON in that chain; it was removed on 2026-11-11 because a key could exist correctly in the JSON fallback while Tolgee's copy of the namespace was stale/missing it, and the chain's first-hit-wins behavior meant the correct translation never got served. `public/locales/` is now authoritative — edit it directly.
 - **Marketplace**: two near-duplicate AiFiles docs exist (`Marketplace/frontend-instructions.md` and `marketplace/marketplace-frontend-instructions.md`, different casing). Check both and look at git history/dates if they conflict.
 - **API base URL**: `.cursorrules` and this doc used to instruct using `import.meta.env.BASE_URL` for API calls. That var is Vite's own reserved deploy-base-path constant (default `"/"`) — the project's `BASE_URL` in `.env` lacked the required `VITE_` prefix, so it was never actually exposed to client code, and using it produced a broken protocol-relative URL (`//businesses/...`) in production. The fix that shipped at the time was hardcoding `'https://api.flairsync.com/api/v1'` in every `features/*/service.ts` file — which worked, until staging needed a different API host and there was no env var to change. That's now fixed properly: `lib/flairapi.ts` exports `API_URL = import.meta.env.VITE_API_URL`, every service file imports and uses that instead of the literal, and `Dockerfile.prod` declares `VITE_API_URL` as a build ARG so Dokploy's per-environment build args actually take effect (Vite inlines `VITE_`-prefixed vars at build time, not runtime). If you see the old hardcoded literal anywhere (a stale AiFiles doc, a new PR), it's a regression — replace it with `API_URL`.

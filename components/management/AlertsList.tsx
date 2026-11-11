@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { navigate } from "vike/client/router";
 import { TriangleAlert, ShieldAlert } from "lucide-react";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -20,10 +21,11 @@ type Props = {
 };
 
 export const AlertsList = ({ businessId, filterCategory = "all" }: Props) => {
+    const { t } = useTranslation("management");
     const { alerts, fetchingAlerts } = useAlerts(businessId);
 
     if (fetchingAlerts) {
-        return <div className="p-8 text-center text-muted-foreground animate-pulse">Loading alerts...</div>;
+        return <div className="p-8 text-center text-muted-foreground animate-pulse">{t("alerts_page.loading")}</div>;
     }
 
     const filteredAlerts = filterCategory === "all"
@@ -34,8 +36,8 @@ export const AlertsList = ({ businessId, filterCategory = "all" }: Props) => {
         return (
             <div className="bg-background rounded-lg border shadow-sm">
                 <EmptyState
-                    title="No alerts to show"
-                    description="Everything looks good here — you'll see a warning if something needs your attention."
+                    title={t("alerts_page.empty_title")}
+                    description={t("alerts_page.empty_description")}
                 />
             </div>
         );

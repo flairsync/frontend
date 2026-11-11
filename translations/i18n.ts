@@ -3,7 +3,6 @@ import ChainedBackend from "i18next-chained-backend";
 import HttpBackend from "i18next-http-backend";
 import LocalStorageBackend from "i18next-localstorage-backend";
 import { initReactI18next } from "react-i18next";
-import { DevBackend, FormatSimple, I18nextPlugin, Tolgee, tolgeeBackend } from "@tolgee/i18next";
 import { getLangCookie } from "@/utils/cookies";
 
 export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca"] as const;
@@ -40,18 +39,6 @@ function detectLang(): string {
   return normalizeLang(navigator.language ?? "en");
 }
 
-// DevBackend is registered explicitly (instead of via Tolgee's DevTools() helper) so live
-// fetching from the Tolgee API works the same in dev and prod builds — DevTools() only wires
-// up fetching in dev builds by default, since it's meant to gate the in-context editing overlay.
-const tolgee = Tolgee()
-  .use(DevBackend())
-  .use(I18nextPlugin())
-  .use(FormatSimple())
-  .init({
-    apiUrl: import.meta.env.VITE_TOLGEE_API_URL,
-    apiKey: import.meta.env.VITE_TOLGEE_API_KEY,
-  });
-
 i18n
   .use(ChainedBackend)
   .use(initReactI18next)
@@ -80,11 +67,11 @@ i18n
       // LocalStorageBackend goes first: ChainedBackend tries each backend in
       // order and stops at the first hit, and writes back into any backend
       // before the one that actually served the data — so a cache hit here
-      // skips the Tolgee/HTTP round trip entirely, and a miss falls through
-      // to Tolgee (or the static JSON fallback) and gets cached for next
-      // time. 24h expiry caps how long a translation edit made in Tolgee
-      // can take to reach an already-loaded browser.
-      backends: [LocalStorageBackend, tolgeeBackend(tolgee), HttpBackend],
+      // skips the HTTP round trip entirely, and a miss falls through to the
+      // static JSON and gets cached for next time. Tolgee is intentionally
+      // not in this chain (see Known Doc Drift in CLAUDE.md / memory) — the
+      // static JSON in public/locales is the single source of truth now.
+      backends: [LocalStorageBackend, HttpBackend],
       backendOptions: [
         {
           expirationTime: 24 * 60 * 60 * 1000,
@@ -94,7 +81,6 @@ i18n
           // instead of waiting out the 24h expiry on every warm browser.
           defaultVersion: I18N_CACHE_VERSION,
         },
-        {},
         { loadPath: "/locales/{{lng}}/{{ns}}.json" },
       ],
     },

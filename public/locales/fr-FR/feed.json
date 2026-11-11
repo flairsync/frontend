@@ -305,5 +305,18 @@
   "feed_page": {
     "no_businesses_found": "Aucun établissement trouvé",
     "try_adjusting_search": "Essayez d'ajuster vos critères de recherche"
+  },
+  "join_business_page": {
+    "title": "Rejoindre {{businessName}}",
+    "subtitle": "Vous avez été invité(e) à rejoindre cet établissement sur FlairSync",
+    "accept": "Accepter l'invitation",
+    "decline": "Refuser",
+    "expiry_note": "Cette invitation expirera dans 24 heures. Si vous ne souhaitez pas la rejoindre, ignorez simplement cette page.",
+    "back_to_home": "Retour à l'accueil",
+    "invalid": {
+      "title": "Invitation indisponible",
+      "alert_title": "Ce lien n'est pas valide",
+      "alert_description": "Ce lien d'invitation est invalide, expiré, ou a déjà été utilisé. Demandez à la personne qui vous a invité(e) de vous en envoyer un nouveau."
+    }
   }
 }
