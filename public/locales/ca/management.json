@@ -4516,7 +4516,8 @@
       "middle_name_placeholder": "Segon nom (opcional)",
       "email_locked_hint": "Aquest correu està bloquejat perquè la invitació s'hi va enviar.",
       "confirm_label": "Confirmo que la informació anterior és exacta i em pertany.",
-      "submit": "Crear perfil professional"
+      "submit": "Crear perfil professional",
+      "failed": "S'ha produït un error en crear el teu perfil professional. Torna-ho a provar."
     },
     "tips": {
       "title": "Consells per al perfil",
@@ -4756,7 +4757,26 @@
     },
     "expiry_label": "Els punts caduquen després de",
     "expiry_description": "Nombre de mesos després de guanyar-los abans que els punts caduquin. Deixa-ho en blanc perquè els punts no caduquin mai.",
-    "expiry_placeholder": "Mai"
+    "expiry_placeholder": "Mai",
+    "members": {
+      "title": "Membres de fidelització",
+      "stats": {
+        "members": "Membres",
+        "points_outstanding": "Punts pendents",
+        "points_issued": "Punts emesos"
+      },
+      "col_name": "Nom",
+      "col_email": "Correu electrònic",
+      "col_balance": "Saldo",
+      "col_joined": "Data d'alta",
+      "col_actions": "Accions",
+      "loading": "Carregant membres...",
+      "empty": "Encara ningú s'ha unit a aquest programa de fidelització.",
+      "points_one": "{{count}} pt",
+      "points_other": "{{count}} pts",
+      "view_history": "Veure historial",
+      "adjust_points": "Ajustar punts"
+    }
   },
   "simple_mode": {
     "toggle": {
@@ -5301,5 +5321,17 @@
         "description": "Posa't en línia perquè els clients et puguin trobar i fer comandes"
       }
     }
+  },
+  "alerts_page": {
+    "title": "Alertes i avisos",
+    "subtitle": "Problemes de configuració que podrien estar bloquejant comandes o altres processos del negoci.",
+    "tabs": {
+      "all": "Totes",
+      "floor_plan": "Plànol de sala",
+      "menu": "Menú"
+    },
+    "loading": "Carregant alertes...",
+    "empty_title": "No hi ha alertes per mostrar",
+    "empty_description": "Tot sembla estar en ordre — veuràs un avís si alguna cosa necessita la teva atenció."
   }
 }

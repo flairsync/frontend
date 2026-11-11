@@ -13,6 +13,15 @@ import { cn } from "@/lib/utils";
 
 const DEFAULT_INTERVAL_MS = 8000;
 
+// A kiosk/TV running this page is never manually reloaded, so it must pull
+// fresh data on its own - otherwise a menu edit never reaches a screen
+// that's been up for hours or days.
+const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+// On fetch failure, retry with backoff instead of locking the screen in the
+// error state forever over one transient network blip.
+const RETRY_BASE_MS = 10_000;
+const RETRY_MAX_MS = 60_000;
+
 // useLayoutEffect is a no-op (with a console warning) during SSR - this page is
 // rendered per-request (dynamic @token route), so fall back to useEffect there.
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -161,14 +170,39 @@ export default function MenuBoardDisplayPage() {
     const headerRefs = useRef<Record<string, HTMLElement | null>>({});
     const itemRefs = useRef<Record<string, HTMLElement | null>>({});
 
+    const retryCountRef = useRef(0);
+    const refreshTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
     useEffect(() => {
         if (!token) return;
-        fetchPublicMenuBoardApiCall(token)
-            .then((res) => {
-                setData(res);
-                setStatus("ready");
-            })
-            .catch(() => setStatus("error"));
+        let cancelled = false;
+
+        const load = () => {
+            fetchPublicMenuBoardApiCall(token)
+                .then((res) => {
+                    if (cancelled) return;
+                    setData(res);
+                    setStatus("ready");
+                    retryCountRef.current = 0;
+                    refreshTimeoutRef.current = setTimeout(load, REFRESH_INTERVAL_MS);
+                })
+                .catch(() => {
+                    if (cancelled) return;
+                    // Keep showing the last successfully loaded board rather than
+                    // blanking a kiosk screen over a transient refresh failure.
+                    setStatus((prev) => (prev === "ready" ? prev : "error"));
+                    const delay = Math.min(RETRY_BASE_MS * 2 ** retryCountRef.current, RETRY_MAX_MS);
+                    retryCountRef.current += 1;
+                    refreshTimeoutRef.current = setTimeout(load, delay);
+                });
+        };
+
+        load();
+
+        return () => {
+            cancelled = true;
+            if (refreshTimeoutRef.current) clearTimeout(refreshTimeoutRef.current);
+        };
     }, [token]);
 
     const isCarousel = data?.board.displayMode === "CAROUSEL";

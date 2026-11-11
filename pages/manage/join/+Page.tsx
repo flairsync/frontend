@@ -29,6 +29,7 @@ const JoinProfessionalPage = () => {
     const {
         createProProfile,
         creatingProProfile,
+        errorCreatingProProfile,
         userProfessionalProfile,
         resendWorkEmailVerification,
         resendingWorkEmailVerification,
@@ -348,6 +349,12 @@ const JoinProfessionalPage = () => {
                                                 >
                                                     {t("join_professional_page.create.submit")}
                                                 </Button>
+
+                                                {errorCreatingProProfile && (
+                                                    <p className="text-center text-sm text-destructive">
+                                                        {errorCreatingProProfile.response?.data?.message || t("join_professional_page.create.failed")}
+                                                    </p>
+                                                )}
                                             </Form>
                                         )}
                                     </Formik>

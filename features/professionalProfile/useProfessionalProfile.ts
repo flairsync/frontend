@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import {
   createMyProfessionalProfileApiCall,
   CreateProProfileDto,
@@ -26,8 +27,11 @@ export const useProfessionalProfile = () => {
     },
   });
 
-  const { mutate: createProProfile, isPending: creatingProProfile } =
-    useMutation({
+  const {
+    mutate: createProProfile,
+    isPending: creatingProProfile,
+    error: errorCreatingProProfile,
+  } = useMutation<unknown, AxiosError<{ message: string }>, CreateProProfileDto>({
       mutationKey: ["user_create_pro_profile"],
       mutationFn: (data: CreateProProfileDto) => {
         toast.loading("Creating professional profile", {
@@ -49,6 +53,12 @@ export const useProfessionalProfile = () => {
         // which re-fetches guarded pageContext against the already-updated cookie.
         queryClient.refetchQueries({
           queryKey: ["user_pro_profile"],
+        });
+      },
+      onError(error) {
+        toast.dismiss("pro_profile_create_toast");
+        toast.error("Couldn't create professional profile", {
+          description: error.response?.data?.message,
         });
       },
     });
@@ -103,6 +113,7 @@ export const useProfessionalProfile = () => {
 
     createProProfile,
     creatingProProfile,
+    errorCreatingProProfile,
 
     updateProProfile,
     updatingProProfile,

@@ -175,6 +175,11 @@
     "order_already_joined": "Quelqu'un à cette table a déjà passé une commande — vous l'avez rejointe.",
     "order_place_failed": "Impossible de passer la commande. Veuillez réessayer.",
     "email_save_failed": "Impossible d'enregistrer votre email. Veuillez réessayer.",
-    "feedback_submit_failed": "Impossible d'envoyer votre avis. Veuillez réessayer."
+    "feedback_submit_failed": "Impossible d'envoyer votre avis. Veuillez réessayer.",
+    "invalid_link": {
+      "title": "Ce lien ne fonctionne pas",
+      "description": "Le code QR ou le lien utilisé n'est plus valide. Veuillez demander de l'aide à un membre du personnel.",
+      "home_link": "Aller à la page d'accueil"
+    }
   }
 }

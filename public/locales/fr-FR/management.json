@@ -4516,7 +4516,8 @@
       "middle_name_placeholder": "Deuxième prénom (facultatif)",
       "email_locked_hint": "Cet e-mail est verrouillé car l'invitation lui a été envoyée.",
       "confirm_label": "Je confirme que les informations ci-dessus sont exactes et me concernent.",
-      "submit": "Créer le profil professionnel"
+      "submit": "Créer le profil professionnel",
+      "failed": "Une erreur s'est produite lors de la création de votre profil professionnel. Veuillez réessayer."
     },
     "tips": {
       "title": "Conseils pour le profil",
@@ -4756,7 +4757,26 @@
     },
     "expiry_label": "Les points expirent après",
     "expiry_description": "Nombre de mois après leur obtention avant que les points n'expirent. Laissez vide pour des points qui n'expirent jamais.",
-    "expiry_placeholder": "Jamais"
+    "expiry_placeholder": "Jamais",
+    "members": {
+      "title": "Membres du programme de fidélité",
+      "stats": {
+        "members": "Membres",
+        "points_outstanding": "Points en circulation",
+        "points_issued": "Points attribués"
+      },
+      "col_name": "Nom",
+      "col_email": "E-mail",
+      "col_balance": "Solde",
+      "col_joined": "Inscrit le",
+      "col_actions": "Actions",
+      "loading": "Chargement des membres...",
+      "empty": "Personne n'a encore rejoint ce programme de fidélité.",
+      "points_one": "{{count}} pt",
+      "points_other": "{{count}} pts",
+      "view_history": "Voir l'historique",
+      "adjust_points": "Ajuster les points"
+    }
   },
   "simple_mode": {
     "toggle": {
@@ -5301,5 +5321,17 @@
         "description": "Passez en ligne pour que les clients puissent vous trouver et commander"
       }
     }
+  },
+  "alerts_page": {
+    "title": "Alertes et avertissements",
+    "subtitle": "Problèmes de configuration qui pourraient bloquer les commandes ou d'autres processus de votre établissement.",
+    "tabs": {
+      "all": "Tout",
+      "floor_plan": "Plan de salle",
+      "menu": "Menu"
+    },
+    "loading": "Chargement des alertes...",
+    "empty_title": "Aucune alerte à afficher",
+    "empty_description": "Tout semble en ordre ici — vous verrez un avertissement si quelque chose nécessite votre attention."
   }
 }

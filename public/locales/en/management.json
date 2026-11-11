@@ -4592,7 +4592,8 @@
       "middle_name_placeholder": "Middle Name (optional)",
       "email_locked_hint": "This email is locked because the invitation was sent to it.",
       "confirm_label": "I confirm that the information above is accurate and belongs to me.",
-      "submit": "Create Professional Profile"
+      "submit": "Create Professional Profile",
+      "failed": "Something went wrong while creating your professional profile. Please try again."
     },
     "tips": {
       "title": "Profile Tips",
@@ -4832,7 +4833,26 @@
     },
     "expiry_label": "Points expire after",
     "expiry_description": "Number of months after earning before points expire. Leave blank for points that never expire.",
-    "expiry_placeholder": "Never"
+    "expiry_placeholder": "Never",
+    "members": {
+      "title": "Loyalty Members",
+      "stats": {
+        "members": "Members",
+        "points_outstanding": "Points Outstanding",
+        "points_issued": "Points Issued"
+      },
+      "col_name": "Name",
+      "col_email": "Email",
+      "col_balance": "Balance",
+      "col_joined": "Joined",
+      "col_actions": "Actions",
+      "loading": "Loading members...",
+      "empty": "No one has joined this loyalty program yet.",
+      "points_one": "{{count}} pt",
+      "points_other": "{{count}} pts",
+      "view_history": "View history",
+      "adjust_points": "Adjust points"
+    }
   },
   "simple_mode": {
     "toggle": {
@@ -5304,5 +5324,17 @@
         "description": "Go live so customers can find and order from you"
       }
     }
+  },
+  "alerts_page": {
+    "title": "Alerts & Warnings",
+    "subtitle": "Configuration issues that may be blocking orders or other business flows.",
+    "tabs": {
+      "all": "All",
+      "floor_plan": "Floor Plan",
+      "menu": "Menu"
+    },
+    "loading": "Loading alerts...",
+    "empty_title": "No alerts to show",
+    "empty_description": "Everything looks good here — you'll see a warning if something needs your attention."
   }
 }

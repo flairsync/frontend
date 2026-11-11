@@ -175,6 +175,11 @@
     "order_already_joined": "Someone at this table already started an order — you've joined it.",
     "order_place_failed": "Failed to place order. Please try again.",
     "email_save_failed": "Failed to save your email. Please try again.",
-    "feedback_submit_failed": "Failed to submit feedback. Please try again."
+    "feedback_submit_failed": "Failed to submit feedback. Please try again.",
+    "invalid_link": {
+      "title": "This link doesn't work",
+      "description": "The QR code or link you used isn't valid anymore. Please ask a member of staff for help.",
+      "home_link": "Go to homepage"
+    }
   }
 }

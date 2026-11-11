@@ -175,6 +175,11 @@
     "order_already_joined": "Algú en aquesta taula ja ha iniciat una comanda — t'hi has unit.",
     "order_place_failed": "No s'ha pogut fer la comanda. Torna-ho a intentar.",
     "email_save_failed": "No s'ha pogut desar el teu correu. Torna-ho a intentar.",
-    "feedback_submit_failed": "No s'ha pogut enviar la teva opinió. Torna-ho a intentar."
+    "feedback_submit_failed": "No s'ha pogut enviar la teva opinió. Torna-ho a intentar.",
+    "invalid_link": {
+      "title": "Aquest enllaç no funciona",
+      "description": "El codi QR o l'enllaç que has utilitzat ja no és vàlid. Demana ajuda a un membre del personal.",
+      "home_link": "Anar a la pàgina principal"
+    }
   }
 }

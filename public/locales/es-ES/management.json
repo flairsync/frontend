@@ -4516,7 +4516,8 @@
       "middle_name_placeholder": "Segundo nombre (opcional)",
       "email_locked_hint": "Este correo está bloqueado porque la invitación se envió a él.",
       "confirm_label": "Confirmo que la información anterior es exacta y me pertenece.",
-      "submit": "Crear perfil profesional"
+      "submit": "Crear perfil profesional",
+      "failed": "Se produjo un error al crear tu perfil profesional. Por favor, inténtalo de nuevo."
     },
     "tips": {
       "title": "Consejos para el perfil",
@@ -4756,7 +4757,26 @@
     },
     "expiry_label": "Los puntos caducan después de",
     "expiry_description": "Número de meses tras ganarlos antes de que los puntos caduquen. Déjalo en blanco para que los puntos no caduquen nunca.",
-    "expiry_placeholder": "Nunca"
+    "expiry_placeholder": "Nunca",
+    "members": {
+      "title": "Miembros de fidelización",
+      "stats": {
+        "members": "Miembros",
+        "points_outstanding": "Puntos pendientes",
+        "points_issued": "Puntos emitidos"
+      },
+      "col_name": "Nombre",
+      "col_email": "Correo electrónico",
+      "col_balance": "Saldo",
+      "col_joined": "Fecha de ingreso",
+      "col_actions": "Acciones",
+      "loading": "Cargando miembros...",
+      "empty": "Todavía nadie se ha unido a este programa de fidelización.",
+      "points_one": "{{count}} pto",
+      "points_other": "{{count}} ptos",
+      "view_history": "Ver historial",
+      "adjust_points": "Ajustar puntos"
+    }
   },
   "simple_mode": {
     "toggle": {
@@ -5301,5 +5321,17 @@
         "description": "Publícate para que los clientes puedan encontrarte y pedir"
       }
     }
+  },
+  "alerts_page": {
+    "title": "Alertas y advertencias",
+    "subtitle": "Problemas de configuración que podrían estar bloqueando pedidos u otros procesos del negocio.",
+    "tabs": {
+      "all": "Todas",
+      "floor_plan": "Plano de sala",
+      "menu": "Menú"
+    },
+    "loading": "Cargando alertas...",
+    "empty_title": "No hay alertas que mostrar",
+    "empty_description": "Todo parece estar en orden — verás una advertencia si algo necesita tu atención."
   }
 }

@@ -28,7 +28,7 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const currentPath = pageContext.urlPathname;
     const isLoggedIn = !!pageContext.user;
 
-    const { data: profile, isLoading } = useDiscoveryProfile(businessId);
+    const { data: profile, isLoading, isError } = useDiscoveryProfile(businessId);
     const { data: floors } = useDiscoveryFloors(businessId);
     const { data: reservation } = useBusinessSeatedReservation(businessId);
     const { data: myOrderSummary } = useActiveDineInOrder(businessId);
@@ -178,7 +178,19 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
         );
     }
 
-    if (!profile) return null;
+    // An invalid/stale businessId (bad link, deleted business) must not render
+    // a permanently blank screen — tell the diner instead of leaving them stuck.
+    if (isError || !profile) {
+        return (
+            <div className="h-dvh w-screen flex flex-col items-center justify-center bg-background text-foreground gap-2 px-6 text-center">
+                <h1 className="text-xl font-bold">{t('errors.invalid_link.title')}</h1>
+                <p className="text-muted-foreground max-w-sm">{t('errors.invalid_link.description')}</p>
+                <a href="/" className="text-primary underline text-sm mt-2">
+                    {t('errors.invalid_link.home_link')}
+                </a>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-dvh bg-background overflow-hidden">
