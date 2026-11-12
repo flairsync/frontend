@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { FEATURE_FLAGS } from "@/lib/featureFlags"
 
 import {
     Sidebar,
@@ -126,7 +127,9 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "settings", titleKey: "sidebar.items.settings", url: "/manage/:id/owner/settings", icon: Settings },
             { key: "payments", titleKey: "sidebar.items.payments", url: "/manage/:id/owner/payments", icon: CreditCard },
             { key: "themes", titleKey: "sidebar.items.themes", url: "/manage/:id/owner/themes", icon: Palette },
-            { key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store },
+            ...(FEATURE_FLAGS.marketplace
+                ? [{ key: "marketplace", titleKey: "sidebar.items.marketplace", url: "/manage/:id/owner/marketplace", icon: Store }]
+                : []),
         ],
     },
     {
@@ -169,7 +172,9 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "payroll", titleKey: "sidebar.items.payroll", url: "/manage/:id/owner/payroll", icon: Banknote },
             { key: "tip-pooling", titleKey: "sidebar.items.tip_pooling", url: "/manage/:id/owner/tip-pooling", icon: HandCoins },
-            { key: "jobs", titleKey: "sidebar.items.jobs", url: "/manage/:id/owner/jobs", icon: Briefcase },
+            ...(FEATURE_FLAGS.hiring
+                ? [{ key: "jobs", titleKey: "sidebar.items.jobs", url: "/manage/:id/owner/jobs", icon: Briefcase }]
+                : []),
         ],
     },
     {
