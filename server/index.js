@@ -48,6 +48,12 @@ function startServer() {
       uiModeCookie === "simple" || uiModeCookie === "advanced" ? uiModeCookie : null
     );
     await next();
+
+    // SSR HTML embeds the requesting user's pageContext — never let the browser
+    // or Cloudflare cache it. Static assets (hashed filenames) are left alone.
+    if (c.res.headers.get("content-type")?.includes("text/html")) {
+      c.res.headers.set("Cache-Control", "private, no-store");
+    }
   });
 
   app.get("/health", (c) => c.json({ status: "ok" }));
