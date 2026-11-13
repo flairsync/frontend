@@ -11,6 +11,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 type HeaderProps = {
     activeTag?: string;
@@ -43,26 +44,28 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
 
                 {/* Desktop actions */}
                 <div className="hidden md:flex items-center gap-4">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="gap-2">
-                                <ShoppingBag className="w-4 h-4" />
-                                {t("business_management_header.marketplace")}
-                                <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem asChild>
-                                <a href="/marketplace/guest" className="cursor-pointer">{t("business_management_header.guest_shop")}</a>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <a href="/marketplace/b2b" className="cursor-pointer">{t("business_management_header.b2b_supplies")}</a>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <a href="/marketplace/saas" className="cursor-pointer">{t("business_management_header.official_gear")}</a>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    {FEATURE_FLAGS.marketplace && (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="gap-2">
+                                    <ShoppingBag className="w-4 h-4" />
+                                    {t("business_management_header.marketplace")}
+                                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuItem asChild>
+                                    <a href="/marketplace/guest" className="cursor-pointer">{t("business_management_header.guest_shop")}</a>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <a href="/marketplace/b2b" className="cursor-pointer">{t("business_management_header.b2b_supplies")}</a>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <a href="/marketplace/saas" className="cursor-pointer">{t("business_management_header.official_gear")}</a>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    )}
 
                     {user ? (
                         <HeaderProfileAvatar />
@@ -116,30 +119,32 @@ const BusinessManagementHeader = ({ activeTag }: HeaderProps) => {
                         </a>
 
                         {/* Mobile Marketplace Links */}
-                        <div className="pt-2 flex flex-col space-y-3">
-                            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t("business_management_header.marketplace")}</span>
-                            <a
-                                href="/marketplace/guest"
-                                className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {t("business_management_header.guest_shop")}
-                            </a>
-                            <a
-                                href="/marketplace/b2b"
-                                className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {t("business_management_header.b2b_supplies")}
-                            </a>
-                            <a
-                                href="/marketplace/saas"
-                                className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {t("business_management_header.official_gear")}
-                            </a>
-                        </div>
+                        {FEATURE_FLAGS.marketplace && (
+                            <div className="pt-2 flex flex-col space-y-3">
+                                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">{t("business_management_header.marketplace")}</span>
+                                <a
+                                    href="/marketplace/guest"
+                                    className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {t("business_management_header.guest_shop")}
+                                </a>
+                                <a
+                                    href="/marketplace/b2b"
+                                    className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {t("business_management_header.b2b_supplies")}
+                                </a>
+                                <a
+                                    href="/marketplace/saas"
+                                    className="text-foreground hover:text-primary transition pl-2 border-l-2 border-transparent hover:border-primary"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {t("business_management_header.official_gear")}
+                                </a>
+                            </div>
+                        )}
 
                         <div className="pt-3 border-t">
                             {user ? (

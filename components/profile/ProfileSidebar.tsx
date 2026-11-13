@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Briefcase, Calendar, Gift, Heart, Settings, Star, User, UserCog } from "lucide-react"
 import WebsiteLogo from "../shared/WebsiteLogo"
+import { FEATURE_FLAGS } from "@/lib/featureFlags"
 
 const ownerNavData = {
     navMain: [
@@ -46,11 +47,11 @@ const ownerNavData = {
                     url: "/profile/loyalty",
                     icon: Gift,
                 },
-                {
+                ...(FEATURE_FLAGS.hiring ? [{
                     title: "Jobs",
                     url: "/profile/jobs",
                     icon: Briefcase,
-                },
+                }] : []),
                 {
                     title: "Settings",
                     url: "/profile/settings",

@@ -16,6 +16,7 @@ import { ThemeToggle } from "../shared/ThemeToggle";
 import { TextSizeToggle } from "../shared/TextSizeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/features/profile/useProfile";
+import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 const NAV_LINKS = [
     { name: "home_tab_title", href: "#home" },
@@ -140,18 +141,22 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                                             {t("public_feed.title", "Explore Feed")}
                                         </a>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                        <a href="/jobs" className="flex items-center gap-2">
-                                            <Briefcase className="w-4 h-4 text-muted-foreground" />
-                                            {t("landing_page.header.jobs", "Jobs")}
-                                        </a>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                        <a href="/marketplace/guest" className="flex items-center gap-2">
-                                            <Store className="w-4 h-4 text-muted-foreground" />
-                                            {t("marketplace.title", "Marketplace")}
-                                        </a>
-                                    </DropdownMenuItem>
+                                    {FEATURE_FLAGS.hiring && (
+                                        <DropdownMenuItem asChild>
+                                            <a href="/jobs" className="flex items-center gap-2">
+                                                <Briefcase className="w-4 h-4 text-muted-foreground" />
+                                                {t("landing_page.header.jobs", "Jobs")}
+                                            </a>
+                                        </DropdownMenuItem>
+                                    )}
+                                    {FEATURE_FLAGS.marketplace && (
+                                        <DropdownMenuItem asChild>
+                                            <a href="/marketplace/guest" className="flex items-center gap-2">
+                                                <Store className="w-4 h-4 text-muted-foreground" />
+                                                {t("marketplace.title", "Marketplace")}
+                                            </a>
+                                        </DropdownMenuItem>
+                                    )}
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
@@ -160,14 +165,18 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                                     <Newspaper className="w-4 h-4" />
                                     {t("public_feed.title", "Explore Feed")}
                                 </a>
-                                <a href="/jobs" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-                                    <Briefcase className="w-4 h-4" />
-                                    {t("landing_page.header.jobs", "Jobs")}
-                                </a>
-                                <a href="/marketplace/guest" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-                                    <ShoppingBag className="w-4 h-4" />
-                                    {t("marketplace.title", "Marketplace")}
-                                </a>
+                                {FEATURE_FLAGS.hiring && (
+                                    <a href="/jobs" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
+                                        <Briefcase className="w-4 h-4" />
+                                        {t("landing_page.header.jobs", "Jobs")}
+                                    </a>
+                                )}
+                                {FEATURE_FLAGS.marketplace && (
+                                    <a href="/marketplace/guest" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
+                                        <ShoppingBag className="w-4 h-4" />
+                                        {t("marketplace.title", "Marketplace")}
+                                    </a>
+                                )}
                             </nav>
                         )}
                     </div>
@@ -248,14 +257,18 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                                 <Compass className="w-5 h-5" />
                                 {t("public_feed.title", "Explore Feed")}
                             </a>
-                            <a href="/jobs" className="flex items-center gap-2 text-base font-medium text-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>
-                                <Briefcase className="w-5 h-5" />
-                                {t("landing_page.header.jobs", "Jobs")}
-                            </a>
-                            <a href="/marketplace/guest" className="flex items-center gap-2 text-base font-medium text-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>
-                                <Store className="w-5 h-5" />
-                                {t("marketplace.title", "Marketplace")}
-                            </a>
+                            {FEATURE_FLAGS.hiring && (
+                                <a href="/jobs" className="flex items-center gap-2 text-base font-medium text-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>
+                                    <Briefcase className="w-5 h-5" />
+                                    {t("landing_page.header.jobs", "Jobs")}
+                                </a>
+                            )}
+                            {FEATURE_FLAGS.marketplace && (
+                                <a href="/marketplace/guest" className="flex items-center gap-2 text-base font-medium text-foreground/80 hover:text-primary" onClick={() => setIsOpen(false)}>
+                                    <Store className="w-5 h-5" />
+                                    {t("marketplace.title", "Marketplace")}
+                                </a>
+                            )}
 
                             {authResolved && !user && (
                                 <div className="pt-1 flex items-center gap-2">
