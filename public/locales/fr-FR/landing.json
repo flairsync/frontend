@@ -72,6 +72,20 @@
       "title": "Nous connaissons les défis de la gestion d'un restaurant",
       "subtitle": "Gérer le personnel, suivre les stocks, mettre à jour les menus et fidéliser les clients peut être accablant. C'est pourquoi nous avons créé un outil simple tout-en-un pour les cafés et restaurants.",
       "leftPanelTitle": "Comment nous pouvons vous aider à développer votre entreprise",
+      "inventoryDemo": {
+        "items": {
+          "pastaFlour": "Farine à pâtes",
+          "tomatoSauce": "Sauce tomate",
+          "oliveOil": "Huile d'olive",
+          "mozzarella": "Mozzarella",
+          "basil": "Basilic",
+          "parmesan": "Parmesan"
+        },
+        "status": {
+          "low": "Faible",
+          "critical": "Critique"
+        }
+      },
       "solutions[0]": {
         "id": "1",
         "title": "Suivre facilement les stocks",
@@ -149,19 +163,48 @@
         "yearly": "*Facturé annuellement, taxes applicables en sus"
       },
       "choose_plan_button": "Choisir le plan",
-      "per_business_price": "{{price}} / commerce / {{period}}",
+      "per_business_price": "{{price}} / établissement / {{period}}",
       "period_suffix": {
         "monthly": "mois",
         "quarterly": "trimestre",
         "yearly": "an"
       },
-      "min_businesses_one": "minimum {{count}} commerce",
-      "min_businesses_other": "minimum {{count}} commerces"
+      "min_businesses_one": "minimum {{count}} établissement",
+      "min_businesses_other": "minimum {{count}} établissements",
+      "free_price": "Gratuit",
+      "plan_descriptions": {
+        "free": "Tout ce dont vous avez besoin pour démarrer votre entreprise.",
+        "starter": "Idéal pour les petits restaurants qui démarrent.",
+        "pro": "Idéal pour les restaurants en croissance ou les petites chaînes.",
+        "enterprise": "Pour les groupes de restaurants ou les franchises."
+      }
     },
     "faq": {
       "title": "Questions fréquemment posées",
       "subtitle": "Vous avez des questions ? Nous avons des réponses. Voici quelques-unes des questions les plus fréquentes posées par les propriétaires de restaurants et cafés concernant notre plateforme.",
-      "cta_button": "Vous avez d'autres questions ?"
+      "cta_button": "Vous avez d'autres questions ?",
+      "items": [
+        {
+          "question": "Ai-je besoin de connaissances techniques pour utiliser la plateforme ?",
+          "answer": "Pas du tout. Notre système est conçu pour être simple et intuitif. Vous pouvez configurer votre établissement et commencer à le gérer en quelques minutes."
+        },
+        {
+          "question": "Puis-je gérer plusieurs restaurants ou cafés avec un seul compte ?",
+          "answer": "Oui, vous pouvez facilement gérer plusieurs établissements depuis un seul compte avec notre plateforme. Les forfaits Growth et Pro sont conçus spécifiquement pour cela."
+        },
+        {
+          "question": "Y a-t-il un essai gratuit disponible ?",
+          "answer": "Oui, nous offrons un essai gratuit de 14 jours pour que vous puissiez découvrir toutes les fonctionnalités avant de vous engager sur un forfait."
+        },
+        {
+          "question": "La plateforme fonctionne-t-elle sur téléphones et tablettes ?",
+          "answer": "Notre plateforme est entièrement responsive et optimisée pour une utilisation sur plusieurs appareils, dont les téléphones, tablettes et ordinateurs."
+        },
+        {
+          "question": "Puis-je ajouter un nombre illimité d'articles au menu ?",
+          "answer": "Le forfait Pro inclut des articles de menu illimités. Les forfaits Starter et Growth ont des limites sur le nombre de menus que vous pouvez avoir par établissement."
+        }
+      ]
     },
     "footer": {
       "logo": "FlairSync",
@@ -183,7 +226,7 @@
         "Conditions"
       ],
       "contact_title": "Contact",
-      "contact_address_line1": "Andorra La Vella, AD500, Andorre",
+      "contact_address_line1": "Andorra la Vella, AD500, Andorre",
       "contact_phone": "+376 123 456",
       "newsletter_title": "Abonnez-vous à notre newsletter",
       "newsletter_placeholder": "Entrez votre email",

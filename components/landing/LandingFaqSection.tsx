@@ -13,28 +13,8 @@ import { navigate } from 'vike/client/router';
 const LandingFaqSection = () => {
     const { t } = useTranslation("landing");
 
-    const faqItems = [
-        {
-            question: 'Do I need technical knowledge to use the platform?',
-            answer: 'Not at all. Our system is designed to be simple and intuitive. You can set up your business and start managing it in minutes.',
-        },
-        {
-            question: 'Can I manage multiple restaurants or cafés with one account?',
-            answer: 'Yes, you can easily manage multiple locations from a single account with our platform. The growth and pro plans are designed specifically for this purpose.',
-        },
-        {
-            question: 'Is there a free trial available?',
-            answer: 'Yes, we offer a 14-day free trial so you can explore all the features before committing to a plan.',
-        },
-        {
-            question: 'Does the platform work on phones and tablets?',
-            answer: 'Our platform is fully responsive and optimized for use on a variety of devices, including phones, tablets, and desktops.',
-        },
-        {
-            question: 'Can I add unlimited menu items?',
-            answer: 'The Pro plan includes unlimited menu items. The Starter and Growth plans have limits on the number of menus you can have per business.',
-        },
-    ];
+    // P1-7 (QA, 2026-11-18): every question/answer was hardcoded English.
+    const faqItems = (t('landing_page.faq.items', { returnObjects: true }) as { question: string, answer: string }[]) ?? [];
 
     return (
         <div className="flex justify-center items-center bg-background font-sans text-foreground py-16 px-4">

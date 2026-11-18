@@ -26,18 +26,22 @@ const solutions: Solution[] = [
 // --- Per-tab visuals ---
 
 const inventoryItems = [
-    { name: "Pasta Flour",    unit: "12 kg",   stock: 80, status: "ok"       },
-    { name: "Tomato Sauce",   unit: "2 cans",  stock: 18, status: "low"      },
-    { name: "Olive Oil",      unit: "5.5 L",   stock: 55, status: "ok"       },
-    { name: "Mozzarella",     unit: "0.5 kg",  stock: 5,  status: "critical" },
-    { name: "Basil",          unit: "1.2 kg",  stock: 40, status: "ok"       },
-    { name: "Parmesan",       unit: "3 kg",    stock: 22, status: "low"      },
+    { nameKey: "pastaFlour",  unit: "12 kg",   stock: 80, status: "ok"       },
+    { nameKey: "tomatoSauce", unit: "2 cans",  stock: 18, status: "low"      },
+    { nameKey: "oliveOil",    unit: "5.5 L",   stock: 55, status: "ok"       },
+    { nameKey: "mozzarella",  unit: "0.5 kg",  stock: 5,  status: "critical" },
+    { nameKey: "basil",       unit: "1.2 kg",  stock: 40, status: "ok"       },
+    { nameKey: "parmesan",    unit: "3 kg",    stock: 22, status: "low"      },
 ];
 
-const InventoryVisual = () => (
+// P1-7 (QA, 2026-11-18): item names and the Low/Critical status labels were hardcoded
+// English, visible in every locale.
+const InventoryVisual = () => {
+    const { t } = useTranslation("landing");
+    return (
     <div className="w-full space-y-3">
         {inventoryItems.map((item) => (
-            <div key={item.name} className="flex items-center gap-3">
+            <div key={item.nameKey} className="flex items-center gap-3">
                 <div className={cn(
                     "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
                     item.status === "critical" ? "bg-red-100 text-red-500"
@@ -51,14 +55,14 @@ const InventoryVisual = () => (
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium text-foreground truncate">{item.name}</span>
+                        <span className="text-sm font-medium text-foreground truncate">{t(`problemSolution.inventoryDemo.items.${item.nameKey}`)}</span>
                         <span className={cn(
                             "text-xs font-semibold px-1.5 py-0.5 rounded ml-2 shrink-0",
                             item.status === "critical" ? "bg-red-100 text-red-600"
                             : item.status === "low"    ? "bg-amber-100 text-amber-600"
                             : "bg-green-100 text-green-600"
                         )}>
-                            {item.status === "critical" ? "Critical" : item.status === "low" ? "Low" : item.unit}
+                            {item.status === "critical" ? t("problemSolution.inventoryDemo.status.critical") : item.status === "low" ? t("problemSolution.inventoryDemo.status.low") : item.unit}
                         </span>
                     </div>
                     <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
@@ -76,7 +80,8 @@ const InventoryVisual = () => (
             </div>
         ))}
     </div>
-);
+    );
+};
 
 const staffMembers = [
     { name: "Maria L.",  role: "Waitress",   time: "09:00 – 17:00", color: "bg-violet-500" },

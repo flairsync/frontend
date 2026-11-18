@@ -119,7 +119,7 @@ const LandingPricingSection = () => {
                     </CardTitle>
                     <div className="flex items-baseline gap-1">
                         <h2 className={cn("text-4xl font-extrabold", isHighlighted ? 'text-white' : 'text-foreground')}>
-                            {isFree ? "Free" : t('landing_page.pricing.per_business_price', { price: pack.getFormattedPrice(), period: periodSuffix })}
+                            {isFree ? t('landing_page.pricing.free_price') : t('landing_page.pricing.per_business_price', { price: pack.getFormattedPrice(), period: periodSuffix })}
                         </h2>
                     </div>
                     {!isFree && (
@@ -128,7 +128,12 @@ const LandingPricingSection = () => {
                         </p>
                     )}
                     <CardDescription className={cn("text-sm mt-4 min-h-[40px]", isHighlighted ? 'text-white/90' : 'text-muted-foreground')}>
-                        {pack.description || pack.getShortDescription()}
+                        {/* P1-7 (QA, 2026-11-18): pack.description comes straight from the DB
+                            (seeded/admin-entered, English-only — Pack has no per-locale column),
+                            so it never translated. Looks up a translation by plan name for the
+                            known seeded plans, falling back to the raw DB text for any custom
+                            plan an admin creates that has no matching key. */}
+                        {t(`landing_page.pricing.plan_descriptions.${pack.name?.toLowerCase()}`, pack.description || pack.getShortDescription()) as string}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0 flex-1 flex flex-col">

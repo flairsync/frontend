@@ -72,6 +72,20 @@
       "title": "We Know the Struggles of Running a Restaurant",
       "subtitle": "Managing staff, tracking stock, updating menus, and keeping customers coming back can feel overwhelming. That's why we built a simple, all-in-one tool designed for cafés and restaurants.",
       "leftPanelTitle": "How we can help you grow your business",
+      "inventoryDemo": {
+        "items": {
+          "pastaFlour": "Pasta Flour",
+          "tomatoSauce": "Tomato Sauce",
+          "oliveOil": "Olive Oil",
+          "mozzarella": "Mozzarella",
+          "basil": "Basil",
+          "parmesan": "Parmesan"
+        },
+        "status": {
+          "low": "Low",
+          "critical": "Critical"
+        }
+      },
       "solutions[0]": {
         "id": "1",
         "title": "Track inventory easily",
@@ -156,12 +170,41 @@
         "yearly": "yr"
       },
       "min_businesses_one": "{{count}}-business minimum",
-      "min_businesses_other": "{{count}}-business minimum"
+      "min_businesses_other": "{{count}}-business minimum",
+      "free_price": "Free",
+      "plan_descriptions": {
+        "free": "Everything you need to start your business.",
+        "starter": "Perfect for small restaurants getting started.",
+        "pro": "Best for growing restaurants or small chains.",
+        "enterprise": "For restaurant groups or franchises."
+      }
     },
     "faq": {
       "title": "Frequently Asked Questions",
       "subtitle": "Got questions? We've got answers. Here are some of the most common questions restaurant and café owners ask about using our platform.",
-      "cta_button": "Got more questions?"
+      "cta_button": "Got more questions?",
+      "items": [
+        {
+          "question": "Do I need technical knowledge to use the platform?",
+          "answer": "Not at all. Our system is designed to be simple and intuitive. You can set up your business and start managing it in minutes."
+        },
+        {
+          "question": "Can I manage multiple restaurants or cafés with one account?",
+          "answer": "Yes, you can easily manage multiple locations from a single account with our platform. The growth and pro plans are designed specifically for this purpose."
+        },
+        {
+          "question": "Is there a free trial available?",
+          "answer": "Yes, we offer a 14-day free trial so you can explore all the features before committing to a plan."
+        },
+        {
+          "question": "Does the platform work on phones and tablets?",
+          "answer": "Our platform is fully responsive and optimized for use on a variety of devices, including phones, tablets, and desktops."
+        },
+        {
+          "question": "Can I add unlimited menu items?",
+          "answer": "The Pro plan includes unlimited menu items. The Starter and Growth plans have limits on the number of menus you can have per business."
+        }
+      ]
     },
     "footer": {
       "logo": "FlairSync",
@@ -183,7 +226,7 @@
         "Terms"
       ],
       "contact_title": "Contact",
-      "contact_address_line1": "Andorra La Vella, AD500, Andorra",
+      "contact_address_line1": "Andorra la Vella, AD500, Andorra",
       "contact_phone": "+376 123 456",
       "newsletter_title": "Subscribe to our Newsletter",
       "newsletter_placeholder": "Enter your email",

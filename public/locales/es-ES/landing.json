@@ -72,6 +72,20 @@
       "title": "Conocemos los retos de manejar un restaurante",
       "subtitle": "Gestionar personal, controlar el inventario, actualizar menús y fidelizar clientes puede ser abrumador. Por eso creamos una herramienta simple todo-en-uno diseñada para cafés y restaurantes.",
       "leftPanelTitle": "Cómo podemos ayudarte a hacer crecer tu negocio",
+      "inventoryDemo": {
+        "items": {
+          "pastaFlour": "Harina para pasta",
+          "tomatoSauce": "Salsa de tomate",
+          "oliveOil": "Aceite de oliva",
+          "mozzarella": "Mozzarella",
+          "basil": "Albahaca",
+          "parmesan": "Parmesano"
+        },
+        "status": {
+          "low": "Bajo",
+          "critical": "Crítico"
+        }
+      },
       "solutions[0]": {
         "id": "1",
         "title": "Controla fácilmente el inventario",
@@ -110,7 +124,7 @@
       },
       "items[1]": {
         "prefix": "HASTA",
-        "value": "4 hrs",
+        "value": "4 h",
         "label": "Ahorradas al día",
         "sub": "en planificación, inventario e informes"
       },
@@ -156,12 +170,41 @@
         "yearly": "año"
       },
       "min_businesses_one": "mínimo {{count}} negocio",
-      "min_businesses_other": "mínimo {{count}} negocios"
+      "min_businesses_other": "mínimo {{count}} negocios",
+      "free_price": "Gratis",
+      "plan_descriptions": {
+        "free": "Todo lo que necesitas para empezar tu negocio.",
+        "starter": "Perfecto para restaurantes pequeños que empiezan.",
+        "pro": "Ideal para restaurantes en crecimiento o pequeñas cadenas.",
+        "enterprise": "Para grupos de restaurantes o franquicias."
+      }
     },
     "faq": {
       "title": "Preguntas frecuentes",
       "subtitle": "¿Tienes preguntas? Tenemos respuestas. Aquí están algunas de las preguntas más comunes de propietarios de restaurantes y cafés sobre nuestra plataforma.",
-      "cta_button": "¿Tienes más preguntas?"
+      "cta_button": "¿Tienes más preguntas?",
+      "items": [
+        {
+          "question": "¿Necesito conocimientos técnicos para usar la plataforma?",
+          "answer": "Para nada. Nuestro sistema está diseñado para ser simple e intuitivo. Puedes configurar tu negocio y empezar a gestionarlo en minutos."
+        },
+        {
+          "question": "¿Puedo gestionar varios restaurantes o cafeterías con una sola cuenta?",
+          "answer": "Sí, puedes gestionar fácilmente varias ubicaciones desde una sola cuenta con nuestra plataforma. Los planes Growth y Pro están diseñados específicamente para esto."
+        },
+        {
+          "question": "¿Hay una prueba gratuita disponible?",
+          "answer": "Sí, ofrecemos una prueba gratuita de 14 días para que puedas explorar todas las funciones antes de comprometerte con un plan."
+        },
+        {
+          "question": "¿La plataforma funciona en teléfonos y tablets?",
+          "answer": "Nuestra plataforma es totalmente responsiva y está optimizada para usarse en varios dispositivos, incluyendo teléfonos, tablets y ordenadores."
+        },
+        {
+          "question": "¿Puedo añadir artículos ilimitados al menú?",
+          "answer": "El plan Pro incluye artículos de menú ilimitados. Los planes Starter y Growth tienen límites en el número de menús que puedes tener por negocio."
+        }
+      ]
     },
     "footer": {
       "logo": "FlairSync",
@@ -183,7 +226,7 @@
         "Términos"
       ],
       "contact_title": "Contacto",
-      "contact_address_line1": "Andorra La Vella, AD500, Andorra",
+      "contact_address_line1": "Andorra la Vella, AD500, Andorra",
       "contact_phone": "+376 123 456",
       "newsletter_title": "Suscríbete a nuestro boletín",
       "newsletter_placeholder": "Ingresa tu correo electrónico",

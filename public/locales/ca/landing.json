@@ -72,6 +72,20 @@
       "title": "Coneixem els reptes de gestionar un restaurant",
       "subtitle": "Gestionar personal, controlar l'inventari, actualitzar menús i fidelitzar clients pot ser aclaparador. Per això vam crear una eina simple tot-en-un dissenyada per a cafès i restaurants.",
       "leftPanelTitle": "Com podem ajudar-te a fer créixer el teu negoci",
+      "inventoryDemo": {
+        "items": {
+          "pastaFlour": "Farina per a pasta",
+          "tomatoSauce": "Salsa de tomàquet",
+          "oliveOil": "Oli d'oliva",
+          "mozzarella": "Mozzarella",
+          "basil": "Alfàbrega",
+          "parmesan": "Parmesà"
+        },
+        "status": {
+          "low": "Baix",
+          "critical": "Crític"
+        }
+      },
       "solutions[0]": {
         "id": "1",
         "title": "Controla fàcilment l'inventari",
@@ -156,12 +170,41 @@
         "yearly": "any"
       },
       "min_businesses_one": "mínim {{count}} negoci",
-      "min_businesses_other": "mínim {{count}} negocis"
+      "min_businesses_other": "mínim {{count}} negocis",
+      "free_price": "Gratuït",
+      "plan_descriptions": {
+        "free": "Tot el que necessites per començar el teu negoci.",
+        "starter": "Perfecte per a restaurants petits que estan començant.",
+        "pro": "Ideal per a restaurants en creixement o cadenes petites.",
+        "enterprise": "Per a grups de restaurants o franquícies."
+      }
     },
     "faq": {
       "title": "Preguntes freqüents",
       "subtitle": "Tens preguntes? Tenim respostes. Aquí tens algunes de les preguntes més comunes dels propietaris de restaurants i cafès sobre la nostra plataforma.",
-      "cta_button": "Tens més preguntes?"
+      "cta_button": "Tens més preguntes?",
+      "items": [
+        {
+          "question": "Necessito coneixements tècnics per utilitzar la plataforma?",
+          "answer": "Gens ni mica. El nostre sistema està dissenyat per ser senzill i intuïtiu. Pots configurar el teu negoci i començar a gestionar-lo en minuts."
+        },
+        {
+          "question": "Puc gestionar diversos restaurants o cafès amb un sol compte?",
+          "answer": "Sí, pots gestionar fàcilment diverses ubicacions des d'un sol compte amb la nostra plataforma. Els plans Growth i Pro estan dissenyats específicament per a això."
+        },
+        {
+          "question": "Hi ha una prova gratuïta disponible?",
+          "answer": "Sí, oferim una prova gratuïta de 14 dies perquè puguis explorar totes les funcions abans de comprometre't amb un pla."
+        },
+        {
+          "question": "La plataforma funciona en telèfons i tauletes?",
+          "answer": "La nostra plataforma és totalment responsiva i està optimitzada per utilitzar-se en diversos dispositius, incloent telèfons, tauletes i ordinadors."
+        },
+        {
+          "question": "Puc afegir articles il·limitats al menú?",
+          "answer": "El pla Pro inclou articles de menú il·limitats. Els plans Starter i Growth tenen límits en el nombre de menús que pots tenir per negoci."
+        }
+      ]
     },
     "footer": {
       "logo": "FlairSync",
