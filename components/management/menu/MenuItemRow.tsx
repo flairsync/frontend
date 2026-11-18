@@ -1,6 +1,6 @@
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { Button } from "@/components/ui/button";
-import { Edit, ImageIcon, Plus, Trash } from "lucide-react";
+import { Edit, ImageIcon, Plus, Trash2 } from "lucide-react";
 
 type MenuItemRowProps = {
     item: {
@@ -74,7 +74,7 @@ export const MenuItemRow = ({
                         className="text-destructive hover:text-destructive border-destructive/30 hover:bg-destructive/10"
                         aria-label="Delete"
                     >
-                        <Trash className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                     </Button>
                 </ConfirmAction>
             </div>

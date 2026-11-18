@@ -154,7 +154,7 @@ const RegisterPage = () => {
                                             value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            placeholder="email@gmail.com"
+                                            placeholder="you@example.com"
                                             className="h-11 md:h-12 bg-muted border-border focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 focus-visible:ring-0 transition-all rounded-lg"
                                         />
                                         {errors.email && touched.email && <InputError message={errors.email} />}

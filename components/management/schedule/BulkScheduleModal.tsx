@@ -11,7 +11,7 @@ import { asPresetList, toTimeInputValue } from "./ShiftPresetPicker";
 import { useShifts } from "@/features/shifts/useShifts";
 import { BulkShiftConflict } from "@/features/shifts/service";
 import { usePageContext } from "vike-react/usePageContext";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { eachDayOfInterval, format } from "date-fns";
 import dayjs from "@/utils/date-utils";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
@@ -220,7 +220,7 @@ export const BulkScheduleModal: React.FC<BulkScheduleModalProps> = ({ open, onOp
                                             className="flex items-center gap-1 bg-secondary hover:bg-destructive/10 hover:text-destructive text-secondary-foreground px-2 py-0.5 rounded text-xs transition-colors"
                                         >
                                             {d}
-                                            <Trash className="w-2.5 h-2.5" />
+                                            <Trash2 className="w-2.5 h-2.5" />
                                         </button>
                                     ))}
                                 </div>

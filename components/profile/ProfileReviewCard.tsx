@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Star, StarHalf, StarOff, Pencil, Trash2 } from "lucide-react"
+import { Star, StarHalf, StarOff, Edit, Trash2 } from "lucide-react"
 import { navigate } from "vike/client/router"
 import React, { useState } from "react"
 
@@ -102,7 +102,7 @@ const ProfileReviewCard: React.FC<ProfileReviewCardProps> = ({
                                 onClick={(e) => { e.stopPropagation(); onEdit(id) }}
                                 className="text-muted-foreground hover:text-primary"
                             >
-                                <Pencil className="h-4 w-4 mr-1" /> Edit
+                                <Edit className="h-4 w-4 mr-1" /> Edit
                             </Button>
                         )}
                         {onDelete && (

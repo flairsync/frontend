@@ -3,7 +3,7 @@ import { useNotifications } from '@/features/notifications/useNotifications';
 import { NotificationPayload, NotificationRecipient } from '@/features/notifications/types';
 import { navigate } from 'vike/client/router';
 import { formatDistanceToNow } from 'date-fns';
-import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, Package, UserX } from 'lucide-react';
+import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle2, Package, UserX } from 'lucide-react';
 import { EmptyState } from '@/components/shared/EmptyState';
 
 const getIconForType = (type: NotificationPayload['type']) => {
@@ -114,7 +114,7 @@ export const NotificationList = ({ filterType = 'all' }: { filterType?: string }
                     disabled={markingAllAsRead}
                     className="text-sm text-primary hover:underline disabled:opacity-50 flex items-center gap-1"
                 >
-                    <CheckCircle className="w-4 h-4" />
+                    <CheckCircle2 className="w-4 h-4" />
                     Mark all as read
                 </button>
             </div>

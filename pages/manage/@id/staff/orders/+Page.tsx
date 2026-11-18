@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin, Zap } from "lucide-react"
+import { Plus, Eye, CheckCircle2, CheckSquare, PlusCircle, CreditCard, Clock, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin, Zap } from "lucide-react"
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -456,7 +456,7 @@ export default function StaffOrdersPage() {
                                                                 )}
                                                                 {o.status === "created" && (
                                                                     <DropdownMenuItem onClick={() => acceptOrder(o.id)} disabled={isAcceptingOrder} className="text-blue-600 focus:text-blue-700">
-                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <CheckCircle2 className="mr-2 h-4 w-4" />
                                                                         <span>{t("orders.actions.accept")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
@@ -474,13 +474,13 @@ export default function StaffOrdersPage() {
                                                                 )}
                                                                 {o.status === "preparing" && (
                                                                     <DropdownMenuItem onClick={() => readyOrder(o.id)} disabled={isMarkingReady} className="text-green-600 focus:text-green-700">
-                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <CheckCircle2 className="mr-2 h-4 w-4" />
                                                                         <span>{t("orders.actions.mark_ready")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}
                                                                 {o.status === "ready" && (
                                                                     <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isMarkingServed} className="text-green-600 focus:text-green-700">
-                                                                        <CheckCircle className="mr-2 h-4 w-4" />
+                                                                        <CheckCircle2 className="mr-2 h-4 w-4" />
                                                                         <span>{t("orders.actions.mark_served")}</span>
                                                                     </DropdownMenuItem>
                                                                 )}

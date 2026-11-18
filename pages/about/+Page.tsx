@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Rocket, Activity, Shield, Users, TrendingUp, Globe, Star, ArrowRight, CheckCircle } from "lucide-react";
+import { Rocket, Activity, Shield, Users, TrendingUp, Globe, Star, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import LandingHeader from "@/components/landing/LandingHeader";
@@ -125,7 +125,7 @@ const AboutUsPage: React.FC = () => {
                         <div className="space-y-3">
                             {principles.map((p, i) => (
                                 <div key={i} className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card/60">
-                                    <CheckCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                                    <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                                     <span className="text-sm font-medium">{p}</span>
                                 </div>
                             ))}

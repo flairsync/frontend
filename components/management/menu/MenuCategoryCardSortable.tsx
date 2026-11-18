@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, Plus, Pencil, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus, Edit, Trash2 } from "lucide-react";
 import { MenuItemRowSortable } from "./MenuItemRowSortable";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -106,7 +106,7 @@ export const MenuCategoryCardSortable = ({
                                     onEdit();
                                 }}
                             >
-                                <Pencil className="h-4 w-4" />
+                                <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                                 size="sm"

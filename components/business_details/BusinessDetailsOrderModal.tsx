@@ -14,6 +14,7 @@ import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessPr
 import { useSubmitOrder } from "@/features/discovery/useDiscovery";
 import { Loader2, MapPin, CheckCircle2 } from "lucide-react";
 import { getDistanceInMeters } from "@/lib/locationUtils";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -232,7 +233,7 @@ export const BusinessDetailsOrderModal: React.FC<Props> = ({ open, onClose, item
                     </Button>
                     <Button onClick={handleSubmit} disabled={!canSubmit}>
                         {submitOrder.isPending && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
-                        {t("business_page.order_modal.confirm_order_button", { price: `${business?.currency || "$"}${(item?.price || 0) * quantity}`, defaultValue: `Confirm Order - ${business?.currency || "$"}${(item?.price || 0) * quantity}` })}
+                        {t("business_page.order_modal.confirm_order_button", { price: formatCurrency((item?.price || 0) * quantity, business?.currency || "EUR"), defaultValue: `Confirm Order - ${formatCurrency((item?.price || 0) * quantity, business?.currency || "EUR")}` })}
                     </Button>
                 </DialogFooter>
             </DialogContent>

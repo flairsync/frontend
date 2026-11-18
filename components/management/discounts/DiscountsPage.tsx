@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
-import { Plus, Pencil, Trash2, Tag } from "lucide-react";
+import { Plus, Edit, Trash2, Tag } from "lucide-react";
 import { useDiscounts } from "@/features/orders/useDiscounts";
 import { Discount, DiscountType, CreateDiscountPayload } from "@/features/orders/discounts";
 
@@ -136,7 +136,7 @@ const DiscountsPage: React.FC<Props> = ({ businessId }) => {
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">
                                                 <Button size="icon" variant="ghost" onClick={() => openEdit(discount)}>
-                                                    <Pencil className="w-4 h-4" />
+                                                    <Edit className="w-4 h-4" />
                                                 </Button>
                                                 <ConfirmAction onConfirm={() => removeDiscount(discount.id)}>
                                                     <Button size="icon" variant="ghost" className="text-destructive">

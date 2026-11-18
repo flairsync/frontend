@@ -9,7 +9,7 @@ import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import AbstractBG from '@/assets/svg/vecteezy_abstract-blue-color-background-dynamic-wave-fluid-shape_23455702.svg';
 import { ResetPasswordSchema } from '@/misc/FormValidators';
 import { useResetPassword } from '@/features/auth/useResetPassword';
-import { Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
+import { Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react';
 import { navigate } from 'vike/client/router';
 
 const ResetPasswordPage = () => {
@@ -75,7 +75,7 @@ const ResetPasswordPage = () => {
                     <div className="w-full max-w-md text-center">
                         <div className="flex justify-center mb-6">
                             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-50">
-                                <CheckCircle className="h-8 w-8 text-green-500" />
+                                <CheckCircle2 className="h-8 w-8 text-green-500" />
                             </div>
                         </div>
                         <h1 className="text-3xl font-extrabold mb-3">

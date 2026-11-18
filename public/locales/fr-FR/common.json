@@ -109,14 +109,14 @@
       "errorCode": "Code d'erreur :"
     },
     "500": {
-      "title": "500 Erreur interne du serveur",
+      "title": "Un problème est survenu de notre côté",
       "description": "Une erreur est survenue."
     },
     "technical": {
       "network_title": "Connexion perdue",
       "error_title": "Erreur système",
       "network_error": "Erreur réseau ou connexion perdue. Nous y travaillons.",
-      "server_error": "Erreur interne du serveur. Veuillez réessayer plus tard.",
+      "server_error": "Nous avons rencontré un problème. Veuillez réessayer dans un instant.",
       "session_expired": "Votre session a expiré. Veuillez vous reconnecter.",
       "unexpected_error": "Une erreur inattendue est survenue. Veuillez réessayer.",
       "working_on_it": "Nous sommes au courant du problème et nous travaillons à restaurer l'accès."

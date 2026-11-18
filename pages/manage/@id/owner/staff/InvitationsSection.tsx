@@ -20,7 +20,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { Trash, UserPlus, Edit, Plus, MoreHorizontal, Clock, Check, X, Slash, Hourglass, FileSpreadsheet } from "lucide-react";
+import { Trash2, UserPlus, Edit, Plus, MoreHorizontal, Clock, Check, X, Slash, Hourglass, FileSpreadsheet } from "lucide-react";
 import { StaffCsvImportModal } from "@/components/management/staff/StaffCsvImportModal";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useBusinessEmployeeOps } from '@/features/business/employment/useBusinessEmployeeOps';

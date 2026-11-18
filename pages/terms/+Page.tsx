@@ -24,7 +24,7 @@ const TermsPage: React.FC = () => {
                     <h1 className="text-4xl font-extrabold">{t("terms_page.title")}</h1>
                     {document && (
                         <p className="text-muted-foreground">
-                            {t("gdpr_page.last_updated", {
+                            {t("terms_page.last_updated", {
                                 date: new Date(document.publishedAt).toLocaleDateString(undefined, {
                                     year: "numeric",
                                     month: "long",
@@ -53,7 +53,7 @@ const TermsPage: React.FC = () => {
                     <Alert variant="destructive" className="max-w-2xl mx-auto">
                         <AlertCircle className="h-5 w-5" />
                         <AlertTitle>{t("terms_page.load_error_title")}</AlertTitle>
-                        <AlertDescription>{t("gdpr_page.load_error_description")}</AlertDescription>
+                        <AlertDescription>{t("terms_page.load_error_description")}</AlertDescription>
                     </Alert>
                 )}
 
@@ -64,11 +64,27 @@ const TermsPage: React.FC = () => {
                                 <CardHeader>
                                     <CardTitle className="text-lg">{title}</CardTitle>
                                 </CardHeader>
-                                <CardContent className="text-muted-foreground">{content}</CardContent>
+                                <CardContent className="text-muted-foreground whitespace-pre-line">{content}</CardContent>
                             </Card>
                         ))}
                     </section>
                 )}
+
+                {/* Contact */}
+                <section className="text-center space-y-2 pt-4">
+                    <p className="text-muted-foreground text-sm">
+                        {t("terms_page.self_service_notice")}{" "}
+                        <a href="/profile/account" className="text-primary underline">
+                            {t("terms_page.self_service_link")}
+                        </a>
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                        {t("terms_page.contact_question")}{" "}
+                        <a href="mailto:privacy@flairsync.com" className="text-primary underline">
+                            privacy@flairsync.com
+                        </a>
+                    </p>
+                </section>
             </main>
             <WebsiteFooter />
         </div>

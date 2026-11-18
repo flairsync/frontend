@@ -20,7 +20,7 @@ import {
     CommandInput,
     CommandItem,
 } from "@/components/ui/command";
-import { Plus, Trash } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { Role } from "@/models/business/roles/Role";
@@ -141,7 +141,7 @@ export function EditStaffRolesModal({
                                         aria-label={t("edit_staff_roles_modal.remove_role")}
                                         onClick={() => removeRole(role.id)}
                                     >
-                                        <Trash className="h-4 w-4 text-destructive" />
+                                        <Trash2 className="h-4 w-4 text-destructive" />
                                     </Button>
                                 </div>
 

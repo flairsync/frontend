@@ -8,7 +8,7 @@
     "loading": "Chargement des commandes...",
     "station_unassigned": {
       "title": "Poste non assigné",
-      "description": "Ce KDS n'a pas de poste de cuisine assigné. Demandez à un responsable de le réassigner depuis le tableau de bord, dans Postes."
+      "description": "Ce KDS n'a pas de poste de cuisine assigné. Demandez à un propriétaire de l'assigner depuis le tableau de bord, dans Postes."
     },
     "empty_state": {
       "title": "Cuisine dégagée",
@@ -156,7 +156,7 @@
     }
   },
   "nfc_scan": {
-    "trigger": "NFC",
+    "trigger": "Badge",
     "panel_title": "Pointage par Badge NFC",
     "panel_description": "Approchez le badge du personnel du lecteur pour pointer l'arrivée ou le départ.",
     "status": {

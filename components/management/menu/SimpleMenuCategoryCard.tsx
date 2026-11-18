@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-    ChevronDown, ChevronUp, Edit, MoreVertical, Plus, Trash, UtensilsCrossed
+    ChevronDown, ChevronUp, Edit, MoreVertical, Plus, Trash2, UtensilsCrossed
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
@@ -149,7 +149,7 @@ export const SimpleMenuCategoryCard = ({
                                     onDelete();
                                 }}
                             >
-                                <Trash className="h-4 w-4" />
+                                <Trash2 className="h-4 w-4" />
                             </Button>
                         )}
                         {canEdit && (

@@ -26,7 +26,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Edit, Loader2, Trash, Users } from "lucide-react";
+import { Edit, Loader2, Trash2, Users } from "lucide-react";
 import { EditStaffRolesModal } from "@/components/management/staff/EditStaffRolesModal";
 import { BusinessEmployee } from "@/models/business/BusinessEmployee";
 import {
@@ -314,7 +314,7 @@ function StaffTab({ canUpdate, canDelete, myEmploymentId }: StaffTabProps) {
                                                                 disabled={terminatingEmployee}
                                                                 onClick={() => setRemovingStaff(member)}
                                                             >
-                                                                <Trash className="h-4 w-4" />
+                                                                <Trash2 className="h-4 w-4" />
                                                             </Button>
                                                         )}
                                                     </div>

@@ -20,7 +20,7 @@ import { CustomerLatePopover } from "./CustomerLatePopover";
 import { ReservationTimeline } from "./ReservationTimeline";
 import {
     CalendarDays, Clock, Users, User, Phone, Mail, FileText,
-    ShoppingBag, CreditCard, Table2, History, Loader, AlertCircle
+    ShoppingBag, CreditCard, Table2, History, Loader2, AlertCircle
 } from "lucide-react";
 
 interface ViewReservationModalProps {
@@ -72,7 +72,7 @@ export const ViewReservationModal: React.FC<ViewReservationModalProps> = ({
                     {/* Loading state */}
                     {loadingDetail && (
                         <div className="flex items-center justify-center py-16">
-                            <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                         </div>
                     )}
 

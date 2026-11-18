@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, X, Compass, Store, ChevronDown, Briefcase, Newspaper, ShoppingBag } from "lucide-react";
+import { Menu, X, Compass, Store, ChevronDown, Briefcase } from "lucide-react";
 import { Button } from "../ui/button";
 import {
     DropdownMenu,
@@ -162,7 +162,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                         ) : (
                             <nav className="flex items-center gap-5 mr-2">
                                 <a href="/feed" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-                                    <Newspaper className="w-4 h-4" />
+                                    <Compass className="w-4 h-4" />
                                     {t("public_feed.title", "Explore Feed")}
                                 </a>
                                 {FEATURE_FLAGS.hiring && (
@@ -173,7 +173,7 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                                 )}
                                 {FEATURE_FLAGS.marketplace && (
                                     <a href="/marketplace/guest" className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-                                        <ShoppingBag className="w-4 h-4" />
+                                        <Store className="w-4 h-4" />
                                         {t("marketplace.title", "Marketplace")}
                                     </a>
                                 )}

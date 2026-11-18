@@ -23,7 +23,7 @@ const PrivacyPolicyPage: React.FC = () => {
                     <h1 className="text-4xl font-extrabold">{t("privacy_page.title")}</h1>
                     {document && (
                         <p className="text-muted-foreground">
-                            {t("gdpr_page.last_updated", {
+                            {t("privacy_page.last_updated", {
                                 date: new Date(document.publishedAt).toLocaleDateString(undefined, {
                                     year: "numeric",
                                     month: "long",
@@ -51,7 +51,7 @@ const PrivacyPolicyPage: React.FC = () => {
                     <Alert variant="destructive" className="max-w-2xl mx-auto">
                         <AlertCircle className="h-5 w-5" />
                         <AlertTitle>{t("privacy_page.load_error_title")}</AlertTitle>
-                        <AlertDescription>{t("gdpr_page.load_error_description")}</AlertDescription>
+                        <AlertDescription>{t("privacy_page.load_error_description")}</AlertDescription>
                     </Alert>
                 )}
 
@@ -67,6 +67,22 @@ const PrivacyPolicyPage: React.FC = () => {
                         ))}
                     </section>
                 )}
+
+                {/* Contact */}
+                <section className="text-center space-y-2 pt-4">
+                    <p className="text-muted-foreground text-sm">
+                        {t("privacy_page.self_service_notice")}{" "}
+                        <a href="/profile/account" className="text-primary underline">
+                            {t("privacy_page.self_service_link")}
+                        </a>
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                        {t("privacy_page.contact_question")}{" "}
+                        <a href="mailto:privacy@flairsync.com" className="text-primary underline">
+                            privacy@flairsync.com
+                        </a>
+                    </p>
+                </section>
             </main>
             <WebsiteFooter />
         </div>

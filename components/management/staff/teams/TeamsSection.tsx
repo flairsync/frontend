@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit2, Users, Trash2 } from "lucide-react";
+import { Edit, Users, Trash2 } from "lucide-react";
 import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessTeams } from "@/features/business/team/useBusinessTeams";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
@@ -168,7 +168,7 @@ const TeamsSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                     setIsCreateModalOpen(true);
                                                 }}
                                             >
-                                                <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+                                                <Edit className="w-4 h-4 text-muted-foreground hover:text-foreground" />
                                             </Button>
                                         )}
                                         {canDelete && (

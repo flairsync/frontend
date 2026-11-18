@@ -35,7 +35,6 @@ import {
     LayoutDashboard,
     PackageOpen,
     Settings,
-    ShieldAlert,
     DatabaseBackup,
     ShoppingBag,
     ClockFadingIcon,
@@ -64,6 +63,9 @@ import {
     Wifi,
     CreditCard,
     Gift,
+    Grid2x2,
+    CalendarClock,
+    Trash2,
 } from "lucide-react"
 import { BusinessSwitcher } from "./BusinessSwitcher"
 import { SidebarPinToggle } from "./SidebarPinToggle"
@@ -147,7 +149,7 @@ export const NAV_GROUPS: NavGroup[] = [
         titleKey: "sidebar.groups.floor_service",
         icon: LayoutGrid,
         items: [
-            { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: LayoutDashboard },
+            { key: "floor-plan", titleKey: "sidebar.items.floor_plan", url: "/manage/:id/owner/floor-plan", icon: Grid2x2 },
             { key: "orders", titleKey: "sidebar.items.orders", url: "/manage/:id/owner/orders", icon: ShoppingBag },
             { key: "reservations", titleKey: "sidebar.items.reservations", url: "/manage/:id/owner/reservations", icon: CalendarCheck },
             { key: "tasks", titleKey: "sidebar.items.tasks", url: "/manage/:id/owner/tasks", icon: ClipboardList },
@@ -162,7 +164,7 @@ export const NAV_GROUPS: NavGroup[] = [
         items: [
             { key: "staff", titleKey: "sidebar.items.staff", url: "/manage/:id/owner/staff", icon: Users },
             { key: "announcements", titleKey: "sidebar.items.announcements", url: "/manage/:id/owner/announcements", icon: Megaphone },
-            { key: "schedule", titleKey: "sidebar.items.schedule", url: "/manage/:id/owner/schedule", icon: CalendarCheck },
+            { key: "schedule", titleKey: "sidebar.items.schedule", url: "/manage/:id/owner/schedule", icon: CalendarClock },
             { key: "attendance", titleKey: "sidebar.items.attendance", url: "/manage/:id/owner/attendance", icon: ClockFadingIcon },
         ],
     },
@@ -195,7 +197,7 @@ export const NAV_GROUPS: NavGroup[] = [
             { key: "fiscal-invoices", titleKey: "sidebar.items.fiscal_invoices", url: "/manage/:id/owner/fiscal-invoices", icon: Receipt },
             { key: "fiscal-services", titleKey: "sidebar.items.fiscal_services", url: "/manage/:id/owner/fiscal-services", icon: FileSpreadsheet },
             { key: "data-export", titleKey: "sidebar.items.data_export", url: "/manage/:id/owner/data-export", icon: DatabaseBackup },
-            { key: "danger", titleKey: "sidebar.items.danger", url: "/manage/:id/owner/danger", icon: ShieldAlert },
+            { key: "danger", titleKey: "sidebar.items.danger", url: "/manage/:id/owner/danger", icon: Trash2 },
         ],
     },
 ]

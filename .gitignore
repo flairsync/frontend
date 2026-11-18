@@ -144,3 +144,6 @@ cdk.out
 # Tutorial video pipeline output
 tutorials-output/
 /tutorials
+
+# Windows NTFS download sidecar files (WSL)
+*:Zone.Identifier

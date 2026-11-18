@@ -98,7 +98,7 @@ const LoginPage = () => {
                                             value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            placeholder="jonas_kahnwald@gmail.com"
+                                            placeholder="you@example.com"
                                             className="h-12 border-border focus:border-primary focus-visible:ring-0"
                                         />
                                     </div>
@@ -172,18 +172,6 @@ const LoginPage = () => {
                             <span className="px-4 text-muted-foreground">{t("auth_page.or_label")}</span>
                             <div className="flex-1 border-t border-border"></div>
                         </div>
-
-                        {/*  <Button variant="outline" className="w-full h-12 rounded-lg border-zinc-300 hover:bg-zinc-100 text-zinc-800">
-                            <svg
-                                className="mr-2 h-5 w-5"
-                                fill="currentColor"
-                                viewBox="0 0 488 500"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M488 261.8C488 432 377.9 488 244 488 108.9 488 0 379.1 0 244S108.9 0 244 0c74.4 0 123.6 28.5 163.6 66.8l-49.9 48.9c-29.4-28-71.8-46.6-113.6-46.6-89 0-161 72-161 161s72 161 161 161c94.2 0 144.3-64.2 150-97.1h-150v-85h255.9c2.3 12.7 3.5 25.5 3.5 39.3z" />
-                            </svg>
-                            {t("auth_page.signin_with_google_label")}
-                        </Button> */}
 
                         <GoogleLoginButton />
 

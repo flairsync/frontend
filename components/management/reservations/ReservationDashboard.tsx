@@ -23,7 +23,7 @@ import { WaitlistPanel } from "./WaitlistPanel";
 import DataPagination from "@/components/inputs/DataPagination";
 import { formatInTimezone } from "@/lib/dateUtils";
 import {
-    Users, CheckCircle, Armchair, Flag, XCircle, UserX,
+    Users, CheckCircle2, Armchair, Flag, XCircle, UserX,
     CalendarCheck, Clock, Plus, Eye, RefreshCw, Hourglass
 } from "lucide-react";
 
@@ -104,7 +104,7 @@ export const ReservationDashboard: React.FC<ReservationDashboardProps> = ({
 
     const statTiles = [
         { key: "all",       label: t("reservation_dashboard.stat_tiles.total_today"), value: stats.totalToday, icon: CalendarCheck, color: "bg-muted text-muted-foreground" },
-        { key: "confirmed", label: t("reservation_dashboard.stat_tiles.confirmed"),   value: stats.confirmed,  icon: CheckCircle,   color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
+        { key: "confirmed", label: t("reservation_dashboard.stat_tiles.confirmed"),   value: stats.confirmed,  icon: CheckCircle2,   color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
         { key: "seated",    label: t("reservation_dashboard.stat_tiles.seated"),      value: stats.seated,     icon: Armchair,      color: "bg-green-500/10 text-green-600 dark:text-green-400" },
         { key: "completed", label: t("reservation_dashboard.stat_tiles.completed"),   value: stats.completed,  icon: Flag,          color: "bg-muted text-muted-foreground" },
         { key: "no_show",   label: t("reservation_dashboard.stat_tiles.no_shows"),    value: stats.noShow,     icon: UserX,         color: "bg-orange-500/10 text-orange-600 dark:text-orange-400" },

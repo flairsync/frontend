@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, Layers, Grid2X2, Eye, EyeOff, Info } from "lucide-react";
+import { Plus, Edit, Trash2, Layers, Grid2X2, Eye, EyeOff, Info } from "lucide-react";
 import { useFloors, useTables, useFloorStats } from "@/features/floor-plan/useFloorPlan";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { FloorPlanDesigner } from "@/features/floor-plan/components/FloorPlanDesigner";
@@ -282,7 +282,7 @@ const FloorPlanPage: React.FC = () => {
                                                             {floor.isPublished ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                                         </Button>
                                                         <Button size="icon" variant="ghost" onClick={() => handleEditFloor(floor)}>
-                                                            <Pencil className="w-4 h-4" />
+                                                            <Edit className="w-4 h-4" />
                                                         </Button>
                                                         <ConfirmAction onConfirm={() => deleteFloor(floor.id)}>
                                                             <Button size="icon" variant="ghost" className="text-destructive">
@@ -376,7 +376,7 @@ const FloorPlanPage: React.FC = () => {
                                                         )}
                                                         <DownloadTableQrButton businessId={businessId} tableId={table.id} tableName={table.name} />
                                                         <Button size="icon" variant="ghost" onClick={() => handleEditTable(table)}>
-                                                            <Pencil className="w-4 h-4" />
+                                                            <Edit className="w-4 h-4" />
                                                         </Button>
                                                         <ConfirmAction onConfirm={() => deleteTable(table.id)}>
                                                             <Button size="icon" variant="ghost" className="text-destructive">

@@ -318,8 +318,12 @@ const ManagerScheduleStaffSchedulingTab = () => {
                         {t("schedule_staff_scheduling_tab.status_open")}
                     </Badge>
                 );
+            case ShiftStatus.CANCELLED:
+                return <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-gray-300 bg-gray-50 text-gray-500">{t("schedule_staff_scheduling_tab.status_cancelled")}</Badge>;
+            case ShiftStatus.SICK:
+                return <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-sky-300 bg-sky-50 text-sky-700">{t("schedule_staff_scheduling_tab.status_sick")}</Badge>;
             default:
-                return <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5">{status}</Badge>;
+                return <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5">{t("schedule_staff_scheduling_tab.status_unknown")}</Badge>;
         }
     };
 
@@ -917,7 +921,7 @@ const ManagerScheduleStaffSchedulingTab = () => {
                                                                     <div className="flex items-center gap-1">
                                                                         {getStatusBadge(shift.status, shift.staffResponse)}
                                                                         {!shift.isPublished && (
-                                                                            <Badge variant="secondary" className="text-[7px] px-1 py-0 h-3 bg-amber-100 text-amber-700 hover:bg-amber-100 font-bold">{t("schedule_staff_scheduling_tab.status_draft")}</Badge>
+                                                                            <Badge variant="secondary" className="text-[7px] px-1 py-0 h-3 bg-amber-100 text-amber-700 hover:bg-amber-100 font-bold uppercase">{t("schedule_staff_scheduling_tab.status_draft")}</Badge>
                                                                         )}
                                                                     </div>
                                                                 </div>

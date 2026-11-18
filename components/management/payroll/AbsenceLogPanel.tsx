@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Lock, Unlock, Pencil, Trash2 } from "lucide-react";
+import { Lock, Unlock, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -227,7 +227,7 @@ const AbsenceLogPanel = ({ businessId }: Props) => {
                                             onClick={() => openEdit(record)}
                                             disabled={record.locked}
                                         >
-                                            <Pencil className="h-3.5 w-3.5" />
+                                            <Edit className="h-3.5 w-3.5" />
                                         </Button>
                                         <Button
                                             variant="ghost"

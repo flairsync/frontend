@@ -76,7 +76,7 @@ export function PaymentModal({
     const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent">("idle");
     const [guestPhone, setGuestPhone] = useState("");
     const [loyaltyPhase, setLoyaltyPhase] = useState<"idle" | "checking" | "checked" | "inviting" | "invited">("idle");
-    const [loyaltyResult, setLoyaltyResult] = useState<{ userFound: boolean; alreadyEnrolled: boolean } | null>(null);
+    const [loyaltyResult, setLoyaltyResult] = useState<{ alreadyEnrolled: boolean } | null>(null);
 
     const effectiveTotal = total - discountAmount;
 
@@ -391,9 +391,7 @@ export function PaymentModal({
                             ) : (
                                 <>
                                     <p className="text-sm text-muted-foreground">
-                                        {loyaltyResult?.userFound
-                                            ? t("payment_modal.success.loyalty_not_enrolled")
-                                            : t("payment_modal.success.loyalty_not_found")}
+                                        {t("payment_modal.success.loyalty_not_enrolled")}
                                     </p>
                                     <Button
                                         variant="outline"
@@ -589,8 +587,8 @@ export function PaymentModal({
                                     }`}
                                 >
                                     {change >= 0
-                                        ? t("payment_modal.confirm.change_amount", { amount: change.toFixed(2) })
-                                        : t("payment_modal.confirm.short_by_amount", { amount: Math.abs(change).toFixed(2) })}
+                                        ? t("payment_modal.confirm.change_amount", { amount: `${currencySymbol}${change.toFixed(2)}` })
+                                        : t("payment_modal.confirm.short_by_amount", { amount: `${currencySymbol}${Math.abs(change).toFixed(2)}` })}
                                 </p>
                             )}
                         </div>

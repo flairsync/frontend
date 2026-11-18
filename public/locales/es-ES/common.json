@@ -109,14 +109,14 @@
       "errorCode": "Código de error:"
     },
     "500": {
-      "title": "500 Error interno del servidor",
+      "title": "Ha ocurrido un problema de nuestra parte",
       "description": "Algo salió mal."
     },
     "technical": {
       "network_title": "Conexión perdida",
       "error_title": "Error del sistema",
       "network_error": "Error de red o conexión perdida. Estamos trabajando en ello.",
-      "server_error": "Error interno del servidor. Por favor, inténtalo de nuevo más tarde.",
+      "server_error": "Hemos tenido un problema. Por favor, inténtalo de nuevo en un momento.",
       "session_expired": "Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.",
       "unexpected_error": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
       "working_on_it": "Somos conscientes del problema y estamos trabajando para restaurar el acceso."

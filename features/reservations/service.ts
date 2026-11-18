@@ -75,8 +75,8 @@ export const markReservationNoShowApiCall = (businessId: string, reservationId: 
 export const findAvailabilityApiCall = async (businessId: string, date: string, guestCount: number) =>
     unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
 
-export const lookupUserApiCall = async (email?: string, phone?: string) =>
-    unwrap(await flairapi.get(`${API_URL}/users/lookup`, { params: { email, phone } }));
+export const lookupUserApiCall = async (businessId: string, email?: string, phone?: string) =>
+    unwrap(await flairapi.get(`${API_URL}/users/lookup`, { params: { businessId, email, phone } }));
 
 // V2 endpoints
 export const fetchReservationDashboardApiCall = async (businessId: string) =>

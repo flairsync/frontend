@@ -60,7 +60,6 @@ type SelectedTable = { id: string; number: string; seats: number };
 
 interface BusinessDetailsTableReservationProps {
     businessId: string;
-    tables?: any; // kept for backward compat, data now fetched internally
 }
 
 const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationProps> = ({ businessId }) => {
@@ -271,7 +270,7 @@ const BusinessDetailsTableReservation: React.FC<BusinessDetailsTableReservationP
                             <Map size={15} />
                             {t("business_page.table_reservation.floor_plan_tab", "Floor Plan")}
                             <span className="text-[9px] bg-amber-100 text-amber-600 border border-amber-200 rounded px-1 py-0.5 font-black uppercase leading-none">
-                                {t("business_page.table_reservation.beta_badge", "BETA")}
+                                {t("business_page.table_reservation.beta_badge", "Beta")}
                             </span>
                         </button>
                     </div>

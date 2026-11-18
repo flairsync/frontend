@@ -29,7 +29,7 @@ import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { DownloadWifiQrButton } from "@/components/qr/DownloadWifiQrButton";
-import { Eye, EyeOff, Loader2, Pencil, Plus, Trash2, Wifi } from "lucide-react";
+import { Eye, EyeOff, Loader2, Edit, Plus, Trash2, Wifi } from "lucide-react";
 
 import { useWifiNetworks } from "@/features/wifi/useWifi";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
@@ -201,7 +201,7 @@ export function WifiNetworksManagement({ businessId, canCreate, canUpdate, canDe
                                                                 <DownloadWifiQrButton businessId={businessId} wifiNetworkId={network.id} label={network.label} />
                                                                 {canUpdate && (
                                                                     <Button size="icon" variant="ghost" onClick={() => handleOpenEdit(network)}>
-                                                                        <Pencil className="w-4 h-4" />
+                                                                        <Edit className="w-4 h-4" />
                                                                     </Button>
                                                                 )}
                                                                 {canDelete && (

@@ -233,12 +233,16 @@ export default function StaffShiftsPage() {
                 );
             case ShiftStatus.OPEN:
                 return (
-                    <Badge variant="outline" className="border-orange-500 bg-orange-50 text-orange-700 font-bold">
+                    <Badge variant="outline" className="border-orange-500 bg-orange-50 text-orange-700 font-bold uppercase">
                         {t("schedule_staff_scheduling_tab.status_open")}
                     </Badge>
                 );
+            case ShiftStatus.CANCELLED:
+                return <Badge variant="outline" className="border-gray-300 bg-gray-50 text-gray-500">{t("schedule_staff_scheduling_tab.status_cancelled")}</Badge>;
+            case ShiftStatus.SICK:
+                return <Badge variant="outline" className="border-sky-300 bg-sky-50 text-sky-700">{t("schedule_staff_scheduling_tab.status_sick")}</Badge>;
             default:
-                return <Badge variant="outline">{status}</Badge>;
+                return <Badge variant="outline">{t("schedule_staff_scheduling_tab.status_unknown")}</Badge>;
         }
     };
 
@@ -258,7 +262,7 @@ export default function StaffShiftsPage() {
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                     <Button variant="outline" className="flex items-center gap-2" onClick={() => setIsAvailabilityOpen(true)} disabled={!employmentId}>
-                        <Calendar className="h-4 w-4" />
+                        <CalendarDays className="h-4 w-4" />
                         {t("staff_shifts_page.header.my_availability")}
                     </Button>
                     <Button variant="outline" className="flex items-center gap-2" onClick={() => setIsTimeOffOpen(true)} disabled={!employmentId}>

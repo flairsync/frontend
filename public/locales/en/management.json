@@ -369,7 +369,7 @@
     "working_shift": "Working Shift: {{start}} - {{end}}"
   },
   "attendance_table": {
-    "col_employee": "Employee",
+    "col_employee": "Staff",
     "col_date": "Date",
     "col_clock_in": "Clock In",
     "col_clock_out": "Clock Out",
@@ -413,7 +413,7 @@
       "dashboard": "Overview",
       "my_shifts": "My shifts",
       "schedule": "Rota",
-      "staff": "Team",
+      "staff": "Staff",
       "tasks": "Tasks",
       "orders": "Orders",
       "reservations": "Bookings",
@@ -438,7 +438,7 @@
       "business": "Business",
       "menu_catalog": "Menu & Catalog",
       "floor_service": "Floor & Service",
-      "team": "Team",
+      "team": "Staff",
       "payroll_hiring": "Payroll & Hiring",
       "insights": "Insights",
       "system": "System"
@@ -448,7 +448,7 @@
       "branding": "Logo & photos",
       "settings": "Opening hours & details",
       "payments": "Card payments",
-      "staff": "Team",
+      "staff": "Staff",
       "announcements": "Notices",
       "schedule": "Rota",
       "attendance": "Hours worked",
@@ -917,7 +917,7 @@
       "businesses": "Businesses",
       "menus_active": "Menus (Active)",
       "products": "Products",
-      "employees": "Employees",
+      "employees": "Staff",
       "menus": "Menus",
       "menu_boards": "Menu Boards"
     },
@@ -955,8 +955,8 @@
     "limits": {
       "businesses_one": "Up to {{count}} Business",
       "businesses_other": "Up to {{count}} Businesses",
-      "employees_one": "Up to {{count}} Employee",
-      "employees_other": "Up to {{count}} Employees",
+      "employees_one": "Up to {{count}} Staff Member",
+      "employees_other": "Up to {{count}} Staff Members",
       "menus_one": "Up to {{count}} Menu",
       "menus_other": "Up to {{count}} Menus",
       "products_one": "Up to {{count}} Product",
@@ -1151,7 +1151,7 @@
     "set_failed": "Failed to set PIN"
   },
   "staff_management_page": {
-    "heading": "Team",
+    "heading": "Staff",
     "tabs": {
       "staff": "Staff",
       "invitations": "Invitations",
@@ -1213,7 +1213,7 @@
     "heading": "Who's Working Now",
     "subtitle": "Real-time status of clocked-in employees.",
     "live_active_count": "LIVE · {{count}} active",
-    "col_employee": "Employee",
+    "col_employee": "Staff",
     "col_clock_in": "Clock In",
     "col_duration": "Duration",
     "col_status": "Status",
@@ -1238,7 +1238,7 @@
     "overtime_hours": "Overtime Hours",
     "total_pay": "Total Pay",
     "pending_validation_notice": "Some records are still pending validation and are not included in this summary.",
-    "col_employee": "Employee",
+    "col_employee": "Staff",
     "col_records": "Records",
     "col_total_hours": "Total Hours",
     "col_regular": "Regular",
@@ -1251,7 +1251,7 @@
     "heading": "Absence Log",
     "subtitle": "Manager-recorded absences for all staff.",
     "add_absence": "Add Absence",
-    "col_employee": "Employee",
+    "col_employee": "Staff",
     "col_date": "Date",
     "col_type": "Type",
     "col_notes": "Notes",
@@ -1285,7 +1285,7 @@
     "absence": {
       "create_title": "Record Absence",
       "edit_title": "Edit Absence Record",
-      "employee_label": "Employee",
+      "employee_label": "Staff Member",
       "employment_id_label": "Employment ID",
       "employment_id_placeholder": "Employee employment UUID",
       "date_label": "Date",
@@ -1326,7 +1326,7 @@
     "status_late": "Late",
     "status_no_show": "No Show",
     "status_on_break": "On Break",
-    "search_employee_placeholder": "Search employee...",
+    "search_employee_placeholder": "Search staff...",
     "clear": "Clear"
   },
   "attendance_stats": {
@@ -1451,10 +1451,10 @@
     "empty_description": "Presets are optional. Add one for each shift you run often — “Morning 08:00–16:00”, “Evening 17:00–23:00” — and you'll stop retyping hours."
   },
   "schedule_swaps_tab": {
-    "unknown_staff": "Unknown",
+    "unknown_staff": "Unknown Staff",
     "unknown_shift": "Unknown Shift",
     "heading": "Shift Swaps",
-    "subheading": "Final approval for shift swaps between employees.",
+    "subheading": "Final approval for shift swaps between staff members.",
     "loading": "Loading swaps...",
     "no_swaps": "No active shift swaps requiring approval.",
     "col_shift": "Shift",
@@ -1482,8 +1482,11 @@
     "status_finished": "Finished",
     "status_validated": "Validated",
     "status_no_show": "No-show",
-    "status_open": "OPEN",
-    "status_draft": "DRAFT",
+    "status_open": "Open",
+    "status_draft": "Draft",
+    "status_cancelled": "Cancelled",
+    "status_sick": "Sick",
+    "status_unknown": "Unknown",
     "toast_export_failed": "Failed to export schedule",
     "title": "Schedule",
     "refresh_button": "Refresh",
@@ -1524,8 +1527,8 @@
     "empty_no_employees": "No employees found.",
     "monthly_overview_title": "Monthly Overview",
     "monthly_overview_select_staff": "Please select a staff member to view their monthly schedule.",
-    "tooltip_no_show": "NO-SHOW: employee never clocked in",
-    "tooltip_conflict": "CONFLICT: Employee has approved time off",
+    "tooltip_no_show": "This staff member never clocked in",
+    "tooltip_conflict": "This staff member already has approved time off",
     "tooltip_published": "Published",
     "tooltip_draft": "Draft",
     "context_add_new_shift": "Add New Shift",
@@ -1670,7 +1673,7 @@
     "log_shift_worked": {
       "fallback_error": "Failed to log shift as worked",
       "title": "Log Shift as Worked",
-      "description": "Resolve this no-show by entering the employee's real check-in and check-out times.",
+      "description": "Resolve this no-show by entering the staff member's real check-in and check-out times.",
       "success_title": "Shift marked as worked",
       "success_description": "The attendance record has been created and validated.",
       "worked_label": "Worked",
@@ -1711,7 +1714,7 @@
       "conflicts_count": "{{count}} shift(s) could not be scheduled:",
       "select_staff_label": "Select Staff Member",
       "loading_employees": "Loading employees...",
-      "choose_employee": "Choose an employee",
+      "choose_employee": "Choose a staff member",
       "unnamed_staff": "Unnamed Staff",
       "shift_time_label": "Shift Time",
       "use_template": "Use a saved preset",
@@ -1733,18 +1736,18 @@
       "error_update": "Failed to update shift",
       "error_create": "Failed to create shift",
       "bid_approved_toast": "Bid approved and shift assigned!",
-      "edit_title": "Edit Employee Shift",
-      "create_title": "Schedule Employee Shift",
+      "edit_title": "Edit Staff Shift",
+      "create_title": "Schedule Staff Shift",
       "status_accepted": "ACCEPTED",
       "status_rejected": "REJECTED",
       "status_pending_response": "PENDING RESPONSE",
       "edit_description": "Update details for this shift.",
-      "create_description": "Assign a shift to an individual employee.",
+      "create_description": "Assign a shift to an individual staff member.",
       "no_show_flagged": "This shift was flagged as a no-show.",
       "log_as_worked": "Log as Worked",
       "post_open_shift_label": "Post as Open Shift",
       "post_open_shift_hint": "Allows any eligible staff to bid or claim.",
-      "select_employee_label": "Select Employee",
+      "select_employee_label": "Select Staff Member",
       "loading_employees": "Loading employees...",
       "choose_employee": "Choose an employee",
       "unnamed_staff": "Unnamed Staff",
@@ -1756,7 +1759,7 @@
       "loading_roles": "Loading roles...",
       "choose_required_role": "Choose a required role",
       "no_role_required": "No specific role required",
-      "required_role_hint": "If set, the system will verify the employee has this role.",
+      "required_role_hint": "If set, the system will verify the staff member has this role.",
       "notes_label": "Notes (Optional)",
       "notes_placeholder": "e.g. Front desk duty",
       "unpaid_break_label": "Unpaid Break (Minutes)",
@@ -1770,7 +1773,7 @@
       "saving": "Saving...",
       "update_shift": "Update Shift",
       "post_open_shift": "Post Open Shift",
-      "schedule_employee": "Schedule Employee"
+      "schedule_employee": "Schedule Staff"
     },
     "recurring_rule": {
       "days": {
@@ -1830,7 +1833,7 @@
       "title": "Schedule a Whole Team",
       "description": "Gives every member of one team the same shift on each date you pick. For a single person, use Bulk Staff Setup instead.",
       "conflicts_count": "{{count}} shift(s) could not be scheduled:",
-      "conflict_employee_line": "{{date}} — Employee {{employmentId}}",
+      "conflict_employee_line": "{{date}} — Staff {{employmentId}}",
       "select_team_label": "Select Team",
       "loading_teams": "Loading teams...",
       "choose_team": "Choose a team",
@@ -1947,10 +1950,10 @@
       "prime_cost": "Prime Cost"
     },
     "labor_table": {
-      "title": "Labor Cost by Employee",
+      "title": "Labor Cost by Staff",
       "description": "Hours worked and wages for the selected period, from validated attendance",
       "no_data": "No validated attendance in this period.",
-      "col_employee": "Employee",
+      "col_employee": "Staff",
       "col_hours": "Hours",
       "col_overtime_hours": "Overtime Hours",
       "col_cost": "Labor Cost",
@@ -2417,7 +2420,7 @@
       }
     },
     "table": {
-      "employee": "Employee",
+      "employee": "Staff",
       "regular_hrs": "Regular Hrs",
       "ot_hrs": "OT Hrs",
       "total_hrs": "Total Hrs",
@@ -2433,15 +2436,15 @@
       }
     },
     "warning_banner": {
-      "message_one": "{{count}} employee has unvalidated or still-open attendance this period and is NOT included in the numbers below — validate their attendance and re-check this preview.",
-      "message_other": "{{count}} employees have unvalidated or still-open attendance this period and are NOT included in the numbers below — validate their attendance and re-check this preview.",
+      "message_one": "{{count}} staff member has unvalidated or still-open attendance this period and is NOT included in the numbers below — validate their attendance and re-check this preview.",
+      "message_other": "{{count}} staff members have unvalidated or still-open attendance this period and are NOT included in the numbers below — validate their attendance and re-check this preview.",
       "record_line_one": "{{name}} — {{count}} unvalidated record",
       "record_line_other": "{{name}} — {{count}} unvalidated records",
       "still_clocked_in": ", {{count}} still clocked in"
     },
     "missing_rate_banner": {
-      "message_one": "{{count}} employee has no hourly rate set and will be paid nothing this period until you set one.",
-      "message_other": "{{count}} employees have no hourly rate set and will be paid nothing this period until you set one."
+      "message_one": "{{count}} staff member has no hourly rate set and will be paid nothing this period until you set one.",
+      "message_other": "{{count}} staff members have no hourly rate set and will be paid nothing this period until you set one."
     },
     "draft_entries": {
       "title": "Draft Entries",
@@ -2471,7 +2474,7 @@
     "loading": "Loading absences…",
     "empty": "No absence records yet.",
     "col_date": "Date",
-    "col_employee": "Employee",
+    "col_employee": "Staff",
     "col_type": "Type",
     "col_linked_shift": "Linked Shift",
     "col_notes": "Notes",
@@ -2707,7 +2710,7 @@
       "trigger": "Labor & Compliance Defaults",
       "max_weekly_hours": {
         "label": "Max Weekly Hours",
-        "desc": "Default max hours per employee before blocking schedule"
+        "desc": "Default max hours per staff member before blocking schedule"
       },
       "min_gap": {
         "label": "Min Gap Between Shifts (Hours)",
@@ -3328,7 +3331,7 @@
     "add_staff": "Add Staff",
     "upgrade": "Upgrade",
     "upgrade_prompt_with_limit": "The business plan allows up to {{allowed}} employees ({{current}} currently active). The owner needs to upgrade to add more.",
-    "upgrade_prompt_generic": "The business plan employee limit has been reached. The owner needs to upgrade to add more staff.",
+    "upgrade_prompt_generic": "The business plan staff limit has been reached. The owner needs to upgrade to add more staff.",
     "add_new_staff_title": "Add New Staff",
     "email_placeholder": "Email",
     "add": "Send invite",
@@ -3611,12 +3614,8 @@
     "confirm_switch": "Confirm switch"
   },
   "danger_page": {
-    "title": "Close or delete",
+    "title": "Close or delete your business",
     "warning": "These actions are destructive and cannot be undone. Please be careful.",
-    "reset_shifts": "Reset All Staff Shifts",
-    "reset_shifts_description": "This will remove all current staff schedules. This action cannot be undone.",
-    "delete_menu_items": "Delete All Menu Items",
-    "delete_menu_items_description": "This will remove every item in your menu permanently.",
     "transfer_ownership": "Transfer Ownership",
     "transfer_ownership_description": "The new owner must already have a FlairSync account with a professional profile. They'll get an email to confirm — after that there's a 3-day grace period during which either of you can still cancel before the transfer completes.",
     "transfer_in_progress": "A transfer is already in progress",
@@ -3635,8 +3634,6 @@
     "cancelling": "Cancelling…",
     "cancel_transfer": "Cancel transfer",
     "cancel": "Cancel",
-    "confirm_reset": "Confirm Reset",
-    "delete_all": "Delete All",
     "new_owner_email": "New owner's email",
     "enter_recipient_email": "Enter recipient email",
     "confirm_your_password": "Confirm your password",
@@ -3746,8 +3743,8 @@
     "skipped_duplicate_other": "{{count}} rows skipped — duplicate email within the file.",
     "skipped_invalid_email_one": "{{count}} row skipped — missing or invalid email.",
     "skipped_invalid_email_other": "{{count}} rows skipped — missing or invalid email.",
-    "skipped_limit_reached_one": "{{count}} row skipped — your plan's employee limit was reached.",
-    "skipped_limit_reached_other": "{{count}} rows skipped — your plan's employee limit was reached.",
+    "skipped_limit_reached_one": "{{count}} row skipped — your plan's staff limit was reached.",
+    "skipped_limit_reached_other": "{{count}} rows skipped — your plan's staff limit was reached.",
     "skipped_other_one": "{{count}} row skipped — already had a pending invitation or another issue.",
     "skipped_other_other": "{{count}} rows skipped — already had a pending invitation or another issue.",
     "unmatched_roles_prefix": "These role names didn't match any existing role, so those rows got the default role instead:",
@@ -4770,10 +4767,10 @@
   "roles_section": {
     "title": "Roles",
     "role_name": "Role Name",
-    "employees": "Employees",
+    "employees": "Staff",
     "permissions": "Permissions",
-    "emps_count_one": "{{count}} Emp.",
-    "emps_count_other": "{{count}} Emps.",
+    "emps_count_one": "{{count}} Staff",
+    "emps_count_other": "{{count}} Staff",
     "permissions_count_one": "{{count}} Permission",
     "permissions_count_other": "{{count}} Permissions",
     "delete_confirm_title": "Delete this role?",
@@ -4961,7 +4958,7 @@
         "synonyms": "inventory, supplies, ingredients, stock take, cellar"
       },
       "staff": {
-        "label": "Team",
+        "label": "Staff",
         "description": "The people who work here",
         "synonyms": "staff, employees, waiters, chefs, hire, roles"
       },
@@ -5042,7 +5039,7 @@
       },
       "menu_boards": {
         "label": "Menu screens",
-        "description": "Screens showing your menu in the venue",
+        "description": "Screens showing your menu in the restaurant",
         "synonyms": "menu board, display, signage, tv, screen"
       },
       "stations": {
@@ -5072,7 +5069,7 @@
       },
       "marketplace": {
         "label": "Marketplace",
-        "description": "Buy and sell equipment with other venues",
+        "description": "Buy and sell equipment with other restaurants",
         "synonyms": "marketplace, equipment, second hand, buy, sell"
       },
       "alerts": {
@@ -5103,7 +5100,7 @@
         "add": "Add an order"
       },
       "staff": {
-        "invite": "Add a team member",
+        "invite": "Add staff",
         "people": "Who works here",
         "roles": "What they can do",
         "teams": "Teams",

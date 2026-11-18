@@ -7,7 +7,7 @@ import {
     ChevronDown,
     ChevronRight,
     Plus,
-    Pencil,
+    Edit,
     Trash2,
 } from "lucide-react";
 import { MenuItemRow } from "./MenuItemRow";
@@ -104,7 +104,7 @@ export const MenuCategoryCard = ({
                                 onClick={() => onEditCategory(category)}
                                 className="hover:bg-muted"
                             >
-                                <Pencil className="h-4 w-4" />
+                                <Edit className="h-4 w-4" />
                             </Button>
 
                             {/* Delete category with confirmation */}

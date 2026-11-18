@@ -31,7 +31,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Trash, UserPlus, Edit, Plus } from "lucide-react";
+import { Trash2, UserPlus, Edit, Plus } from "lucide-react";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
 import { AddRoleModal } from "@/components/management/staff/AddNewRoleModal";
 import { ViewRoleModal } from "@/components/management/staff/ViewRoleModal";
@@ -259,7 +259,7 @@ const RolesSection = ({ canCreate = true, canUpdate = true, canDelete = true }: 
                                                                 size="sm"
                                                                 variant="destructive"
                                                             >
-                                                                <Trash className="h-4 w-4" />
+                                                                <Trash2 className="h-4 w-4" />
                                                             </Button>
                                                         </ConfirmAction>
                                                     )}

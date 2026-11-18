@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash, Copy } from "lucide-react";
+import { Edit, Trash2, Copy } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useTranslation } from "react-i18next";
@@ -92,7 +92,7 @@ export const MenuItemRowSortable = ({
                             className="text-destructive hover:text-destructive border-destructive/30 hover:bg-destructive/10"
                             aria-label={t('shared.actions.delete')}
                         >
-                            <Trash className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4" />
                         </Button>
                     </ConfirmAction>
                 </div>

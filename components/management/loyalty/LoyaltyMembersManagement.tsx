@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, Coins, TrendingUp, Pencil, History } from "lucide-react";
+import { Users, Coins, TrendingUp, Edit, History } from "lucide-react";
 import DataPagination from "@/components/inputs/DataPagination";
 import { useLoyaltyMembers, useLoyaltyStats, useAdjustLoyaltyPoints } from "@/features/loyalty/useLoyaltyMembers";
 import { LoyaltyMember } from "@/features/loyalty/loyalty-api";
@@ -138,7 +138,7 @@ export function LoyaltyMembersManagement({ businessId, canUpdate }: LoyaltyMembe
                                                             onClick={() => setAdjustingMember(member)}
                                                             title={t("loyalty_management.members.adjust_points")}
                                                         >
-                                                            <Pencil className="h-4 w-4" />
+                                                            <Edit className="h-4 w-4" />
                                                         </Button>
                                                     )}
                                                 </TableCell>

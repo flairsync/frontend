@@ -163,8 +163,7 @@
       "loyalty_check_button": "Comprova",
       "loyalty_checking": "Comprovant...",
       "loyalty_member": "Ja està guanyant punts!",
-      "loyalty_not_found": "No s'ha trobat cap compte de FlairSync per a aquest contacte",
-      "loyalty_not_enrolled": "Té un compte, però encara no s'ha unit a aquest programa",
+      "loyalty_not_enrolled": "Encara no s'ha unit a aquest programa de fidelització",
       "loyalty_invite_button": "Convida a unir-se",
       "loyalty_invite_sending": "Enviant la invitació...",
       "loyalty_invite_sent": "Invitació enviada!",
@@ -181,8 +180,8 @@
       "discount": "Descompte",
       "split_bill": "Dividir el compte",
       "cash_tendered": "Efectiu lliurat",
-      "change_amount": "Canvi: {{amount}} $",
-      "short_by_amount": "Falten {{amount}} $",
+      "change_amount": "Canvi: {{amount}}",
+      "short_by_amount": "Falten {{amount}}",
       "present_card": "Presenta la targeta o acosta el dispositiu al terminal",
       "processing": "Processant...",
       "confirm_payment": "CONFIRMAR PAGAMENT"
@@ -354,7 +353,7 @@
     "order_card": {
       "table": "Taula",
       "takeaway": "Per emportar",
-      "total": "Total: {{amount}} $",
+      "total": "Total: {{amount}}",
       "unnamed_item": "Article",
       "more_items_one": "+ {{count}} article més",
       "more_items_other": "+ {{count}} articles més",
@@ -390,7 +389,7 @@
       },
       "table_occupied": {
         "title": "{{name}} està ocupada",
-        "description": "Aquesta taula té una comanda activa ({{amount}} $). Vols veure-la?"
+        "description": "Aquesta taula té una comanda activa ({{amount}}). Vols veure-la?"
       },
       "table_cleaning": {
         "title": "{{name}} necessita neteja",
@@ -402,7 +401,7 @@
       "offline_sync_issues_other": "{{count}} acció/ons sense connexió no s'ha/han pogut sincronitzar — revisa-ho",
       "offline_sync_success_one": "{{count}} acció/ons sense connexió sincronitzada/es",
       "offline_sync_success_other": "{{count}} acció/ons sense connexió sincronitzada/es",
-      "session_expired_offline_sync": "La sessió ha caducat. Torna a autenticar-te per sincronitzar els canvis sense connexió.",
+      "session_expired_offline_sync": "La teva sessió ha caducat. Torna a iniciar sessió per desar les comandes que vas prendre sense connexió.",
       "select_table_to_continue": "Selecciona una taula per continuar",
       "order_sent_to_kitchen": "Comanda enviada a cuina!",
       "offline_order_queued": "Estàs sense connexió — la comanda s'ha posat a la cua i se sincronitzarà quan tornis a tenir connexió",

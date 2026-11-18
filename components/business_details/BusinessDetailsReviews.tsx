@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Star, UserRound, Loader2, Pencil, Trash2, PlusCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, UserRound, Loader2, Edit, Trash2, PlusCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { formatInTimezone } from "@/lib/dateUtils";
@@ -250,7 +250,7 @@ const BusinessDetailsReviews: React.FC<BusinessDetailsReviewsProps> = ({ busines
                                     className="rounded-xl gap-2 font-bold"
                                     onClick={() => setReviewDialogOpen(true)}
                                 >
-                                    <Pencil size={14} />
+                                    <Edit size={14} />
                                     {t("business_page.reviews.edit_review_button", "Edit Your Review")}
                                 </Button>
                                 <ConfirmAction

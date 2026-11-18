@@ -108,6 +108,12 @@ const GDPRPage: React.FC = () => {
                 {/* Contact */}
                 <section className="text-center space-y-2 pt-4">
                     <p className="text-muted-foreground text-sm">
+                        {t("gdpr_page.self_service_notice")}{" "}
+                        <a href="/profile/account" className="text-primary underline">
+                            {t("gdpr_page.self_service_link")}
+                        </a>
+                    </p>
+                    <p className="text-muted-foreground text-sm">
                         {t("gdpr_page.contact_question")}{" "}
                         <a href="mailto:privacy@flairsync.com" className="text-primary underline">
                             privacy@flairsync.com

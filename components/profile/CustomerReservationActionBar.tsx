@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useReservationAction } from "@/features/discovery/useDiscovery";
 import { CustomerActionType, CustomerActionPayload } from "@/features/discovery/types";
-import { Loader2, CheckCircle, Clock, X, Edit2, HandMetal } from "lucide-react";
+import { Loader2, CheckCircle2, Clock, X, Edit, HandMetal } from "lucide-react";
 
 interface CustomerReservationActionBarProps {
     businessId: string;
@@ -68,7 +68,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                         disabled={isPending}
                         onClick={() => handleSimple('confirm_attendance')}
                     >
-                        {isPending && expanded === null ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle className="w-4 h-4 mr-2" />}
+                        {isPending && expanded === null ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <CheckCircle2 className="w-4 h-4 mr-2" />}
                         {t("reservation_action_bar.confirm_attendance")}
                     </Button>
                 )}
@@ -134,7 +134,7 @@ export const CustomerReservationActionBar: React.FC<CustomerReservationActionBar
                             className="w-full justify-start"
                             onClick={() => setExpanded(expanded === 'request_modification' ? null : 'request_modification')}
                         >
-                            <Edit2 className="w-4 h-4 mr-2" />
+                            <Edit className="w-4 h-4 mr-2" />
                             {t("reservation_action_bar.request_change_button")}
                         </Button>
                         {expanded === 'request_modification' && (

@@ -130,7 +130,7 @@
       "generic_error": "Alguna cosa ha fallat. Torna-ho a provar.",
       "received_title": "Reserva rebuda!",
       "received_message_prefix": "La teva reserva per a {{tableName}} el {{date}} a les {{time}} és actualment",
-      "pending_badge": "PENDENT",
+      "pending_badge": "Pendent",
       "received_message_suffix": "de confirmació.",
       "keep_eye": "Vigila el teu correu electrònic/telèfon per rebre l'avís de confirmació.",
       "back_to_business": "Torna al negoci",
@@ -163,7 +163,7 @@
       "guest_count_other": "{{count}} comensals",
       "table_list_tab": "Llista de taules",
       "floor_plan_tab": "Plànol del local",
-      "beta_badge": "BETA",
+      "beta_badge": "Beta",
       "checking_availability": "Comprovant disponibilitat…",
       "no_tables_available": "No hi ha taules disponibles per a {{count}} {{guestLabel}} a les {{time}}.",
       "guest_one": "comensal",
@@ -267,6 +267,9 @@
       "reserve": "Reserva",
       "reviews": "Ressenyes",
       "contact": "Contacte"
+    },
+    "loyalty_card": {
+      "member_since": "Membre des del {{date}}"
     }
   },
   "location_selection_modal": {

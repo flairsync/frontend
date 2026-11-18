@@ -12,7 +12,7 @@ import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { getCurrencySymbol } from "@/utils/currency";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Eye, CheckCircle, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin, Zap } from "lucide-react";
+import { Plus, Eye, CheckCircle2, CheckSquare, PlusCircle, CreditCard, Clock, Utensils, Hash, MoreHorizontal, XCircle, ArrowRightLeft, ChefHat, ThumbsDown, Receipt, X, Search, MapPin, Zap } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import ReceiptView from "@/components/pos/ReceiptView";
@@ -323,7 +323,7 @@ const OwnerOrdersPage: React.FC = () => {
                 )}
                 {o.status === "created" && (
                     <DropdownMenuItem onClick={() => acceptOrder(o.id)} disabled={isAcceptingOrder} className="text-blue-600 focus:text-blue-700">
-                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
                         <span>{t("orders.actions.accept")}</span>
                     </DropdownMenuItem>
                 )}
@@ -341,13 +341,13 @@ const OwnerOrdersPage: React.FC = () => {
                 )}
                 {o.status === "preparing" && (
                     <DropdownMenuItem onClick={() => readyOrder(o.id)} disabled={isMarkingReady} className="text-green-600 focus:text-green-700">
-                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
                         <span>{t("orders.actions.mark_ready")}</span>
                     </DropdownMenuItem>
                 )}
                 {o.status === "ready" && (
                     <DropdownMenuItem onClick={() => serveOrder(o.id)} disabled={isMarkingServed} className="text-green-600 focus:text-green-700">
-                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
                         <span>{t("orders.actions.mark_served")}</span>
                     </DropdownMenuItem>
                 )}
@@ -493,7 +493,7 @@ const OwnerOrdersPage: React.FC = () => {
                                 disabled={isBatchUpdating}
                                 onClick={() => handleBatchAction('accept')}
                             >
-                                <CheckCircle className="w-3.5 h-3.5" />
+                                <CheckCircle2 className="w-3.5 h-3.5" />
                                 {t("orders.accept_all")}
                             </Button>
                             <Button

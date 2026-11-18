@@ -318,17 +318,29 @@
         "description": "Estas cookies se usan para ofrecer contenido relevante y medir la eficacia de las campañas. No vendemos tus datos a anunciantes. Solo se activan con tu consentimiento explícito.",
         "examples": "Seguimiento del origen de campañas, eventos de conversión"
       }
-    }
+    },
+    "self_service_notice": "¿Quieres exportar o eliminar tus datos personales?",
+    "self_service_link": "Gestiónalo desde la configuración de tu cuenta"
   },
   "privacy_page": {
     "title": "Política de privacidad",
     "intro": "Esta Política de Privacidad explica cómo FlairSync recopila, utiliza y protege tus datos personales en pleno cumplimiento del RGPD (UE) 2016/679, la Directiva ePrivacy y la legislación aplicable de la UE en materia de protección de datos.",
-    "load_error_title": "No se pudo cargar la Política de Privacidad"
+    "load_error_title": "No se pudo cargar la Política de Privacidad",
+    "last_updated": "Última actualización: {{date}}",
+    "load_error_description": "Intenta actualizar la página en un momento.",
+    "self_service_notice": "¿Quieres exportar o eliminar tus datos personales?",
+    "self_service_link": "Gestiónalo desde la configuración de tu cuenta",
+    "contact_question": "¿Tienes preguntas sobre esta política?"
   },
   "terms_page": {
     "title": "Términos y condiciones",
     "intro": "Estos Términos y Condiciones rigen el uso de FlairSync. Al utilizar nuestros servicios, aceptas cumplirlos.",
-    "load_error_title": "No se pudieron cargar los Términos y Condiciones"
+    "load_error_title": "No se pudieron cargar los Términos y Condiciones",
+    "last_updated": "Última actualización: {{date}}",
+    "load_error_description": "Intenta actualizar la página en un momento.",
+    "self_service_notice": "¿Quieres exportar o eliminar tus datos personales?",
+    "self_service_link": "Gestiónalo desde la configuración de tu cuenta",
+    "contact_question": "¿Tienes preguntas sobre esta política?"
   },
   "about_page": {
     "badge_early_access": "Ahora en acceso anticipado",

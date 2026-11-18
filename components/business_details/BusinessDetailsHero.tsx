@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Share2, Heart, Calendar, Check, ImageOff } from "lucide-react";
+import { Star, MapPin, Share2, Heart, Calendar, CheckCircle2, ImageOff } from "lucide-react";
 import {
     Carousel,
     CarouselContent,
@@ -125,7 +125,7 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
                                 : "bg-background border-border text-foreground hover:bg-muted"
                         )}
                     >
-                        {copied ? <Check size={18} className="text-emerald-400" /> : <Share2 size={18} />}
+                        {copied ? <CheckCircle2 size={18} className="text-emerald-400" /> : <Share2 size={18} />}
                     </Button>
                     {user && (
                         <Button

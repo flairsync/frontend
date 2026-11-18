@@ -1,3 +1,3 @@
 export default {
-  title: "Terms of use",
+  title: "Terms and Conditions",
 };

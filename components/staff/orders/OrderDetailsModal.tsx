@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { formatTime } from "@/lib/dateUtils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CreditCard, Banknote, CalendarClock, Ban, CheckCircle, Undo, Pencil, ChevronRight, Flame } from "lucide-react";
+import { CreditCard, Banknote, CalendarClock, Ban, CheckCircle2, Undo, Edit, ChevronRight, Flame } from "lucide-react";
 import { RefundPaymentModal } from "@/components/staff/orders/RefundPaymentModal";
 import { ManageOrderItemModal } from "@/components/staff/orders/ManageOrderItemModal";
 import { AuditLogHint } from "@/components/audit/AuditLogHint";
@@ -287,7 +287,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                                     onClick={() => setManageItemId(item.id)}
                                                                     title={t("staff_orders.order_details_modal.edit_item_title")}
                                                                 >
-                                                                    <Pencil className="w-3.5 h-3.5" />
+                                                                    <Edit className="w-3.5 h-3.5" />
                                                                 </Button>
                                                             )}
                                                             {itemStatus === 'pending' ? (
@@ -377,7 +377,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ businessId
                                                 <div className="flex gap-2 items-center">
                                                     {payment.status === "success" || payment.status === "paid" ? (
                                                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-[10px] h-4">
-                                                            <CheckCircle className="w-3 h-3 mr-1" />
+                                                            <CheckCircle2 className="w-3 h-3 mr-1" />
                                                             {t("staff_orders.order_details_modal.successful")}
                                                         </Badge>
                                                     ) : payment.status === "failed" ? (

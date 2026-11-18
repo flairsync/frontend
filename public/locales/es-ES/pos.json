@@ -163,8 +163,7 @@
       "loyalty_check_button": "Comprobar",
       "loyalty_checking": "Comprobando...",
       "loyalty_member": "¡Ya está ganando puntos!",
-      "loyalty_not_found": "No se encontró ninguna cuenta de FlairSync con este contacto",
-      "loyalty_not_enrolled": "Tiene una cuenta, pero aún no se ha unido a este programa",
+      "loyalty_not_enrolled": "Aún no se ha unido a este programa de fidelización",
       "loyalty_invite_button": "Invitar a unirse",
       "loyalty_invite_sending": "Enviando invitación...",
       "loyalty_invite_sent": "¡Invitación enviada!",
@@ -181,8 +180,8 @@
       "discount": "Descuento",
       "split_bill": "Dividir cuenta",
       "cash_tendered": "Efectivo entregado",
-      "change_amount": "Cambio: {{amount}} $",
-      "short_by_amount": "Faltan {{amount}} $",
+      "change_amount": "Cambio: {{amount}}",
+      "short_by_amount": "Faltan {{amount}}",
       "present_card": "Presenta la tarjeta o acerca el dispositivo al terminal",
       "processing": "Procesando...",
       "confirm_payment": "CONFIRMAR PAGO"
@@ -354,7 +353,7 @@
     "order_card": {
       "table": "Mesa",
       "takeaway": "Para llevar",
-      "total": "Total: {{amount}} $",
+      "total": "Total: {{amount}}",
       "unnamed_item": "Artículo",
       "more_items_one": "+ {{count}} artículo más",
       "more_items_other": "+ {{count}} artículos más",
@@ -390,7 +389,7 @@
       },
       "table_occupied": {
         "title": "{{name}} está ocupada",
-        "description": "Esta mesa tiene un pedido activo ({{amount}} $). ¿Quieres verlo?"
+        "description": "Esta mesa tiene un pedido activo ({{amount}}). ¿Quieres verlo?"
       },
       "table_cleaning": {
         "title": "{{name}} necesita limpieza",
@@ -402,7 +401,7 @@
       "offline_sync_issues_other": "{{count}} acción(es) sin conexión no se pudo(ieron) sincronizar — revisa, por favor",
       "offline_sync_success_one": "{{count}} acción(es) sin conexión sincronizada(s)",
       "offline_sync_success_other": "{{count}} acción(es) sin conexión sincronizada(s)",
-      "session_expired_offline_sync": "Sesión caducada. Vuelve a autenticarte para sincronizar los cambios sin conexión.",
+      "session_expired_offline_sync": "Tu sesión ha caducado. Vuelve a iniciar sesión para guardar los pedidos que tomaste sin conexión.",
       "select_table_to_continue": "Selecciona una mesa para continuar",
       "order_sent_to_kitchen": "¡Pedido enviado a cocina!",
       "offline_order_queued": "Estás sin conexión — el pedido se ha puesto en cola y se sincronizará al recuperar la conexión",

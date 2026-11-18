@@ -8,7 +8,7 @@
     "loading": "Cargando pedidos...",
     "station_unassigned": {
       "title": "Estación sin asignar",
-      "description": "Este KDS no tiene una estación de cocina asignada. Pide a un encargado que la reasigne desde el panel, en Estaciones."
+      "description": "Este KDS no tiene una estación de cocina asignada. Pide a un propietario que la asigne desde el panel, en Estaciones."
     },
     "empty_state": {
       "title": "Cocina despejada",
@@ -156,7 +156,7 @@
     }
   },
   "nfc_scan": {
-    "trigger": "NFC",
+    "trigger": "Tarjeta",
     "panel_title": "Fichaje con Tarjeta NFC",
     "panel_description": "Acerca la tarjeta del personal al lector para fichar entrada o salida.",
     "status": {

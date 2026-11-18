@@ -26,6 +26,7 @@ import { Badge } from "../ui/badge";
 
 import { BusinessMenuItem } from "@/models/business/menu/BusinessMenuItem";
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { BusinessDetailsOrderModal } from "./BusinessDetailsOrderModal";
 
 interface BusinessDetailsMenuProps {
@@ -137,7 +138,7 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, busines
                                                     </div>
                                                     <div className="flex items-center gap-4 ml-4">
                                                         <span className="font-black text-primary bg-primary/5 px-3 py-1 rounded-lg">
-                                                            {business.currency || "$"}{item.price}
+                                                            {formatCurrency(item.price, business.currency || "EUR")}
                                                         </span>
                                                         {allowOrders && (
                                                             <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />

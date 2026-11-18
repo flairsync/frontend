@@ -318,17 +318,29 @@
         "description": "Aquestes cookies s'utilitzen per oferir contingut rellevant i mesurar l'eficàcia de les campanyes. No venem les teves dades a anunciants. Només s'activen amb el teu consentiment explícit.",
         "examples": "Seguiment de l'origen de campanyes, esdeveniments de conversió"
       }
-    }
+    },
+    "self_service_notice": "Vols exportar o eliminar les teves dades personals?",
+    "self_service_link": "Gestiona-ho des de la configuració del teu compte"
   },
   "privacy_page": {
     "title": "Política de privacitat",
     "intro": "Aquesta Política de Privacitat explica com FlairSync recull, utilitza i protegeix les teves dades personals en total compliment del RGPD (UE) 2016/679, la Directiva ePrivacy i la legislació aplicable de la UE en matèria de protecció de dades.",
-    "load_error_title": "No s'ha pogut carregar la Política de Privacitat"
+    "load_error_title": "No s'ha pogut carregar la Política de Privacitat",
+    "last_updated": "Darrera actualització: {{date}}",
+    "load_error_description": "Torna a provar d'actualitzar la pàgina d'aquí un moment.",
+    "self_service_notice": "Vols exportar o eliminar les teves dades personals?",
+    "self_service_link": "Gestiona-ho des de la configuració del teu compte",
+    "contact_question": "Tens preguntes sobre aquesta política?"
   },
   "terms_page": {
     "title": "Termes i condicions",
     "intro": "Aquests Termes i Condicions regeixen l'ús de FlairSync. En utilitzar els nostres serveis, acceptes complir-los.",
-    "load_error_title": "No s'han pogut carregar els Termes i Condicions"
+    "load_error_title": "No s'han pogut carregar els Termes i Condicions",
+    "last_updated": "Darrera actualització: {{date}}",
+    "load_error_description": "Torna a provar d'actualitzar la pàgina d'aquí un moment.",
+    "self_service_notice": "Vols exportar o eliminar les teves dades personals?",
+    "self_service_link": "Gestiona-ho des de la configuració del teu compte",
+    "contact_question": "Tens preguntes sobre aquesta política?"
   },
   "about_page": {
     "badge_early_access": "Ara en accés anticipat",

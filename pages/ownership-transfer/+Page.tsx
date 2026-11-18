@@ -7,7 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Clock, ShieldAlert } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, ShieldAlert } from "lucide-react";
 import { usePageContext } from "vike-react/usePageContext";
 import PublicFeedHeader from "@/components/feed/PublicFeedHeader";
 import WebsiteFooter from "@/components/shared/WebsiteFooter";
@@ -122,7 +122,7 @@ const OwnershipTransferPage: React.FC = () => {
   } else if (transfer.status === "COMPLETED") {
     content = (
       <StatusBlock
-        icon={<CheckCircle className="h-10 w-10 text-green-500" />}
+        icon={<CheckCircle2 className="h-10 w-10 text-green-500" />}
         title="Ownership transfer complete"
         description={
           transfer.isNewOwner

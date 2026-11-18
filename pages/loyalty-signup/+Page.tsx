@@ -12,7 +12,7 @@ import AbstractBG from '@/assets/svg/vecteezy_abstract-blue-color-background-dyn
 import { LoginFormSchema, SignupFormSchema } from '@/misc/FormValidators';
 import { useAuth } from '@/features/auth/useAuth';
 import { resolveLoyaltySignupInviteApiCall, consumeLoyaltySignupInviteApiCall } from '@/features/loyalty/loyalty-api';
-import { Gift, XCircle, CheckCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Gift, XCircle, CheckCircle2, Loader2, Eye, EyeOff } from 'lucide-react';
 
 function PageShell({ children }: { children: React.ReactNode }) {
     return (
@@ -115,7 +115,7 @@ const LoyaltySignupPage = () => {
                 <div className="text-center">
                     <div className="flex justify-center mb-6">
                         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-50">
-                            <CheckCircle className="h-8 w-8 text-green-500" />
+                            <CheckCircle2 className="h-8 w-8 text-green-500" />
                         </div>
                     </div>
                     <h1 className="text-3xl font-extrabold mb-3">{t('auth_page.loyalty_signup.success_title')}</h1>

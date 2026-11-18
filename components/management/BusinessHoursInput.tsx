@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 type Shift = { start: string; end: string };
 type DayShifts = Shift[];
@@ -105,7 +105,7 @@ const BusinessHoursInput: React.FC = () => {
                                         size="sm"
                                         onClick={() => removeShift(day, index)}
                                     >
-                                        <Trash className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
                                 </div>
                             ))}

@@ -8,7 +8,7 @@ import { useShifts } from "@/features/shifts/useShifts";
 import { usePageContext } from "vike-react/usePageContext";
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { parseISO, format } from "date-fns";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 
@@ -121,7 +121,7 @@ export const ShiftAdjustmentPopover: React.FC<ShiftAdjustmentPopoverProps> = ({ 
                             cancelText={t("shared.actions.cancel")}
                         >
                             <Button variant="ghost" size="sm" className="text-destructive px-2" disabled={isDeletingShift}>
-                                <Trash className="w-4 h-4 mr-1" />
+                                <Trash2 className="w-4 h-4 mr-1" />
                                 {t("schedule_modals.shift_adjustment_popover.delete")}
                             </Button>
                         </ConfirmAction>

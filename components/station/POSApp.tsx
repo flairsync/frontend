@@ -79,6 +79,7 @@ import type {
     MenuCategory, MenuItem,
 } from "@/features/pos/types";
 import { calcTotal } from "@/features/pos/types";
+import { getCurrencySymbol } from "@/utils/currency";
 import type { Order } from "@/features/orders/service";
 import { formatTime } from "@/lib/dateUtils";
 
@@ -320,6 +321,7 @@ function POSMain({
 
     // `rate` is a decimal column and comes back from the API as a string — coerce here so
     // every downstream consumer (calcTotal, OrderCart, PaymentModal) gets a real number.
+    const currencySymbol = getCurrencySymbol(station.business.currency);
     const defaultTaxRate = Number(station.business.taxes?.find((t) => t.isDefault)?.rate) || 0;
     const cartTotal = useMemo(
         () => calcTotal(cart, defaultTaxRate, station.business.taxIncluded),
@@ -740,7 +742,7 @@ function POSMain({
                 setConfirmModal({
                     isOpen: true,
                     title: t("pos_app.confirm_modals.table_occupied.title", { name: table.name }),
-                    description: t("pos_app.confirm_modals.table_occupied.description", { amount: Number(existing.totalAmount).toFixed(2) }),
+                    description: t("pos_app.confirm_modals.table_occupied.description", { amount: `${currencySymbol}${Number(existing.totalAmount).toFixed(2)}` }),
                     onConfirm: () => {
                         setActiveMainSection("orders");
                     },
@@ -1086,6 +1088,7 @@ function POSMain({
                                     <ActiveOrderCard
                                         key={order.id}
                                         order={order}
+                                        currencySymbol={currencySymbol}
                                         posPermissions={perms}
                                         onPay={(method) =>
                                             handlePayment(
@@ -1348,6 +1351,7 @@ const STATUS_COLOR: Record<string, string> = {
 
 function ActiveOrderCard({
     order,
+    currencySymbol,
     posPermissions,
     onPay,
     onTransition,
@@ -1355,6 +1359,7 @@ function ActiveOrderCard({
     onReorder,
 }: {
     order: Order;
+    currencySymbol: string;
     posPermissions?: { posCreateOrder: boolean; posVoidItem: boolean; posCancelOrder: boolean; posRefund: boolean; posApplyDiscount: boolean } | null;
     onPay: (method: "cash" | "card") => void;
     onTransition: (action: string) => void;
@@ -1402,7 +1407,7 @@ function ActiveOrderCard({
 
                     <div className="space-y-1 mb-5">
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest font-mono">
-                            {t("pos_app.order_card.total", { amount: Number(order.totalAmount).toFixed(2) })}
+                            {t("pos_app.order_card.total", { amount: `${currencySymbol}${Number(order.totalAmount).toFixed(2)}` })}
                         </p>
                         {order.items.slice(0, 2).map((it, idx) => (
                             <p key={idx} className="text-xs text-muted-foreground">

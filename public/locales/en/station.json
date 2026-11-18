@@ -19,7 +19,7 @@
     "loading": "Loading orders...",
     "station_unassigned": {
       "title": "Station Unassigned",
-      "description": "This KDS has no kitchen station assigned. Ask a manager to re-assign it from the dashboard under Stations."
+      "description": "This KDS has no kitchen station assigned. Ask an owner to assign it from the dashboard under Stations."
     },
     "empty_state": {
       "title": "Kitchen Clear",
@@ -167,7 +167,7 @@
     }
   },
   "nfc_scan": {
-    "trigger": "NFC",
+    "trigger": "Tap Badge",
     "panel_title": "Badge Scan",
     "panel_description": "Hold a staff badge near the reader to clock in or out.",
     "status": {

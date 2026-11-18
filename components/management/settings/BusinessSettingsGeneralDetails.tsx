@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { getCurrencySymbol, toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
-import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
+import { CheckCircle2, XCircle, Loader2, AlertCircle } from 'lucide-react'
 
 // AD-04 gap fix: countries whose legally mandated primary receipt language can't be
 // overridden away (Catalan for Andorra, per Llei 6/2024 — see
@@ -186,7 +186,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                         />
                         <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
                             {slugStatus === 'checking' && <Loader2 className="h-4 w-4 animate-spin" />}
-                            {slugStatus === 'available' && <CheckCircle className="h-4 w-4 text-green-500" />}
+                            {slugStatus === 'available' && <CheckCircle2 className="h-4 w-4 text-green-500" />}
                             {(slugStatus === 'taken' || slugStatus === 'invalid') && <XCircle className="h-4 w-4 text-destructive" />}
                         </span>
                     </div>

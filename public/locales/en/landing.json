@@ -318,17 +318,29 @@
         "description": "These cookies are used to deliver relevant content and measure campaign effectiveness. We do not sell your data to advertisers. Set only with your explicit consent.",
         "examples": "Campaign source tracking, conversion events"
       }
-    }
+    },
+    "self_service_notice": "Want to export or delete your personal data?",
+    "self_service_link": "Manage it from your account settings"
   },
   "privacy_page": {
     "title": "Privacy Policy",
     "intro": "This Privacy Policy explains how FlairSync collects, uses, and protects your personal data in full compliance with the GDPR (EU) 2016/679, the ePrivacy Directive, and applicable EU data protection law.",
-    "load_error_title": "Unable to load Privacy Policy"
+    "load_error_title": "Unable to load Privacy Policy",
+    "last_updated": "Last Updated: {{date}}",
+    "load_error_description": "Please try refreshing the page in a moment.",
+    "self_service_notice": "Want to export or delete your personal data?",
+    "self_service_link": "Manage it from your account settings",
+    "contact_question": "Questions about this policy?"
   },
   "terms_page": {
     "title": "Terms and Conditions",
     "intro": "These Terms and Conditions govern your use of FlairSync. By using our services, you agree to comply with them.",
-    "load_error_title": "Unable to load Terms and Conditions"
+    "load_error_title": "Unable to load Terms and Conditions",
+    "last_updated": "Last Updated: {{date}}",
+    "load_error_description": "Please try refreshing the page in a moment.",
+    "self_service_notice": "Want to export or delete your personal data?",
+    "self_service_link": "Manage it from your account settings",
+    "contact_question": "Questions about this policy?"
   },
   "about_page": {
     "badge_early_access": "Now in Early Access",

@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash, Copy, ArrowRight, ChevronUp, ChevronDown, MoreVertical } from "lucide-react";
+import { Edit, Trash2, Copy, ArrowRight, ChevronUp, ChevronDown, MoreVertical } from "lucide-react";
 import { BusinessMenuCategory } from "@/models/business/menu/BusinessMenuCategory";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { useTranslation } from "react-i18next";
@@ -139,7 +139,7 @@ export const SimpleMenuItemRow = ({
                                 variant="destructive"
                                 className="h-8 px-3"
                             >
-                                <Trash className="h-4 w-4 mr-1" />
+                                <Trash2 className="h-4 w-4 mr-1" />
                                 <span>{t('shared.actions.delete')}</span>
                             </Button>
                         </ConfirmAction>
@@ -210,7 +210,7 @@ export const SimpleMenuItemRow = ({
                                             setConfirmDeleteOpen(true);
                                         }}
                                     >
-                                        <Trash className="h-4 w-4 mr-2" /> {t('shared.actions.delete')}
+                                        <Trash2 className="h-4 w-4 mr-2" /> {t('shared.actions.delete')}
                                     </DropdownMenuItem>
                                 )}
                             </DropdownMenuContent>

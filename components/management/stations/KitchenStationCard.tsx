@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
-  Pencil, Trash2, UtensilsCrossed, GripVertical, Loader2,
+  Edit, Trash2, UtensilsCrossed, GripVertical, Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -109,7 +109,7 @@ export function KitchenStationCard({ ks, businessId, onDelete }: KitchenStationC
           className="h-7 w-7 text-muted-foreground hover:text-foreground"
           onClick={() => setEditing(true)}
         >
-          <Pencil className="w-3.5 h-3.5" />
+          <Edit className="w-3.5 h-3.5" />
         </Button>
         <Button
           variant="ghost"

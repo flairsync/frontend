@@ -20,7 +20,7 @@ import { ConfirmAction } from '@/components/shared/ConfirmAction';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { IncomingOrdersTable } from '@/components/management/marketplace/IncomingOrdersTable';
 import { MyOrdersTable } from '@/components/management/marketplace/MyOrdersTable';
-import { Plus, Pencil, Trash2, Loader2, PackageOpen } from 'lucide-react';
+import { Plus, Edit, Trash2, Loader2, PackageOpen } from 'lucide-react';
 
 function formatPrice(price: number, currency: string) {
     try {
@@ -215,7 +215,7 @@ const BusinessOwnerMarketplaceManagement: React.FC = () => {
                                                 disabled={isMutating}
                                                 onClick={() => openEdit(item)}
                                             >
-                                                <Pencil className="w-3.5 h-3.5" />
+                                                <Edit className="w-3.5 h-3.5" />
                                             </Button>
                                             <ConfirmAction
                                                 title={t('marketplace_management.delete_item')}

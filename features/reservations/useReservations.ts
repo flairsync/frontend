@@ -131,19 +131,19 @@ export const useReservationDetails = (businessId: string, reservationId: string,
     });
 };
 
-export const useUserLookup = (email?: string, phone?: string) => {
+export const useUserLookup = (businessId: string, email?: string, phone?: string) => {
     return useQuery({
-        queryKey: ["user-lookup", email, phone],
+        queryKey: ["user-lookup", businessId, email, phone],
         queryFn: async () => {
             if (!email && !phone) return null;
             try {
-                return await lookupUserApiCall(email, phone);
+                return await lookupUserApiCall(businessId, email, phone);
             } catch (error) {
                 console.warn("User lookup failed:", error);
                 return null;
             }
         },
-        enabled: !!email || !!phone,
+        enabled: !!businessId && (!!email || !!phone),
         retry: false,
     });
 };

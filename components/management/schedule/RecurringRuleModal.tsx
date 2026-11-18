@@ -18,7 +18,7 @@ import { RecurringShiftRule } from "@/models/business/shift/RecurringShiftRule";
 import { useMutation } from "@tanstack/react-query";
 import { generateDraftApiCall } from "@/features/shifts/service";
 import { format, startOfWeek, endOfWeek } from "date-fns";
-import { Trash, Users } from "lucide-react";
+import { Trash2, Users } from "lucide-react";
 
 interface RecurringRuleModalProps {
     open: boolean;
@@ -366,7 +366,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                                         className="flex items-center gap-1 bg-secondary hover:bg-destructive/10 hover:text-destructive text-secondary-foreground px-2 py-0.5 rounded text-xs transition-colors"
                                     >
                                         {d}
-                                        <Trash className="w-2.5 h-2.5" />
+                                        <Trash2 className="w-2.5 h-2.5" />
                                     </button>
                                 ))}
                             </div>

@@ -130,7 +130,7 @@
       "generic_error": "Une erreur s'est produite. Veuillez réessayer.",
       "received_title": "Réservation reçue !",
       "received_message_prefix": "Votre réservation pour {{tableName}} le {{date}} à {{time}} est actuellement",
-      "pending_badge": "EN ATTENTE",
+      "pending_badge": "En attente",
       "received_message_suffix": "de confirmation.",
       "keep_eye": "Surveillez votre e-mail/téléphone pour l'avis de confirmation.",
       "back_to_business": "Retour à l'établissement",
@@ -163,7 +163,7 @@
       "guest_count_other": "{{count}} invités",
       "table_list_tab": "Liste des tables",
       "floor_plan_tab": "Plan de salle",
-      "beta_badge": "BÊTA",
+      "beta_badge": "Bêta",
       "checking_availability": "Vérification de la disponibilité…",
       "no_tables_available": "Aucune table disponible pour {{count}} {{guestLabel}} à {{time}}.",
       "guest_one": "invité",
@@ -267,6 +267,9 @@
       "reserve": "Réserver",
       "reviews": "Avis",
       "contact": "Contact"
+    },
+    "loyalty_card": {
+      "member_since": "Membre depuis le {{date}}"
     }
   },
   "location_selection_modal": {

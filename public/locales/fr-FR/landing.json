@@ -318,17 +318,29 @@
         "description": "Ces cookies servent à proposer du contenu pertinent et à mesurer l'efficacité des campagnes. Nous ne vendons pas vos données à des annonceurs. Activés uniquement avec votre consentement explicite.",
         "examples": "Suivi de la source des campagnes, événements de conversion"
       }
-    }
+    },
+    "self_service_notice": "Vous souhaitez exporter ou supprimer vos données personnelles ?",
+    "self_service_link": "Gérez-les depuis les paramètres de votre compte"
   },
   "privacy_page": {
     "title": "Politique de confidentialité",
     "intro": "Cette politique de confidentialité explique comment FlairSync collecte, utilise et protège vos données personnelles, en pleine conformité avec le RGPD (UE) 2016/679, la directive ePrivacy et le droit applicable de l'UE en matière de protection des données.",
-    "load_error_title": "Impossible de charger la politique de confidentialité"
+    "load_error_title": "Impossible de charger la politique de confidentialité",
+    "last_updated": "Dernière mise à jour : {{date}}",
+    "load_error_description": "Veuillez réessayer de rafraîchir la page dans un instant.",
+    "self_service_notice": "Vous souhaitez exporter ou supprimer vos données personnelles ?",
+    "self_service_link": "Gérez-les depuis les paramètres de votre compte",
+    "contact_question": "Des questions sur cette politique ?"
   },
   "terms_page": {
     "title": "Conditions générales",
     "intro": "Ces conditions générales régissent votre utilisation de FlairSync. En utilisant nos services, vous acceptez de vous y conformer.",
-    "load_error_title": "Impossible de charger les conditions générales"
+    "load_error_title": "Impossible de charger les conditions générales",
+    "last_updated": "Dernière mise à jour : {{date}}",
+    "load_error_description": "Veuillez réessayer de rafraîchir la page dans un instant.",
+    "self_service_notice": "Vous souhaitez exporter ou supprimer vos données personnelles ?",
+    "self_service_link": "Gérez-les depuis les paramètres de votre compte",
+    "contact_question": "Des questions sur cette politique ?"
   },
   "about_page": {
     "badge_early_access": "Actuellement en accès anticipé",

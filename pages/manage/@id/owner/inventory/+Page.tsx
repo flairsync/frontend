@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-    Plus, Pencil, Trash2, Search, History, AlertTriangle, Layers, Sparkles,
+    Plus, Edit, Trash2, Search, History, AlertTriangle, Layers, Sparkles,
     ChevronLeft, ChevronRight, ChevronsUpDown, Check, X, ChevronUp, ChevronDown,
     SlidersHorizontal
 } from "lucide-react";
@@ -217,7 +217,7 @@ const BusinessOwnerInventoryManagement: React.FC = () => {
                 <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
             </Button>
             <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEditItem(item)} title={t("shared.actions.edit")} aria-label={t("shared.actions.edit")}>
-                <Pencil className="w-4 h-4 text-muted-foreground" />
+                <Edit className="w-4 h-4 text-muted-foreground" />
             </Button>
             <ConfirmAction
                 onConfirm={() => handleDeleteItem(item.id)}

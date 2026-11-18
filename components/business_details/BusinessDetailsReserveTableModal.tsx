@@ -20,6 +20,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useSubmitReservation, useDiscoveryProfile, useDiscoveryMenu } from "@/features/discovery/useDiscovery";
 import { Badge } from "@/components/ui/badge";
 import { parseInTimezone } from "@/lib/dateUtils";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { usePageContext } from "vike-react/usePageContext";
 import { useProfile } from "@/features/profile/useProfile";
 
@@ -112,7 +113,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                         <div className="space-y-2">
                             <h2 className="text-2xl font-bold">{t("business_page.reserve_modal.received_title", "Reservation Received!")}</h2>
                             <p className="text-muted-foreground">
-                                {t("business_page.reserve_modal.received_message_prefix", { tableName: props.tableName, date: props.date, time: props.time })} <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 uppercase font-black px-2 ml-1">{t("business_page.reserve_modal.pending_badge", "PENDING")}</Badge> {t("business_page.reserve_modal.received_message_suffix", "confirmation.")}
+                                {t("business_page.reserve_modal.received_message_prefix", { tableName: props.tableName, date: props.date, time: props.time })} <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200 uppercase font-black px-2 ml-1">{t("business_page.reserve_modal.pending_badge", "Pending")}</Badge> {t("business_page.reserve_modal.received_message_suffix", "confirmation.")}
                             </p>
                             <p className="text-sm text-muted-foreground/80 mt-4">
                                 {t("business_page.reserve_modal.keep_eye", "Keep an eye on your email/phone for the confirmation notice.")}
@@ -240,7 +241,7 @@ const BusinessDetailsReserveTableModal: React.FC<Props> = (props) => {
                                                                 <div key={item.id} className="flex items-center justify-between gap-4">
                                                                     <div className="flex-1 min-w-0">
                                                                         <div className="font-medium text-sm truncate">{item.name}</div>
-                                                                        <div className="text-xs text-muted-foreground">{businessProfile?.currency || "$"}{item.price}</div>
+                                                                        <div className="text-xs text-muted-foreground">{formatCurrency(item.price, businessProfile?.currency || "EUR")}</div>
                                                                     </div>
                                                                     <div className="flex items-center gap-2">
                                                                         <Button

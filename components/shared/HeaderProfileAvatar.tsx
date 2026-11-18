@@ -19,7 +19,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useTheme } from './theme-provider'
 import { useTextSize, type TextSize } from './text-size-provider'
-import { AlertTriangle, CheckCircle, CheckCircle2 } from 'lucide-react'
+import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 // Import SVGs (place them in /src/assets/flags/)
 import EnFlag from "@/assets/flags/gb.svg";
 import FrFlag from "@/assets/flags/fr.svg";
@@ -153,7 +153,7 @@ const ProfileDropdownMenu = () => {
                                         className="flex items-center gap-2 hover:cursor-pointer"
 
                                     >
-                                        {i18n.language == lang.code && <CheckCircle />}
+                                        {i18n.language == lang.code && <CheckCircle2 />}
                                         <img src={lang.flag} alt={lang.label} loading="lazy" className="w-5 h-5" />
                                         {lang.label}
                                     </DropdownMenuItem>

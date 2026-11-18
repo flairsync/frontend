@@ -163,8 +163,7 @@
       "loyalty_check_button": "Check",
       "loyalty_checking": "Checking...",
       "loyalty_member": "Already earning points!",
-      "loyalty_not_found": "No FlairSync account found for this contact",
-      "loyalty_not_enrolled": "Has an account, but hasn't joined this program yet",
+      "loyalty_not_enrolled": "Not enrolled in this loyalty program yet",
       "loyalty_invite_button": "Invite to join",
       "loyalty_invite_sending": "Sending invite...",
       "loyalty_invite_sent": "Invite sent!",
@@ -181,8 +180,8 @@
       "discount": "Discount",
       "split_bill": "Split Bill",
       "cash_tendered": "Cash Tendered",
-      "change_amount": "Change: ${{amount}}",
-      "short_by_amount": "Short by ${{amount}}",
+      "change_amount": "Change: {{amount}}",
+      "short_by_amount": "Short by {{amount}}",
       "present_card": "Present card or tap device to terminal",
       "processing": "Processing...",
       "confirm_payment": "CONFIRM PAYMENT"
@@ -354,7 +353,7 @@
     "order_card": {
       "table": "Table",
       "takeaway": "Takeaway",
-      "total": "Total: ${{amount}}",
+      "total": "Total: {{amount}}",
       "unnamed_item": "Item",
       "more_items_one": "+ {{count}} more item",
       "more_items_other": "+ {{count}} more items",
@@ -390,7 +389,7 @@
       },
       "table_occupied": {
         "title": "{{name}} is Occupied",
-        "description": "This table has an active order (${{amount}}). Would you like to view it?"
+        "description": "This table has an active order ({{amount}}). Would you like to view it?"
       },
       "table_cleaning": {
         "title": "{{name}} Needs Cleaning",
@@ -402,7 +401,7 @@
       "offline_sync_issues_other": "{{count}} offline action(s) could not be synced — please review",
       "offline_sync_success_one": "{{count}} offline action(s) synced",
       "offline_sync_success_other": "{{count}} offline action(s) synced",
-      "session_expired_offline_sync": "Session expired. Re-authenticate to sync offline changes.",
+      "session_expired_offline_sync": "Your login timed out. Log in again to save the orders you took while offline.",
       "select_table_to_continue": "Please select a table to continue",
       "order_sent_to_kitchen": "Order sent to kitchen!",
       "offline_order_queued": "You're offline — order queued and will sync when connection returns",

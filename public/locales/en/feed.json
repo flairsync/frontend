@@ -130,7 +130,7 @@
       "generic_error": "Something went wrong. Please try again.",
       "received_title": "Reservation Received!",
       "received_message_prefix": "Your reservation for {{tableName}} on {{date}} at {{time}} is currently",
-      "pending_badge": "PENDING",
+      "pending_badge": "Pending",
       "received_message_suffix": "confirmation.",
       "keep_eye": "Keep an eye on your email/phone for the confirmation notice.",
       "back_to_business": "Back to Business",
@@ -163,7 +163,7 @@
       "guest_count_other": "{{count}} Guests",
       "table_list_tab": "Table List",
       "floor_plan_tab": "Floor Plan",
-      "beta_badge": "BETA",
+      "beta_badge": "Beta",
       "checking_availability": "Checking availability…",
       "no_tables_available": "No tables available for {{count}} {{guestLabel}} at {{time}}.",
       "guest_one": "guest",
@@ -267,6 +267,9 @@
       "reserve": "Reserve",
       "reviews": "Reviews",
       "contact": "Contact"
+    },
+    "loyalty_card": {
+      "member_since": "Member since {{date}}"
     }
   },
   "location_selection_modal": {

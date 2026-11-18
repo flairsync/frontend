@@ -26,7 +26,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Loader2, Plus, Pencil, Trash2, Star, Wand2 } from "lucide-react"
+import { Loader2, Plus, Edit, Trash2, Star, Wand2 } from "lucide-react"
 import { toast } from "sonner"
 import { MyBusinessFullDetails } from "@/models/business/MyBusinessFullDetails"
 import { businessTaxApi, BusinessTax, BusinessTaxGroup } from "@/features/business/taxes/service"
@@ -325,7 +325,7 @@ function TaxLibrary({
                                     className="h-7 w-7"
                                     onClick={() => setEditTax(tax)}
                                 >
-                                    <Pencil className="w-3.5 h-3.5" />
+                                    <Edit className="w-3.5 h-3.5" />
                                 </Button>
                                 <TooltipProvider>
                                     <Tooltip>
@@ -577,7 +577,7 @@ function TaxGroupsSection({
                                         className="h-7 w-7"
                                         onClick={() => setEditGroup(group)}
                                     >
-                                        <Pencil className="w-3.5 h-3.5" />
+                                        <Edit className="w-3.5 h-3.5" />
                                     </Button>
                                     <Button
                                         size="icon"

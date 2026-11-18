@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Check } from "lucide-react";
+import { Plus, Edit, Trash2, Check } from "lucide-react";
 import { InventoryGroup } from "@/models/inventory/InventoryGroup";
 
 interface ManageGroupsModalProps {
@@ -118,7 +118,7 @@ export const ManageGroupsModal: React.FC<ManageGroupsModalProps> = ({
                                     <span>{group.name}</span>
                                     <div className="flex gap-1">
                                         <Button size="icon" variant="ghost" className="h-8 w-8" aria-label={t("common:shared.actions.edit")} onClick={() => handleEditGroup(group)}>
-                                            <Pencil className="w-4 h-4" />
+                                            <Edit className="w-4 h-4" />
                                         </Button>
                                         <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive hover:text-destructive" aria-label={t("common:shared.actions.delete")} onClick={() => onDeleteGroup(group.id)}>
                                             <Trash2 className="w-4 h-4" />

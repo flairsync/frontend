@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NumberInput } from "@/components/ui/number-input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Plus, Pencil, Check, ChevronsUpDown, ScanLine } from "lucide-react";
+import { Plus, Edit, Check, ChevronsUpDown, ScanLine } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -66,7 +66,7 @@ export const InventoryItemModal: React.FC<InventoryItemModalProps> = ({
                 <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle className={cn("flex items-center gap-2", editingItem ? "text-primary" : "")}>
-                            {editingItem ? <Pencil className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                            {editingItem ? <Edit className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                             {editingItem ? `Editing ${editingItem.name}...` : t("inventory_management.add_item")}
                         </DialogTitle>
                     </DialogHeader>

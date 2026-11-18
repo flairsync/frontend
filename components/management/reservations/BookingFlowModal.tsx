@@ -113,7 +113,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
         }
     };
 
-    const { data: foundUser } = useUserLookup(debouncedEmail, debouncedPhone);
+    const { data: foundUser } = useUserLookup(businessId, debouncedEmail, debouncedPhone);
 
     const validateEmail = (email: string) => {
         if (!email) return null;

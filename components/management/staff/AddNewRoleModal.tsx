@@ -34,7 +34,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePlatformPermissions } from "@/features/shared/usePlatformPermissions";
-import { Loader, Check, Plus, Trash, Info, Lock } from "lucide-react";
+import { Loader2, Check, Plus, Trash2, Info, Lock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Role } from "@/models/business/roles/Role";
 import { RoleSchema } from "@/misc/FormValidators";
@@ -247,7 +247,7 @@ export function AddRoleModal(props: Props) {
 
                 {loadingPermissionsList ? (
                     <div className="flex justify-center py-10">
-                        <Loader className="animate-spin" />
+                        <Loader2 className="animate-spin" />
                     </div>
                 ) : (
                     <form
@@ -401,7 +401,7 @@ export function AddRoleModal(props: Props) {
                                                                             className="h-8 w-8"
                                                                             disabled
                                                                         >
-                                                                            <Trash className="h-4 w-4 text-muted-foreground" />
+                                                                            <Trash2 className="h-4 w-4 text-muted-foreground" />
                                                                         </Button>
                                                                     </span>
                                                                 </TooltipTrigger>
@@ -429,7 +429,7 @@ export function AddRoleModal(props: Props) {
                                                                     );
                                                                 }}
                                                             >
-                                                                <Trash className="h-4 w-4 text-destructive" />
+                                                                <Trash2 className="h-4 w-4 text-destructive" />
                                                             </Button>
                                                         )
                                                     )}

@@ -71,7 +71,7 @@ data/         Static geo data (andorra.cities.json, andorra.geo.json, world.geo.
 
 Note: `utils/currency.ts` and `lib/formatCurrency.ts` both exist — check both before adding a new currency helper to avoid a third copy. `components/` also has a handful of root-level files (`ClientOnly.tsx`, `app-sidebar.tsx`, `search-form.tsx`, `version-switcher.tsx`, `comp-542.tsx`) that look like leftover shadcn sidebar-block scaffolding, not tied to a real feature.
 
-### `features/` inventory (27 modules)
+### `features/` inventory (46 modules)
 
 | Feature | Notes |
 |---|---|
@@ -101,10 +101,29 @@ Note: `utils/currency.ts` and `lib/formatCurrency.ts` both exist — check both 
 | `support` | support ticket submission (service only, no hooks yet) |
 | `system-errors` | `SystemErrorStore.ts` + `SystemErrorOverlay.tsx` (network/server lock screen, permission-denied modal) |
 | `tasks` | staff task assignment |
+| `alerts` | live-computed config-gap warnings (floors/tables/menu), owner-only bell + page |
+| `dashboard` | `pinnedLinks/` — user-pinned shortcuts on the manage dashboard |
+| `data-export` | GDPR data export (`useDataExport.ts`) |
+| `fiscal-invoices` | fiscal/tax invoice records (`useFiscalInvoices.ts`) |
+| `fiscal-services` | fiscal service provider integration (`useFiscalServices.ts`) |
+| `join-requests` | requests to join an existing business/org (`useJoinRequests.ts`) |
+| `legal` | legal/compliance documents (`useLegal.ts`) |
+| `loyalty` | loyalty program + member management (`useLoyalty.ts`, `useLoyaltyMembers.ts`, `useLoyaltyProgram.ts`) |
+| `navigation` | cross-page action bus + task registry (`actionBus.ts`, `taskRegistry.ts`) — not API/data, an exception to the "features = API layer" rule |
+| `nfc` | NFC tag pairing/management (`useNfc.ts`) |
+| `organizations` | multi-business org dashboard/detail (`useOrganizations.ts`, `useOrganizationDashboard.ts`, `useOrganizationDetail.ts`) |
+| `ownershipTransfer` | business ownership transfer flow (`useOwnershipTransfer.ts`) |
+| `payments` | payment processing/provider config (`usePayments.ts`) |
+| `platform-settings` | platform-level (admin) settings (`usePlatformSettings.ts`) |
+| `qr` | QR code design/generation for tables/menus (`useQrDesign.ts`) |
+| `regions` | multi-region org dashboard/detail (`useRegions.ts`, `useRegionDashboard.ts`, `useRegionDetail.ts`) |
+| `themes` | visual theme registry + preview components (`DepthCarousel.tsx`, `TiltCard.tsx`, `useThemes.ts`, `useBodyThemeScope.ts`) — has its own `components/` subfolder, an exception to the "components live under components/" rule |
+| `tipPooling` | tip pooling configuration (`useTipPooling.ts`) |
+| `wifi` | guest wifi config (`useWifi.ts`) |
 
 ### `components/` subdirectories
 
-`ui`, `shared`, `inputs`, `helpers`, `staff`, `station`, `pos`, `management`, `profile`, `business_details`, `diner-mode`, `feed`, `analytics`, `jobs`, `landing`, `marketplace`, `notifications`, `payments`, `shift-tracking`, `tutorials`, `audit`, `subscriptions`
+`ui`, `shared`, `inputs`, `helpers`, `staff`, `station`, `pos`, `management`, `profile`, `business_details`, `diner-mode`, `feed`, `analytics`, `jobs`, `landing`, `learn`, `marketplace`, `notifications`, `payments`, `shift-tracking`, `tutorials`, `audit`, `subscriptions`, `fiscal`, `loyalty`, `qr`
 
 ### `models/` — domain classes with `parseApiResponse()`
 
@@ -115,7 +134,7 @@ Nested: `business/` (employee, invitation, tag, type, media, team, employment), 
 
 `about`, `business/@id` (public profile), `diner/@businessId` (customer ordering, has its own `+Layout.tsx` + `menu`/`order` subroutes), `feed`, `forgot-password`, `gdpr`, `index`, `jobs`, `join`, `learn`, `login`, `manage` (the whole admin app, see below), `marketplace`, `notifications`, `privacy`, `profile`, `reset-password`, `signup`, `station` (`/station/kds`, `/station/pos`), `support`, `terms`, `tfa`, `verify`, `_error`.
 
-`manage/@id/owner/*` and `manage/@id/staff/*` are the two role-scoped admin surfaces (same business, different permission level), each with its own subroutes: `analytics`, `attendance`, `audit-logs` (owner only), `branding` (owner only), `danger` (owner only), `dashboard`, `floor-plan` (owner only), `integrations` (owner only), `inventory`, `jobs` (owner only), `marketplace` (owner only), `menu`, `orders`, `payroll` (owner only), `reservations`, `reviews` (owner only), `schedule`, `settings` (owner only), `staff`, `stations` (owner only), `tasks`, plus staff-only `messages`. `manage/(global)/*` (billing, help, joined, overview, owned, plans, professional-profile, profile) is a route group shared across all businesses the user belongs to.
+`manage/@id/owner/*` and `manage/@id/staff/*` are the two role-scoped admin surfaces (same business, different permission level), each with its own subroutes. Shared between both: `dashboard`, `home`, `analytics`, `attendance`, `inventory`, `loyalty`, `menu`, `menu-boards`, `nfc-tags`, `orders`, `reservations`, `schedule`, `staff`, `tasks`, `themes`, `wifi`. Owner-only: `alerts`, `announcements`, `audit-logs`, `branding`, `danger`, `data-export`, `discounts`, `feedback`, `fiscal-invoices`, `fiscal-services`, `floor-plan`, `jobs`, `marketplace`, `payments`, `payroll`, `reviews`, `settings`, `stations`, `tip-pooling`. Staff-only: `messages`, `shifts` (the staff member's own shift view, distinct from the owner/manager-facing `schedule` tab both roles share). There is no `integrations` page — a prior version of this doc listed one that was never built. `manage/(global)/*` (billing, help, joined, overview, owned, plans, professional-profile, profile) is a route group shared across all businesses the user belongs to.
 
 ## `lib/flairapi.ts` — Verified Behavior
 
@@ -169,7 +188,7 @@ These are point-in-time specs written when a backend feature shipped/changed —
 | `KDS/kds_frontend_updates.md`, `POS/kds_frontend_guide.md` | Kitchen Display System |
 | `POS/frontend_tax_receipt_guide.md`, `pos_frontend_guide.md` | POS taxes/receipts, core POS guide |
 | `Station/frontend_station_guide.md` | Station pairing/device auth |
-| `Marketplace/frontend-instructions.md`, `marketplace/marketplace-frontend-instructions.md` | Marketplace (two docs — check both, possibly duplicated/superseding) |
+| `marketplace/marketplace-frontend-instructions.md` | Marketplace |
 | `Notifications/frontend-integration.md` | Notification system integration |
 | `Settings/frontend_settings_update.md` | Business settings updates |
 | `Support/frontend_support_guide.md` | Support ticket flow |
@@ -189,5 +208,5 @@ These are point-in-time specs written when a backend feature shipped/changed —
 ## Known Doc Drift
 
 - **i18n**: `VIKE_PROJECT_GUIDE.md`'s i18n section shows TS-object translation files (`translations/english_us.ts` etc.) and manual `resources` config. The actual code uses `i18next-chained-backend` (`LocalStorageBackend` → `HttpBackend`) + JSON files in `public/locales/`. Trust the code (and the section above), not that guide's example. The repo briefly ran Tolgee as a translation-management layer ahead of the static JSON in that chain; it was removed on 2026-11-11 because a key could exist correctly in the JSON fallback while Tolgee's copy of the namespace was stale/missing it, and the chain's first-hit-wins behavior meant the correct translation never got served. `public/locales/` is now authoritative — edit it directly.
-- **Marketplace**: two near-duplicate AiFiles docs exist (`Marketplace/frontend-instructions.md` and `marketplace/marketplace-frontend-instructions.md`, different casing). Check both and look at git history/dates if they conflict.
+- **Marketplace**: previously two near-duplicate AiFiles docs existed (`Marketplace/frontend-instructions.md` and `marketplace/marketplace-frontend-instructions.md`, different casing). Resolved 2026-11-17: the capitalized one was a stale pre-stock-tracking draft that didn't match the shipped code (no `stock`, no `current`/`pages` pagination envelope); it's been deleted. `marketplace/marketplace-frontend-instructions.md` is now the sole doc.
 - **API base URL**: `.cursorrules` and this doc used to instruct using `import.meta.env.BASE_URL` for API calls. That var is Vite's own reserved deploy-base-path constant (default `"/"`) — the project's `BASE_URL` in `.env` lacked the required `VITE_` prefix, so it was never actually exposed to client code, and using it produced a broken protocol-relative URL (`//businesses/...`) in production. The fix that shipped at the time was hardcoding `'https://api.flairsync.com/api/v1'` in every `features/*/service.ts` file — which worked, until staging needed a different API host and there was no env var to change. That's now fixed properly: `lib/flairapi.ts` exports `API_URL = import.meta.env.VITE_API_URL`, every service file imports and uses that instead of the literal, and `Dockerfile.prod` declares `VITE_API_URL` as a build ARG so Dokploy's per-environment build args actually take effect (Vite inlines `VITE_`-prefixed vars at build time, not runtime). If you see the old hardcoded literal anywhere (a stale AiFiles doc, a new PR), it's a regression — replace it with `API_URL`.

@@ -163,8 +163,7 @@
       "loyalty_check_button": "Vérifier",
       "loyalty_checking": "Vérification...",
       "loyalty_member": "Gagne déjà des points !",
-      "loyalty_not_found": "Aucun compte FlairSync trouvé pour ce contact",
-      "loyalty_not_enrolled": "A un compte, mais n'a pas encore rejoint ce programme",
+      "loyalty_not_enrolled": "Pas encore inscrit à ce programme de fidélité",
       "loyalty_invite_button": "Inviter à rejoindre",
       "loyalty_invite_sending": "Envoi de l'invitation...",
       "loyalty_invite_sent": "Invitation envoyée !",
@@ -181,8 +180,8 @@
       "discount": "Remise",
       "split_bill": "Partager l'addition",
       "cash_tendered": "Montant remis",
-      "change_amount": "Monnaie : {{amount}} $",
-      "short_by_amount": "Manque {{amount}} $",
+      "change_amount": "Monnaie : {{amount}}",
+      "short_by_amount": "Manque {{amount}}",
       "present_card": "Présentez la carte ou approchez l'appareil du terminal",
       "processing": "Traitement en cours...",
       "confirm_payment": "CONFIRMER LE PAIEMENT"
@@ -354,7 +353,7 @@
     "order_card": {
       "table": "Table",
       "takeaway": "À emporter",
-      "total": "Total : {{amount}} $",
+      "total": "Total : {{amount}}",
       "unnamed_item": "Article",
       "more_items_one": "+ {{count}} article supplémentaire",
       "more_items_other": "+ {{count}} articles supplémentaires",
@@ -390,7 +389,7 @@
       },
       "table_occupied": {
         "title": "{{name}} est occupée",
-        "description": "Cette table a une commande active ({{amount}} $). Souhaitez-vous la consulter ?"
+        "description": "Cette table a une commande active ({{amount}}). Souhaitez-vous la consulter ?"
       },
       "table_cleaning": {
         "title": "{{name}} doit être nettoyée",
@@ -402,7 +401,7 @@
       "offline_sync_issues_other": "{{count}} action(s) hors ligne n'a/n'ont pas pu être synchronisée(s) — veuillez vérifier",
       "offline_sync_success_one": "{{count}} action(s) hors ligne synchronisée(s)",
       "offline_sync_success_other": "{{count}} action(s) hors ligne synchronisée(s)",
-      "session_expired_offline_sync": "Session expirée. Reconnectez-vous pour synchroniser les modifications hors ligne.",
+      "session_expired_offline_sync": "Votre connexion a expiré. Reconnectez-vous pour enregistrer les commandes prises hors ligne.",
       "select_table_to_continue": "Veuillez sélectionner une table pour continuer",
       "order_sent_to_kitchen": "Commande envoyée en cuisine !",
       "offline_order_queued": "Vous êtes hors ligne — la commande est en attente et sera synchronisée à la reconnexion",

@@ -130,7 +130,7 @@
       "generic_error": "Algo salió mal. Inténtalo de nuevo.",
       "received_title": "¡Reserva recibida!",
       "received_message_prefix": "Tu reserva para {{tableName}} el {{date}} a las {{time}} está actualmente",
-      "pending_badge": "PENDIENTE",
+      "pending_badge": "Pendiente",
       "received_message_suffix": "de confirmación.",
       "keep_eye": "Revisa tu correo electrónico/teléfono para el aviso de confirmación.",
       "back_to_business": "Volver al negocio",
@@ -163,7 +163,7 @@
       "guest_count_other": "{{count}} comensales",
       "table_list_tab": "Lista de mesas",
       "floor_plan_tab": "Plano del local",
-      "beta_badge": "BETA",
+      "beta_badge": "Beta",
       "checking_availability": "Comprobando disponibilidad…",
       "no_tables_available": "No hay mesas disponibles para {{count}} {{guestLabel}} a las {{time}}.",
       "guest_one": "comensal",
@@ -267,6 +267,9 @@
       "reserve": "Reservar",
       "reviews": "Opiniones",
       "contact": "Contacto"
+    },
+    "loyalty_card": {
+      "member_since": "Miembro desde el {{date}}"
     }
   },
   "location_selection_modal": {

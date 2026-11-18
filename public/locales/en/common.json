@@ -109,14 +109,14 @@
       "errorCode": "Error code:"
     },
     "500": {
-      "title": "500 Internal Server Error",
+      "title": "Something went wrong on our end",
       "description": "Something went wrong."
     },
     "technical": {
       "network_title": "Connection Lost",
       "error_title": "System Error",
       "network_error": "Network error or connection lost. We're working on it.",
-      "server_error": "Internal server error. Please try again later.",
+      "server_error": "We ran into a problem. Please try again in a moment.",
       "session_expired": "Your session has expired. Please log in again.",
       "unexpected_error": "An unexpected error occurred. Please try again.",
       "working_on_it": "We're aware of the issue and working to restore access."

@@ -24,11 +24,11 @@ import {
 import {
   Copy,
   MoreVertical,
-  Pencil,
+  Edit,
   Plus,
   QrCode,
   RefreshCw,
-  Trash,
+  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { QrcodePopup } from "@/components/shared/QrcodePopup";
@@ -291,7 +291,7 @@ export const MenuBoardsManager: React.FC<Props> = ({ businessId }) => {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => openEditModal(board)}>
-                              <Pencil className="h-4 w-4 mr-2" />
+                              <Edit className="h-4 w-4 mr-2" />
                               {t("menu_board_management.list.edit")}
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => handleCopyLink(board)}>
@@ -313,7 +313,7 @@ export const MenuBoardsManager: React.FC<Props> = ({ businessId }) => {
                                 className="text-destructive"
                                 onClick={() => setDeleteTarget(board)}
                               >
-                                <Trash className="h-4 w-4 mr-2" />
+                                <Trash2 className="h-4 w-4 mr-2" />
                                 {t("menu_board_management.list.delete")}
                               </DropdownMenuItem>
                             )}

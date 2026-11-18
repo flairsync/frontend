@@ -5,7 +5,7 @@ import { useNotificationSocket } from '@/features/notifications/useNotificationS
 import { navigate } from 'vike/client/router';
 import { NotificationPayload } from '@/features/notifications/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle, ChevronRight, UserX } from 'lucide-react';
+import { Bell, ShieldAlert, Calendar, Tag, ShoppingBag, CheckCircle2, ChevronRight, UserX } from 'lucide-react';
 import {
     Popover,
     PopoverContent,

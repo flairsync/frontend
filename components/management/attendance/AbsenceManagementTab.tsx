@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Plus, Pencil, Trash2, ExternalLink, ClipboardCheck } from "lucide-react";
+import { Plus, Edit, Trash2, ExternalLink, ClipboardCheck } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { toast } from "sonner";
 import { useAbsences } from "@/features/shifts/useAbsences";
@@ -146,7 +146,7 @@ const AbsenceManagementTab = ({ businessId }: AbsenceManagementTabProps) => {
                           className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10"
                           onClick={() => setEditingRecord(absence)}
                         >
-                          <Pencil className="h-3.5 w-3.5" />
+                          <Edit className="h-3.5 w-3.5" />
                         </Button>
                         <Button
                           variant="ghost"

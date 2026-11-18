@@ -109,14 +109,14 @@
       "errorCode": "Codi d'error:"
     },
     "500": {
-      "title": "500 Error intern del servidor",
+      "title": "Hi ha hagut un problema per la nostra banda",
       "description": "Alguna cosa ha anat malament."
     },
     "technical": {
       "network_title": "Connexió perduda",
       "error_title": "Error del sistema",
       "network_error": "Error de xarxa o connexió perduda. Hi estem treballant.",
-      "server_error": "Error intern del servidor. Si us plau, torna-ho a intentar més tard.",
+      "server_error": "Hem tingut un problema. Si us plau, torna-ho a intentar d'aquí un moment.",
       "session_expired": "La teva sessió ha expirat. Si us plau, torna a iniciar sessió.",
       "unexpected_error": "S'ha produït un error inesperat. Si us plau, torna-ho a intentar.",
       "working_on_it": "Som conscients del problema i estem treballant per restaurar l'accés."

@@ -8,7 +8,7 @@
     "loading": "Carregant comandes...",
     "station_unassigned": {
       "title": "Estació sense assignar",
-      "description": "Aquest KDS no té cap estació de cuina assignada. Demana a un responsable que la reassigni des del tauler, a Estacions."
+      "description": "Aquest KDS no té cap estació de cuina assignada. Demana a un propietari que l'assigni des del tauler, a Estacions."
     },
     "empty_state": {
       "title": "Cuina lliure",
@@ -156,7 +156,7 @@
     }
   },
   "nfc_scan": {
-    "trigger": "NFC",
+    "trigger": "Targeta",
     "panel_title": "Fitxatge amb Targeta NFC",
     "panel_description": "Acosta la targeta del personal al lector per fitxar entrada o sortida.",
     "status": {

@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash, UserPlus, Edit, Plus, EditIcon, CalendarPlus, AlertCircle, Check, X, KeyRound } from "lucide-react";
+import { Trash2, UserPlus, Edit, Plus, EditIcon, CalendarPlus, AlertCircle, Check, X, KeyRound } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -215,7 +215,7 @@ const StaffSection = () => {
             disabled={terminatingEmployee}
             onClick={() => setRemovingStaff(member)}
           >
-            <Trash className="h-4 w-4" />
+            <Trash2 className="h-4 w-4" />
           </Button>
         </>
       )}

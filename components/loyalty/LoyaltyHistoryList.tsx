@@ -1,9 +1,9 @@
-import { Gift, Pencil, Clock, LucideIcon } from "lucide-react";
+import { Gift, Edit, Clock, LucideIcon } from "lucide-react";
 import { LoyaltyHistoryEntry, LoyaltyLedgerReason } from "@/features/loyalty/loyalty-api";
 
 const REASON_CONFIG: Record<LoyaltyLedgerReason, { label: string; icon: LucideIcon }> = {
     EARN_ORDER: { label: "Points earned", icon: Gift },
-    MANUAL_ADJUSTMENT: { label: "Staff adjustment", icon: Pencil },
+    MANUAL_ADJUSTMENT: { label: "Staff adjustment", icon: Edit },
     EXPIRY: { label: "Points expired", icon: Clock },
 };
 

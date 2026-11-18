@@ -6,7 +6,7 @@ import { useOrders } from "@/features/orders/useOrders";
 import { useFloors } from "@/features/floor-plan/useFloorPlan";
 import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 import { getCurrencySymbol } from "@/utils/currency";
-import { Loader2, Plus, CheckCircle, Utensils, ChefHat } from "lucide-react";
+import { Loader2, Plus, CheckCircle2, Utensils, ChefHat } from "lucide-react";
 import { AddItemsModal } from "@/components/staff/orders/AddItemsModal";
 import { OrderDetailsModal } from "@/components/staff/orders/OrderDetailsModal";
 import { useTranslation } from "react-i18next";
@@ -83,7 +83,7 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                         <div className="flex flex-wrap gap-1">
                                             {order.status === "created" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 text-blue-600 border-blue-200" onClick={() => acceptOrder(order.id)} disabled={isAcceptingOrder}>
-                                                    <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.accept")}
+                                                    <CheckCircle2 className="w-3 h-3" /> {t("staff_orders.active_view.accept")}
                                                 </Button>
                                             )}
                                             {order.status === "accepted" && (
@@ -93,12 +93,12 @@ export const ActiveOrdersView: React.FC<ActiveOrdersViewProps> = ({ businessId }
                                             )}
                                             {order.status === "preparing" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-amber-50 text-amber-600 border-amber-200" onClick={() => readyOrder(order.id)} disabled={isMarkingReady}>
-                                                    <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.mark_ready")}
+                                                    <CheckCircle2 className="w-3 h-3" /> {t("staff_orders.active_view.mark_ready")}
                                                 </Button>
                                             )}
                                             {order.status === "ready" && (
                                                 <Button size="sm" variant="outline" className="h-7 text-[10px] px-2 gap-1 bg-green-50 text-green-600 border-green-200" onClick={() => serveOrder(order.id)} disabled={isMarkingServed}>
-                                                    <CheckCircle className="w-3 h-3" /> {t("staff_orders.active_view.mark_served")}
+                                                    <CheckCircle2 className="w-3 h-3" /> {t("staff_orders.active_view.mark_served")}
                                                 </Button>
                                             )}
                                             <Button size="sm" variant="secondary" className="h-7 text-[10px] px-2 gap-1" onClick={() => handleAddItems(order.id, order.status)}>

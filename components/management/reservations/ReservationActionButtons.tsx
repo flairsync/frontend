@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useReservations } from "@/features/reservations/useReservations";
 import { getAvailableActions } from "@/features/reservations/reservationUtils";
-import { CheckCircle, XCircle, Armchair, Flag, RefreshCw } from "lucide-react";
+import { CheckCircle2, XCircle, Armchair, Flag, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface ReservationActionButtonsProps {
@@ -80,7 +80,7 @@ export const ReservationActionButtons: React.FC<ReservationActionButtonsProps> =
                 {actions.includes("confirm") && (
                     <Button size={size} variant="outline" className={cn("border-green-500/30 text-green-700 hover:bg-green-500/10 dark:text-green-400", btnClass)}
                         disabled={isUpdatingReservation} onClick={() => handleTransition("confirmed")}>
-                        <CheckCircle className="w-3.5 h-3.5 mr-1" /> {t("reservation_action_buttons.confirm")}
+                        <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> {t("reservation_action_buttons.confirm")}
                     </Button>
                 )}
                 {actions.includes("seat") && (

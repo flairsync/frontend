@@ -47,7 +47,7 @@ const OwnerDashboardPage = () => {
     } = useOwnershipTransfer(businessId);
 
     const [openModal, setOpenModal] = useState<
-        null | "shifts" | "menu" | "ownership" | "business"
+        null | "ownership" | "business"
     >(null);
 
     const [confirmText, setConfirmText] = useState("");
@@ -124,12 +124,6 @@ const OwnerDashboardPage = () => {
         ? t("danger_page.remove_staff_first", { count: myBusinessFullDetails?.counts?.employees ?? 0 })
         : null;
 
-    const handleDangerAction = (type: string) => {
-        console.log(`Performing danger action: ${type}`);
-        setOpenModal(null);
-        setConfirmText("");
-    };
-
     function handleDeleteBusiness() {
         deleteBusiness(undefined, {
             onSuccess: () => {
@@ -190,22 +184,6 @@ const OwnerDashboardPage = () => {
                         </p>
 
                         <div className="flex flex-col gap-3">
-                            <Button
-                                variant="destructive"
-                                onClick={() => setOpenModal("shifts")}
-                            >
-                                <AlertTriangle className="h-4 w-4 mr-2" />
-                                {t("danger_page.reset_shifts")}
-                            </Button>
-
-                            <Button
-                                variant="destructive"
-                                onClick={() => setOpenModal("menu")}
-                            >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                {t("danger_page.delete_menu_items")}
-                            </Button>
-
                             <div className="flex flex-col gap-1">
                                 <Button
                                     variant="destructive"
@@ -240,44 +218,6 @@ const OwnerDashboardPage = () => {
                 </Card>
 
                 {/* Confirm Modals */}
-                <Dialog open={openModal === "shifts"} onOpenChange={() => setOpenModal(null)}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>{t("danger_page.reset_shifts")}</DialogTitle>
-                            <DialogDescription>
-                                {t("danger_page.reset_shifts_description")}
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => setOpenModal(null)}>
-                                {t("danger_page.cancel")}
-                            </Button>
-                            <Button variant="destructive" onClick={() => handleDangerAction("reset_shifts")}>
-                                {t("danger_page.confirm_reset")}
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-
-                <Dialog open={openModal === "menu"} onOpenChange={() => setOpenModal(null)}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>{t("danger_page.delete_menu_items")}</DialogTitle>
-                            <DialogDescription>
-                                {t("danger_page.delete_menu_items_description")}
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => setOpenModal(null)}>
-                                {t("danger_page.cancel")}
-                            </Button>
-                            <Button variant="destructive" onClick={() => handleDangerAction("delete_menu")}>
-                                {t("danger_page.delete_all")}
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-
                 <Dialog
                     open={openModal === "ownership"}
                     onOpenChange={(open) => {
