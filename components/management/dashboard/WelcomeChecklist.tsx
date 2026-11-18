@@ -11,17 +11,13 @@ import { useBusinessEmployees } from "@/features/business/employment/useBusiness
 import { navigate } from "vike/client/router";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { FISCAL_ID_REQUIRED_COUNTRIES } from "@/utils/taxId";
 
 interface WelcomeChecklistProps {
     businessId: string;
 }
 
 const DISMISS_KEY_PREFIX = "flairsync_welcome_checklist_dismissed_";
-
-// Mirrors FISCAL_ID_REQUIRED_COUNTRIES in the owner layout header (pages/manage/@id/owner/+Layout.tsx)
-// and TAX_ID_REQUIRED_COUNTRY_CODES on the backend (src/business/utils/tax-id.util.ts) — only a
-// business in one of these countries can't complete an order without a Tax ID set.
-const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
 
 export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }) => {
     const { t } = useTranslation("management");

@@ -2581,6 +2581,7 @@
         "slug": "Adreça web pública (slug)",
         "email": "Correu electrònic de contacte",
         "phone": "Número de telèfon de contacte",
+        "tax_id": "NRT — obligatori abans de poder completar cap comanda",
         "menu": "Un menú actiu amb articles",
         "floor_plan": "Un pla de sala publicat"
       }

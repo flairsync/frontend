@@ -18,9 +18,13 @@ export function DefaultTheme({ profile }: ThemeComponentProps) {
                 <p className="text-muted-foreground max-w-xl">{profile.description}</p>
             )}
             {profile.phone && <p className="text-sm">{profile.phone}</p>}
-            {profile.address && (
+            {/* N10 (QA Retest, 2026-11-18): `address` is already the full formatted address
+                (street, city, country) from the reverse-geocoder — appending `city` again
+                here duplicated it, e.g. "...Andorra la Vella, AD, andorra la vella". Mirrors
+                the address/city fallback in BusinessDetailsHero. */}
+            {(profile.address || profile.city) && (
                 <p className="text-sm text-muted-foreground">
-                    {profile.address}{profile.city ? `, ${profile.city}` : ""}
+                    {profile.address || profile.city}
                 </p>
             )}
         </main>

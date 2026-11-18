@@ -34,6 +34,7 @@ import { AuditLogHint } from "@/components/audit/AuditLogHint"
 import { usePageTour } from "@/features/tour/usePageTour"
 import type { TourStep } from "@/features/tour/types"
 import { useParamFromAction } from "@/features/navigation/actionBus";
+import { FISCAL_ID_REQUIRED_COUNTRIES } from "@/utils/taxId";
 
 const SETTINGS_TOUR_STEPS: TourStep[] = [
     {
@@ -106,12 +107,31 @@ const BusinessSettingsPage = () => {
     const { alerts } = useAlerts(businessId);
     const [publishWarning, setPublishWarning] = useState<string[] | null>(null)
 
-    const getPrePublishWarnings = useCallback((): string[] => {
+    // N4 (QA Retest, 2026-11-18): slug/email/phone live as draft state inside
+    // BusinessSettingsGeneralDetails, not here — checking myBusinessFullDetails alone meant a
+    // value typed but not yet saved (e.g. a slug) was reported as missing even though it was
+    // right there on screen. The Publish switch now passes its current draft values through
+    // `draft`, which take priority over the last-saved business record; falling back to the
+    // saved values keeps this working for callers that don't have a draft to pass (none do
+    // today, but this is also where it'd be invoked from a toggle elsewhere in the page).
+    const getPrePublishWarnings = useCallback((draft?: { slug?: string, email?: string, phone?: string }): string[] => {
         if (!myBusinessFullDetails) return []
         const missing: string[] = []
-        if (!myBusinessFullDetails.slug) missing.push(t("settings_page.publish_warning.items.slug"))
-        if (!myBusinessFullDetails.email) missing.push(t("settings_page.publish_warning.items.email"))
-        if (!myBusinessFullDetails.phone) missing.push(t("settings_page.publish_warning.items.phone"))
+        const slug = draft?.slug ?? myBusinessFullDetails.slug
+        const email = draft?.email ?? myBusinessFullDetails.email
+        const phone = draft?.phone ?? myBusinessFullDetails.phone
+        if (!slug) missing.push(t("settings_page.publish_warning.items.slug"))
+        if (!email) missing.push(t("settings_page.publish_warning.items.email"))
+        if (!phone) missing.push(t("settings_page.publish_warning.items.phone"))
+        // N3 (QA Retest, 2026-11-18): the one item that actually blocks orders (AndorraFiscalAdapter
+        // throws without it) was the one item missing from this list.
+        if (
+            myBusinessFullDetails.country?.code
+            && FISCAL_ID_REQUIRED_COUNTRIES.has(myBusinessFullDetails.country.code)
+            && !myBusinessFullDetails.taxIdNumber
+        ) {
+            missing.push(t("settings_page.publish_warning.items.tax_id"))
+        }
         for (const alert of alerts) {
             if (alert.key === "menu.no_items" || alert.key === "menu.no_active_items") {
                 missing.push(t("settings_page.publish_warning.items.menu"))
@@ -123,9 +143,9 @@ const BusinessSettingsPage = () => {
         return missing
     }, [myBusinessFullDetails, alerts, t])
 
-    const handleTogglePublished = (val: boolean) => {
+    const handleTogglePublished = (val: boolean, draft?: { slug?: string, email?: string, phone?: string }) => {
         if (val && !myBusinessFullDetails?.isPublished) {
-            const missing = getPrePublishWarnings()
+            const missing = getPrePublishWarnings(draft)
             if (missing.length > 0) {
                 setPublishWarning(missing)
                 return

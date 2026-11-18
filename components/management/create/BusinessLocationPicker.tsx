@@ -175,7 +175,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
             if (res.addresses && res.addresses.length > 0) {
                 const addr = res.addresses[0];
                 const newAddress = addr.formattedAddress || addr.addressLabel || addr.placeLabel || address;
-                const newCity = addr.city ? addr.city.toLowerCase() : city;
+                // N10 (QA Retest, 2026-11-18): was .toLowerCase()'d, so the stored city (shown
+                // on its own on the guest page's info card) read e.g. "andorra la vella" —
+                // Radar already returns it properly cased, same as the rest of the address.
+                const newCity = addr.city || city;
                 setAddress(newAddress);
                 setCity(newCity);
                 onChange({
@@ -236,7 +239,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
 
         let newCity = city;
         if (adr.city) {
-            newCity = adr.city.toLowerCase();
+            newCity = adr.city;
             setCity(newCity);
         }
 
@@ -292,7 +295,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                     if (res.addresses && res.addresses.length > 0) {
                         const addr = res.addresses[0];
                         const newAddress = addr.formattedAddress || addr.addressLabel || addr.placeLabel || "";
-                        const newCity = addr.city ? addr.city.toLowerCase() : "";
+                        const newCity = addr.city || "";
                         setAddress(newAddress);
                         if (newCity) setCity(newCity);
 

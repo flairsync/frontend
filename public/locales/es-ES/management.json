@@ -2581,6 +2581,7 @@
         "slug": "Dirección web pública (slug)",
         "email": "Correo electrónico de contacto",
         "phone": "Número de teléfono de contacto",
+        "tax_id": "NIF/CIF — obligatorio antes de poder completar cualquier pedido",
         "menu": "Un menú activo con artículos",
         "floor_plan": "Un plano de sala publicado"
       }

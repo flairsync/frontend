@@ -52,7 +52,7 @@ type SlugStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid'
 type Props = {
     businessDetails?: MyBusinessFullDetails,
     onSaveDetails?: (data: BusinessGeneralInfo) => void,
-    onTogglePublished?: (val: boolean) => void,
+    onTogglePublished?: (val: boolean, draft?: { slug?: string, email?: string, phone?: string }) => void,
     onToggleAutoDisableOutOfStock?: (val: boolean) => void,
     disabled?: boolean,
     sectionRef?: (el: HTMLDivElement | null) => void,
@@ -202,7 +202,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     )}
                     {!!props.businessDetails?.id && (
                         <a
-                            href={`/business/${props.businessDetails.slug || props.businessDetails.id}/site`}
+                            href={`/business/${props.businessDetails.slug || props.businessDetails.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-xs text-primary hover:underline w-fit"
@@ -284,7 +284,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                         <Switch
                             disabled={props.disabled}
                             checked={props.businessDetails?.isPublished ?? false}
-                            onCheckedChange={(val) => props.onTogglePublished?.(val)}
+                            onCheckedChange={(val) => props.onTogglePublished?.(val, { slug, email: contactEmail, phone })}
                         />
                     </div>
                     <div className="flex items-center justify-between py-3 rounded-sm transition-colors hover:bg-muted/50">

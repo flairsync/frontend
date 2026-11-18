@@ -164,28 +164,39 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                     <Formik
                                         initialValues={{ email: '', }}
                                         validationSchema={inviteNewEmployeeSchema}
-                                        onSubmit={values => {
+                                        onSubmit={(values, { setSubmitting, resetForm }) => {
+                                            // N7 (QA Retest, 2026-11-18): the dialog used to close right after calling
+                                            // mutate(), regardless of outcome — so a failed invite (e.g. the self-invite
+                                            // error) closed the dialog with no visible result, and the next attempt had
+                                            // no clean slate to retry from. Now it only closes and resets on success;
+                                            // on error it stays open with isSubmitting cleared so the owner can just
+                                            // fix the email and submit again.
                                             inviteNewEmployee(values.email, {
+                                                onSuccess: () => {
+                                                    resetForm();
+                                                    setInviteModalOpen(false);
+                                                },
                                                 onError: (err: any) => {
-                                                    // Global interceptor handles this
-                                                }
+                                                    // Global interceptor handles the toast
+                                                },
+                                                onSettled: () => setSubmitting(false),
                                             });
-                                            setInviteModalOpen(false);
                                         }}
                                     >
-                                        {({ errors, touched, handleChange, values }) => (
+                                        {({ errors, touched, handleChange, values, isSubmitting }) => (
                                             <Form className="space-y-4 mt-2">
                                                 <Input
                                                     placeholder={t("invitations_section.email_placeholder")}
                                                     value={values.email}
                                                     name="email"
                                                     id="email"
+                                                    autoFocus
                                                     onChange={handleChange}
                                                 />
                                                 <InputError
                                                     message={errors.email}
                                                 />
-                                                <Button type="submit" >{t("invitations_section.add")}</Button>
+                                                <Button type="submit" disabled={isSubmitting}>{t("invitations_section.add")}</Button>
                                             </Form>)}
                                     </Formik>
 

@@ -41,15 +41,7 @@ import {
 } from '@/components/ui/tooltip';
 
 import { Home, Loader, TriangleAlert, ExternalLink } from 'lucide-react';
-
-// Countries whose fiscal adapter is actually LIVE (FiscalAdapterFactory routes to the
-// real per-country adapter, not the generic one) and therefore actually requires
-// business.taxIdNumber before an order can be completed. Andorra only, as of 2026-08-08
-// (AD-01/04/05/06/07) — Spain's SpainFiscalAdapter is fully built but still deliberately
-// unrouted (ES-07/08 open), so a Spain business missing its tax ID does NOT currently fail
-// to complete orders; warning them here would be a false alarm. Add "ES" the same day
-// FiscalAdapterFactory's 'ES' case is flipped on, not before.
-const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
+import { FISCAL_ID_REQUIRED_COUNTRIES } from '@/utils/taxId';
 
 // Page names come from the task registry, so the breadcrumb, the launcher tile
 // and the page's own heading can't drift apart — and it's translated, which the
@@ -195,9 +187,10 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <a
-                                                        href={`/business/${myBusinessFullDetails.slug || myBusinessFullDetails.id}/site`}
+                                                        href={`/business/${myBusinessFullDetails.slug || myBusinessFullDetails.id}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
+                                                        aria-label="View my public page"
                                                         className="inline-flex items-center justify-center rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                                                     >
                                                         <ExternalLink className="w-4 h-4" />

@@ -25,9 +25,7 @@ import WebsiteFooter from '@/components/shared/WebsiteFooter'
 import { clientOnly } from 'vike-react/clientOnly'
 import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries';
-import { useProfile } from '@/features/profile/useProfile';
 import { withFallback } from 'vike-react-query'
-import { toast } from 'sonner'
 
 const FILTER_STORAGE_KEY = 'public_feed_filters';
 
@@ -183,7 +181,6 @@ const FeedPage = () => {
     const [locationErrorReason, setLocationErrorReason] = useState<string | undefined>();
 
     const { platformCountries } = usePlatformCountries();
-    const { userProfile } = useProfile();
 
     // ✅ Persistence: Save to localStorage (Only after initial load is complete)
     React.useEffect(() => {
@@ -202,8 +199,15 @@ const FeedPage = () => {
     React.useEffect(() => {
         if (isInitialized) return;
 
-        let hasValidStoredFilters = false;
-
+        // N/C3 (QA Test Report + Retest, 2026-11-18): this used to request geolocation on every
+        // fresh visit and, on success, silently switch to a 50km "Nearby You" radius search with
+        // no opt-in — so any visitor who hasn't explicitly chosen a location (the common case)
+        // saw 0 results unless they happened to be standing near one of the handful of test
+        // businesses. The feed now defaults to the same unfiltered, global list it already
+        // server-renders for crawlers, and only narrows by location once the visitor explicitly
+        // picks one via the location modal (which does its own geolocation lookup when opened).
+        // A visitor's own earlier explicit choice (including "use my location") is still restored
+        // from localStorage below — this just stops a location filter being assumed by default.
         const stored = localStorage.getItem(FILTER_STORAGE_KEY);
         if (stored) {
             try {
@@ -213,74 +217,16 @@ const FeedPage = () => {
                     if (parsed.selectedTypeId) setSelectedTypeId(parsed.selectedTypeId);
                     if (parsed.selectedTagIds) setSelectedTagIds(parsed.selectedTagIds);
                     if (parsed.selectedMinRating) setSelectedMinRating(parsed.selectedMinRating);
-                    hasValidStoredFilters = true;
                 }
             } catch (e) {
                 console.error("Error parsing stored filters:", e);
             }
         }
 
-        const requestGeolocation = () => {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        setLocationState(prev => ({
-                            ...prev,
-                            lat: latitude,
-                            lng: longitude,
-                            useCustomLocation: false,
-                            countryId: undefined
-                        }));
-                    },
-                    (error) => {
-                        console.error("Geolocation error:", error);
-                        handleFallbackToProfileCountry();
-                        setIsLocationModalOpen(true);
-                        if (error.code === error.PERMISSION_DENIED) {
-                            setLocationErrorReason("denied");
-                        } else {
-                            setLocationErrorReason("error");
-                        }
-                    },
-                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-                );
-            } else {
-                handleFallbackToProfileCountry();
-                setIsLocationModalOpen(true);
-                setLocationErrorReason("unsupported");
-            }
-        };
-
-        const handleFallbackToProfileCountry = () => {
-            // C3 (QA Test Report, 2026-11-18): this silently narrows results to one country
-            // whenever geolocation fails — with no indication why, a business outside that
-            // country (or a tester whose profile country doesn't match their test business)
-            // sees "Found 0 results" and no clue it's a location filter, not a missing listing.
-            if (userProfile?.countryId) {
-                const country = platformCountries?.find(c => c.id === userProfile.countryId);
-                toast.info(
-                    country
-                        ? t("public_feed.locationFallbackToast", { country: country.name })
-                        : t("public_feed.locationFallbackToastGeneric"),
-                );
-                setLocationState(prev => ({
-                    ...prev,
-                    countryId: userProfile.countryId,
-                    lat: undefined,
-                    lng: undefined
-                }));
-            }
-        };
-
-        if (!hasValidStoredFilters) {
-            requestGeolocation();
-        }
-
         const timeoutId = setTimeout(() => setIsInitialized(true), 50);
         return () => clearTimeout(timeoutId);
 
-    }, [userProfile?.id, userProfile?.countryId, isInitialized]);
+    }, [isInitialized]);
 
     const handleSearch = () => {
         setSearchQuery(searchInput);

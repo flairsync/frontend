@@ -29,7 +29,11 @@ const LoginPage = () => {
 
     const { loginUser, loggingIn, loginError } = useAuth();
 
-    const origin = urlParsed.search.origin || '/';
+    // N9 (QA Retest, 2026-11-18): with no ?origin= param (e.g. navigating to /login
+    // directly rather than being bounced off a protected page), this fell back to '/' —
+    // the marketing homepage — instead of the dashboard every other post-auth redirect
+    // in the app uses (see /manage/overview usages across the codebase).
+    const origin = urlParsed.search.origin || '/manage/overview';
     const packId = urlParsed.search.packId;
 
     const handlePostLogin = (res?: any) => {

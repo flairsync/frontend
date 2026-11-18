@@ -2655,6 +2655,7 @@
         "slug": "Public web address (slug)",
         "email": "Contact email",
         "phone": "Contact phone number",
+        "tax_id": "Tax ID — required before any order can be completed",
         "menu": "An active menu with items",
         "floor_plan": "A published floor plan"
       }

@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/tooltip"
 import { Loader2, Plus, Edit, Trash2, Star, Wand2 } from "lucide-react"
 import { toast } from "sonner"
+import { TAX_ID_FORMAT_BY_COUNTRY } from "@/utils/taxId"
 import { MyBusinessFullDetails } from "@/models/business/MyBusinessFullDetails"
 import { businessTaxApi, BusinessTax, BusinessTaxGroup } from "@/features/business/taxes/service"
 
@@ -101,15 +102,6 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
 // still sends every ES business to the generic adapter) — so unlike Andorra below,
 // this does NOT currently block completing an order. Don't claim otherwise until that
 // changes.
-
-// C2 (QA Test Report, 2026-11-18): "abc" was accepted as a Tax ID and printed on receipts.
-// Mirrors isTaxIdFormatInvalid in the backend's src/business/utils/tax-id.util.ts — this is
-// only a UX shortcut so the owner sees the problem before hitting Save; the backend still
-// re-validates and is the actual source of truth.
-const TAX_ID_FORMAT_BY_COUNTRY: Record<string, RegExp> = {
-    AD: /^[A-Z]-\d{6}-[A-Z]$/i,
-    ES: /^[A-Z0-9]\d{6,7}[A-Z0-9]$/i,
-}
 
 function FiscalIdField({
     countryCode,

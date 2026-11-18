@@ -326,6 +326,7 @@ const JoinProfessionalPage = () => {
                                                 {/* Confirmation */}
                                                 <div className="flex items-start gap-2">
                                                     <Checkbox
+                                                        id="confirmed"
                                                         checked={values.confirmed}
                                                         onCheckedChange={(checked) =>
                                                             setFieldValue(
@@ -334,7 +335,7 @@ const JoinProfessionalPage = () => {
                                                             )
                                                         }
                                                     />
-                                                    <label className="text-sm leading-snug">
+                                                    <label htmlFor="confirmed" className="text-sm leading-snug cursor-pointer">
                                                         {t("join_professional_page.create.confirm_label")}
                                                     </label>
                                                 </div>

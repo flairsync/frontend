@@ -2581,6 +2581,7 @@
         "slug": "Adresse web publique (slug)",
         "email": "E-mail de contact",
         "phone": "Numéro de téléphone de contact",
+        "tax_id": "Numéro fiscal — obligatoire avant de pouvoir finaliser une commande",
         "menu": "Un menu actif avec des articles",
         "floor_plan": "Un plan de salle publié"
       }
