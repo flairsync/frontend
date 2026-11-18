@@ -1,6 +1,8 @@
 {
   "public_feed": {
     "resultsFound": "Found {{count}} results",
+    "locationFallbackToast": "Couldn't access your location — showing results for {{country}} instead.",
+    "locationFallbackToastGeneric": "Couldn't access your location — showing results near you based on your profile.",
     "sortBy": "Sort by",
     "sortOptions": {
       "default": "Default",
@@ -307,7 +309,9 @@
   },
   "feed_page": {
     "no_businesses_found": "No businesses found",
-    "try_adjusting_search": "Try adjusting your search criteria"
+    "try_adjusting_search": "Try adjusting your search criteria",
+    "no_results_filtered_reason": "No businesses match your current location or filters — not that there aren't any.",
+    "clear_filters": "Clear filters"
   },
   "join_business_page": {
     "title": "Join {{businessName}}",

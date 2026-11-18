@@ -101,6 +101,16 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
 // still sends every ES business to the generic adapter) — so unlike Andorra below,
 // this does NOT currently block completing an order. Don't claim otherwise until that
 // changes.
+
+// C2 (QA Test Report, 2026-11-18): "abc" was accepted as a Tax ID and printed on receipts.
+// Mirrors isTaxIdFormatInvalid in the backend's src/business/utils/tax-id.util.ts — this is
+// only a UX shortcut so the owner sees the problem before hitting Save; the backend still
+// re-validates and is the actual source of truth.
+const TAX_ID_FORMAT_BY_COUNTRY: Record<string, RegExp> = {
+    AD: /^[A-Z]-\d{6}-[A-Z]$/i,
+    ES: /^[A-Z0-9]\d{6,7}[A-Z0-9]$/i,
+}
+
 function FiscalIdField({
     countryCode,
     taxIdNumber,
@@ -118,6 +128,8 @@ function FiscalIdField({
     const copy = t(`settings_page.tax.fiscal_id.${countryCode}`, { returnObjects: true }) as {
         label: string; placeholder: string; helper: string; notSetWarning: string
     }
+    const trimmed = value.trim()
+    const isInvalidFormat = trimmed.length > 0 && !TAX_ID_FORMAT_BY_COUNTRY[countryCode].test(trimmed)
 
     return (
         <div className="space-y-2 pb-4 border-b">
@@ -131,15 +143,21 @@ function FiscalIdField({
                     maxLength={20}
                     onChange={(e) => setValue(e.target.value)}
                     disabled={disabled}
+                    className={isInvalidFormat ? "border-destructive" : undefined}
                 />
                 <Button
                     size="sm"
-                    disabled={disabled || !isDirty || !value.trim()}
-                    onClick={() => onSave(value.trim())}
+                    disabled={disabled || !isDirty || !trimmed || isInvalidFormat}
+                    onClick={() => onSave(trimmed)}
                 >
                     {t("settings_page.tax.save")}
                 </Button>
             </div>
+            {isInvalidFormat && (
+                <p className="text-xs text-destructive font-medium">
+                    {t("settings_page.tax.fiscal_id.invalid_format", { example: copy.placeholder })}
+                </p>
+            )}
             {!taxIdNumber && (
                 <p className="text-xs text-amber-600 font-medium">{copy.notSetWarning}</p>
             )}

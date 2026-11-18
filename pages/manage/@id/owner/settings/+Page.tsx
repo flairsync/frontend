@@ -12,8 +12,18 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "@/components/ui/dialog"
+import { TriangleAlert } from "lucide-react"
 import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
+import { useAlerts } from "@/features/alerts/useAlerts"
 import { useJoinRequests } from "@/features/join-requests/useJoinRequests"
 import BusinessSettingsGeneralDetails from "@/components/management/settings/BusinessSettingsGeneralDetails"
 import BusinessSettingsOpenPeriods from "@/components/management/settings/BusinessSettingsOpenPeriods"
@@ -88,6 +98,41 @@ const BusinessSettingsPage = () => {
     const pendingLeaveRequest = outgoing.find(
         (r) => r.childType === "BUSINESS" && r.childId === businessId && r.action === "UNLINK" && r.status === "PENDING",
     );
+
+    // B4 (QA Test Report, 2026-11-18): a business could go Live with no public URL slug, no
+    // contact email/phone, an inactive menu and no published floor — no warning anywhere.
+    // `alerts` already computes the menu/floor-plan gaps server-side (same data the Alerts
+    // page and dashboard badge use); slug/email/phone aren't alerts, so they're checked here.
+    const { alerts } = useAlerts(businessId);
+    const [publishWarning, setPublishWarning] = useState<string[] | null>(null)
+
+    const getPrePublishWarnings = useCallback((): string[] => {
+        if (!myBusinessFullDetails) return []
+        const missing: string[] = []
+        if (!myBusinessFullDetails.slug) missing.push(t("settings_page.publish_warning.items.slug"))
+        if (!myBusinessFullDetails.email) missing.push(t("settings_page.publish_warning.items.email"))
+        if (!myBusinessFullDetails.phone) missing.push(t("settings_page.publish_warning.items.phone"))
+        for (const alert of alerts) {
+            if (alert.key === "menu.no_items" || alert.key === "menu.no_active_items") {
+                missing.push(t("settings_page.publish_warning.items.menu"))
+            }
+            if (alert.key === "floor_plan.no_floors" || alert.key === "floor_plan.no_published_floor") {
+                missing.push(t("settings_page.publish_warning.items.floor_plan"))
+            }
+        }
+        return missing
+    }, [myBusinessFullDetails, alerts, t])
+
+    const handleTogglePublished = (val: boolean) => {
+        if (val && !myBusinessFullDetails?.isPublished) {
+            const missing = getPrePublishWarnings()
+            if (missing.length > 0) {
+                setPublishWarning(missing)
+                return
+            }
+        }
+        updateMyBusinessDetails({ isPublished: val })
+    }
 
     // Reservations & Orders local state
     const [resSettings, setResSettings] = useState({
@@ -180,7 +225,7 @@ const BusinessSettingsPage = () => {
                     onSaveDetails={(data) => {
                         updateMyBusinessDetails(data);
                     }}
-                    onTogglePublished={(val) => updateMyBusinessDetails({ isPublished: val })}
+                    onTogglePublished={handleTogglePublished}
                     onToggleAutoDisableOutOfStock={(val) => updateMyBusinessDetails({ autoDisableOutOfStock: val })}
                     disabled={updatingMyBusiness}
                     sectionRef={(el) => { sectionRefs.current["general-info"] = el }}
@@ -520,6 +565,39 @@ const BusinessSettingsPage = () => {
             </AccordionItem>
 
         </Accordion>
+
+        <Dialog open={!!publishWarning} onOpenChange={(open) => { if (!open) setPublishWarning(null) }}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                        <TriangleAlert className="w-5 h-5 text-amber-600 shrink-0" />
+                        {t("settings_page.publish_warning.title")}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {t("settings_page.publish_warning.description")}
+                    </DialogDescription>
+                </DialogHeader>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-foreground">
+                    {publishWarning?.map((item) => (
+                        <li key={item}>{item}</li>
+                    ))}
+                </ul>
+                <DialogFooter className="mt-4 gap-2">
+                    <Button variant="outline" onClick={() => setPublishWarning(null)}>
+                        {t("settings_page.publish_warning.cancel")}
+                    </Button>
+                    <Button
+                        variant="default"
+                        onClick={() => {
+                            setPublishWarning(null)
+                            updateMyBusinessDetails({ isPublished: true })
+                        }}
+                    >
+                        {t("settings_page.publish_warning.publish_anyway")}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
         </div>
     )
 }

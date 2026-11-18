@@ -2543,7 +2543,8 @@
         "invalid": "Seuls les lettres minuscules, chiffres et tirets sont autorisés",
         "available": "Ce slug est disponible",
         "idle_hint": "Utilisé dans l'URL de votre page publique. Lettres minuscules, chiffres et tirets uniquement.",
-        "change_warning": "Modifier le slug cassera tous les liens partagés utilisant l'actuel"
+        "change_warning": "Modifier le slug cassera tous les liens partagés utilisant l'actuel",
+        "view_public_page": "Voir ma page publique"
       },
       "currency": {
         "label": "Devise",
@@ -2570,6 +2571,19 @@
         "desc": "Masquer automatiquement un article du menu dès que son stock suivi atteint zéro, et le réafficher une fois réapprovisionné"
       },
       "save": "Enregistrer"
+    },
+    "publish_warning": {
+      "title": "Cet établissement n'est pas encore tout à fait prêt",
+      "description": "Le publier maintenant le rendra visible aux clients, mais les éléments suivants manquent encore :",
+      "cancel": "Laissez-moi d'abord corriger cela",
+      "publish_anyway": "Publier quand même",
+      "items": {
+        "slug": "Adresse web publique (slug)",
+        "email": "E-mail de contact",
+        "phone": "Numéro de téléphone de contact",
+        "menu": "Un menu actif avec des articles",
+        "floor_plan": "Un plan de salle publié"
+      }
     },
     "location": {
       "trigger": "Localisation et adresse",
@@ -2697,7 +2711,8 @@
           "placeholder": "ex. A-123456-Z",
           "helper": "Requis pour la facturation fiscale andorrane — imprimé sur les reçus. Les commandes ne peuvent pas être finalisées tant que ce champ n'est pas renseigné.",
           "notSetWarning": "Non défini — requis avant de pouvoir finaliser une commande."
-        }
+        },
+        "invalid_format": "Cela ne semble pas correct. Format attendu : {{example}}"
       },
       "pricing_model": {
         "label": "Modèle de tarification",
@@ -4265,6 +4280,7 @@
   "branding_page": {
     "title": "Logo et photos",
     "qr_code": "Code QR",
+    "qr_code_points_to": "Voir vers quoi pointe ce code QR",
     "logo": "Logo",
     "gallery": "Galerie",
     "logo_upload": {
@@ -5312,6 +5328,10 @@
       "staff": {
         "label": "Invitez votre équipe",
         "description": "Ajoutez des membres de l'équipe et attribuez-leur des rôles"
+      },
+      "tax_id": {
+        "label": "Renseignez votre numéro fiscal",
+        "description": "Obligatoire avant de pouvoir finaliser une commande"
       },
       "publish": {
         "label": "Publiez votre établissement",

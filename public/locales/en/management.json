@@ -2617,7 +2617,8 @@
         "invalid": "Only lowercase letters, numbers, and hyphens allowed",
         "available": "Slug is available",
         "idle_hint": "Used in your public page URL. Lowercase letters, numbers, and hyphens only.",
-        "change_warning": "Changing the slug will break any shared links using the current one"
+        "change_warning": "Changing the slug will break any shared links using the current one",
+        "view_public_page": "View my public page"
       },
       "currency": {
         "label": "Currency",
@@ -2644,6 +2645,19 @@
         "desc": "Automatically hide a menu item once its tracked stock hits zero, and bring it back once restocked"
       },
       "save": "Save"
+    },
+    "publish_warning": {
+      "title": "This business isn't quite ready",
+      "description": "Publishing now will make it visible to customers, but the following are still missing:",
+      "cancel": "Let me fix these first",
+      "publish_anyway": "Publish anyway",
+      "items": {
+        "slug": "Public web address (slug)",
+        "email": "Contact email",
+        "phone": "Contact phone number",
+        "menu": "An active menu with items",
+        "floor_plan": "A published floor plan"
+      }
     },
     "location": {
       "trigger": "Location & Address",
@@ -2771,7 +2785,8 @@
           "placeholder": "e.g. A-123456-Z",
           "helper": "Required for Andorran fiscal invoicing — printed on receipts. Orders can't be completed until this is set.",
           "notSetWarning": "Not set — required before completing any order."
-        }
+        },
+        "invalid_format": "This doesn't look right. Expected format: {{example}}"
       },
       "pricing_model": {
         "label": "Pricing Model",
@@ -4340,6 +4355,7 @@
   "branding_page": {
     "title": "Logo & photos",
     "qr_code": "QR Code",
+    "qr_code_points_to": "View where this QR code links to",
     "logo": "Logo",
     "gallery": "Gallery",
     "logo_upload": {
@@ -5315,6 +5331,10 @@
       "staff": {
         "label": "Invite your team",
         "description": "Bring in staff and assign them roles"
+      },
+      "tax_id": {
+        "label": "Set your Tax ID",
+        "description": "Required before any order can be completed"
       },
       "publish": {
         "label": "Publish your business",

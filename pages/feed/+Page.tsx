@@ -27,6 +27,7 @@ import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries';
 import { useProfile } from '@/features/profile/useProfile';
 import { withFallback } from 'vike-react-query'
+import { toast } from 'sonner'
 
 const FILTER_STORAGE_KEY = 'public_feed_filters';
 
@@ -50,12 +51,14 @@ const container = {
 
 // Inner component — server-rendered via useSuspenseQuery with default params on first load
 const BusinessGrid = withFallback(
-    ({ params, page, limit, onPageChange, t }: {
+    ({ params, page, limit, onPageChange, t, hasActiveFilters, onClearFilters }: {
         params: FetchDiscoveryBusinessesParams;
         page: number;
         limit: number;
         onPageChange: (p: number) => void;
         t: ReturnType<typeof useTranslation<'feed'>>['t'];
+        hasActiveFilters: boolean;
+        onClearFilters: () => void;
     }) => {
         const { data: searchData } = useSuspenseDiscoverySearch(params);
 
@@ -120,7 +123,19 @@ const BusinessGrid = withFallback(
                 ) : (
                     <div className="w-full py-20 flex flex-col items-center justify-center space-y-2">
                         <h3 className="text-xl font-bold text-foreground">{t("feed_page.no_businesses_found")}</h3>
-                        <p className="text-muted-foreground">{t("feed_page.try_adjusting_search")}</p>
+                        <p className="text-muted-foreground">
+                            {hasActiveFilters
+                                ? t("feed_page.no_results_filtered_reason")
+                                : t("feed_page.try_adjusting_search")}
+                        </p>
+                        {hasActiveFilters && (
+                            <button
+                                onClick={onClearFilters}
+                                className="text-sm font-semibold text-primary hover:underline"
+                            >
+                                {t("feed_page.clear_filters")}
+                            </button>
+                        )}
                     </div>
                 )}
 
@@ -238,7 +253,17 @@ const FeedPage = () => {
         };
 
         const handleFallbackToProfileCountry = () => {
+            // C3 (QA Test Report, 2026-11-18): this silently narrows results to one country
+            // whenever geolocation fails — with no indication why, a business outside that
+            // country (or a tester whose profile country doesn't match their test business)
+            // sees "Found 0 results" and no clue it's a location filter, not a missing listing.
             if (userProfile?.countryId) {
+                const country = platformCountries?.find(c => c.id === userProfile.countryId);
+                toast.info(
+                    country
+                        ? t("public_feed.locationFallbackToast", { country: country.name })
+                        : t("public_feed.locationFallbackToastGeneric"),
+                );
                 setLocationState(prev => ({
                     ...prev,
                     countryId: userProfile.countryId,
@@ -296,6 +321,11 @@ const FeedPage = () => {
         }
         return undefined;
     }, [locationState, platformCountries, t]);
+
+    const hasActiveFilters = Boolean(
+        searchQuery || selectedTypeId || selectedTagIds.length > 0 || selectedMinRating
+        || locationState.countryId || locationState.lat || locationState.useCustomLocation
+    );
 
     // Build query params — on server these default to no-location (shows global results for crawlers)
     const searchParams: FetchDiscoveryBusinessesParams = {
@@ -385,6 +415,8 @@ const FeedPage = () => {
                                 limit={limit}
                                 onPageChange={setPage}
                                 t={t}
+                                hasActiveFilters={hasActiveFilters}
+                                onClearFilters={handleClearFilters}
                             />
                         </div>
                     </div>

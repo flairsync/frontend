@@ -128,10 +128,12 @@
       "pairing_code_label": "Codi de vinculació",
       "pairing_code_placeholder": "Codi de 8 caràcters",
       "linking": "Vinculant...",
-      "link_device": "Vincula el dispositiu"
+      "link_device": "Vincula el dispositiu",
+      "relink_anyway": "Vincula'l a aquest negoci igualment"
     },
     "errors": {
-      "invalid_code": "Codi no vàlid. Torna-ho a provar."
+      "invalid_code": "Codi no vàlid. Torna-ho a provar.",
+      "device_conflict": "Aquest dispositiu està vinculat actualment a un altre negoci. Si el tornes a vincular, es desconnectarà d'aquell negoci."
     },
     "device_id_footer": "ID del dispositiu: {{deviceId}}..."
   },

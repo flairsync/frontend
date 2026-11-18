@@ -1,6 +1,8 @@
 {
   "public_feed": {
     "resultsFound": "{{count}} résultats trouvés",
+    "locationFallbackToast": "Impossible d'accéder à votre position — affichage des résultats pour {{country}}.",
+    "locationFallbackToastGeneric": "Impossible d'accéder à votre position — affichage des résultats proches selon votre profil.",
     "sortBy": "Trier par",
     "sortOptions": {
       "default": "Par défaut",
@@ -307,7 +309,9 @@
   },
   "feed_page": {
     "no_businesses_found": "Aucun établissement trouvé",
-    "try_adjusting_search": "Essayez d'ajuster vos critères de recherche"
+    "try_adjusting_search": "Essayez d'ajuster vos critères de recherche",
+    "no_results_filtered_reason": "Aucun établissement ne correspond à votre position ou à vos filtres actuels — cela ne veut pas dire qu'il n'y en a aucun.",
+    "clear_filters": "Effacer les filtres"
   },
   "join_business_page": {
     "title": "Rejoindre {{businessName}}",

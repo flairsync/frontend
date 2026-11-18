@@ -21,6 +21,7 @@ const TourProvider = clientOnly(() => import("@/features/tour/components/TourPro
 const CookieConsentBanner = clientOnly(() => import("@/components/shared/CookieConsentBanner"));
 const BetaModeBanner = clientOnly(() => import("@/components/shared/BetaModeBanner"));
 const PasswordBreachBanner = clientOnly(() => import("@/components/shared/PasswordBreachBanner"));
+const RadixPointerEventsGuard = clientOnly(() => import("@/components/shared/RadixPointerEventsGuard"));
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
@@ -43,6 +44,7 @@ export default function LayoutDefault({ children }: { children: React.ReactNode 
           <CookieConsentBanner />
           <BetaModeBanner />
           <PasswordBreachBanner />
+          <RadixPointerEventsGuard />
         </TextSizeProvider>
       </ThemeProvider>
     </UiModeProvider>

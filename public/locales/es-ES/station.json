@@ -128,10 +128,12 @@
       "pairing_code_label": "Código de vinculación",
       "pairing_code_placeholder": "Código de 8 caracteres",
       "linking": "Vinculando...",
-      "link_device": "Vincular dispositivo"
+      "link_device": "Vincular dispositivo",
+      "relink_anyway": "Vincular a este negocio de todos modos"
     },
     "errors": {
-      "invalid_code": "Código no válido. Inténtalo de nuevo."
+      "invalid_code": "Código no válido. Inténtalo de nuevo.",
+      "device_conflict": "Este dispositivo está vinculado actualmente a otro negocio. Si lo vinculas de nuevo, se desconectará de ese negocio."
     },
     "device_id_footer": "ID del dispositivo: {{deviceId}}..."
   },

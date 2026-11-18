@@ -139,10 +139,12 @@
       "pairing_code_label": "Pairing Code",
       "pairing_code_placeholder": "8-character code",
       "linking": "Linking...",
-      "link_device": "Link Device"
+      "link_device": "Link Device",
+      "relink_anyway": "Relink to this business anyway"
     },
     "errors": {
-      "invalid_code": "Invalid code. Please try again."
+      "invalid_code": "Invalid code. Please try again.",
+      "device_conflict": "This device is currently set up for another business. Relinking it will disconnect it from that business."
     },
     "device_id_footer": "Device ID: {{deviceId}}..."
   },

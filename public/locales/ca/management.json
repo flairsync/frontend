@@ -2543,7 +2543,8 @@
         "invalid": "Només es permeten lletres minúscules, números i guions",
         "available": "L'slug està disponible",
         "idle_hint": "S'utilitza a l'URL de la teva pàgina pública. Només lletres minúscules, números i guions.",
-        "change_warning": "Canviar l'slug trencarà qualsevol enllaç compartit que utilitzi l'actual"
+        "change_warning": "Canviar l'slug trencarà qualsevol enllaç compartit que utilitzi l'actual",
+        "view_public_page": "Veure la meva pàgina pública"
       },
       "currency": {
         "label": "Moneda",
@@ -2570,6 +2571,19 @@
         "desc": "Amaga automàticament un article del menú quan el seu estoc registrat arriba a zero, i el torna a mostrar quan es reposi"
       },
       "save": "Desar"
+    },
+    "publish_warning": {
+      "title": "Aquest negoci encara no està del tot a punt",
+      "description": "Publicar-lo ara el farà visible per als clients, però encara falta això:",
+      "cancel": "Deixa'm arreglar-ho primer",
+      "publish_anyway": "Publica igualment",
+      "items": {
+        "slug": "Adreça web pública (slug)",
+        "email": "Correu electrònic de contacte",
+        "phone": "Número de telèfon de contacte",
+        "menu": "Un menú actiu amb articles",
+        "floor_plan": "Un pla de sala publicat"
+      }
     },
     "location": {
       "trigger": "Ubicació i adreça",
@@ -2697,7 +2711,8 @@
           "placeholder": "p. ex. A-123456-Z",
           "helper": "Necessari per a la facturació fiscal andorrana — s'imprimeix als rebuts. Les comandes no es poden completar fins que això estigui configurat.",
           "notSetWarning": "No definit — necessari abans de completar qualsevol comanda."
-        }
+        },
+        "invalid_format": "Això no sembla correcte. Format esperat: {{example}}"
       },
       "pricing_model": {
         "label": "Model de preus",
@@ -4265,6 +4280,7 @@
   "branding_page": {
     "title": "Logotip i fotos",
     "qr_code": "Codi QR",
+    "qr_code_points_to": "Veure a on enllaça aquest codi QR",
     "logo": "Logotip",
     "gallery": "Galeria",
     "logo_upload": {
@@ -5312,6 +5328,10 @@
       "staff": {
         "label": "Convida el teu equip",
         "description": "Afegeix personal i assigna'ls rols"
+      },
+      "tax_id": {
+        "label": "Configura el teu NIF/NRT",
+        "description": "Obligatori abans de poder completar cap comanda"
       },
       "publish": {
         "label": "Publica el teu negoci",

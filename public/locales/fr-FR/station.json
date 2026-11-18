@@ -128,10 +128,12 @@
       "pairing_code_label": "Code d'association",
       "pairing_code_placeholder": "Code à 8 caractères",
       "linking": "Association en cours...",
-      "link_device": "Associer l'appareil"
+      "link_device": "Associer l'appareil",
+      "relink_anyway": "Associer à ce commerce quand même"
     },
     "errors": {
-      "invalid_code": "Code invalide. Veuillez réessayer."
+      "invalid_code": "Code invalide. Veuillez réessayer.",
+      "device_conflict": "Cet appareil est actuellement associé à un autre commerce. Le réassocier le déconnectera de ce commerce."
     },
     "device_id_footer": "ID de l'appareil : {{deviceId}}..."
   },

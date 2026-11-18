@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Circle, X, Utensils, LayoutDashboard, Users, Rocket } from "lucide-react";
+import { CheckCircle2, Circle, X, Utensils, LayoutDashboard, Users, Rocket, Receipt } from "lucide-react";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
 import { useTables } from "@/features/floor-plan/useFloorPlan";
@@ -17,6 +17,11 @@ interface WelcomeChecklistProps {
 }
 
 const DISMISS_KEY_PREFIX = "flairsync_welcome_checklist_dismissed_";
+
+// Mirrors FISCAL_ID_REQUIRED_COUNTRIES in the owner layout header (pages/manage/@id/owner/+Layout.tsx)
+// and TAX_ID_REQUIRED_COUNTRY_CODES on the backend (src/business/utils/tax-id.util.ts) — only a
+// business in one of these countries can't complete an order without a Tax ID set.
+const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
 
 export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }) => {
     const { t } = useTranslation("management");
@@ -40,6 +45,9 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
         fetchingEmployees ||
         businessAllItems === undefined ||
         tables === undefined;
+
+    const requiresTaxId = !!myBusinessFullDetails?.country?.code
+        && FISCAL_ID_REQUIRED_COUNTRIES.has(myBusinessFullDetails.country.code);
 
     const steps = [
         {
@@ -66,6 +74,17 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
             icon: Users,
             href: `/manage/${businessId}/owner/staff`,
         },
+        // C1 (QA Test Report, 2026-11-18): orders can't be completed without a Tax ID in a
+        // country that mandates one, but nothing else in onboarding ever asks for it —
+        // surfaced here, and the publish toggle itself now blocks on it server-side too.
+        ...(requiresTaxId ? [{
+            key: "tax-id",
+            label: t("welcome_checklist.steps.tax_id.label"),
+            description: t("welcome_checklist.steps.tax_id.description"),
+            done: !!myBusinessFullDetails?.taxIdNumber,
+            icon: Receipt,
+            href: `/manage/${businessId}/owner/settings?section=tax`,
+        }] : []),
         {
             key: "publish",
             label: t("welcome_checklist.steps.publish.label"),

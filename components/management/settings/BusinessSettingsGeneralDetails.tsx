@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { getCurrencySymbol, toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
-import { CheckCircle2, XCircle, Loader2, AlertCircle } from 'lucide-react'
+import { CheckCircle2, XCircle, Loader2, AlertCircle, ExternalLink } from 'lucide-react'
 
 // AD-04 gap fix: countries whose legally mandated primary receipt language can't be
 // overridden away (Catalan for Andorra, per Llei 6/2024 — see
@@ -199,6 +199,17 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                             {t("settings_page.general_details.slug.change_warning")}
                         </p>
+                    )}
+                    {!!props.businessDetails?.id && (
+                        <a
+                            href={`/business/${props.businessDetails.slug || props.businessDetails.id}/site`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-xs text-primary hover:underline w-fit"
+                        >
+                            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                            {t("settings_page.general_details.slug.view_public_page")}
+                        </a>
                     )}
                 </div>
 

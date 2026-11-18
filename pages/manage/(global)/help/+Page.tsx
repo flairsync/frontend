@@ -53,15 +53,20 @@ const HelpPage = () => {
                             {t("help_page.contact_support.description")}
                         </p>
                         <a
-                            href="mailto:support@yourapp.com"
+                            href="mailto:info@flairsync.com"
                             className="text-blue-600 hover:underline text-sm"
                         >
-                            support@yourapp.com
+                            info@flairsync.com
                         </a>
                         <div className="mt-4">
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
-                                {t("help_page.contact_support.send_message")}
-                            </Button>
+                            {/* B6 (QA Test Report, 2026-11-18): this button had no onClick at all.
+                                The public Support Center (/support) already has a complete,
+                                working contact form — reuse it instead of building a second one. */}
+                            <a href="/support">
+                                <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl">
+                                    {t("help_page.contact_support.send_message")}
+                                </Button>
+                            </a>
                         </div>
                     </CardContent>
                 </Card>

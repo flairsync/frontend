@@ -100,7 +100,7 @@ export class BusinessEmployeeInvitation {
   };
 
   getExpiryDate = () => {
-    return dayjs(this.createdAt).format("YYYY/MM/DD HH:mm");
+    return dayjs(this.expiresAt).format("YYYY/MM/DD HH:mm");
   };
 
   isCanceled = () => {

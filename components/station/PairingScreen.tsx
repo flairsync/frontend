@@ -24,10 +24,13 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // Set when the device is actively registered to a different business — offers a
+  // confirm-and-relink step instead of just a dead-end error (see QA Test Report C5).
+  const [conflict, setConflict] = useState(false);
 
   const isReady = code.length === 8 && name.trim().length > 0;
 
-  async function handleLink() {
+  async function handleLink(force = false) {
     if (!isReady) return;
     setLoading(true);
     setError("");
@@ -38,11 +41,19 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
         code: code.toUpperCase(),
         name: name.trim(),
         type: stationType,
+        force,
       });
       saveStationToken(res.data.data.token);
       onLinked();
     } catch (e: any) {
-      setError(e.response?.data?.message ?? t("pairing_screen.errors.invalid_code"));
+      const message: string | undefined = e.response?.data?.message;
+      if (!force && message?.includes("already registered to a different business")) {
+        setConflict(true);
+        setError(t("pairing_screen.errors.device_conflict"));
+      } else {
+        setConflict(false);
+        setError(message ?? t("pairing_screen.errors.invalid_code"));
+      }
     } finally {
       setLoading(false);
     }
@@ -50,6 +61,8 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
 
   function handleCodeChange(val: string) {
     setCode(sanitizeCode(val));
+    setConflict(false);
+    setError("");
   }
 
   const Icon = stationType === "kds" ? ChefHat : Monitor;
@@ -118,23 +131,39 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
               </p>
             )}
 
-            <Button
-              onClick={handleLink}
-              disabled={loading || !isReady}
-              className="h-12 font-black text-xs uppercase tracking-widest gap-2"
-            >
-              {loading ? (
-                <>
+            {conflict ? (
+              <Button
+                variant="outline"
+                onClick={() => handleLink(true)}
+                disabled={loading}
+                className="h-12 font-black text-xs uppercase tracking-widest gap-2 border-destructive/40 text-destructive hover:bg-destructive/10"
+              >
+                {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  {t("pairing_screen.form.linking")}
-                </>
-              ) : (
-                <>
+                ) : (
                   <Unplug className="w-4 h-4" />
-                  {t("pairing_screen.form.link_device")}
-                </>
-              )}
-            </Button>
+                )}
+                {t("pairing_screen.form.relink_anyway")}
+              </Button>
+            ) : (
+              <Button
+                onClick={() => handleLink(false)}
+                disabled={loading || !isReady}
+                className="h-12 font-black text-xs uppercase tracking-widest gap-2"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {t("pairing_screen.form.linking")}
+                  </>
+                ) : (
+                  <>
+                    <Unplug className="w-4 h-4" />
+                    {t("pairing_screen.form.link_device")}
+                  </>
+                )}
+              </Button>
+            )}
           </CardContent>
         </Card>
 

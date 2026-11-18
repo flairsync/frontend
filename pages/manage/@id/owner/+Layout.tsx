@@ -40,7 +40,7 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { Home, Loader, TriangleAlert } from 'lucide-react';
+import { Home, Loader, TriangleAlert, ExternalLink } from 'lucide-react';
 
 // Countries whose fiscal adapter is actually LIVE (FiscalAdapterFactory routes to the
 // real per-country adapter, not the generic one) and therefore actually requires
@@ -189,6 +189,23 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                                 Draft
                                             </button>
                                         )
+                                    )}
+                                    {!fetchingMyBusinessFullDetails && myBusinessFullDetails && (
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <a
+                                                        href={`/business/${myBusinessFullDetails.slug || myBusinessFullDetails.id}/site`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center justify-center rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                                    >
+                                                        <ExternalLink className="w-4 h-4" />
+                                                    </a>
+                                                </TooltipTrigger>
+                                                <TooltipContent>View my public page</TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
                                     )}
                                     {!fetchingMyBusinessFullDetails && myBusinessFullDetails && (
                                         <BusinessStatusPill

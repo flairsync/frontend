@@ -15,6 +15,7 @@ import BusinessBrandingGalleryUpload from "@/components/management/branding/Busi
 import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { DownloadBusinessQrButton } from "@/components/qr/DownloadBusinessQrButton"
+import { ExternalLink } from "lucide-react"
 const BusinessBrandingVirtualViewer = clientOnly(() =>
     import("@/components/management/branding/BusinessBrandingVirtualViewer")
 )
@@ -54,7 +55,18 @@ const BusinessBrandingPage = () => {
             <AccordionItem value="qr-code" className="border rounded-lg px-3">
                 <AccordionTrigger className="hover:cursor-pointer ">{t("branding_page.qr_code")}</AccordionTrigger>
                 <AccordionContent className="space-y-4 py-2">
-                    <div className="flex justify-end">
+                    <div className="flex items-center justify-between gap-2">
+                        {myBusinessFullDetails?.id && (
+                            <a
+                                href={`/business/${myBusinessFullDetails.slug || myBusinessFullDetails.id}/site`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 text-xs text-primary hover:underline"
+                            >
+                                <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                                {t("branding_page.qr_code_points_to")}
+                            </a>
+                        )}
                         <DownloadBusinessQrButton businessId={routeParams.id} />
                     </div>
                     <QrDesignEditor businessId={routeParams.id} />

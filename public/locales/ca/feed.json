@@ -1,6 +1,8 @@
 {
   "public_feed": {
     "resultsFound": "{{count}} resultats trobats",
+    "locationFallbackToast": "No s'ha pogut accedir a la teva ubicació — mostrant resultats de {{country}}.",
+    "locationFallbackToastGeneric": "No s'ha pogut accedir a la teva ubicació — mostrant resultats propers segons el teu perfil.",
     "sortBy": "Ordenar per",
     "sortOptions": {
       "default": "Per defecte",
@@ -307,7 +309,9 @@
   },
   "feed_page": {
     "no_businesses_found": "No s'ha trobat cap negoci",
-    "try_adjusting_search": "Prova d'ajustar els criteris de cerca"
+    "try_adjusting_search": "Prova d'ajustar els criteris de cerca",
+    "no_results_filtered_reason": "Cap negoci coincideix amb la teva ubicació o filtres actuals — no vol dir que no n'hi hagi cap.",
+    "clear_filters": "Esborra els filtres"
   },
   "join_business_page": {
     "title": "Unir-te a {{businessName}}",

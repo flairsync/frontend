@@ -2543,7 +2543,8 @@
         "invalid": "Solo se permiten letras minúsculas, números y guiones",
         "available": "El slug está disponible",
         "idle_hint": "Se usa en la URL de tu página pública. Solo letras minúsculas, números y guiones.",
-        "change_warning": "Cambiar el slug romperá cualquier enlace compartido que use el actual"
+        "change_warning": "Cambiar el slug romperá cualquier enlace compartido que use el actual",
+        "view_public_page": "Ver mi página pública"
       },
       "currency": {
         "label": "Moneda",
@@ -2570,6 +2571,19 @@
         "desc": "Oculta automáticamente un artículo del menú cuando su stock registrado llega a cero, y lo vuelve a mostrar al reponerse"
       },
       "save": "Guardar"
+    },
+    "publish_warning": {
+      "title": "Este negocio aún no está del todo listo",
+      "description": "Publicarlo ahora lo hará visible para los clientes, pero todavía falta lo siguiente:",
+      "cancel": "Déjame arreglar esto primero",
+      "publish_anyway": "Publicar de todos modos",
+      "items": {
+        "slug": "Dirección web pública (slug)",
+        "email": "Correo electrónico de contacto",
+        "phone": "Número de teléfono de contacto",
+        "menu": "Un menú activo con artículos",
+        "floor_plan": "Un plano de sala publicado"
+      }
     },
     "location": {
       "trigger": "Ubicación y dirección",
@@ -2697,7 +2711,8 @@
           "placeholder": "p. ej. A-123456-Z",
           "helper": "Necesario para la facturación fiscal andorrana — se imprime en los recibos. Los pedidos no se pueden completar hasta que esto esté configurado.",
           "notSetWarning": "No definido — necesario antes de completar cualquier pedido."
-        }
+        },
+        "invalid_format": "Esto no parece correcto. Formato esperado: {{example}}"
       },
       "pricing_model": {
         "label": "Modelo de precios",
@@ -4265,6 +4280,7 @@
   "branding_page": {
     "title": "Logo y fotos",
     "qr_code": "Código QR",
+    "qr_code_points_to": "Ver a dónde enlaza este código QR",
     "logo": "Logotipo",
     "gallery": "Galería",
     "logo_upload": {
@@ -5312,6 +5328,10 @@
       "staff": {
         "label": "Invita a tu equipo",
         "description": "Añade personal y asígnale roles"
+      },
+      "tax_id": {
+        "label": "Configura tu NIF/NRT",
+        "description": "Obligatorio antes de poder completar ningún pedido"
       },
       "publish": {
         "label": "Publica tu negocio",
