@@ -14,7 +14,7 @@ interface DinerModeHeaderProps {
 export default function DinerModeHeader({ profile, tableLabel, onExit }: DinerModeHeaderProps) {
     const { t } = useTranslation('diner');
     return (
-        <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border/40">
+        <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border/40 shadow-sm">
             <div className="flex items-center justify-between px-4 h-14">
                 <div className="flex items-center gap-3 min-w-0">
                     {profile.logo && (

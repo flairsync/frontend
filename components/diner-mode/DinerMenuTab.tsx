@@ -70,16 +70,16 @@ export default function DinerMenuTab({ menu, canOrder, currency }: DinerMenuTabP
 
     return (
         <div className="flex flex-col h-full">
-            <div className="sticky top-14 z-30 bg-background border-b border-border/40 overflow-x-auto scrollbar-hide">
+            <div className="sticky top-14 z-30 bg-background border-b border-border/40 shadow-sm overflow-x-auto scrollbar-hide">
                 <div className="flex gap-1 px-4 py-2 w-max">
                     {categories.map((cat) => (
                         <button
                             key={cat.id}
                             onClick={() => scrollToCategory(cat.id)}
                             className={cn(
-                                "px-3.5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
+                                "px-3.5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all",
                                 activeCategoryId === cat.id
-                                    ? "bg-primary text-primary-foreground"
+                                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
                                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                             )}
                         >
@@ -151,8 +151,8 @@ function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
             onClick={isSelectable ? onAdd : undefined}
             onKeyDown={isSelectable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onAdd(); } } : undefined}
             className={cn(
-                "flex gap-3 rounded-2xl border p-3 bg-card transition-opacity",
-                isSelectable && "cursor-pointer active:bg-muted/50",
+                "flex gap-3 rounded-2xl border border-border/60 p-3 bg-card shadow-sm transition-all",
+                isSelectable && "cursor-pointer active:scale-[0.98] active:shadow-none active:bg-muted/50",
                 isUnavailable && "opacity-50 pointer-events-none"
             )}
         >
@@ -204,7 +204,7 @@ function MenuItemCard({ item, canOrder, currency, onAdd }: MenuItemCardProps) {
                     {canOrder && !isUnavailable && (
                         <Button
                             size="icon"
-                            className="h-11 w-11 rounded-full shrink-0"
+                            className="h-11 w-11 rounded-full shrink-0 shadow-md shadow-primary/25"
                             onClick={onAdd}
                         >
                             <Plus className="w-4 h-4" />

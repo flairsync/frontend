@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import { BusinessMenuItem } from '@/models/business/menu/BusinessMenuItem';
 import { useDinerModeStore, CartItem } from '@/features/diner-mode/DinerModeStore';
 import { formatCurrency } from '@/lib/formatCurrency';
@@ -159,7 +160,13 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                         className="space-y-2"
                                     >
                                         {item.variants!.map((v) => (
-                                            <div key={v.id} className="flex items-center justify-between rounded-xl border px-3 py-2.5">
+                                            <div
+                                                key={v.id}
+                                                className={cn(
+                                                    "flex items-center justify-between rounded-xl border px-3 py-2.5 transition-colors",
+                                                    selectedVariantId === v.id ? "border-primary bg-primary/5" : "border-border"
+                                                )}
+                                            >
                                                 <div className="flex items-center gap-2">
                                                     <RadioGroupItem value={v.id} id={`variant-${v.id}`} />
                                                     <Label htmlFor={`variant-${v.id}`} className="cursor-pointer font-normal">
@@ -198,7 +205,12 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                 onValueChange={(val) => handleToggleModifier(group.id, val === 'none' ? null : val, 'single')}
                                             >
                                                 {!isRequired && (
-                                                    <div className="flex items-center justify-between rounded-xl border px-3 py-2.5">
+                                                    <div
+                                                        className={cn(
+                                                            "flex items-center justify-between rounded-xl border px-3 py-2.5 transition-colors",
+                                                            (selectedModifiers[group.id]?.size ?? 0) === 0 ? "border-primary bg-primary/5" : "border-border"
+                                                        )}
+                                                    >
                                                         <div className="flex items-center gap-2">
                                                             <RadioGroupItem value="none" id={`mod-none-${group.id}`} />
                                                             <Label htmlFor={`mod-none-${group.id}`} className="cursor-pointer font-normal">
@@ -207,8 +219,16 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                         </div>
                                                     </div>
                                                 )}
-                                                {group.items.map((mod) => (
-                                                    <div key={mod.id} className="flex items-center justify-between rounded-xl border px-3 py-2.5">
+                                                {group.items.map((mod) => {
+                                                    const isSelected = selectedModifiers[group.id]?.has(mod.id) ?? false;
+                                                    return (
+                                                    <div
+                                                        key={mod.id}
+                                                        className={cn(
+                                                            "flex items-center justify-between rounded-xl border px-3 py-2.5 transition-colors",
+                                                            isSelected ? "border-primary bg-primary/5" : "border-border"
+                                                        )}
+                                                    >
                                                         <div className="flex items-center gap-2">
                                                             <RadioGroupItem value={mod.id} id={`mod-${mod.id}`} />
                                                             <Label htmlFor={`mod-${mod.id}`} className="cursor-pointer font-normal">
@@ -219,7 +239,8 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                             <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency)}</span>
                                                         )}
                                                     </div>
-                                                ))}
+                                                    );
+                                                })}
                                             </RadioGroup>
                                         ) : (
                                             group.items.map((mod) => {
@@ -229,7 +250,11 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                 return (
                                                     <div
                                                         key={mod.id}
-                                                        className={`flex items-center justify-between rounded-xl border px-3 py-2.5 ${isDisabled ? 'opacity-50' : ''}`}
+                                                        className={cn(
+                                                            "flex items-center justify-between rounded-xl border px-3 py-2.5 transition-colors",
+                                                            isSelected ? "border-primary bg-primary/5" : "border-border",
+                                                            isDisabled && "opacity-50"
+                                                        )}
                                                     >
                                                         <div className="flex items-center gap-2">
                                                             <Checkbox
@@ -269,7 +294,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                         <Separator className="my-5" />
 
                         <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 border rounded-full px-2">
+                            <div className="flex items-center gap-2 border rounded-full px-2 bg-background shadow-sm">
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -290,7 +315,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                             </div>
 
                             <Button
-                                className="flex-1 rounded-full h-11 text-base font-semibold"
+                                className="flex-1 rounded-full h-11 text-base font-semibold shadow-md shadow-primary/25"
                                 onClick={handleAdd}
                                 disabled={(hasVariants && !selectedVariantId) || unsatisfiedGroups.length > 0}
                             >

@@ -157,7 +157,7 @@ export default function FeedbackForm({ onSubmit, isSubmitting }: FeedbackFormPro
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
-            <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full">
+            <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full rounded-full h-12 text-base font-semibold shadow-md shadow-primary/25">
                 {t('feedback.submit')}
             </Button>
         </div>

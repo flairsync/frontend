@@ -56,25 +56,28 @@ function formatUpdatedAgo(t: (key: string, opts?: any) => string, seconds: numbe
 
 function getStatusConfig(
     t: (key: string) => string
-): Record<string, { label: string; description?: string; icon: React.ReactNode; color: string; pulse?: boolean }> {
+): Record<string, { label: string; description?: string; icon: React.ReactNode; color: string; surface: string; pulse?: boolean }> {
     return {
         created: {
             label: t('my_order_tab.status.created'),
             description: t('my_order_tab.status_description.created'),
             icon: <Loader2 className="w-5 h-5 animate-spin" />,
             color: 'text-blue-500',
+            surface: 'bg-blue-50 border-blue-200 dark:bg-blue-500/10 dark:border-blue-500/30',
         },
         accepted: {
             label: t('my_order_tab.status.accepted'),
             description: t('my_order_tab.status_description.accepted'),
             icon: <CheckCircle2 className="w-5 h-5" />,
             color: 'text-green-500',
+            surface: 'bg-green-50 border-green-200 dark:bg-green-500/10 dark:border-green-500/30',
         },
         preparing: {
             label: t('my_order_tab.status.preparing'),
             description: t('my_order_tab.status_description.preparing'),
             icon: <ChefHat className="w-5 h-5" />,
             color: 'text-orange-500',
+            surface: 'bg-orange-50 border-orange-200 dark:bg-orange-500/10 dark:border-orange-500/30',
         },
         ready: {
             label: t('my_order_tab.status.ready'),
@@ -84,22 +87,26 @@ function getStatusConfig(
                 </span>
             ),
             color: 'text-emerald-500',
+            surface: 'bg-emerald-50 border-emerald-200 dark:bg-emerald-500/10 dark:border-emerald-500/30',
             pulse: true,
         },
         completed: {
             label: t('my_order_tab.status.completed'),
             icon: <CheckCircle2 className="w-5 h-5" />,
             color: 'text-muted-foreground',
+            surface: 'bg-muted border-border',
         },
         canceled: {
             label: t('my_order_tab.status.canceled'),
             icon: <XCircle className="w-5 h-5" />,
             color: 'text-destructive',
+            surface: 'bg-destructive/5 border-destructive/20',
         },
         rejected: {
             label: t('my_order_tab.status.rejected'),
             icon: <XCircle className="w-5 h-5" />,
             color: 'text-destructive',
+            surface: 'bg-destructive/5 border-destructive/20',
         },
     };
 }
@@ -138,7 +145,9 @@ export default function DinerMyOrderTab({
     if (!activeOrder && cart.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center h-full px-8 pb-24 text-center">
-                <ShoppingCart className="w-12 h-12 text-muted-foreground/40 mb-3" />
+                <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-4">
+                    <ShoppingCart className="w-9 h-9 text-muted-foreground/50" />
+                </div>
                 <p className="font-semibold text-base">{t('my_order_tab.empty_title')}</p>
                 <p className="text-sm text-muted-foreground mt-1">
                     {t('my_order_tab.empty_description')}
@@ -183,11 +192,12 @@ export default function DinerMyOrderTab({
             {activeOrder && statusConfig && (
                 <div
                     className={cn(
-                        "rounded-2xl border p-4 flex items-center gap-3",
+                        "rounded-2xl border p-4 flex items-center gap-3 shadow-sm",
+                        statusConfig.surface,
                         statusConfig.pulse && "ring-2 ring-emerald-400/60 animate-pulse"
                     )}
                 >
-                    <span className={statusConfig.color}>{statusConfig.icon}</span>
+                    <span className={cn("w-10 h-10 shrink-0 rounded-full bg-background/70 flex items-center justify-center", statusConfig.color)}>{statusConfig.icon}</span>
                     <div>
                         <p className="font-semibold text-base">{statusConfig.label}</p>
                         {statusConfig.description && (
@@ -204,8 +214,8 @@ export default function DinerMyOrderTab({
             )}
 
             {activeOrder && (
-                <div className="rounded-2xl border bg-card overflow-hidden">
-                    <div className="px-4 py-3 border-b flex items-center justify-between">
+                <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
+                    <div className="px-4 py-3 border-b bg-muted/40 flex items-center justify-between">
                         <p className="text-base font-semibold">{t('my_order_tab.your_order_heading')}</p>
                         {isEditable && canOrder && (
                             <Button
@@ -248,8 +258,8 @@ export default function DinerMyOrderTab({
             )}
 
             {cart.length > 0 && (
-                <div className="rounded-2xl border bg-card overflow-hidden">
-                    <div className="px-4 py-3 border-b flex items-center justify-between">
+                <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
+                    <div className="px-4 py-3 border-b bg-muted/40 flex items-center justify-between">
                         <p className="text-sm font-semibold">
                             {activeOrder ? t('my_order_tab.items_to_add_heading') : t('my_order_tab.new_order_heading')}
                         </p>
@@ -273,7 +283,7 @@ export default function DinerMyOrderTab({
                                     {item.notes && (
                                         <p className="text-sm text-muted-foreground italic">{item.notes}</p>
                                     )}
-                                    <div className="flex items-center gap-1.5 mt-2 border rounded-full w-fit px-1">
+                                    <div className="flex items-center gap-1.5 mt-2 border rounded-full w-fit px-1 bg-background shadow-sm">
                                         <button
                                             onClick={() => onUpdateCartItemQuantity(index, -1)}
                                             disabled={item.quantity <= 1}
@@ -314,7 +324,7 @@ export default function DinerMyOrderTab({
 
                     <div className="px-4 pb-4">
                         <Button
-                            className="w-full rounded-full h-12 text-base font-semibold"
+                            className="w-full rounded-full h-12 text-base font-semibold shadow-md shadow-primary/25"
                             onClick={onPlaceOrder}
                             disabled={isSubmitting}
                         >
