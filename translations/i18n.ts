@@ -4,8 +4,9 @@ import HttpBackend from "i18next-http-backend";
 import LocalStorageBackend from "i18next-localstorage-backend";
 import { initReactI18next } from "react-i18next";
 import { getLangCookie } from "@/utils/cookies";
+import { SUPPORTED_LANGUAGES, normalizeLang } from "./supportedLanguages";
 
-export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca"] as const;
+export { SUPPORTED_LANGUAGES, normalizeLang };
 
 // vite.config.ts replaces __I18N_VERSION__ with a per-build stamp. The typeof
 // guard keeps this import-safe in any context the define might not reach (a
@@ -13,25 +14,6 @@ export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca"] as const;
 // otherwise throw a ReferenceError here and take down every translation.
 const I18N_CACHE_VERSION =
   typeof __I18N_VERSION__ !== "undefined" ? __I18N_VERSION__ : "dev";
-
-// Maps a base subtag (from a browser Accept-Language value, or a cookie set before this
-// project switched to full BCP-47 tags matching Tolgee's project languages) to the supported
-// tag it corresponds to.
-const BASE_LANG_MAP: Record<string, (typeof SUPPORTED_LANGUAGES)[number]> = {
-  en: "en",
-  fr: "fr-FR",
-  es: "es-ES",
-  ca: "ca",
-  cat: "ca",
-};
-
-function normalizeLang(lang: string): (typeof SUPPORTED_LANGUAGES)[number] {
-  if ((SUPPORTED_LANGUAGES as readonly string[]).includes(lang)) {
-    return lang as (typeof SUPPORTED_LANGUAGES)[number];
-  }
-  const base = lang.split("-")[0].toLowerCase();
-  return BASE_LANG_MAP[base] ?? "en";
-}
 
 function detectLang(): string {
   const cookie = getLangCookie();
@@ -91,5 +73,16 @@ i18n
       useSuspense: false,
     },
   });
+
+// P1-6 (QA, 2026-11-18): <html lang> was always "en" — this keeps it correct on every
+// in-app language change (vike-react's own `lang` config in pages/+config.ts handles the
+// SSR/first-render case from the request cookie, since this i18n instance is a
+// server-shared singleton and can't safely hold one request's language across others).
+if (typeof document !== "undefined") {
+  document.documentElement.lang = i18n.language;
+  i18n.on("languageChanged", (lng) => {
+    document.documentElement.lang = lng;
+  });
+}
 
 export default i18n;

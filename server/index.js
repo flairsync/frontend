@@ -15,6 +15,11 @@ function startServer() {
     // the very first SSR paint already has it — reading it client-side instead
     // would flash the wrong shell on every manage page load.
     const uiModeCookie = getCookie(c, "fs_ui_mode");
+    // P1-6 (QA, 2026-11-18): <html lang> was always "en" on first paint since the i18n
+    // instance (translations/i18n.ts) defaults to "en" on the server — read here so
+    // vike-react's `lang` config (pages/+config.ts) can set the real attribute from the
+    // very first SSR response instead of only correcting it after client hydration.
+    const langCookie = getCookie(c, "fs_lang");
 
     let user = null;
     let tfa = null;
@@ -47,6 +52,7 @@ function startServer() {
       "uiMode",
       uiModeCookie === "simple" || uiModeCookie === "advanced" ? uiModeCookie : null
     );
+    c.set("langCookie", langCookie ?? null);
     await next();
 
     // SSR HTML embeds the requesting user's pageContext — never let the browser

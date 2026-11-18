@@ -4,6 +4,7 @@ import Layout from "../layouts/LayoutDefault.js";
 import vikeReactQuery from "vike-react-query/config";
 import vikeServer from "vike-server/config";
 import React from "react";
+import { normalizeLang } from "../translations/supportedLanguages.js";
 
 // Default config (can be overridden by pages)
 // https://vike.dev/config
@@ -18,10 +19,16 @@ export default {
     "FlairSync is a modern platform that helps creators and businesses connect, manage their content, and streamline their workflow with powerful tools for collaboration, analytics, and payouts — all in one place.",
   image: "https://flairsync.com/social-preview.png",
 
+  // P1-6 (QA, 2026-11-18): <html lang> was always "en". `langCookie` is read server-side
+  // from the fs_lang cookie (server/index.js), the same way uiMode already is — this sets
+  // the real attribute from the very first SSR response. In-app language changes (no
+  // navigation) are kept in sync separately, in translations/i18n.ts.
+  lang: (pageContext) => normalizeLang(pageContext.langCookie ?? "en"),
+
   extends: [vikeReact, vikeReactQuery, vikeServer],
   server: "server/index.js",
 
-  passToClient: ["user", "tfa", "session", "uiMode"],
+  passToClient: ["user", "tfa", "session", "uiMode", "langCookie"],
 
   // Default TanStack Query staleTime: without this it's 0, so every query
   // refetches on mount/window-focus. Screens that need fresher data (KDS,
@@ -57,6 +64,10 @@ declare global {
       // cookie server-side. null when the user has never chosen — the provider
       // then applies the default for their account age.
       uiMode?: "simple" | "advanced" | null;
+      // Raw fs_lang cookie value, read server-side (server/index.js) — unnormalized
+      // (may be a base subtag like "fr" from before this project used full BCP-47 tags),
+      // hence `normalizeLang` in the `lang` config above rather than using it directly.
+      langCookie?: string | null;
       // Refine type of pageContext.Page
     }
   }
