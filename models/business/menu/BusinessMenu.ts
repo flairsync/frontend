@@ -102,4 +102,29 @@ export class BusinessMenu {
     if (!this.repeatDaysOfWeek) return [];
     return this.repeatDaysOfWeek?.map((val) => Number(val));
   };
+
+  // P0-5 (QA, 2026-11-18): MenuHeader's "Active"/"Inactive" badge was never actually wired to
+  // real data — both the owner and staff menu detail pages passed it a menu object with no
+  // isActive (or startDate/endDate) at all, so it showed "Inactive" unconditionally, for every
+  // menu, including ones with no schedule restriction at all (which should read as always
+  // active). Mirrors the backend's applyMenuActiveWindowWhere + filterByDayOfWeek
+  // (src/menu/utils/menu-active-window.util.ts) — a null/unset field means "no restriction".
+  // Uses the viewer's local clock, same approximation the rest of this page already makes.
+  get isActive(): boolean {
+    const now = dayjs();
+    const today = now.format("YYYY-MM-DD");
+    const currentTime = now.format("HH:mm:ss");
+
+    if (this.startDate && this.startDate > today) return false;
+    if (this.endDate && this.endDate < today) return false;
+    if (this.startTime && this.startTime > currentTime) return false;
+    if (this.endTime && this.endTime < currentTime) return false;
+
+    if (this.repeatDaysOfWeek && this.repeatDaysOfWeek.length > 0) {
+      const dayOfWeek = now.day();
+      if (!this.getRepeatDaysAsNumberArray().includes(dayOfWeek)) return false;
+    }
+
+    return true;
+  }
 }

@@ -572,6 +572,9 @@ const MenuDetailPage: React.FC = () => {
                                 name: businessMenu?.name,
                                 id: businessMenu?.id,
                                 description: businessMenu?.description,
+                                startDate: businessMenu?.startDate,
+                                endDate: businessMenu?.endDate,
+                                isActive: businessMenu?.isActive,
                             }}
                             onEdit={() => setEditMenu(true)}
                             onDelete={() => setDeleteMenuConfirm(true)}
