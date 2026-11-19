@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { User, Info, Building2Icon } from "lucide-react";
 import BusinessManagementHeader from "@/components/management/BusinessManagementHeader";
@@ -262,40 +263,60 @@ const JoinProfessionalPage = () => {
                                         }) => (
                                             <Form className="space-y-6">
                                                 {/* Identity */}
+                                                {/* P1-20 (QA round 4, 2026-11-19): these inputs had only a placeholder — no
+                                                    <Label>, so they had no accessible name at all once a value was typed in
+                                                    (placeholders disappear). Add one per field, reusing the same i18n keys
+                                                    already used as placeholder text. */}
                                                 <div className="space-y-3">
-                                                    <Input
-                                                        name="fname"
-                                                        placeholder={t("professional_profile_page.form.first_name_label")}
-                                                        value={values.fname}
-                                                        onChange={handleChange}
-                                                    />
+                                                    <div className="space-y-1.5">
+                                                        <Label htmlFor="fname">{t("professional_profile_page.form.first_name_label")}</Label>
+                                                        <Input
+                                                            id="fname"
+                                                            name="fname"
+                                                            placeholder={t("professional_profile_page.form.first_name_label")}
+                                                            value={values.fname}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
                                                     {errors.fname && (
                                                         <InputError message={errors.fname} />
                                                     )}
 
-                                                    <Input
-                                                        name="mname"
-                                                        placeholder={t("join_professional_page.create.middle_name_placeholder")}
-                                                        value={values.mname}
-                                                        onChange={handleChange}
-                                                    />
+                                                    <div className="space-y-1.5">
+                                                        <Label htmlFor="mname">{t("join_professional_page.create.middle_name_placeholder")}</Label>
+                                                        <Input
+                                                            id="mname"
+                                                            name="mname"
+                                                            placeholder={t("join_professional_page.create.middle_name_placeholder")}
+                                                            value={values.mname}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
 
-                                                    <Input
-                                                        name="lname"
-                                                        placeholder={t("professional_profile_page.form.last_name_label")}
-                                                        value={values.lname}
-                                                        onChange={handleChange}
-                                                    />
+                                                    <div className="space-y-1.5">
+                                                        <Label htmlFor="lname">{t("professional_profile_page.form.last_name_label")}</Label>
+                                                        <Input
+                                                            id="lname"
+                                                            name="lname"
+                                                            placeholder={t("professional_profile_page.form.last_name_label")}
+                                                            value={values.lname}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
                                                     {errors.lname && (
                                                         <InputError message={errors.lname} />
                                                     )}
 
-                                                    <Input
-                                                        name="dname"
-                                                        placeholder={t("professional_profile_page.form.display_name_label")}
-                                                        value={values.dname}
-                                                        onChange={handleChange}
-                                                    />
+                                                    <div className="space-y-1.5">
+                                                        <Label htmlFor="dname">{t("professional_profile_page.form.display_name_label")}</Label>
+                                                        <Input
+                                                            id="dname"
+                                                            name="dname"
+                                                            placeholder={t("professional_profile_page.form.display_name_label")}
+                                                            value={values.dname}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
                                                     {errors.dname && (
                                                         <InputError message={errors.dname} />
                                                     )}
@@ -303,7 +324,9 @@ const JoinProfessionalPage = () => {
 
                                                 {/* Email */}
                                                 <div className="border-t pt-4 space-y-2">
+                                                    <Label htmlFor="email">{t("professional_profile_page.form.work_email_label")}</Label>
                                                     <Input
+                                                        id="email"
                                                         name="email"
                                                         type="email"
                                                         placeholder={t("professional_profile_page.form.work_email_label")}
