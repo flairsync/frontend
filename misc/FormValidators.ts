@@ -11,8 +11,13 @@ export const passwordValidation = Yup.string()
   .required("input_errors.password.required");
 
 export const SignupFormSchema = Yup.object().shape({
+  // P1-19 (QA round 4, 2026-11-19): Yup's built-in .email() is adapted from the old
+  // HTML5/WHATWG pattern, which only requires "localpart@something" — a bare, dot-less
+  // domain like "bad" passes it, so "test@bad" was accepted. Require a dot followed by a
+  // 2+ letter TLD on top of the built-in check.
   email: Yup.string()
     .email("input_errors.email.invalid")
+    .matches(/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/, "input_errors.email.invalid")
     .required("input_errors.email.required"),
   firstName: Yup.string().required("input_errors.firstName.required"),
   lastName: Yup.string().required("input_errors.lastName.required"),

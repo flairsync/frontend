@@ -213,37 +213,27 @@ const RegisterPage = () => {
                                     </div>
 
                                     {/* Terms and Conditions Checkbox */}
+                                    {/* P1-19 (QA round 4, 2026-11-19): the checkbox and its label used to open the
+                                        must-scroll modal instead of ticking directly, so the box could never actually
+                                        be checked without going through the modal first. Let the checkbox and its
+                                        label just toggle the field; only the "Terms and Conditions" link opens the
+                                        modal (for reading), and no longer also gates checking the box. */}
                                     <div className="flex flex-col space-y-1.5">
                                         <div className="flex items-center space-x-2">
                                             <Checkbox
                                                 id="termsAccepted"
                                                 checked={values.termsAccepted}
                                                 onCheckedChange={(checked) => {
-                                                    if (!values.termsAccepted) {
-                                                        // Open modal when trying to check it
-                                                        setIsTermsModalOpen(true);
-                                                        setHasScrolledToBottom(false);
-                                                    } else {
-                                                        // Allow unchecking
-                                                        setFieldValue('termsAccepted', false);
-                                                    }
+                                                    setFieldValue('termsAccepted', checked === true);
                                                 }}
                                             />
                                             <Label
                                                 htmlFor="termsAccepted"
                                                 className="text-sm cursor-pointer"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (!values.termsAccepted) {
-                                                        setIsTermsModalOpen(true);
-                                                        setHasScrolledToBottom(false);
-                                                    } else {
-                                                        setFieldValue('termsAccepted', false);
-                                                    }
-                                                }}
                                             >
                                                 {t("auth_page.register.i_agree_to")}{" "}
                                                 <span className="text-primary hover:underline" onClick={(e) => {
+                                                    e.preventDefault();
                                                     e.stopPropagation();
                                                     setIsTermsModalOpen(true);
                                                     setHasScrolledToBottom(false);
