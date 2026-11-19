@@ -33,14 +33,9 @@ import {
   UpdateShiftDto
 } from "./service";
 import { Shift } from "@/models/business/shift/Shift";
+import { PaginatedData } from "../shared/api-response";
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  pages: number;
-}
+export type PaginatedResponse<T> = PaginatedData<T>;
 
 // Helper to format for Wall Time
 const formatToWallTime = (date: Date | string) => {

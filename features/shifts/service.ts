@@ -300,7 +300,7 @@ export const copyPreviousWeekApiCall = async (data: { businessId: string; source
 
 // Recurring Rules API
 export const fetchRecurringRulesApiCall = async (businessId: string) => {
-  const { data } = unwrapPaginated(await flairapi.get(`${baseUrl}/rules?businessId=${businessId}`));
+  const { data } = unwrapPaginated<RecurringShiftRule>(await flairapi.get(`${baseUrl}/rules?businessId=${businessId}`));
   return data;
 };
 
@@ -440,7 +440,7 @@ export const fetchMyAttendanceApiCall = async (
 
 export const fetchTodayAttendanceDashboardApiCall = async (businessId: string, date?: string) => {
   const url = `${API_URL}/attendance/today?businessId=${businessId}`;
-  return unwrap<{ attendance?: AttendanceLog }>(await flairapi.get(date ? `${url}&date=${date}` : url));
+  return unwrap<{ attendance?: AttendanceLog; shifts?: Shift[] }>(await flairapi.get(date ? `${url}&date=${date}` : url));
 };
 
 export const validateAttendanceApiCall = (attendanceId: string, data: ValidateAttendanceDto) => {

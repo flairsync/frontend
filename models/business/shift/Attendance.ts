@@ -5,6 +5,9 @@ export interface BreakEntry {
   start: string;
   end: string | null;
   type: 'PAID' | 'UNPAID';
+  // Some call sites defensively check these legacy field names too.
+  startTime?: string;
+  endTime?: string;
 }
 
 export interface AttendanceLog {
