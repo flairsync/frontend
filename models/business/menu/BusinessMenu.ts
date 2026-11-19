@@ -2,6 +2,11 @@
 
 import { BusinessMenuCategory } from "./BusinessMenuCategory";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export type MenuHint = {
   message: string;
@@ -109,9 +114,13 @@ export class BusinessMenu {
   // menu, including ones with no schedule restriction at all (which should read as always
   // active). Mirrors the backend's applyMenuActiveWindowWhere + filterByDayOfWeek
   // (src/menu/utils/menu-active-window.util.ts) — a null/unset field means "no restriction".
-  // Uses the viewer's local clock, same approximation the rest of this page already makes.
-  get isActive(): boolean {
-    const now = dayjs();
+  // P0-8 (QA round 4, 2026-11-19): this used the viewer's own browser clock with no timezone,
+  // while the backend's computeMenuActiveWindow evaluates the same window in the BUSINESS's
+  // timezone — a viewer in a different timezone than the business could see this badge read
+  // "Inactive" while guests (served by the backend, which gets it right) still saw the menu.
+  // Takes the business's timezone so both sides agree; defaults to UTC, same as the backend.
+  isActive(businessTimezone?: string): boolean {
+    const now = dayjs().tz(businessTimezone || "UTC");
     const today = now.format("YYYY-MM-DD");
     const currentTime = now.format("HH:mm:ss");
 

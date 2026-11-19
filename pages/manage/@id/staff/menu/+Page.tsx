@@ -21,6 +21,7 @@ import { snapshotCategories, diffCategories } from "@/features/business/menu/men
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
 import { useAllergies } from "@/features/shared/useAllergies";
+import { useBusinessBasicDetails } from "@/features/business/useBusinessBasicDetails";
 
 export default function StaffMenuPage() {
     const { routeParams } = usePageContext();
@@ -33,6 +34,10 @@ export default function StaffMenuPage() {
     const canCreate = hasPermission('MENU', 'create');
     const canUpdate = hasPermission('MENU', 'update');
     const canDelete = hasPermission('MENU', 'delete');
+
+    // P0-8 (QA round 4, 2026-11-19): the Active/Inactive badge needs the business's own
+    // timezone to agree with the backend's (viewer-local-clock) — see BusinessMenu.isActive.
+    const { businessBasicDetails } = useBusinessBasicDetails(businessId as string);
 
     // Menus State
     const { businessBasicMenus, createNewMenu, businessAllItems } = useBusinessMenus(businessId);
@@ -220,7 +225,7 @@ export default function StaffMenuPage() {
                 {selectedMenuId && businessMenu ? (
                     <div className="max-w-5xl mx-auto p-6 space-y-8">
                         <MenuHeader
-                            menu={businessMenu as any}
+                            menu={{ ...businessMenu, isActive: businessMenu.isActive(businessBasicDetails?.timezone) } as any}
                             canEdit={canUpdate}
                             canDelete={canDelete}
                             onEdit={() => {

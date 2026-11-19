@@ -27,6 +27,7 @@ import {
 // #region Feature Hooks & Services
 import { useBusinessSingleMenu } from "@/features/business/menu/useBusinessSingleMenu";
 import { useBusinessMenus } from "@/features/business/menu/useBusinessMenus";
+import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { MenuHeader } from "@/features/business/menu/MenuHeader";
 import { MenuChanges } from "@/features/business/menu/service";
 import { diffCategories, snapshotCategories } from "@/features/business/menu/menuUtils";
@@ -120,6 +121,9 @@ const MenuDetailPage: React.FC = () => {
     } = useBusinessSingleMenu(id, menuId);
 
     const { businessAllItems } = useBusinessMenus(id);
+    // P0-8 (QA round 4, 2026-11-19): the Active/Inactive badge needs the business's own
+    // timezone to agree with the backend's (viewer-local-clock) — see BusinessMenu.isActive.
+    const { myBusinessFullDetails } = useMyBusiness(id);
     // #endregion
 
     // #region State
@@ -574,7 +578,7 @@ const MenuDetailPage: React.FC = () => {
                                 description: businessMenu?.description,
                                 startDate: businessMenu?.startDate,
                                 endDate: businessMenu?.endDate,
-                                isActive: businessMenu?.isActive,
+                                isActive: businessMenu?.isActive(myBusinessFullDetails?.timezone),
                             }}
                             onEdit={() => setEditMenu(true)}
                             onDelete={() => setDeleteMenuConfirm(true)}
