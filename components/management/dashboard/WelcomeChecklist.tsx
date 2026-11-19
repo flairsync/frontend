@@ -29,7 +29,11 @@ export const WelcomeChecklist: React.FC<WelcomeChecklistProps> = ({ businessId }
 
     const { myBusinessFullDetails, fetchingMyBusinessFullDetails } = useMyBusiness(businessId);
     const { businessAllItems } = useBusinessMenus(businessId);
-    const { tables } = useTables(businessId);
+    // P1-15 (QA round 4, 2026-11-19): was useTables(businessId) with no publishedOnly filter,
+    // so tables on an unpublished/draft floor counted as "done" here while the dashboard's own
+    // "No published floor" alert (which only counts published floors) correctly still fired —
+    // the two could never agree. publishedOnly=true matches the alert's own condition.
+    const { tables } = useTables(businessId, true);
     const { employees, isPending: fetchingEmployees } = useBusinessEmployees(businessId);
 
     // Each of these starts out empty/undefined before its first fetch resolves.
