@@ -14,6 +14,7 @@ import { AddressAutocomplete } from "@/components/inputs/AddressAutocomplete";
 import { usePlatformCountries } from "@/features/shared/usePlatformCountries";
 import { CountryStatus, PlatformCountry } from "@/models/shared/PlatformCountry";
 import andorraCities from '@/data/andorra.cities.json';
+import { capitalizeCity } from '@/utils/cityLabel';
 import Radar from 'radar-sdk-js';
 import 'radar-sdk-js/dist/radar.css';
 
@@ -141,26 +142,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
     const [mapZoom, setMapZoom] = useState<number | undefined>(undefined);
     const [isGeolocating, setIsGeolocating] = useState(false);
 
-    // P1-29 (QA, 2026-11-18): naive "uppercase the first letter of every word" produced
-    // "Escaldes-engordany" (didn't look past the hyphen) and "Sant Julià De Lòria" /
-    // "Andorra La Vella" (capitalized Catalan connector words — la/de/etc. — that should
-    // stay lowercase mid-name). Capitalize city name for display, respecting both.
-    const CATALAN_LOWERCASE_CONNECTORS = new Set(['la', 'de', 'del', 'les', 'els']);
-    const capitalizeCity = (name: string) => {
-        return name
-            .split(' ')
-            .map((word, index) => {
-                if (index > 0 && CATALAN_LOWERCASE_CONNECTORS.has(word.toLowerCase())) {
-                    return word.toLowerCase();
-                }
-                return word
-                    .split('-')
-                    .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
-                    .join('-');
-            })
-            .join(' ');
-    };
-
     // Propagate all state changes to the parent
     const emitChange = useCallback((overrides: Partial<LocationValue> = {}) => {
         const merged: LocationValue = {
@@ -219,17 +200,18 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
     };
 
     const handleCitySelection = (selectedCity: string) => {
-        // P1-29/28 (QA, 2026-11-18): the Select's own value (and this list) is the raw
-        // lowercase JSON ("andorra la vella") — only the dropdown's visible label ran
-        // through capitalizeCity, so the actual stored/persisted city (shown later on the
-        // guest page's "LOCATION" card and the draft address) kept the lowercase form.
-        // Capitalize before storing, not just for this list's display.
-        const displayCity = capitalizeCity(selectedCity);
-        setCity(displayCity);
+        // P1-1 (QA round 4, 2026-11-19): the Select's controlled `value` (and the stored/
+        // persisted city) is the capitalized display form, so the SelectItem `value`s must
+        // match that same capitalized form too — otherwise Radix can't find a matching item
+        // after selection (or on edit-load, since the saved city is also capitalized) and the
+        // trigger falls back to the empty placeholder. `selectedCity` here is already
+        // capitalized; look up the underlying raw city data by capitalizing each entry to
+        // compare, not by equality against the raw lowercase JSON values.
+        setCity(selectedCity);
 
         // Look up city coords and pan map there
         const citiesList = getCitiesList();
-        const cityData = citiesList.find(c => c.city === selectedCity);
+        const cityData = citiesList.find(c => capitalizeCity(c.city) === selectedCity);
         if (cityData) {
             const newPos = { lat: cityData.lat, lng: cityData.lng };
             setPosition(newPos);
@@ -239,14 +221,14 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                 lng: newPos.lng,
                 country: country,
                 address: address,
-                city: displayCity,
+                city: selectedCity,
             });
         } else {
             onChange({
                 ...position,
                 country: country,
                 address: address,
-                city: displayCity,
+                city: selectedCity,
             });
         }
     };
@@ -405,6 +387,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             const newCountry = platformCountries?.find(count => count.code == val);
                             setCountry(newCountry);
                             setCity("");
+                            setAddress("");
                             if (newCountry) {
                                 setPosition({ lat: newCountry.centerLat, lng: newCountry.centerLng })
                                 setMapZoom(10); // Country-level zoom
@@ -412,7 +395,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             onChange({
                                 lat: newCountry ? newCountry.centerLat : position.lat,
                                 lng: newCountry ? newCountry.centerLng : position.lng,
-                                country: newCountry, city: "", address
+                                country: newCountry, city: "", address: ""
                             });
                         }}
                     >
@@ -444,7 +427,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             </SelectTrigger>
                             <SelectContent>
                                 {citiesList.map(val => (
-                                    <SelectItem key={val.city} value={val.city}>
+                                    <SelectItem key={val.city} value={capitalizeCity(val.city)}>
                                         {capitalizeCity(val.city)}
                                     </SelectItem>
                                 ))}
