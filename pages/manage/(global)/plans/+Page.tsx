@@ -12,6 +12,7 @@ import BusinessManagementHeader from "@/components/management/BusinessManagement
 import LemonPaymentOverlay from "@/components/payments/LemonPaymentOverlay";
 import { openPaddleCheckout } from "@/lib/paddle";
 import { toast } from "sonner";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { usePageContext } from "vike-react/usePageContext";
 import {
   AlertDialog,
@@ -26,7 +27,7 @@ import {
 import dayjs from "dayjs";
 
 const PlansPage: React.FC = () => {
-  const { t } = useTranslation(["management", "landing"]);
+  const { t, i18n } = useTranslation(["management", "landing"]);
   const { urlParsed } = usePageContext();
   const { subscriptionPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
 
@@ -276,9 +277,11 @@ const PlansPage: React.FC = () => {
 
               <CardContent className="flex flex-col justify-between flex-grow">
                 <div className="mt-2 text-center mb-6">
+                  {/* P1-29 (QA round 4, 2026-11-19): plain toFixed(2) + currency code always
+                      read like "39.99 EUR" — use the locale-aware formatter so fr/es/ca show
+                      "39,99 €" instead. */}
                   <p className="text-4xl font-bold mb-1">
-                    {pack.getTotalPrice(businessCount).toFixed(2)}{" "}
-                    <span className="text-lg font-normal">{pack.currency}</span>
+                    {formatCurrency(pack.getTotalPrice(businessCount), pack.currency, i18n.language)}
                   </p>
                   <p className="text-muted-foreground text-sm">{pack.getPlanDuration()}</p>
                   {exceedsMax ? (
@@ -294,7 +297,7 @@ const PlansPage: React.FC = () => {
                   <p className="text-xs text-muted-foreground mt-1">
                     {t("plans_page.included_businesses", { count: pack.includedBusinesses })}
                     {pack.extraBusinessPrice > 0 && (
-                      <> · {t("plans_page.extra_business_price", { price: `${pack.extraBusinessPrice.toFixed(2)} ${pack.currency}` })}</>
+                      <> · {t("plans_page.extra_business_price", { price: formatCurrency(pack.extraBusinessPrice, pack.currency, i18n.language) })}</>
                     )}
                   </p>
                   {/* P1-23 (QA round 4, 2026-11-19): rendered unconditionally, even for the €0

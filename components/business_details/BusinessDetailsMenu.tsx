@@ -47,7 +47,7 @@ const getCategoryIcon = (name: string) => {
 };
 
 const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, business }) => {
-    const { t } = useTranslation("feed");
+    const { t, i18n } = useTranslation("feed");
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedItem, setSelectedItem] = useState<BusinessMenuItem | null>(null);
     const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -138,7 +138,7 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, busines
                                                     </div>
                                                     <div className="flex items-center gap-4 ml-4">
                                                         <span className="font-black text-primary bg-primary/5 px-3 py-1 rounded-lg">
-                                                            {formatCurrency(item.price, business.currency || "EUR")}
+                                                            {formatCurrency(item.price, business.currency || "EUR", i18n.language)}
                                                         </span>
                                                         {allowOrders && (
                                                             <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />

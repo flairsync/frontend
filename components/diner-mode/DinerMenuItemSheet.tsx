@@ -25,7 +25,7 @@ interface DinerMenuItemSheetProps {
 }
 
 export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMenuItemSheetProps) {
-    const { t } = useTranslation('diner');
+    const { t, i18n } = useTranslation('diner');
     const { addToCart } = useDinerModeStore();
 
     const [quantity, setQuantity] = useState(1);
@@ -146,7 +146,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                 </p>
                             )}
                             <p className="text-base font-semibold text-primary">
-                                {formatCurrency(item.price, currency)}
+                                {formatCurrency(item.price, currency, i18n.language)}
                             </p>
                         </SheetHeader>
 
@@ -173,7 +173,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                         {v.name}
                                                     </Label>
                                                 </div>
-                                                <span className="text-sm text-muted-foreground">{formatCurrency(v.price, currency)}</span>
+                                                <span className="text-sm text-muted-foreground">{formatCurrency(v.price, currency, i18n.language)}</span>
                                             </div>
                                         ))}
                                     </RadioGroup>
@@ -236,7 +236,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                             </Label>
                                                         </div>
                                                         {mod.price > 0 && (
-                                                            <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency)}</span>
+                                                            <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency, i18n.language)}</span>
                                                         )}
                                                     </div>
                                                     );
@@ -268,7 +268,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                                             </Label>
                                                         </div>
                                                         {mod.price > 0 && (
-                                                            <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency)}</span>
+                                                            <span className="text-sm text-muted-foreground">+{formatCurrency(mod.price, currency, i18n.language)}</span>
                                                         )}
                                                     </div>
                                                 );
@@ -319,7 +319,7 @@ export default function DinerMenuItemSheet({ item, onClose, currency }: DinerMen
                                 onClick={handleAdd}
                                 disabled={(hasVariants && !selectedVariantId) || unsatisfiedGroups.length > 0}
                             >
-                                {t('menu_item_sheet.add_to_order', { price: formatCurrency(lineTotal, currency) })}
+                                {t('menu_item_sheet.add_to_order', { price: formatCurrency(lineTotal, currency, i18n.language) })}
                             </Button>
                         </div>
                     </>
