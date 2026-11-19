@@ -11,12 +11,16 @@ const VerificationRow = ({
     icon: Icon,
     label,
     value,
+    hasValue = true,
     verified,
     onVerify,
 }: {
     icon: React.ElementType
     label: string
     value?: string
+    // P1-36 (QA, 2026-11-18): phone showed "Verify" even with no phone number set at
+    // all — misleading, since there's nothing yet to verify. False only for that case.
+    hasValue?: boolean
     verified?: boolean
     onVerify: () => void
 }) => {
@@ -45,7 +49,7 @@ const VerificationRow = ({
                             {t('account_verification.not_verified')}
                         </Badge>
                         <Button size="sm" variant="outline" onClick={onVerify}>
-                            {t('account_verification.verify')}
+                            {hasValue ? t('account_verification.verify') : t('account_verification.add_phone')}
                         </Button>
                     </>
                 )}
@@ -85,6 +89,7 @@ const AccountVerification = () => {
                     icon={Phone}
                     label={t('account_verification.phone_number')}
                     value={userProfile?.phoneNumber ?? t('account_verification.no_phone_number')}
+                    hasValue={!!userProfile?.phoneNumber}
                     verified={userProfile?.phoneVerified}
                     onVerify={handleVerifyPhone}
                 />

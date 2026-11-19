@@ -73,6 +73,7 @@
     "verified": "Verified",
     "not_verified": "Not verified",
     "verify": "Verify",
+    "add_phone": "Add phone",
     "email_address": "Email address",
     "phone_number": "Phone number",
     "no_phone_number": "No phone number added",
