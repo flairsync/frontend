@@ -3375,6 +3375,10 @@
     "step2": {
       "work_times_label": "Horaires de travail",
       "pricing_label": "Gamme de prix",
+      "pricing_budget": "Économique",
+      "pricing_moderate": "Modéré",
+      "pricing_expensive": "Cher",
+      "pricing_luxury": "Luxe",
       "tags_label": "Tags de l'établissement"
     },
     "step3": {
@@ -3382,6 +3386,7 @@
     },
     "step4": {
       "social_links_label": "Liens sociaux (facultatif)",
+      "website_label": "Site web",
       "auto_setup_title": "Configuration automatique",
       "recommended_badge": "Recommandé",
       "auto_setup_desc": "Crée automatiquement des catégories de menu, des rôles du personnel, un plan de salle, des postes de cuisine et plus encore selon le type de votre établissement — pour ne pas partir de zéro. Décochez pour tout configurer vous-même."

@@ -86,7 +86,8 @@
       "large": "Large",
       "xlarge": "Extra Large"
     },
-    "tags_label": "Tags"
+    "tags_label": "Tags",
+    "tags_placeholder": "Select or type tags..."
   },
   "errors": {
     "404": {

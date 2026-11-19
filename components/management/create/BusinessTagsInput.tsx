@@ -43,9 +43,10 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
   };
 
   return (
+    // P1-13 (QA round 4, 2026-11-19): the wizard's own outer label
+    // (create_business_page.step2.tags_label, "Business Tags") already labels this — this
+    // component's own inner label duplicated it ("Business Tags" / "Tags").
     <div className="space-y-2">
-      <label className="font-medium text-sm text-foreground">{t("shared.tags_label")}</label>
-
       {/* Display Selected Tags */}
       {value.length > 0 && (
         <div className="flex flex-wrap gap-2">
@@ -71,7 +72,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
             className="w-full justify-start"
             onClick={() => setOpen(true)}
           >
-            {placeholder || "Select or type tags..."}
+            {placeholder || t("shared.tags_placeholder")}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-[250px]">

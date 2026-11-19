@@ -3375,6 +3375,10 @@
     "step2": {
       "work_times_label": "Horaris de treball",
       "pricing_label": "Rang de preus",
+      "pricing_budget": "Econòmic",
+      "pricing_moderate": "Moderat",
+      "pricing_expensive": "Car",
+      "pricing_luxury": "Luxe",
       "tags_label": "Etiquetes del negoci"
     },
     "step3": {
@@ -3382,6 +3386,7 @@
     },
     "step4": {
       "social_links_label": "Enllaços socials (opcional)",
+      "website_label": "Lloc web",
       "auto_setup_title": "Configuració automàtica",
       "recommended_badge": "Recomanat",
       "auto_setup_desc": "Crea automàticament categories de menú, rols de personal, un pla de sala, estacions de cuina i més segons el tipus del teu negoci — perquè no comencis de zero. Desmarca-ho per configurar-ho tot tu mateix."

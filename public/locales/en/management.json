@@ -3448,6 +3448,10 @@
     "step2": {
       "work_times_label": "Work Times",
       "pricing_label": "Pricing Range",
+      "pricing_budget": "Budget",
+      "pricing_moderate": "Moderate",
+      "pricing_expensive": "Expensive",
+      "pricing_luxury": "Luxury",
       "tags_label": "Business Tags"
     },
     "step3": {
@@ -3455,6 +3459,7 @@
     },
     "step4": {
       "social_links_label": "Social Links (Optional)",
+      "website_label": "Website",
       "auto_setup_title": "Auto-create setup",
       "recommended_badge": "Recommended",
       "auto_setup_desc": "Automatically create menu categories, staff roles, a floor plan, kitchen stations and more based on your business type — so you're not starting from a blank slate. Uncheck to set everything up yourself."

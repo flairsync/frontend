@@ -86,7 +86,8 @@
       "large": "Gran",
       "xlarge": "Molt gran"
     },
-    "tags_label": "Etiquetes"
+    "tags_label": "Etiquetes",
+    "tags_placeholder": "Selecciona o escriu etiquetes..."
   },
   "errors": {
     "404": {

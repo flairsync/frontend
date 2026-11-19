@@ -3375,6 +3375,10 @@
     "step2": {
       "work_times_label": "Horarios de trabajo",
       "pricing_label": "Rango de precios",
+      "pricing_budget": "Económico",
+      "pricing_moderate": "Moderado",
+      "pricing_expensive": "Caro",
+      "pricing_luxury": "Lujo",
       "tags_label": "Etiquetas del negocio"
     },
     "step3": {
@@ -3382,6 +3386,7 @@
     },
     "step4": {
       "social_links_label": "Enlaces sociales (opcional)",
+      "website_label": "Sitio web",
       "auto_setup_title": "Configuración automática",
       "recommended_badge": "Recomendado",
       "auto_setup_desc": "Crea automáticamente categorías de menú, roles de personal, un plano de sala, estaciones de cocina y más según el tipo de tu negocio — para no empezar de cero. Desmarca para configurarlo todo tú mismo."
