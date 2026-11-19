@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { MapPinOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface LocationPlaceholderCardProps {
     title?: string;
@@ -7,9 +8,12 @@ interface LocationPlaceholderCardProps {
 }
 
 export function LocationPlaceholderCard({
-    title = "Location Required",
-    description = "Please select a country or enable location to show the map.",
+    title,
+    description,
 }: LocationPlaceholderCardProps) {
+    const { t } = useTranslation("management");
+    title ??= t("create_business_page.step3.location_required_title");
+    description ??= t("create_business_page.step3.location_required_description");
     return (
         <Card className="h-80 w-full flex items-center justify-center text-center border-dashed">
             <CardHeader>

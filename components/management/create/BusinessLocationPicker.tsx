@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents, Circle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -76,6 +77,7 @@ const LocationMarker = ({
     allowedCountries: PlatformCountry[] | undefined;
     selectedCountryCode: string | undefined;
 }) => {
+    const { t } = useTranslation("management");
 
     useMapEvents({
         async click(e) {
@@ -102,8 +104,8 @@ const LocationMarker = ({
                     if (isAllowed) {
                         onSelect({ lat, lng });
                     } else {
-                        toast.error("Location not allowed", {
-                            description: "Please select a location within the allowed country.",
+                        toast.error(t("create_business_page.step3.location_not_allowed_title"), {
+                            description: t("create_business_page.step3.location_not_allowed_description"),
                         });
                     }
                 } else {
@@ -130,6 +132,8 @@ const MapPanTo: React.FC<{ position: LocationValue; zoom?: number }> = ({ positi
 };
 
 const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRadius, radiusMeters }) => {
+
+    const { t } = useTranslation("management");
 
     const {
         platformCountries
@@ -267,8 +271,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
 
     const handleGeolocate = () => {
         if (!navigator.geolocation) {
-            toast("Geolocation not supported", {
-                description: "Your browser does not support geolocation.",
+            toast(t("create_business_page.step3.geolocation_not_supported_title"), {
+                description: t("create_business_page.step3.geolocation_not_supported_description"),
             });
             return;
         }
@@ -317,8 +321,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             city: newCity,
                         });
 
-                        toast.success("Location detected", {
-                            description: newAddress || "Your location has been set.",
+                        toast.success(t("create_business_page.step3.location_detected_title"), {
+                            description: newAddress || t("create_business_page.step3.location_detected_description"),
                         });
                     } else {
                         onChange({ ...coords, country, city, address });
@@ -331,8 +335,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
             },
             () => {
                 setIsGeolocating(false);
-                toast("Location permission denied", {
-                    description: "Please enable location permission or select manually",
+                toast(t("create_business_page.step3.location_permission_denied_title"), {
+                    description: t("create_business_page.step3.location_permission_denied_description"),
                 });
             }
         );
@@ -379,7 +383,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                 <div className="space-y-1.5">
                     <Label className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
                         <MapPin className="h-3.5 w-3.5" />
-                        Country
+                        {t("create_business_page.step3.country_label")}
                     </Label>
                     <Select
                         value={country?.code}
@@ -400,12 +404,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                         }}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Select Country" />
+                            <SelectValue placeholder={t("create_business_page.step3.select_country_placeholder")} />
                         </SelectTrigger>
                         <SelectContent>
                             {platformCountries?.filter(c => c.status === CountryStatus.ACTIVE).map((c) => (
                                 <SelectItem key={c.id} value={c.code}>
-                                    {c.name}
+                                    {t(`create_business_page.step3.countries.${c.code}`, c.name)}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -415,7 +419,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                 <div className="space-y-1.5">
                     <Label className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
                         <Navigation className="h-3.5 w-3.5" />
-                        City
+                        {t("create_business_page.step3.city_label")}
                     </Label>
                     {hasCities ? (
                         <Select
@@ -423,7 +427,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             onValueChange={handleCitySelection}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select City" />
+                                <SelectValue placeholder={t("create_business_page.step3.select_city_placeholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {citiesList.map(val => (
@@ -436,7 +440,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                     ) : (
                         <Input
                             value={city}
-                            placeholder={country ? "Type city name" : "Select a country first"}
+                            placeholder={country ? t("create_business_page.step3.type_city_placeholder") : t("create_business_page.step3.select_country_first_placeholder")}
                             disabled={!country}
                             onChange={(e) => {
                                 const newCity = e.target.value;
@@ -452,7 +456,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
             <div className="space-y-1.5">
                 <Label className="font-medium text-sm text-gray-700 flex items-center gap-1.5">
                     <Search className="h-3.5 w-3.5" />
-                    Search address
+                    {t("create_business_page.step3.search_address_label")}
                 </Label>
                 <div className="flex gap-2">
                     <AddressAutocomplete
@@ -465,7 +469,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                         variant="outline"
                         size="icon"
                         onClick={handleGeolocate}
-                        title="Use my location"
+                        title={t("create_business_page.step3.use_my_location_title")}
                         disabled={isGeolocating}
                         className="shrink-0"
                     >
@@ -476,11 +480,11 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
 
             {/* Editable address field */}
             <div className="space-y-1.5">
-                <Label className="text-sm font-medium text-gray-700">Address</Label>
+                <Label className="text-sm font-medium text-gray-700">{t("create_business_page.step3.address_label")}</Label>
                 <Input
                     value={address}
                     maxLength={80}
-                    placeholder="Street address (auto-filled or type manually)"
+                    placeholder={t("create_business_page.step3.street_address_placeholder")}
                     onChange={(e) => {
                         const newAddress = e.target.value;
                         setAddress(newAddress);
@@ -536,7 +540,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
             {/* Hint text */}
             {country && (
                 <p className="text-xs text-muted-foreground text-center">
-                    Click anywhere on the map to drop a pin, or use the search bar above
+                    {t("create_business_page.step3.map_hint")}
                 </p>
             )}
         </div>

@@ -3389,7 +3389,32 @@
       "tags_label": "Tags de l'établissement"
     },
     "step3": {
-      "location_label": "Détails de l'emplacement"
+      "location_label": "Détails de l'emplacement",
+      "country_label": "Pays",
+      "select_country_placeholder": "Sélectionnez le pays",
+      "city_label": "Ville",
+      "select_city_placeholder": "Sélectionnez la ville",
+      "type_city_placeholder": "Saisissez le nom de la ville",
+      "select_country_first_placeholder": "Sélectionnez d'abord un pays",
+      "search_address_label": "Rechercher une adresse",
+      "use_my_location_title": "Utiliser ma position",
+      "address_label": "Adresse",
+      "street_address_placeholder": "Adresse (pré-remplie ou saisie manuellement)",
+      "map_hint": "Cliquez n'importe où sur la carte pour placer un repère, ou utilisez la barre de recherche ci-dessus",
+      "location_required_title": "Emplacement requis",
+      "location_required_description": "Sélectionnez un pays ou activez la localisation pour afficher la carte.",
+      "location_not_allowed_title": "Emplacement non autorisé",
+      "location_not_allowed_description": "Sélectionnez un emplacement situé dans le pays autorisé.",
+      "geolocation_not_supported_title": "Géolocalisation non prise en charge",
+      "geolocation_not_supported_description": "Votre navigateur ne prend pas en charge la géolocalisation.",
+      "location_detected_title": "Position détectée",
+      "location_detected_description": "Votre position a été définie.",
+      "location_permission_denied_title": "Permission de localisation refusée",
+      "location_permission_denied_description": "Activez la permission de localisation ou sélectionnez manuellement",
+      "countries": {
+        "AD": "Andorre",
+        "ES": "Espagne"
+      }
     },
     "step4": {
       "social_links_label": "Liens sociaux (facultatif)",

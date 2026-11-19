@@ -3462,7 +3462,32 @@
       "tags_label": "Business Tags"
     },
     "step3": {
-      "location_label": "Location Details"
+      "location_label": "Location Details",
+      "country_label": "Country",
+      "select_country_placeholder": "Select Country",
+      "city_label": "City",
+      "select_city_placeholder": "Select City",
+      "type_city_placeholder": "Type city name",
+      "select_country_first_placeholder": "Select a country first",
+      "search_address_label": "Search address",
+      "use_my_location_title": "Use my location",
+      "address_label": "Address",
+      "street_address_placeholder": "Street address (auto-filled or type manually)",
+      "map_hint": "Click anywhere on the map to drop a pin, or use the search bar above",
+      "location_required_title": "Location Required",
+      "location_required_description": "Please select a country or enable location to show the map.",
+      "location_not_allowed_title": "Location not allowed",
+      "location_not_allowed_description": "Please select a location within the allowed country.",
+      "geolocation_not_supported_title": "Geolocation not supported",
+      "geolocation_not_supported_description": "Your browser does not support geolocation.",
+      "location_detected_title": "Location detected",
+      "location_detected_description": "Your location has been set.",
+      "location_permission_denied_title": "Location permission denied",
+      "location_permission_denied_description": "Please enable location permission or select manually",
+      "countries": {
+        "AD": "Andorra",
+        "ES": "Spain"
+      }
     },
     "step4": {
       "social_links_label": "Social Links (Optional)",

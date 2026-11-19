@@ -3389,7 +3389,32 @@
       "tags_label": "Etiquetas del negocio"
     },
     "step3": {
-      "location_label": "Detalles de la ubicación"
+      "location_label": "Detalles de la ubicación",
+      "country_label": "País",
+      "select_country_placeholder": "Selecciona el país",
+      "city_label": "Ciudad",
+      "select_city_placeholder": "Selecciona la ciudad",
+      "type_city_placeholder": "Escribe el nombre de la ciudad",
+      "select_country_first_placeholder": "Selecciona primero un país",
+      "search_address_label": "Buscar dirección",
+      "use_my_location_title": "Usar mi ubicación",
+      "address_label": "Dirección",
+      "street_address_placeholder": "Dirección (autocompletada o escrita manualmente)",
+      "map_hint": "Haz clic en cualquier parte del mapa para colocar un marcador, o usa la barra de búsqueda de arriba",
+      "location_required_title": "Ubicación requerida",
+      "location_required_description": "Selecciona un país o activa la ubicación para mostrar el mapa.",
+      "location_not_allowed_title": "Ubicación no permitida",
+      "location_not_allowed_description": "Selecciona una ubicación dentro del país permitido.",
+      "geolocation_not_supported_title": "Geolocalización no disponible",
+      "geolocation_not_supported_description": "Tu navegador no admite la geolocalización.",
+      "location_detected_title": "Ubicación detectada",
+      "location_detected_description": "Tu ubicación se ha configurado.",
+      "location_permission_denied_title": "Permiso de ubicación denegado",
+      "location_permission_denied_description": "Activa el permiso de ubicación o selecciona la ubicación manualmente",
+      "countries": {
+        "AD": "Andorra",
+        "ES": "España"
+      }
     },
     "step4": {
       "social_links_label": "Enlaces sociales (opcional)",
