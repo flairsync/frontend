@@ -73,10 +73,14 @@ export default function VerifyAccountPage() {
                         navigate(origin);
                     }, 1500);
                 },
-                onError: () => {
+                onError: (err: any) => {
+                    // P0-4 (QA round 4, 2026-11-19): this always showed the same generic
+                    // string, so a late-arriving code after resend read as "Código inválido"
+                    // with no way to tell that apart from a genuinely wrong code. Prefer the
+                    // backend's specific translated message when it sent one.
                     setMessage({
                         type: "error",
-                        text: t("auth_page.verify.invalid_code"),
+                        text: err?.response?.data?.message || t("auth_page.verify.invalid_code"),
                     })
                 },
             }
@@ -94,10 +98,10 @@ export default function VerifyAccountPage() {
                 })
                 setResendCooldown(RESEND_COOLDOWN_SECONDS)
             },
-            onError: () => {
+            onError: (err: any) => {
                 setMessage({
                     type: "error",
-                    text: t("auth_page.verify.resend_error"),
+                    text: err?.response?.data?.message || t("auth_page.verify.resend_error"),
                 })
             },
         })
