@@ -87,7 +87,8 @@
       "xlarge": "Extra Large"
     },
     "tags_label": "Tags",
-    "tags_placeholder": "Select or type tags..."
+    "tags_placeholder": "Select or type tags...",
+    "close_button": "Close"
   },
   "errors": {
     "404": {
@@ -161,6 +162,7 @@
       "required": "Please accept the Terms and Conditions"
     }
   },
+  "business_type_select_placeholder": "Select a business type...",
   "business_types": {
     "bakery": "Bakery",
     "fast_food": "Fast Food",

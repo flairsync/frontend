@@ -26,7 +26,7 @@ import {
 import dayjs from "dayjs";
 
 const PlansPage: React.FC = () => {
-  const { t } = useTranslation("management");
+  const { t } = useTranslation(["management", "landing"]);
   const { urlParsed } = usePageContext();
   const { subscriptionPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
 
@@ -266,7 +266,12 @@ const PlansPage: React.FC = () => {
                 <CardTitle className="text-2xl font-semibold text-primary mb-1">
                   {pack.name}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">{pack.getShortDescription()}</p>
+                {/* P1-25 (QA round 4, 2026-11-19): same plan descriptions are already
+                    translated on the landing page (landing_page.pricing.plan_descriptions) —
+                    reuse that instead of the raw, untranslated API description. */}
+                <p className="text-sm text-muted-foreground">
+                  {t(`landing:landing_page.pricing.plan_descriptions.${pack.name?.toLowerCase()}`, pack.getShortDescription())}
+                </p>
               </CardHeader>
 
               <CardContent className="flex flex-col justify-between flex-grow">

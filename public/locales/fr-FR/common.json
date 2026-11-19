@@ -87,7 +87,8 @@
       "xlarge": "Très grand"
     },
     "tags_label": "Étiquettes",
-    "tags_placeholder": "Sélectionnez ou saisissez des tags..."
+    "tags_placeholder": "Sélectionnez ou saisissez des tags...",
+    "close_button": "Fermer"
   },
   "errors": {
     "404": {
@@ -161,6 +162,7 @@
       "required": "Veuillez accepter les Conditions Générales"
     }
   },
+  "business_type_select_placeholder": "Sélectionnez un type d'établissement...",
   "business_types": {
     "bakery": "Boulangerie",
     "fast_food": "Restauration rapide",

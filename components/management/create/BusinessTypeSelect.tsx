@@ -22,16 +22,19 @@ export default function BusinessTypeSelect({
     value,
     onChange,
     types,
-    placeholder = "Select a business type...",
+    placeholder,
     error,
 }: BusinessTypeSelectProps) {
     const { t } = useTranslation();
+    // P1-25 (QA round 4, 2026-11-19): this default was a hardcoded English literal, never
+    // reachable to translate since no call site overrides it with a translated string.
+    const resolvedPlaceholder = placeholder ?? t("business_type_select_placeholder");
 
     return (
         <div className="flex flex-col space-y-1.5">
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger>
-                    <SelectValue placeholder={placeholder} >{
+                    <SelectValue placeholder={resolvedPlaceholder} >{
                         types?.find(val => val.id == value)?.name ? t(`business_types.${types?.find(val => val.id == value)?.name}`) : undefined
                     }</SelectValue>
                 </SelectTrigger>

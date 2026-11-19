@@ -87,7 +87,8 @@
       "xlarge": "Molt gran"
     },
     "tags_label": "Etiquetes",
-    "tags_placeholder": "Selecciona o escriu etiquetes..."
+    "tags_placeholder": "Selecciona o escriu etiquetes...",
+    "close_button": "Tanca"
   },
   "errors": {
     "404": {
@@ -161,6 +162,7 @@
       "required": "Si us plau, accepta els termes i condicions"
     }
   },
+  "business_type_select_placeholder": "Selecciona un tipus de negoci...",
   "business_types": {
     "bakery": "Forn de Pa",
     "fast_food": "Menjar Ràpid",

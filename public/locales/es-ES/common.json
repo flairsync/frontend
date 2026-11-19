@@ -87,7 +87,8 @@
       "xlarge": "Muy grande"
     },
     "tags_label": "Etiquetas",
-    "tags_placeholder": "Selecciona o escribe etiquetas..."
+    "tags_placeholder": "Selecciona o escribe etiquetas...",
+    "close_button": "Cerrar"
   },
   "errors": {
     "404": {
@@ -161,6 +162,7 @@
       "required": "Por favor acepta los Términos y Condiciones"
     }
   },
+  "business_type_select_placeholder": "Selecciona un tipo de negocio...",
   "business_types": {
     "bakery": "Panadería",
     "fast_food": "Comida Rápida",
