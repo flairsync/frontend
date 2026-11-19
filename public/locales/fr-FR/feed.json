@@ -60,7 +60,8 @@
     "menu": {
       "section_title": "Menu",
       "subtitle": "Des sélections artisanales pour tous les goûts.",
-      "items_count": "Articles disponibles",
+      "items_count_one": "{{count}} article disponible",
+      "items_count_other": "{{count}} articles disponibles",
       "allergy_badge": "Info allergènes",
       "categories": {
         "coffee_drinks": "Café & Boissons",

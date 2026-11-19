@@ -17,6 +17,7 @@ import { usePageContext } from "vike-react/usePageContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
+import { capitalizeCity } from "@/utils/cityLabel";
 
 interface BusinessDetailsHeroProps {
     profile: DiscoveryBusinessProfile;
@@ -66,7 +67,9 @@ const BusinessDetailsHero = ({ profile }: BusinessDetailsHeroProps) => {
     const bannerImages = profile.media.map(m => m.url);
     const hasMedia = bannerImages.length > 0;
 
-    const addressLabel = profile.address || (profile.city ? `${profile.city}, ${profile.country?.name || ''}` : profile.country?.name || '');
+    // P1-17 (QA round 4, 2026-11-19): profile.city comes back lowercase from the backend
+    // (e.g. "andorra la vella") and was rendered verbatim.
+    const addressLabel = profile.address || (profile.city ? `${capitalizeCity(profile.city)}, ${profile.country?.name || ''}` : profile.country?.name || '');
 
     return (
         <div className="relative space-y-8">

@@ -103,7 +103,7 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, busines
                                                     {category.name}
                                                 </span>
                                                 <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                                                    {category.filteredItems.length} {t("business_page.menu.items_count", "Items Available")}
+                                                    {t("business_page.menu.items_count", { count: category.filteredItems.length })}
                                                 </span>
                                             </div>
                                         </div>

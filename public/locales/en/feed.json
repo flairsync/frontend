@@ -60,7 +60,8 @@
     "menu": {
       "section_title": "Menu",
       "subtitle": "Handcrafted selections for every taste.",
-      "items_count": "Items Available",
+      "items_count_one": "{{count}} item available",
+      "items_count_other": "{{count}} items available",
       "allergy_badge": "Allergy Info",
       "categories": {
         "coffee_drinks": "Coffee & Drinks",

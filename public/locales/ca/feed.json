@@ -60,7 +60,8 @@
     "menu": {
       "section_title": "Menú",
       "subtitle": "Seleccions artesanals per a tots els gustos.",
-      "items_count": "Articles disponibles",
+      "items_count_one": "{{count}} article disponible",
+      "items_count_other": "{{count}} articles disponibles",
       "allergy_badge": "Info al·lèrgens",
       "categories": {
         "coffee_drinks": "Cafè i Begudes",

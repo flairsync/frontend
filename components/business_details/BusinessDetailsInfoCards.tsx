@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Star, Clock, MapPin, Navigation } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { DiscoveryBusinessProfile } from "@/models/discovery/DiscoveryBusinessProfile";
+import { capitalizeCity } from "@/utils/cityLabel";
 
 interface BusinessDetailsInfoCardsProps {
     profile: DiscoveryBusinessProfile;
@@ -29,9 +30,13 @@ const InfoCard = ({ icon: Icon, title, content, subContent, action, contentClass
     </Card>
 );
 
-const formatTimeString = (timeStr: string) => {
+// P1-17 (QA round 4, 2026-11-19): always rendered 12h AM/PM, even for fr/es/ca, where this
+// page's own opening-hours list (BusinessDetailsTiming.tsx) already shows 24h time. Use the
+// 24-hour clock for every non-English locale, matching it.
+const formatTimeString = (timeStr: string, language: string) => {
     if (!timeStr) return "";
     const [h, m] = timeStr.split(':');
+    if (!language.startsWith('en')) return `${h}:${m}`;
     const hour = parseInt(h);
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const displayHour = hour % 12 || 12;
@@ -39,7 +44,7 @@ const formatTimeString = (timeStr: string) => {
 };
 
 const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) => {
-    const { t } = useTranslation("feed");
+    const { t, i18n } = useTranslation("feed");
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -56,16 +61,16 @@ const BusinessDetailsInfoCards = ({ profile }: BusinessDetailsInfoCardsProps) =>
                 content={profile.isOpen ? t("business_page.info_cards.status_open_now") : t("business_page.info_cards.status_closed")}
                 contentClassName={profile.isOpen ? "text-emerald-500" : "text-rose-500"}
                 subContent={profile.changeType === 'closes'
-                    ? t("business_page.info_cards.status_closes_at", { time: formatTimeString(profile.changesAt!) })
+                    ? t("business_page.info_cards.status_closes_at", { time: formatTimeString(profile.changesAt!, i18n.language) })
                     : profile.changeType === 'opens'
-                        ? t("business_page.info_cards.status_opens_at", { time: formatTimeString(profile.changesAt!) })
+                        ? t("business_page.info_cards.status_opens_at", { time: formatTimeString(profile.changesAt!, i18n.language) })
                         : t("business_page.info_cards.status_check_hours")}
             />
 
             <InfoCard
                 icon={MapPin}
                 title={t("business_page.info_cards.location_title")}
-                content={profile.city || profile.country?.name || t("business_page.info_cards.location_fallback", "Location")}
+                content={(profile.city && capitalizeCity(profile.city)) || profile.country?.name || t("business_page.info_cards.location_fallback", "Location")}
                 subContent={profile.address}
                 action={
                     <Button
