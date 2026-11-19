@@ -5380,6 +5380,13 @@
       "draft": "Draft",
       "draft_tooltip": "Business is not published — click to publish it"
     },
+    "open_status": {
+      "open": "Open",
+      "closed": "Closed",
+      "auto": "Auto (follow hours)",
+      "force_open": "Force open",
+      "force_closed": "Force closed"
+    },
     "tax_id_tooltip": "Tax ID not set — orders can't be completed until this business's {{taxIdLabel}} is set. Click to fix it now.",
     "view_public_page": "View my public page"
   }

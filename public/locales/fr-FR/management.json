@@ -5380,6 +5380,13 @@
       "draft": "Brouillon",
       "draft_tooltip": "L'établissement n'est pas publié — cliquez pour le publier"
     },
+    "open_status": {
+      "open": "Ouvert",
+      "closed": "Fermé",
+      "auto": "Automatique (selon les horaires)",
+      "force_open": "Forcer l'ouverture",
+      "force_closed": "Forcer la fermeture"
+    },
     "tax_id_tooltip": "Le numéro fiscal n'est pas défini — les commandes ne peuvent pas être finalisées tant que {{taxIdLabel}} de cet établissement n'est pas défini. Cliquez pour le corriger maintenant.",
     "view_public_page": "Voir ma page publique"
   }

@@ -5380,6 +5380,13 @@
       "draft": "Esborrany",
       "draft_tooltip": "El negoci no està publicat — fes clic per publicar-lo"
     },
+    "open_status": {
+      "open": "Obert",
+      "closed": "Tancat",
+      "auto": "Automàtic (segons l'horari)",
+      "force_open": "Forçar obert",
+      "force_closed": "Forçar tancat"
+    },
     "tax_id_tooltip": "El NRT no està configurat — les comandes no es poden completar fins que es configuri {{taxIdLabel}} d'aquest negoci. Fes clic per solucionar-ho ara.",
     "view_public_page": "Veure la meva pàgina pública"
   }

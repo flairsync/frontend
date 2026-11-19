@@ -5380,6 +5380,13 @@
       "draft": "Borrador",
       "draft_tooltip": "El negocio no está publicado — haz clic para publicarlo"
     },
+    "open_status": {
+      "open": "Abierto",
+      "closed": "Cerrado",
+      "auto": "Automático (según horario)",
+      "force_open": "Forzar abierto",
+      "force_closed": "Forzar cerrado"
+    },
     "tax_id_tooltip": "El NIF/CIF no está configurado — los pedidos no se pueden completar hasta que se configure {{taxIdLabel}} de este negocio. Haz clic para solucionarlo ahora.",
     "view_public_page": "Ver mi página pública"
   }
