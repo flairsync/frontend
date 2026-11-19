@@ -45,7 +45,7 @@ const FavoritesPage = () => {
                                 key={business.id}
                                 id={business.id}
                                 href={`/business/${business.id}`}
-                                image={details.image}
+                                image={details.image || ""}
                                 name={business.name}
                                 description={business.description || ""}
                                 onRemove={async (id) => {

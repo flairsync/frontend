@@ -136,7 +136,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
         if (step === "SEARCH") {
             const timestamp = `${bookingData.date}T${bookingData.time}`;
             const reservationDate = parseInTimezone(timestamp, businessTimezone);
-            if (reservationDate <= new Date()) {
+            if (new Date(reservationDate) <= new Date()) {
                 toast.error(t("booking_flow_modal.errors.time_in_past"));
                 return;
             }

@@ -274,8 +274,8 @@ export const ViewReservationModal: React.FC<ViewReservationModalProps> = ({
                                                     <Separator className="my-3" />
                                                     <div className="space-y-2">
                                                         <p className="text-xs font-semibold text-muted-foreground">{t("view_reservation_modal.order.items_heading")}</p>
-                                                        {res.order.items?.length > 0 ? (
-                                                            res.order.items.map((item: any, idx: number) => (
+                                                        {(res.order.items?.length ?? 0) > 0 ? (
+                                                            res.order.items!.map((item: any, idx: number) => (
                                                                 <div key={idx} className="flex justify-between items-center text-sm bg-background p-2 rounded border">
                                                                     <div>
                                                                         <span className="font-medium">{item.quantity}x</span> {item.name}

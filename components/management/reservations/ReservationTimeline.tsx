@@ -94,7 +94,9 @@ export const ReservationTimeline: React.FC<ReservationTimelineProps> = ({ busine
                                         {sourceBadge.label}
                                     </Badge>
                                     {event.visibility === "staff_only" && (
-                                        <Lock className="w-3 h-3 text-muted-foreground" title="Staff only" />
+                                        <span title="Staff only">
+                                            <Lock className="w-3 h-3 text-muted-foreground" />
+                                        </span>
                                     )}
                                 </div>
                                 <div className="flex items-center gap-2 mt-1">

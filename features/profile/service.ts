@@ -25,7 +25,7 @@ export const updateUserProfileApiCall = (data: UpdateUserProfileDTO) => {
 
 
 export const getPublicUserDisplayName = async (userId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/${userId}/display-name`));
+  unwrap<string>(await flairapi.get(`${baseUrl}/${userId}/display-name`));
 
 export const requestAccountDeletionApiCall = () => {
   return flairapi.delete(myUserProfileUrl);

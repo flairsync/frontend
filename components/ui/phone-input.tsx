@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/popover";
 import { type Country, getCountryCallingCode } from "react-phone-number-input";
 
-type PhoneInputProps = React.ComponentProps<"input"> & {
+type PhoneInputProps = Omit<React.ComponentProps<"input">, "value" | "onChange"> & {
     value?: string;
     onChange?: (value: string) => void;
     defaultCountry?: Country;

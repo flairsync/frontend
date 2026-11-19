@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore";
 import { PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { cn } from "@/lib/utils";
+import { openPaddleCheckout } from "@/lib/paddle";
 
 const UpgradeModal: React.FC = () => {
     const { t } = useTranslation("management");
@@ -28,9 +29,16 @@ const UpgradeModal: React.FC = () => {
         }
 
         createCheckout({ packId }, {
-            onSuccess: (url) => {
-                if (url) {
-                    window.location.href = url;
+            onSuccess: (checkout) => {
+                // Paddle: open its overlay for the transaction our backend created.
+                // Lemon Squeezy: hand the hosted URL to a full-page redirect. Only one
+                // of the two comes back, depending on BILLING_PROVIDER.
+                if (checkout?.transactionId) {
+                    void openPaddleCheckout(checkout.transactionId);
+                    return;
+                }
+                if (checkout?.url) {
+                    window.location.href = checkout.url;
                 }
             }
         });

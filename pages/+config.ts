@@ -26,7 +26,10 @@ export default {
   lang: (pageContext) => normalizeLang(pageContext.langCookie ?? "en"),
 
   extends: [vikeReact, vikeReactQuery, vikeServer],
-  server: "server/index.js",
+  // vike and vike-server each augment Vike.Config's `server` key with a different type,
+  // and declaration merging intersects them into something a bare path can't satisfy —
+  // this is the documented vike-server usage regardless.
+  server: "server/index.js" as any,
 
   passToClient: ["user", "tfa", "session", "uiMode", "langCookie"],
 
