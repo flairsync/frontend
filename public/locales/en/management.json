@@ -3419,6 +3419,12 @@
     "title": "Create a New Business",
     "loading": "Loading...",
     "upgrade_prompt": "You've reached your business limit. Upgrade to add more locations.",
+    "step_names": {
+      "basics": "Basics",
+      "hours": "Hours",
+      "location": "Location",
+      "links": "Links"
+    },
     "errors": {
       "name_required": "Business name is required",
       "description_required": "Description is required",

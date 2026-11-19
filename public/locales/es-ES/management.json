@@ -3346,6 +3346,12 @@
     "title": "Crear un nuevo negocio",
     "loading": "Cargando...",
     "upgrade_prompt": "Has alcanzado el límite de negocios. Mejora tu plan para añadir más ubicaciones.",
+    "step_names": {
+      "basics": "Datos básicos",
+      "hours": "Horarios",
+      "location": "Ubicación",
+      "links": "Enlaces"
+    },
     "errors": {
       "name_required": "El nombre del negocio es obligatorio",
       "description_required": "La descripción es obligatoria",

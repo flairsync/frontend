@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -128,6 +128,23 @@ export default function CreateNewBusiness() {
     const kitchenToggleTouchedRef = useRef(false);
     const totalSteps = 4;
 
+    const stepNames = [
+        t('create_business_page.step_names.basics'),
+        t('create_business_page.step_names.hours'),
+        t('create_business_page.step_names.location'),
+        t('create_business_page.step_names.links'),
+    ];
+
+    // P1-12 (QA round 4, 2026-11-19): scroll to the top on every step change. Step 3's map
+    // widget (BusinessLocationPicker, loaded client-only) mounts asynchronously and can grow
+    // the page's height after this first scroll, pushing the viewport back down — the second,
+    // delayed scroll (after its mount/transition settles) is a safety net for that.
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const timeout = setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 350);
+        return () => clearTimeout(timeout);
+    }, [step]);
+
     const initialValues: BusinessFormValues = {
         name: '',
         description: '',
@@ -182,6 +199,13 @@ export default function CreateNewBusiness() {
                 </CardHeader>
 
                 <CardContent>
+                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                        {stepNames.map((name, index) => (
+                            <span key={name} className={index === step ? "font-semibold text-primary" : undefined}>
+                                {name}
+                            </span>
+                        ))}
+                    </div>
                     <Progress value={((step) / totalSteps) * 100} className="mb-6" />
 
                     <Formik

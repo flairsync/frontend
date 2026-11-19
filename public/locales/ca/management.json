@@ -3346,6 +3346,12 @@
     "title": "Crear un negoci nou",
     "loading": "Carregant...",
     "upgrade_prompt": "Has arribat al límit de negocis. Millora el teu pla per afegir més ubicacions.",
+    "step_names": {
+      "basics": "Dades bàsiques",
+      "hours": "Horaris",
+      "location": "Ubicació",
+      "links": "Enllaços"
+    },
     "errors": {
       "name_required": "El nom del negoci és obligatori",
       "description_required": "La descripció és obligatòria",

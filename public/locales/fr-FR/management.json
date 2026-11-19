@@ -3346,6 +3346,12 @@
     "title": "Créer un nouvel établissement",
     "loading": "Chargement...",
     "upgrade_prompt": "Vous avez atteint votre limite d'établissements. Passez à une offre supérieure pour ajouter plus d'emplacements.",
+    "step_names": {
+      "basics": "Informations de base",
+      "hours": "Horaires",
+      "location": "Emplacement",
+      "links": "Liens"
+    },
     "errors": {
       "name_required": "Le nom de l'établissement est requis",
       "description_required": "La description est requise",
