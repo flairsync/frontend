@@ -22,8 +22,14 @@ export const useUsage = () => {
     const { data: usage, isLoading, refetch } = useQuery<UsageData | null>({
         queryKey: ["user_usage"],
         queryFn: async () => {
+            // P1-9 (QA round 4, 2026-11-19): unlike /subscriptions/current and /subscriptions/my
+            // (which double-wrap, since their service methods already return an ApiResponse that
+            // the controller wraps again), GET /subscriptions/usage's controller wraps its plain
+            // UsageService.getUserLimits() object only once — unwrap() already strips that one
+            // envelope, so `res` IS the usage object. Reading `res.data` here read undefined for
+            // every account, not just new ones, permanently showing "Usage data not available".
             const res = await getUserUsageApiCall();
-            return res.data as UsageData ?? null;
+            return (res as unknown as UsageData) ?? null;
         },
         enabled: !!user,
     });
