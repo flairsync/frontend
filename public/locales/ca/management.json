@@ -685,6 +685,7 @@
     "price": "Preu",
     "allergies": "Al·lèrgies",
     "images": "Imatges",
+    "images_dropzone_hint": "Arrossega fotos aquí, o fes clic per buscar-ne",
     "tracking": {
       "label": "Seguiment",
       "tooltip": "Tria com es vincula aquest article amb el teu inventari.",
@@ -3712,6 +3713,7 @@
     "remove": "Eliminar",
     "all_staff": "Tot el personal",
     "resync_invitations": "Resincronitzar invitacions",
+    "resync_invitations_hint": "Torna a comprovar les invitacions acceptades amb la teva llista d'equip i corregeix les que estiguin desincronitzades.",
     "col_name": "Nom",
     "col_email": "Correu electrònic",
     "col_roles": "Rols",
@@ -4467,6 +4469,7 @@
     "title": "Perfil professional",
     "subtitle_update": "Actualitza com apareixes davant d'ocupadors i negocis.",
     "subtitle_create": "Crea el teu perfil professional per postular-te a feines i connectar amb negocis.",
+    "beta_pending_notice": "FlairSync està en beta limitada — el teu compte encara espera aprovació, així que això no es desarà fins llavors. T'enviarem un correu tan bon punt s'aprovi.",
     "active_badge": "Actiu",
     "no_profile_yet": "Encara no hi ha perfil professional",
     "member_since": "Membre des de {{date}}",
@@ -5356,5 +5359,15 @@
     "loading": "Carregant alertes...",
     "empty_title": "No hi ha alertes per mostrar",
     "empty_description": "Tot sembla estar en ordre — veuràs un avís si alguna cosa necessita la teva atenció."
+  },
+  "owner_layout": {
+    "home": "Inici",
+    "status": {
+      "live": "Actiu",
+      "draft": "Esborrany",
+      "draft_tooltip": "El negoci no està publicat — fes clic per publicar-lo"
+    },
+    "tax_id_tooltip": "El NRT no està configurat — les comandes no es poden completar fins que es configuri {{taxIdLabel}} d'aquest negoci. Fes clic per solucionar-ho ara.",
+    "view_public_page": "Veure la meva pàgina pública"
   }
 }

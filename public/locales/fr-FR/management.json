@@ -685,6 +685,7 @@
     "price": "Prix",
     "allergies": "Allergies",
     "images": "Images",
+    "images_dropzone_hint": "Faites glisser des photos ici, ou cliquez pour en choisir",
     "tracking": {
       "label": "Suivi",
       "tooltip": "Choisissez comment cet article est lié à votre inventaire.",
@@ -3712,6 +3713,7 @@
     "remove": "Retirer",
     "all_staff": "Tout le personnel",
     "resync_invitations": "Resynchroniser les invitations",
+    "resync_invitations_hint": "Revérifie les invitations acceptées par rapport à votre liste d'équipe et corrige celles qui sont désynchronisées.",
     "col_name": "Nom",
     "col_email": "E-mail",
     "col_roles": "Rôles",
@@ -4467,6 +4469,7 @@
     "title": "Profil professionnel",
     "subtitle_update": "Mettez à jour la façon dont vous apparaissez auprès des employeurs et des entreprises.",
     "subtitle_create": "Créez votre profil professionnel pour postuler à des offres et entrer en contact avec des entreprises.",
+    "beta_pending_notice": "FlairSync est en bêta limitée — votre compte est encore en attente d'approbation, donc cela ne sera pas enregistré avant. Vous recevrez un e-mail dès l'approbation.",
     "active_badge": "Actif",
     "no_profile_yet": "Aucun profil professionnel pour le moment",
     "member_since": "Membre depuis {{date}}",
@@ -5356,5 +5359,15 @@
     "loading": "Chargement des alertes...",
     "empty_title": "Aucune alerte à afficher",
     "empty_description": "Tout semble en ordre ici — vous verrez un avertissement si quelque chose nécessite votre attention."
+  },
+  "owner_layout": {
+    "home": "Accueil",
+    "status": {
+      "live": "En ligne",
+      "draft": "Brouillon",
+      "draft_tooltip": "L'établissement n'est pas publié — cliquez pour le publier"
+    },
+    "tax_id_tooltip": "Le numéro fiscal n'est pas défini — les commandes ne peuvent pas être finalisées tant que {{taxIdLabel}} de cet établissement n'est pas défini. Cliquez pour le corriger maintenant.",
+    "view_public_page": "Voir ma page publique"
   }
 }

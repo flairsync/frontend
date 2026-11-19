@@ -685,6 +685,7 @@
     "price": "Precio",
     "allergies": "Alergias",
     "images": "Imágenes",
+    "images_dropzone_hint": "Arrastra fotos aquí, o haz clic para buscar",
     "tracking": {
       "label": "Seguimiento",
       "tooltip": "Elige cómo se vincula este artículo con tu inventario.",
@@ -3712,6 +3713,7 @@
     "remove": "Eliminar",
     "all_staff": "Todo el personal",
     "resync_invitations": "Resincronizar invitaciones",
+    "resync_invitations_hint": "Vuelve a comprobar las invitaciones aceptadas frente a tu lista de equipo y corrige las que estén desincronizadas.",
     "col_name": "Nombre",
     "col_email": "Correo electrónico",
     "col_roles": "Roles",
@@ -4467,6 +4469,7 @@
     "title": "Perfil profesional",
     "subtitle_update": "Actualiza cómo apareces ante empleadores y negocios.",
     "subtitle_create": "Crea tu perfil profesional para postularte a empleos y conectar con negocios.",
+    "beta_pending_notice": "FlairSync está en beta limitada — tu cuenta todavía está pendiente de aprobación, así que esto no se guardará hasta entonces. Te enviaremos un correo en cuanto se apruebe.",
     "active_badge": "Activo",
     "no_profile_yet": "Aún no hay perfil profesional",
     "member_since": "Miembro desde {{date}}",
@@ -5356,5 +5359,15 @@
     "loading": "Cargando alertas...",
     "empty_title": "No hay alertas que mostrar",
     "empty_description": "Todo parece estar en orden — verás una advertencia si algo necesita tu atención."
+  },
+  "owner_layout": {
+    "home": "Inicio",
+    "status": {
+      "live": "Activo",
+      "draft": "Borrador",
+      "draft_tooltip": "El negocio no está publicado — haz clic para publicarlo"
+    },
+    "tax_id_tooltip": "El NIF/CIF no está configurado — los pedidos no se pueden completar hasta que se configure {{taxIdLabel}} de este negocio. Haz clic para solucionarlo ahora.",
+    "view_public_page": "Ver mi página pública"
   }
 }
