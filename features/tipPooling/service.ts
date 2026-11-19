@@ -1,6 +1,6 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-import { GenerateTipDistributionDto, FinalizeTipDistributionDto, TipPoolStatus } from "@/models/business/tipPooling/TipDistribution";
+import { GenerateTipDistributionDto, FinalizeTipDistributionDto, TipPoolStatus, TipPoolPreview, TipDistributionEntry } from "@/models/business/tipPooling/TipDistribution";
 
 const baseUrl = `${API_URL}/tip-pooling`;
 
@@ -10,7 +10,7 @@ export const fetchTipPoolPreviewApiCall = async (
   endDate: string,
 ) => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
-  return unwrap(await flairapi.get(`${baseUrl}/preview?${params.toString()}`));
+  return unwrap<TipPoolPreview>(await flairapi.get(`${baseUrl}/preview?${params.toString()}`));
 };
 
 export const generateTipDistributionApiCall = (data: GenerateTipDistributionDto) => {
@@ -31,5 +31,5 @@ export const fetchTipDistributionsApiCall = async (
   if (startDate) params.append('startDate', startDate);
   if (endDate) params.append('endDate', endDate);
   if (status) params.append('status', status);
-  return unwrap(await flairapi.get(`${baseUrl}?${params.toString()}`));
+  return unwrap<TipDistributionEntry[]>(await flairapi.get(`${baseUrl}?${params.toString()}`));
 };

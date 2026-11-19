@@ -1,6 +1,13 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
 import { Shift, ShiftStatus } from "@/models/business/shift/Shift";
 import { RecurringShiftRule } from "@/models/business/shift/RecurringShiftRule";
+import { ShiftTemplate } from "@/models/business/shift/ShiftTemplate";
+import { ShiftBid } from "@/models/business/shift/ShiftBid";
+import { StaffAvailability } from "@/models/business/shift/StaffAvailability";
+import { TimeOffRequest } from "@/models/business/shift/TimeOffRequest";
+import { ShiftSwap } from "@/models/business/shift/ShiftSwap";
+import { AttendanceLog, AttendanceSummaryEntry } from "@/models/business/shift/Attendance";
+import { AbsenceRecord } from "@/models/business/shift/AbsenceRecord";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 // DTOs
@@ -135,7 +142,7 @@ const baseUrl = `${API_URL}/shifts`;
 
 // Templates API
 export const fetchShiftTemplatesApiCall = async (businessId: string) => {
-  const { data } = unwrapPaginated(await flairapi.get(`${baseUrl}/templates?businessId=${businessId}`));
+  const { data } = unwrapPaginated<ShiftTemplate>(await flairapi.get(`${baseUrl}/templates?businessId=${businessId}`));
   return data;
 };
 
@@ -164,16 +171,16 @@ export const fetchShiftsApiCall = async (businessId: string, startDate?: string,
 };
 
 export const getUpcomingShiftsApiCall = async (params: any) =>
-  unwrapPaginated(await flairapi.get(`${baseUrl}/upcoming`, { params }));
+  unwrapPaginated<Shift>(await flairapi.get(`${baseUrl}/upcoming`, { params }));
 
 export const fetchManagerRosterApiCall = async (businessId: string, startDate: string, endDate: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/manager-roster?businessId=${businessId}&startDate=${startDate}&endDate=${endDate}`));
+  unwrap<any[]>(await flairapi.get(`${baseUrl}/manager-roster?businessId=${businessId}&startDate=${startDate}&endDate=${endDate}`));
 
 export const fetchAvailableShiftsApiCall = async (businessId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/available?businessId=${businessId}`));
+  unwrap<Shift[]>(await flairapi.get(`${baseUrl}/available?businessId=${businessId}`));
 
 export const fetchMyBidsApiCall = async () =>
-  unwrap(await flairapi.get(`${baseUrl}/my-bids`));
+  unwrap<any[]>(await flairapi.get(`${baseUrl}/my-bids`));
 
 export interface StaffCalendarShift {
   id: string;
@@ -229,10 +236,10 @@ export const bidOnShiftApiCall = (shiftId: string) => {
 };
 
 export const fetchShiftBidsApiCall = async (shiftId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/${shiftId}/bids`));
+  unwrap<ShiftBid[]>(await flairapi.get(`${baseUrl}/${shiftId}/bids`));
 
 export const fetchAllBusinessBidsApiCall = async (businessId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/bids/all?businessId=${businessId}`));
+  unwrap<any[]>(await flairapi.get(`${baseUrl}/bids/all?businessId=${businessId}`));
 
 export const updateShiftBidStatusApiCall = (bidId: string, businessId: string, status: 'APPROVED' | 'REJECTED') => {
   return flairapi.patch(`${baseUrl}/bids/${bidId}/status`, { status, businessId });
@@ -313,7 +320,7 @@ export const deleteRecurringRuleApiCall = (ruleId: string, businessId: string) =
 
 // Availability API
 export const fetchAvailabilityApiCall = async (employmentId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/availability/${employmentId}`));
+  unwrap<StaffAvailability[]>(await flairapi.get(`${baseUrl}/availability/${employmentId}`));
 
 export const updateAvailabilityApiCall = (data: UpdateAvailabilityDto) => {
   return flairapi.post(`${baseUrl}/availability`, data);
@@ -324,14 +331,14 @@ export const fetchTimeOffRequestsApiCall = async (businessId: string, employment
   const params = new URLSearchParams();
   params.append("businessId", businessId);
   if (employmentId) params.append("employmentId", employmentId);
-  return unwrap(await flairapi.get(`${baseUrl}/time-off?${params.toString()}`));
+  return unwrap<TimeOffRequest[]>(await flairapi.get(`${baseUrl}/time-off?${params.toString()}`));
 };
 
 // Self-scoped: no STAFF permission required — the backend resolves the caller's own employment.
 export const fetchMyTimeOffRequestsApiCall = async (businessId: string) => {
   const params = new URLSearchParams();
   params.append("businessId", businessId);
-  return unwrap(await flairapi.get(`${baseUrl}/time-off/mine?${params.toString()}`));
+  return unwrap<TimeOffRequest[]>(await flairapi.get(`${baseUrl}/time-off/mine?${params.toString()}`));
 };
 
 export const submitTimeOffRequestApiCall = (data: { businessId: string; employmentId: string; startDate: string; endDate: string; leaveType: string; reason: string; documentUrl?: string }) => {
@@ -347,14 +354,14 @@ export const fetchShiftSwapsApiCall = async (businessId: string, employmentId?: 
   const params = new URLSearchParams();
   params.append("businessId", businessId);
   if (employmentId) params.append("employmentId", employmentId);
-  return unwrap(await flairapi.get(`${baseUrl}/swaps?${params.toString()}`));
+  return unwrap<ShiftSwap[]>(await flairapi.get(`${baseUrl}/swaps?${params.toString()}`));
 };
 
 // Self-scoped: no STAFF permission required — the backend resolves the caller's own employment.
 export const fetchMyShiftSwapsApiCall = async (businessId: string) => {
   const params = new URLSearchParams();
   params.append("businessId", businessId);
-  return unwrap(await flairapi.get(`${baseUrl}/swaps/mine?${params.toString()}`));
+  return unwrap<ShiftSwap[]>(await flairapi.get(`${baseUrl}/swaps/mine?${params.toString()}`));
 };
 
 export const requestShiftSwapApiCall = (data: { businessId: string; shiftId: string; fromEmploymentId: string; toEmploymentId: string }) => {
@@ -366,7 +373,7 @@ export const updateShiftSwapStatusApiCall = (swapId: string, businessId: string,
 };
 
 export const fetchUnvalidatedShiftSummaryApiCall = async (businessId: string, weeks: number = 4) =>
-  unwrap(await flairapi.get(`${baseUrl}/unvalidated-summary?businessId=${businessId}&weeks=${weeks}`));
+  unwrap<UnvalidatedShiftSummary>(await flairapi.get(`${baseUrl}/unvalidated-summary?businessId=${businessId}&weeks=${weeks}`));
 
 // Attendance API
 export const checkInApiCall = (data: CheckInDto) => {
@@ -412,11 +419,11 @@ export const fetchAttendanceLogsApiCall = async (
   if (filters?.page) params.append('page', String(filters.page));
   if (filters?.limit) params.append('limit', String(filters.limit));
   const qs = params.toString();
-  return unwrapPaginated(await flairapi.get(`${API_URL}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
+  return unwrapPaginated<AttendanceLog>(await flairapi.get(`${API_URL}/attendance/business/${businessId}${qs ? `?${qs}` : ''}`));
 };
 
 export const fetchAttendanceByIdApiCall = async (id: string, businessId: string) =>
-  unwrap(await flairapi.get(`${API_URL}/attendance/${id}?businessId=${businessId}`));
+  unwrap<AttendanceLog>(await flairapi.get(`${API_URL}/attendance/${id}?businessId=${businessId}`));
 
 export const fetchMyAttendanceApiCall = async (
   businessId: string,
@@ -428,12 +435,12 @@ export const fetchMyAttendanceApiCall = async (
   if (filters?.lifecycleStatus) params.append('lifecycleStatus', filters.lifecycleStatus);
   if (filters?.page) params.append('page', String(filters.page));
   if (filters?.limit) params.append('limit', String(filters.limit));
-  return unwrapPaginated(await flairapi.get(`${API_URL}/attendance/me?${params.toString()}`));
+  return unwrapPaginated<AttendanceLog>(await flairapi.get(`${API_URL}/attendance/me?${params.toString()}`));
 };
 
 export const fetchTodayAttendanceDashboardApiCall = async (businessId: string, date?: string) => {
   const url = `${API_URL}/attendance/today?businessId=${businessId}`;
-  return unwrap(await flairapi.get(date ? `${url}&date=${date}` : url));
+  return unwrap<{ attendance?: AttendanceLog }>(await flairapi.get(date ? `${url}&date=${date}` : url));
 };
 
 export const validateAttendanceApiCall = (attendanceId: string, data: ValidateAttendanceDto) => {
@@ -449,7 +456,7 @@ export const logShiftWorkedApiCall = async (shiftId: string, data: LogShiftWorke
 export const fetchAttendanceSummaryApiCall = async (businessId: string, startDate: string, endDate: string, employmentId?: string) => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append('employmentId', employmentId);
-  return unwrap(await flairapi.get(`${API_URL}/attendance/summary?${params.toString()}`));
+  return unwrap<AttendanceSummaryEntry[]>(await flairapi.get(`${API_URL}/attendance/summary?${params.toString()}`));
 };
 
 // Absence Records API
@@ -462,11 +469,11 @@ export const createAbsenceRecordApiCall = (data: import('@/models/business/shift
 export const fetchAbsenceRecordsApiCall = async (businessId: string, employmentId?: string) => {
   const params = new URLSearchParams({ businessId });
   if (employmentId) params.append('employmentId', employmentId);
-  return unwrap(await flairapi.get(`${absenceBaseUrl}?${params.toString()}`));
+  return unwrap<AbsenceRecord[]>(await flairapi.get(`${absenceBaseUrl}?${params.toString()}`));
 };
 
 export const fetchMyAbsencesApiCall = async (employmentId: string) =>
-  unwrap(await flairapi.get(`${absenceBaseUrl}/me?employmentId=${employmentId}`));
+  unwrap<AbsenceRecord[]>(await flairapi.get(`${absenceBaseUrl}/me?employmentId=${employmentId}`));
 
 export const updateAbsenceRecordApiCall = (absenceId: string, data: import('@/models/business/shift/AbsenceRecord').UpdateAbsenceRecordDto) => {
   return flairapi.patch(`${absenceBaseUrl}/${absenceId}`, data);

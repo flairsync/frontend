@@ -1,6 +1,6 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
 import { unwrap } from "../shared/api-response";
-import { GeneratePayrollDto, FinalizePayrollDto } from "@/models/business/shift/PayrollEntry";
+import { GeneratePayrollDto, FinalizePayrollDto, PayrollPreview, PayrollEntry } from "@/models/business/shift/PayrollEntry";
 
 const baseUrl = `${API_URL}/payroll`;
 
@@ -12,7 +12,7 @@ export const fetchPayrollPreviewApiCall = async (
 ) => {
   const params = new URLSearchParams({ businessId, startDate, endDate });
   if (employmentId) params.append('employmentId', employmentId);
-  return unwrap(await flairapi.get(`${baseUrl}/preview?${params.toString()}`));
+  return unwrap<PayrollPreview>(await flairapi.get(`${baseUrl}/preview?${params.toString()}`));
 };
 
 export const generatePayrollApiCall = (data: GeneratePayrollDto) => {
@@ -39,7 +39,7 @@ export const fetchPayrollEntriesApiCall = async (
   if (endDate) params.append('endDate', endDate);
   if (employmentId) params.append('employmentId', employmentId);
   if (status) params.append('status', status);
-  return unwrap(await flairapi.get(`${baseUrl}?${params.toString()}`));
+  return unwrap<PayrollEntry[]>(await flairapi.get(`${baseUrl}?${params.toString()}`));
 };
 
 export const getPayrollExportUrl = (
