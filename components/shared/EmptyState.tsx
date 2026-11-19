@@ -1,12 +1,11 @@
 import type { LucideIcon } from "lucide-react";
-import { clientOnly } from "vike-react/clientOnly";
+import { ClientOnly } from "vike-react/ClientOnly";
 
 import emptyBoxAnimation from "@/components/tutorials/animations/empty-box.json";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-
-const LottiePlayer = clientOnly(() => import("@/components/shared/LottiePlayer"));
+import LottiePlayer from "@/components/shared/LottiePlayer";
 
 export interface EmptyStateAction {
   label: string;
@@ -71,7 +70,9 @@ export function EmptyState({
   return (
     <div className={cn("flex flex-col items-center justify-center text-center py-10", className)}>
       <div style={{ width: size, height: size }}>
-        <LottiePlayer animationData={emptyBoxAnimation} className="w-full h-full" />
+        <ClientOnly>
+          <LottiePlayer animationData={emptyBoxAnimation} className="w-full h-full" />
+        </ClientOnly>
       </div>
       <p className="font-medium text-sm mt-1">{title}</p>
       {description && (

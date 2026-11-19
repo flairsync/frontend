@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { clientOnly } from "vike-react/clientOnly";
+import { ClientOnly } from "vike-react/ClientOnly";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +20,7 @@ import {
   SupportCategory,
 } from "@/features/support/service";
 
-const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
+import LandingHeader from "@/components/landing/LandingHeader";
 
 function getSupportSchema(t: (key: string) => string) {
   return Yup.object().shape({
@@ -72,7 +72,9 @@ const SupportPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <LandingHeader />
+      <ClientOnly>
+        <LandingHeader />
+      </ClientOnly>
 
       <main className="flex-1 pt-20">
         {/* Hero */}

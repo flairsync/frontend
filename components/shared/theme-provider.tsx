@@ -21,12 +21,8 @@ const initialState: ThemeProviderState = {
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 
-import { clientOnly } from "vike-react/clientOnly"
-
-
-const RadarInit = clientOnly(() =>
-    import("./RadarInitializer")
-)
+import { ClientOnly } from "vike-react/ClientOnly"
+import RadarInit from "./RadarInitializer"
 
 
 export default function ThemeProvider({
@@ -68,7 +64,9 @@ export default function ThemeProvider({
     return (
         <ThemeProviderContext.Provider {...props} value={value}>
             {children}
-            <RadarInit />
+            <ClientOnly>
+                <RadarInit />
+            </ClientOnly>
         </ThemeProviderContext.Provider>
     )
 }

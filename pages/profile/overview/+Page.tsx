@@ -1,14 +1,14 @@
-import React from "react"
+import React, { lazy, Suspense } from "react"
 import { useTranslation } from "react-i18next"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { clientOnly } from "vike-react/clientOnly"
+import { ClientOnly } from "vike-react/ClientOnly"
 import { useProfile } from "@/features/profile/useProfile"
 
 // recharts is a heavy dependency — defer it off the initial render path so the
 // rest of the page (profile card, stats) becomes interactive immediately.
-const ProfileOverviewOrdersChart = clientOnly(() => import("@/components/profile/ProfileOverviewOrdersChart"))
+const ProfileOverviewOrdersChart = lazy(() => import("@/components/profile/ProfileOverviewOrdersChart"))
 
 const ProfileOverviewPage = () => {
     const { t } = useTranslation("profile")
@@ -83,7 +83,11 @@ const ProfileOverviewPage = () => {
                 </Card>
             </div>
 
-            <ProfileOverviewOrdersChart fallback={chartSkeleton} />
+            <ClientOnly fallback={chartSkeleton}>
+                <Suspense fallback={chartSkeleton}>
+                    <ProfileOverviewOrdersChart />
+                </Suspense>
+            </ClientOnly>
 
         </div>
     )

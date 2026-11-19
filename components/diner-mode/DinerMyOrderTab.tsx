@@ -10,7 +10,7 @@ import {
     RefreshCw,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { clientOnly } from 'vike-react/clientOnly';
+import { ClientOnly } from 'vike-react/ClientOnly';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -20,7 +20,7 @@ import { CartItem } from '@/features/diner-mode/DinerModeStore';
 import { formatCurrency } from '@/lib/formatCurrency';
 import celebratePopAnimation from '@/components/tutorials/animations/celebrate-pop.json';
 
-const LottiePlayer = clientOnly(() => import('@/components/shared/LottiePlayer'));
+import LottiePlayer from '@/components/shared/LottiePlayer';
 
 interface DinerMyOrderTabProps {
     businessId: string;
@@ -83,7 +83,9 @@ function getStatusConfig(
             label: t('my_order_tab.status.ready'),
             icon: (
                 <span className="w-6 h-6 -m-0.5 inline-block">
-                    <LottiePlayer animationData={celebratePopAnimation} className="w-full h-full" />
+                    <ClientOnly>
+                        <LottiePlayer animationData={celebratePopAnimation} className="w-full h-full" />
+                    </ClientOnly>
                 </span>
             ),
             color: 'text-emerald-500',

@@ -11,18 +11,18 @@ import ProblemSolutionSection from '@/components/landing/ProblemSolutionSection'
 import StaffManagementFeature from '@/components/landing/StaffManagementFeature';
 import WebsiteFooter from '@/components/shared/WebsiteFooter';
 import { useSectionObserver } from '@/hooks/useSectionObserver';
-import { clientOnly } from 'vike-react/clientOnly'
-
-const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
-const ScrollArrow = clientOnly(() => import("@/components/landing/AnimatedScrollArrow"));
+import { ClientOnly } from 'vike-react/ClientOnly'
+import LandingHeader from "@/components/landing/LandingHeader";
+import ScrollArrow from "@/components/landing/AnimatedScrollArrow";
 
 
 const ScrollMoreArrow = () => {
   return <div
     className='flex justify-center py-6 md:py-10'
   >
-    <ScrollArrow
-    />
+    <ClientOnly>
+      <ScrollArrow />
+    </ClientOnly>
   </div>
 
 }
@@ -37,10 +37,12 @@ export default function Page() {
     <div
       className='scroll-container max-w-screen overflow-hidden'
     >
-      <LandingHeader
-        activeTag={activeTag}
-        liveAuthCheck
-      />
+      <ClientOnly>
+        <LandingHeader
+          activeTag={activeTag}
+          liveAuthCheck
+        />
+      </ClientOnly>
       <div
         className='pt-50 md:pt-20 gap-10 flex flex-col'
       >

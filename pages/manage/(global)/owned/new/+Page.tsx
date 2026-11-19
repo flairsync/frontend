@@ -24,15 +24,12 @@ import BusinessPricingSelector from '@/components/management/create/BusinessPric
 import BusinessSocialLinksInput from '@/components/management/create/BusinessSocialLinksInput';
 import { OpeningHours, OpeningPeriod } from '@/models/business/MyBusinessFullDetails';
 import { PlatformCountry } from "@/models/shared/PlatformCountry";
-import { clientOnly } from 'vike-react/clientOnly';
+import { ClientOnly } from 'vike-react/ClientOnly';
 import { useBusinessTypes } from '@/features/business/types/useBusinessTypes';
 import { BusinessTag } from '@/models/business/BusinessTag';
 import { useBusinessOps } from '@/features/business/useBusinessOps';
 import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
-
-const LocationPicker = clientOnly(() =>
-    import("@/components/management/create/BusinessLocationPicker")
-)
+import LocationPicker from "@/components/management/create/BusinessLocationPicker"
 interface BusinessFormValues {
     name: string;
     description: string;
@@ -338,10 +335,12 @@ export default function CreateNewBusiness() {
                                     {step === 2 && (
                                         <div className="space-y-4 pt-2">
                                             <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step3.location_label')}</label>
-                                            <LocationPicker
-                                                value={values.location}
-                                                onChange={(loc: any) => setFieldValue("location", loc)}
-                                            />
+                                            <ClientOnly>
+                                                <LocationPicker
+                                                    value={values.location}
+                                                    onChange={(loc: any) => setFieldValue("location", loc)}
+                                                />
+                                            </ClientOnly>
                                             {touched.location && errors.location && (
                                                 <p className="text-red-500 text-xs font-medium">
                                                     {typeof errors.location === 'string'

@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator"
 
-import { clientOnly } from "vike-react/clientOnly"
+import { ClientOnly } from "vike-react/ClientOnly"
 import { CardDescription } from "@/components/ui/card"
 import BusinessBrandingLogoUpload from "@/components/management/branding/BusinessBrandingLogoUpload"
 import BusinessBrandingGalleryUpload from "@/components/management/branding/BusinessBrandingGalleryUpload"
@@ -16,10 +16,7 @@ import { usePageContext } from "vike-react/usePageContext"
 import { useMyBusiness } from "@/features/business/useMyBusiness"
 import { DownloadBusinessQrButton } from "@/components/qr/DownloadBusinessQrButton"
 import { ExternalLink } from "lucide-react"
-const BusinessBrandingVirtualViewer = clientOnly(() =>
-    import("@/components/management/branding/BusinessBrandingVirtualViewer")
-)
-const QrDesignEditor = clientOnly(() => import("@/components/qr/QrDesignEditor"))
+import QrDesignEditor from "@/components/qr/QrDesignEditor"
 
 
 const BusinessBrandingPage = () => {
@@ -69,7 +66,9 @@ const BusinessBrandingPage = () => {
                         )}
                         <DownloadBusinessQrButton businessId={routeParams.id} />
                     </div>
-                    <QrDesignEditor businessId={routeParams.id} />
+                    <ClientOnly>
+                        <QrDesignEditor businessId={routeParams.id} />
+                    </ClientOnly>
                 </AccordionContent>
             </AccordionItem>
 

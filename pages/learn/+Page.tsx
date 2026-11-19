@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { clientOnly } from "vike-react/clientOnly";
+import { ClientOnly } from "vike-react/ClientOnly";
 import { useTranslation } from "react-i18next";
 import {
   TUTORIAL_PARTS,
@@ -25,9 +25,9 @@ import { TutorialContent } from "@/components/learn/TutorialContent";
 import { PART_ICONS, type TFn } from "@/components/learn/constants";
 import heroSparkleAnimation from "@/components/tutorials/animations/hero-sparkle.json";
 
-const LandingHeader = clientOnly(() => import("@/components/landing/LandingHeader"));
-const WebsiteFooter = clientOnly(() => import("@/components/shared/WebsiteFooter"));
-const LottiePlayer = clientOnly(() => import("@/components/shared/LottiePlayer"));
+import LandingHeader from "@/components/landing/LandingHeader";
+import WebsiteFooter from "@/components/shared/WebsiteFooter";
+import LottiePlayer from "@/components/shared/LottiePlayer";
 
 // ─── Overview landing card grid ───────────────────────────────────────────────
 
@@ -42,7 +42,9 @@ function OverviewGrid({
     <div className="max-w-3xl mx-auto px-6 py-12 space-y-10">
       <div className="flex items-center gap-4">
         <div className="w-24 h-24 shrink-0 -my-2">
-          <LottiePlayer animationData={heroSparkleAnimation} className="w-full h-full" />
+          <ClientOnly>
+            <LottiePlayer animationData={heroSparkleAnimation} className="w-full h-full" />
+          </ClientOnly>
         </div>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
@@ -143,7 +145,9 @@ const LearnPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <LandingHeader />
+      <ClientOnly>
+        <LandingHeader />
+      </ClientOnly>
 
       {/* Layout: sidebar + main */}
       <div className="flex flex-1 mt-20" style={{ height: "calc(100vh - 80px)" }}>
@@ -220,7 +224,9 @@ const LearnPage: React.FC = () => {
           )}
 
           {/* Footer */}
-          <WebsiteFooter />
+          <ClientOnly>
+            <WebsiteFooter />
+          </ClientOnly>
         </main>
       </div>
     </div>

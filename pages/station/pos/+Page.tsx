@@ -1,8 +1,11 @@
-import { clientOnly } from "vike-react/clientOnly";
+import { ClientOnly } from "vike-react/ClientOnly";
+import StationBootstrap from "@/components/station/StationBootstrap";
 
 // Station auth reads localStorage — must run client-only
-const StationBootstrap = clientOnly(() => import("@/components/station/StationBootstrap"));
-
 export default function StationPosPage() {
-  return <StationBootstrap stationType="pos" />;
+  return (
+    <ClientOnly>
+      <StationBootstrap stationType="pos" />
+    </ClientOnly>
+  );
 }

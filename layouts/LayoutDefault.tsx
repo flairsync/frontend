@@ -4,9 +4,9 @@ import "nprogress/nprogress.css";
 import "./tailwind.css";
 import 'react-photo-view/dist/react-photo-view.css';
 import "@/translations/i18n"
-import { clientOnly } from "vike-react/clientOnly";
-const ThemeProvider = clientOnly(() => import("@/components/shared/theme-provider"));
-const TextSizeProvider = clientOnly(() => import("@/components/shared/text-size-provider"));
+import { ClientOnly } from "vike-react/ClientOnly";
+import ThemeProvider from "@/components/shared/theme-provider";
+import TextSizeProvider from "@/components/shared/text-size-provider";
 // Deliberately NOT clientOnly: the management shells branch on uiMode during
 // SSR, so this has to render on the server or every manage page flashes the
 // wrong navigation before hydration.
@@ -14,41 +14,42 @@ import UiModeProvider from "@/components/shared/ui-mode-provider";
 import { Toaster } from "@/components/ui/sonner"
 import { SystemErrorOverlay } from "@/features/system-errors/SystemErrorOverlay";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
-const UpgradeModal = clientOnly(() => import("@/components/subscriptions/UpgradeModal"));
-const DinerModeWatcher = clientOnly(() => import("@/components/diner-mode/DinerModeWatcher"));
-const ClockedInBanner = clientOnly(() => import("@/components/shift-tracking/ClockedInBanner"));
-const TourProvider = clientOnly(() => import("@/features/tour/components/TourProvider").then(m => ({ default: m.TourProvider })));
-const CookieConsentBanner = clientOnly(() => import("@/components/shared/CookieConsentBanner"));
-const BetaModeBanner = clientOnly(() => import("@/components/shared/BetaModeBanner"));
-const PasswordBreachBanner = clientOnly(() => import("@/components/shared/PasswordBreachBanner"));
-const RadixPointerEventsGuard = clientOnly(() => import("@/components/shared/RadixPointerEventsGuard"));
+import UpgradeModal from "@/components/subscriptions/UpgradeModal";
+import DinerModeWatcher from "@/components/diner-mode/DinerModeWatcher";
+import ClockedInBanner from "@/components/shift-tracking/ClockedInBanner";
+import { TourProvider } from "@/features/tour/components/TourProvider";
+import CookieConsentBanner from "@/components/shared/CookieConsentBanner";
+import BetaModeBanner from "@/components/shared/BetaModeBanner";
+import PasswordBreachBanner from "@/components/shared/PasswordBreachBanner";
+import RadixPointerEventsGuard from "@/components/shared/RadixPointerEventsGuard";
 
 export default function LayoutDefault({ children }: { children: React.ReactNode }) {
   return (
     <UiModeProvider>
-      <ThemeProvider
-        defaultTheme="light"
-        storageKey="vite-ui-theme"
+      <ClientOnly>
+        <ThemeProvider
+          defaultTheme="light"
+          storageKey="vite-ui-theme"
 
-      >
-        <TextSizeProvider>
-          <ErrorBoundary>
-            {children}
-          </ErrorBoundary>
-          <DinerModeWatcher />
-          <ClockedInBanner />
-          <Toaster />
-          <UpgradeModal />
-          <SystemErrorOverlay />
-          <TourProvider />
-          <CookieConsentBanner />
-          <BetaModeBanner />
-          <PasswordBreachBanner />
-          <RadixPointerEventsGuard />
-        </TextSizeProvider>
-      </ThemeProvider>
+        >
+          <TextSizeProvider>
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
+            <DinerModeWatcher />
+            <ClockedInBanner />
+            <Toaster />
+            <UpgradeModal />
+            <SystemErrorOverlay />
+            <TourProvider />
+            <CookieConsentBanner />
+            <BetaModeBanner />
+            <PasswordBreachBanner />
+            <RadixPointerEventsGuard />
+          </TextSizeProvider>
+        </ThemeProvider>
+      </ClientOnly>
     </UiModeProvider>
   );
 }
-
 

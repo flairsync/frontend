@@ -22,20 +22,14 @@ import { useSuspenseDiscoverySearch } from '@/features/discovery/useDiscovery'
 import { useTranslation, Trans } from 'react-i18next'
 import WebsiteFooter from '@/components/shared/WebsiteFooter'
 
-import { clientOnly } from 'vike-react/clientOnly'
+import { ClientOnly } from 'vike-react/ClientOnly'
 import { useBusinessTags } from '@/features/business/tags/useBusinessTags'
 import { usePlatformCountries } from '@/features/shared/usePlatformCountries';
 import { withFallback } from 'vike-react-query'
+import PublicFeedBusinessCard from "@/components/feed/PublicFeedBusinessCard"
+import LocationSelectionModal from "@/components/inputs/LocationSelectionModal"
 
 const FILTER_STORAGE_KEY = 'public_feed_filters';
-
-const PublicFeedBusinessCard = clientOnly(() =>
-    import("@/components/feed/PublicFeedBusinessCard")
-)
-
-const LocationSelectionModal = clientOnly(() =>
-    import("@/components/inputs/LocationSelectionModal")
-)
 
 const container = {
     hidden: { opacity: 0 },
@@ -115,7 +109,9 @@ const BusinessGrid = withFallback(
                         className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
                     >
                         {businesses.map((val, index) => (
-                            <PublicFeedBusinessCard key={val.link || index} businessDetails={val} />
+                            <ClientOnly key={val.link || index}>
+                                <PublicFeedBusinessCard businessDetails={val} />
+                            </ClientOnly>
                         ))}
                     </motion.div>
                 ) : (
@@ -312,24 +308,26 @@ const FeedPage = () => {
                     </div>
                 </div>
 
-                <LocationSelectionModal
-                    isOpen={isLocationModalOpen}
-                    onOpenChange={(open) => {
-                        setIsLocationModalOpen(open);
-                        if (!open) setLocationErrorReason(undefined);
-                    }}
-                    defaultState={locationState}
-                    reason={locationErrorReason}
-                    onSave={(newState) => {
-                        if (newState.countryId) {
-                            newState.lat = undefined;
-                            newState.lng = undefined;
-                        }
-                        setLocationState(newState);
-                        setPage(1);
-                        setLocationErrorReason(undefined);
-                    }}
-                />
+                <ClientOnly>
+                    <LocationSelectionModal
+                        isOpen={isLocationModalOpen}
+                        onOpenChange={(open) => {
+                            setIsLocationModalOpen(open);
+                            if (!open) setLocationErrorReason(undefined);
+                        }}
+                        defaultState={locationState}
+                        reason={locationErrorReason}
+                        onSave={(newState) => {
+                            if (newState.countryId) {
+                                newState.lat = undefined;
+                                newState.lng = undefined;
+                            }
+                            setLocationState(newState);
+                            setPage(1);
+                            setLocationErrorReason(undefined);
+                        }}
+                    />
+                </ClientOnly>
 
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col lg:flex-row gap-12">

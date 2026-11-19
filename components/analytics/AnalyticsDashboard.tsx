@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Download, FileText, Sheet } from "lucide-react";
 import { useDashboardAnalytics, useAnalyticsExport } from "@/features/analytics/useDashboardAnalytics";
@@ -6,7 +6,7 @@ import { useMyBusiness } from "@/features/business/useMyBusiness";
 import { getCurrencySymbol } from "@/utils/currency";
 import { AnalyticsTimeFilter, TimeRangePreset } from "./AnalyticsTimeFilter";
 import { subDays, startOfDay, endOfDay, formatISO } from "date-fns";
-import { clientOnly } from "vike-react/clientOnly";
+import { ClientOnly } from "vike-react/ClientOnly";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,13 +22,13 @@ import { AnalyticsLaborTable } from "./AnalyticsLaborTable";
 
 // recharts is a heavy dependency — defer it off the initial render path so the
 // KPI cards and top-products table become interactive without waiting on it.
-const AnalyticsRevenueChart = clientOnly(() =>
+const AnalyticsRevenueChart = lazy(() =>
     import("./AnalyticsRevenueChart").then((m) => ({ default: m.AnalyticsRevenueChart }))
 );
-const AnalyticsOrderTypesChart = clientOnly(() =>
+const AnalyticsOrderTypesChart = lazy(() =>
     import("./AnalyticsOrderTypesChart").then((m) => ({ default: m.AnalyticsOrderTypesChart }))
 );
-const AnalyticsBusiestHoursChart = clientOnly(() =>
+const AnalyticsBusiestHoursChart = lazy(() =>
     import("./AnalyticsBusiestHoursChart").then((m) => ({ default: m.AnalyticsBusiestHoursChart }))
 );
 
@@ -136,12 +136,24 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <AnalyticsRevenueChart sales={data.sales} currency={currency} fallback={chartSkeleton} />
-                        <AnalyticsOrderTypesChart sales={data.sales} fallback={chartSkeleton} />
+                        <ClientOnly fallback={chartSkeleton}>
+                            <Suspense fallback={chartSkeleton}>
+                                <AnalyticsRevenueChart sales={data.sales} currency={currency} />
+                            </Suspense>
+                        </ClientOnly>
+                        <ClientOnly fallback={chartSkeleton}>
+                            <Suspense fallback={chartSkeleton}>
+                                <AnalyticsOrderTypesChart sales={data.sales} />
+                            </Suspense>
+                        </ClientOnly>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
-                        <AnalyticsBusiestHoursChart hourlyVisitors={data.hourlyVisitors} fallback={chartSkeleton} />
+                        <ClientOnly fallback={chartSkeleton}>
+                            <Suspense fallback={chartSkeleton}>
+                                <AnalyticsBusiestHoursChart hourlyVisitors={data.hourlyVisitors} />
+                            </Suspense>
+                        </ClientOnly>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
