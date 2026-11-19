@@ -26,7 +26,11 @@
       "anyType": "Any type",
       "anyTag": "Any tag",
       "tagsTitle": "Tags",
-      "filterButton": "Filters"
+      "filterButton": "Filters",
+      "ratingTitle": "Minimum Rating",
+      "anyRating": "Any",
+      "showLess": "Show less",
+      "showMore": "{{count}} more"
     }
   },
   "business_page": {
@@ -310,8 +314,15 @@
   "feed_page": {
     "no_businesses_found": "No businesses found",
     "try_adjusting_search": "Try adjusting your search criteria",
-    "no_results_filtered_reason": "No businesses match your current location or filters — not that there aren't any.",
+    "no_results_filtered_reason": "No businesses match your filters or location. Clear filters to see all.",
     "clear_filters": "Clear filters"
+  },
+  "feed_card": {
+    "no_reviews_yet": "No reviews yet",
+    "no_photo_yet": "No photo yet",
+    "open_now": "Open Now",
+    "closed": "Closed",
+    "price_level": "Price Level"
   },
   "join_business_page": {
     "title": "Join {{businessName}}",

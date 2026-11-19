@@ -300,5 +300,33 @@
     "text": "Tu contraseña se encontró en una filtración de datos — por favor, cámbiala",
     "aria_label": "Tu contraseña se encontró en una filtración de datos — haz clic para cambiarla",
     "dismiss_aria_label": "Descartar"
+  },
+  "tour_help_button": {
+    "start": "Recorrido guiado",
+    "end": "Terminar recorrido",
+    "dismiss": "Ocultar"
+  },
+  "sidebar": {
+    "toggle": "Mostrar/ocultar barra lateral"
+  },
+  "theme_toggle": {
+    "select_theme": "Seleccionar tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "auto": "Automático"
+  },
+  "text_size_toggle": {
+    "select": "Seleccionar tamaño de texto",
+    "default": "Predeterminado",
+    "large": "Grande",
+    "xlarge": "Extra grande"
+  },
+  "language_switcher": {
+    "select": "Seleccionar idioma"
+  },
+  "welcome_back": "Hola de nuevo, {{name}}",
+  "toasts": {
+    "updated": "Actualizado",
+    "item_added": "¡Artículo añadido!"
   }
 }

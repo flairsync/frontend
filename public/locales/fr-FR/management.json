@@ -3268,6 +3268,11 @@
     }
   },
   "invitations_section": {
+    "toasts": {
+      "sending": "Envoi de l'invitation",
+      "sent": "Invitation envoyée",
+      "send_error": "Erreur lors de l'envoi de l'invitation"
+    },
     "qr_description": "Veuillez scanner ce code QR depuis l'application mobile « FlairSync Staff »",
     "title": "Toutes les invitations du personnel",
     "add_staff": "Ajouter du personnel",

@@ -26,7 +26,11 @@
       "anyType": "Cualquier tipo",
       "anyTag": "Cualquier etiqueta",
       "tagsTitle": "Etiquetas",
-      "filterButton": "Filtros"
+      "filterButton": "Filtros",
+      "ratingTitle": "Valoración mínima",
+      "anyRating": "Cualquiera",
+      "showLess": "Mostrar menos",
+      "showMore": "{{count}} más"
     }
   },
   "business_page": {
@@ -310,8 +314,15 @@
   "feed_page": {
     "no_businesses_found": "No se encontraron negocios",
     "try_adjusting_search": "Prueba a ajustar tus criterios de búsqueda",
-    "no_results_filtered_reason": "Ningún negocio coincide con tu ubicación o filtros actuales — no significa que no haya ninguno.",
+    "no_results_filtered_reason": "Ningún negocio coincide con tus filtros o tu ubicación. Borra los filtros para ver todos.",
     "clear_filters": "Borrar filtros"
+  },
+  "feed_card": {
+    "no_reviews_yet": "Sin reseñas todavía",
+    "no_photo_yet": "Sin foto todavía",
+    "open_now": "Abierto ahora",
+    "closed": "Cerrado",
+    "price_level": "Nivel de precio"
   },
   "join_business_page": {
     "title": "Unirte a {{businessName}}",

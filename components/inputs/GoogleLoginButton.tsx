@@ -2,6 +2,7 @@ import { useAuth } from "@/features/auth/useAuth";
 import { useEffect, useRef } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from "vike/client/router";
+import { useTranslation } from "react-i18next";
 
 interface GoogleLoginButtonProps {
     // Signup-only gate: when provided, a click is intercepted (the real
@@ -22,6 +23,7 @@ export default function GoogleLoginButton({ termsAccepted, onBlockedByTerms }: G
         loggingInWithGoogle
     } = useAuth();
     const { urlParsed } = usePageContext();
+    const { t } = useTranslation("auth");
 
     const origin = urlParsed.search.origin || '/';
     const packId = urlParsed.search.packId;
@@ -86,7 +88,7 @@ export default function GoogleLoginButton({ termsAccepted, onBlockedByTerms }: G
                 // in place rather than hiding/graying it out.
                 <div
                     role="button"
-                    aria-label="Accept the Terms of Service to continue with Google"
+                    aria-label={t('google_login.blocked_by_terms_aria_label')}
                     className="absolute inset-0 z-10 cursor-not-allowed"
                     onClick={onBlockedByTerms}
                 />

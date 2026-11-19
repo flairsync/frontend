@@ -37,6 +37,7 @@ import {
 } from "./service";
 import { BusinessMenu } from "@/models/business/menu/BusinessMenu";
 import { toast } from "sonner";
+import i18n from "@/translations/i18n";
 
 export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
   const queryClient = useQueryClient();
@@ -242,7 +243,7 @@ export const useBusinessSingleMenu = (businessId: string, menuId: string) => {
       );
     },
     onSuccess(data, variables, context) {
-      toast.success("Item added!");
+      toast.success(i18n.t("toasts.item_added"));
       refreshBusinessMenu();
       invalidateBusinessMenuAggregates();
     },

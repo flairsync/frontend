@@ -1,14 +1,27 @@
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useTourStore } from '../tourStore';
 
 export function TourHelpButton() {
+  const { t } = useTranslation();
   const registeredSteps = useTourStore((s) => s.registeredSteps);
   const isActive = useTourStore((s) => s.isActive);
   const startTour = useTourStore((s) => s.startTour);
   const endTour = useTourStore((s) => s.endTour);
 
   const hasSteps = !!registeredSteps?.length;
+
+  // P1-26 (QA, 2026-11-18): this floats bottom-right on every page with a tour, which on a
+  // short page (e.g. Staff → Invitations) can sit directly over pagination controls that
+  // also live in that corner. Dismissing hides it for this page view; it reappears on the
+  // next page that registers steps, rather than needing a persisted preference for something
+  // this low-stakes.
+  const [dismissed, setDismissed] = useState(false);
+  useEffect(() => {
+    setDismissed(false);
+  }, [registeredSteps]);
 
   const handleClick = () => {
     if (isActive) {
@@ -20,7 +33,7 @@ export function TourHelpButton() {
 
   return (
     <AnimatePresence>
-      {hasSteps && (
+      {hasSteps && !dismissed && (
         <motion.div
           // Several pages (e.g. the Rota) put their primary action — Publish,
           // Save — in that same bottom-right corner, either in-flow near the
@@ -70,10 +83,21 @@ export function TourHelpButton() {
                 transition={{ duration: 0.15 }}
                 className="overflow-hidden whitespace-nowrap"
               >
-                {isActive ? 'End Tour' : 'Page Tour'}
+                {isActive ? t('tour_help_button.end') : t('tour_help_button.start')}
               </motion.span>
             </AnimatePresence>
           </motion.button>
+
+          {!isActive && (
+            <button
+              type="button"
+              onClick={() => setDismissed(true)}
+              aria-label={t('tour_help_button.dismiss')}
+              className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 rounded-full bg-muted text-muted-foreground shadow ring-1 ring-border hover:bg-muted/80 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <X size={11} />
+            </button>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

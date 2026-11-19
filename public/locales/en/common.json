@@ -300,5 +300,33 @@
     "empty_description": "Create your first business to start managing your team, menu, and sales effortlessly.",
     "create_business_now": "Create a Business Now",
     "unlock_more_businesses": "Unlock More Businesses"
+  },
+  "tour_help_button": {
+    "start": "Page Tour",
+    "end": "End Tour",
+    "dismiss": "Hide"
+  },
+  "sidebar": {
+    "toggle": "Toggle Sidebar"
+  },
+  "theme_toggle": {
+    "select_theme": "Select theme",
+    "light": "Light",
+    "dark": "Dark",
+    "auto": "Auto"
+  },
+  "text_size_toggle": {
+    "select": "Select text size",
+    "default": "Default",
+    "large": "Large",
+    "xlarge": "Extra Large"
+  },
+  "language_switcher": {
+    "select": "Select language"
+  },
+  "welcome_back": "Welcome back, {{name}}",
+  "toasts": {
+    "updated": "Updated",
+    "item_added": "Item added!"
   }
 }

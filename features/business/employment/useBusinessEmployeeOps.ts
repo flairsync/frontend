@@ -12,6 +12,7 @@ import {
   ImportStaffCsvDto,
 } from "../service";
 import { toast } from "sonner";
+import i18n from "@/translations/i18n";
 
 export const useBusinessEmployeeOps = (businessId: string) => {
   const queryClient = useQueryClient();
@@ -20,7 +21,7 @@ export const useBusinessEmployeeOps = (businessId: string) => {
   const { mutate: inviteNewEmployee, isPending: invitingNewEmployee } =
     useMutation({
       mutationFn: (email: string) => {
-        toast.loading("Sending invitation", {
+        toast.loading(i18n.t("invitations_section.toasts.sending", { ns: "management" }), {
           id: "invitation_send_toast",
           toasterId: "invitation_send_toast",
         });
@@ -29,14 +30,18 @@ export const useBusinessEmployeeOps = (businessId: string) => {
       },
       onSuccess: () => {
         toast.dismiss("invitation_send_toast");
-        toast.success("Invitation sent");
+        toast.success(i18n.t("invitations_section.toasts.sent", { ns: "management" }));
         queryClient.invalidateQueries({
           queryKey: ["business_emps_invits", businessId],
         });
       },
-      onError(error, variables, context) {
+      onError(error: any, variables, context) {
         toast.dismiss("invitation_send_toast");
-        toast.error("Error sending invitation");
+        // P1-26 (QA, 2026-11-18): this always showed the same generic text, even for the
+        // self-invite case, which the backend already returns a specific, locale-correct
+        // message for (InvitationErrorCodes.CANNOT_INVITE_SELF, translated server-side via
+        // the request's x-custom-lang header) — just use it instead of discarding it.
+        toast.error(error?.response?.data?.message || i18n.t("invitations_section.toasts.send_error", { ns: "management" }));
       },
     });
 

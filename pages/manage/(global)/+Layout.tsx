@@ -11,6 +11,7 @@ import { useProfile } from '@/features/profile/useProfile';
 import { BusinessManageHubSidebar } from '@/components/management/layouts/BusinessManageHubSidebar';
 import BetaPendingScreen from '@/components/shared/BetaPendingScreen';
 import { usePageContext } from 'vike-react/usePageContext';
+import { useTranslation } from 'react-i18next';
 
 const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const [sidebarOpen, setsidebarOpen] = useState(true);
@@ -18,6 +19,7 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const {
         userProfile
     } = useProfile();
+    const { t } = useTranslation();
 
     // The professional-profile page hosts its own OTP/edit UI and must stay
     // reachable regardless of beta status, so a pending/rejected user isn't
@@ -66,7 +68,7 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         className="mr-2 data-[orientation=vertical]:h-4"
                     />
                     <span className="text-sm truncate max-w-[120px] sm:max-w-none">
-                        Welcome back, {userProfile?.getFullName()}
+                        {t('welcome_back', { name: userProfile?.getFullName() })}
                     </span>
                     <div className="flex flex-1 justify-end items-center gap-1 mr-2 md:mr-10">
                         <HeaderProfileAvatar />

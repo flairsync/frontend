@@ -8,9 +8,11 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CheckCircle2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function ThemeToggle() {
     const { theme, setTheme } = useTheme();
+    const { t } = useTranslation();
 
     const Icon = theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
 
@@ -21,7 +23,7 @@ export function ThemeToggle() {
                     variant="ghost"
                     size="sm"
                     className="flex items-center gap-1.5 px-2 text-foreground/70 hover:text-foreground"
-                    aria-label="Select theme"
+                    aria-label={t('theme_toggle.select_theme')}
                 >
                     <Icon className="h-4 w-4 shrink-0" />
                 </Button>
@@ -29,17 +31,17 @@ export function ThemeToggle() {
             <DropdownMenuContent align="end" className="w-36">
                 <DropdownMenuItem onClick={() => setTheme("light")} className="flex items-center gap-2">
                     <Sun className="h-4 w-4" />
-                    Light
+                    {t('theme_toggle.light')}
                     {theme === "light" && <CheckCircle2 className="h-4 w-4 ml-auto" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("dark")} className="flex items-center gap-2">
                     <Moon className="h-4 w-4" />
-                    Dark
+                    {t('theme_toggle.dark')}
                     {theme === "dark" && <CheckCircle2 className="h-4 w-4 ml-auto" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("system")} className="flex items-center gap-2">
                     <Monitor className="h-4 w-4" />
-                    Auto
+                    {t('theme_toggle.auto')}
                     {theme === "system" && <CheckCircle2 className="h-4 w-4 ml-auto" />}
                 </DropdownMenuItem>
             </DropdownMenuContent>

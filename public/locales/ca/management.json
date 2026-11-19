@@ -3268,6 +3268,11 @@
     }
   },
   "invitations_section": {
+    "toasts": {
+      "sending": "Enviant la invitació",
+      "sent": "Invitació enviada",
+      "send_error": "Error en enviar la invitació"
+    },
     "qr_description": "Escaneja aquest codi QR des de l'aplicació mòbil \"FlairSync Staff\" del personal",
     "title": "Totes les invitacions del personal",
     "add_staff": "Afegir personal",

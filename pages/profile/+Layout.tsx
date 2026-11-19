@@ -10,10 +10,12 @@ import WebsiteLogo from '@/components/shared/WebsiteLogo';
 import { motion, AnimatePresence } from "framer-motion"
 import { useProfile } from '@/features/profile/useProfile';
 import PendingDeletionScreen from '@/components/profile/PendingDeletionScreen';
+import { useTranslation } from 'react-i18next';
 
 const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const { userProfile } = useProfile();
+    const { t } = useTranslation();
 
     if (userProfile?.deletionRequestedAt) {
         return <PendingDeletionScreen deletionRequestedAt={userProfile.deletionRequestedAt} />;
@@ -48,7 +50,7 @@ const ProfilePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         </AnimatePresence>
                         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
                         <span className="text-sm truncate max-w-[120px] sm:max-w-none">
-                            Welcome back, {userProfile?.getFullName()}
+                            {t('welcome_back', { name: userProfile?.getFullName() })}
                         </span>
                         <div className="flex flex-1 justify-end items-center gap-1 mr-2 md:mr-10">
                             <HeaderProfileAvatar />

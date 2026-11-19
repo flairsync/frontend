@@ -26,7 +26,11 @@
       "anyType": "Tous types",
       "anyTag": "Toutes étiquettes",
       "tagsTitle": "Tags",
-      "filterButton": "Filtres"
+      "filterButton": "Filtres",
+      "ratingTitle": "Note minimale",
+      "anyRating": "Toutes",
+      "showLess": "Afficher moins",
+      "showMore": "{{count}} de plus"
     }
   },
   "business_page": {
@@ -310,8 +314,15 @@
   "feed_page": {
     "no_businesses_found": "Aucun établissement trouvé",
     "try_adjusting_search": "Essayez d'ajuster vos critères de recherche",
-    "no_results_filtered_reason": "Aucun établissement ne correspond à votre position ou à vos filtres actuels — cela ne veut pas dire qu'il n'y en a aucun.",
+    "no_results_filtered_reason": "Aucun établissement ne correspond à vos filtres ou à votre position. Effacez les filtres pour tous les voir.",
     "clear_filters": "Effacer les filtres"
+  },
+  "feed_card": {
+    "no_reviews_yet": "Pas encore d'avis",
+    "no_photo_yet": "Pas encore de photo",
+    "open_now": "Ouvert maintenant",
+    "closed": "Fermé",
+    "price_level": "Niveau de prix"
   },
   "join_business_page": {
     "title": "Rejoindre {{businessName}}",

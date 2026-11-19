@@ -56,7 +56,8 @@ function useCurrentPageLabel(urlPathname: string | undefined): string {
 const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
 
     const {
-        i18n
+        i18n,
+        t
     } = useTranslation("management");
     const {
         routeParams,
@@ -125,7 +126,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                     }`}
                             >
                                 <Home className="h-4 w-4" />
-                                <span className="hidden sm:inline">Home</span>
+                                <span className="hidden sm:inline">{t('owner_layout.home')}</span>
                             </a>
                         ) : (
                             <SidebarTrigger className="-ml-1" />
@@ -157,9 +158,9 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                                     </button>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    Tax ID not set — orders can't be completed until this business's{" "}
-                                                    {myBusinessFullDetails.country.code === "AD" ? "NRT" : "NIF/CIF"}{" "}
-                                                    is set. Click to fix it now.
+                                                    {t('owner_layout.tax_id_tooltip', {
+                                                        taxIdLabel: myBusinessFullDetails.country.code === "AD" ? "NRT" : "NIF/CIF",
+                                                    })}
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -168,17 +169,17 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                         myBusinessFullDetails.isPublished ? (
                                             <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 font-medium">
                                                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                                Live
+                                                {t('owner_layout.status.live')}
                                             </span>
                                         ) : (
                                             <button
                                                 type="button"
                                                 onClick={() => navigate(`/manage/${routeParams.id}/owner/settings?section=general-info`)}
                                                 className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20 font-medium hover:bg-amber-500/20 transition-colors cursor-pointer"
-                                                title="Business is not published — click to publish it"
+                                                title={t('owner_layout.status.draft_tooltip')}
                                             >
                                                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                                                Draft
+                                                {t('owner_layout.status.draft')}
                                             </button>
                                         )
                                     )}
@@ -190,13 +191,13 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                                                         href={`/business/${myBusinessFullDetails.slug || myBusinessFullDetails.id}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        aria-label="View my public page"
+                                                        aria-label={t('owner_layout.view_public_page')}
                                                         className="inline-flex items-center justify-center rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                                                     >
                                                         <ExternalLink className="w-4 h-4" />
                                                     </a>
                                                 </TooltipTrigger>
-                                                <TooltipContent>View my public page</TooltipContent>
+                                                <TooltipContent>{t('owner_layout.view_public_page')}</TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
                                     )}

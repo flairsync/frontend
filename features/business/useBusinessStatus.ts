@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BusinessStatusResponse, fetchMyBusinessStatusApiCall, updateMyBusinessStatusApiCall } from "./service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import i18n from "@/translations/i18n";
 
 export type BusinessStatusData = BusinessStatusResponse;
 
@@ -29,7 +30,7 @@ export const useBusinessStatus = (businessId: string | null = null) => {
     onSuccess() {
       queryClient.refetchQueries({ queryKey: ["business_status", businessId], stale: true });
       queryClient.refetchQueries({ queryKey: ["my_business", businessId], stale: true });
-      toast.success("Updated", { description: "Business status updated ..." });
+      toast.success(i18n.t("toasts.updated"), { description: "Business status updated ..." });
     },
     onError() {
       toast.error("Error updating", {

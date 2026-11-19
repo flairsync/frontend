@@ -86,6 +86,7 @@ function RatingFilter({
     selected?: number
     onChange: (r: number | undefined) => void
 }) {
+    const { t } = useTranslation("feed")
     const options = [2, 3, 4, 5]
     return (
         <div className="flex flex-wrap gap-2">
@@ -98,7 +99,7 @@ function RatingFilter({
                         : "bg-card border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
                 )}
             >
-                Any
+                {t("public_feed.sidebar.anyRating")}
             </button>
             {options.map(r => (
                 <button
@@ -196,7 +197,7 @@ function TagPills({
                     >
                         <ChevronDown size={12} />
                     </motion.span>
-                    {expanded ? "Show less" : `${hiddenCount} more`}
+                    {expanded ? t("public_feed.sidebar.showLess") : t("public_feed.sidebar.showMore", { count: hiddenCount })}
                 </button>
             )}
         </div>
@@ -268,7 +269,7 @@ const PublicFeedSidebar = ({
             <Separator className="bg-border/30" />
 
             {/* Rating */}
-            <FilterSection title="Minimum Rating">
+            <FilterSection title={t("public_feed.sidebar.ratingTitle")}>
                 <RatingFilter selected={selectedMinRating} onChange={onMinRatingChange} />
             </FilterSection>
 

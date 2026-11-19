@@ -300,5 +300,33 @@
     "text": "Votre mot de passe a été trouvé dans une fuite de données — veuillez le changer",
     "aria_label": "Votre mot de passe a été trouvé dans une fuite de données — cliquez pour le changer",
     "dismiss_aria_label": "Ignorer"
+  },
+  "tour_help_button": {
+    "start": "Visite guidée",
+    "end": "Terminer la visite",
+    "dismiss": "Masquer"
+  },
+  "sidebar": {
+    "toggle": "Afficher/masquer la barre latérale"
+  },
+  "theme_toggle": {
+    "select_theme": "Sélectionner le thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "auto": "Auto"
+  },
+  "text_size_toggle": {
+    "select": "Sélectionner la taille du texte",
+    "default": "Par défaut",
+    "large": "Grande",
+    "xlarge": "Très grande"
+  },
+  "language_switcher": {
+    "select": "Sélectionner la langue"
+  },
+  "welcome_back": "Bon retour, {{name}}",
+  "toasts": {
+    "updated": "Mis à jour",
+    "item_added": "Article ajouté !"
   }
 }

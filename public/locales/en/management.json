@@ -3342,6 +3342,11 @@
     }
   },
   "invitations_section": {
+    "toasts": {
+      "sending": "Sending invitation",
+      "sent": "Invitation sent",
+      "send_error": "Error sending invitation"
+    },
     "qr_description": "Please scan this QR code from the staff \"FlairSync Staff\" mobile app",
     "title": "All Staff Invitations",
     "add_staff": "Add Staff",
@@ -5354,5 +5359,15 @@
     "loading": "Loading alerts...",
     "empty_title": "No alerts to show",
     "empty_description": "Everything looks good here — you'll see a warning if something needs your attention."
+  },
+  "owner_layout": {
+    "home": "Home",
+    "status": {
+      "live": "Live",
+      "draft": "Draft",
+      "draft_tooltip": "Business is not published — click to publish it"
+    },
+    "tax_id_tooltip": "Tax ID not set — orders can't be completed until this business's {{taxIdLabel}} is set. Click to fix it now.",
+    "view_public_page": "View my public page"
   }
 }

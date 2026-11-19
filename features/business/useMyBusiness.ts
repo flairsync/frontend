@@ -20,6 +20,7 @@ import {
   UpdateBusinessDetailsDto,
 } from "@/models/business/MyBusinessFullDetails";
 import { toast } from "sonner";
+import i18n from "@/translations/i18n";
 
 export const useMyBusiness = (businessId: string | null = null) => {
   const queryClient = useQueryClient();
@@ -62,7 +63,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
           queryKey: ["my_business", businessId],
         });
         toast.dismiss("update_business_toast");
-        toast.success("Updated", {
+        toast.success(i18n.t("toasts.updated"), {
           description: "Business details updated ...",
         });
       },
@@ -88,7 +89,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
           queryKey: ["my_business", businessId],
         });
         toast.dismiss("update_logo_toast");
-        toast.success("Updated", {
+        toast.success(i18n.t("toasts.updated"), {
           description: "Business details updated ...",
         });
       },
@@ -120,7 +121,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
         stale: true,
       });
       toast.dismiss("gallery_update_toast");
-      toast.success("Updated", {
+      toast.success(i18n.t("toasts.updated"), {
         description: "Business gallery updated ...",
       });
     },
@@ -157,7 +158,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
         stale: true,
       });
       toast.dismiss("oh_update_toast");
-      toast.success("Updated", {
+      toast.success(i18n.t("toasts.updated"), {
         description: "Open hours updated ...",
       });
     },
@@ -192,7 +193,7 @@ export const useMyBusiness = (businessId: string | null = null) => {
         stale: true,
       });
       toast.dismiss("status_update_toast");
-      toast.success("Updated", {
+      toast.success(i18n.t("toasts.updated"), {
         description: "Business status updated ...",
       });
     },

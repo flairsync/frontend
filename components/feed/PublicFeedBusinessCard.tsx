@@ -1,10 +1,10 @@
 import React, { memo } from "react"
 import { motion } from "framer-motion"
 import { Star, Clock, MapPin, ExternalLink, Heart, ImageOff } from "lucide-react"
-import { Badge } from "../ui/badge"
 import { BusinessCardDetails } from "@/models/BusinessCardDetails"
 import { useFavorites } from "@/features/favorites/useFavorites"
 import { usePageContext } from "vike-react/usePageContext"
+import { useTranslation } from "react-i18next"
 import { cn } from "@/lib/utils"
 
 type Props = {
@@ -12,10 +12,11 @@ type Props = {
 }
 
 const GetStars = memo(({ rating, reviewCount }: { rating: number | null; reviewCount: number }) => {
+    const { t } = useTranslation("feed")
     if (rating === null) {
         return (
             <span className="text-[10px] font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
-                No reviews yet
+                {t("feed_card.no_reviews_yet")}
             </span>
         );
     }
@@ -43,6 +44,7 @@ GetStars.displayName = "GetStars"
 const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
     const { user } = usePageContext();
     const { addFavorite, removeFavorite } = useFavorites();
+    const { t } = useTranslation("feed");
 
     const toggleFavorite = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -82,7 +84,7 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                     ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center gap-2">
                             <ImageOff size={36} className="text-muted-foreground/30" />
-                            <p className="text-xs text-muted-foreground/40 font-medium">No photo yet</p>
+                            <p className="text-xs text-muted-foreground/40 font-medium">{t("feed_card.no_photo_yet")}</p>
                         </div>
                     )}
 
@@ -91,17 +93,9 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
                     )}
 
-                    {/* Status Badge */}
-                    <div className="absolute top-4 left-4">
-                        <Badge className={cn(
-                            "transition-colors rounded-full px-3 py-1 text-[10px] uppercase tracking-wider font-bold",
-                            businessDetails.image
-                                ? "bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20"
-                                : "bg-muted-foreground/10 border-border text-muted-foreground"
-                        )}>
-                            {businessDetails.status}
-                        </Badge>
-                    </div>
+                    {/* P1-28 (QA, 2026-11-18): this card used to show a raw open/closed
+                        Badge here AND the Open Now/Closed indicator below — same information
+                        twice. The one below is clearer (color + icon), so this one is gone. */}
 
                     {/* Favorite Button — logged-in users only */}
                     {user && (
@@ -153,14 +147,14 @@ const PublicFeedBusinessCard = memo(({ businessDetails }: Props) => {
                         <div className="flex items-center gap-1.5 text-muted-foreground">
                             <Clock size={12} className={businessDetails.status === "open" ? "text-green-500/60" : "text-red-500/60"} />
                             <span className="text-[10px] font-bold uppercase tracking-tight">
-                                {businessDetails.status === "open" ? "Open Now" : "Closed"}
+                                {businessDetails.status === "open" ? t("feed_card.open_now") : t("feed_card.closed")}
                             </span>
                         </div>
                     </div>
 
                     <div className="pt-2 mt-auto border-t border-border/30 flex items-center justify-between">
                         <p className="text-sm font-bold text-foreground/90">
-                            {"$".repeat(businessDetails.priceLevel)} <span className="text-muted-foreground/50 font-medium ml-1">Price Level</span>
+                            {"$".repeat(businessDetails.priceLevel)} <span className="text-muted-foreground/50 font-medium ml-1">{t("feed_card.price_level")}</span>
                         </p>
                         {businessDetails.rating !== null && businessDetails.reviewCount > 0 && (
                             <p className="text-[10px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-md">

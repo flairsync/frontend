@@ -27,7 +27,7 @@ const languages = [
 
 
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
     const [currentLang, setCurrentLang] = useState(i18n.language || "en");
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                         variant="ghost"
                         size="sm"
                         className="flex items-center gap-1.5 px-2 h-11 min-w-11 text-foreground/70 hover:text-foreground"
-                        aria-label="Select language"
+                        aria-label={t('language_switcher.select')}
                     >
                         <Globe className="h-4 w-4 shrink-0" />
                         {current && (
