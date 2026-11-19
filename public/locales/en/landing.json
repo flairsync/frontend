@@ -163,6 +163,7 @@
         "yearly": "*Billed annually, plus applicable taxes"
       },
       "choose_plan_button": "Choose Plan",
+      "get_started_free_button": "Get started free",
       "per_business_price": "{{price}} / business / {{period}}",
       "period_suffix": {
         "monthly": "mo",

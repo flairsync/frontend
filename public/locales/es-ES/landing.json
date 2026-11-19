@@ -163,6 +163,7 @@
         "yearly": "*Facturado anualmente, impuestos aplicables no incluidos"
       },
       "choose_plan_button": "Elegir plan",
+      "get_started_free_button": "Empieza gratis",
       "per_business_price": "{{price}} / negocio / {{period}}",
       "period_suffix": {
         "monthly": "mes",

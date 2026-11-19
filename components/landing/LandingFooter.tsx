@@ -94,8 +94,12 @@ const LandingFooter = () => {
                     <div className="flex flex-col items-center md:items-start">
                         <h3 className="text-xl font-bold mb-5">{t("footer.contact.title", { defaultValue: "Contact" })}</h3>
                         <address className="not-italic text-muted-foreground mb-8 text-center md:text-left">
-                            <p>Andorra La Vella, AD500, Andorra</p>
-                            <p>+376 123 456</p>
+                            {/* P1-24 (QA round 4, 2026-11-19): "Andorra La Vella" -> "Andorra la Vella";
+                                use the already-translated (but previously unused) locale key instead of
+                                a hardcoded, English-only, wrong-cased string. Phone number is a
+                                [DECISION] item (real value or remove) — left as-is. */}
+                            <p>{t("footer.contact_address_line1")}</p>
+                            <p>{t("footer.contact_phone")}</p>
                         </address>
 
                         <h4 className="text-xl font-bold mb-4">{t("footer.newsletter.title", { defaultValue: "Subscribe to our Newsletter" })}</h4>

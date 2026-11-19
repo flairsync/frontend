@@ -163,6 +163,7 @@
         "yearly": "*Facturé annuellement, taxes applicables en sus"
       },
       "choose_plan_button": "Choisir le plan",
+      "get_started_free_button": "Commencer gratuitement",
       "per_business_price": "{{price}} / établissement / {{period}}",
       "period_suffix": {
         "monthly": "mois",

@@ -180,7 +180,9 @@ const LandingPricingSection = () => {
                             ) : planAction === 'downgrade' ? (
                                 t('subscriptions.downgrade', 'Downgrade')
                             ) : isFree ? (
-                                t('landing_page.hero.trialButton')
+                                // P1-24 (QA round 4, 2026-11-19): reused the hero's "Start Free
+                                // Trial" copy — there's no trial, just a free plan.
+                                t('landing_page.pricing.get_started_free_button')
                             ) : (
                                 t('landing_page.pricing.choose_plan_button')
                             )}

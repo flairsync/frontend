@@ -163,6 +163,7 @@
         "yearly": "*Facturat anualment, impostos aplicables no inclosos"
       },
       "choose_plan_button": "Tria pla",
+      "get_started_free_button": "Comença gratis",
       "per_business_price": "{{price}} / negoci / {{period}}",
       "period_suffix": {
         "monthly": "mes",
