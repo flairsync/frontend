@@ -141,11 +141,23 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
     const [mapZoom, setMapZoom] = useState<number | undefined>(undefined);
     const [isGeolocating, setIsGeolocating] = useState(false);
 
-    // Capitalize city name for display
+    // P1-29 (QA, 2026-11-18): naive "uppercase the first letter of every word" produced
+    // "Escaldes-engordany" (didn't look past the hyphen) and "Sant Julià De Lòria" /
+    // "Andorra La Vella" (capitalized Catalan connector words — la/de/etc. — that should
+    // stay lowercase mid-name). Capitalize city name for display, respecting both.
+    const CATALAN_LOWERCASE_CONNECTORS = new Set(['la', 'de', 'del', 'les', 'els']);
     const capitalizeCity = (name: string) => {
         return name
             .split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .map((word, index) => {
+                if (index > 0 && CATALAN_LOWERCASE_CONNECTORS.has(word.toLowerCase())) {
+                    return word.toLowerCase();
+                }
+                return word
+                    .split('-')
+                    .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+                    .join('-');
+            })
             .join(' ');
     };
 
@@ -207,7 +219,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
     };
 
     const handleCitySelection = (selectedCity: string) => {
-        setCity(selectedCity);
+        // P1-29/28 (QA, 2026-11-18): the Select's own value (and this list) is the raw
+        // lowercase JSON ("andorra la vella") — only the dropdown's visible label ran
+        // through capitalizeCity, so the actual stored/persisted city (shown later on the
+        // guest page's "LOCATION" card and the draft address) kept the lowercase form.
+        // Capitalize before storing, not just for this list's display.
+        const displayCity = capitalizeCity(selectedCity);
+        setCity(displayCity);
 
         // Look up city coords and pan map there
         const citiesList = getCitiesList();
@@ -221,14 +239,14 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                 lng: newPos.lng,
                 country: country,
                 address: address,
-                city: selectedCity,
+                city: displayCity,
             });
         } else {
             onChange({
                 ...position,
                 country: country,
                 address: address,
-                city: selectedCity,
+                city: displayCity,
             });
         }
     };
