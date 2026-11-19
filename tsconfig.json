@@ -9,6 +9,10 @@
     "module": "ESNext",
     "noEmit": true,
     "moduleResolution": "Bundler",
+    // Needed for *.test.ts files to import their subject with an explicit .ts extension —
+    // required by Node's native TypeScript support (node --test), which isn't a bundler and
+    // needs a real, resolvable specifier. Safe with noEmit + moduleResolution: Bundler above.
+    "allowImportingTsExtensions": true,
     "target": "ES2022",
     "lib": [
       "DOM",

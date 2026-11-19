@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { getCurrencySymbol, toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
+import { slugify } from '@/utils/slugify'
 import { CheckCircle2, XCircle, Loader2, AlertCircle, ExternalLink } from 'lucide-react'
 
 // AD-04 gap fix: countries whose legally mandated primary receipt language can't be
@@ -79,7 +80,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
     const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
     const handleSlugChange = (value: string) => {
-        const normalized = value.toLowerCase().replace(/[^a-z0-9-]/g, '')
+        const normalized = slugify(value)
         setSlug(normalized)
 
         if (debounceRef.current) clearTimeout(debounceRef.current)
