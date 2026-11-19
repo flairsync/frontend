@@ -378,8 +378,8 @@
   },
   "terms_page": {
     "title": "Termes i condicions",
-    "intro": "Aquests Termes i Condicions regeixen l'ús de FlairSync. En utilitzar els nostres serveis, acceptes complir-los.",
-    "load_error_title": "No s'han pogut carregar els Termes i Condicions",
+    "intro": "Aquests termes i condicions regeixen l'ús de FlairSync. En utilitzar els nostres serveis, acceptes complir-los.",
+    "load_error_title": "No s'han pogut carregar els termes i condicions",
     "last_updated": "Darrera actualització: {{date}}",
     "load_error_description": "Torna a provar d'actualitzar la pàgina d'aquí un moment.",
     "self_service_notice": "Vols exportar o eliminar les teves dades personals?",

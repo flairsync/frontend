@@ -2538,13 +2538,13 @@
       "contact_email_placeholder": "Correu de contacte",
       "phone_placeholder": "Número de telèfon",
       "slug": {
-        "label": "Slug de l'URL pública",
+        "label": "Adreça web pública",
         "placeholder": "el-teu-restaurant",
-        "taken": "Aquest slug ja està agafat",
+        "taken": "Aquesta adreça ja està agafada",
         "invalid": "Només es permeten lletres minúscules, números i guions",
-        "available": "L'slug està disponible",
+        "available": "L'adreça està disponible",
         "idle_hint": "S'utilitza a l'URL de la teva pàgina pública. Només lletres minúscules, números i guions.",
-        "change_warning": "Canviar l'slug trencarà qualsevol enllaç compartit que utilitzi l'actual",
+        "change_warning": "Canviar l'adreça trencarà qualsevol enllaç compartit que utilitzi l'actual",
         "view_public_page": "Veure la meva pàgina pública"
       },
       "currency": {

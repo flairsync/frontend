@@ -158,7 +158,7 @@
       "required": "Has de confirmar aquesta casella"
     },
     "terms": {
-      "required": "Si us plau accepta els Termes i Condicions"
+      "required": "Si us plau, accepta els termes i condicions"
     }
   },
   "business_types": {

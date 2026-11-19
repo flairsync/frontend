@@ -2538,13 +2538,13 @@
       "contact_email_placeholder": "Correo de contacto",
       "phone_placeholder": "Número de teléfono",
       "slug": {
-        "label": "Slug de la URL pública",
+        "label": "Dirección web pública",
         "placeholder": "tu-restaurante",
-        "taken": "Este slug ya está en uso",
+        "taken": "Esta dirección ya está en uso",
         "invalid": "Solo se permiten letras minúsculas, números y guiones",
-        "available": "El slug está disponible",
+        "available": "La dirección está disponible",
         "idle_hint": "Se usa en la URL de tu página pública. Solo letras minúsculas, números y guiones.",
-        "change_warning": "Cambiar el slug romperá cualquier enlace compartido que use el actual",
+        "change_warning": "Cambiar la dirección romperá cualquier enlace compartido que use la actual",
         "view_public_page": "Ver mi página pública"
       },
       "currency": {
