@@ -3433,7 +3433,8 @@
       "address_required": "Address is required",
       "city_required": "City is required",
       "country_required": "Country is required",
-      "location_required": "Location is required"
+      "location_required": "Location is required",
+      "social_link_invalid": "Enter a valid link (e.g. instagram.com/yourpage)"
     },
     "step1": {
       "name_label": "Business Name",

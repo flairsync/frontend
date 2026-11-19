@@ -3360,7 +3360,8 @@
       "address_required": "L'adresse est requise",
       "city_required": "La ville est requise",
       "country_required": "Le pays est requis",
-      "location_required": "L'emplacement est requis"
+      "location_required": "L'emplacement est requis",
+      "social_link_invalid": "Saisissez un lien valide (ex. instagram.com/votrepage)"
     },
     "step1": {
       "name_label": "Nom de l'établissement",

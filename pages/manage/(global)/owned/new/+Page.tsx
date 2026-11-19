@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -29,6 +29,7 @@ import { useBusinessTypes } from '@/features/business/types/useBusinessTypes';
 import { BusinessTag } from '@/models/business/BusinessTag';
 import { useBusinessOps } from '@/features/business/useBusinessOps';
 import { useSubscriptionStore } from '@/features/subscriptions/SubscriptionStore';
+import { LENIENT_URL_REGEX } from '@/utils/url-utils';
 import LocationPicker from "@/components/management/create/BusinessLocationPicker"
 interface BusinessFormValues {
     name: string;
@@ -100,7 +101,11 @@ function getValidationSchema(t: (key: string) => string) {
         }),
         // Step 4: Social
         Yup.object({
-            links: Yup.object().nullable(),
+            links: Yup.object({
+                instagram: Yup.string().optional().matches(LENIENT_URL_REGEX, { message: t('create_business_page.errors.social_link_invalid'), excludeEmptyString: true }),
+                facebook: Yup.string().optional().matches(LENIENT_URL_REGEX, { message: t('create_business_page.errors.social_link_invalid'), excludeEmptyString: true }),
+                website: Yup.string().optional().matches(LENIENT_URL_REGEX, { message: t('create_business_page.errors.social_link_invalid'), excludeEmptyString: true }),
+            }).nullable(),
         }),
     ];
 }
@@ -117,6 +122,10 @@ export default function CreateNewBusiness() {
     const { openUpgradeModal } = useSubscriptionStore();
 
     const [step, setStep] = useState(0);
+    // P1-10 (QA round 4, 2026-11-19): auto-set the kitchen default on every type change —
+    // not just turn it off for no-kitchen types — until the user manually touches the
+    // toggle, so switching Coffee Shop -> Restaurant restores it instead of leaving it off.
+    const kitchenToggleTouchedRef = useRef(false);
     const totalSteps = 4;
 
     const initialValues: BusinessFormValues = {
@@ -235,10 +244,9 @@ export default function CreateNewBusiness() {
                                                     types={businessTypes}
                                                     onChange={(newValue: string) => {
                                                         setFieldValue("type", newValue);
+                                                        if (kitchenToggleTouchedRef.current) return;
                                                         const typeName = businessTypes?.find(t => t.id === newValue)?.name ?? '';
-                                                        if (NO_KITCHEN_TYPES.includes(typeName)) {
-                                                            setFieldValue("hasKitchen", false);
-                                                        }
+                                                        setFieldValue("hasKitchen", !NO_KITCHEN_TYPES.includes(typeName));
                                                     }}
                                                     value={values.type}
                                                 />
@@ -271,7 +279,10 @@ export default function CreateNewBusiness() {
                                                     <label className="font-medium text-sm text-zinc-600">{t('create_business_page.step1.has_kitchen_label')}</label>
                                                     <button
                                                         type="button"
-                                                        onClick={() => setFieldValue("hasKitchen", !values.hasKitchen)}
+                                                        onClick={() => {
+                                                            kitchenToggleTouchedRef.current = true;
+                                                            setFieldValue("hasKitchen", !values.hasKitchen);
+                                                        }}
                                                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${values.hasKitchen ? 'bg-primary' : 'bg-zinc-300'}`}
                                                     >
                                                         <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${values.hasKitchen ? 'translate-x-6' : 'translate-x-1'}`} />
@@ -360,6 +371,21 @@ export default function CreateNewBusiness() {
                                                     setFieldValue("links", links)
                                                 }}
                                                 values={values.links}
+                                            />
+                                            <ErrorMessage
+                                                name="links.instagram"
+                                                component="p"
+                                                className="text-red-500 text-xs mt-1"
+                                            />
+                                            <ErrorMessage
+                                                name="links.facebook"
+                                                component="p"
+                                                className="text-red-500 text-xs mt-1"
+                                            />
+                                            <ErrorMessage
+                                                name="links.website"
+                                                component="p"
+                                                className="text-red-500 text-xs mt-1"
                                             />
 
                                             <button

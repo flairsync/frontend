@@ -3360,7 +3360,8 @@
       "address_required": "L'adreça és obligatòria",
       "city_required": "La ciutat és obligatòria",
       "country_required": "El país és obligatori",
-      "location_required": "La ubicació és obligatòria"
+      "location_required": "La ubicació és obligatòria",
+      "social_link_invalid": "Introdueix un enllaç vàlid (p. ex. instagram.com/lapagina)"
     },
     "step1": {
       "name_label": "Nom del negoci",

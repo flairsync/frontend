@@ -31,19 +31,19 @@ const BusinessSocialLinksInput: React.FC<SocialLinksInputProps> = ({
         {
             key: "instagram" as const,
             label: "Instagram",
-            placeholder: "https://instagram.com/yourpage",
+            placeholder: "instagram.com/yourpage",
             icon: <Instagram className="h-4 w-4 text-pink-500" />,
         },
         {
             key: "facebook" as const,
             label: "Facebook",
-            placeholder: "https://facebook.com/yourpage",
+            placeholder: "facebook.com/yourpage",
             icon: <Facebook className="h-4 w-4 text-blue-600" />,
         },
         {
             key: "website" as const,
             label: "Website",
-            placeholder: "https://yourwebsite.com",
+            placeholder: "yourwebsite.com",
             icon: <Globe className="h-4 w-4 text-muted-foreground" />,
         },
     ];
@@ -64,7 +64,7 @@ const BusinessSocialLinksInput: React.FC<SocialLinksInputProps> = ({
                         </div>
                         <Input
                             id={link.key}
-                            type="url"
+                            type="text"
                             placeholder={link.placeholder}
                             value={values[link.key] || ""}
                             onChange={handleChange(link.key)}

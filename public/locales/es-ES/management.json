@@ -3360,7 +3360,8 @@
       "address_required": "La dirección es obligatoria",
       "city_required": "La ciudad es obligatoria",
       "country_required": "El país es obligatorio",
-      "location_required": "La ubicación es obligatoria"
+      "location_required": "La ubicación es obligatoria",
+      "social_link_invalid": "Introduce un enlace válido (p. ej. instagram.com/tupagina)"
     },
     "step1": {
       "name_label": "Nombre del negocio",

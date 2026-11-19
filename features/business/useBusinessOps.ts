@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createNewBusinessApiCall } from "./service";
+import { normalizeUrl } from "@/utils/url-utils";
 
 export const useBusinessOps = () => {
   const queryClient = useQueryClient();
@@ -41,8 +42,8 @@ export const useBusinessOps = () => {
       lng: input.location?.lng ?? undefined,
 
       // social links
-      facebook: input.links?.facebook || undefined,
-      instagram: input.links?.instagram || undefined,
+      facebook: normalizeUrl(input.links?.facebook),
+      instagram: normalizeUrl(input.links?.instagram),
 
       // opening hours
       openingHours: (input.workTimes || []).map(
