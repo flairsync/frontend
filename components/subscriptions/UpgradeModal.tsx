@@ -8,9 +8,10 @@ import { useSubscriptionStore } from "@/features/subscriptions/SubscriptionStore
 import { PricingType, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { cn } from "@/lib/utils";
 import { openPaddleCheckout } from "@/lib/paddle";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 const UpgradeModal: React.FC = () => {
-    const { t } = useTranslation("management");
+    const { t, i18n } = useTranslation("management");
     const { isUpgradeModalOpen, closeUpgradeModal, limitMessage } = useSubscriptionStore();
     const { subscriptionPacks, fetchingPacks, currentUserSubscription, createCheckout, creatingCheckout, changePlan, changingPlan } = useSubscriptions();
     const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
@@ -143,10 +144,14 @@ const UpgradeModal: React.FC = () => {
                                             </p>
                                         </div>
 
+                                        {/* Decision (2026-11-19): follow the Plans page's pricing story
+                                            (DB-driven included/extra businesses), not a flat
+                                            "per_business_price" rate — also fixed the raw toFixed(2)
+                                            price and the hardcoded "Free" label while here. */}
                                         <div className="mb-8">
                                             <div className="flex items-baseline gap-1">
                                                 <span className="text-4xl font-black text-foreground">
-                                                    {isFree ? "Free" : t("subscriptions.per_business_price", { price: pack.getFormattedPrice() })}
+                                                    {isFree ? t("billing_page.free") : formatCurrency(pack.price, pack.currency, i18n.language)}
                                                 </span>
                                                 {!isFree && (
                                                     <span className="text-muted-foreground font-bold text-lg">
@@ -156,7 +161,10 @@ const UpgradeModal: React.FC = () => {
                                             </div>
                                             {!isFree && (
                                                 <p className="text-xs text-muted-foreground mt-1">
-                                                    {t("subscriptions.min_businesses", { count: pack.minBusinesses })}
+                                                    {t("plans_page.included_businesses", { count: pack.includedBusinesses })}
+                                                    {pack.extraBusinessPrice > 0 && (
+                                                        <> · {t("plans_page.extra_business_price", { price: formatCurrency(pack.extraBusinessPrice, pack.currency, i18n.language) })}</>
+                                                    )}
                                                 </p>
                                             )}
                                         </div>

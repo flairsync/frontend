@@ -10,6 +10,7 @@ import { useSubscriptions } from '@/features/subscriptions/useSubscriptions';
 import { PricingType } from '@/models/SubscriptionPack';
 import { usePageContext } from 'vike-react/usePageContext';
 import { navigate } from 'vike/client/router';
+import { formatCurrency } from '@/lib/formatCurrency';
 
 // Sanctioned exception (see DESIGN_SYSTEM.md): the featured pricing card uses this
 // specific gradient/ring hex pair instead of design tokens. Kept as a single constant
@@ -17,7 +18,9 @@ import { navigate } from 'vike/client/router';
 const FEATURED_GRADIENT_CLASS = "bg-gradient-to-b from-[#8A89F9] to-[#6366F1] ring-[#8A89F9]/50";
 
 const LandingPricingSection = () => {
-    const { t } = useTranslation("landing");
+    // "management" is needed to reuse the in-app Plans page's included/extra-business
+    // copy below, so the two pages tell the same pricing story instead of diverging.
+    const { t, i18n } = useTranslation(["landing", "management"]);
     const { user } = usePageContext();
     const [billingType, setBillingType] = useState<PricingType>(PricingType.MONTHLY);
     const scope = useRef<Scope>(null);
@@ -119,12 +122,19 @@ const LandingPricingSection = () => {
                     </CardTitle>
                     <div className="flex items-baseline gap-1">
                         <h2 className={cn("text-4xl font-extrabold", isHighlighted ? 'text-white' : 'text-foreground')}>
-                            {isFree ? t('landing_page.pricing.free_price') : t('landing_page.pricing.per_business_price', { price: pack.getFormattedPrice(), period: periodSuffix })}
+                            {/* Decision (2026-11-19): follow the in-app Plans page's pricing story
+                                (DB-driven included/extra businesses), not a flat "/ business" rate
+                                that doesn't match how packs with includedBusinesses > 1 actually
+                                bill — this used to claim "{{price}} / business / {{period}}". */}
+                            {isFree ? t('landing_page.pricing.free_price') : t('landing_page.pricing.price_per_period', { price: pack.getFormattedPrice(), period: periodSuffix })}
                         </h2>
                     </div>
                     {!isFree && (
                         <p className={cn("text-xs font-medium mt-1", isHighlighted ? "text-white/80" : "text-muted-foreground")}>
-                            {t('landing_page.pricing.min_businesses', { count: pack.minBusinesses })}
+                            {t("management:plans_page.included_businesses", { count: pack.includedBusinesses })}
+                            {pack.extraBusinessPrice > 0 && (
+                                <> · {t("management:plans_page.extra_business_price", { price: formatCurrency(pack.extraBusinessPrice, pack.currency, i18n.language) })}</>
+                            )}
                         </p>
                     )}
                     <CardDescription className={cn("text-sm mt-4 min-h-[40px]", isHighlighted ? 'text-white/90' : 'text-muted-foreground')}>

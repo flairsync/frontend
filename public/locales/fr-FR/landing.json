@@ -164,14 +164,12 @@
       },
       "choose_plan_button": "Choisir le plan",
       "get_started_free_button": "Commencer gratuitement",
-      "per_business_price": "{{price}} / établissement / {{period}}",
+      "price_per_period": "{{price}} / {{period}}",
       "period_suffix": {
         "monthly": "mois",
         "quarterly": "trimestre",
         "yearly": "an"
       },
-      "min_businesses_one": "minimum {{count}} établissement",
-      "min_businesses_other": "minimum {{count}} établissements",
       "free_price": "Gratuit",
       "plan_descriptions": {
         "free": "Tout ce dont vous avez besoin pour démarrer votre entreprise.",
@@ -228,7 +226,6 @@
       ],
       "contact_title": "Contact",
       "contact_address_line1": "Andorra la Vella, AD500, Andorre",
-      "contact_phone": "+376 123 456",
       "newsletter_title": "Abonnez-vous à notre newsletter",
       "newsletter_placeholder": "Entrez votre email",
       "copyright": "© {{year}} FlairSync. Tous droits réservés."

@@ -23,6 +23,7 @@ import { Check, Loader2 } from "lucide-react";
 import { Subscription } from "@/models/Subscription";
 import { SubscriptionPack, getMonthlyEquivalentPrice, isSamePlanFamily } from "@/models/SubscriptionPack";
 import { useSubscriptions } from "@/features/subscriptions/useSubscriptions";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { cn } from "@/lib/utils";
 
 interface ChangePlanModalProps {
@@ -32,7 +33,7 @@ interface ChangePlanModalProps {
 }
 
 export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlanModalProps) {
-    const { t } = useTranslation("management");
+    const { t, i18n } = useTranslation("management");
     const { subscriptionPacks, fetchingPacks, changePlan, changingPlan } = useSubscriptions();
     const [confirmPack, setConfirmPack] = useState<SubscriptionPack | null>(null);
 
@@ -104,14 +105,21 @@ export function ChangePlanModal({ open, onOpenChange, subscription }: ChangePlan
                                         <p className="text-sm text-muted-foreground mb-4 min-h-[2.5rem]">
                                             {pack.getShortDescription()}
                                         </p>
+                                        {/* Decision (2026-11-19): follow the Plans page's pricing story
+                                            (DB-driven included/extra businesses) — this used to claim a
+                                            flat "/business/{period}" rate that doesn't match a pack with
+                                            includedBusinesses > 1, plus a raw toFixed(2) price. */}
                                         <div className="flex items-baseline gap-1 mb-1">
-                                            <span className="text-2xl font-black">{pack.getFormattedPrice()}</span>
+                                            <span className="text-2xl font-black">{formatCurrency(pack.price, pack.currency, i18n.language)}</span>
                                             <span className="text-muted-foreground text-sm">
-                                                /business/{pack.pricingType === "monthly" ? "mo" : pack.pricingType === "yearly" ? "yr" : "qtr"}
+                                                /{pack.pricingType === "monthly" ? "mo" : pack.pricingType === "yearly" ? "yr" : "qtr"}
                                             </span>
                                         </div>
                                         <p className="text-xs text-muted-foreground mb-4">
-                                            {t("subscriptions.min_businesses", { count: pack.minBusinesses })}
+                                            {t("plans_page.included_businesses", { count: pack.includedBusinesses })}
+                                            {pack.extraBusinessPrice > 0 && (
+                                                <> · {t("plans_page.extra_business_price", { price: formatCurrency(pack.extraBusinessPrice, pack.currency, i18n.language) })}</>
+                                            )}
                                         </p>
                                         <ul className="text-sm space-y-1.5 mb-6 flex-1 text-muted-foreground">
                                             <li className="flex items-center gap-2">

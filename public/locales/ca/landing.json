@@ -164,14 +164,12 @@
       },
       "choose_plan_button": "Tria pla",
       "get_started_free_button": "Comença gratis",
-      "per_business_price": "{{price}} / negoci / {{period}}",
+      "price_per_period": "{{price}} / {{period}}",
       "period_suffix": {
         "monthly": "mes",
         "quarterly": "trimestre",
         "yearly": "any"
       },
-      "min_businesses_one": "mínim {{count}} negoci",
-      "min_businesses_other": "mínim {{count}} negocis",
       "free_price": "Gratuït",
       "plan_descriptions": {
         "free": "Tot el que necessites per començar el teu negoci.",
@@ -228,7 +226,6 @@
       ],
       "contact_title": "Contacte",
       "contact_address_line1": "Andorra la Vella, AD500, Andorra",
-      "contact_phone": "+376 123 456",
       "newsletter_title": "Subscriu-te al nostre butlletí",
       "newsletter_placeholder": "Introdueix el teu correu electrònic",
       "copyright": "© {{year}} FlairSync. Tots els drets reservats."

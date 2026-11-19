@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, Facebook, Linkedin, Twitter } from "lucide-react";
+import { ArrowRight, Instagram } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -15,30 +15,19 @@ const LandingFooter = () => {
                     <div className="flex flex-col items-center md:items-start">
                         <h2 className="text-3xl font-extrabold mb-4">FlairSync</h2>
                         <p className="text-lg font-semibold mb-3">{t("footer.follow_us", { defaultValue: "Follow us" })}</p>
+                        {/* Decision (2026-11-19): Facebook/Twitter/LinkedIn removed — none had a
+                            real href (plain dead buttons). Instagram kept, now with a real link. */}
                         <div className="flex space-x-2">
                             <Button
                                 variant="outline"
                                 size="icon"
-                                aria-label="Facebook"
+                                aria-label="Instagram"
                                 className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground rounded-md"
+                                asChild
                             >
-                                <Facebook className="w-5 h-5" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                aria-label="Twitter"
-                                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground rounded-md"
-                            >
-                                <Twitter className="w-5 h-5" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                aria-label="LinkedIn"
-                                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground rounded-md"
-                            >
-                                <Linkedin className="w-5 h-5" />
+                                <a href="https://www.instagram.com/flair.sync" target="_blank" rel="noopener noreferrer">
+                                    <Instagram className="w-5 h-5" />
+                                </a>
                             </Button>
                         </div>
                     </div>
@@ -96,10 +85,9 @@ const LandingFooter = () => {
                         <address className="not-italic text-muted-foreground mb-8 text-center md:text-left">
                             {/* P1-24 (QA round 4, 2026-11-19): "Andorra La Vella" -> "Andorra la Vella";
                                 use the already-translated (but previously unused) locale key instead of
-                                a hardcoded, English-only, wrong-cased string. Phone number is a
-                                [DECISION] item (real value or remove) — left as-is. */}
+                                a hardcoded, English-only, wrong-cased string. Phone number removed per
+                                decision (2026-11-19) — it was a placeholder, not a real number. */}
                             <p>{t("footer.contact_address_line1")}</p>
-                            <p>{t("footer.contact_phone")}</p>
                         </address>
 
                         <h4 className="text-xl font-bold mb-4">{t("footer.newsletter.title", { defaultValue: "Subscribe to our Newsletter" })}</h4>

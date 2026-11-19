@@ -963,9 +963,6 @@
       "products_other": "Up to {{count}} Products"
     },
     "upgrade_message": "Choose a plan that fits your business needs and unlock more power.",
-    "per_business_price": "{{price}} / business",
-    "min_businesses_one": "{{count}}-business minimum",
-    "min_businesses_other": "{{count}}-business minimum",
     "upgrade_your_plan": "Upgrade Your Plan"
   },
   "floor_plan": {
