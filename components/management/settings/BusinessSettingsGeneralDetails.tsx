@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { MyBusinessFullDetails } from '@/models/business/MyBusinessFullDetails'
 import { getCurrencySymbol, toIsoCurrencyCode } from '@/utils/currency'
 import { checkSlugAvailabilityApiCall } from '@/features/business/service'
-import { slugify } from '@/utils/slugify'
+import { slugify, slugifyPartial } from '@/utils/slugify'
 import { CheckCircle2, XCircle, Loader2, AlertCircle, ExternalLink } from 'lucide-react'
 
 // AD-04 gap fix: countries whose legally mandated primary receipt language can't be
@@ -79,10 +79,7 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
 
     const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
-    const handleSlugChange = (value: string) => {
-        const normalized = slugify(value)
-        setSlug(normalized)
-
+    const checkSlugValue = (normalized: string) => {
         if (debounceRef.current) clearTimeout(debounceRef.current)
 
         if (!normalized) {
@@ -109,14 +106,33 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
         }, 500)
     }
 
+    // P0-2 (QA round 4, 2026-11-19): only lightly normalize while typing (slugifyPartial), so an
+    // in-progress trailing hyphen isn't eaten before the next keystroke lands. A paste inserts
+    // a whole finished value at once (no "next keystroke" to wait for), so it gets the full
+    // slugify immediately; the full slugify also runs again on blur/submit as a safety net.
+    const handleSlugChange = (value: string, isPaste: boolean = false) => {
+        const normalized = isPaste ? slugify(value) : slugifyPartial(value)
+        setSlug(normalized)
+        checkSlugValue(normalized)
+    }
+
+    const handleSlugBlur = () => {
+        const normalized = slugify(slug)
+        if (normalized !== slug) {
+            setSlug(normalized)
+            checkSlugValue(normalized)
+        }
+    }
+
     const onSaveDetails = () => {
         if (props.onSaveDetails) {
+            const normalizedSlug = slugify(slug)
             props.onSaveDetails({
                 description: description,
                 email: contactEmail,
                 name: businessName,
                 phone: phone,
-                slug: slug || undefined,
+                slug: normalizedSlug || undefined,
                 receiptLanguage: receiptLanguage,
                 // AD-04 gap fix: for a mandated-language country, receiptLanguage above is
                 // ignored server-side entirely — this is the field that actually matters,
@@ -176,7 +192,11 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             disabled={props.disabled}
                             placeholder={t("settings_page.general_details.slug.placeholder")}
                             value={slug}
-                            onChange={(e) => handleSlugChange(e.target.value)}
+                            onChange={(e) => handleSlugChange(
+                                e.target.value,
+                                (e.nativeEvent as InputEvent).inputType === 'insertFromPaste',
+                            )}
+                            onBlur={handleSlugBlur}
                             className={
                                 slugStatus === 'taken' || slugStatus === 'invalid'
                                     ? 'border-destructive pr-9'
