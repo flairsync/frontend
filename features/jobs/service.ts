@@ -1,5 +1,5 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
-import { ApplicationStatus, JobCategory, JobStatus, JobType } from "@/models/Job";
+import { ApplicationStatus, Job, JobApplication, JobCategory, JobStatus, JobType } from "@/models/Job";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 export interface CreateJobDto {
@@ -61,11 +61,11 @@ export const fetchPublicJobsApiCall = async (params: ListJobsParams = {}) => {
   if (params.type) qs.set('type', params.type);
   if (params.category) qs.set('category', params.category);
   if (params.location) qs.set('location', params.location);
-  return unwrapPaginated(await flairapi.get(`${baseUrl}?${qs.toString()}`));
+  return unwrapPaginated<Job>(await flairapi.get(`${baseUrl}?${qs.toString()}`));
 };
 
 export const fetchPublicJobBySlugApiCall = async (slug: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/${slug}`));
+  unwrap<Job>(await flairapi.get(`${baseUrl}/${slug}`));
 
 export const applyToJobApiCall = (jobId: string, data: ApplyToJobDto) => {
   return flairapi.post(`${baseUrl}/${jobId}/apply`, data);
@@ -78,14 +78,14 @@ export const fetchMyApplicationsApiCall = async (params: ListApplicationsParams 
   if (params.page) qs.set('page', String(params.page));
   if (params.limit) qs.set('limit', String(params.limit));
   if (params.status) qs.set('status', params.status);
-  return unwrapPaginated(await flairapi.get(`${baseUrl}/my/applications?${qs.toString()}`));
+  return unwrapPaginated<JobApplication>(await flairapi.get(`${baseUrl}/my/applications?${qs.toString()}`));
 };
 
 export const fetchMyApplicationDetailApiCall = async (jobId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/${jobId}/my-application`));
+  unwrap<JobApplication>(await flairapi.get(`${baseUrl}/${jobId}/my-application`));
 
 export const fetchMyApplicationByAppIdApiCall = async (applicationId: string) =>
-  unwrap(await flairapi.get(`${baseUrl}/my/applications/${applicationId}`));
+  unwrap<JobApplication>(await flairapi.get(`${baseUrl}/my/applications/${applicationId}`));
 
 export const uploadResumeFileApiCall = (jobId: string, file: File) => {
   const form = new FormData();
@@ -108,11 +108,11 @@ export const fetchBusinessJobsApiCall = async (businessId: string, params: ListJ
   if (params.status) qs.set('status', params.status);
   if (params.type) qs.set('type', params.type);
   if (params.category) qs.set('category', params.category);
-  return unwrapPaginated(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs?${qs.toString()}`));
+  return unwrapPaginated<Job>(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs?${qs.toString()}`));
 };
 
 export const fetchBusinessJobByIdApiCall = async (businessId: string, jobId: string) =>
-  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}`));
+  unwrap<Job>(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}`));
 
 export const createJobApiCall = (businessId: string, data: CreateJobDto) => {
   return flairapi.post(`${businessesBaseUrl}/${businessId}/jobs`, data);
@@ -135,7 +135,7 @@ export const fetchJobApplicationsApiCall = async (
   if (params.page) qs.set('page', String(params.page));
   if (params.limit) qs.set('limit', String(params.limit));
   if (params.status) qs.set('status', params.status);
-  return unwrapPaginated(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications?${qs.toString()}`));
+  return unwrapPaginated<JobApplication>(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications?${qs.toString()}`));
 };
 
 export const fetchOwnerApplicationDetailApiCall = async (
@@ -143,7 +143,7 @@ export const fetchOwnerApplicationDetailApiCall = async (
   jobId: string,
   appId: string
 ) =>
-  unwrap(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications/${appId}`));
+  unwrap<JobApplication>(await flairapi.get(`${businessesBaseUrl}/${businessId}/jobs/${jobId}/applications/${appId}`));
 
 export const updateApplicationStatusApiCall = (
   businessId: string,

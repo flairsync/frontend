@@ -133,7 +133,7 @@ export const createOrderApiCall = (businessId: string, data: CreateOrderDto) => 
 };
 
 export const fetchOrderDetailsApiCall = async (businessId: string, orderId: string) =>
-    unwrap(await flairapi.get(`${getOrdersUrl(businessId)}/${orderId}`));
+    unwrap<Order>(await flairapi.get(`${getOrdersUrl(businessId)}/${orderId}`));
 
 export const updateOrderApiCall = (businessId: string, orderId: string, data: UpdateOrderDto) => {
     return flairapi.patch(`${getOrdersUrl(businessId)}/${orderId}`, data);

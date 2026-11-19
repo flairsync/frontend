@@ -115,3 +115,21 @@ export interface JoinWaitlistDto {
 export interface WaitlistEntry extends ReservationSummary {
     waitingMinutes: number;
 }
+
+export interface ReservationOrderSummary {
+    status: string;
+    paymentStatus: string;
+    totalAmount: number;
+    items?: { name?: string; quantity?: number; notes?: string }[];
+}
+
+export interface ReservationDetails extends ReservationSummary {
+    reservationSource?: string;
+    order?: ReservationOrderSummary | null;
+}
+
+export interface UserLookupResult {
+    id: string;
+    firstName: string;
+    lastName: string;
+}

@@ -1,5 +1,5 @@
 import flairapi, { API_URL } from "@/lib/flairapi";
-import { WalkInReservationDto, AssignTableDto, CustomerLateDto, JoinWaitlistDto, WaitlistEntry } from "./types";
+import { WalkInReservationDto, AssignTableDto, CustomerLateDto, JoinWaitlistDto, WaitlistEntry, ReservationDetails, DashboardResponse, UserLookupResult } from "./types";
 import { unwrap, unwrapPaginated } from "../shared/api-response";
 
 const getReservationsUrl = (businessId: string) => {
@@ -58,7 +58,7 @@ export const createReservationApiCall = (businessId: string, data: CreateReserva
 };
 
 export const fetchReservationDetailsApiCall = async (businessId: string, reservationId: string) =>
-    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}`));
+    unwrap<ReservationDetails>(await flairapi.get(`${getReservationsUrl(businessId)}/${reservationId}`));
 
 export const updateReservationApiCall = (businessId: string, reservationId: string, data: UpdateReservationDto) => {
     return flairapi.patch(`${getReservationsUrl(businessId)}/${reservationId}`, data);
@@ -76,11 +76,11 @@ export const findAvailabilityApiCall = async (businessId: string, date: string, 
     unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
 
 export const lookupUserApiCall = async (businessId: string, email?: string, phone?: string) =>
-    unwrap(await flairapi.get(`${API_URL}/users/lookup`, { params: { businessId, email, phone } }));
+    unwrap<UserLookupResult | null>(await flairapi.get(`${API_URL}/users/lookup`, { params: { businessId, email, phone } }));
 
 // V2 endpoints
 export const fetchReservationDashboardApiCall = async (businessId: string) =>
-    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/dashboard`));
+    unwrap<DashboardResponse>(await flairapi.get(`${getReservationsUrl(businessId)}/dashboard`));
 
 export const createWalkInApiCall = (businessId: string, data: WalkInReservationDto) => {
     return flairapi.post(`${getReservationsUrl(businessId)}/walk-in`, data);
