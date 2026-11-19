@@ -1,0 +1,21 @@
+name: i18n coverage
+
+# P1-30 (QA round 4, 2026-11-19): regression guard so a locale silently falling behind en
+# (missing keys, like several of this round's QA findings) fails CI instead of shipping.
+# scripts/check-i18n-coverage.js already existed and does this; it just wasn't wired into CI
+# anywhere, since this repo has no workflows at all yet.
+on:
+  push:
+    branches: [staging, master]
+  pull_request:
+
+jobs:
+  check-i18n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Pure node built-ins (fs/path/url), no npm install needed.
+      - run: node scripts/check-i18n-coverage.js
