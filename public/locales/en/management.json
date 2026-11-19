@@ -4047,7 +4047,7 @@
   },
   "billing_page": {
     "title": "Billing & Subscription",
-    "subtitle": "Manage your subscription, payment methods, and view past invoices.",
+    "subtitle": "Manage your subscription and view past invoices.",
     "cancelled_label": "Your subscription is cancelled",
     "cancelled_prefix": "and will end on",
     "cancelled_suffix": "You can resume at any time before that date.",
@@ -4471,7 +4471,7 @@
       },
       {
         "question": "How can I create a new business?",
-        "answer": "Go to the 'My Businesses' page and click on 'Create Business'. You'll be able to set up your business name, description, and invite members."
+        "answer": "Go to the 'My Businesses' page and click on 'Create New'. You'll be able to set up your business name, description, and invite members."
       },
       {
         "question": "Where can I manage my subscription?",
@@ -4479,7 +4479,7 @@
       },
       {
         "question": "How do I contact support?",
-        "answer": "If you need help, reach out through the support form below or email us directly."
+        "answer": "If you need help, use the 'Send a Message' button below to reach our support page, or email us directly."
       }
     ],
     "contact_support": {

@@ -2014,7 +2014,7 @@
     },
     "items": {
       "overview": "Resum",
-      "joined": "Units",
+      "joined": "On treballo",
       "owned": "Els meus negocis",
       "organization": "Organització",
       "organizations": "Organitzacions",
@@ -3974,7 +3974,7 @@
   },
   "billing_page": {
     "title": "Facturació i subscripció",
-    "subtitle": "Gestiona la teva subscripció, mètodes de pagament i consulta factures anteriors.",
+    "subtitle": "Gestiona la teva subscripció i consulta factures anteriors.",
     "cancelled_label": "La teva subscripció està cancel·lada",
     "cancelled_prefix": "i finalitzarà el",
     "cancelled_suffix": "Pots reprendre-la en qualsevol moment abans d'aquesta data.",
@@ -4394,11 +4394,11 @@
     "faqs": [
       {
         "question": "Com em puc unir a un negoci?",
-        "answer": "Només et pots unir a un negoci si un propietari o administrador t'envia un enllaç d'invitació. Un cop acceptada, apareixerà a la teva pestanya 'Unit'."
+        "answer": "Només et pots unir a un negoci si un propietari o administrador t'envia un enllaç d'invitació. Un cop acceptada, apareixerà a la teva pestanya 'On treballo'."
       },
       {
         "question": "Com puc crear un negoci nou?",
-        "answer": "Ves a la pàgina 'Els meus negocis' i fes clic a 'Crear negoci'. Podràs configurar el nom, la descripció i convidar membres."
+        "answer": "Ves a la pàgina 'Els meus negocis' i fes clic a 'Crear nou'. Podràs configurar el nom, la descripció i convidar membres."
       },
       {
         "question": "On puc gestionar la meva subscripció?",
@@ -4406,7 +4406,7 @@
       },
       {
         "question": "Com contacto amb suport?",
-        "answer": "Si necessites ajuda, fes servir el formulari de suport a continuació o envia'ns un correu directament."
+        "answer": "Si necessites ajuda, fes servir el botó 'Enviar un missatge' de més avall per anar a la nostra pàgina de suport, o escriu-nos directament per correu."
       }
     ],
     "contact_support": {

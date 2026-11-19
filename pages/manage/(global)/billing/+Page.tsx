@@ -161,7 +161,13 @@ const BillingPage = () => {
                                                 ? t("billing_page.payment_failed_past_due")
                                                 : (currentUserSubscription?.status === SubscriptionStatus.ON_TRIAL || userProfile?.currentSubscription?.status === SubscriptionStatus.ON_TRIAL)
                                                     ? t("billing_page.free_trial")
-                                                    : currentUserSubscription?.status || userProfile?.currentSubscription?.status || t("billing_page.active")).toUpperCase()}
+                                                    // P1-22 (QA round 4, 2026-11-19): fell through to the raw enum value
+                                                    // ("active") whenever status was ACTIVE, since it's a truthy string
+                                                    // that always won over the t("billing_page.active") fallback after
+                                                    // it in the old `||` chain — check for it explicitly instead.
+                                                    : (currentUserSubscription?.status === SubscriptionStatus.ACTIVE || userProfile?.currentSubscription?.status === SubscriptionStatus.ACTIVE)
+                                                        ? t("billing_page.active")
+                                                        : currentUserSubscription?.status || userProfile?.currentSubscription?.status || t("billing_page.active")).toUpperCase()}
                                     </p>
                                 </div>
                             </div>

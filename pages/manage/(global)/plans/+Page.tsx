@@ -292,7 +292,12 @@ const PlansPage: React.FC = () => {
                       <> · {t("plans_page.extra_business_price", { price: `${pack.extraBusinessPrice.toFixed(2)} ${pack.currency}` })}</>
                     )}
                   </p>
-                  <p className="text-[11px] text-muted-foreground mt-1">{t("plans_page.estimated_at_checkout")}</p>
+                  {/* P1-23 (QA round 4, 2026-11-19): rendered unconditionally, even for the €0
+                      Free plan, where "confirmed at checkout" makes no sense — nothing is
+                      charged. */}
+                  {pack.getTotalPrice(businessCount) > 0 && (
+                    <p className="text-[11px] text-muted-foreground mt-1">{t("plans_page.estimated_at_checkout")}</p>
+                  )}
                 </div>
 
                 <div className="mb-6 grid grid-cols-2 gap-4 text-xs bg-muted/50 p-3 rounded-lg border border-border">

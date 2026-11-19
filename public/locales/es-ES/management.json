@@ -2014,7 +2014,7 @@
     },
     "items": {
       "overview": "Resumen",
-      "joined": "Unidos",
+      "joined": "Donde trabajo",
       "owned": "Mis negocios",
       "organization": "Organización",
       "organizations": "Organizaciones",
@@ -3974,7 +3974,7 @@
   },
   "billing_page": {
     "title": "Facturación y suscripción",
-    "subtitle": "Gestiona tu suscripción, métodos de pago y consulta facturas anteriores.",
+    "subtitle": "Gestiona tu suscripción y consulta facturas anteriores.",
     "cancelled_label": "Tu suscripción está cancelada",
     "cancelled_prefix": "y finalizará el",
     "cancelled_suffix": "Puedes reanudarla en cualquier momento antes de esa fecha.",
@@ -4394,11 +4394,11 @@
     "faqs": [
       {
         "question": "¿Cómo me uno a un negocio?",
-        "answer": "Solo puedes unirte a un negocio si un propietario o administrador te envía un enlace de invitación. Una vez aceptada, aparecerá en tu pestaña 'Unido'."
+        "answer": "Solo puedes unirte a un negocio si un propietario o administrador te envía un enlace de invitación. Una vez aceptada, aparecerá en tu pestaña 'Donde trabajo'."
       },
       {
         "question": "¿Cómo puedo crear un nuevo negocio?",
-        "answer": "Ve a la página 'Mis negocios' y haz clic en 'Crear negocio'. Podrás configurar el nombre, la descripción e invitar miembros."
+        "answer": "Ve a la página 'Mis negocios' y haz clic en 'Crear nuevo'. Podrás configurar el nombre, la descripción e invitar miembros."
       },
       {
         "question": "¿Dónde puedo gestionar mi suscripción?",
@@ -4406,7 +4406,7 @@
       },
       {
         "question": "¿Cómo contacto con soporte?",
-        "answer": "Si necesitas ayuda, usa el formulario de soporte a continuación o envíanos un correo directamente."
+        "answer": "Si necesitas ayuda, usa el botón 'Enviar un mensaje' de más abajo para ir a nuestra página de soporte, o escríbenos directamente por correo."
       }
     ],
     "contact_support": {

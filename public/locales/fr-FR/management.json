@@ -3974,7 +3974,7 @@
   },
   "billing_page": {
     "title": "Facturation et abonnement",
-    "subtitle": "Gérez votre abonnement, vos moyens de paiement et consultez vos factures passées.",
+    "subtitle": "Gérez votre abonnement et consultez vos factures passées.",
     "cancelled_label": "Votre abonnement est annulé",
     "cancelled_prefix": "et se terminera le",
     "cancelled_suffix": "Vous pouvez le reprendre à tout moment avant cette date.",
@@ -4398,7 +4398,7 @@
       },
       {
         "question": "Comment puis-je créer une nouvelle entreprise ?",
-        "answer": "Allez sur la page « Mes entreprises » et cliquez sur « Créer une entreprise ». Vous pourrez configurer le nom, la description et inviter des membres."
+        "answer": "Allez sur la page « Mes entreprises » et cliquez sur « Créer un nouveau ». Vous pourrez configurer le nom, la description et inviter des membres."
       },
       {
         "question": "Où puis-je gérer mon abonnement ?",
@@ -4406,7 +4406,7 @@
       },
       {
         "question": "Comment contacter le support ?",
-        "answer": "Si vous avez besoin d'aide, utilisez le formulaire d'assistance ci-dessous ou envoyez-nous un e-mail directement."
+        "answer": "Si vous avez besoin d'aide, utilisez le bouton « Envoyer un message » ci-dessous pour accéder à notre page d'assistance, ou écrivez-nous directement par e-mail."
       }
     ],
     "contact_support": {
