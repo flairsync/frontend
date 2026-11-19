@@ -20,7 +20,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { Trash2, UserPlus, Edit, Plus, MoreHorizontal, Clock, Check, X, Slash, Hourglass, FileSpreadsheet } from "lucide-react";
+import { Trash2, UserPlus, Edit, Plus, MoreHorizontal, Clock, Check, X, Slash, Hourglass, FileSpreadsheet, AlertTriangle } from "lucide-react";
 import { StaffCsvImportModal } from "@/components/management/staff/StaffCsvImportModal";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useBusinessEmployeeOps } from '@/features/business/employment/useBusinessEmployeeOps';
@@ -224,6 +224,7 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                 <SelectItem value="DECLINED">{t("invitations_section.status_options.DECLINED")}</SelectItem>
                                 <SelectItem value="CANCELLED">{t("invitations_section.status_options.CANCELLED")}</SelectItem>
                                 <SelectItem value="EXPIRED">{t("invitations_section.status_options.EXPIRED")}</SelectItem>
+                                <SelectItem value="FAILED">{t("invitations_section.status_options.FAILED")}</SelectItem>
                             </SelectContent>
                         </Select>
 
@@ -233,14 +234,18 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                 <CardContent className="overflow-x-auto">
                     <Table>
                         <TableHeader>
+                            {/* P1-18 (QA round 4, 2026-11-19): es/ca header text is noticeably longer than
+                                en, and without whitespace-nowrap it wrapped instead of forcing the table
+                                past the container width — so overflow-x-auto never kicked in and the
+                                Actions column (a flex cell, not a normal sized one) got squeezed/clipped. */}
                             <TableRow>
-                                <TableHead>{t("invitations_section.col_email")}</TableHead>
-                                <TableHead>{t("invitations_section.col_display_name")}</TableHead>
-                                <TableHead>{t("invitations_section.col_created")}</TableHead>
-                                <TableHead>{t("invitations_section.col_expires")}</TableHead>
-                                <TableHead>{t("invitations_section.col_status")}</TableHead>
-                                <TableHead>{t("invitations_section.col_retries")}</TableHead>
-                                <TableHead>{t("invitations_section.col_actions")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_email")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_display_name")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_created")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_expires")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_status")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_retries")}</TableHead>
+                                <TableHead className="whitespace-nowrap">{t("invitations_section.col_actions")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -266,7 +271,7 @@ const InvitationsSection = ({ canCreate = true }: InvitationsSectionProps) => {
                                         <StatusCell status={invite.status} />
                                     </TableCell>
                                     <TableCell>{invite.resendCount}</TableCell>
-                                    <TableCell className="flex gap-2">
+                                    <TableCell className="flex gap-2 whitespace-nowrap">
                                         {invite.status !== 'ACCEPTED' && (
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
@@ -360,6 +365,14 @@ const StatusCell = ({ status }: { status: string }) => {
             icon = <Hourglass className="w-4 h-4 mr-1" />;
             text = t("invitations_section.status_options.EXPIRED");
             color = "text-orange-500";
+            break;
+        // P0-3 (QA round 4, 2026-11-19): set by the backend once a businessInvitation email
+        // job exhausts its retries, so a send that never went out doesn't sit looking
+        // "Pending" forever.
+        case "FAILED":
+            icon = <AlertTriangle className="w-4 h-4 mr-1" />;
+            text = t("invitations_section.status_options.FAILED");
+            color = "text-red-500";
             break;
         default:
             icon = null;

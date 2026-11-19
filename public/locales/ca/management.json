@@ -3291,7 +3291,8 @@
       "ACCEPTED": "Acceptada",
       "DECLINED": "Rebutjada",
       "CANCELLED": "Cancel·lada",
-      "EXPIRED": "Caducada"
+      "EXPIRED": "Caducada",
+      "FAILED": "Enviament fallit"
     },
     "col_email": "Correu electrònic",
     "col_display_name": "Nom mostrat",

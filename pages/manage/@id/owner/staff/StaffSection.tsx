@@ -143,6 +143,12 @@ const StaffSection = () => {
     setPage
   } = useBusinessEmployees(routeParams.id);
 
+  // P1-18 (QA round 4, 2026-11-19): the owner's own Employment row is now included in
+  // `employees` (see employments.service.ts), so the list is never truly empty anymore —
+  // the "invite your first teammate" prompt needs its own "no one but the owner yet"
+  // condition instead of relying on employees.length === 0.
+  const otherStaffCount = employees?.filter((m: any) => m.type !== 'OWNER').length ?? 0;
+
   const {
     businessRoles,
     loadingBusinessRoles,
@@ -313,7 +319,7 @@ const StaffSection = () => {
               <div className="rounded-xl border border-dashed p-6 text-center">
                 <p className="text-sm font-medium">{t("simple_mode.empty.team.title")}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{t("simple_mode.empty.team.description")}</p>
-                <Button className="mt-3 gap-2" onClick={() => emitAction({ tab: "invitations" })}>
+                <Button className="mt-3 gap-2" onClick={() => setTimeout(() => emitAction({ tab: "invitations", action: "invite" }), 0)}>
                   <UserPlus className="h-4 w-4" />
                   {t("simple_mode.actions.staff.invite")}
                 </Button>
@@ -367,10 +373,10 @@ const StaffSection = () => {
                   action={{
                     label: t("simple_mode.actions.staff.invite"),
                     icon: UserPlus,
-                    // The invite dialog lives in the Invitations tab, which only
-                    // mounts once that tab is active — so switch tabs rather than
-                    // firing an action nothing is listening for yet.
-                    onClick: () => emitAction({ tab: "invitations" }),
+                    // P1-18 (QA round 4, 2026-11-19): switch tabs AND open the invite dialog
+                    // directly, same pattern as SimpleActionBar.tsx — deferred so the
+                    // Invitations tab (and its deep-link listener) has mounted first.
+                    onClick: () => setTimeout(() => emitAction({ tab: "invitations", action: "invite" }), 0),
                   }}
                 />
               )}
@@ -409,6 +415,16 @@ const StaffSection = () => {
             </TableBody>
           </Table>
           </ResponsiveList>
+          {!isPending && otherStaffCount === 0 && (employees?.length ?? 0) > 0 && (
+            <div className="mt-3 rounded-xl border border-dashed p-6 text-center">
+              <p className="text-sm font-medium">{t("simple_mode.empty.team.title")}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("simple_mode.empty.team.description")}</p>
+              <Button className="mt-3 gap-2" onClick={() => setTimeout(() => emitAction({ tab: "invitations", action: "invite" }), 0)}>
+                <UserPlus className="h-4 w-4" />
+                {t("simple_mode.actions.staff.invite")}
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 

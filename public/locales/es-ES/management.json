@@ -3291,7 +3291,8 @@
       "ACCEPTED": "Aceptada",
       "DECLINED": "Rechazada",
       "CANCELLED": "Cancelada",
-      "EXPIRED": "Caducada"
+      "EXPIRED": "Caducada",
+      "FAILED": "Envío fallido"
     },
     "col_email": "Correo electrónico",
     "col_display_name": "Nombre mostrado",

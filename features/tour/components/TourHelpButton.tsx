@@ -13,11 +13,13 @@ export function TourHelpButton() {
 
   const hasSteps = !!registeredSteps?.length;
 
-  // P1-26 (QA, 2026-11-18): this floats bottom-right on every page with a tour, which on a
-  // short page (e.g. Staff → Invitations) can sit directly over pagination controls that
-  // also live in that corner. Dismissing hides it for this page view; it reappears on the
-  // next page that registers steps, rather than needing a persisted preference for something
-  // this low-stakes.
+  // P1-18 (QA round 4, 2026-11-19): bottom-24/right-6 still wasn't enough clearance on short
+  // pages (e.g. Staff -> Invitations, where the table's own pagination row also lands in that
+  // corner) — every other bottom-right occupant this was dodging (primary action buttons,
+  // table pagination, the toast stack, which also defaults to bottom-right) lives on the
+  // right, so move to the bottom-LEFT corner instead of chasing offsets on the right one.
+  // Dismissing hides it for this page view; it reappears on the next page that registers
+  // steps, rather than needing a persisted preference for something this low-stakes.
   const [dismissed, setDismissed] = useState(false);
   useEffect(() => {
     setDismissed(false);
@@ -39,7 +41,7 @@ export function TourHelpButton() {
           // Save — in that same bottom-right corner, either in-flow near the
           // page's end or in their own sticky footer. bottom-24 floats this
           // well clear of both, instead of sitting on top of them.
-          className="fixed bottom-24 right-6 z-[9990] flex items-center group"
+          className="fixed bottom-6 left-6 z-[9990] flex items-center group"
           initial={{ opacity: 0, y: 16, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 12, scale: 0.9 }}
