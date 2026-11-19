@@ -5,6 +5,12 @@ const getFloorPlanUrl = (businessId: string) => {
     return `${API_URL}/businesses/${businessId}/floor-plan`;
 };
 
+export interface FloorStats {
+    total: number;
+    published: number;
+    unpublished: number;
+}
+
 // DTOs
 export interface CreateFloorDto {
     name: string;
@@ -51,7 +57,7 @@ export const fetchFloorsApiCall = async (businessId: string, publishedOnly?: boo
     unwrap(await flairapi.get(`${getFloorPlanUrl(businessId)}/floors${publishedOnly ? "?published=true" : ""}`));
 
 export const fetchFloorStatsApiCall = async (businessId: string) =>
-    unwrap(await flairapi.get(`${getFloorPlanUrl(businessId)}/floors/stats`));
+    unwrap<FloorStats>(await flairapi.get(`${getFloorPlanUrl(businessId)}/floors/stats`));
 
 export const createFloorApiCall = (businessId: string, data: CreateFloorDto) => {
     return flairapi.post(`${getFloorPlanUrl(businessId)}/floors`, data);

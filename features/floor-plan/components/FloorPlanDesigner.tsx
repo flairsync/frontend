@@ -473,7 +473,7 @@ export const FloorPlanDesigner: React.FC = () => {
                                         el={selectedElement}
                                         businessId={businessId}
                                         floorTables={floorTables}
-                                        tables={tables}
+                                        tables={tables || []}
                                         onUpdate={handleUpdateItem}
                                         onRotate={handleRotate}
                                         onDelete={handleDeleteItem}

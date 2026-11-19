@@ -54,7 +54,7 @@ export const changePlanApiCall = async (subId: string, packId: string, businessC
   unwrap<SingleItemResponse>(await flairapi.post(`${baseUrl}/${subId}/change-plan`, { packId, businessCount }));
 
 export const getSubscriptionInvoicesApiCall = async (subId: string) =>
-  unwrap<SingleItemResponse>(await flairapi.get(`${invoiceUrl}/${subId}`));
+  unwrap<any[]>(await flairapi.get(`${invoiceUrl}/${subId}`));
 
 export const downloadSubscriptionInvoiceApiCall = async (subId: string, invoiceId: string) =>
   unwrap<SingleItemResponse>(await flairapi.get(`${invoiceUrl}/${subId}/download/${invoiceId}`));

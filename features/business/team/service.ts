@@ -14,7 +14,7 @@ export interface UpdateTeamPayload {
 }
 
 export const fetchTeamsApiCall = async (businessId: string) =>
-    unwrap(await flairapi.get(`${BASE_URL}/${businessId}/teams`));
+    unwrap<any[]>(await flairapi.get(`${BASE_URL}/${businessId}/teams`));
 
 export const fetchTeamApiCall = async (businessId: string, teamId: string) => {
     return flairapi.get(`${BASE_URL}/${businessId}/teams/${teamId}`);

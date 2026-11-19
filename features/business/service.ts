@@ -391,7 +391,7 @@ export const importStaffCsvApiCall = async (
 };
 
 export const fetchMyInvitationsApiCall = async () =>
-  unwrap(await flairapi.get(`${invitationsBaseUrl}/invitations/me`));
+  unwrap<any[]>(await flairapi.get(`${invitationsBaseUrl}/invitations/me`));
 
 export const fetchInvitationDetailsApiCall = async (inviteId: string) =>
   unwrap(await flairapi.get(`${invitationsBaseUrl}/invitation/${inviteId}`));

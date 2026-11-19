@@ -111,8 +111,7 @@ const JobDetailPage = () => {
   const { data: job, isPending: loading, isError } = useQuery<Job>({
     queryKey: ["public_job", slug],
     queryFn: async () => {
-      const resp = await fetchPublicJobBySlugApiCall(slug);
-      return resp.data.data;
+      return await fetchPublicJobBySlugApiCall(slug);
     },
     enabled: !!slug,
     retry: false,

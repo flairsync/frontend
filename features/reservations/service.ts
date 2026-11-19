@@ -73,7 +73,7 @@ export const markReservationNoShowApiCall = (businessId: string, reservationId: 
 };
 
 export const findAvailabilityApiCall = async (businessId: string, date: string, guestCount: number) =>
-    unwrap(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
+    unwrap<any[]>(await flairapi.get(`${getReservationsUrl(businessId)}/availability`, { params: { date, guestCount } }));
 
 export const lookupUserApiCall = async (businessId: string, email?: string, phone?: string) =>
     unwrap<UserLookupResult | null>(await flairapi.get(`${API_URL}/users/lookup`, { params: { businessId, email, phone } }));
