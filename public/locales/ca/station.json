@@ -120,6 +120,8 @@
   "pairing_screen": {
     "title": "Vincula aquest dispositiu",
     "subtitle": "Demana al propietari del negoci que generi un codi de vinculació des del tauler.",
+    "subtitle_owner": "Genera un codi de vinculació per a {{business}} des de Dispositius → Afegir estació.",
+    "generate_code_link": "Ves a Dispositius → Afegir estació",
     "station_type_kds": "Pantalla de Cuina (KDS)",
     "station_type_pos": "Terminal POS",
     "form": {

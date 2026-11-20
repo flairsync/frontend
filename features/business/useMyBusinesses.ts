@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-quer
 import { fetchMyBusinessesApiCall } from "./service";
 import { MyBusiness } from "@/models/business/MyBusiness";
 
-export const useMyBusinesses = (page: number = 1, limit: number = 10) => {
+export const useMyBusinesses = (page: number = 1, limit: number = 10, options?: { enabled?: boolean }) => {
   const queryClient = useQueryClient();
 
   const {
@@ -12,6 +12,7 @@ export const useMyBusinesses = (page: number = 1, limit: number = 10) => {
   } = useQuery({
     queryKey: ["my_businesses", page, limit],
     staleTime: Infinity,
+    enabled: options?.enabled ?? true,
     queryFn: async () => {
       const res = await fetchMyBusinessesApiCall(page, limit) as any;
 

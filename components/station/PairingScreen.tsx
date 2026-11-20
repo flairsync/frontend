@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { usePageContext } from "vike-react/usePageContext";
 import { getOrCreateDeviceUuid, saveStationToken } from "@/features/station/useStationAuth";
 import { publicApi } from "@/features/station/station-api";
+import { useMyBusinesses } from "@/features/business/useMyBusinesses";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +22,15 @@ function sanitizeCode(val: string) {
 
 export default function PairingScreen({ stationType, initialCode, onLinked }: Props) {
   const { t } = useTranslation("station");
+  const { user } = usePageContext();
+  // P1-11 (QA round 6, 2026-11-20): the default copy here ("ask the
+  // business owner...") used to show even to the owner/admin themselves, if they
+  // opened this device-pairing screen while already logged into the dashboard in
+  // the same browser. useMyBusinesses only ever runs when pageContext.user is
+  // truthy — this page is otherwise fully public/unauthenticated, and we don't
+  // want an unauthenticated visitor's browser firing an authenticated call here.
+  const { myBusinesses, loadingMyBussinesses } = useMyBusinesses(1, 5, { enabled: !!user });
+  const ownedBusiness = !loadingMyBussinesses && myBusinesses.length > 0 ? myBusinesses[0] : null;
   const [code, setCode] = useState(() => sanitizeCode(initialCode ?? ""));
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -78,8 +89,18 @@ export default function PairingScreen({ stationType, initialCode, onLinked }: Pr
           </div>
           <h1 className="text-2xl font-black text-foreground tracking-tight">{t("pairing_screen.title")}</h1>
           <p className="text-muted-foreground text-sm mt-2">
-            {t("pairing_screen.subtitle")}
+            {ownedBusiness
+              ? t("pairing_screen.subtitle_owner", { business: ownedBusiness.name })
+              : t("pairing_screen.subtitle")}
           </p>
+          {ownedBusiness && (
+            <a
+              href={`/manage/${ownedBusiness.id}/owner/stations`}
+              className="inline-block mt-2 text-xs font-bold text-primary hover:underline"
+            >
+              {t("pairing_screen.generate_code_link")}
+            </a>
+          )}
           <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 bg-card border border-border rounded-full text-[10px] font-black text-muted-foreground uppercase tracking-widest">
             <div className={`w-1.5 h-1.5 rounded-full ${stationType === 'kds' ? 'bg-amber-500' : 'bg-primary'}`} />
             {label}

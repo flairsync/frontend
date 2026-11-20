@@ -120,6 +120,8 @@
   "pairing_screen": {
     "title": "Vincular este dispositivo",
     "subtitle": "Pide al propietario del negocio que genere un código de vinculación desde el panel.",
+    "subtitle_owner": "Genera un código de vinculación para {{business}} desde Dispositivos → Añadir estación.",
+    "generate_code_link": "Ir a Dispositivos → Añadir estación",
     "station_type_kds": "Pantalla de Cocina (KDS)",
     "station_type_pos": "Terminal POS",
     "form": {

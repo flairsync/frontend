@@ -120,6 +120,8 @@
   "pairing_screen": {
     "title": "Associer cet appareil",
     "subtitle": "Demandez au propriétaire de l'établissement de générer un code d'association depuis le tableau de bord.",
+    "subtitle_owner": "Générez un code d'association pour {{business}} depuis Appareils → Ajouter une station.",
+    "generate_code_link": "Aller à Appareils → Ajouter une station",
     "station_type_kds": "Écran Cuisine (KDS)",
     "station_type_pos": "Terminal POS",
     "form": {

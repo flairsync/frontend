@@ -131,6 +131,8 @@
   "pairing_screen": {
     "title": "Link this device",
     "subtitle": "Ask the business owner to generate a pairing code from the dashboard.",
+    "subtitle_owner": "Generate a pairing code for {{business}} from Devices → Add station.",
+    "generate_code_link": "Go to Devices → Add station",
     "station_type_kds": "Kitchen Display (KDS)",
     "station_type_pos": "POS Terminal",
     "form": {
