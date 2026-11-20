@@ -4,6 +4,12 @@ name: i18n coverage
 # (missing keys, like several of this round's QA findings) fails CI instead of shipping.
 # scripts/check-i18n-coverage.js already existed and does this; it just wasn't wired into CI
 # anywhere, since this repo has no workflows at all yet.
+#
+# P1-16 (QA round 6, 2026-11-20): the OTHER half of that bug class — a string typed
+# straight into JSX/a toast instead of ever becoming a key at all, so it's not "missing
+# from a locale", it's missing from ALL of them. scripts/check-hardcoded-strings.js
+# ratchets against scripts/hardcoded-strings-baseline.json so this doesn't have to fail on
+# every pre-existing instance to catch new ones.
 on:
   push:
     branches: [staging, master]
@@ -19,3 +25,4 @@ jobs:
           node-version: 22
       # Pure node built-ins (fs/path/url), no npm install needed.
       - run: node scripts/check-i18n-coverage.js
+      - run: node scripts/check-hardcoded-strings.js
