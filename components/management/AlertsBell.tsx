@@ -1,5 +1,6 @@
 import React from "react";
 import { navigate } from "vike/client/router";
+import { useTranslation } from "react-i18next";
 import { TriangleAlert, ChevronRight } from "lucide-react";
 import {
     Popover,
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export function AlertsBell({ businessId }: Props) {
+    const { t } = useTranslation("management");
     const { alerts, alertCount } = useAlerts(businessId);
 
     if (alertCount === 0) return null;
@@ -36,7 +38,7 @@ export function AlertsBell({ businessId }: Props) {
             </PopoverTrigger>
             <PopoverContent className="w-80 max-w-[90vw] p-0" align="end">
                 <div className="flex items-center justify-between p-4 border-b">
-                    <h4 className="font-semibold">Alerts & Warnings</h4>
+                    <h4 className="font-semibold">{t("alerts_page.title")}</h4>
                 </div>
 
                 <div className="max-h-[300px] overflow-y-auto flex flex-col divide-y">
@@ -68,7 +70,7 @@ export function AlertsBell({ businessId }: Props) {
                         onClick={handleViewAll}
                         className="text-xs text-primary hover:underline flex items-center justify-center w-full gap-1 py-1"
                     >
-                        View all alerts <ChevronRight className="w-3 h-3" />
+                        {t("alerts_page.view_all")} <ChevronRight className="w-3 h-3" />
                     </button>
                 </div>
             </PopoverContent>

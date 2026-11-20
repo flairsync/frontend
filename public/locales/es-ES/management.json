@@ -3394,6 +3394,7 @@
       "type_city_placeholder": "Escribe el nombre de la ciudad",
       "select_country_first_placeholder": "Selecciona primero un país",
       "search_address_label": "Buscar dirección",
+      "search_address_placeholder": "Buscar dirección...",
       "use_my_location_title": "Usar mi ubicación",
       "address_label": "Dirección",
       "street_address_placeholder": "Dirección (autocompletada o escrita manualmente)",
@@ -3786,6 +3787,11 @@
     "download_pdf": "Descargar PDF"
   },
   "plans_page": {
+    "duration": {
+      "monthly": "al mes",
+      "quarterly": "al trimestre",
+      "yearly": "al año"
+    },
     "current_plan": "Plan actual",
     "upgrade": "Mejorar",
     "downgrade": "Reducir",
@@ -5165,6 +5171,7 @@
       },
       "team": {
         "title": "Aún no hay nadie en el equipo",
+        "owner_only_title": "Aún no has invitado a nadie del personal",
         "description": "Invita a las personas que trabajan aquí. Recibirán un correo y podrán fichar, tomar pedidos y ver sus turnos."
       },
       "invitations": {
@@ -5386,6 +5393,7 @@
   "alerts_page": {
     "title": "Alertas y advertencias",
     "subtitle": "Problemas de configuración que podrían estar bloqueando pedidos u otros procesos del negocio.",
+    "view_all": "Ver todas las alertas",
     "tabs": {
       "all": "Todas",
       "floor_plan": "Plano de sala",

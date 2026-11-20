@@ -25,19 +25,22 @@ const solutions: Solution[] = [
 
 // --- Per-tab visuals ---
 
+// P1-13 (QA round 6, 2026-11-20): qty/unitLabel are kept separate (rather than one
+// hardcoded "5.5 L" string) so the number can go through Intl.NumberFormat below —
+// es/ca/fr use a comma decimal separator ("5,5 L"), which a literal string can't do.
 const inventoryItems = [
-    { nameKey: "pastaFlour",  unit: "12 kg",   stock: 80, status: "ok"       },
-    { nameKey: "tomatoSauce", unit: "2 cans",  stock: 18, status: "low"      },
-    { nameKey: "oliveOil",    unit: "5.5 L",   stock: 55, status: "ok"       },
-    { nameKey: "mozzarella",  unit: "0.5 kg",  stock: 5,  status: "critical" },
-    { nameKey: "basil",       unit: "1.2 kg",  stock: 40, status: "ok"       },
-    { nameKey: "parmesan",    unit: "3 kg",    stock: 22, status: "low"      },
+    { nameKey: "pastaFlour",  qty: 12,  unitLabel: "kg",   stock: 80, status: "ok"       },
+    { nameKey: "tomatoSauce", qty: 2,   unitLabel: "cans", stock: 18, status: "low"      },
+    { nameKey: "oliveOil",    qty: 5.5, unitLabel: "L",    stock: 55, status: "ok"       },
+    { nameKey: "mozzarella",  qty: 0.5, unitLabel: "kg",   stock: 5,  status: "critical" },
+    { nameKey: "basil",       qty: 1.2, unitLabel: "kg",   stock: 40, status: "ok"       },
+    { nameKey: "parmesan",    qty: 3,   unitLabel: "kg",   stock: 22, status: "low"      },
 ];
 
 // P1-7 (QA, 2026-11-18): item names and the Low/Critical status labels were hardcoded
 // English, visible in every locale.
 const InventoryVisual = () => {
-    const { t } = useTranslation("landing");
+    const { t, i18n } = useTranslation("landing");
     return (
     <div className="w-full space-y-3">
         {inventoryItems.map((item) => (
@@ -62,7 +65,7 @@ const InventoryVisual = () => {
                             : item.status === "low"    ? "bg-amber-100 text-amber-600"
                             : "bg-green-100 text-green-600"
                         )}>
-                            {item.status === "critical" ? t("problemSolution.inventoryDemo.status.critical") : item.status === "low" ? t("problemSolution.inventoryDemo.status.low") : item.unit}
+                            {item.status === "critical" ? t("problemSolution.inventoryDemo.status.critical") : item.status === "low" ? t("problemSolution.inventoryDemo.status.low") : `${new Intl.NumberFormat(i18n.language).format(item.qty)} ${item.unitLabel}`}
                         </span>
                     </div>
                     <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">

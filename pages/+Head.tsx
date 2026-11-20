@@ -22,7 +22,7 @@ export default function HeadDefault() {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
     <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
-    <script src={`https://accounts.google.com/gsi/client?hl=${googleHl}`} async defer></script>
+    <script id="gsi-client-script" src={`https://accounts.google.com/gsi/client?hl=${googleHl}`} async defer></script>
 
   </>
 }

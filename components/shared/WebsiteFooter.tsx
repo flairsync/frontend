@@ -104,7 +104,8 @@ const WebsiteFooter = () => {
                         <div>
                             <h3 className="text-lg font-semibold">{t("footer.contact.title", { defaultValue: "Contact" })}</h3>
                             <address className="not-italic text-muted-foreground mt-2 space-y-1">
-                                <p>Andorra La Vella, AD500, Andorra</p>
+                                {/* Same key LandingFooter uses — already correctly cased/translated. */}
+                                <p>{t("footer.contact_address_line1")}</p>
                                 <p>+376 123 456</p>
                             </address>
                         </div>

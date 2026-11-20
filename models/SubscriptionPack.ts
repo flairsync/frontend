@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { formatCurrency } from "@/lib/formatCurrency";
 
 export enum PricingType {
   MONTHLY = "monthly",
@@ -10,6 +11,12 @@ const MONTHS_BY_PRICING_TYPE: Record<PricingType, number> = {
   [PricingType.MONTHLY]: 1,
   [PricingType.QUARTERLY]: 3,
   [PricingType.YEARLY]: 12,
+};
+
+const DEFAULT_DURATION_EN: Record<string, string> = {
+  "plans_page.duration.monthly": "per month",
+  "plans_page.duration.quarterly": "per quarter",
+  "plans_page.duration.yearly": "per year",
 };
 
 /**
@@ -139,8 +146,13 @@ export class SubscriptionPack {
 
   // --- Utility methods ---
 
-  getFormattedPrice(): string {
-    return `${this.price.toFixed(2)} ${this.currency}`;
+  // P1-13 (QA round 6, 2026-11-20): used to hardcode `${price} ${currency}` (e.g.
+  // "39.99 EUR"), regardless of locale, right next to properly localized prices
+  // (formatCurrency, e.g. "+11,99 €") on the same pricing card. `locale` is optional
+  // so existing callers that haven't been updated yet still get a sane default
+  // (Intl.NumberFormat(undefined, ...) falls back to the browser/OS locale).
+  getFormattedPrice(locale?: string): string {
+    return formatCurrency(this.price, this.currency, locale);
   }
 
   /** `price` covers up to `includedBusinesses`; each business selected beyond
@@ -164,14 +176,17 @@ export class SubscriptionPack {
     return this.maxBusinesses !== -1 && businessCount > this.maxBusinesses;
   }
 
-  getPlanDuration(): string {
+  /** `t` is the "management" namespace's translate function — this model has no i18n
+   * context of its own, so every caller passes its own `t` in. Falls back to English
+   * when omitted, for the rare caller (e.g. getDisplayName below) with no `t` on hand. */
+  getPlanDuration(t: (key: string) => string = (key) => DEFAULT_DURATION_EN[key] ?? ""): string {
     switch (this.pricingType) {
       case PricingType.MONTHLY:
-        return "per month";
+        return t("plans_page.duration.monthly");
       case PricingType.QUARTERLY:
-        return "per quarter";
+        return t("plans_page.duration.quarterly");
       case PricingType.YEARLY:
-        return "per year";
+        return t("plans_page.duration.yearly");
       default:
         return "";
     }

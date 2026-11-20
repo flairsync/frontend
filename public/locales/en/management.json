@@ -3467,6 +3467,7 @@
       "type_city_placeholder": "Type city name",
       "select_country_first_placeholder": "Select a country first",
       "search_address_label": "Search address",
+      "search_address_placeholder": "Search address...",
       "use_my_location_title": "Use my location",
       "address_label": "Address",
       "street_address_placeholder": "Street address (auto-filled or type manually)",
@@ -3859,6 +3860,11 @@
     "download_pdf": "Download PDF"
   },
   "plans_page": {
+    "duration": {
+      "monthly": "per month",
+      "quarterly": "per quarter",
+      "yearly": "per year"
+    },
     "current_plan": "Current Plan",
     "upgrade": "Upgrade",
     "downgrade": "Downgrade",
@@ -5238,6 +5244,7 @@
       },
       "team": {
         "title": "No one on the team yet",
+        "owner_only_title": "No staff invited yet",
         "description": "Invite the people who work here. They'll get an email and can clock in, take orders and see their shifts."
       },
       "invitations": {
@@ -5386,6 +5393,7 @@
   "alerts_page": {
     "title": "Alerts & Warnings",
     "subtitle": "Configuration issues that may be blocking orders or other business flows.",
+    "view_all": "View all alerts",
     "tabs": {
       "all": "All",
       "floor_plan": "Floor Plan",

@@ -8,7 +8,8 @@ import { useTables } from "@/features/floor-plan/useFloorPlan";
 import { useOrders } from "@/features/orders/useOrders";
 import { useAttendanceLogs } from "@/features/shifts/useAttendance";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
-import { getCurrencySymbol } from "@/utils/currency";
+import { toIsoCurrencyCode } from "@/utils/currency";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -41,15 +42,15 @@ type Stat = {
  * the other polled aggregates), at which point this component swaps to one hook.
  */
 export function RightNowStrip({ businessId }: Props) {
-    const { t } = useTranslation("management");
+    const { t, i18n } = useTranslation("management");
     const today = format(new Date(), "yyyy-MM-dd");
 
     const { myBusinessFullDetails } = useMyBusiness(businessId);
     // business.currency holds either an ISO code or, on older records, a bare
-    // symbol — getCurrencySymbol normalises both. Passing the raw value to
+    // symbol — toIsoCurrencyCode normalises both. Passing the raw value to
     // Intl.NumberFormat would throw a RangeError on the legacy symbol data and
     // take the whole home screen down with it.
-    const currencySymbol = getCurrencySymbol(myBusinessFullDetails?.currency);
+    const currencyCode = toIsoCurrencyCode(myBusinessFullDetails?.currency);
 
     // limit: 1 — we want the server's total, not the rows.
     const { totalOrders, fetchingOrders } = useOrders(
@@ -111,7 +112,7 @@ export function RightNowStrip({ businessId }: Props) {
         {
             key: "revenue",
             label: t("simple_mode.right_now.today_sales"),
-            value: `${currencySymbol}${todayRevenue.toFixed(2)}`,
+            value: formatCurrency(todayRevenue, currencyCode, i18n.language),
             icon: TrendingUp,
             href: `/manage/${businessId}/owner/analytics`,
             tone: "text-violet-600 dark:text-violet-400",

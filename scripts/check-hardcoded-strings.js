@@ -85,8 +85,11 @@ function scanFile(filePath) {
     return violations;
 }
 
+// Deliberately excludes line number: an unrelated edit earlier in the same file shifts
+// every later line down, which would otherwise make the baseline think an untouched
+// violation is new just because its line moved.
 function violationKey(v) {
-    return `${v.file}:${v.line}:${v.kind}:${v.snippet}`;
+    return `${v.file}:${v.kind}:${v.snippet}`;
 }
 
 const allFiles = SCAN_DIRS.flatMap((dir) => listFiles(path.join(root, dir)));

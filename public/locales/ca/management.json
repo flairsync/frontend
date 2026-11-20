@@ -3394,6 +3394,7 @@
       "type_city_placeholder": "Escriu el nom de la ciutat",
       "select_country_first_placeholder": "Selecciona primer un país",
       "search_address_label": "Cerca adreça",
+      "search_address_placeholder": "Cerca adreça...",
       "use_my_location_title": "Utilitza la meva ubicació",
       "address_label": "Adreça",
       "street_address_placeholder": "Adreça (emplenada automàticament o escrita manualment)",
@@ -3786,6 +3787,11 @@
     "download_pdf": "Descarregar PDF"
   },
   "plans_page": {
+    "duration": {
+      "monthly": "al mes",
+      "quarterly": "al trimestre",
+      "yearly": "a l'any"
+    },
     "current_plan": "Pla actual",
     "upgrade": "Millorar",
     "downgrade": "Reduir",
@@ -5165,6 +5171,7 @@
       },
       "team": {
         "title": "Encara no hi ha ningú a l'equip",
+        "owner_only_title": "Encara no has convidat ningú de l'equip",
         "description": "Convida les persones que treballen aquí. Rebran un correu i podran fitxar, prendre comandes i veure els seus torns."
       },
       "invitations": {
@@ -5386,6 +5393,7 @@
   "alerts_page": {
     "title": "Alertes i avisos",
     "subtitle": "Problemes de configuració que podrien estar bloquejant comandes o altres processos del negoci.",
+    "view_all": "Veure totes les alertes",
     "tabs": {
       "all": "Totes",
       "floor_plan": "Plànol de sala",

@@ -153,12 +153,12 @@ const PlansPage: React.FC = () => {
                     {t("plans_page.confirm_trial_prefix")} <strong>{confirmPack?.name}</strong> {t("plans_page.confirm_trial_immediately")}
                     {trialEndsAt ? ` (${t("plans_page.confirm_trial_ends", { date: dayjs(trialEndsAt).format("DD/MM/YYYY") })})` : ""}.
                     {" "}{t("plans_page.confirm_trial_after")}{" "}
-                    <strong>{confirmPack?.getFormattedPrice()} {confirmPack?.getPlanDuration()}</strong>.
+                    <strong>{confirmPack?.getFormattedPrice(i18n.language)} {confirmPack?.getPlanDuration(t)}</strong>.
                   </>
                 ) : (
                   <>
                     {t("plans_page.confirm_prefix")} <strong>{confirmPack?.name}</strong> {t("plans_page.confirm_immediately")}{" "}
-                    <strong>{confirmPack?.getFormattedPrice()} {confirmPack?.getPlanDuration()}</strong>.
+                    <strong>{confirmPack?.getFormattedPrice(i18n.language)} {confirmPack?.getPlanDuration(t)}</strong>.
                   </>
                 )}
               </span>
@@ -283,7 +283,7 @@ const PlansPage: React.FC = () => {
                   <p className="text-4xl font-bold mb-1">
                     {formatCurrency(pack.getTotalPrice(businessCount), pack.currency, i18n.language)}
                   </p>
-                  <p className="text-muted-foreground text-sm">{pack.getPlanDuration()}</p>
+                  <p className="text-muted-foreground text-sm">{pack.getPlanDuration(t)}</p>
                   {exceedsMax ? (
                     <p className="text-xs text-destructive mt-1 font-medium flex items-center justify-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" />

@@ -3,6 +3,9 @@ import { useEffect, useRef } from "react";
 import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from "vike/client/router";
 import { useTranslation } from "react-i18next";
+import { normalizeLang } from "../../translations/supportedLanguages.js";
+
+const GSI_SCRIPT_ID = "gsi-client-script";
 
 interface GoogleLoginButtonProps {
     // Signup-only gate: when provided, a click is intercepted (the real
@@ -23,7 +26,7 @@ export default function GoogleLoginButton({ termsAccepted, onBlockedByTerms }: G
         loggingInWithGoogle
     } = useAuth();
     const { urlParsed } = usePageContext();
-    const { t } = useTranslation("auth");
+    const { t, i18n } = useTranslation("auth");
 
     const origin = urlParsed.search.origin || '/';
     const packId = urlParsed.search.packId;
@@ -54,27 +57,68 @@ export default function GoogleLoginButton({ termsAccepted, onBlockedByTerms }: G
         });
     };
 
+    const renderGoogleButton = () => {
+        window.google.accounts.id.initialize({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            callback: handleLogin,
+        });
+
+        const container = document.getElementById("googleBtn");
+        if (container) container.innerHTML = "";
+
+        window.google.accounts.id.renderButton(
+            container!,
+            {
+                theme: "outline",
+                size: "large",
+                width: "100%",   // ⬅ full width!
+            }
+        );
+    };
+
+    const isFirstRenderRef = useRef(true);
+
     useEffect(() => {
+        // First mount: the GSI script is already on the page (see +Head.tsx, which sets
+        // its `hl` from the same language cookie this component reads via i18n.language),
+        // so just wait for it to finish loading.
+        if (isFirstRenderRef.current) {
+            isFirstRenderRef.current = false;
+            const interval = setInterval(() => {
+                if (window.google) {
+                    renderGoogleButton();
+                    clearInterval(interval);
+                }
+            }, 200);
+            return () => clearInterval(interval);
+        }
+
+        // P1-8 (QA round 6, 2026-11-20): the GSI script only reads `hl` once, at the time
+        // it's loaded — switching language in-app (LanguageSwitcher) re-renders every i18n-
+        // aware component but never touches this already-loaded script, so the Google
+        // button kept showing whatever language was active on first page load. Reloading
+        // the script with the new `hl` and re-running initialize/renderButton is the only
+        // way to actually change it after the fact — Google doesn't expose a per-call
+        // locale option.
+        const hl = normalizeLang(i18n.language ?? "en").split("-")[0];
+        document.getElementById(GSI_SCRIPT_ID)?.remove();
+        delete (window as any).google;
+
+        const script = document.createElement("script");
+        script.id = GSI_SCRIPT_ID;
+        script.src = `https://accounts.google.com/gsi/client?hl=${hl}`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+
         const interval = setInterval(() => {
             if (window.google) {
-                window.google.accounts.id.initialize({
-                    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-                    callback: handleLogin,
-                });
-
-                window.google.accounts.id.renderButton(
-                    document.getElementById("googleBtn")!,
-                    {
-                        theme: "outline",
-                        size: "large",
-                        width: "100%",   // ⬅ full width!
-                    }
-                );
-
+                renderGoogleButton();
                 clearInterval(interval);
             }
         }, 200);
-    }, []);
+        return () => clearInterval(interval);
+    }, [i18n.language]);
 
     const isBlocked = requiresTerms && !termsAccepted;
 

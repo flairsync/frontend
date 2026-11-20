@@ -466,6 +466,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                            pattern already used for the map below. */
                         onSelect={handleAddressSelect}
                         country={country}
+                        placeholder={t("create_business_page.step3.search_address_placeholder")}
+                        noCountryMessage={t("create_business_page.step3.select_country_first_placeholder")}
                     />
 
                     <Button

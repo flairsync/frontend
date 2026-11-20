@@ -28,7 +28,8 @@ import { usePageContext } from "vike-react/usePageContext";
 import { useBusinessEmployees } from "@/features/business/employment/useBusinessEmployees";
 import { useBusinessEmployeeOps } from "@/features/business/employment/useBusinessEmployeeOps";
 import { useMyBusiness } from "@/features/business/useMyBusiness";
-import { getCurrencySymbol } from "@/utils/currency";
+import { toIsoCurrencyCode } from "@/utils/currency";
+import { formatCurrency } from "@/lib/formatCurrency";
 import { Badge } from "@/components/ui/badge";
 import { BusinessEmployee } from "@/models/business/BusinessEmployee";
 import { EditStaffRolesModal } from "@/components/management/staff/EditStaffRolesModal";
@@ -54,9 +55,9 @@ const EditableHourlyRate = ({
   initialRate,
   onSave,
   isUpdating,
-  currency = "€",
+  currency = "EUR",
 }: EditableHourlyRateProps) => {
-  const { t } = useTranslation("management");
+  const { t, i18n } = useTranslation("management");
   const [isEditing, setIsEditing] = useState(false);
   const [rate, setRate] = useState(initialRate.toString());
 
@@ -103,7 +104,7 @@ const EditableHourlyRate = ({
         className="cursor-pointer hover:underline decoration-dotted"
         onClick={() => setIsEditing(true)}
       >
-        {initialRate > 0 ? `${initialRate}${currency}` : `0${currency}`}
+        {formatCurrency(initialRate || 0, currency, i18n.language)}
       </span>
       {(!initialRate || initialRate === 0) && (
         <TooltipProvider>
@@ -167,7 +168,7 @@ const StaffSection = () => {
   } = useBusinessEmployeeOps(routeParams.id);
 
   const { myBusinessFullDetails } = useMyBusiness(routeParams.id);
-  const currency = getCurrencySymbol(myBusinessFullDetails?.currency);
+  const currency = toIsoCurrencyCode(myBusinessFullDetails?.currency);
 
   const [selectedStaff, setSelectedStaff] = useState<BusinessEmployee | null>(null);
   const [editingSettingsStaff, setEditingSettingsStaff] = useState<BusinessEmployee | null>(null);
@@ -417,7 +418,11 @@ const StaffSection = () => {
           </ResponsiveList>
           {!isPending && otherStaffCount === 0 && (employees?.length ?? 0) > 0 && (
             <div className="mt-3 rounded-xl border border-dashed p-6 text-center">
-              <p className="text-sm font-medium">{t("simple_mode.empty.team.title")}</p>
+              {/* P1-9 (QA round 6, 2026-11-20): this banner shows alongside the owner's own
+                  row, not instead of an empty list — "No one on the team yet" read as if the
+                  page were broken when it wasn't. owner_only_title is the same prompt for the
+                  accurate situation: the owner exists, no one else has been invited yet. */}
+              <p className="text-sm font-medium">{t("simple_mode.empty.team.owner_only_title")}</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("simple_mode.empty.team.description")}</p>
               <Button className="mt-3 gap-2" onClick={() => setTimeout(() => emitAction({ tab: "invitations", action: "invite" }), 0)}>
                 <UserPlus className="h-4 w-4" />

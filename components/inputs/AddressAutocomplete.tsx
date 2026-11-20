@@ -21,6 +21,11 @@ interface AddressDetails {
 interface AddressAutocompleteProps {
     onSelect: (address: AddressDetails) => void;
     placeholder?: string;
+    // P1-12 (QA round 6, 2026-11-20): this component had no i18n of its own and no way for
+    // a caller to supply translated copy for its "no country selected yet" fallback — the
+    // caller already has the right translated string (BusinessLocationPicker does), it just
+    // wasn't being passed in.
+    noCountryMessage?: string;
     country?: PlatformCountry
 }
 
@@ -36,6 +41,7 @@ function useDebouncedValue<T>(value: T, delayMs: number): T {
 export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     onSelect,
     placeholder = 'Search address...',
+    noCountryMessage = 'Please select a country first',
     country
 }) => {
     const [query, setQuery] = useState('');
@@ -91,7 +97,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     };
 
     if (!country) return <>
-        Please select a country first
+        {noCountryMessage}
     </>
     return (
         <div className="relative w-full">

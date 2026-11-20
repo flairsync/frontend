@@ -3394,6 +3394,7 @@
       "type_city_placeholder": "Saisissez le nom de la ville",
       "select_country_first_placeholder": "Sélectionnez d'abord un pays",
       "search_address_label": "Rechercher une adresse",
+      "search_address_placeholder": "Rechercher une adresse...",
       "use_my_location_title": "Utiliser ma position",
       "address_label": "Adresse",
       "street_address_placeholder": "Adresse (pré-remplie ou saisie manuellement)",
@@ -3786,6 +3787,11 @@
     "download_pdf": "Télécharger le PDF"
   },
   "plans_page": {
+    "duration": {
+      "monthly": "par mois",
+      "quarterly": "par trimestre",
+      "yearly": "par an"
+    },
     "current_plan": "Formule actuelle",
     "upgrade": "Améliorer",
     "downgrade": "Rétrograder",
@@ -5165,6 +5171,7 @@
       },
       "team": {
         "title": "Personne dans l'équipe",
+        "owner_only_title": "Aucun membre du personnel invité pour l'instant",
         "description": "Invitez les personnes qui travaillent ici. Elles recevront un e-mail et pourront pointer, prendre les commandes et voir leurs services."
       },
       "invitations": {
@@ -5386,6 +5393,7 @@
   "alerts_page": {
     "title": "Alertes et avertissements",
     "subtitle": "Problèmes de configuration qui pourraient bloquer les commandes ou d'autres processus de votre établissement.",
+    "view_all": "Voir toutes les alertes",
     "tabs": {
       "all": "Tout",
       "floor_plan": "Plan de salle",

@@ -60,7 +60,7 @@ const SupportPage: React.FC = () => {
   const contactDetails = [
     { icon: Mail, label: t("support_page.contact.email_label"), value: "info@flairsync.com" },
     { icon: Phone, label: t("support_page.contact.phone_label"), value: "+376 123 456" },
-    { icon: MapPin, label: t("support_page.contact.address_label"), value: "Andorra La Vella, AD500, Andorra" },
+    { icon: MapPin, label: t("support_page.contact.address_label"), value: t("footer.contact_address_line1") },
   ];
 
   useEffect(() => {

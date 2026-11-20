@@ -126,7 +126,7 @@ const LandingPricingSection = () => {
                                 (DB-driven included/extra businesses), not a flat "/ business" rate
                                 that doesn't match how packs with includedBusinesses > 1 actually
                                 bill — this used to claim "{{price}} / business / {{period}}". */}
-                            {isFree ? t('landing_page.pricing.free_price') : t('landing_page.pricing.price_per_period', { price: pack.getFormattedPrice(), period: periodSuffix })}
+                            {isFree ? t('landing_page.pricing.free_price') : t('landing_page.pricing.price_per_period', { price: pack.getFormattedPrice(i18n.language), period: periodSuffix })}
                         </h2>
                     </div>
                     {!isFree && (
