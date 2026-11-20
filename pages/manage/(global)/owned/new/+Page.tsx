@@ -122,6 +122,14 @@ export default function CreateNewBusiness() {
     const { openUpgradeModal } = useSubscriptionStore();
 
     const [step, setStep] = useState(0);
+    // P1-6 (QA round 6, 2026-11-20): window.scrollTo below never actually moved anything —
+    // this page lives inside the manage layout's own `overflow-y-auto` container
+    // ((global)/+Layout.tsx), not the window, so the window was never the thing scrolled in
+    // the first place. Steps 1/2/4 are short enough to rarely need a scroll reset to begin
+    // with, which is why only step 3 (country/address/map) made the bug visible. Scrolling
+    // this ref via scrollIntoView finds whatever the real scrolling ancestor is instead of
+    // assuming it's the window.
+    const topRef = useRef<HTMLDivElement>(null);
     // P1-10 (QA round 4, 2026-11-19): auto-set the kitchen default on every type change —
     // not just turn it off for no-kitchen types — until the user manually touches the
     // toggle, so switching Coffee Shop -> Restaurant restores it instead of leaving it off.
@@ -140,8 +148,12 @@ export default function CreateNewBusiness() {
     // the page's height after this first scroll, pushing the viewport back down — the second,
     // delayed scroll (after its mount/transition settles) is a safety net for that.
     useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        const timeout = setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 350);
+        const scrollToTop = () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        scrollToTop();
+        const timeout = setTimeout(scrollToTop, 350);
         return () => clearTimeout(timeout);
     }, [step]);
 
@@ -190,7 +202,7 @@ export default function CreateNewBusiness() {
     }
 
     return (
-        <div className="flex justify-center py-10 px-4">
+        <div className="flex justify-center py-10 px-4" ref={topRef}>
             <Card className="w-full max-w-2xl shadow-xl rounded-2xl">
                 <CardHeader className="text-center">
                     <CardTitle className="text-2xl font-bold">

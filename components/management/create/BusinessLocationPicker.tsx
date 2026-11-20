@@ -460,6 +460,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                 </Label>
                 <div className="flex gap-2">
                     <AddressAutocomplete
+                        key={country?.code} /* P1-7 (QA round 6, 2026-11-20): remount on country change so its
+                           internal query text (otherwise unreset — it has no external value/reset prop)
+                           doesn't carry over from the previous country. Same remount-on-country-change
+                           pattern already used for the map below. */
                         onSelect={handleAddressSelect}
                         country={country}
                     />
