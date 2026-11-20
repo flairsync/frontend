@@ -42,8 +42,11 @@ export const useBusinessOps = () => {
       lng: input.location?.lng ?? undefined,
 
       // social links
+      // P1-8 (QA round 6, 2026-11-20): website was never included here at all (facebook/
+      // instagram were), so it was silently dropped on submit regardless of normalization.
       facebook: normalizeUrl(input.links?.facebook),
       instagram: normalizeUrl(input.links?.instagram),
+      website: normalizeUrl(input.links?.website),
 
       // opening hours
       openingHours: (input.workTimes || []).map(

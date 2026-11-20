@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { normalizeUrl } from "@/utils/url-utils";
 import { Facebook, Instagram, Globe } from "lucide-react";
 
 interface SocialLinks {
@@ -27,6 +28,21 @@ const BusinessSocialLinksInput: React.FC<SocialLinksInputProps> = ({
         (field: keyof SocialLinks) =>
             (e: React.ChangeEvent<HTMLInputElement>) => {
                 onChange({ ...values, [field]: e.target.value });
+            };
+
+    // P1-8 (QA round 6, 2026-11-20): "www.example.com" is accepted, but https:// was never
+    // actually prepended anywhere the person could see — only at submit time, and only for
+    // facebook/instagram (see useBusinessOps.ts), not website at all. Normalizing on blur
+    // gives immediate visual feedback for all three fields; mapBusinessFormToCreateBusinessDto
+    // still normalizes again before submit as a backstop (e.g. a submit that doesn't blur
+    // the field first).
+    const handleBlur =
+        (field: keyof SocialLinks) =>
+            (e: React.FocusEvent<HTMLInputElement>) => {
+                const normalized = normalizeUrl(e.target.value);
+                if (normalized !== values[field]) {
+                    onChange({ ...values, [field]: normalized ?? "" });
+                }
             };
 
     const links = [
@@ -70,6 +86,7 @@ const BusinessSocialLinksInput: React.FC<SocialLinksInputProps> = ({
                             placeholder={link.placeholder}
                             value={values[link.key] || ""}
                             onChange={handleChange(link.key)}
+                            onBlur={handleBlur(link.key)}
                             className="w-full"
                         />
                     </div>
