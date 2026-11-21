@@ -2,7 +2,7 @@
 // translations/i18n.ts (the stateful i18next singleton) AND from pages/+config.ts, which
 // Vike may statically analyse/evaluate outside a normal runtime, where importing a module
 // that calls i18next.init() at import time would be unsafe.
-export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca"] as const;
+export const SUPPORTED_LANGUAGES = ["en", "fr-FR", "es-ES", "ca", "it"] as const;
 
 // Maps a base subtag (from a browser Accept-Language value, or a cookie set before this
 // project switched to full BCP-47 tags matching Tolgee's project languages) to the supported
@@ -13,6 +13,7 @@ const BASE_LANG_MAP: Record<string, (typeof SUPPORTED_LANGUAGES)[number]> = {
   es: "es-ES",
   ca: "ca",
   cat: "ca",
+  it: "it",
 };
 
 export function normalizeLang(lang: string): (typeof SUPPORTED_LANGUAGES)[number] {

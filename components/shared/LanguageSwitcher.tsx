@@ -13,6 +13,7 @@ import EnFlag from "@/assets/flags/gb.svg";
 import FrFlag from "@/assets/flags/fr.svg";
 import EsFlag from "@/assets/flags/es.svg";
 import CatFlag from "@/assets/flags/ad.svg";
+import ItFlag from "@/assets/flags/it.svg";
 import { useTranslation } from "react-i18next";
 import { setLangCookie } from "@/utils/cookies";
 
@@ -23,6 +24,7 @@ const languages = [
     { code: "fr-FR", label: "Français", flag: FrFlag },
     { code: "es-ES", label: "Español", flag: EsFlag },
     { code: "ca", label: "Català", flag: CatFlag },
+    { code: "it", label: "Italiano", flag: ItFlag },
 ];
 
 

@@ -1,0 +1,185 @@
+{
+  "watcher": {
+    "seated_single": "Sei seduto: apri la modalità ospite",
+    "seated_multiple": "Sei seduto ({{count}})",
+    "open_diner_for": "Apri modalità ospite — {{businessId}}"
+  },
+  "call_waiter": {
+    "success_title": "Il cameriere è stato avvisato",
+    "success_description": "Qualcuno verrà da te a breve.",
+    "error_title": "Non siamo riusciti a contattare il personale",
+    "error_description": "Riprova oppure chiedi assistenza direttamente.",
+    "unavailable_title": "Nessun cameriere disponibile al momento",
+    "unavailable_description": "Chiedi assistenza direttamente, per favore.",
+    "calling": "Chiamata in corso…",
+    "notified_cooldown": "Cameriere avvisato ({{seconds}}s)",
+    "button_label": "Chiama il cameriere"
+  },
+  "cart_fab": {
+    "view_order": "Vedi ordine"
+  },
+  "guest_email_prompt": {
+    "title": "Vuoi restare aggiornato sul tuo ordine?",
+    "description": "Lascia la tua email, la useremo solo per contattarti riguardo a questo ordine. Del tutto facoltativo.",
+    "placeholder": "tu@esempio.com",
+    "submit": "Salva email",
+    "skip": "No, grazie",
+    "success": "Grazie! Useremo questa email per aggiornarti sul tuo ordine.",
+    "invalid": "Inserisci un indirizzo email valido."
+  },
+  "feedback": {
+    "prompt_title": "Com'è andata la tua visita?",
+    "prompt_description": "Ci farebbe piacere conoscere la tua esperienza: basta un minuto.",
+    "page_title": "Com'è andata la tua visita da {{businessName}}?",
+    "page_description": "Il tuo feedback ci aiuta a migliorare. Basta un minuto.",
+    "questions": {
+      "overall": "Nel complesso, com'è stata la tua esperienza?",
+      "food": "Qualità del cibo",
+      "service": "Servizio",
+      "ambiance": "Atmosfera e pulizia",
+      "value": "Rapporto qualità-prezzo",
+      "nps": "Quanto è probabile che ci raccomandi a un amico?",
+      "improve": "Cosa potremmo migliorare?",
+      "comment": "Vuoi dirci altro?"
+    },
+    "nps_not_likely": "Poco probabile",
+    "nps_very_likely": "Molto probabile",
+    "tags": {
+      "FOOD_TEMPERATURE": "Temperatura del cibo",
+      "ORDER_ACCURACY": "Precisione dell'ordine",
+      "WAIT_TIME": "Tempo di attesa",
+      "STAFF_FRIENDLINESS": "Cordialità del personale",
+      "CLEANLINESS": "Pulizia",
+      "NOISE_LEVEL": "Rumorosità",
+      "PRICE": "Prezzo",
+      "PORTION_SIZE": "Dimensione delle porzioni"
+    },
+    "comment_placeholder": "Dicci di più (opzionale)",
+    "submit": "Invia feedback",
+    "skip": "Non ora",
+    "success": "Grazie per il tuo feedback!",
+    "required_rating": "Valuta la tua esperienza complessiva.",
+    "not_found_title": "Non siamo riusciti a trovare questo ordine",
+    "not_found_description": "Questo link per il feedback potrebbe essere scaduto o essere già stato usato."
+  },
+  "layout": {
+    "tab_menu": "Menu",
+    "tab_my_order": "Il mio ordine",
+    "seated_at": "Sei seduto a {{name}}",
+    "table_fallback": "Tavolo {{number}}",
+    "exit": {
+      "title": "Grazie per aver cenato con noi!",
+      "subtitle": "La tua sessione è terminata. Speriamo che il pasto ti sia piaciuto!",
+      "leave_review": "Lascia una recensione",
+      "redirecting": "Ti riportiamo alla pagina iniziale in un momento: tocca ovunque per restare"
+    },
+    "order_ready": {
+      "title": "Il tuo ordine è pronto!",
+      "description": "Il tuo ordine è pronto per essere servito. Buon appetito!",
+      "dismiss": "Chiudi"
+    },
+    "tab_loyalty": "Punti"
+  },
+  "onboarding": {
+    "title": "Benvenuto! Ecco come funziona",
+    "step_1": "Tocca un piatto per aggiungerlo al tuo ordine",
+    "step_2": "Controlla tutto in \"Il mio ordine\"",
+    "step_3": "Invialo: inizieremo subito a prepararlo",
+    "got_it": "Capito"
+  },
+  "banner": {
+    "seated_title": "Sei seduto qui",
+    "active_order_title": "Hai un ordine attivo",
+    "seated_subtitle": "Passa alla modalità ospite per ordinare",
+    "active_order_subtitle": "Segui il tuo ordine in modalità ospite",
+    "enter_button": "Entra"
+  },
+  "my_order_tab": {
+    "status": {
+      "created": "Ordine ricevuto",
+      "accepted": "Ordine confermato",
+      "preparing": "In preparazione",
+      "ready": "Pronto da servire!",
+      "completed": "Buon appetito!",
+      "canceled": "Ordine annullato",
+      "rejected": "Ordine annullato"
+    },
+    "status_description": {
+      "created": "In attesa che il ristorante confermi il tuo ordine",
+      "accepted": "Confermato: la cucina inizierà a prepararlo a breve",
+      "preparing": "La cucina sta preparando il tuo ordine"
+    },
+    "empty_title": "Il tuo ordine è vuoto",
+    "empty_description": "Sfoglia il menu e aggiungi dei piatti per iniziare.",
+    "browse_menu": "Sfoglia il menu",
+    "payment_pending": "Pagamento in sospeso",
+    "your_order_heading": "Il tuo ordine",
+    "add_more": "Aggiungi altro",
+    "unnamed_item": "Piatto",
+    "items_to_add_heading": "Piatti da aggiungere",
+    "new_order_heading": "Nuovo ordine",
+    "items_count_one": "{{count}} piatto",
+    "items_count_other": "{{count}} piatti",
+    "subtotal": "Subtotale",
+    "placing_order": "Invio dell'ordine in corso…",
+    "add_to_existing_order": "Aggiungi all'ordine esistente",
+    "place_order": "Invia ordine",
+    "refresh": "Aggiorna",
+    "updated_just_now": "Aggiornato proprio ora",
+    "updated_seconds_ago_one": "Aggiornato {{count}} secondo fa",
+    "updated_seconds_ago_other": "Aggiornato {{count}} secondi fa",
+    "updated_minutes_ago_one": "Aggiornato {{count}} minuto fa",
+    "updated_minutes_ago_other": "Aggiornato {{count}} minuti fa"
+  },
+  "menu_item_sheet": {
+    "choose_variant": "Scegli una variante",
+    "choose_one": "Scegline uno",
+    "choose_up_to": "Fino a {{count}}",
+    "required": "Obbligatorio",
+    "min_selections_hint": "Seleziona almeno {{count}}",
+    "none": "Nessuno",
+    "special_instructions": "Richieste speciali",
+    "special_instructions_placeholder": "Es. senza cipolla, salsa extra…",
+    "add_to_order": "Aggiungi all'ordine · {{price}}"
+  },
+  "header": {
+    "table_label": "Tavolo {{table}}",
+    "leave_diner_mode": "Esci dalla modalità ospite"
+  },
+  "menu_tab": {
+    "unavailable": "Non disponibile",
+    "ordering_unavailable_title": "Ordini online non disponibili",
+    "ordering_unavailable_description": "Questo ristorante al momento non accetta ordini online: ordina tramite il tuo cameriere.",
+    "contains_allergens": "Contiene",
+    "includes_label": "Include"
+  },
+  "menu_page": {
+    "unavailable_title": "Menu non disponibile",
+    "unavailable_description": "Il menu non può essere caricato in questo momento.",
+    "retry": "Riprova"
+  },
+  "loyalty_page": {
+    "title": "Punti fedeltà",
+    "balance_label": "Il tuo saldo",
+    "points_suffix": "punti",
+    "enrolled_since": "Membro da {{date}}",
+    "not_enrolled_title": "Non ancora iscritto",
+    "not_enrolled_description": "Chiedi a un membro del personale di inviarti un invito per iscriverti al programma fedeltà la prossima volta che ordini.",
+    "login_required_title": "Accedi per vedere i tuoi punti",
+    "login_required_description": "I punti fedeltà sono legati al tuo account FlairSync.",
+    "login_button": "Accedi",
+    "activity_title": "Attività recente",
+    "activity_empty": "Nessuna attività per ora."
+  },
+  "errors": {
+    "order_already_joined": "Qualcuno a questo tavolo ha già avviato un ordine: ti sei unito a quello.",
+    "order_place_failed": "Impossibile inviare l'ordine. Riprova.",
+    "email_save_failed": "Impossibile salvare la tua email. Riprova.",
+    "feedback_submit_failed": "Impossibile inviare il feedback. Riprova.",
+    "invalid_link": {
+      "title": "Questo link non funziona",
+      "description": "Il codice QR o il link che hai usato non è più valido. Chiedi aiuto a un membro del personale.",
+      "home_link": "Vai alla pagina iniziale"
+    }
+  }
+}

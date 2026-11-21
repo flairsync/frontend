@@ -1,0 +1,373 @@
+{
+  "overview": {
+    "title": "Panoramica del profilo",
+    "joined_label": "Iscritto il",
+    "reservations_label": "Prenotazioni",
+    "meals_ordered_label": "Pasti ordinati",
+    "orders_chart_title": "Ordini al giorno (ultimi 30 giorni)"
+  },
+  "account_page": {
+    "title": "Account",
+    "subtitle": "Gestisci i dati del tuo account e le impostazioni di eliminazione.",
+    "export": {
+      "title": "Scarica i tuoi dati",
+      "description": "Richiedi una copia dei tuoi dati personali (articolo 20 del GDPR — diritto alla portabilità dei dati). L'esportazione include il tuo profilo, gli account collegati e lo storico degli abbonamenti in un archivio ZIP. Riceverai un'email con il link per scaricarlo.",
+      "ready": "La tua esportazione dei dati è pronta.",
+      "download_button": "Scarica i miei dati",
+      "link_expiry": "Il link di download scade 7 giorni dopo la generazione dell'esportazione.",
+      "preparing": "La tua esportazione è in preparazione. Ti scriveremo un'email quando sarà pronta.",
+      "requesting": "Richiesta in corso…",
+      "request_button": "Richiedi una copia dei miei dati",
+      "included_heading": "Cosa include l'esportazione:",
+      "included_profile": "informazioni dell'account, email, telefono, data di nascita, preferenze",
+      "included_social": "provider di accesso collegati",
+      "included_subscriptions": "storico degli abbonamenti",
+      "rate_limit": "È possibile richiedere un'esportazione ogni 30 giorni."
+    },
+    "delete": {
+      "title": "Elimina account",
+      "description": "Elimina il tuo account in modo permanente. Si avvia così un <b>periodo di tolleranza di 30 giorni</b> — puoi accedere di nuovo e annullare in qualsiasi momento durante quel periodo. Dopo 30 giorni i tuoi dati personali vengono rese anonime e non possono più essere recuperati.",
+      "what_gets_deleted_heading": "Cosa viene eliminato:",
+      "deleted_item_1": "Nome, indirizzo email, numero di telefono, data di nascita",
+      "deleted_item_2": "Avatar e foto del profilo",
+      "deleted_item_3": "Password e autenticazione a due fattori",
+      "what_is_kept_heading": "Cosa viene conservato (in forma anonima):",
+      "kept_item_1": "Storico degli abbonamenti — necessario per obblighi legali e fiscali",
+      "kept_item_2": "Storico di ordini e prenotazioni",
+      "delete_button": "Elimina il mio account",
+      "confirm_title": "Eliminare il tuo account?",
+      "confirm_description": "Il tuo account verrà eliminato definitivamente dopo <b>30 giorni</b>. Puoi annullare l'operazione entro i 30 giorni accedendo di nuovo.",
+      "no_refund_notice": "Il tuo abbonamento non verrà rimborsato.",
+      "cancel": "Annulla",
+      "processing": "Elaborazione in corso…",
+      "confirm_button": "Sì, elimina il mio account"
+    }
+  },
+  "profile_info_settings": {
+    "title": "Informazioni del profilo",
+    "updated_toast": "Aggiornato",
+    "first_name": "Nome",
+    "last_name": "Cognome",
+    "phone_number": "Numero di telefono",
+    "date_of_birth": "Data di nascita",
+    "pick_a_date": "Scegli una data",
+    "gender": "Genere",
+    "select_gender": "Seleziona il genere",
+    "genders": {
+      "male": "Uomo",
+      "female": "Donna",
+      "non_binary": "Non binario",
+      "other": "Altro",
+      "prefer_not_to_say": "Preferisco non specificare"
+    },
+    "country": "Paese",
+    "select_country": "Seleziona il paese...",
+    "search_country": "Cerca paese...",
+    "no_country_found": "Nessun paese trovato.",
+    "coming_soon": "In arrivo",
+    "inactive": "(Non attivo)",
+    "update": "Aggiorna"
+  },
+  "account_verification": {
+    "title": "Verifica dell'account",
+    "verified": "Verificato",
+    "not_verified": "Non verificato",
+    "verify": "Verifica",
+    "add_phone": "Aggiungi telefono",
+    "email_address": "Indirizzo email",
+    "phone_number": "Numero di telefono",
+    "no_phone_number": "Nessun numero di telefono aggiunto",
+    "email_sent_toast": "Un'email di verifica è stata inviata a {{email}}.",
+    "add_phone_first_toast": "Aggiungi prima un numero di telefono nelle impostazioni del profilo.",
+    "sms_sent_toast": "Un SMS di verifica è stato inviato al numero {{phone}}."
+  },
+  "notification_preferences_settings": {
+    "title": "Notifiche",
+    "description": "Scegli come vuoi essere avvisato per ogni tipo di evento.",
+    "channels": {
+      "email": "Email",
+      "in_app": "In-app",
+      "push": "Push"
+    },
+    "groups": {
+      "orders_reservations": {
+        "title": "Ordini e prenotazioni",
+        "order": "Nuovi ordini",
+        "reservation": "Prenotazioni"
+      },
+      "scheduling_shifts": {
+        "title": "Turni e pianificazione",
+        "shift_published": "Turni pubblicati",
+        "shift_created": "Nuovo turno assegnato",
+        "shift_updated": "Turno aggiornato",
+        "shift_swap_request": "Richiesta di cambio turno",
+        "shift_swap_approved": "Cambio turno approvato",
+        "shift_no_show": "Assenza del personale",
+        "time_off_request": "Richiesta di permesso",
+        "time_off_approved": "Permesso approvato"
+      },
+      "attendance": {
+        "title": "Presenze",
+        "overdue": "Presenza in ritardo",
+        "auto_closed": "Presenza chiusa automaticamente"
+      },
+      "inventory_tasks": {
+        "title": "Magazzino e attività",
+        "low_stock": "Avvisi di scorte basse",
+        "task_assigned": "Attività assegnata",
+        "task_status_changed": "Stato dell'attività cambiato"
+      },
+      "team_organization": {
+        "title": "Team e organizzazione",
+        "announcement": "Comunicazioni",
+        "message": "Messaggi",
+        "join_request": "Richieste di adesione all'organizzazione",
+        "join_resolved": "Richiesta di adesione risolta"
+      },
+      "general": {
+        "title": "Generali",
+        "alert": "Avvisi generali",
+        "security": "Avvisi di sicurezza",
+        "promo": "Promozioni"
+      }
+    }
+  },
+  "marketing_settings": {
+    "title": "Marketing",
+    "marketing_emails": "Email di marketing",
+    "marketing_emails_description": "Ricevi novità, promozioni e offerte personalizzate.",
+    "save": "Salva",
+    "updated_toast": "Preferenze di marketing aggiornate.",
+    "error_toast": "Non è stato possibile salvare le preferenze. Riprova."
+  },
+  "privacy_settings": {
+    "title": "Privacy",
+    "show_full_name": "Mostra il nome completo nelle mie recensioni",
+    "show_full_name_description": "Le recensioni che pubblichi sono visibili a tutti. Se disattivato, mostriamo il tuo nome e l'iniziale del cognome invece del cognome completo.",
+    "save": "Salva",
+    "updated_toast": "Preferenze sulla privacy aggiornate.",
+    "error_toast": "Non è stato possibile salvare le preferenze. Riprova."
+  },
+  "password_settings": {
+    "title": "Cambia password",
+    "current_password": "Password attuale",
+    "current_password_placeholder": "Inserisci la password attuale",
+    "new_password": "Nuova password",
+    "new_password_placeholder": "Nuova password",
+    "confirm_new_password": "Confermi nuova password",
+    "confirm_new_password_placeholder": "Confermi la nuova password",
+    "save": "Salva",
+    "error_title": "Errore nell'aggiornamento della password"
+  },
+  "profile_tfa_settings": {
+    "title": "Autenticazione a due fattori (2FA)",
+    "description": "L'autenticazione a due fattori (2FA) aggiunge un ulteriore livello di sicurezza al tuo account. Dopo aver inserito la password, ti verrà chiesto un codice temporaneo generato da un'app di autenticazione (come Google Authenticator). Questo garantisce che solo tu possa accedere al tuo account, anche se qualcun altro conosce la tua password.",
+    "secret_copied": "Chiave segreta copiata",
+    "link_copied": "Link di configurazione copiato",
+    "copy_failed": "Non è stato possibile copiare negli appunti",
+    "backup_codes_downloaded": "Nuovi codici di backup scaricati. I codici precedenti non sono più validi.",
+    "save_backup_codes_title": "Salva i tuoi codici di backup",
+    "save_backup_codes_description": "Questi sono i tuoi codici di recupero 2FA. Conservali in un luogo sicuro.",
+    "codes_not_shown_again": "Questi codici non verranno mostrati di nuovo. Salvali adesso.",
+    "downloading": "Scaricamento in corso…",
+    "download_as_pdf": "Scarica come PDF",
+    "saved_codes_acknowledgement": "Ho salvato i miei codici di backup",
+    "done": "Fatto",
+    "regenerate_confirm_title": "Rigenerare i codici di backup?",
+    "regenerate_confirm_description": "Questo invaliderà i codici di backup esistenti. Un nuovo set verrà scaricato in PDF.",
+    "cancel": "Annulla",
+    "continue": "Continua",
+    "backup_codes": "Codici di backup",
+    "backup_codes_description": "Scarica un nuovo set di codici di recupero. I codici precedenti verranno invalidati.",
+    "regen_rate_limit_hint": "Puoi rigenerare i codici di backup una volta all'ora",
+    "regenerate_backup_codes": "Rigenera codici di backup",
+    "setup_2fa": "Configura autenticazione a due fattori",
+    "enable_2fa_title": "Attiva autenticazione a due fattori",
+    "enable_2fa_description": "Scansiona il codice QR qui sotto con la tua app di autenticazione (Google Authenticator, Authy, ecc.), poi inserisci il codice a 6 cifre per verificare la configurazione.",
+    "cant_scan": "Non riesci a scansionare? Inserisci questo codice manualmente",
+    "same_phone_hint": "Sei sullo stesso telefono della tua app di autenticazione?",
+    "copy_setup_link": "Copia link di configurazione",
+    "enter_code": "Inserisci il codice a 6 cifre",
+    "verify": "Verifica"
+  },
+  "disable_tfa_notice": {
+    "title": "Autenticazione a due fattori attivata",
+    "description": "Disattivando la 2FA rimuoverai il livello extra di sicurezza dal tuo account. Dopo questa azione ti basterà la password per accedere.",
+    "disabling": "Disattivazione in corso...",
+    "disable": "Disattiva 2FA"
+  },
+  "session_management_settings": {
+    "title": "Sessioni attive",
+    "no_active_sessions": "Nessuna sessione attiva.",
+    "unknown_device": "Dispositivo sconosciuto",
+    "unknown_location": "Posizione sconosciuta",
+    "last_active": "Ultima attività",
+    "unknown": "Sconosciuto",
+    "current_session": "Sessione attuale",
+    "trusted_device": "Dispositivo attendibile",
+    "disconnect": "Disconnetti"
+  },
+  "danger_zone_settings": {
+    "title": "Zona pericolosa",
+    "delete_account": "Elimina account",
+    "delete_account_description": "Elimina il tuo account in modo permanente. Hai 30 giorni di tempo per annullare dopo aver richiesto l'eliminazione.",
+    "delete_my_account": "Elimina il mio account",
+    "confirm_title": "Eliminare il tuo account?",
+    "confirm_intro_prefix": "Il tuo account verrà eliminato definitivamente dopo",
+    "thirty_days": "30 giorni",
+    "confirm_intro_suffix": "Puoi annullare l'operazione entro i 30 giorni accedendo di nuovo.",
+    "no_refund": "Il tuo abbonamento non verrà rimborsato.",
+    "what_gets_deleted": "Cosa viene eliminato:",
+    "deleted_items": {
+      "identity": "Nome, email, numero di telefono, data di nascita",
+      "avatar": "Avatar e foto del profilo",
+      "security": "Password e impostazioni 2FA"
+    },
+    "what_is_kept": "Cosa viene conservato (in forma anonima):",
+    "kept_items": {
+      "subscription_history": "Storico degli abbonamenti (obblighi legali e fiscali)",
+      "order_reservation_history": "Storico di ordini e prenotazioni"
+    },
+    "cancel": "Annulla",
+    "processing": "Elaborazione in corso…",
+    "confirm_delete": "Sì, elimina il mio account"
+  },
+  "profile_preferences_settings": {
+    "title": "Preferenze di marketing",
+    "receive_marketing_emails": "Ricevi email di marketing"
+  },
+  "preferences_page": {
+    "restaurant_types": {
+      "halal": "Halal",
+      "vegan": "Vegano",
+      "glutenFree": "Senza glutine"
+    },
+    "theme_saved": "Tema salvato: {{theme}}",
+    "dark": "Scuro",
+    "light": "Chiaro",
+    "selected_types": "Tipi selezionati: {{types}}",
+    "max_distance_saved": "Distanza massima: {{distance}} km",
+    "theme": "Tema",
+    "dark_mode": "Modalità scura",
+    "save": "Salva",
+    "restaurant_types_title": "Tipi di ristorante",
+    "max_distance": "Distanza massima",
+    "maximum_distance": "Distanza massima: {{distance}} km"
+  },
+  "my_jobs": {
+    "tabs_page": {
+      "title": "Lavori",
+      "tab_applications": "Le mie candidature",
+      "tab_invitations": "Inviti"
+    },
+    "applications": {
+      "tabs": {
+        "all": "Tutte",
+        "pending": "In attesa",
+        "reviewed": "Esaminate",
+        "shortlisted": "Preselezionate",
+        "accepted": "Accettate",
+        "rejected": "Respinte"
+      },
+      "loading": "Caricamento candidature...",
+      "empty_title": "Ancora nessuna candidatura",
+      "empty_description": "Non ti sei ancora candidato per nessuna posizione.",
+      "browse_open_jobs": "Guarda le posizioni aperte →",
+      "status": {
+        "pending": "Candidatura ricevuta",
+        "reviewed": "In fase di valutazione",
+        "shortlisted": "Sei stato preselezionato!",
+        "accepted": "Sei stato accettato!",
+        "hired": "Ora fai parte del team!",
+        "rejected": "Non selezionato"
+      },
+      "job_position_fallback": "Posizione",
+      "staff_invite_sent": "Invito al personale inviato",
+      "applied_prefix": "Candidatura inviata il {{date}}",
+      "view_details": "Vedi i dettagli",
+      "previous": "Precedente",
+      "next": "Successivo",
+      "page_of": "Pagina {{page}} di {{totalPages}}"
+    },
+    "invitations": {
+      "loading": "Caricamento inviti...",
+      "empty_title": "Nessun invito",
+      "empty_description": "Quando un'attività ti invita a entrare nel suo team, apparirà qui.",
+      "status": {
+        "PENDING": "In attesa",
+        "ACCEPTED": "Accettato",
+        "DECLINED": "Rifiutato",
+        "EXPIRED": "Scaduto",
+        "CANCELLED": "Annullato"
+      },
+      "business_fallback": "Un'attività",
+      "invited_to_join": "Invitato a entrare nel team",
+      "expires_on": "Scade il {{date}}",
+      "accepted_on": "Accettato il {{date}}",
+      "declined_on": "Rifiutato il {{date}}",
+      "sent_on": "Inviato il {{date}}",
+      "accept": "Accetta",
+      "decline": "Rifiuta"
+    },
+    "detail": {
+      "not_found_title": "Candidatura non trovata",
+      "not_found_description": "Non è stato possibile trovare questa candidatura. Potrebbe essere stata rimossa.",
+      "resume_title": "Curriculum",
+      "view_resume": "Visualizza curriculum",
+      "cover_letter_title": "Lettera di presentazione",
+      "timeline_title": "Cronologia della candidatura",
+      "job_position_fallback": "Posizione",
+      "applied_on": "Candidatura inviata il {{date}}",
+      "view_job_listing": "Vedi l'offerta di lavoro",
+      "invite_banner_title": "Sei stato invitato a entrare nel team!",
+      "invite_banner_description": "Un invito per il personale è stato inviato il {{date}}. Controlla la tua casella email.",
+      "hired_banner_title": "Ora fai parte del team!",
+      "hired_banner_description": "Il tuo inserimento è stato configurato. Benvenuto a bordo!"
+    },
+    "legacy_list_page": {
+      "title": "Candidature",
+      "back_to_applications": "Torna alle mie candidature"
+    },
+    "back_to_jobs": "Torna a Lavori"
+  },
+  "reservation_status": {
+    "pending": "In attesa",
+    "confirmed": "Confermata",
+    "seated": "Seduto",
+    "completed": "Completata",
+    "cancelled": "Annullata",
+    "no_show": "Mancata presentazione",
+    "expired": "Scaduta",
+    "waitlist": "Lista d'attesa",
+    "rejected": "Rifiutata"
+  },
+  "reservations_page": {
+    "title": "Le mie prenotazioni",
+    "tabs": {
+      "upcoming": "In arrivo",
+      "past": "Passate"
+    },
+    "empty_upcoming": "Non hai prenotazioni in arrivo.",
+    "empty_past": "Non hai prenotazioni passate.",
+    "guest_count_one": "{{count}} persona",
+    "guest_count_other": "{{count}} persone",
+    "restaurant_fallback": "Ristorante",
+    "page_of": "Pagina {{page}} di {{totalPages}}",
+    "track_button": "Segui",
+    "cancel_button": "Annulla"
+  },
+  "reservation_detail_page": {
+    "could_not_identify_restaurant": "Non è stato possibile identificare il ristorante di questa prenotazione.",
+    "back_to_reservations": "Torna alle prenotazioni",
+    "reservation_fallback": "Prenotazione",
+    "table_fallback": "Tavolo {{number}}",
+    "terminal_message": "Questa prenotazione è {{status}}.",
+    "cancel_dialog": {
+      "title": "Annulla prenotazione",
+      "description": "Sei sicuro di voler annullare questa prenotazione? Questa azione non può essere annullata.",
+      "back": "Indietro",
+      "cancelling": "Annullamento in corso…",
+      "confirm": "Sì, annulla"
+    }
+  }
+}

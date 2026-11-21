@@ -1,0 +1,423 @@
+{
+  "staff_pin_screen": {
+    "title": "Accesso personale",
+    "subtitle": "Inserisci il tuo PIN a 4 cifre",
+    "verifying": "Verifica in corso...",
+    "clock_via_qr_button": "Timbra entrata/uscita con QR",
+    "errors": {
+      "incorrect_pin": "PIN errato",
+      "no_access": "Non hai accesso a questo terminale",
+      "terminal_locked": "Terminale bloccato per 15 minuti",
+      "connection_failed": "Impossibile contattare il server — controlla la connessione e riprova"
+    }
+  },
+  "product_card": {
+    "from_price": "Da {{price}}",
+    "unavailable": "Non disponibile",
+    "contains_allergens": "Contiene: {{list}}",
+    "allergens_label": "Contiene",
+    "includes_label": "Include"
+  },
+  "item_config_modal": {
+    "default_description": "Personalizza il tuo piatto",
+    "choose_variant": "Scegli taglia/variante",
+    "base_item": "Articolo base",
+    "optional": "(Facoltativo)",
+    "required": "(Obbligatorio)",
+    "min_selections_hint": "Seleziona almeno {{count}}",
+    "none": "Nessuno",
+    "quantity": "Quantità",
+    "notes_label": "Note",
+    "notes_placeholder": "Es. senza cipolla, extra piccante...",
+    "total": "Totale",
+    "cancel": "Annulla",
+    "add_to_order": "Aggiungi all'ordine"
+  },
+  "discount_panel": {
+    "discount_applied": "Sconto applicato",
+    "mode": {
+      "code": "Codice sconto",
+      "manual": "Importo manuale"
+    },
+    "code_placeholder": "Inserisci il codice sconto",
+    "amount_placeholder": "Importo (€)",
+    "reason_placeholder": "Motivo (obbligatorio)",
+    "applying": "Applicazione in corso...",
+    "apply_button": "Applica sconto",
+    "errors": {
+      "amount_must_be_positive": "Lo sconto deve essere 0 o maggiore",
+      "exceeds_total": "Lo sconto non può superare il totale dell'ordine",
+      "apply_failed": "Non è stato possibile applicare lo sconto"
+    }
+  },
+  "receipt": {
+    "print_title": "Ricevuta",
+    "thank_you": "Grazie per averci scelto!",
+    "fields": {
+      "receipt": "Ricevuta",
+      "invoice_number": "Fattura n.",
+      "date": "Data",
+      "type": "Tipo",
+      "table": "Tavolo",
+      "subtotal": "Subtotale",
+      "discount": "Sconto",
+      "total": "Totale",
+      "tax_included_suffix": "incl.",
+      "tendered": "Contante versato",
+      "change": "Resto",
+      "tip": "Mancia",
+      "balance_due": "Saldo da pagare"
+    },
+    "actions": {
+      "print": "Stampa",
+      "pdf": "PDF",
+      "new_order": "Nuovo ordine",
+      "close": "Chiudi"
+    }
+  },
+  "confirmation_modal": {
+    "confirm": "Confermi",
+    "cancel": "Annulla"
+  },
+  "order_cart": {
+    "header": {
+      "active_order": "Ordine in corso",
+      "operator": "Operatore: {{name}}",
+      "no_staff_logged_in": "Nessun membro del personale ha effettuato l'accesso",
+      "discard": "Elimina",
+      "collapse": "Nascondi il carrello"
+    },
+    "sections": {
+      "items": "Articoli dell'ordine ({{count}})",
+      "totals": "Totale e pagamento"
+    },
+    "mode": {
+      "dine_in": "Al tavolo",
+      "takeaway": "Da asporto"
+    },
+    "table": {
+      "location": "Posizione",
+      "assign_a_table": "Assegna un tavolo",
+      "change": "Cambia"
+    },
+    "empty": {
+      "title": "Terminale vuoto",
+      "description": "Aggiungi articoli per iniziare un ordine"
+    },
+    "item": {
+      "price_per_unit": "{{price}} / unità"
+    },
+    "kitchen_note": {
+      "label": "Nota per la cucina / informazioni allergie",
+      "placeholder": "Es. grave allergia alla frutta a guscio al tavolo"
+    },
+    "tax_exempt": "Esente IVA",
+    "validation": {
+      "table_required": "Per continuare devi assegnare un tavolo.",
+      "ready_for_kitchen": "Articoli pronti per l'invio in cucina."
+    },
+    "totals": {
+      "subtotal": "Subtotale",
+      "tax": "IVA",
+      "tax_exempt": "IVA (esente)",
+      "tax_with_rate": "IVA ({{rate}}%)",
+      "total_amount": "Importo totale"
+    },
+    "actions": {
+      "cart_empty": "Il carrello è vuoto",
+      "select_table": "Seleziona un tavolo",
+      "confirm_and_send": "Confermi e invia"
+    },
+    "payment": {
+      "cash_settle": "SALDA IN CONTANTI",
+      "card_settle": "SALDA CON CARTA"
+    }
+  },
+  "payment_modal": {
+    "method": {
+      "cash": "Contanti",
+      "card": "Carta"
+    },
+    "errors": {
+      "payment_failed": "Pagamento non riuscito. Riprova.",
+      "complete_failed": "Il pagamento è stato salvato, ma non è stato possibile completare l'ordine."
+    },
+    "success": {
+      "title": "Pagamento completato",
+      "processed_via": "Elaborato tramite {{method}}",
+      "total_charged": "Totale incassato",
+      "discount": "Sconto",
+      "cash_received": "Contante ricevuto",
+      "change_due": "Resto da dare",
+      "view_receipt": "Visualizza ricevuta",
+      "print_pdf": "Stampa PDF",
+      "new_order": "Nuovo ordine",
+      "email_receipt_label": "Inviare la ricevuta per email al cliente?",
+      "email_receipt_placeholder": "cliente@email.com",
+      "email_receipt_button": "Invia",
+      "email_receipt_sent": "Ricevuta inviata!",
+      "email_receipt_invalid": "Inserisci un indirizzo email valido",
+      "email_receipt_failed": "Non è stato possibile inviare la ricevuta via email",
+      "loyalty_label": "Programma fedeltà",
+      "loyalty_phone_placeholder": "Numero di telefono (facoltativo)",
+      "loyalty_check_button": "Verifica",
+      "loyalty_checking": "Verifica in corso...",
+      "loyalty_member": "Sta già accumulando punti!",
+      "loyalty_not_enrolled": "Non è ancora iscritto a questo programma fedeltà",
+      "loyalty_invite_button": "Invita a iscriversi",
+      "loyalty_invite_sending": "Invio dell'invito in corso...",
+      "loyalty_invite_sent": "Invito inviato!",
+      "loyalty_invite_email_required": "Per inviare il link d'invito è necessaria un'email",
+      "loyalty_invite_failed": "Non è stato possibile inviare l'invito",
+      "loyalty_lookup_missing_contact": "Inserisci prima un'email o un numero di telefono",
+      "loyalty_lookup_failed": "Non è stato possibile verificare lo stato fedeltà"
+    },
+    "confirm": {
+      "cash_payment": "Pagamento in contanti",
+      "card_payment": "Pagamento con carta",
+      "settle_order": "Salda ordine",
+      "total_due": "Totale da pagare",
+      "discount": "Sconto",
+      "split_bill": "Dividi il conto",
+      "cash_tendered": "Contante versato",
+      "change_amount": "Resto: {{amount}}",
+      "short_by_amount": "Mancano {{amount}}",
+      "present_card": "Avvicina o inserisci la carta nel terminale",
+      "processing": "Elaborazione in corso...",
+      "confirm_payment": "CONFERMA PAGAMENTO"
+    }
+  },
+  "keypad": {
+    "confirm": "Confermi"
+  },
+  "attendance_panel": {
+    "no_staff_logged_in": "Nessun membro del personale ha effettuato l'accesso",
+    "status": {
+      "clocked_in": "Turno iniziato",
+      "on_break": "In pausa",
+      "not_clocked_in": "Turno non iniziato"
+    },
+    "since": "Dalle {{time}} · {{elapsed}}",
+    "break_started": "Pausa iniziata alle {{time}} · {{elapsed}}",
+    "actions": {
+      "clock_in": "ENTRATA",
+      "break": "PAUSA",
+      "clock_out": "USCITA",
+      "end_break": "FINE PAUSA"
+    },
+    "toasts": {
+      "clocked_in": "Entrata registrata",
+      "clock_in_failed": "Registrazione entrata non riuscita",
+      "break_started": "Pausa iniziata",
+      "break_start_failed": "Avvio pausa non riuscito",
+      "clocked_out": "Uscita registrata",
+      "clock_out_failed": "Registrazione uscita non riuscita",
+      "break_ended": "Pausa terminata",
+      "break_end_failed": "Fine pausa non riuscita"
+    },
+    "todays_breaks": "Pause di oggi",
+    "ongoing": "in corso",
+    "break_type": {
+      "paid": "PAGATA",
+      "unpaid": "NON PAGATA"
+    }
+  },
+  "station_receipt": {
+    "print_title": "Ricevuta",
+    "unavailable": "Ricevuta non disponibile",
+    "thank_you": "Grazie!",
+    "print_station_error": "Impossibile contattare la stampante della postazione.",
+    "fields": {
+      "receipt": "Ricevuta",
+      "invoice_number": "Fattura n.",
+      "subtotal": "Subtotale",
+      "discount": "Sconto",
+      "tax_exempt": "IVA (esente)",
+      "tax_included_suffix": "incl.",
+      "total": "Totale",
+      "tendered": "Contante versato",
+      "change": "Resto",
+      "tip": "Mancia"
+    },
+    "actions": {
+      "print": "Stampa",
+      "print_station": "Stampa su stampante",
+      "new_order": "Nuovo ordine",
+      "close": "Chiudi"
+    }
+  },
+  "pos_mode_switcher": {
+    "modes": {
+      "terminal": "Terminale POS",
+      "kds": "Display cucina (KDS)"
+    },
+    "switch_device_role": "Cambia ruolo del dispositivo",
+    "split_mode_coming_soon": "Modalità divisione (in arrivo)"
+  },
+  "split_bill_panel": {
+    "all_checks_paid": "Tutti i conti sono stati pagati",
+    "complete_order": "Completa ordine",
+    "order_changed_since_split_title": "Il totale dell'ordine è cambiato da quando sono stati creati questi conti",
+    "order_changed_since_split_paid": "{{amount}} non è coperto da nessun conto. Poiché un conto è già stato pagato, le divisioni non possono essere riconfigurate — chiudi questo pannello e incassa {{amount}} come pagamento normale.",
+    "order_changed_since_split_unpaid": "{{amount}} non è coperto da nessun conto. Rimuovi le divisioni e riconfiguralo per includere i nuovi articoli.",
+    "checks_count_one": "{{count}} conto",
+    "checks_count_other": "{{count}} conti",
+    "cannot_remove_has_payment": "Impossibile rimuovere — è già stato registrato un pagamento",
+    "removing": "Rimozione in corso…",
+    "remove_split": "Rimuovi divisione",
+    "split_bill_button": "Dividi il conto",
+    "assign_items_heading": "Assegna gli articoli ai conti",
+    "assign_items_description": "Tocca l'etichetta di un conto accanto a ogni articolo. Tutti gli articoli devono essere assegnati.",
+    "checks_label": "Conti",
+    "unnamed_item": "Articolo",
+    "cancel": "Annulla",
+    "creating": "Creazione in corso…",
+    "confirm_split": "Confermi divisione",
+    "cash_tendered_placeholder": "Contante versato (min. {{amount}})",
+    "tip_placeholder": "Aggiungi mancia (facoltativo)",
+    "processing": "Elaborazione in corso…",
+    "charge_button": "Incassa {{amount}}",
+    "pay_check": "Paga conto",
+    "status": {
+      "paid": "Pagato",
+      "remaining": "{{amount}} rimanenti",
+      "unpaid": "Non pagato"
+    },
+    "errors": {
+      "create_failed": "Creazione delle divisioni non riuscita",
+      "remove_has_payment": "Impossibile rimuovere le divisioni — almeno un conto ha già un pagamento registrato",
+      "remove_failed": "Rimozione delle divisioni non riuscita",
+      "need_two_checks": "Assegna gli articoli ad almeno 2 conti diversi",
+      "label_too_long": "L'etichetta del conto deve avere massimo 60 caratteri",
+      "all_items_must_be_assigned": "Tutti gli articoli devono essere assegnati a un conto prima di dividere.",
+      "items_need_two_checks": "Gli articoli devono essere distribuiti su almeno 2 conti.",
+      "payment_failed": "Pagamento non riuscito"
+    }
+  },
+  "pos_app": {
+    "nav": {
+      "menu": "MENU",
+      "orders": "ORDINI",
+      "tables": "TAVOLI"
+    },
+    "titles": {
+      "lock_terminal": "Blocca terminale",
+      "drag_to_resize": "Trascina per ridimensionare",
+      "refresh_orders": "Aggiorna ordini",
+      "refresh_tables": "Aggiorna tavoli",
+      "expand_cart": "Mostra il carrello",
+      "collapse_filters": "Nascondi i filtri",
+      "expand_filters": "Mostra i filtri"
+    },
+    "sidebar": {
+      "category": "Categoria",
+      "floor": "Sala",
+      "filter": "Filtro",
+      "menu": "Menu",
+      "no_categories": "Nessuna categoria",
+      "all_floors": "Tutte le sale"
+    },
+    "order_filters": {
+      "all_active": "Tutti gli attivi",
+      "created": "Creato",
+      "accepted": "Accettato",
+      "preparing": "In preparazione",
+      "ready": "Pronto"
+    },
+    "menu_view": {
+      "search_placeholder": "Cerca nel menu...",
+      "no_menu_configured": "Nessun menu configurato",
+      "no_items_in_category": "Nessun articolo in questa categoria"
+    },
+    "orders_view": {
+      "active_orders": "Ordini attivi",
+      "total_count_one": "{{count}} totale",
+      "total_count_other": "{{count}} totali",
+      "no_active_orders": "Nessun ordine attivo",
+      "load_more": "Carica altri",
+      "no_matching_orders": "Nessun ordine corrisponde a questo filtro"
+    },
+    "tables_view": {
+      "select_a_table": "Seleziona un tavolo",
+      "no_tables_configured": "Nessun tavolo configurato",
+      "current": "Attuale",
+      "active_badge": "ATTIVO"
+    },
+    "table_status": {
+      "available": "Libero",
+      "occupied": "Occupato",
+      "reserved": "Riservato",
+      "cleaning": "Pulizia in corso",
+      "out_of_service": "Fuori servizio"
+    },
+    "order_card": {
+      "table": "Tavolo",
+      "takeaway": "Asporto",
+      "total": "Totale: {{amount}}",
+      "unnamed_item": "Articolo",
+      "more_items_one": "+ {{count}} altro articolo",
+      "more_items_other": "+ {{count}} altri articoli",
+      "pay_card": "PAGA CON CARTA",
+      "pay_cash": "PAGA IN CONTANTI",
+      "reorder": "Ripeti ordine",
+      "cancel_and_void": "Annulla ed elimina ordine",
+      "status": {
+        "created": "CREATO",
+        "accepted": "ACCETTATO",
+        "preparing": "IN PREPARAZIONE",
+        "ready": "PRONTO",
+        "served": "SERVITO",
+        "completed": "COMPLETATO",
+        "rejected": "RIFIUTATO",
+        "canceled": "ANNULLATO"
+      },
+      "transition": {
+        "accept": "ACCETTA",
+        "preparing": "IN PREPARAZIONE",
+        "mark_ready": "SEGNA COME PRONTO",
+        "mark_served": "SEGNA COME SERVITO"
+      }
+    },
+    "confirm_modals": {
+      "cancel_order": {
+        "title": "Annullare l'ordine?",
+        "description": "Sei sicuro di voler annullare questo ordine?"
+      },
+      "clear_cart": {
+        "title": "Svuotare l'ordine in corso?",
+        "description": "Questo rimuoverà tutti gli articoli dal carrello attuale."
+      },
+      "table_occupied": {
+        "title": "{{name}} è occupato",
+        "description": "Questo tavolo ha un ordine attivo ({{amount}}). Vuoi visualizzarlo?"
+      },
+      "table_cleaning": {
+        "title": "{{name}} richiede pulizia",
+        "description": "Segnare questo tavolo come pulito e di nuovo disponibile?"
+      }
+    },
+    "toasts": {
+      "offline_sync_issues_one": "{{count}} azione offline non è stata sincronizzata — controlla",
+      "offline_sync_issues_other": "{{count}} azioni offline non sono state sincronizzate — controlla",
+      "offline_sync_success_one": "{{count}} azione offline sincronizzata",
+      "offline_sync_success_other": "{{count}} azioni offline sincronizzate",
+      "session_expired_offline_sync": "La sessione è scaduta. Accedi di nuovo per salvare gli ordini presi mentre eri offline.",
+      "select_table_to_continue": "Seleziona un tavolo per continuare",
+      "order_sent_to_kitchen": "Ordine inviato in cucina!",
+      "offline_order_queued": "Sei offline — l'ordine è in coda e si sincronizzerà al ripristino della connessione",
+      "create_order_failed": "Creazione dell'ordine non riuscita",
+      "payment_requires_connection": "Il pagamento richiede una connessione. Riprova quando sei online.",
+      "select_table_dine_in": "Seleziona un tavolo per gli ordini al tavolo",
+      "offline_action_queued": "Offline — azione in coda per la sincronizzazione",
+      "update_order_failed": "Aggiornamento dell'ordine non riuscito",
+      "offline_cancel_queued": "Offline — annullamento in coda per la sincronizzazione",
+      "order_cancelled": "Ordine annullato",
+      "cancel_order_failed": "Annullamento dell'ordine non riuscito",
+      "table_assigned_to_cart": "{{name}} assegnato al carrello",
+      "reorder_created": "Ordine ripetuto creato",
+      "reorder_failed": "Non è stato possibile ripetere l'ordine",
+      "table_marked_clean": "{{name}} segnato come disponibile",
+      "table_mark_clean_failed": "Aggiornamento dello stato del tavolo non riuscito"
+    }
+  }
+}

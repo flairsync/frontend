@@ -1,0 +1,55 @@
+{
+  "gallery_titles": {
+    "b2b": "Marketplace B2B",
+    "saas": "Negozio SaaS",
+    "guest": "Marketplace ospiti",
+    "saas_official": "Negozio ufficiale"
+  },
+  "item_detail": {
+    "back_to_gallery": "Torna alla galleria",
+    "back_to_shop": "Torna al negozio",
+    "loading": "Caricamento...",
+    "item_not_found": "Articolo non trovato",
+    "product_not_found": "Prodotto non trovato",
+    "in_stock_one": "Disponibile ({{count}})",
+    "in_stock_other": "Disponibile ({{count}})",
+    "out_of_stock": "Esaurito",
+    "business_label": "Attività",
+    "select_business_placeholder": "Seleziona attività...",
+    "quantity_label": "Quantità",
+    "shipping_details_title": "Dettagli di spedizione",
+    "full_name_label": "Nome e cognome",
+    "full_name_placeholder": "Nome del destinatario",
+    "contact_number_label": "Numero di contatto",
+    "street_address_label": "Indirizzo",
+    "street_address_placeholder": "Via del commercio 123, interno 100",
+    "city_state_zip_label": "Città, provincia, CAP",
+    "city_state_zip_placeholder": "Milano, MI 20100",
+    "customization_label": "Dettagli di personalizzazione (opzionale)",
+    "customization_placeholder": "Indica numeri, lettere o istruzioni specifiche per la personalizzazione...",
+    "customization_hint": "Aggiungi qualsiasi dettaglio specifico per il tuo ordine personalizzato.",
+    "total_estimated_cost": "Costo totale stimato",
+    "order_submitted": "Richiesta d'ordine inviata: il venditore la esaminerà a breve.",
+    "submitting": "Invio in corso...",
+    "initialize_order": "Avvia ordine",
+    "out_of_stock_hint": "Questo articolo è esaurito",
+    "select_business_hint": "Seleziona un'attività",
+    "fill_shipping_hint": "Compila tutti i dettagli di spedizione"
+  },
+  "browse_page": {
+    "guest_subtitle_with_business": "Acquista gli articoli di questa attività.",
+    "guest_subtitle_no_business": "Scopri i tuoi articoli preferiti del ristorante.",
+    "b2b_subtitle": "Forniture e approvvigionamento per la tua attività.",
+    "saas_subtitle": "Gadget esclusivi e tecnologia NFC.",
+    "no_business_selected": "Nessuna attività selezionata.",
+    "no_business_hint": "Visita il profilo di un ristorante specifico per vedere i suoi articoli in vendita.",
+    "loading_items": "Caricamento articoli..."
+  },
+  "grid": {
+    "search_placeholder": "Cerca articoli...",
+    "empty_title": "Nessun articolo trovato",
+    "empty_search_description": "Nessun risultato per \"{{search}}\". Prova con un altro termine di ricerca.",
+    "empty_no_items_description": "Questo negozio non ha ancora articoli attivi.",
+    "page_of": "Pagina {{page}} di {{totalPages}}"
+  }
+}

@@ -20,7 +20,7 @@ const root = path.join(__dirname, "..");
 const localesDir = path.join(root, "public", "locales");
 
 const SOURCE_LOCALE = "en";
-const TARGET_LOCALES = ["es-ES", "ca", "fr-FR"];
+const TARGET_LOCALES = ["es-ES", "ca", "fr-FR", "it"];
 
 function flattenKeys(obj, prefix = "") {
     const keys = [];
@@ -41,9 +41,12 @@ function getByPath(obj, keyPath) {
     return keyPath.split(".").reduce((acc, segment) => (acc == null ? acc : acc[segment]), obj);
 }
 
+// *_upload.json files are dead: not in translations/i18n.ts's `ns` list and not referenced
+// by any useTranslation() call anywhere in the codebase (checked 2026-11-21 while adding the
+// it locale) — excluded so this check doesn't demand translations for content nothing loads.
 const namespaceFiles = fs
     .readdirSync(path.join(localesDir, SOURCE_LOCALE))
-    .filter((f) => f.endsWith(".json"));
+    .filter((f) => f.endsWith(".json") && !f.endsWith("_upload.json"));
 
 let totalMissing = 0;
 const report = [];

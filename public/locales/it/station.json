@@ -1,0 +1,192 @@
+{
+  "offline_banner": {
+    "message": "Nessuna connessione: le azioni vengono salvate e si sincronizzeranno automaticamente",
+    "message_with_count_one": "Nessuna connessione: {{count}} azione salvata, si sincronizzerà automaticamente",
+    "message_with_count_other": "Nessuna connessione: {{count}} azioni salvate, si sincronizzeranno automaticamente"
+  },
+  "live_indicator": {
+    "connected": "In linea",
+    "connecting": "Riconnessione…",
+    "disconnected": "Offline",
+    "tooltip": "Stato della connessione per gli aggiornamenti degli ordini in tempo reale"
+  },
+  "kds_app": {
+    "header": {
+      "title": "Display cucina",
+      "active_orders_count_one": "{{count}} attivo",
+      "active_orders_count_other": "{{count}} attivi"
+    },
+    "loading": "Caricamento ordini...",
+    "station_unassigned": {
+      "title": "Postazione non assegnata",
+      "description": "Questo display cucina non ha una postazione assegnata. Chiedi a un titolare di assegnarla dalla dashboard, in Postazioni."
+    },
+    "empty_state": {
+      "title": "Cucina libera",
+      "description": "In attesa di nuovi ordini dal terminale..."
+    },
+    "no_kitchen_station": {
+      "title": "Nessuna postazione cucina assegnata",
+      "description": "Chiedi a un titolare di assegnare una postazione cucina a questo dispositivo dalla dashboard, in Postazioni."
+    },
+    "settings_popover": {
+      "title": "Impostazioni display cucina",
+      "sound_label": "Suono sui nuovi ordini",
+      "hide_after_label": "Nascondi gli scontrini completati dopo (minuti)",
+      "never_placeholder": "Mai",
+      "hint": "Lascia vuoto per mostrare sempre gli scontrini completati."
+    },
+    "ticket": {
+      "rush": "Urgente",
+      "priority_value": "P{{value}}",
+      "lower_priority": "Diminuisci priorità",
+      "raise_priority": "Aumenta priorità",
+      "order_type_dine_in": "Al tavolo",
+      "order_type_takeaway": "Da portare via",
+      "order_type_labels": {
+        "dine_in": "al tavolo",
+        "takeaway": "da portare via",
+        "delivery": "consegna"
+      },
+      "waiting_for_expo": "In attesa dell'expo",
+      "allergens_in_order": "Allergeni in questo ordine: {{list}}",
+      "done_in": "Completato in {{time}}",
+      "unbump_title": "Riporta indietro questo piatto",
+      "item_voided": "Annullato: non preparare",
+      "item_cancelled": "Cancellato: non preparare",
+      "recall": "Richiama",
+      "other_items_count_one": "{{count}} altro piatto da altre postazioni",
+      "other_items_count_other": "{{count}} altri piatti da altre postazioni",
+      "ready_for_pickup": "Pronto per il ritiro",
+      "mark_served": "Segna come servito",
+      "confirm_mark_served_title": "Segnare questo ordine come servito?",
+      "confirm_mark_served_desc": "Questo rimuove l'ordine dal tabellone. Fallo solo dopo che ha lasciato la cucina.",
+      "awaiting_expo_confirmation": "In attesa della conferma dell'expo",
+      "station_done_waiting": "Postazione completata: in attesa delle altre postazioni",
+      "start_preparing": "Inizia la preparazione",
+      "bump_all": "Completa tutto ({{count}})"
+    },
+    "toasts": {
+      "new_orders_arrived_one": "{{count}} nuovo ordine arrivato",
+      "new_orders_arrived_other": "{{count}} nuovi ordini arrivati",
+      "order_complete": "Ordine completato: pronto per il ritiro!",
+      "item_not_assigned": "Questo piatto non è assegnato alla tua postazione",
+      "recall_failed": "Richiamo del piatto non riuscito. Riprova.",
+      "start_preparing_failed": "Impossibile avviare la preparazione. Riprova.",
+      "mark_served_failed": "Impossibile segnare come servito. Riprova.",
+      "priority_update_failed": "Impossibile aggiornare la priorità.",
+      "offline_action_queued": "Nessuna connessione: azione salvata, si sincronizzerà automaticamente",
+      "offline_sync_issues_one": "{{count}} azione offline non è stata sincronizzata: controlla",
+      "offline_sync_issues_other": "{{count}} azioni offline non sono state sincronizzate: controlla",
+      "offline_sync_success_one": "{{count}} azione offline sincronizzata",
+      "offline_sync_success_other": "{{count}} azioni offline sincronizzate"
+    }
+  },
+  "expo_screen": {
+    "header": {
+      "title": "Postazione expo",
+      "business_all_stations": "{{businessName}} · Tutte le postazioni",
+      "active_orders_count_one": "{{count}} ordine",
+      "active_orders_count_other": "{{count}} ordini"
+    },
+    "loading": "Caricamento ordini...",
+    "empty_state": {
+      "title": "Tutto libero",
+      "description": "Nessun ordine attivo su tutte le postazioni"
+    },
+    "ticket": {
+      "takeaway": "Da portare via",
+      "rush": "Urgente",
+      "ready_ago": "Pronto {{time}} fa",
+      "station_pill": "Postazione {{index}}",
+      "ready_awaiting_pickup": "Pronto: in attesa di ritiro",
+      "confirm_and_send": "Conferma e invia",
+      "all_stations_done": "Tutte le postazioni completate",
+      "in_progress": "In corso",
+      "mark_served": "Segna come servito",
+      "confirm_mark_served_title": "Segnare questo ordine come servito?",
+      "confirm_mark_served_desc": "Questo rimuove l'ordine dal tabellone. Fallo solo dopo che ha lasciato la cucina."
+    },
+    "toasts": {
+      "confirm_success": "Ordine confermato: pronto per il ritiro!",
+      "items_not_ready": "Alcuni piatti sono ancora in preparazione.",
+      "invalid_status": "L'ordine non è in uno stato confermabile.",
+      "confirm_failed": "Impossibile confermare l'ordine.",
+      "mark_served_failed": "Impossibile segnare come servito. Riprova.",
+      "offline_action_queued": "Nessuna connessione: azione salvata, si sincronizzerà automaticamente",
+      "offline_sync_issues_one": "{{count}} azione offline non è stata sincronizzata: controlla",
+      "offline_sync_issues_other": "{{count}} azioni offline non sono state sincronizzate: controlla",
+      "offline_sync_success_one": "{{count}} azione offline sincronizzata",
+      "offline_sync_success_other": "{{count}} azioni offline sincronizzate"
+    }
+  },
+  "station_bootstrap": {
+    "initializing": "Inizializzazione della postazione...",
+    "error": {
+      "title": "Impossibile caricare i dati della postazione.",
+      "description": "Controlla la connessione e riprova.",
+      "retry": "Riprova"
+    }
+  },
+  "pairing_screen": {
+    "title": "Collega questo dispositivo",
+    "subtitle": "Chiedi al titolare dell'attività di generare un codice di abbinamento dalla dashboard.",
+    "subtitle_owner": "Genera un codice di abbinamento per {{business}} da Dispositivi → Aggiungi postazione.",
+    "generate_code_link": "Vai a Dispositivi → Aggiungi postazione",
+    "station_type_kds": "Display cucina (KDS)",
+    "station_type_pos": "Terminale POS",
+    "form": {
+      "station_name_label": "Nome della postazione",
+      "station_name_placeholder": "es. Terminale bar principale",
+      "pairing_code_label": "Codice di abbinamento",
+      "pairing_code_placeholder": "Codice di 8 caratteri",
+      "linking": "Collegamento in corso...",
+      "link_device": "Collega dispositivo",
+      "relink_anyway": "Collega comunque a questa attività"
+    },
+    "errors": {
+      "invalid_code": "Codice non valido. Riprova.",
+      "device_conflict": "Questo dispositivo è attualmente configurato per un'altra attività. Ricollegarlo lo disconnetterà da quell'attività."
+    },
+    "device_id_footer": "ID dispositivo: {{deviceId}}..."
+  },
+  "quick_settings": {
+    "title": "Impostazioni postazione",
+    "this_device": "Questo dispositivo",
+    "station_type_kds": "Display cucina",
+    "station_type_pos": "Terminale POS",
+    "attendance": "Presenze",
+    "switch_mode": "Cambia modalità",
+    "active_badge": "Attivo",
+    "mode_switcher": {
+      "pos_label": "Terminale POS",
+      "kds_label": "Display cucina (KDS)"
+    },
+    "attendance_qr": {
+      "trigger": "Entrata/uscita tramite QR",
+      "title": "Codice QR per entrata/uscita",
+      "description": "Il personale scansiona questo codice dall'app mobile per timbrare l'entrata, l'uscita o una pausa. Si aggiorna automaticamente ogni pochi secondi, così una foto non può essere riutilizzata.",
+      "refreshing_in": "Aggiornamento in {{secs}}s",
+      "generate_error": "Impossibile generare il codice QR. Riprova."
+    }
+  },
+  "nfc_scan": {
+    "trigger": "Avvicina il badge",
+    "panel_title": "Scansione badge",
+    "panel_description": "Avvicina un badge del personale al lettore per timbrare l'entrata o l'uscita.",
+    "status": {
+      "ready": "Pronto: avvicina un badge",
+      "processing": "Lettura del badge in corso…"
+    },
+    "recent_scans": "Scansioni recenti",
+    "empty_state": "Nessuna scansione per ora",
+    "toasts": {
+      "clocked_in": "Entrata registrata",
+      "clocked_out": "Uscita registrata",
+      "pos_login": "Accesso effettuato come {{name}}"
+    },
+    "errors": {
+      "generic": "Impossibile elaborare questo badge. Riprova."
+    }
+  }
+}

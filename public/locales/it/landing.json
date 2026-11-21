@@ -1,0 +1,461 @@
+{
+  "marketplace": {
+    "title": "Marketplace"
+  },
+  "footer": {
+    "follow_us": "Seguici",
+    "quick_links": {
+      "title": "Link rapidi",
+      "home": "Home",
+      "about_us": "Chi siamo",
+      "integrations": "Integrazioni",
+      "features": "Funzionalità",
+      "pricing": "Prezzi",
+      "contact_us": "Contattaci"
+    },
+    "support": {
+      "title": "Supporto",
+      "faq_s": "FAQ",
+      "support_center": "Centro assistenza",
+      "user_guide": "Guida utente",
+      "privacy_policy": "Informativa sulla privacy",
+      "terms_of_use": "Termini di utilizzo",
+      "gdpr_&_cookies": "GDPR e cookie"
+    },
+    "contact": {
+      "title": "Contatti"
+    },
+    "newsletter": {
+      "title": "Iscriviti alla nostra newsletter",
+      "placeholder": "Inserisci la tua email"
+    },
+    "rights": "Tutti i diritti riservati."
+  },
+  "public_feed": {
+    "title": "Esplora il feed"
+  },
+  "landing_page": {
+    "header": {
+      "navLinks": {
+        "home_tab_title": "Home",
+        "businesses_tab_title": "Attività",
+        "features_tab_title": "Funzionalità",
+        "solution_tab_title": "Soluzione",
+        "integration_tab_title": "Integrazione",
+        "pricing_tab_title": "Prezzi",
+        "faq_tab_title": "FAQ"
+      },
+      "joinUsButton": "Iscriviti",
+      "jobs": "Lavori",
+      "findBusinessButton": "Trova la tua attività preferita",
+      "explore": "Esplora"
+    },
+    "hero": {
+      "title": "Migliora la gestione del tuo bar e ristorante",
+      "subtitle": "Il modo più semplice per gestire il tuo lavoro quotidiano e collaborare con il team senza intoppi.",
+      "trialButton": "Inizia la prova gratuita",
+      "explainButton": "Scopri come funziona"
+    },
+    "features": {
+      "globalTitle": "Tutto quello che ti serve per gestire bar e ristorante",
+      "globalSubtitle": "Dai menù al personale, dall'inventario alla scoperta dei clienti: gestisci tutto da un'unica piattaforma elegante. Risparmia tempo, riduci i costi e concentrati su cibo ed esperienze straordinarie, mentre noi ci occupiamo della gestione operativa.",
+      "inventoryManagement": {
+        "title": "Gestione del magazzino",
+        "subtitle": "Monitora gli ingredienti in tempo reale, ricevi avvisi di scorte basse e semplifica gli ordini ai fornitori per mantenere la cucina sempre efficiente."
+      },
+      "staffManagement": {
+        "title": "Gestione del personale",
+        "subtitle": "Crea e condividi i turni del personale in pochi minuti, gestisci i turni e monitora le presenze — tutto da un unico posto. Basta caos dell'ultimo minuto."
+      }
+    },
+    "problemSolution": {
+      "title": "Conosciamo le difficoltà di gestire un ristorante",
+      "subtitle": "Gestire il personale, controllare le scorte, aggiornare i menù e fidelizzare i clienti può sembrare opprimente. Per questo abbiamo creato uno strumento semplice e completo, pensato per bar e ristoranti.",
+      "leftPanelTitle": "Come possiamo aiutarti a far crescere la tua attività",
+      "inventoryDemo": {
+        "items": {
+          "pastaFlour": "Farina per pasta",
+          "tomatoSauce": "Salsa di pomodoro",
+          "oliveOil": "Olio d'oliva",
+          "mozzarella": "Mozzarella",
+          "basil": "Basilico",
+          "parmesan": "Parmigiano"
+        },
+        "status": {
+          "low": "Basso",
+          "critical": "Critico"
+        }
+      },
+      "solutions[0]": {
+        "id": "1",
+        "title": "Tieni sotto controllo il magazzino facilmente",
+        "description": "Mantieni le scorte sempre aggiornate, ricevi avvisi di scorte basse e riordina gli ingredienti senza sforzo.",
+        "cardTitle": "Gestione del magazzino",
+        "cardDescription": "Monitora gli ingredienti in tempo reale, ricevi avvisi di scorte basse e semplifica gli ordini ai fornitori per mantenere la cucina sempre efficiente."
+      },
+      "solutions[1]": {
+        "id": "2",
+        "title": "Gestisci i turni del personale",
+        "description": "Crea e condividi i turni, monitora le presenze e comunica facilmente con il tuo team.",
+        "cardTitle": "Gestione del personale",
+        "cardDescription": "Crea e condividi i turni del personale in pochi minuti, gestisci i turni e monitora le presenze — tutto da un unico posto."
+      },
+      "solutions[2]": {
+        "id": "3",
+        "title": "Aggiorna i menù in un attimo",
+        "description": "Aggiungi nuovi piatti, rimuovi quelli vecchi e aggiorna i prezzi senza complicazioni.",
+        "cardTitle": "Gestione del menù",
+        "cardDescription": "Gestisci facilmente il tuo menù e mantieni le tue proposte sempre aggiornate per i clienti."
+      },
+      "solutions[3]": {
+        "id": "4",
+        "title": "Aumenta la fedeltà dei clienti",
+        "description": "Coinvolgi i tuoi clienti e falli tornare con offerte personalizzate.",
+        "cardTitle": "Coinvolgimento dei clienti",
+        "cardDescription": "Crea programmi fedeltà, monitora le preferenze dei clienti e migliora la retention."
+      }
+    },
+    "stats": {
+      "items[0]": {
+        "prefix": "FINO AL",
+        "value": "35%",
+        "label": "Più ricavi",
+        "sub": "grazie a ordini ottimizzati e upselling"
+      },
+      "items[1]": {
+        "prefix": "FINO A",
+        "value": "4 ore",
+        "label": "Risparmiate ogni giorno",
+        "sub": "su turni, magazzino e report"
+      },
+      "items[2]": {
+        "prefix": "FINO AL",
+        "value": "40%",
+        "label": "Meno sprechi alimentari",
+        "sub": "con avvisi di magazzino in tempo reale"
+      },
+      "items[3]": {
+        "prefix": "FINO A",
+        "value": "3×",
+        "label": "Rotazione tavoli più rapida",
+        "sub": "con prenotazioni e piantine intelligenti"
+      }
+    },
+    "integration": {
+      "title": "Configurazione semplice, zero complicazioni",
+      "subtitle": "Nessuna integrazione complicata. Crea il tuo account, configura i dettagli della tua attività e inizia a gestire tutto da un unico posto — da subito.",
+      "buttonText": "Prenota una demo",
+      "mainCard": {
+        "title": "Avviso scorte basse",
+        "status": "Attivo",
+        "progress": "93%",
+        "progressLabel": "Progresso settimanale"
+      }
+    },
+    "pricing": {
+      "title": "Scegli il piano più adatto a te",
+      "monthly_label": "Fatturazione mensile",
+      "quarterly_label": "Fatturazione trimestrale (10% di sconto)",
+      "yearly_label": "Fatturazione annuale (17% di sconto)",
+      "billed_note": {
+        "monthly": "*Fatturato mensilmente, imposte escluse",
+        "quarterly": "*Fatturato trimestralmente, imposte escluse",
+        "yearly": "*Fatturato annualmente, imposte escluse"
+      },
+      "choose_plan_button": "Scegli piano",
+      "get_started_free_button": "Inizia gratis",
+      "price_per_period": "{{price}} / {{period}}",
+      "period_suffix": {
+        "monthly": "mese",
+        "quarterly": "trimestre",
+        "yearly": "anno"
+      },
+      "free_price": "Gratis",
+      "plan_descriptions": {
+        "free": "Tutto quello che ti serve per iniziare la tua attività.",
+        "starter": "Perfetto per i piccoli ristoranti che iniziano.",
+        "pro": "Ideale per ristoranti in crescita o piccole catene.",
+        "enterprise": "Per gruppi di ristoranti o catene in franchising."
+      }
+    },
+    "faq": {
+      "title": "Domande frequenti",
+      "subtitle": "Hai domande? Abbiamo le risposte. Ecco alcune delle domande più comuni che ristoratori e gestori di bar ci fanno sulla nostra piattaforma.",
+      "cta_button": "Hai altre domande?",
+      "items": [
+        {
+          "question": "Serve essere esperti di tecnologia per usare la piattaforma?",
+          "answer": "Per niente. Il nostro sistema è pensato per essere semplice e intuitivo. Puoi configurare la tua attività e iniziare a gestirla in pochi minuti."
+        },
+        {
+          "question": "Posso gestire più ristoranti o bar con un solo account?",
+          "answer": "Sì, con la nostra piattaforma puoi gestire facilmente più sedi da un solo account. I piani Growth e Pro sono pensati proprio per questo."
+        },
+        {
+          "question": "È disponibile una prova gratuita?",
+          "answer": "Sì, offriamo una prova gratuita di 14 giorni per esplorare tutte le funzionalità prima di scegliere un piano."
+        },
+        {
+          "question": "La piattaforma funziona su smartphone e tablet?",
+          "answer": "La nostra piattaforma è completamente responsive e ottimizzata per smartphone, tablet e computer."
+        },
+        {
+          "question": "Posso aggiungere piatti illimitati al menù?",
+          "answer": "Il piano Pro include piatti illimitati nel menù. I piani Starter e Growth hanno un limite al numero di menù per attività."
+        }
+      ]
+    },
+    "footer": {
+      "logo": "FlairSync",
+      "follow_us": "Seguici",
+      "quick_links_title": "Link rapidi",
+      "quick_links": [
+        "Home",
+        "Chi siamo",
+        "Integrazioni",
+        "Funzionalità",
+        "Prezzi",
+        "Contattaci"
+      ],
+      "support_title": "Supporto",
+      "support_links": [
+        "FAQ",
+        "Centro assistenza",
+        "Informativa sulla privacy",
+        "Termini"
+      ],
+      "contact_title": "Contatti",
+      "contact_address_line1": "Andorra la Vella, AD500, Andorra",
+      "newsletter_title": "Iscriviti alla nostra newsletter",
+      "newsletter_placeholder": "Inserisci la tua email",
+      "copyright": "© {{year}} FlairSync. Tutti i diritti riservati."
+    }
+  },
+  "subscriptions": {
+    "current_plan": "Piano attuale",
+    "current_plan_badge": "Il tuo piano attuale",
+    "upgrade": "Passa a un piano superiore",
+    "downgrade": "Passa a un piano inferiore",
+    "limits": {
+      "businesses_one": "{{count}} attività",
+      "businesses_other": "{{count}} attività",
+      "employees_one": "{{count}} dipendente",
+      "employees_other": "{{count}} dipendenti",
+      "menus_one": "{{count}} menù",
+      "menus_other": "{{count}} menù",
+      "products_one": "{{count}} prodotto",
+      "products_other": "{{count}} prodotti"
+    },
+    "features": {
+      "basic_menu_mgmt": "Gestione base del menù",
+      "menu_mgmt": "Gestione completa del menù",
+      "basic_analytics": "Statistiche di base",
+      "advanced_analytics": "Statistiche avanzate",
+      "staff_scheduling": "Pianificazione turni",
+      "reservation_system": "Sistema di prenotazione",
+      "priority_support": "Supporto prioritario",
+      "ded_acc_manager": "Account manager dedicato",
+      "custom_branding": "Branding personalizzato",
+      "premium_themes": "Temi premium",
+      "loyalty_points": "Punti fedeltà"
+    }
+  },
+  "support_page": {
+    "hero_title": "Centro assistenza",
+    "hero_subtitle": "Hai una domanda o serve aiuto? Compila il modulo e il nostro team ti risponderà a breve.",
+    "contact": {
+      "email_label": "Email",
+      "phone_label": "Telefono",
+      "address_label": "Indirizzo"
+    },
+    "send_message_title": "Inviaci un messaggio",
+    "send_message_description": "Descrivi il tuo problema e lo instraderemo al team giusto. La maggior parte delle richieste riceve risposta entro un giorno lavorativo.",
+    "bullets": {
+      "billing": "Problemi di fatturazione e abbonamento",
+      "technical": "Problemi tecnici",
+      "account_security": "Dubbi su account e sicurezza",
+      "general": "Domande generali"
+    },
+    "success": {
+      "title": "Messaggio ricevuto!",
+      "body_prefix": "Risponderemo a",
+      "body_suffix": "a breve.",
+      "submit_another": "Invia un'altra richiesta"
+    },
+    "contact_support_title": "Contatta l'assistenza",
+    "form": {
+      "name": "Nome",
+      "name_placeholder": "Mario Rossi",
+      "email": "Email",
+      "email_placeholder": "mario@esempio.com",
+      "category": "Categoria",
+      "loading_categories": "Caricamento categorie…",
+      "select_category": "Seleziona una categoria",
+      "subject": "Oggetto",
+      "subject_placeholder": "Breve descrizione del problema",
+      "message": "Messaggio",
+      "message_placeholder": "Descrivi il problema in dettaglio…",
+      "sending": "Invio in corso…",
+      "send_message": "Invia messaggio"
+    },
+    "categories": {
+      "billing_and_payments": "Fatturazione e pagamenti",
+      "subscription": "Abbonamento",
+      "getting_started": "Primi passi",
+      "menu_management": "Gestione del menù",
+      "staff_and_permissions": "Personale e permessi",
+      "reservations_and_orders": "Prenotazioni e ordini",
+      "technical_issue": "Problema tecnico",
+      "account_and_security": "Account e sicurezza",
+      "integrations": "Integrazioni",
+      "other": "Altro"
+    },
+    "errors": {
+      "name_max": "Il nome deve contenere al massimo 100 caratteri",
+      "name_required": "Il nome è obbligatorio",
+      "email_invalid": "Deve essere un'email valida",
+      "email_required": "L'email è obbligatoria",
+      "category_required": "Seleziona una categoria",
+      "subject_max": "L'oggetto deve contenere al massimo 150 caratteri",
+      "subject_required": "L'oggetto è obbligatorio",
+      "message_min": "Il messaggio deve contenere almeno 10 caratteri",
+      "message_max": "Il messaggio deve contenere al massimo 2000 caratteri",
+      "message_required": "Il messaggio è obbligatorio",
+      "generic": "Qualcosa è andato storto. Riprova."
+    }
+  },
+  "gdpr_page": {
+    "title": "GDPR e politica sui cookie",
+    "last_updated": "Ultimo aggiornamento: {{date}}",
+    "intro": "La dichiarazione completa di conformità al GDPR di FlairSync, la politica sui cookie, la guida ai diritti degli interessati e le informazioni per i residenti UE.",
+    "cookie_categories_title": "Categorie di cookie",
+    "cookie_categories_intro": "Usiamo quattro categorie di cookie sulla nostra piattaforma. I cookie strettamente necessari sono sempre attivi. Tutti gli altri richiedono il tuo consenso, che puoi gestire in qualsiasi momento.",
+    "examples_label": "Esempi:",
+    "load_error_title": "Impossibile caricare la politica GDPR e cookie",
+    "load_error_description": "Riprova ad aggiornare la pagina tra poco.",
+    "contact_question": "Domande sulla conformità al GDPR o sui tuoi diritti?",
+    "categories": {
+      "strictly_necessary": {
+        "name": "Strettamente necessari",
+        "badge": "Sempre attivi",
+        "description": "Questi cookie sono essenziali per il funzionamento della piattaforma. Abilitano funzioni principali come autenticazione, gestione delle sessioni e sicurezza. Non possono essere disattivati.",
+        "examples": "Token di autenticazione, protezione CSRF, identificatori di sessione"
+      },
+      "functional": {
+        "name": "Funzionali",
+        "badge": "Opzionale",
+        "description": "Questi cookie ricordano le tue preferenze e impostazioni per offrirti un'esperienza più personalizzata (es. lingua, tema, fuso orario). Disattivarli può limitare l'usabilità.",
+        "examples": "Preferenza lingua, tema interfaccia, impostazione fuso orario"
+      },
+      "analytics": {
+        "name": "Statistiche",
+        "badge": "Richiede consenso",
+        "description": "Questi cookie ci aiutano a capire come gli utenti interagiscono con la piattaforma, per poterla migliorare. Tutti i dati sono anonimi e aggregati. Attivati solo con il tuo consenso.",
+        "examples": "Visualizzazioni di pagina, utilizzo delle funzioni, durata della sessione, tassi di errore"
+      },
+      "marketing": {
+        "name": "Marketing",
+        "badge": "Richiede consenso",
+        "description": "Questi cookie sono usati per offrirti contenuti pertinenti e misurare l'efficacia delle campagne. Non vendiamo i tuoi dati agli inserzionisti. Attivati solo con il tuo consenso esplicito.",
+        "examples": "Tracciamento dell'origine delle campagne, eventi di conversione"
+      }
+    },
+    "self_service_notice": "Vuoi esportare o eliminare i tuoi dati personali?",
+    "self_service_link": "Gestiscili dalle impostazioni del tuo account"
+  },
+  "privacy_page": {
+    "title": "Informativa sulla privacy",
+    "intro": "Questa Informativa sulla privacy spiega come FlairSync raccoglie, utilizza e protegge i tuoi dati personali, in piena conformità con il GDPR (UE) 2016/679, la direttiva ePrivacy e la normativa UE applicabile in materia di protezione dei dati.",
+    "load_error_title": "Impossibile caricare l'informativa sulla privacy",
+    "last_updated": "Ultimo aggiornamento: {{date}}",
+    "load_error_description": "Riprova ad aggiornare la pagina tra poco.",
+    "self_service_notice": "Vuoi esportare o eliminare i tuoi dati personali?",
+    "self_service_link": "Gestiscili dalle impostazioni del tuo account",
+    "contact_question": "Domande su questa informativa?"
+  },
+  "terms_page": {
+    "title": "Termini e condizioni",
+    "intro": "Questi Termini e condizioni regolano il tuo utilizzo di FlairSync. Utilizzando i nostri servizi, accetti di rispettarli.",
+    "load_error_title": "Impossibile caricare i Termini e condizioni",
+    "last_updated": "Ultimo aggiornamento: {{date}}",
+    "load_error_description": "Riprova ad aggiornare la pagina tra poco.",
+    "self_service_notice": "Vuoi esportare o eliminare i tuoi dati personali?",
+    "self_service_link": "Gestiscili dalle impostazioni del tuo account",
+    "contact_question": "Domande su questa informativa?"
+  },
+  "about_page": {
+    "badge_early_access": "Ora in accesso anticipato",
+    "hero_title_prefix": "La piattaforma pensata per",
+    "hero_title_highlight": "l'ospitalità moderna",
+    "hero_subtitle": "FlairSync è una piattaforma di gestione completa per ristoranti e bar — gestisce prenotazioni, menù, personale, statistiche e rapporto con i clienti da un'unica dashboard.",
+    "get_started_free": "Inizia gratis",
+    "talk_to_us": "Parla con noi",
+    "stats": [
+      {
+        "value": "Presto",
+        "label": "Lancio in accesso anticipato"
+      },
+      {
+        "value": "2026",
+        "label": "Anno di fondazione"
+      },
+      {
+        "value": "1",
+        "label": "Paese, in crescita"
+      },
+      {
+        "value": "99,9%",
+        "label": "Disponibilità della piattaforma"
+      }
+    ],
+    "what_drives_us_title": "Cosa ci guida",
+    "what_drives_us_subtitle": "Tre pilastri che orientano ogni nostra decisione.",
+    "values": [
+      {
+        "title": "La nostra missione",
+        "description": "FlairSync esiste per offrire a ogni proprietario di ristorante o bar — grande o piccolo — la stessa tecnologia potente usata dalle grandi catene. Semplifichiamo prenotazioni, menù, ordini e feedback dei clienti in un'unica piattaforma fluida."
+      },
+      {
+        "title": "La nostra visione",
+        "description": "Un mondo in cui le attività dell'ospitalità crescono grazie alla tecnologia. Costruiamo strumenti di analisi in tempo reale e soluzioni per la soddisfazione del cliente che favoriscono una crescita sostenibile."
+      },
+      {
+        "title": "Sicurezza e fiducia",
+        "description": "La privacy dei dati non è negoziabile. FlairSync utilizza archiviazione crittografata, controllo degli accessi basato sui ruoli ed è pienamente conforme agli standard moderni di protezione dei dati, così la tua attività è sempre protetta."
+      }
+    ],
+    "our_story_label": "La nostra storia",
+    "our_story_title": "Nata da un problema reale, non da una lavagna",
+    "our_story_paragraph1": "FlairSync è nata osservando quanti ristoratori faticavano con strumenti frammentati — un'app per le prenotazioni, un'altra per i menù, fogli di calcolo per il personale. Ci siamo proposti di unificare tutto in un'unica piattaforma davvero semplice da usare.",
+    "our_story_paragraph2": "Oggi supportiamo centinaia di ristoranti in più di 12 paesi, e siamo solo all'inizio. Ogni funzione che rilasciamo nasce direttamente dalle conversazioni con chi la usa ogni giorno.",
+    "principles": [
+      "Costruito per la velocità — ogni funzione viene rilasciata rapidamente e funziona in modo affidabile",
+      "Design incentrato sul cliente in ogni punto di contatto",
+      "Prezzi trasparenti, senza costi nascosti",
+      "Supporto dedicato che risponde davvero",
+      "Miglioramento continuo guidato da feedback reali"
+    ],
+    "team_label": "Il team",
+    "team_title": "Le persone dietro FlairSync",
+    "team_subtitle": "Un team piccolo ma concentrato, con la missione di reinventare la gestione dei ristoranti.",
+    "team": [
+      {
+        "name": "Semah Chriha",
+        "role": "Fondatore e CTO",
+        "bio": "Ingegnere full-stack e imprenditore, con una passione per creare strumenti che potenziano il settore dell'ospitalità.",
+        "initial": "S"
+      },
+      {
+        "name": "Sarah Chamekh",
+        "role": "Co-fondatrice e AI Engineer",
+        "bio": "Guidata dalla visione di rendere la gestione dei ristoranti più umana, Sarah definisce la strategia di prodotto e la direzione aziendale di FlairSync.",
+        "initial": "S"
+      }
+    ],
+    "cta_badge": "Sii tra i primi ristoranti su FlairSync",
+    "cta_title": "Pronto a trasformare il tuo ristorante?",
+    "cta_subtitle": "Inizia gratis. Nessuna carta di credito richiesta. Configura la tua attività in meno di 5 minuti.",
+    "start_for_free": "Inizia gratis",
+    "contact_sales": "Contatta le vendite"
+  }
+}

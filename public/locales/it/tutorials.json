@@ -1,0 +1,547 @@
+{
+  "page": {
+    "title": "Guida utente FlairSync",
+    "subtitle": "Tutorial passo per passo per ogni funzione della piattaforma. Scegli un argomento qui sotto oppure usa il menu laterale per iniziare."
+  },
+  "ui": {
+    "search_placeholder": "Cerca un argomento…",
+    "contents": "Indice",
+    "overview_label": "Panoramica",
+    "who_uses": "Chi lo usa",
+    "how_to": "Come si fa",
+    "tips_label": "Consigli",
+    "ready_to_try": "Pronto a provarlo?",
+    "ready_desc": "Apri la sezione corrispondente nell'app e segui i passaggi qui sopra.",
+    "part": "Parte",
+    "topic": "argomento",
+    "topics": "argomenti",
+    "prev_label": "Precedente",
+    "next_label": "Successivo",
+    "no_results": "Nessun risultato trovato."
+  },
+  "parts": {
+    "1": "Per iniziare",
+    "2": "Configurazione dell'attività",
+    "3": "Gestione del personale",
+    "4": "Turni e pianificazione",
+    "5": "Presenze e paghe",
+    "6": "Gestione del menu",
+    "7": "Piantina e tavoli",
+    "8": "Ordini",
+    "9": "Display cucina (KDS)",
+    "10": "Prenotazioni",
+    "11": "Gestione del magazzino",
+    "12": "Notifiche",
+    "13": "Statistiche",
+    "14": "Postazione POS",
+    "15": "Ricerca ristoranti e prenotazione",
+    "16": "Abbonamenti e fatturazione",
+    "17": "Attività operative",
+    "18": "Lavori e reclutamento",
+    "19": "Marketplace",
+    "20": "Assistenza",
+    "21": "Account e privacy"
+  },
+  "sections": {
+    "1-1": {
+      "title": "Creare il tuo account",
+      "whatItIs": "Registrati e verifica la tua identità per accedere alla piattaforma.",
+      "whoUsesIt": "Chiunque sia nuovo su FlairSync.",
+      "stepGroups": [{ "steps": ["Clicca su Registrati nella pagina di accesso.", "Inserisci nome e cognome, indirizzo email e una password sicura.", "Clicca su Crea account.", "Apri la tua casella di posta — riceverai un codice di verifica a 6 cifre.", "Inserisci il codice nella schermata di verifica.", "Il tuo account è ora attivo. Verrai portato alla tua dashboard."] }],
+      "tips": ["Il codice di verifica scade dopo 10 minuti. Richiedine uno nuovo se è scaduto.", "Puoi anche registrarti con Continua con Google — senza bisogno di codice."],
+      "appRouteLabel": "Registrati ora"
+    },
+    "1-2": {
+      "title": "Accedere al tuo account",
+      "whatItIs": "Accedi al tuo account con email/password oppure con Google.",
+      "whoUsesIt": "Tutti gli utenti.",
+      "stepGroups": [{ "steps": ["Vai alla pagina di accesso e inserisci email e password.", "Clicca su Accedi.", "Se hai attivato l'autenticazione a due fattori, inserisci il codice a 6 cifre dalla tua app di autenticazione.", "Sei dentro."] }],
+      "tips": ["Le sessioni scadono dopo 15 minuti di inattività. Verrai autenticato di nuovo in automatico se il tuo token di aggiornamento è ancora valido.", "Clicca su Password dimenticata per ricevere un link di reimpostazione via email."],
+      "appRouteLabel": "Vai all'accesso"
+    },
+    "1-3": {
+      "title": "Reimpostare la password",
+      "whatItIs": "Recupera l'accesso al tuo account quando hai dimenticato la password.",
+      "whoUsesIt": "Chiunque sia bloccato fuori dal proprio account.",
+      "stepGroups": [{ "steps": ["Nella pagina di accesso, clicca su Password dimenticata.", "Inserisci il tuo indirizzo email registrato e clicca su Invia link di reimpostazione.", "Apri la tua casella di posta e clicca sul link nell'email.", "Inserisci la nuova password due volte per confermarla.", "Clicca su Reimposta password — ora puoi accedere con la nuova password."] }],
+      "appRouteLabel": "Reimposta password"
+    },
+    "1-4": {
+      "title": "Configurare l'autenticazione a due fattori",
+      "whatItIs": "Un livello extra di sicurezza che richiede un codice temporaneo da un'app di autenticazione ogni volta che accedi.",
+      "whoUsesIt": "Chiunque voglia una sicurezza più forte per il proprio account.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni profilo → Sicurezza.", "Clicca su Attiva autenticazione a due fattori.", "Apri un'app di autenticazione (Google Authenticator, Authy o simili) sul tuo telefono.", "Scansiona il codice QR mostrato a schermo.", "Inserisci il codice a 6 cifre mostrato nell'app per confermare.", "Salva i tuoi codici di backup in un luogo sicuro — ti serviranno se perdi il telefono.", "La 2FA è ora attiva. I prossimi accessi richiederanno il codice dalla tua app di autenticazione."] }],
+      "tips": ["Per disattivare la 2FA, vai su Impostazioni profilo → Sicurezza → Disattiva 2FA e inserisci un codice valido dalla tua app di autenticazione."],
+      "appRouteLabel": "Configura la 2FA"
+    },
+    "1-5": {
+      "title": "Aggiornare il tuo profilo",
+      "whatItIs": "Modifica il tuo nome, la foto del profilo e i tuoi dati personali.",
+      "whoUsesIt": "Tutti gli utenti.",
+      "stepGroups": [{ "steps": ["Clicca sul tuo avatar in alto a destra.", "Seleziona Impostazioni profilo.", "Aggiorna il tuo nome, la tua email o altre informazioni.", "Per cambiare la foto del profilo, clicca su Carica avatar e scegli un file immagine.", "Clicca su Salva modifiche."] }],
+      "appRouteLabel": "Vai al profilo"
+    },
+    "1-6": {
+      "title": "Gestire le sessioni attive",
+      "whatItIs": "Visualizza ogni dispositivo attualmente connesso al tuo account e revoca l'accesso a uno qualsiasi di essi.",
+      "whoUsesIt": "Utenti attenti alla sicurezza del proprio account.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni profilo → Sessioni.", "Vedrai un elenco delle sessioni attive con informazioni sul dispositivo e sulla posizione.", "Per disconnettere un dispositivo specifico, clicca su Revoca accanto a esso.", "Per disconnettere tutti gli altri dispositivi, clicca su Revoca tutte le altre sessioni."] }],
+      "appRouteLabel": "Gestisci sessioni"
+    },
+    "2-1": {
+      "title": "Creare la tua attività",
+      "whatItIs": "Registra il tuo ristorante o locale su FlairSync per gestire personale, menu, ordini e molto altro.",
+      "whoUsesIt": "Titolari che configurano la propria attività per la prima volta.",
+      "stepGroups": [{ "steps": ["Dalla tua dashboard, clicca su Crea un'attività.", "Inserisci il nome dell'attività e seleziona un Tipo di attività (es. Ristorante, Caffè, Bar).", "Aggiungi l'indirizzo e il paese della tua attività.", "Clicca su Crea attività.", "Verrai portato alla dashboard della tua nuova attività."] }],
+      "tips": ["Puoi gestire più attività da un unico account — basta ripetere questa procedura.", "Il tuo piano di abbonamento determina quante attività puoi creare."],
+      "appRouteLabel": "Vai alla dashboard"
+    },
+    "2-2": {
+      "title": "Completare il profilo della tua attività",
+      "whatItIs": "Aggiungi tutti i dettagli che ospiti e clienti vedranno quando scoprono la tua attività.",
+      "whoUsesIt": "Titolari dopo la configurazione iniziale.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni attività → Profilo.", "Carica il tuo Logo (comparirà nei risultati di ricerca e nel tuo profilo pubblico).", "Aggiungi una breve Descrizione del tuo locale.", "Seleziona i Tag più adatti (es. Terrazza, Vegano, Musica dal vivo) — aiutano i clienti a trovarti.", "Imposta la tua Fascia di prezzo (da $ a $$$$).", "Aggiungi un Numero di telefono e un Sito web, se ne hai uno.", "Carica le Foto della galleria per mostrare il tuo locale (fino al limite del tuo piano).", "Clicca su Salva."] }],
+      "appRouteLabel": "Apri il centro attività"
+    },
+    "2-3": {
+      "title": "Impostare gli orari di apertura",
+      "whatItIs": "Definisci quando la tua attività è aperta, così il sistema può gestire le prenotazioni e mostrare gli orari corretti ai clienti.",
+      "whoUsesIt": "Titolari.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni attività → Orari di apertura.", "Per ogni giorno della settimana, attiva l'interruttore se sei aperto quel giorno.", "Imposta l'Orario di apertura e l'Orario di chiusura.", "Se sei chiuso in un determinato giorno, lascia l'interruttore disattivato.", "Clicca su Salva orari."] }],
+      "tips": ["Puoi impostare orari diversi per i giorni festivi separatamente."],
+      "appRouteLabel": "Apri impostazioni attività"
+    },
+    "2-4": {
+      "title": "Configurare le aliquote IVA",
+      "whatItIs": "Configura le aliquote fiscali applicate agli ordini della tua attività.",
+      "whoUsesIt": "Titolari responsabili della fatturazione.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni attività → Imposte.", "Clicca su Aggiungi gruppo fiscale e assegnagli un nome (es. \"IVA standard\").", "Inserisci la Percentuale fiscale (es. 22 per il 22%).", "Assegna il gruppo fiscale alle voci di menu interessate più avanti, in Impostazioni menu.", "Clicca su Salva."] }],
+      "appRouteLabel": "Apri impostazioni attività"
+    },
+    "3-1": {
+      "title": "Invitare membri del personale",
+      "whatItIs": "Invia inviti via email ai dipendenti per farli entrare nella tua attività su FlairSync.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Personale → Inviti.", "Clicca su Invita membro del personale.", "Inserisci l'indirizzo email del dipendente.", "Seleziona il ruolo che avrà (es. Cameriere, Personale di cucina, Manager).", "Clicca su Invia invito.", "Il dipendente riceverà un'email con un link per accettare l'invito e creare o collegare il proprio account."] }],
+      "tips": ["Puoi rinviare o annullare gli inviti dall'elenco Inviti.", "Il link di invito scade dopo 7 giorni."],
+      "appRouteLabel": "Vai al personale"
+    },
+    "3-2": {
+      "title": "Creare e gestire i ruoli",
+      "whatItIs": "Definisci ruoli personalizzati e controlla esattamente cosa ogni ruolo può vedere e fare nel sistema.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Personale → Ruoli.", "Clicca su Crea ruolo.", "Assegna al ruolo un nome e, se vuoi, una descrizione.", "Clicca su Crea.", "Ora clicca su Modifica permessi sul nuovo ruolo.", "Attiva i permessi necessari a questo ruolo (es. Visualizza ordini, Gestisci prenotazioni, Visualizza magazzino).", "Clicca su Salva permessi."] }],
+      "tips": ["Le modifiche ai permessi di un ruolo hanno effetto immediato su tutto il personale con quel ruolo.", "Un membro del personale può avere più ruoli — i suoi permessi sono l'unione di tutti i ruoli assegnati."],
+      "appRouteLabel": "Vai ai ruoli"
+    },
+    "3-3": {
+      "title": "Gestire i dati dei dipendenti",
+      "whatItIs": "Visualizza l'elenco completo del personale, aggiorna i dati di impiego, imposta le tariffe orarie e gestisci l'accesso di ciascuno.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Personale → Dipendenti.", "Clicca su un dipendente per aprire il suo profilo lavorativo.", "Per aggiornare il suo ruolo, clicca su Modifica ruolo e selezionane uno nuovo.", "Per impostare la sua tariffa oraria (usata per le paghe), clicca su Modifica tariffa e inserisci il valore.", "Per impostare un PIN POS per l'accesso da tablet, clicca su Imposta PIN e inserisci un numero di 4-6 cifre.", "Per rimuovere una persona dall'attività, clicca su Termina rapporto in fondo al suo profilo."] }],
+      "appRouteLabel": "Vai ai dipendenti"
+    },
+    "3-4": {
+      "title": "Organizzare il personale in team",
+      "whatItIs": "Raggruppa i dipendenti in team come \"Cucina\", \"Sala\" o \"Bar\" per gestirli e pianificarli insieme.",
+      "whoUsesIt": "Manager di locali più grandi.",
+      "stepGroups": [{ "steps": ["Vai su Personale → Team.", "Clicca su Crea team e assegnagli un nome.", "Apri il team e clicca su Aggiungi membri.", "Seleziona i dipendenti da aggiungere a questo team.", "Clicca su Salva."] }],
+      "tips": ["I team rendono molto più rapida la creazione di turni multipli — puoi creare un turno per un intero team in un solo passaggio."],
+      "appRouteLabel": "Vai ai team"
+    },
+    "4-1": {
+      "title": "Creare un turno per un singolo dipendente",
+      "whatItIs": "Pianifica un turno di lavoro per un dipendente specifico in una data specifica.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Pianificazione → Turni.", "Clicca su Aggiungi turno oppure clicca direttamente su un giorno nel calendario.", "Seleziona il dipendente.", "Imposta l'orario di inizio e l'orario di fine.", "Se hai pattern ricorrenti salvati, seleziona facoltativamente un modello di turno.", "Clicca su Salva turno.", "Il dipendente riceverà una notifica sul nuovo turno."] }],
+      "appRouteLabel": "Apri i turni"
+    },
+    "4-2": {
+      "title": "Creare turni per un team",
+      "whatItIs": "Crea lo stesso turno per tutti i membri di un team in un solo passaggio — ideale per impostare rapidamente i turni settimanali.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Pianificazione → Turni.", "Clicca su Creazione multipla → Turno per team.", "Seleziona il team da pianificare.", "Imposta la data, l'orario di inizio e l'orario di fine.", "Clicca su Crea turni — verrà creato un turno per ogni membro attivo del team."] }],
+      "appRouteLabel": "Apri i turni"
+    },
+    "4-3": {
+      "title": "Generare una bozza di pianificazione settimanale",
+      "whatItIs": "Genera automaticamente una bozza di pianificazione settimanale basata sulla disponibilità del personale e sui modelli salvati, che i manager possono rivedere e modificare prima di pubblicarla.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Pianificazione → Turni.", "Clicca su Genera bozza settimanale.", "Seleziona la settimana da pianificare.", "Il sistema creerà turni in bozza (mostrati come \"Bozza\").", "Rivedi la bozza — modifica qualsiasi turno cliccandoci sopra.", "Quando sei soddisfatto, clicca su Pubblica pianificazione.", "Tutto il personale presente nella pianificazione verrà avvisato."] }],
+      "appRouteLabel": "Apri i turni"
+    },
+    "4-4": {
+      "title": "Gestire i cambi turno",
+      "whatItIs": "Permette al personale di richiedere lo scambio di un turno con un collega. I manager esaminano e approvano o rifiutano la richiesta.",
+      "whoUsesIt": "Personale (richiesta) e manager (approvazione).",
+      "stepGroups": [
+        { "label": "Il personale richiede un cambio", "steps": ["Vai su I miei turni.", "Clicca sul turno che vuoi scambiare.", "Clicca su Richiedi cambio e seleziona un collega con cui scambiarlo.", "Invia la richiesta."] },
+        { "label": "Il manager approva un cambio", "steps": ["Vai su Pianificazione → Richieste di cambio.", "Esamina la richiesta in attesa e i due dipendenti coinvolti.", "Clicca su Approva o Rifiuta.", "Entrambi i dipendenti vengono avvisati della decisione."] }
+      ],
+      "appRouteLabel": "Apri i turni"
+    },
+    "4-5": {
+      "title": "Offerte per turni scoperti",
+      "whatItIs": "Pubblica un turno scoperto e lascia che il personale si proponga per coprirlo. I manager scelgono chi lo ottiene.",
+      "whoUsesIt": "Manager e personale.",
+      "stepGroups": [
+        { "label": "Pubblicare un turno scoperto", "steps": ["Crea un turno senza assegnarlo a un dipendente (lascia vuoto il campo dipendente o segnalo come \"Scoperto\").", "Il turno appare nella bacheca dei Turni scoperti, visibile a tutto il personale idoneo."] },
+        { "label": "Il personale fa un'offerta", "steps": ["Vai su I miei turni → Turni scoperti.", "Clicca su un turno disponibile e poi su Proponiti."] },
+        { "label": "Il manager seleziona un'offerta", "steps": ["Vai su Pianificazione → Turni scoperti.", "Apri il turno ed esamina tutte le proposte.", "Clicca su Accetta proposta accanto al dipendente che vuoi assegnare."] }
+      ],
+      "appRouteLabel": "Apri i turni"
+    },
+    "4-6": {
+      "title": "Gestire le richieste di permesso",
+      "whatItIs": "Il personale può richiedere giorni di permesso. I manager esaminano e approvano o rifiutano le richieste.",
+      "whoUsesIt": "Personale (richiesta) e manager (approvazione).",
+      "stepGroups": [
+        { "label": "Il personale richiede un permesso", "steps": ["Vai su I miei turni → Permessi.", "Clicca su Richiedi permesso.", "Seleziona l'intervallo di date e inserisci un motivo (facoltativo).", "Invia la richiesta."] },
+        { "label": "Il manager esamina le richieste", "steps": ["Vai su Pianificazione → Richieste di permesso.", "Esamina ogni richiesta in attesa.", "Clicca su Approva o Rifiuta, aggiungendo facoltativamente una nota.", "Il dipendente viene avvisato."] }
+      ],
+      "appRouteLabel": "Apri i turni"
+    },
+    "4-7": {
+      "title": "Impostare la disponibilità del personale",
+      "whatItIs": "Il personale può dichiarare in quali giorni e orari è generalmente disponibile, così i manager possono pianificare i turni di conseguenza.",
+      "whoUsesIt": "Personale.",
+      "stepGroups": [{ "steps": ["Vai su Il mio profilo → Disponibilità.", "Per ogni giorno della settimana, imposta gli orari in cui sei disponibile.", "Disattiva i giorni in cui non sei mai disponibile.", "Clicca su Salva disponibilità."] }],
+      "appRouteLabel": "Vai ai miei turni"
+    },
+    "5-1": {
+      "title": "Timbrare entrata e uscita",
+      "whatItIs": "Registra quando il personale inizia e finisce di lavorare. Si può fare dall'app web o da un tablet della postazione POS.",
+      "whoUsesIt": "Tutto il personale.",
+      "stepGroups": [{ "steps": ["All'inizio del turno, vai su Presenze oppure usa la postazione POS.", "Clicca su Timbra entrata — l'orario di inizio viene registrato.", "Per fare una pausa, clicca su Inizia pausa.", "Clicca su Fine pausa quando rientri.", "Alla fine del turno, clicca su Timbra uscita."] }],
+      "appRouteLabel": "Vai alle presenze"
+    },
+    "5-2": {
+      "title": "Registrare le assenze",
+      "whatItIs": "I manager possono registrare quando un dipendente è assente (malattia, permesso non retribuito, ecc.) per mantenere accurati i registri delle presenze.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Presenze → Assenze.", "Clicca su Registra assenza.", "Seleziona il dipendente e la data.", "Scegli il tipo di assenza (Malattia, Permesso non retribuito, Altro).", "Aggiungi una nota se necessario e clicca su Salva."] }],
+      "appRouteLabel": "Vai alle presenze"
+    },
+    "5-3": {
+      "title": "Generare le paghe",
+      "whatItIs": "Calcola automaticamente quanto è dovuto a ogni dipendente per un determinato periodo, in base alle presenze e alla tariffa oraria.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Assicurati che tutti i dipendenti abbiano una tariffa oraria impostata (Personale → Dipendenti → Modifica tariffa).", "Vai su Paghe.", "Seleziona il periodo di paga (es. giugno 2026).", "Clicca su Genera paghe.", "Rivedi il riepilogo — ore lavorate × tariffa oraria per ogni dipendente.", "Clicca su Esporta in CSV per scaricare il report da usare con il tuo software di contabilità."] }],
+      "appRouteLabel": "Vai alle paghe"
+    },
+    "6-1": {
+      "title": "Creare un menu",
+      "whatItIs": "Crea un menu (es. \"Menu pranzo\", \"Menu cena\", \"Bevande\") che conterrà le tue categorie e voci.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Menu.", "Clicca su Crea menu.", "Inserisci un nome per il menu e, facoltativamente, una descrizione.", "Clicca su Crea."] }],
+      "appRouteLabel": "Vai al menu"
+    },
+    "6-2": {
+      "title": "Aggiungere categorie e voci",
+      "whatItIs": "Organizza il tuo menu raggruppando le voci in categorie (es. Antipasti, Primi, Dolci) e aggiungendo le voci all'interno di ciascuna.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [
+        { "label": "Aggiungere una categoria", "steps": ["Apri il tuo menu e clicca su Aggiungi categoria.", "Inserisci il nome della categoria (es. \"Antipasti\") e clicca su Salva."] },
+        { "label": "Aggiungere una voce", "steps": ["Clicca su una categoria per espanderla, poi clicca su Aggiungi voce.", "Inserisci nome, descrizione e prezzo della voce, e carica un'immagine.", "Imposta le informazioni alimentari (vegano, senza glutine, ecc.) e gli allergeni.", "Clicca su Salva voce."] }
+      ],
+      "appRouteLabel": "Vai al menu"
+    },
+    "6-3": {
+      "title": "Aggiungere varianti e opzioni",
+      "whatItIs": "Le varianti permettono di offrire lo stesso piatto in formati o versioni diverse (es. Piccolo / Grande). Le opzioni permettono ai clienti di personalizzare una voce (es. aggiungere condimenti, scegliere una salsa).",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [
+        { "label": "Aggiungere varianti (es. formati)", "steps": ["Apri una voce di menu e vai su Varianti.", "Clicca su Aggiungi variante e inserisci un nome (es. \"Grande\") e il suo prezzo.", "Ripeti per ogni variante."] },
+        { "label": "Aggiungere un gruppo di opzioni", "steps": ["Apri una voce di menu e vai su Opzioni.", "Clicca su Aggiungi gruppo di opzioni e assegnagli un nome.", "Imposta se è obbligatorio o facoltativo, e il numero minimo/massimo di selezioni.", "Clicca su Aggiungi opzione all'interno del gruppo e inserisci ogni scelta con il suo prezzo (0 se gratuita)."] }
+      ],
+      "appRouteLabel": "Vai al menu"
+    },
+    "6-4": {
+      "title": "Programmare un menu",
+      "whatItIs": "Attiva o disattiva automaticamente un menu in date, orari o giorni della settimana specifici — perfetto per i menu del pranzo o le proposte stagionali.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Apri un menu e clicca su Programma.", "Imposta una data/ora di attivazione e una di scadenza, oppure scegli giorni specifici della settimana.", "Clicca su Salva programmazione.", "Il menu si attiverà e scadrà automaticamente agli orari impostati."] }],
+      "appRouteLabel": "Vai al menu"
+    },
+    "7-1": {
+      "title": "Impostare la piantina del locale",
+      "whatItIs": "Crea una mappa visiva delle sale e dei tavoli del tuo locale per poter assegnare ordini e prenotazioni a tavoli specifici.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Piantina del locale.", "Clicca su Aggiungi sala e assegnale un nome (es. \"Sala principale\", \"Terrazza\").", "Nella sala, clicca su Aggiungi tavolo.", "Imposta il numero o il nome del tavolo, la capienza (numero di posti) e la sua posizione sulla mappa.", "Ripeti per tutti i tavoli.", "Clicca su Salva."] }],
+      "tips": ["Usa Aggiungi più tavoli per creare diversi tavoli in una volta con numerazione sequenziale."],
+      "appRouteLabel": "Apri la piantina"
+    },
+    "7-2": {
+      "title": "Visualizzare lo stato dei tavoli",
+      "whatItIs": "Vedi in tempo reale quali tavoli sono occupati, liberi o riservati.",
+      "whoUsesIt": "Hostess, camerieri, manager.",
+      "stepGroups": [{ "steps": ["Vai su Piantina del locale o sulla vista Tavoli della postazione POS.", "I tavoli sono colorati in base allo stato: verde = libero, rosso = occupato, giallo = riservato.", "Clicca su un tavolo per vedere chi è seduto, l'ordine in corso o la prossima prenotazione."] }],
+      "appRouteLabel": "Apri la piantina"
+    },
+    "8-1": {
+      "title": "Creare un ordine",
+      "whatItIs": "Apri un nuovo ordine per un tavolo oppure per asporto/consegna.",
+      "whoUsesIt": "Camerieri e personale POS.",
+      "stepGroups": [{ "steps": ["Vai su Ordini oppure usa la postazione POS.", "Clicca su Nuovo ordine.", "Seleziona il tipo di ordine: Al tavolo, Asporto o Consegna.", "Per gli ordini al tavolo, seleziona il tavolo.", "Scorri il menu e clicca sulle voci per aggiungerle.", "Per le voci con varianti o opzioni, fai le selezioni richieste nella finestra che appare.", "Modifica le quantità secondo necessità.", "Clicca su Invia ordine — l'ordine viene inviato in cucina."] }],
+      "appRouteLabel": "Vai agli ordini"
+    },
+    "8-2": {
+      "title": "Gestire il ciclo di vita di un ordine",
+      "whatItIs": "Segui un ordine dal momento in cui viene effettuato fino al completamento, facendolo avanzare attraverso le fasi corrette.",
+      "whoUsesIt": "Personale di cucina, camerieri, manager.",
+      "stepGroups": [{ "steps": ["Quando arriva un nuovo ordine, appare come In attesa.", "Clicca su Accetta per confermare che la cucina lo ha ricevuto (stato → Accettato).", "Quando inizia la preparazione, clicca su In preparazione (stato → In preparazione).", "Quando il cibo è pronto da servire, clicca su Pronto (stato → Pronto).", "Dopo averlo portato al cliente, clicca su Completa (stato → Completato)."] }],
+      "tips": ["Puoi annullare un ordine in qualsiasi fase prima del completamento. Aggiungi un motivo quando richiesto."],
+      "appRouteLabel": "Vai agli ordini"
+    },
+    "8-3": {
+      "title": "Incassare un pagamento",
+      "whatItIs": "Registra il pagamento di un ordine quando il cliente è pronto a pagare.",
+      "whoUsesIt": "Camerieri e cassieri.",
+      "stepGroups": [{ "steps": ["Apri l'ordine completato o in corso e clicca su Incassa pagamento.", "Seleziona il metodo di pagamento (Contanti, Carta, ecc.).", "Inserisci l'importo ricevuto.", "Se dividi il conto, clicca prima su Dividi il conto e ripartisci l'importo tra gli ospiti.", "Clicca su Conferma pagamento.", "L'ordine viene ora contrassegnato come Pagato."] }],
+      "appRouteLabel": "Vai agli ordini"
+    },
+    "8-4": {
+      "title": "Effettuare un rimborso",
+      "whatItIs": "Elabora un rimborso totale o parziale su un pagamento già registrato.",
+      "whoUsesIt": "Manager e cassieri.",
+      "stepGroups": [{ "steps": ["Apri l'ordine e vai alla scheda Pagamenti.", "Trova il pagamento da rimborsare e clicca su Rimborsa.", "Inserisci l'importo del rimborso (totale o parziale).", "Aggiungi un motivo per il rimborso.", "Clicca su Conferma rimborso."] }],
+      "appRouteLabel": "Vai agli ordini"
+    },
+    "9-1": {
+      "title": "Configurare le postazioni di cucina",
+      "whatItIs": "Definisci le diverse postazioni di cucina (es. Griglia, Preparazione freddi, Pasticceria) e assegna loro le categorie di menu, in modo che gli ordini giusti compaiano sullo schermo giusto.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Cucina → Postazioni.", "Clicca su Aggiungi postazione e assegnale un nome (es. \"Postazione griglia\").", "Seleziona quali categorie di menu devono comparire su questa postazione (es. \"Primi\", \"Hamburger\").", "Clicca su Salva.", "Configura un tablet o uno schermo in quella postazione e collegalo al display della postazione."] }],
+      "appRouteLabel": "Vai alle postazioni"
+    },
+    "9-2": {
+      "title": "Usare il display cucina",
+      "whatItIs": "La vista in tempo reale che il personale di cucina usa per vedere gli ordini in arrivo per la propria postazione.",
+      "whoUsesIt": "Personale di cucina.",
+      "stepGroups": [{ "steps": ["Apri la vista KDS sullo schermo di cucina.", "I nuovi ordini appaiono automaticamente in coda.", "Clicca su un ordine per vederne tutti i dettagli (voci, opzioni, note).", "Clicca su Segna come pronto quando il cibo di quell'ordine è stato preparato.", "Il cameriere viene avvisato che l'ordine è pronto per il ritiro."] }],
+      "appRouteLabel": "Vai alle postazioni"
+    },
+    "10-1": {
+      "title": "Creare una prenotazione",
+      "whatItIs": "Prenota un tavolo per un ospite in una data e un orario futuri.",
+      "whoUsesIt": "Personale di sala, hostess.",
+      "stepGroups": [{ "steps": ["Vai su Prenotazioni.", "Clicca su Nuova prenotazione.", "Inserisci il nome dell'ospite, il numero di telefono o l'email, e il numero di persone.", "Seleziona la data e l'orario.", "Il sistema mostrerà i tavoli disponibili — selezionane uno.", "Aggiungi eventuali note speciali (es. \"Torta di compleanno\", \"Serve un tavolo accessibile in sedia a rotelle\").", "Clicca su Confermi prenotazione.", "L'ospite riceverà una conferma."] }],
+      "appRouteLabel": "Vai alle prenotazioni"
+    },
+    "10-2": {
+      "title": "Gestire il ciclo di vita della prenotazione",
+      "whatItIs": "Segui una prenotazione dal momento della prenotazione fino alla partenza dell'ospite.",
+      "whoUsesIt": "Hostess e personale di sala.",
+      "stepGroups": [{ "steps": ["Una nuova prenotazione parte come In attesa.", "Confermala cliccando su Confermi (stato → Confermata).", "Quando l'ospite arriva, clicca su Registra arrivo (stato → Arrivato).", "Dopo la visita, clicca su Completa (stato → Completata).", "Se l'ospite non si presenta, clicca su Non presentato.", "Per annullare, clicca su Annulla e indica un motivo."] }],
+      "appRouteLabel": "Vai alle prenotazioni"
+    },
+    "10-3": {
+      "title": "Clienti senza prenotazione",
+      "whatItIs": "Fai sedere rapidamente un ospite arrivato senza prenotazione.",
+      "whoUsesIt": "Hostess.",
+      "stepGroups": [{ "steps": ["Vai su Prenotazioni e clicca su Senza prenotazione.", "Seleziona un tavolo libero adatto al numero di persone.", "Inserisci il numero di ospiti (il nome è facoltativo per questo tipo di arrivo).", "Clicca su Fai sedere ora — il tavolo viene immediatamente segnato come occupato."] }],
+      "appRouteLabel": "Vai alle prenotazioni"
+    },
+    "10-4": {
+      "title": "Verificare la disponibilità",
+      "whatItIs": "Vedi quali tavoli sono disponibili per una data, un orario e un numero di persone prima di confermare una prenotazione.",
+      "whoUsesIt": "Hostess e personale che gestisce prenotazioni telefoniche.",
+      "stepGroups": [{ "steps": ["Vai su Prenotazioni → Verifica disponibilità.", "Inserisci data, orario e numero di ospiti.", "Il sistema mostra un elenco dei tavoli disponibili con la loro capienza.", "Selezionane uno per precompilare un nuovo modulo di prenotazione."] }],
+      "appRouteLabel": "Vai alle prenotazioni"
+    },
+    "11-1": {
+      "title": "Aggiungere voci al magazzino",
+      "whatItIs": "Crea una scheda per ogni ingrediente o articolo di fornitura che vuoi tracciare (es. Pomodori, Olio d'oliva, Tovaglioli).",
+      "whoUsesIt": "Manager e responsabili di cucina.",
+      "stepGroups": [{ "steps": ["Vai su Magazzino.", "Clicca su Aggiungi articolo.", "Inserisci il nome dell'articolo, l'unità di misura (kg, litri, pezzi, ecc.) e la quantità attuale in giacenza.", "Imposta una soglia di riordino — quando la giacenza scende sotto questo valore riceverai un avviso di scorte basse.", "Facoltativamente, assegnalo a un gruppo (es. Prodotti freschi, Bevande, Generi secchi).", "Clicca su Salva."] }],
+      "appRouteLabel": "Vai al magazzino"
+    },
+    "11-2": {
+      "title": "Modificare i livelli di giacenza",
+      "whatItIs": "Registra le variazioni di giacenza quando arrivano le forniture, gli ingredienti vengono usati o gli articoli vengono scartati.",
+      "whoUsesIt": "Personale di cucina e manager.",
+      "stepGroups": [{ "steps": ["Vai su Magazzino e trova l'articolo.", "Clicca su Modifica giacenza.", "Seleziona il tipo di movimento: Aggiungi (consegna ricevuta), Sottrai (uso manuale) oppure Scarto (deterioramento).", "Inserisci la quantità e una nota.", "Clicca su Salva — il movimento viene registrato nello storico dell'articolo."] }],
+      "appRouteLabel": "Vai al magazzino"
+    },
+    "11-3": {
+      "title": "Collegare le ricette alle voci di menu",
+      "whatItIs": "Collega una voce di menu ai suoi ingredienti, in modo che ogni volta che viene ordinata e completata il sistema sottragga automaticamente le quantità corrette dal magazzino.",
+      "whoUsesIt": "Manager e responsabili di cucina.",
+      "stepGroups": [{ "steps": ["Vai su Magazzino → Ricette, oppure apri una voce di menu e clicca su Ricetta.", "Clicca su Aggiungi ingrediente.", "Seleziona l'articolo di magazzino e inserisci la quantità usata per porzione (es. 0,2 kg di pomodori).", "Ripeti per tutti gli ingredienti del piatto.", "Clicca su Salva ricetta."] }],
+      "tips": ["Una volta configurata la ricetta, completare un ordine sottrarrà automaticamente dal magazzino tutti gli ingredienti collegati."],
+      "appRouteLabel": "Vai al magazzino"
+    },
+    "11-4": {
+      "title": "Visualizzare lo storico dei movimenti di magazzino",
+      "whatItIs": "Visualizza il registro completo di ogni variazione di giacenza per qualsiasi articolo.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Magazzino e clicca su un articolo qualsiasi.", "Scorri fino alla scheda Storico movimenti.", "Vedrai ogni aggiunta, sottrazione e scarto, con data, quantità e autore della modifica."] }],
+      "appRouteLabel": "Vai al magazzino"
+    },
+    "12-1": {
+      "title": "Gestire le tue notifiche",
+      "whatItIs": "Visualizza e gestisci le notifiche in-app per cose come nuovi ordini, modifiche alle prenotazioni, assegnazioni di turni e avvisi di scorte basse.",
+      "whoUsesIt": "Tutti gli utenti.",
+      "stepGroups": [{ "steps": ["Clicca sull'icona della campanella nella barra di navigazione in alto.", "Appare un elenco delle tue notifiche recenti.", "Clicca su una notifica per andare alla sezione corrispondente.", "Clicca su Segna come letta sulle singole notifiche, oppure su Segna tutte come lette per azzerarle tutte."] }],
+      "appRouteLabel": "Vedi le notifiche"
+    },
+    "12-2": {
+      "title": "Preferenze di notifica",
+      "whatItIs": "Controlla quali tipi di notifiche ricevi, così il tuo feed resta rilevante.",
+      "whoUsesIt": "Tutti gli utenti.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni profilo → Notifiche.", "Attiva o disattiva ogni tipo di notifica (es. Aggiornamenti ordini, Promemoria turni, Avvisi scorte basse).", "Le modifiche si salvano automaticamente."] }],
+      "appRouteLabel": "Vai al profilo"
+    },
+    "13-1": {
+      "title": "Visualizzare la dashboard delle vendite",
+      "whatItIs": "Una panoramica delle prestazioni della tua attività — incassi, numero di ordini, voci più vendute e andamento nel tempo.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Statistiche.", "Seleziona l'intervallo di date (es. ultimi 7 giorni, ultimo mese, o un intervallo personalizzato).", "Visualizza le Vendite totali del periodo.", "Esamina il Numero di ordini suddiviso per tipo (al tavolo, asporto, consegna).", "Controlla le Voci più vendute classificate per incasso.", "Esplora il Grafico vendite giornaliere con l'andamento del periodo.", "Usa la scheda Prestazioni del personale per vedere le metriche individuali."] }],
+      "appRouteLabel": "Vai alle statistiche"
+    },
+    "14-1": {
+      "title": "Configurare una postazione POS (tablet)",
+      "whatItIs": "Collega un tablet o un terminale al tuo account FlairSync, così il personale può prendere ordini, elaborare pagamenti e timbrare da lì.",
+      "whoUsesIt": "Manager che configurano l'hardware.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni → Postazioni POS.", "Clicca su Aggiungi postazione e assegnale un nome (es. \"Terminale bar\", \"iPad tavolo 1\").", "Clicca su Genera codice di abbinamento — apparirà un codice breve.", "Sul tablet, apri FlairSync POS e inserisci il codice di abbinamento.", "La postazione è ora collegata. Userà un token sicuro di lunga durata per l'autenticazione."] }],
+      "appRouteLabel": "Vai alle impostazioni POS"
+    },
+    "14-2": {
+      "title": "Accesso del personale sulla postazione POS",
+      "whatItIs": "Il personale usa un PIN breve invece di una password per accedere rapidamente alla postazione POS all'inizio del turno.",
+      "whoUsesIt": "Tutto il personale di sala e cucina.",
+      "stepGroups": [{ "steps": ["Sulla postazione POS, tocca Accesso personale.", "Inserisci il tuo PIN di 4-6 cifre (impostato dal tuo manager nel tuo profilo lavorativo).", "Ora hai effettuato l'accesso e puoi prendere ordini, timbrare e molto altro."] }],
+      "tips": ["Se non hai ancora un PIN, chiedi al tuo manager di impostarne uno da Personale → Dipendenti → Imposta PIN."],
+      "appRouteLabel": "Avvia la postazione POS"
+    },
+    "14-3": {
+      "title": "Collegare una stampante per ricevute e un cassetto portavalori",
+      "whatItIs": "Collega una stampante termica fisica per ricevute (e, facoltativamente, un cassetto portavalori) a una postazione POS, così gli ordini si stampano automaticamente e il cassetto si apre al momento del pagamento.",
+      "whoUsesIt": "Manager che configurano l'hardware.",
+      "stepGroups": [
+        { "label": "Scegli il tuo percorso", "steps": ["FlairSync supporta due modi per collegare una stampante: tramite la tua rete locale (WiFi o Ethernet), oppure collegandola direttamente via USB senza alcuna configurazione di rete. Se la tua stampante ha solo una porta USB, non serve più un adattatore USB-Ethernet — il percorso USB qui sotto la gestisce direttamente.", "L'USB è più semplice da configurare (nessun indirizzo IP, nessun router) ma funziona solo su Chrome o Edge, sullo stesso dispositivo che esegue il POS — non funziona su Safari o Firefox, e l'abbinamento non si trasferisce su un altro tablet o laptop. La stampa in rete funziona in qualsiasi browser e non è legata a un solo dispositivo."] },
+        { "label": "Percorso USB: abbina direttamente nel browser (senza adattatore, senza configurazione di rete)", "steps": ["Collega la stampante allo stesso tablet o laptop che esegue FlairSync POS, usando un cavo USB (o un adattatore USB-OTG se si tratta di un tablet).", "Nella dashboard del titolare, vai su Impostazioni → Postazioni POS, trova la postazione e, sotto Stampante, scegli Stampante USB (diretta da browser).", "Clicca su Abbina — il browser mostrerà un selettore di dispositivi: scegli la stampante dall'elenco.", "Clicca su Salva, poi su Test per confermare che stampa. Salta i passaggi specifici per la rete qui sotto (collegamento al WiFi, ricerca di un indirizzo IP) — non si applicano a questo percorso."] },
+        { "label": "Percorso di rete: scegli la stampante giusta", "steps": ["Assicurati che la tua stampante sia una termica ESC/POS \"di rete\" o \"LAN\" — è lo standard sulla maggior parte delle stampanti per ricevute vendute oggi (Epson TM-T20III, Star TSP143 e quasi tutti i cloni generici lo supportano).", "Se la tua stampante è solo USB e preferisci non usare il percorso USB diretto dal browser descritto sopra, ti servirà invece un adattatore USB-Ethernet per server di stampa tra la stampante e il router."] },
+        { "label": "Collegare la stampante alla tua rete", "steps": ["Collega la stampante al tuo router nello stesso modo in cui collegheresti un laptop — con un cavo Ethernet — oppure collegala al WiFi tramite il menu o il pulsante di configurazione della stampante (consulta il manuale, questo passaggio varia da marca a marca).", "Assicurati che la stampante finisca sulla stessa rete WiFi del tablet o laptop che esegue FlairSync POS — una stampante su una rete separata per gli ospiti non sarà raggiungibile."] },
+        { "label": "Trovare l'indirizzo IP della stampante", "steps": ["La maggior parte delle stampanti può stampare una pagina di \"configurazione di rete\" o \"autotest\" — tieni premuto il tasto di avanzamento carta durante l'accensione, oppure consulta il manuale per la combinazione di tasti esatta.", "Quella pagina mostra l'indirizzo IP della stampante (es. 192.168.1.50). Puoi anche controllare la pagina di amministrazione del router per un elenco dei dispositivi collegati e trovare lì la stampante."] },
+        { "label": "Collegare il cassetto portavalori (se ne hai uno)", "steps": ["Un cassetto portavalori non si collega mai direttamente al tablet o al laptop — si collega alla porta dedicata sul retro della stampante (di solito indicata come RJ11 o RJ12), usando il cavo fornito con il cassetto. Questo vale sia per il percorso USB che per quello di rete descritti sopra.", "È la stampante che apre effettivamente il cassetto — FlairSync si limita a dirle di farlo come parte della stampa, quindi non serve collegare nulla di aggiuntivo al tuo dispositivo."] },
+        { "label": "Aggiungere la stampante alla postazione POS (percorso di rete)", "steps": ["Nella dashboard del titolare, vai su Impostazioni → Postazioni POS e trova la postazione (tablet o laptop) a cui è collegata la stampante.", "Sotto Stampante, scegli Stampante di rete (ESC/POS) e inserisci l'indirizzo IP e la porta della stampante (9100 funziona per quasi tutte le stampanti).", "Attiva Ha cassetto portavalori se ne è collegato uno alla stampante.", "Clicca su Salva, poi su Test — verifica la connessione senza stampare nulla, così saprai subito se l'IP è sbagliato.", "Da questo momento il personale potrà stampare uno scontrino reale dalla schermata della ricevuta di quella postazione, invece di usare solo la finestra di stampa del browser."] }
+      ],
+      "tips": ["Una configurazione della stampante vale per una sola postazione. Se hai due banchi, ciascuno con la propria stampante, configura ogni postazione separatamente.", "L'abbinamento USB viene ricordato dal browser su quel dispositivo — se cancelli i dati del browser del tablet o cambi tablet, dovrai cliccare di nuovo su Abbina.", "Gli indirizzi IP delle stampanti possono cambiare se il router li riassegna (solo percorso di rete). Se la stampa si interrompe improvvisamente, controlla di nuovo l'IP della stampante in Impostazioni → Postazioni POS.", "La maggior parte dei router permette di riservare un IP fisso per un dispositivo (a volte chiamato \"prenotazione DHCP\" o \"lease statico\") — chiedi a chi gestisce il tuo WiFi di impostarne uno, così l'indirizzo della stampante non cambia più."],
+      "appRouteLabel": "Vai alle impostazioni POS"
+    },
+    "15-1": {
+      "title": "Trovare un ristorante",
+      "whatItIs": "Scopri i ristoranti sulla piattaforma FlairSync, filtra per tipo, posizione e preferenze, e trova dove mangiare.",
+      "whoUsesIt": "Clienti / utenti finali.",
+      "stepGroups": [{ "steps": ["Vai alla pagina Scopri.", "Usa la barra di ricerca per cercare per nome o parola chiave.", "Filtra per tipo di cucina, fascia di prezzo, tag (es. All'aperto, Vegano) o valutazione.", "Attiva Vicino a me per mostrare i ristoranti vicini alla tua posizione attuale.", "Clicca su un ristorante per vedere il suo profilo completo, il menu e gli orari disponibili."] }],
+      "appRouteLabel": "Scopri i ristoranti"
+    },
+    "15-2": {
+      "title": "Fare una prenotazione (come cliente)",
+      "whatItIs": "Prenota un tavolo in un ristorante direttamente dalla piattaforma.",
+      "whoUsesIt": "Clienti.",
+      "stepGroups": [{ "steps": ["Apri il profilo di un ristorante e clicca su Prenota un tavolo.", "Seleziona data, orario e numero di ospiti.", "Appariranno gli orari disponibili — scegline uno.", "Inserisci nome, telefono ed eventuali richieste particolari.", "Se hai un account, accedi — altrimenti puoi prenotare come ospite.", "Clicca su Confermi prenotazione.", "Riceverai una conferma via email o SMS."] }],
+      "appRouteLabel": "Scopri i ristoranti"
+    },
+    "15-3": {
+      "title": "Effettuare un ordine da asporto o con consegna",
+      "whatItIs": "Ordina cibo online da un ristorante e scegli di ritirarlo o farlo consegnare.",
+      "whoUsesIt": "Clienti.",
+      "stepGroups": [{ "steps": ["Apri il profilo di un ristorante e clicca su Ordina ora.", "Seleziona Asporto o Consegna.", "Scorri il menu e aggiungi le voci al carrello.", "Personalizza le voci con varianti e opzioni, se necessario.", "Rivedi il carrello e clicca su Effettua ordine.", "Riceverai una conferma e potrai seguire lo stato dell'ordine."] }],
+      "appRouteLabel": "Scopri i ristoranti"
+    },
+    "15-4": {
+      "title": "Scrivere una recensione",
+      "whatItIs": "Valuta e recensisci un ristorante dopo una visita per condividere la tua esperienza.",
+      "whoUsesIt": "Clienti.",
+      "stepGroups": [{ "steps": ["Apri il profilo del ristorante oppure trovalo nello storico I miei ordini.", "Clicca su Scrivi una recensione.", "Seleziona una valutazione in stelle (da 1 a 5).", "Scrivi la tua recensione nel campo di testo.", "Clicca su Invia recensione."] }],
+      "appRouteLabel": "Scopri i ristoranti"
+    },
+    "16-1": {
+      "title": "Scegliere un piano di abbonamento",
+      "whatItIs": "Seleziona il piano FlairSync più adatto alla dimensione della tua attività e sblocca le relative funzioni e limiti.",
+      "whoUsesIt": "Titolari.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni → Abbonamento.", "Visualizza i piani disponibili e le loro funzioni (limiti di personale, limiti di menu, limiti di tavoli, ecc.).", "Clicca su Scegli piano su quello più adatto alle tue esigenze.", "Verrai reindirizzato alla pagina di fatturazione sicura per inserire i dati di pagamento.", "Dopo il pagamento, il tuo piano si attiva immediatamente."] }],
+      "appRouteLabel": "Vedi i piani"
+    },
+    "16-2": {
+      "title": "Gestire la tua fatturazione",
+      "whatItIs": "Visualizza il tuo piano attuale, scarica le fatture e aggiorna i dati di pagamento.",
+      "whoUsesIt": "Titolari.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni → Abbonamento → Fatturazione.", "Visualizza il tuo piano attuale e la prossima data di fatturazione.", "Per scaricare una fattura, clicca su Fatture e poi su Scarica accanto alla fattura desiderata.", "Per aggiornare i dati di pagamento o annullare, clicca su Gestisci fatturazione — si aprirà un portale di fatturazione sicuro."] }],
+      "appRouteLabel": "Gestisci fatturazione"
+    },
+    "17-1": {
+      "title": "Creare e assegnare attività",
+      "whatItIs": "Crea attività da completare per il personale (es. \"Pulire la cella frigorifera\") e assegnale a dipendenti specifici.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Attività.", "Clicca su Crea attività.", "Inserisci un nome per l'attività e, facoltativamente, una descrizione.", "Imposta una data di scadenza, se applicabile.", "Assegnala a un dipendente.", "Clicca su Crea — il dipendente assegnato viene avvisato."] }],
+      "appRouteLabel": "Vai alle attività"
+    },
+    "17-2": {
+      "title": "Completare un'attività",
+      "whatItIs": "Il personale aggiorna lo stato delle attività man mano che le svolge.",
+      "whoUsesIt": "Personale.",
+      "stepGroups": [{ "steps": ["Vai su Attività → Le mie attività.", "Clicca su un'attività per aprirla.", "Clicca su Segna come in corso quando inizi.", "Clicca su Segna come completata quando hai finito.", "Il manager viene avvisato."] }],
+      "appRouteLabel": "Vai alle attività"
+    },
+    "18-1": {
+      "title": "Pubblicare un'offerta di lavoro",
+      "whatItIs": "Pubblica una posizione aperta nel tuo ristorante così chi cerca lavoro può trovarla e candidarsi tramite la piattaforma.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Lavori → I miei annunci.", "Clicca su Pubblica un'offerta.", "Inserisci titolo, descrizione, requisiti e tipo di contratto (Tempo pieno, Part-time, ecc.).", "Clicca su Pubblica — l'annuncio diventa visibile nella bacheca lavori pubblica."] }],
+      "appRouteLabel": "Vai ai lavori"
+    },
+    "18-2": {
+      "title": "Esaminare le candidature",
+      "whatItIs": "Visualizza le candidature ricevute e fai avanzare i candidati nelle fasi di assunzione.",
+      "whoUsesIt": "Manager.",
+      "stepGroups": [{ "steps": ["Vai su Lavori → I miei annunci e apri l'offerta interessata.", "Clicca su Visualizza candidature.", "Per ogni candidato puoi visualizzare il profilo, il curriculum e la lettera di presentazione.", "Fai avanzare il candidato tra le fasi: Selezione → Colloquio → Assunto oppure Respinto.", "Il candidato viene avvisato a ogni cambio di stato."] }],
+      "appRouteLabel": "Vai ai lavori"
+    },
+    "18-3": {
+      "title": "Candidarsi per un lavoro",
+      "whatItIs": "Esplora le posizioni aperte nei ristoranti e invia la tua candidatura.",
+      "whoUsesIt": "Chi cerca lavoro.",
+      "stepGroups": [{ "steps": ["Vai alla Bacheca lavori dalla pagina pubblica di ricerca.", "Filtra per posizione, tipo di ruolo o ristorante.", "Clicca su un annuncio per leggere la descrizione completa.", "Clicca su Candidati ora.", "Carica il tuo curriculum (PDF) oppure inserisci un link.", "Aggiungi una lettera di presentazione (facoltativa).", "Clicca su Invia candidatura.", "Segui lo stato della tua candidatura da Le mie candidature."] }],
+      "appRouteLabel": "Esplora la bacheca lavori"
+    },
+    "19-1": {
+      "title": "Esplorare il Marketplace",
+      "whatItIs": "Uno spazio condiviso dove le attività possono pubblicare e scoprire voci di menu, modelli o risorse da scambiare con altri ristoranti sulla piattaforma.",
+      "whoUsesIt": "Titolari e manager.",
+      "stepGroups": [{ "steps": ["Vai su Marketplace.", "Esplora tutti gli annunci oppure usa la barra di ricerca per trovare qualcosa in particolare.", "Clicca su un annuncio per vederne tutti i dettagli.", "Contatta il proprietario dell'annuncio oppure richiedi/rivendica l'articolo."] }],
+      "appRouteLabel": "Apri il Marketplace"
+    },
+    "19-2": {
+      "title": "Creare un annuncio sul Marketplace",
+      "whatItIs": "Condividi qualcosa della tua attività con altri ristoranti sulla piattaforma.",
+      "whoUsesIt": "Titolari.",
+      "stepGroups": [{ "steps": ["Vai su Marketplace e clicca su Crea annuncio.", "Inserisci un titolo, una descrizione e tutti i dettagli pertinenti.", "Aggiungi un'immagine, se applicabile.", "Clicca su Pubblica."] }],
+      "appRouteLabel": "Apri il Marketplace"
+    },
+    "20-1": {
+      "title": "Contattare l'assistenza",
+      "whatItIs": "Invia una richiesta al team di assistenza FlairSync se hai problemi o domande.",
+      "whoUsesIt": "Tutti gli utenti.",
+      "stepGroups": [{ "steps": ["Vai su Assistenza → Contatta l'assistenza, oppure clicca sull'icona ?.", "Seleziona la categoria che descrive meglio il tuo problema.", "Scrivi una descrizione di ciò per cui ti serve aiuto.", "Clicca su Invia — riceverai un'email di conferma e una risposta dal team."] }],
+      "appRouteLabel": "Contatta l'assistenza"
+    },
+    "21-1": {
+      "title": "Esportare i tuoi dati",
+      "whatItIs": "Scarica una copia di tutti i tuoi dati personali conservati su FlairSync (diritto di accesso GDPR).",
+      "whoUsesIt": "Qualsiasi utente.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni profilo → Privacy.", "Clicca su Esporta i miei dati.", "Viene avviata un'elaborazione — riceverai un'email con un link per il download quando sarà pronta (di solito entro pochi minuti)."] }],
+      "appRouteLabel": "Vai al profilo"
+    },
+    "21-2": {
+      "title": "Eliminare il tuo account",
+      "whatItIs": "Rimuovi definitivamente il tuo account e tutti i dati associati dalla piattaforma. È previsto un periodo di tolleranza di 30 giorni prima che l'eliminazione sia definitiva.",
+      "whoUsesIt": "Qualsiasi utente che desideri lasciare la piattaforma.",
+      "stepGroups": [{ "steps": ["Vai su Impostazioni profilo → Privacy.", "Clicca su Elimina il mio account.", "Leggi attentamente l'avviso di conferma.", "Digita la tua password per confermare.", "Clicca su Pianifica eliminazione.", "Il tuo account entra in un periodo di tolleranza di 30 giorni — in questo periodo puoi accedere di nuovo e cliccare su Annulla eliminazione.", "Dopo 30 giorni, il tuo account e tutti i dati vengono rimossi definitivamente."] }],
+      "tips": ["Se sei titolare di un'attività, assicurati di trasferire la proprietà prima di eliminare il tuo account."],
+      "appRouteLabel": "Vai al profilo"
+    }
+  }
+}

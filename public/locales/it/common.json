@@ -1,0 +1,335 @@
+{
+  "shared": {
+    "days": {
+      "monday": "Lunedì",
+      "tuesday": "Martedì",
+      "wednesday": "Mercoledì",
+      "thursday": "Giovedì",
+      "friday": "Venerdì",
+      "saturday": "Sabato",
+      "sunday": "Domenica"
+    },
+    "actions": {
+      "save": "Salva",
+      "cancel": "Annulla",
+      "delete": "Elimina",
+      "edit": "Modifica",
+      "add": "Aggiungi",
+      "move": "Sposta",
+      "duplicate": "Duplica",
+      "confirm": "Conferma",
+      "back": "Indietro",
+      "search": "Cerca",
+      "clear": "Cancella",
+      "all": "Tutti",
+      "previous": "Precedente",
+      "next": "Successivo",
+      "retry": "Riprova connessione",
+      "search_placeholder": "Cerca...",
+      "import": "Importa"
+    },
+    "messages": {
+      "no_results_found": "Nessun risultato trovato."
+    },
+    "tags": {
+      "halal": "Halal",
+      "vegan": "Vegano",
+      "vegetarian": "Vegetariano",
+      "gluten_free": "Senza glutine",
+      "organic": "Biologico",
+      "kosher": "Kosher",
+      "dairy_free": "Senza latticini",
+      "nut_free": "Senza frutta a guscio",
+      "locally_sourced": "Prodotto locale",
+      "fair_trade": "Commercio equo",
+      "pet_friendly": "Animali ammessi",
+      "outdoor_seating": "Posti all'aperto",
+      "takeaway": "Da portare via",
+      "delivery": "Consegna a domicilio",
+      "kid_friendly": "Adatto ai bambini",
+      "wifi": "Wi-Fi",
+      "wheelchair_accessible": "Accessibile in sedia a rotelle",
+      "brunch": "Brunch",
+      "breakfast": "Colazione",
+      "late_night": "Aperto fino a tardi",
+      "cozy": "Accogliente",
+      "romantic": "Romantico",
+      "family_friendly": "Per famiglie",
+      "trendy": "Alla moda",
+      "quiet": "Tranquillo",
+      "lively": "Vivace"
+    },
+    "user_menu": {
+      "default_user": "Utente",
+      "profile": "Profilo",
+      "settings": "Impostazioni",
+      "jobs": "Lavori",
+      "language": "Lingua",
+      "theme": "Tema",
+      "text_size": "Dimensione testo",
+      "business_hub": "Hub attività",
+      "view_all_businesses": "Vedi tutte",
+      "owned_businesses": "Di proprietà",
+      "joined_businesses": "Dove lavori",
+      "logout": "Esci",
+      "unverified_account": "Account non verificato",
+      "profile_aria_label": "Profilo",
+      "verify_email": "Verifica email"
+    },
+    "theme": {
+      "light": "Chiaro",
+      "dark": "Scuro",
+      "auto": "Automatico"
+    },
+    "text_size": {
+      "default": "Predefinito",
+      "large": "Grande",
+      "xlarge": "Molto grande"
+    },
+    "tags_label": "Tag",
+    "tags_placeholder": "Seleziona o digita i tag...",
+    "close_button": "Chiudi"
+  },
+  "errors": {
+    "404": {
+      "title": "Pagina non trovata",
+      "description": "Non riusciamo a trovare la pagina che stai cercando. Potrebbe essere stata spostata, rinominata o non essere mai esistita.",
+      "quickSearch": "Ricerca rapida",
+      "searchPlaceholder": "Cerca pagine, personale o impostazioni...",
+      "searchButton": "Cerca",
+      "goToDashboard": "Vai alla dashboard",
+      "contactSupport": "Contatta l'assistenza",
+      "reportError": "Se pensi che si tratti di un errore, segnalacelo: lo verificheremo.",
+      "lostTitle": "Perso in cucina?",
+      "lostDescription": "Prova uno dei link qui sotto oppure torna alla dashboard principale.",
+      "staffManagement": "Gestione del personale",
+      "scheduleManagement": "Gestione dei turni",
+      "settings": "Impostazioni",
+      "goHome": "Vai alla home",
+      "goToFeed": "Vai al feed",
+      "goToHub": "Vai all'hub attività",
+      "errorCode": "Codice errore:"
+    },
+    "500": {
+      "title": "Si è verificato un problema da parte nostra",
+      "description": "Qualcosa è andato storto."
+    },
+    "technical": {
+      "network_title": "Connessione persa",
+      "error_title": "Errore di sistema",
+      "network_error": "Errore di rete o connessione persa. Ci stiamo lavorando.",
+      "server_error": "Abbiamo riscontrato un problema. Riprova tra poco.",
+      "session_expired": "La tua sessione è scaduta. Accedi di nuovo.",
+      "unexpected_error": "Si è verificato un errore imprevisto. Riprova.",
+      "working_on_it": "Siamo al corrente del problema e stiamo ripristinando l'accesso."
+    }
+  },
+  "input_errors": {
+    "email": {
+      "invalid": "Indirizzo email non valido",
+      "required": "L'email è obbligatoria"
+    },
+    "firstName": {
+      "required": "Il nome è obbligatorio",
+      "too_long": "Il nome è troppo lungo"
+    },
+    "lastName": {
+      "required": "Il cognome è obbligatorio",
+      "too_long": "Il cognome è troppo lungo"
+    },
+    "displayName": {
+      "required": "Il nome visualizzato è obbligatorio",
+      "too_long": "Il nome visualizzato è troppo lungo"
+    },
+    "password": {
+      "min_length": "La password deve contenere almeno 8 caratteri",
+      "requirements": "La password deve contenere almeno una lettera maiuscola, una minuscola e un numero",
+      "too_long": "La password è troppo lunga",
+      "required": "La password è obbligatoria"
+    },
+    "repeat_password": {
+      "mismatch": "Le password non coincidono",
+      "required": "Conferma la tua password"
+    },
+    "repeatNewPassword": {
+      "mismatch": "Le nuove password non coincidono",
+      "required": "Conferma la tua nuova password"
+    },
+    "checkbox": {
+      "required": "Devi confermare questa casella"
+    },
+    "terms": {
+      "required": "Accetta i Termini e Condizioni"
+    }
+  },
+  "business_type_select_placeholder": "Seleziona un tipo di attività...",
+  "business_types": {
+    "bakery": "Panetteria",
+    "fast_food": "Fast food",
+    "coffee_shop": "Caffetteria",
+    "restaurant": "Ristorante",
+    "other": "Altro"
+  },
+  "cookies": {
+    "banner_text": "Utilizziamo i cookie per migliorare la tua esperienza, ricordare le tue preferenze e analizzare l'utilizzo del sito. Cliccando su «Accetta tutto», acconsenti a tutti i cookie.",
+    "learn_more": "Scopri di più nella nostra Politica sui cookie e GDPR",
+    "manage": "Gestisci preferenze",
+    "reject_all": "Rifiuta tutto",
+    "accept_all": "Accetta tutto",
+    "always_active": "Sempre attivi",
+    "save_preferences": "Salva le mie preferenze",
+    "preferences_title": "Preferenze sui cookie",
+    "preferences_description": "Scegli quali cookie consentire. I cookie strettamente necessari non possono essere disattivati, poiché indispensabili per il funzionamento della piattaforma.",
+    "categories": {
+      "necessary": {
+        "label": "Strettamente necessari",
+        "description": "Necessari per l'autenticazione, la sicurezza e le funzioni principali della piattaforma. Non possono essere disattivati."
+      },
+      "functional": {
+        "label": "Funzionali",
+        "description": "Ricordano la tua lingua, il tema e altre preferenze per offrirti un'esperienza personalizzata."
+      },
+      "analytics": {
+        "label": "Statistiche",
+        "description": "Ci aiutano a capire come usi la piattaforma per poterla migliorare. Tutti i dati sono anonimi."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "description": "Usati per offrirti contenuti pertinenti e misurare l'efficacia delle campagne. Non vendiamo i tuoi dati."
+      }
+    }
+  },
+  "beta_mode": {
+    "banner_text": "FlairSync Beta",
+    "banner_aria_label": "FlairSync è in fase beta — clicca per i dettagli",
+    "modal_title": "Stai usando FlairSync Beta",
+    "modal_description": "FlairSync è attualmente in una beta limitata. I nuovi account devono essere approvati da un amministratore prima di poter gestire un ristorante, e alcune funzioni sono ancora in evoluzione.",
+    "modal_point_approval_title": "Approvazione richiesta",
+    "modal_point_approval_text": "Chi si registra non sceglie ancora un piano — un amministratore verifica e approva prima il tuo account.",
+    "modal_point_free_title": "Accesso Pro gratuito",
+    "modal_point_free_text": "I beta tester approvati ottengono l'accesso completo al piano Pro senza costi per tutta la durata della beta.",
+    "modal_point_changing_title": "Possono esserci cambiamenti",
+    "modal_point_changing_text": "Funzioni, prezzi e flussi di lavoro potrebbero ancora cambiare prima del rilascio definitivo.",
+    "modal_point_transition_title": "Un avviso prima che la beta finisca",
+    "modal_point_transition_text": "Al termine del periodo beta riceverai un'email sul passaggio a un piano a pagamento, con il prezzo e la data in cui entra in vigore — inviata almeno 14 giorni prima di dover iniziare a pagare per continuare a usare il servizio.",
+    "modal_close": "Ho capito",
+    "pending_title": "Sei in lista",
+    "pending_description": "FlairSync è in una beta limitata — i nuovi account vengono approvati manualmente. Ti scriveremo non appena il tuo account sarà approvato, di solito in un paio di giorni lavorativi, con un link diretto alla configurazione.",
+    "rejected_title": "La tua richiesta di beta non è stata approvata",
+    "rejected_description": "Se pensi sia un errore, contattaci e la rivedremo.",
+    "contact_link": "Contattaci",
+    "go_home_link": "Vai alla pagina principale",
+    "check_again": "Controlla di nuovo"
+  },
+  "password_breach_banner": {
+    "text": "La tua password è stata trovata in una violazione di dati — cambiala",
+    "aria_label": "La tua password è stata trovata in una violazione di dati — clicca per cambiarla",
+    "dismiss_aria_label": "Ignora"
+  },
+  "notifications_page": {
+    "title": "Centro notifiche",
+    "subtitle": "Resta aggiornato sulle ultime notifiche, prenotazioni e messaggi di sicurezza del sistema.",
+    "tabs": {
+      "all": "Tutte",
+      "alerts": "Avvisi",
+      "reservations": "Prenotazioni",
+      "orders": "Ordini",
+      "promos": "Promozioni",
+      "security": "Sicurezza"
+    }
+  },
+  "reservation_action_bar": {
+    "prompt": "Cosa vuoi fare?",
+    "confirm_attendance": "Ci sarò ✓",
+    "acknowledge_delay": "Aspetterò",
+    "running_late_button": "Sono in ritardo",
+    "minutes_label": "Quanti minuti circa?",
+    "choose_placeholder": "Scegli (opzionale)",
+    "minutes_option_one": "{{count}} minuto",
+    "minutes_option_other": "{{count}} minuti",
+    "send": "Invia",
+    "request_change_button": "Richiedi una modifica",
+    "new_time_label": "Nuova data e ora (opzionale)",
+    "new_guests_label": "Nuovo numero di persone (opzionale)",
+    "guests_placeholder": "es. 4",
+    "send_request": "Invia richiesta",
+    "request_cancellation_button": "Richiedi la cancellazione",
+    "cancellation_notice": "Questo invia una richiesta di cancellazione al ristorante, che confermerà a breve. La tua prenotazione resta attiva fino a quel momento.",
+    "reason_label": "Motivo (opzionale)",
+    "reason_placeholder": "es. Cambio di programma"
+  },
+  "customer_reservation_timeline": {
+    "event_labels": {
+      "created": "Prenotazione ricevuta",
+      "confirmed": "Prenotazione confermata",
+      "seated": "Ti abbiamo accomodato — buon appetito!",
+      "completed": "Grazie per essere stato nostro ospite",
+      "cancelled": "Prenotazione annullata",
+      "rejected": "Prenotazione rifiutata",
+      "updated": "Dettagli aggiornati",
+      "no_show": "Segnato come mancata presentazione",
+      "expired": "Prenotazione scaduta",
+      "table_assigned": "Tavolo assegnato",
+      "table_reassigned": "Tavolo riassegnato",
+      "reminder_sent": "Promemoria inviato",
+      "customer_late": "Ritardo segnalato",
+      "delay_noticed": "Ritardo rilevato",
+      "customer_confirmed_attendance": "Hai confermato la presenza",
+      "customer_running_late": "Hai segnalato un ritardo",
+      "customer_requested_cancellation": "Hai richiesto la cancellazione",
+      "customer_requested_modification": "Hai richiesto una modifica",
+      "customer_acknowledged_delay": "Hai confermato l'attesa"
+    },
+    "empty_state": "Ancora nessun aggiornamento. Torna a controllare presto!",
+    "meta": {
+      "delay_estimate": "~{{minutes}} min di ritardo",
+      "reminder_sent_before": "Inviato {{minutes}} min prima della prenotazione",
+      "new_time": "Nuovo orario: {{time}}",
+      "party_of": "Gruppo di {{count}}"
+    }
+  },
+  "owned_page": {
+    "title": "Le mie attività",
+    "subtitle": "Gestisci le attività di tua proprietà e monitora le loro performance.",
+    "create_business": "+ Crea attività",
+    "upgrade": "Passa a un piano superiore",
+    "limit_reached_message": "Hai raggiunto il limite di attività. Passa a un piano superiore per aggiungere altre sedi.",
+    "loading": "Caricamento delle tue attività...",
+    "owner": "Proprietario",
+    "other": "Altro",
+    "view_dashboard": "Vai alla dashboard",
+    "settings": "Impostazioni",
+    "empty_title": "Non possiedi ancora nessuna attività",
+    "empty_description": "Crea la tua prima attività per iniziare a gestire il tuo team, il menù e le vendite senza sforzo.",
+    "create_business_now": "Crea un'attività ora",
+    "unlock_more_businesses": "Sblocca altre attività"
+  },
+  "tour_help_button": {
+    "start": "Tour della pagina",
+    "end": "Termina il tour",
+    "dismiss": "Nascondi"
+  },
+  "sidebar": {
+    "toggle": "Mostra/nascondi barra laterale"
+  },
+  "theme_toggle": {
+    "select_theme": "Seleziona tema",
+    "light": "Chiaro",
+    "dark": "Scuro",
+    "auto": "Automatico"
+  },
+  "text_size_toggle": {
+    "select": "Seleziona dimensione testo",
+    "default": "Predefinito",
+    "large": "Grande",
+    "xlarge": "Molto grande"
+  },
+  "language_switcher": {
+    "select": "Seleziona lingua"
+  },
+  "welcome_back": "Bentornato, {{name}}",
+  "toasts": {
+    "updated": "Aggiornato",
+    "item_added": "Articolo aggiunto!"
+  }
+}
