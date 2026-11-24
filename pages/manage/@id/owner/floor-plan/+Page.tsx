@@ -277,15 +277,16 @@ const FloorPlanPage: React.FC = () => {
                                                         <Button
                                                             size="icon"
                                                             variant="ghost"
+                                                            aria-label={floor.isPublished ? t("floor_plan.unpublish_floor") : t("floor_plan.publish_floor")}
                                                             onClick={() => updateFloor({ floorId: floor.id, data: { isPublished: !floor.isPublished } })}
                                                         >
                                                             {floor.isPublished ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                                         </Button>
-                                                        <Button size="icon" variant="ghost" onClick={() => handleEditFloor(floor)}>
+                                                        <Button size="icon" variant="ghost" aria-label={t("floor_plan.edit_floor")} onClick={() => handleEditFloor(floor)}>
                                                             <Edit className="w-4 h-4" />
                                                         </Button>
                                                         <ConfirmAction onConfirm={() => deleteFloor(floor.id)}>
-                                                            <Button size="icon" variant="ghost" className="text-destructive">
+                                                            <Button size="icon" variant="ghost" className="text-destructive" aria-label={t("floor_plan.delete_floor")}>
                                                                 <Trash2 className="w-4 h-4" />
                                                             </Button>
                                                         </ConfirmAction>
@@ -375,11 +376,11 @@ const FloorPlanPage: React.FC = () => {
                                                             </Button>
                                                         )}
                                                         <DownloadTableQrButton businessId={businessId} tableId={table.id} tableName={table.name} />
-                                                        <Button size="icon" variant="ghost" onClick={() => handleEditTable(table)}>
+                                                        <Button size="icon" variant="ghost" aria-label={t("floor_plan.edit_table")} onClick={() => handleEditTable(table)}>
                                                             <Edit className="w-4 h-4" />
                                                         </Button>
                                                         <ConfirmAction onConfirm={() => deleteTable(table.id)}>
-                                                            <Button size="icon" variant="ghost" className="text-destructive">
+                                                            <Button size="icon" variant="ghost" className="text-destructive" aria-label={t("floor_plan.delete_table")}>
                                                                 <Trash2 className="w-4 h-4" />
                                                             </Button>
                                                         </ConfirmAction>

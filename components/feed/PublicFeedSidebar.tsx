@@ -312,15 +312,19 @@ const PublicFeedSidebar = ({
 
     return (
         <>
-            {/* Desktop */}
-            <aside className="hidden md:block w-full md:w-1/4">
+            {/* Desktop. Breakpoint matches the parent's `lg:flex-row` (pages/feed/+Page.tsx) —
+                B22 (QA Test Report, 2026-11-18): this used to switch on at `md` (768px), a full
+                256px before the parent left its stacked/column layout at `lg` (1024px), so
+                between those two widths this rendered as a block element trying to be 1/4-width
+                inside a still-vertically-stacked container, squashing the filter panel. */}
+            <aside className="hidden lg:block w-full lg:w-1/4">
                 <div className="sticky top-[calc(var(--public-header-height)+1.5rem)] p-6 bg-card border border-border/50 rounded-2xl shadow-sm max-h-[calc(100vh-8rem)] overflow-y-auto">
                     {FiltersContent}
                 </div>
             </aside>
 
             {/* Mobile */}
-            <div className="block md:hidden w-full px-4 mb-4">
+            <div className="block lg:hidden w-full px-4 mb-4">
                 <Dialog open={filterModalOpen} onOpenChange={setFilterModalOpen}>
                     <DialogTrigger asChild>
                         <Button variant="outline" className="w-full h-12 rounded-xl flex items-center justify-between px-4 border-border/50 bg-card hover:bg-accent shadow-sm">

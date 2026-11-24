@@ -218,7 +218,10 @@ export default function CreateNewBusiness() {
                             </span>
                         ))}
                     </div>
-                    <Progress value={((step) / totalSteps) * 100} className="mb-6" />
+                    {/* B9 (QA Test Report, 2026-11-18): step is 0-indexed, so dividing it directly by
+                        totalSteps left the bar at 75% on the final step instead of 100% — it was
+                        showing "steps completed before this one", not "progress including this one". */}
+                    <Progress value={((step + 1) / totalSteps) * 100} className="mb-6" />
 
                     <Formik
                         initialValues={initialValues}

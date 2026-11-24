@@ -172,8 +172,11 @@ const MenusPage: React.FC = () => {
                                             <span>{t('menu_management.list.categories_count', { count: menu.categoriesCount })}</span>
                                             <span>•</span>
                                             <span>{t('menu_management.list.items_count', { count: menu.itemsCount })}</span>
-                                            <span>•</span>
+                                            {/* B15 (QA Test Report, 2026-11-18): this separator used to be unconditional,
+                                                so it rendered with nothing after it whenever a menu had no hints. */}
                                             {menu.hints && Object.keys(menu.hints).length > 0 && (
+                                                <>
+                                                <span>•</span>
                                                 <TooltipProvider>
                                                     <Tooltip>
                                                         <TooltipTrigger asChild>
@@ -219,6 +222,7 @@ const MenusPage: React.FC = () => {
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
+                                                </>
                                             )}
                                         </div>
                                         <p className="text-muted-foreground text-sm italic">

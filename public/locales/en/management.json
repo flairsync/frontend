@@ -969,6 +969,8 @@
     "title": "Floor Plan",
     "add_floor": "Add Floor",
     "edit_floor": "Edit Floor",
+    "publish_floor": "Publish floor",
+    "unpublish_floor": "Unpublish floor",
     "delete_floor": "Delete Floor",
     "floors": "Floors",
     "tables": "Tables",
@@ -4075,7 +4077,7 @@
   },
   "billing_page": {
     "title": "Billing & Subscription",
-    "subtitle": "Manage your subscription and view past invoices.",
+    "subtitle": "Manage your subscription. Payment methods and past invoices are available through Manage Subscription below.",
     "cancelled_label": "Your subscription is cancelled",
     "cancelled_prefix": "and will end on",
     "cancelled_suffix": "You can resume at any time before that date.",

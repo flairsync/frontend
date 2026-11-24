@@ -969,6 +969,8 @@
     "title": "Plano de planta",
     "add_floor": "Añadir planta",
     "edit_floor": "Editar planta",
+    "publish_floor": "Publicar planta",
+    "unpublish_floor": "Despublicar planta",
     "delete_floor": "Eliminar planta",
     "floors": "Plantas",
     "tables": "Mesas",
@@ -4002,7 +4004,7 @@
   },
   "billing_page": {
     "title": "Facturación y suscripción",
-    "subtitle": "Gestiona tu suscripción y consulta facturas anteriores.",
+    "subtitle": "Gestiona tu suscripción. Los métodos de pago y las facturas anteriores están disponibles en Gestionar suscripción, más abajo.",
     "cancelled_label": "Tu suscripción está cancelada",
     "cancelled_prefix": "y finalizará el",
     "cancelled_suffix": "Puedes reanudarla en cualquier momento antes de esa fecha.",

@@ -969,6 +969,8 @@
     "title": "Plànol de planta",
     "add_floor": "Afegir planta",
     "edit_floor": "Editar planta",
+    "publish_floor": "Publicar planta",
+    "unpublish_floor": "Despublicar planta",
     "delete_floor": "Eliminar planta",
     "floors": "Plantes",
     "tables": "Taules",
@@ -4002,7 +4004,7 @@
   },
   "billing_page": {
     "title": "Facturació i subscripció",
-    "subtitle": "Gestiona la teva subscripció i consulta factures anteriors.",
+    "subtitle": "Gestiona la teva subscripció. Els mètodes de pagament i les factures anteriors estan disponibles a Gestionar subscripció, més avall.",
     "cancelled_label": "La teva subscripció està cancel·lada",
     "cancelled_prefix": "i finalitzarà el",
     "cancelled_suffix": "Pots reprendre-la en qualsevol moment abans d'aquesta data.",

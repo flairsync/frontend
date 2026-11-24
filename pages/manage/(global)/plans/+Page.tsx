@@ -336,13 +336,17 @@ const PlansPage: React.FC = () => {
                   ))}
                 </ul>
 
+                {/* B18 (QA Test Report, 2026-11-18): checked exceedsMax before isCurrentPlan, so
+                    the current (Free) plan's own button read "Not Available" once the business
+                    count was raised past its max, even though the card itself correctly showed
+                    the "current plan" ring/badge right above. */}
                 <Button
                   onClick={() => {
                     onChoosePlan(pack.id)
                   }}
                   disabled={isCurrentPlan || exceedsMax || creatingCheckout || changingPlan}
                   variant={isCurrentPlan ? "outline" : exceedsMax ? "secondary" : planAction === "downgrade" ? "secondary" : "default"}
-                  className="w-full mt-auto">{exceedsMax ? t("plans_page.not_available") : planActionLabel[planAction]}</Button>
+                  className="w-full mt-auto">{!isCurrentPlan && exceedsMax ? t("plans_page.not_available") : planActionLabel[planAction]}</Button>
               </CardContent>
             </Card>
           </motion.div>

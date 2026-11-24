@@ -969,6 +969,8 @@
     "title": "Plan de salle",
     "add_floor": "Ajouter un étage",
     "edit_floor": "Modifier l'étage",
+    "publish_floor": "Publier l'étage",
+    "unpublish_floor": "Dépublier l'étage",
     "delete_floor": "Supprimer l'étage",
     "floors": "Étages",
     "tables": "Tables",
@@ -4002,7 +4004,7 @@
   },
   "billing_page": {
     "title": "Facturation et abonnement",
-    "subtitle": "Gérez votre abonnement et consultez vos factures passées.",
+    "subtitle": "Gérez votre abonnement. Les moyens de paiement et les factures passées sont disponibles via Gérer l'abonnement ci-dessous.",
     "cancelled_label": "Votre abonnement est annulé",
     "cancelled_prefix": "et se terminera le",
     "cancelled_suffix": "Vous pouvez le reprendre à tout moment avant cette date.",

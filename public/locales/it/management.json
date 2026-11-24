@@ -969,6 +969,8 @@
     "title": "Piano sala",
     "add_floor": "Aggiungi piano",
     "edit_floor": "Modifica piano",
+    "publish_floor": "Pubblica piano",
+    "unpublish_floor": "Rimuovi pubblicazione piano",
     "delete_floor": "Elimina piano",
     "floors": "Piani",
     "tables": "Tavoli",
@@ -4075,7 +4077,7 @@
   },
   "billing_page": {
     "title": "Fatturazione e abbonamento",
-    "subtitle": "Gestisci il tuo abbonamento e consulta le fatture passate.",
+    "subtitle": "Gestisci il tuo abbonamento. Metodi di pagamento e fatture passate sono disponibili in Gestisci abbonamento, qui sotto.",
     "cancelled_label": "Il tuo abbonamento è stato annullato",
     "cancelled_prefix": "e terminerà il",
     "cancelled_suffix": "Puoi riattivarlo in qualsiasi momento prima di quella data.",
