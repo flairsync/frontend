@@ -554,6 +554,15 @@
       "description": "Gérer les réseaux WiFi invités et les étages ou impressions sur lesquels ils apparaissent."
     }
   },
+  "menu_header": {
+    "active": "Actif",
+    "inactive": "Inactif",
+    "inactive_activate": "Inactif · Activer",
+    "inactive_tooltip_editable": "Ce menu est en dehors de ses dates/horaires actifs, ou a été désactivé — cliquez pour le modifier et l'activer",
+    "inactive_tooltip_readonly": "Ce menu est en dehors de ses dates/horaires actifs, ou a été désactivé",
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
   "menu_management": {
     "actions": {
       "add_category": "Ajouter une catégorie",
@@ -2534,10 +2543,13 @@
       "trigger": "Informations générales",
       "business_name_placeholder": "Nom de l'établissement",
       "description_placeholder": "Description",
+      "contact_email_label": "E-mail de contact",
       "contact_email_placeholder": "E-mail de contact",
+      "phone_label": "Numéro de téléphone",
       "phone_placeholder": "Numéro de téléphone",
       "slug": {
-        "label": "Slug de l'URL publique",
+        "label": "Votre adresse web publique",
+        "url_preview": "Votre page : /business/{{slug}}",
         "placeholder": "votre-restaurant",
         "taken": "Ce slug est déjà pris",
         "invalid": "Seuls les lettres minuscules, chiffres et tirets sont autorisés",
@@ -4511,7 +4523,7 @@
   "professional_profile_page": {
     "title": "Profil professionnel",
     "subtitle_update": "Mettez à jour la façon dont vous apparaissez auprès des employeurs et des entreprises.",
-    "subtitle_create": "Créez votre profil professionnel pour postuler à des offres et entrer en contact avec des entreprises.",
+    "subtitle_create": "Ceci est distinct de votre compte personnel : c'est ce que voient les entreprises et les employeurs. Créez le vôtre pour postuler à des offres et entrer en contact avec des entreprises.",
     "beta_pending_notice": "FlairSync est en bêta limitée — votre compte est encore en attente d'approbation, donc cela ne sera pas enregistré avant. Vous recevrez un e-mail dès l'approbation.",
     "active_badge": "Actif",
     "no_profile_yet": "Aucun profil professionnel pour le moment",

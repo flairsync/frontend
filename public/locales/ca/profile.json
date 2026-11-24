@@ -6,6 +6,9 @@
     "meals_ordered_label": "Àpats demanats",
     "orders_chart_title": "Comandes per dia (últims 30 dies)"
   },
+  "account_settings_page": {
+    "title": "Configuració del compte"
+  },
   "account_page": {
     "title": "Compte",
     "subtitle": "Gestiona les dades del teu compte i la configuració d'eliminació.",

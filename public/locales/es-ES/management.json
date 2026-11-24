@@ -554,6 +554,15 @@
       "description": "Gestionar las redes WiFi para invitados y en qué plantas o impresos aparecen."
     }
   },
+  "menu_header": {
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "inactive_activate": "Inactivo · Activar",
+    "inactive_tooltip_editable": "Este menú está fuera de sus fechas/horarios activos, o se desactivó — haz clic para editarlo y activarlo",
+    "inactive_tooltip_readonly": "Este menú está fuera de sus fechas/horarios activos, o se desactivó",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
   "menu_management": {
     "actions": {
       "add_category": "Añadir categoría",
@@ -2534,10 +2543,13 @@
       "trigger": "Información general",
       "business_name_placeholder": "Nombre del negocio",
       "description_placeholder": "Descripción",
+      "contact_email_label": "Correo de contacto",
       "contact_email_placeholder": "Correo de contacto",
+      "phone_label": "Número de teléfono",
       "phone_placeholder": "Número de teléfono",
       "slug": {
         "label": "Dirección web pública",
+        "url_preview": "Tu página: /business/{{slug}}",
         "placeholder": "tu-restaurante",
         "taken": "Esta dirección ya está en uso",
         "invalid": "Solo se permiten letras minúsculas, números y guiones",
@@ -4511,7 +4523,7 @@
   "professional_profile_page": {
     "title": "Perfil profesional",
     "subtitle_update": "Actualiza cómo apareces ante empleadores y negocios.",
-    "subtitle_create": "Crea tu perfil profesional para postularte a empleos y conectar con negocios.",
+    "subtitle_create": "Esto es independiente de tu cuenta personal: es lo que ven las empresas y empleadores. Crea el tuyo para postularte a empleos y conectar con negocios.",
     "beta_pending_notice": "FlairSync está en beta limitada — tu cuenta todavía está pendiente de aprobación, así que esto no se guardará hasta entonces. Te enviaremos un correo en cuanto se apruebe.",
     "active_badge": "Activo",
     "no_profile_yet": "Aún no hay perfil profesional",

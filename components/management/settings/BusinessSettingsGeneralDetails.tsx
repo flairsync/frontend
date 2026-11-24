@@ -168,22 +168,29 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                     onChange={(e) => setDescription(e.target.value)}
                 />
 
-                <Input
-                    disabled={props.disabled}
-
-                    placeholder={t("settings_page.general_details.contact_email_placeholder")}
-                    type="email"
-                    value={contactEmail}
-                    onChange={(e) => setContactEmail(e.target.value)}
-                />
-                <Input
-                    disabled={props.disabled}
-
-                    placeholder={t("settings_page.general_details.phone_placeholder")}
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                />
+                {/* Usability audit (QA Test Report, 2026-11-18): these two fields had only a
+                    placeholder, which disappears once filled in — no way to tell them apart
+                    from a glance at an already-filled form. */}
+                <div className="space-y-1.5">
+                    <Label>{t("settings_page.general_details.contact_email_label")}</Label>
+                    <Input
+                        disabled={props.disabled}
+                        placeholder={t("settings_page.general_details.contact_email_placeholder")}
+                        type="email"
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
+                    />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>{t("settings_page.general_details.phone_label")}</Label>
+                    <Input
+                        disabled={props.disabled}
+                        placeholder={t("settings_page.general_details.phone_placeholder")}
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                    />
+                </div>
 
                 <div className="space-y-1.5 pt-2 border-t mt-4">
                     <Label>{t("settings_page.general_details.slug.label")}</Label>
@@ -211,6 +218,11 @@ const BusinessSettingsGeneralDetails = (props: Props) => {
                             {(slugStatus === 'taken' || slugStatus === 'invalid') && <XCircle className="h-4 w-4 text-destructive" />}
                         </span>
                     </div>
+                    {/* Usability audit (QA Test Report, 2026-11-18): report asked to rename the
+                        jargon label and show a full URL preview — showing it as a path here since
+                        the public page already links relatively (see view_public_page below),
+                        which keeps this correct across staging/production domains. */}
+                    {slug && <p className="text-xs text-muted-foreground">{t("settings_page.general_details.slug.url_preview", { slug })}</p>}
                     {slugStatus === 'taken' && <p className="text-xs text-destructive">{t("settings_page.general_details.slug.taken")}</p>}
                     {slugStatus === 'invalid' && <p className="text-xs text-destructive">{t("settings_page.general_details.slug.invalid")}</p>}
                     {slugStatus === 'available' && <p className="text-xs text-green-600">{t("settings_page.general_details.slug.available")}</p>}

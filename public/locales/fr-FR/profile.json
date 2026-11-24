@@ -6,6 +6,9 @@
     "meals_ordered_label": "Repas commandés",
     "orders_chart_title": "Commandes par jour (30 derniers jours)"
   },
+  "account_settings_page": {
+    "title": "Paramètres du compte"
+  },
   "account_page": {
     "title": "Compte",
     "subtitle": "Gérez les données de votre compte et les paramètres de suppression.",

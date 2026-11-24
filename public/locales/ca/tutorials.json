@@ -47,8 +47,8 @@
       "title": "Crear el teu compte",
       "whatItIs": "Registra't i verifica la teva identitat per accedir a la plataforma.",
       "whoUsesIt": "Qualsevol persona nova a FlairSync.",
-      "stepGroups": [{ "steps": ["Fes clic a Registra't a la pàgina d'inici de sessió.", "Introdueix el teu nom complet, adreça de correu i una contrasenya segura.", "Fes clic a Crea el compte.", "Obre la teva bústia — rebràs un codi de verificació de 6 dígits.", "Introdueix el codi a la pantalla de verificació.", "El teu compte ja és actiu. Seràs redirigit al teu tauler."] }],
-      "tips": ["El codi de verificació caduca en 10 minuts. Sol·licita'n un de nou si caduca.", "També pots registrar-te amb Continua amb Google — sense codi necessari."],
+      "stepGroups": [{ "steps": ["Fes clic a Crea'n un a la pàgina d'inici de sessió.", "Introdueix el teu nom complet, adreça de correu i una contrasenya segura.", "Marca la casella per acceptar els Termes i condicions — toca l'enllaç per llegir-los en una finestra emergent.", "Fes clic a Registra't.", "Obre la teva bústia — rebràs un codi de verificació de 6 dígits.", "Introdueix el codi a la pantalla de verificació.", "Configura el teu perfil professional — és independent del teu compte personal i és el que veuen les empreses i els ocupadors.", "El teu compte ja és actiu. Seràs redirigit al teu tauler."] }],
+      "tips": ["El codi de verificació caduca en 10 minuts. Sol·licita'n un de nou si caduca.", "També pots registrar-te amb Inicia la sessió amb Google — sense codi necessari."],
       "appRouteLabel": "Registra't ara"
     },
     "1-2": {

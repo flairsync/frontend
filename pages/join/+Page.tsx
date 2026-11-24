@@ -31,13 +31,21 @@ const JoinBusinessPage: React.FC = () => {
     acceptingInvitation,
     loadingInvitationDetails,
     invitationError,
+    invitationFetchError,
     refuseInvitation,
     refuseingInvitation
   } = useBusinessInvitation(invitationToken);
 
   const [actionInProgress, setActionInProgress] = useState(false);
 
-  const invitationInvalid = !invitationToken || invitationError || (!loadingInvitationDetails && !invitationDetails);
+  // Flow audit (QA Test Report follow-up, 2026-11-24): fetching invitation details
+  // (GET invitation/:id) requires a logged-in session (JwtCookieGuard) — a visitor who
+  // clicks a real, valid invite link while logged out got a 401 here, which this page used
+  // to lump in with "invitation is invalid or expired", even though their invitation was
+  // perfectly fine. Distinguish that case so they're told to sign in instead of being told
+  // their invite is broken.
+  const isUnauthenticated = (invitationFetchError as any)?.response?.status === 401;
+  const invitationInvalid = !invitationToken || (invitationError && !isUnauthenticated) || (!loadingInvitationDetails && !invitationDetails && !isUnauthenticated);
 
   const handleAccept = async () => {
     if (invitationToken && invitationDetails) {
@@ -88,6 +96,28 @@ const JoinBusinessPage: React.FC = () => {
                 <Skeleton className="h-10 w-36" />
                 <Skeleton className="h-10 w-28" />
               </div>
+            </CardContent>
+          </Card>
+        ) : isUnauthenticated ? (
+          <Card>
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-bold">{t("join_business_page.signin_required.title")}</CardTitle>
+              <CardDescription className="mt-1 text-gray-500">
+                {t("join_business_page.signin_required.subtitle")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center gap-4">
+              <div className="flex gap-4">
+                <Button onClick={() => navigate(`/login?invitation=${invitationToken}`)}>
+                  {t("join_business_page.signin_required.login")}
+                </Button>
+                <Button variant="outline" onClick={() => navigate(`/signup?invitation=${invitationToken}`)}>
+                  {t("join_business_page.signin_required.signup")}
+                </Button>
+              </div>
+              <p className="text-center text-gray-400 text-xs">
+                {t("join_business_page.signin_required.note")}
+              </p>
             </CardContent>
           </Card>
         ) : invitationInvalid ? (

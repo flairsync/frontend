@@ -47,8 +47,8 @@
       "title": "Creating Your Account",
       "whatItIs": "Register and verify your identity so you can access the platform.",
       "whoUsesIt": "Anyone new to FlairSync.",
-      "stepGroups": [{ "steps": ["Click Sign Up on the login page.", "Enter your full name, email address, and a strong password.", "Click Create Account.", "Open your inbox — you'll receive a 6-digit verification code.", "Enter the code on the verification screen.", "Your account is now active. You'll be taken to your dashboard."] }],
-      "tips": ["The verification code expires in 10 minutes. Request a new one if it expires.", "You can also sign up via Continue with Google — no code needed."],
+      "stepGroups": [{ "steps": ["Click Create one on the login page.", "Enter your full name, email address, and a strong password.", "Tick the box to accept the Terms and Conditions — tap the link to read them in a popup first.", "Click Sign Up.", "Open your inbox — you'll receive a 6-digit verification code.", "Enter the code on the verification screen.", "Set up your professional profile — this is separate from your personal account and is what businesses and employers see.", "Your account is now active. You'll be taken to your dashboard."] }],
+      "tips": ["The verification code expires in 10 minutes. Request a new one if it expires.", "You can also sign up via Sign in with Google — no code needed."],
       "appRouteLabel": "Sign Up Now"
     },
     "1-2": {

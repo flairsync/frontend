@@ -6,6 +6,7 @@ import {
 } from "../service";
 import { BusinessEmployeeInvitation } from "@/models/business/BusinessEmployeeInvitation";
 import { toast } from "sonner";
+import { navigate } from "vike/client/router";
 
 export const useBusinessInvitation = (inviteId?: string) => {
   const queryClient = useQueryClient();
@@ -14,6 +15,7 @@ export const useBusinessInvitation = (inviteId?: string) => {
     data: invitationDetails,
     isPending: loadingInvitationDetails,
     isError: invitationError,
+    error: invitationFetchError,
     refetch: refreshInvitation,
   } = useQuery({
     queryKey: ["business_invitation_details", inviteId],
@@ -48,10 +50,25 @@ export const useBusinessInvitation = (inviteId?: string) => {
       onError(error: any, variables, context) {
         toast.dismiss("invitation_accept_toast");
 
-        const errorMessage = error.response?.data?.message;
+        // Flow audit (QA Test Report follow-up, 2026-11-24): this used to compare
+        // error.response.data.message against the literal strings "PROFILE_NOT_VERIFIED" —
+        // but the backend's `message` field is always the translated sentence (e.g. "Your
+        // professional profile is not verified"), never that raw constant name, and
+        // PROFILE_REQUIRED (no professional profile at all yet) had no handling here either.
+        // Both cases silently fell through to the generic toast below. The stable,
+        // untranslated identifier is ApiResponse's own `code` field
+        // (src/constants/errors/invitation-error-codes.ts), not `message`.
+        const errorCode = error.response?.data?.code;
 
-        if (errorMessage === "PROFILE_NOT_VERIFIED") {
+        if (errorCode === "invitation.profile_not_verified") {
           toast.error("Please verify your email address to accept this invitation. Check your inbox and try again.");
+        } else if (errorCode === "invitation.profile_required") {
+          toast.error("Create your professional profile first to accept this invitation.", {
+            action: {
+              label: "Create profile",
+              onClick: () => navigate("/manage/professional-profile"),
+            },
+          });
         } else {
           toast.error("Error accepting invitation");
         }
@@ -88,6 +105,7 @@ export const useBusinessInvitation = (inviteId?: string) => {
     invitationDetails,
     loadingInvitationDetails,
     invitationError,
+    invitationFetchError,
     acceptInvitation,
     acceptingInvitation,
     refuseInvitation,

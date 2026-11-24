@@ -554,6 +554,15 @@
       "description": "Gestionar les xarxes WiFi per a clients i en quines plantes o impresos apareixen."
     }
   },
+  "menu_header": {
+    "active": "Actiu",
+    "inactive": "Inactiu",
+    "inactive_activate": "Inactiu · Activa'l",
+    "inactive_tooltip_editable": "Aquest menú està fora de les seves dates/horaris actius, o s'ha desactivat — fes clic per editar-lo i activar-lo",
+    "inactive_tooltip_readonly": "Aquest menú està fora de les seves dates/horaris actius, o s'ha desactivat",
+    "edit": "Edita",
+    "delete": "Elimina"
+  },
   "menu_management": {
     "actions": {
       "add_category": "Afegir categoria",
@@ -2534,10 +2543,13 @@
       "trigger": "Informació general",
       "business_name_placeholder": "Nom del negoci",
       "description_placeholder": "Descripció",
+      "contact_email_label": "Correu de contacte",
       "contact_email_placeholder": "Correu de contacte",
+      "phone_label": "Número de telèfon",
       "phone_placeholder": "Número de telèfon",
       "slug": {
         "label": "Adreça web pública",
+        "url_preview": "La teva pàgina: /business/{{slug}}",
         "placeholder": "el-teu-restaurant",
         "taken": "Aquesta adreça ja està agafada",
         "invalid": "Només es permeten lletres minúscules, números i guions",
@@ -4511,7 +4523,7 @@
   "professional_profile_page": {
     "title": "Perfil professional",
     "subtitle_update": "Actualitza com apareixes davant d'ocupadors i negocis.",
-    "subtitle_create": "Crea el teu perfil professional per postular-te a feines i connectar amb negocis.",
+    "subtitle_create": "Això és independent del teu compte personal: és el que veuen les empreses i els ocupadors. Crea el teu per postular-te a feines i connectar amb negocis.",
     "beta_pending_notice": "FlairSync està en beta limitada — el teu compte encara espera aprovació, així que això no es desarà fins llavors. T'enviarem un correu tan bon punt s'aprovi.",
     "active_badge": "Actiu",
     "no_profile_yet": "Encara no hi ha perfil professional",

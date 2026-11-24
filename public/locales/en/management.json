@@ -554,6 +554,15 @@
       "description": "Manage guest WiFi networks and which floors or printouts they appear on."
     }
   },
+  "menu_header": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "inactive_activate": "Inactive · Activate",
+    "inactive_tooltip_editable": "This menu is outside its active dates/hours, or was turned off — click to edit and activate it",
+    "inactive_tooltip_readonly": "This menu is outside its active dates/hours, or was turned off",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
   "menu_management": {
     "actions": {
       "add_category": "Add Category",
@@ -2607,10 +2616,13 @@
       "trigger": "General Information",
       "business_name_placeholder": "Business Name",
       "description_placeholder": "Description",
-      "contact_email_placeholder": "Contact Email",
-      "phone_placeholder": "Phone Number",
+      "contact_email_label": "Contact email",
+    "contact_email_placeholder": "Contact Email",
+      "phone_label": "Phone number",
+    "phone_placeholder": "Phone Number",
       "slug": {
-        "label": "Public URL Slug",
+        "label": "Your public web address",
+        "url_preview": "Your page: /business/{{slug}}",
         "placeholder": "your-restaurant-name",
         "taken": "This slug is already taken",
         "invalid": "Only lowercase letters, numbers, and hyphens allowed",
@@ -4584,7 +4596,7 @@
   "professional_profile_page": {
     "title": "Professional Profile",
     "subtitle_update": "Update how you appear to employers and businesses.",
-    "subtitle_create": "Create your professional profile to apply for jobs and connect with businesses.",
+    "subtitle_create": "This is separate from your personal account — it's what businesses and employers see. Create yours to apply for jobs and connect with businesses.",
     "beta_pending_notice": "FlairSync is in a limited beta — your account is still waiting on approval, so this won't save until then. We'll email you once it's approved.",
     "active_badge": "Active",
     "no_profile_yet": "No professional profile yet",

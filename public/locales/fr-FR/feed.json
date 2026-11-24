@@ -336,6 +336,13 @@
       "title": "Invitation indisponible",
       "alert_title": "Ce lien n'est pas valide",
       "alert_description": "Ce lien d'invitation est invalide, expiré, ou a déjà été utilisé. Demandez à la personne qui vous a invité(e) de vous en envoyer un nouveau."
+    },
+    "signin_required": {
+      "title": "Connectez-vous pour voir cette invitation",
+      "subtitle": "Vous devez avoir un compte pour voir qui vous a invité(e) et répondre.",
+      "login": "Se connecter",
+      "signup": "Créer un compte",
+      "note": "Après vous être connecté(e), revenez sur ce lien pour accepter ou refuser l'invitation."
     }
   }
 }

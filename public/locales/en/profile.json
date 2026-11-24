@@ -6,6 +6,9 @@
     "meals_ordered_label": "Meals Ordered",
     "orders_chart_title": "Orders Per Day (Last 30 Days)"
   },
+  "account_settings_page": {
+    "title": "Account Settings"
+  },
   "account_page": {
     "title": "Account",
     "subtitle": "Manage your account data and deletion settings.",

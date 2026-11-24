@@ -554,6 +554,15 @@
       "description": "Gestisci le reti WiFi per gli ospiti e su quali piani o stampe appaiono."
     }
   },
+  "menu_header": {
+    "active": "Attivo",
+    "inactive": "Non attivo",
+    "inactive_activate": "Non attivo · Attiva",
+    "inactive_tooltip_editable": "Questo menu è fuori dalle sue date/fasce orarie attive, oppure è stato disattivato — clicca per modificarlo e attivarlo",
+    "inactive_tooltip_readonly": "Questo menu è fuori dalle sue date/fasce orarie attive, oppure è stato disattivato",
+    "edit": "Modifica",
+    "delete": "Elimina"
+  },
   "menu_management": {
     "actions": {
       "add_category": "Aggiungi categoria",
@@ -2607,10 +2616,13 @@
       "trigger": "Informazioni generali",
       "business_name_placeholder": "Nome dell'attività",
       "description_placeholder": "Descrizione",
+      "contact_email_label": "Email di contatto",
       "contact_email_placeholder": "Email di contatto",
+      "phone_label": "Numero di telefono",
       "phone_placeholder": "Numero di telefono",
       "slug": {
-        "label": "Slug dell'URL pubblico",
+        "label": "Il tuo indirizzo web pubblico",
+        "url_preview": "La tua pagina: /business/{{slug}}",
         "placeholder": "nome-del-tuo-ristorante",
         "taken": "Questo slug è già in uso",
         "invalid": "Sono ammessi solo lettere minuscole, numeri e trattini",
@@ -4584,7 +4596,7 @@
   "professional_profile_page": {
     "title": "Profilo professionale",
     "subtitle_update": "Aggiorna come ti presenti a datori di lavoro e attività.",
-    "subtitle_create": "Crea il tuo profilo professionale per candidarti a offerte di lavoro e metterti in contatto con le attività.",
+    "subtitle_create": "Questo è separato dal tuo account personale: è ciò che vedono le attività e i datori di lavoro. Crea il tuo per candidarti a offerte di lavoro e metterti in contatto con le attività.",
     "beta_pending_notice": "FlairSync è in beta limitata — il tuo account è ancora in attesa di approvazione, quindi questo non verrà salvato finché non sarà approvato. Ti scriveremo un'email non appena sarà approvato.",
     "active_badge": "Attivo",
     "no_profile_yet": "Ancora nessun profilo professionale",

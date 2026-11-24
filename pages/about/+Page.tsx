@@ -65,7 +65,11 @@ const AboutUsPage: React.FC = () => {
 
                 {/* Stats */}
                 <section className="border-y border-border bg-card/50">
-                    <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    {/* B23 equivalent (QA Test Report follow-up, 2026-11-24): dropped the "99.9%
+                        Platform Uptime" stat — an unverified precision claim that contradicted the
+                        "Early Access" badge right above it on the same page. Grid now matches the
+                        remaining 3 stats instead of leaving an empty 4th cell. */}
+                    <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
                         {stats.map(({ value, label }, i) => (
                             <div key={i} className="space-y-1">
                                 <p className="text-4xl font-extrabold text-primary">{value}</p>

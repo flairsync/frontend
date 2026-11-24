@@ -47,8 +47,8 @@
       "title": "Créer votre compte",
       "whatItIs": "Inscrivez-vous et vérifiez votre identité pour accéder à la plateforme.",
       "whoUsesIt": "Toute personne nouvelle sur FlairSync.",
-      "stepGroups": [{ "steps": ["Cliquez sur S'inscrire sur la page de connexion.", "Entrez votre nom complet, adresse e-mail et un mot de passe fort.", "Cliquez sur Créer un compte.", "Ouvrez votre boîte de réception — vous recevrez un code de vérification à 6 chiffres.", "Entrez le code sur l'écran de vérification.", "Votre compte est maintenant actif. Vous serez redirigé vers votre tableau de bord."] }],
-      "tips": ["Le code de vérification expire dans 10 minutes. Demandez-en un nouveau s'il expire.", "Vous pouvez également vous inscrire via Continuer avec Google — aucun code requis."],
+      "stepGroups": [{ "steps": ["Cliquez sur Créez-en un sur la page de connexion.", "Entrez votre nom complet, adresse e-mail et un mot de passe fort.", "Cochez la case pour accepter les Conditions générales — cliquez sur le lien pour les lire dans une fenêtre pop-up.", "Cliquez sur S'inscrire.", "Ouvrez votre boîte de réception — vous recevrez un code de vérification à 6 chiffres.", "Entrez le code sur l'écran de vérification.", "Configurez votre profil professionnel — il est distinct de votre compte personnel et c'est ce que voient les entreprises et les employeurs.", "Votre compte est maintenant actif. Vous serez redirigé vers votre tableau de bord."] }],
+      "tips": ["Le code de vérification expire dans 10 minutes. Demandez-en un nouveau s'il expire.", "Vous pouvez également vous inscrire via Se connecter avec Google — aucun code requis."],
       "appRouteLabel": "S'inscrire maintenant"
     },
     "1-2": {

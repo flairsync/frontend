@@ -47,8 +47,8 @@
       "title": "Crear tu cuenta",
       "whatItIs": "Regístrate y verifica tu identidad para acceder a la plataforma.",
       "whoUsesIt": "Cualquier persona nueva en FlairSync.",
-      "stepGroups": [{ "steps": ["Haz clic en Registrarse en la página de inicio de sesión.", "Ingresa tu nombre completo, dirección de correo y una contraseña segura.", "Haz clic en Crear cuenta.", "Abre tu bandeja de entrada — recibirás un código de verificación de 6 dígitos.", "Ingresa el código en la pantalla de verificación.", "Tu cuenta ya está activa. Serás redirigido a tu panel."] }],
-      "tips": ["El código de verificación expira en 10 minutos. Solicita uno nuevo si expira.", "También puedes registrarte con Continuar con Google — sin código necesario."],
+      "stepGroups": [{ "steps": ["Haz clic en Crea una en la página de inicio de sesión.", "Ingresa tu nombre completo, dirección de correo y una contraseña segura.", "Marca la casilla para aceptar los Términos y condiciones — toca el enlace para leerlos en una ventana emergente.", "Haz clic en Registrarse.", "Abre tu bandeja de entrada — recibirás un código de verificación de 6 dígitos.", "Ingresa el código en la pantalla de verificación.", "Configura tu perfil profesional — es independiente de tu cuenta personal y es lo que ven las empresas y empleadores.", "Tu cuenta ya está activa. Serás redirigido a tu panel."] }],
+      "tips": ["El código de verificación expira en 10 minutos. Solicita uno nuevo si expira.", "También puedes registrarte con Iniciar sesión con Google — sin código necesario."],
       "appRouteLabel": "Registrarse ahora"
     },
     "1-2": {

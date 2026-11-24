@@ -336,6 +336,13 @@
       "title": "Invitación no disponible",
       "alert_title": "Este enlace no es válido",
       "alert_description": "Este enlace de invitación no es válido, ha caducado o ya se ha utilizado. Pide a quien te invitó que te envíe uno nuevo."
+    },
+    "signin_required": {
+      "title": "Inicia sesión para ver esta invitación",
+      "subtitle": "Necesitas una cuenta para ver quién te invitó y responder.",
+      "login": "Iniciar sesión",
+      "signup": "Crear una cuenta",
+      "note": "Después de iniciar sesión, vuelve a este enlace para aceptar o rechazar la invitación."
     }
   }
 }

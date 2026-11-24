@@ -336,6 +336,13 @@
       "title": "Invitation not available",
       "alert_title": "This link isn't valid",
       "alert_description": "This invitation link is invalid, expired, or has already been used. Ask whoever invited you to send a new one."
+    },
+    "signin_required": {
+      "title": "Sign in to view this invitation",
+      "subtitle": "You need an account to see who invited you and respond.",
+      "login": "Log in",
+      "signup": "Create an account",
+      "note": "After signing in, come back to this link to accept or decline."
     }
   }
 }

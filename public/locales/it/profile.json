@@ -6,6 +6,9 @@
     "meals_ordered_label": "Pasti ordinati",
     "orders_chart_title": "Ordini al giorno (ultimi 30 giorni)"
   },
+  "account_settings_page": {
+    "title": "Impostazioni account"
+  },
   "account_page": {
     "title": "Account",
     "subtitle": "Gestisci i dati del tuo account e le impostazioni di eliminazione.",

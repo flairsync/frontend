@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 type MenuHeaderProps = {
     menu: {
         id: string;
@@ -21,6 +23,9 @@ export const MenuHeader = ({
     canEdit = true,
     canDelete = true,
 }: MenuHeaderProps) => {
+    // Side finding during the QA Test Report follow-up (2026-11-24): this whole component had
+    // zero t() calls in an otherwise fully-i18n'd app.
+    const { t } = useTranslation("management");
     return (
         <div className="flex flex-col gap-4 border-b border-zinc-200 dark:border-zinc-700 pb-6">
             {/* Top row */}
@@ -47,18 +52,18 @@ export const MenuHeader = ({
 
                         {menu.isActive ? (
                             <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-                                Active
+                                {t("menu_header.active")}
                             </span>
                         ) : (
                             <button
                                 type="button"
                                 onClick={canEdit ? onEdit : undefined}
                                 title={canEdit
-                                    ? "This menu is outside its active dates/hours, or was turned off — click to edit and activate it"
-                                    : "This menu is outside its active dates/hours, or was turned off"}
+                                    ? t("menu_header.inactive_tooltip_editable")
+                                    : t("menu_header.inactive_tooltip_readonly")}
                                 className={`px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300 ${canEdit ? "cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-600" : ""}`}
                             >
-                                Inactive{canEdit ? " · Activate" : ""}
+                                {canEdit ? t("menu_header.inactive_activate") : t("menu_header.inactive")}
                             </button>
                         )}
                     </div>
@@ -72,7 +77,7 @@ export const MenuHeader = ({
                             className="px-3 py-1.5 rounded-md text-sm font-medium
               bg-indigo-500 text-white hover:bg-indigo-600 transition"
                         >
-                            Edit
+                            {t("menu_header.edit")}
                         </button>
                     )}
 
@@ -82,7 +87,7 @@ export const MenuHeader = ({
                             className="px-3 py-1.5 rounded-md text-sm font-medium
               bg-red-500 text-white hover:bg-red-600 transition"
                         >
-                            Delete
+                            {t("menu_header.delete")}
                         </button>
                     )}
                 </div>

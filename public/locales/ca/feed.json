@@ -336,6 +336,13 @@
       "title": "Invitació no disponible",
       "alert_title": "Aquest enllaç no és vàlid",
       "alert_description": "Aquest enllaç d'invitació no és vàlid, ha caducat o ja s'ha fet servir. Demana a qui t'ha convidat que te n'enviï un de nou."
+    },
+    "signin_required": {
+      "title": "Inicia sessió per veure aquesta invitació",
+      "subtitle": "Necessites un compte per veure qui t'ha convidat i respondre.",
+      "login": "Inicia sessió",
+      "signup": "Crea un compte",
+      "note": "Després d'iniciar sessió, torna a aquest enllaç per acceptar o rebutjar la invitació."
     }
   }
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
@@ -21,9 +22,13 @@ import PrivacySettings from "@/components/profile/settings/PrivacySettings"
 import NotificationPreferencesSettings from "@/components/profile/settings/NotificationPreferencesSettings"
 
 const ProfileSettingsPage = () => {
-
+    const { t } = useTranslation("profile");
 
     return (
+        <>
+        {/* Usability audit (QA Test Report, 2026-11-18): this page rendered straight into the
+            accordion with no page title anywhere above it. */}
+        <h1 className="text-2xl font-bold mb-4">{t("account_settings_page.title")}</h1>
         <Accordion type="single" collapsible className="w-full space-y-2">
             <ProfileInfoSettings />
 
@@ -41,6 +46,7 @@ const ProfileSettingsPage = () => {
 
             <SessionManagementSettings />
         </Accordion>
+        </>
     )
 }
 

@@ -336,6 +336,13 @@
       "title": "Invito non disponibile",
       "alert_title": "Questo link non è valido",
       "alert_description": "Questo link di invito non è valido, è scaduto oppure è già stato utilizzato. Chiedi a chi ti ha invitato di inviartene uno nuovo."
+    },
+    "signin_required": {
+      "title": "Accedi per vedere questo invito",
+      "subtitle": "Devi avere un account per vedere chi ti ha invitato e rispondere.",
+      "login": "Accedi",
+      "signup": "Crea un account",
+      "note": "Dopo aver effettuato l'accesso, torna su questo link per accettare o rifiutare l'invito."
     }
   }
 }

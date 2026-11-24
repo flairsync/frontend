@@ -75,8 +75,18 @@ const ProfessionalProfilePage: React.FC = () => {
                 displayName: userProfessionalProfile.displayName ?? "",
                 workEmail: userProfessionalProfile.workEmail ?? "",
             });
+        } else if (userProfile) {
+            // Usability audit (QA Test Report follow-up, 2026-11-24): creating a professional
+            // profile for the first time re-asked for name/email seconds after signup collected
+            // them, instead of prefilling from the personal account the user already has.
+            setForm((prev) => ({
+                ...prev,
+                firstName: userProfile.firstName ?? "",
+                lastName: userProfile.lastName ?? "",
+                workEmail: userProfile.email ?? "",
+            }));
         }
-    }, [userProfessionalProfile]);
+    }, [userProfessionalProfile, userProfile]);
 
     const isSaving = creatingProProfile || updatingProProfile;
 

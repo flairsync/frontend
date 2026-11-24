@@ -47,8 +47,8 @@
       "title": "Creare il tuo account",
       "whatItIs": "Registrati e verifica la tua identità per accedere alla piattaforma.",
       "whoUsesIt": "Chiunque sia nuovo su FlairSync.",
-      "stepGroups": [{ "steps": ["Clicca su Registrati nella pagina di accesso.", "Inserisci nome e cognome, indirizzo email e una password sicura.", "Clicca su Crea account.", "Apri la tua casella di posta — riceverai un codice di verifica a 6 cifre.", "Inserisci il codice nella schermata di verifica.", "Il tuo account è ora attivo. Verrai portato alla tua dashboard."] }],
-      "tips": ["Il codice di verifica scade dopo 10 minuti. Richiedine uno nuovo se è scaduto.", "Puoi anche registrarti con Continua con Google — senza bisogno di codice."],
+      "stepGroups": [{ "steps": ["Clicca su Creane uno nella pagina di accesso.", "Inserisci nome e cognome, indirizzo email e una password sicura.", "Spunta la casella per accettare i Termini e condizioni — tocca il link per leggerli in una finestra pop-up.", "Clicca su Registrati.", "Apri la tua casella di posta — riceverai un codice di verifica a 6 cifre.", "Inserisci il codice nella schermata di verifica.", "Configura il tuo profilo professionale — è separato dal tuo account personale ed è ciò che vedono le attività e i datori di lavoro.", "Il tuo account è ora attivo. Verrai portato alla tua dashboard."] }],
+      "tips": ["Il codice di verifica scade dopo 10 minuti. Richiedine uno nuovo se è scaduto.", "Puoi anche registrarti con Accedi con Google — senza bisogno di codice."],
       "appRouteLabel": "Registrati ora"
     },
     "1-2": {

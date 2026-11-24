@@ -234,7 +234,22 @@ export default function CreateNewBusiness() {
                             }
                         }}
                     >
-                        {({ setFieldValue, values, errors, touched }) => (
+                        {({ setFieldValue, values, errors, touched }) => {
+                          // Usability audit (QA Test Report follow-up, 2026-11-24): touched.location is a
+                          // nested object (address/city/etc.) — touching any ONE subfield made the whole
+                          // object truthy, so errors.location's first entry could render for a sibling
+                          // subfield the user never touched. Only show an error for a subfield that is
+                          // BOTH touched and actually invalid.
+                          const locationErrorMessage = (() => {
+                            if (!touched.location || !errors.location) return undefined;
+                            if (typeof errors.location === 'string') return errors.location;
+                            const touchedLoc = touched.location as Record<string, boolean>;
+                            const errorsLoc = errors.location as Record<string, any>;
+                            const [, message] = Object.entries(errorsLoc).find(([key]) => touchedLoc[key]) ?? [];
+                            return Array.isArray(message) ? message.flat()[0] : message;
+                          })();
+
+                          return (
                             <Form>
                                 <motion.div
                                     key={step}
@@ -391,11 +406,9 @@ export default function CreateNewBusiness() {
                                                     onChange={(loc: any) => setFieldValue("location", loc)}
                                                 />
                                             </ClientOnly>
-                                            {touched.location && errors.location && (
+                                            {locationErrorMessage && (
                                                 <p className="text-red-500 text-xs font-medium">
-                                                    {typeof errors.location === 'string'
-                                                        ? errors.location
-                                                        : Object.values(errors.location || {}).flat()[0] as string}
+                                                    {locationErrorMessage}
                                                 </p>
                                             )}
                                         </div>
@@ -471,7 +484,8 @@ export default function CreateNewBusiness() {
                                     </Button>
                                 </div>
                             </Form>
-                        )}
+                          );
+                        }}
                     </Formik>
                 </CardContent>
             </Card>

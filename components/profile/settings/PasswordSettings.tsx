@@ -89,12 +89,15 @@ const PasswordSettings = () => {
                         }) => (
                             <form onSubmit={handleSubmit}>
 
+                                {/* Usability audit (QA Test Report follow-up, 2026-11-24): errors used to be
+                                    passed with no touched-gating, so Yup's .required() errors rendered red
+                                    on mount, before the user had typed anything. */}
                                 <PasswordInput
                                     label={t('password_settings.current_password')}
                                     name="currentPassword"
                                     value={values.currentPassword}
                                     onChange={handleChange}
-                                    error={errors.currentPassword}
+                                    error={touched.currentPassword ? errors.currentPassword : undefined}
                                     placeholder={t('password_settings.current_password_placeholder')}
                                 />
                                 <PasswordInput
@@ -102,7 +105,7 @@ const PasswordSettings = () => {
                                     name="newPassword"
                                     value={values.newPassword}
                                     onChange={handleChange}
-                                    error={errors.newPassword}
+                                    error={touched.newPassword ? errors.newPassword : undefined}
                                     placeholder={t('password_settings.new_password_placeholder')}
                                 />
                                 <PasswordInput
@@ -110,7 +113,7 @@ const PasswordSettings = () => {
                                     name="repeatNewPassword"
                                     value={values.repeatNewPassword}
                                     onChange={handleChange}
-                                    error={errors.repeatNewPassword}
+                                    error={touched.repeatNewPassword ? errors.repeatNewPassword : undefined}
                                     placeholder={t('password_settings.confirm_new_password_placeholder')}
                                 />
                                 <Button type='submit'
