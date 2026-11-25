@@ -62,8 +62,20 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const {
         routeParams,
         data,
-        urlPathname
+        urlPathname,
+        isBackwardNavigation
     } = usePageContext();
+
+    // This layout persists across navigations within /owner/*, so its scroll
+    // container keeps whatever scrollTop the previous page left it at. Reset
+    // to top on a normal navigation (e.g. the Home breadcrumb); back/forward
+    // should keep restoring the browser's own scroll position.
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (!isBackwardNavigation) {
+            contentRef.current?.scrollTo(0, 0);
+        }
+    }, [urlPathname, isBackwardNavigation]);
 
     const { isSimple } = useUiMode();
     const currentPageLabel = useCurrentPageLabel(urlPathname);
@@ -234,7 +246,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             <HeaderProfileAvatar />
                         </div>
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
+                    <div ref={contentRef} className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
                         {isSimple && !onHomePage && (
                             <SimpleActionBar
                                 businessId={routeParams.id}
