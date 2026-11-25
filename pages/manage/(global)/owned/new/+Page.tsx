@@ -87,7 +87,7 @@ function getValidationSchema(t: (key: string) => string) {
         Yup.object({
             workTimes: Yup.array().min(1, t('create_business_page.errors.work_times_required')).required(t('create_business_page.errors.work_times_required')),
             pricing: Yup.string().required(t('create_business_page.errors.pricing_required')),
-            tags: Yup.array().min(1, t('create_business_page.errors.tags_required')).required(t('create_business_page.errors.tags_required')),
+            tags: Yup.array(),
         }),
         // Step 3: Location
         Yup.object({

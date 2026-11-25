@@ -75,7 +75,7 @@ const BusinessTagsInput: React.FC<TagsDropdownProps> = ({ value, onChange, optio
             {placeholder || t("shared.tags_placeholder")}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="p-0 w-[250px]">
+        <PopoverContent align="start" className="p-0 w-[var(--radix-popover-trigger-width)]">
           <Command>
             <CommandInput
               placeholder="Search or create tag..."
