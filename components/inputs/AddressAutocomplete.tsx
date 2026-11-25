@@ -27,6 +27,10 @@ interface AddressAutocompleteProps {
     // wasn't being passed in.
     noCountryMessage?: string;
     country?: PlatformCountry
+    // KAN-90: biases results toward this point (typically the selected city's center) so a
+    // query like "10 Rue de Rivoli" in Paris doesn't match a same-named street in a different
+    // town across the country.
+    near?: { lat: number; lng: number }
 }
 
 function useDebouncedValue<T>(value: T, delayMs: number): T {
@@ -42,7 +46,8 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     onSelect,
     placeholder = 'Search address...',
     noCountryMessage = 'Please select a country first',
-    country
+    country,
+    near
 }) => {
     const [query, setQuery] = useState('');
     // Closed right after a selection so the dropdown doesn't flash back open
@@ -52,13 +57,14 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     const searchReady = !!country && debouncedQuery.length >= 3 && !suppressDropdown;
 
     const { data: suggestions = [], isFetching: loading, error } = useQuery({
-        queryKey: ['address_autocomplete', debouncedQuery, country?.code],
+        queryKey: ['address_autocomplete', debouncedQuery, country?.code, near?.lat, near?.lng],
         queryFn: async () => {
             const res = await Radar.autocomplete({
                 query: debouncedQuery,
                 limit: 5,
                 layers: ['address', 'place'],
                 countryCode: country?.code,
+                near: near ? { latitude: near.lat, longitude: near.lng } : undefined,
             });
             if (!res.addresses) return [];
             return res.addresses.map((a: any) => ({

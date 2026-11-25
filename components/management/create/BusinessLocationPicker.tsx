@@ -146,6 +146,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
     const [address, setAddress] = useState(value?.address || "");
     const [mapZoom, setMapZoom] = useState<number | undefined>(undefined);
     const [isGeolocating, setIsGeolocating] = useState(false);
+    // KAN-90: geocoded center of the free-text city (Spain/France — Andorra's city dropdown
+    // already carries its own lat/lng, see handleCitySelection). Biases the address
+    // autocomplete toward the right city and centers the map once the city resolves, instead
+    // of leaving the autocomplete to search the whole country and the map parked on the
+    // country's center.
+    const [cityCoords, setCityCoords] = useState<{ lat: number; lng: number } | undefined>(undefined);
 
     // Propagate all state changes to the parent
     const emitChange = useCallback((overrides: Partial<LocationValue> = {}) => {
@@ -220,6 +226,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
         if (cityData) {
             const newPos = { lat: cityData.lat, lng: cityData.lng };
             setPosition(newPos);
+            setCityCoords(newPos); // KAN-90: bias the address search toward this city too
             setMapZoom(14); // Zoom in closer for city-level
             onChange({
                 lat: newPos.lat,
@@ -235,6 +242,33 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                 address: address,
                 city: selectedCity,
             });
+        }
+    };
+
+    // KAN-90: for countries whose city field is free text (no bundled lat/lng, unlike
+    // Andorra's dropdown), resolve the typed city to a point once the owner is done typing
+    // so the map can center on it and the address search below can be biased toward it.
+    const handleFreeTextCityBlur = async () => {
+        const typedCity = city.trim();
+        if (!typedCity || !country) {
+            setCityCoords(undefined);
+            return;
+        }
+        try {
+            const res = await Radar.forwardGeocode({
+                query: `${typedCity}, ${country.name}`,
+                country: country.code,
+                layers: ['locality', 'place'],
+            });
+            const match = res.addresses?.[0];
+            if (match) {
+                const newPos = { lat: match.latitude, lng: match.longitude };
+                setCityCoords(newPos);
+                setPosition(newPos);
+                setMapZoom(12);
+            }
+        } catch (error) {
+            console.error('Radar forward geocode (city) error:', error);
         }
     };
 
@@ -451,8 +485,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             onChange={(e) => {
                                 const newCity = e.target.value;
                                 setCity(newCity);
+                                setCityCoords(undefined);
                                 emitChange({ city: newCity });
                             }}
+                            onBlur={handleFreeTextCityBlur}
                         />
                     )}
                 </div>
@@ -472,6 +508,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                            pattern already used for the map below. */
                         onSelect={handleAddressSelect}
                         country={country}
+                        near={cityCoords}
                         placeholder={t("create_business_page.step3.search_address_placeholder")}
                         noCountryMessage={t("create_business_page.step3.select_country_first_placeholder")}
                     />
