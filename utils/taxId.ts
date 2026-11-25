@@ -13,4 +13,5 @@ export const FISCAL_ID_REQUIRED_COUNTRIES = new Set(["AD"]);
 export const TAX_ID_FORMAT_BY_COUNTRY: Record<string, RegExp> = {
     AD: /^[A-Z]-\d{6}-[A-Z]$/i,
     ES: /^[A-Z0-9]\d{6,7}[A-Z0-9]$/i,
+    FR: /^(?:\d{14}|FR[A-Z0-9]{2}\d{9})$/i,
 };

@@ -2725,6 +2725,12 @@
           "helper": "Requis pour la facturation fiscale andorrane — imprimé sur les reçus. Les commandes ne peuvent pas être finalisées tant que ce champ n'est pas renseigné.",
           "notSetWarning": "Non défini — requis avant de pouvoir finaliser une commande."
         },
+        "FR": {
+          "label": "Identifiant fiscal (SIRET/TVA)",
+          "placeholder": "ex. 12345678900012",
+          "helper": "La facturation fiscale française n'est pas encore obligatoire, mais la définir maintenant évitera une étape plus tard.",
+          "notSetWarning": "Non défini."
+        },
         "invalid_format": "Cela ne semble pas correct. Format attendu : {{example}}"
       },
       "pricing_model": {

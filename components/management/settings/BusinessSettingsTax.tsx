@@ -68,9 +68,9 @@ export default function BusinessSettingsTax({ businessDetails, onSaveDetails, di
                     </div>
                 ) : (
                     <>
-                        {(businessDetails?.country?.code === "ES" || businessDetails?.country?.code === "AD") && (
+                        {(businessDetails?.country?.code === "ES" || businessDetails?.country?.code === "AD" || businessDetails?.country?.code === "FR") && (
                             <FiscalIdField
-                                countryCode={businessDetails.country!.code as "ES" | "AD"}
+                                countryCode={businessDetails.country!.code as "ES" | "AD" | "FR"}
                                 taxIdNumber={businessDetails?.taxIdNumber ?? null}
                                 onSave={(val) => onSaveDetails?.({ taxIdNumber: val })}
                                 disabled={disabled}
@@ -109,7 +109,7 @@ function FiscalIdField({
     onSave,
     disabled,
 }: {
-    countryCode: "ES" | "AD"
+    countryCode: "ES" | "AD" | "FR"
     taxIdNumber: string | null
     onSave: (val: string) => void
     disabled?: boolean

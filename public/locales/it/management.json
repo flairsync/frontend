@@ -2798,6 +2798,12 @@
           "helper": "Richiesto per la fatturazione fiscale andorrana — stampato sulle ricevute. Gli ordini non possono essere completati finché non viene impostato.",
           "notSetWarning": "Non impostato — richiesto prima di poter completare qualsiasi ordine."
         },
+        "FR": {
+          "label": "Codice fiscale (SIRET/TVA)",
+          "placeholder": "es. 12345678900012",
+          "helper": "La fatturazione fiscale francese non è ancora obbligatoria, ma impostarlo ora farà risparmiare un passaggio in futuro.",
+          "notSetWarning": "Non impostato."
+        },
         "invalid_format": "Non sembra corretto. Formato previsto: {{example}}"
       },
       "pricing_model": {

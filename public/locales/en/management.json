@@ -2617,9 +2617,9 @@
       "business_name_placeholder": "Business Name",
       "description_placeholder": "Description",
       "contact_email_label": "Contact email",
-    "contact_email_placeholder": "Contact Email",
+      "contact_email_placeholder": "Contact Email",
       "phone_label": "Phone number",
-    "phone_placeholder": "Phone Number",
+      "phone_placeholder": "Phone Number",
       "slug": {
         "label": "Your public web address",
         "url_preview": "Your page: /business/{{slug}}",
@@ -2797,6 +2797,12 @@
           "placeholder": "e.g. A-123456-Z",
           "helper": "Required for Andorran fiscal invoicing — printed on receipts. Orders can't be completed until this is set.",
           "notSetWarning": "Not set — required before completing any order."
+        },
+        "FR": {
+          "label": "Tax ID (SIRET/TVA)",
+          "placeholder": "e.g. 12345678900012",
+          "helper": "French fiscal invoicing isn't enforced yet, but setting this now will save a step later.",
+          "notSetWarning": "Not set."
         },
         "invalid_format": "This doesn't look right. Expected format: {{example}}"
       },

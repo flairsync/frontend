@@ -2725,6 +2725,12 @@
           "helper": "Necesario para la facturación fiscal andorrana — se imprime en los recibos. Los pedidos no se pueden completar hasta que esto esté configurado.",
           "notSetWarning": "No definido — necesario antes de completar cualquier pedido."
         },
+        "FR": {
+          "label": "SIRET/TVA",
+          "placeholder": "p. ej. 12345678900012",
+          "helper": "La facturación fiscal francesa aún no es obligatoria, pero configurarlo ahora ahorrará un paso más adelante.",
+          "notSetWarning": "No definido."
+        },
         "invalid_format": "Esto no parece correcto. Formato esperado: {{example}}"
       },
       "pricing_model": {
