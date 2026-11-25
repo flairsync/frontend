@@ -6,7 +6,12 @@ import { PageContext } from "vike/types";
 // white screen a client-side useEffect redirect used to show until hydration.
 export const guard = (pageContext: PageContext) => {
   const { businessId } = pageContext.routeParams as { businessId: string };
-  const search = pageContext.urlParsed.searchOriginal ?? "";
+  const { pathname, searchOriginal } = pageContext.urlParsed;
 
-  throw redirect(`/diner/${businessId}/menu${search}`);
+  // This guard also applies to every nested page (menu/, order/, loyalty/) —
+  // only redirect the bare root, otherwise /diner/:businessId/menu redirects
+  // to itself forever.
+  if (pathname !== `/diner/${businessId}`) return;
+
+  throw redirect(`/diner/${businessId}/menu${searchOriginal ?? ""}`);
 };
