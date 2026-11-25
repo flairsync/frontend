@@ -29,7 +29,8 @@
       "title": "Subscribe to our Newsletter",
       "placeholder": "Enter your email"
     },
-    "rights": "All Rights Reserved."
+    "rights": "All Rights Reserved.",
+    "contact_address_line1": "Andorra la Vella, AD500, Andorra"
   },
   "public_feed": {
     "title": "Explore Feed"
@@ -453,5 +454,21 @@
     "cta_subtitle": "Start for free. No credit card required. Set up your business in under 5 minutes.",
     "start_for_free": "Start for Free",
     "contact_sales": "Contact Sales"
+  },
+  "problemSolution": {
+    "inventoryDemo": {
+      "items": {
+        "pastaFlour": "Pasta Flour",
+        "tomatoSauce": "Tomato Sauce",
+        "oliveOil": "Olive Oil",
+        "mozzarella": "Mozzarella",
+        "basil": "Basil",
+        "parmesan": "Parmesan"
+      },
+      "status": {
+        "low": "Low",
+        "critical": "Critical"
+      }
+    }
   }
 }

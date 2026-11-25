@@ -29,7 +29,8 @@
       "title": "Suscríbete a nuestro boletín",
       "placeholder": "Introduce tu email"
     },
-    "rights": "Todos los derechos reservados."
+    "rights": "Todos los derechos reservados.",
+    "contact_address_line1": "Andorra la Vella, AD500, Andorra"
   },
   "public_feed": {
     "title": "Explorar feed"
@@ -453,5 +454,21 @@
     "cta_subtitle": "Empieza gratis. Sin tarjeta de crédito. Configura tu negocio en menos de 5 minutos.",
     "start_for_free": "Empezar gratis",
     "contact_sales": "Contactar con ventas"
+  },
+  "problemSolution": {
+    "inventoryDemo": {
+      "items": {
+        "pastaFlour": "Harina para pasta",
+        "tomatoSauce": "Salsa de tomate",
+        "oliveOil": "Aceite de oliva",
+        "mozzarella": "Mozzarella",
+        "basil": "Albahaca",
+        "parmesan": "Parmesano"
+      },
+      "status": {
+        "low": "Bajo",
+        "critical": "Crítico"
+      }
+    }
   }
 }

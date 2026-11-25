@@ -29,7 +29,8 @@
       "title": "Abonnez-vous à notre newsletter",
       "placeholder": "Entrez votre email"
     },
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "contact_address_line1": "Andorra la Vella, AD500, Andorre"
   },
   "public_feed": {
     "title": "Explorer le fil"
@@ -453,5 +454,21 @@
     "cta_subtitle": "Commencez gratuitement. Sans carte bancaire. Configurez votre entreprise en moins de 5 minutes.",
     "start_for_free": "Commencer gratuitement",
     "contact_sales": "Contacter les ventes"
+  },
+  "problemSolution": {
+    "inventoryDemo": {
+      "items": {
+        "pastaFlour": "Farine à pâtes",
+        "tomatoSauce": "Sauce tomate",
+        "oliveOil": "Huile d'olive",
+        "mozzarella": "Mozzarella",
+        "basil": "Basilic",
+        "parmesan": "Parmesan"
+      },
+      "status": {
+        "low": "Faible",
+        "critical": "Critique"
+      }
+    }
   }
 }

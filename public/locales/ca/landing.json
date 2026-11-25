@@ -29,7 +29,8 @@
       "title": "Subscriu-te al nostre butlletí",
       "placeholder": "Introdueix el teu correu"
     },
-    "rights": "Tots els drets reservats."
+    "rights": "Tots els drets reservats.",
+    "contact_address_line1": "Andorra la Vella, AD500, Andorra"
   },
   "public_feed": {
     "title": "Explorar feed"
@@ -453,5 +454,21 @@
     "cta_subtitle": "Comença gratis. Sense targeta de crèdit. Configura el teu negoci en menys de 5 minuts.",
     "start_for_free": "Comença gratis",
     "contact_sales": "Contacta amb vendes"
+  },
+  "problemSolution": {
+    "inventoryDemo": {
+      "items": {
+        "pastaFlour": "Farina per a pasta",
+        "tomatoSauce": "Salsa de tomàquet",
+        "oliveOil": "Oli d'oliva",
+        "mozzarella": "Mozzarella",
+        "basil": "Alfàbrega",
+        "parmesan": "Parmesà"
+      },
+      "status": {
+        "low": "Baix",
+        "critical": "Crític"
+      }
+    }
   }
 }
