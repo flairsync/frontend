@@ -5,7 +5,9 @@ export const guard = (pageContext: PageContext) => {
   const { user, urlParsed } = pageContext;
 
   if (user) {
-    if (urlParsed.search["origin"]) {
+    if (!user.verified) {
+      throw redirect("/verify");
+    } else if (urlParsed.search["origin"]) {
       throw redirect(urlParsed.search["origin"]);
     } else {
       // Render the error page and show message to the user
