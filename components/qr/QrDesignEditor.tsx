@@ -161,8 +161,13 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                                 </SelectContent>
                             </Select>
                         </div>
+                        {/* Usability audit (QA Test Report, 2026-11-18): "Corners square/dot style"
+                            read as raw designer jargon with nothing explaining what they control —
+                            added a short hint under each, same pattern already used below for
+                            clear_dots_behind_logo. */}
                         <div className="space-y-2">
                             <Label>{t("qr_design_editor.corners_square_style")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("qr_design_editor.corners_square_style_hint")}</p>
                             <Select value={local.cornersSquareType} onValueChange={(val: CornersSquareType) => updateLocal({ cornersSquareType: val })}>
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
@@ -174,6 +179,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                         </div>
                         <div className="space-y-2">
                             <Label>{t("qr_design_editor.corners_dot_style")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("qr_design_editor.corners_dot_style_hint")}</p>
                             <Select value={local.cornersDotType} onValueChange={(val: CornersDotType) => updateLocal({ cornersDotType: val })}>
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
@@ -198,6 +204,7 @@ export default function QrDesignEditor({ businessId }: QrDesignEditorProps) {
                         </div>
                         <div className="space-y-2">
                             <Label>{t("qr_design_editor.quiet_zone_margin", { px: local.margin ?? 10 })}</Label>
+                            <p className="text-xs text-muted-foreground">{t("qr_design_editor.quiet_zone_margin_hint")}</p>
                             <Slider
                                 min={0}
                                 max={50}

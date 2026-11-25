@@ -103,7 +103,7 @@ const MobileProfileSheet = () => {
                             <AccordionItem value="business-hub" className="border-none">
                                 <AccordionTrigger className="px-3 py-3 rounded-xl hover:bg-primary/5 hover:no-underline text-sm font-medium">
                                     <span className="flex items-center gap-3">
-                                        <Building2 className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.business_hub", "BusinessHub")}
+                                        <Building2 className="w-4 h-4 text-muted-foreground" /> {t("management:manage_overview.my_businesses_title")}
                                     </span>
                                 </AccordionTrigger>
                                 <AccordionContent className="pl-4">
@@ -151,7 +151,7 @@ const MobileProfileSheet = () => {
                         </Accordion>
                     ) : (
                         <a href="/manage/overview" className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-primary/5 text-sm font-medium transition-colors">
-                            <Building2 className="w-4 h-4 text-muted-foreground" /> {t("shared.user_menu.business_hub", "BusinessHub")}
+                            <Building2 className="w-4 h-4 text-muted-foreground" /> {t("management:manage_overview.my_businesses_title")}
                         </a>
                     )}
 

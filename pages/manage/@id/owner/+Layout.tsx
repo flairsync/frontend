@@ -137,8 +137,15 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                         />
                         <Breadcrumb className="min-w-0 flex-shrink">
                             <BreadcrumbList className="min-w-0 flex-nowrap overflow-hidden">
-                                <BreadcrumbItem className="hidden md:flex items-center gap-2">
-                                    <BreadcrumbLink>
+                                <BreadcrumbItem className="hidden md:flex items-center gap-2 min-w-0">
+                                    {/* Usability audit (QA Test Report follow-up, 2026-11-25): this row sits
+                                        in a fixed-height (h-16) header with flex-nowrap + overflow-hidden on
+                                        the parent BreadcrumbList, and has grown a tax-warning icon, a
+                                        draft/live pill, a public-page link and a status pill since this
+                                        layout was first built (C4/B16 fixes) — an unbounded business name
+                                        here can silently push those badges past the clipped edge. Truncating
+                                        it keeps the badges that follow it visible regardless of name length. */}
+                                    <BreadcrumbLink className="truncate max-w-[140px] sm:max-w-[220px]" title={myBusinessFullDetails?.name}>
                                         {myBusinessFullDetails?.name}
                                     </BreadcrumbLink>
                                     {!fetchingMyBusinessFullDetails

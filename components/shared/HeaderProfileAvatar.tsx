@@ -202,7 +202,7 @@ const ProfileDropdownMenu = () => {
                     <DropdownMenuGroup>
                         <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
-                                {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                                {i18n.t("management:manage_overview.my_businesses_title")}
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                                 <DropdownMenuSubContent>
@@ -273,7 +273,7 @@ const ProfileDropdownMenu = () => {
                         href='/manage/overview'
                     >
                         <DropdownMenuItem className='hover:cursor-pointer'>
-                            {i18n.t("shared.user_menu.business_hub", "BusinessHub")}
+                            {i18n.t("management:manage_overview.my_businesses_title")}
                         </DropdownMenuItem>
                     </a>
                 )}

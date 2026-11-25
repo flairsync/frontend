@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Button } from "@/components/ui/button";
 import { LocateFixed, MapPin, Navigation, Search } from "lucide-react";
 import { toast } from "sonner";
@@ -385,11 +386,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                         <MapPin className="h-3.5 w-3.5" />
                         {t("create_business_page.step3.country_label")}
                     </Label>
-                    <Select
-                        value={country?.code}
-                        onValueChange={(val) => {
-                            const newCountry = platformCountries?.find(count => count.code == val);
-                            setCountry(newCountry);
+                    {/* Usability audit (QA Test Report, 2026-11-18): plain Select had no search —
+                        fine for 2 countries (AD/ES), already cramped now that Italy is active too,
+                        and will only get worse as more markets go live. */}
+                    <Combobox
+                        items={platformCountries?.filter(c => c.status === CountryStatus.ACTIVE) ?? []}
+                        value={country ?? null}
+                        itemToStringLabel={(c: PlatformCountry) => t(`create_business_page.step3.countries.${c.code}`, c.name)}
+                        onValueChange={(newCountry: PlatformCountry | null) => {
+                            setCountry(newCountry ?? undefined);
                             setCity("");
                             setAddress("");
                             if (newCountry) {
@@ -399,21 +404,22 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ value, onChange, showRa
                             onChange({
                                 lat: newCountry ? newCountry.centerLat : position.lat,
                                 lng: newCountry ? newCountry.centerLng : position.lng,
-                                country: newCountry, city: "", address: ""
+                                country: newCountry ?? undefined, city: "", address: ""
                             });
                         }}
                     >
-                        <SelectTrigger>
-                            <SelectValue placeholder={t("create_business_page.step3.select_country_placeholder")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {platformCountries?.filter(c => c.status === CountryStatus.ACTIVE).map((c) => (
-                                <SelectItem key={c.id} value={c.code}>
-                                    {t(`create_business_page.step3.countries.${c.code}`, c.name)}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                        <ComboboxInput placeholder={t("create_business_page.step3.select_country_placeholder")} />
+                        <ComboboxContent>
+                            <ComboboxEmpty>{t("create_business_page.step3.no_countries_found")}</ComboboxEmpty>
+                            <ComboboxList>
+                                {(c: PlatformCountry) => (
+                                    <ComboboxItem key={c.id} value={c}>
+                                        {t(`create_business_page.step3.countries.${c.code}`, c.name)}
+                                    </ComboboxItem>
+                                )}
+                            </ComboboxList>
+                        </ComboboxContent>
+                    </Combobox>
                 </div>
 
                 <div className="space-y-1.5">

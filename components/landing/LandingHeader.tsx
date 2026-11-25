@@ -192,11 +192,15 @@ const LandingHeader = ({ activeTag, showSectionNav = true, disableEntryAnimation
                     {/* Auth: HeaderProfileAvatar picks dropdown vs. bottom sheet itself */}
                     {authResolved && user && (
                         <div className="hidden md:flex items-center">
+                            {/* Naming audit (QA Test Report follow-up, 2026-11-25): this was the only
+                                place "BusinessHub" appeared anywhere in the app — the page it links to
+                                is titled "My Businesses" everywhere else, so this now matches instead
+                                of introducing a second name for the same destination. */}
                             <a
                                 href="/manage/overview"
                                 className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-primary transition-colors mr-3"
                             >
-                                {t("shared.user_menu.business_hub", "BusinessHub")}
+                                {t("management:manage_overview.my_businesses_title")}
                             </a>
                         </div>
                     )}
