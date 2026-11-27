@@ -141,7 +141,13 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({ menu, busines
                                                             {formatCurrency(item.price, business.currency || "EUR", i18n.language)}
                                                         </span>
                                                         {allowOrders && (
-                                                            <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                                                            <Badge
+                                                                variant="outline"
+                                                                className="h-8 px-3 border-primary/30 bg-primary/10 text-primary font-semibold gap-1 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                                                            >
+                                                                {t("business_page.menu.add_button", "Add")}
+                                                                <ChevronRight size={14} />
+                                                            </Badge>
                                                         )}
                                                     </div>
                                                 </div>

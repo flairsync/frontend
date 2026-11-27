@@ -5,6 +5,8 @@
     "preview": "vike preview",
     "shadcn": "npx shadcn@latest",
     "test": "node --test",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
     "check:nav": "node scripts/check-task-registry.js",
     "check:i18n": "node scripts/check-i18n-coverage.js",
     "start": "node server.mjs",
@@ -112,6 +114,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@remotion/bundler": "^4.0.526",
     "@remotion/cli": "^4.0.526",
     "@remotion/renderer": "^4.0.526",

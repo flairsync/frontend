@@ -1,0 +1,22 @@
+name: unit tests
+
+# KAN-71 round 5 "Done means": the repo's own unit tests (node --test, including the KAN-90
+# addressCityFilter regression) weren't wired into CI at all before this — only i18n-check.yml
+# ran anything. Needs npm install (real deps, unlike i18n-check.yml's pure-builtin scripts).
+on:
+  push:
+    branches: [staging, master]
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck --if-present
+      - run: npm test
