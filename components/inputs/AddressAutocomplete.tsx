@@ -7,6 +7,7 @@ import { Command, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@
 import Radar from 'radar-sdk-js';
 import 'radar-sdk-js/dist/radar.css';
 import { PlatformCountry } from '@/models/shared/PlatformCountry';
+import { filterAddressesByCity } from '@/utils/addressCityFilter';
 
 interface AddressDetails {
     formattedAddress: string;
@@ -31,6 +32,12 @@ interface AddressAutocompleteProps {
     // query like "10 Rue de Rivoli" in Paris doesn't match a same-named street in a different
     // town across the country.
     near?: { lat: number; lng: number }
+    // KAN-90: `near` is only a proximity *bias* for Radar's ranking, not a hard filter — in a
+    // large country like France it still let results from other towns outrank/appear alongside
+    // the right one. When given, results are filtered to this city (case/diacritic-insensitive)
+    // whenever at least one match exists; falls back to the unfiltered, near-biased list rather
+    // than showing nothing if the city name doesn't line up with how Radar labels it.
+    city?: string
 }
 
 function useDebouncedValue<T>(value: T, delayMs: number): T {
@@ -47,7 +54,8 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     placeholder = 'Search address...',
     noCountryMessage = 'Please select a country first',
     country,
-    near
+    near,
+    city
 }) => {
     const [query, setQuery] = useState('');
     // Closed right after a selection so the dropdown doesn't flash back open
@@ -57,7 +65,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     const searchReady = !!country && debouncedQuery.length >= 3 && !suppressDropdown;
 
     const { data: suggestions = [], isFetching: loading, error } = useQuery({
-        queryKey: ['address_autocomplete', debouncedQuery, country?.code, near?.lat, near?.lng],
+        queryKey: ['address_autocomplete', debouncedQuery, country?.code, near?.lat, near?.lng, city],
         queryFn: async () => {
             const res = await Radar.autocomplete({
                 query: debouncedQuery,
@@ -67,7 +75,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
                 near: near ? { latitude: near.lat, longitude: near.lng } : undefined,
             });
             if (!res.addresses) return [];
-            return res.addresses.map((a: any) => ({
+            const mapped = res.addresses.map((a: any) => ({
                 formattedAddress: a.formattedAddress || a.label || a.address, // fallback fields
                 latitude: a.latitude,
                 longitude: a.longitude,
@@ -76,6 +84,8 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
                 city: a.city,
                 postalCode: a.postalCode,
             }));
+
+            return filterAddressesByCity(mapped, city);
         },
         enabled: searchReady,
         staleTime: 30_000,
