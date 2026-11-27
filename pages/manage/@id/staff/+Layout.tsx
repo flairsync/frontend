@@ -1,6 +1,6 @@
 export { ManagePagesLayout }
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 
 
@@ -57,7 +57,20 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
     const {
         routeParams,
         urlPathname,
+        isBackwardNavigation,
     } = usePageContext();
+
+    // KAN-80: this layout persists across navigations within /staff/*, so its scroll
+    // container (below) keeps whatever scrollTop the previous page left it at — e.g. the
+    // Home breadcrumb landing on staff/home still scrolled ~850px. Mirrors the owner-side
+    // fix: reset to top on a normal navigation; back/forward keeps the browser's own
+    // scroll restoration.
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (!isBackwardNavigation) {
+            contentRef.current?.scrollTo(0, 0);
+        }
+    }, [urlPathname, isBackwardNavigation]);
 
     const { isLoading: loadingPermissions, permissions, hasPermission } = usePermissions(routeParams.id);
     const canViewOpeningHours = hasPermission("OPENING_HOURS", "read");
@@ -173,7 +186,7 @@ const ManagePagesLayout = ({ children }: { children: React.ReactNode }) => {
                             <HeaderProfileAvatar />
                         </div>
                     </header>
-                    <div className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
+                    <div ref={contentRef} className="flex flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden p-4 pb-24 min-w-0">
                         {isSimple && !onHomePage && (
                             <SimpleActionBar
                                 businessId={routeParams.id}
