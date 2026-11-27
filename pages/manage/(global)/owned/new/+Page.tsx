@@ -365,7 +365,10 @@ export default function CreateNewBusiness() {
                                             </div>
 
                                             <div className="pt-4">
-                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">{t('create_business_page.step2.pricing_label')}</label>
+                                                <label className="font-medium text-sm text-zinc-600 mb-2 block">
+                                                    {t('create_business_page.step2.pricing_label')}
+                                                    <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>
+                                                </label>
                                                 <BusinessPricingSelector
                                                     onChange={(val: string) => {
                                                         setFieldValue("pricing", val);

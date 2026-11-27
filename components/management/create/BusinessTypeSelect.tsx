@@ -38,7 +38,16 @@ export default function BusinessTypeSelect({
                         types?.find(val => val.id == value)?.name ? t(`business_types.${types?.find(val => val.id == value)?.name}`) : undefined
                     }</SelectValue>
                 </SelectTrigger>
-                <SelectContent>
+                {/* KAN-79: pin exact trigger width (not just the min-width the shadcn default
+                    gives it) and force side="bottom" so Radix's collision-avoidance can't flip
+                    it above the trigger, which was overlapping the Description field above it. */}
+                <SelectContent
+                    position="popper"
+                    side="bottom"
+                    align="start"
+                    sideOffset={4}
+                    className="w-[var(--radix-select-trigger-width)]"
+                >
                     {types?.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
                             <div
