@@ -1,5 +1,5 @@
 import { render, redirect } from "vike/abort";
-import { PageContext } from "vike/types";
+import type { PageContext } from "vike/types";
 
 export const guard = (pageContext: PageContext) => {
   const { user, urlParsed } = pageContext;
