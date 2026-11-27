@@ -97,8 +97,16 @@ const DinerLayout = ({ children }: { children: React.ReactNode }) => {
     const isLoyaltyActive = currentPath === `/diner/${businessId}/loyalty`;
 
     useEffect(() => {
-        if (!isLoading && !hasSeatedReservation && !hasActiveOrder && !hasScannedTable && cart.length === 0 && !isLoyaltyActive) {
+        if (isLoading) return;
+        // On the very first render after a table scan, the cookie-hydration effect
+        // above hasn't flushed scannedTableId into the store yet, so this effect can
+        // run once against a stale hasScannedTable === false. Without resetting back
+        // to false once the real state arrives, that stale pass would permanently
+        // arm the 12s auto-exit redirect on every single table-scan visit (KAN-72).
+        if (!hasSeatedReservation && !hasActiveOrder && !hasScannedTable && cart.length === 0 && !isLoyaltyActive) {
             setExitVisible(true);
+        } else {
+            setExitVisible(false);
         }
     }, [hasSeatedReservation, hasActiveOrder, hasScannedTable, isLoading, cart.length, isLoyaltyActive]);
 
