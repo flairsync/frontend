@@ -106,7 +106,8 @@ const WebsiteFooter = () => {
                             <address className="not-italic text-muted-foreground mt-2 space-y-1">
                                 {/* Same key LandingFooter uses — already correctly cased/translated. */}
                                 <p>{t("footer.contact_address_line1")}</p>
-                                <p>+376 123 456</p>
+                                {/* Phone number removed per decision (2026-11-19) — it was a placeholder,
+                                    not a real number (KAN-82). Mirrors LandingFooter/support page. */}
                             </address>
                         </div>
 

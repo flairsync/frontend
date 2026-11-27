@@ -29,6 +29,7 @@
   "components/profile/PendingDeletionScreen.tsx:jsx-text:Log out",
   "components/profile/PendingDeletionScreen.tsx:jsx-text:Your account is scheduled for deletion",
   "components/qr/DownloadTableQrButton.tsx:toast-literal:Failed to download QR code",
+  "components/qr/DownloadTableQrButton.tsx:toast-literal:Failed to load QR code",
   "components/qr/DownloadWifiQrButton.tsx:toast-literal:Failed to download WiFi QR code",
   "components/shared/ConfirmAction.tsx:jsx-text:Never show again",
   "components/shared/ErrorBoundary.tsx:jsx-text:Go to homepage",
